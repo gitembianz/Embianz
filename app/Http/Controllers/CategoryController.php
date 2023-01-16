@@ -81,12 +81,14 @@ class CategoryController extends Controller
         $id=$request->hiddenid;
         $category=category::find($id);
         $category_image=ImageCategories::where('category_id', $category->id)->first();
+        if($category_image){
         if (File::exists('categories/'.$category_image->img_main_path)) {
             File::delete('categories/'.$category_image->img_main_path);
         }
         if (File::exists('categories/'.$category_image->img_search_path)) {
             File::delete('categories/'.$category_image->img_search_path);
         }
+    }
         $category->delete();
         
         return redirect()->back()->with('message','Category Deleted Succesfully!');
