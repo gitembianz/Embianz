@@ -7,7 +7,7 @@ use App\Models\ImageCategories;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
-use Intervention\Image\ImageManagerStatic as Imagee;
+use Illuminate\Support\Facades\Storage;
 use DataTables;
 use Validator;
 
@@ -80,6 +80,8 @@ class CategoryController extends Controller
     public function delete(Request $request){
         $id=$request->hiddenid;
         $category=category::find($id);
+        $category_image=$category->imagescategories;
+        Storage::delete(['categories/$category_image->img_main_path','categories/$category_image->img_search_path']);
         $category->delete();
         
         return redirect()->back()->with('message','Category Deleted Succesfully!');
