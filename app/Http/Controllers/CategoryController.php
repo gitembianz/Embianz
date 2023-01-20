@@ -17,8 +17,20 @@ class CategoryController extends Controller
     public function category(Request $request){
        
             if($request->ajax()) {
-                $data= Category::query();
+                $data= Category::query()->with('image');
                 return DataTables::eloquent($data)
+                ->addColumn('image', function($data) {
+                    
+                    $testvar = $data->image->first();
+                    if($testvar != NULL){
+                        $path = $testvar->img_search_path ;
+                    
+                    }else{
+                        $path = "defaultcategory.jpg";
+                    };
+                   
+                    return $path;
+                })
                     ->addColumn('action', function($data){
                         $button = '<button type="button" class="view btn-bg text-secondary br-xs"  name="view" id="'.$data->id.'">View</button>';
                         return $button;
@@ -47,8 +59,8 @@ class CategoryController extends Controller
             $image =$request->category_image;
             $images =$request->category_image_search;
 
-            $image_search=$request->category.'_search.'.$images->getClientOriginalExtension();
-            $image_main=$request->category.'_main.'.$image->getClientOriginalExtension();
+            $image_search=time().'_search.'.$images->getClientOriginalExtension();
+            $image_main=time().'_main.'.$image->getClientOriginalExtension();
 
             $request->category_image->move('categories',$image_main);
             $request->category_image_search->move('categories',$image_search);
@@ -109,4 +121,16 @@ class CategoryController extends Controller
         return redirect()->back()->with('message','Category Update Succesfully!');
         
     }
+
+    public function getImages()
+{
+    
+    //edit category
+    if(request()->ajax()){
+        $data = ImageCategories::all();
+        return response()->json(['result' =>$data]);
+        }
 }
+}
+
+

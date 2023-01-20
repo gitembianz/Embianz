@@ -35,6 +35,9 @@
 }
 
 .content-category {
+  .browse{
+    @include wh(10%, auto);
+  }
   @extend .content;
   @include wh(50vw, auto);
   top: $base-margin;

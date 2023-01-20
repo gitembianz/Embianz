@@ -30,8 +30,11 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'])-
     route::get('/show_category/{id}/', [CategoryController::class, 'show']);
     route::post('/delete_category', [CategoryController::class, 'delete']);
     route::post('/category_update', [CategoryController::class, 'update_category']);
+    route::get('/images', [CategoryController::class, 'getImages']);
+    
 
     
 });
 route::get('/redirect', [HomeController::class, 'redirect'])->middleware('auth','verified')->name('redirect');
+
 

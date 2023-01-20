@@ -24,7 +24,9 @@
                     <th class="bg-sidebar-bg">Catagory Name</th>
                     <th class="bg-sidebar-bg">Catagory Parrent</th>
                     <th class="bg-sidebar-bg">Catagory Short Description</th>
+                    <th class="bg-sidebar-bg">Images</th>
                     <th class="bg-sidebar-bg">Action</th>
+                    
                 </tr>
             </thead>
                 <tbody></tbody>

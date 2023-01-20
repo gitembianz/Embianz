@@ -3829,6 +3829,10 @@ th {
   top: 0.75rem;
   padding: 0;
 }
+.content-category .browse {
+  width: 10%;
+  height: auto;
+}
 .content-category #new, .content-category #delete, .content-category #edit {
   width: 10%;
   height: auto;

@@ -21,11 +21,21 @@
                     name: 'short_description'
                 },
                 {
+                    data: 'image',
+                    name: 'image',
+                    orderable: false,
+                    searchable: false,
+                    render: function(data, type, row) {
+                        return '<img src="categories/' + data + '" width="50" height="50">';
+                    }
+                },
+                {
                     data: 'action',
                     name: 'action',
                     orderable: false,
                     searchable: false
                 },
+                
             ]
         });
 
@@ -105,6 +115,21 @@
         $('#hiddenid').val(id);
 
     });
+
+    $('#browse_main').on('click', function(event) {
+        event.preventDefault();
+        document.getElementById('imageModal').style.display = 'block';
+
+        $.ajax({
+            url: "/images",
+            dataType: "json",
+            success: function(data) {
+
+                document.getElementById('imageModal').style.display = 'block';
+
+            }
+        });
+    });
 </script>
 <script>
     /* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
@@ -155,3 +180,21 @@
         }
     }
 </script>
+
+
+
+
+
+
+{{-- <script>
+    $('#browse_main').on('click', function(event) {
+        event.preventDefault();
+        $.get('/images', function(images) {
+            images.map(function(image) {
+                var img = $('<img>').attr('src', image.result.img_main_path);
+                $('#image-container').append(img);
+            });
+            document.getElementById('imageModal').style.display = 'block';
+        });
+    });
+</script> --}}

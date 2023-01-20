@@ -67,12 +67,16 @@
                                 <div class="element">
                                     <label class="font-lg text-secondary ls-1" for="end_date">Image main -</label>
                                     <input type="file" class="image ml-1"  id="category_image" name="category_image">
+                                    <input type="button" class="browse1 ls-1 ml-1 talign-c cursor-p bg-hover-bg-light-2" value="or Browse"
+                                    name="browse" id="browse_main">
                                 </div>
                             </li>
                             <li class="p-1 font-xl talign-c">
                                 <div class="element">
                                     <label class="font-lg text-secondary ls-1" for="end_date">Image search -</label>
                                     <input type="file" class="image ml-1"  id="category_image_search" name="category_image_search">
+                                    <input type="button" class="browse ls-1 ml-1 talign-c cursor-p bg-hover-bg-light-2" value="or Browse"
+                                    name="browse" id="browse_saerch">
                                 </div>
                             </li>
                             <li class="p-1 font-xl talign-c">
@@ -261,4 +265,33 @@
     </div>
 </div>
 {{-- Image Selection Modal --}}
- 
+<!-- Modal -->
+<div class="modal" id="imageModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="content-category">
+       
+    <div>
+        <span onclick="document.getElementById('imageModal').style.display='none'"
+        class="exit text-hover-secondary float-r">&times;</span>
+        <ul class="pt-1 mb-2">
+            <li class="p-1 font-xl">
+                <h1 class="title talign-c font-xl ls-1 text-secondary">
+                    {{ __('Please select an image') }}
+                </h1>
+            </li>
+            <li class="p-1 font-xl">
+                <div class="modal-body" id="image-container">
+                    <h1 id="test"></h1>
+                  </div>
+            </li>
+            <li class="p-1 font-xl">
+                <input type="submit" class="submit cursor-p bg-hover-bg-light-2" value="Confirm"
+                                    name="submit">
+                <input type="button" onclick="document.getElementById('imageModal').style.display='none'"
+                                    class="submit cursor-p talign-c bg-hover-bg-light-2" value="Cancel">
+            </li>
+        </ul>
+    </div>
+    </div>
+  </div>
+  
+  {{--  --}}
