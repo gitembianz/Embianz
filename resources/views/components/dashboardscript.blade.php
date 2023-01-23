@@ -43,35 +43,36 @@
 </script>
 <script>
     //view category script
-    $(document).on('click', '.view', function(event) {
-        event.preventDefault();
-        var id = $(this).attr('id');
+    // $(document).on('click', '.view', function(event) {
+    //     event.preventDefault();
+    //     var id = $(this).attr('id');
 
-        $.ajax({
-            url: "/show_category/" + id + "/",
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            dataType: "json",
-            success: function(data) {
-                $('#category_name').val(data.result.name);
-                $('#category_parrent').val(data.result.parrent);
-                $('#category_long_description').val(data.result.long_description);
-                $('#category_short_description').val(data.result.short_description);
-                $('#category_sequence').val(data.result.sequence);
-                $('#category_start_date').val(data.result.start_date);
-                $('#category_end_date').val(data.result.end_date);
-                $('#hidden_id').val(id);
-                $('.modal-title').text('View - ' + data.result.name + ' - category');
-                document.getElementById('viewmodal-category').style.display = 'block';
+    //     $.ajax({
+    //         url: "/show_category/" + id + "/",
+    //         headers: {
+    //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    //         },
+    //         dataType: "json",
+    //         success: function(data) {
+    //             $('#category_name').val(data.result.name);
+    //             $('#category_parrent').val(data.result.parrent);
+    //             $('#category_long_description').val(data.result.long_description);
+    //             $('#category_short_description').val(data.result.short_description);
+    //             $('#category_sequence').val(data.result.sequence);
+    //             $('#category_start_date').val(data.result.start_date);
+    //             $('#category_end_date').val(data.result.end_date);
+    //            // $('#category_image').attr("src", data.result.image.img_main_path);
+    //             $('#hidden_id').val(id);
+    //             $('.modal-title').text('View - ' + data.result.name + ' - category');
+    //             document.getElementById('viewmodal-category').style.display = 'block';
 
-            },
-            error: function(data) {
-                var errors = data.responseJSON;
-                console.log(errors);
-            }
-        });
-    });
+    //         },
+    //         error: function(data) {
+    //             var errors = data.responseJSON;
+    //             console.log(errors);
+    //         }
+    //     });
+    // });
 
     //edit category script
     $(document).on('click', '.edit', function(event) {

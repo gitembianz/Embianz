@@ -147,7 +147,12 @@
                                     <input type="hidden" name="hidden_id" id="hidden_id">
                                 </div>
                             </li>
-                            
+                            <li class="p-1 font-xl talign-c">
+                                <div class="element">
+                                    <label class="font-lg text-white ls-1" for="end_date"> Image Main-</label>
+                                    <img id="category_image" width="50" height="50">
+                                </div>
+                            </li>
                         </ul>
                     </form>
                 </li>
