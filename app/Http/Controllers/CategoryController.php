@@ -32,7 +32,8 @@ class CategoryController extends Controller
                     return $path;
                 })
                     ->addColumn('action', function($data){
-                        $button = '<button type="button" class="view btn-bg text-secondary br-xs"  name="view" id="'.$data->id.'">View</button>';
+                        $button = '<button type="button" class="view btn-bg text-secondary br-xs" name="view" onclick="event.preventDefault();location.href=\'/show_category/'.$data->id.'\'">View</button>';
+                        // $button = '<button type="button" class="view btn-bg text-secondary br-xs"  name="view" id="'.$data->id.'">View</button>';
                         return $button;
                     })
                     ->make(true);
@@ -82,11 +83,10 @@ class CategoryController extends Controller
         }
     }
     public function show($id){
-        //show category
-        if(request()->ajax()){
+        
         $data = Category::findOrFail($id);
-        return response()->json(['result' =>$data]);
-        }
+        return view('admin.show_category', compact('data'));
+        
     }
 
     public function delete(Request $request){
