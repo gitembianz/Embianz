@@ -84,7 +84,7 @@ class CategoryController extends Controller
     }
     public function show($id){
         
-        $data = Category::findOrFail($id);
+        $data = Category::find($id);
         return view('admin.show_category', compact('data'));
         
     }
