@@ -1,22 +1,6 @@
-.add-category {
-  button {
-    svg {
-      @include wh(2rem, auto);
 
-      @media (max-width: 662px) {
-        @include wh(1rem, auto);
-      }
-
-      &:hover {
-        @include wh(2.1rem, auto);
-        cursor: pointer;
-
-        @media (max-width: 662px) {
-          @include wh(1.1rem, auto);
-        }
-      }
-    }
-  }
+#back, #new, #edit, #delete {
+  border: 1px solid $secondary;
 }
 
 @media (max-width: 662px) {

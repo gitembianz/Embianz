@@ -3358,6 +3358,10 @@ th {
   display: inline-block;
 }
 
+.display-c {
+  display: contents;
+}
+
 .font-sm {
   font-size: 0.65625rem;
 }
@@ -3521,6 +3525,30 @@ th {
 
 .cursor-p {
   cursor: pointer;
+}
+
+.fld-row {
+  flex-direction: row;
+}
+
+.fld-rowr {
+  flex-direction: row-reverse;
+}
+
+.fld-col {
+  flex-direction: column;
+}
+
+.fld-colr {
+  flex-direction: column-reverse;
+}
+
+.fld-i {
+  flex-direction: initial;
+}
+
+.fld-in {
+  flex-direction: inherit;
 }
 
 .navbar .container, .navbar-white .container, .navbar-black .container, .navbar-gray .container, .navbar-sidebar-bg .container, .navbar-bg .container, .navbar-info .container, .navbar-error .container, .navbar-secondary .container, .navbar-primary .container, .navbar .section-container, .navbar-white .section-container, .navbar-black .section-container, .navbar-gray .section-container, .navbar-sidebar-bg .section-container, .navbar-bg .section-container, .navbar-info .section-container, .navbar-error .section-container, .navbar-secondary .section-container, .navbar-primary .section-container, .navbar, .navbar-white, .navbar-black, .navbar-gray, .navbar-sidebar-bg, .navbar-bg, .navbar-info, .navbar-error, .navbar-secondary, .navbar-primary {
@@ -3789,26 +3817,8 @@ th {
   }
 }
 
-.add-category button svg {
-  width: 2rem;
-  height: auto;
-}
-@media (max-width: 662px) {
-  .add-category button svg {
-    width: 1rem;
-    height: auto;
-  }
-}
-.add-category button svg:hover {
-  width: 2.1rem;
-  height: auto;
-  cursor: pointer;
-}
-@media (max-width: 662px) {
-  .add-category button svg:hover {
-    width: 1.1rem;
-    height: auto;
-  }
+#back, #new, #edit, #delete {
+  border: 1px solid hsl(152deg, 92%, 86%);
 }
 
 @media (max-width: 662px) {
