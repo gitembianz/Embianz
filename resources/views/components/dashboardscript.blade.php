@@ -3,7 +3,7 @@
 
 
     $(document).ready(function() {
-        var dataTable = $('#category_table').DataTable({
+        var table = $('#category_table').DataTable({
             processing: true,
             serverSide: true,
             orderable: true,
@@ -42,11 +42,18 @@
                 
             ]
         });
+        $('a.toggle-vis').on('click', function (e) {
+        e.preventDefault();
+ 
+        // Get the column API object
+        var column = table.column($(this).attr('data-column'));
+ 
+        // Toggle the visibility
+        column.visible(!column.visible());
+    });
     });
    
-</script>
-<script>
-    
+
     //edit category script
     $(document).on('click', '.edit', function(event) {
         event.preventDefault();
@@ -90,8 +97,7 @@
 
     });
 
-</script>
-<script>
+
     /* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
     var dropdown = document.getElementsByClassName("dropdown-btn");
     var i;
