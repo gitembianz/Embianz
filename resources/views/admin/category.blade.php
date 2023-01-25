@@ -16,6 +16,17 @@
     
     <div class="row talign-c">
         <div class="col-12-xs col-12-sm col-12-xl m-2 p-1 text-secondary">
+            <div class="form-group float-r">
+                <label for="column-select">Select Columns:</label>
+                <select class="form-control p-1 br-xs bg-sidebar-bg-light-1" id="column-select">
+                   <?php 
+                      $columns = ["Category ID", "Category Name", "Category Parent", "Category Short Description", "Category Images"];
+                      for ($i = 0; $i < count($columns); $i++) {
+                      echo "<option data-column='$i'>$columns[$i]</option>";
+                      }
+                    ?>
+                </select>
+            </div>
             {{-- Table Category --}}
             <table class="category-table" id="category_table">
                 <thead>

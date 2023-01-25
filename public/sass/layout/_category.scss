@@ -2,6 +2,23 @@
 #back, #new, #edit, #delete {
   border: 1px solid $secondary;
 }
+.listelement{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#category_image_main{
+  image-rendering: crisp-edges;
+  object-fit: cover;
+  transition: opacity 0.5s ease-in-out;
+  opacity: 1;
+ 
+  border: 1px solid $secondary;
+}
+#category_image_main.loaded {
+  opacity: 1;
+}
 
 @media (max-width: 662px) {
   #title {

@@ -3821,6 +3821,25 @@ th {
   border: 1px solid hsl(152deg, 92%, 86%);
 }
 
+.listelement {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#category_image_main {
+  image-rendering: crisp-edges;
+  -o-object-fit: cover;
+     object-fit: cover;
+  transition: opacity 0.5s ease-in-out;
+  opacity: 1;
+  border: 1px solid hsl(152deg, 92%, 86%);
+}
+
+#category_image_main.loaded {
+  opacity: 1;
+}
+
 @media (max-width: 662px) {
   #title {
     margin-top: 1rem;

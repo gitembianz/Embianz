@@ -103,7 +103,7 @@ class CategoryController extends Controller
     }
         $category->delete();
         
-        return redirect()->back()->with('message','Category Deleted Succesfully!');
+        return view('admin.category')->with('message', 'Category Deleted Successfully!');
     }
 
     public function update_category(Request $request){
