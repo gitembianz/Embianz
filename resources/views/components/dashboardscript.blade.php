@@ -42,6 +42,7 @@
                 
             ]
         });
+        
         $('a.toggle-vis').on('click', function (e) {
         e.preventDefault();
  
@@ -51,8 +52,30 @@
         // Toggle the visibility
         column.visible(!column.visible());
     });
+    $('.checkbox').on('click', function() {
+    var column = table.column($(this).attr('data-column')); // get the column number from the checkbox's data-column attribute
+    if (column.visible()) {
+        column.visible(false); // hide the column
+        $(this).attr('checked', false); // uncheck the checkbox
+    } else {
+        column.visible(true); // show the column
+        $(this).attr('checked', true); // check the checkbox
+    }
+});
     });
    
+    var expanded = false;
+
+function showCheckboxes() {
+  var checkboxes = document.getElementById("checkboxes");
+  if (!expanded) {
+    checkboxes.style.display = "block";
+    expanded = true;
+  } else {
+    checkboxes.style.display = "none";
+    expanded = false;
+  }
+}
 
     //edit category script
     $(document).on('click', '.edit', function(event) {

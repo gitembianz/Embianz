@@ -3821,6 +3821,43 @@ th {
   border: 1px solid hsl(152deg, 92%, 86%);
 }
 
+.multiselect {
+  width: 20vw;
+}
+
+.selectBox {
+  position: relative;
+}
+
+.selectBox select {
+  width: 100%;
+  font-weight: bold;
+}
+
+.overSelect {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  border: 1px solid hsl(152deg, 92%, 86%);
+}
+
+#checkboxes {
+  display: none;
+  border: 1px solid hsl(152deg, 92%, 86%);
+  padding: 0.75rem;
+  position: absolute;
+  z-index: 1;
+  background: #35424b;
+  float: right;
+  width: 20vw;
+}
+
+#checkboxes label {
+  display: block;
+}
+
 .listelement {
   display: flex;
   align-items: center;

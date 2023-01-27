@@ -17,9 +17,30 @@
     <div class="row talign-c">
         <div class="col-12-xs col-12-sm col-12-xl m-2 p-1 text-secondary">
             <div class="form-group float-r">
-                <div>
-                    Toggle column: <a class="toggle-vis text-hover-white cursor-p" data-column="0">ID</a> - <a class="toggle-vis text-hover-white cursor-p" data-column="1">Name</a> - <a class="toggle-vis cursor-p text-hover-white" data-column="2">Parrent</a> - <a class="toggle-vis text-hover-white cursor-p" data-column="3">Short</a> - <a class="toggle-vis text-hover-white cursor-p" data-column="4">Images</a>
-                </div>
+                <form>
+                    <div class="multiselect">
+                      <div class="selectBox br-xs" onclick="showCheckboxes()">
+                        <select class="p-1  bg-sidebar-bg-light-1">
+                          <option>Toggle columns</option>
+                        </select>
+                        <div class="overSelect br-xs"></div>
+                      </div>
+                      <div id="checkboxes">
+                        
+                            <?php 
+                            $columns = ["Category ID", "Category Name", "Category Parent", "Category Short Description", "Category Images"];
+                            for ($i = 0; $i < count($columns); $i++) {
+                            
+                             echo "<label data-column='$i' class='talign-r pt-1' for='$i'>$columns[$i]
+                          <input type='checkbox' class='checkbox' id='$i' /></label>";
+                            }
+                          ?>
+                         
+                      </div>
+                    </div>
+                  </form>
+                
+                 
             </div>
             {{-- Table Category --}}
             <table class="category-table" id="category_table">
