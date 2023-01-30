@@ -1,7 +1,11 @@
 
-#back, #new, #edit, #delete {
+#back, #new, #edit, #delete, #Update {
   border: 1px solid $secondary;
 
+}
+#Update{
+  position: relative;
+  left: 47.5%;
 }
 .multiselect {
   width: 20vw;

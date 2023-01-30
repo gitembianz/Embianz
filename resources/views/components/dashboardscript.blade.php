@@ -1,7 +1,4 @@
-
 <script>
-
-
     $(document).ready(function() {
         var table = $('#category_table').DataTable({
             processing: true,
@@ -39,75 +36,69 @@
                     orderable: false,
                     searchable: false
                 },
-                
+
             ]
         });
-        
-        $('a.toggle-vis').on('click', function (e) {
-        e.preventDefault();
- 
-        // Get the column API object
-        var column = table.column($(this).attr('data-column'));
- 
-        // Toggle the visibility
-        column.visible(!column.visible());
-    });
-    $('.checkbox').on('click', function() {
-    var column = table.column($(this).attr('data-column')); // get the column number from the checkbox's data-column attribute
-    if (column.visible()) {
-        column.visible(false); // hide the column
-        $(this).attr('checked', false); // uncheck the checkbox
-    } else {
-        column.visible(true); // show the column
-        $(this).attr('checked', true); // check the checkbox
-    }
-});
-    });
-   
-    var expanded = false;
 
-function showCheckboxes() {
-  var checkboxes = document.getElementById("checkboxes");
-  if (!expanded) {
-    checkboxes.style.display = "block";
-    expanded = true;
-  } else {
-    checkboxes.style.display = "none";
-    expanded = false;
-  }
-}
-
-    //edit category script
-    $(document).on('click', '.edit', function(event) {
-        event.preventDefault();
-        const input = document.getElementById('hidden_id');
-        var id = input.value;
-
-        $.ajax({
-            url: "/edit_category/" + id + "/",
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            dataType: "json",
-            success: function(data) {
-                $('#categoryname').val(data.result.name);
-                $('#categoryparrent').val(data.result.parrent);
-                $('#categorylong_description').val(data.result.long_description);
-                $('#categoryshort_description').val(data.result.short_description);
-                $('#categorysequence').val(data.result.sequence);
-                $('#categorystart_date').val(data.result.start_date);
-                $('#categoryend_date').val(data.result.end_date);
-                $('#idupdate').val(id);
-                $('.modaltitle').text('Edit - ' + data.result.name + ' - category');
-                document.getElementById('editmodal-category').style.display = 'block';
-
-            },
-            error: function(data) {
-                var errors = data.responseJSON;
-                console.log(errors);
+        $('.checkbox').on('click', function() {
+            var column = table.column($(this).attr(
+                'data-column')); // get the column number from the checkbox's data-column attribute
+            if (column.visible()) {
+                column.visible(false); // hide the column
+                $(this).attr('checked', false); // uncheck the checkbox
+            } else {
+                column.visible(true); // show the column
+                $(this).attr('checked', true); // check the checkbox
             }
         });
     });
+
+
+
+    var expanded = false;
+
+    function showCheckboxes() {
+        var checkboxes = document.getElementById("checkboxes");
+        if (!expanded) {
+            checkboxes.style.display = "block";
+            expanded = true;
+        } else {
+            checkboxes.style.display = "none";
+            expanded = false;
+        }
+    }
+
+    //edit category script
+    // $(document).on('click', '.editt', function(event) {
+    //     event.preventDefault();
+    //     const input = document.getElementById('hidden_id');
+    //     var id = input.value;
+
+    //     $.ajax({
+    //         url: "/edit_category/" + id + "/",
+    //         headers: {
+    //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    //         },
+    //         dataType: "json",
+    //         success: function(data) {
+    //             $('#categoryname').val(data.result.name);
+    //             $('#categoryparrent').val(data.result.parrent);
+    //             $('#categorylong_description').val(data.result.long_description);
+    //             $('#categoryshort_description').val(data.result.short_description);
+    //             $('#categorysequence').val(data.result.sequence);
+    //             $('#categorystart_date').val(data.result.start_date);
+    //             $('#categoryend_date').val(data.result.end_date);
+    //             $('#idupdate').val(id);
+    //             $('.modaltitle').text('Edit - ' + data.result.name + ' - category');
+    //             document.getElementById('editmodal-category').style.display = 'block';
+
+    //         },
+    //         error: function(data) {
+    //             var errors = data.responseJSON;
+    //             console.log(errors);
+    //         }
+    //     });
+    // });
 
     //delete script
     $(document).on('click', '.delete', function(event) {
@@ -163,4 +154,29 @@ function showCheckboxes() {
         }
     }
 </script>
+<script>
+    document.getElementById("edit").addEventListener("click", function() {
 
+        document.getElementById("new").style.display = "none";
+        document.getElementById("delete").style.display = "none";
+        document.getElementById("edit").style.display = "none";
+        document.getElementById("Update").style.display = "block";
+        const spanElements = document.querySelectorAll(
+            '#category_name, #category_parrent, #category_long_description,#category_short_description');
+        const dates = document.querySelectorAll('#category_start_date, #category_end_date');
+        dates.forEach(date => {
+            const inpdate = document.createElement('input');
+            inpdate.value = date.innerText;
+            inpdate.setAttribute("class", date.getAttribute("class"));
+            inpdate.setAttribute("type", "date");
+            date.replaceWith(inpdate);
+        });
+
+        spanElements.forEach(spanElement => {
+            const inputElement = document.createElement('input');
+            inputElement.value = spanElement.innerText;
+            inputElement.setAttribute("class", spanElement.getAttribute("class"));
+            spanElement.replaceWith(inputElement);
+        });
+    });
+</script>

@@ -3817,8 +3817,13 @@ th {
   }
 }
 
-#back, #new, #edit, #delete {
+#back, #new, #edit, #delete, #Update {
   border: 1px solid hsl(152deg, 92%, 86%);
+}
+
+#Update {
+  position: relative;
+  left: 47.5%;
 }
 
 .multiselect {

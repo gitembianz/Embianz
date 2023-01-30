@@ -23,32 +23,38 @@
     </div>
     <div class="row gap-4 justify-center">
         <div class="col-12-xs col-12-sm mt-1 col-5-xl text-white">
-            
+            <form id="editcategory_form" action="{{ url('/category_update') }}" method="POST">
+                @csrf
                     <ul class="p-1">
                         <li class="listelement p-1">
-                            <label class="font-lg align-left text-white ls-1" for="end_date">Name -</label>
-                            <input type="text" class="text-secondary talign-c font-lg p-1 bg-bg" name="categoryname"
-                                id="category_name" value="{{ $data->name }}" readonly>
+                            <label class="font-lg align-left text-white ls-1">Name -</label>
+                            {{-- <input type="text" class="text-secondary talign-c font-lg p-1 bg-bg" name="categoryname"
+                                id="category_name" value="{{ $data->name }}" readonly> --}}
+                                <span class="ml-1 font-lg talign-c text-secondary p-1 bg-bg" id="category_name">{{ $data->name }}</span>
                         </li>
                         <li class="listelement p-1">
-                            <label class="font-lg text-white ls-1" for="end_date">Parrent -</label>
-                            <input class="text-secondary talign-c font-lg p-1 bg-bg" type="text" name="category_parrent"
-                                id="category_parrent" value="{{ $data->parrent }}" readonly>
+                            <label class="font-lg text-white ls-1">Parrent -</label>
+                            {{-- <input class="text-secondary talign-c font-lg p-1 bg-bg" type="text" name="category_parrent"
+                                id="category_parrent" value="{{ $data->parrent }}" readonly> --}}
+                                <span class="ml-1 font-lg talign-c text-secondary p-1 bg-bg" id="category_parrent">{{ $data->parrent }}</span>
                         </li>
                         <li class="listelement p-1">
-                            <label class="font-lg text-white ls-1" for="end_date">Long Description -</label>
-                            <input type="text" class="text-secondary talign-c p-1 font-lg bg-bg" id="category_long_description"
-                                name="category_long_description" value="{{ $data->long_description }}" readonly>
+                            <label class="font-lg text-white ls-1">Long Description -</label>
+                            {{-- <input type="text" class="text-secondary talign-c p-1 font-lg bg-bg" id="category_long_description"
+                                name="category_long_description" value="{{ $data->long_description }}" readonly> --}}
+                                <span class="ml-1 font-lg talign-c text-secondary p-1 bg-bg" id="category_long_description">{{ $data->long_description }}</span>
                         </li>
                         <li class="listelement p-1">
-                            <label class="font-lg text-white ls-1" for="end_date">Short Description -</label>
-                            <input type="text" class="text-secondary talign-c font-lg p-1 bg-bg" name="category_short_description"
-                                id="category_short_description" value="{{ $data->short_description }}" readonly>
+                            <label class="font-lg text-white ls-1">Short Description -</label>
+                            {{-- <input type="text" class="text-secondary talign-c font-lg p-1 bg-bg" name="category_short_description"
+                                id="category_short_description" value="{{ $data->short_description }}" readonly> --}}
+                                <span class="ml-1 font-lg talign-c text-secondary p-1 bg-bg" id="category_short_description">{{ $data->short_description }}</span>
                         </li>
                         <li class="listelement p-1">
-                            <label class="font-lg text-white ls-1" for="end_date">Sequence -</label>
-                            <input type="number" class="text-secondary talign-c font-lg p-1 bg-bg" name="category_sequence"
-                                id="category_sequence" value="{{ $data->sequence }}" readonly>
+                            <label class="font-lg text-white ls-1">Sequence -</label>
+                            {{-- <input type="number" class="text-secondary talign-c font-lg p-1 bg-bg" name="category_sequence"
+                                id="category_sequence" value="{{ $data->sequence }}" readonly> --}}
+                                <span class="ml-1 font-lg talign-c text-secondary p-1 bg-bg" id="category_sequence">{{ $data->sequence }}</span>
                         </li>
                     </ul>
         </div>
@@ -56,17 +62,20 @@
             <ul>
                 <li class="listelement p-1">
                         <label class="font-lg  text-white ls-1" for="start_date">Start Date -</label>
-                        <input class="ml-1 font-lg talign-c text-secondary p-1 bg-bg" type="date" id="category_start_date"
-                            name="category_start_date" value="{{ $data->start_date }}" readonly>
+                        {{-- <input class="ml-1 font-lg talign-c text-secondary p-1 bg-bg" type="date" id="category_start_date"
+                            name="category_start_date" value="{{ $data->start_date }}" readonly> --}}
+                            <span class="ml-1 font-lg talign-c text-secondary p-1 bg-bg" id="category_start_date">{{ $data->start_date }}</span>
+
                 </li>
                 <li class="listelement p-1">
-                        <label class="font-lg text-white ls-1" for="end_date">End Date -</label>
-                        <input class="ml-1 font-lg talign-c text-secondary p-1 bg-bg" type="date" id="category_end_date"
-                            name="category_end_date" value="{{ $data->end_date }}" readonly>
+                        <label class="font-lg text-white ls-1">End Date -</label>
+                        {{-- <input class="ml-1 font-lg talign-c text-secondary p-1 bg-bg" type="date" id="category_end_date"
+                            name="category_end_date" value="{{ $data->end_date }}" readonly> --}}
+                            <span class="ml-1 font-lg talign-c text-secondary p-1 bg-bg" id="category_end_date">{{ $data->end_date}}</span>
                         <input type="hidden" name="hidden_id" value="{{ $data->id }}" id="hidden_id">
                 </li>
                 <li class="listelement p-1">
-                        <label class="font-lg text-white ls-1" for="end_date"> Image Main-</label>
+                        <label class="font-lg text-white ls-1"> Image Main-</label>
                         @if (isset($data) && !is_null($data->image->first()))
                             <img id="category_image_main" src="/categories/{{ $data->image->first()->img_main_path }}"
                                 alt="category_image_main" width="100" height="50">
@@ -106,11 +115,14 @@
                         class="cursor-p br-xs font-lg ls-1 talign-c p-1 text-secondary bg-hover-bg bg-sidebar-bg-light-1" value="Add New" id="new">
                     <input type="button" class="edit br-xs font-lg ls-1 text-secondary ml-1 cursor-p p-1 bg-hover-bg bg-sidebar-bg-light-1"
                         value="Edit" name="edit" id="edit">
+                        <input type="submit" style="display: none" class="edit br-xs talign-c font-lg ls-1 text-secondary ml-1 cursor-p p-1 bg-hover-bg bg-sidebar-bg-light-1"
+                        value="Update" name="edit" id="Update">
 
                     <input type="button" class="delete ml-1 font-lg text-secondary br-xs ls-1 cursor-p p-1 bg-hover-bg bg-sidebar-bg-light-1"
                         value="Delete" name="delete" id="delete">
                 </li>
             </ul>
+        </form>
         </div>
     </div>
 </section>
