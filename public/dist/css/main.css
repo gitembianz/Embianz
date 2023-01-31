@@ -107,7 +107,8 @@ button {
   .section-container {
     left: 4.5rem;
     z-index: -1;
-    width: calc(100% - 4rem);
+    width: calc(100% - 4.5rem);
+    height: auto;
   }
 }
 
@@ -3875,7 +3876,6 @@ th {
      object-fit: cover;
   transition: opacity 0.5s ease-in-out;
   opacity: 1;
-  border: 1px solid hsl(152deg, 92%, 86%);
 }
 
 #category_image_main.loaded {

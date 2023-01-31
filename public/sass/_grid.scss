@@ -34,7 +34,7 @@ $layout-values: flex-start, flex-end, center, space-between, space-around;
   @media (max-width: 662px) {
     left: 4.5rem;
     z-index: -1;
-    @include w(calc(100% - 4rem));
+    @include wh(calc(100% - 4.5rem), auto);
       }
 }
 

@@ -155,6 +155,7 @@
     }
 </script>
 <script>
+    //edit category script
     document.getElementById("edit").addEventListener("click", function() {
 
         document.getElementById("new").style.display = "none";
@@ -164,11 +165,33 @@
         const spanElements = document.querySelectorAll(
             '#category_name, #category_parrent, #category_long_description,#category_short_description');
         const dates = document.querySelectorAll('#category_start_date, #category_end_date');
+        const seques = document.querySelectorAll('#category_sequence, #category_image_sequence');
+        const imgs = document.querySelectorAll('#category_image_main, #category_image_search');
+
+        imgs.forEach(img => {
+            const inpfile = document.createElement('input');
+            inpfile.value = "test";
+            inpfile.setAttribute("class", "ml-1 font-lg talign-c text-secondary p-1 bg-bg");
+            inpfile.setAttribute("type", "file");
+            img.replaceWith(inpfile);
+        });
+
+        seques.forEach(seque => {
+            const inpseq = document.createElement('input');
+            inpseq.value = seque.innerText;
+            inpseq.setAttribute("class", seque.getAttribute("class"));
+            inpseq.setAttribute("name", seque.getAttribute("id"));
+            inpseq.setAttribute("type", "number");
+            seque.replaceWith(inpseq);
+        });
+
         dates.forEach(date => {
             const inpdate = document.createElement('input');
             inpdate.value = date.innerText;
             inpdate.setAttribute("class", date.getAttribute("class"));
+            inpdate.setAttribute("name", date.getAttribute("id"));
             inpdate.setAttribute("type", "date");
+            inpdate.setAttribute("required", true);
             date.replaceWith(inpdate);
         });
 
@@ -176,6 +199,8 @@
             const inputElement = document.createElement('input');
             inputElement.value = spanElement.innerText;
             inputElement.setAttribute("class", spanElement.getAttribute("class"));
+            inputElement.setAttribute("name", spanElement.getAttribute("id"));
+            inputElement.setAttribute("required", true);
             spanElement.replaceWith(inputElement);
         });
     });

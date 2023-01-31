@@ -28,32 +28,22 @@
                     <ul class="p-1">
                         <li class="listelement p-1">
                             <label class="font-lg align-left text-white ls-1">Name -</label>
-                            {{-- <input type="text" class="text-secondary talign-c font-lg p-1 bg-bg" name="categoryname"
-                                id="category_name" value="{{ $data->name }}" readonly> --}}
                                 <span class="ml-1 font-lg talign-c text-secondary p-1 bg-bg" id="category_name">{{ $data->name }}</span>
                         </li>
                         <li class="listelement p-1">
                             <label class="font-lg text-white ls-1">Parrent -</label>
-                            {{-- <input class="text-secondary talign-c font-lg p-1 bg-bg" type="text" name="category_parrent"
-                                id="category_parrent" value="{{ $data->parrent }}" readonly> --}}
                                 <span class="ml-1 font-lg talign-c text-secondary p-1 bg-bg" id="category_parrent">{{ $data->parrent }}</span>
                         </li>
                         <li class="listelement p-1">
                             <label class="font-lg text-white ls-1">Long Description -</label>
-                            {{-- <input type="text" class="text-secondary talign-c p-1 font-lg bg-bg" id="category_long_description"
-                                name="category_long_description" value="{{ $data->long_description }}" readonly> --}}
                                 <span class="ml-1 font-lg talign-c text-secondary p-1 bg-bg" id="category_long_description">{{ $data->long_description }}</span>
                         </li>
                         <li class="listelement p-1">
                             <label class="font-lg text-white ls-1">Short Description -</label>
-                            {{-- <input type="text" class="text-secondary talign-c font-lg p-1 bg-bg" name="category_short_description"
-                                id="category_short_description" value="{{ $data->short_description }}" readonly> --}}
                                 <span class="ml-1 font-lg talign-c text-secondary p-1 bg-bg" id="category_short_description">{{ $data->short_description }}</span>
                         </li>
                         <li class="listelement p-1">
                             <label class="font-lg text-white ls-1">Sequence -</label>
-                            {{-- <input type="number" class="text-secondary talign-c font-lg p-1 bg-bg" name="category_sequence"
-                                id="category_sequence" value="{{ $data->sequence }}" readonly> --}}
                                 <span class="ml-1 font-lg talign-c text-secondary p-1 bg-bg" id="category_sequence">{{ $data->sequence }}</span>
                         </li>
                     </ul>
@@ -62,15 +52,11 @@
             <ul>
                 <li class="listelement p-1">
                         <label class="font-lg  text-white ls-1" for="start_date">Start Date -</label>
-                        {{-- <input class="ml-1 font-lg talign-c text-secondary p-1 bg-bg" type="date" id="category_start_date"
-                            name="category_start_date" value="{{ $data->start_date }}" readonly> --}}
                             <span class="ml-1 font-lg talign-c text-secondary p-1 bg-bg" id="category_start_date">{{ $data->start_date }}</span>
 
                 </li>
                 <li class="listelement p-1">
                         <label class="font-lg text-white ls-1">End Date -</label>
-                        {{-- <input class="ml-1 font-lg talign-c text-secondary p-1 bg-bg" type="date" id="category_end_date"
-                            name="category_end_date" value="{{ $data->end_date }}" readonly> --}}
                             <span class="ml-1 font-lg talign-c text-secondary p-1 bg-bg" id="category_end_date">{{ $data->end_date}}</span>
                         <input type="hidden" name="hidden_id" value="{{ $data->id }}" id="hidden_id">
                 </li>
@@ -80,28 +66,26 @@
                             <img id="category_image_main" src="/categories/{{ $data->image->first()->img_main_path }}"
                                 alt="category_image_main" width="100" height="50">
                         @else
-                            <p>Image not found</p>
+                        <span class="ml-1 font-lg talign-c text-secondary p-1 bg-bg" id="category_image_main">{{ __('Image not found') }}</span> 
                         @endif
                 </li>
                 <li class="listelement p-1">
                         <label class="font-lg text-white ls-1" for="end_date"> Image Search-</label>
 
                         @if (isset($data) && !is_null($data->image->first()))
-                            <img id="category_image_main"
+                            <img id="category_image_search"
                                 src="/categories/{{ $data->image->first()->img_search_path }}"
-                                alt="category_image_main" width="100" height="50">
+                                alt="category_image_search" width="100" height="50">
                         @else
-                            <p>Image not found</p>
+                        <span class="ml-1 font-lg talign-c text-secondary p-1 bg-bg" id="category_image_search">{{ __('Image not found') }}</span> 
                         @endif
                 </li>
                 <li class="listelement p-1">
                         <label class="font-lg text-white ls-1" for="end_date">Image Sequence -</label>
                         @if (isset($data) && !is_null($data->image->first()))
-                            <input type="number" class="text-secondary talign-c font-lg p-1 bg-bg" name="category_sequence"
-                                id="image_category_sequence" value="{{ $data->image->first()->img_sequence }}"
-                                readonly>
+                                <span class="ml-1 font-lg talign-c text-secondary p-1 bg-bg" id="category_image_sequence">{{ $data->image->first()->img_sequence}}</span>
                         @else
-                            <p>Image Sequence not found</p>
+                        <span class="ml-1 font-lg talign-c text-secondary p-1 bg-bg" id="category_image_sequence">{{ __('Image Sequence not found') }}</span>
                         @endif
                 </li>
             </ul>
