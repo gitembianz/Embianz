@@ -3,7 +3,7 @@
 <x-dashboardsidebar />
 <x-dashboardmodals />
 {{-- Page content start --}}
-<section class="section-container bg-sidebar-bg-light-1">
+<section style="height: auto" class="section-container bg-sidebar-bg-light-1">
     {{-- Display session message --}}
     @if (session()->has('message'))
         <div class="bg-secondary pos-rel ls-1 p-1" id="alertevent">

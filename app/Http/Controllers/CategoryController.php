@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\UploadedFile;
 use DataTables;
 use Validator;
 
@@ -32,7 +33,7 @@ class CategoryController extends Controller
                     return $path;
                 })
                     ->addColumn('action', function($data){
-                        $button = '<button type="button" class="view btn-bg text-secondary br-xs" name="view" onclick="event.preventDefault();location.href=\'/show_category/'.$data->id.'\'">View</button>';
+                        $button = '<button type="button" class="view btn-bg text-white br-xs" name="view" onclick="event.preventDefault();location.href=\'/show_category/'.$data->id.'\'">View</button>';
                         // $button = '<button type="button" class="view btn-bg text-secondary br-xs"  name="view" id="'.$data->id.'">View</button>';
                         return $button;
                     })
@@ -106,21 +107,69 @@ class CategoryController extends Controller
         return view('admin.category')->with('message', 'Category Deleted Successfully!');
     }
 
-    public function update_category(Request $request){
-        
-        $data= Category::find($request->idupdate);
-        $data->name=$request->categorynameupdate;
-        $data->parrent=$request->category_parrentupdate;
-        $data->long_description=$request->category_long_descriptionupdate;
-        $data->short_description=$request->category_short_descriptionupdate;
-        $data->sequence=$request->category_sequenceupdate;
-        $data->start_date=$request->category_start_dateupdate;
-        $data->end_date=$request->category_end_dateupdate;
-        $data->lastmodifiedby=Auth::user()->name;
-        $data->save();
-        return redirect()->back()->with('message','Category Update Succesfully!');
-        
-    }
+    public function update_category(Request $request, $id) {
+        $data = Category::find($id);
+        $data->update([
+          'name' => $request->category_name,
+          'parrent' => $request->category_parrent,
+          'long_description' => $request->category_long_description,
+          'short_description' => $request->category_short_description,
+          'sequence' => $request->category_sequence,
+          'start_date' => $request->category_start_date,
+          'end_date' => $request->category_end_date,
+          'lastmodifiedby' => Auth::user()->name
+        ]);
+      
+        $imagem = $request->category_image_main;
+        $images = $request->category_image_search;
+        $seque = $request->category_image_sequence;
+      
+        if ($data->image->first() != NULL) {
+          $imageData = [
+            'category_id' => $data->id
+          ];
+      
+          if ($imagem) {
+            $image_main = time() . '_main.' . $imagem->getClientOriginalExtension();
+            $request->category_image_main->move('categories', $image_main);
+            $imageData['img_main_path'] = $image_main;
+          }
+      
+          if ($images) {
+            $image_search = time() . '_search.' . $images->getClientOriginalExtension();
+            $request->category_image_search->move('categories', $image_search);
+            $imageData['img_search_path'] = $image_search;
+          }
+      
+          if ($seque) {
+            $imageData['img_sequence'] = $seque;
+          }
+      
+          $data->image->first()->update($imageData);
+        } else {
+          $imageData = [
+            'category_id' => $data->id,
+            'img_sequence' => $seque ? $seque : 0
+          ];
+      
+          if ($imagem) {
+            $image_main = time() . '_main.' . $imagem->getClientOriginalExtension();
+            $request->category_image_main->move('categories', $image_main);
+            $imageData['img_main_path'] = $image_main;
+          }
+      
+          if ($images) {
+            $image_search = time() . '_main.' . $images->getClientOriginalExtension();
+            $request->category_image_search->move('categories', $image_search);
+            $imageData['img_search_path'] = $image_search;
+          }
+      
+          imagecategories::create($imageData);
+        }
+      
+        return redirect()->back()->with('message', 'Category Update Successfully!');
+      }
+      
 
     public function getImages()
 {

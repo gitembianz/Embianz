@@ -35,7 +35,6 @@
                 <a class="pt-1 pr-2 pb-1 cursor-p font-md"
                     onclick="document.getElementById('modal-category').style.display='block'">Add new Category</a>
                 <a class="pt-1 pr-2  pb-1 font-md" href="{{ url('category') }}">Show all Categories</a>
-
             </div>
         </li>
         <li class="list pt-1 pb-1 cursor-p font-lg">
@@ -59,15 +58,12 @@
                         d="M8.5 17c-0.128 0-0.256-0.049-0.354-0.146-0.195-0.195-0.195-0.512 0-0.707l1-1c0.195-0.195 0.512-0.195 0.707 0s0.195 0.512 0 0.707l-1 1c-0.098 0.098-0.226 0.146-0.354 0.146z">
                     </path>
                 </svg>
-
                 <span class="text-white text-hover-secondary ml-1 ls-1">{{ __('Products') }}<i
                         class="fa fa-caret-down ml-4"></i></span>
             </a>
             <div class="dropdown-container ml-1 text-white">
                 <a class="pt-1 pr-2 pb-1 font-md" href="#">Add new Product</a>
                 <a class="pt-1 pr-2 pb-1 font-md" href="#">Show all Products</a>
-
-
             </div>
         </li>
         <li class="list pt-1 pb-1 cursor-p font-lg">
@@ -90,7 +86,6 @@
             <div class="dropdown-container ml-1 text-white">
                 <a class="pt-1 pr-2 pb-1 font-md" href="#">Active Orders</a>
                 <a class="pt-1 pr-2 pb-1 font-md" href="#">Show all Orders</a>
-
             </div>
         </li>
         <li class="list pt-1 pb-1 cursor-p font-lg">
@@ -110,7 +105,6 @@
             <div class="dropdown-container ml-1 text-white">
                 <a class="pt-1 pr-2 pb-1 font-md" href="#">Show Price Lists</a>
                 <a class="pt-1 pr-2 pb-1 font-md" href="#">Add new Price List</a>
-
             </div>
         </li>
         <li class="list pt-1 pb-1 cursor-p font-lg">

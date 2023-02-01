@@ -13,4 +13,10 @@ class ImageCategories extends Model
     {
         return $this->belongsTo(Category::class, 'category_id')->cascadeOnDelete();
     }
+    protected $fillable = [
+        'category_id',
+        'img_main_path',
+        'img_search_path',
+        'img_sequence',
+    ];
 }
