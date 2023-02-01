@@ -24,7 +24,9 @@ class CategoryController extends Controller
                     
                     $testvar = $data->image->first();
                     if($testvar != NULL){
+                        if($testvar->img_search_path !=NULL){
                         $path = $testvar->img_search_path ;
+                        } else{$path = "defaultcategory.jpg";}
                     
                     }else{
                         $path = "defaultcategory.jpg";
