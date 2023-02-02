@@ -36,7 +36,6 @@ class CategoryController extends Controller
                 })
                     ->addColumn('action', function($data){
                         $button = '<button type="button" class="view btn-bg text-white br-xs" name="view" onclick="event.preventDefault();location.href=\'/show_category/'.$data->id.'\'">View</button>';
-                        // $button = '<button type="button" class="view btn-bg text-secondary br-xs"  name="view" id="'.$data->id.'">View</button>';
                         return $button;
                     })
                     ->make(true);
