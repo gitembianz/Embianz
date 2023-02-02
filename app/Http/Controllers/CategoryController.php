@@ -129,62 +129,51 @@ class CategoryController extends Controller
           $imageData = [
             'category_id' => $data->id
           ];
-      
           if ($imagem) {
             $image_main = time() . '_main.' . $imagem->getClientOriginalExtension();
             $request->category_image_main->move('categories', $image_main);
             $imageData['img_main_path'] = $image_main;
           }
-      
           if ($images) {
             $image_search = time() . '_search.' . $images->getClientOriginalExtension();
             $request->category_image_search->move('categories', $image_search);
             $imageData['img_search_path'] = $image_search;
           }
-      
           if ($seque) {
             $imageData['img_sequence'] = $seque;
           }
-      
           $data->image->first()->update($imageData);
-        } else {
-          $imageData = [
-            'category_id' => $data->id,
-            'img_sequence' => $seque ? $seque : 0
-          ];
-      
-          if ($imagem) {
+            } else {
+                $imageData = [
+                'category_id' => $data->id,
+                 ];
+            if ($imagem) {
             $image_main = time() . '_main.' . $imagem->getClientOriginalExtension();
             $request->category_image_main->move('categories', $image_main);
             $imageData['img_main_path'] = $image_main;
           }
-      
           if ($images) {
             $image_search = time() . '_main.' . $images->getClientOriginalExtension();
             $request->category_image_search->move('categories', $image_search);
             $imageData['img_search_path'] = $image_search;
           }
-      
           imagecategories::create($imageData);
         }
-      
         return redirect()->back()->with('message', 'Category Update Successfully!');
       }
 
       public function browse()
-{
-    $images = [];
-    $files = File::files(public_path().'/categories');
-
-    foreach ($files as $file) {
-        $images[] = [
+    {
+        $images = [];
+        $files = File::files(public_path().'/categories');
+        foreach ($files as $file) {
+            $images[] = [
             'path' => $file->getPathName(),
             'filename' => $file->getFilename()
-        ];
+             ];
+         }
+         return response()->json($images);
     }
-
-    return response()->json($images);
-}
 }
 
 

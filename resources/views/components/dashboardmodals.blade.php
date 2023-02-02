@@ -66,7 +66,7 @@
                             <li class="p-1 font-xl talign-c">
                                 <div class="element">
                                     <label class="font-lg text-secondary ls-1" for="end_date">Image main -</label>
-                                    <input type="file" class="image ml-1"  id="category_image" name="category_image">
+                                    <input type="file" class="image ml-1"  id="category_image" name="category_image" value="cars.png">
                                     <input type="button" class="browse1 ls-1 ml-1 talign-c cursor-p bg-hover-bg-light-2" value="or Browse"
                                     name="browse" id="browse_main">
                                 </div>
@@ -140,12 +140,12 @@
             </li>
             <li class="p-1 font-xl">
                 <div class="modal-body bg-bg-dark-1" id="image-container">
-                    <h1 id="test"></h1>
+                    <input type="hidden" id="selected-image" name="hidden">
                   </div>
             </li>
             <li class="p-1 font-xl">
                 <input type="submit" class="submit cursor-p bg-hover-bg-light-2" value="Confirm"
-                                    name="submit">
+                                    name="submit" id="confirmimageselection">
                 <input type="button" id="closeselection1" class="submit cursor-p talign-c bg-hover-bg-light-2" value="Cancel">
             </li>
         </ul>

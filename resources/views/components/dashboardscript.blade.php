@@ -123,98 +123,176 @@
 <script>
     //edit category script
     document.getElementById("edit").addEventListener("click", function() {
-  document.getElementById("new").style.display = "none";
-  document.getElementById("delete").style.display = "none";
-  document.getElementById("edit").style.display = "none";
-  document.getElementById("Update").style.display = "block";
+        document.getElementById("new").style.display = "none";
+        document.getElementById("delete").style.display = "none";
+        document.getElementById("edit").style.display = "none";
+        document.getElementById("Update").style.display = "block";
 
-  const spanElements = document.querySelectorAll(
-    '#category_name, #category_parrent, #category_long_description,#category_short_description'
-  );
-  const dateElements = document.querySelectorAll(
-    '#category_start_date, #category_end_date'
-  );
-  const sequenceElements = document.querySelectorAll(
-    '#category_sequence, #category_image_sequence'
-  );
-  const imageElements = document.querySelectorAll(
-    '#category_image_main, #category_image_search'
-  );
+        const spanElements = document.querySelectorAll(
+            '#category_name, #category_parrent, #category_long_description,#category_short_description'
+        );
+        const dateElements = document.querySelectorAll(
+            '#category_start_date, #category_end_date'
+        );
+        const sequenceElements = document.querySelectorAll(
+            '#category_sequence, #category_image_sequence'
+        );
+        const imageElements = document.querySelectorAll(
+            '#category_image_main, #category_image_search'
+        );
 
-  imageElements.forEach(imageElement => {
-    const inputFile = document.createElement("input");
-    const file = imageElement.value;
-    inputFile.value = file || "";
-    inputFile.setAttribute("class", "ml-1 font-lg talign-c text-secondary p-1 bg-bg");
-    inputFile.setAttribute("type", "file");
-    inputFile.setAttribute("name", imageElement.getAttribute("id"));
-    imageElement.replaceWith(inputFile);
-  });
+        imageElements.forEach(imageElement => {
+            const inputFile = document.createElement("input");
+            const file = imageElement.value;
+            inputFile.value = file || "";
+            inputFile.setAttribute("class", "ml-1 font-lg talign-c text-secondary p-1 bg-bg");
+            inputFile.setAttribute("type", "file");
+            inputFile.setAttribute("name", imageElement.getAttribute("id"));
+            imageElement.replaceWith(inputFile);
+        });
 
-  sequenceElements.forEach(sequenceElement => {
-    const inputSeq = document.createElement("input");
-    inputSeq.value = sequenceElement.innerText;
-    inputSeq.setAttribute("class", sequenceElement.getAttribute("class"));
-    inputSeq.setAttribute("name", sequenceElement.getAttribute("id"));
-    inputSeq.setAttribute("type", "number");
-    sequenceElement.replaceWith(inputSeq);
-  });
+        sequenceElements.forEach(sequenceElement => {
+            const inputSeq = document.createElement("input");
+            inputSeq.value = sequenceElement.innerText;
+            inputSeq.setAttribute("class", sequenceElement.getAttribute("class"));
+            inputSeq.setAttribute("name", sequenceElement.getAttribute("id"));
+            inputSeq.setAttribute("type", "number");
+            sequenceElement.replaceWith(inputSeq);
+        });
 
-  dateElements.forEach(dateElement => {
-    const inputDate = document.createElement("input");
-    inputDate.value = dateElement.innerText;
-    inputDate.setAttribute("class", dateElement.getAttribute("class"));
-    inputDate.setAttribute("name", dateElement.getAttribute("id"));
-    inputDate.setAttribute("type", "date");
-    inputDate.setAttribute("required", true);
-    dateElement.replaceWith(inputDate);
-  });
+        dateElements.forEach(dateElement => {
+            const inputDate = document.createElement("input");
+            inputDate.value = dateElement.innerText;
+            inputDate.setAttribute("class", dateElement.getAttribute("class"));
+            inputDate.setAttribute("name", dateElement.getAttribute("id"));
+            inputDate.setAttribute("type", "date");
+            inputDate.setAttribute("required", true);
+            dateElement.replaceWith(inputDate);
+        });
 
-  spanElements.forEach(spanElement => {
-    const inputElement = document.createElement("input");
-    inputElement.value = spanElement.innerText;
-    inputElement.setAttribute("class", spanElement.getAttribute("class"));
-    inputElement.setAttribute("name", spanElement.getAttribute("id"));
-    inputElement.setAttribute("required", true);
-    spanElement.replaceWith(inputElement);
-  });
-});
-
-//Get image from browse
-const button = document.getElementById("browse_main");
-button.addEventListener("click", function() {
-  fetch('/get-images')
-    .then(response => response.json())
-    .then(data => {
-        document.getElementById('imageModal').style.display = 'block';
-      const imagesContainer = document.getElementById("image-container");
-
-      data.forEach(image => {
-        const img = document.createElement("img");
-        img.src = '/categories/' + image.filename;
-        img.alt = image.filename;
-        img.classList.add("grid-item");
-        imagesContainer.appendChild(img);
-      });
+        spanElements.forEach(spanElement => {
+            const inputElement = document.createElement("input");
+            inputElement.value = spanElement.innerText;
+            inputElement.setAttribute("class", spanElement.getAttribute("class"));
+            inputElement.setAttribute("name", spanElement.getAttribute("id"));
+            inputElement.setAttribute("required", true);
+            spanElement.replaceWith(inputElement);
+        });
     });
-});
 
-//close the modal and distroy all images
-document.getElementById("closeselection").addEventListener("click", function() {
-  document.getElementById('imageModal').style.display = 'none';
-  const imagesContainer = document.getElementById("image-container");
-  while (imagesContainer.firstChild) {
-    imagesContainer.removeChild(imagesContainer.firstChild);
-  }
-});
-document.getElementById("closeselection1").addEventListener("click", function() {
-  document.getElementById('imageModal').style.display = 'none';
-  const imagesContainer = document.getElementById("image-container");
-  while (imagesContainer.firstChild) {
-    imagesContainer.removeChild(imagesContainer.firstChild);
-  }
-});
+    //Get image from browse
+    const button = document.getElementById("browse_main");
+    button.addEventListener("click", function() {
+        fetch('/get-images')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('imageModal').style.display = 'block';
+                const imagesContainer = document.getElementById("image-container");
 
+                data.forEach(image => {
+                    const img = document.createElement("img");
+                    img.src = '/categories/' + image.filename;
+                    img.alt = image.filename;
+                    img.classList.add("grid-item");
+                    img.addEventListener("click", function() {
+                        const selected = document.querySelector(".selected");
+                        if (selected) {
+                            selected.classList.remove("selected");
+                        }
+                        this.classList.add("selected");
+                        document.getElementById("selected-image").value = image.filename;
+                    });
+                    imagesContainer.appendChild(img);
+                });
+            });
+    });
+    const buttonn = document.getElementById("browse_saerch");
+    buttonn.addEventListener("click", function() {
+        fetch('/get-images')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('imageModal').style.display = 'block';
+                const imagesContainer = document.getElementById("image-container");
 
+                data.forEach(image => {
+                    const img = document.createElement("img");
+                    img.src = '/categories/' + image.filename;
+                    img.alt = image.filename;
+                    img.classList.add("grid-item");
+                    img.addEventListener("click", function() {
+                        const selected = document.querySelector(".selected");
+                        if (selected) {
+                            selected.classList.remove("selected");
+                        }
+                        this.classList.add("selected");
+                        document.getElementById("selected-image").value = image.filename;
+                    });
+                    imagesContainer.appendChild(img);
+                });
+            });
+    });
 
+    //close the modal and distroy all images
+    document.getElementById("closeselection").addEventListener("click", function() {
+        document.getElementById('imageModal').style.display = 'none';
+        const imagesContainer = document.getElementById("image-container");
+        while (imagesContainer.firstChild) {
+            imagesContainer.removeChild(imagesContainer.firstChild);
+        }
+    });
+    document.getElementById("closeselection1").addEventListener("click", function() {
+        document.getElementById('imageModal').style.display = 'none';
+        const imagesContainer = document.getElementById("image-container");
+        while (imagesContainer.firstChild) {
+            imagesContainer.removeChild(imagesContainer.firstChild);
+        }
+    });
+    document.getElementById("confirmimageselection").addEventListener("click", function() {
+        const selectedImage = document.getElementById("selected-image").value;
+        const fileInput = document.getElementById("category_image");
+        const fileName = selectedImage.split("/").pop();
+        let span = document.querySelector(".font-md.text-white.ls-1");
+        const hiddenInput = document.createElement("input");
+        document.getElementById('imageModal').style.display = 'none';
+        const imagesContainer = document.getElementById("image-container");
+        while (imagesContainer.firstChild) {
+            imagesContainer.removeChild(imagesContainer.firstChild);
+        }
+
+        if (!span) {
+            span = document.createElement("span");
+            span.className = "font-md text-white ls-1";
+        }
+        span.innerHTML = fileName;
+
+        hiddenInput.type = "hidden";
+        hiddenInput.id = "category_image";
+        hiddenInput.name = "category_image";
+        hiddenInput.value = selectedImage;
+
+        fileInput.replaceWith(span);
+        span.insertAdjacentElement("afterend", hiddenInput);
+    });
+    // document.getElementById("confirmimageselection").addEventListener("click", function() {
+    //   const selectedImage = document.getElementById("selected-image").value;
+    //   const fileInput = document.getElementById("category_image");
+    //   const fileName = selectedImage.split("/").pop();
+    //   const span = document.createElement("span");
+    //   const hiddenInput = document.createElement("input");
+    //   document.getElementById('imageModal').style.display = 'none';
+    //   const imagesContainer = document.getElementById("image-container");
+    //   while (imagesContainer.firstChild) {
+    //     imagesContainer.removeChild(imagesContainer.firstChild);
+    //   }
+
+    //   span.innerHTML = fileName;
+    //   span.className = "font-lg text-white ls-1";
+    //   hiddenInput.type = "hidden";
+    //   hiddenInput.id = "category_image";
+    //   hiddenInput.name = "category_image";
+    //   hiddenInput.value = selectedImage;
+
+    //   fileInput.replaceWith(span);
+    //   span.insertAdjacentElement("afterend", hiddenInput);
+    // });
 </script>
