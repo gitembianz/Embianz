@@ -131,24 +131,22 @@
     <div class="content-category">
        
     <div>
-        <span onclick="document.getElementById('imageModal').style.display='none'"
-        class="exit text-hover-secondary float-r">&times;</span>
+        <span id="closeselection" class="exit text-hover-secondary float-r">&times;</span>
         <ul class="pt-1 mb-2">
             <li class="p-1 font-xl">
-                <h1 class="title talign-c font-xl ls-1 text-secondary">
+                <h1 class="title talign-c font-xl ls-1 text-white">
                     {{ __('Please select an image') }}
                 </h1>
             </li>
             <li class="p-1 font-xl">
-                <div class="modal-body" id="image-container">
+                <div class="modal-body bg-bg-dark-1" id="image-container">
                     <h1 id="test"></h1>
                   </div>
             </li>
             <li class="p-1 font-xl">
                 <input type="submit" class="submit cursor-p bg-hover-bg-light-2" value="Confirm"
                                     name="submit">
-                <input type="button" onclick="document.getElementById('imageModal').style.display='none'"
-                                    class="submit cursor-p talign-c bg-hover-bg-light-2" value="Cancel">
+                <input type="button" id="closeselection1" class="submit cursor-p talign-c bg-hover-bg-light-2" value="Cancel">
             </li>
         </ul>
     </div>

@@ -3,6 +3,25 @@
   border: 1px solid $secondary;
 
 }
+#imageModal{
+  .content-category{
+    top: $base-margin;
+  }
+}
+#images-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 100px);
+  grid-gap: 10px;
+}
+
+.grid-item {
+  width: 15%;
+  height: 15%;
+  object-fit: cover;
+  padding: $base-padding;
+  margin: $base-margin;
+  border: 1px solid $secondary;
+}
 #Update{
   position: relative;
   left: 47.5%;

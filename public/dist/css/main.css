@@ -3820,6 +3820,26 @@ th {
   border: 1px solid hsl(152deg, 92%, 86%);
 }
 
+#imageModal .content-category {
+  top: 0.75rem;
+}
+
+#images-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 100px);
+  grid-gap: 10px;
+}
+
+.grid-item {
+  width: 15%;
+  height: 15%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  padding: 0.75rem;
+  margin: 0.75rem;
+  border: 1px solid hsl(152deg, 92%, 86%);
+}
+
 #Update {
   position: relative;
   left: 47.5%;

@@ -170,16 +170,20 @@ class CategoryController extends Controller
       
         return redirect()->back()->with('message', 'Category Update Successfully!');
       }
-      
 
-    public function getImages()
+      public function browse()
 {
-    
-    //edit category
-    if(request()->ajax()){
-        $data = ImageCategories::all();
-        return response()->json(['result' =>$data]);
-        }
+    $images = [];
+    $files = File::files(public_path().'/categories');
+
+    foreach ($files as $file) {
+        $images[] = [
+            'path' => $file->getPathName(),
+            'filename' => $file->getFilename()
+        ];
+    }
+
+    return response()->json($images);
 }
 }
 

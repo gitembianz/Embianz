@@ -180,4 +180,41 @@
   });
 });
 
+//Get image from browse
+const button = document.getElementById("browse_main");
+button.addEventListener("click", function() {
+  fetch('/get-images')
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById('imageModal').style.display = 'block';
+      const imagesContainer = document.getElementById("image-container");
+
+      data.forEach(image => {
+        const img = document.createElement("img");
+        img.src = '/categories/' + image.filename;
+        img.alt = image.filename;
+        img.classList.add("grid-item");
+        imagesContainer.appendChild(img);
+      });
+    });
+});
+
+//close the modal and distroy all images
+document.getElementById("closeselection").addEventListener("click", function() {
+  document.getElementById('imageModal').style.display = 'none';
+  const imagesContainer = document.getElementById("image-container");
+  while (imagesContainer.firstChild) {
+    imagesContainer.removeChild(imagesContainer.firstChild);
+  }
+});
+document.getElementById("closeselection1").addEventListener("click", function() {
+  document.getElementById('imageModal').style.display = 'none';
+  const imagesContainer = document.getElementById("image-container");
+  while (imagesContainer.firstChild) {
+    imagesContainer.removeChild(imagesContainer.firstChild);
+  }
+});
+
+
+
 </script>
