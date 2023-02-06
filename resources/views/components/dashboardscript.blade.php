@@ -101,10 +101,10 @@
             modaluser.style.display = "none";
         }
     }
-    var modalcategory = document.getElementById("modal-category");
+    var modal_category = document.getElementById("modal-category");
     window.onclick = function(event) {
-        if (event.target == modalcategory) {
-            modalcategory.style.display = "none";
+        if (event.target == modal_category) {
+            modal_category.style.display = "none";
         }
     }
     var modalupdate = document.getElementById("editmodal-category");
@@ -246,53 +246,34 @@
         while (imagesContainer.firstChild) {
             imagesContainer.removeChild(imagesContainer.firstChild);
         }
+
     });
+    document.getElementById("category_image").addEventListener("change", function() {
+const categoryImage = document.getElementById("category_image").value;
+if (categoryImage) {
+const imageSpan = document.getElementById("select_image_main");
+imageSpan.innerText = "";
+}
+});
     document.getElementById("confirmimageselection").addEventListener("click", function() {
-        const selectedImage = document.getElementById("selected-image").value;
-        const fileInput = document.getElementById("category_image");
-        const fileName = selectedImage.split("/").pop();
-        let span = document.querySelector(".font-md.text-white.ls-1");
-        const hiddenInput = document.createElement("input");
-        document.getElementById('imageModal').style.display = 'none';
-        const imagesContainer = document.getElementById("image-container");
-        while (imagesContainer.firstChild) {
-            imagesContainer.removeChild(imagesContainer.firstChild);
-        }
+  const selectedImage = document.getElementById("selected-image").value;
+  const fileInput = document.getElementById("category_image");
+fileInput.value = "";
+  if (!selectedImage) {
+    // Show an error message
+    alert("Please select an image");
+    return;
+  }
 
-        if (!span) {
-            span = document.createElement("span");
-            span.className = "font-md text-white ls-1";
-        }
-        span.innerHTML = fileName;
+  const imageSpan = document.getElementById("select_image_main");
+imageSpan.innerText = selectedImage;
 
-        hiddenInput.type = "hidden";
-        hiddenInput.id = "category_image";
-        hiddenInput.name = "category_image";
-        hiddenInput.value = selectedImage;
+  const imagesContainer = document.getElementById("image-container");
+  while (imagesContainer.firstChild) {
+    imagesContainer.removeChild(imagesContainer.firstChild);
+  }
+  document.getElementById("img_select_image_main").src = "/categories/" + selectedImage;
+  document.getElementById('imageModal').style.display = 'none';
+});
 
-        fileInput.replaceWith(span);
-        span.insertAdjacentElement("afterend", hiddenInput);
-    });
-    // document.getElementById("confirmimageselection").addEventListener("click", function() {
-    //   const selectedImage = document.getElementById("selected-image").value;
-    //   const fileInput = document.getElementById("category_image");
-    //   const fileName = selectedImage.split("/").pop();
-    //   const span = document.createElement("span");
-    //   const hiddenInput = document.createElement("input");
-    //   document.getElementById('imageModal').style.display = 'none';
-    //   const imagesContainer = document.getElementById("image-container");
-    //   while (imagesContainer.firstChild) {
-    //     imagesContainer.removeChild(imagesContainer.firstChild);
-    //   }
-
-    //   span.innerHTML = fileName;
-    //   span.className = "font-lg text-white ls-1";
-    //   hiddenInput.type = "hidden";
-    //   hiddenInput.id = "category_image";
-    //   hiddenInput.name = "category_image";
-    //   hiddenInput.value = selectedImage;
-
-    //   fileInput.replaceWith(span);
-    //   span.insertAdjacentElement("afterend", hiddenInput);
-    // });
 </script>

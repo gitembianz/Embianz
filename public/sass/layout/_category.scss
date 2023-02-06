@@ -3,28 +3,33 @@
   border: 1px solid $secondary;
 
 }
+
+.browse1{
+  @include wh(5vw, auto);
+}
 #imageModal{
   .content-category{
-    top: $base-margin;
+    top: 10%;
   }
 }
-#images-container {
+#images-container, #image-container1 {
   display: grid;
   grid-template-columns: repeat(auto-fill, 100px);
   grid-gap: 10px;
 }
 
+
 .grid-item {
-  width: 15%;
-  height: 15%;
+  width: 7.5rem;
+  height: 7.5rem;
   object-fit: cover;
   padding: $base-padding;
   margin: $base-margin;
   border: 1px solid $white;
   &.selected {
     border: 2px solid $secondary;
-    width: 16%;
-    height: 16%;
+    width: 7.6rem;
+    height: 7.6rem;
   
   }
 }
@@ -111,8 +116,8 @@
     @include wh(10%, auto);
   }
   @extend .content;
-  @include wh(50vw, auto);
-  top: $base-margin;
+  @include wh(75vw, auto);
+  top: 10%;
   padding: 0;
 
   #new, #delete, #edit{
@@ -137,7 +142,13 @@
 
   input {
     @include wh(40%, auto);
-
+    &.browse1{
+      @include wh(15%, auto);
+    }
+    &#category_image,
+    &#category_image_search{
+      @include wh(40%, auto);
+    }
     @media (max-width: 662px) {
       @include wh(70%, auto);
     }
@@ -191,7 +202,10 @@
   .reset {
     border: 1px solid $secondary;
     margin-right: 7.5%;
-    @include wh(18%, 3%);
+    @include wh(8%, auto);
+    position: absolute;
+   top: 20px;
+   right: 10px;
 
     @media (max-width: 662px) {
       margin-right: 5%;
@@ -204,6 +218,11 @@
       @include wh(60%, auto);
     }
   }
+}
+
+.content-category-images{
+  @extend .content-category;
+  @include wh(60vw, auto);
 }
 
 #confirmmodal-category {
