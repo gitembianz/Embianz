@@ -2920,6 +2920,7 @@ li.dropdown {
   padding: 0;
   outline: 0;
   text-align: center;
+  box-shadow: 0px 0px 15px hsl(152deg, 92%, 86%);
 }
 
 table {
@@ -3825,11 +3826,11 @@ th {
   height: auto;
 }
 
-#imageModal .content-category, #imageModal .content-category-images {
+#imageModal .content-category, #imageModal .content-category-images, #imageModal1 .content-category, #imageModal1 .content-category-images {
   top: 10%;
 }
 
-#images-container, #image-container1 {
+#images-container, #images-container1 {
   display: grid;
   grid-template-columns: repeat(auto-fill, 100px);
   grid-gap: 10px;

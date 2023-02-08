@@ -211,8 +211,8 @@
         fetch('/get-images')
             .then(response => response.json())
             .then(data => {
-                document.getElementById('imageModal').style.display = 'block';
-                const imagesContainer = document.getElementById("image-container");
+                document.getElementById('imageModal1').style.display = 'block';
+                const imagesContainer = document.getElementById("image-container1");
 
                 data.forEach(image => {
                     const img = document.createElement("img");
@@ -225,14 +225,14 @@
                             selected.classList.remove("selected");
                         }
                         this.classList.add("selected");
-                        document.getElementById("selected-image").value = image.filename;
+                        document.getElementById("selected-image1").value = image.filename;
                     });
                     imagesContainer.appendChild(img);
                 });
             });
     });
 
-    //close the modal and distroy all images
+    //close the modal and distroy all images for main & search
     document.getElementById("closeselection").addEventListener("click", function() {
         document.getElementById('imageModal').style.display = 'none';
         const imagesContainer = document.getElementById("image-container");
@@ -248,32 +248,109 @@
         }
 
     });
+    document.getElementById("closeselection2").addEventListener("click", function() {
+        document.getElementById('imageModal1').style.display = 'none';
+        const imagesContainer = document.getElementById("image-container1");
+        while (imagesContainer.firstChild) {
+            imagesContainer.removeChild(imagesContainer.firstChild);
+        }
+
+    });
+    document.getElementById("closeselection3").addEventListener("click", function() {
+        document.getElementById('imageModal1').style.display = 'none';
+        const imagesContainer = document.getElementById("image-container1");
+        while (imagesContainer.firstChild) {
+            imagesContainer.removeChild(imagesContainer.firstChild);
+        }
+
+    });
+
+    //remove browse value for main image
     document.getElementById("category_image").addEventListener("change", function() {
-const categoryImage = document.getElementById("category_image").value;
-if (categoryImage) {
-const imageSpan = document.getElementById("select_image_main");
-imageSpan.innerText = "";
-}
-});
+        const categoryImage = document.getElementById("category_image").value;
+        document.getElementById('bloc_image_main').classList.add("display-n");
+        document.getElementById('browse_main').value = 'or Browse';
+        if (categoryImage) {
+            const imageSpan = document.getElementById("select_image_main");
+            imageSpan.innerText = "";
+        }
+    });
+
+    //clear images on click reset button
+    document.getElementById("resetform").addEventListener("click", function() {
+
+        document.getElementById('bloc_image_main').classList.add("display-n");
+        document.getElementById('bloc_image_search').classList.add("display-n");
+        document.getElementById('browse_main').value = 'or Browse';
+        document.getElementById('browse_saerch').value = 'or Browse';
+
+            const imageSpan = document.getElementById("select_image_main");
+            imageSpan.innerText = "";
+            const imageSpann = document.getElementById("select_image_search");
+            imageSpann.innerText = "";
+
+    });
+    //remove browse value for search image
+    document.getElementById("category_image_search").addEventListener("change", function() {
+        const categoryImage = document.getElementById("category_image_search").value;
+        document.getElementById('bloc_image_search').classList.add("display-n");
+        document.getElementById('browse_saerch').value = 'or Browse';
+        if (categoryImage) {
+            const imageSpan = document.getElementById("select_image_search");
+            imageSpan.innerText = "";
+        }
+    });
+
+    //script on press confirm image main
     document.getElementById("confirmimageselection").addEventListener("click", function() {
-  const selectedImage = document.getElementById("selected-image").value;
-  const fileInput = document.getElementById("category_image");
-fileInput.value = "";
-  if (!selectedImage) {
-    // Show an error message
-    alert("Please select an image");
-    return;
-  }
+        const selectedImage = document.getElementById("selected-image").value;
+        const fileInput = document.getElementById("category_image");
+        fileInput.value = "";
+        if (!selectedImage) {
+            // Show an error message
+            alert("Please select an image");
+            return;
+        }
 
-  const imageSpan = document.getElementById("select_image_main");
-imageSpan.innerText = selectedImage;
+        const imageSpan = document.getElementById("select_image_main");
+        imageSpan.innerText = selectedImage;
 
-  const imagesContainer = document.getElementById("image-container");
-  while (imagesContainer.firstChild) {
-    imagesContainer.removeChild(imagesContainer.firstChild);
-  }
-  document.getElementById("img_select_image_main").src = "/categories/" + selectedImage;
-  document.getElementById('imageModal').style.display = 'none';
-});
+        const imagesContainer = document.getElementById("image-container");
+        while (imagesContainer.firstChild) {
+            imagesContainer.removeChild(imagesContainer.firstChild);
+        }
+        document.getElementById('bloc_image_main').classList.remove("display-n");
+        document.getElementById("img_select_image_main").src = "/categories/" + selectedImage;
+        document.getElementById('imageModal').style.display = 'none';
+        document.getElementById('browse_main').value = 'Browse again';
+
+
+    });
+
+    //script on press confirm image search
+    document.getElementById("confirmimageselection1").addEventListener("click", function() {
+        const selectedImage = document.getElementById("selected-image1").value;
+        const fileInput = document.getElementById("category_image_search");
+        fileInput.value = "";
+        if (!selectedImage) {
+            // Show an error message
+            alert("Please select an image");
+            return;
+        }
+
+        const imageSpan = document.getElementById("select_image_search");
+        imageSpan.innerText = selectedImage;
+
+        const imagesContainer = document.getElementById("image-container1");
+        while (imagesContainer.firstChild) {
+            imagesContainer.removeChild(imagesContainer.firstChild);
+        }
+        document.getElementById('bloc_image_search').classList.remove("display-n");
+        document.getElementById("img_select_image_search").src = "/categories/" + selectedImage;
+        document.getElementById('imageModal1').style.display = 'none';
+        document.getElementById('browse_saerch').value = 'Browse again';
+
+
+    });
 
 </script>

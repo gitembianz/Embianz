@@ -18,22 +18,22 @@
 
 {{-- Modal Add new Category --}}
 <div id="modal-category" class="modal">
-    <div class="content-category o-50">
+    <div class="content-category o-50 br-sm">
         <div>
             <span onclick="document.getElementById('modal-category').style.display='none'"
                 class="exit text-hover-secondary float-r">&times;</span>
             <ul class="pt-1">
                 <li class="p-1 pt-1 font-xl">
-                    <h1 id="title" class="talign-c text-white font-xl ls-1 text-bg">{{ __('Add new category') }}
+                    <h1 id="title" class="talign-l text-white font-xl ml-2 ls-1 text-bg">{{ __('Create Category') }}
                     </h1>
-                    
+
                 </li>
                 <li class="p-1 font-xl">
                     <form action="{{ url('/add_category') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="row">
                             <div class="col-12-xs col-12-sm col-12-xl text-white">
-                            <button class="reset bg-bg cursor-p text-white p-1" type="reset">Clear
+                            <button class="reset bg-bg cursor-p text-white p-1" id="resetform" type="reset">Clear
                                 form</button>
                             </div>
                         </div>
@@ -80,7 +80,7 @@
 
                                         <label class="font-lg text-white ls-1">Image Sequence -</label>
                                         <input type="number" class="ml-1" name="image_sequence"
-                                            placeholder="Image sequence" required>
+                                            placeholder="Image sequence">
 
                                     </li>
                                 </ul>
@@ -95,12 +95,12 @@
                                         <input type="button"
                                             class="browse1 ls-1 ml-1 talign-c cursor-p bg-hover-bg-light-2"
                                             value="or Browse" name="browse" id="browse_main">
-                                            <div class="bloc">
+                                            <div class="bloc display-n" id="bloc_image_main">
                                                 <span class="ml-1 font-md talign-c text-white p-1 bg-red"
-                                                id="select_image_main"></span>
-                                                <img width="25px" height="25px" id="img_select_image_main">
+                                                id="select_image_main" name="select_image_main"></span>
+                                                <img width="45px" height="45px" id="img_select_image_main">
                                             </div>
-                                            
+
 
                                     </li>
                                     <li class="p-1 listelement">
@@ -111,7 +111,11 @@
                                         <input type="button"
                                             class="browse1 ls-1 ml-1 talign-c cursor-p bg-hover-bg-light-2"
                                             value="or Browse" name="browse" id="browse_saerch">
-
+                                            <div class="bloc display-n" id="bloc_image_search">
+                                                <span class="ml-1 font-md talign-c text-white p-1 bg-red"
+                                                id="select_image_search" name="select_image_search"></span>
+                                                <img width="45px" height="45px" id="img_select_image_search">
+                                            </div>
                                     </li>
 
                                     <li class="p-1 font-xl"><input type="submit" class="submit cursor-p"
@@ -129,7 +133,7 @@
 
 {{-- Confirm Delete Category modal --}}
 <div id="confirmmodal-category" class="modal">
-    <div class="content-category">
+    <div class="content-category br-sm">
         <div>
             <span onclick="document.getElementById('confirmmodal-category').style.display='none'"
                 class="exit text-hover-secondary float-r">&times;</span>
@@ -160,7 +164,7 @@
 {{-- Image Selection Modal --}}
 <!-- Modals -->
 <div class="modal" id="imageModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="content-category-images">
+    <div class="content-category-images br-xs">
 
         <div>
             <span id="closeselection" class="exit text-hover-secondary float-r">&times;</span>
@@ -173,12 +177,11 @@
                 <li class="p-1 font-xl">
                     <div id="images-container-wrapper" style="height: 500px; overflow-y: scroll;">
                         <div class="modal-body bg-bg-dark-1" id="image-container">
-                            
+
                         </div>
-                        <div id="lazy-load-observer"></div>
                       </div>
                       <input type="hidden" id="selected-image" name="hidden">
-                    
+
                 </li>
                 <li class="p-1 font-xl">
                     <input type="submit" class="submit cursor-p bg-hover-bg-light-2" value="Confirm" name="submit"
@@ -194,7 +197,7 @@
 <div class="modal" id="imageModal1" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="content-category-images">
         <div>
-            <span id="closeselection" class="exit text-hover-secondary float-r">&times;</span>
+            <span id="closeselection2" class="exit text-hover-secondary float-r">&times;</span>
             <ul class="pt-1 mb-2">
                 <li class="p-1 font-xl">
                     <h1 class="title talign-c font-xl ls-1 text-white">
@@ -202,14 +205,17 @@
                     </h1>
                 </li>
                 <li class="p-1 font-xl">
-                    <div class="modal-body bg-bg-dark-1" id="image-container1">
-                        <input type="hidden" id="selected-image1" name="hidden">
-                    </div>
+                    <div id="images-container-wrapper" style="height: 500px; overflow-y: scroll;">
+                        <div class="modal-body bg-bg-dark-1" id="image-container1">
+
+                        </div>
+                      </div>
+                      <input type="hidden" id="selected-image1" name="hidden">
                 </li>
                 <li class="p-1 font-xl">
                     <input type="submit" class="submit cursor-p bg-hover-bg-light-2" value="Confirm" name="submit"
                         id="confirmimageselection1">
-                    <input type="button" id="closeselection1" class="submit cursor-p talign-c bg-hover-bg-light-2"
+                    <input type="button" id="closeselection3" class="submit cursor-p talign-c bg-hover-bg-light-2"
                         value="Cancel">
                 </li>
             </ul>
@@ -217,4 +223,3 @@
     </div>
 </div>
 
- 

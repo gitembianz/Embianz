@@ -7,12 +7,12 @@
 .browse1{
   @include wh(5vw, auto);
 }
-#imageModal{
+#imageModal, #imageModal1{
   .content-category{
     top: 10%;
   }
 }
-#images-container, #image-container1 {
+#images-container, #images-container1 {
   display: grid;
   grid-template-columns: repeat(auto-fill, 100px);
   grid-gap: 10px;
@@ -30,7 +30,7 @@
     border: 2px solid $secondary;
     width: 7.6rem;
     height: 7.6rem;
-  
+
   }
 }
 
@@ -40,7 +40,7 @@
 }
 .multiselect {
   width: 20vw;
-  
+
 }
 
 .selectBox {
@@ -90,7 +90,7 @@
   object-fit: cover;
   transition: opacity 0.5s ease-in-out;
   opacity: 1;
- 
+
 }
 #category_image_main.loaded {
   opacity: 1;

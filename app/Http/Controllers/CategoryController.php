@@ -61,19 +61,26 @@ class CategoryController extends Controller
 
             $image =$request->category_image;
             $images =$request->category_image_search;
+            $seq= $request->image_sequence;
 
-            $image_search=time().'_search.'.$images->getClientOriginalExtension();
-            $image_main=time().'_main.'.$image->getClientOriginalExtension();
 
-            $request->category_image->move('categories',$image_main);
-            $request->category_image_search->move('categories',$image_search);
+            if ($image) {
+                $image_main = time().'_main.'.$image->getClientOriginalExtension();
+                $request->category_image->move('categories',$image_main);
+                $imagecategory->img_main_path=$image_main;
+            }
+            if ($images) {
+                $image_search=time().'_search.'.$images->getClientOriginalExtension();
+                $request->category_image_search->move('categories',$image_search);
+                $imagecategory->img_search_path=$image_search;
+            }
+            if($seq){
+                $imagecategory->img_sequence=$request->image_sequence;
+            }
 
             $imagecategory->category_id= $data->id;
-            $imagecategory->img_main_path=$image_main;
-            $imagecategory->img_search_path=$image_search;
-            $imagecategory->img_sequence=$request->image_sequence;
-
             $imagecategory->save();
+
             return redirect()->back()->with('message','Category Added Succesfully!');
     }
 
@@ -131,7 +138,7 @@ class CategoryController extends Controller
           ];
           if ($imagem) {
             $image_main = time() . '_main.' . $imagem->getClientOriginalExtension();
-            $request->category_image_main->move('categories', $image_main);
+            $imagem->move('categories', $image_main);
             $imageData['img_main_path'] = $image_main;
           }
           if ($images) {
