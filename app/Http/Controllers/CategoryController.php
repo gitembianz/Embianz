@@ -57,23 +57,44 @@ class CategoryController extends Controller
             $data->createdby=Auth::user()->name;
             $data->lastmodifiedby=Auth::user()->name;
             $data->save();
+
             //save category image
-
-            $image =$request->category_image;
-            $images =$request->category_image_search;
-            $seq= $request->image_sequence;
-
-
-            if ($image) {
+            //Check the input or browse
+            if(isset($request->category_image)){
+                $image =$request->category_image;
                 $image_main = time().'_main.'.$image->getClientOriginalExtension();
                 $request->category_image->move('categories',$image_main);
+
+            } elseif(isset($request->select_image_main_hidden)) {
+                $image_main =$request->select_image_main_hidden;
+            } else{
+                $image_main = NULL;
+            }
+
+            if ($image_main) {
+
                 $imagecategory->img_main_path=$image_main;
             }
-            if ($images) {
+
+            if(isset($request->ategory_image_search)){
+                $images =$request->category_image_search;
                 $image_search=time().'_search.'.$images->getClientOriginalExtension();
                 $request->category_image_search->move('categories',$image_search);
+            } elseif(isset($request->select_image_search_hidden)) {
+                $image_search =$request->select_image_search_hidden;
+            } else{
+                $image_search = NULL;
+            }
+
+
+
+
+
+            if ($image_search) {
+
                 $imagecategory->img_search_path=$image_search;
             }
+            $seq= $request->image_sequence;
             if($seq){
                 $imagecategory->img_sequence=$request->image_sequence;
             }

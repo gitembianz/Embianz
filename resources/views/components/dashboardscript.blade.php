@@ -273,23 +273,10 @@
         if (categoryImage) {
             const imageSpan = document.getElementById("select_image_main");
             imageSpan.innerText = "";
+            document.getElementById('select_image_main_hidden').value = "";
         }
     });
 
-    //clear images on click reset button
-    document.getElementById("resetform").addEventListener("click", function() {
-
-        document.getElementById('bloc_image_main').classList.add("display-n");
-        document.getElementById('bloc_image_search').classList.add("display-n");
-        document.getElementById('browse_main').value = 'or Browse';
-        document.getElementById('browse_saerch').value = 'or Browse';
-
-            const imageSpan = document.getElementById("select_image_main");
-            imageSpan.innerText = "";
-            const imageSpann = document.getElementById("select_image_search");
-            imageSpann.innerText = "";
-
-    });
     //remove browse value for search image
     document.getElementById("category_image_search").addEventListener("change", function() {
         const categoryImage = document.getElementById("category_image_search").value;
@@ -298,8 +285,25 @@
         if (categoryImage) {
             const imageSpan = document.getElementById("select_image_search");
             imageSpan.innerText = "";
+            document.getElementById('select_image_search_hidden').value = "";
         }
     });
+
+
+    //clear images on click reset button
+    document.getElementById("resetform").addEventListener("click", function() {
+
+document.getElementById('bloc_image_main').classList.add("display-n");
+document.getElementById('bloc_image_search').classList.add("display-n");
+document.getElementById('browse_main').value = 'or Browse';
+document.getElementById('browse_saerch').value = 'or Browse';
+
+    const imageSpan = document.getElementById("select_image_main");
+    imageSpan.innerText = "";
+    const imageSpann = document.getElementById("select_image_search");
+    imageSpann.innerText = "";
+
+});
 
     //script on press confirm image main
     document.getElementById("confirmimageselection").addEventListener("click", function() {
@@ -323,6 +327,8 @@
         document.getElementById("img_select_image_main").src = "/categories/" + selectedImage;
         document.getElementById('imageModal').style.display = 'none';
         document.getElementById('browse_main').value = 'Browse again';
+        document.getElementById('select_image_main_hidden').value = selectedImage;
+
 
 
     });
@@ -349,6 +355,7 @@
         document.getElementById("img_select_image_search").src = "/categories/" + selectedImage;
         document.getElementById('imageModal1').style.display = 'none';
         document.getElementById('browse_saerch').value = 'Browse again';
+        document.getElementById('select_image_search_hidden').value = selectedImage;
 
 
     });

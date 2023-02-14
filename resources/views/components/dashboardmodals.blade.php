@@ -99,6 +99,7 @@
                                                 <span class="ml-1 font-md talign-c text-white p-1 bg-red"
                                                 id="select_image_main" name="select_image_main"></span>
                                                 <img width="45px" height="45px" id="img_select_image_main">
+                                                <input type="hidden" name="select_image_main_hidden" id="select_image_main_hidden">
                                             </div>
 
 
@@ -115,6 +116,7 @@
                                                 <span class="ml-1 font-md talign-c text-white p-1 bg-red"
                                                 id="select_image_search" name="select_image_search"></span>
                                                 <img width="45px" height="45px" id="img_select_image_search">
+                                                <input type="hidden" name="select_image_search_hidden" id="select_image_search_hidden">
                                             </div>
                                     </li>
 
