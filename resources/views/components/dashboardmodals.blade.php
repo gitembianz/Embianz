@@ -91,7 +91,7 @@
 
                                         <label class="font-lg text-white ls-1" for="end_date">Image main -</label>
                                         <input type="file" class="image ml-1" id="category_image"
-                                            name="category_image" value="cars.png">
+                                            name="category_image" value="cars.png" multiple>
                                         <input type="button"
                                             class="browse1 ls-1 ml-1 talign-c cursor-p bg-hover-bg-light-2"
                                             value="or Browse" name="browse" id="browse_main">

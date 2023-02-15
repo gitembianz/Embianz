@@ -4,12 +4,9 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\ImageCategories;
-use Illuminate\Http\UploadedFile;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
-use Intervention\Image\Facades\Image;
-use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
 
 class CategoryController extends Controller
@@ -72,7 +69,6 @@ class CategoryController extends Controller
             }
 
             if ($image_main) {
-
                 $imagecategory->img_main_path=$image_main;
             }
 
@@ -86,14 +82,11 @@ class CategoryController extends Controller
                 $image_search = NULL;
             }
 
-
-
-
-
             if ($image_search) {
 
                 $imagecategory->img_search_path=$image_search;
             }
+
             $seq= $request->image_sequence;
             if($seq){
                 $imagecategory->img_sequence=$request->image_sequence;

@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CategoryController;
 
 
@@ -31,11 +30,11 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'])-
     route::get('/show_category/{id}/', [CategoryController::class, 'show']);
     route::post('/delete_category', [CategoryController::class, 'delete']);
     route::post('/category_update/{id}', [CategoryController::class, 'update_category'])->name('category_update');
-    
+
     // browse image
     route::get('/get-images', [CategoryController::class, 'browse']);
 
-    
+
 });
 route::get('/redirect', [HomeController::class, 'redirect'])->middleware('auth','verified')->name('redirect');
 
