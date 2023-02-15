@@ -1,117 +1,236 @@
-.add-category{
-  button{
-    svg{
-      @include wh(2.5rem, auto);
-      @media (max-width: 662px){
-        @include wh(1.5rem, auto);
-      }
-      &:hover{
-        @include wh(2.6rem, auto);
-        cursor: pointer;
-        @media (max-width: 662px){
-          @include wh(1.8rem, auto);
-        }
-      }
-    }
+
+#back, #new, #edit, #delete, #Update {
+  border: 1px solid $secondary;
+
+}
+
+.browse1{
+  @include wh(5vw, auto);
+}
+#imageModal, #imageModal1{
+  .content-category{
+    top: 10%;
+  }
+}
+#images-container, #images-container1 {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 100px);
+  grid-gap: 10px;
+}
+
+
+.grid-item {
+  width: 7.5rem;
+  height: 7.5rem;
+  object-fit: cover;
+  padding: $base-padding;
+  margin: $base-margin;
+  border: 1px solid $white;
+  &.selected {
+    border: 2px solid $secondary;
+    width: 7.6rem;
+    height: 7.6rem;
+
   }
 }
 
-@media (max-width: 662px){
-  #title{
+#Update{
+  position: relative;
+  left: 47.5%;
+}
+.multiselect {
+  width: 20vw;
+
+}
+
+.selectBox {
+  position: relative;
+}
+
+.selectBox select {
+  width: 100%;
+  font-weight: bold;
+}
+
+.overSelect {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  border: 1px  solid $secondary;
+}
+
+#checkboxes {
+  display: none;
+  border: 1px  solid $secondary;
+  padding: $base-padding;
+  position: absolute;
+  z-index: 1;
+  background: $bg;
+  float: right;
+  width: 20vw;
+  //position: absolute;
+}
+
+#checkboxes label {
+  display: block;
+}
+
+
+
+.listelement{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#category_image_main{
+  image-rendering: crisp-edges;
+  object-fit: cover;
+  transition: opacity 0.5s ease-in-out;
+  opacity: 1;
+
+}
+#category_image_main.loaded {
+  opacity: 1;
+}
+
+@media (max-width: 662px) {
+  #title {
     margin-top: 1rem;
     font-size: $base-font-size;
-    
-    
   }
-  .content-category{
+
+  .content-category {
     width: 95vw;
   }
-  #modal-category{
+
+  #modal-category {
     z-index: 1;
   }
-  
 }
-.content-category{
+
+.content-category {
+  .browse{
+    @include wh(10%, auto);
+  }
   @extend .content;
-  @include wh(50vw, auto);
-      top: 4.5rem;
-      padding: 0;
-      @media (max-width: 662px){
-        width: 95vw;
-      }
-      
-    #title{
+  @include wh(75vw, auto);
+  top: 10%;
+  padding: 0;
+
+  #new, #delete, #edit{
+    @include wh(10%, auto);
+  }
+
+  @media (max-width: 662px) {
+    width: 95vw;
+  }
+
+  #title {
+    color: $secondary;
+  }
+
+  .exit {
+    @include wh(3rem, auto);
+    cursor: pointer;
+    font-size: 28px;
+    font-weight: bold;
+    color: $secondary;
+  }
+
+  input {
+    @include wh(40%, auto);
+    &.browse1{
+      @include wh(15%, auto);
+    }
+    &#category_image,
+    &#category_image_search{
+      @include wh(40%, auto);
+    }
+    @media (max-width: 662px) {
+      @include wh(70%, auto);
+    }
+
+    padding: $base-padding;
+    background-color: $bg;
+
+    &::placeholder {
       color: $secondary;
+      opacity: 1;
     }
 
-      .exit{
-        @include wh(3rem, auto);
-        cursor: pointer;
-        font-size: 28px;
-        font-weight: bold;
-        color: $secondary;
+    transition: $transition;
+    -webkit-transition: width 0.4s ease-in-out;
+    color: $secondary;
+    border: 1px solid $secondary
+  }
 
-        
-
-      }
-
-      input {
-        @include wh(85%, auto);
-        @media (max-width: 662px){
-        @include wh(90%, auto);
-        }
-        padding: $base-padding;
-        background-color: $bg;
-        &::placeholder{
-          color: $secondary;
-          opacity: 1;
-        }
-        transition: $transition;
-        -webkit-transition: width 0.4s ease-in-out;
-        color: $secondary;
-        //align-items: center;
-        border: 1px solid $secondary
-        
-      }
-
-      .submit{
-        @include wh(40%, auto);
-        @media (max-width: 662px){
-          @include wh(50%, auto);
-          }
-      }
-
-      .element{
-        // @include wh(85%, auto);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        label{
-          @media (max-width: 662px){
-            font-size: $base-font-size;
-            }
-        }
-        
-        
-        input{
-          @include wh(25%, auto);
-          @media (max-width: 662px){
-            @include wh(25%, auto);
-            }
-          &::-webkit-calendar-picker-indicator {
-            filter: invert(0.8);
-             
-        } 
-        }
-      }
-
-      .reset{
-        border: 1px solid $secondary;
-        margin-right: 7.5%;
-        @media (max-width: 662px){
-          margin-right: 5%;
-          }
-      }
-      
-
+  .submit {
+    @include wh(20%, auto);
+    @media (max-width: 662px) {
+      @include wh(30%, auto);
     }
+  }
+
+  .element {
+    // @include wh(85%, auto);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    label {
+      @media (max-width: 662px) {
+        font-size: $base-font-size;
+      }
+    }
+
+
+    input {
+      @include wh(25%, auto);
+      @media (max-width: 662px) {
+        @include wh(25%, auto);
+      }
+
+      &::-webkit-calendar-picker-indicator {
+        filter: invert(0.8);
+      }
+    }
+  }
+
+  .reset {
+    border: 1px solid $secondary;
+    margin-right: 7.5%;
+    @include wh(8%, auto);
+    position: absolute;
+   top: 20px;
+   right: 10px;
+
+    @media (max-width: 662px) {
+      margin-right: 5%;
+    }
+  }
+
+  #category_image, #category_image_search{
+    @include wh(25%, auto);
+    @media (max-width: 662px) {
+      @include wh(60%, auto);
+    }
+  }
+}
+
+.content-category-images{
+  @extend .content-category;
+  @include wh(60vw, auto);
+}
+
+#confirmmodal-category {
+  .content-category {
+    top: 40%;
+    @include wh(30%, auto);
+    @media (max-width: 662px) {
+      @include wh(80%, auto);
+    }
+  }
+}

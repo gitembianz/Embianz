@@ -165,7 +165,8 @@ $utilities: (
       "b": block,
       "f": flex,
       "i": inline,
-      "i-b": inline-block
+      "i-b": inline-block,
+      "c": contents,
     ),
   ),
   "font-size": (
@@ -239,6 +240,24 @@ $utilities: (
       "r": right,
       "c": center,
       "j": justify,
+      "i": initial,
+      "in": inherit,
+    ),
+  ),
+  "cursor": (
+    "prefix": "cursor",
+    "values": (
+      "p": pointer,
+      
+    ),
+  ),
+  "flex-direction": (
+    "prefix": "fld",
+    "values": (
+      "row": row,
+      "rowr": row-reverse,
+      "col": column,
+      "colr": column-reverse,
       "i": initial,
       "in": inherit,
     ),

@@ -13,26 +13,30 @@ $layout-values: flex-start, flex-end, center, space-between, space-around;
 
 .container {
   width: 100%;
+  height: auto;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2 20px;
+  padding: 20px;
   box-sizing: border-box;
 }
 
 .section-container{
   @extend .container;
-  @include wh(calc(100% - 15rem), auto);
+  @include w(calc(100% - 15rem));
+  height: 100%;
   padding: 0;
   margin: 0;
   position: absolute;
   top: 4.5rem;
   left: 15rem;
   max-width: 100%;
-  height: 100%; 
+  
+  
   @media (max-width: 662px) {
     left: 4.5rem;
-    z-index: -1;
-    @include w(calc(100% - 4rem));
+   // z-index: -1;
+   @include w(100vw);
+   height: auto;
       }
 }
 

@@ -1,0 +1,53 @@
+table {
+  border: 1px solid $secondary;
+  color: $white;
+  @include wh(90%, auto);
+  @media (max-width: 662px) {
+    @include wh(80%, auto);
+  }
+
+  tbody {
+    tr {
+      td {
+        border-left: 1px solid $secondary;
+        border-right: 1px solid $secondary;
+      }
+    }
+  }
+
+}
+
+th {
+  text-align: center;
+  border: 1px solid $secondary;
+}
+
+.dataTables_length {
+  padding: $base-padding;
+
+  label {
+    margin-right: $base-margin;
+  }
+
+  select {
+    margin: $base-margin;
+
+    option {
+      background-color: $bg;
+    }
+
+  }
+}
+
+.dataTables_filter {
+  padding: $base-padding;
+
+}
+
+.dataTables_info {
+  padding-top: $base-padding;
+}
+
+.dataTables_paginate {
+  padding-top: $base-padding;
+}

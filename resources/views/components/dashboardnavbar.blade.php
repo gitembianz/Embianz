@@ -1,7 +1,7 @@
 <nav class="navbar-bg">
     <div class="logo">
-        <img src="/images/dashboard/navbar/rectangular_light.png" id="full_logo" alt="icon large">
-        <img src="/images/dashboard/navbar/logoe.png" id="min_logo" alt="icon ">
+        <img class="cursor-p" onclick="window.location.href='/redirect'" src="/images/dashboard/navbar/rectangular_light.png" id="full_logo" alt="icon large">
+        <img onclick="window.location.href='/redirect'" src="/images/dashboard/navbar/logoe.png" id="min_logo" alt="icon ">
     </div>
     <div>
         <form action="#" method="post" class="display-f" x-data>
