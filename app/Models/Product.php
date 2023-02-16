@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     use HasFactory;
+    public function product()
+    {
+        return $this->hasMany(Products_categories::class, 'product_id');
+    }
 
     protected $fillable = [
         'name',

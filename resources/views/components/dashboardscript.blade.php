@@ -53,6 +53,52 @@
         });
     });
 
+    //script for DataTable for products
+    $(document).ready(function() {
+        var table = $('#product-table').DataTable({
+            processing: true,
+            serverSide: true,
+            orderable: true,
+            ajax: "{{ route('products') }}",
+            columns: [{
+                    data: 'name',
+                    name: 'name'
+                },
+                {
+                    data: 'short_description',
+                    name: 'short_description'
+                },
+                {
+                    data: 'quantity',
+                    name: 'quantity'
+                },
+                {
+                    data: 'product_status',
+                    name: 'product_status'
+                },
+
+                {
+                    data: 'action',
+                    name: 'action',
+                    orderable: false,
+                    searchable: false
+                },
+            ]
+        });
+
+        $('.checkbox').on('click', function() {
+            var column = table.column($(this).attr(
+                'data-column')); // get the column number from the checkbox's data-column attribute
+            if (column.visible()) {
+                column.visible(false); // hide the column
+                $(this).attr('checked', false); // uncheck the checkbox
+            } else {
+                column.visible(true); // show the column
+                $(this).attr('checked', true); // check the checkbox
+            }
+        });
+    });
+
     var expanded = false;
 
     function showCheckboxes() {

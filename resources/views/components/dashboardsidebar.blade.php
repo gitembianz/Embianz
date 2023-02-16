@@ -63,7 +63,7 @@
             </a>
             <div class="dropdown-container ml-1 text-white">
                 <a class="pt-1 pr-2 pb-1 font-md" href="#">Add new Product</a>
-                <a class="pt-1 pr-2 pb-1 font-md" href="#">Show all Products</a>
+                <a class="pt-1 pr-2 pb-1 font-md" href="{{ url('products') }}">Show all Products</a>
             </div>
         </li>
         <li class="list pt-1 pb-1 cursor-p font-lg">
@@ -91,7 +91,7 @@
         <li class="list pt-1 pb-1 cursor-p font-lg">
             <a class="dropdown-btn pl-1">
                 <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                    
+
                     <path class="cls-1"
                         d="M215.8,512a76.1,76.1,0,0,1-54.17-22.44L22.44,350.37a76.59,76.59,0,0,1,0-108.32L242,22.44A76.11,76.11,0,0,1,296.2,0H435.4A76.69,76.69,0,0,1,512,76.6V215.79A76.09,76.09,0,0,1,489.56,270L270,489.56A76.09,76.09,0,0,1,215.8,512ZM296.2,25.6a50.69,50.69,0,0,0-36.06,14.94L40.54,260.14a51,51,0,0,0,0,72.13L179.73,471.46a51,51,0,0,0,72.13,0l219.6-219.61a50.68,50.68,0,0,0,14.94-36.06V76.6a51.06,51.06,0,0,0-51-51ZM422.64,127.68A38.32,38.32,0,1,1,461,89.36,38.36,38.36,0,0,1,422.64,127.68Zm0-51a12.72,12.72,0,1,0,12.72,12.72A12.73,12.73,0,0,0,422.64,76.64Z" />
                     <path class="cls-1"

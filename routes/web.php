@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
 
 
 /*
@@ -33,6 +34,9 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'])-
 
     // browse image
     route::get('/get-images', [CategoryController::class, 'browse']);
+
+    //Products routes
+    route::get('/products', [ProductController::class, 'products'])->name('products');
 
 
 });
