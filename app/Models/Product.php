@@ -5,26 +5,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-
-class Category extends Model
+class Product extends Model
 {
     use HasFactory;
 
-    public function image()
-    {
-        return $this->hasMany(ImageCategories::class, 'category_id');
-    }
-
-
     protected $fillable = [
         'name',
-        'parrent',
-        'long_description',
         'short_description',
-        'sequence',
+        'long_description',
+        'quantity',
+        'product_status',
         'start_date',
         'end_date',
         'createdby',
         'lastmodifiedby',
+        'seo_title'
     ];
+
 }
