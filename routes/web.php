@@ -37,6 +37,7 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'])-
 
     //Products routes
     route::get('/products', [ProductController::class, 'products'])->name('products');
+    route::get('/add_products', [ProductController::class, 'add'])->name('add_products');
 
 
 });

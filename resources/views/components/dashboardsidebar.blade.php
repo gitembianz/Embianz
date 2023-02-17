@@ -62,7 +62,7 @@
                         class="fa fa-caret-down ml-4"></i></span>
             </a>
             <div class="dropdown-container ml-1 text-white">
-                <a class="pt-1 pr-2 pb-1 font-md" href="#">Add new Product</a>
+                <a class="pt-1 pr-2 pb-1 font-md" href="{{ url('add_products') }}">Add new Product</a>
                 <a class="pt-1 pr-2 pb-1 font-md" href="{{ url('products') }}">Show all Products</a>
             </div>
         </li>
