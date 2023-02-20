@@ -13,7 +13,7 @@
     @endif
     {{-- End Section session message --}}
     <h1 id="title" class="mt-1 talign-c font-xl ls-1 text-secondary">{{ __('All categories') }}</h1>
-    
+
     <div class="row talign-c">
         <div class="col-12-xs col-12-sm col-12-xl m-2 p-1 text-secondary">
             <div class="form-group float-r">
@@ -26,21 +26,21 @@
                         <div class="overSelect br-xs"></div>
                       </div>
                       <div id="checkboxes">
-                        
-                            <?php 
+
+                            <?php
                             $columns = ["Category ID", "Category Name", "Category Parent", "Category Short Description", "Category Images"];
                             for ($i = 0; $i < count($columns); $i++) {
-                            
+
                              echo "<label data-column='$i' class='talign-r pt-1' for='$i'>$columns[$i]
                           <input type='checkbox' class='checkbox' id='$i' /></label>";
                             }
                           ?>
-                         
+
                       </div>
                     </div>
                   </form>
-                
-                 
+
+
             </div>
             {{-- Table Category --}}
             <table class="category-table" id="category_table">
@@ -52,7 +52,7 @@
                     <th class="bg-sidebar-bg">Catagory Short Description</th>
                     <th class="bg-sidebar-bg">Images</th>
                     <th class="bg-sidebar-bg">Action</th>
-                    
+
                 </tr>
             </thead>
                 <tbody></tbody>

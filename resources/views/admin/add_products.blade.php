@@ -26,7 +26,9 @@
             <div class="col-12-xs col-12-sm mt-1 col-5-xl text-white">
                 <ul class="p-1">
                     <li class="listelement p-1">
-
+                        <label class="font-lg text-white ls-1">Enter a product name -</label>
+                        <input type="text" class="bg-bg p-1  text-white" name="product_name" placeholder="Enter here"
+                            required>
                     </li>
                     <li class="listelement p-1">
 
