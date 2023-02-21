@@ -32,8 +32,9 @@
                         class="fa fa-caret-down ml-3"></i></span>
             </a>
             <div class="dropdown-container ml-1 text-white">
-                <a class="pt-1 pr-2 pb-1 cursor-p font-md"
-                    onclick="document.getElementById('modal-category').style.display='block'">Add new Category</a>
+
+                    <a class="pt-1 pr-2 pb-1 cursor-p font-md" href="{{ route('newcategory') }}">Add new Category</a>
+
                 <a class="pt-1 pr-2  pb-1 font-md" href="{{ url('category') }}">Show all Categories</a>
             </div>
         </li>

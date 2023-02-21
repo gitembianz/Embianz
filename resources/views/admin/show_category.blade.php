@@ -127,4 +127,5 @@
 </section>
 {{-- page content end --}}
 <x-dashboardscript />
+<x-dashboardscriptcategory />
 <x-dashboardfooter />

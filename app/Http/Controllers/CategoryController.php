@@ -105,6 +105,13 @@ class CategoryController extends Controller
         return response()->json(['result' =>$data]);
         }
     }
+
+    public function new(){
+
+        $categories = Category::pluck('name');
+        return view('admin.add_category', compact('categories'));
+    }
+
     public function show($id){
 
         $data = Category::find($id);
@@ -195,6 +202,9 @@ class CategoryController extends Controller
          }
          return response()->json($images);
     }
+
+
+
 }
 
 
