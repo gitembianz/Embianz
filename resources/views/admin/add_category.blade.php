@@ -15,17 +15,17 @@
     {{-- End Section session message --}}
     <div class="row gap-4 mt-2 mb-2 justify-center talign-c">
         {{-- page title --}}
-        <div class="col-12-xs display-c col-12-sm col-12-xl m-1 text-white">
-            <h1 id="title" class="talign-l text-white font-xl ml-2 ls-1 text-bg">{{ __('Create Category') }}
-            </h1>
-        </div>
+
         <ul class="pt-1">
 
             <li class="p-1 font-xl">
                 <form action="{{ url('/add_category') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="row">
+
                         <div class="col-12-xs col-12-sm col-12-xl text-white">
+                            <h1 id="title" class="talign-l text-white font-xl ml-2 ls-1 text-bg">{{ __('Create Category') }}
+                            </h1>
                         <button class="reset bg-bg cursor-p text-white p-1" id="resetform" type="reset">Clear
                             form</button>
                         </div>

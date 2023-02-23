@@ -180,6 +180,15 @@
 
     });
 
+    //script for apear search input
+const searchIcon = document.getElementById("search-icon");
+const inputSearch = document.getElementById("input_search");
+
+searchIcon.addEventListener("click", function() {
+  inputSearch.style.display = "block";
+});
+
+
     //script on press confirm image search
     document.getElementById("confirmimageselection1").addEventListener("click", function() {
         const selectedImage = document.getElementById("selected-image1").value;

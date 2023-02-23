@@ -6,19 +6,17 @@
   box-sizing: border-box;
 }
 
+//modal for user acesibility
 .modal-user{
   @extend .modal;
 
-  
 @media (max-width: 662px){
   padding-top: 4rem;
 }
-
   .content-user{
     @extend .content;
     width: 90%;
     height: 95%;
-    
     .exit{
       @include wh(3rem, auto);
       cursor: pointer;
@@ -34,64 +32,98 @@
   padding: $base-padding $base-padding *2;
   box-shadow: $base-box-shadow;
   z-index: 1;
-  
   position: fixed;
-  height: 4.5rem;
+  height: 6.5rem;
 
+  //icon on mobile version
   .small{
     display: none;
     @media (max-width: 662px){
       display: block;
       margin-right: 1rem;
     }
-
   }
 
-  
+.right{
+    display: flex;
+    .controls{
+        & svg {
+            @include wh(2.7rem, auto);
+            padding: $base-padding /2;
+            object-fit: cover;
+            align-items: center;
+            background-color: $secondarydark;
+            border: 2px solid $secondary;
+            border-radius: $base-border-thickness * 2;
+            cursor: pointer;
+            path {
+              fill: $white;
+            }
+          }
+    }
+    .user_container{
+        display: flex;
+        .user_icon{
+            padding: $base-padding;
+            border: 2px solid $secondary;
+            border-radius: 50%;
+            background-color: $secondarydark;
+            margin: $base-margin;
+            & svg {
+                 @include wh(2.5rem, auto);
+                 object-fit: cover;
+                 color: $white;
+                 align-items: center;
+                 cursor: pointer;
+                 path {
+                   fill: $white;
+                 }
+               }
+        }
+        .drop_icon{
+            & svg {
+                @include wh(2.5rem, auto);
+                object-fit: cover;
+                color: $white;
+                align-items: center;
+                cursor: pointer;
+                path {
+                  fill: $white;
+                }
+              }
+        }
+    }
+}
 
-  .site-title{
-    font-size: $font-size-lg;
-  }
-  .container{
-    @extend %flex-layout;
-    position: fixed;
-  }
   #input_search {
     @include wh(30vw, auto);
     background-color: $sidebar-bg;
-    background-image: url(/images/dashboard/navbar/magnifier.svg);
-    
+    display: none;
+    //background-image: url(/images/dashboard/navbar/magnifier.svg);
     &::placeholder{
       color: $secondary;
       opacity: 1;
     }
-    
-    background-position: 10px 10px;
-    background-repeat: no-repeat;
+    //background-position: 10px 10px;
+    //background-repeat: no-repeat;
     transition: $transition;
     -webkit-transition: width 0.4s ease-in-out;
     color: $secondary;
     //align-items: center;
-    border: 1px solid $secondary;
-    
+    border: 2px solid $secondary;
   }
-  
 
+//logo for navbar
   & .logo{
     display: flex;
     align-items: center;
-    
+
     & img{
-      @include wh(15rem, auto);
+      @include wh(20rem, auto);
       object-fit: cover;
     }
   }
-  & #button_user{
-    padding: 0.5rem;
-    img{
-      @include wh(.8rem,auto); 
-    }
-  }
+
 
   & #button_user_small{
     display: none;
@@ -102,10 +134,7 @@
   & #min_logo{
     display: none;
     @include wh(4rem, auto);
-    
-  }
-  & .link-responsive{
-    display: none;
+
   }
 
   @media (max-width: 662px){
@@ -114,33 +143,22 @@
     & #min_logo{
       display: block;
     }
-    #input_search{
-     @include wh(50vw, auto);
-    }
-
     & #full_logo{
-      display: none;
-    }
-    & #button_user{
-      display: none;
-    }
-    & .dropdowncontent{
       display: none;
     }
     & #button_user_small{
       padding: $base-padding;
       margin-right: 1rem;
       display: block;
-      
+
        @include wh(1rem, auto);
-      
+
       &:hover{
         background: $bg;
         @include wh(1.5rem, auto);
       }
     }
   }
-
 }
 
 @each $key, $val in $colors {

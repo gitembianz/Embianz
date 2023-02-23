@@ -2392,7 +2392,7 @@ button {
 .card {
   display: block;
   padding: 0.75rem;
-  border: 1px solid #fff;
+  border: 5px solid #fff;
   box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.1);
   border-radius: 5px;
 }
@@ -3550,7 +3550,7 @@ th {
   flex-direction: inherit;
 }
 
-.navbar .container, .navbar-white .container, .navbar-black .container, .navbar-gray .container, .navbar-sidebar-bg .container, .navbar-bg .container, .navbar-info .container, .navbar-error .container, .navbar-secondary .container, .navbar-primary .container, .navbar .section-container, .navbar-white .section-container, .navbar-black .section-container, .navbar-gray .section-container, .navbar-sidebar-bg .section-container, .navbar-bg .section-container, .navbar-info .section-container, .navbar-error .section-container, .navbar-secondary .section-container, .navbar-primary .section-container, .navbar, .navbar-white, .navbar-black, .navbar-gray, .navbar-sidebar-bg, .navbar-bg, .navbar-info, .navbar-error, .navbar-secondary, .navbar-primary {
+.navbar, .navbar-white, .navbar-black, .navbar-gray, .navbar-sidebar-bg, .navbar-bg, .navbar-info, .navbar-error, .navbar-secondary, .navbar-primary {
   width: 100%;
   display: flex;
   align-items: center;
@@ -3581,7 +3581,7 @@ th {
   box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.1);
   z-index: 1;
   position: fixed;
-  height: 4.5rem;
+  height: 6.5rem;
 }
 .navbar .small, .navbar-white .small, .navbar-black .small, .navbar-gray .small, .navbar-sidebar-bg .small, .navbar-bg .small, .navbar-info .small, .navbar-error .small, .navbar-secondary .small, .navbar-primary .small {
   display: none;
@@ -3592,23 +3592,67 @@ th {
     margin-right: 1rem;
   }
 }
-.navbar .site-title, .navbar-white .site-title, .navbar-black .site-title, .navbar-gray .site-title, .navbar-sidebar-bg .site-title, .navbar-bg .site-title, .navbar-info .site-title, .navbar-error .site-title, .navbar-secondary .site-title, .navbar-primary .site-title {
-  font-size: 1.3125rem;
+.navbar .right, .navbar-white .right, .navbar-black .right, .navbar-gray .right, .navbar-sidebar-bg .right, .navbar-bg .right, .navbar-info .right, .navbar-error .right, .navbar-secondary .right, .navbar-primary .right {
+  display: flex;
 }
-.navbar .container, .navbar-white .container, .navbar-black .container, .navbar-gray .container, .navbar-sidebar-bg .container, .navbar-bg .container, .navbar-info .container, .navbar-error .container, .navbar-secondary .container, .navbar-primary .container, .navbar .section-container, .navbar-white .section-container, .navbar-black .section-container, .navbar-gray .section-container, .navbar-sidebar-bg .section-container, .navbar-bg .section-container, .navbar-info .section-container, .navbar-error .section-container, .navbar-secondary .section-container, .navbar-primary .section-container {
-  position: fixed;
+.navbar .right .controls svg, .navbar-white .right .controls svg, .navbar-black .right .controls svg, .navbar-gray .right .controls svg, .navbar-sidebar-bg .right .controls svg, .navbar-bg .right .controls svg, .navbar-info .right .controls svg, .navbar-error .right .controls svg, .navbar-secondary .right .controls svg, .navbar-primary .right .controls svg {
+  width: 2.7rem;
+  height: auto;
+  padding: 0.375rem;
+  -o-object-fit: cover;
+     object-fit: cover;
+  align-items: center;
+  background-color: hsl(150deg, 10%, 40%);
+  border: 2px solid hsl(152deg, 92%, 86%);
+  border-radius: 10px;
+  cursor: pointer;
+}
+.navbar .right .controls svg path, .navbar-white .right .controls svg path, .navbar-black .right .controls svg path, .navbar-gray .right .controls svg path, .navbar-sidebar-bg .right .controls svg path, .navbar-bg .right .controls svg path, .navbar-info .right .controls svg path, .navbar-error .right .controls svg path, .navbar-secondary .right .controls svg path, .navbar-primary .right .controls svg path {
+  fill: #ffffff;
+}
+.navbar .right .user_container, .navbar-white .right .user_container, .navbar-black .right .user_container, .navbar-gray .right .user_container, .navbar-sidebar-bg .right .user_container, .navbar-bg .right .user_container, .navbar-info .right .user_container, .navbar-error .right .user_container, .navbar-secondary .right .user_container, .navbar-primary .right .user_container {
+  display: flex;
+}
+.navbar .right .user_container .user_icon, .navbar-white .right .user_container .user_icon, .navbar-black .right .user_container .user_icon, .navbar-gray .right .user_container .user_icon, .navbar-sidebar-bg .right .user_container .user_icon, .navbar-bg .right .user_container .user_icon, .navbar-info .right .user_container .user_icon, .navbar-error .right .user_container .user_icon, .navbar-secondary .right .user_container .user_icon, .navbar-primary .right .user_container .user_icon {
+  padding: 0.75rem;
+  border: 2px solid hsl(152deg, 92%, 86%);
+  border-radius: 50%;
+  background-color: hsl(150deg, 10%, 40%);
+  margin: 0.75rem;
+}
+.navbar .right .user_container .user_icon svg, .navbar-white .right .user_container .user_icon svg, .navbar-black .right .user_container .user_icon svg, .navbar-gray .right .user_container .user_icon svg, .navbar-sidebar-bg .right .user_container .user_icon svg, .navbar-bg .right .user_container .user_icon svg, .navbar-info .right .user_container .user_icon svg, .navbar-error .right .user_container .user_icon svg, .navbar-secondary .right .user_container .user_icon svg, .navbar-primary .right .user_container .user_icon svg {
+  width: 2.5rem;
+  height: auto;
+  -o-object-fit: cover;
+     object-fit: cover;
+  color: #ffffff;
+  align-items: center;
+  cursor: pointer;
+}
+.navbar .right .user_container .user_icon svg path, .navbar-white .right .user_container .user_icon svg path, .navbar-black .right .user_container .user_icon svg path, .navbar-gray .right .user_container .user_icon svg path, .navbar-sidebar-bg .right .user_container .user_icon svg path, .navbar-bg .right .user_container .user_icon svg path, .navbar-info .right .user_container .user_icon svg path, .navbar-error .right .user_container .user_icon svg path, .navbar-secondary .right .user_container .user_icon svg path, .navbar-primary .right .user_container .user_icon svg path {
+  fill: #ffffff;
+}
+.navbar .right .user_container .drop_icon svg, .navbar-white .right .user_container .drop_icon svg, .navbar-black .right .user_container .drop_icon svg, .navbar-gray .right .user_container .drop_icon svg, .navbar-sidebar-bg .right .user_container .drop_icon svg, .navbar-bg .right .user_container .drop_icon svg, .navbar-info .right .user_container .drop_icon svg, .navbar-error .right .user_container .drop_icon svg, .navbar-secondary .right .user_container .drop_icon svg, .navbar-primary .right .user_container .drop_icon svg {
+  width: 2.5rem;
+  height: auto;
+  -o-object-fit: cover;
+     object-fit: cover;
+  color: #ffffff;
+  align-items: center;
+  cursor: pointer;
+}
+.navbar .right .user_container .drop_icon svg path, .navbar-white .right .user_container .drop_icon svg path, .navbar-black .right .user_container .drop_icon svg path, .navbar-gray .right .user_container .drop_icon svg path, .navbar-sidebar-bg .right .user_container .drop_icon svg path, .navbar-bg .right .user_container .drop_icon svg path, .navbar-info .right .user_container .drop_icon svg path, .navbar-error .right .user_container .drop_icon svg path, .navbar-secondary .right .user_container .drop_icon svg path, .navbar-primary .right .user_container .drop_icon svg path {
+  fill: #ffffff;
 }
 .navbar #input_search, .navbar-white #input_search, .navbar-black #input_search, .navbar-gray #input_search, .navbar-sidebar-bg #input_search, .navbar-bg #input_search, .navbar-info #input_search, .navbar-error #input_search, .navbar-secondary #input_search, .navbar-primary #input_search {
   width: 30vw;
   height: auto;
   background-color: #35424b;
-  background-image: url(/images/dashboard/navbar/magnifier.svg);
-  background-position: 10px 10px;
-  background-repeat: no-repeat;
+  display: none;
   transition: all 0.5s ease-in-out;
   -webkit-transition: width 0.4s ease-in-out;
   color: hsl(152deg, 92%, 86%);
-  border: 1px solid hsl(152deg, 92%, 86%);
+  border: 2px solid hsl(152deg, 92%, 86%);
 }
 .navbar #input_search::-moz-placeholder, .navbar-white #input_search::-moz-placeholder, .navbar-black #input_search::-moz-placeholder, .navbar-gray #input_search::-moz-placeholder, .navbar-sidebar-bg #input_search::-moz-placeholder, .navbar-bg #input_search::-moz-placeholder, .navbar-info #input_search::-moz-placeholder, .navbar-error #input_search::-moz-placeholder, .navbar-secondary #input_search::-moz-placeholder, .navbar-primary #input_search::-moz-placeholder {
   color: hsl(152deg, 92%, 86%);
@@ -3623,17 +3667,10 @@ th {
   align-items: center;
 }
 .navbar .logo img, .navbar-white .logo img, .navbar-black .logo img, .navbar-gray .logo img, .navbar-sidebar-bg .logo img, .navbar-bg .logo img, .navbar-info .logo img, .navbar-error .logo img, .navbar-secondary .logo img, .navbar-primary .logo img {
-  width: 15rem;
+  width: 20rem;
   height: auto;
   -o-object-fit: cover;
      object-fit: cover;
-}
-.navbar #button_user, .navbar-white #button_user, .navbar-black #button_user, .navbar-gray #button_user, .navbar-sidebar-bg #button_user, .navbar-bg #button_user, .navbar-info #button_user, .navbar-error #button_user, .navbar-secondary #button_user, .navbar-primary #button_user {
-  padding: 0.5rem;
-}
-.navbar #button_user img, .navbar-white #button_user img, .navbar-black #button_user img, .navbar-gray #button_user img, .navbar-sidebar-bg #button_user img, .navbar-bg #button_user img, .navbar-info #button_user img, .navbar-error #button_user img, .navbar-secondary #button_user img, .navbar-primary #button_user img {
-  width: 0.8rem;
-  height: auto;
 }
 .navbar #button_user_small, .navbar-white #button_user_small, .navbar-black #button_user_small, .navbar-gray #button_user_small, .navbar-sidebar-bg #button_user_small, .navbar-bg #button_user_small, .navbar-info #button_user_small, .navbar-error #button_user_small, .navbar-secondary #button_user_small, .navbar-primary #button_user_small {
   display: none;
@@ -3645,9 +3682,6 @@ th {
   width: 4rem;
   height: auto;
 }
-.navbar .link-responsive, .navbar-white .link-responsive, .navbar-black .link-responsive, .navbar-gray .link-responsive, .navbar-sidebar-bg .link-responsive, .navbar-bg .link-responsive, .navbar-info .link-responsive, .navbar-error .link-responsive, .navbar-secondary .link-responsive, .navbar-primary .link-responsive {
-  display: none;
-}
 @media (max-width: 662px) {
   .navbar, .navbar-white, .navbar-black, .navbar-gray, .navbar-sidebar-bg, .navbar-bg, .navbar-info, .navbar-error, .navbar-secondary, .navbar-primary {
     padding: 0;
@@ -3655,17 +3689,7 @@ th {
   .navbar #min_logo, .navbar-white #min_logo, .navbar-black #min_logo, .navbar-gray #min_logo, .navbar-sidebar-bg #min_logo, .navbar-bg #min_logo, .navbar-info #min_logo, .navbar-error #min_logo, .navbar-secondary #min_logo, .navbar-primary #min_logo {
     display: block;
   }
-  .navbar #input_search, .navbar-white #input_search, .navbar-black #input_search, .navbar-gray #input_search, .navbar-sidebar-bg #input_search, .navbar-bg #input_search, .navbar-info #input_search, .navbar-error #input_search, .navbar-secondary #input_search, .navbar-primary #input_search {
-    width: 50vw;
-    height: auto;
-  }
   .navbar #full_logo, .navbar-white #full_logo, .navbar-black #full_logo, .navbar-gray #full_logo, .navbar-sidebar-bg #full_logo, .navbar-bg #full_logo, .navbar-info #full_logo, .navbar-error #full_logo, .navbar-secondary #full_logo, .navbar-primary #full_logo {
-    display: none;
-  }
-  .navbar #button_user, .navbar-white #button_user, .navbar-black #button_user, .navbar-gray #button_user, .navbar-sidebar-bg #button_user, .navbar-bg #button_user, .navbar-info #button_user, .navbar-error #button_user, .navbar-secondary #button_user, .navbar-primary #button_user {
-    display: none;
-  }
-  .navbar .dropdowncontent, .navbar-white .dropdowncontent, .navbar-black .dropdowncontent, .navbar-gray .dropdowncontent, .navbar-sidebar-bg .dropdowncontent, .navbar-bg .dropdowncontent, .navbar-info .dropdowncontent, .navbar-error .dropdowncontent, .navbar-secondary .dropdowncontent, .navbar-primary .dropdowncontent {
     display: none;
   }
   .navbar #button_user_small, .navbar-white #button_user_small, .navbar-black #button_user_small, .navbar-gray #button_user_small, .navbar-sidebar-bg #button_user_small, .navbar-bg #button_user_small, .navbar-info #button_user_small, .navbar-error #button_user_small, .navbar-secondary #button_user_small, .navbar-primary #button_user_small {

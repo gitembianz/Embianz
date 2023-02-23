@@ -1,5 +1,5 @@
 ///////////// color sistem///////
-/// 
+///
 //colors definition by default
 $blue: #5E50F9;
 $indigo: #6610f2;
@@ -22,6 +22,7 @@ $dodger-blue : #3498db;
 
 $primary: #326dee !default;
 $secondary: hsl(152deg 92% 86%) !default;
+$secondarydark: hsl(150, 10%, 40%) !default;
 $succes: #1ac888 !default;
 $info: #8f5fe8 !default;
 $error: #d32752 !default;
@@ -49,7 +50,7 @@ behance: #1769ff,
 dribbble: #ea4c89,
 reddit: #ff4500);
 
-/// 
+///
 //color maps
 $colors: (
   "primary": $primary,
@@ -70,14 +71,14 @@ $base-padding: 0.75rem !default;
 $base-margin: 0.75rem !default;
 
 
-//border 
-$base-border-thickness: 1px !default;
+//border
+$base-border-thickness: 5px !default;
 $base-border-radius: 20px !default;
 
 //box-shadow
 $base-box-shadow: 1px 3px 5px rgba(0,0,0,0.1) !default;
 
-///FONT//// 
+///FONT////
 ////////// FONT-WEIGHT/////////
 
 $font-weight-light: 300;
@@ -95,6 +96,6 @@ $font-size-xl: $base-font-size * 2 !default;
 $font-size-xxl: $base-font-size * 3 !default;
 
 //transition variables///
-$transition: all 0.5s ease-in-out; 
+$transition: all 0.5s ease-in-out;
 //transition variables///
 
