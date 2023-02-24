@@ -30,7 +30,6 @@
 .navbar{
   @extend %flex-layout;
   padding: $base-padding $base-padding *2;
-  box-shadow: $base-box-shadow;
   z-index: 1;
   position: fixed;
   height: 6.5rem;

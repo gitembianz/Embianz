@@ -93,13 +93,13 @@ button {
 }
 
 .section-container {
-  width: calc(100% - 15rem);
+  width: calc(100% - 20rem);
   height: 100%;
   padding: 0;
   margin: 0;
   position: absolute;
-  top: 4.5rem;
-  left: 15rem;
+  top: 6.5rem;
+  left: 20rem;
   max-width: 100%;
 }
 @media (max-width: 662px) {
@@ -3578,7 +3578,6 @@ th {
 
 .navbar, .navbar-white, .navbar-black, .navbar-gray, .navbar-sidebar-bg, .navbar-bg, .navbar-info, .navbar-error, .navbar-secondary, .navbar-primary {
   padding: 0.75rem 1.5rem;
-  box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.1);
   z-index: 1;
   position: fixed;
   height: 6.5rem;
@@ -3719,11 +3718,10 @@ th {
 .sidebar {
   position: fixed;
   left: 0;
-  width: 15rem;
+  width: 20rem;
   height: 100%;
   overflow-y: scroll;
   background: #35424b;
-  box-shadow: 0 0.1rem 1rem rgba(23, 23, 37, 0.8);
 }
 
 .active {
@@ -3733,7 +3731,7 @@ th {
 
 .sidebar {
   overflow: scroll;
-  top: 4.5rem;
+  top: 6.5rem;
   --webkit-transition: width 0.4s ease-in-out;
 }
 .sidebar::-webkit-scrollbar {
@@ -3742,7 +3740,6 @@ th {
 .sidebar .menu .list {
   position: relative;
   transition: all 0.5s ease-in-out;
-  border-bottom: 1px solid hsla(205deg, 2%, 58%, 0.48);
 }
 .sidebar .menu .list::before {
   content: "";

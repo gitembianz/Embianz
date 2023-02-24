@@ -22,16 +22,16 @@ $layout-values: flex-start, flex-end, center, space-between, space-around;
 
 .section-container{
   @extend .container;
-  @include w(calc(100% - 15rem));
+  @include w(calc(100% - 20rem));
   height: 100%;
   padding: 0;
   margin: 0;
   position: absolute;
-  top: 4.5rem;
-  left: 15rem;
+  top: 6.5rem;
+  left: 20rem;
   max-width: 100%;
-  
-  
+
+
   @media (max-width: 662px) {
     left: 4.5rem;
    // z-index: -1;
