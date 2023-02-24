@@ -3596,7 +3596,7 @@ th {
   display: flex;
 }
 .navbar .right .controls svg, .navbar-white .right .controls svg, .navbar-black .right .controls svg, .navbar-gray .right .controls svg, .navbar-sidebar-bg .right .controls svg, .navbar-bg .right .controls svg, .navbar-info .right .controls svg, .navbar-error .right .controls svg, .navbar-secondary .right .controls svg, .navbar-primary .right .controls svg {
-  width: 2.7rem;
+  width: 2rem;
   height: auto;
   padding: 0.375rem;
   -o-object-fit: cover;
@@ -3621,7 +3621,7 @@ th {
   margin: 0.75rem;
 }
 .navbar .right .user_container .user_icon svg, .navbar-white .right .user_container .user_icon svg, .navbar-black .right .user_container .user_icon svg, .navbar-gray .right .user_container .user_icon svg, .navbar-sidebar-bg .right .user_container .user_icon svg, .navbar-bg .right .user_container .user_icon svg, .navbar-info .right .user_container .user_icon svg, .navbar-error .right .user_container .user_icon svg, .navbar-secondary .right .user_container .user_icon svg, .navbar-primary .right .user_container .user_icon svg {
-  width: 2.5rem;
+  width: 2rem;
   height: auto;
   -o-object-fit: cover;
      object-fit: cover;
@@ -3632,17 +3632,8 @@ th {
 .navbar .right .user_container .user_icon svg path, .navbar-white .right .user_container .user_icon svg path, .navbar-black .right .user_container .user_icon svg path, .navbar-gray .right .user_container .user_icon svg path, .navbar-sidebar-bg .right .user_container .user_icon svg path, .navbar-bg .right .user_container .user_icon svg path, .navbar-info .right .user_container .user_icon svg path, .navbar-error .right .user_container .user_icon svg path, .navbar-secondary .right .user_container .user_icon svg path, .navbar-primary .right .user_container .user_icon svg path {
   fill: #ffffff;
 }
-.navbar .right .user_container .drop_icon svg, .navbar-white .right .user_container .drop_icon svg, .navbar-black .right .user_container .drop_icon svg, .navbar-gray .right .user_container .drop_icon svg, .navbar-sidebar-bg .right .user_container .drop_icon svg, .navbar-bg .right .user_container .drop_icon svg, .navbar-info .right .user_container .drop_icon svg, .navbar-error .right .user_container .drop_icon svg, .navbar-secondary .right .user_container .drop_icon svg, .navbar-primary .right .user_container .drop_icon svg {
-  width: 2.5rem;
-  height: auto;
-  -o-object-fit: cover;
-     object-fit: cover;
-  color: #ffffff;
-  align-items: center;
-  cursor: pointer;
-}
-.navbar .right .user_container .drop_icon svg path, .navbar-white .right .user_container .drop_icon svg path, .navbar-black .right .user_container .drop_icon svg path, .navbar-gray .right .user_container .drop_icon svg path, .navbar-sidebar-bg .right .user_container .drop_icon svg path, .navbar-bg .right .user_container .drop_icon svg path, .navbar-info .right .user_container .drop_icon svg path, .navbar-error .right .user_container .drop_icon svg path, .navbar-secondary .right .user_container .drop_icon svg path, .navbar-primary .right .user_container .drop_icon svg path {
-  fill: #ffffff;
+.navbar .right .user_container .drop_icon path, .navbar-white .right .user_container .drop_icon path, .navbar-black .right .user_container .drop_icon path, .navbar-gray .right .user_container .drop_icon path, .navbar-sidebar-bg .right .user_container .drop_icon path, .navbar-bg .right .user_container .drop_icon path, .navbar-info .right .user_container .drop_icon path, .navbar-error .right .user_container .drop_icon path, .navbar-secondary .right .user_container .drop_icon path, .navbar-primary .right .user_container .drop_icon path {
+  fill: hsl(152deg, 92%, 86%);
 }
 .navbar #input_search, .navbar-white #input_search, .navbar-black #input_search, .navbar-gray #input_search, .navbar-sidebar-bg #input_search, .navbar-bg #input_search, .navbar-info #input_search, .navbar-error #input_search, .navbar-secondary #input_search, .navbar-primary #input_search {
   width: 30vw;

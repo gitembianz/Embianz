@@ -48,7 +48,7 @@
     display: flex;
     .controls{
         & svg {
-            @include wh(2.7rem, auto);
+            @include wh(2rem, auto);
             padding: $base-padding /2;
             object-fit: cover;
             align-items: center;
@@ -70,7 +70,7 @@
             background-color: $secondarydark;
             margin: $base-margin;
             & svg {
-                 @include wh(2.5rem, auto);
+                 @include wh(2rem, auto);
                  object-fit: cover;
                  color: $white;
                  align-items: center;
@@ -81,16 +81,9 @@
                }
         }
         .drop_icon{
-            & svg {
-                @include wh(2.5rem, auto);
-                object-fit: cover;
-                color: $white;
-                align-items: center;
-                cursor: pointer;
-                path {
-                  fill: $white;
-                }
-              }
+            path{
+                fill: $secondary;
+            }
         }
     }
 }
