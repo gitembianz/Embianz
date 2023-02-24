@@ -90,10 +90,10 @@
             </div>
             <div class="user_name talign-l m-1 text-white">
                 <div>
-                    Iosif Relia
+                    {{ __('Iosif Relia') }}
                 </div>
                 <div>
-                    admin
+                    {{ $user }}
                 </div>
             </div>
             <div class="drop_icon">
