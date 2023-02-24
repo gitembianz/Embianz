@@ -15,7 +15,7 @@
     </div>
 
     <div class="right align-center">
-        <div class="controls mr-4">
+        <div class="controls mr-3">
             <span class="mr-1" id="search-icon">
                 <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none"
                     xmlns="http://www.w3.org/2000/svg">

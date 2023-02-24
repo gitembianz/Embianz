@@ -92,17 +92,13 @@
     @include wh(30vw, auto);
     background-color: $sidebar-bg;
     display: none;
-    //background-image: url(/images/dashboard/navbar/magnifier.svg);
     &::placeholder{
       color: $secondary;
       opacity: 1;
     }
-    //background-position: 10px 10px;
-    //background-repeat: no-repeat;
     transition: $transition;
     -webkit-transition: width 0.4s ease-in-out;
     color: $secondary;
-    //align-items: center;
     border: 2px solid $secondary;
   }
 
@@ -117,13 +113,6 @@
     }
   }
 
-
-  & #button_user_small{
-    display: none;
-    text-align: center;
-    justify-content: center;
-  }
-
   & #min_logo{
     display: none;
     @include wh(4rem, auto);
@@ -132,24 +121,11 @@
 
   @media (max-width: 662px){
     padding: 0;
-    //z-index: -1;
     & #min_logo{
       display: block;
     }
     & #full_logo{
       display: none;
-    }
-    & #button_user_small{
-      padding: $base-padding;
-      margin-right: 1rem;
-      display: block;
-
-       @include wh(1rem, auto);
-
-      &:hover{
-        background: $bg;
-        @include wh(1.5rem, auto);
-      }
     }
   }
 }

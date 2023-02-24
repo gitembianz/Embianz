@@ -3663,11 +3663,6 @@ th {
   -o-object-fit: cover;
      object-fit: cover;
 }
-.navbar #button_user_small, .navbar-white #button_user_small, .navbar-black #button_user_small, .navbar-gray #button_user_small, .navbar-sidebar-bg #button_user_small, .navbar-bg #button_user_small, .navbar-info #button_user_small, .navbar-error #button_user_small, .navbar-secondary #button_user_small, .navbar-primary #button_user_small {
-  display: none;
-  text-align: center;
-  justify-content: center;
-}
 .navbar #min_logo, .navbar-white #min_logo, .navbar-black #min_logo, .navbar-gray #min_logo, .navbar-sidebar-bg #min_logo, .navbar-bg #min_logo, .navbar-info #min_logo, .navbar-error #min_logo, .navbar-secondary #min_logo, .navbar-primary #min_logo {
   display: none;
   width: 4rem;
@@ -3682,18 +3677,6 @@ th {
   }
   .navbar #full_logo, .navbar-white #full_logo, .navbar-black #full_logo, .navbar-gray #full_logo, .navbar-sidebar-bg #full_logo, .navbar-bg #full_logo, .navbar-info #full_logo, .navbar-error #full_logo, .navbar-secondary #full_logo, .navbar-primary #full_logo {
     display: none;
-  }
-  .navbar #button_user_small, .navbar-white #button_user_small, .navbar-black #button_user_small, .navbar-gray #button_user_small, .navbar-sidebar-bg #button_user_small, .navbar-bg #button_user_small, .navbar-info #button_user_small, .navbar-error #button_user_small, .navbar-secondary #button_user_small, .navbar-primary #button_user_small {
-    padding: 0.75rem;
-    margin-right: 1rem;
-    display: block;
-    width: 1rem;
-    height: auto;
-  }
-  .navbar #button_user_small:hover, .navbar-white #button_user_small:hover, .navbar-black #button_user_small:hover, .navbar-gray #button_user_small:hover, .navbar-sidebar-bg #button_user_small:hover, .navbar-bg #button_user_small:hover, .navbar-info #button_user_small:hover, .navbar-error #button_user_small:hover, .navbar-secondary #button_user_small:hover, .navbar-primary #button_user_small:hover {
-    background: #35424b;
-    width: 1.5rem;
-    height: auto;
   }
 }
 
