@@ -1,10 +1,11 @@
 .container-right{
     @extend %fixed-layout;
     align-items: flex-end;
-    //left: 200px;
     position:fixed;
     right: 0;
     top: 6.5rem;
     z-index: 1;
+    overflow-y: hidden;
+    @include wh(22rem, 100%);
 
 }

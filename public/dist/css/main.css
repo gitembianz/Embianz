@@ -99,7 +99,7 @@ button {
   margin: 0;
   position: absolute;
   top: 6.5rem;
-  left: 20rem;
+  left: 18rem;
   max-width: 100%;
 }
 @media (max-width: 662px) {
@@ -3730,6 +3730,8 @@ th {
 
 .sidebar {
   overflow: scroll;
+  width: 18rem;
+  height: 100%;
   top: 6.5rem;
   left: 0;
   --webkit-transition: width 0.4s ease-in-out;
@@ -4056,4 +4058,7 @@ th {
   right: 0;
   top: 6.5rem;
   z-index: 1;
+  overflow-y: hidden;
+  width: 22rem;
+  height: 100%;
 }/*# sourceMappingURL=main.css.map */
