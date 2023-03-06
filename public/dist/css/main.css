@@ -25,7 +25,7 @@ img {
 }
 
 .section-heading {
-  color: hsl(152deg, 92%, 86%);
+  color: hsl(152, 92%, 86%);
 }
 
 button {
@@ -93,7 +93,7 @@ button {
 }
 
 .section-container {
-  width: calc(100% - 20rem);
+  width: calc(100% - 40rem);
   height: 100%;
   padding: 0;
   margin: 0;
@@ -750,19 +750,19 @@ button {
 }
 
 .text-secondary {
-  color: hsl(152deg, 92%, 86%);
+  color: hsl(152, 92%, 86%);
 }
 
 .text-hover-secondary:hover {
-  color: hsl(152deg, 92%, 86%);
+  color: hsl(152, 92%, 86%);
 }
 
 .bg-secondary {
-  background-color: hsl(152deg, 92%, 86%);
+  background-color: hsl(152, 92%, 86%);
 }
 
 .bg-hover-secondary:hover {
-  background-color: hsl(152deg, 92%, 86%);
+  background-color: hsl(152, 92%, 86%);
 }
 
 .text-secondary-light-1 {
@@ -2467,7 +2467,7 @@ button {
   border: 0;
   padding: 0.75rem 1.5rem;
   border-radius: 20px;
-  background-color: hsl(152deg, 92%, 86%);
+  background-color: hsl(152, 92%, 86%);
 }
 .btn-secondary:hover {
   background-color: #d3fde9;
@@ -2484,7 +2484,7 @@ button {
   border-radius: 20px;
 }
 .btn-outlined-secondary:hover {
-  background-color: hsl(152deg, 92%, 86%);
+  background-color: hsl(152, 92%, 86%);
 }
 
 .btn-complement-secondary {
@@ -2494,11 +2494,11 @@ button {
   border: 0;
   padding: 0.75rem 1.5rem;
   border-radius: 20px;
-  background-color: hsl(152deg, 92%, 86%);
+  background-color: hsl(152, 92%, 86%);
   color: white;
 }
 .btn-complement-secondary:hover {
-  color: hsl(152deg, 92%, 86%);
+  color: hsl(152, 92%, 86%);
   background-color: white;
 }
 
@@ -2814,7 +2814,7 @@ button {
 
 .badge-secondary {
   border-radius: 80px;
-  background-color: hsl(152deg, 92%, 86%);
+  background-color: hsl(152, 92%, 86%);
   padding: 0.1875rem 0.375rem;
   font-size: 0.65625rem;
   font-weight: normal;
@@ -2920,11 +2920,11 @@ li.dropdown {
   padding: 0;
   outline: 0;
   text-align: center;
-  box-shadow: 0px 0px 15px hsl(152deg, 92%, 86%);
+  box-shadow: 0px 0px 15px hsl(152, 92%, 86%);
 }
 
 table {
-  border: 1px solid hsl(152deg, 92%, 86%);
+  border: 1px solid hsl(152, 92%, 86%);
   color: #ffffff;
   width: 90%;
   height: auto;
@@ -2936,13 +2936,13 @@ table {
   }
 }
 table tbody tr td {
-  border-left: 1px solid hsl(152deg, 92%, 86%);
-  border-right: 1px solid hsl(152deg, 92%, 86%);
+  border-left: 1px solid hsl(152, 92%, 86%);
+  border-right: 1px solid hsl(152, 92%, 86%);
 }
 
 th {
   text-align: center;
-  border: 1px solid hsl(152deg, 92%, 86%);
+  border: 1px solid hsl(152, 92%, 86%);
 }
 
 .dataTables_length {
@@ -3573,7 +3573,7 @@ th {
   cursor: pointer;
   font-size: 28px;
   font-weight: bold;
-  color: hsl(152deg, 92%, 86%);
+  color: hsl(152, 92%, 86%);
 }
 
 .navbar, .navbar-white, .navbar-black, .navbar-gray, .navbar-sidebar-bg, .navbar-bg, .navbar-info, .navbar-error, .navbar-secondary, .navbar-primary {
@@ -3601,8 +3601,8 @@ th {
   -o-object-fit: cover;
      object-fit: cover;
   align-items: center;
-  background-color: hsl(150deg, 10%, 40%);
-  border: 2px solid hsl(152deg, 92%, 86%);
+  background-color: hsl(150, 10%, 40%);
+  border: 2px solid hsl(152, 92%, 86%);
   border-radius: 10px;
   cursor: pointer;
 }
@@ -3614,9 +3614,9 @@ th {
 }
 .navbar .right .user_container .user_icon, .navbar-white .right .user_container .user_icon, .navbar-black .right .user_container .user_icon, .navbar-gray .right .user_container .user_icon, .navbar-sidebar-bg .right .user_container .user_icon, .navbar-bg .right .user_container .user_icon, .navbar-info .right .user_container .user_icon, .navbar-error .right .user_container .user_icon, .navbar-secondary .right .user_container .user_icon, .navbar-primary .right .user_container .user_icon {
   padding: 0.75rem;
-  border: 2px solid hsl(152deg, 92%, 86%);
+  border: 2px solid hsl(152, 92%, 86%);
   border-radius: 50%;
-  background-color: hsl(150deg, 10%, 40%);
+  background-color: hsl(150, 10%, 40%);
   margin: 0.75rem;
 }
 .navbar .right .user_container .user_icon svg, .navbar-white .right .user_container .user_icon svg, .navbar-black .right .user_container .user_icon svg, .navbar-gray .right .user_container .user_icon svg, .navbar-sidebar-bg .right .user_container .user_icon svg, .navbar-bg .right .user_container .user_icon svg, .navbar-info .right .user_container .user_icon svg, .navbar-error .right .user_container .user_icon svg, .navbar-secondary .right .user_container .user_icon svg, .navbar-primary .right .user_container .user_icon svg {
@@ -3632,7 +3632,7 @@ th {
   fill: #ffffff;
 }
 .navbar .right .user_container .drop_icon path, .navbar-white .right .user_container .drop_icon path, .navbar-black .right .user_container .drop_icon path, .navbar-gray .right .user_container .drop_icon path, .navbar-sidebar-bg .right .user_container .drop_icon path, .navbar-bg .right .user_container .drop_icon path, .navbar-info .right .user_container .drop_icon path, .navbar-error .right .user_container .drop_icon path, .navbar-secondary .right .user_container .drop_icon path, .navbar-primary .right .user_container .drop_icon path {
-  fill: hsl(152deg, 92%, 86%);
+  fill: hsl(152, 92%, 86%);
 }
 .navbar #input_search, .navbar-white #input_search, .navbar-black #input_search, .navbar-gray #input_search, .navbar-sidebar-bg #input_search, .navbar-bg #input_search, .navbar-info #input_search, .navbar-error #input_search, .navbar-secondary #input_search, .navbar-primary #input_search {
   width: 30vw;
@@ -3641,15 +3641,15 @@ th {
   display: none;
   transition: all 0.5s ease-in-out;
   -webkit-transition: width 0.4s ease-in-out;
-  color: hsl(152deg, 92%, 86%);
-  border: 2px solid hsl(152deg, 92%, 86%);
+  color: hsl(152, 92%, 86%);
+  border: 2px solid hsl(152, 92%, 86%);
 }
 .navbar #input_search::-moz-placeholder, .navbar-white #input_search::-moz-placeholder, .navbar-black #input_search::-moz-placeholder, .navbar-gray #input_search::-moz-placeholder, .navbar-sidebar-bg #input_search::-moz-placeholder, .navbar-bg #input_search::-moz-placeholder, .navbar-info #input_search::-moz-placeholder, .navbar-error #input_search::-moz-placeholder, .navbar-secondary #input_search::-moz-placeholder, .navbar-primary #input_search::-moz-placeholder {
-  color: hsl(152deg, 92%, 86%);
+  color: hsl(152, 92%, 86%);
   opacity: 1;
 }
 .navbar #input_search::placeholder, .navbar-white #input_search::placeholder, .navbar-black #input_search::placeholder, .navbar-gray #input_search::placeholder, .navbar-sidebar-bg #input_search::placeholder, .navbar-bg #input_search::placeholder, .navbar-info #input_search::placeholder, .navbar-error #input_search::placeholder, .navbar-secondary #input_search::placeholder, .navbar-primary #input_search::placeholder {
-  color: hsl(152deg, 92%, 86%);
+  color: hsl(152, 92%, 86%);
   opacity: 1;
 }
 .navbar .logo, .navbar-white .logo, .navbar-black .logo, .navbar-gray .logo, .navbar-sidebar-bg .logo, .navbar-bg .logo, .navbar-info .logo, .navbar-error .logo, .navbar-secondary .logo, .navbar-primary .logo {
@@ -3684,7 +3684,7 @@ th {
 }
 
 .navbar-secondary {
-  background-color: hsl(152deg, 92%, 86%);
+  background-color: hsl(152, 92%, 86%);
 }
 
 .navbar-error {
@@ -3715,9 +3715,8 @@ th {
   background-color: white;
 }
 
-.sidebar {
+.container-right, .sidebar {
   position: fixed;
-  left: 0;
   width: 20rem;
   height: 100%;
   overflow-y: scroll;
@@ -3725,13 +3724,14 @@ th {
 }
 
 .active {
-  color: hsl(152deg, 92%, 86%);
+  color: hsl(152, 92%, 86%);
   background: #35424b;
 }
 
 .sidebar {
   overflow: scroll;
   top: 6.5rem;
+  left: 0;
   --webkit-transition: width 0.4s ease-in-out;
 }
 .sidebar::-webkit-scrollbar {
@@ -3748,7 +3748,7 @@ th {
   left: 0;
   width: 0.3rem;
   height: 100%;
-  background: hsl(152deg, 92%, 86%);
+  background: hsl(152, 92%, 86%);
   border-radius: 0.2rem;
   opacity: 0;
   pointer-events: none;
@@ -3781,7 +3781,7 @@ th {
   text-align: right;
 }
 .sidebar .menu .list .dropdown-container a:hover {
-  color: hsl(152deg, 92%, 86%);
+  color: hsl(152, 92%, 86%);
   background: #35424b;
 }
 .sidebar .menu .list svg {
@@ -3794,7 +3794,7 @@ th {
   align-items: center;
 }
 .sidebar .menu .list svg path {
-  fill: hsl(152deg, 92%, 86%);
+  fill: hsl(152, 92%, 86%);
 }
 @media (max-width: 662px) {
   .sidebar {
@@ -3808,7 +3808,7 @@ th {
 }
 
 #back, #new, #edit, #delete, #Update, .selectparrent {
-  border: 1px solid hsl(152deg, 92%, 86%);
+  border: 1px solid hsl(152, 92%, 86%);
 }
 
 .browse1 {
@@ -3836,7 +3836,7 @@ th {
   border: 1px solid #ffffff;
 }
 .grid-item.selected {
-  border: 2px solid hsl(152deg, 92%, 86%);
+  border: 2px solid hsl(152, 92%, 86%);
   width: 7.6rem;
   height: 7.6rem;
 }
@@ -3865,12 +3865,12 @@ th {
   right: 0;
   top: 0;
   bottom: 0;
-  border: 1px solid hsl(152deg, 92%, 86%);
+  border: 1px solid hsl(152, 92%, 86%);
 }
 
 #checkboxes {
   display: none;
-  border: 1px solid hsl(152deg, 92%, 86%);
+  border: 1px solid hsl(152, 92%, 86%);
   padding: 0.75rem;
   position: absolute;
   z-index: 1;
@@ -3933,7 +3933,7 @@ th {
   }
 }
 .content-category #title, .content-category-images #title {
-  color: hsl(152deg, 92%, 86%);
+  color: hsl(152, 92%, 86%);
 }
 .content-category .exit, .content-category-images .exit {
   width: 3rem;
@@ -3941,7 +3941,7 @@ th {
   cursor: pointer;
   font-size: 28px;
   font-weight: bold;
-  color: hsl(152deg, 92%, 86%);
+  color: hsl(152, 92%, 86%);
 }
 .content-category input, .content-category-images input {
   width: 40%;
@@ -3950,8 +3950,8 @@ th {
   background-color: #35424b;
   transition: all 0.5s ease-in-out;
   -webkit-transition: width 0.4s ease-in-out;
-  color: hsl(152deg, 92%, 86%);
-  border: 1px solid hsl(152deg, 92%, 86%);
+  color: hsl(152, 92%, 86%);
+  border: 1px solid hsl(152, 92%, 86%);
 }
 .content-category input.browse1, .content-category-images input.browse1 {
   width: 15%;
@@ -3968,11 +3968,11 @@ th {
   }
 }
 .content-category input::-moz-placeholder, .content-category-images input::-moz-placeholder {
-  color: hsl(152deg, 92%, 86%);
+  color: hsl(152, 92%, 86%);
   opacity: 1;
 }
 .content-category input::placeholder, .content-category-images input::placeholder {
-  color: hsl(152deg, 92%, 86%);
+  color: hsl(152, 92%, 86%);
   opacity: 1;
 }
 .content-category .submit, .content-category-images .submit {
@@ -4009,7 +4009,7 @@ th {
   filter: invert(0.8);
 }
 .content-category .reset, .content-category-images .reset {
-  border: 1px solid hsl(152deg, 92%, 86%);
+  border: 1px solid hsl(152, 92%, 86%);
   margin-right: 7.5%;
   width: 8%;
   height: auto;
@@ -4048,4 +4048,12 @@ th {
     width: 80%;
     height: auto;
   }
+}
+
+.container-right {
+  align-items: flex-end;
+  position: fixed;
+  right: 0;
+  top: 6.5rem;
+  z-index: 1;
 }/*# sourceMappingURL=main.css.map */

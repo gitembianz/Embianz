@@ -22,7 +22,7 @@ $layout-values: flex-start, flex-end, center, space-between, space-around;
 
 .section-container{
   @extend .container;
-  @include w(calc(100% - 20rem));
+  @include w(calc(100% - 40rem));
   height: 100%;
   padding: 0;
   margin: 0;
