@@ -2,18 +2,15 @@
 
 namespace Yajra\DataTables\Utilities;
 
-use Illuminate\Http\Request as BaseRequest;
-use Yajra\DataTables\Exceptions\Exception;
-
 /**
  * @mixin \Illuminate\Http\Request
  */
 class Request
 {
     /**
-     * @var BaseRequest
+     * @var \Illuminate\Http\Request
      */
-    protected BaseRequest $request;
+    protected $request;
 
     /**
      * Request constructor.
@@ -24,17 +21,16 @@ class Request
     }
 
     /**
-     * Proxy non-existing method calls to base request class.
+     * Proxy non existing method calls to request class.
      *
-     * @param  string  $name
-     * @param  array  $arguments
+     * @param  mixed  $name
+     * @param  mixed  $arguments
      * @return mixed
      */
     public function __call($name, $arguments)
     {
-        $callback = [$this->request, $name];
-        if (is_callable($callback)) {
-            return call_user_func_array($callback, $arguments);
+        if (method_exists($this->request, $name)) {
+            return call_user_func_array([$this->request, $name], $arguments);
         }
     }
 
@@ -92,14 +88,9 @@ class Request
         }
 
         $orderable = [];
-        for ($i = 0, $c = count((array) $this->request->input('order')); $i < $c; $i++) {
-            /** @var int $order_col */
-            $order_col = $this->request->input("order.$i.column");
-
-            /** @var string $direction */
-            $direction = $this->request->input("order.$i.dir");
-
-            $order_dir = strtolower($direction) === 'asc' ? 'asc' : 'desc';
+        for ($i = 0, $c = count($this->request->input('order')); $i < $c; $i++) {
+            $order_col = (int) $this->request->input("order.$i.column");
+            $order_dir = strtolower($this->request->input("order.$i.dir")) === 'asc' ? 'asc' : 'desc';
             if ($this->isColumnOrderable($order_col)) {
                 $orderable[] = ['column' => $order_col, 'direction' => $order_dir];
             }
@@ -115,7 +106,7 @@ class Request
      */
     public function isOrderable()
     {
-        return $this->request->input('order') && count((array) $this->request->input('order')) > 0;
+        return $this->request->input('order') && count($this->request->input('order')) > 0;
     }
 
     /**
@@ -133,14 +124,11 @@ class Request
      * Get searchable column indexes.
      *
      * @return array
-     *
-     * @throws \Yajra\DataTables\Exceptions\Exception
      */
     public function searchableColumnIndex()
     {
         $searchable = [];
-        $columns = (array) $this->request->input('columns');
-        for ($i = 0, $c = count($columns); $i < $c; $i++) {
+        for ($i = 0, $c = count($this->request->input('columns')); $i < $c; $i++) {
             if ($this->isColumnSearchable($i, false)) {
                 $searchable[] = $i;
             }
@@ -155,8 +143,6 @@ class Request
      * @param  int  $i
      * @param  bool  $column_search
      * @return bool
-     *
-     * @throws \Yajra\DataTables\Exceptions\Exception
      */
     public function isColumnSearchable($i, $column_search = true)
     {
@@ -181,10 +167,8 @@ class Request
      *
      * @param  int  $index
      * @return string
-     *
-     * @throws \Yajra\DataTables\Exceptions\Exception
      */
-    public function columnKeyword($index): string
+    public function columnKeyword($index)
     {
         $keyword = $this->request->input("columns.$index.search.value") ?? '';
 
@@ -194,32 +178,24 @@ class Request
     /**
      * Prepare keyword string value.
      *
-     * @param  mixed  $keyword
+     * @param  string|array  $keyword
      * @return string
-     *
-     * @throws \Yajra\DataTables\Exceptions\Exception
      */
-    protected function prepareKeyword($keyword): string
+    protected function prepareKeyword($keyword)
     {
         if (is_array($keyword)) {
             return implode(' ', $keyword);
         }
 
-        if (is_string($keyword)) {
-            return $keyword;
-        }
-
-        throw new Exception('Invalid keyword value.');
+        return $keyword;
     }
 
     /**
      * Get global search keyword.
      *
      * @return string
-     *
-     * @throws \Yajra\DataTables\Exceptions\Exception
      */
-    public function keyword(): string
+    public function keyword()
     {
         $keyword = $this->request->input('search.value') ?? '';
 
@@ -230,14 +206,30 @@ class Request
      * Get column identity from input or database.
      *
      * @param  int  $i
-     * @return string|null
+     * @param  string|null  $type
+     * @return string
      */
-    public function columnName(int $i): ?string
+    public function columnName($i, $type = null)
     {
-        /** @var string[] $column */
         $column = $this->request->input("columns.$i");
 
-        return (isset($column['name']) && $column['name'] != '') ? $column['name'] : $column['data'];
+        if (isset($type) && isset($column['data']) && is_array($column['data'])) {
+            if (isset($column['data'][$type]) && $column['data'][$type] != '') {
+                return $column['data'][$type];
+            }
+
+            if (isset($column['data']['display']) && $column['data']['display'] != '') {
+                return $column['data']['display'];
+            }
+
+            if (isset($column['data']['_']) && $column['data']['_'] != '') {
+                return $column['data']['_'];
+            }
+
+            return $column['name'];
+        }
+
+        return isset($column['name']) && $column['name'] != '' ? $column['name'] : $column['data'];
     }
 
     /**
@@ -245,42 +237,10 @@ class Request
      *
      * @return bool
      */
-    public function isPaginationable(): bool
+    public function isPaginationable()
     {
         return ! is_null($this->request->input('start')) &&
             ! is_null($this->request->input('length')) &&
             $this->request->input('length') != -1;
-    }
-
-    /**
-     * @return BaseRequest
-     */
-    public function getBaseRequest(): BaseRequest
-    {
-        return $this->request;
-    }
-
-    public function start(): int
-    {
-        /** @var int $start */
-        $start = $this->request->input('start', 0);
-
-        return $start;
-    }
-
-    public function length(): int
-    {
-        /** @var int $length */
-        $length = $this->request->input('length', 10);
-
-        return $length;
-    }
-
-    public function draw(): int
-    {
-        /** @var int $draw */
-        $draw = $this->request->input('draw', 0);
-
-        return $draw;
     }
 }

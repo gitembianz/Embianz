@@ -9,7 +9,7 @@ class Config
     /**
      * @var \Illuminate\Contracts\Config\Repository
      */
-    private Repository $repository;
+    private $repository;
 
     /**
      * Config constructor.
@@ -26,9 +26,9 @@ class Config
      *
      * @return bool
      */
-    public function isWildcard(): bool
+    public function isWildcard()
     {
-        return (bool) $this->repository->get('datatables.search.use_wildcards', false);
+        return $this->repository->get('datatables.search.use_wildcards', false);
     }
 
     /**
@@ -36,19 +36,19 @@ class Config
      *
      * @return bool
      */
-    public function isSmartSearch(): bool
+    public function isSmartSearch()
     {
-        return (bool) $this->repository->get('datatables.search.smart', true);
+        return $this->repository->get('datatables.search.smart', true);
     }
 
     /**
-     * Check if config uses case-insensitive search.
+     * Check if config uses case insensitive search.
      *
      * @return bool
      */
-    public function isCaseInsensitive(): bool
+    public function isCaseInsensitive()
     {
-        return (bool) $this->repository->get('datatables.search.case_insensitive', false);
+        return $this->repository->get('datatables.search.case_insensitive', false);
     }
 
     /**
@@ -56,9 +56,9 @@ class Config
      *
      * @return bool
      */
-    public function isDebugging(): bool
+    public function isDebugging()
     {
-        return (bool) $this->repository->get('app.debug', false);
+        return $this->repository->get('app.debug', false);
     }
 
     /**
@@ -90,9 +90,9 @@ class Config
      *
      * @return bool
      */
-    public function isMultiTerm(): bool
+    public function isMultiTerm()
     {
-        return (bool) $this->repository->get('datatables.search.multi_term', true);
+        return $this->repository->get('datatables.search.multi_term', true);
     }
 
     /**
@@ -100,21 +100,8 @@ class Config
      *
      * @return bool
      */
-    public function isStartsWithSearch(): bool
+    public function isStartsWithSearch()
     {
-        return (bool) $this->repository->get('datatables.search.starts_with', false);
-    }
-
-    public function jsonOptions(): int
-    {
-        /** @var int $options */
-        $options = $this->repository->get('datatables.json.options', 0);
-
-        return $options;
-    }
-
-    public function jsonHeaders(): array
-    {
-        return (array) $this->repository->get('datatables.json.header', []);
+        return $this->repository->get('datatables.search.starts_with', false);
     }
 }
