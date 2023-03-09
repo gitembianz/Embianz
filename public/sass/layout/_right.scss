@@ -1,4 +1,18 @@
 //style for rightsidebar
+
+.input_style {
+    @include wh(10vw, auto);
+    background-color: $sidebar-bg;
+    &::placeholder{
+      color: $secondary;
+      opacity: 1;
+    }
+    transition: $transition;
+    -webkit-transition: width 0.4s ease-in-out;
+    color: $secondary;
+    border: 1px solid $secondary;
+  }
+
 .container-right{
     @extend %fixed-layout;
     align-items: flex-end;
@@ -8,5 +22,57 @@
     z-index: 1;
     overflow-y: hidden;
     @include wh(22rem, 100%);
+
+    .card_todo{
+        border: 1px solid $secondarydark;
+        //padding: $base-padding;
+        //margin: $base-margin;
+        box-shadow: 0px 0px 15px  $secondary;
+        //border: $base-border-thickness solid $secondary;
+
+
+        .input-grups{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+             svg{
+                &:hover{
+                    @include wh(2.7rem, auto);
+                }
+            }
+
+        }
+
+        .list-task-item{
+
+            .formtodo{
+                display: flex;
+                align-items: center;
+                text-align: center;
+                justify-content: space-between;
+
+            & svg {
+                @include wh(3.5rem, auto);
+                padding: 0.5rem;
+                object-fit: cover;
+                align-items: center;
+                background: $bg;
+
+                path {
+                    fill: $secondary;
+                }
+                &:hover {
+                    @include wh(3.6rem, auto);
+                }
+            }
+
+        }
+
+        }
+        .count{
+            border-top: 1px solid $secondary;
+        }
+    }
 
 }

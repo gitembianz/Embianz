@@ -1,4 +1,4 @@
-<div class="sidebar pl-4">
+<div class="sidebar pl-3">
     <ul class="menu">
         <li class="list pt-1 pb-1 cursor-p font-sm">
             <a href="{{ url('redirect') }}" class="link pl-1">

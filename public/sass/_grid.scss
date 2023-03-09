@@ -30,6 +30,14 @@ $layout-values: flex-start, flex-end, center, space-between, space-around;
   top: 6.5rem;
   left: 18rem;
   max-width: 100%;
+  .contenttab{
+    border: 1px solid $secondary;
+    box-shadow: 2px 0px 15px  $secondary;
+    height: auto;
+    background: $white;
+
+  }
+
 
 
   @media (max-width: 662px) {
@@ -43,6 +51,7 @@ $layout-values: flex-start, flex-end, center, space-between, space-around;
 .row {
   display: flex;
   flex-flow: row wrap;
+
 }
 
 //grid gaps

@@ -2,8 +2,9 @@
 <x-dashboardnavbar />
 <x-dashboardsidebar />
 <x-dashboardmodals />
+<x-dashboardright />
 {{-- Page content start --}}
-<section class="section-container bg-sidebar-bg-light-1">
+<section class="section-container bg-bg">
     {{-- Display session message --}}
     @if (session()->has('message'))
         <div class="bg-secondary pos-rel ls-1 p-1" id="alertevent">
@@ -13,6 +14,7 @@
         </div>
     @endif
     {{-- End Section session message --}}
+    <div class="contenttab bg-white text-secondary p-2 br-sm">
     <div class="row gap-4 mt-2 mb-2 justify-center talign-c">
         <div class="col-12-xs display-c col-12-sm col-12-xl m-1 text-white">
             <h1 id="title" class="mt-1 talign-c font-xl ls-1 text-white">View - <span
@@ -124,6 +126,7 @@
             </div>
         </div>
     </form>
+</div>
 </section>
 {{-- page content end --}}
 <x-dashboardscript />

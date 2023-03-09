@@ -2,8 +2,9 @@
 <x-dashboardnavbar />
 <x-dashboardsidebar />
 <x-dashboardmodals />
+<x-dashboardright />
 {{-- Page content start --}}
-<section class="section-container bg-sidebar-bg-light-1">
+<section class="section-container bg-bg">
     {{-- Display session message --}}
     @if (session()->has('message'))
         <div class="bg-secondary pos-rel ls-1 p-1" id="alertevent">

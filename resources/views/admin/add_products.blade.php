@@ -2,6 +2,7 @@
 <x-dashboardnavbar />
 <x-dashboardsidebar />
 <x-dashboardmodals />
+<x-dashboardright />
 {{-- Page content start --}}
 <section class="section-container bg-sidebar-bg-light-1">
     {{-- Display session message --}}
