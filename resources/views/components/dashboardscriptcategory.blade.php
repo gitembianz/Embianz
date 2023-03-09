@@ -121,7 +121,7 @@ rows.forEach((row) => {
 
     //edit category script
     document.getElementById("edit").addEventListener("click", function() {
-        document.getElementById("new").style.display = "none";
+        //document.getElementById("new").style.display = "none";
         document.getElementById("delete").style.display = "none";
         document.getElementById("edit").style.display = "none";
         document.getElementById("Update").style.display = "block";
