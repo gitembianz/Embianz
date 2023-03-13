@@ -138,4 +138,4 @@
 {{-- page content end --}}
 <x-dashboardscript />
 <x-dashboardscriptcategory />
-<x-dashboardfooter /
+<x-dashboardfooter />

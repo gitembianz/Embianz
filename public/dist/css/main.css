@@ -4068,18 +4068,18 @@ th {
 .input_style {
   width: 10vw;
   height: auto;
-  background-color: #35424b;
+  background-color: #ffffff;
   transition: all 0.5s ease-in-out;
   -webkit-transition: width 0.4s ease-in-out;
-  color: #bafcdd;
-  border: 1px solid #bafcdd;
+  color: #35424b;
+  border: 1px solid #35424b;
 }
 .input_style::-moz-placeholder {
-  color: #bafcdd;
+  color: #35424b;
   opacity: 1;
 }
 .input_style::placeholder {
-  color: #bafcdd;
+  color: #35424b;
   opacity: 1;
 }
 
@@ -4093,8 +4093,15 @@ th {
   width: 22rem;
   height: 100%;
 }
+.container-right .card_calendar {
+  width: 200px;
+}
 .container-right .card_todo {
   border: 1px solid #82b09b;
+  padding: 0.75rem;
+  margin: 0.75rem;
+  margin-top: 0;
+  padding-top: 0;
   box-shadow: 0px 0px 15px #bafcdd;
 }
 .container-right .card_todo .input-grups {
@@ -4119,15 +4126,15 @@ th {
   -o-object-fit: cover;
      object-fit: cover;
   align-items: center;
-  background: #35424b;
+  background: #ffffff;
 }
 .container-right .card_todo .list-task-item .formtodo svg path {
-  fill: #bafcdd;
+  fill: #35424b;
 }
 .container-right .card_todo .list-task-item .formtodo svg:hover {
   width: 3.6rem;
   height: auto;
 }
 .container-right .card_todo .count {
-  border-top: 1px solid #bafcdd;
+  border-top: 1px solid #35424b;
 }/*# sourceMappingURL=main.css.map */
