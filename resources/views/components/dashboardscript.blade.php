@@ -1,46 +1,5 @@
-<script src="./dist/datedreamer.js"></script>
 <script>
     /* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
-    const DateDreamer = require('datedreamer');
-    new datedreamer.calendar({
-    element: "#calendar",
-})
-new datedreamer.calendarToggle({
-    element: "#calendar",
-})
-new datedreamer.calendar({
-
-    // select date on init
-    selectedDate: "02/15/2023",
-    // date format
-    format: "MM/DD/YYYY",
-    // custom next/prev icons
-    iconNext: '',
-    iconPrev: '',
-    // set the label of the date input
-    inputLabel: 'Set a date',
-    // set the placeholder of the date input
-    inputPlaceholder: 'Enter a date',
-    // hide the input and today button
-    hideInputs: false,
-    // enable dark mode
-    darkMode: false,
-    // or 'lite-purple'
-    theme: 'unstyled',
-    // custom styles here
-    styles: `
-      button {
-        color: blue
-      }
-    `,
-    // callback
-    onChange: (e) => {
-      console.log(e.detail);
-    },
-    onRender: (e) => {
-      console.log(e.detail.calendar);
-    },
-})
 
     var dropdown = document.getElementsByClassName("dropdown-btn");
     var i;
