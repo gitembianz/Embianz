@@ -216,4 +216,5 @@ searchIcon.addEventListener("click", function() {
 
 
     });
+
 </script>

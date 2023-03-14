@@ -33,7 +33,7 @@ button {
   border: none;
   margin: 0;
   padding: 0;
-  transition: all 0.5s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 
 @font-face {
@@ -3642,7 +3642,7 @@ th {
   height: auto;
   background-color: #35424b;
   display: none;
-  transition: all 0.5s ease-in-out;
+  transition: all 0.2s ease-in-out;
   -webkit-transition: width 0.4s ease-in-out;
   color: #bafcdd;
   border: 2px solid #bafcdd;
@@ -3744,7 +3744,7 @@ th {
 }
 .sidebar .menu .list {
   position: relative;
-  transition: all 0.5s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 .sidebar .menu .list::before {
   content: "";
@@ -3757,11 +3757,11 @@ th {
   border-radius: 0.2rem;
   opacity: 0;
   pointer-events: none;
-  transition: all 0.5s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 .sidebar .menu .list:hover::before, .sidebar .menu .list.active::before {
   opacity: 1;
-  transition: all 0.5s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 .sidebar .menu .list .link, .sidebar .menu .list .settings, .sidebar .menu .list .dropdown-btn {
   display: flex;
@@ -3773,7 +3773,7 @@ th {
 .sidebar .menu .list .dropdown-container {
   position: relative;
   box-shadow: none;
-  transition: all 0.5s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 @media (max-width: 662px) {
   .sidebar .menu .list .dropdown-container {
@@ -3963,7 +3963,7 @@ th {
   height: auto;
   padding: 0.75rem;
   background-color: #35424b;
-  transition: all 0.5s ease-in-out;
+  transition: all 0.2s ease-in-out;
   -webkit-transition: width 0.4s ease-in-out;
   color: #bafcdd;
   border: 1px solid #bafcdd;
@@ -4065,11 +4065,61 @@ th {
   }
 }
 
+@keyframes to-top {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(100%);
+    opacity: 1;
+  }
+}
+@keyframes to-left {
+  0% {
+    transform: translateY(230%);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(230%);
+    opacity: 1;
+  }
+}
+@keyframes to-right {
+  0% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-150%);
+    opacity: 1;
+  }
+}
+@keyframes showtime {
+  0% {
+    transform: translateY(250%);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+@keyframes hidetime {
+  0% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-370%);
+    opacity: 1;
+  }
+}
 .input_style {
   width: 10vw;
   height: auto;
   background-color: #ffffff;
-  transition: all 0.5s ease-in-out;
+  transition: all 0.2s ease-in-out;
   -webkit-transition: width 0.4s ease-in-out;
   color: #35424b;
   border: 1px solid #35424b;
@@ -4094,7 +4144,275 @@ th {
   height: 100%;
 }
 .container-right .card_calendar {
-  width: 200px;
+  box-shadow: 0px 0px 15px #bafcdd;
+  border: 1px solid #bafcdd;
+  padding: 0.75rem;
+  margin: 0.75rem;
+  height: 22rem;
+}
+.container-right .card_calendar .calendar {
+  height: 610px;
+  width: -moz-max-content;
+  width: max-content;
+  background-color: white;
+  border-radius: 25px;
+  overflow: hidden;
+  padding: 30px 50px 0px 50px;
+}
+.container-right .card_calendar .calendar {
+  box-shadow: var(--shadow);
+}
+.container-right .card_calendar .calendar-header {
+  background: #9796f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 700;
+  color: var(--white);
+  padding: 10px;
+}
+.container-right .card_calendar .calendar-body {
+  pad: 10px;
+}
+.container-right .card_calendar .calendar-week-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  font-weight: 600;
+  cursor: pointer;
+  color: rgb(104, 104, 104);
+}
+.container-right .card_calendar .calendar-week-days div:hover {
+  color: black;
+  transform: scale(1.2);
+  transition: all 0.2s ease-in-out;
+}
+.container-right .card_calendar .calendar-week-days div {
+  display: grid;
+  place-items: center;
+  color: var(--bg-second);
+  height: 50px;
+}
+.container-right .card_calendar .calendar-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  color: var(--color-txt);
+}
+.container-right .card_calendar .calendar-days div {
+  width: 37px;
+  height: 33px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  position: relative;
+  cursor: pointer;
+  animation: to-top 1s forwards;
+}
+.container-right .card_calendar .month-picker {
+  padding: 5px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.container-right .card_calendar .month-picker:hover {
+  background-color: var(--color-hover);
+}
+.container-right .card_calendar .month-picker:hover {
+  color: var(--color-txt);
+}
+.container-right .card_calendar .year-picker {
+  display: flex;
+  align-items: center;
+}
+.container-right .card_calendar .year-change {
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  margin: 0px 10px;
+  cursor: pointer;
+}
+.container-right .card_calendar .year-change:hover {
+  background-color: var(--light-btn);
+  transition: all 0.2s ease-in-out;
+  transform: scale(1.12);
+}
+.container-right .card_calendar .year-change:hover pre {
+  color: var(--bg-body);
+}
+.container-right .card_calendar .calendar-footer {
+  padding: 10px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.container-right .card_calendar #year:hover {
+  cursor: pointer;
+  transform: scale(1.2);
+  transition: all 0.2 ease-in-out;
+}
+.container-right .card_calendar .calendar-days div span {
+  position: absolute;
+}
+.container-right .card_calendar .calendar-days div:hover {
+  transition: width 0.2s ease-in-out, height 0.2s ease-in-out;
+  background-color: #fbc7d4;
+  border-radius: 20%;
+  color: var(--dark-text);
+}
+.container-right .card_calendar .calendar-days div.current-date {
+  color: var(--dark-text);
+  background-color: var(--light-btn);
+  border-radius: 20%;
+}
+.container-right .card_calendar .month-list {
+  position: relative;
+  left: 0;
+  top: -50px;
+  background-color: #ebebeb;
+  color: var(--light-text);
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  gap: 5px;
+  border-radius: 20px;
+}
+.container-right .card_calendar .month-list > div {
+  display: grid;
+  place-content: center;
+  margin: 5px 10px;
+  transition: all 0.2s ease-in-out;
+}
+.container-right .card_calendar .month-list > div > div {
+  border-radius: 15px;
+  padding: 10px;
+  cursor: pointer;
+}
+.container-right .card_calendar .month-list > div > div:hover {
+  background-color: var(--light-btn);
+  color: var(--dark-text);
+  transform: scale(0.9);
+  transition: all 0.2s ease-in-out;
+}
+.container-right .card_calendar .month-list.show {
+  visibility: visible;
+  pointer-events: visible;
+  transition: 0.6s ease-in-out;
+  animation: to-left 0.71s forwards;
+}
+.container-right .card_calendar .month-list.hideonce {
+  visibility: hidden;
+}
+.container-right .card_calendar .month-list.hide {
+  animation: to-right 1s forwards;
+  visibility: none;
+  pointer-events: none;
+}
+.container-right .card_calendar .date-time-formate {
+  width: -moz-max-content;
+  width: max-content;
+  height: -moz-max-content;
+  height: max-content;
+  font-family: Dubai Light, Century Gothic;
+  position: relative;
+  display: inline;
+  top: 140px;
+  justify-content: center;
+}
+.container-right .card_calendar .day-text-formate {
+  font-family: Microsoft JhengHei UI;
+  font-size: 1.4rem;
+  padding-right: 5%;
+  border-right: 3px solid #9796f0;
+  position: absolute;
+  left: -1rem;
+}
+.container-right .card_calendar .date-time-value {
+  display: block;
+  height: -moz-max-content;
+  height: max-content;
+  width: -moz-max-content;
+  width: max-content;
+  position: relative;
+  left: 40%;
+  top: -18px;
+  text-align: center;
+}
+.container-right .card_calendar .time-formate {
+  font-size: 1.5rem;
+}
+.container-right .card_calendar .time-formate.hideTime {
+  animation: hidetime 1.5s forwards;
+}
+.container-right .card_calendar .day-text-formate.hidetime {
+  animation: hidetime 1.5s forwards;
+}
+.container-right .card_calendar .date-formate.hideTime {
+  animation: hidetime 1.5s forwards;
+}
+.container-right .card_calendar .day-text-formate.showtime {
+  animation: showtime 1s forwards;
+}
+.container-right .card_calendar .time-formate.showtime {
+  animation: showtime 1s forwards;
+}
+.container-right .card_calendar .date-formate.showtime {
+  animation: showtime 1s forwards;
+}
+@keyframes to-top {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(100%);
+    opacity: 1;
+  }
+}
+@keyframes to-left {
+  0% {
+    transform: translatex(230%);
+    opacity: 1;
+  }
+  100% {
+    transform: translatex(0);
+    opacity: 1;
+  }
+}
+@keyframes to-right {
+  10% {
+    transform: translatex(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translatex(-150%);
+    opacity: 1;
+  }
+}
+@keyframes showtime {
+  0% {
+    transform: translatex(250%);
+    opacity: 1;
+  }
+  100% {
+    transform: translatex(0%);
+    opacity: 1;
+  }
+}
+@keyframes hidetime {
+  0% {
+    transform: translatex(0%);
+    opacity: 1;
+  }
+  100% {
+    transform: translatex(-370%);
+    opacity: 1;
+  }
+}
+@media (max-width: 375px) {
+  .container-right .card_calendar .month-list > div {
+    margin: 5px 0px;
+  }
 }
 .container-right .card_todo {
   border: 1px solid #82b09b;
