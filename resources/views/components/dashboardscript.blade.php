@@ -217,4 +217,7 @@ searchIcon.addEventListener("click", function() {
 
     });
 
+    const listGroup = document.querySelector('.list-group');
+const width = listGroup.clientWidth;
+console.log(width);
 </script>

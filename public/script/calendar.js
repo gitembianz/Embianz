@@ -26,7 +26,7 @@ const isLeapYear = (year) => {
   const dayTextFormate = document.querySelector('.day-text-formate');
   const timeFormate = document.querySelector('.time-formate');
   const dateFormate = document.querySelector('.date-formate');
-  
+
   month_picker.onclick = () => {
     month_list.classList.remove('hideonce');
     month_list.classList.remove('hide');
@@ -38,7 +38,7 @@ const isLeapYear = (year) => {
     dateFormate.classList.remove('showtime');
     dateFormate.classList.add('hideTime');
   };
-  
+
   const generateCalendar = (month, year) => {
     let calendar_days = document.querySelector('.calendar-days');
     calendar_days.innerHTML = '';
@@ -57,20 +57,20 @@ const isLeapYear = (year) => {
       30,
       31,
     ];
-    
+
     let currentDate = new Date();
-    
+
     month_picker.innerHTML = month_names[month];
-    
+
     calendar_header_year.innerHTML = year;
-    
+
     let first_day = new Date(year, month);
-  
-  
+
+
   for (let i = 0; i <= days_of_month[month] + first_day.getDay() - 1; i++) {
-  
+
       let day = document.createElement('div');
-  
+
       if (i >= first_day.getDay()) {
         day.innerHTML = i - first_day.getDay() + 1;
 
@@ -84,12 +84,12 @@ const isLeapYear = (year) => {
       calendar_days.appendChild(day);
     }
   };
-  
+
   let month_list = calendar.querySelector('.month-list');
   month_names.forEach((e, index) => {
     let month = document.createElement('div');
     month.innerHTML = `<div>${e}</div>`;
-  
+
     month_list.append(month);
     month.onclick = () => {
       currentMonth.value = index;
@@ -103,7 +103,7 @@ const isLeapYear = (year) => {
       dateFormate.classList.add('showtime');
     };
   });
-  
+
   (function () {
     month_list.classList.add('hideonce');
   })();
@@ -115,7 +115,7 @@ const isLeapYear = (year) => {
     ++currentYear.value;
     generateCalendar(currentMonth.value, currentYear.value);
   };
-  
+
   let currentDate = new Date();
   let currentMonth = { value: currentDate.getMonth() };
   let currentYear = { value: currentDate.getFullYear() };
@@ -123,7 +123,7 @@ const isLeapYear = (year) => {
 
   const todayShowTime = document.querySelector('.time-formate');
   const todayShowDate = document.querySelector('.date-formate');
-  
+
   const currshowDate = new Date();
   const showCurrentDateOption = {
     year: 'numeric',
@@ -153,3 +153,5 @@ const isLeapYear = (year) => {
     )}: ${`${timer.getSeconds()}`.padStart(2, '0')}`;
     todayShowTime.textContent = formateTimer;
   }, 1000);
+
+

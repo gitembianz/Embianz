@@ -1,4 +1,28 @@
 //style for rightsidebar
+.list-group-div {
+    max-height: 10vw; /* set a maximum width */
+    @media only screen and (min-height:10.1vw) {
+
+            overflow-y: auto; /* add scrollbar when width is greater than 600px */
+
+    }
+}
+.list-group-div::-webkit-scrollbar {
+    width: 8px; /* Set width of scrollbar */
+}
+
+.list-group-div::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Set color of scrollbar track */
+}
+
+.list-group-div::-webkit-scrollbar-thumb {
+    background: #888; /* Set color of scrollbar thumb */
+    border-radius: 10px; /* Set border radius of scrollbar thumb */
+}
+
+.list-group-div::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Set color of scrollbar thumb when hovered */
+}
 
 @keyframes to-top{
         0%{
@@ -71,27 +95,16 @@
     overflow-y: hidden;
     @include wh(22rem, 100%);
 
-    
+
     .card_calendar {
         box-shadow: 0px 0px 15px $secondary;
-        border: 1px solid $secondary;
+       // border: 1px solid $secondary;
         padding: $base-padding;
         margin: $base-margin;
-        height: 22rem;
-      
-        .calendar {
-            height: 610px;
-            width: max-content;
-            background-color: white;
-            border-radius: 25px;
-            overflow: hidden;
-            padding: 30px 50px 0px 50px;
-          }
-          .calendar {
-            box-shadow: var(--shadow);
-          }
+        height: 30rem;
+
           .calendar-header {
-            background: #9796f0;
+            //background: #9796f0;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -185,7 +198,7 @@
           }
            .calendar-days div:hover {
             transition: width 0.2s ease-in-out, height 0.2s ease-in-out;
-            background-color: #fbc7d4;
+            background-color: $secondary;
             border-radius: 20%;
             color: var(--dark-text);
           }
@@ -198,7 +211,7 @@
             position: relative;
             left: 0;
             top: -50px;
-            background-color: #ebebeb;
+            background-color: $white;
             color: var(--light-text);
             display: grid;
             grid-template-columns: repeat(3, auto);
@@ -208,12 +221,12 @@
           .month-list > div {
             display: grid;
             place-content: center;
-            margin: 5px 10px;
+            margin-bottom: $base-margin;
             transition: all 0.2s ease-in-out;
           }
           .month-list > div > div {
             border-radius: 15px;
-            padding: 10px;
+           // padding: 10px;
             cursor: pointer;
           }
           .month-list > div > div:hover {
@@ -241,15 +254,16 @@
             height: max-content;
             font-family: Dubai Light, Century Gothic;
             position: relative;
-            display: inline;
-            top: 140px;
+            display: flex;
+            top: 5rem;
             justify-content: center;
+
           }
           .day-text-formate {
             font-family: Microsoft JhengHei UI;
             font-size: 1.4rem;
             padding-right: 5%;
-            border-right: 3px solid #9796f0;
+            //border-right: 3px solid $bg;
             position: absolute;
             left: -1rem;
           }
@@ -335,14 +349,14 @@
           }
           @media (max-width:375px) {
             .month-list>div{
-          
+
               margin: 5px 0px;
             }
           }
     }
 
     .card_todo {
-        border: 1px solid $secondarydark;
+        //border: 1px solid $secondarydark;
         padding: $base-padding;
         margin: $base-margin;
         margin-top: 0;
@@ -356,11 +370,6 @@
             align-items: center;
             justify-content: center;
 
-            svg {
-                &:hover {
-                    @include wh(2.7rem, auto);
-                }
-            }
         }
 
         .list-task-item {

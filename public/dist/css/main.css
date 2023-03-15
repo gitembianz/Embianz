@@ -2941,24 +2941,6 @@ table {
     height: auto;
   }
 }
-table .odd, table .even {
-  border: 1px solid #35424b !important;
-}
-table .odd:hover, table .even:hover {
-  color: black;
-  background: #bafcdd;
-  border: 2px solid black;
-  transform: scale(1.03); /* Makes the row a little biggerr */
-  border-radius: 2rem;
-  font-size: 20px;
-  font-weight: bold;
-}
-table .odd:hover .view, table .even:hover .view {
-  background: #bafcdd;
-}
-table .odd:hover .view:hover, table .even:hover .view:hover {
-  transform: scale(1.15);
-}
 
 th {
   text-align: center;
@@ -4065,6 +4047,32 @@ th {
   }
 }
 
+.list-group-div {
+  max-height: 10vw; /* set a maximum width */
+}
+@media only screen and (min-height: 10.1vw) {
+  .list-group-div {
+    overflow-y: auto; /* add scrollbar when width is greater than 600px */
+  }
+}
+
+.list-group-div::-webkit-scrollbar {
+  width: 8px; /* Set width of scrollbar */
+}
+
+.list-group-div::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Set color of scrollbar track */
+}
+
+.list-group-div::-webkit-scrollbar-thumb {
+  background: #888; /* Set color of scrollbar thumb */
+  border-radius: 10px; /* Set border radius of scrollbar thumb */
+}
+
+.list-group-div::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Set color of scrollbar thumb when hovered */
+}
+
 @keyframes to-top {
   0% {
     transform: translateY(0);
@@ -4145,25 +4153,11 @@ th {
 }
 .container-right .card_calendar {
   box-shadow: 0px 0px 15px #bafcdd;
-  border: 1px solid #bafcdd;
   padding: 0.75rem;
   margin: 0.75rem;
-  height: 22rem;
-}
-.container-right .card_calendar .calendar {
-  height: 610px;
-  width: -moz-max-content;
-  width: max-content;
-  background-color: white;
-  border-radius: 25px;
-  overflow: hidden;
-  padding: 30px 50px 0px 50px;
-}
-.container-right .card_calendar .calendar {
-  box-shadow: var(--shadow);
+  height: 30rem;
 }
 .container-right .card_calendar .calendar-header {
-  background: #9796f0;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -4257,7 +4251,7 @@ th {
 }
 .container-right .card_calendar .calendar-days div:hover {
   transition: width 0.2s ease-in-out, height 0.2s ease-in-out;
-  background-color: #fbc7d4;
+  background-color: #bafcdd;
   border-radius: 20%;
   color: var(--dark-text);
 }
@@ -4270,7 +4264,7 @@ th {
   position: relative;
   left: 0;
   top: -50px;
-  background-color: #ebebeb;
+  background-color: #ffffff;
   color: var(--light-text);
   display: grid;
   grid-template-columns: repeat(3, auto);
@@ -4280,12 +4274,11 @@ th {
 .container-right .card_calendar .month-list > div {
   display: grid;
   place-content: center;
-  margin: 5px 10px;
+  margin-bottom: 0.75rem;
   transition: all 0.2s ease-in-out;
 }
 .container-right .card_calendar .month-list > div > div {
   border-radius: 15px;
-  padding: 10px;
   cursor: pointer;
 }
 .container-right .card_calendar .month-list > div > div:hover {
@@ -4315,15 +4308,14 @@ th {
   height: max-content;
   font-family: Dubai Light, Century Gothic;
   position: relative;
-  display: inline;
-  top: 140px;
+  display: flex;
+  top: 5rem;
   justify-content: center;
 }
 .container-right .card_calendar .day-text-formate {
   font-family: Microsoft JhengHei UI;
   font-size: 1.4rem;
   padding-right: 5%;
-  border-right: 3px solid #9796f0;
   position: absolute;
   left: -1rem;
 }
@@ -4415,7 +4407,6 @@ th {
   }
 }
 .container-right .card_todo {
-  border: 1px solid #82b09b;
   padding: 0.75rem;
   margin: 0.75rem;
   margin-top: 0;
@@ -4426,10 +4417,6 @@ th {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-.container-right .card_todo .input-grups svg:hover {
-  width: 2.7rem;
-  height: auto;
 }
 .container-right .card_todo .list-task-item .formtodo {
   display: flex;

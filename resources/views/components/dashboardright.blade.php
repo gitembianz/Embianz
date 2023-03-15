@@ -1,8 +1,47 @@
 
-    <div class="container-right p-1 talign-c">
+    <div class="container-right pl-1 pr-1 talign-c">
+        <div class="card_calendar bg-white br-xs">
+            <div class="calendar">
+                <div class="calendar-header">
+                  <span class="month-picker" id="month-picker"> May </span>
+                  <div class="year-picker" id="year-picker">
+                    <span class="year-change" id="pre-year">
+                      <pre><</pre>
+                    </span>
+                    <span id="year">2020 </span>
+                    <span class="year-change" id="next-year">
+                      <pre>></pre>
+                    </span>
+                  </div>
+                </div>
+
+                <div class="calendar-body">
+                  <div class="calendar-week-days">
+                    <div>Sun</div>
+                    <div>Mon</div>
+                    <div>Tue</div>
+                    <div>Wed</div>
+                    <div>Thu</div>
+                    <div>Fri</div>
+                    <div>Sat</div>
+                  </div>
+                  <div class="calendar-days">
+                  </div>
+                </div>
+                <div class="calendar-footer">
+                </div>
+                <div class="date-time-formate ml-2">
+                  <div class="day-text-formate pr-2">TODAY</div>
+                  <div class="date-time-value">
+                    <div class="time-formate">02:51:20</div>
+                    <div class="date-formate">23 - july - 2022</div>
+                  </div>
+                </div>
+                <div class="month-list mt-1"></div>
+              </div>
+        </div>
         <div class="card_todo bg-white br-xs">
             <div class="card_todo_body p-1">
-                <h3 class="mb-1 text-bg ls-2">Task List</h3>
                 <form action="{{ route('store') }}" method="post" autocomplete="off">
                     @csrf
                     <div class="input-grups">
@@ -21,6 +60,7 @@
                 </form>
                 {{-- if tasks exist --}}
                 @if (count($todolists))
+                <div class="list-group-div mb-1">
                     <ul class="list-group">
                         @foreach ($todolists as $todolist)
                             <li class="list-task-item talign-c">
@@ -43,52 +83,13 @@
                             </li>
                         @endforeach
                     </ul>
+                </div>
                     <p class="count talign-c text-bg pt-1">You have {{ count($todolists) }} tasks active!</p>
                 @else
                     <p class="talign-c text-bg mt-1">You have no tasks!</p>
                 @endif
             </div>
 
-        </div>
-        <div class="card_calendar bg-white mt-1 br-xs">
-            <div class="calendar">
-                <div class="calendar-header">
-                  <span class="month-picker" id="month-picker"> May </span>
-                  <div class="year-picker" id="year-picker">
-                    <span class="year-change" id="pre-year">
-                      <pre><</pre>
-                    </span>
-                    <span id="year">2020 </span>
-                    <span class="year-change" id="next-year">
-                      <pre>></pre>
-                    </span>
-                  </div>
-                </div>
-         
-                <div class="calendar-body">
-                  <div class="calendar-week-days">
-                    <div>Sun</div>
-                    <div>Mon</div>
-                    <div>Tue</div>
-                    <div>Wed</div>
-                    <div>Thu</div>
-                    <div>Fri</div>
-                    <div>Sat</div>
-                  </div>
-                  <div class="calendar-days">
-                  </div>
-                </div>
-                <div class="calendar-footer">
-                </div>
-                <div class="date-time-formate">
-                  <div class="day-text-formate">TODAY</div>
-                  <div class="date-time-value">
-                    <div class="time-formate">02:51:20</div>
-                    <div class="date-formate">23 - july - 2022</div>
-                  </div>
-                </div>
-                <div class="month-list"></div>
-              </div>
         </div>
     </div>
 
