@@ -167,6 +167,21 @@ $utilities: (
       "i": inline,
       "i-b": inline-block,
       "c": contents,
+      "g": grid,
+    ),
+  ),
+  "justify-content": (
+    "prefix": "jus",
+    "values": (
+      "fs": flex-start,
+      "fe": flex-end,
+      "c": center,
+      "sb": space-between,
+      "sa": space-around,
+      "se": space-evenly,
+      "i": initial,
+      "in": inherit,
+
     ),
   ),
   "font-size": (

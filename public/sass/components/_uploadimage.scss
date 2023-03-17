@@ -1,0 +1,47 @@
+.container_img {
+   // background-color: $white;
+    width: 100%;
+    min-width: 10rem;
+    padding: $base-padding;
+    box-shadow: $base-box-shadow;
+
+    .image-container {
+        width: 90%;
+        margin: $base-margin;
+
+        & img {
+            display: block;
+            position: relative;
+            max-width: 100%;
+            margin: auto;
+        }
+
+        figcaption {
+            margin: 20px 0 30px 0;
+            text-align: center;
+            width: 100%;
+            color: $bg;
+            font-size: 18px;
+        }
+    }
+
+    input[type="file"] {
+        display: none;
+    }
+    label{
+        display: flex;
+        position: relative;
+        align-items: center;
+        justify-content: center;
+        background-color: $secondary;
+        text-align: center;
+        font-size: 18px;
+        padding: $base-padding  / 2;
+        margin: auto;
+        border: 1px solid $bg;
+        & svg{
+            @include wh(2rem, auto);
+        }
+    }
+
+}

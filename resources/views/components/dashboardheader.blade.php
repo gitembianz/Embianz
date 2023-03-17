@@ -13,6 +13,7 @@
         <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js"></script>
         <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
         <script src="/script/calendar.js" defer></script>
+        <script src="/script/imgupload.js" defer></script>
 
     </head>
     <body>

@@ -3,6 +3,7 @@
   border: 1px solid $secondary;
 
 }
+
 .view{
     background: $white;
 }
@@ -210,18 +211,6 @@
     }
   }
 
-  .reset {
-    border: 1px solid $secondary;
-    margin-right: 7.5%;
-    @include wh(8%, auto);
-    position: absolute;
-   top: 20px;
-   right: 10px;
-
-    @media (max-width: 662px) {
-      margin-right: 5%;
-    }
-  }
 
   #category_image, #category_image_search{
     @include wh(25%, auto);

@@ -33,8 +33,8 @@
                 <div class="date-time-formate ml-2">
                   <div class="day-text-formate pr-2">TODAY</div>
                   <div class="date-time-value">
-                    <div class="time-formate">02:51:20</div>
-                    <div class="date-formate">23 - july - 2022</div>
+                    <div class="time-formate"></div>
+                    <div class="date-formate"></div>
                   </div>
                 </div>
                 <div class="month-list mt-1"></div>
