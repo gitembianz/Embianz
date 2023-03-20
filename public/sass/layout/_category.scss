@@ -4,6 +4,23 @@
 
 }
 
+.listelementbutton{
+    display: flex;
+    justify-content: space-between;
+
+
+}
+.addcategory, .backcategory{
+    @include wh(5vw, auto);
+    border: none;
+    background-color: $secondary;
+    color: $bg;
+    cursor: pointer;
+    font-size: 16px;
+
+}
+
+
 .view{
     background: $white;
 }
@@ -16,9 +33,6 @@
     z-index: 2;
   }
 
-.browse1{
-  @include wh(5vw, auto);
-}
 #imageModal, #imageModal1{
   .content-category{
     top: 10%;
@@ -154,9 +168,6 @@
 
   input {
     @include wh(40%, auto);
-    &.browse1{
-      @include wh(15%, auto);
-    }
     &#category_image,
     &#category_image_search{
       @include wh(40%, auto);

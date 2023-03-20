@@ -71,21 +71,7 @@
         });
     });
 
-    const rows = document.querySelectorAll('.odd, .even');
-
-// Loop through each row and add a border on hover
-rows.forEach((row) => {
-  row.addEventListener('mouseover', () => {
-    row.style.border = '2px solid black';
-    //row.style.border-radius ='25px';
-  });
-
-  row.addEventListener('mouseout', () => {
-    row.style.border = '1px solid black';
-  });
-});
-
-    //script for droplist with checkboxes
+      //script for droplist with checkboxes
     var expanded = false;
 
     function showCheckboxes() {

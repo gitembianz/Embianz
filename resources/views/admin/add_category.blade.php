@@ -25,12 +25,12 @@
                         <div class="row add_header col-12-xs col-12-sm col-12-xl jus-sb display-f">
                             <h1 id="title" class="ml-1 fw-500 ls-3 text-bg">{{ __('Create Category') }}
                             </h1>
-                            <button class="cursor-p mr-1 bg-white text-bg p-1" type="reset">Clear form</button>
+                            <button id="resetform" class="cursor-p mr-1 bg-white text-bg p-1" type="reset">Clear form</button>
                         </div>
                         {{-- content --}}
                         <div class="row gap-2 jus-c">
                             {{-- image category --}}
-                            <div class="col-12-xs col-12-sm col-3-xl text-bg">
+                            <div class="col-12-xs col-12-sm col-4-xl text-bg">
                                 <ul>
                                     <li><label class="font-lg text-bg ls-1">Category Image</label></li>
                                     <li class="p-1 listelement">
@@ -42,6 +42,7 @@
                                                 </figcaption>
                                             </figure>
                                             <input type="file" name="" id="upload-button" accept="image/*">
+                                            <div class="display-f">
                                             <label for="upload-button" class="br-xs cursor-p"><svg width="64px"
                                                     height="64px" viewBox="0 0 24 24" fill="none"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -61,7 +62,12 @@
                                                             stroke-width="2" stroke-linecap="round"
                                                             stroke-linejoin="round"></path>
                                                     </g>
-                                                </svg> &nbsp; {{ __('Main image') }}</label>
+                                                </svg> &nbsp; {{ __('Main image') }} </label>
+                                                <input type="button" class="browse1 ml-1 br-xs talign-c cursor-p"
+                                        value="or Browse" name="browse" id="browse_main">
+                                        <input type="hidden" name="select_image_main_hidden"
+                                            id="select_image_main_hidden">
+                                            </div>
                                         </div>
                                         {{-- old image input / browse --}}
                                         {{-- <label class="font-lg text-bg ls-1" for="end_date">Image main -</label>
@@ -100,6 +106,7 @@
                                             </figure>
                                             <input type="file" name="" id="upload-button-search"
                                                 accept="image/*">
+                                                <div class="display-f">
                                             <label for="upload-button-search" class="br-xs cursor-p"><svg width="64px"
                                                     height="64px" viewBox="0 0 24 24" fill="none"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -120,6 +127,9 @@
                                                             stroke-linejoin="round"></path>
                                                     </g>
                                                 </svg> &nbsp; {{ __('Search image') }}</label>
+                                                <input type="button" class="browse1 ls-1 ml-1 br-xs talign-c cursor-p bg-white"
+                                        value="or Browse" name="browse" id="browse_saerch">
+                                                </div>
                                         </div>
                                     </li>
 
@@ -134,7 +144,7 @@
                                 </ul>
                             </div>
                             {{-- content category --}}
-                            <div class="col-12-xs col-12-sm col-8-xl text-bg">
+                            <div class="col-12-xs col-12-sm col-7-xl text-bg">
                                 <ul>
                                     <li class="p-1 listelement">
                                         <div class="subelement display-g">
@@ -146,7 +156,11 @@
                                             <label class="font-lg text-bg mb-1 ls-1">Category Parent</label>
                                             <select id="select-category" name="category"
                                                 class="select-parent p-1 text-bg">
-                                                <option value="">Select a category</option>
+                                                <option value="" selected="">Select a parrent</option>
+                                                @foreach($categories as $category_name)
+                                                <option value="{{ $category_name }}">{{ $category_name }}</option>
+                                             @endforeach
+
                                             </select>
                                         </div>
                                     </li>
@@ -156,7 +170,7 @@
                                             <label class="font-lg text-bg mb-1 ls-1">Category Long Description</label>
                                             {{-- <input type="text" name="long_description"
                                         placeholder="Long description catagory name" required> --}}
-                                            <textarea name="long_description" class="p-1" placeholder="Long description catagory name" style="width: 49rem" id=""
+                                            <textarea name="long_description" class="p-1" placeholder="Long description catagory name" style="width: 210%" id=""
                                                 cols="30" rows="10" required></textarea>
                                         </div>
                                     </li>
@@ -172,7 +186,7 @@
                                                 required>
                                         </div>
                                     </li>
-                                    <li class="p-1 listelement">
+                                    <li class="listelementbutton p-1 listelement">
                                         <div class="subelement display-g">
                                             <label class="font-lg text-bg mb-1 ls-1">Category Start Date</label>
                                             <input type="date" class="p-1" id="start_date" name="start_date" required>
@@ -183,10 +197,10 @@
                                         </div>
                                     </li>
                                     <li class="p-1 font-xl">
-                                        <input type="submit" class="addcategory bg-secondary-dark-1 display-f align-center br-xs float-l p-1 mb-1"
-                                            value="Add" name="submit">
+                                        <input type="submit" class="addcategory display-f align-center br-xs float-l p-1 mb-1"
+                                            value="Add new" name="submit">
                                         <a href="{{ route('category') }}"
-                                        class="bg-secondary-dark-1 display-f align-center br-xs float-r p-1"> Go Back</a>
+                                        class="backcategory display-f float-r br-xs p-1"> Go Back</a>
                                     </li>
                                 </ul>
                             </div>

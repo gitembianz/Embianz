@@ -108,7 +108,7 @@ class CategoryController extends Controller
 
     public function new(){
 
-        $categories = Category::pluck('name');
+        $categories = Category::pluck('name', 'id');
         return view('admin.add_category', compact('categories'));
     }
 
@@ -206,5 +206,3 @@ class CategoryController extends Controller
 
 
 }
-
-
