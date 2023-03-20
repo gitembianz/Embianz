@@ -2930,6 +2930,43 @@ li.dropdown {
   box-shadow: 0px 0px 15px #bafcdd;
 }
 
+#confirmmodal-category .content-category, #confirmmodal-category .content-category-images {
+  background: #ffffff;
+  color: #35424b;
+  top: 40%;
+  width: 40%;
+  height: 20%;
+}
+@media (max-width: 662px) {
+  #confirmmodal-category .content-category, #confirmmodal-category .content-category-images {
+    width: 80%;
+    height: auto;
+  }
+}
+#confirmmodal-category .content-category .exit, #confirmmodal-category .content-category-images .exit {
+  width: 3rem;
+  height: auto;
+  cursor: pointer;
+  font-size: 28px;
+  font-weight: bold;
+  color: #35424b;
+  float: right;
+}
+#confirmmodal-category .content-category .submit, #confirmmodal-category .content-category-images .submit {
+  background: #bafcdd;
+  color: #35424b;
+  box-shadow: 0px 0px 2px #35424b;
+  font-size: 18px;
+  width: 20%;
+  height: auto;
+}
+@media (max-width: 662px) {
+  #confirmmodal-category .content-category .submit, #confirmmodal-category .content-category-images .submit {
+    width: 30%;
+    height: auto;
+  }
+}
+
 table {
   color: #35424b;
   width: 90%;
@@ -3003,6 +3040,10 @@ th {
   border: 1px solid #ffffff;
   padding: 0.375rem;
   background: #ffffff;
+}
+
+.boxsha {
+  box-shadow: 0px 0px 2px #35424b;
 }
 
 .p-0 {
@@ -3880,8 +3921,9 @@ th {
   }
 }
 
-#back, #new, #edit, #delete, #Update, .selectparrent {
+#back, #new, #edit, #delete, #Update {
   border: 1px solid #bafcdd;
+  box-shadow: 0px 0px 2px #35424b;
 }
 
 .listelementbutton {
@@ -3894,6 +3936,7 @@ th {
   height: auto;
   border: none;
   background-color: #bafcdd;
+  box-shadow: 0px 0px 2px #35424b;
   color: #35424b;
   cursor: pointer;
   font-size: 16px;
@@ -4020,6 +4063,7 @@ th {
   height: auto;
 }
 .content-category #new, .content-category-images #new, .content-category #delete, .content-category-images #delete, .content-category #edit, .content-category-images #edit {
+  box-shadow: 0px 0px 2px #35424b;
   width: 10%;
   height: auto;
 }
@@ -4027,14 +4071,6 @@ th {
   .content-category, .content-category-images {
     width: 95vw;
   }
-}
-.content-category .exit, .content-category-images .exit {
-  width: 3rem;
-  height: auto;
-  cursor: pointer;
-  font-size: 28px;
-  font-weight: bold;
-  color: #bafcdd;
 }
 .content-category input, .content-category-images input {
   width: 40%;
@@ -4063,16 +4099,6 @@ th {
 .content-category input::placeholder, .content-category-images input::placeholder {
   color: #bafcdd;
   opacity: 1;
-}
-.content-category .submit, .content-category-images .submit {
-  width: 20%;
-  height: auto;
-}
-@media (max-width: 662px) {
-  .content-category .submit, .content-category-images .submit {
-    width: 30%;
-    height: auto;
-  }
 }
 .content-category .element, .content-category-images .element {
   display: flex;
@@ -4111,18 +4137,6 @@ th {
 .content-category-images {
   width: 60vw;
   height: auto;
-}
-
-#confirmmodal-category .content-category, #confirmmodal-category .content-category-images {
-  top: 40%;
-  width: 30%;
-  height: auto;
-}
-@media (max-width: 662px) {
-  #confirmmodal-category .content-category, #confirmmodal-category .content-category-images {
-    width: 80%;
-    height: auto;
-  }
 }
 
 .list-group-div {

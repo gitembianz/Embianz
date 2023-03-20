@@ -72,7 +72,7 @@ class CategoryController extends Controller
                 $imagecategory->img_main_path=$image_main;
             }
 
-            if(isset($request->ategory_image_search)){
+            if(isset($request->category_image_search)){
                 $images =$request->category_image_search;
                 $image_search=time().'_search.'.$images->getClientOriginalExtension();
                 $request->category_image_search->move('categories',$image_search);
@@ -132,8 +132,8 @@ class CategoryController extends Controller
         }
     }
         $category->delete();
-
-        return view('admin.category')->with('message', 'Category Deleted Successfully!');
+        //de verificat de ce nu trimite message to view
+        return redirect()->view('admin.category')->with('message', 'Category Deleted Successfully!');
     }
 
     public function update_category(Request $request, $id) {

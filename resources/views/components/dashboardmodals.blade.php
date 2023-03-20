@@ -25,8 +25,8 @@
                 class="exit text-hover-secondary float-r">&times;</span>
             <ul class="pt-1 mb-2">
                 <li class="p-1 pt-1 font-xl">
-                    <h1 class="title talign-c font-xl ls-1 text-secondary">
-                        {{ __('Are you sure to delete this Category ?') }}
+                    <h1 class="title talign-c font-xl ls-1 text-white">
+                        {{ __('Are you sure to delete this category ?') }}
                     </h1>
                 </li>
                 <li class="p-1 font-xl">
@@ -35,10 +35,10 @@
                         <ul class="pt-1 mb-2">
                             <li class="p-1 font-xl">
                                 <input type="hidden" name="hiddenid" id="hiddenid">
-                                <input type="submit" class="submit cursor-p bg-hover-bg-light-2" value="Confirm"
+                                <input type="submit" class="submit br-xs cursor-p" value="Confirm"
                                     name="submit">
                                 <input onclick="document.getElementById('confirmmodal-category').style.display='none'"
-                                    class="submit cursor-p talign-c bg-hover-bg-light-2" value="Cancel">
+                                    class="submit cursor-p br-xs talign-c" value="Cancel">
                             </li>
                         </ul>
                     </form>

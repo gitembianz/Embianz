@@ -17,7 +17,7 @@
 <div class="contenttab p-2 br-sm" >
     <div class="row talign-c">
         <div class="col-12-xs col-12-sm col-12-xl m-2 p-1 text-bg">
-            <a href="{{ route('newcategory') }}" class="bg-secondary-dark-1 display-f align-center br-xs float-r p-1 mb-1"><span class="bg-secondary-dark-1"><svg class="bg-secondary-dark-1" width="20px" height="20px" viewBox="0 0 24 24"
+            <a href="{{ route('newcategory') }}" class="boxsha bg-secondary-dark-1 display-f align-center br-xs float-r p-1 mb-1"><span class="bg-secondary-dark-1"><svg class="bg-secondary-dark-1" width="20px" height="20px" viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg" fill="#35424b">
                 <g id="SVGRepo_bgCarrier" stroke-width="1"></g>
                 <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"

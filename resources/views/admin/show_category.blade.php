@@ -15,13 +15,13 @@
     @endif
     {{-- End Section session message --}}
     <div class="contenttab bg-white text-bg p-2 br-sm">
-    <div class="row gap-4 mt-2 mb-2 justify-center talign-c">
-        <div class="col-12-xs display-c col-12-sm col-12-xl m-1 text-bg">
-            <h1 id="title" class="mt-1 talign-c font-xl ls-1 text-bg">View - <span
-                    class="text-bg fw-800">{{ $data->name }}</span> - details</h1>
-                    <div style="right: 10%" class="display-f pos-abs">
-                <a href="{{ route('category') }}" class="bg-secondary-dark-1 display-f align-center br-xs p-1 mb-1"> Go Back</a>
-                <a href="{{ route('newcategory') }}" class="bg-secondary-dark-1 ml-1 display-f align-center br-xs p-1 mb-1"><span class="bg-secondary-dark-1"><svg class="bg-secondary-dark-1" width="20px" height="20px" viewBox="0 0 24 24"
+    <div class="row jus-c">
+        <div class="col-12-xs display-f jus-sb col-12-sm col-12-xl m-1 text-bg">
+            <h1 id="title" class="mt-1 font-xl ls-1 text-bg">View - <span
+                    class="text-black font-lg">{{ $data->name }}</span> - details</h1>
+                    <div class="display-f">
+                <a href="{{ route('category') }}" class="boxsha bg-secondary display-f align-center br-xs p-1"> Go Back</a>
+                <a href="{{ route('newcategory') }}" class="boxsha bg-secondary ml-1 display-f align-center br-xs p-1"><span class="bg-secondary"><svg class="bg-secondary" width="20px" height="20px" viewBox="0 0 24 24"
                     xmlns="http://www.w3.org/2000/svg" fill="#35424b">
                     <g id="SVGRepo_bgCarrier" stroke-width="1"></g>
                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"
@@ -36,49 +36,12 @@
     </div>
     <form  action="{{ route('category_update', $data->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
+        {{-- content --}}
         <div class="row gap-4 justify-center">
-            <div class="col-12-xs col-12-sm col-5-xl text-bg br-xs bg-secondary-light-7">
-                <ul class="p-1">
-                    <li class="listelement p-1">
-                        <label class="font-lg align-left text-bg ls-1">Name -</label>
-                        <span class="ml-1 font-lg talign-c text-bg p-1 br-xs bg-secondary-light-4"
-                            id="category_name">{{ $data->name }}</span>
-                    </li>
-                    <li class="listelement p-1">
-                        <label class="font-lg text-bg ls-1">Parrent -</label>
-                        <span class="ml-1 font-lg talign-c text-bg p-1 br-xs bg-secondary-light-4"
-                            id="category_parrent">{{ $data->parrent }}</span>
-                    </li>
-                    <li class="listelement p-1">
-                        <label class="font-lg text-bg ls-1">Long Description -</label>
-                        <span class="ml-1 font-lg talign-c text-bg p-1 br-xs bg-secondary-light-4"
-                            id="category_long_description">{{ $data->long_description }}</span>
-                    </li>
-                    <li class="listelement p-1">
-                        <label class="font-lg text-bg ls-1">Short Description -</label>
-                        <span class="ml-1 font-lg talign-c text-bg p-1 br-xs bg-secondary-light-4"
-                            id="category_short_description">{{ $data->short_description }}</span>
-                    </li>
-                    <li class="listelement p-1">
-                        <label class="font-lg text-bg ls-1">Sequence -</label>
-                        <span class="ml-1 font-lg talign-c text-bg p-1 br-xs bg-secondary-light-4"
-                            id="category_sequence">{{ $data->sequence }}</span>
-                    </li>
-                </ul>
-            </div>
-            <div class="col-12-xs col-12-sm col-5-xl br-xs bg-secondary-light-7">
+            {{-- image category --}}
+            <div class="col-12-xs col-12-sm col-4-xl text-bg">
                 <ul>
-                    <li class="listelement p-1">
-                        <label class="font-lg  text-bg ls-1" for="start_date">Start Date -</label>
-                        <span class="ml-1 font-lg talign-c text-bg p-1 br-xs bg-secondary-light-4"
-                            id="category_start_date">{{ $data->start_date }}</span>
-                    </li>
-                    <li class="listelement p-1">
-                        <label class="font-lg text-bg ls-1">End Date -</label>
-                        <span class="ml-1 font-lg talign-c text-bg p-1 br-xs bg-secondary-light-4"
-                            id="category_end_date">{{ $data->end_date }}</span>
-                        <input type="hidden" name="hidden_id" value="{{ $data->id }}" id="hidden_id">
-                    </li>
+                    <li><label class="font-lg text-bg ls-1">Category Image</label></li>
                     <li class="listelement p-1">
                         <label class="font-lg text-bg ls-1"> Image Main-</label>
                         @if (isset($data) && !is_null($data->image->first()))
@@ -111,6 +74,57 @@
                                 id="category_image_sequence">{{ __('Image Sequence not found') }}</span>
                         @endif
                     </li>
+
+                </ul>
+            </div>
+            <div class="col-12-xs col-12-sm col-7-xl text-bg">
+                <ul>
+                    <li class="listelement p-1">
+                        <div class="subelement display-g">
+                        <label class="font-lg text-bg mb-1 ls-1"> Category Name</label>
+                        <span class="boxsha p-1 font-lg talign-c text-bg p-1 br-xs bg-bg-light-9"
+                            id="category_name">{{ $data->name }}</span>
+                        </div>
+
+                        <div class="subelement display-g">
+                        <label class="font-lg mb-1  text-bg ls-1">Category Parrent</label>
+                        <span class="boxsha font-lg talign-c text-bg p-1 br-xs bg-bg-light-9"
+                            id="category_parrent">{{ $data->parrent }}</span>
+                        </div>
+                    </li>
+                    <li class="listelement p-1">
+                        <div class="subelement display-g">
+                        <label class="font-lg mb-1 text-bg ls-1">Category Long Description</label>
+                        <span class="boxsha font-lg talign-c text-bg p-1 br-xs bg-bg-light-9"
+                            id="category_long_description">{{ $data->long_description }}</span>
+                        </div>
+                    </li>
+                    <li class="listelement p-1">
+                        <div class="subelement display-g">
+                        <label class="font-lg mb-1 text-bg ls-1">Category Short Description</label>
+                        <span class="boxsha font-lg talign-c text-bg p-1 br-xs bg-bg-light-9"
+                            id="category_short_description">{{ $data->short_description }}</span>
+                        </div>
+                        <div class="subelement display-g">
+                        <label class="font-lg mb-1 text-bg ls-1">Category Sequence</label>
+                        <span class="boxsha font-lg talign-c text-bg p-1 br-xs bg-bg-light-9"
+                            id="category_sequence">{{ $data->sequence }}</span>
+                        </div>
+                    </li>
+                    <li class="listelement p-1">
+                        <div class="subelement display-g">
+                        <label class="font-lg mb-1  text-bg ls-1" for="start_date">Category Start Date</label>
+                        <span class="boxsha font-lg talign-c text-bg p-1 br-xs bg-bg-light-9"
+                            id="category_start_date">{{ $data->start_date }}</span>
+                        </div>
+                        <div class="subelement display-g">
+                        <label class="font-lg mb-1  text-bg ls-1">Category End Date </label>
+                        <span class="boxsha font-lg talign-c text-bg p-1 br-xs bg-bg-light-9"
+                            id="category_end_date">{{ $data->end_date }}</span>
+                        <input type="hidden" name="hidden_id" value="{{ $data->id }}" id="hidden_id">
+                        </div>
+                    </li>
+
                 </ul>
             </div>
             <div class="row gap-4 mt-1 justify-center talign-c">
@@ -118,11 +132,11 @@
                     <ul>
                         <li>
                             <input type="button"
-                                class="edit br-xs font-lg ls-1 text-bg ml-1 cursor-p p-1 bg-secondary-light-1"
+                                class="edit boxsha br-xs font-lg ls-1 text-bg cursor-p p-1 bg-secondary"
                                 value="Edit" name="edit" id="edit">
                             <input type="submit" style="display: none"
-                                class="edit br-xs talign-c font-lg ls-1 text-bg ml-1 cursor-p p-1  bg-secondary-light-1"
-                                value="Update" name="edit" id="Update">
+                                class="edit br-xs talign-c font-lg ls-1 text-bg cursor-p p-1  bg-secondary"
+                                value="Update" id="Update">
 
                             <input type="button"
                                 class="delete ml-1 font-lg text-bg br-xs ls-1 cursor-p p-1 bg-secondary-light-1"

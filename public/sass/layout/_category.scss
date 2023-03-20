@@ -1,6 +1,7 @@
 
-#back, #new, #edit, #delete, #Update, .selectparrent {
+#back, #new, #edit, #delete, #Update{
   border: 1px solid $secondary;
+  box-shadow: 0px 0px 2px $bg;
 
 }
 
@@ -14,6 +15,7 @@
     @include wh(5vw, auto);
     border: none;
     background-color: $secondary;
+    box-shadow: 0px 0px 2px $bg;
     color: $bg;
     cursor: pointer;
     font-size: 16px;
@@ -149,6 +151,7 @@
   padding: 0;
 
   #new, #delete, #edit{
+    box-shadow: 0px 0px 2px $bg;
     @include wh(10%, auto);
   }
 
@@ -158,13 +161,7 @@
 
 
 
-  .exit {
-    @include wh(3rem, auto);
-    cursor: pointer;
-    font-size: 28px;
-    font-weight: bold;
-    color: $secondary;
-  }
+
 
   input {
     @include wh(40%, auto);
@@ -190,12 +187,7 @@
     border: 1px solid $secondary
   }
 
-  .submit {
-    @include wh(20%, auto);
-    @media (max-width: 662px) {
-      @include wh(30%, auto);
-    }
-  }
+
 
   .element {
     // @include wh(85%, auto);
@@ -236,12 +228,4 @@
   @include wh(60vw, auto);
 }
 
-#confirmmodal-category {
-  .content-category {
-    top: 40%;
-    @include wh(30%, auto);
-    @media (max-width: 662px) {
-      @include wh(80%, auto);
-    }
-  }
-}
+

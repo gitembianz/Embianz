@@ -41,7 +41,7 @@
                                                     {{ _('No image uploaded') }}
                                                 </figcaption>
                                             </figure>
-                                            <input type="file" name="" id="upload-button" accept="image/*">
+                                            <input type="file" name="category_image" id="upload-button" accept="image/*">
                                             <div class="display-f">
                                             <label for="upload-button" class="br-xs cursor-p"><svg width="64px"
                                                     height="64px" viewBox="0 0 24 24" fill="none"
@@ -104,7 +104,7 @@
                                                     {{ _('No image uploaded') }}
                                                 </figcaption>
                                             </figure>
-                                            <input type="file" name="" id="upload-button-search"
+                                            <input type="file" name="category_image_search" id="upload-button-search"
                                                 accept="image/*">
                                                 <div class="display-f">
                                             <label for="upload-button-search" class="br-xs cursor-p"><svg width="64px"
@@ -128,7 +128,9 @@
                                                     </g>
                                                 </svg> &nbsp; {{ __('Search image') }}</label>
                                                 <input type="button" class="browse1 ls-1 ml-1 br-xs talign-c cursor-p bg-white"
-                                        value="or Browse" name="browse" id="browse_saerch">
+                                        value="or Browse" name="browse" id="browse_search">
+                                        <input type="hidden" name="select_image_search_hidden"
+                                            id="select_image_search_hidden">
                                                 </div>
                                         </div>
                                     </li>
@@ -154,7 +156,7 @@
                                         </div>
                                         <div class="subelement display-g">
                                             <label class="font-lg text-bg mb-1 ls-1">Category Parent</label>
-                                            <select id="select-category" name="category"
+                                            <select id="select-category" name="parrent"
                                                 class="select-parent p-1 text-bg">
                                                 <option value="" selected="">Select a parrent</option>
                                                 @foreach($categories as $category_name)
@@ -170,7 +172,7 @@
                                             <label class="font-lg text-bg mb-1 ls-1">Category Long Description</label>
                                             {{-- <input type="text" name="long_description"
                                         placeholder="Long description catagory name" required> --}}
-                                            <textarea name="long_description" class="p-1" placeholder="Long description catagory name" style="width: 210%" id=""
+                                            <textarea name="long_description" class="p-1" placeholder="Long description catagory name" style="width: 200%" id=""
                                                 cols="30" rows="10" required></textarea>
                                         </div>
                                     </li>
