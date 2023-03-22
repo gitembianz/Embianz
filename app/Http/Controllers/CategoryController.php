@@ -125,13 +125,20 @@ class CategoryController extends Controller
         $category=category::find($id);
         $category_image=ImageCategories::where('category_id', $category->id)->first();
         if($category_image){
-        if (File::exists('categories/'.$category_image->img_main_path)) {
-            File::delete('categories/'.$category_image->img_main_path);
+            // Check if there are other ImageCategories with the same img_main_path or img_search_path
+            $other_images = ImageCategories::where('img_main_path', $category_image->img_main_path)
+                                           ->orWhere('img_search_path', $category_image->img_search_path)
+                                           ->get();
+            if(count($other_images) == 0){
+                // No other ImageCategories with the same img_main_path or img_search_path, delete the files
+                if (File::exists('categories/'.$category_image->img_main_path)) {
+                    File::delete('categories/'.$category_image->img_main_path);
+                }
+                if (File::exists('categories/'.$category_image->img_search_path)) {
+                    File::delete('categories/'.$category_image->img_search_path);
+                }
+            }
         }
-        if (File::exists('categories/'.$category_image->img_search_path)) {
-            File::delete('categories/'.$category_image->img_search_path);
-        }
-    }
         $category->delete();
         //de verificat de ce nu trimite message to view
         return view('admin.category')->with('message', 'Category Deleted Successfully!');

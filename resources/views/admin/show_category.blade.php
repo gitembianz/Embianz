@@ -149,7 +149,7 @@
                                     </g>
                                 </svg> &nbsp; {{ __('Search image') }}</label>
                                 <input type="button" class="browse1 ls-1 ml-1 br-xs talign-c cursor-p bg-white"
-                        value="or Browse" name="browse" id="browse_search1">
+                        value="or Browse" name="browse" id="browse_search">
                         <input type="hidden" name="select_image_search_hidden"
                             id="select_image_search_hidden">
                                 </div>
