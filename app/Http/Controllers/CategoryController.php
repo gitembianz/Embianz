@@ -115,6 +115,7 @@ class CategoryController extends Controller
     public function show($id){
 
         $data = Category::find($id);
+        $categories = Category::pluck('name', 'id');
         return view('admin.show_category', compact('data'));
 
     }
@@ -133,7 +134,7 @@ class CategoryController extends Controller
     }
         $category->delete();
         //de verificat de ce nu trimite message to view
-        return redirect()->view('admin.category')->with('message', 'Category Deleted Successfully!');
+        return view('admin.category')->with('message', 'Category Deleted Successfully!');
     }
 
     public function update_category(Request $request, $id) {
@@ -201,6 +202,14 @@ class CategoryController extends Controller
              ];
          }
          return response()->json($images);
+    }
+
+    public function selectli($id){
+        //edit category
+        if(request()->ajax()){
+        $data = Category::findOrFail($id);
+        return response()->json(['result' =>$data]);
+        }
     }
 
 
