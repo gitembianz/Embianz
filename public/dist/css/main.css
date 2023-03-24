@@ -2919,7 +2919,7 @@ li.dropdown {
 }
 .modal .content, .modal .content-category, .modal .content-category-images, .modal-user .content, .modal-user .content-category, .modal-user .content-category-images, .modal-user .content-user {
   margin: auto;
-  background-color: #35424b;
+  background-color: #ffffff;
   opacity: 100%;
   display: flex;
   flex-direction: column;
@@ -3942,6 +3942,10 @@ th {
   font-size: 16px;
 }
 
+.modalbutton {
+  background-color: #bafcdd;
+}
+
 .view {
   background: #ffffff;
 }
@@ -3956,7 +3960,11 @@ th {
 }
 
 #imageModal .content-category, #imageModal .content-category-images, #imageModal1 .content-category, #imageModal1 .content-category-images {
-  top: 10%;
+  top: 7.35rem;
+}
+
+.modalbutton {
+  width: 5rem;
 }
 
 #images-container, #images-container1 {
@@ -4137,6 +4145,7 @@ th {
 .content-category-images {
   width: 60vw;
   height: auto;
+  color: #35424b;
 }
 
 .list-group-div {

@@ -11,7 +11,7 @@
 
 
 }
-.addcategory, .backcategory{
+.addcategory, .backcategory {
     @include wh(5vw, auto);
     border: none;
     background-color: $secondary;
@@ -20,6 +20,9 @@
     cursor: pointer;
     font-size: 16px;
 
+}
+.modalbutton{
+    background-color: $secondary;
 }
 
 
@@ -37,9 +40,15 @@
 
 #imageModal, #imageModal1{
   .content-category{
-    top: 10%;
+    top: 7.35rem;
   }
 }
+
+.modalbutton{
+@include w(5rem);
+
+}
+
 #images-container, #images-container1 {
   display: grid;
   grid-template-columns: repeat(auto-fill, 100px);
@@ -226,6 +235,7 @@
 .content-category-images{
   @extend .content-category;
   @include wh(60vw, auto);
+  color: $bg;
 }
 
 
