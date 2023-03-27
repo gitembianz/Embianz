@@ -61,7 +61,7 @@
                 </li>
                 <li class="p-1 font-xl">
                     <div id="images-container-wrapper">
-                        <div class="modal-body" id="image-container">
+                        <div class="modal-body jus-c" id="image-container">
                         </div>
                     </div>
                     <input type="hidden" id="selected-image" name="hidden">

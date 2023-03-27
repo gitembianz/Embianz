@@ -21,9 +21,7 @@
     font-size: 16px;
 
 }
-.modalbutton{
-    background-color: $secondary;
-}
+
 
 
 .view{
@@ -44,15 +42,13 @@
   }
 }
 
-.modalbutton{
-@include w(5rem);
 
-}
 
 #images-container, #images-container1 {
   display: grid;
   grid-template-columns: repeat(auto-fill, 100px);
   grid-gap: 10px;
+  
 }
 
 
@@ -62,13 +58,36 @@
   object-fit: cover;
   padding: $base-padding;
   margin: $base-margin;
-  border: 1px solid $white;
+  position: relative;
+  left: -10px;
   &.selected {
-    border: 2px solid $secondary;
+    background: $secondary;
+    border-radius: $base-border-radius /2;
     width: 7.6rem;
     height: 7.6rem;
-
+    //display: inline-table;
+   // position: relative;
+    padding-bottom: $base-padding;
   }
+  
+}
+.img-container{
+   // position: relative;
+    &.selected {
+        background: $secondary;
+        border-radius: $base-border-radius /2;
+        width: 7.6rem;
+        height: 7.6rem;
+        //display: inline-table;
+       // position: relative;
+        padding-bottom: $base-padding;
+      }
+}
+
+
+.img-name{
+   // display: block;
+    font-size: 10px;
 }
 
 #Update{
@@ -193,7 +212,16 @@
     transition: $transition;
     -webkit-transition: width 0.4s ease-in-out;
     color: $secondary;
-    border: 1px solid $secondary
+    border: 1px solid $secondary;
+    
+    &.modalbutton{
+        @include w(15rem);
+        background-color: $secondary;
+        color: $bg;
+        border: 1px solid $secondary;
+        box-shadow: 0px 0px 2px $bg;
+        font-size: 18px;
+        }
   }
 
 
@@ -237,5 +265,4 @@
   @include wh(60vw, auto);
   color: $bg;
 }
-
 

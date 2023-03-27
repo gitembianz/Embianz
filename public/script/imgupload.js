@@ -47,28 +47,66 @@ document.getElementById("resetform").addEventListener("click", function() {
 //Get image from browse for main
 const button = document.getElementById("browse_main");
 if(button){
+// button.addEventListener("click", function() {
+//     fetch('/get-images')
+//         .then(response => response.json())
+//         .then(data => {
+//             document.getElementById('imageModal').style.display = 'block';
+//             data.forEach(image => {
+//                 const img = document.createElement("img");
+//                 img.src = '/categories/' + image.filename;
+//                 img.alt = image.filename;
+//                 img.classList.add("grid-item");
+//                 const imgName = document.createElement("span");
+//                 imgName.innerText = image.filename;
+//                 imgName.classList.add("img-name");
+//                 img.addEventListener("click", function() {
+//                     const selected = document.querySelector(".selected");
+//                     if (selected) {
+//                         selected.classList.remove("selected");
+//                     }
+//                     this.classList.add("selected");
+//                     document.getElementById("selected-image").value = image.filename;
+//                 });
+//                 imagesContainer.appendChild(img);
+//                 imagesContainer.appendChild(imgName);
+//             });
+//         });
+// });
 button.addEventListener("click", function() {
     fetch('/get-images')
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById('imageModal').style.display = 'block';
-            data.forEach(image => {
-                const img = document.createElement("img");
-                img.src = '/categories/' + image.filename;
-                img.alt = image.filename;
-                img.classList.add("grid-item");
-                img.addEventListener("click", function() {
-                    const selected = document.querySelector(".selected");
-                    if (selected) {
-                        selected.classList.remove("selected");
-                    }
-                    this.classList.add("selected");
-                    document.getElementById("selected-image").value = image.filename;
-                });
-                imagesContainer.appendChild(img);
-            });
-        });
-});}
+    .then(response => response.json())
+    .then(data => {
+    document.getElementById('imageModal').style.display = 'block';
+    data.forEach(image => {
+    const imgContainer = document.createElement("div");
+    imgContainer.classList.add("grid-item");
+    const img = document.createElement("img");
+    img.src = '/categories/' + image.filename;
+    img.alt = image.filename;
+    img.classList.add("grid-item");
+    
+    const imgName = document.createElement("span");
+    imgName.innerText = image.filename;
+    imgName.classList.add("img-name");
+    
+    imgContainer.appendChild(img);
+    imgContainer.appendChild(imgName);
+    
+    imgContainer.addEventListener("click", function() {
+        const selected = document.querySelector(".selected");
+        if (selected) {
+            selected.classList.remove("selected");
+        }
+        this.classList.add("selected");
+        document.getElementById("selected-image").value = image.filename;
+    });
+    
+    imagesContainer.appendChild(imgContainer);
+});
+});
+});
+}
 
 //close the image modals and destroy
 document.getElementById("closeselection").addEventListener("click", function() {

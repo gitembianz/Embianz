@@ -3942,10 +3942,6 @@ th {
   font-size: 16px;
 }
 
-.modalbutton {
-  background-color: #bafcdd;
-}
-
 .view {
   background: #ffffff;
 }
@@ -3963,10 +3959,6 @@ th {
   top: 7.35rem;
 }
 
-.modalbutton {
-  width: 5rem;
-}
-
 #images-container, #images-container1 {
   display: grid;
   grid-template-columns: repeat(auto-fill, 100px);
@@ -3980,12 +3972,27 @@ th {
      object-fit: cover;
   padding: 0.75rem;
   margin: 0.75rem;
-  border: 1px solid #ffffff;
+  position: relative;
+  left: -10px;
 }
 .grid-item.selected {
-  border: 2px solid #bafcdd;
+  background: #bafcdd;
+  border-radius: 10px;
   width: 7.6rem;
   height: 7.6rem;
+  padding-bottom: 0.75rem;
+}
+
+.img-container.selected {
+  background: #bafcdd;
+  border-radius: 10px;
+  width: 7.6rem;
+  height: 7.6rem;
+  padding-bottom: 0.75rem;
+}
+
+.img-name {
+  font-size: 10px;
 }
 
 #Update {
@@ -4107,6 +4114,14 @@ th {
 .content-category input::placeholder, .content-category-images input::placeholder {
   color: #bafcdd;
   opacity: 1;
+}
+.content-category input.modalbutton, .content-category-images input.modalbutton {
+  width: 15rem;
+  background-color: #bafcdd;
+  color: #35424b;
+  border: 1px solid #bafcdd;
+  box-shadow: 0px 0px 2px #35424b;
+  font-size: 18px;
 }
 .content-category .element, .content-category-images .element {
   display: flex;
