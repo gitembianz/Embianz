@@ -115,7 +115,7 @@ class CategoryController extends Controller
     public function show($id){
 
         $data = Category::find($id);
-        $categories = Category::pluck('name', 'id');
+
         return view('admin.show_category', compact('data'));
 
     }

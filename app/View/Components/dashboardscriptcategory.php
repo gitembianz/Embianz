@@ -2,6 +2,7 @@
 
 namespace App\View\Components;
 
+use App\Models\Category;
 use Illuminate\View\Component;
 
 class dashboardscriptcategory extends Component
@@ -23,6 +24,7 @@ class dashboardscriptcategory extends Component
      */
     public function render()
     {
-        return view('components.dashboardscriptcategory');
+        $categories = Category::pluck('name');
+        return view('components.dashboardscriptcategory', compact('categories'));
     }
 }

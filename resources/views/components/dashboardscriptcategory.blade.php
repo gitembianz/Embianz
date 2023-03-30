@@ -120,6 +120,9 @@
         const spanElements = document.querySelectorAll(
             '#category_name, #category_parrent,#category_short_description'
         );
+        const selectElements = document.querySelectorAll(
+            '#category_parrent'
+        );
         const textareaElements = document.querySelectorAll(
             '#category_long_description'
         );
@@ -142,6 +145,22 @@
             inputFile.setAttribute("name", imageElement.getAttribute("id"));
             imageElement.replaceWith(inputFile);
         });
+        selectElements.forEach((selectElement, index) => {
+    const selectp = document.createElement("select");
+    const categories = {!! json_encode($categories) !!};
+
+    selectp.setAttribute("class", "ml-1 font-lg talign-c text-bg p-1 bg-white");
+    selectp.setAttribute("name", selectElement.getAttribute("id"));
+
+    categories.forEach((category, categoryIndex) => {
+        const option = document.createElement("option");
+        option.text = category;
+        option.value = category;
+        selectp.add(option);
+    });
+
+    selectElement.replaceWith(selectp);
+});
 
         sequenceElements.forEach(sequenceElement => {
             const inputSeq = document.createElement("input");
