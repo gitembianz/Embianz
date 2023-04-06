@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Products_categories;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -48,6 +49,12 @@ class ProductController extends Controller
         $newproduct->created_by=Auth::user()->name;
         $newproduct->last_modified_by=Auth::user()->name;
         $newproduct->save();
+        
+        $productcategory = new products_categories();
+        $productcategory->product_id = $newproduct->id;
+        $productcategory->category_id = Category::where('name', $request->category)->first()->id;
+        $productcategory->save();
+        
         return redirect()->back()->with('message','Product Added Succesfully!');
     }
 
