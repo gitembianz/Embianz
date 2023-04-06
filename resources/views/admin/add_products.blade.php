@@ -19,7 +19,7 @@
         {{-- Header --}}
         <ul>
             <li class="p-1 font-xl">
-                <form  action="{{ url('/add_products') }}" method="POST" enctype="multipart/form-data">
+                <form  action="{{ url('/new_products') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="row add_header col-12-xs col-12-sm col-12-xl jus-sb display-f">
             <h1 id="title" class="ml-1 fw-500 ls-3 text-bg">{{ __('New Product') }}</h1>

@@ -41,6 +41,7 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'])-
     //Products routes
     route::get('/products', [ProductController::class, 'products'])->name('products');
     route::get('/add_products', [ProductController::class, 'add'])->name('add_products');
+    route::post('/new_products', [ProductController::class, 'new'])->name('new_products');
 
     //todolist routes
     route::post('/new', [TodolistController::class, 'store'])->name('store');
