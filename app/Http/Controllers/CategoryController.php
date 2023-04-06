@@ -95,7 +95,7 @@ class CategoryController extends Controller
             $imagecategory->category_id= $data->id;
             $imagecategory->save();
 
-            return redirect()->back()->with('message','Category Added Succesfully!');
+            return redirect()->back()->with('message','Category Added Succesfully! Please go back!');
     }
 
     public function edit($id){

@@ -23,6 +23,13 @@
                     data: 'product_status',
                     name: 'product_status'
                 },
+                {
+                    data: 'category',
+                    name: 'category',
+                    render: function(data, type, row) {
+                        return  data;
+                    }
+                },
 
                 {
                     data: 'action',

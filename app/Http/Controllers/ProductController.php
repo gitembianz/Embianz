@@ -19,6 +19,20 @@ class ProductController extends Controller
         if($request->ajax()) {
             $data= Product::query();
             return DataTables::eloquent($data)
+            ->addColumn('category', function($data) {
+
+                $testvar = $data->product_categories->first();
+                if($testvar != NULL){
+                    if($testvar->category !=NULL){
+                    $path = $testvar->category->name;
+                    } else{$path = "No category";}
+
+                }else{
+                    $path = "No category";
+                };
+
+                return $path;
+            })
 
                 ->addColumn('action', function($data){
                     $button = '<button type="button" class="view_product btn-white text-bg br-xs" name="view" onclick="event.preventDefault();location.href=\'/show_product/'.$data->id.'\'">View</button>';
@@ -49,13 +63,13 @@ class ProductController extends Controller
         $newproduct->created_by=Auth::user()->name;
         $newproduct->last_modified_by=Auth::user()->name;
         $newproduct->save();
-        
+
         $productcategory = new products_categories();
         $productcategory->product_id = $newproduct->id;
         $productcategory->category_id = Category::where('name', $request->category)->first()->id;
         $productcategory->save();
         
-        return redirect()->back()->with('message','Product Added Succesfully!');
+        return redirect()->back()->with('message','Product Added Succesfully! Please Go Back');
     }
 
 }

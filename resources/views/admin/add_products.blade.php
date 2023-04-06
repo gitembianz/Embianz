@@ -7,7 +7,7 @@
 <section class="section-container bg-bg">
     {{-- Display session message --}}
     @if (session()->has('message'))
-        <div class="bg-secondary pos-rel ls-1 p-1" id="alertevent">
+        <div class="bg-secondary pos-rel ls-1 mb-1 br-xs p-1" id="alertevent">
             {{ session()->get('message') }}
             <button type="button" onclick="document.getElementById('alertevent').style.display='none'"
                 class="exit font-lg bg-secondary float-r" data-bs-dismiss="alert" aria-hidden="true">x</button>

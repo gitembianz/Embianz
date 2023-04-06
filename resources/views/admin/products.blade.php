@@ -39,7 +39,7 @@
                       <div id="checkboxes">
 
                             <?php
-                            $columns = ["Product Name", "Product Short Description", "Product Quantity", "Product Status"];
+                            $columns = ["Product Name", "Product Short Description", "Product Quantity", "Product Status","Product Category"];
                             for ($i = 0; $i < count($columns); $i++) {
 
                              echo "<label data-column='$i' class='talign-r pt-1' for='$i'>$columns[$i]
@@ -62,6 +62,7 @@
                     <th class="bg-white">Product Short Description</th>
                     <th class="bg-white">Product Quantity</th>
                     <th class="bg-white">Product Status</th>
+                    <th class="bg-white">Product Category</th>
                     <th class="bg-white">Action</th>
 
                 </tr>
