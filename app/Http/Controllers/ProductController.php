@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -27,7 +28,8 @@ class ProductController extends Controller
 
     public function add()
     {
-        return view('admin.add_products');
+        $categories = Category::pluck('name', 'id');
+        return view('admin.add_products', compact('categories'));
     }
 
 }

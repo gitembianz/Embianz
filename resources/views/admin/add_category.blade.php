@@ -69,34 +69,8 @@
                                             id="select_image_main_hidden">
                                             </div>
                                         </div>
-                                        {{-- old image input / browse --}}
-                                        {{-- <label class="font-lg text-bg ls-1" for="end_date">Image main -</label>
-                                    <input type="file" class="image ml-1" id="category_image" name="category_image"
-                                        value="cars.png" multiple>
-                                    <input type="button" class="browse1 ls-1 ml-1 talign-c cursor-p bg-white"
-                                        value="or Browse" name="browse" id="browse_main">
-                                    <div class="bloc display-n" id="bloc_image_main">
-                                        <span class="ml-1 font-md talign-c text-bg p-1 bg-red" id="select_image_main"
-                                            name="select_image_main"></span>
-                                        <img width="45px" height="45px" id="img_select_image_main">
-                                        <input type="hidden" name="select_image_main_hidden"
-                                            id="select_image_main_hidden">
-                                    </div> --}}
                                     </li>
                                     <li class="p-1 listelement">
-
-                                        {{-- <label class="font-lg text-bg ls-1" for="end_date">Image search -</label>
-                                    <input type="file" class="image ml-1" id="category_image_search"
-                                        name="category_image_search">
-                                    <input type="button" class="browse1 ls-1 ml-1 talign-c cursor-p bg-white"
-                                        value="or Browse" name="browse" id="browse_saerch">
-                                    <div class="bloc display-n" id="bloc_image_search">
-                                        <span class="ml-1 font-md talign-c text-bg p-1 bg-red"
-                                            id="select_image_search" name="select_image_search"></span>
-                                        <img width="45px" height="45px" id="img_select_image_search">
-                                        <input type="hidden" name="select_image_search_hidden"
-                                            id="select_image_search_hidden">
-                                    </div> --}}
                                         <div class="container_img bg-bg-light-9 br-xs">
                                             <figure class="image-container">
                                                 <img id="chosen-image-search">
@@ -170,8 +144,7 @@
                                     <li class="p-1 listelement">
                                         <div class="subelement display-g">
                                             <label class="font-lg text-bg mb-1 ls-1">Category Long Description</label>
-                                            {{-- <input type="text" name="long_description"
-                                        placeholder="Long description catagory name" required> --}}
+                                         
                                             <textarea name="long_description" class="p-1" placeholder="Long description catagory name" style="width: 200%" id=""
                                                 cols="30" rows="10" required></textarea>
                                         </div>

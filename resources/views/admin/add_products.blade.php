@@ -4,7 +4,7 @@
 <x-dashboardmodals />
 <x-dashboardright />
 {{-- Page content start --}}
-<section class="section-container bg-sidebar-bg-light-1">
+<section class="section-container bg-bg">
     {{-- Display session message --}}
     @if (session()->has('message'))
         <div class="bg-secondary pos-rel ls-1 p-1" id="alertevent">
@@ -14,90 +14,103 @@
         </div>
     @endif
     {{-- End Section session message --}}
-    <div class="row gap-4 mt-2 mb-2 justify-center talign-c">
-        {{-- page title --}}
-        <div class="col-12-xs display-c col-12-sm col-12-xl m-1 text-white">
-            <h1 id="title" class="mt-1 talign-c font-xl ls-1 text-white">Add new Product</h1>
-
-        </div>
-    </div>
-    <form  action="#" method="POST">
+    <div class="contenttab mt-1 mr-1 bg-white text-bg br-sm">
+    <div class="row jus-c">
+        {{-- Header --}}
+        <ul>
+            <li class="p-1 font-xl">
+                <form  action="{{ url('/add_products') }}" method="POST" enctype="multipart/form-data">
         @csrf
-        <div class="row justify-center">
-            <div class="col-12-xs col-12-sm col-4-xl text-white">
-                <ul class="p-1">
+        <div class="row add_header col-12-xs col-12-sm col-12-xl jus-sb display-f">
+            <h1 id="title" class="ml-1 fw-500 ls-3 text-bg">{{ __('New Product') }}</h1>
+            <button id="resetform" class="cursor-p mr-1 bg-white text-bg p-1" type="reset">Clear form</button>
+        </div>
+         {{-- content --}}
+        <div class="row gap-2 jus-c">
+            <div class="col-12-xs col-12-sm col-4-xl text-bg">
+                <ul>
+                    <li><label class="font-lg text-bg ls-1">Product Image</label></li>
+                </ul>
+            </div>
+            <div class="col-12-xs col-12-sm col-7-xl text-bg">
+                <ul>
                     <li class="listelement p-1">
-                        <label class="font-lg text-white ls-1">Enter a product name -</label>
-                        <input type="text" class="bg-bg p-1  text-white" name="product_name" placeholder="Enter here"
-                            required>
+                        <div class="subelement display-g">
+                            <label class="font-lg text-bg mb-1 ls-1"> Product Name</label>
+                            <input class="p-1" type="text" name="product_name"
+                                placeholder="Enter a Product name" required>
+                        </div>
+                        <div class="subelement display-g">
+                            <label class="font-lg text-bg mb-1 ls-1">Product Category</label>
+                            <select id="select-category" name="category"
+                                class="select-parent p-1 text-bg">
+                                <option value="" selected="">Select a category</option>
+                                @foreach($categories as $category_name)
+                                <option value="{{ $category_name }}">{{ $category_name }}</option>
+                             @endforeach
+                            </select>
+                        </div>
                     </li>
                     <li class="listelement p-1">
-
+                        <div class="subelement display-g">
+                            <label class="font-lg text-bg mb-1 ls-1">Product Long Description</label>
+                            
+                            <textarea name="long_description" class="p-1" placeholder="Enter a product Long description" style="width: 200%"
+                                cols="30" rows="10" required></textarea>
+                        </div>
                     </li>
                     <li class="listelement p-1">
-
+                        <div class="subelement display-g">
+                            <label class="font-lg text-bg mb-1 ls-1">Product Short Description</label>
+                            <input class="p-1" type="text" name="short_description"
+                                placeholder="Product short description" required>
+                        </div>
+                        <div class="subelement display-g">
+                            <label class="font-lg text-bg mb-1 ls-1">Product Quantity</label>
+                            <input type="number" class="p-1" name="quantity" placeholder="Select Quantity"
+                                required>
+                        </div>
                     </li>
                     <li class="listelement p-1">
-
+                        <div class="subelement display-g">
+                            <label class="font-lg text-bg mb-1 ls-1">Product Start Date</label>
+                            <input type="date" class="p-1" id="start_date" name="start_date" required>
+                        </div>
+                        <div class="subelement display-g">
+                            <label class="font-lg text-bg mb-1 ls-1">Product End Date</label>
+                            <input type="date" id="end_date" class="p-1" name="end_date" required>
+                        </div>
                     </li>
                     <li class="listelement p-1">
-
+                        <div class="subelement display-g">
+                            <label class="font-lg text-bg mb-1 ls-1">Product Status</label>
+                            <select id="select-category" name="status"
+                                class="select-parent p-1 text-bg">
+                                <?php 
+                                $status = ["active", "inactive", "low stock"];
+                                ?>
+                                <option value="" selected="">Select a status</option>
+                                @foreach($status as $status_name)
+                                <option value="{{ $status_name }}">{{ $status_name }}</option>
+                             @endforeach
+                            </select>
+                        </div>
+                        <div class="subelement display-g">
+                            <label class="font-lg text-bg mb-1 ls-1">SEO Title</label>
+                            <input class="p-1" type="text" name="seo_title"
+                                placeholder="Enter SEO" required>
+                        </div>
                     </li>
                 </ul>
             </div>
-            <div class="col-12-xs col-12-sm col-4-xl text-white">
-                <ul class="p-1">
-                    <li class="listelement p-1">
-                        <label class="font-lg text-white ls-1">Enter a product name -</label>
-                        <input type="text" class="bg-bg p-1  text-white" name="product_name" placeholder="Enter here"
-                            required>
-                    </li>
-                    <li class="listelement p-1">
-
-                    </li>
-                    <li class="listelement p-1">
-
-                    </li>
-                    <li class="listelement p-1">
-
-
-
-                    </li>
-                    <li class="listelement p-1">
-
-                    </li>
-                </ul>
-            </div>
-            <div class="col-12-xs col-12-sm col-4-xl text-white">
-                <ul class="p-1">
-                    <li class="listelement p-1">
-                        <label class="font-lg text-white ls-1">Enter a product name -</label>
-                        <input type="text" class="bg-bg p-1  text-white" name="product_name" placeholder="Enter here"
-                            required>
-                    </li>
-                    <li class="listelement p-1">
-
-                    </li>
-                    <li class="listelement p-1">
-
-                    </li>
-                    <li class="listelement p-1">
-
-
-
-                    </li>
-                    <li class="listelement p-1">
-
-                    </li>
-                </ul>
-            </div>
-            <div class="row gap-4 mt-1 justify-center talign-c">
-                <div class="col-12-xs col-12-sm col-12-xl m-1 text-white">
+            <div class="product_footer row justify-center talign-c">
+                <div class="col-12-xs col-12-sm col-12-xl">
                     <ul>
                         <li>
-                            <input type="submit"
-                                class="edit br-xs talign-c font-lg ls-1 text-secondary ml-1 cursor-p p-1 bg-hover-bg bg-sidebar-bg-light-1"
-                                value="Add Product" name="add_product" id="add_product">
+                            <input type="submit" class="addcategory display-f align-center br-xs float-l p-1 mb-1"
+                            value="Add new" name="submit">
+                        <a href="{{ route('products') }}"
+                        class="backcategory display-f ml-2 float-r br-xs p-1"> Go Back</a>
 
 
                         </li>
@@ -106,9 +119,12 @@
             </div>
         </div>
     </form>
+            </li>
+</ul>
+    </div>
+</div>
 </section>
 {{-- page content end --}}
 <x-dashboardscript />
 <x-dashboardscriptproduct />
 <x-dashboardfooter />
-
