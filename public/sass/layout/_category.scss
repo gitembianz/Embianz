@@ -1,21 +1,54 @@
 
-#back, #new, #edit, #delete, #Update {
+#back, #new, #edit, #delete, #Update{
   border: 1px solid $secondary;
+  box-shadow: 0px 0px 2px $bg;
 
 }
 
-.browse1{
-  @include wh(5vw, auto);
+.listelementbutton{
+    display: flex;
+    justify-content: space-between;
+
+
 }
+.addcategory, .backcategory {
+    @include wh(5vw, auto);
+    border: none;
+    background-color: $secondary;
+    box-shadow: 0px 0px 2px $bg;
+    color: $bg;
+    cursor: pointer;
+    font-size: 16px;
+
+}
+
+
+
+.view{
+    background: $white;
+}
+.dataTables_length{
+    display: none;
+}
+
+.title {
+    color: $bg !important;
+    z-index: 2;
+  }
+
 #imageModal, #imageModal1{
   .content-category{
-    top: 10%;
+    top: 7.35rem;
   }
 }
+
+
+
 #images-container, #images-container1 {
   display: grid;
   grid-template-columns: repeat(auto-fill, 100px);
   grid-gap: 10px;
+
 }
 
 
@@ -25,13 +58,36 @@
   object-fit: cover;
   padding: $base-padding;
   margin: $base-margin;
-  border: 1px solid $white;
+  position: relative;
+  left: -10px;
   &.selected {
-    border: 2px solid $secondary;
+    background: $secondary;
+    border-radius: $base-border-radius /2;
     width: 7.6rem;
     height: 7.6rem;
-
+    //display: inline-table;
+   // position: relative;
+    padding-bottom: $base-padding;
   }
+
+}
+.img-container{
+   // position: relative;
+    &.selected {
+        background: $secondary;
+        border-radius: $base-border-radius /2;
+        width: 7.6rem;
+        height: 7.6rem;
+        //display: inline-table;
+       // position: relative;
+        padding-bottom: $base-padding;
+      }
+}
+
+
+.img-name{
+   // display: block;
+    font-size: 10px;
 }
 
 #Update{
@@ -39,7 +95,9 @@
   left: 47.5%;
 }
 .multiselect {
-  width: 20vw;
+  width: 10vw;
+  position: absolute;
+  //top: 10rem;
 
 }
 
@@ -58,18 +116,18 @@
   right: 0;
   top: 0;
   bottom: 0;
-  border: 1px  solid $secondary;
+
 }
 
 #checkboxes {
   display: none;
-  border: 1px  solid $secondary;
+  border: 1px  solid $bg;
   padding: $base-padding;
   position: absolute;
   z-index: 1;
-  background: $bg;
+  background: $white;
   float: right;
-  width: 20vw;
+  width: 10vw;
   //position: absolute;
 }
 
@@ -97,7 +155,7 @@
 }
 
 @media (max-width: 662px) {
-  #title {
+  .title {
     margin-top: 1rem;
     font-size: $base-font-size;
   }
@@ -121,6 +179,7 @@
   padding: 0;
 
   #new, #delete, #edit{
+    box-shadow: 0px 0px 2px $bg;
     @include wh(10%, auto);
   }
 
@@ -128,23 +187,12 @@
     width: 95vw;
   }
 
-  #title {
-    color: $secondary;
-  }
 
-  .exit {
-    @include wh(3rem, auto);
-    cursor: pointer;
-    font-size: 28px;
-    font-weight: bold;
-    color: $secondary;
-  }
+
+
 
   input {
     @include wh(40%, auto);
-    &.browse1{
-      @include wh(15%, auto);
-    }
     &#category_image,
     &#category_image_search{
       @include wh(40%, auto);
@@ -164,15 +212,19 @@
     transition: $transition;
     -webkit-transition: width 0.4s ease-in-out;
     color: $secondary;
-    border: 1px solid $secondary
+    border: 1px solid $secondary;
+
+    &.modalbutton{
+        @include w(15rem);
+        background-color: $secondary;
+        color: $bg;
+        border: 1px solid $secondary;
+        box-shadow: 0px 0px 2px $bg;
+        font-size: 18px;
+        }
   }
 
-  .submit {
-    @include wh(20%, auto);
-    @media (max-width: 662px) {
-      @include wh(30%, auto);
-    }
-  }
+
 
   .element {
     // @include wh(85%, auto);
@@ -199,18 +251,6 @@
     }
   }
 
-  .reset {
-    border: 1px solid $secondary;
-    margin-right: 7.5%;
-    @include wh(8%, auto);
-    position: absolute;
-   top: 20px;
-   right: 10px;
-
-    @media (max-width: 662px) {
-      margin-right: 5%;
-    }
-  }
 
   #category_image, #category_image_search{
     @include wh(25%, auto);
@@ -223,14 +263,6 @@
 .content-category-images{
   @extend .content-category;
   @include wh(60vw, auto);
+  color: $bg;
 }
 
-#confirmmodal-category {
-  .content-category {
-    top: 40%;
-    @include wh(30%, auto);
-    @media (max-width: 662px) {
-      @include wh(80%, auto);
-    }
-  }
-}

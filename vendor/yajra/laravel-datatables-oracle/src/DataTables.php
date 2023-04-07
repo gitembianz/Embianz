@@ -2,10 +2,7 @@
 
 namespace Yajra\DataTables;
 
-use Illuminate\Contracts\Database\Eloquent\Builder as EloquentBuilder;
-use Illuminate\Contracts\Database\Query\Builder as QueryBuilder;
 use Illuminate\Support\Traits\Macroable;
-use Yajra\DataTables\Exceptions\Exception;
 
 class DataTables
 {
@@ -16,23 +13,21 @@ class DataTables
      *
      * @var \Yajra\DataTables\Utilities\Request
      */
-    protected Utilities\Request $request;
+    protected $request;
 
     /**
      * HTML builder instance.
      *
-     * @phpstan-ignore-next-line
-     *
-     * @var \Yajra\DataTables\Html\Builder|null
+     * @var \Yajra\DataTables\Html\Builder
      */
-    protected $html = null;
+    protected $html;
 
     /**
      * Make a DataTable instance from source.
      * Alias of make for backward compatibility.
      *
-     * @param  object  $source
-     * @return DataTableAbstract
+     * @param  mixed  $source
+     * @return mixed
      *
      * @throws \Exception
      */
@@ -44,41 +39,30 @@ class DataTables
     /**
      * Make a DataTable instance from source.
      *
-     * @param  object  $source
-     * @return DataTableAbstract
+     * @param  mixed  $source
+     * @return mixed
      *
-     * @throws \Yajra\DataTables\Exceptions\Exception
+     * @throws \Exception
      */
     public static function make($source)
     {
-        $engines = (array) config('datatables.engines');
-        $builders = (array) config('datatables.builders');
+        $engines  = config('datatables.engines');
+        $builders = config('datatables.builders');
 
         $args = func_get_args();
         foreach ($builders as $class => $engine) {
             if ($source instanceof $class) {
-                $callback = [$engines[$engine], 'create'];
-
-                if (is_callable($callback)) {
-                    // @phpstan-ignore-next-line
-                    return call_user_func_array($callback, $args);
-                }
+                return call_user_func_array([$engines[$engine], 'create'], $args);
             }
         }
 
-        foreach ($engines as $engine) {
-            $canCreate = [$engine, 'canCreate'];
-            if (is_callable($canCreate) && call_user_func_array($canCreate, $args)) {
-                $create = [$engine, 'create'];
-
-                if (is_callable($create)) {
-                    // @phpstan-ignore-next-line
-                    return call_user_func_array($create, $args);
-                }
+        foreach ($engines as $engine => $class) {
+            if (call_user_func_array([$engines[$engine], 'canCreate'], $args)) {
+                return call_user_func_array([$engines[$engine], 'create'], $args);
             }
         }
 
-        throw new Exception('No available engine for '.get_class($source));
+        throw new \Exception('No available engine for ' . get_class($source));
     }
 
     /**
@@ -102,12 +86,23 @@ class DataTables
     }
 
     /**
+     * @deprecated Please use query() instead, this method will be removed in a next version.
+     *
+     * @param $builder
+     * @return QueryDataTable
+     */
+    public function queryBuilder($builder)
+    {
+        return $this->query($builder);
+    }
+
+    /**
      * DataTables using Query.
      *
-     * @param  QueryBuilder  $builder
-     * @return \Yajra\DataTables\QueryDataTable
+     * @param  \Illuminate\Database\Query\Builder|mixed  $builder
+     * @return QueryDataTable|DataTableAbstract
      */
-    public function query(QueryBuilder $builder): QueryDataTable
+    public function query($builder)
     {
         return QueryDataTable::create($builder);
     }
@@ -115,10 +110,10 @@ class DataTables
     /**
      * DataTables using Eloquent Builder.
      *
-     * @param  \Illuminate\Contracts\Database\Eloquent\Builder  $builder
-     * @return \Yajra\DataTables\EloquentDataTable
+     * @param  \Illuminate\Database\Eloquent\Builder|mixed  $builder
+     * @return EloquentDataTable|DataTableAbstract
      */
-    public function eloquent(EloquentBuilder $builder): EloquentDataTable
+    public function eloquent($builder)
     {
         return EloquentDataTable::create($builder);
     }
@@ -126,27 +121,36 @@ class DataTables
     /**
      * DataTables using Collection.
      *
-     * @param  \Illuminate\Support\Collection<array-key, array>|array  $collection
-     * @return \Yajra\DataTables\CollectionDataTable
+     * @param  \Illuminate\Support\Collection|array  $collection
+     * @return CollectionDataTable|DataTableAbstract
      */
-    public function collection($collection): CollectionDataTable
+    public function collection($collection)
     {
         return CollectionDataTable::create($collection);
     }
 
     /**
-     * Get html builder instance.
+     * DataTables using Collection.
      *
-     * @phpstan-ignore-next-line
+     * @param  \Illuminate\Http\Resources\Json\AnonymousResourceCollection|array  $collection
+     * @return ApiResourceDataTable|DataTableAbstract
+     */
+    public function resource($resource)
+    {
+        return ApiResourceDataTable::create($resource);
+    }
+
+    /**
+     * Get html builder instance.
      *
      * @return \Yajra\DataTables\Html\Builder
      *
-     * @throws Exception
+     * @throws \Exception
      */
     public function getHtmlBuilder()
     {
         if (! class_exists('\Yajra\DataTables\Html\Builder')) {
-            throw new Exception('Please install yajra/laravel-datatables-html to be able to use this function.');
+            throw new \Exception('Please install yajra/laravel-datatables-html to be able to use this function.');
         }
 
         return $this->html ?: $this->html = app('datatables.html');

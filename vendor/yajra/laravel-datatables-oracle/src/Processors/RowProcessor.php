@@ -8,11 +8,23 @@ use Yajra\DataTables\Utilities\Helper;
 class RowProcessor
 {
     /**
-     * @param  array  $data
-     * @param  array|object  $row
+     * @var mixed
      */
-    public function __construct(protected array $data, protected $row)
+    private $data;
+
+    /**
+     * @var mixed
+     */
+    private $row;
+
+    /**
+     * @param  mixed  $data
+     * @param  mixed  $row
+     */
+    public function __construct($data, $row)
     {
+        $this->data = $data;
+        $this->row  = $row;
     }
 
     /**
@@ -21,8 +33,6 @@ class RowProcessor
      * @param  string  $attribute
      * @param  string|callable  $template
      * @return $this
-     *
-     * @throws \Exception
      */
     public function rowValue($attribute, $template)
     {
@@ -43,8 +53,6 @@ class RowProcessor
      * @param  string  $attribute
      * @param  array  $template
      * @return $this
-     *
-     * @throws \Exception
      */
     public function rowData($attribute, array $template)
     {
@@ -59,7 +67,7 @@ class RowProcessor
     }
 
     /**
-     * @return array
+     * @return mixed
      */
     public function getData()
     {

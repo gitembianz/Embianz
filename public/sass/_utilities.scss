@@ -1,5 +1,8 @@
 @use 'sass:math';
 //maps of utilies//
+.boxsha{
+    box-shadow: 0px 0px 2px $bg;
+  }
 $utilities: (
   "padding": (
     "prefix": "p",
@@ -167,6 +170,21 @@ $utilities: (
       "i": inline,
       "i-b": inline-block,
       "c": contents,
+      "g": grid,
+    ),
+  ),
+  "justify-content": (
+    "prefix": "jus",
+    "values": (
+      "fs": flex-start,
+      "fe": flex-end,
+      "c": center,
+      "sb": space-between,
+      "sa": space-around,
+      "se": space-evenly,
+      "i": initial,
+      "in": inherit,
+
     ),
   ),
   "font-size": (
@@ -248,7 +266,7 @@ $utilities: (
     "prefix": "cursor",
     "values": (
       "p": pointer,
-      
+
     ),
   ),
   "flex-direction": (

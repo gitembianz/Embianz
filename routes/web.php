@@ -2,7 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\TodolistController;
 
 
 /*
@@ -30,10 +32,20 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'])-
     route::get('/show_category/{id}/', [CategoryController::class, 'show']);
     route::post('/delete_category', [CategoryController::class, 'delete']);
     route::post('/category_update/{id}', [CategoryController::class, 'update_category'])->name('category_update');
+    route::get('/new_categories', [CategoryController::class, 'new'])->name('newcategory');
+
 
     // browse image
     route::get('/get-images', [CategoryController::class, 'browse']);
 
+    //Products routes
+    route::get('/products', [ProductController::class, 'products'])->name('products');
+    route::get('/add_products', [ProductController::class, 'add'])->name('add_products');
+    route::post('/new_products', [ProductController::class, 'new'])->name('new_products');
+
+    //todolist routes
+    route::post('/new', [TodolistController::class, 'store'])->name('store');
+    route::delete('/{todolist:id}', [TodolistController::class, 'destroy'])->name('destroy');
 
 });
 route::get('/redirect', [HomeController::class, 'redirect'])->middleware('auth','verified')->name('redirect');

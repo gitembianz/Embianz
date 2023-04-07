@@ -1,0 +1,68 @@
+.container_img {
+   // background-color: $white;
+    width: 100%;
+    min-width: 10rem;
+   padding: $base-padding;
+    box-shadow: $base-box-shadow;
+
+    .image-container {
+        width: 100%;
+        margin: $base-margin;
+        display: grid;
+
+        & img {
+            position: relative;
+            max-width: 100%;
+            margin: auto;
+        }
+
+        figcaption {
+            margin: 20px 0 30px 0;
+            text-align: center;
+            width: 100%;
+            color: $bg;
+            font-size: 18px;
+        }
+    }
+
+    
+
+    input[type="file"] {
+        display: none;
+    }
+    label{
+        display: flex;
+        position: relative;
+        align-items: center;
+        justify-content: center;
+        background-color: $secondary;
+        text-align: center;
+        font-size: 16px;
+        padding: $base-padding  / 2;
+        margin: auto;
+        border: 1px solid $bg;
+        @include wh(17vw, auto);
+        & svg{
+            @include wh(2rem, auto);
+        }
+
+    }
+    .browse1{
+        border: 1px solid $white;
+        padding: $base-padding / 2;
+        background: $white;
+    }
+
+}
+
+.container_img_multiple{
+    @extend .container_img;
+      
+}
+#images{
+    @extend .image-container;
+    border: 1px solid $bg;
+    width: 90%;
+  height: 10rem;
+    background: red;
+}

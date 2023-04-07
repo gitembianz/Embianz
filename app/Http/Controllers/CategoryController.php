@@ -23,16 +23,17 @@ class CategoryController extends Controller
                     if($testvar != NULL){
                         if($testvar->img_search_path !=NULL){
                         $path = $testvar->img_search_path ;
-                        } else{$path = "defaultcategory.jpg";}
+                        } else{$path = "defaultcategory.svg";}
 
                     }else{
-                        $path = "defaultcategory.jpg";
+                        $path = "defaultcategory.svg";
                     };
 
                     return $path;
                 })
                     ->addColumn('action', function($data){
-                        $button = '<button type="button" class="view btn-bg text-white br-xs" name="view" onclick="event.preventDefault();location.href=\'/show_category/'.$data->id.'\'">View</button>';
+                        
+                        $button = '<button type="button" class="view_product btn-white text-bg br-xs" name="view" onclick="event.preventDefault();location.href=\'/show_category/'.$data->id.'\'">View</button>';
                         return $button;
                     })
                     ->make(true);
@@ -72,7 +73,7 @@ class CategoryController extends Controller
                 $imagecategory->img_main_path=$image_main;
             }
 
-            if(isset($request->ategory_image_search)){
+            if(isset($request->category_image_search)){
                 $images =$request->category_image_search;
                 $image_search=time().'_search.'.$images->getClientOriginalExtension();
                 $request->category_image_search->move('categories',$image_search);
@@ -95,7 +96,7 @@ class CategoryController extends Controller
             $imagecategory->category_id= $data->id;
             $imagecategory->save();
 
-            return redirect()->back()->with('message','Category Added Succesfully!');
+            return redirect()->back()->with('message','Category Added Succesfully! Please go back!');
     }
 
     public function edit($id){
@@ -105,9 +106,17 @@ class CategoryController extends Controller
         return response()->json(['result' =>$data]);
         }
     }
+
+    public function new(){
+
+        $categories = Category::pluck('name', 'id');
+        return view('admin.add_category', compact('categories'));
+    }
+
     public function show($id){
 
         $data = Category::find($id);
+
         return view('admin.show_category', compact('data'));
 
     }
@@ -117,15 +126,22 @@ class CategoryController extends Controller
         $category=category::find($id);
         $category_image=ImageCategories::where('category_id', $category->id)->first();
         if($category_image){
-        if (File::exists('categories/'.$category_image->img_main_path)) {
-            File::delete('categories/'.$category_image->img_main_path);
+            // Check if there are other ImageCategories with the same img_main_path or img_search_path
+            $other_images = ImageCategories::where('img_main_path', $category_image->img_main_path)
+                                           ->orWhere('img_search_path', $category_image->img_search_path)
+                                           ->get();
+            if(count($other_images) == 0){
+                // No other ImageCategories with the same img_main_path or img_search_path, delete the files
+                if (File::exists('categories/'.$category_image->img_main_path)) {
+                    File::delete('categories/'.$category_image->img_main_path);
+                }
+                if (File::exists('categories/'.$category_image->img_search_path)) {
+                    File::delete('categories/'.$category_image->img_search_path);
+                }
+            }
         }
-        if (File::exists('categories/'.$category_image->img_search_path)) {
-            File::delete('categories/'.$category_image->img_search_path);
-        }
-    }
         $category->delete();
-
+        //de verificat de ce nu trimite message to view
         return view('admin.category')->with('message', 'Category Deleted Successfully!');
     }
 
@@ -195,6 +211,15 @@ class CategoryController extends Controller
          }
          return response()->json($images);
     }
+
+    public function selectli($id){
+        //edit category
+        if(request()->ajax()){
+        $data = Category::findOrFail($id);
+        return response()->json(['result' =>$data]);
+        }
+    }
+
+
+
 }
-
-

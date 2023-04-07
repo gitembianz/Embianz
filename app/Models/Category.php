@@ -14,6 +14,11 @@ class Category extends Model
     {
         return $this->hasMany(ImageCategories::class, 'category_id');
     }
+    public function product_categories()
+    {
+        return $this->hasMany(Products_categories::class, 'category_id');
+    }
+
 
     protected $fillable = [
         'name',
