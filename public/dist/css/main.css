@@ -2992,33 +2992,33 @@ th {
   color: black;
 }
 
-.container_img {
+.container_img, .container_img_multiple {
   width: 100%;
   min-width: 10rem;
   padding: 0.75rem;
   box-shadow: 3px #bafcdd;
 }
-.container_img .image-container {
+.container_img .image-container, .container_img #images, .container_img_multiple .image-container, .container_img_multiple #images {
   width: 100%;
   margin: 0.75rem;
   display: grid;
 }
-.container_img .image-container img {
+.container_img .image-container img, .container_img #images img, .container_img_multiple .image-container img, .container_img_multiple #images img {
   position: relative;
   max-width: 100%;
   margin: auto;
 }
-.container_img .image-container figcaption {
+.container_img .image-container figcaption, .container_img #images figcaption, .container_img_multiple .image-container figcaption, .container_img_multiple #images figcaption {
   margin: 20px 0 30px 0;
   text-align: center;
   width: 100%;
   color: #35424b;
   font-size: 18px;
 }
-.container_img input[type=file] {
+.container_img input[type=file], .container_img_multiple input[type=file] {
   display: none;
 }
-.container_img label {
+.container_img label, .container_img_multiple label {
   display: flex;
   position: relative;
   align-items: center;
@@ -3032,14 +3032,21 @@ th {
   width: 17vw;
   height: auto;
 }
-.container_img label svg {
+.container_img label svg, .container_img_multiple label svg {
   width: 2rem;
   height: auto;
 }
-.container_img .browse1 {
+.container_img .browse1, .container_img_multiple .browse1 {
   border: 1px solid #ffffff;
   padding: 0.375rem;
   background: #ffffff;
+}
+
+#images {
+  border: 1px solid #35424b;
+  width: 90%;
+  height: 10rem;
+  background: red;
 }
 
 .boxsha {

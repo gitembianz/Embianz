@@ -24,14 +24,14 @@ class ProductController extends Controller
                 $testvar = $data->product_categories->first();
                 if($testvar != NULL){
                     if($testvar->category !=NULL){
-                    $path = $testvar->category->name;
-                    } else{$path = "No category";}
+                    $cat = $testvar->category->name;
+                    } else{$cat = "No category";}
 
                 }else{
-                    $path = "No category";
+                    $cat = "No category";
                 };
 
-                return $path;
+                return $cat;
             })
 
                 ->addColumn('action', function($data){

@@ -25,6 +25,8 @@
         }
     }
 
+    
+
     input[type="file"] {
         display: none;
     }
@@ -51,4 +53,16 @@
         background: $white;
     }
 
+}
+
+.container_img_multiple{
+    @extend .container_img;
+      
+}
+#images{
+    @extend .image-container;
+    border: 1px solid $bg;
+    width: 90%;
+  height: 10rem;
+    background: red;
 }
