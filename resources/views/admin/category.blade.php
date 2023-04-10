@@ -4,7 +4,7 @@
 <x-dashboardmodals />
 <x-dashboardright />
 {{-- Page content start --}}
-<section style="height: auto" class="section-container p-1 bg-bg">
+<section style="height: auto" class="section-container  bg-bg">
     {{-- Display session message --}}
     @if (session()->has('message'))
         <div class="bg-secondary pos-rel ls-1 p-1" id="alertevent">

@@ -3717,8 +3717,7 @@ th {
   width: 2rem;
   height: auto;
   padding: 0.375rem;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
   align-items: center;
   background-color: #82b09b;
   border: 2px solid #bafcdd;
@@ -3741,8 +3740,7 @@ th {
 .navbar .right .user_container .user_icon svg, .navbar-white .right .user_container .user_icon svg, .navbar-black .right .user_container .user_icon svg, .navbar-gray .right .user_container .user_icon svg, .navbar-sidebar-bg .right .user_container .user_icon svg, .navbar-bg .right .user_container .user_icon svg, .navbar-info .right .user_container .user_icon svg, .navbar-error .right .user_container .user_icon svg, .navbar-secondary .right .user_container .user_icon svg, .navbar-primary .right .user_container .user_icon svg {
   width: 2rem;
   height: auto;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
   color: #ffffff;
   align-items: center;
   cursor: pointer;
@@ -3763,10 +3761,6 @@ th {
   color: #bafcdd;
   border: 2px solid #bafcdd;
 }
-.navbar #input_search::-moz-placeholder, .navbar-white #input_search::-moz-placeholder, .navbar-black #input_search::-moz-placeholder, .navbar-gray #input_search::-moz-placeholder, .navbar-sidebar-bg #input_search::-moz-placeholder, .navbar-bg #input_search::-moz-placeholder, .navbar-info #input_search::-moz-placeholder, .navbar-error #input_search::-moz-placeholder, .navbar-secondary #input_search::-moz-placeholder, .navbar-primary #input_search::-moz-placeholder {
-  color: #bafcdd;
-  opacity: 1;
-}
 .navbar #input_search::placeholder, .navbar-white #input_search::placeholder, .navbar-black #input_search::placeholder, .navbar-gray #input_search::placeholder, .navbar-sidebar-bg #input_search::placeholder, .navbar-bg #input_search::placeholder, .navbar-info #input_search::placeholder, .navbar-error #input_search::placeholder, .navbar-secondary #input_search::placeholder, .navbar-primary #input_search::placeholder {
   color: #bafcdd;
   opacity: 1;
@@ -3778,8 +3772,7 @@ th {
 .navbar .logo img, .navbar-white .logo img, .navbar-black .logo img, .navbar-gray .logo img, .navbar-sidebar-bg .logo img, .navbar-bg .logo img, .navbar-info .logo img, .navbar-error .logo img, .navbar-secondary .logo img, .navbar-primary .logo img {
   width: 20rem;
   height: auto;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
 }
 .navbar #min_logo, .navbar-white #min_logo, .navbar-black #min_logo, .navbar-gray #min_logo, .navbar-sidebar-bg #min_logo, .navbar-bg #min_logo, .navbar-info #min_logo, .navbar-error #min_logo, .navbar-secondary #min_logo, .navbar-primary #min_logo {
   display: none;
@@ -3910,8 +3903,7 @@ th {
   width: 2.7rem;
   height: auto;
   padding: 0.5rem;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
   align-items: center;
 }
 .sidebar .menu .list svg path {
@@ -3975,8 +3967,7 @@ th {
 .grid-item {
   width: 7.5rem;
   height: 7.5rem;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
   padding: 0.75rem;
   margin: 0.75rem;
   position: relative;
@@ -4052,8 +4043,7 @@ th {
 
 #category_image_main {
   image-rendering: crisp-edges;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
   transition: opacity 0.5s ease-in-out;
   opacity: 1;
 }
@@ -4113,10 +4103,6 @@ th {
     width: 70%;
     height: auto;
   }
-}
-.content-category input::-moz-placeholder, .content-category-images input::-moz-placeholder {
-  color: #bafcdd;
-  opacity: 1;
 }
 .content-category input::placeholder, .content-category-images input::placeholder {
   color: #bafcdd;
@@ -4254,10 +4240,6 @@ th {
   -webkit-transition: width 0.4s ease-in-out;
   color: #35424b;
   border: 1px solid #35424b;
-}
-.input_style::-moz-placeholder {
-  color: #35424b;
-  opacity: 1;
 }
 .input_style::placeholder {
   color: #35424b;
@@ -4425,9 +4407,7 @@ th {
   pointer-events: none;
 }
 .container-right .card_calendar .date-time-formate {
-  width: -moz-max-content;
   width: max-content;
-  height: -moz-max-content;
   height: max-content;
   font-family: Dubai Light, Century Gothic;
   position: relative;
@@ -4436,17 +4416,12 @@ th {
   justify-content: center;
 }
 .container-right .card_calendar .day-text-formate {
-  font-family: Microsoft JhengHei UI;
-  font-size: 1.4rem;
-  padding-right: 5%;
   position: absolute;
   left: -1rem;
 }
 .container-right .card_calendar .date-time-value {
   display: block;
-  height: -moz-max-content;
   height: max-content;
-  width: -moz-max-content;
   width: max-content;
   position: relative;
   left: 40%;
@@ -4551,8 +4526,7 @@ th {
   width: 3.5rem;
   height: auto;
   padding: 0.5rem;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
   align-items: center;
   background: #ffffff;
 }
@@ -4570,7 +4544,3 @@ th {
 .view_product {
   border: 1px solid #35424b;
 }
-
-.product_footer {
-  border-top: 1px solid #35424b;
-}/*# sourceMappingURL=main.css.map */
