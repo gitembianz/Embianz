@@ -1,44 +1,9 @@
+<script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+<script src="//cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 <script>
     //script for DataTable for categories
     $(document).ready(function() {
-        var table = $('#category_table').DataTable({
-            processing: true,
-            serverSide: true,
-            orderable: true,
-            ajax: "{{ route('category') }}",
-            columns: [{
-                    data: 'id',
-                    name: 'id'
-                },
-                {
-                    data: 'name',
-                    name: 'name'
-                },
-                {
-                    data: 'parrent',
-                    name: 'parrent'
-                },
-                {
-                    data: 'short_description',
-                    name: 'short_description'
-                },
-                {
-                    data: 'image',
-                    name: 'image',
-                    orderable: false,
-                    searchable: false,
-                    render: function(data, type, row) {
-                        return '<img src="categories/' + data + '" width="50" height="50">';
-                    }
-                },
-                {
-                    data: 'action',
-                    name: 'action',
-                    orderable: false,
-                    searchable: false
-                },
-            ]
-        });
+        var table = $('#category_table').DataTable();
 
 
         var columnState = localStorage.getItem('columnState');

@@ -9,36 +9,14 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Yajra\DataTables\Facades\DataTables;
 
+
 class CategoryController extends Controller
 {
 
     public function category(Request $request){
 
-            if($request->ajax()) {
-                $data= Category::query()->with('image');
-                return DataTables::eloquent($data)
-                ->addColumn('image', function($data) {
-
-                    $testvar = $data->image->first();
-                    if($testvar != NULL){
-                        if($testvar->img_search_path !=NULL){
-                        $path = $testvar->img_search_path ;
-                        } else{$path = "defaultcategory.svg";}
-
-                    }else{
-                        $path = "defaultcategory.svg";
-                    };
-
-                    return $path;
-                })
-                    ->addColumn('action', function($data){
-                        
-                        $button = '<button type="button" class="view_product btn-white text-bg br-xs" name="view" onclick="event.preventDefault();location.href=\'/show_category/'.$data->id.'\'">View</button>';
-                        return $button;
-                    })
-                    ->make(true);
-            }
-            return view('admin.category');
+        $categories = Category::all();
+            return view('admin.category', compact('categories'));
     }
 
     public function add_category(Request $request)

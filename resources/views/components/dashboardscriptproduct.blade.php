@@ -1,44 +1,10 @@
+<script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+<script src="//cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 <script>
 
     //script for DataTable for products
     $(document).ready(function() {
-        var table = $('#product-table').DataTable({
-            processing: true,
-            serverSide: true,
-            orderable: true,
-            ajax: "{{ route('products') }}",
-            columns: [{
-                    data: 'name',
-                    name: 'name'
-                },
-                {
-                    data: 'short_description',
-                    name: 'short_description'
-                },
-                {
-                    data: 'quantity',
-                    name: 'quantity'
-                },
-                {
-                    data: 'product_status',
-                    name: 'product_status'
-                },
-                {
-                    data: 'category',
-                    name: 'category',
-                    render: function(data, type, row) {
-                        return  data;
-                    }
-                },
-
-                {
-                    data: 'action',
-                    name: 'action',
-                    orderable: false,
-                    searchable: false
-                },
-            ]
-        });
+        var table = $('#product-table').DataTable();
 
         var columnState = localStorage.getItem('columnState');
 

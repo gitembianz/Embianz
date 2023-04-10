@@ -62,7 +62,30 @@
                         <th class="bg-white">Action</th>
                     </tr>
                 </thead>
-                <tbody></tbody>
+                <tbody>
+                    @foreach ($categories as $category)
+                      <?php
+                        $imagee = $category->image->first();
+                        if ($imagee != null) {
+                          $path = $imagee->img_search_path ?? 'defaultcategory.svg';
+                        } else {
+                          $path = 'defaultcategory.svg';
+                        }
+                      ?>
+                      <tr>
+                        <td>{{ $category->id }}</td>
+                        <td>{{ $category->name }}</td>
+                        <td>{{ $category->parent }}</td>
+                        <td>{{ $category->short_description }}</td>
+                        <td><img src="categories/{{ $path }}" alt="{{ $path}}" width="50"></td>
+                        <td>
+                          <button type="button" class="view_product btn-white text-bg br-xs" name="view" onclick="location.href='/show_category/{{ $category->id }}'">
+                            View
+                          </button>
+                        </td>
+                      </tr>
+                    @endforeach
+                  </tbody>
             </table>
             {{-- End Table Category --}}
         </div>

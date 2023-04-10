@@ -54,7 +54,7 @@
 
 
             </div>
-            {{-- Table Category --}}
+            {{-- Table Products --}}
             <table class="product-table" id="product-table">
                 <thead>
                 <tr>
@@ -67,7 +67,33 @@
 
                 </tr>
             </thead>
-                <tbody></tbody>
+            <tbody>
+                @foreach ($products as $product)
+                <?php
+                         $testvar = $product->product_categories->first();
+                if($testvar != NULL){
+                    if($testvar->category !=NULL){
+                    $cat = $testvar->category->name;
+                    } else{$cat = "No category";}
+
+                }else{
+                    $cat = "No category";
+                };
+                      ?>
+                  <tr>
+                    <td>{{ $product->name }}</td>
+                    <td>{{ $product->short_description}}</td>
+                    <td>{{ $product->quantity }}</td>
+                    <td>{{ $product->product_status }}</td>
+                    <td>{{ $cat }}</td>
+                    <td>
+                      <button type="button" class="view_product btn-white text-bg br-xs" name="view" onclick="location.href='/show_product/{{ $product->id }}'">
+                        View
+                      </button>
+                    </td>
+                  </tr>
+                @endforeach
+              </tbody>
             </table>
             {{--End Table Category --}}
         </div>

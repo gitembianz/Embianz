@@ -8,39 +8,15 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Products_categories;
 use Illuminate\Support\Facades\Auth;
-use Yajra\DataTables\Facades\DataTables;
 
 class ProductController extends Controller
 {
     //show all products
 
     public function products(Request $request){
+        $products= Product::all();
 
-        if($request->ajax()) {
-            $data= Product::query();
-            return DataTables::eloquent($data)
-            ->addColumn('category', function($data) {
-
-                $testvar = $data->product_categories->first();
-                if($testvar != NULL){
-                    if($testvar->category !=NULL){
-                    $cat = $testvar->category->name;
-                    } else{$cat = "No category";}
-
-                }else{
-                    $cat = "No category";
-                };
-
-                return $cat;
-            })
-
-                ->addColumn('action', function($data){
-                    $button = '<button type="button" class="view_product btn-white text-bg br-xs" name="view" onclick="event.preventDefault();location.href=\'/show_product/'.$data->id.'\'">View</button>';
-                    return $button;
-                })
-                ->make(true);
-        }
-        return view('admin.products');
+        return view('admin.products', compact('products'));
 }
 
     public function add()
@@ -68,7 +44,7 @@ class ProductController extends Controller
         $productcategory->product_id = $newproduct->id;
         $productcategory->category_id = Category::where('name', $request->category)->first()->id;
         $productcategory->save();
-        
+
         return redirect()->back()->with('message','Product Added Succesfully! Please Go Back');
     }
 
