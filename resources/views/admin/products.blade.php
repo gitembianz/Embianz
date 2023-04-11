@@ -39,7 +39,7 @@
                       <div id="checkboxes">
 
                             <?php
-                            $columns = ["Product Name", "Product Short Description", "Product Quantity", "Product Status","Product Category"];
+                            $columns = ["Product Image","Product ID","Product Name", "Product Short Description", "Product Quantity", "Product Status","Product Category"];
                             for ($i = 0; $i < count($columns); $i++) {
 
                              echo "<label data-column='$i' class='talign-r pt-1' for='$i'>$columns[$i]
@@ -58,12 +58,14 @@
             <table class="product-table" id="product-table">
                 <thead>
                 <tr>
-                    <th class="bg-white">Product Name</th>
-                    <th class="bg-white">Product Short Description</th>
-                    <th class="bg-white">Product Quantity</th>
-                    <th class="bg-white">Product Status</th>
-                    <th class="bg-white">Product Category</th>
-                    <th class="bg-white">Action</th>
+                    <th class="bg-white" style="text-align: center">Image</th>
+                    <th class="bg-white" style="text-align: center">ID</th>
+                    <th class="bg-white" style="text-align: center">Name</th>
+                    <th class="bg-white" style="text-align: center">Short Description</th>
+                    <th class="bg-white" style="text-align: center">Quantity</th>
+                    <th class="bg-white" style="text-align: center">Status</th>
+                    <th class="bg-white" style="text-align: center">Category</th>
+                    <th class="bg-white" style="text-align: center">Action</th>
 
                 </tr>
             </thead>
@@ -81,6 +83,8 @@
                 };
                       ?>
                   <tr>
+                    <td>No Image</td>
+                    <td>{{ $product->id }}</td>
                     <td>{{ $product->name }}</td>
                     <td>{{ $product->short_description}}</td>
                     <td>{{ $product->quantity }}</td>

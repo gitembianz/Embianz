@@ -212,12 +212,8 @@ let numoffiles = document.getElementById("num-of-files");
 
 console.log(fileInputmutiple, imagesContainermutiple, numoffiles);
 
-// function preview(){
-//     imagesContainermutiple.innerHTML = "";
-//     numoffiles.textContent = `${fileInputmutiple.files} Files Selected`;
-
-// }
-fileInputmutiple.onchange = () => {
+function preview(){
     imagesContainermutiple.innerHTML = "";
-        numoffiles.textContent = "5";
+    numoffiles.textContent = `${fileInputmutiple.files} Files Selected`;
+
 }

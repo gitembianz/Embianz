@@ -66,7 +66,7 @@
                     <li class="p-1 listelement">
                         <div class="container_img_multiple bg-bg-light-9 br-xs">
                             <div class="images"></div>
-                            <input type="file" name="product_image" id="upload-button-multiple" accept="image/*" multiple>
+                            <input type="file" name="product_image" id="upload-button-multiple" onchange="preview()" accept="image/*" multiple>
                             <div class="talign-c">
                             <label for="upload-button-multiple" class="br-xs cursor-p"><svg width="64px"
                                     height="64px" viewBox="0 0 24 24" fill="none"

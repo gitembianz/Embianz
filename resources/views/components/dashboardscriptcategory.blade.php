@@ -129,7 +129,7 @@
         sequenceElements.forEach(sequenceElement => {
             const inputSeq = document.createElement("input");
             inputSeq.value = sequenceElement.innerText;
-            inputSeq.setAttribute("class", sequenceElement.getAttribute("class"));
+            inputSeq.setAttribute("class", sequenceElement.getAttribute("class") + " subelement100");
             inputSeq.setAttribute("name", sequenceElement.getAttribute("id"));
             inputSeq.setAttribute("type", "number");
             sequenceElement.replaceWith(inputSeq);
@@ -148,7 +148,7 @@
         spanElements.forEach(spanElement => {
             const inputElement = document.createElement("input");
             inputElement.value = spanElement.innerText;
-            inputElement.setAttribute("class", spanElement.getAttribute("class"));
+            inputElement.setAttribute("class", spanElement.getAttribute("class") + " subelement100");
             inputElement.setAttribute("name", spanElement.getAttribute("id"));
             inputElement.setAttribute("required", true);
             spanElement.replaceWith(inputElement);
@@ -159,7 +159,7 @@
             inputElement.setAttribute("class", textareaElements.getAttribute("class"));
             inputElement.setAttribute("name", textareaElements.getAttribute("id"));
             inputElement.setAttribute("required", true);
-            inputElement.setAttribute('style', 'width: 200%');
+            inputElement.setAttribute('style', 'width: 100%');
             textareaElements.replaceWith(inputElement);
         });
     });

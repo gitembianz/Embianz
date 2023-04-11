@@ -3940,6 +3940,14 @@ th {
   font-size: 16px;
 }
 
+.subelement100 {
+  width: 100%;
+}
+
+.subelement40 {
+  width: 40%;
+}
+
 .view {
   background: #ffffff;
 }
