@@ -201,4 +201,23 @@ document.getElementById("confirmimageselection1").addEventListener("click", func
 
 });
 
-//Browse for search!!! en
+// Script for upload product Images
+// !!!!!!!!!!!!!!!!!!! Script for Upload single Image
+
+// !!!!!!!!!!!!!!!!!!! Script for Upload multiple Images
+let fileInputmutiple = document.getElementById("upload-button-multiple");
+let imagesContainermutiple = document.getElementById("images");
+let numoffiles = document.getElementById("num-of-files");
+
+
+console.log(fileInputmutiple, imagesContainermutiple, numoffiles);
+
+// function preview(){
+//     imagesContainermutiple.innerHTML = "";
+//     numoffiles.textContent = `${fileInputmutiple.files} Files Selected`;
+
+// }
+fileInputmutiple.onchange = () => {
+    imagesContainermutiple.innerHTML = "";
+        numoffiles.textContent = "5";
+}

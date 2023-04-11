@@ -3045,8 +3045,7 @@ th {
 #images {
   border: 1px solid #35424b;
   width: 90%;
-  height: 10rem;
-  background: red;
+  margin: auto;
 }
 
 .boxsha {

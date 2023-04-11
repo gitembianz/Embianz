@@ -101,6 +101,6 @@
     </div>
 </section>
 {{-- page content end --}}
-<x-dashboardscriptproduct />
 <x-dashboardscript />
+<x-dashboardscriptproduct />
 <x-dashboardfooter />

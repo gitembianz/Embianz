@@ -25,7 +25,7 @@
         }
     }
 
-    
+
 
     input[type="file"] {
         display: none;
@@ -57,12 +57,11 @@
 
 .container_img_multiple{
     @extend .container_img;
-      
+
 }
 #images{
     @extend .image-container;
     border: 1px solid $bg;
     width: 90%;
-  height: 10rem;
-    background: red;
+    margin: auto;
 }

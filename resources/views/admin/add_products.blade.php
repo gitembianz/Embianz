@@ -116,7 +116,7 @@
                     <li class="listelement p-1">
                         <div class="subelement display-g">
                             <label class="font-lg text-bg mb-1 ls-1">Product Long Description</label>
-                            
+
                             <textarea name="long_description" class="p-1" placeholder="Enter a product Long description" style="width: 200%"
                                 cols="30" rows="10" required></textarea>
                         </div>
@@ -148,7 +148,7 @@
                             <label class="font-lg text-bg mb-1 ls-1">Product Status</label>
                             <select id="select-category" name="status"
                                 class="select-parent p-1 text-bg">
-                                <?php 
+                                <?php
                                 $status = ["active", "inactive", "low stock"];
                                 ?>
                                 <option value="" selected="">Select a status</option>
