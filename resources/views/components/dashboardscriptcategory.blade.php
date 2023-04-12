@@ -154,13 +154,18 @@
     const selectp = document.createElement("select");
     const categories = {!! json_encode($categories) !!};
 
-    selectp.setAttribute("class", "ml-1 font-lg talign-c text-bg p-1 bg-white");
+    selectp.setAttribute("class", selectElement.getAttribute("class"));
     selectp.setAttribute("name", selectElement.getAttribute("id"));
 
     categories.forEach((category, categoryIndex) => {
         const option = document.createElement("option");
         option.text = category;
         option.value = category;
+
+        if (category === selectElement.innerText) {
+            option.selected = true; // set the option as selected if its value matches the value of the selectElement
+        }
+
         selectp.add(option);
     });
 

@@ -5,14 +5,16 @@
   box-sizing: border-box;
   list-style-type: none;
   text-decoration: none;
+  font-family: "Roboto-thin", sans-serif !important;
 }
 
 input {
-  font-family: "Roboto-thin", sans-serif;
+  font-family: "Roboto-thin", sans-serif !important;
+  border: 1px solid #35424b;
 }
 
 body {
-  font-family: "Roboto-thin", sans-serif;
+  font-family: "Roboto-thin", sans-serif !important;
   font-weight: normal;
   background: #35424b;
 }
@@ -3913,7 +3915,7 @@ th {
 
 #back, #new, #edit, #delete, #Update {
   border: 1px solid #bafcdd;
-  box-shadow: 0px 0px 2px #35424b;
+  box-shadow: 0px 0px 0.5px #35424b;
 }
 
 .listelementbutton {
@@ -4368,11 +4370,9 @@ th {
   position: relative;
   left: 0;
   top: -50px;
-  background-color: #ffffff;
   color: var(--light-text);
   display: grid;
   grid-template-columns: repeat(3, auto);
-  gap: 5px;
   border-radius: 20px;
 }
 .container-right .card_calendar .month-list > div {
@@ -4408,7 +4408,6 @@ th {
 .container-right .card_calendar .date-time-formate {
   width: max-content;
   height: max-content;
-  font-family: Dubai Light, Century Gothic;
   position: relative;
   display: flex;
   top: 5rem;

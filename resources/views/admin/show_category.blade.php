@@ -151,13 +151,13 @@
                                     <span class="boxsha font-lg talign-c text-bg p-1 br-xs bg-bg-light-9"
                                         id="category_image_sequence">{{ $data->image->first()->img_sequence }}</span>
                                 @else
-                                    <span class="boxsha font-lg talign-c text-bg p-1 br-xs bg-bg-light-9"
+                                    <span class="talign-c text-bg p-1 br-xs bg-bg-light-9"
                                         id="category_image_sequence">{{ __('Not found') }}</span>
                                 @endif
                             </div>
                             <div class="subelement40 display-g">
                                 <label class="font-lg mb-1 text-bg ls-1">Category Sequence</label>
-                                <span class="boxsha font-lg talign-c text-bg p-1 br-xs bg-bg-light-9"
+                                <span class="font-md talign-c text-bg p-1 br-xs bg-bg-light-9"
                                     id="category_sequence">{{ $data->sequence }}</span>
                             </div>
                         </li>
@@ -168,25 +168,25 @@
                         <li class="listelement p-1">
                             <div class="subelement40 display-g">
                                 <label class="font-lg text-bg mb-1 ls-1"> Category Name</label>
-                                <span class="boxsha p-1 font-lg talign-c text-bg p-1 br-xs bg-bg-light-9"
+                                <span class="p-1 talign-c text-bg p-1 br-xs bg-bg-light-9"
                                     id="category_name">{{ $data->name }}</span>
                             </div>
 
                             <div class="subelement40 display-g">
                                 <label class="font-lg mb-1  text-bg ls-1">Category Parrent</label>
-                                <span class="boxsha font-lg talign-c text-bg p-1 br-xs bg-bg-light-9"
+                                <span class="talign-c text-bg p-1 br-xs bg-bg-light-9"
                                     id="category_parrent">{{ $data->parrent }}</span>
                             </div>
                         </li>
                         <li class="listelement p-1">
                             <div class="subelement40 display-g">
                                 <label class="font-lg mb-1  text-bg ls-1" for="start_date">Category Start Date</label>
-                                <span class="boxsha font-lg talign-c text-bg p-1 br-xs bg-bg-light-9"
+                                <span class=" talign-c text-bg p-1 br-xs bg-bg-light-9"
                                     id="category_start_date">{{ $data->start_date }}</span>
                             </div>
                             <div class="subelement40 display-g">
                                 <label class="font-lg mb-1  text-bg ls-1">Category End Date </label>
-                                <span class="boxsha font-lg talign-c text-bg p-1 br-xs bg-bg-light-9"
+                                <span class="talign-c text-bg p-1 br-xs bg-bg-light-9"
                                     id="category_end_date">{{ $data->end_date }}</span>
                                 <input type="hidden" name="hidden_id" value="{{ $data->id }}" id="hidden_id">
                             </div>
@@ -194,14 +194,14 @@
                         <li class="listelement p-1">
                             <div class="subelement100 display-b">
                                 <label class="font-lg text-bg ls-1">Category Long Description</label>
-                                <span class="boxsha mt-1 display-b font-lg text-bg p-1 br-xs bg-bg-light-9"
+                                <span class="mt-1 display-b text-bg p-1 br-xs bg-bg-light-9"
                                     id="category_long_description">{{ $data->long_description }}</span>
                             </div>
                         </li>
                         <li class="listelement p-1">
                             <div class="subelement100 display-b">
                                 <label class="font-lg text-bg ls-1">Category Short Description</label>
-                                <span class="boxsha mt-1 display-b font-lg text-bg p-1 br-xs bg-bg-light-9"
+                                <span class="mt-1 display-b text-bg p-1 br-xs bg-bg-light-9"
                                     id="category_short_description">{{ $data->short_description }}</span>
                             </div>
                         </li>
@@ -212,7 +212,7 @@
                         <ul>
                             <li>
                                 <input type="button"
-                                    class="edit boxsha br-xs font-lg ls-1 text-bg cursor-p p-1 bg-secondary"
+                                    class="edit br-xs font-lg ls-1 text-bg cursor-p p-1 bg-secondary"
                                     value="Edit" name="edit" id="edit">
                                 <input type="submit" style="display: none"
                                     class="edit br-xs talign-c font-lg ls-1 text-bg cursor-p p-1  bg-secondary"

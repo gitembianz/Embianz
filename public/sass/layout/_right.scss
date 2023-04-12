@@ -211,11 +211,9 @@
             position: relative;
             left: 0;
             top: -50px;
-            background-color: $white;
             color: var(--light-text);
             display: grid;
             grid-template-columns: repeat(3, auto);
-            gap: 5px;
             border-radius: 20px;
           }
           .month-list > div {
@@ -252,7 +250,6 @@
           .date-time-formate {
             width: max-content;
             height: max-content;
-            font-family: Dubai Light, Century Gothic;
             position: relative;
             display: flex;
             top: 5rem;
