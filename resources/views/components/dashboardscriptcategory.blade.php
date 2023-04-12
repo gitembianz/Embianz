@@ -2,7 +2,48 @@
 <script>
     //script for DataTable for categories
     $(document).ready(function() {
-        var table = $('#category_table').DataTable();
+        var table = $('#category_table').DataTable({
+            processing: true,
+            serverSide: true,
+            orderable: true,
+            ajax: "{{ route('category') }}",
+            columns: [{
+                    data: 'id',
+                    name: 'id'
+                },
+                {
+                    data: 'image',
+                    name: 'image',
+                    orderable: false,
+                    searchable: false,
+                    render: function(data, type, row) {
+                        return '<img src="categories/' + data + '" width="50" height="50">';
+                    }
+                },
+                {
+                    data: 'name',
+                    name: 'name'
+                },
+                {
+                    data: 'parrent',
+                    name: 'parrent'
+                },
+                {
+                    data: 'short_description',
+                    name: 'short_description'
+                },
+                {
+                    data: 'sequence',
+                    name: 'sequence'
+                },
+                {
+                    data: 'action',
+                    name: 'action',
+                    orderable: false,
+                    searchable: false
+                },
+            ]
+        });
 
 
         var columnState = localStorage.getItem('columnState');

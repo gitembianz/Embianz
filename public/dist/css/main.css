@@ -2967,20 +2967,12 @@ li.dropdown {
   }
 }
 
-table {
-  color: #35424b;
-  width: 90%;
-  height: auto;
-}
-@media (max-width: 662px) {
-  table {
-    width: 80%;
-    height: auto;
-  }
+.category-table, .product-table {
+  width: 100% !important;
 }
 
 th {
-  text-align: center;
+  text-align: center !important;
 }
 
 .dataTables_info {

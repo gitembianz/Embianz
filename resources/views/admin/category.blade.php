@@ -54,39 +54,16 @@
             <table class="category-table" id="category_table">
                 <thead>
                     <tr>
-                        <th class="bg-white" style="text-align: center">Id</th>
-                        <th class="bg-white" style="text-align: center">Image</th>
-                        <th class="bg-white" style="text-align: center">Name</th>
-                        <th class="bg-white" style="text-align: center">Catagory Parrent</th>
-                        <th class="bg-white" style="text-align: center">Short Description</th>
-                        <th class="bg-white" style="text-align: center">Squence</th>
-                        <th class="bg-white" style="text-align: center">Action</th>
+                        <th class="bg-white">Id</th>
+                        <th class="bg-white">Image</th>
+                        <th class="bg-white">Name</th>
+                        <th class="bg-white">Catagory Parrent</th>
+                        <th class="bg-white">Short Description</th>
+                        <th class="bg-white">Squence</th>
+                        <th class="bg-white">Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($categories as $category)
-                      <?php
-                        $imagee = $category->image->first();
-                        if ($imagee != null) {
-                          $path = $imagee->img_search_path ?? 'defaultcategory.svg';
-                        } else {
-                          $path = 'defaultcategory.svg';
-                        }
-                      ?>
-                      <tr>
-                        <td>{{ $category->id }}</td>
-                        <td><img src="categories/{{ $path }}" alt="{{ $path}}" width="50"></td>
-                        <td>{{ $category->name }}</td>
-                        <td>{{ $category->parrent }}</td>
-                        <td>{{ $category->short_description }}</td>
-                        <td>{{ $category->sequence }}</td>
-                        <td>
-                          <button type="button" class="view_product btn-white text-bg br-xs" name="view" onclick="location.href='/show_category/{{ $category->id }}'">
-                            View
-                          </button>
-                        </td>
-                      </tr>
-                    @endforeach
                   </tbody>
             </table>
             {{-- End Table Category --}}

@@ -8,6 +8,7 @@ use App\Models\ImageCategories;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Yajra\DataTables\Facades\DataTables;
 
 
 class CategoryController extends Controller
@@ -16,8 +17,32 @@ class CategoryController extends Controller
     public function category(Request $request)
     {
 
-        $categories = Category::all();
-        return view('admin.category', compact('categories'));
+        if ($request->ajax()) {
+            $data = Category::query()->with('image');
+            return DataTables::eloquent($data)
+                ->addColumn('image', function ($data) {
+
+                    $testvar = $data->image->first();
+                    if ($testvar != NULL) {
+                        if ($testvar->img_search_path != NULL) {
+                            $path = $testvar->img_search_path;
+                        } else {
+                            $path = "defaultcategory.svg";
+                        }
+                    } else {
+                        $path = "defaultcategory.svg";
+                    };
+
+                    return $path;
+                })
+                ->addColumn('action', function ($data) {
+
+                    $button = '<button type="button" class="view_product btn-white text-bg br-xs" name="view" onclick="event.preventDefault();location.href=\'/show_category/' . $data->id . '\'">View</button>';
+                    return $button;
+                })
+                ->make(true);
+        }
+        return view('admin.category');
     }
 
     public function add_category(Request $request)
@@ -109,6 +134,7 @@ class CategoryController extends Controller
     {
         $id = $request->hiddenid;
         $category = category::find($id);
+        $categories = category::all();
         $category_image = ImageCategories::where('category_id', $category->id)->first();
         if ($category_image) {
             // Check if there are other ImageCategories with the same img_main_path or img_search_path
@@ -127,7 +153,7 @@ class CategoryController extends Controller
         }
         $category->delete();
         //de verificat de ce nu trimite message to view
-        return view('admin.category')->with('message', 'Category Deleted Successfully!');
+        return view('admin.category', compact('categories'))->with('message', 'Category Deleted Successfully!');
     }
 
     public function update_category(Request $request, $id)
@@ -196,14 +222,5 @@ class CategoryController extends Controller
             ];
         }
         return response()->json($images);
-    }
-
-    public function selectli($id)
-    {
-        //edit category
-        if (request()->ajax()) {
-            $data = Category::findOrFail($id);
-            return response()->json(['result' => $data]);
-        }
     }
 }

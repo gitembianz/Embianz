@@ -3,7 +3,54 @@
 
     //script for DataTable for products
     $(document).ready(function() {
-        var table = $('#product-table').DataTable();
+        var table = $('#product-table').DataTable({
+            processing: true,
+            serverSide: true,
+            orderable: true,
+            ajax: "{{ route('products') }}",
+            columns: [
+                {
+                    data: 'image',
+                    name: 'image',
+                    render: function(data, type, row) {
+                        return  data;
+                    }
+                },
+                {
+                    data: 'id',
+                    name: 'id'
+                },
+                {
+                    data: 'name',
+                    name: 'name'
+                },
+                {
+                    data: 'short_description',
+                    name: 'short_description'
+                },
+                {
+                    data: 'quantity',
+                    name: 'quantity'
+                },
+                {
+                    data: 'product_status',
+                    name: 'product_status'
+                },
+                {
+                    data: 'category',
+                    name: 'category',
+                    render: function(data, type, row) {
+                        return  data;
+                    }
+                },
+                {
+                    data: 'action',
+                    name: 'action',
+                    orderable: false,
+                    searchable: false
+                },
+            ]
+        });
 
         var columnState = localStorage.getItem('columnState');
 

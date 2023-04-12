@@ -194,14 +194,14 @@
                         <li class="listelement p-1">
                             <div class="subelement100 display-b">
                                 <label class="font-lg text-bg ls-1">Category Long Description</label>
-                                <span class="boxsha mt-1 display-b font-lg talign-c text-bg p-1 br-xs bg-bg-light-9"
+                                <span class="boxsha mt-1 display-b font-lg text-bg p-1 br-xs bg-bg-light-9"
                                     id="category_long_description">{{ $data->long_description }}</span>
                             </div>
                         </li>
                         <li class="listelement p-1">
                             <div class="subelement100 display-b">
                                 <label class="font-lg text-bg ls-1">Category Short Description</label>
-                                <span class="boxsha mt-1 display-b font-lg talign-c text-bg p-1 br-xs bg-bg-light-9"
+                                <span class="boxsha mt-1 display-b font-lg text-bg p-1 br-xs bg-bg-light-9"
                                     id="category_short_description">{{ $data->short_description }}</span>
                             </div>
                         </li>
