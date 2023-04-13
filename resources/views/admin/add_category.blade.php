@@ -15,8 +15,8 @@
     @endif
     {{-- End Section session message --}}
     <div class="contenttab mt-1 mr-1 bg-white text-bg br-sm">
-        <div class="row jus-c">
-            <ul>
+        <div class="row">
+            <ul style="width: 100%">
                 <li class="p-1 font-xl">
                     <form action="{{ url('/add_category') }}" method="POST" enctype="multipart/form-data">
                         @csrf
@@ -107,10 +107,7 @@
                                         </div>
                                     </li>
                                     <li class="p-1 listelement">
-                                        <div class="subelement100 display-g">
-                                            <label class="font-lg text-bg mb-1 ls-1">Category Sequence</label>
-                                            <input type="number" class="p-1 subelement100" name="sequence" placeholder="Catagory sequence" required>
-                                        </div>
+
                                     </li>
                                 </ul>
                             </div>
@@ -133,13 +130,24 @@
                                         </div>
                                     </li>
                                     <li class="listelementbutton p-1 listelement">
-                                        <div class="subelement40 display-g">
+                                        <div class="subelement30 display-g">
                                             <label class="font-lg text-bg mb-1 ls-1">Category Start Date</label>
                                             <input type="date" class="p-1" id="start_date" name="start_date" required>
                                         </div>
-                                        <div class="subelement40 display-g">
+                                        <div class="subelement30 display-g">
                                             <label class="font-lg text-bg mb-1 ls-1">Category End Date</label>
                                             <input type="date" id="end_date" class="p-1" name="end_date" required>
+                                        </div>
+                                        <div class="subelement30 display-g">
+                                            <label class="font-lg text-bg mb-1 ls-1">Category Sequence</label>
+                                            <input type="number" class="p-1 subelement100" name="sequence" placeholder="Catagory sequence" required>
+                                        </div>
+                                    </li>
+
+                                    <li class="p-1 listelement">
+                                        <div class="subelement100 display-g">
+                                            <label class="font-lg text-bg mb-1 ls-1">Category Short Description</label>
+                                            <input class="p-1 subelement100" type="text" name="short_description" placeholder="Short description catagory name" required>
                                         </div>
                                     </li>
                                     <li class="p-1 listelement">
@@ -148,13 +156,12 @@
                                             <textarea name="long_description" class="p-1" placeholder="Long description catagory name" cols="30" rows="10" required></textarea>
                                         </div>
                                     </li>
-                                    <li class="p-1 listelement">
+                                    <li class="listelement p-1">
                                         <div class="subelement100 display-g">
-                                            <label class="font-lg text-bg mb-1 ls-1">Category Short Description</label>
-                                            <input class="p-1 subelement100" type="text" name="short_description" placeholder="Short description catagory name" required>
+                                            <label class="font-lg text-bg mb-1 ls-1">SEO Title</label>
+                                            <input class="p-1" type="text" name="seo_title" placeholder="Enter SEO" required>
                                         </div>
                                     </li>
-
                                     <li class="p-1 font-xl">
                                         <input type="submit" class="addcategory display-f align-center br-xs float-l p-1 mb-1" value="Add new" name="submit">
                                         <a href="{{ route('category') }}" class="backcategory display-f float-r br-xs p-1"> Go Back</a>

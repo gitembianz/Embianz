@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('createdby')->nullable();
             $table->string('lastmodifiedby')->nullable();
             $table->timestamps();
+            $table->string('seo_title')->nullable();
         });
     }
 

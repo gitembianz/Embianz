@@ -7,7 +7,7 @@
 <section class="section-container p-1 bg-bg">
     {{-- Display session message --}}
     @if (session()->has('message'))
-        <div class="bg-secondary pos-rel ls-1 mb-1 br-xs p-1" id="alertevent">
+        <div class="bg-secondary pos-rel talign-c ls-1 mb-1 br-xs p-1" id="alertevent">
             {{ session()->get('message') }}
             <button type="button" onclick="document.getElementById('alertevent').style.display='none'"
                 class="exit font-lg bg-secondary float-r" data-bs-dismiss="alert" aria-hidden="true">x</button>
@@ -155,11 +155,7 @@
                                         id="category_image_sequence">{{ __('Not found') }}</span>
                                 @endif
                             </div>
-                            <div class="subelement40 display-g">
-                                <label class="font-lg mb-1 text-bg ls-1">Category Sequence</label>
-                                <span class="font-md talign-c text-bg p-1 br-xs bg-bg-light-9"
-                                    id="category_sequence">{{ $data->sequence }}</span>
-                            </div>
+
                         </li>
                     </ul>
                 </div>
@@ -179,22 +175,27 @@
                             </div>
                         </li>
                         <li class="listelement p-1">
-                            <div class="subelement40 display-g">
+                            <div class="subelement30 display-g">
                                 <label class="font-lg mb-1  text-bg ls-1" for="start_date">Category Start Date</label>
                                 <span class=" talign-c text-bg p-1 br-xs bg-bg-light-9"
                                     id="category_start_date">{{ $data->start_date }}</span>
                             </div>
-                            <div class="subelement40 display-g">
+                            <div class="subelement30 display-g">
                                 <label class="font-lg mb-1  text-bg ls-1">Category End Date </label>
                                 <span class="talign-c text-bg p-1 br-xs bg-bg-light-9"
                                     id="category_end_date">{{ $data->end_date }}</span>
                                 <input type="hidden" name="hidden_id" value="{{ $data->id }}" id="hidden_id">
                             </div>
+                            <div class="subelement30 display-g">
+                                <label class="font-lg mb-1 text-bg ls-1">Category Sequence</label>
+                                <span class="font-md talign-c text-bg p-1 br-xs bg-bg-light-9"
+                                    id="category_sequence">{{ $data->sequence }}</span>
+                            </div>
                         </li>
                         <li class="listelement p-1">
                             <div class="subelement100 display-b">
                                 <label class="font-lg text-bg ls-1">Category Long Description</label>
-                                <span class="mt-1 display-b text-bg p-1 br-xs bg-bg-light-9"
+                                <span class="textareamin mt-1 display-b text-bg p-1 br-xs bg-bg-light-9"
                                     id="category_long_description">{{ $data->long_description }}</span>
                             </div>
                         </li>

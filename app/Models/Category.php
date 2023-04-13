@@ -32,5 +32,6 @@ class Category extends Model
         'end_date',
         'createdby',
         'lastmodifiedby',
+        'seo_title',
     ];
 }

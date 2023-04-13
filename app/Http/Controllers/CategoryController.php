@@ -58,6 +58,7 @@ class CategoryController extends Controller
         $data->end_date = $request->end_date;
         $data->createdby = Auth::user()->name;
         $data->lastmodifiedby = Auth::user()->name;
+        $data->seo_title = $request->seo_title;
         $data->save();
 
         //save category image
