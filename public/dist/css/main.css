@@ -3042,6 +3042,72 @@ th {
   margin: auto;
 }
 
+#dropBox {
+  min-width: 400px;
+  max-width: 75%;
+  min-height: 300px;
+  border: 3px dashed black;
+  text-align: center;
+  background: lightgrey;
+  padding: 3em;
+  margin: auto;
+}
+
+#dropBox.hover {
+  border-color: darkslateblue;
+  background: aliceblue;
+}
+
+.button {
+  display: inline-block;
+  padding: 0.5em 1em;
+  background: black;
+  cursor: pointer;
+  border-radius: 5px;
+  border: 1px solid darkslateblue;
+  color: #fff;
+  transition: 0.4s;
+}
+
+.button:hover {
+  background: darkslateblue;
+}
+
+#imgUpload {
+  display: none;
+}
+
+#gallery {
+  text-align: center;
+  margin-top: 1.5em;
+}
+
+#gallery div {
+  display: inline-block;
+  margin: 0.5em 1em;
+}
+
+#gallery img {
+  max-height: 150px;
+}
+
+#gallery .fName,
+#gallery .fSize {
+  display: block;
+}
+
+#gallery .fName {
+  color: brown;
+}
+
+#gallery .fSize {
+  font-size: 0.8em;
+}
+
+#gallery .fType {
+  font-size: 0.7em;
+}
+
 .boxsha {
   box-shadow: 0px 0px 2px #35424b;
 }

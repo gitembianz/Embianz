@@ -14,7 +14,7 @@
 
 
         <script src="/script/calendar.js" defer></script>
-        <script src="/script/imgupload.js" defer></script>
+        <script src="/script/imgupload.js"></script>
 
     </head>
     <body>
