@@ -366,8 +366,8 @@ class ComposerStaticInitdbceb679be78fc0f2f620fcaf24d3e3e
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
@@ -611,11 +611,12 @@ class ComposerStaticInitdbceb679be78fc0f2f620fcaf24d3e3e
         'App\\Http\\Middleware\\ValidateSignature' => __DIR__ . '/../..' . '/app/Http/Middleware/ValidateSignature.php',
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
         'App\\Models\\Category' => __DIR__ . '/../..' . '/app/Models/Category.php',
-        'App\\Models\\ImageCategories' => __DIR__ . '/../..' . '/app/Models/ImageCategories.php',
         'App\\Models\\Imagetype' => __DIR__ . '/../..' . '/app/Models/Imagetype.php',
         'App\\Models\\Languages' => __DIR__ . '/../..' . '/app/Models/Languages.php',
+        'App\\Models\\MediaLocation' => __DIR__ . '/../..' . '/app/Models/MediaLocation.php',
         'App\\Models\\Product' => __DIR__ . '/../..' . '/app/Models/Product.php',
         'App\\Models\\Products_categories' => __DIR__ . '/../..' . '/app/Models/Products_categories.php',
+        'App\\Models\\Tabels' => __DIR__ . '/../..' . '/app/Models/Tabels.php',
         'App\\Models\\Todolist' => __DIR__ . '/../..' . '/app/Models/Todolist.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
@@ -629,6 +630,7 @@ class ComposerStaticInitdbceb679be78fc0f2f620fcaf24d3e3e
         'App\\View\\Components\\GuestLayout' => __DIR__ . '/../..' . '/app/View/Components/GuestLayout.php',
         'App\\View\\Components\\dashboardfooter' => __DIR__ . '/../..' . '/app/View/Components/dashboardfooter.php',
         'App\\View\\Components\\dashboardheader' => __DIR__ . '/../..' . '/app/View/Components/dashboardheader.php',
+        'App\\View\\Components\\dashboardmediahanddler' => __DIR__ . '/../..' . '/app/View/Components/dashboardmediahanddler.php',
         'App\\View\\Components\\dashboardmodals' => __DIR__ . '/../..' . '/app/View/Components/dashboardmodals.php',
         'App\\View\\Components\\dashboardnavbar' => __DIR__ . '/../..' . '/app/View/Components/dashboardnavbar.php',
         'App\\View\\Components\\dashboardright' => __DIR__ . '/../..' . '/app/View/Components/dashboardright.php',
@@ -2775,6 +2777,7 @@ class ComposerStaticInitdbceb679be78fc0f2f620fcaf24d3e3e
         'Illuminate\\Support\\Composer' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Support/Composer.php',
         'Illuminate\\Support\\ConfigurationUrlParser' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Support/ConfigurationUrlParser.php',
         'Illuminate\\Support\\DateFactory' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Support/DateFactory.php',
+        'Illuminate\\Support\\DefaultProviders' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Support/DefaultProviders.php',
         'Illuminate\\Support\\Enumerable' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Collections/Enumerable.php',
         'Illuminate\\Support\\Env' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Support/Env.php',
         'Illuminate\\Support\\Exceptions\\MathException' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Support/Exceptions/MathException.php',
@@ -3205,6 +3208,7 @@ class ComposerStaticInitdbceb679be78fc0f2f620fcaf24d3e3e
         'Laravel\\Fortify\\Http\\Responses\\VerifyEmailResponse' => __DIR__ . '/..' . '/laravel/fortify/src/Http/Responses/VerifyEmailResponse.php',
         'Laravel\\Fortify\\LoginRateLimiter' => __DIR__ . '/..' . '/laravel/fortify/src/LoginRateLimiter.php',
         'Laravel\\Fortify\\RecoveryCode' => __DIR__ . '/..' . '/laravel/fortify/src/RecoveryCode.php',
+        'Laravel\\Fortify\\RoutePath' => __DIR__ . '/..' . '/laravel/fortify/src/RoutePath.php',
         'Laravel\\Fortify\\Rules\\Password' => __DIR__ . '/..' . '/laravel/fortify/src/Rules/Password.php',
         'Laravel\\Fortify\\TwoFactorAuthenticatable' => __DIR__ . '/..' . '/laravel/fortify/src/TwoFactorAuthenticatable.php',
         'Laravel\\Fortify\\TwoFactorAuthenticationProvider' => __DIR__ . '/..' . '/laravel/fortify/src/TwoFactorAuthenticationProvider.php',
