@@ -1,0 +1,57 @@
+
+///upload component
+
+#dropBox {
+    min-width: 450px;
+    max-width: 100%;
+    min-height: auto;
+    text-align: center;
+    padding: $base-padding;
+}
+.button {
+    display: inline-block;
+    padding: $base-padding;
+    cursor: pointer;
+    border-radius: 5px;
+    border: 1px solid $bg;
+    color: $bg;
+    transition: .4s;
+}
+.buttonremove{
+    background: $white;
+    cursor: pointer;
+    color: $bg;
+}
+#imgUpload {
+    display: none;
+}
+#gallery {
+    text-align: center;
+}
+#gallery div {
+    display: inline-block;
+}
+#gallery img {
+    max-height: 150px;
+}
+#imageTable {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  #imageTable th, #imageTable td {
+    padding: 0.5em;
+    border: 1px solid #ccc;
+  }
+
+  #imageTable th {
+    background-color: $white;
+  }
+
+  #imageTable tr:hover {
+    .buttonremove{
+        background-color: #f5f5f5;
+    }
+    background-color: #f5f5f5;
+
+  }

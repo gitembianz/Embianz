@@ -13,7 +13,7 @@ class HomeController extends Controller
         if($usertype=='1'){
             return view('admin.home');
         } else{
-            return view('welcome');
+            return view('site.home');
         }
 
     }

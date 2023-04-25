@@ -1,0 +1,282 @@
+
+#back, #new, #edit, #delete, #Update{
+  border: 1px solid $secondary;
+  box-shadow: 0px 0px 0.5px $bg;
+
+}
+
+
+
+.listelementbutton{
+    display: flex;
+    justify-content: space-between;
+
+
+}
+.addcategory, .backcategory {
+    @include wh(5vw, auto);
+    border: none;
+    background-color: $secondary;
+    box-shadow: 0px 0px 2px $bg;
+    color: $bg;
+    cursor: pointer;
+    font-size: 16px;
+
+}
+
+
+.subelement100{
+    width: 100%;
+}
+.subelement40{
+    width: 40%;
+}
+.subelement80{
+    width: 80%;
+}
+.subelement30{
+    width: 30%;
+}
+
+
+
+
+.view{
+    background: $white;
+}
+
+.title {
+    color: $bg !important;
+    z-index: 2;
+  }
+
+#imageModal, #imageModal1{
+  .content-category{
+    top: 7.35rem;
+  }
+}
+
+
+
+#images-container, #images-container1 {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 100px);
+  grid-gap: 10px;
+
+}
+
+
+.grid-item {
+  width: 7.5rem;
+  height: 7.5rem;
+  object-fit: cover;
+  padding: $base-padding;
+  margin: $base-margin;
+  position: relative;
+  left: -10px;
+  &.selected {
+    background: $secondary;
+    border-radius: $base-border-radius /2;
+    width: 7.6rem;
+    height: 7.6rem;
+    //display: inline-table;
+   // position: relative;
+    padding-bottom: $base-padding;
+  }
+
+}
+.img-container{
+   // position: relative;
+    &.selected {
+        background: $secondary;
+        border-radius: $base-border-radius /2;
+        width: 7.6rem;
+        height: 7.6rem;
+        //display: inline-table;
+       // position: relative;
+        padding-bottom: $base-padding;
+      }
+}
+
+
+.img-name{
+   // display: block;
+    font-size: 10px;
+}
+
+#Update{
+  position: relative;
+  left: 47.5%;
+}
+.multiselect {
+  width: 10vw;
+  position: absolute;
+  //top: 10rem;
+
+}
+
+.selectBox {
+  position: relative;
+}
+
+.selectBox select {
+  width: 100%;
+  font-weight: bold;
+}
+
+.overSelect {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+
+}
+
+#checkboxes {
+  display: none;
+  border: 1px  solid $bg;
+  padding: $base-padding;
+  position: absolute;
+  z-index: 1;
+  background: $white;
+  float: right;
+  width: 10vw;
+  //position: absolute;
+}
+
+#checkboxes label {
+  display: block;
+}
+
+
+
+.listelement{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#category_image_main{
+  image-rendering: crisp-edges;
+  object-fit: cover;
+  transition: opacity 0.5s ease-in-out;
+  opacity: 1;
+
+}
+#category_image_main.loaded {
+  opacity: 1;
+}
+
+@media (max-width: 662px) {
+  .title {
+    margin-top: 1rem;
+    font-size: $base-font-size;
+  }
+
+  .content-category {
+    width: 95vw;
+  }
+
+  #modal-category {
+    z-index: 1;
+  }
+}
+
+.content-category {
+  .browse{
+    @include wh(10%, auto);
+  }
+  @extend .content;
+  @include wh(75vw, auto);
+  top: 10%;
+  padding: 0;
+
+  #new, #delete, #edit{
+    box-shadow: 0px 0px 2px $bg;
+    @include wh(10%, auto);
+  }
+
+  @media (max-width: 662px) {
+    width: 95vw;
+  }
+
+
+
+
+
+  input {
+    @include wh(40%, auto);
+    &#category_image,
+    &#category_image_search{
+      @include wh(40%, auto);
+    }
+    @media (max-width: 662px) {
+      @include wh(70%, auto);
+    }
+
+    padding: $base-padding;
+    background-color: $bg;
+
+    &::placeholder {
+      color: $secondary;
+      opacity: 1;
+    }
+
+    transition: $transition;
+    -webkit-transition: width 0.4s ease-in-out;
+    color: $secondary;
+    border: 1px solid $secondary;
+
+    &.modalbutton{
+        @include w(15rem);
+        background-color: $secondary;
+        color: $bg;
+        border: 1px solid $secondary;
+        box-shadow: 0px 0px 2px $bg;
+        font-size: 18px;
+        }
+  }
+
+
+
+  .element {
+    // @include wh(85%, auto);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    label {
+      @media (max-width: 662px) {
+        font-size: $base-font-size;
+      }
+    }
+
+
+    input {
+      @include wh(25%, auto);
+      @media (max-width: 662px) {
+        @include wh(25%, auto);
+      }
+
+      &::-webkit-calendar-picker-indicator {
+        filter: invert(0.8);
+      }
+    }
+  }
+
+
+  #category_image, #category_image_search{
+    @include wh(25%, auto);
+    @media (max-width: 662px) {
+      @include wh(60%, auto);
+    }
+  }
+}
+
+.content-category-images{
+  @extend .content-category;
+  @include wh(60vw, auto);
+  color: $bg;
+}
+

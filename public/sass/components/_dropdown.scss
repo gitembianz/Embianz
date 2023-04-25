@@ -1,0 +1,26 @@
+li.dropdown {
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  min-width: 10vh;
+  box-shadow: $base-box-shadow;
+  z-index: 1;
+}
+
+.dropdown-content a {
+  text-decoration: none;
+  display: block;
+  text-align: left;
+  box-shadow: $base-box-shadow;
+ 
+}
+
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+

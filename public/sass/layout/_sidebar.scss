@@ -1,0 +1,111 @@
+%fixed-layout {
+    position: fixed;
+    @include wh(20rem, 100%);
+    overflow-y: scroll;
+    background: $sidebar-bg;
+}
+
+.active {
+    color: $secondary;
+    background: $sidebar-bg;
+}
+
+.sidebar {
+    @extend %fixed-layout;
+    overflow: scroll;
+    @include wh(13rem, 100%);
+    top: 5rem;
+    left: 0;
+    //overflow-x: hidden;
+    --webkit-transition: width 0.4s ease-in-out;
+
+    &::-webkit-scrollbar {
+        @include w(0);
+    }
+
+
+    & .menu {
+
+        & .list {
+            position: relative;
+            transition: $transition;
+
+            &::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                @include wh(0.3rem, 100%);
+                background: $secondary;
+                border-radius: 0.2rem;
+                opacity: 0;
+                pointer-events: none;
+                transition: $transition;
+            }
+
+            &:hover::before,
+            &.active::before {
+                opacity: 1;
+                transition: $transition;
+            }
+
+            & .link,
+            & .settings,
+            & .dropdown-btn {
+                display: flex;
+                font-size: $base-font-size;
+                font-family: 'Roboto-light', sans-serif !important;
+                align-items: center;
+                @include w(100%);
+
+            }
+
+            .dropdown-container {
+                @extend .dropdown-content;
+                position: relative;
+                box-shadow: none;
+
+                @media (max-width: 662px) {
+                    z-index: 1;
+                    padding-top: $base-padding;
+                }
+
+                transition: $transition;
+
+                & a {
+
+                    box-shadow: none;
+                    text-align: right;
+
+                    &:hover {
+                        color: $secondary;
+                        background: $sidebar-bg;
+                    }
+                }
+            }
+
+            & svg {
+                display: flex;
+                @include wh(2.7rem, auto);
+                padding: 0.5rem;
+                object-fit: cover;
+                align-items: center;
+
+                path {
+                    fill: $secondary;
+                }
+            }
+        }
+    }
+
+    @media (max-width: 662px) {
+
+        @include w(4.5rem);
+        overflow-x: hidden;
+        top: 4.5rem;
+
+        span {
+            display: none;
+        }
+    }
+}

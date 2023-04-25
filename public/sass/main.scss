@@ -1,0 +1,31 @@
+//variables & functions
+@import './functions';
+@import './variables';
+@import './mixins';
+
+// base &layout
+@import './reset';
+@import './breakpoints';
+@import './grid';
+
+//colors
+@import './colors';
+
+//components(button, card, navbar)
+@import 'components/card';
+@import 'components/button';
+@import 'components/badge';
+@import 'components/dropdown';
+@import 'components/modal';
+@import 'components/datatable';
+@import 'components/uploadimage';
+
+//utilities(margin, padding, opacity)
+@import './utilities';
+
+//layout
+@import 'layout/navbar';
+@import 'layout/sidebar';
+@import 'layout/category';
+@import 'layout/right';
+@import 'layout/product';
