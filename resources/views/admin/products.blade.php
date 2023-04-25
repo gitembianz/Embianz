@@ -13,20 +13,11 @@
         </div>
     @endif
     {{-- End Section session message --}}
-    <div class="contenttab m-1 p-2 br-sm" >
+    <div class="contenttab m-1 mb-1 p-2 br-sm" >
 
     <div class="row talign-c">
         <div class="col-12-xs col-12-sm col-12-xl text-bg">
-            <a href="{{ route('add_products') }}" class="boxsha bg-secondary-dark-1 display-f align-center br-xs float-r p-1 mb-1"><span class="bg-secondary-dark-1"><svg class="bg-secondary-dark-1" width="20px" height="20px" viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg" fill="#35424b">
-                <g id="SVGRepo_bgCarrier" stroke-width="1"></g>
-                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"
-                    stroke="#CCCCCC" stroke-width="0.288"></g>
-                <g id="SVGRepo_iconCarrier">
-                    <path d="M6 12h6V6h1v6h6v1h-6v6h-1v-6H6z"></path>
-                    <path fill="none" d="M0 0h24v24H0z"></path>
-                </g>
-            </svg></span> Add new</a>
+            <a href="{{ route('add_products') }}" class="bg-secondary display-f align-center br-xs float-r p-1 mb-1">{{ __('Add new') }}</a>
             <div class="form-group mb-2">
                 <form>
                     <div class="multiselect">

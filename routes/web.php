@@ -34,10 +34,6 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'])-
     route::post('/category_update/{id}', [CategoryController::class, 'update_category'])->name('category_update');
     route::get('/new_categories', [CategoryController::class, 'new'])->name('newcategory');
 
-
-    // browse image
-    route::get('/get-images', [CategoryController::class, 'browse']);
-
     //Products routes
     route::get('/products', [ProductController::class, 'products'])->name('products');
     route::get('/add_products', [ProductController::class, 'add'])->name('add_products');

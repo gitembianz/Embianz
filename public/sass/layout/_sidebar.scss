@@ -1,6 +1,5 @@
 %fixed-layout {
     position: fixed;
-
     @include wh(20rem, 100%);
     overflow-y: scroll;
     background: $sidebar-bg;
@@ -14,8 +13,8 @@
 .sidebar {
     @extend %fixed-layout;
     overflow: scroll;
-    @include wh(18rem, 100%);
-    top: 6.5rem;
+    @include wh(13rem, 100%);
+    top: 5rem;
     left: 0;
     //overflow-x: hidden;
     --webkit-transition: width 0.4s ease-in-out;

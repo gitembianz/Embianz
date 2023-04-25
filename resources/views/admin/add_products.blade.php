@@ -3,6 +3,7 @@
 <x-dashboardsidebar />
 <x-dashboardmodals />
 <x-dashboardright />
+<x-dashboardmediahanddler />
 {{-- Page content start --}}
 <section class="section-container bg-bg">
     {{-- Display session message --}}
@@ -14,7 +15,7 @@
         </div>
     @endif
     {{-- End Section session message --}}
-    <div class="contenttab m-1 bg-white text-bg br-sm">
+    <div class="contenttab m-1 mb-2 bg-white text-bg br-sm">
         <div class="row">
             {{-- Header --}}
             <ul style="width: 100%">
@@ -26,26 +27,21 @@
                             <button id="resetform" class="cursor-p mr-1 bg-white text-bg p-1" type="reset">Clear form</button>
                         </div>
                         {{-- content --}}
-                        <div class="row mt-1 gap-4">
-                            <div class="col-12-xs col-12-sm col-4-xl text-bg">
+                        <div class="row gap-4">
+                            <div class="col-12-xs col-12-sm col-5-xl text-bg">
                                 <ul>
-                                    <li><label class="font-lg text-bg ls-1">Product Image</label></li>
-                                    <li class="p-1 listelement">
-                                        <div class="subelement100 display-g">
-                                            <div id="dropBox">
-                                                <p>Drag & Drop Images Here...</p>
-                                                <form class="imgUploader">
-                                                    <input type="file" id="imgUpload" multiple accept="image/*" onchange="filesManager(this.files)">
-                                                    <label class="button" for="imgUpload">...or Upload From Your Computer</label>
-                                                </form>
-                                                <div id="gallery"></div>
-                                            </div>
-                                        </div>
+
+                                    <li class="p-1 mt-1 subelement100">
+                                        <label class="font-lg text-bg ls-1">Product Image</label>
+                                                <input type="file" id="imgUpload" multiple accept="image/*" onchange="filesManager(this.files)">
+                                                <label class="button ml-3 font-md" for="imgUpload">Upload Media</label>
+                                              <table id="imageTable" class="mt-2 talign-c">
+                                              </table>
                                     </li>
 
                                 </ul>
                             </div>
-                            <div class="col-12-xs col-12-sm col-7-xl text-bg">
+                            <div class="col-12-xs col-12-sm col-6-xl text-bg">
                                 <ul>
                                     <li class="listelement p-1">
                                         <div class="subelement40 display-g">
@@ -72,12 +68,7 @@
                                             <input type="date" id="end_date" class="p-1" name="end_date" required>
                                         </div>
                                     </li>
-                                    <li class="listelement p-1">
-                                        <div class="subelement100 display-g">
-                                            <label class="font-lg text-bg mb-1 ls-1">Product Long Description</label>
-                                            <textarea name="long_description" class="p-1 subelement100" placeholder="Enter a product Long description" cols="30" rows="10" required></textarea>
-                                        </div>
-                                    </li>
+
                                     <li class="listelement p-1">
                                         <div class="subelement100 display-g">
                                             <label class="font-lg text-bg mb-1 ls-1">Product Short Description</label>
@@ -100,6 +91,12 @@
                                                     <option value="{{ $status_name }}">{{ $status_name }}</option>
                                                 @endforeach
                                             </select>
+                                        </div>
+                                    </li>
+                                    <li class="listelement p-1">
+                                        <div class="subelement100 display-g">
+                                            <label class="font-lg text-bg mb-1 ls-1">Product Long Description</label>
+                                            <textarea name="long_description" class="p-1 subelement100" placeholder="Enter a product Long description" cols="30" rows="10" required></textarea>
                                         </div>
                                     </li>
                                     <li class="listelement p-1">

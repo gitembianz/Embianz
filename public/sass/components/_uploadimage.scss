@@ -1,123 +1,57 @@
-.container_img {
-   // background-color: $white;
-    width: 100%;
-    min-width: 10rem;
-   padding: $base-padding;
-    box-shadow: $base-box-shadow;
 
-    .image-container {
-        width: 100%;
-        margin: $base-margin;
-        display: grid;
-
-        & img {
-            position: relative;
-            max-width: 100%;
-            margin: auto;
-        }
-
-        figcaption {
-            margin: 20px 0 30px 0;
-            text-align: center;
-            width: 100%;
-            color: $bg;
-            font-size: 18px;
-        }
-    }
-
-
-
-    input[type="file"] {
-        display: none;
-    }
-    label{
-        display: flex;
-        position: relative;
-        align-items: center;
-        justify-content: center;
-        background-color: $secondary;
-        text-align: center;
-        font-size: 16px;
-        padding: $base-padding  / 2;
-        margin: auto;
-        border: 1px solid $bg;
-        @include wh(17vw, auto);
-        & svg{
-            @include wh(2rem, auto);
-        }
-
-    }
-    .browse1{
-        border: 1px solid $white;
-        padding: $base-padding / 2;
-        background: $white;
-    }
-
-}
-
-.container_img_multiple{
-    @extend .container_img;
-
-}
-#images{
-    @extend .image-container;
-    border: 1px solid $bg;
-    width: 90%;
-    margin: auto;
-}
-///new upload component
+///upload component
 
 #dropBox {
-    min-width: 400px;
-    max-width: 75%;
-    min-height: 300px;
-    border: 3px dashed black;
+    min-width: 450px;
+    max-width: 100%;
+    min-height: auto;
     text-align: center;
-    background: lightgrey;
-    padding: 3em;
-    margin: auto;
-}
-#dropBox.hover {
-  border-color: darkslateblue;
-  background: aliceblue;
+    padding: $base-padding;
 }
 .button {
     display: inline-block;
-    padding: .5em 1em;
-    background: black;
+    padding: $base-padding;
     cursor: pointer;
     border-radius: 5px;
-    border: 1px solid darkslateblue;
-    color: #fff;
+    border: 1px solid $bg;
+    color: $bg;
     transition: .4s;
 }
-.button:hover {
-    background: darkslateblue;
+.buttonremove{
+    background: $white;
+    cursor: pointer;
+    color: $bg;
 }
 #imgUpload {
     display: none;
 }
 #gallery {
     text-align: center;
-    margin-top: 1.5em;
 }
 #gallery div {
     display: inline-block;
-    margin: .5em 1em;
 }
 #gallery img {
     max-height: 150px;
 }
-#gallery .fName,
-#gallery .fSize {
-    display: block;
-}
-#gallery .fName {
-    color: brown;
-}
-#gallery .fSize {
-    font-size: .8em;
-}
-#gallery .fType {
-    font-size: .7em;
-}
+#imageTable {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  #imageTable th, #imageTable td {
+    padding: 0.5em;
+    border: 1px solid #ccc;
+  }
+
+  #imageTable th {
+    background-color: $white;
+  }
+
+  #imageTable tr:hover {
+    .buttonremove{
+        background-color: #f5f5f5;
+    }
+    background-color: #f5f5f5;
+
+  }

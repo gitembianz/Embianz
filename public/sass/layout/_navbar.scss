@@ -29,10 +29,10 @@
 
 .navbar{
   @extend %flex-layout;
-  padding: $base-padding $base-padding *2;
+  padding: $base-padding;
   z-index: 1;
   position: fixed;
-  height: 6.5rem;
+  height: 5rem;
 
   //icon on mobile version
   .small{
@@ -51,31 +51,31 @@
             padding: $base-padding /2;
             object-fit: cover;
             align-items: center;
-            background-color: $secondarydark;
-            border: 2px solid $secondary;
+            //background-color: $secondarydark;
+            border: 1px solid $secondary;
             border-radius: $base-border-thickness * 2;
             cursor: pointer;
             path {
-              fill: $white;
+              fill: $secondary;
             }
           }
     }
     .user_container{
         display: flex;
         .user_icon{
-            padding: $base-padding;
-            border: 2px solid $secondary;
-            border-radius: 50%;
-            background-color: $secondarydark;
-            margin: $base-margin;
+           // padding: $base-padding;
+           // border: 2px solid $secondary;
+            //border-radius: 50%;
+            //background-color: $secondarydark;
+            //margin: $base-margin;
             & svg {
                  @include wh(2rem, auto);
                  object-fit: cover;
-                 color: $white;
+                // color: $white;
                  align-items: center;
                  cursor: pointer;
                  path {
-                   fill: $white;
+                   fill: $secondary;
                  }
                }
         }

@@ -46,117 +46,9 @@
                     <ul>
                         <li><label class="font-lg text-bg ls-1">Category Image</label></li>
                         <li class="listelement p-1">
-                            <div class="container_img bg-bg-light-9 br-xs">
-                                <figure class="image-container">
-                                    <img id="chosen-image">
-                                    @if (isset($data) && !is_null($data->image->first()) && !is_null($data->image->first()->img_main_path))
-                                        <img id="chosen-image"
-                                            src="/categories/{{ $data->image->first()->img_main_path }}"
-                                            alt="category_image_main" width="100" height="50">
-                                        <figcaption id="file-name">
-                                            {{ _('Main Image is ') . $data->image->first()->img_main_path }}
-                                        </figcaption>
-                                    @else
-                                        <figcaption id="file-name">
-                                            {{ _('No main image uploaded') }}
-                                        </figcaption>
-                                    @endif
-                                </figure>
-                                <div id="uploadcontrollersm" class="display-n">
-                                    <input type="file" name="category_image_main" id="upload-button"
-                                        accept="image/*">
-                                    <div class="display-f">
-                                        <label for="upload-button" class="br-xs cursor-p"><svg width="64px"
-                                                height="64px" viewBox="0 0 24 24" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
-                                                    stroke-linejoin="round"></g>
-                                                <g id="SVGRepo_iconCarrier">
-                                                    <path
-                                                        d="M13 4H8.8C7.11984 4 6.27976 4 5.63803 4.32698C5.07354 4.6146 4.6146 5.07354 4.32698 5.63803C4 6.27976 4 7.11984 4 8.8V15.2C4 16.8802 4 17.7202 4.32698 18.362C4.6146 18.9265 5.07354 19.3854 5.63803 19.673C6.27976 20 7.11984 20 8.8 20H15.2C16.8802 20 17.7202 20 18.362 19.673C18.9265 19.3854 19.3854 18.9265 19.673 18.362C20 17.7202 20 16.8802 20 15.2V11"
-                                                        stroke="#35424b" stroke-width="2" stroke-linecap="round"
-                                                        stroke-linejoin="round"></path>
-                                                    <path
-                                                        d="M4 16L8.29289 11.7071C8.68342 11.3166 9.31658 11.3166 9.70711 11.7071L13 15M13 15L15.7929 12.2071C16.1834 11.8166 16.8166 11.8166 17.2071 12.2071L20 15M13 15L15.25 17.25"
-                                                        stroke="#35424b" stroke-width="2" stroke-linecap="round"
-                                                        stroke-linejoin="round"></path>
-                                                    <path d="M18 8V3M18 3L16 5M18 3L20 5" stroke="#35424b"
-                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                    </path>
-                                                </g>
-                                            </svg> &nbsp; {{ __('Main image') }} </label>
-                                        <input type="button" class="browse1 ml-1 br-xs talign-c cursor-p"
-                                            value="or Browse" name="browse" id="browse_main">
-                                        <input type="hidden" name="select_image_main_hidden"
-                                            id="select_image_main_hidden">
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="listelement p-1">
-                            <div class="container_img bg-bg-light-9 br-xs">
-                                <figure class="image-container">
-                                    <img id="chosen-image-search">
-                                    @if (isset($data) && !is_null($data->image->first()) && !is_null($data->image->first()->img_search_path))
-                                        <img id="chosen-image-search"
-                                            src="/categories/{{ $data->image->first()->img_search_path }}"
-                                            alt="category_image_search" width="100" height="50">
-                                        <figcaption id="file-name-search">
-                                            {{ _('Search Image is ') . $data->image->first()->img_search_path }}
-                                        </figcaption>
-                                    @else
-                                        <figcaption id="file-name-search">
-                                            {{ _('No search image uploaded') }}
-                                        </figcaption>
-                                    @endif
-                                </figure>
-                                <div id="uploadcontrollerss" class="display-n">
-                                    <input type="file" name="category_image_search" id="upload-button-search"
-                                        accept="image/*">
-                                    <div class="display-f">
-                                        <label for="upload-button-search" class="br-xs cursor-p"><svg width="64px"
-                                                height="64px" viewBox="0 0 24 24" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
-                                                    stroke-linejoin="round"></g>
-                                                <g id="SVGRepo_iconCarrier">
-                                                    <path
-                                                        d="M13 4H8.8C7.11984 4 6.27976 4 5.63803 4.32698C5.07354 4.6146 4.6146 5.07354 4.32698 5.63803C4 6.27976 4 7.11984 4 8.8V15.2C4 16.8802 4 17.7202 4.32698 18.362C4.6146 18.9265 5.07354 19.3854 5.63803 19.673C6.27976 20 7.11984 20 8.8 20H15.2C16.8802 20 17.7202 20 18.362 19.673C18.9265 19.3854 19.3854 18.9265 19.673 18.362C20 17.7202 20 16.8802 20 15.2V11"
-                                                        stroke="#35424b" stroke-width="2" stroke-linecap="round"
-                                                        stroke-linejoin="round"></path>
-                                                    <path
-                                                        d="M4 16L8.29289 11.7071C8.68342 11.3166 9.31658 11.3166 9.70711 11.7071L13 15M13 15L15.7929 12.2071C16.1834 11.8166 16.8166 11.8166 17.2071 12.2071L20 15M13 15L15.25 17.25"
-                                                        stroke="#35424b" stroke-width="2" stroke-linecap="round"
-                                                        stroke-linejoin="round"></path>
-                                                    <path d="M18 8V3M18 3L16 5M18 3L20 5" stroke="#35424b"
-                                                        stroke-width="2" stroke-linecap="round"
-                                                        stroke-linejoin="round"></path>
-                                                </g>
-                                            </svg> &nbsp; {{ __('Search image') }}</label>
-                                        <input type="button"
-                                            class="browse1 ls-1 ml-1 br-xs talign-c cursor-p bg-white"
-                                            value="or Browse" name="browse" id="browse_search">
-                                        <input type="hidden" name="select_image_search_hidden"
-                                            id="select_image_search_hidden">
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="listelement p-1">
-                            <div class="subelement40 display-g">
-                                <label class="font-lg text-bg mb-1 ls-1">Image Sequence</label>
-                                @if (isset($data) && !is_null($data->image->first()) && !is_null($data->image->first()->img_sequence))
-                                    <span class="boxsha font-lg talign-c text-bg p-1 br-xs bg-bg-light-9"
-                                        id="category_image_sequence">{{ $data->image->first()->img_sequence }}</span>
-                                @else
-                                    <span class="talign-c text-bg p-1 br-xs bg-bg-light-9"
-                                        id="category_image_sequence">{{ __('Not found') }}</span>
-                                @endif
-                            </div>
 
                         </li>
+
                     </ul>
                 </div>
                 <div class="col-12-xs col-12-sm col-7-xl text-bg">
@@ -194,6 +86,13 @@
                         </li>
                         <li class="listelement p-1">
                             <div class="subelement100 display-b">
+                                <label class="font-lg text-bg ls-1">Category Short Description</label>
+                                <span class="mt-1 display-b text-bg p-1 br-xs bg-bg-light-9"
+                                    id="category_short_description">{{ $data->short_description }}</span>
+                            </div>
+                        </li>
+                        <li class="listelement p-1">
+                            <div class="subelement100 display-b">
                                 <label class="font-lg text-bg ls-1">Category Long Description</label>
                                 <span class="textareamin mt-1 display-b text-bg p-1 br-xs bg-bg-light-9"
                                     id="category_long_description">{{ $data->long_description }}</span>
@@ -201,15 +100,15 @@
                         </li>
                         <li class="listelement p-1">
                             <div class="subelement100 display-b">
-                                <label class="font-lg text-bg ls-1">Category Short Description</label>
+                                <label class="font-lg text-bg ls-1">SEO Title</label>
                                 <span class="mt-1 display-b text-bg p-1 br-xs bg-bg-light-9"
-                                    id="category_short_description">{{ $data->short_description }}</span>
+                                    id="seo_title">{{ $data->seo_title }}</span>
                             </div>
                         </li>
                     </ul>
                 </div>
-                <div class="row gap-4 mt-1 justify-center talign-c">
-                    <div class="col-12-xs col-12-sm col-12-xl m-1">
+                <div class="row gap-4 justify-center talign-c">
+                    <div class="col-12-xs col-12-sm col-12-xl">
                         <ul>
                             <li>
                                 <input type="button"

@@ -1,4 +1,4 @@
-<div class="sidebar pl-3">
+<div class="sidebar pl-1">
     <ul class="menu">
         <li class="list pt-1 pb-1 cursor-p font-sm">
             <a href="{{ url('redirect') }}" class="link pl-1">
@@ -15,7 +15,7 @@
             </a>
         </li>
         <li class="list pt-1 pb-1 cursor-p font-sm">
-            <a class="dropdown-btn pl-1">
+            <a href="{{ url('category') }}" class="link pl-1">
                 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                     width="20" height="20" viewBox="0 0 20 20">
                     <path fill="#000000"
@@ -28,18 +28,11 @@
                         d="M10 18c-0.066 0-0.132-0.013-0.194-0.039l-9.5-4c-0.254-0.107-0.374-0.4-0.267-0.655s0.4-0.374 0.655-0.267l9.306 3.918 9.306-3.918c0.254-0.107 0.548 0.012 0.655 0.267s-0.012 0.548-0.267 0.655l-9.5 4c-0.062 0.026-0.128 0.039-0.194 0.039z">
                     </path>
                 </svg>
-                <span class="text-white text-hover-secondary ml-1 ls-2">{{ __('Categories') }}<i
-                        class="fa fa-caret-down ml-3"></i></span>
+                <span class="text-white text-hover-secondary ml-1 ls-2">{{ __('Categories') }}</span>
             </a>
-            <div class="dropdown-container ml-1 text-white">
-
-                    <a class="pt-1 pr-2 pb-1 cursor-p font-md" href="{{ route('newcategory') }}">Add new Category</a>
-
-                <a class="pt-1 pr-2  pb-1 font-md" href="{{ url('category') }}">Show all Categories</a>
-            </div>
         </li>
         <li class="list pt-1 pb-1 cursor-p font-lg">
-            <a class="dropdown-btn pl-1">
+            <a href="{{ url('products') }}" class="link pl-1">
 
                 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                     width="20" height="20" viewBox="0 0 20 20">
@@ -59,14 +52,11 @@
                         d="M8.5 17c-0.128 0-0.256-0.049-0.354-0.146-0.195-0.195-0.195-0.512 0-0.707l1-1c0.195-0.195 0.512-0.195 0.707 0s0.195 0.512 0 0.707l-1 1c-0.098 0.098-0.226 0.146-0.354 0.146z">
                     </path>
                 </svg>
-                <span class="text-white text-hover-secondary ml-1 ls-1">{{ __('Products') }}<i
-                        class="fa fa-caret-down ml-4"></i></span>
+                <span class="text-white text-hover-secondary ml-1 ls-1">{{ __('Products') }}</span>
             </a>
-            <div class="dropdown-container ml-1 text-white">
-                <a class="pt-1 pr-2 pb-1 font-md" href="{{ url('add_products') }}">Add new Product</a>
-                <a class="pt-1 pr-2 pb-1 font-md" href="{{ url('products') }}">Show all Products</a>
-            </div>
         </li>
+
+
         <li class="list pt-1 pb-1 cursor-p font-lg">
             <a class="dropdown-btn pl-1">
                 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -81,11 +71,20 @@
                         d="M17.539 4.467c-0.251-0.297-0.63-0.467-1.039-0.467h-12.243l-0.099-0.596c-0.131-0.787-0.859-1.404-1.658-1.404h-1c-0.276 0-0.5 0.224-0.5 0.5s0.224 0.5 0.5 0.5h1c0.307 0 0.621 0.266 0.671 0.569l1.671 10.027c0.131 0.787 0.859 1.404 1.658 1.404h10c0.276 0 0.5-0.224 0.5-0.5s-0.224-0.5-0.5-0.5h-10c-0.307 0-0.621-0.266-0.671-0.569l-0.247-1.48 9.965-0.867c0.775-0.067 1.483-0.721 1.611-1.489l0.671-4.027c0.067-0.404-0.038-0.806-0.289-1.102zM16.842 5.404l-0.671 4.027c-0.053 0.316-0.391 0.629-0.711 0.657l-10.043 0.873-0.994-5.962h12.076c0.117 0 0.215 0.040 0.276 0.113s0.085 0.176 0.066 0.291z">
                     </path>
                 </svg>
-                <span class="text-white text-hover-secondary ml-1 ls-2">{{ __('Orders') }}<i
+                <span class="text-white text-hover-secondary ml-1 ls-2">{{ __('Carts') }}<i
                         class="fa fa-caret-down ml-4 pl-1"></i></span>
             </a>
             <div class="dropdown-container ml-1 text-white">
-                <a class="pt-1 pr-2 pb-1 font-md" href="#">Active Orders</a>
+                <a class="pt-1 pr-2 pb-1 font-md" href="#">Show all Carts</a>
+            </div>
+        </li>
+        <li class="list pt-1 pb-1 cursor-p font-lg">
+            <a class="dropdown-btn pl-1">
+                <svg fill="#000000" width="64px" height="64px" viewBox="0 0 60 60" id="Capa_1" version="1.1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M59,16V2H1v14H0v37.259C0,55.873,2.127,58,4.742,58h50.517C57.873,58,60,55.873,60,53.259V16H59z M56.5,16l-5.18-6.906 L56.414,4H57v12H56.5z M11,16V9c0-0.024-0.012-0.046-0.014-0.07c-0.005-0.064-0.02-0.124-0.036-0.187 c-0.011-0.042-0.01-0.085-0.027-0.125c-0.009-0.022-0.027-0.039-0.037-0.061c-0.027-0.055-0.065-0.102-0.103-0.152 c-0.028-0.036-0.044-0.081-0.077-0.113L6.414,4h47.172l-4.292,4.292c-0.032,0.032-0.049,0.077-0.077,0.113 c-0.038,0.05-0.075,0.097-0.102,0.152c-0.011,0.022-0.028,0.038-0.038,0.061c-0.017,0.04-0.016,0.084-0.027,0.125 c-0.017,0.063-0.032,0.122-0.036,0.187C49.012,8.954,49,8.976,49,9v7H11z M6,16l3-4.001V16H6z M51,11.999L54,16h-3V11.999z M3,4 h0.586L8.68,9.094L3.5,16H3V4z M58,53.259C58,54.771,56.77,56,55.258,56H4.742C3.23,56,2,54.771,2,53.259V18h56V53.259z"></path> <path d="M42,24c-0.552,0-1,0.447-1,1v6c0,6.065-4.935,11-11,11s-11-4.935-11-11v-6c0-0.553-0.448-1-1-1s-1,0.447-1,1v6 c0,7.168,5.832,13,13,13s13-5.832,13-13v-6C43,24.447,42.552,24,42,24z"></path> <path d="M20,25c0,0.553,0.448,1,1,1s1-0.447,1-1c0-2.206-1.794-4-4-4s-4,1.794-4,4c0,0.553,0.448,1,1,1s1-0.447,1-1 c0-1.103,0.897-2,2-2S20,23.897,20,25z"></path> <path d="M42,21c-2.206,0-4,1.794-4,4c0,0.553,0.448,1,1,1s1-0.447,1-1c0-1.103,0.897-2,2-2s2,0.897,2,2c0,0.553,0.448,1,1,1 s1-0.447,1-1C46,22.794,44.206,21,42,21z"></path> </g> <g></g> <g></g> <g></g> <g></g> <g></g> <g></g> <g></g> <g></g> <g></g> <g></g> <g></g> <g></g> <g></g> <g></g> <g></g> </g></svg>
+
+                <span class="text-white text-hover-secondary ml-1 ls-2">{{ __('Orders') }}</span>
+            </a>
+            <div class="dropdown-container ml-1 text-white">
                 <a class="pt-1 pr-2 pb-1 font-md" href="#">Show all Orders</a>
             </div>
         </li>
@@ -100,8 +99,7 @@
                     <path class="cls-1"
                         d="M279.38,240.85c3,3,3,5,.11,7.92L275,253.23c7.28,10.32,8.8,21.19,4.56,32.8-1.41,4.67-3.8,5.54-8.58,3.58l-10.86-4.13c-4.23-1.63-5.21-3.48-3.8-8.15,2.07-6.41,1.31-11.29-4.67-17.27-7.71-7.72-12.6-9.34-17.27-4.67-4,4-1,10.1,6.52,19.34a107.26,107.26,0,0,1,10.32,14.45,30.06,30.06,0,0,1,3.37,8.37c2,7.82,1,18.14-8.8,27-11.62,11.62-27.26,12-43.23,1.07l-4.67,4.67c-3,3-5,3-8,0l-8.26-8.26c-2.93-2.94-3-5,0-8l4.45-4.45c-9-12.28-10.64-24.55-5.1-36.82q2.77-5.7,8.79-2.93l10,4.79c4.34,2,5.22,4.13,3.47,8.69-2.72,6.19-.87,12.39,5.32,18.58,8.26,8.26,14.67,10.1,19.34,5.44,4.34-4.34,1.52-10-6.2-19.45-5.32-6.84-8.15-10.32-11.51-18a26.74,26.74,0,0,1-2.94-10.54c-.43-6.3,2.28-14.66,9.34-21.72,11.41-11.4,26.51-11.93,42.15-.64l4.46-4.45c2.93-2.93,5-2.82,7.93.12Z" />
                 </svg>
-                <span class="text-white text-hover-secondary ml-1 ls-1">{{ __('Price List') }}<i
-                        class="fa fa-caret-down ml-4"></i></span>
+                <span class="text-white text-hover-secondary ml-1 ls-1">{{ __('Price List') }}</span>
             </a>
             <div class="dropdown-container ml-1 text-white">
                 <a class="pt-1 pr-2 pb-1 font-md" href="#">Show Price Lists</a>
@@ -119,8 +117,7 @@
                         d="M42,40.5v7a2,2,0,0,0,4,0v-2h6v2a2,2,0,0,0,4,0v-7a7,7,0,0,0-14,0Zm7-3a3.00328,3.00328,0,0,1,3,3v1H46v-1A3.00328,3.00328,0,0,1,49,37.5Z" />
                     <circle cx="49" cy="29.5" r="2" />
                 </svg>
-                <span class="text-white text-hover-secondary ml-1 ls-1">{{ __('Languages') }}<i
-                        class="fa fa-caret-down ml-3-5"></i></span>
+                <span class="text-white text-hover-secondary ml-1 ls-1">{{ __('Languages') }}</span>
             </a>
             <div class="dropdown-container ml-1 text-white">
                 <a class="pt-1 pr-2 pb-1 font-md" href="#">Show Language Lists</a>

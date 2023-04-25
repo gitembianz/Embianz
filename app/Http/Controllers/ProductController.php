@@ -38,7 +38,7 @@ class ProductController extends Controller
                     $button = '<button type="button" class="view_product btn-white text-bg br-xs" name="view" onclick="event.preventDefault();location.href=\'/show_product/'.$data->id.'\'">View</button>';
                     return $button;
                 })->addColumn('image', function($data){
-                    $image = "not image";
+                    $image = "no image";
                     return $image;
                 })
                 ->make(true);
