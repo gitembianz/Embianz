@@ -1,24 +1,8 @@
 
-table {
-
-  color: $bg;
-  @include wh(90%, auto);
-  @media (max-width: 662px) {
-    @include wh(80%, auto);
-  }
-
-
+.category-table, .product-table{
+    width: 100% !important;
 }
-
 th {
-  text-align: center;
+  text-align: center !important;
 }
 
-.dataTables_info {
-  display: none;
-}
-
-.dataTables_paginate {
-  padding-top: $base-padding;
-  color: black;
-}

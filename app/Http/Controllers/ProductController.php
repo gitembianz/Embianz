@@ -37,6 +37,9 @@ class ProductController extends Controller
                 ->addColumn('action', function($data){
                     $button = '<button type="button" class="view_product btn-white text-bg br-xs" name="view" onclick="event.preventDefault();location.href=\'/show_product/'.$data->id.'\'">View</button>';
                     return $button;
+                })->addColumn('image', function($data){
+                    $image = "no image";
+                    return $image;
                 })
                 ->make(true);
         }
@@ -68,7 +71,7 @@ class ProductController extends Controller
         $productcategory->product_id = $newproduct->id;
         $productcategory->category_id = Category::where('name', $request->category)->first()->id;
         $productcategory->save();
-        
+
         return redirect()->back()->with('message','Product Added Succesfully! Please Go Back');
     }
 

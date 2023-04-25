@@ -1,68 +1,57 @@
-.container_img {
-   // background-color: $white;
-    width: 100%;
-    min-width: 10rem;
-   padding: $base-padding;
-    box-shadow: $base-box-shadow;
 
-    .image-container {
-        width: 100%;
-        margin: $base-margin;
-        display: grid;
+///upload component
 
-        & img {
-            position: relative;
-            max-width: 100%;
-            margin: auto;
-        }
-
-        figcaption {
-            margin: 20px 0 30px 0;
-            text-align: center;
-            width: 100%;
-            color: $bg;
-            font-size: 18px;
-        }
-    }
-
-    
-
-    input[type="file"] {
-        display: none;
-    }
-    label{
-        display: flex;
-        position: relative;
-        align-items: center;
-        justify-content: center;
-        background-color: $secondary;
-        text-align: center;
-        font-size: 16px;
-        padding: $base-padding  / 2;
-        margin: auto;
-        border: 1px solid $bg;
-        @include wh(17vw, auto);
-        & svg{
-            @include wh(2rem, auto);
-        }
-
-    }
-    .browse1{
-        border: 1px solid $white;
-        padding: $base-padding / 2;
-        background: $white;
-    }
-
+#dropBox {
+    min-width: 450px;
+    max-width: 100%;
+    min-height: auto;
+    text-align: center;
+    padding: $base-padding;
 }
-
-.container_img_multiple{
-    @extend .container_img;
-      
-}
-#images{
-    @extend .image-container;
+.button {
+    display: inline-block;
+    padding: $base-padding;
+    cursor: pointer;
+    border-radius: 5px;
     border: 1px solid $bg;
-    width: 90%;
-  height: 10rem;
-    background: red;
+    color: $bg;
+    transition: .4s;
 }
+.buttonremove{
+    background: $white;
+    cursor: pointer;
+    color: $bg;
+}
+#imgUpload {
+    display: none;
+}
+#gallery {
+    text-align: center;
+}
+#gallery div {
+    display: inline-block;
+}
+#gallery img {
+    max-height: 150px;
+}
+#imageTable {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  #imageTable th, #imageTable td {
+    padding: 0.5em;
+    border: 1px solid #ccc;
+  }
+
+  #imageTable th {
+    background-color: $white;
+  }
+
+  #imageTable tr:hover {
+    .buttonremove{
+        background-color: #f5f5f5;
+    }
+    background-color: #f5f5f5;
+
+  }

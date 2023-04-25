@@ -29,14 +29,10 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'])-
     route::get('/category', [CategoryController::class, 'category'])->name('category');
     route::post('/add_category', [CategoryController::class, 'add_category']);
     route::get('/edit_category/{id}/', [CategoryController::class, 'edit']);
-    route::get('/show_category/{id}/', [CategoryController::class, 'show']);
+    route::get('/show_category/{id}/', [CategoryController::class, 'show'])->name('show_category');
     route::post('/delete_category', [CategoryController::class, 'delete']);
     route::post('/category_update/{id}', [CategoryController::class, 'update_category'])->name('category_update');
     route::get('/new_categories', [CategoryController::class, 'new'])->name('newcategory');
-
-
-    // browse image
-    route::get('/get-images', [CategoryController::class, 'browse']);
 
     //Products routes
     route::get('/products', [ProductController::class, 'products'])->name('products');

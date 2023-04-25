@@ -9,11 +9,8 @@
 
         <!-- Scripts -->
         <link rel="stylesheet" href="/dist/css/main.css">
-       <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
-        <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js"></script>
-        <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+        <link href="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.13.4/datatables.min.css" rel="stylesheet"/>
         <script src="/script/calendar.js" defer></script>
-        <script src="/script/imgupload.js" defer></script>
 
     </head>
     <body>

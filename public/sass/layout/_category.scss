@@ -1,9 +1,11 @@
 
 #back, #new, #edit, #delete, #Update{
   border: 1px solid $secondary;
-  box-shadow: 0px 0px 2px $bg;
+  box-shadow: 0px 0px 0.5px $bg;
 
 }
+
+
 
 .listelementbutton{
     display: flex;
@@ -23,12 +25,24 @@
 }
 
 
+.subelement100{
+    width: 100%;
+}
+.subelement40{
+    width: 40%;
+}
+.subelement80{
+    width: 80%;
+}
+.subelement30{
+    width: 30%;
+}
+
+
+
 
 .view{
     background: $white;
-}
-.dataTables_length{
-    display: none;
 }
 
 .title {

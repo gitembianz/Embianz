@@ -22,13 +22,13 @@ $layout-values: flex-start, flex-end, center, space-between, space-around;
 
 .section-container{
   @extend .container;
-  @include w(calc(100% - 40rem));
+  @include w(calc(100% - 37rem));
   height: 100%;
   padding: 0;
   margin: 0;
   position: absolute;
-  top: 6.5rem;
-  left: 18rem;
+  top: 5rem;
+  left: 15rem;
   max-width: 100%;
   .contenttab{
     border: 1px solid $secondary;

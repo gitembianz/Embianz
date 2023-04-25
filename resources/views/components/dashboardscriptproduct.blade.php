@@ -1,3 +1,4 @@
+
 <script>
 
     //script for DataTable for products
@@ -7,7 +8,19 @@
             serverSide: true,
             orderable: true,
             ajax: "{{ route('products') }}",
-            columns: [{
+            columns: [
+                {
+                    data: 'image',
+                    name: 'image',
+                    render: function(data, type, row) {
+                        return  data;
+                    }
+                },
+                {
+                    data: 'id',
+                    name: 'id'
+                },
+                {
                     data: 'name',
                     name: 'name'
                 },
@@ -30,7 +43,6 @@
                         return  data;
                     }
                 },
-
                 {
                     data: 'action',
                     name: 'action',

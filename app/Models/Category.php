@@ -10,10 +10,8 @@ class Category extends Model
 {
     use HasFactory;
 
-    public function image()
-    {
-        return $this->hasMany(ImageCategories::class, 'category_id');
-    }
+    protected $guarded = [];
+
     public function product_categories()
     {
         return $this->hasMany(Products_categories::class, 'category_id');
@@ -30,5 +28,6 @@ class Category extends Model
         'end_date',
         'createdby',
         'lastmodifiedby',
+        'seo_title',
     ];
 }
