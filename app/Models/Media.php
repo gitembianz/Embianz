@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Tabels extends Model
+class Media extends Model
 {
     use HasFactory;
 
-    public function media()
+    public function tabel()
     {
-        return $this->belongsTo(Media::class, 'item_id');
+        return $this->hasMany(Tabels::class, 'item_id');
     }
 }

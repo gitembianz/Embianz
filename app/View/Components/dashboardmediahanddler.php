@@ -22,7 +22,7 @@ class dashboardmediahanddler extends Component
      */
     public function render(): View|Closure|string
     {
-        $medialocations = MediaLocation::all(); 
+        $medialocations = MediaLocation::all();
         return view('components.dashboardmediahanddler', compact('medialocations'));
     }
 }
