@@ -47,6 +47,7 @@ class CategoryController extends Controller
         $data->createdby = Auth::user()->name;
         $data->lastmodifiedby = Auth::user()->name;
         $data->seo_title = $request->seo_title;
+
         $data->save();
 
         //image handdler

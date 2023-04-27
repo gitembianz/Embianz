@@ -613,6 +613,7 @@ class ComposerStaticInitdbceb679be78fc0f2f620fcaf24d3e3e
         'App\\Models\\Category' => __DIR__ . '/../..' . '/app/Models/Category.php',
         'App\\Models\\Imagetype' => __DIR__ . '/../..' . '/app/Models/Imagetype.php',
         'App\\Models\\Languages' => __DIR__ . '/../..' . '/app/Models/Languages.php',
+        'App\\Models\\Media' => __DIR__ . '/../..' . '/app/Models/Media.php',
         'App\\Models\\MediaLocation' => __DIR__ . '/../..' . '/app/Models/MediaLocation.php',
         'App\\Models\\Product' => __DIR__ . '/../..' . '/app/Models/Product.php',
         'App\\Models\\Products_categories' => __DIR__ . '/../..' . '/app/Models/Products_categories.php',

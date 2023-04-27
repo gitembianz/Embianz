@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Items;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Models\Products_categories;
+use App\Http\Controllers\Controller;
+use App\Models\Media;
+use App\Models\MediaLocation;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -53,7 +56,7 @@ class ProductController extends Controller
     }
 
     public function new(Request $request){
-        //add a new product to database
+
         $newproduct =new Product;
         $newproduct->name=$request->product_name;
         $newproduct->product_status=$request->status;
@@ -66,6 +69,35 @@ class ProductController extends Controller
         $newproduct->created_by=Auth::user()->name;
         $newproduct->last_modified_by=Auth::user()->name;
         $newproduct->save();
+
+
+        //handdle the image-component
+        $locations = $request->input('file_location');
+        $sequences = $request->input('file_sequence');
+        $tests = $request->input('all_files');
+        dd($tests);
+
+
+            // $files = $request->file('media');
+            // dd($files);
+           if($tests){
+            $i = 0;
+            foreach ($tests as $test) {
+                $test->store('public/media');
+                //save the image name to the database
+                $media = new Media();
+                $media->item_id = $newproduct->id;
+                $media->media_path = $test->getClientOriginalName();;
+                $media->media_sequence =  $sequences[$i];
+                $media->media_tabel_id = "1";
+                $media->media_location_id = MediaLocation::where('location', $locations[$i])->first()->id;
+                $media->createdby=Auth::user()->name;
+                $media->lastmodifiedby=Auth::user()->name;
+                $media->save();
+                $i += 1;
+
+            }}
+
 
         $productcategory = new products_categories();
         $productcategory->product_id = $newproduct->id;

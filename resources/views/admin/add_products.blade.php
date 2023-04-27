@@ -32,10 +32,11 @@
                                 <ul>
 
                                     <li class="p-1 mt-1 subelement100">
-                                        <label class="font-lg text-bg ls-1">Product Image</label>
-                                                <input type="file" id="imgUpload" multiple accept="image/*" onchange="filesManager(this.files)">
+                                        <label id="testtt" class="font-lg ls-1" >Product Image</label>
+                                                <input type="file" name="media[]" id="imgUpload" multiple accept="image/*" onchange="filesManager(this.files)">
+                                                <input type="hidden" name="all_files[]" id="allFiles">
                                                 <label class="button ml-3 font-md" for="imgUpload">Upload Media</label>
-                                              <table id="imageTable" class="mt-2 talign-c">
+                                              <table id="imageTable" class="talign-c">
                                               </table>
                                     </li>
 

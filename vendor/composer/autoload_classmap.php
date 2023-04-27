@@ -33,6 +33,7 @@ return array(
     'App\\Models\\Category' => $baseDir . '/app/Models/Category.php',
     'App\\Models\\Imagetype' => $baseDir . '/app/Models/Imagetype.php',
     'App\\Models\\Languages' => $baseDir . '/app/Models/Languages.php',
+    'App\\Models\\Media' => $baseDir . '/app/Models/Media.php',
     'App\\Models\\MediaLocation' => $baseDir . '/app/Models/MediaLocation.php',
     'App\\Models\\Product' => $baseDir . '/app/Models/Product.php',
     'App\\Models\\Products_categories' => $baseDir . '/app/Models/Products_categories.php',
