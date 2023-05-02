@@ -28,17 +28,22 @@
                         {{-- content --}}
                         <div class="row gap-2 jus-c">
                             {{-- image category --}}
-                            <div class="col-12-xs col-12-sm col-4-xl text-bg">
+                            <div class="col-12-xs col-12-sm col-5-xl text-bg">
                                 <ul>
-                                    <li><label class="font-lg text-bg ls-1">Category Image</label></li>
-                                    <li class="p-1 listelement">
-                                        
+                                    <li>
+                                        <label class="font-lg text-bg ls-1">Category Image</label>
+                                        <input type="file" name="media[]" id="imgUpload" multiple accept="image/*" onchange="filesManager(this.files)">
+
+                                        <label class="button ml-3 font-md" for="imgUpload">Upload Media</label>
+                                      <table id="imageTable" class="talign-c mt-2">
+                                      </table>
                                     </li>
-                                    
+
+
                                 </ul>
                             </div>
                             {{-- content category --}}
-                            <div class="col-12-xs col-12-sm col-7-xl text-bg">
+                            <div class="col-12-xs col-12-sm col-6-xl text-bg">
                                 <ul>
                                     <li class="p-1 listelement">
                                         <div class="subelement40 display-g">
@@ -102,6 +107,7 @@
     </div>
 </section>
 {{-- page content end --}}
+<x-dashboardmediahanddler />
 <x-dashboardscript />
 <x-dashboardscriptcategory />
 <x-dashboardfooter />

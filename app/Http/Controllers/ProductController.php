@@ -92,7 +92,7 @@ class ProductController extends Controller
         $size = $request->input('file_size');
         $files = $request->file('media');
         $filespath = 'media/Products';
-        //Verifi it is a folder name 'Products' in general 'media' folder
+        //Verifi it is a folder name 'Products' in general 'media' folders
         if (!File::exists($filespath)) {
             File::makeDirectory($filespath, 0755, true);
         }
