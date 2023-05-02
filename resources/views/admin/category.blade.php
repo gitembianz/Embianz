@@ -1,5 +1,4 @@
 <x-dashboardheader />
-<x-dashbaordtopnavbar />
 <x-dashboardnavbar />
 <x-dashboardsidebar />
 <x-dashboardmodals />

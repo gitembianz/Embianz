@@ -5,7 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\TodolistController;
-
+use App\Http\Controllers\UploadController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +25,9 @@ Route::get('/', function () {
 Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'])->group(function () {
     Route::get('/dashboard', function () {return view('dashboard');})->name('dashboard');
 
+    //Strore Image
+
+
     //Category routes
     route::get('/category', [CategoryController::class, 'category'])->name('category');
     route::post('/add_category', [CategoryController::class, 'add_category']);
@@ -38,6 +41,7 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'])-
     route::get('/products', [ProductController::class, 'products'])->name('products');
     route::get('/add_products', [ProductController::class, 'add'])->name('add_products');
     route::post('/new_products', [ProductController::class, 'new'])->name('new_products');
+    route::get('/show_product/{id}/', [ProductController::class, 'show'])->name('show_product');
 
     //todolist routes
     route::post('/new', [TodolistController::class, 'store'])->name('store');

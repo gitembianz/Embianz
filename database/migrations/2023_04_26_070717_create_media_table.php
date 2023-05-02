@@ -14,14 +14,17 @@ return new class extends Migration
         Schema::create('media', function (Blueprint $table) {
             $table->id();
             $table->string('item_id');
-            $table->string('media_path')->nullable();
-            $table->string('media_sequence')->nullable();
-            $table->string('media_type')->nullable();
-            $table->string('media_title')->nullable();
-            $table->unsignedBigInteger('media_location_id')->index();
-            $table->foreign('media_location_id')->references('id')->on('media_locations');
-            $table->unsignedBigInteger('media_tabel_id')->index();
-            $table->foreign('media_tabel_id')->references('id')->on('tabels');
+            $table->string('path')->nullable();
+            $table->string('sequence')->nullable();
+            $table->string('type')->nullable();
+            $table->string('name')->nullable();
+            $table->unsignedBigInteger('location_id')->index()->nullable();
+            $table->foreign('location_id')->references('id')->on('media_locations');
+            $table->unsignedBigInteger('tabel_id')->index();
+            $table->foreign('tabel_id')->references('id')->on('tabels');
+            $table->string('width')->nullable();
+            $table->string('height')->nullable();
+            $table->string('size')->nullable();
             $table->string('createdby')->nullable();
             $table->string('lastmodifiedby')->nullable();
             $table->timestamps();

@@ -3,17 +3,17 @@
 <x-dashboardsidebar />
 <x-dashboardmodals />
 <x-dashboardright />
-<x-dashboardmediahanddler />
+
 {{-- Page content start --}}
 <section class="section-container bg-bg">
     {{-- Display session message --}}
-    @if (session()->has('message'))
-        <div class="bg-secondary pos-rel talign-c ls-1 mb-1 br-xs p-1" id="alertevent">
-            {{ session()->get('message') }}
-            <button type="button" onclick="document.getElementById('alertevent').style.display='none'"
-                class="exit font-lg bg-secondary curssor-p float-r" data-bs-dismiss="alert" aria-hidden="true">x</button>
-        </div>
-    @endif
+    @if (session()->has('message') && session()->has('item_name') && session()->has('item_id'))
+    <div class="bg-secondary pos-rel ls-1 talign-c mb-1 br-xs p-1" id="alertevent">
+        {!! session('message') !!}
+        <Span> Click for view - <a href="{{ route('show_product', ['id' => session('item_id')]) }}" class="fw-800 font-lg">{{ session('item_name') }}</a></Span>
+        <button type="button" onclick="document.getElementById('alertevent').style.display='none'" class="exit font-lg bg-secondary float-r" data-bs-dismiss="alert" aria-hidden="true">x</button>
+    </div>
+@endif
     {{-- End Section session message --}}
     <div class="contenttab m-1 mb-2 bg-white text-bg br-sm">
         <div class="row">
@@ -32,11 +32,11 @@
                                 <ul>
 
                                     <li class="p-1 mt-1 subelement100">
-                                        <label id="testtt" class="font-lg ls-1" >Product Image</label>
+                                        <label class="font-lg text-bg ls-1" >Product Image</label>
                                                 <input type="file" name="media[]" id="imgUpload" multiple accept="image/*" onchange="filesManager(this.files)">
-                                                <input type="hidden" name="all_files[]" id="allFiles">
+
                                                 <label class="button ml-3 font-md" for="imgUpload">Upload Media</label>
-                                              <table id="imageTable" class="talign-c">
+                                              <table id="imageTable" class="talign-c mt-2">
                                               </table>
                                     </li>
 
@@ -123,6 +123,7 @@
     </div>
 </section>
 {{-- page content end --}}
+<x-dashboardmediahanddler />
 <x-dashboardscript />
 <x-dashboardscriptproduct />
 <x-dashboardfooter />
