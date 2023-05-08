@@ -206,7 +206,7 @@ $utilities: (
     "prefix": "font",
     "values": (
       "sm": $font-size-sm,
-      "md": $base-font-size,
+      "md": $font-size-md,
       "lg": $font-size-lg,
       "xl": $font-size-xl,
       "xxl": $font-size-xxl
@@ -245,15 +245,6 @@ $utilities: (
       "inh": inherit
     ),
   ),
-  "gap": (
-    "prefix": "gap",
-    "values": (
-      "l": 1rem,
-      "2": 2rem,
-      "3": 3rem,
-      "4": 4rem
-    ),
-  ),
   "align-items": (
     "prefix": "align",
     "values": (
@@ -282,6 +273,13 @@ $utilities: (
     "values": (
       "p": pointer,
 
+    ),
+  ),
+  "flex-wrap": (
+    "prefix": "wrap",
+    "values": (
+      "w": wrap,
+      "n": nowrap,
     ),
   ),
   "flex-direction": (

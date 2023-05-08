@@ -7,7 +7,6 @@ $grid-gaps: (
   "2": 20px,
   "3": 30px
 );
-$layout-values: flex-start, flex-end, center, space-between, space-around;
 
 //base layout classes
 
@@ -32,7 +31,7 @@ $layout-values: flex-start, flex-end, center, space-between, space-around;
   max-width: 100%;
   .contenttab{
     border: 1px solid $secondary;
-    box-shadow: 2px 0px 15px  $secondary;
+    box-shadow: 1px 0px 5px  $secondary;
     height: auto;
     background: $white;
 
@@ -62,13 +61,6 @@ $layout-values: flex-start, flex-end, center, space-between, space-around;
   .gap-#{$key} {
     margin-left: -$val;
     margin-right: -$val;
-  }
-}
-
-//justify content classes
-@each $val in $layout-values {
-  .justify-#{$val}{
-    justify-content: $val;
   }
 }
 

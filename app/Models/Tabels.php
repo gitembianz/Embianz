@@ -11,6 +11,6 @@ class Tabels extends Model
 
     public function media()
     {
-        return $this->belongsTo(Media::class, 'item_id');
+        return $this->hasMany(Media::class, 'tabel_id');
     }
 }

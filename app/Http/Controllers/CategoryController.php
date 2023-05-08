@@ -8,10 +8,12 @@ use App\Models\Tabels;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\MediaLocation;
+use App\Models\Products_categories;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
 
 
@@ -23,10 +25,19 @@ class CategoryController extends Controller
 
         if ($request->ajax()) {
             $data = Category::query();
+
             return DataTables::eloquent($data)
                 ->addColumn('image', function ($data) {
+                    $productType = class_basename(get_class($data));
+                    $type = Tabels::where('name', $productType)->first()->id;
+                    $files = Media::where('item_id', $data->id)->where('tabel_id', $type)->where('location_id', '3')->first();
+                    if($files){
+                        $path = $files->path .$files->name;
+                    } else{
+                        $path = "images/resets/category.svg";
+                    }
 
-                    $path = "no image";
+
                     return $path;
 
                 })
@@ -39,6 +50,19 @@ class CategoryController extends Controller
         }
         return view('admin.category');
     }
+    public function deleteMedia($id)
+{
+    // Find the media file by ID
+    $media = Media::findOrFail($id);
+
+    // Delete the media file from storage
+    Storage::delete($media->path.$media->name);
+
+    // Delete the media file from the database
+    $media->delete();
+
+    return response()->json(['message' => 'Media file deleted successfully']);
+}
 
     public function add_category(Request $request)
     {       //add a new category to dbase
@@ -61,17 +85,19 @@ class CategoryController extends Controller
         $sequences = $request->input('file_sequence');
         $size = $request->input('file_size');
         $files = $request->file('media');
-        $filespath = 'media/Categories';
+        $productType = class_basename(get_class($data));
+        $filespath = 'media/' . $productType . '/';
         if (!File::exists($filespath)) {
             File::makeDirectory($filespath, 0755, true);
         }
 
         if ($files) {
             //verify and create a folder with product id name
-            if (!File::exists($filespath . "/$data->id")) {
-                File::makeDirectory($filespath . "/$data->id", 0755, true);
-                $path = $filespath . "/$data->id" . "/";
+            if (!File::exists($filespath . "$data->id")) {
+                File::makeDirectory($filespath . "$data->id", 0755, true);
+
             }
+            $path = $filespath . "$data->id" . "/";
             $i = 0;
             foreach ($files as $file) {
                 $media = new Media();
@@ -97,9 +123,19 @@ class CategoryController extends Controller
                 $media->path = $path;
                 $media->name = $file->getClientOriginalName();
                 //store the media
+                $filename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                $media->name = $filename . '.' . $type;
+                // Verify if media name exist
+                if (file_exists($path . $media->name)) {
+                    $i = 1;
+                    while (file_exists($path . $filename . '(' . $i . ').' .$type)) {
+                        $i++;
+                    }
+                    $media->name = $filename . '(' . $i . ').' . $type;
+                }
                 $file->move($path, $media->name);
                 $media->sequence =  $sequences[$i];
-                $media->tabel_id = Tabels::where('name', 'Category')->first()->id;
+                $media->tabel_id = Tabels::where('name', $productType)->first()->id;
                 if ($locations[$i] != NULL) {
                     $media->location_id = MediaLocation::where('location', $locations[$i])->first()->id;
                 } else {
@@ -108,7 +144,7 @@ class CategoryController extends Controller
                 $media->type = $type;
                 $media->width = $width;
                 $media->height =  $height;
-                $media->size = $size[$i] . " KB";
+                $media->size = $size[$i];
                 $media->createdby = Auth::user()->name;
                 $media->lastmodifiedby = Auth::user()->name;
                 $media->save();
@@ -141,13 +177,45 @@ class CategoryController extends Controller
         return view('admin.add_category', compact('categories'));
     }
 
-    public function show($id)
+    public function media($id)
     {
-
         $data = Category::find($id);
-
-        return view('admin.show_category', compact('data'));
+        $itemType = class_basename(get_class($data));
+        $type = Tabels::where('name', $itemType)->first()->id;
+        $files = Media::where('item_id', $data->id)->where('tabel_id', $type)->with('location')->get();
+        return view('admin.media',compact('files','data'));
     }
+
+    public function update(Request $request, $id)
+{
+    // Retrieve the file with the given ID
+    $file = Media::findOrFail($id);
+
+    // Update the file's properties based on the request data
+    $file->location_id = MediaLocation::where('location', $request->input('location'))->first()->id;
+    $file->sequence = $request->input('sequence');
+
+
+    // Save the changes to the database
+    $file->save();
+
+    // Return a JSON response indicating success
+    return response()->json(['success' => true]);
+}
+
+
+    public function show($id)
+{
+    $data = Category::find($id);
+    $productType = class_basename(get_class($data));
+    $type = Tabels::where('name', $productType)->first()->id;
+    $files = Media::where('item_id', $data->id)->where('tabel_id', $type)->with('location')->get();
+    $products = Products_categories::where('category_id', $data->id)->get();
+    $count_media = $files->count();
+    $count_products = $products->count();
+    return view('admin.show_category', compact('data', 'count_media', 'count_products'));
+
+}
 
     public function delete(Request $request)
     {

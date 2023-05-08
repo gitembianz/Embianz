@@ -48,8 +48,17 @@ class ProductController extends Controller
                     return $button;
                     //add column for images
                 })->addColumn('image', function ($data) {
-                    $image = "no image";
-                    return $image;
+                    $productType = class_basename(get_class($data));
+                    $type = Tabels::where('name', $productType)->first()->id;
+                    $files = Media::where('item_id', $data->id)->where('tabel_id', $type)->where('location_id', '3')->first();
+                    if($files){
+                        $path = $files->path .$files->name;
+                    } else{
+                        $path = "images/resets/product.svg";
+                    }
+
+
+                    return $path;
                 })
                 ->make(true);
         }
@@ -91,7 +100,8 @@ class ProductController extends Controller
         $sequences = $request->input('file_sequence');
         $size = $request->input('file_size');
         $files = $request->file('media');
-        $filespath = 'media/Products';
+        $productType = class_basename(get_class($newproduct));
+        $filespath = 'media/' . $productType . '/';
         //Verifi it is a folder name 'Products' in general 'media' folders
         if (!File::exists($filespath)) {
             File::makeDirectory($filespath, 0755, true);
@@ -99,9 +109,9 @@ class ProductController extends Controller
 
         if ($files) {
             //verify and create a folder with product id name
-            if (!File::exists($filespath . "/$newproduct->id")) {
-                File::makeDirectory($filespath . "/$newproduct->id", 0755, true);
-                $path = $filespath . "/$newproduct->id" . "/";
+            if (!File::exists($filespath . "$newproduct->id")) {
+                File::makeDirectory($filespath . "$newproduct->id", 0755, true);
+                $path = $filespath . "$newproduct->id" . "/";
             }
             $i = 0;
             foreach ($files as $file) {
@@ -126,11 +136,21 @@ class ProductController extends Controller
                 //save the path and the name
                 $media->item_id = $newproduct->id;
                 $media->path = $path;
-                $media->name = $file->getClientOriginalName();
+                $filename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                $media->name = $filename . '.' . $type;
+                // Verify if media name exist
+                if (file_exists($path . $media->name)) {
+                    $i = 1;
+                    while (file_exists($path . $filename . '(' . $i . ').' .$type)) {
+                        $i++;
+                    }
+                    $media->name = $filename . '(' . $i . ').' . $type;
+                }
+
                 //store the media
                 $file->move($path, $media->name);
                 $media->sequence =  $sequences[$i];
-                $media->tabel_id = Tabels::where('name', 'Product')->first()->id;
+                $media->tabel_id = Tabels::where('name', $productType)->first()->id;
                 if ($locations[$i] != NULL) {
                     $media->location_id = MediaLocation::where('location', $locations[$i])->first()->id;
                 } else {
@@ -139,7 +159,7 @@ class ProductController extends Controller
                 $media->type = $type;
                 $media->width = $width;
                 $media->height =  $height;
-                $media->size = $size[$i] . " KB";
+                $media->size = $size[$i];
                 $media->createdby = Auth::user()->name;
                 $media->lastmodifiedby = Auth::user()->name;
                 $media->save();

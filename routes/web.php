@@ -36,6 +36,8 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'])-
     route::post('/delete_category', [CategoryController::class, 'delete']);
     route::post('/category_update/{id}', [CategoryController::class, 'update_category'])->name('category_update');
     route::get('/new_categories', [CategoryController::class, 'new'])->name('newcategory');
+    route::get('/media/{id}/', [CategoryController::class, 'media'])->name('media');
+    route::get('/filesd/{id}/', [CategoryController::class, 'deleteMedia']);
 
     //Products routes
     route::get('/products', [ProductController::class, 'products'])->name('products');

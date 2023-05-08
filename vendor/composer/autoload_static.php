@@ -123,6 +123,7 @@ class ComposerStaticInitdbceb679be78fc0f2f620fcaf24d3e3e
         array (
             'Livewire\\' => 9,
             'League\\MimeTypeDetection\\' => 25,
+            'League\\Flysystem\\Local\\' => 23,
             'League\\Flysystem\\' => 17,
             'League\\Config\\' => 14,
             'League\\CommonMark\\' => 18,
@@ -407,6 +408,10 @@ class ComposerStaticInitdbceb679be78fc0f2f620fcaf24d3e3e
         array (
             0 => __DIR__ . '/..' . '/league/mime-type-detection/src',
         ),
+        'League\\Flysystem\\Local\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/league/flysystem-local',
+        ),
         'League\\Flysystem\\' => 
         array (
             0 => __DIR__ . '/..' . '/league/flysystem/src',
@@ -604,12 +609,12 @@ class ComposerStaticInitdbceb679be78fc0f2f620fcaf24d3e3e
         'App\\Http\\Middleware\\ValidateSignature' => __DIR__ . '/../..' . '/app/Http/Middleware/ValidateSignature.php',
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
         'App\\Models\\Category' => __DIR__ . '/../..' . '/app/Models/Category.php',
-        'App\\Models\\Imagetype' => __DIR__ . '/../..' . '/app/Models/Imagetype.php',
         'App\\Models\\Languages' => __DIR__ . '/../..' . '/app/Models/Languages.php',
         'App\\Models\\Media' => __DIR__ . '/../..' . '/app/Models/Media.php',
         'App\\Models\\MediaLocation' => __DIR__ . '/../..' . '/app/Models/MediaLocation.php',
         'App\\Models\\Product' => __DIR__ . '/../..' . '/app/Models/Product.php',
         'App\\Models\\Products_categories' => __DIR__ . '/../..' . '/app/Models/Products_categories.php',
+        'App\\Models\\Specs' => __DIR__ . '/../..' . '/app/Models/Specs.php',
         'App\\Models\\Tabels' => __DIR__ . '/../..' . '/app/Models/Tabels.php',
         'App\\Models\\Todolist' => __DIR__ . '/../..' . '/app/Models/Todolist.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',
@@ -3630,8 +3635,8 @@ class ComposerStaticInitdbceb679be78fc0f2f620fcaf24d3e3e
         'League\\Flysystem\\FilesystemWriter' => __DIR__ . '/..' . '/league/flysystem/src/FilesystemWriter.php',
         'League\\Flysystem\\InvalidStreamProvided' => __DIR__ . '/..' . '/league/flysystem/src/InvalidStreamProvided.php',
         'League\\Flysystem\\InvalidVisibilityProvided' => __DIR__ . '/..' . '/league/flysystem/src/InvalidVisibilityProvided.php',
-        'League\\Flysystem\\Local\\FallbackMimeTypeDetector' => __DIR__ . '/..' . '/league/flysystem/src/Local/FallbackMimeTypeDetector.php',
-        'League\\Flysystem\\Local\\LocalFilesystemAdapter' => __DIR__ . '/..' . '/league/flysystem/src/Local/LocalFilesystemAdapter.php',
+        'League\\Flysystem\\Local\\FallbackMimeTypeDetector' => __DIR__ . '/..' . '/league/flysystem-local/FallbackMimeTypeDetector.php',
+        'League\\Flysystem\\Local\\LocalFilesystemAdapter' => __DIR__ . '/..' . '/league/flysystem-local/LocalFilesystemAdapter.php',
         'League\\Flysystem\\MountManager' => __DIR__ . '/..' . '/league/flysystem/src/MountManager.php',
         'League\\Flysystem\\PathNormalizer' => __DIR__ . '/..' . '/league/flysystem/src/PathNormalizer.php',
         'League\\Flysystem\\PathPrefixer' => __DIR__ . '/..' . '/league/flysystem/src/PathPrefixer.php',

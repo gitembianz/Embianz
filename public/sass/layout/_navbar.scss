@@ -6,26 +6,7 @@
   box-sizing: border-box;
 }
 
-//modal for user acesibility
-.modal-user{
-  @extend .modal;
 
-@media (max-width: 662px){
-  padding-top: 4rem;
-}
-  .content-user{
-    @extend .content;
-    width: 90%;
-    height: 95%;
-    .exit{
-      @include wh(3rem, auto);
-      cursor: pointer;
-      font-size: 28px;
-      font-weight: bold;
-      color: $secondary;
-    }
-  }
-}
 
 .navbar{
   @extend %flex-layout;

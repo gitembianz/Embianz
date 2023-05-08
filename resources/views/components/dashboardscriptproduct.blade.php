@@ -12,8 +12,10 @@
                 {
                     data: 'image',
                     name: 'image',
+                    orderable: false,
+                    searchable: false,
                     render: function(data, type, row) {
-                        return  data;
+                        return '<img src="' + data + '" width="50" height="50">';
                     }
                 },
                 {

@@ -27,6 +27,33 @@ listItems.forEach(item => {
         });
     }
 
+    function opentab(evt, tabName) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  document.getElementById(tabName).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+
+// Get the element with id="defaultOpen" and click on it
+let activeTab = document.getElementById("defaultOpen");
+if(activeTab){activeTab.click();}
+
+setTimeout(function() {
+    var element = document.getElementById('alertevent');
+    if (element !== null) {
+        element.classList.add('fade-out');
+        setTimeout(function() {
+            element.remove();
+        }, 500); // wait for the transition to complete
+    }
+}, 2000);
 
 </script>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>

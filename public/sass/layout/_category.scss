@@ -1,18 +1,56 @@
 
 #back, #new, #edit, #delete, #Update{
-  border: 1px solid $secondary;
-  box-shadow: 0px 0px 0.5px $bg;
+  border-top: 1px solid $bg;
+ // border-bottom: 1px solid $bg;
 
 }
 
-
-
-.listelementbutton{
-    display: flex;
-    justify-content: space-between;
-
-
+.alert {
+    opacity: 1;
+    transition: opacity 0.5s ease-out;
 }
+
+.alert.fade-out {
+    opacity: 0;
+}
+
+.releated{
+   border: 1px solid $bg !important;
+}
+
+.tab {
+    overflow: hidden;
+    border-top: 1px solid $bg;
+    border-radius: $base-border-radius $base-border-radius 0 0;
+
+  }
+  .tab button {
+    background-color: $bg;
+    float: left;
+    border-top: 1px solid $secondary;
+    border-bottom: 1px solid $secondary;
+    outline: none;
+    color: $secondary;
+    cursor: pointer;
+    //padding: 14px 16px;
+    transition: 0.3s;
+    //font-size: 17px;
+  }
+  .tab button:hover {
+    background-color: $bg;
+    color: $white;
+  }
+  .tab button.active {
+    background-color: $secondary;
+    color: $bg;
+  }
+  .tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid $bg;
+    border-top: none;
+    border-radius:  0 0 $base-border-radius $base-border-radius;
+  }
 .addcategory, .backcategory {
     @include wh(5vw, auto);
     border: none;
@@ -25,89 +63,11 @@
 }
 
 
-.subelement100{
-    width: 100%;
-}
-.subelement40{
-    width: 40%;
-}
-.subelement80{
-    width: 80%;
-}
-.subelement30{
-    width: 30%;
-}
-
-
-
-
-.view{
-    background: $white;
-}
-
 .title {
     color: $bg !important;
     z-index: 2;
   }
 
-#imageModal, #imageModal1{
-  .content-category{
-    top: 7.35rem;
-  }
-}
-
-
-
-#images-container, #images-container1 {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 100px);
-  grid-gap: 10px;
-
-}
-
-
-.grid-item {
-  width: 7.5rem;
-  height: 7.5rem;
-  object-fit: cover;
-  padding: $base-padding;
-  margin: $base-margin;
-  position: relative;
-  left: -10px;
-  &.selected {
-    background: $secondary;
-    border-radius: $base-border-radius /2;
-    width: 7.6rem;
-    height: 7.6rem;
-    //display: inline-table;
-   // position: relative;
-    padding-bottom: $base-padding;
-  }
-
-}
-.img-container{
-   // position: relative;
-    &.selected {
-        background: $secondary;
-        border-radius: $base-border-radius /2;
-        width: 7.6rem;
-        height: 7.6rem;
-        //display: inline-table;
-       // position: relative;
-        padding-bottom: $base-padding;
-      }
-}
-
-
-.img-name{
-   // display: block;
-    font-size: 10px;
-}
-
-#Update{
-  position: relative;
-  left: 47.5%;
-}
 .multiselect {
   width: 10vw;
   position: absolute;
@@ -157,16 +117,6 @@
   justify-content: space-between;
 }
 
-#category_image_main{
-  image-rendering: crisp-edges;
-  object-fit: cover;
-  transition: opacity 0.5s ease-in-out;
-  opacity: 1;
-
-}
-#category_image_main.loaded {
-  opacity: 1;
-}
 
 @media (max-width: 662px) {
   .title {
@@ -207,10 +157,7 @@
 
   input {
     @include wh(40%, auto);
-    &#category_image,
-    &#category_image_search{
-      @include wh(40%, auto);
-    }
+
     @media (max-width: 662px) {
       @include wh(70%, auto);
     }
@@ -264,19 +211,6 @@
       }
     }
   }
-
-
-  #category_image, #category_image_search{
-    @include wh(25%, auto);
-    @media (max-width: 662px) {
-      @include wh(60%, auto);
-    }
-  }
 }
 
-.content-category-images{
-  @extend .content-category;
-  @include wh(60vw, auto);
-  color: $bg;
-}
 

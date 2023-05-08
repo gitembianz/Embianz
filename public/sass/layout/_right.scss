@@ -97,14 +97,12 @@
 
 
     .card_calendar {
-        box-shadow: 0px 0px 15px $secondary;
-       // border: 1px solid $secondary;
+        box-shadow: 1px 0px 5px $secondary;
         padding: $base-padding;
         margin: $base-margin;
         height: 30rem;
 
           .calendar-header {
-            //background: #9796f0;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -354,7 +352,7 @@
         margin: $base-margin;
         margin-top: 0;
         padding-top: 0;
-        box-shadow: 0px 0px 15px $secondary;
+        box-shadow: 1px 0px 5px $secondary;
         //border: $base-border-thickness solid $secondary;
 
 

@@ -8,8 +8,6 @@
     <div id="search-form" class="hidden">
         <form action="#" method="post" class="display-f" x-data>
             @csrf
-            <input type="text" name="input_search" id="input_search" class="ls-2 fw-300 text-secondary p-1 br-sm"
-                placeholder="Search here...">
 
         </form>
     </div>
@@ -84,9 +82,6 @@
                     </svg>
             </div>
             <div class="user_name talign-l text-white">
-                <div>
-                    {{ __('Iosif Relia') }}
-                </div>
                 <div>
                     {{ $user }}
                 </div>
