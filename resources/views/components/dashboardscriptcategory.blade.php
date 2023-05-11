@@ -1,6 +1,9 @@
 <script>
     //script for DataTable for categories
     $(document).ready(function() {
+          $('#productsTable').DataTable();
+          $('#mediaTable').DataTable();
+
         var table = $('#category_table').DataTable({
             processing: true,
             serverSide: true,

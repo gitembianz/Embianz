@@ -188,7 +188,6 @@
 
 
   .element {
-    // @include wh(85%, auto);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -212,5 +211,7 @@
     }
   }
 }
+
+
 
 

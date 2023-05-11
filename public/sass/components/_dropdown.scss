@@ -15,7 +15,7 @@ li.dropdown {
   display: block;
   text-align: left;
   box-shadow: $base-box-shadow;
- 
+
 }
 
 
@@ -23,4 +23,40 @@ li.dropdown {
   display: block;
 }
 
+
+.collapsible {
+    background-color: $bg;
+    color: $white;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: $font-size-md;
+  }
+
+  .active, .collapsible:hover {
+    background-color: $bg-light;
+  }
+
+  .collapsible:after {
+    content: '\002B';
+    color: $white;
+    font-weight: $font-weight-bold;
+    float: right;
+    margin-left: $base-margin;
+  }
+
+  .collapsible.active:after {
+    content: "\2212";
+  }
+
+  .content {
+    padding: 0 $base-padding;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+    background-color: $white;
+  }
 

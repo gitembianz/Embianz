@@ -54,14 +54,15 @@ class CategoryController extends Controller
 {
     // Find the media file by ID
     $media = Media::findOrFail($id);
-
+    $path = '/' . $media->path . $media->name;
     // Delete the media file from storage
-    Storage::delete($media->path.$media->name);
+    Storage::delete($path);
+    //dd($path);
 
     // Delete the media file from the database
     $media->delete();
 
-    return response()->json(['message' => 'Media file deleted successfully']);
+    return response()->json(['message' => $path]);
 }
 
     public function add_category(Request $request)
@@ -210,10 +211,10 @@ class CategoryController extends Controller
     $productType = class_basename(get_class($data));
     $type = Tabels::where('name', $productType)->first()->id;
     $files = Media::where('item_id', $data->id)->where('tabel_id', $type)->with('location')->get();
-    $products = Products_categories::where('category_id', $data->id)->get();
+    $products = Products_categories::where('category_id', $data->id)->with('product')->get();
     $count_media = $files->count();
     $count_products = $products->count();
-    return view('admin.show_category', compact('data', 'count_media', 'count_products'));
+    return view('admin.show_category', compact('data', 'count_media','files', 'count_products', 'products'));
 
 }
 

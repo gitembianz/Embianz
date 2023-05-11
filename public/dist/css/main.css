@@ -1,3 +1,4 @@
+@charset "UTF-8";
 *, *:before, *:after {
   color: inherit;
   margin: 0;
@@ -1818,272 +1819,272 @@ button {
   background-color: #050708;
 }
 
-.text-sidebar-bg {
-  color: #35424b;
-}
-
-.text-hover-sidebar-bg:hover {
-  color: #35424b;
-}
-
-.bg-sidebar-bg {
-  background-color: #35424b;
-}
-
-.bg-hover-sidebar-bg:hover {
-  background-color: #35424b;
-}
-
-.text-sidebar-bg-light-1 {
+.text-bg-light {
   color: #49555d;
 }
 
-.text-hover-sidebar-bg-light-1:hover {
+.text-hover-bg-light:hover {
   color: #49555d;
 }
 
-.bg-sidebar-bg-light-1 {
+.bg-bg-light {
   background-color: #49555d;
 }
 
-.bg-hover-sidebar-bg-light-1:hover {
-  background-color: #3a4750;
+.bg-hover-bg-light:hover {
+  background-color: #49555d;
 }
 
-.text-sidebar-bg-light-2 {
-  color: #5d686f;
+.text-bg-light-light-1 {
+  color: #5b666d;
 }
 
-.text-hover-sidebar-bg-light-2:hover {
-  color: #5d686f;
+.text-hover-bg-light-light-1:hover {
+  color: #5b666d;
 }
 
-.bg-sidebar-bg-light-2 {
-  background-color: #5d686f;
+.bg-bg-light-light-1 {
+  background-color: #5b666d;
 }
 
-.bg-hover-sidebar-bg-light-2:hover {
-  background-color: #3f4b54;
+.bg-hover-bg-light-light-1:hover {
+  background-color: #4e5961;
 }
 
-.text-sidebar-bg-light-3 {
-  color: #727b81;
+.text-bg-light-light-2 {
+  color: #6d777d;
 }
 
-.text-hover-sidebar-bg-light-3:hover {
-  color: #727b81;
+.text-hover-bg-light-light-2:hover {
+  color: #6d777d;
 }
 
-.bg-sidebar-bg-light-3 {
+.bg-bg-light-light-2 {
+  background-color: #6d777d;
+}
+
+.bg-hover-bg-light-light-2:hover {
+  background-color: #525e65;
+}
+
+.text-bg-light-light-3 {
+  color: #80888e;
+}
+
+.text-hover-bg-light-light-3:hover {
+  color: #80888e;
+}
+
+.bg-bg-light-light-3 {
+  background-color: #80888e;
+}
+
+.bg-hover-bg-light-light-3:hover {
+  background-color: #576269;
+}
+
+.text-bg-light-light-4 {
+  color: #92999e;
+}
+
+.text-hover-bg-light-light-4:hover {
+  color: #92999e;
+}
+
+.bg-bg-light-light-4 {
+  background-color: #92999e;
+}
+
+.bg-hover-bg-light-light-4:hover {
+  background-color: #5b666d;
+}
+
+.text-bg-light-light-5 {
+  color: #a4aaae;
+}
+
+.text-hover-bg-light-light-5:hover {
+  color: #a4aaae;
+}
+
+.bg-bg-light-light-5 {
+  background-color: #a4aaae;
+}
+
+.bg-hover-bg-light-light-5:hover {
+  background-color: #606a71;
+}
+
+.text-bg-light-light-6 {
+  color: #b6bbbe;
+}
+
+.text-hover-bg-light-light-6:hover {
+  color: #b6bbbe;
+}
+
+.bg-bg-light-light-6 {
+  background-color: #b6bbbe;
+}
+
+.bg-hover-bg-light-light-6:hover {
+  background-color: #646f75;
+}
+
+.text-bg-light-light-7 {
+  color: #c8ccce;
+}
+
+.text-hover-bg-light-light-7:hover {
+  color: #c8ccce;
+}
+
+.bg-bg-light-light-7 {
+  background-color: #c8ccce;
+}
+
+.bg-hover-bg-light-light-7:hover {
+  background-color: #697379;
+}
+
+.text-bg-light-light-8 {
+  color: #dbdddf;
+}
+
+.text-hover-bg-light-light-8:hover {
+  color: #dbdddf;
+}
+
+.bg-bg-light-light-8 {
+  background-color: #dbdddf;
+}
+
+.bg-hover-bg-light-light-8:hover {
+  background-color: #6d777d;
+}
+
+.text-bg-light-light-9 {
+  color: #edeeef;
+}
+
+.text-hover-bg-light-light-9:hover {
+  color: #edeeef;
+}
+
+.bg-bg-light-light-9 {
+  background-color: #edeeef;
+}
+
+.bg-hover-bg-light-light-9:hover {
   background-color: #727b81;
 }
 
-.bg-hover-sidebar-bg-light-3:hover {
-  background-color: #445059;
+.text-bg-light-dark-1 {
+  color: #424d54;
 }
 
-.text-sidebar-bg-light-4 {
-  color: #868e93;
+.text-hover-bg-light-dark-1:hover {
+  color: #424d54;
 }
 
-.text-hover-sidebar-bg-light-4:hover {
-  color: #868e93;
+.bg-bg-light-dark-1 {
+  background-color: #424d54;
 }
 
-.bg-sidebar-bg-light-4 {
-  background-color: #868e93;
+.text-bg-light-dark-2 {
+  color: #3a444a;
 }
 
-.bg-hover-sidebar-bg-light-4:hover {
-  background-color: #49555d;
+.text-hover-bg-light-dark-2:hover {
+  color: #3a444a;
 }
 
-.text-sidebar-bg-light-5 {
-  color: #9aa1a5;
+.bg-bg-light-dark-2 {
+  background-color: #3a444a;
 }
 
-.text-hover-sidebar-bg-light-5:hover {
-  color: #9aa1a5;
+.text-bg-light-dark-3 {
+  color: #333c41;
 }
 
-.bg-sidebar-bg-light-5 {
-  background-color: #9aa1a5;
+.text-hover-bg-light-dark-3:hover {
+  color: #333c41;
 }
 
-.bg-hover-sidebar-bg-light-5:hover {
-  background-color: #4e5a62;
+.bg-bg-light-dark-3 {
+  background-color: #333c41;
 }
 
-.text-sidebar-bg-light-6 {
-  color: #aeb3b7;
+.text-bg-light-dark-4 {
+  color: #2c3338;
 }
 
-.text-hover-sidebar-bg-light-6:hover {
-  color: #aeb3b7;
+.text-hover-bg-light-dark-4:hover {
+  color: #2c3338;
 }
 
-.bg-sidebar-bg-light-6 {
-  background-color: #aeb3b7;
+.bg-bg-light-dark-4 {
+  background-color: #2c3338;
 }
 
-.bg-hover-sidebar-bg-light-6:hover {
-  background-color: #535e66;
+.text-bg-light-dark-5 {
+  color: #252b2f;
 }
 
-.text-sidebar-bg-light-7 {
-  color: #c2c6c9;
+.text-hover-bg-light-dark-5:hover {
+  color: #252b2f;
 }
 
-.text-hover-sidebar-bg-light-7:hover {
-  color: #c2c6c9;
+.bg-bg-light-dark-5 {
+  background-color: #252b2f;
 }
 
-.bg-sidebar-bg-light-7 {
-  background-color: #c2c6c9;
+.text-bg-light-dark-6 {
+  color: #1d2225;
 }
 
-.bg-hover-sidebar-bg-light-7:hover {
-  background-color: #58636b;
+.text-hover-bg-light-dark-6:hover {
+  color: #1d2225;
 }
 
-.text-sidebar-bg-light-8 {
-  color: #d7d9db;
+.bg-bg-light-dark-6 {
+  background-color: #1d2225;
 }
 
-.text-hover-sidebar-bg-light-8:hover {
-  color: #d7d9db;
+.text-bg-light-dark-7 {
+  color: #161a1c;
 }
 
-.bg-sidebar-bg-light-8 {
-  background-color: #d7d9db;
+.text-hover-bg-light-dark-7:hover {
+  color: #161a1c;
 }
 
-.bg-hover-sidebar-bg-light-8:hover {
-  background-color: #5d686f;
+.bg-bg-light-dark-7 {
+  background-color: #161a1c;
 }
 
-.text-sidebar-bg-light-9 {
-  color: #ebeced;
+.text-bg-light-dark-8 {
+  color: #0f1113;
 }
 
-.text-hover-sidebar-bg-light-9:hover {
-  color: #ebeced;
+.text-hover-bg-light-dark-8:hover {
+  color: #0f1113;
 }
 
-.bg-sidebar-bg-light-9 {
-  background-color: #ebeced;
+.bg-bg-light-dark-8 {
+  background-color: #0f1113;
 }
 
-.bg-hover-sidebar-bg-light-9:hover {
-  background-color: #626d74;
+.text-bg-light-dark-9 {
+  color: #070909;
 }
 
-.text-sidebar-bg-dark-1 {
-  color: #303b44;
+.text-hover-bg-light-dark-9:hover {
+  color: #070909;
 }
 
-.text-hover-sidebar-bg-dark-1:hover {
-  color: #303b44;
-}
-
-.bg-sidebar-bg-dark-1 {
-  background-color: #303b44;
-}
-
-.text-sidebar-bg-dark-2 {
-  color: #2a353c;
-}
-
-.text-hover-sidebar-bg-dark-2:hover {
-  color: #2a353c;
-}
-
-.bg-sidebar-bg-dark-2 {
-  background-color: #2a353c;
-}
-
-.text-sidebar-bg-dark-3 {
-  color: #252e35;
-}
-
-.text-hover-sidebar-bg-dark-3:hover {
-  color: #252e35;
-}
-
-.bg-sidebar-bg-dark-3 {
-  background-color: #252e35;
-}
-
-.text-sidebar-bg-dark-4 {
-  color: #20282d;
-}
-
-.text-hover-sidebar-bg-dark-4:hover {
-  color: #20282d;
-}
-
-.bg-sidebar-bg-dark-4 {
-  background-color: #20282d;
-}
-
-.text-sidebar-bg-dark-5 {
-  color: #1b2126;
-}
-
-.text-hover-sidebar-bg-dark-5:hover {
-  color: #1b2126;
-}
-
-.bg-sidebar-bg-dark-5 {
-  background-color: #1b2126;
-}
-
-.text-sidebar-bg-dark-6 {
-  color: #151a1e;
-}
-
-.text-hover-sidebar-bg-dark-6:hover {
-  color: #151a1e;
-}
-
-.bg-sidebar-bg-dark-6 {
-  background-color: #151a1e;
-}
-
-.text-sidebar-bg-dark-7 {
-  color: #101417;
-}
-
-.text-hover-sidebar-bg-dark-7:hover {
-  color: #101417;
-}
-
-.bg-sidebar-bg-dark-7 {
-  background-color: #101417;
-}
-
-.text-sidebar-bg-dark-8 {
-  color: #0b0d0f;
-}
-
-.text-hover-sidebar-bg-dark-8:hover {
-  color: #0b0d0f;
-}
-
-.bg-sidebar-bg-dark-8 {
-  background-color: #0b0d0f;
-}
-
-.text-sidebar-bg-dark-9 {
-  color: #050708;
-}
-
-.text-hover-sidebar-bg-dark-9:hover {
-  color: #050708;
-}
-
-.bg-sidebar-bg-dark-9 {
-  background-color: #050708;
+.bg-bg-light-dark-9 {
+  background-color: #070909;
 }
 
 .text-gray {
@@ -2625,20 +2626,20 @@ button {
   background-color: #a08979;
 }
 
-.btn-sidebar-bg {
+.btn-bg-light {
   text-decoration: none;
   cursor: pointer;
   display: inline-block;
   border: 0;
   padding: 0.75rem 1.5rem;
   border-radius: 20px;
-  background-color: #35424b;
+  background-color: #49555d;
 }
-.btn-sidebar-bg:hover {
-  background-color: #404f5a;
+.btn-bg-light:hover {
+  background-color: #54626b;
 }
 
-.btn-outlined-sidebar-bg {
+.btn-outlined-bg-light {
   text-decoration: none;
   cursor: pointer;
   display: inline-block;
@@ -2648,23 +2649,23 @@ button {
   background-color: #fff;
   border-radius: 20px;
 }
-.btn-outlined-sidebar-bg:hover {
-  background-color: #35424b;
+.btn-outlined-bg-light:hover {
+  background-color: #49555d;
 }
 
-.btn-complement-sidebar-bg {
+.btn-complement-bg-light {
   text-decoration: none;
   cursor: pointer;
   display: inline-block;
   border: 0;
   padding: 0.75rem 1.5rem;
   border-radius: 20px;
-  background-color: #35424b;
-  color: #a08979;
+  background-color: #49555d;
+  color: #ab9d94;
 }
-.btn-complement-sidebar-bg:hover {
-  color: #35424b;
-  background-color: #a08979;
+.btn-complement-bg-light:hover {
+  color: #49555d;
+  background-color: #ab9d94;
 }
 
 .btn-gray {
@@ -2841,9 +2842,9 @@ button {
   font-weight: normal;
 }
 
-.badge-sidebar-bg {
+.badge-bg-light {
   border-radius: 80px;
-  background-color: #35424b;
+  background-color: #49555d;
   padding: 0.1875rem 0.375rem;
   font-size: 0.65625rem;
   font-weight: normal;
@@ -2894,6 +2895,42 @@ li.dropdown {
 
 .dropdown:hover .dropdown-content, .dropdown:hover .sidebar .menu .list .dropdown-container, .sidebar .menu .list .dropdown:hover .dropdown-container {
   display: block;
+}
+
+.collapsible {
+  background-color: #35424b;
+  color: #ffffff;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 1.05rem;
+}
+
+.active, .collapsible:hover {
+  background-color: #49555d;
+}
+
+.collapsible:after {
+  content: "+";
+  color: #ffffff;
+  font-weight: 700;
+  float: right;
+  margin-left: 0.75rem;
+}
+
+.collapsible.active:after {
+  content: "−";
+}
+
+.content, .content-category {
+  padding: 0 0.75rem;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+  background-color: #ffffff;
 }
 
 .modal {
@@ -3658,7 +3695,7 @@ th {
   flex-direction: inherit;
 }
 
-.navbar, .navbar-white, .navbar-black, .navbar-gray, .navbar-sidebar-bg, .navbar-bg, .navbar-info, .navbar-error, .navbar-secondary, .navbar-primary {
+.navbar, .navbar-white, .navbar-black, .navbar-gray, .navbar-bg-light, .navbar-bg, .navbar-info, .navbar-error, .navbar-secondary, .navbar-primary {
   width: 100%;
   display: flex;
   align-items: center;
@@ -3666,25 +3703,25 @@ th {
   box-sizing: border-box;
 }
 
-.navbar, .navbar-white, .navbar-black, .navbar-gray, .navbar-sidebar-bg, .navbar-bg, .navbar-info, .navbar-error, .navbar-secondary, .navbar-primary {
+.navbar, .navbar-white, .navbar-black, .navbar-gray, .navbar-bg-light, .navbar-bg, .navbar-info, .navbar-error, .navbar-secondary, .navbar-primary {
   padding: 0.75rem;
   z-index: 1;
   position: fixed;
   height: 5rem;
 }
-.navbar .small, .navbar-white .small, .navbar-black .small, .navbar-gray .small, .navbar-sidebar-bg .small, .navbar-bg .small, .navbar-info .small, .navbar-error .small, .navbar-secondary .small, .navbar-primary .small {
+.navbar .small, .navbar-white .small, .navbar-black .small, .navbar-gray .small, .navbar-bg-light .small, .navbar-bg .small, .navbar-info .small, .navbar-error .small, .navbar-secondary .small, .navbar-primary .small {
   display: none;
 }
 @media (max-width: 662px) {
-  .navbar .small, .navbar-white .small, .navbar-black .small, .navbar-gray .small, .navbar-sidebar-bg .small, .navbar-bg .small, .navbar-info .small, .navbar-error .small, .navbar-secondary .small, .navbar-primary .small {
+  .navbar .small, .navbar-white .small, .navbar-black .small, .navbar-gray .small, .navbar-bg-light .small, .navbar-bg .small, .navbar-info .small, .navbar-error .small, .navbar-secondary .small, .navbar-primary .small {
     display: block;
     margin-right: 1rem;
   }
 }
-.navbar .right, .navbar-white .right, .navbar-black .right, .navbar-gray .right, .navbar-sidebar-bg .right, .navbar-bg .right, .navbar-info .right, .navbar-error .right, .navbar-secondary .right, .navbar-primary .right {
+.navbar .right, .navbar-white .right, .navbar-black .right, .navbar-gray .right, .navbar-bg-light .right, .navbar-bg .right, .navbar-info .right, .navbar-error .right, .navbar-secondary .right, .navbar-primary .right {
   display: flex;
 }
-.navbar .right .controls svg, .navbar-white .right .controls svg, .navbar-black .right .controls svg, .navbar-gray .right .controls svg, .navbar-sidebar-bg .right .controls svg, .navbar-bg .right .controls svg, .navbar-info .right .controls svg, .navbar-error .right .controls svg, .navbar-secondary .right .controls svg, .navbar-primary .right .controls svg {
+.navbar .right .controls svg, .navbar-white .right .controls svg, .navbar-black .right .controls svg, .navbar-gray .right .controls svg, .navbar-bg-light .right .controls svg, .navbar-bg .right .controls svg, .navbar-info .right .controls svg, .navbar-error .right .controls svg, .navbar-secondary .right .controls svg, .navbar-primary .right .controls svg {
   width: 2rem;
   height: auto;
   padding: 0.375rem;
@@ -3694,26 +3731,26 @@ th {
   border-radius: 10px;
   cursor: pointer;
 }
-.navbar .right .controls svg path, .navbar-white .right .controls svg path, .navbar-black .right .controls svg path, .navbar-gray .right .controls svg path, .navbar-sidebar-bg .right .controls svg path, .navbar-bg .right .controls svg path, .navbar-info .right .controls svg path, .navbar-error .right .controls svg path, .navbar-secondary .right .controls svg path, .navbar-primary .right .controls svg path {
+.navbar .right .controls svg path, .navbar-white .right .controls svg path, .navbar-black .right .controls svg path, .navbar-gray .right .controls svg path, .navbar-bg-light .right .controls svg path, .navbar-bg .right .controls svg path, .navbar-info .right .controls svg path, .navbar-error .right .controls svg path, .navbar-secondary .right .controls svg path, .navbar-primary .right .controls svg path {
   fill: #bafcdd;
 }
-.navbar .right .user_container, .navbar-white .right .user_container, .navbar-black .right .user_container, .navbar-gray .right .user_container, .navbar-sidebar-bg .right .user_container, .navbar-bg .right .user_container, .navbar-info .right .user_container, .navbar-error .right .user_container, .navbar-secondary .right .user_container, .navbar-primary .right .user_container {
+.navbar .right .user_container, .navbar-white .right .user_container, .navbar-black .right .user_container, .navbar-gray .right .user_container, .navbar-bg-light .right .user_container, .navbar-bg .right .user_container, .navbar-info .right .user_container, .navbar-error .right .user_container, .navbar-secondary .right .user_container, .navbar-primary .right .user_container {
   display: flex;
 }
-.navbar .right .user_container .user_icon svg, .navbar-white .right .user_container .user_icon svg, .navbar-black .right .user_container .user_icon svg, .navbar-gray .right .user_container .user_icon svg, .navbar-sidebar-bg .right .user_container .user_icon svg, .navbar-bg .right .user_container .user_icon svg, .navbar-info .right .user_container .user_icon svg, .navbar-error .right .user_container .user_icon svg, .navbar-secondary .right .user_container .user_icon svg, .navbar-primary .right .user_container .user_icon svg {
+.navbar .right .user_container .user_icon svg, .navbar-white .right .user_container .user_icon svg, .navbar-black .right .user_container .user_icon svg, .navbar-gray .right .user_container .user_icon svg, .navbar-bg-light .right .user_container .user_icon svg, .navbar-bg .right .user_container .user_icon svg, .navbar-info .right .user_container .user_icon svg, .navbar-error .right .user_container .user_icon svg, .navbar-secondary .right .user_container .user_icon svg, .navbar-primary .right .user_container .user_icon svg {
   width: 2rem;
   height: auto;
   object-fit: cover;
   align-items: center;
   cursor: pointer;
 }
-.navbar .right .user_container .user_icon svg path, .navbar-white .right .user_container .user_icon svg path, .navbar-black .right .user_container .user_icon svg path, .navbar-gray .right .user_container .user_icon svg path, .navbar-sidebar-bg .right .user_container .user_icon svg path, .navbar-bg .right .user_container .user_icon svg path, .navbar-info .right .user_container .user_icon svg path, .navbar-error .right .user_container .user_icon svg path, .navbar-secondary .right .user_container .user_icon svg path, .navbar-primary .right .user_container .user_icon svg path {
+.navbar .right .user_container .user_icon svg path, .navbar-white .right .user_container .user_icon svg path, .navbar-black .right .user_container .user_icon svg path, .navbar-gray .right .user_container .user_icon svg path, .navbar-bg-light .right .user_container .user_icon svg path, .navbar-bg .right .user_container .user_icon svg path, .navbar-info .right .user_container .user_icon svg path, .navbar-error .right .user_container .user_icon svg path, .navbar-secondary .right .user_container .user_icon svg path, .navbar-primary .right .user_container .user_icon svg path {
   fill: #bafcdd;
 }
-.navbar .right .user_container .drop_icon path, .navbar-white .right .user_container .drop_icon path, .navbar-black .right .user_container .drop_icon path, .navbar-gray .right .user_container .drop_icon path, .navbar-sidebar-bg .right .user_container .drop_icon path, .navbar-bg .right .user_container .drop_icon path, .navbar-info .right .user_container .drop_icon path, .navbar-error .right .user_container .drop_icon path, .navbar-secondary .right .user_container .drop_icon path, .navbar-primary .right .user_container .drop_icon path {
+.navbar .right .user_container .drop_icon path, .navbar-white .right .user_container .drop_icon path, .navbar-black .right .user_container .drop_icon path, .navbar-gray .right .user_container .drop_icon path, .navbar-bg-light .right .user_container .drop_icon path, .navbar-bg .right .user_container .drop_icon path, .navbar-info .right .user_container .drop_icon path, .navbar-error .right .user_container .drop_icon path, .navbar-secondary .right .user_container .drop_icon path, .navbar-primary .right .user_container .drop_icon path {
   fill: #bafcdd;
 }
-.navbar #input_search, .navbar-white #input_search, .navbar-black #input_search, .navbar-gray #input_search, .navbar-sidebar-bg #input_search, .navbar-bg #input_search, .navbar-info #input_search, .navbar-error #input_search, .navbar-secondary #input_search, .navbar-primary #input_search {
+.navbar #input_search, .navbar-white #input_search, .navbar-black #input_search, .navbar-gray #input_search, .navbar-bg-light #input_search, .navbar-bg #input_search, .navbar-info #input_search, .navbar-error #input_search, .navbar-secondary #input_search, .navbar-primary #input_search {
   width: 30vw;
   height: auto;
   background-color: #35424b;
@@ -3723,32 +3760,32 @@ th {
   color: #bafcdd;
   border: 2px solid #bafcdd;
 }
-.navbar #input_search::placeholder, .navbar-white #input_search::placeholder, .navbar-black #input_search::placeholder, .navbar-gray #input_search::placeholder, .navbar-sidebar-bg #input_search::placeholder, .navbar-bg #input_search::placeholder, .navbar-info #input_search::placeholder, .navbar-error #input_search::placeholder, .navbar-secondary #input_search::placeholder, .navbar-primary #input_search::placeholder {
+.navbar #input_search::placeholder, .navbar-white #input_search::placeholder, .navbar-black #input_search::placeholder, .navbar-gray #input_search::placeholder, .navbar-bg-light #input_search::placeholder, .navbar-bg #input_search::placeholder, .navbar-info #input_search::placeholder, .navbar-error #input_search::placeholder, .navbar-secondary #input_search::placeholder, .navbar-primary #input_search::placeholder {
   color: #bafcdd;
   opacity: 1;
 }
-.navbar .logo, .navbar-white .logo, .navbar-black .logo, .navbar-gray .logo, .navbar-sidebar-bg .logo, .navbar-bg .logo, .navbar-info .logo, .navbar-error .logo, .navbar-secondary .logo, .navbar-primary .logo {
+.navbar .logo, .navbar-white .logo, .navbar-black .logo, .navbar-gray .logo, .navbar-bg-light .logo, .navbar-bg .logo, .navbar-info .logo, .navbar-error .logo, .navbar-secondary .logo, .navbar-primary .logo {
   display: flex;
   align-items: center;
 }
-.navbar .logo img, .navbar-white .logo img, .navbar-black .logo img, .navbar-gray .logo img, .navbar-sidebar-bg .logo img, .navbar-bg .logo img, .navbar-info .logo img, .navbar-error .logo img, .navbar-secondary .logo img, .navbar-primary .logo img {
+.navbar .logo img, .navbar-white .logo img, .navbar-black .logo img, .navbar-gray .logo img, .navbar-bg-light .logo img, .navbar-bg .logo img, .navbar-info .logo img, .navbar-error .logo img, .navbar-secondary .logo img, .navbar-primary .logo img {
   width: 20rem;
   height: auto;
   object-fit: cover;
 }
-.navbar #min_logo, .navbar-white #min_logo, .navbar-black #min_logo, .navbar-gray #min_logo, .navbar-sidebar-bg #min_logo, .navbar-bg #min_logo, .navbar-info #min_logo, .navbar-error #min_logo, .navbar-secondary #min_logo, .navbar-primary #min_logo {
+.navbar #min_logo, .navbar-white #min_logo, .navbar-black #min_logo, .navbar-gray #min_logo, .navbar-bg-light #min_logo, .navbar-bg #min_logo, .navbar-info #min_logo, .navbar-error #min_logo, .navbar-secondary #min_logo, .navbar-primary #min_logo {
   display: none;
   width: 4rem;
   height: auto;
 }
 @media (max-width: 662px) {
-  .navbar, .navbar-white, .navbar-black, .navbar-gray, .navbar-sidebar-bg, .navbar-bg, .navbar-info, .navbar-error, .navbar-secondary, .navbar-primary {
+  .navbar, .navbar-white, .navbar-black, .navbar-gray, .navbar-bg-light, .navbar-bg, .navbar-info, .navbar-error, .navbar-secondary, .navbar-primary {
     padding: 0;
   }
-  .navbar #min_logo, .navbar-white #min_logo, .navbar-black #min_logo, .navbar-gray #min_logo, .navbar-sidebar-bg #min_logo, .navbar-bg #min_logo, .navbar-info #min_logo, .navbar-error #min_logo, .navbar-secondary #min_logo, .navbar-primary #min_logo {
+  .navbar #min_logo, .navbar-white #min_logo, .navbar-black #min_logo, .navbar-gray #min_logo, .navbar-bg-light #min_logo, .navbar-bg #min_logo, .navbar-info #min_logo, .navbar-error #min_logo, .navbar-secondary #min_logo, .navbar-primary #min_logo {
     display: block;
   }
-  .navbar #full_logo, .navbar-white #full_logo, .navbar-black #full_logo, .navbar-gray #full_logo, .navbar-sidebar-bg #full_logo, .navbar-bg #full_logo, .navbar-info #full_logo, .navbar-error #full_logo, .navbar-secondary #full_logo, .navbar-primary #full_logo {
+  .navbar #full_logo, .navbar-white #full_logo, .navbar-black #full_logo, .navbar-gray #full_logo, .navbar-bg-light #full_logo, .navbar-bg #full_logo, .navbar-info #full_logo, .navbar-error #full_logo, .navbar-secondary #full_logo, .navbar-primary #full_logo {
     display: none;
   }
 }
@@ -3773,8 +3810,8 @@ th {
   background-color: #35424b;
 }
 
-.navbar-sidebar-bg {
-  background-color: #35424b;
+.navbar-bg-light {
+  background-color: #49555d;
 }
 
 .navbar-gray {

@@ -1703,17 +1703,17 @@
         },
         {
             "name": "laravel/fortify",
-            "version": "v1.17.1",
-            "version_normalized": "1.17.1.0",
+            "version": "v1.17.2",
+            "version_normalized": "1.17.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/fortify.git",
-                "reference": "76908639d6c58a4996ce8bbacea9ec7f610b2ec6"
+                "reference": "fc4b9b00b0d657dd035751b286f412976596ba32"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/fortify/zipball/76908639d6c58a4996ce8bbacea9ec7f610b2ec6",
-                "reference": "76908639d6c58a4996ce8bbacea9ec7f610b2ec6",
+                "url": "https://api.github.com/repos/laravel/fortify/zipball/fc4b9b00b0d657dd035751b286f412976596ba32",
+                "reference": "fc4b9b00b0d657dd035751b286f412976596ba32",
                 "shasum": ""
             },
             "require": {
@@ -1729,7 +1729,7 @@
                 "phpstan/phpstan": "^1.10",
                 "phpunit/phpunit": "^9.3"
             },
-            "time": "2023-04-19T15:48:59+00:00",
+            "time": "2023-04-26T13:35:07+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1770,17 +1770,17 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v10.9.0",
-            "version_normalized": "10.9.0.0",
+            "version": "v10.10.0",
+            "version_normalized": "10.10.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "35078125f61ef0b125edf524de934f108d4b47fd"
+                "reference": "0da22a8d179f79b49d4e71f4822f759651f35012"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/35078125f61ef0b125edf524de934f108d4b47fd",
-                "reference": "35078125f61ef0b125edf524de934f108d4b47fd",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/0da22a8d179f79b49d4e71f4822f759651f35012",
+                "reference": "0da22a8d179f79b49d4e71f4822f759651f35012",
                 "shasum": ""
             },
             "require": {
@@ -1925,7 +1925,7 @@
                 "symfony/postmark-mailer": "Required to enable support for the Postmark mail transport (^6.2).",
                 "symfony/psr-http-message-bridge": "Required to use PSR-7 bridging features (^2.0)."
             },
-            "time": "2023-04-25T13:47:18+00:00",
+            "time": "2023-05-09T13:08:05+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -4277,17 +4277,17 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "10.1.2",
-            "version_normalized": "10.1.2.0",
+            "version": "10.1.3",
+            "version_normalized": "10.1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "6f0cd95be71add539f8fd2be25b2a4a29789000b"
+                "reference": "2379ebafc1737e71cdc84f402acb6b7f04198b9d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/6f0cd95be71add539f8fd2be25b2a4a29789000b",
-                "reference": "6f0cd95be71add539f8fd2be25b2a4a29789000b",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/2379ebafc1737e71cdc84f402acb6b7f04198b9d",
+                "reference": "2379ebafc1737e71cdc84f402acb6b7f04198b9d",
                 "shasum": ""
             },
             "require": {
@@ -4321,7 +4321,7 @@
             "suggest": {
                 "ext-soap": "To be able to generate mocks based on WSDL files"
             },
-            "time": "2023-04-22T07:38:19+00:00",
+            "time": "2023-05-11T05:16:22+00:00",
             "bin": [
                 "phpunit"
             ],
@@ -4361,7 +4361,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/10.1.2"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/10.1.3"
             },
             "funding": [
                 {
@@ -6312,17 +6312,17 @@
         },
         {
             "name": "spatie/laravel-ignition",
-            "version": "2.1.1",
-            "version_normalized": "2.1.1.0",
+            "version": "2.1.2",
+            "version_normalized": "2.1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-ignition.git",
-                "reference": "802c7e27754456e45134f1a9d29ab7df4b6cb9e4"
+                "reference": "2f99fa6b732a6049e78ed34e4608ce589605ae54"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-ignition/zipball/802c7e27754456e45134f1a9d29ab7df4b6cb9e4",
-                "reference": "802c7e27754456e45134f1a9d29ab7df4b6cb9e4",
+                "url": "https://api.github.com/repos/spatie/laravel-ignition/zipball/2f99fa6b732a6049e78ed34e4608ce589605ae54",
+                "reference": "2f99fa6b732a6049e78ed34e4608ce589605ae54",
                 "shasum": ""
             },
             "require": {
@@ -6351,7 +6351,7 @@
                 "openai-php/client": "Require get solutions from OpenAI",
                 "psr/simple-cache-implementation": "Needed to cache solutions from OpenAI"
             },
-            "time": "2023-05-04T13:54:49+00:00",
+            "time": "2023-05-09T07:19:31+00:00",
             "type": "library",
             "extra": {
                 "laravel": {

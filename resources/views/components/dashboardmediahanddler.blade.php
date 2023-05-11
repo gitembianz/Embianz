@@ -146,15 +146,6 @@
     }
   });
 }
-var message = sessionStorage.getItem('message');
-
-// if (message) {
-//   // Display the message in an alert box
-//   alert(message);
-
-//   // Remove the message from the session
-//   sessionStorage.removeItem('message');
-// }
 
 
 </script>

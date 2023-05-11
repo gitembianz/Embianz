@@ -15,7 +15,7 @@ $dark: #0d0d0d !default;
 
 ///Color variables///
 $bg: #35424b!default;
-$sidebar-bg: #35424b !default;
+$bg-light: #49555d !default;
 $sidebar-active-bg: rgba(23, 23, 37, 0.8) !default;
 $border:#7e73ff !default;
 
@@ -26,7 +26,7 @@ $colors: (
   "error": $error,
   "info": $info,
   "bg": $bg,
-  "sidebar-bg": $sidebar-bg,
+  "bg-light": $bg-light,
   "gray": gray,
   "black": black,
   "white": white,

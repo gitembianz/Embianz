@@ -70,7 +70,7 @@
 
   #input_search {
     @include wh(30vw, auto);
-    background-color: $sidebar-bg;
+    background-color: $bg;
     display: none;
     &::placeholder{
       color: $secondary;
