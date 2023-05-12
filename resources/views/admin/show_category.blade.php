@@ -16,14 +16,16 @@
     {{-- End Section session message --}}
     <div class="contenttab bg-white text-bg p-2 br-sm">
         <div class="row jus-c">
-            <div class="col-12-xs display-f jus-sb col-12-sm col-12-xl m-1 text-bg">
+            <div class="col-12-xs display-f jus-sb col-12-sm col-12-xl mb-1">
                 <h1 id="title" class="mt-1 font-xl ls-1 text-bg">Category - {{ $data->name }}</h1>
                 <div class="display-f">
-                    <a href="{{ route('category') }}" class="boxsha bg-secondary display-f align-center br-xs p-1"> Go
-                        Back</a>
+                    <a href="{{ route('category') }}" class="back">Back</a>
                     <a href="{{ route('newcategory') }}"
-                        class="boxsha bg-secondary ml-1 display-f align-center br-xs p-1"><span
-                            class="bg-secondary"></span> Add new</a>
+                        class="add ml-1">New</a>
+                            <input type="button" class="delete ml-1" value="Delete" name="delete" id="delete">
+                            <input type="button"
+                                    class="edit ml-1"
+                                    value="Edit" name="edit" id="edit">
                 </div>
             </div>
         </div>
@@ -31,12 +33,14 @@
         <div class="tab bg-bg">
             <button class="tablinks br-xs p-1 m-1" onclick="opentab(event, 'Details')" id="defaultOpen">Details</button>
             <button class="tablinks br-xs p-1 m-1" onclick="opentab(event, 'Releated')">Releated</button>
+
         </div>
         <div class="tabcontent br-xs" id="Details">
             <form action="{{ route('category_update', $data->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 {{-- content --}}
                 <div class="row">
+
                     <div class="col-12-xs col-12-sm col-12-xl text-bg">
                         <ul class="wid-10">
                             <li class="listelement p-1">
@@ -113,15 +117,7 @@
                                 </div>
                             </li>
                             <li class="talign-c wid-10">
-                                <input type="button"
-                                    class="edit br-xs wid-4 font-lg ls-1 text-bg cursor-p p-1 bg-secondary"
-                                    value="Edit" name="edit" id="edit">
-                                <input type="submit" style="display: none"
-                                    class="edit br-xs wid-10 talign-c font-lg ls-1 text-bg cursor-p p-1  bg-secondary"
-                                    value="Update" id="Update">
-                                <input type="button"
-                                    class="delete wid-4 font-lg text-bg br-xs ls-1 cursor-p p-1 bg-secondary"
-                                    value="Delete" name="delete" id="delete">
+                                <input type="submit" style="display: none" class="add wid-10" value="Update" id="Update">
                             </li>
                         </ul>
                     </div>
@@ -166,60 +162,21 @@
                             </tbody>
                         </table>
                     </div>
-
-                        {{-- <div class="row talign-c">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Location</th>
-                                        <th>Sequence</th>
-                                        <th>Media</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($files as $file)
-                                        <tr>
-                                            <td>
-                                                <span>{{ $file->location->location }}</span>
-                                            </td>
-                                            <td>
-                                                <span>{{ $file->sequence }}</span>
-                                            </td>
-                                            <td>
-                                                @if (in_array($file->type, ['jpg', 'jpeg', 'png', 'gif', 'svg', 'jfif']))
-                                                    <img src="/{{ $file->path . $file->name }}"
-                                                        alt="{{ $file->name }}" width="100">
-                                                @elseif (in_array($file->type, ['mp4', 'mov', 'avi']))
-                                                    <video src="/{{ $file->path . $file->name }}" width="150"
-                                                        controls="true"></video>
-                                                @else
-                                                    {{ $file->name }}
-                                                @endif
-                                            </td>
-                                            <td>
-                                                <button class="cursor-p" type="button"
-                                                    onclick="removeFile({{ $file->id }})">Remove</button>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div> --}}
                     @else
-                        <div class="col-12-xs col-12-sm col-5-xl text-bg">
-                            <ul>
-                                <li class="talign-c p-2">
-                                    <input type="file" name="media[]" id="imgUpload" multiple
-                                        accept="image/*,video/*" onchange="filesManager(this.files)">
 
-                                    <label class="button ml-3 font-md" for="imgUpload">Upload Media</label>
-                                    <table id="imageTable" class="talign-c mt-2">
-                                    </table>
-                                </li>
-                            </ul>
-                        </div>
                     @endif
+                    <div class="col-12-xs col-12-sm col-6-xl talign-c">
+                        <ul>
+                            <li class="talign-c p-2">
+                                <input type="file" name="media[]" id="imgUpload" multiple accept="image/*,video/*" onchange="filesManager(this.files)">
+
+                                            <label class="upload" for="imgUpload"><span><svg width="40px" height="40px" viewBox="0 0 1024.00 1024.00" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M77.312 286.208h503.808v559.104H77.312z" fill="35424b"></path><path d="M133.632 342.016h391.68v335.36H133.632z" fill="#FFFFFF"></path><path d="M189.44 621.568h93.184L236.032 537.6zM375.808 453.632l-93.184 167.936h186.88z" fill="#82b09b"></path><path d="M637.44 621.568v83.456l337.408-165.376-211.456-432.64-252.928 122.88h110.08l120.32-58.368 127.488 259.584-230.912 113.152z" fill="35424b"></path></g></svg></span> <span class="ml-1">Upload Media</span></label>
+                                          <table id="imageTable" class="talign-c mt-2">
+                                          </table>
+                                </table>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
             <div class="releated mt-1 wid-10 talign-c br-xs">

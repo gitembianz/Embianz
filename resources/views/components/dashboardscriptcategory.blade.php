@@ -116,8 +116,12 @@
     const editt = document.getElementById("edit");
     if (editt) {
         document.getElementById("edit").addEventListener("click", function() {
-            //document.getElementById("new").style.display = "none";
-            document.getElementById("delete").style.display = "none";
+            opentab(event, 'Details');
+            document.querySelector(".tablinks#defaultOpen").classList.add("active");
+
+        // Open "Details" tab
+
+
             document.getElementById("edit").style.display = "none";
             document.getElementById("Update").style.display = "block";
 

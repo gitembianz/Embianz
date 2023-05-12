@@ -16,9 +16,9 @@
     {{-- End Section session message --}}
 <div class="contenttab m-1 mb-1 p-2 br-sm" >
     <div class="row talign-c">
-        <div class="col-12-xs col-12-sm col-12-xl text-bg">
-            <a href="{{ route('newcategory') }}" class="bg-secondary display-f align-center br-xs float-r p-1 mb-1">{{ __('Add new') }}</a>
-            <div class="form-group">
+        <div class="col-12-xs col-12-sm col-12-xl">
+            <a href="{{ route('newcategory') }}" class="addnew">{{ __('Add new') }}</a>
+            <div class="form-group mb-1">
                 <form>
                     <div class="multiselect bg-white">
                         <div class="selectBox br-xs bg-white" onclick="showCheckboxes()">

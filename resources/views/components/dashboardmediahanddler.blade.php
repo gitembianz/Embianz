@@ -45,13 +45,13 @@
                     // create an <img> element and set its src attribute to the file's contents (from read operation)
                     let img = document.createElement('img');
                     img.src = fReader.result;
-                    img.width = 150;
+                    img.width = 100;
                     tdImage.appendChild(img);
                 } else if (file.type.includes('video')) {
                     // create a <video> element and set its src attribute to the file's contents (from read operation)
                     let video = document.createElement('video');
                     video.src = fReader.result;
-                    video.width = 150;
+                    video.width = 100;
                     video.controls = true; // add controls to the video player
                     tdImage.appendChild(video);
                 }

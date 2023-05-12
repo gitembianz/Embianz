@@ -16,12 +16,12 @@
     <div class="contenttab m-1 mb-1 p-2 br-sm" >
 
     <div class="row talign-c">
-        <div class="col-12-xs col-12-sm col-12-xl text-bg">
-            <a href="{{ route('add_products') }}" class="bg-secondary display-f align-center br-xs float-r p-1 mb-1">{{ __('Add new') }}</a>
+        <div class="col-12-xs col-12-sm col-12-xl">
+            <a href="{{ route('add_products') }}" class="addnew">{{ __('Add new') }}</a>
             <div class="form-group mb-2">
                 <form>
                     <div class="multiselect">
-                      <div class="selectBox br-xs" onclick="showCheckboxes()">
+                      <div class="selectBox" onclick="showCheckboxes()">
                         <select class="p-1  bg-white">
                           <option>Toggle columns</option>
                         </select>

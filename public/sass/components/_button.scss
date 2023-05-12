@@ -1,41 +1,56 @@
-@mixin btn($bg-color: #e2e2e2) {
+@mixin btn {
   text-decoration: none;
   cursor: pointer;
-  display: inline-block;
-  border: 0;
-  padding: $base-padding $base-padding * 2;
-  border-radius: $base-border-radius;
-  background-color: $bg-color;
+  border: none;
+  padding: $base-padding;
+  border-radius: calc($base-border-radius / 3);
 }
 
 .btn {
   @include btn;
 }
 
-@each $key,
-$val in $colors {
-  .btn-#{$key} {
-    @include btn($val);
+.back{
+    @extend .btn;
+    border: 1px solid $bg;
+    background-color: $white;
+    color: $bg;
+}
 
-    &:hover {
-      background-color: lighten($color: $val, $amount: 5);
-    }
-  }
+.viewbtn{
+@extend .back;
+}
 
-  .btn-outlined-#{$key} {
-    @include btn(#fff);
-    border-radius: $base-border-radius;
+.add{
+    @extend .btn;
+    border: 1px solid $secondarydark;
+    background-color: $secondary;
+    color: $bg;
+}
 
-    &:hover {
-      background-color: $val;
-    }
-  }
-  .btn-complement-#{$key} {
-    @include btn($val);
-    color: light-comp($val);
-    &:hover {
-      color: $val;
-      background-color: light-comp($val);
-    }
-  }
+.delete{
+    @extend .btn;
+    border: 1px solid $bg-light;
+    color: $secondary;
+    background-color: $bg;
+}
+
+.edit{
+    @extend .add;
+}
+
+.addnew{
+    @extend .add;
+    float: right;
+    margin-bottom: calc($base-margin / 2);
+}
+
+.upload{
+    @extend .add;
+    padding: calc($base-padding / 3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: $base-margin;
+    font-size: $font-size-md;
 }

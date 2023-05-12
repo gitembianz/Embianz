@@ -1,5 +1,5 @@
 .modal {
-    z-index: 3;
+    z-index: 99;
     display: none;
     position: fixed;
     left: 0;
@@ -8,7 +8,7 @@
     overflow: auto;
     background-color: rgba(0, 0, 0, 0.6);
 
-    .content {
+   & .modal-content {
         margin: auto;
         background-color: $white;
         opacity: 100%;
@@ -19,21 +19,12 @@
         outline: 0;
         text-align: center;
         box-shadow: 0px 0px 15px $secondary;
-    }
-}
-
-//styling a specific modals
-#confirmmodal-category {
-    .content-category {
-    background: $white;
+        background: $white;
     color: $bg;
       top: 40%;
       @include wh(40%, 20%);
-      @media (max-width: 662px) {
-        @include wh(80%, auto);
-      }
 
-      .exit {
+      &  .exit {
         @include wh(3rem, auto);
         cursor: pointer;
         font-size: 28px;
@@ -53,6 +44,7 @@
         }
       }
     }
-  }
+}
+
 
 

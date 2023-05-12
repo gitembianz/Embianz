@@ -43,7 +43,7 @@ class CategoryController extends Controller
                 })
                 ->addColumn('action', function ($data) {
 
-                    $button = '<button type="button" class="view_product btn-white text-bg br-xs" name="view" onclick="event.preventDefault();location.href=\'/show_category/' . $data->id . '\'">View</button>';
+                    $button = '<button type="button" class="viewbtn" name="view" onclick="event.preventDefault();location.href=\'/show_category/' . $data->id . '\'">View</button>';
                     return $button;
                 })
                 ->make(true);
@@ -54,13 +54,18 @@ class CategoryController extends Controller
 {
     // Find the media file by ID
     $media = Media::findOrFail($id);
-    $path = '/' . $media->path . $media->name;
-    // Delete the media file from storage
-    Storage::delete($path);
-    //dd($path);
+    $path = $media->path . $media->name;
+
+    if (File::exists($path)) {
+        File::delete($path);
+    }
 
     // Delete the media file from the database
     $media->delete();
+    $folder = $media->path;
+    if (File::isDirectory($folder) && count(File::allFiles($folder)) === 0) {
+        File::deleteDirectory($folder);
+    }
 
     return response()->json(['message' => $path]);
 }
@@ -178,14 +183,6 @@ class CategoryController extends Controller
         return view('admin.add_category', compact('categories'));
     }
 
-    public function media($id)
-    {
-        $data = Category::find($id);
-        $itemType = class_basename(get_class($data));
-        $type = Tabels::where('name', $itemType)->first()->id;
-        $files = Media::where('item_id', $data->id)->where('tabel_id', $type)->with('location')->get();
-        return view('admin.media',compact('files','data'));
-    }
 
     public function update(Request $request, $id)
 {
@@ -223,9 +220,14 @@ class CategoryController extends Controller
         $id = $request->hiddenid;
         $category = category::find($id);
         $categories = category::all();
-
+        $productType = class_basename(get_class($category));
+        $filespath = 'media/' . $productType . '/' . $category->id;
+        if (File::exists($filespath)) {
+            File::deleteDirectory($filespath);
+        }
         $category->delete();
-        //de verificat de ce nu trimite message to view
+
+
         return view('admin.category', compact('categories'))->with('message', 'Category Deleted Successfully!');
     }
 
