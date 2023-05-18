@@ -1,6 +1,7 @@
 <script type="text/javascript">
-    allFiles = new DataTransfer();
 
+//Script fot Table with media
+    allFiles = new DataTransfer();
     function previewFile(file) {
         let imageType = /^image\/.*|^video\/.*/;
         if (file.type.match(imageType)) {
@@ -35,43 +36,36 @@
             fReader.readAsDataURL(file);
 
             fReader.onloadend = function() {
-                //create <tr> and <td>
                 let tr = document.createElement('tr');
                 let tdImage = document.createElement('td');
                 let tdFileLocation = document.createElement('td');
                 let tdFileSequence = document.createElement('td');
                 let tdRemoveBtn = document.createElement('td');
                 if (file.type.includes('image')) {
-                    // create an <img> element and set its src attribute to the file's contents (from read operation)
                     let img = document.createElement('img');
                     img.src = fReader.result;
                     img.width = 100;
                     tdImage.appendChild(img);
                 } else if (file.type.includes('video')) {
-                    // create a <video> element and set its src attribute to the file's contents (from read operation)
                     let video = document.createElement('video');
                     video.src = fReader.result;
                     video.width = 100;
-                    video.controls = true; // add controls to the video player
+                    video.controls = true;
                     tdImage.appendChild(video);
                 }
 
-                // Add image size and extension info
-                let fileInfo = document.createTextNode(file.size / 1000 + " KB, " + file.type.split("/")[1] +
-                    " file");
+                let fileInfo = document.createTextNode(file.size / 1000 + " KB, " + file.type.split("/")[1] + " file");
                 allFiles.items.add(file);
                 document.getElementById('imgUpload').files = allFiles.files;
-
                 let fileSize = document.createElement('input');
                 fileSize.setAttribute("type", "hidden");
                 fileSize.setAttribute("name", "file_size[]");
                 fileSize.value = file.size;
 
-
-                //create select with location value
                 let fileLocation = document.createElement('select');
                 fileLocation.setAttribute("class", "p-1");
-                fileLocation.setAttribute("name", "file_location[]"); // add name attribute
+                fileLocation.setAttribute("required", "required");
+                fileLocation.setAttribute("name", "file_location[]");
                 const medialocations = {!! json_encode($medialocations) !!};
 
                 medialocations.forEach((medialocation, categoryIndex) => {
@@ -81,19 +75,22 @@
                     fileLocation.add(option);
                 });
 
-                //create inputs for sequence
                 let fileSequence = document.createElement('input');
                 fileSequence.setAttribute("type", "number");
+                fileSequence.setAttribute("required", "required");
                 fileSequence.setAttribute("class", " wid-6 p-1");
-                fileSequence.setAttribute("name", "file_sequence[]"); // add name attribute
+                fileSequence.setAttribute("name", "file_sequence[]");
 
-                //add remove button
                 let removeBtn = document.createElement('button');
                 removeBtn.innerHTML = 'x';
                 removeBtn.setAttribute("class", "buttonremove" + " font-xl");
                 removeBtn.onclick = function() {
                     tr.remove();
                     if (imageTable.rows.length === 1) {
+                        var addMediaCat = document.getElementById('addmediacat');
+                        if (addMediaCat) {
+                            addMediaCat.style.display = 'none';
+                        }
                         tableHeader.remove();
                     }
                     let name = file.name;
@@ -104,10 +101,9 @@
                         }
                     }
                     document.getElementById('imgUpload').files = allFiles.files;
-
                 };
-                tdImage.setAttribute("class", "font-md");
 
+                tdImage.setAttribute("class", "font-md");
                 tdImage.appendChild(fileInfo);
                 tdImage.appendChild(fileSize);
                 tdFileLocation.appendChild(fileLocation);
@@ -128,24 +124,27 @@
         files = [...files];
         files.forEach(previewFile);
         document.getElementById('imgUpload').files = allFiles.files;
-
+        var contentDiv = document.getElementById('contentDiv');
+        if(contentDiv){
+        contentDiv.style.maxHeight = '100%';
+        contentDiv.style.height = '100%';
+        window.addEventListener('resize', function() {
+            contentDiv.style.height = '100%';
+        });
     }
+    }
+
+//Remove a media from table
     function removeFile(fileId) {
-  // Make an AJAX request to remove the file with the given ID
-  $.ajax({
-    url: '/filesd/' + fileId,
-    success: function(data) {
-       // Add a success message to the session
-
-      // Refresh the page
-      location.reload();
-      sessionStorage.setItem('message', 'Media are deleted!');
-    },
-    error: function(xhr, status, error) {
-      console.error(error);
+        $.ajax({
+            url: '/filesd/' + fileId,
+            success: function(data) {
+                location.reload();
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+            }
+        });
     }
-  });
-}
-
 
 </script>

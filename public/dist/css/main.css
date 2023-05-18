@@ -1889,6 +1889,11 @@ th {
   text-align: center !important;
 }
 
+.link-name {
+  color: #49555d;
+  border-bottom: 1px solid #35424b;
+}
+
 .button {
   display: inline-block;
   padding: 0.75rem;
@@ -2116,6 +2121,10 @@ th {
 
 .m-5 {
   margin: 6rem;
+}
+
+.m-a {
+  margin: auto;
 }
 
 .ml-0 {
@@ -2842,6 +2851,7 @@ th {
   padding: 6px 12px;
   border: 1px solid #35424b;
   border-top: none;
+  height: 100%;
   max-height: 100% !important;
   border-radius: 0 0 20px 20px;
 }

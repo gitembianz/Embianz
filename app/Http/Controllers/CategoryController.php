@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use getID3;
 use App\Models\Media;
 use App\Models\Tabels;
+use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\MediaLocation;
@@ -13,7 +14,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
-use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
 
 
@@ -36,19 +36,12 @@ class CategoryController extends Controller
                     } else{
                         $path = "images/resets/category.svg";
                     }
-
-
                     return $path;
 
                 })
-                ->addColumn('action', function ($data) {
 
-                    $button = '<button type="button" class="viewbtn" name="view" onclick="event.preventDefault();location.href=\'/show_category/' . $data->id . '\'">View</button>';
-                    return $button;
-                })
                 ->make(true);
-        }
-        return view('admin.category');
+        } return view('admin.category');
     }
     public function deleteMedia($id)
 {
@@ -69,6 +62,37 @@ class CategoryController extends Controller
 
     return response()->json(['message' => $path]);
 }
+
+public function deleteProduct($id)
+{
+    // Find the media file by ID
+    $product = Products_categories::where('product_id', $id)->first();
+    $product->delete();
+
+
+    return response()->json(['message' => 'Product deleted succesfully']);
+}
+
+public function deleteSelectedProducts(Request $request)
+{
+    $productIds = $request->input('productIds');
+    $productIdsArray = explode(',', $productIds);
+    $count = count($productIdsArray);
+
+    if ($count > 0) {
+        for ($i = 0; $i < $count; $i++) {
+            $id = $productIdsArray[$i];
+            $product = Product::find($id);
+            $productcat = Products_categories::where('product_id', $id)->first();
+            $productcat->delete();
+            $product->delete();
+        }
+        return redirect()->back()->with('message', 'Products Deleted Successfully!');
+    } else {
+        return redirect()->back()->with('message', 'No products selected for deletion.');
+    }
+}
+
 
     public function add_category(Request $request)
     {       //add a new category to dbase
@@ -225,11 +249,21 @@ class CategoryController extends Controller
         if (File::exists($filespath)) {
             File::deleteDirectory($filespath);
         }
+        $products = Products_categories::where('category_id', $category->id)->get();
+        foreach($products as $product){
+            $product->delete();
+        }
         $category->delete();
 
 
         return view('admin.category', compact('categories'))->with('message', 'Category Deleted Successfully!');
     }
+    public function getAllProducts()
+{
+    $products = Product::all();
+
+    return response()->json(['products' => $products]);
+}
 
     public function update_category(Request $request, $id)
     {
@@ -246,5 +280,79 @@ class CategoryController extends Controller
             'seo_title' =>$request->seo_title
         ]);
         return redirect()->back()->with('message', 'Category Update Successfully!');
+    }
+    public function add_media(Request $request, $id)
+    {
+        $data = Category::find($id);
+        $locations = $request->input('file_location');
+        $sequences = $request->input('file_sequence');
+        $size = $request->input('file_size');
+        $files = $request->file('media');
+        $productType = class_basename(get_class($data));
+        $filespath = 'media/' . $productType . '/';
+        if (!File::exists($filespath)) {
+            File::makeDirectory($filespath, 0755, true);
+        }
+
+        //verify and create a folder with product id name
+        if (!File::exists($filespath . "$data->id")) {
+            File::makeDirectory($filespath . "$data->id", 0755, true);
+
+        }
+        $path = $filespath . "$data->id" . "/";
+        $i = 0;
+        foreach ($files as $file) {
+            $media = new Media();
+            //verify the type of media
+            $type = $file->getClientOriginalExtension();
+            if ($type === "svg") {
+                $svg = simplexml_load_file($file);
+                $attributes = $svg->attributes();
+                $width = (float) $attributes->width;
+                $height = (float) $attributes->height;
+            } elseif ($type === "mp4" || $type === " ogg") {
+                $getID3 = new getID3;
+                $fileinfo = $getID3->analyze($file);
+                $width = $fileinfo['video']['resolution_x'];
+                $height = $fileinfo['video']['resolution_y'];
+            } else {
+                $image = Image::make($file);
+                $width = $image->width();
+                $height = $image->height();
+            }
+            //save the path and the name
+            $media->item_id = $data->id;
+            $media->path = $path;
+            $media->name = $file->getClientOriginalName();
+            //store the media
+            $filename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+            $media->name = $filename . '.' . $type;
+            // Verify if media name exist
+            if (file_exists($path . $media->name)) {
+                $i = 1;
+                while (file_exists($path . $filename . '(' . $i . ').' .$type)) {
+                    $i++;
+                }
+                $media->name = $filename . '(' . $i . ').' . $type;
+            }
+            $file->move($path, $media->name);
+            $media->sequence =  $sequences[$i];
+            $media->tabel_id = Tabels::where('name', $productType)->first()->id;
+            if ($locations[$i] != NULL) {
+                $media->location_id = MediaLocation::where('location', $locations[$i])->first()->id;
+            } else {
+                $media->location_id = NULL;
+            }
+            $media->type = $type;
+            $media->width = $width;
+            $media->height =  $height;
+            $media->size = $size[$i];
+            $media->createdby = Auth::user()->name;
+            $media->lastmodifiedby = Auth::user()->name;
+            $media->save();
+            $i += 1;
+        }
+
+        return redirect()->back()->with('message', 'Media Update Successfully!');
     }
 }

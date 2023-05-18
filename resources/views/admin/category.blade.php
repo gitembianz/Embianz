@@ -23,16 +23,16 @@
                     <div class="multiselect bg-white">
                         <div class="selectBox br-xs bg-white" onclick="showCheckboxes()">
                             <select class="p-1  bg-white">
-                                <option>Toggle columns</option>
+                                <option>Columns</option>
                             </select>
                             <div class="overSelect br-xs"></div>
                         </div>
                         <div id="checkboxes">
                             <?php
-                            $columns = ['Category Images','Category ID', 'Category Name', 'Category Parent', 'Category Short Description','Category Sequence'];
+                            $columns = ['Images','ID', 'Name', 'Parent', 'Short Description','Sequence'];
                             for ($i = 0; $i < count($columns); $i++) {
-                                echo "<label data-column='$i' class='talign-r pt-1' for='$i'>$columns[$i]
-                                                      <input type='checkbox' class='checkbox' id='$i' /></label>";
+                                echo "<label data-column='$i' class='talign-l pt-1' for='$i'>$columns[$i]
+                                                      <input type='checkbox' class='checkbox float-r' id='$i' /></label>";
                             }
                             ?>
                         </div>
@@ -41,7 +41,7 @@
 
                 </form>
             </div>
-            {{-- Table Category --}}
+            {{-- Table Categorys --}}
             <table class="category-table" id="category_table">
                 <thead>
                     <tr>
@@ -51,7 +51,6 @@
                         <th class="bg-white">Catagory Parrent</th>
                         <th class="bg-white">Short Description</th>
                         <th class="bg-white">Squence</th>
-                        <th class="bg-white">Action</th>
                     </tr>
                 </thead>
                 <tbody>

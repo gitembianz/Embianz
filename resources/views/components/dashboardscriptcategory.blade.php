@@ -1,16 +1,14 @@
 <script>
     //script for DataTable for categories
     $(document).ready(function() {
-          $('#productsTable').DataTable();
-          $('#mediaTable').DataTable();
-
+        $('#productsTable').DataTable();
+        $('#mediaTable').DataTable();
         var table = $('#category_table').DataTable({
             processing: true,
             serverSide: true,
             orderable: true,
             ajax: "{{ route('category') }}",
-            columns: [
-                {
+            columns: [{
                     data: 'image',
                     name: 'image',
                     orderable: false,
@@ -26,7 +24,10 @@
 
                 {
                     data: 'name',
-                    name: 'name'
+                    name: 'name',
+                    render: function(data, type, row) {
+                        return '<a href="/show_category/' + row.id + '" class="link-name">' + data + '</a>';
+                    }
                 },
                 {
                     data: 'parrent',
@@ -40,18 +41,10 @@
                     data: 'sequence',
                     name: 'sequence'
                 },
-                {
-                    data: 'action',
-                    name: 'action',
-                    orderable: false,
-                    searchable: false
-                },
             ]
         });
-
+        // Script for toggle columns
         var columnState = localStorage.getItem('columnState');
-
-        // Restore the state of the columns
         if (columnState) {
             var columnStates = JSON.parse(columnState);
             $.each(columnStates, function(columnIndex, visible) {
@@ -60,15 +53,10 @@
                 $('#' + columnIndex).prop('checked', visible);
             });
         }
-
         $('.checkbox').on('click', function() {
             var columnIndex = $(this).attr('id');
             var column = table.column(columnIndex);
-
-            // Toggle the visibility of the column based on the checkbox status
             column.visible(!column.visible());
-
-            // Save the state of the columns to localStorage
             var columnStates = {};
             $('.checkbox').each(function() {
                 var columnIndex = $(this).attr('id');
@@ -78,6 +66,7 @@
             localStorage.setItem('columnState', JSON.stringify(columnStates));
         });
     });
+
 
     //script for droplist with checkboxes
     var expanded = false;
@@ -94,14 +83,12 @@
     }
 
     //delete script
-    $(document).on('click', '.delete', function(event) {
+    $(document).on('click', '#deletecat', function(event) {
         event.preventDefault();
         const input = document.getElementById('hidden_id');
         var id = input.value;
-
         document.getElementById('confirmmodal-category').style.display = 'block';
         $('#hiddenid').val(id);
-
     });
 
     //Script on click outside of modal
@@ -112,16 +99,23 @@
         }
     }
 
+    // Handdle media on view category
+    var imgUpload = document.getElementById('imgUpload');
+    var addMediaCat = document.getElementById('addmediacat');
+    if(imgUpload){
+    imgUpload.addEventListener('click', function() {
+        if(addMediaCat){
+        if (addMediaCat.style.display === 'none') {
+            addMediaCat.style.display = 'block';
+        }}
+    });}
+
     //edit category script
     const editt = document.getElementById("edit");
     if (editt) {
         document.getElementById("edit").addEventListener("click", function() {
             opentab(event, 'Details');
             document.querySelector(".tablinks#defaultOpen").classList.add("active");
-
-        // Open "Details" tab
-
-
             document.getElementById("edit").style.display = "none";
             document.getElementById("Update").style.display = "block";
 
@@ -147,10 +141,8 @@
             selectElements.forEach((selectElement, index) => {
                 const selectp = document.createElement("select");
                 const categories = {!! json_encode($categories) !!};
-
                 selectp.setAttribute("class", selectElement.getAttribute("class"));
                 selectp.setAttribute("name", selectElement.getAttribute("id"));
-
                 categories.forEach((category, categoryIndex) => {
                     const option = document.createElement("option");
                     option.text = category;
@@ -158,12 +150,10 @@
 
                     if (category === selectElement.innerText) {
                         option.selected =
-                        true; // set the option as selected if its value matches the value of the selectElement
+                            true;
                     }
-
                     selectp.add(option);
                 });
-
                 selectElement.replaceWith(selectp);
             });
 
@@ -200,9 +190,41 @@
                 inputElement.setAttribute("class", textareaElements.getAttribute("class"));
                 inputElement.setAttribute("name", textareaElements.getAttribute("id"));
                 inputElement.setAttribute("required", true);
-                //inputElement.setAttribute('style', 'width: 100%');
                 textareaElements.replaceWith(inputElement);
             });
         });
     }
+
+    // Add products related
+    function fetchAllProductsData() {
+        $.ajax({
+            url: '/get_all_products',
+            type: 'GET',
+            success: function(response) {
+                const productsData = response.products;
+                populateSelectWithOptions(productsData);
+            },
+            error: function(error) {
+            },
+        });
+    }
+
+    function populateSelectWithOptions(productsData) {
+        const selectElement = document.querySelector('select');
+        productsData.forEach(function(product) {
+            const option = document.createElement('option');
+            const checkbox = document.createElement('input');
+            checkbox.setAttribute('type', 'checkbox');
+            checkbox.setAttribute('value', product.id);
+            option.appendChild(document.createTextNode(product.name));
+            option.appendChild(checkbox);
+            selectElement.appendChild(option);
+        });
+    }
+
+    const addProductButton = document.querySelector('#addProductButton');
+    if(addProductButton){
+    addProductButton.addEventListener('click', fetchAllProductsData);
+    }
+
 </script>

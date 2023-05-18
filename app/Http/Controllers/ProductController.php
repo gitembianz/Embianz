@@ -41,12 +41,6 @@ class ProductController extends Controller
                     };
 
                     return $cat;
-                })
-                //add column for action(view)
-                ->addColumn('action', function ($data) {
-                    $button = '<button type="button" class="viewbtn" name="view" onclick="event.preventDefault();location.href=\'/show_product/' . $data->id . '\'">View</button>';
-                    return $button;
-                    //add column for images
                 })->addColumn('image', function ($data) {
                     $productType = class_basename(get_class($data));
                     $type = Tabels::where('name', $productType)->first()->id;

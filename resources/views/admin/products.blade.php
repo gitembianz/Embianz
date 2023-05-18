@@ -23,18 +23,18 @@
                     <div class="multiselect">
                       <div class="selectBox" onclick="showCheckboxes()">
                         <select class="p-1  bg-white">
-                          <option>Toggle columns</option>
+                          <option>Columns</option>
                         </select>
                         <div class="overSelect br-xs"></div>
                       </div>
                       <div id="checkboxes">
 
                             <?php
-                            $columns = ["Product Image","Product ID","Product Name", "Product Short Description", "Product Quantity", "Product Status","Product Category"];
+                            $columns = ["Image","ID","Name", "Short Description", "Quantity", "Status","Category"];
                             for ($i = 0; $i < count($columns); $i++) {
 
-                             echo "<label data-column='$i' class='talign-r pt-1' for='$i'>$columns[$i]
-                          <input type='checkbox' class='checkbox' id='$i' /></label>";
+                             echo "<label data-column='$i' class='talign-l pt-1' for='$i'>$columns[$i]
+                          <input type='checkbox' class='checkbox float-r' id='$i' /></label>";
                             }
                           ?>
 
@@ -56,7 +56,6 @@
                     <th class="bg-white" style="text-align: center">Quantity</th>
                     <th class="bg-white" style="text-align: center">Status</th>
                     <th class="bg-white" style="text-align: center">Category</th>
-                    <th class="bg-white" style="text-align: center">Action</th>
 
                 </tr>
             </thead>

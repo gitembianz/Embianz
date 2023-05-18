@@ -24,7 +24,10 @@
                 },
                 {
                     data: 'name',
-                    name: 'name'
+                    name: 'name',
+                    render: function(data, type, row) {
+            return '<a href="/show_product/' + row.id + '" class="link-name">' + data + '</a>';
+        }
                 },
                 {
                     data: 'short_description',
@@ -44,12 +47,6 @@
                     render: function(data, type, row) {
                         return  data;
                     }
-                },
-                {
-                    data: 'action',
-                    name: 'action',
-                    orderable: false,
-                    searchable: false
                 },
             ]
         });
