@@ -92,6 +92,26 @@ public function deleteSelectedProducts(Request $request)
         return redirect()->back()->with('message', 'No products selected for deletion.');
     }
 }
+public function deleteSelectedMedia(Request $request)
+{
+    $mediaIds = $request->input('mediaIds');
+    dd($mediaIds);
+    // $productIdsArray = explode(',', $productIds);
+    // $count = count($productIdsArray);
+
+    // if ($count > 0) {
+    //     for ($i = 0; $i < $count; $i++) {
+    //         $id = $productIdsArray[$i];
+    //         $product = Product::find($id);
+    //         $productcat = Products_categories::where('product_id', $id)->first();
+    //         $productcat->delete();
+    //         $product->delete();
+    //     }
+    //     return redirect()->back()->with('message', 'Products Deleted Successfully!');
+    // } else {
+    //     return redirect()->back()->with('message', 'No products selected for deletion.');
+    // }
+}
 
 
     public function add_category(Request $request)

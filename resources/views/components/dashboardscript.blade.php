@@ -92,15 +92,10 @@ hiddenInput.setAttribute('value', productIds);
 const formElement = document.querySelector('#deleteProductsForm');
 formElement.appendChild(hiddenInput);
 
-// Submit the form to delete the selected products
-
-
-        // Rest of your deletion logic...
     }
-
     // Add event listener to the checkboxes to trigger the update of the "Delete selected products" button
-    const checkboxes = document.querySelectorAll('.product-checkbox');
-    checkboxes.forEach(function(checkbox) {
+    const checkboxess = document.querySelectorAll('.product-checkbox');
+    checkboxess.forEach(function(checkbox) {
         checkbox.addEventListener('change', deleteSelectedProducts);
     });
 
@@ -109,8 +104,6 @@ formElement.appendChild(hiddenInput);
     if(deleteButton){
     deleteButton.addEventListener('click', deleteSelectedProducts);
     }
-
-
 </script>
 
 {{-- script for DataTables --}}

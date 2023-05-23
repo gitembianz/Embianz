@@ -26,7 +26,8 @@
                     data: 'name',
                     name: 'name',
                     render: function(data, type, row) {
-                        return '<a href="/show_category/' + row.id + '" class="link-name">' + data + '</a>';
+                        return '<a href="/show_category/' + row.id + '" class="link-name">' +
+                            data + '</a>';
                     }
                 },
                 {
@@ -102,13 +103,15 @@
     // Handdle media on view category
     var imgUpload = document.getElementById('imgUpload');
     var addMediaCat = document.getElementById('addmediacat');
-    if(imgUpload){
-    imgUpload.addEventListener('click', function() {
-        if(addMediaCat){
-        if (addMediaCat.style.display === 'none') {
-            addMediaCat.style.display = 'block';
-        }}
-    });}
+    if (imgUpload) {
+        imgUpload.addEventListener('click', function() {
+            if (addMediaCat) {
+                if (addMediaCat.style.display === 'none') {
+                    addMediaCat.style.display = 'block';
+                }
+            }
+        });
+    }
 
     //edit category script
     const editt = document.getElementById("edit");
@@ -185,46 +188,232 @@
                 spanElement.replaceWith(inputElement);
             });
             textareaElements.forEach(textareaElements => {
-                const inputElement = document.createElement("textarea");
-                inputElement.value = textareaElements.innerText;
-                inputElement.setAttribute("class", textareaElements.getAttribute("class"));
-                inputElement.setAttribute("name", textareaElements.getAttribute("id"));
-                inputElement.setAttribute("required", true);
-                textareaElements.replaceWith(inputElement);
+                const inputTextarea = document.createElement("textarea");
+                inputTextarea.value = textareaElements.innerText;
+                inputTextarea.setAttribute("class", textareaElements.getAttribute("class"));
+                inputTextarea.setAttribute("name", textareaElements.getAttribute("id"));
+                inputTextarea.setAttribute("required", true);
+                textareaElements.replaceWith(inputTextarea);
             });
         });
     }
 
-    // Add products related
+    // Script for product tables
+
+    function createtable(productsData) {
+        // Create the table element
+        const table = document.createElement('table');
+        table.setAttribute('id', 'productTable');
+
+        // Create the table header
+        const thead = document.createElement('thead');
+        const headerRow = document.createElement('tr');
+
+        // Add a checkbox column header
+        const checkboxHeader = document.createElement('th');
+        checkboxHeader.textContent = 'Action';
+        headerRow.appendChild(checkboxHeader);
+
+        // Add Name column header
+        const nameHeader = document.createElement('th');
+        nameHeader.textContent = 'Name';
+        headerRow.appendChild(nameHeader);
+
+        // Add Status column header
+        const statusHeader = document.createElement('th');
+        statusHeader.textContent = 'Status';
+        headerRow.appendChild(statusHeader);
+
+        // Add Quantity column header
+        const quantityHeader = document.createElement('th');
+        quantityHeader.textContent = 'Quantity';
+        headerRow.appendChild(quantityHeader);
+
+        // Add the header row to the table
+        thead.appendChild(headerRow);
+        table.appendChild(thead);
+
+        // Create the table body
+        const tbody = document.createElement('tbody');
+
+        // Iterate over the products data and create a row for each product
+        for (const product of productsData) {
+            const row = document.createElement('tr');
+
+            // Add a checkbox column for selecting the product
+            const checkboxCell = document.createElement('td');
+            const checkbox = document.createElement('input');
+            checkbox.setAttribute('type', 'checkbox');
+            checkbox.setAttribute("class", 'addproduct-checkbox');
+            checkbox.value = product.id;
+            checkboxCell.appendChild(checkbox);
+            row.appendChild(checkboxCell);
+
+            // Add Name cell
+            const nameCell = document.createElement('td');
+            nameCell.textContent = product.name;
+            row.appendChild(nameCell);
+
+            // Add Status cell
+            const statusCell = document.createElement('td');
+            statusCell.textContent = product.product_status;
+            row.appendChild(statusCell);
+
+            // Add Quantity cell
+            const quantityCell = document.createElement('td');
+            quantityCell.textContent = product.quantity;
+            row.appendChild(quantityCell);
+
+            // Add the row to the table body
+            tbody.appendChild(row);
+        }
+
+        // Add the table body to the table
+        table.appendChild(tbody);
+
+        // Append the table to a container element in your HTML
+        const container = document.querySelector('#tableContainerproducts');
+        container.innerHTML = '';
+        container.appendChild(table);
+
+        // Initialize DataTables
+        $(document).ready(function() {
+            $('#productTable').DataTable();
+            console.log('datatable created');
+            document.querySelector('#addProductButton').style.display= 'none';
+
+        });
+
+        var contentDiv = document.getElementById('contentDivp');
+        if (contentDiv) {
+            contentDiv.style.maxHeight = '100%';
+            contentDiv.style.height = '100%';
+            window.addEventListener('resize', function() {
+                contentDiv.style.height = '100%';
+            });
+        }
+    }
+
+    //get all products
     function fetchAllProductsData() {
         $.ajax({
             url: '/get_all_products',
             type: 'GET',
             success: function(response) {
+                document.getElementById('tableContainerproducts').style.display = 'block';
+                document.getElementById('addProductsForm').style.display = 'block';
                 const productsData = response.products;
-                populateSelectWithOptions(productsData);
+                createtable(productsData);
+                const checkboxes = document.querySelectorAll('.addproduct-checkbox');
+            checkboxes.forEach(function(checkbox) {
+                checkbox.addEventListener('change', updateAddButton);
+                console.log('in foreach');
+            });
+
+            // Add event listener to the add button
+            const addButton = document.querySelector('#addfromcheckbox');
+            if (addButton) {
+                addButton.addEventListener('click', updateAddButton);
+            }
             },
-            error: function(error) {
-            },
+            error: function(error) {},
         });
     }
 
-    function populateSelectWithOptions(productsData) {
-        const selectElement = document.querySelector('select');
-        productsData.forEach(function(product) {
-            const option = document.createElement('option');
-            const checkbox = document.createElement('input');
-            checkbox.setAttribute('type', 'checkbox');
-            checkbox.setAttribute('value', product.id);
-            option.appendChild(document.createTextNode(product.name));
-            option.appendChild(checkbox);
-            selectElement.appendChild(option);
-        });
+    let productIds = [];
+
+    function updateAddButton() {
+  const selectedProducts = document.querySelectorAll('.addproduct-checkbox:checked');
+  const addButton = document.querySelector('#addfromcheckbox');
+
+  // Update the button text and visibility
+  const count = selectedProducts.length;
+  if (count > 0) {
+    addButton.style.display = 'block';
+    addButton.value = `Add ${count} product${count > 1 ? 's' : ''}`;
+  } else {
+    addButton.style.display = 'none';
+  }
+
+  // Update the productIds array
+  productIds = Array.from(selectedProducts).map(checkbox => checkbox.value);
+
+  // Create a hidden input element
+  const hiddenInputt = document.createElement('input');
+  hiddenInputt.setAttribute('type', 'hidden');
+  hiddenInputt.setAttribute('name', 'productIdsp');
+  hiddenInputt.setAttribute('value', productIds.join(','));
+
+  // Remove any existing hidden input elements before appending the new one
+  const existingHiddenInputs = document.querySelectorAll('#addProductsForm input[type="hidden"][name="productIdsp"]');
+  existingHiddenInputs.forEach(input => input.remove());
+
+  // Append the hidden input to the desired location
+  const formElement = document.querySelector('#addProductsForm');
+  formElement.appendChild(hiddenInputt);
+}
+
+function handleCheckboxChange(event) {
+  const checkbox = event.target;
+  const productId = checkbox.value;
+
+  if (checkbox.checked) {
+    // Add the product ID to the array
+    productIds.push(productId);
+  } else {
+    // Remove the product ID from the array
+    const index = productIds.indexOf(productId);
+    if (index !== -1) {
+      productIds.splice(index, 1);
+    }
+  }
+
+  updateAddButton();
+}
+
+// Add event listener to each checkbox
+const checkboxes = document.querySelectorAll('.addproduct-checkbox');
+checkboxes.forEach(checkbox => {
+  checkbox.addEventListener('change', handleCheckboxChange);
+});
+
+
+function hideTableAndForm(event) {
+  event.preventDefault(); // Prevent the default form submission behavior
+
+  const tableContainer = document.getElementById('tableContainerproducts');
+  if (tableContainer) {
+    tableContainer.style.display = 'none';
+  }
+
+  const addProductsForm = document.getElementById('addProductsForm');
+  if (addProductsForm) {
+    addProductsForm.style.display = 'none';
+  }
+
+  document.querySelector('#addProductButton').style.display = 'block';
+
+  // Reset the selected products
+  checkboxes.forEach(checkbox => {
+    checkbox.checked = false;
+  });
+
+  // Clear the productIds array
+  productIds = [];
+
+  // Hide the add button
+  const addButton = document.querySelector('#addfromcheckbox');
+  if (addButton) {
+    addButton.style.display = 'none';
+  }
+}
+
+document.getElementById('calceladdproducts').addEventListener('click', hideTableAndForm);
+
+const addProductButton = document.querySelector('#addProductButton');
+    if (addProductButton) {
+        addProductButton.addEventListener('click', fetchAllProductsData);
     }
 
-    const addProductButton = document.querySelector('#addProductButton');
-    if(addProductButton){
-    addProductButton.addEventListener('click', fetchAllProductsData);
-    }
 
 </script>

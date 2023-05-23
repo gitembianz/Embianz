@@ -17,7 +17,7 @@
 <div class="contenttab m-1 mb-1 p-2 br-sm" >
     <div class="row talign-c">
         <div class="col-12-xs col-12-sm col-12-xl">
-            <a href="{{ route('newcategory') }}" class="addnew">{{ __('Add new') }}</a>
+            <a href="{{ route('newcategory') }}" class="addnew">{{ __('Add') }}</a>
             <div class="form-group mb-1">
                 <form>
                     <div class="multiselect bg-white">

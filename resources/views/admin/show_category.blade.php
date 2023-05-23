@@ -20,12 +20,9 @@
                 <h1 id="title" class="mt-1 font-xl ls-1 text-bg">Category - {{ $data->name }}</h1>
                 <div class="display-f">
                     <a href="{{ route('category') }}" class="back">Back</a>
-                    <a href="{{ route('newcategory') }}"
-                        class="add ml-1">New</a>
-                            <input type="button" class="delete ml-1" value="Delete" name="delete" id="deletecat">
-                            <input type="button"
-                                    class="edit ml-1"
-                                    value="Edit" name="edit" id="edit">
+                    <a href="{{ route('newcategory') }}" class="add ml-1">New</a>
+                    <input type="button" class="delete ml-1" value="Delete" name="delete" id="deletecat">
+                    <input type="button" class="edit ml-1" value="Edit" name="edit" id="edit">
                 </div>
             </div>
         </div>
@@ -33,14 +30,12 @@
         <div class="tab bg-bg">
             <button class="tablinks br-xs p-1 m-1" onclick="opentab(event, 'Details')" id="defaultOpen">Details</button>
             <button class="tablinks br-xs p-1 m-1" onclick="opentab(event, 'Releated')">Releated</button>
-
         </div>
         <div class="tabcontent br-xs" id="Details">
             <form action="{{ route('category_update', $data->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 {{-- content --}}
                 <div class="row">
-
                     <div class="col-12-xs col-12-sm col-12-xl text-bg">
                         <ul class="wid-10">
                             <li class="listelement p-1">
@@ -117,7 +112,8 @@
                                 </div>
                             </li>
                             <li class="talign-c wid-10">
-                                <input type="submit" style="display: none" class="add wid-10" value="Update" id="Update">
+                                <input type="submit" style="display: none" class="add wid-10" value="Update"
+                                    id="Update">
                             </li>
                         </ul>
                     </div>
@@ -131,64 +127,87 @@
 
                 <div class="content" id="contentDiv">
                     <div class="col-12-xs col-12-sm col-12-xl talign-c">
-                        <form action="{{ route('add_media', $data->id) }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('add_media', $data->id) }}" method="POST"
+                            enctype="multipart/form-data">
                             @csrf
-                        <ul>
-                            <li>
-                                <div class="col-12-xs col-12-sm col-12-xl display-f jus-c">
-                                <input type="file" name="media[]" id="imgUpload" multiple accept="image/*,video/*" onchange="filesManager(this.files)">
+                            <ul>
+                                <li>
+                                    <div class="col-12-xs col-12-sm col-12-xl display-f jus-c">
+                                        <input type="file" name="media[]" id="imgUpload" multiple
+                                            accept="image/*,video/*" onchange="filesManager(this.files)">
 
-                                            <label class="upload wid-3" for="imgUpload"><span><svg width="40px" height="40px" viewBox="0 0 1024.00 1024.00" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M77.312 286.208h503.808v559.104H77.312z" fill="35424b"></path><path d="M133.632 342.016h391.68v335.36H133.632z" fill="#FFFFFF"></path><path d="M189.44 621.568h93.184L236.032 537.6zM375.808 453.632l-93.184 167.936h186.88z" fill="#82b09b"></path><path d="M637.44 621.568v83.456l337.408-165.376-211.456-432.64-252.928 122.88h110.08l120.32-58.368 127.488 259.584-230.912 113.152z" fill="35424b"></path></g></svg></span> <span class="ml-1">Upload Media</span></label>
-                                            <input type="submit" id="addmediacat" style="display: none" class="upload" value="Save Media">
+                                        <label class="upload wid-3" for="imgUpload"><span><svg width="40px"
+                                                    height="40px" viewBox="0 0 1024.00 1024.00" class="icon"
+                                                    version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000">
+                                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
+                                                        stroke-linejoin="round"></g>
+                                                    <g id="SVGRepo_iconCarrier">
+                                                        <path d="M77.312 286.208h503.808v559.104H77.312z"
+                                                            fill="35424b"></path>
+                                                        <path d="M133.632 342.016h391.68v335.36H133.632z"
+                                                            fill="#FFFFFF"></path>
+                                                        <path
+                                                            d="M189.44 621.568h93.184L236.032 537.6zM375.808 453.632l-93.184 167.936h186.88z"
+                                                            fill="#82b09b"></path>
+                                                        <path
+                                                            d="M637.44 621.568v83.456l337.408-165.376-211.456-432.64-252.928 122.88h110.08l120.32-58.368 127.488 259.584-230.912 113.152z"
+                                                            fill="35424b"></path>
+                                                    </g>
+                                                </svg></span> <span class="ml-1">Upload Media</span></label>
+                                        <input type="submit" id="addmediacat" style="display: none" class="upload"
+                                            value="Save Media">
 
-                                </div>
-                                <div class="col-12-xs col-12-sm col-12-xl align-center">
-                                    <table id="imageTable" class="talign-c mt-2">
-                                    </table>
-                                </div>
-                            </li>
-                        </ul>
+                                    </div>
+                                    <div class="col-12-xs col-12-sm col-12-xl align-center">
+                                        <table id="imageTable" class="talign-c mt-2">
+                                        </table>
+                                    </div>
+                                </li>
+                            </ul>
                         </form>
                     </div>
                     @if ($files->first() != null)
-                    <div class="col-12-xs col-12-sm col-12-xl mt-2 pt-2 align-center">
-                        <table id="mediaTable" >
-                            <thead>
-                                <tr>
-                                    <th>Media</th>
-                                    <th>Location</th>
-                                    <th>Sequence</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($files as $file)
+                        <div class="col-12-xs col-12-sm col-12-xl align-center">
+                            <table id="mediaTable">
+                                <thead>
                                     <tr>
-                                        <td>@if (in_array($file->type, ['jpg', 'jpeg', 'png', 'gif', 'svg', 'jfif']))
-                                            <img src="/{{ $file->path . $file->name }}"
-                                                alt="{{ $file->name }}" width="100">
-                                        @elseif (in_array($file->type, ['mp4', 'mov', 'avi']))
-                                            <video src="/{{ $file->path . $file->name }}" width="150"
-                                                controls="true"></video>
-                                        @else
-                                            {{ $file->name }}
-                                        @endif</td>
-                                        <td>{{ $file->location->location }}</td>
-                                        <td>{{ $file->sequence }}</td>
-
-                                        <td><button class="cursor-p" type="button"
-                                            onclick="removeFile({{ $file->id }})">x</button></td>
+                                        <th>Media</th>
+                                        <th>Location</th>
+                                        <th>Sequence</th>
+                                        <th>Action</th>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                    @else
-                    <div class="col-12-xs col-12-sm col-12-xl mt-1 talign-c">
-                        <span class="mt-1 m-a display-b text-bg wid-7 p-1 br-xs mb-2 bg-bg-light-9">No Media related</span>
-                    </div>
-                    @endif
+                                </thead>
+                                <tbody>
+                                    @foreach ($files as $file)
+                                        <tr>
+                                            <td>
+                                                @if (in_array($file->type, ['jpg', 'jpeg', 'png', 'gif', 'svg', 'jfif']))
+                                                    <img src="/{{ $file->path . $file->name }}"
+                                                        alt="{{ $file->name }}" width="100">
+                                                @elseif (in_array($file->type, ['mp4', 'mov', 'avi']))
+                                                    <video src="/{{ $file->path . $file->name }}" width="150"
+                                                        controls="true"></video>
+                                                @else
+                                                    {{ $file->name }}
+                                                @endif
+                                            </td>
+                                            <td>{{ $file->location->location }}</td>
+                                            <td>{{ $file->sequence }}</td>
 
+                                            <td><button class="cursor-p" type="button"
+                                                    onclick="removeFile({{ $file->id }})">x</button></td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    @else
+                        <div class="col-12-xs col-12-sm col-12-xl mt-1 talign-c">
+                            <span class="mt-1 m-a display-b text-bg wid-7 p-1 br-xs mb-2 bg-bg-light-9">No Media
+                                related</span>
+                        </div>
+                    @endif
                 </div>
             </div>
             <div class="releated mt-1 wid-10 talign-c br-xs">
@@ -196,19 +215,23 @@
                 <button class="collapsible"><Span> {{ __('Products ') }}<span
                             class="fw-600">({{ $count_products }})</span></Span></button>
 
-                <div class="content">
+                <div class="content" id="contentDivp">
                     <div class="col-12-xs col-12-sm col-12-xl mt-1 talign-c">
                         <form id="deleteProductsForm" action="{{ route('deleteSelectedProducts') }}" method="POST">
                             @csrf
-                            <input type="submit" id="deletefromcheckbox" class="delete float-r mb-1" style="display: none" value="">
+                            <input type="submit" id="deletefromcheckbox" class="delete float-r mb-1"
+                                style="display: none" value="">
                         </form>
-
-
-
                         <button id="addProductButton" class="add float-r mr-1 mb-1"> Add new product</button>
                     </div>
-                    <div class="col-12-xs col-12-sm col-12-xl mt-1 talign-c">
-                        <select name="" id=""></select>
+                    <div class="col-12-xs col-12-sm col-12-xl mt-1  display-b talign-c">
+                        <form id="addProductsForm" class="mb-1 p-1" style="display: none" action="{{ route('addSelectedProducts') }}" method="POST">
+                            @csrf
+                            <button class="delete float-l" id="calceladdproducts"> Cancel</button>
+                            <input type="submit" id="addfromcheckbox" class="add float-r" style="display: none" value="">
+                        </form>
+                        <div id="tableContainerproducts" class="wid-10 bg-bg-light-9 p-1 mt-3 br-xs" style="display: none"></div>
+
                     </div>
                     @if ($products->first() != null)
                         <div class="col-12-xs col-12-sm col-12-xl mt-1 pt-1 align-center">
@@ -226,28 +249,31 @@
                                 <tbody>
                                     @foreach ($products as $product)
                                         <tr>
-                                            <td><input type="checkbox" class="product-checkbox" value="{{ $product->product->id }}"></td> <!-- Add checkbox column -->
-                                            <td><a href="/show_product/{{ $product->product->id }}" class="link-name">{{ $product->product->name }}</a></td>
+                                            <td><input type="checkbox" class="product-checkbox"
+                                                    value="{{ $product->product->id }}"></td>
+                                            <!-- Add checkbox column -->
+                                            <td><a href="/show_product/{{ $product->product->id }}"
+                                                    class="link-name">{{ $product->product->name }}</a></td>
                                             <td>{{ $product->product->product_status }}</td>
                                             <td>{{ $product->product->quantity }}</td>
                                             <td><button class="cursor-p" type="button"
-                                                onclick="removeProduct({{ $product->product->id }})">x</button></td>
+                                                    onclick="removeProduct({{ $product->product->id }})">x</button>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
                             </table>
                         </div>
                     @else
-                    <div class="col-12-xs col-12-sm col-12-xl mt-1 talign-c">
-                        <span class="mt-4 m-a display-b text-bg wid-7 p-1 br-xs mb-2 bg-bg-light-9">No products related</span>
-                    </div>
+                        <div class="col-12-xs col-12-sm col-12-xl mt-1 talign-c">
+                            <span class="mt-4 m-a display-b text-bg wid-7 p-1 br-xs mb-2 bg-bg-light-9">No products
+                                related</span>
+                        </div>
                     @endif
-
                 </div>
             </div>
         </div>
     </div>
-
 </section>
 {{-- page content end --}}
 <x-dashboardscript />

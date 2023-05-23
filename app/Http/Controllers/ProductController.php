@@ -44,7 +44,7 @@ class ProductController extends Controller
                 })->addColumn('image', function ($data) {
                     $productType = class_basename(get_class($data));
                     $type = Tabels::where('name', $productType)->first()->id;
-                    $files = Media::where('item_id', $data->id)->where('tabel_id', $type)->where('location_id', '3')->first();
+                    $files = Media::where('item_id', $data->id)->where('tabel_id', $type)->where('location_id', '2')->first();
                     if($files){
                         $path = $files->path .$files->name;
                     } else{
