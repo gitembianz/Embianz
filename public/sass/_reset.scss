@@ -1,47 +1,52 @@
-*,*:before,*:after{
-  color:inherit;
+*,
+*:before,
+*:after {
+  color: inherit;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   list-style-type: none;
   text-decoration: none;
-  font-family:'Roboto-thin', sans-serif !important;
+  font-family: 'Roboto-thin', sans-serif !important;
   font-weight: normal;
 }
 
-body{
+body {
   background: $mainBg;
   overflow-x: hidden;
   @include scrollbar;
 }
 
 .overflow {
-    overflow: hidden;
-  }
+  overflow: hidden;
+}
 
-  .stop-height {
-    height: 65vh;
-  }
+.stop-height {
+  height: 65vh;
+}
 
-  main {
-    position: relative;
-  }
+main {
+  position: relative;
+}
 
-.textareamin{
-    min-height: 10rem;
+.textareamin {
+  min-height: 10rem;
 }
 
 // The big part for all main content
 .content {
-    padding: $contentPadding;
-    color: $black;
-    height: 100%;
-    //de revizuit
-    // max-height: 55rem;
-    // overflow-x: auto;
-    background-color: $white;
-    border-radius: $BtnBorderRadius;
-  }
-  .category-table.dataTable tbody td {
-    padding: 0 !important;
+  padding: $contentPadding;
+  color: $black;
+  height: 100%;
+  //de revizuit
+  // max-height: 55rem;
+  // overflow-x: auto;
+  background-color: $white;
+  border-radius: $BtnBorderRadius;
+
+  z-index: 0;
+}
+
+.category-table.dataTable tbody td {
+  padding: 0 !important;
 }
