@@ -2,9 +2,10 @@
 <x-dashboardnavbar />
 <x-dashboardsidebar />
 <x-dashboardmodals />
-<x-dashboardright />
+
 {{-- Page content start --}}
-<section style="height: auto" class="section-container bg-bg">
+<section  class="content">
+    <div class="row">
     {{-- Display session message --}}
     @if (session()->has('message'))
         <div class="bg-secondary pos-rel ls-1 p-1" id="alertevent">
@@ -13,15 +14,13 @@
         </div>
     @endif
     {{-- End Section session message --}}
-    <div class="contenttab m-1 mb-1 p-2 br-sm" >
 
-    <div class="row talign-c">
-        <div class="col-12-xs col-12-sm col-12-xl text-bg">
-            <a href="{{ route('add_products') }}" class="bg-secondary display-f align-center br-xs float-r p-1 mb-1">{{ __('Add new') }}</a>
+        <div class="col-12-xs col-12-sm col-12-xl">
+            <a href="{{ route('add_products') }}" class="addnew">{{ __('Add new') }}</a>
             <div class="form-group mb-2">
                 <form>
                     <div class="multiselect">
-                      <div class="selectBox br-xs" onclick="showCheckboxes()">
+                      <div class="selectBox" onclick="showCheckboxes()">
                         <select class="p-1  bg-white">
                           <option>Toggle columns</option>
                         </select>
@@ -46,7 +45,7 @@
 
             </div>
             {{-- Table Products --}}
-            <table class="product-table" id="product-table">
+            <table class="product-table" style="width: 100% !important" id="product-table">
                 <thead>
                 <tr>
                     <th class="bg-white" style="text-align: center">Image</th>
@@ -56,7 +55,6 @@
                     <th class="bg-white" style="text-align: center">Quantity</th>
                     <th class="bg-white" style="text-align: center">Status</th>
                     <th class="bg-white" style="text-align: center">Category</th>
-                    <th class="bg-white" style="text-align: center">Action</th>
 
                 </tr>
             </thead>
@@ -66,9 +64,9 @@
             {{--End Table Category --}}
         </div>
     </div>
-    </div>
 </section>
 {{-- page content end --}}
+<x-dashboardright />
 <x-dashboardscript />
 <x-dashboardscriptproduct />
 <x-dashboardfooter />

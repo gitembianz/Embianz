@@ -1,6 +1,4 @@
-
 <script>
-
     //script for DataTable for products
     $(document).ready(function() {
         var table = $('#product-table').DataTable({
@@ -8,12 +6,13 @@
             serverSide: true,
             orderable: true,
             ajax: "{{ route('products') }}",
-            columns: [
-                {
+            columns: [{
                     data: 'image',
                     name: 'image',
+                    orderable: false,
+                    searchable: false,
                     render: function(data, type, row) {
-                        return  data;
+                        return '<img src="' + data + '" width="50" height="50">';
                     }
                 },
                 {
@@ -22,7 +21,11 @@
                 },
                 {
                     data: 'name',
-                    name: 'name'
+                    name: 'name',
+                    render: function(data, type, row) {
+                        return '<a href="/show_product/' + row.id + '" class="link-name">' +
+                            data + '</a>';
+                    }
                 },
                 {
                     data: 'short_description',
@@ -40,14 +43,8 @@
                     data: 'category',
                     name: 'category',
                     render: function(data, type, row) {
-                        return  data;
+                        return data;
                     }
-                },
-                {
-                    data: 'action',
-                    name: 'action',
-                    orderable: false,
-                    searchable: false
                 },
             ]
         });
@@ -97,21 +94,19 @@
     }
 
     let uploadButton = document.getElementById("upload-button");
-let chosenImage =document.getElementById("chosen-image");
-let fileName = document.getElementById("file-name");
-const imagesContainer = document.getElementById("image-container");
+    let chosenImage = document.getElementById("chosen-image");
+    let fileName = document.getElementById("file-name");
+    const imagesContainer = document.getElementById("image-container");
 
-if(uploadButton){
-uploadButton.onchange = () => {
-    let reader = new FileReader();
-    reader.readAsDataURL(uploadButton.files[0]);
-    reader.onload = () =>{
-        chosenImage.classList.remove("display-n");
-        chosenImage.setAttribute("src", reader.result);
+    if (uploadButton) {
+        uploadButton.onchange = () => {
+            let reader = new FileReader();
+            reader.readAsDataURL(uploadButton.files[0]);
+            reader.onload = () => {
+                chosenImage.classList.remove("display-n");
+                chosenImage.setAttribute("src", reader.result);
+            }
+            fileName.textContent = uploadButton.files[0].name;
+        }
     }
-    fileName.textContent = uploadButton.files[0].name;
-}
-}
-
-
 </script>

@@ -1,20 +1,24 @@
 //variables & functions
-@import './functions';
 @import './variables';
+@import './fonts';
 @import './mixins';
 
 // base &layout
 @import './reset';
-@import './breakpoints';
+
 @import './grid';
 
 //colors
 @import './colors';
 
+// Header Part
+@import 'header/header';
+@import 'header/search';
+@import 'header/profile';
+@import 'header/notify';
+
 //components(button, card, navbar)
-@import 'components/card';
 @import 'components/button';
-@import 'components/badge';
 @import 'components/dropdown';
 @import 'components/modal';
 @import 'components/datatable';
@@ -24,8 +28,7 @@
 @import './utilities';
 
 //layout
-@import 'layout/navbar';
 @import 'layout/sidebar';
 @import 'layout/category';
 @import 'layout/right';
-@import 'layout/product';
+@import './breakpoints';

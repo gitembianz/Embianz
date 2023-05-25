@@ -1,117 +1,50 @@
-
-#back, #new, #edit, #delete, #Update{
-  border: 1px solid $secondary;
-  box-shadow: 0px 0px 0.5px $bg;
-
+.releated{
+   border: 1px solid $mainBg !important;
 }
 
+.tab {
+    overflow: hidden;
+    border-top: 1px solid $mainBg;
+    border-radius: $base-border-radius $base-border-radius 0 0;
 
-
-.listelementbutton{
-    display: flex;
-    justify-content: space-between;
-
-
-}
-.addcategory, .backcategory {
-    @include wh(5vw, auto);
-    border: none;
-    background-color: $secondary;
-    box-shadow: 0px 0px 2px $bg;
-    color: $bg;
+  }
+  .tab button {
+    background-color: $mainBg;
+    float: left;
+    border-top: 1px solid $secondColor;
+    border-bottom: 1px solid $secondColor;
+    outline: none;
+    color: $secondColor;
     cursor: pointer;
-    font-size: 16px;
+    transition: 0.3s;
+  }
+  .tab button:hover {
+    background-color: $mainBg;
+    color: $white;
+  }
+  .tab button.active {
+    background-color: $secondColor;
+    color: $mainBg;
+  }
+  .tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid $mainBg;
+    border-top: none;
+    height: 100%;
+    max-height: 100% !important;
+    border-radius:  0 0 $base-border-radius $base-border-radius;
+  }
 
-}
-
-
-.subelement100{
-    width: 100%;
-}
-.subelement40{
-    width: 40%;
-}
-.subelement80{
-    width: 80%;
-}
-.subelement30{
-    width: 30%;
-}
-
-
-
-
-.view{
-    background: $white;
-}
 
 .title {
-    color: $bg !important;
+    color: $mainBg !important;
     z-index: 2;
   }
 
-#imageModal, #imageModal1{
-  .content-category{
-    top: 7.35rem;
-  }
-}
-
-
-
-#images-container, #images-container1 {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 100px);
-  grid-gap: 10px;
-
-}
-
-
-.grid-item {
-  width: 7.5rem;
-  height: 7.5rem;
-  object-fit: cover;
-  padding: $base-padding;
-  margin: $base-margin;
-  position: relative;
-  left: -10px;
-  &.selected {
-    background: $secondary;
-    border-radius: $base-border-radius /2;
-    width: 7.6rem;
-    height: 7.6rem;
-    //display: inline-table;
-   // position: relative;
-    padding-bottom: $base-padding;
-  }
-
-}
-.img-container{
-   // position: relative;
-    &.selected {
-        background: $secondary;
-        border-radius: $base-border-radius /2;
-        width: 7.6rem;
-        height: 7.6rem;
-        //display: inline-table;
-       // position: relative;
-        padding-bottom: $base-padding;
-      }
-}
-
-
-.img-name{
-   // display: block;
-    font-size: 10px;
-}
-
-#Update{
-  position: relative;
-  left: 47.5%;
-}
 .multiselect {
   width: 10vw;
   position: absolute;
-  //top: 10rem;
 
 }
 
@@ -135,14 +68,13 @@
 
 #checkboxes {
   display: none;
-  border: 1px  solid $bg;
-  padding: $base-padding;
+  border: 1px  solid $mainBg;
+  padding: $padding;
   position: absolute;
   z-index: 1;
   background: $white;
   float: right;
   width: 10vw;
-  //position: absolute;
 }
 
 #checkboxes label {
@@ -157,83 +89,48 @@
   justify-content: space-between;
 }
 
-#category_image_main{
-  image-rendering: crisp-edges;
-  object-fit: cover;
-  transition: opacity 0.5s ease-in-out;
-  opacity: 1;
-
-}
-#category_image_main.loaded {
-  opacity: 1;
-}
 
 @media (max-width: 662px) {
   .title {
     margin-top: 1rem;
     font-size: $base-font-size;
   }
-
-  .content-category {
-    width: 95vw;
-  }
-
-  #modal-category {
-    z-index: 1;
-  }
 }
 
 .content-category {
-  .browse{
-    @include wh(10%, auto);
-  }
-  @extend .content;
+//   @extend .content;
   @include wh(75vw, auto);
   top: 10%;
-  padding: 0;
-
-  #new, #delete, #edit{
-    box-shadow: 0px 0px 2px $bg;
-    @include wh(10%, auto);
-  }
 
   @media (max-width: 662px) {
     width: 95vw;
   }
-
-
-
-
-
   input {
     @include wh(40%, auto);
-    &#category_image,
-    &#category_image_search{
-      @include wh(40%, auto);
-    }
+
     @media (max-width: 662px) {
       @include wh(70%, auto);
     }
 
-    padding: $base-padding;
-    background-color: $bg;
+    padding: $padding;
+    background-color: $mainBg;
 
     &::placeholder {
-      color: $secondary;
+      color: $secondColor;
       opacity: 1;
     }
 
     transition: $transition;
     -webkit-transition: width 0.4s ease-in-out;
-    color: $secondary;
-    border: 1px solid $secondary;
+    color: $secondColor;
+    border: 1px solid $secondColor;
 
     &.modalbutton{
         @include w(15rem);
-        background-color: $secondary;
-        color: $bg;
-        border: 1px solid $secondary;
-        box-shadow: 0px 0px 2px $bg;
+        background-color: $secondColor;
+        color: $mainBg;
+        border: 1px solid $secondColor;
+        box-shadow: 0px 0px 2px $mainBg;
         font-size: 18px;
         }
   }
@@ -241,7 +138,6 @@
 
 
   .element {
-    // @include wh(85%, auto);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -264,19 +160,8 @@
       }
     }
   }
-
-
-  #category_image, #category_image_search{
-    @include wh(25%, auto);
-    @media (max-width: 662px) {
-      @include wh(60%, auto);
-    }
-  }
 }
 
-.content-category-images{
-  @extend .content-category;
-  @include wh(60vw, auto);
-  color: $bg;
-}
+
+
 

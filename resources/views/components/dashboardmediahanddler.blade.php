@@ -1,131 +1,150 @@
 <script type="text/javascript">
-    let dropBox = document.getElementById('dropBox');
 
-function upFile(file) {
-  let imageType = /image.*/;
-  if (file.type.match(imageType)) {
-    let url = 'HTTP/HTTPS URL TO SEND THE DATA TO';
-    let formData = new FormData();
-    formData.append('file', file);
-    fetch(url, {
-      method: 'put',
-      body: formData
-    })
-    .then(response => response.json())
-    .then(result => { console.log('Success:', result); })
-    .catch(error => { console.error('Error:', error); });
-  } else {
-    console.error("Only images are allowed!", file);
-  }
-}
+//Script fot Table with media
+    allFiles = new DataTransfer();
+    function previewFile(file) {
+        let imageType = /^image\/.*|^video\/.*/;
+        if (file.type.match(imageType)) {
+            let fReader = new FileReader();
+            let imageTable = document.getElementById('imageTable');
+            let tableHeader = document.getElementById('tableHeader');
 
-function previewFile(file) {
-  let imageType = /image.*/;
-  if (file.type.match(imageType)) {
-    let fReader = new FileReader();
-    let imageTable = document.getElementById('imageTable');
-    let tableHeader = document.getElementById('tableHeader');
+            //create table header if it doesn't exist
+            if (!tableHeader) {
+                tableHeader = document.createElement('thead');
+                tableHeader.setAttribute('id', 'tableHeader');
 
-    //create table header if it doesn't exist
-    if(!tableHeader){
-      tableHeader = document.createElement('thead');
-      tableHeader.setAttribute('id', 'tableHeader');
+                let tr = document.createElement('tr');
+                tr.setAttribute("class", "font-md");
+                let thImage = document.createElement('th');
+                let thFileLocation = document.createElement('th');
+                let thFileSequence = document.createElement('th');
+                let thRemoveBtn = document.createElement('th');
 
-      let tr = document.createElement('tr');
-      tr.setAttribute("class", "font-lg");
-      let thImage = document.createElement('th');
-      let thFileLocation = document.createElement('th');
-      let thFileSequence = document.createElement('th');
-      let thRemoveBtn = document.createElement('th');
+                thImage.innerHTML = "Media";
+                thFileLocation.innerHTML = "Location";
+                thFileSequence.innerHTML = "Sequence";
+                thRemoveBtn.innerHTML = "Action";
 
-      thImage.innerHTML = "Image";
-      thFileLocation.innerHTML = "Location";
-      thFileSequence.innerHTML = "Sequence";
-      thRemoveBtn.innerHTML = "Action";
+                tr.appendChild(thImage);
+                tr.appendChild(thFileLocation);
+                tr.appendChild(thFileSequence);
+                tr.appendChild(thRemoveBtn);
+                tableHeader.appendChild(tr);
+                imageTable.appendChild(tableHeader);
+            }
+            fReader.readAsDataURL(file);
 
-      tr.appendChild(thImage);
-      tr.appendChild(thFileLocation);
-      tr.appendChild(thFileSequence);
-      tr.appendChild(thRemoveBtn);
-      tableHeader.appendChild(tr);
-      imageTable.appendChild(tableHeader);
-    }
+            fReader.onloadend = function() {
+                let tr = document.createElement('tr');
+                let tdImage = document.createElement('td');
+                let tdFileLocation = document.createElement('td');
+                let tdFileSequence = document.createElement('td');
+                let tdRemoveBtn = document.createElement('td');
+                if (file.type.includes('image')) {
+                    let img = document.createElement('img');
+                    img.src = fReader.result;
+                    img.width = 100;
+                    tdImage.appendChild(img);
+                } else if (file.type.includes('video')) {
+                    let video = document.createElement('video');
+                    video.src = fReader.result;
+                    video.width = 100;
+                    video.controls = true;
+                    tdImage.appendChild(video);
+                }
 
-    // reads the contents of the specified Blob. the result attribute of this
-    // with hold a data: URL representing the file's data
-    fReader.readAsDataURL(file);
-    // handler for the loadend event, triggered when the reading operation is
-    // completed (whether success or failure)
-    fReader.onloadend = function() {
+                let fileInfo = document.createTextNode(file.size / 1000 + " KB, " + file.type.split("/")[1] + " file");
+                allFiles.items.add(file);
+                document.getElementById('imgUpload').files = allFiles.files;
+                let fileSize = document.createElement('input');
+                fileSize.setAttribute("type", "hidden");
+                fileSize.setAttribute("name", "file_size[]");
+                fileSize.value = file.size;
 
-      //create <tr> and <td>
-      let tr = document.createElement('tr');
+                let fileLocation = document.createElement('select');
+                fileLocation.setAttribute("class", "p-1");
+                fileLocation.setAttribute("required", "required");
+                fileLocation.setAttribute("name", "file_location[]");
+                const medialocations = {!! json_encode($medialocations) !!};
 
-      let tdImage = document.createElement('td');
-      let tdFileLocation = document.createElement('td');
-      let tdFileSequence = document.createElement('td');
-      let tdRemoveBtn = document.createElement('td');
-      let img = document.createElement('img');
+                medialocations.forEach((medialocation, categoryIndex) => {
+                    const option = document.createElement("option");
+                    option.text = medialocation.location;
+                    option.value = medialocation.location;
+                    fileLocation.add(option);
+                });
 
-      // set the img src attribute to the file's contents (from read operation)
-      img.src = fReader.result;
-      img.width = 150;
+                let fileSequence = document.createElement('input');
+                fileSequence.setAttribute("type", "number");
+                fileSequence.setAttribute("required", "required");
+                fileSequence.setAttribute("class", " wid-6 p-1");
+                fileSequence.setAttribute("name", "file_sequence[]");
 
-       // Add image size and extension info
-       let fileInfo = document.createTextNode(file.size/1000 + " KB, " + file.type.split("/")[1] + " file");
+                let removeBtn = document.createElement('button');
+                removeBtn.innerHTML = 'x';
+                removeBtn.setAttribute("class", "buttonremove" + " font-xl");
+                removeBtn.onclick = function() {
+                    tr.remove();
+                    if (imageTable.rows.length === 1) {
+                        var addMediaCat = document.getElementById('addmediacat');
+                        if (addMediaCat) {
+                            addMediaCat.style.display = 'none';
+                        }
+                        tableHeader.remove();
+                    }
+                    let name = file.name;
+                    for (let i = 0; i < allFiles.items.length; i++) {
+                        if (name === allFiles.items[i].getAsFile().name) {
+                            allFiles.items.remove(i);
+                            continue;
+                        }
+                    }
+                    document.getElementById('imgUpload').files = allFiles.files;
+                };
 
-
-      //create select with location value
-      let fileLocation = document.createElement('select');
-      fileLocation.setAttribute("class", "wid-60 p-1");
-      const medialocations = {!! json_encode($medialocations) !!};
-
-      medialocations.forEach((medialocation, categoryIndex) => {
-        const option = document.createElement("option");
-        option.text = medialocation.location;
-        option.value = medialocation.location;
-        fileLocation.add(option);
-      });
-
-
-      //create inputs for sequence
-      let fileSequence = document.createElement('input');
-      fileSequence.setAttribute("type", "number");
-      fileSequence.setAttribute("class", "wid-60 p-1");
-      fileSequence.setAttribute("placeholder", "image sequence");
-
-      //add remove button
-      let removeBtn = document.createElement('button');
-      removeBtn.innerHTML = 'x';
-      removeBtn.setAttribute("class", "buttonremove" + " font-xl");
-      removeBtn.onclick = function() {
-        tr.remove();
-        if (imageTable.rows.length === 1) { //remove table header if there are no images in the table
-          tableHeader.remove();
+                tdImage.setAttribute("class", "font-md");
+                tdImage.appendChild(fileInfo);
+                tdImage.appendChild(fileSize);
+                tdFileLocation.appendChild(fileLocation);
+                tdFileSequence.appendChild(fileSequence);
+                tdRemoveBtn.appendChild(removeBtn);
+                tr.appendChild(tdImage);
+                tr.appendChild(tdFileLocation);
+                tr.appendChild(tdFileSequence);
+                tr.appendChild(tdRemoveBtn);
+                imageTable.appendChild(tr);
+            };
+        } else {
+            console.error("Only images are allowed!", file);
         }
-      };
-      tdImage.setAttribute("class", "font-md")
-      tdImage.appendChild(img);
-      tdImage.appendChild(fileInfo);
-      tdFileLocation.appendChild(fileLocation);
-      tdFileSequence.appendChild(fileSequence);
-      tdRemoveBtn.appendChild(removeBtn);
-      tr.appendChild(tdImage);
-      tr.appendChild(tdFileLocation);
-      tr.appendChild(tdFileSequence);
-      tr.appendChild(tdRemoveBtn);
-      imageTable.appendChild(tr);
     }
-  } else {
-    console.error("Only images are allowed!", file);
-  }
-}
 
-function filesManager(files) {
-  files = [...files];
-  files.forEach(upFile);
-  files.forEach(previewFile);
-}
+    function filesManager(files) {
+        files = [...files];
+        files.forEach(previewFile);
+        document.getElementById('imgUpload').files = allFiles.files;
+        var contentDiv = document.getElementById('contentDiv');
+        if(contentDiv){
+        contentDiv.style.maxHeight = '100%';
+        contentDiv.style.height = '100%';
+        window.addEventListener('resize', function() {
+            contentDiv.style.height = '100%';
+        });
+    }
+    }
+
+//Remove a media from table
+    function removeFile(fileId) {
+        $.ajax({
+            url: '/filesd/' + fileId,
+            success: function(data) {
+                location.reload();
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+            }
+        });
+    }
 
 </script>
-

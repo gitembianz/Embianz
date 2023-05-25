@@ -7,69 +7,52 @@ $grid-gaps: (
   "2": 20px,
   "3": 30px
 );
-$layout-values: flex-start, flex-end, center, space-between, space-around;
 
-//base layout classes
+$breakpoints: (
+  "xs": 0,
+  "sm": 480px,
+  "md": 720px,
+  "lg": 960px,
+  "xl": 1200px
+);
 
-.container {
-  width: 100%;
-  height: auto;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-  box-sizing: border-box;
-}
-
-.section-container{
-  @extend .container;
-  @include w(calc(100% - 37rem));
-  height: 100%;
-  padding: 0;
-  margin: 0;
-  position: absolute;
-  top: 5rem;
-  left: 15rem;
-  max-width: 100%;
-  .contenttab{
-    border: 1px solid $secondary;
-    box-shadow: 2px 0px 15px  $secondary;
-    height: auto;
-    background: $white;
-
+@mixin xs {
+  @media (min-width: map-get($breakpoints, "xs")) {
+    @content;
   }
-
-
-
-  @media (max-width: 662px) {
-    left: 4.5rem;
-   // z-index: -1;
-   @include w(100vw);
-   height: auto;
-      }
 }
+@mixin sm {
+  @media (min-width: map-get($breakpoints, "sm")) {
+    @content;
+  }
+}
+@mixin md {
+  @media (min-width: map-get($breakpoints, "md")) {
+    @content;
+  }
+}
+@mixin lg {
+  @media (min-width: map-get($breakpoints, "lg")) {
+    @content;
+  }
+}
+@mixin xl {
+  @media (min-width: map-get($breakpoints, "xl")) {
+    @content;
+  }
+}
+
+@mixin  breakpoint($bp: 0) {
+  @media(min-width: $bp){
+    @content;
+  }
+}
+
 
 .row {
   display: flex;
   flex-flow: row wrap;
-
-}
-
-//grid gaps
-@each $key, $val in $grid-gaps{
-  .gap-#{$key} > * {
-    padding: $val;
-  }
-  .gap-#{$key} {
-    margin-left: -$val;
-    margin-right: -$val;
-  }
-}
-
-//justify content classes
-@each $val in $layout-values {
-  .justify-#{$val}{
-    justify-content: $val;
-  }
+  text-align: center;
 }
 
 //diferent classes
