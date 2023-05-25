@@ -7,7 +7,7 @@ $black: #000;
 
 //border
 $base-border-radius: 10px !default;
-$base-width:10% !default;
+$base-width: 10% !default;
 
 ////////// FONT-WEIGHT/////////
 $font-weight-light: 300;
@@ -57,7 +57,7 @@ $BtnShadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 
 // Notification//
 // Notification for Button
-$notifyPosition: 2%;
+$notifyPosition: 5%;
 // Notification Width on PC
 $notifyWidth: 400px;
 // Notification Height
@@ -91,3 +91,6 @@ $colors: (
 );
 
 
+$z-index-small: 1;
+$z-index-medium: 2;
+$z-index-big: 3;

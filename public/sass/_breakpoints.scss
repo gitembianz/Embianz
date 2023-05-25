@@ -1,292 +1,279 @@
-
 @media (max-height: 375px) {
 
-    // Sidebar BreakPoints
-    .sidebar {
+  // Sidebar BreakPoints
+  .sidebar {
 
-      // Sidebar List of Items
-      &__list {
-        grid-template-columns: repeat(2, 1fr);
+    // Sidebar List of Items
+    &__list {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+}
+
+@media (min-width: 768px) {
+
+  // Notification Button
+  .header__notify {
+
+    // Notification list
+    &-list {
+      width: $notifyWidth;
+      right: $notifyPosition;
+      transform: translateX(0);
+    }
+  }
+}
+
+@media (min-width: 1024px) {
+  .header__logo {
+    display: block;
+  }
+
+  // General Modifacation
+  main {
+    display: grid;
+    grid-template-columns: 1fr 20fr 0fr;
+  }
+
+  // Header Search BreakPoints
+  #openSearch {
+    display: none;
+  }
+
+  #openProfile {
+    display: none;
+  }
+
+  .header__search {
+    position: relative;
+
+    width: $BtnSize;
+    height: $BtnSize;
+
+    opacity: 1;
+    transform: translateY(0);
+
+    // Search Buttons (Open button, Close button, Search Button)
+    &-btn {
+
+      // Close Button
+      &:first-child {
+        opacity: 0;
+        width: 0;
+      }
+    }
+
+    // Search Input
+    &-input {
+      border-radius: 0;
+      opacity: 0;
+      padding: 0;
+    }
+
+    // Searchbar active mode
+    &.active {
+      width: $searchWidth;
+
+      gap: 0;
+      padding: 0;
+
+      &>.header__search {
+
+        // Search Input in active mode
+        &-input {
+          opacity: 1;
+          padding: initial;
+        }
+
+        // Search Buttons in active mode
+        &-btn {
+
+          // Close Button
+          &:first-child {
+            opacity: 1;
+            width: $BtnSize;
+
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+          }
+
+          // Search Button
+          &:last-child {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+          }
+        }
       }
     }
   }
 
-  @media (min-width: 768px) {
+  // Header Profile Breakpoints
+  .header__profile {
+    flex: 1;
+    flex-direction: row;
 
-    // Notification Button
-    .header__notify {
+    position: relative;
+    opacity: 1;
+    transform: unset;
 
-      // Notification list
-      &-list {
-        width: $notifyWidth;
-        right: $notifyPosition;
-        transform: translateX(0);
+    &-bottom {
+      button {
+        width: 0;
+        opacity: 0;
+      }
+    }
+
+    &-name {
+      width: 0px;
+      opacity: 0;
+      font-size: 0;
+    }
+
+    //  Header Profile in Active mode
+    &.active {
+      display: flex;
+
+      .header__profile-name {
+        width: $ProfileNameWidth;
+        opacity: 1;
+        font-size: initial;
+        border-radius: 0;
+      }
+
+      &>.header__profile {
+
+        &-bottom,
+        &-top {
+          gap: 0;
+          padding: 0;
+
+          button {
+            width: $BtnSize;
+            border-radius: 0;
+          }
+        }
+
+        &-top {
+          button {
+            &:first-child {
+              border-top-left-radius: $BtnBorderRadius;
+              border-bottom-left-radius: $BtnBorderRadius;
+            }
+          }
+        }
+
+        &-bottom {
+          button {
+            width: $BtnSize;
+            opacity: 1;
+
+            &:last-child {
+              border-top-right-radius: $BtnBorderRadius;
+              border-bottom-right-radius: $BtnBorderRadius;
+            }
+          }
+        }
       }
     }
   }
 
-  @media (min-width: 1024px) {
-    .header__logo {
-      display: block;
+  // Sidebar BreakPoints
+  .sidebar {
+    width: $sidebar-Width-Desktop-Min; // Sidebar-close Width on big Screen
+    position: relative;
+
+    // Sidebar List of Items
+    &__list {
+      justify-items: center;
+      grid-template-columns: repeat(1, 1fr);
     }
 
-    // General Modifacation
-    main {
-      display: grid;
-      grid-template-columns: 1fr 20fr 0fr;
-    }
-
-    // Header Search BreakPoints
-    #openSearch {
+    // Sidebar Button in Header
+    &__btn {
       display: none;
     }
 
-    #openProfile {
-      display: none;
-    }
-
-    .header__search {
-      position: relative;
+    // Sidebar Button in the right
+    &__open {
+      @include standart-Btn;
+      position: absolute;
+      top: calc(($BtnSize + $gap) / 2);
+      left: calc(100% - ($BtnSize / 2));
 
       width: $BtnSize;
       height: $BtnSize;
 
-      opacity: 1;
-      transform: translateY(0);
+      border: calc($BtnSize / 10) solid $mainBg;
+      border-radius: 100%;
+      box-shadow: none;
 
-      // Search Buttons (Open button, Close button, Search Button)
-      &-btn {
+      transition: all $transition;
 
-        // Close Button
-        &:first-child {
-          opacity: 0;
-          width: 0;
-        }
-      }
-
-      // Search Input
-      &-input {
-        border-radius: 0;
-        opacity: 0;
-        padding: 0;
-      }
-
-      // Searchbar active mode
-      &.active {
-        width: $searchWidth;
-
-        gap: 0;
-        padding: 0;
-
-        &>.header__search {
-
-          // Search Input in active mode
-          &-input {
-            opacity: 1;
-            padding: initial;
-          }
-
-          // Search Buttons in active mode
-          &-btn {
-
-            // Close Button
-            &:first-child {
-              opacity: 1;
-              width: $BtnSize;
-
-              border-top-right-radius: 0;
-              border-bottom-right-radius: 0;
-            }
-
-            // Search Button
-            &:last-child {
-              border-top-left-radius: 0;
-              border-bottom-left-radius: 0;
-            }
-          }
-        }
+      svg {
+        height: $BtnSvgSize;
+        width: $BtnSvgSize;
       }
     }
 
-    // Header Profile Breakpoints
-    .header__profile {
-      flex: 1;
-      flex-direction: row;
-
-      position: relative;
+    // Sidebar Icon of Item
+    &__icon {
       opacity: 1;
-      transform: unset;
-
-      &-bottom {
-        button {
-          width: 0;
-          opacity: 0;
-        }
-      }
-
-      &-name {
-        width: 0px;
-        opacity: 0;
-        font-size: 0;
-      }
-
-      //  Header Profile in Active mode
-      &.active {
-        display: flex;
-
-        .header__profile-name {
-          width: $ProfileNameWidth;
-          opacity: 1;
-          font-size: initial;
-          border-radius: 0;
-        }
-
-        &>.header__profile {
-
-          &-bottom,
-          &-top {
-            gap: 0;
-            padding: 0;
-
-            button {
-              width: $BtnSize;
-              border-radius: 0;
-            }
-          }
-
-          &-top {
-            button {
-              &:first-child {
-                border-top-left-radius: $BtnBorderRadius;
-                border-bottom-left-radius: $BtnBorderRadius;
-              }
-            }
-          }
-
-          &-bottom {
-            button {
-              width: $BtnSize;
-              opacity: 1;
-
-              &:last-child {
-                border-top-right-radius: $BtnBorderRadius;
-                border-bottom-right-radius: $BtnBorderRadius;
-              }
-            }
-          }
-        }
-      }
+      width: $BtnSize;
+      height: $BtnSize;
     }
 
-    // Sidebar BreakPoints
-    .sidebar {
-      width: $sidebar-Width-Desktop-Min; // Sidebar-close Width on big Screen
-      position: relative;
+    // Sidebar Item
+    &__item {
+      width: $BtnSize;
+    }
 
-      // Sidebar List of Items
-      &__list {
-        justify-items: center;
-        grid-template-columns: repeat(1, 1fr);
-      }
-
-      // Sidebar Button in Header
-      &__btn {
-        display: none;
-      }
+    // SideBar Opened
+    &.open {
+      width: $sidebar-Width-Desktop-Max; // Sidebar-Open Width on big Screen
 
       // Sidebar Button in the right
-      &__open {
-        @include standart-Btn;
-        position: absolute;
-        top: calc(($BtnSize + $gap) / 2);
-        left: calc(100% - ($BtnSize / 2));
-
-        width: $BtnSize;
-        height: $BtnSize;
-
-        border: calc($BtnSize / 10) solid $mainBg;
-        border-radius: 100%;
-        box-shadow: none;
-
-        transition: all $transition;
-
+      .sidebar__open {
         svg {
-          height: $BtnSvgSize;
-          width: $BtnSvgSize;
+          transform: rotateY(180deg);
         }
-      }
-
-      // Sidebar Icon of Item
-      &__icon {
-        opacity: 1;
-        width: $BtnSize;
-        height: $BtnSize;
-      }
-
-      // Sidebar Item
-      &__item {
-        width: $BtnSize;
-      }
-
-      // SideBar Opened
-      &.open {
-        width: $sidebar-Width-Desktop-Max; // Sidebar-Open Width on big Screen
-
-        // Sidebar Button in the right
-        .sidebar__open {
-          svg {
-            transform: rotateY(180deg);
-          }
-        }
-      }
-    }
-
-
-    // Delete this after
-
-    .header__notify {
-      display: none;
-
-      &-list {
-        display: none;
-      }
-    }
-
-    .right {
-      position: relative;
-      right: 0;
-      top: 0;
-
-      border-top-left-radius: $BtnBorderRadius;
-      border-bottom-left-radius: $BtnBorderRadius;
-
-      width: 50px;
-      background-color: $darkBg;
-      margin-left: $margin;
-      transform: translateX(0%);
-
-      &__open {
-        top: calc(($BtnSize + $gap) / 2);
-        right: calc(100% - ($BtnSize / 2.5));
-      }
-
-      &.open {
-        width: $calendarWidth;
-
-        &>.right {
-          &__open {
-            left: unset;
-            top: calc(($BtnSize + $gap) / 2);
-            right: calc(100% - ($BtnSize / 2.5));
-          }
-
-          &__content {
-            height: 100%;
-          }
-        }
-
-
       }
     }
   }
 
+  .right {
+    position: relative;
+    right: 0;
+    top: 0;
+
+    border-top-left-radius: $BtnBorderRadius;
+    border-bottom-left-radius: $BtnBorderRadius;
+
+    width: 50px;
+    background-color: $darkBg;
+    margin-left: $margin;
+    transform: translateX(0%);
+
+    &__open {
+      top: calc(($BtnSize + $gap) / 2);
+      right: calc(100% - ($BtnSize / 2.5));
+    }
+
+    &.open {
+      width: $calendarWidth;
+
+      &>.right {
+        &__open {
+          left: unset;
+          top: calc(($BtnSize + $gap) / 2);
+          right: calc(100% - ($BtnSize / 2.5));
+        }
+
+        &__content {
+          height: 100%;
+        }
+      }
+
+
+    }
+  }
+}
