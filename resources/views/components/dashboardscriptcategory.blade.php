@@ -305,29 +305,25 @@
                 const productsData = response.products;
                 createtable(productsData);
                 const checkboxes = document.querySelectorAll('.addproduct-checkbox');
+                let productIds = [];
             checkboxes.forEach(function(checkbox) {
                 checkbox.addEventListener('change', updateAddButton);
                 console.log('in foreach');
             });
 
-            // Add event listener to the add button
-            const addButton = document.querySelector('#addfromcheckbox');
-            if (addButton) {
-                addButton.addEventListener('click', updateAddButton);
-            }
             },
             error: function(error) {},
         });
     }
 
-    let productIds = [];
 
     function updateAddButton() {
   const selectedProducts = document.querySelectorAll('.addproduct-checkbox:checked');
+  const checkedProducts = Array.from(selectedProducts);
+  const count = checkedProducts.length;
   const addButton = document.querySelector('#addfromcheckbox');
 
   // Update the button text and visibility
-  const count = selectedProducts.length;
   if (count > 0) {
     addButton.style.display = 'block';
     addButton.value = `Add ${count} product${count > 1 ? 's' : ''}`;
@@ -335,14 +331,15 @@
     addButton.style.display = 'none';
   }
 
-  // Update the productIds array
-  productIds = Array.from(selectedProducts).map(checkbox => checkbox.value);
+  const productIds = checkedProducts.map(checkbox => checkbox.value);
 
   // Create a hidden input element
   const hiddenInputt = document.createElement('input');
   hiddenInputt.setAttribute('type', 'hidden');
   hiddenInputt.setAttribute('name', 'productIdsp');
-  hiddenInputt.setAttribute('value', productIds.join(','));
+  hiddenInputt.setAttribute('value', productIds.join(',')); // Join the productIds array into a comma-separated string
+  hiddenInputt.setAttribute('id', 'sssssss');
+  console.log(productIds);
 
   // Remove any existing hidden input elements before appending the new one
   const existingHiddenInputs = document.querySelectorAll('#addProductsForm input[type="hidden"][name="productIdsp"]');
@@ -353,32 +350,8 @@
   formElement.appendChild(hiddenInputt);
 }
 
-function handleCheckboxChange(event) {
-  const checkbox = event.target;
-  const productId = checkbox.value;
 
-  if (checkbox.checked) {
-    // Add the product ID to the array
-    productIds.push(productId);
-  } else {
-    // Remove the product ID from the array
-    const index = productIds.indexOf(productId);
-    if (index !== -1) {
-      productIds.splice(index, 1);
-    }
-  }
-
-  updateAddButton();
-}
-
-// Add event listener to each checkbox
-const checkboxes = document.querySelectorAll('.addproduct-checkbox');
-checkboxes.forEach(checkbox => {
-  checkbox.addEventListener('change', handleCheckboxChange);
-});
-
-
-function hideTableAndForm(event) {
+    function hideTableAndForm(event) {
   event.preventDefault(); // Prevent the default form submission behavior
 
   const tableContainer = document.getElementById('tableContainerproducts');
@@ -393,19 +366,12 @@ function hideTableAndForm(event) {
 
   document.querySelector('#addProductButton').style.display = 'block';
 
-  // Reset the selected products
-  checkboxes.forEach(checkbox => {
-    checkbox.checked = false;
+  const selectedProducts = document.querySelectorAll('.addproduct-checkbox:checked');
+  selectedProducts.forEach(function(checkbox) {
+    checkbox.checked = false; // Uncheck each selected checkbox
   });
+  document.querySelector('#addfromcheckbox').style.display = 'none';
 
-  // Clear the productIds array
-  productIds = [];
-
-  // Hide the add button
-  const addButton = document.querySelector('#addfromcheckbox');
-  if (addButton) {
-    addButton.style.display = 'none';
-  }
 }
 
 document.getElementById('calceladdproducts').addEventListener('click', hideTableAndForm);
