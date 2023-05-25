@@ -67,7 +67,9 @@
   stroke: #35424B;
 }
 
-*, *:before, *:after {
+*,
+*:before,
+*:after {
   color: inherit;
   margin: 0;
   padding: 0;
@@ -91,6 +93,7 @@ body::-webkit-scrollbar {
 body::-webkit-scrollbar-thumb {
   background: #20282d;
   border-radius: 10px;
+  -webkit-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
 }
 body::-webkit-scrollbar-thumb:hover {
@@ -119,6 +122,7 @@ main {
   height: 100%;
   background-color: #ffffff;
   border-radius: 10px;
+  z-index: 0;
 }
 
 .category-table.dataTable tbody td {
@@ -545,7 +549,8 @@ main {
   height: 3rem;
 }
 .header__logo img {
-  object-fit: contain;
+  -o-object-fit: contain;
+     object-fit: contain;
   height: 100%;
 }
 .header.moved {
@@ -570,7 +575,7 @@ main {
   background-color: #35424B;
   transform: translateY(-100%);
   transition: all 0.3s ease-in-out;
-  z-index: 1;
+  z-index: 2;
 }
 .header__search-btn {
   display: flex;
@@ -706,6 +711,7 @@ main {
   background-color: #35424B;
   transform: translateY(-100%);
   transition: all 0.3s ease-in-out;
+  z-index: 2;
 }
 .header__profile-top, .header__profile-bottom {
   display: grid;
@@ -834,6 +840,9 @@ main {
   padding-top: 0;
 }
 
+.header__notify {
+  z-index: 1;
+}
 .header__notify-btn {
   display: flex;
   align-items: center;
@@ -916,6 +925,7 @@ main {
 .header__notify-list::-webkit-scrollbar-thumb {
   background: #20282d;
   border-radius: 10px;
+  -webkit-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
 }
 .header__notify-list::-webkit-scrollbar-thumb:hover {
@@ -977,14 +987,14 @@ main {
   opacity: 1;
 }
 
-.alert {
+.alert-circle {
   background-color: #151b1e;
   position: relative;
 }
-.alert-off {
+.alert-circle-off {
   display: none;
 }
-.alert::after {
+.alert-circle::after {
   content: "";
   position: absolute;
   top: -2.5px;
@@ -1085,10 +1095,6 @@ li.dropdown {
   text-align: left;
   outline: none;
   font-size: 1.05rem;
-}
-
-.active, .collapsible:hover {
-  background-color: #20282d;
 }
 
 .collapsible:after {
@@ -1877,6 +1883,7 @@ th {
   height: 100%;
   background-color: #35424B;
   transition: all 0.3s ease-in-out;
+  z-index: 3;
 }
 .sidebar__list {
   display: grid;
@@ -2187,6 +2194,10 @@ th {
     height: auto;
   }
 }
+.content-category input::-moz-placeholder {
+  color: #BBFCDE;
+  opacity: 1;
+}
 .content-category input::placeholder {
   color: #BBFCDE;
   opacity: 1;
@@ -2224,29 +2235,36 @@ th {
 }
 
 .list-group-div {
-  max-height: 10vw; /* set a maximum width */
+  max-height: 10vw;
+  /* set a maximum width */
 }
 @media only screen and (min-height: 10.1vw) {
   .list-group-div {
-    overflow-y: auto; /* add scrollbar when width is greater than 600px */
+    overflow-y: auto;
+    /* add scrollbar when width is greater than 600px */
   }
 }
 
 .list-group-div::-webkit-scrollbar {
-  width: 8px; /* Set width of scrollbar */
+  width: 8px;
+  /* Set width of scrollbar */
 }
 
 .list-group-div::-webkit-scrollbar-track {
-  background: #f1f1f1; /* Set color of scrollbar track */
+  background: #f1f1f1;
+  /* Set color of scrollbar track */
 }
 
 .list-group-div::-webkit-scrollbar-thumb {
-  background: #888; /* Set color of scrollbar thumb */
-  border-radius: 10px; /* Set border radius of scrollbar thumb */
+  background: #888;
+  /* Set color of scrollbar thumb */
+  border-radius: 10px;
+  /* Set border radius of scrollbar thumb */
 }
 
 .list-group-div::-webkit-scrollbar-thumb:hover {
-  background: #555; /* Set color of scrollbar thumb when hovered */
+  background: #555;
+  /* Set color of scrollbar thumb when hovered */
 }
 
 @keyframes to-top {
@@ -2307,6 +2325,10 @@ th {
   -webkit-transition: width 0.4s ease-in-out;
   color: #35424B;
   border: 1px solid #35424B;
+}
+.input_style::-moz-placeholder {
+  color: #35424B;
+  opacity: 1;
 }
 .input_style::placeholder {
   color: #35424B;
@@ -2451,7 +2473,9 @@ th {
   pointer-events: none;
 }
 .container-right .card_calendar .date-time-formate {
+  width: -moz-max-content;
   width: max-content;
+  height: -moz-max-content;
   height: max-content;
   position: relative;
   display: flex;
@@ -2465,7 +2489,9 @@ th {
 }
 .container-right .card_calendar .date-time-value {
   display: block;
+  height: -moz-max-content;
   height: max-content;
+  width: -moz-max-content;
   width: max-content;
   position: relative;
   left: 40%;
@@ -2569,7 +2595,8 @@ th {
   width: 3.5rem;
   height: auto;
   padding: 0.5rem;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
   align-items: center;
   background: #ffffff;
 }
@@ -2593,6 +2620,7 @@ th {
   background-color: #35424B;
   transition: all 0.3s ease-in-out;
   transform: translateX(90%);
+  z-index: 3;
 }
 .right__open {
   display: flex;
@@ -2677,7 +2705,7 @@ th {
 @media (min-width: 768px) {
   .header__notify-list {
     width: 400px;
-    right: 2%;
+    right: 5%;
     transform: translateX(0);
   }
 }
@@ -2859,12 +2887,6 @@ th {
   .sidebar.open .sidebar__open svg {
     transform: rotateY(180deg);
   }
-  .header__notify {
-    display: none;
-  }
-  .header__notify-list {
-    display: none;
-  }
   .right {
     position: relative;
     right: 0;
@@ -2891,4 +2913,4 @@ th {
   .right.open > .right__content {
     height: 100%;
   }
-}
+}/*# sourceMappingURL=main.css.map */

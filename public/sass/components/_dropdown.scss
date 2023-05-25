@@ -23,39 +23,36 @@ li.dropdown {
 
 
 .collapsible {
-    background-color: $mainBg;
-    color: $white;
-    cursor: pointer;
-    padding: 18px;
-    width: 100%;
-    border: none;
-    text-align: left;
-    outline: none;
-    font-size: $font-size-md;
-  }
+  background-color: $mainBg;
+  color: $white;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: $font-size-md;
+}
 
-  .active, .collapsible:hover {
-    background-color: $darkBg;
-  }
 
-  .collapsible:after {
-    content: '\002B';
-    color: $white;
-    font-weight: $font-weight-bold;
-    float: right;
-    margin-left: $margin;
-  }
 
-  .collapsible.active:after {
-    content: "\2212";
-  }
+.collapsible:after {
+  content: '\002B';
+  color: $white;
+  font-weight: $font-weight-bold;
+  float: right;
+  margin-left: $margin;
+}
 
-  //cpntentul pentru taburi
-  .contenttabb {
-    padding: 0 $padding;
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.2s ease-out;
-    background-color: $white;
-  }
+.collapsible.active:after {
+  content: "\2212";
+}
 
+//cpntentul pentru taburi
+.contenttabb {
+  padding: 0 $padding;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+  background-color: $white;
+}
