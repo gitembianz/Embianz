@@ -1,17 +1,17 @@
 
 .button {
     display: inline-block;
-    padding: $base-padding;
+    padding: $padding;
     cursor: pointer;
     border-radius: 5px;
-    border: 1px solid $bg;
-    color: $bg;
+    border: 1px solid $mainBg;
+    color: $mainBg;
     transition: .4s;
 }
 .buttonremove{
     background: $white;
     cursor: pointer;
-    color: $bg;
+    color: $mainBg;
 }
 #imgUpload {
     display: none;

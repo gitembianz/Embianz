@@ -8,7 +8,98 @@
   width: $w;
  }
 
- @mixin element-color($color) {
-  background-image: url('data:image/svg+xml;utf8,<svg ...><g stroke="#{$color}" ... /></g></svg>');
+ @mixin centering {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
- 
+
+@mixin BtnHover($hoverEffect: $BtnHover, $activeEffect: $secondColor, $textColor: $mainBg ) {
+
+    &:hover {
+        background-color: $hoverEffect; //$BtnHover
+
+        &>.sidebar__icon {
+            background-color: $hoverEffect; //$BtnHover
+        }
+    }
+
+    &:active,
+    &:focus-visible {
+        background-color: $activeEffect; //$secondColor
+        color: $textColor; //$mainBg
+
+        &>.sidebar__icon {
+            background-color: $activeEffect; //$secondColor
+
+            svg {
+                stroke: $textColor; //$mainBg
+            }
+        }
+
+        svg {
+            stroke: $textColor; //$mainBg
+        }
+    }
+}
+
+.hover{
+    @include BtnHover;
+}
+
+@mixin standart-Font {
+    font-size: $fSize;
+    font-weight: $fWeight;
+    color: $secondColor
+}
+
+@mixin standart-Btn {
+    @include centering;
+    @include BtnHover;
+    @include standart-Font;
+
+    background: $darkBg;
+
+    outline: none;
+    text-decoration: none;
+    box-shadow: $BtnShadow;
+
+    border: none;
+    border-radius: $BtnBorderRadius;
+
+    padding: 0;
+
+    width: $BtnSize;
+    height: $BtnSize;
+
+    transition: all $transition;
+
+    img,
+    svg {
+        width: $BtnSvgSize;
+        height: $BtnSvgSize;
+        stroke: $BtnSvgColor;
+        stroke-width: $btnSvgBold;
+        background-color: transparent;
+        transition: all $transition;
+    }
+}
+
+@mixin scrollbar {
+    &::-webkit-scrollbar {
+        width: 10px;
+        background: lighten($darkBg, 5%);
+        border-top-right-radius: $BtnBorderRadius;
+        border-bottom-right-radius: $BtnBorderRadius;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: $darkBg;
+        border-radius: $BtnBorderRadius;
+        transition: all $transition;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        background: darken($darkBg, 5%);
+    }
+}

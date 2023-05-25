@@ -2,20 +2,18 @@
 <x-dashboardnavbar />
 <x-dashboardsidebar />
 <x-dashboardmodals />
-<x-dashboardright />
+ {{-- Display session message --}}
+ @if (session()->has('message') && session()->has('item_name') && session()->has('item_id'))
+ <div class="bg-secondary pos-rel ls-1 talign-c mb-1 br-xs p-1" id="alertevent">
+     {!! session('message') !!}
+     <Span> Click for view - <a href="{{ route('show_product', ['id' => session('item_id')]) }}" class="fw-800 font-lg">{{ session('item_name') }}</a></Span>
+     <button type="button" onclick="document.getElementById('alertevent').remove()" class="exit font-lg bg-secondary float-r" data-bs-dismiss="alert" aria-hidden="true">x</button>
+ </div>
+@endif
+ {{-- End Section session message --}}
 
 {{-- Page content start --}}
-<section class="section-container bg-bg">
-    {{-- Display session message --}}
-    @if (session()->has('message') && session()->has('item_name') && session()->has('item_id'))
-    <div class="bg-secondary pos-rel ls-1 talign-c mb-1 br-xs p-1" id="alertevent">
-        {!! session('message') !!}
-        <Span> Click for view - <a href="{{ route('show_product', ['id' => session('item_id')]) }}" class="fw-800 font-lg">{{ session('item_name') }}</a></Span>
-        <button type="button" onclick="document.getElementById('alertevent').remove()" class="exit font-lg bg-secondary float-r" data-bs-dismiss="alert" aria-hidden="true">x</button>
-    </div>
-@endif
-    {{-- End Section session message --}}
-    <div class="contenttab m-1 br-sm">
+<section class="content">
         <div class="row">
             {{-- Header --}}
             <ul style="width: 100%">
@@ -119,11 +117,10 @@
                 </li>
             </ul>
         </div>
-    </div>
 </section>
 {{-- page content end --}}
+<x-dashboardright />
 <x-dashboardmediahanddler />
 <x-dashboardscriptproduct />
 <x-dashboardscript />
-
 <x-dashboardfooter />

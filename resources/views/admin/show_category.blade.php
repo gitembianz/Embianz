@@ -2,20 +2,18 @@
 <x-dashboardnavbar />
 <x-dashboardsidebar />
 <x-dashboardmodals />
-<x-dashboardright />
+ {{-- Display session message --}}
+ @if (session()->has('message'))
+ <div class="bg-secondary pos-rel talign-c ls-1 mb-1 br-xs p-1" id="alertevent">
+     {{ session()->get('message') }}
+     <button type="button" onclick="document.getElementById('alertevent').style.display='none'"
+         class="exit font-lg bg-secondary float-r" data-bs-dismiss="alert" aria-hidden="true">x</button>
+ </div>
+@endif
+{{-- End Section session message --}}
 {{-- Page content start --}}
-<section class="section-container p-1 bg-bg">
-    {{-- Display session message --}}
-    @if (session()->has('message'))
-        <div class="bg-secondary pos-rel talign-c ls-1 mb-1 br-xs p-1" id="alertevent">
-            {{ session()->get('message') }}
-            <button type="button" onclick="document.getElementById('alertevent').style.display='none'"
-                class="exit font-lg bg-secondary float-r" data-bs-dismiss="alert" aria-hidden="true">x</button>
-        </div>
-    @endif
-    {{-- End Section session message --}}
-    <div class="contenttab bg-white text-bg p-2 br-sm">
-        <div class="row jus-c">
+<section class="content">
+        <div class="row">
             <div class="col-12-xs display-f jus-sb col-12-sm col-12-xl mb-1">
                 <h1 id="title" class="mt-1 font-xl ls-1 text-bg">Category - {{ $data->name }}</h1>
                 <div class="display-f">
@@ -125,7 +123,7 @@
                 <button class="collapsible"><Span> {{ __('Media ') }}<span
                             class="fw-600">({{ $count_media }})</span></Span></span></button>
 
-                <div class="content" id="contentDiv">
+                <div class="contenttabb" id="contentDiv">
                     <div class="col-12-xs col-12-sm col-12-xl talign-c">
                         <form action="{{ route('add_media', $data->id) }}" method="POST"
                             enctype="multipart/form-data">
@@ -215,7 +213,7 @@
                 <button class="collapsible"><Span> {{ __('Products ') }}<span
                             class="fw-600">({{ $count_products }})</span></Span></button>
 
-                <div class="content" id="contentDivp">
+                <div class="contenttabb" id="contentDivp">
                     <div class="col-12-xs col-12-sm col-12-xl mt-1 talign-c">
                         <form id="deleteProductsForm" action="{{ route('deleteSelectedProducts') }}" method="POST">
                             @csrf
@@ -273,9 +271,9 @@
                 </div>
             </div>
         </div>
-    </div>
 </section>
 {{-- page content end --}}
+<x-dashboardright />
 <x-dashboardscript />
 <x-dashboardmediahanddler />
 <x-dashboardscriptcategory />

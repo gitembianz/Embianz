@@ -47,11 +47,11 @@
     }
 
     // Script for alert desepear
-    var element = document.getElementById('alertevent');
-    if(element){
-    setTimeout(function() {
-        element.remove();
-    }, 500);}
+    // var element = document.getElementById('alertevent');
+    // if(element){
+    // setTimeout(function() {
+    //     element.remove();
+    // }, 500);}
 
     //Script form removing product from tables
     function removeProduct(prodid) {

@@ -1,60 +1,18 @@
 ///////////// color sistem///////
-
-//theme colors///
+//oldest
 $white: #ffffff;
 $black: #000;
-$primary: #326dee !default;
-$secondary: #bafcdd !default;
-$secondarydark: #82b09b !default;
-$succes: #1ac888 !default;
-$info: #8f5fe8 !default;
-$error: #d32752 !default;
-$warning: #f6c31c !default;
-$light: $white;
-$dark: #0d0d0d !default;
 
-///Color variables///
-$bg: #35424b!default;
-$bg-light: #49555d !default;
-$sidebar-active-bg: rgba(23, 23, 37, 0.8) !default;
-$border:#7e73ff !default;
-
-//color maps
-$colors: (
-  "primary": $primary,
-  "secondary": $secondary,
-  "error": $error,
-  "info": $info,
-  "bg": $bg,
-  "bg-light": $bg-light,
-  "gray": gray,
-  "black": black,
-  "white": white,
-);
-
-
-
-//spacing variables
-$base-padding: 0.75rem !default;
-$base-margin: 0.75rem !default;
-$base-width:10% !default;
 
 
 //border
-$base-border-thickness: 5px !default;
-$base-border-radius: 20px !default;
+$base-border-radius: 10px !default;
+$base-width:10% !default;
 
-//box-shadow
-$base-box-shadow: 3px  #bafcdd !default;
-
-///FONT////
 ////////// FONT-WEIGHT/////////
-
 $font-weight-light: 300;
 $font-weight-medium: 500;
 $font-weight-bold: 700;
-
-
 
 //font sizes
 $base-font-size: .875rem; //14px base font size
@@ -64,7 +22,72 @@ $font-size-lg: $base-font-size * 1.5 !default;
 $font-size-xl: $base-font-size * 2 !default;
 $font-size-xxl: $base-font-size * 3 !default;
 
-//transition variables///
-$transition: all 0.2s ease-in-out;
-//transition variables///
+
+//Stanislav//
+
+//colors
+$mainBg: #35424B; // #35424B Embianz color
+$darkBg: darken($mainBg, 10%);
+$secondColor: #BBFCDE;
+
+// Header variables
+$headerHeight: 100px;
+$headerIndex: 5;
+
+//generals resets(paddding, margin, etc)
+$padding: 10px;
+$contentPadding: 30px;
+$margin: 10px;
+$fSize: $base-font-size;
+$fWeight: $font-weight-medium;
+$gap: 10px;
+
+// Transitions
+$transition: .3s ease-in-out;
+
+// Button Variables
+$BtnColorText: $secondColor;
+$BtnHover: darken($darkBg, 10%);
+$BtnSize: 3rem;
+$BtnSvgColor: $secondColor;
+$BtnSvgSize: 23px;
+$btnSvgBold: 1.5px;
+$BtnBorderRadius: $base-border-radius;
+$BtnShadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+
+// Notification//
+// Notification for Button
+$notifyPosition: 2%;
+// Notification Width on PC
+$notifyWidth: 400px;
+// Notification Height
+$NotifyHeight: 60vh;
+
+//Alert
+$alertSize: 20px;
+$alertColor: red;
+
+// Sidebar Width on PC
+$sidebar-Width-Desktop-Min: 70px;
+$sidebar-Width-Desktop-Max: 200px;
+
+// Searchbar
+$searchWidth: 500px;
+
+// Profile Name Section width
+$ProfileNameWidth: 150px;
+
+//Roght-calendar
+$calendarWidth: 400px;
+
+
+//color maps
+$colors: (
+  "mainBg": $mainBg,
+  "darkBg": $darkBg,
+  "secondColor": $secondColor,
+  "black": $black,
+  "white": $white,
+);
+
 

@@ -2,20 +2,11 @@
 <x-dashboardnavbar />
 <x-dashboardsidebar />
 <x-dashboardmodals />
-<x-dashboardright />
+
+
 {{-- Page content start --}}
-<section style="height: auto" class="section-container  bg-bg">
-    {{-- Display session message --}}
-    @if (session()->has('message'))
-        <div class="bg-secondary pos-rel ls-1 p-1" id="alertevent">
-            {{ session()->get('message') }}
-            <button type="button" onclick="document.getElementById('alertevent').style.display='none'"
-                class="exit font-lg bg-secondary float-r" data-bs-dismiss="alert" aria-hidden="true">x</button>
-        </div>
-    @endif
-    {{-- End Section session message --}}
-<div class="contenttab m-1 mb-1 p-2 br-sm" >
-    <div class="row talign-c">
+<section  class="content">
+    <div class="row">
         <div class="col-12-xs col-12-sm col-12-xl">
             <a href="{{ route('newcategory') }}" class="addnew">{{ __('Add') }}</a>
             <div class="form-group mb-1">
@@ -42,7 +33,7 @@
                 </form>
             </div>
             {{-- Table Categorys --}}
-            <table class="category-table" id="category_table">
+            <table class="category-table" style="width: 100% !important" id="category_table">
                 <thead>
                     <tr>
                         <th class="bg-white">Image</th>
@@ -59,9 +50,9 @@
             {{-- End Table Category --}}
         </div>
     </div>
-</div>
 </section>
 {{-- page content end --}}
+<x-dashboardright />
 <x-dashboardscript />
 <x-dashboardscriptcategory />
 <x-dashboardfooter />

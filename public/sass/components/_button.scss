@@ -2,7 +2,7 @@
   text-decoration: none;
   cursor: pointer;
   border: none;
-  padding: $base-padding;
+  padding: $padding;
   border-radius: calc($base-border-radius / 3);
 }
 
@@ -12,9 +12,9 @@
 
 .back{
     @extend .btn;
-    border: 1px solid $bg;
+    border: 1px solid $mainBg;
     background-color: $white;
-    color: $bg;
+    color: $mainBg;
 }
 
 .viewbtn{
@@ -23,16 +23,16 @@
 
 .add{
     @extend .btn;
-    border: 1px solid $secondarydark;
-    background-color: $secondary;
-    color: $bg;
+    border: 1px solid $secondColor;
+    background-color: $secondColor;
+    color: $mainBg;
 }
 
 .delete{
     @extend .btn;
-    border: 1px solid $bg-light;
-    color: $secondary;
-    background-color: $bg;
+    border: 1px solid $mainBg;
+    color: $secondColor;
+    background-color: $mainBg;
 }
 
 .edit{
@@ -42,15 +42,15 @@
 .addnew{
     @extend .add;
     float: right;
-    margin-bottom: calc($base-margin / 2);
+    margin-bottom: calc($margin / 2);
 }
 
 .upload{
     @extend .add;
-    padding: calc($base-padding / 3);
+    padding: calc($padding / 3);
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: $base-margin;
+    margin: $margin;
     font-size: $font-size-md;
 }

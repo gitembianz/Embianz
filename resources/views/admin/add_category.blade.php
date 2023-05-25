@@ -2,19 +2,15 @@
 <x-dashboardnavbar />
 <x-dashboardsidebar />
 <x-dashboardmodals />
-<x-dashboardright />
 {{-- Page content start --}}
-<section class="section-container bg-bg">
- {{-- Session message --}}
-    @if (session()->has('message') && session()->has('category_name') && session()->has('category_id'))
-        <div class="alert bg-secondary pos-rel ls-1 talign-c mb-1 br-xs p-1" id="alertevent">
+@if (session()->has('message') && session()->has('category_name') && session()->has('category_id'))
+        <div class="alert text-white" id="alertevent">
             {!! session('message') !!}
             <Span> Click for view - <a href="{{ route('show_category', ['id' => session('category_id')]) }}" class="fw-800 font-lg">{{ session('category_name') }}</a></Span>
             <button type="button" onclick="document.getElementById('alertevent').style.display='none'" class="exit font-lg bg-secondary float-r" data-bs-dismiss="alert" aria-hidden="true">x</button>
         </div>
     @endif
-    {{-- End Section session message --}}
-    <div class="contenttab m-1 br-xs">
+<section  class="content">
         <div class="row">
             <ul style="width: 100%">
                 <li class="p-1 font-xl">
@@ -105,9 +101,9 @@
                 </li>
             </ul>
         </div>
-    </div>
 </section>
 {{-- page content end --}}
+<x-dashboardright />
 <x-dashboardmediahanddler />
 <x-dashboardscript />
 <x-dashboardscriptcategory />

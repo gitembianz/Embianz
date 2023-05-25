@@ -18,9 +18,9 @@
         padding: 0;
         outline: 0;
         text-align: center;
-        box-shadow: 0px 0px 15px $secondary;
+        box-shadow: 0px 0px 15px $secondColor;
         background: $white;
-    color: $bg;
+    color: $mainBg;
       top: 40%;
       @include wh(40%, 20%);
 
@@ -29,14 +29,14 @@
         cursor: pointer;
         font-size: 28px;
         font-weight: bold;
-        color: $bg;
+        color: $mainBg;
         float: right;
       }
 
       .submit {
-        background: $secondary;
-        color: $bg;
-        box-shadow: 0px 0px 2px $bg;
+        background: $secondColor;
+        color: $mainBg;
+        box-shadow: 0px 0px 2px $mainBg;
         font-size: 18px;
         @include wh(20%, auto);
         @media (max-width: 662px) {

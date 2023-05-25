@@ -75,50 +75,39 @@
     background-color: $white;
 
     &::placeholder {
-        color: $bg;
+        color: $mainBg;
         opacity: 1;
     }
 
     transition: $transition;
     -webkit-transition: width 0.4s ease-in-out;
-    color: $bg;
-    border: 1px solid $bg;
+    color: $mainBg;
+    border: 1px solid $mainBg;
 }
 
 .container-right {
-    @extend %fixed-layout;
-    align-items: flex-end;
-    position: fixed;
-    right: 0;
-    top: 5rem;
-    z-index: 1;
-    overflow-y: hidden;
-    @include wh(22rem, 100%);
+
 
 
     .card_calendar {
-        box-shadow: 1px 0px 5px $secondary;
-        padding: $base-padding;
-        margin: $base-margin;
-        height: 30rem;
+        padding: $padding;
+        margin: $margin;
 
           .calendar-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-weight: 700;
-            color: var(--white);
+            color: $black;
             padding: 10px;
           }
-          .calendar-body {
-            pad: 10px;
-          }
+
           .calendar-week-days {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
             font-weight: 600;
             cursor: pointer;
-            color:rgb(104, 104, 104);
+            color:$black;
           }
           .calendar-week-days div:hover {
           color:black;
@@ -128,14 +117,14 @@
           .calendar-week-days div {
             display: grid;
             place-items: center;
-            color: var(--bg-second);
+            color: $mainBg;
             height: 50px;
           }
           .calendar-days {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
             gap: 2px;
-            color: var(--color-txt);
+            color: $black;
           }
           .calendar-days div {
             width: 37px;
@@ -153,12 +142,7 @@
             border-radius: 10px;
             cursor: pointer;
           }
-          .month-picker:hover {
-            background-color: var(--color-hover);
-          }
-          .month-picker:hover {
-            color: var(--color-txt);
-          }
+
           .year-picker {
             display: flex;
             align-items: center;
@@ -178,7 +162,7 @@
             transform: scale(1.12);
           }
           .year-change:hover pre {
-            color: var(--bg-body);
+            color: $mainBg;
           }
           .calendar-footer {
             padding: 10px;
@@ -196,20 +180,20 @@
           }
            .calendar-days div:hover {
             transition: width 0.2s ease-in-out, height 0.2s ease-in-out;
-            background-color: $secondary;
+            background-color: $secondColor;
             border-radius: 20%;
-            color: var(--dark-text);
+            color: $black;
           }
           .calendar-days div.current-date {
-            color: var(--dark-text);
-            background-color: var(--light-btn);
+            color: $black;
+            background-color: $white;
             border-radius: 20%;
           }
           .month-list {
             position: relative;
             left: 0;
             top: -50px;
-            color: var(--light-text);
+            color: $mainBg;
             display: grid;
             grid-template-columns: repeat(3, auto);
             border-radius: 20px;
@@ -217,7 +201,7 @@
           .month-list > div {
             display: grid;
             place-content: center;
-            margin-bottom: $base-margin;
+            margin-bottom: $margin;
             transition: all 0.2s ease-in-out;
           }
           .month-list > div > div {
@@ -226,8 +210,8 @@
             cursor: pointer;
           }
           .month-list > div > div:hover {
-            background-color:var(--light-btn);
-            color: var(--dark-text);
+            background-color:$white;
+            color: $black;
             transform: scale(0.9);
             transition: all 0.2s ease-in-out;
           }
@@ -252,6 +236,7 @@
             display: flex;
             top: 5rem;
             justify-content: center;
+            color: $black;
 
           }
           .day-text-formate {
@@ -347,13 +332,11 @@
     }
 
     .card_todo {
-        //border: 1px solid $secondarydark;
-        padding: $base-padding;
-        margin: $base-margin;
+        //border: 1px solid $secondColordark;
+        padding: $padding;
+        margin: $margin;
         margin-top: 0;
         padding-top: 0;
-        box-shadow: 1px 0px 5px $secondary;
-        //border: $base-border-thickness solid $secondary;
 
 
         .input-grups {
@@ -379,7 +362,7 @@
                     background: $white;
 
                     path {
-                        fill: $bg;
+                        fill: $mainBg;
                     }
 
                     &:hover {
@@ -390,7 +373,64 @@
         }
 
         .count {
-            border-top: 1px solid $bg;
+            border-top: 1px solid $mainBg;
         }
     }
 }
+
+.right {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+
+    width: 0;
+    height: 100%;
+
+    background-color: $mainBg;
+    transition: all $transition;
+    transform: translateX(90%);
+
+
+    // Sidebar Button in Header
+    &__open {
+      @include standart-Btn;
+      top: calc(-#{$BtnSize} / 2.3);
+
+      display: block;
+      position: absolute;
+      right: calc(100% + 10px);
+      cursor: pointer;
+      z-index: 99;
+
+      border: 3px solid $mainBg;
+      outline: 2px solid $mainBg;
+
+      border-radius: 100%;
+      box-shadow: none;
+    }
+
+    &__content {
+      padding: 0px;
+      background-color: $darkBg;
+      border-radius: $BtnBorderRadius;
+      color: white;
+      display: none;
+    }
+
+    // SideBar Opened
+    &.open {
+      width: 100%;
+      transform: translateX(0%);
+
+      &>.right {
+        &__open {
+          right: unset;
+          left: $margin;
+        }
+
+        &__content {
+          display: block;
+        }
+      }
+    }
+  }
