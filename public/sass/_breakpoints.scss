@@ -25,6 +25,10 @@
 }
 
 @media (min-width: 1024px) {
+  .content {
+    z-index: $z-index-medium;
+  }
+
   .header__logo {
     display: block;
   }
