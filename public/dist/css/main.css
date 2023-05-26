@@ -118,6 +118,7 @@ main {
 
 .content {
   padding: 30px;
+  position: relative;
   color: #000;
   height: 100%;
   background-color: #ffffff;
@@ -2713,6 +2714,9 @@ th {
   }
 }
 @media (min-width: 1024px) {
+  .content {
+    z-index: 5;
+  }
   .header__logo {
     display: block;
   }
