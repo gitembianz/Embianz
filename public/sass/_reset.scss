@@ -29,6 +29,7 @@ main {
   position: relative;
 }
 
+
 .textareamin {
   min-height: 10rem;
 }
@@ -36,6 +37,7 @@ main {
 // The big part for all main content
 .content {
   padding: $contentPadding;
+  position: relative;
   color: $black;
   height: 100%;
   //de revizuit
