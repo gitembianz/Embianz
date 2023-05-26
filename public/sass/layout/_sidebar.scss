@@ -15,8 +15,7 @@
 
   background-color: $mainBg;
   transition: all $transition;
-
-  z-index: $z-index-big;
+  z-index: $z-index-medium + 1;
 
   // Sidebar List of Items
   &__list {

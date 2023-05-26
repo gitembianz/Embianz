@@ -452,7 +452,7 @@
   transition: all $transition;
   transform: translateX(90%);
 
-  z-index: $z-index-big;
+  z-index: $z-index-medium + 1;
 
 
   // Sidebar Button in Header
@@ -464,7 +464,7 @@
     position: absolute;
     right: calc(100% + 10px);
     cursor: pointer;
-    z-index: 99;
+    z-index: $z-index-big;
 
     border: 3px solid $mainBg;
     outline: 2px solid $mainBg;

@@ -43,8 +43,7 @@ main {
   // overflow-x: auto;
   background-color: $white;
   border-radius: $BtnBorderRadius;
-
-  z-index: 0;
+  z-index: $z-index-medium;
 }
 
 .category-table.dataTable tbody td {
