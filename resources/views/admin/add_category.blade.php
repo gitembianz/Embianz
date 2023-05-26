@@ -1,17 +1,25 @@
 <x-dashboardheader />
 <x-dashboardnavbar />
+@if (session()->has('message') && session()->has('category_name') && session()->has('category_id'))
+    <div class="alert__session" id="alertevent">
+        <Span class="alert__session-text">{!! session('message') !!} , click for view - <a
+                href="{{ route('show_category', ['id' => session('category_id')]) }}">{{ session('category_name') }}</a></Span>
+        <button class="alert__session-btn" type="button"
+            onclick="document.getElementById('alertevent').style.display='none'" data-bs-dismiss="alert"
+            aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24" fill="none"
+                stroke="#BBFCDE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+    </div>
+@endif
 <x-dashboardsidebar />
 <x-dashboardmodals />
 {{-- Page content start --}}
-@if (session()->has('message') && session()->has('category_name') && session()->has('category_id'))
-    <div class="alert text-white" id="alertevent">
-        {!! session('message') !!}
-        <Span> Click for view - <a href="{{ route('show_category', ['id' => session('category_id')]) }}"
-                class="fw-800 font-lg">{{ session('category_name') }}</a></Span>
-        <button type="button" onclick="document.getElementById('alertevent').style.display='none'"
-            class="exit font-lg bg-secondary float-r" data-bs-dismiss="alert" aria-hidden="true">x</button>
-    </div>
-@endif
+
+
 <section class="content">
     <div class="row">
         <ul style="width: 100%">
