@@ -121,7 +121,7 @@ main {
   height: 100%;
   background-color: #ffffff;
   border-radius: 10px;
-  z-index: 1;
+  z-index: 0;
 }
 
 .category-table.dataTable tbody td {
@@ -573,7 +573,7 @@ main {
   background-color: #35424B;
   transform: translateY(-100%);
   transition: all 0.3s ease-in-out;
-  z-index: 2;
+  z-index: 5;
 }
 .header__search-btn {
   display: flex;
@@ -709,7 +709,7 @@ main {
   background-color: #35424B;
   transform: translateY(-100%);
   transition: all 0.3s ease-in-out;
-  z-index: 2;
+  z-index: 5;
 }
 .header__profile-top, .header__profile-bottom {
   display: grid;
@@ -839,7 +839,7 @@ main {
 }
 
 .header__notify {
-  z-index: 1;
+  z-index: 5;
 }
 .header__notify-btn {
   display: flex;
@@ -910,7 +910,7 @@ main {
   padding: 10px;
   border-radius: 10px;
   overflow-y: scroll;
-  z-index: -11;
+  z-index: 5;
   list-style: none;
   transition: all 0.3s ease-in-out;
 }
@@ -979,9 +979,6 @@ main {
   stroke-width: 1.5px;
   background-color: transparent;
   transition: all 0.3s ease-in-out;
-}
-.header__notify.open {
-  z-index: 1;
 }
 .header__notify.open > .header__notify-list {
   opacity: 1;
@@ -1884,7 +1881,7 @@ th {
   height: 100%;
   background-color: #35424B;
   transition: all 0.3s ease-in-out;
-  z-index: 3;
+  z-index: 6;
 }
 .sidebar__list {
   display: grid;
@@ -2608,7 +2605,7 @@ th {
   background-color: #35424B;
   transition: all 0.3s ease-in-out;
   transform: translateX(90%);
-  z-index: 3;
+  z-index: 6;
 }
 .right__open {
   display: flex;
