@@ -44,10 +44,6 @@
     }
 }
 
-// .hover{
-//     @include BtnHover;
-// }
-
 @mixin standart-Font {
     font-size: $fSize;
     font-weight: $fWeight;

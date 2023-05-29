@@ -58,28 +58,32 @@ if (element) {
   }, 2000);
 }
 
-var sidebarItems = document.querySelectorAll(".sidebar__item");
+ // Get all the elements with class "sidebar__item"
+ var sidebarItems = document.querySelectorAll(".sidebar__item");
 
-    // Loop through each sidebar item and add a click event listener
-    sidebarItems.forEach(function(item) {
-        item.addEventListener("click", function(event) {
-            // Prevent the default behavior of following the link
-            // event.preventDefault();
+// Retrieve the index of the previously active item from local storage
+var activeIndex = localStorage.getItem("activeIndex");
+if (activeIndex !== null) {
+    // Remove the "active" class from any previously clicked items
+    var activeItem = sidebarItems[activeIndex];
+    activeItem.classList.add("active");
+}
 
-            // Remove the "active" class from any previously clicked items
-            var activeItem = document.querySelector(".sidebar__item.active");
-            if (activeItem) {
-                activeItem.classList.remove("active");
-            }
+// Loop through each sidebar item and add a click event listener
+sidebarItems.forEach(function(item, index) {
+    item.addEventListener("click", function() {
+        // Remove the "active" class from any previously clicked items
+        var activeItem = document.querySelector(".sidebar__item.active");
+        if (activeItem) {
+            activeItem.classList.remove("active");
+        }
+        // Add the "active" class to the clicked item
+        this.classList.add("active");
 
-            // Add the "active" class to the clicked item
-            this.classList.add("active");
-
-            // Perform any additional actions you want to take when the item is clicked
-            // For example, you can navigate to the link URL
-            // window.location.href = this.href;
-        });
+        // Store the index of the active item in local storage
+        localStorage.setItem("activeIndex", index.toString());
     });
+});
 
     //Script form removing product from tables
     function removeProduct(prodid) {
