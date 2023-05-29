@@ -410,9 +410,7 @@ class Arr
      */
     public static function isAssoc(array $array)
     {
-        $keys = array_keys($array);
-
-        return array_keys($keys) !== $keys;
+        return ! array_is_list($array);
     }
 
     /**
@@ -425,7 +423,7 @@ class Arr
      */
     public static function isList($array)
     {
-        return ! self::isAssoc($array);
+        return array_is_list($array);
     }
 
     /**
@@ -566,6 +564,35 @@ class Arr
     }
 
     /**
+     * Run an associative map over each of the items.
+     *
+     * The callback should return an associative array with a single key/value pair.
+     *
+     * @template TKey
+     * @template TValue
+     * @template TMapWithKeysKey of array-key
+     * @template TMapWithKeysValue
+     *
+     * @param  array<TKey, TValue>  $array
+     * @param  callable(TValue, TKey): array<TMapWithKeysKey, TMapWithKeysValue>  $callback
+     * @return array
+     */
+    public static function mapWithKeys(array $array, callable $callback)
+    {
+        $result = [];
+
+        foreach ($array as $key => $value) {
+            $assoc = $callback($value, $key);
+
+            foreach ($assoc as $mapKey => $mapValue) {
+                $result[$mapKey] = $mapValue;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
      * Push an item onto the beginning of an array.
      *
      * @param  array  $array
@@ -617,7 +644,7 @@ class Arr
      *
      * @param  array  $array
      * @param  int|null  $number
-     * @param  bool|false  $preserveKeys
+     * @param  bool  $preserveKeys
      * @return mixed
      *
      * @throws \InvalidArgumentException
@@ -732,6 +759,18 @@ class Arr
     }
 
     /**
+     * Sort the array in descending order using the given callback or "dot" notation.
+     *
+     * @param  array  $array
+     * @param  callable|array|string|null  $callback
+     * @return array
+     */
+    public static function sortDesc($array, $callback = null)
+    {
+        return Collection::make($array)->sortByDesc($callback)->all();
+    }
+
+    /**
      * Recursively sort an array by keys and values.
      *
      * @param  array  $array
@@ -747,7 +786,7 @@ class Arr
             }
         }
 
-        if (static::isAssoc($array)) {
+        if (! array_is_list($array)) {
             $descending
                     ? krsort($array, $options)
                     : ksort($array, $options);
@@ -758,6 +797,18 @@ class Arr
         }
 
         return $array;
+    }
+
+    /**
+     * Recursively sort an array by keys and values in descending order.
+     *
+     * @param  array  $array
+     * @param  int  $options
+     * @return array
+     */
+    public function sortRecursiveDesc($array, $options = SORT_REGULAR)
+    {
+        return $this->sortRecursive($array, $options, true);
     }
 
     /**
@@ -784,6 +835,29 @@ class Arr
     }
 
     /**
+     * Conditionally compile styles from an array into a style list.
+     *
+     * @param  array  $array
+     * @return string
+     */
+    public static function toCssStyles($array)
+    {
+        $styleList = static::wrap($array);
+
+        $styles = [];
+
+        foreach ($styleList as $class => $constraint) {
+            if (is_numeric($class)) {
+                $styles[] = Str::finish($constraint, ';');
+            } elseif ($constraint) {
+                $styles[] = Str::finish($class, ';');
+            }
+        }
+
+        return implode(' ', $styles);
+    }
+
+    /**
      * Filter the array using the given callback.
      *
      * @param  array  $array
@@ -803,9 +877,7 @@ class Arr
      */
     public static function whereNotNull($array)
     {
-        return static::where($array, function ($value) {
-            return ! is_null($value);
-        });
+        return static::where($array, fn ($value) => ! is_null($value));
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace App\View\Components;
 
 use Illuminate\View\Component;
+use Illuminate\Support\Facades\Auth;
 
 class dashboardnavbar extends Component
 {
@@ -23,6 +24,9 @@ class dashboardnavbar extends Component
      */
     public function render()
     {
-        return view('components.dashboardnavbar');
+        $user =Auth::user()->name;
+        //$bg="color: red";
+        //add '$bg' to make it work!
+        return view('components.dashboardnavbar',compact('user'));
     }
 }

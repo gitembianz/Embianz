@@ -1,44 +1,97 @@
-//theme colors
-//colors definition
-$primary: #326dee;
-$secondary: #1ac888;
-$error: #d32752;
-$info: #f6c31c;
+///////////// color sistem///////
+//oldest
+$white: #ffffff;
+$black: #000;
 
-//color palette
+
+
+//border
+$base-border-radius: 10px !default;
+$base-width: 10% !default;
+
+////////// FONT-WEIGHT/////////
+$font-weight-light: 300;
+$font-weight-medium: 500;
+$font-weight-bold: 700;
+
+//font sizes
+$base-font-size: .875rem; //14px base font size
+$font-size-sm: $base-font-size * 0.75 !default;
+$font-size-md: $base-font-size * 1.2 !default;
+$font-size-lg: $base-font-size * 1.5 !default;
+$font-size-xl: $base-font-size * 2 !default;
+$font-size-xxl: $base-font-size * 3 !default;
+
+
+//Stanislav//
+
+//colors
+$mainBg: #35424B; // #35424B Embianz color
+$darkBg: darken($mainBg, 10%);
+$secondColor: #BBFCDE;
+
+// Header variables
+$headerHeight: 100px;
+$headerIndex: 5;
+
+//generals resets(paddding, margin, etc)
+$padding: 10px;
+$contentPadding: 30px;
+$margin: 10px;
+$fSize: $base-font-size;
+$fWeight: $font-weight-medium;
+$gap: 10px;
+
+// Transitions
+$transition: .3s ease-in-out;
+
+// Button Variables
+$BtnColorText: $secondColor;
+$BtnHover: darken($darkBg, 10%);
+$BtnSize: 3rem;
+$BtnSvgColor: $secondColor;
+$BtnSvgSize: 23px;
+$btnSvgBold: 1.5px;
+$BtnBorderRadius: $base-border-radius;
+$BtnShadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+
+// Notification//
+// Notification for Button
+$notifyPosition: 5%;
+// Notification Width on PC
+$notifyWidth: 400px;
+// Notification Height
+$NotifyHeight: 60vh;
+
+//Alert
+$alertSize: 20px;
+$alertColor: red;
+
+// Sidebar Width on PC
+$sidebar-Width-Desktop-Min: 70px;
+$sidebar-Width-Desktop-Max: 200px;
+
+// Searchbar
+$searchWidth: 500px;
+
+// Profile Name Section width
+$ProfileNameWidth: 150px;
+
+//Roght-calendar
+$calendarWidth: 400px;
+
+
+//color maps
 $colors: (
-  "primary": $primary,
-  "secondary": $secondary,
-  "error": $error,
-  "info": $info,
-  "blue": #1c1ce4,
-  "red": red,
-  "yellow": yellow,
-  "green": green,
-  "orange": orange,
-  "purple": purple,
-  "gray": gray,
-  "black": black,
-  "white": white,
+  "mainBg": $mainBg,
+  "darkBg": $darkBg,
+  "secondColor": $secondColor,
+  "black": $black,
+  "white": $white,
 );
 
 
-
-//spacing variables
-$base-padding: 0.75rem;
-$base-margin: 0.75rem;
-
-
-//border 
-$base-border-thickness: 1px;
-$base-border-radius: 20px;
-
-//box-shadow
-$base-box-shadow: 1px 3px 5px rgba(0,0,0,0.1);
-
-//font sizes
-$base-font-size: 1rem;
-$font-size-sm: $base-font-size * 0.75;
-$font-size-lg: $base-font-size * 1.5;
-$font-size-xl: $base-font-size * 2;
-$font-size-xxl: $base-font-size * 3;
+$z-index-0: 0;
+$z-index-small: 1;
+$z-index-medium: 5;
+$z-index-big: 99;

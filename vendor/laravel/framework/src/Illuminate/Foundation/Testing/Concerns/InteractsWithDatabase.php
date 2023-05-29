@@ -5,6 +5,7 @@ namespace Illuminate\Foundation\Testing\Concerns;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Testing\Constraints\CountInDatabase;
@@ -169,6 +170,36 @@ trait InteractsWithDatabase
     }
 
     /**
+     * Specify the number of database queries that should occur throughout the test.
+     *
+     * @param  int  $expected
+     * @param  string|null  $connection
+     * @return $this
+     */
+    public function expectsDatabaseQueryCount($expected, $connection = null)
+    {
+        with($this->getConnection($connection), function ($connectionInstance) use ($expected, $connection) {
+            $actual = 0;
+
+            $connectionInstance->listen(function (QueryExecuted $event) use (&$actual, $connectionInstance, $connection) {
+                if (is_null($connection) || $connectionInstance === $event->connection) {
+                    $actual++;
+                }
+            });
+
+            $this->beforeApplicationDestroyed(function () use (&$actual, $expected, $connectionInstance) {
+                $this->assertSame(
+                    $actual,
+                    $expected,
+                    "Expected {$expected} database queries on the [{$connectionInstance->getName()}] connection. {$actual} occurred."
+                );
+            });
+        });
+
+        return $this;
+    }
+
+    /**
      * Determine if the argument is a soft deletable model.
      *
      * @param  mixed  $model
@@ -184,7 +215,7 @@ trait InteractsWithDatabase
      * Cast a JSON string to a database compatible type.
      *
      * @param  array|object|string  $value
-     * @return \Illuminate\Database\Query\Expression
+     * @return \Illuminate\Contracts\Database\Query\Expression
      */
     public function castAsJson($value)
     {

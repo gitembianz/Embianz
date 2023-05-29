@@ -1,0 +1,110 @@
+// %flex-layout{
+//   width: 100%;
+//   display: flex;
+//   align-items: center;
+//   justify-content: space-between;
+//   box-sizing: border-box;
+// }
+
+
+
+// .navbar{
+//   @extend %flex-layout;
+//   padding: $padding;
+//   z-index: 1;
+//   position: fixed;
+//   height: 5rem;
+
+//   //icon on mobile version
+//   .small{
+//     display: none;
+//     @media (max-width: 662px){
+//       display: block;
+//       margin-right: 1rem;
+//     }
+//   }
+
+// .right{
+//     display: flex;
+//     .controls{
+//         & svg {
+//             @include wh(2rem, auto);
+//             padding: calc($padding / 2);
+//             object-fit: cover;
+//             align-items: center;
+//             border: 1px solid $secondColor;
+//             cursor: pointer;
+//             path {
+//               fill: $secondColor;
+//             }
+//           }
+//     }
+//     .user_container{
+//         display: flex;
+//         .user_icon{
+//             & svg {
+//                  @include wh(2rem, auto);
+//                  object-fit: cover;
+//                  align-items: center;
+//                  cursor: pointer;
+//                  path {
+//                    fill: $secondColor;
+//                  }
+//                }
+//         }
+//         .drop_icon{
+//             path{
+//                 fill: $secondColor;
+//             }
+//         }
+//     }
+// }
+
+//   #input_search {
+//     @include wh(30vw, auto);
+//     background-color: $mainBg;
+//     display: none;
+//     &::placeholder{
+//       color: $secondColor;
+//       opacity: 1;
+//     }
+//     transition: $transition;
+//     -webkit-transition: width 0.4s ease-in-out;
+//     color: $secondColor;
+//     border: 2px solid $secondColor;
+//   }
+
+// //logo for navbar
+//   & .logo{
+//     display: flex;
+//     align-items: center;
+
+//     & img{
+//       @include wh(20rem, auto);
+//       object-fit: cover;
+//     }
+//   }
+
+//   & #min_logo{
+//     display: none;
+//     @include wh(4rem, auto);
+
+//   }
+
+//   @media (max-width: 662px){
+//     padding: 0;
+//     & #min_logo{
+//       display: block;
+//     }
+//     & #full_logo{
+//       display: none;
+//     }
+//   }
+// }
+
+// @each $key, $val in $colors {
+//   .navbar-#{$key}{
+//     @extend .navbar;
+//     background-color: $val;
+//   }
+// }

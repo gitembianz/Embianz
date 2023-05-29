@@ -84,9 +84,6 @@ class QuestionHelper extends Helper
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName(): string
     {
         return 'question';
@@ -126,7 +123,18 @@ class QuestionHelper extends Helper
             }
 
             if (false === $ret) {
+                $isBlocked = stream_get_meta_data($inputStream)['blocked'] ?? true;
+
+                if (!$isBlocked) {
+                    stream_set_blocking($inputStream, true);
+                }
+
                 $ret = $this->readInput($inputStream, $question);
+
+                if (!$isBlocked) {
+                    stream_set_blocking($inputStream, false);
+                }
+
                 if (false === $ret) {
                     throw new MissingInputException('Aborted.');
                 }
@@ -140,6 +148,7 @@ class QuestionHelper extends Helper
         }
 
         if ($output instanceof ConsoleSectionOutput) {
+            $output->addContent(''); // add EOL to the question
             $output->addContent($ret);
         }
 
@@ -432,6 +441,11 @@ class QuestionHelper extends Helper
 
         $value = fgets($inputStream, 4096);
 
+        if (4095 === \strlen($value)) {
+            $errOutput = $output instanceof ConsoleOutputInterface ? $output->getErrorOutput() : $output;
+            $errOutput->warning('The value was possibly truncated by your shell or terminal emulator');
+        }
+
         if (self::$stty && Terminal::hasSttyAvailable()) {
             shell_exec('stty '.$sttyMode);
         }
@@ -493,13 +507,11 @@ class QuestionHelper extends Helper
             return self::$stdinIsInteractive = @posix_isatty(fopen('php://stdin', 'r'));
         }
 
-        if (!\function_exists('exec')) {
+        if (!\function_exists('shell_exec')) {
             return self::$stdinIsInteractive = true;
         }
 
-        exec('stty 2> /dev/null', $output, $status);
-
-        return self::$stdinIsInteractive = 1 !== $status;
+        return self::$stdinIsInteractive = (bool) shell_exec('stty 2> '.('\\' === \DIRECTORY_SEPARATOR ? 'NUL' : '/dev/null'));
     }
 
     /**

@@ -5,14 +5,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Embianz-project') }}</title>
-
-        <!-- Fonts -->
+        <title>{{ __('Embianz-project') }}</title>
 
         <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <link rel="stylesheet" href="/dist/css/main.css">
+        <link href="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.13.4/datatables.min.css" rel="stylesheet"/>
 
-        <!-- Styles -->
-        <link rel="stylesheet" href="dist\css\main.css">
+        <script src="/script/calendar.js" defer></script>
+
+
     </head>
     <body>

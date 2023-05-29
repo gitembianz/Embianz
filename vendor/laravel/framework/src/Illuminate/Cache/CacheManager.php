@@ -11,7 +11,8 @@ use Illuminate\Support\Arr;
 use InvalidArgumentException;
 
 /**
- * @mixin \Illuminate\Contracts\Cache\Repository
+ * @mixin \Illuminate\Cache\Repository
+ * @mixin \Illuminate\Contracts\Cache\LockProvider
  */
 class CacheManager implements FactoryContract
 {
@@ -57,7 +58,7 @@ class CacheManager implements FactoryContract
     {
         $name = $name ?: $this->getDefaultDriver();
 
-        return $this->stores[$name] = $this->get($name);
+        return $this->stores[$name] ??= $this->resolve($name);
     }
 
     /**
@@ -72,17 +73,6 @@ class CacheManager implements FactoryContract
     }
 
     /**
-     * Attempt to get the store from the local cache.
-     *
-     * @param  string  $name
-     * @return \Illuminate\Contracts\Cache\Repository
-     */
-    protected function get($name)
-    {
-        return $this->stores[$name] ?? $this->resolve($name);
-    }
-
-    /**
      * Resolve the given store.
      *
      * @param  string  $name
@@ -90,7 +80,7 @@ class CacheManager implements FactoryContract
      *
      * @throws \InvalidArgumentException
      */
-    protected function resolve($name)
+    public function resolve($name)
     {
         $config = $this->getConfig($name);
 
@@ -100,15 +90,15 @@ class CacheManager implements FactoryContract
 
         if (isset($this->customCreators[$config['driver']])) {
             return $this->callCustomCreator($config);
-        } else {
-            $driverMethod = 'create'.ucfirst($config['driver']).'Driver';
-
-            if (method_exists($this, $driverMethod)) {
-                return $this->{$driverMethod}($config);
-            } else {
-                throw new InvalidArgumentException("Driver [{$config['driver']}] is not supported.");
-            }
         }
+
+        $driverMethod = 'create'.ucfirst($config['driver']).'Driver';
+
+        if (method_exists($this, $driverMethod)) {
+            return $this->{$driverMethod}($config);
+        }
+
+        throw new InvalidArgumentException("Driver [{$config['driver']}] is not supported.");
     }
 
     /**
@@ -154,7 +144,10 @@ class CacheManager implements FactoryContract
      */
     protected function createFileDriver(array $config)
     {
-        return $this->repository(new FileStore($this->app['files'], $config['path'], $config['permission'] ?? null));
+        return $this->repository(
+            (new FileStore($this->app['files'], $config['path'], $config['permission'] ?? null))
+                ->setLockDirectory($config['lock_path'] ?? null)
+        );
     }
 
     /**
@@ -264,7 +257,7 @@ class CacheManager implements FactoryContract
             'endpoint' => $config['endpoint'] ?? null,
         ];
 
-        if (isset($config['key'], $config['secret'])) {
+        if (! empty($config['key']) && ! empty($config['secret'])) {
             $dynamoConfig['credentials'] = Arr::only(
                 $config, ['key', 'secret', 'token']
             );
@@ -402,6 +395,19 @@ class CacheManager implements FactoryContract
     public function extend($driver, Closure $callback)
     {
         $this->customCreators[$driver] = $callback->bindTo($this, $this);
+
+        return $this;
+    }
+
+    /**
+     * Set the application instance used by the manager.
+     *
+     * @param  \Illuminate\Contracts\Foundation\Application  $app
+     * @return $this
+     */
+    public function setApplication($app)
+    {
+        $this->app = $app;
 
         return $this;
     }

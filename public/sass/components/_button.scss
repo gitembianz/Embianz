@@ -1,41 +1,85 @@
-@mixin btn($bg-color: #e2e2e2) {
+@mixin btn {
   text-decoration: none;
   cursor: pointer;
-  display: inline-block;
-  border: 0;
-  padding: $base-padding $base-padding * 2;
-  border-radius: $base-border-radius;
-  background-color: $bg-color;
+  border: none;
+  padding: $padding;
+  border-radius: calc($base-border-radius / 3);
 }
 
 .btn {
   @include btn;
 }
 
-@each $key,
-$val in $colors {
-  .btn-#{$key} {
-    @include btn($val);
+.back {
+  @extend .btn;
+  border: 1px solid $mainBg;
+  background-color: $white;
+  color: $mainBg;
+}
 
-    &:hover {
-      background-color: lighten($color: $val, $amount: 5);
+.viewbtn {
+  @extend .back;
+}
+
+.add {
+  @extend .btn;
+  border: 1px solid $secondColor;
+  background-color: $secondColor;
+  color: $mainBg;
+}
+
+.delete {
+  @extend .btn;
+  border: 1px solid $mainBg;
+  color: $secondColor;
+  background-color: $mainBg;
+}
+
+.edit {
+  @extend .add;
+}
+
+.addnew {
+  @extend .add;
+  float: right;
+  margin-bottom: calc($margin / 2);
+}
+
+.upload {
+  @extend .add;
+  padding: calc($padding / 3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: $margin;
+  font-size: $font-size-md;
+}
+
+// The Notification
+.alert__session {
+  @include standart-Font;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 98%;
+  margin: 0 auto;
+  margin-bottom: $margin;
+  background-color: $darkBg;
+  border-radius: $BtnBorderRadius;
+
+
+  &-text {
+    @include standart-Font;
+    text-align: center;
+    flex: 1;
+
+    a {
+      text-decoration: underline;
     }
   }
 
-  .btn-outlined-#{$key} {
-    @include btn(#fff);
-    border-radius: $base-border-radius;
-
-    &:hover {
-      background-color: $val;
-    }
-  }
-  .btn-complement-#{$key} {
-    @include btn($val);
-    color: light-comp($val);
-    &:hover {
-      color: $val;
-      background-color: light-comp($val);
-    }
+  &-btn {
+    @include standart-Btn;
+    background-color: $alertColor;
   }
 }
