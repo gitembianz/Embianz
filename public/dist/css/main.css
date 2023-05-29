@@ -2750,6 +2750,413 @@ th {
   display: block;
 }
 
+.item__header {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.item__header-title {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #BBFCDE;
+  color: #35424B;
+  font-size: 2rem;
+  text-align: center;
+}
+.item__header-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  justify-content: space-between;
+}
+.item__header-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #BBFCDE;
+  background: #20282d;
+  outline: none;
+  text-decoration: none;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  border: none;
+  border-radius: 10px;
+  padding: 0;
+  width: 3rem;
+  height: 3rem;
+  transition: all 0.3s ease-in-out;
+  width: 100%;
+  border-radius: 1px solid black;
+}
+.item__header-btn:hover {
+  background-color: #0b0d0f;
+}
+.item__header-btn:hover > .sidebar__icon {
+  background-color: #0b0d0f;
+}
+.item__header-btn.active, .item__header-btn:active, .item__header-btn:focus-visible {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.item__header-btn.active > .sidebar__icon, .item__header-btn:active > .sidebar__icon, .item__header-btn:focus-visible > .sidebar__icon {
+  background-color: #BBFCDE;
+}
+.item__header-btn.active > .sidebar__icon svg, .item__header-btn:active > .sidebar__icon svg, .item__header-btn:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.item__header-btn.active svg, .item__header-btn:active svg, .item__header-btn:focus-visible svg {
+  stroke: #35424B;
+}
+.item__header-btn img,
+.item__header-btn svg {
+  width: 23px;
+  height: 23px;
+  stroke: #BBFCDE;
+  stroke-width: 1.5px;
+  background-color: transparent;
+  transition: all 0.3s ease-in-out;
+}
+.item__upload {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.item__upload-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #BBFCDE;
+  background: #20282d;
+  outline: none;
+  text-decoration: none;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  border: none;
+  border-radius: 10px;
+  padding: 0;
+  width: 3rem;
+  height: 3rem;
+  transition: all 0.3s ease-in-out;
+  width: 100%;
+  gap: 10px;
+}
+.item__upload-btn:hover {
+  background-color: #0b0d0f;
+}
+.item__upload-btn:hover > .sidebar__icon {
+  background-color: #0b0d0f;
+}
+.item__upload-btn.active, .item__upload-btn:active, .item__upload-btn:focus-visible {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.item__upload-btn.active > .sidebar__icon, .item__upload-btn:active > .sidebar__icon, .item__upload-btn:focus-visible > .sidebar__icon {
+  background-color: #BBFCDE;
+}
+.item__upload-btn.active > .sidebar__icon svg, .item__upload-btn:active > .sidebar__icon svg, .item__upload-btn:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.item__upload-btn.active svg, .item__upload-btn:active svg, .item__upload-btn:focus-visible svg {
+  stroke: #35424B;
+}
+.item__upload-btn img,
+.item__upload-btn svg {
+  width: 23px;
+  height: 23px;
+  stroke: #BBFCDE;
+  stroke-width: 1.5px;
+  background-color: transparent;
+  transition: all 0.3s ease-in-out;
+}
+.item__upload-content {
+  display: none;
+}
+.item__form {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.item__form-input {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+}
+.item__form-input span {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #BBFCDE;
+  color: #35424B;
+  line-height: 0.875rem;
+}
+.item__form-input select,
+.item__form-input input {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #BBFCDE;
+  background: #20282d;
+  outline: none;
+  text-decoration: none;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  border: none;
+  border-radius: 10px;
+  padding: 0;
+  width: 3rem;
+  height: 3rem;
+  transition: all 0.3s ease-in-out;
+  border: 1px solid #35424B;
+  padding: 10px;
+  background: #BBFCDE;
+  color: #35424B;
+  width: 100%;
+  height: 3rem;
+  resize: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+.item__form-input select:hover,
+.item__form-input input:hover {
+  background-color: #0b0d0f;
+}
+.item__form-input select:hover > .sidebar__icon,
+.item__form-input input:hover > .sidebar__icon {
+  background-color: #0b0d0f;
+}
+.item__form-input select.active, .item__form-input select:active, .item__form-input select:focus-visible,
+.item__form-input input.active,
+.item__form-input input:active,
+.item__form-input input:focus-visible {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.item__form-input select.active > .sidebar__icon, .item__form-input select:active > .sidebar__icon, .item__form-input select:focus-visible > .sidebar__icon,
+.item__form-input input.active > .sidebar__icon,
+.item__form-input input:active > .sidebar__icon,
+.item__form-input input:focus-visible > .sidebar__icon {
+  background-color: #BBFCDE;
+}
+.item__form-input select.active > .sidebar__icon svg, .item__form-input select:active > .sidebar__icon svg, .item__form-input select:focus-visible > .sidebar__icon svg,
+.item__form-input input.active > .sidebar__icon svg,
+.item__form-input input:active > .sidebar__icon svg,
+.item__form-input input:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.item__form-input select.active svg, .item__form-input select:active svg, .item__form-input select:focus-visible svg,
+.item__form-input input.active svg,
+.item__form-input input:active svg,
+.item__form-input input:focus-visible svg {
+  stroke: #35424B;
+}
+.item__form-input select img,
+.item__form-input select svg,
+.item__form-input input img,
+.item__form-input input svg {
+  width: 23px;
+  height: 23px;
+  stroke: #BBFCDE;
+  stroke-width: 1.5px;
+  background-color: transparent;
+  transition: all 0.3s ease-in-out;
+}
+.item__form-input select::-webkit-scrollbar,
+.item__form-input input::-webkit-scrollbar {
+  width: 10px;
+  background: #2a353c;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+.item__form-input select::-webkit-scrollbar-thumb,
+.item__form-input input::-webkit-scrollbar-thumb {
+  background: #20282d;
+  border-radius: 10px;
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+.item__form-input select::-webkit-scrollbar-thumb:hover,
+.item__form-input input::-webkit-scrollbar-thumb:hover {
+  background: #151b1e;
+}
+.item__form-input select:hover,
+.item__form-input input:hover {
+  background-color: #8afac6;
+}
+.item__form-input select:hover > .sidebar__icon,
+.item__form-input input:hover > .sidebar__icon {
+  background-color: #8afac6;
+}
+.item__form-input select.active, .item__form-input select:active, .item__form-input select:focus-visible,
+.item__form-input input.active,
+.item__form-input input:active,
+.item__form-input input:focus-visible {
+  background-color: #8afac6;
+  color: #35424B;
+}
+.item__form-input select.active > .sidebar__icon, .item__form-input select:active > .sidebar__icon, .item__form-input select:focus-visible > .sidebar__icon,
+.item__form-input input.active > .sidebar__icon,
+.item__form-input input:active > .sidebar__icon,
+.item__form-input input:focus-visible > .sidebar__icon {
+  background-color: #8afac6;
+}
+.item__form-input select.active > .sidebar__icon svg, .item__form-input select:active > .sidebar__icon svg, .item__form-input select:focus-visible > .sidebar__icon svg,
+.item__form-input input.active > .sidebar__icon svg,
+.item__form-input input:active > .sidebar__icon svg,
+.item__form-input input:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.item__form-input select.active svg, .item__form-input select:active svg, .item__form-input select:focus-visible svg,
+.item__form-input input.active svg,
+.item__form-input input:active svg,
+.item__form-input input:focus-visible svg {
+  stroke: #35424B;
+}
+.item__form-input textarea {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #BBFCDE;
+  background: #20282d;
+  outline: none;
+  text-decoration: none;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  border: none;
+  border-radius: 10px;
+  padding: 0;
+  width: 3rem;
+  height: 3rem;
+  transition: all 0.3s ease-in-out;
+  border: 1px solid #35424B;
+  padding: 10px;
+  background: #BBFCDE;
+  color: #35424B;
+  width: 100%;
+  height: 3rem;
+  resize: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  height: 12rem;
+}
+.item__form-input textarea:hover {
+  background-color: #0b0d0f;
+}
+.item__form-input textarea:hover > .sidebar__icon {
+  background-color: #0b0d0f;
+}
+.item__form-input textarea.active, .item__form-input textarea:active, .item__form-input textarea:focus-visible {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.item__form-input textarea.active > .sidebar__icon, .item__form-input textarea:active > .sidebar__icon, .item__form-input textarea:focus-visible > .sidebar__icon {
+  background-color: #BBFCDE;
+}
+.item__form-input textarea.active > .sidebar__icon svg, .item__form-input textarea:active > .sidebar__icon svg, .item__form-input textarea:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.item__form-input textarea.active svg, .item__form-input textarea:active svg, .item__form-input textarea:focus-visible svg {
+  stroke: #35424B;
+}
+.item__form-input textarea img,
+.item__form-input textarea svg {
+  width: 23px;
+  height: 23px;
+  stroke: #BBFCDE;
+  stroke-width: 1.5px;
+  background-color: transparent;
+  transition: all 0.3s ease-in-out;
+}
+.item__form-input textarea::-webkit-scrollbar {
+  width: 10px;
+  background: #2a353c;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+.item__form-input textarea::-webkit-scrollbar-thumb {
+  background: #20282d;
+  border-radius: 10px;
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+.item__form-input textarea::-webkit-scrollbar-thumb:hover {
+  background: #151b1e;
+}
+.item__form-input textarea:hover {
+  background-color: #8afac6;
+}
+.item__form-input textarea:hover > .sidebar__icon {
+  background-color: #8afac6;
+}
+.item__form-input textarea.active, .item__form-input textarea:active, .item__form-input textarea:focus-visible {
+  background-color: #8afac6;
+  color: #35424B;
+}
+.item__form-input textarea.active > .sidebar__icon, .item__form-input textarea:active > .sidebar__icon, .item__form-input textarea:focus-visible > .sidebar__icon {
+  background-color: #8afac6;
+}
+.item__form-input textarea.active > .sidebar__icon svg, .item__form-input textarea:active > .sidebar__icon svg, .item__form-input textarea:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.item__form-input textarea.active svg, .item__form-input textarea:active svg, .item__form-input textarea:focus-visible svg {
+  stroke: #35424B;
+}
+.item__form-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #BBFCDE;
+  background: #20282d;
+  outline: none;
+  text-decoration: none;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  border: none;
+  border-radius: 10px;
+  padding: 0;
+  width: 3rem;
+  height: 3rem;
+  transition: all 0.3s ease-in-out;
+  width: 100%;
+  border-radius: 1px solid black;
+}
+.item__form-btn:hover {
+  background-color: #0b0d0f;
+}
+.item__form-btn:hover > .sidebar__icon {
+  background-color: #0b0d0f;
+}
+.item__form-btn.active, .item__form-btn:active, .item__form-btn:focus-visible {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.item__form-btn.active > .sidebar__icon, .item__form-btn:active > .sidebar__icon, .item__form-btn:focus-visible > .sidebar__icon {
+  background-color: #BBFCDE;
+}
+.item__form-btn.active > .sidebar__icon svg, .item__form-btn:active > .sidebar__icon svg, .item__form-btn:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.item__form-btn.active svg, .item__form-btn:active svg, .item__form-btn:focus-visible svg {
+  stroke: #35424B;
+}
+.item__form-btn img,
+.item__form-btn svg {
+  width: 23px;
+  height: 23px;
+  stroke: #BBFCDE;
+  stroke-width: 1.5px;
+  background-color: transparent;
+  transition: all 0.3s ease-in-out;
+}
+
 @media (max-height: 375px) {
   .sidebar__list {
     grid-template-columns: repeat(2, 1fr);
@@ -2968,5 +3375,32 @@ th {
   }
   .right.open > .right__content {
     height: 100%;
+  }
+  .item {
+    display: grid;
+    flex-direction: column;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .item__header {
+    grid-template-columns: 1fr 12rem;
+    grid-column-start: 1;
+    grid-column-end: 3;
+    margin-bottom: 0;
+  }
+  .item__header-title {
+    text-align: left;
+  }
+  .item__upload {
+    margin-top: 0.875rem;
+  }
+  .item__form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 0;
+  }
+  .item__form-input:nth-child(5), .item__form-input:nth-child(8), .item__form-input:nth-child(9), .item__form-btn {
+    grid-column: 1;
+    grid-column-end: 3;
   }
 }/*# sourceMappingURL=main.css.map */
