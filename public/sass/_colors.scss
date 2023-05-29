@@ -1,10 +1,11 @@
-@each $key, $val in $colors {
+@each $key,
+$val in $colors {
   .text-#{$key} {
     color: $val;
   }
 
   .text-hover-#{$key} {
-    &:hover{
+    &:hover {
       color: $val;
     }
   }
@@ -14,8 +15,10 @@
   }
 
   .bg-hover-#{$key} {
-    &:hover{
+    &:hover {
       background-color: $val;
     }
   }
 }
+
+//comentariu
