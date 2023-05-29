@@ -46,12 +46,40 @@
         });
     }
 
-    // Script for alert desepear
-    // var element = document.getElementById('alertevent');
-    // if(element){
-    // setTimeout(function() {
-    //     element.remove();
-    // }, 500);}
+    //Script for alert desepear
+    var element = document.getElementById('alertevent');
+if (element) {
+  element.style.transition = 'opacity 0.5s ease';
+  setTimeout(function() {
+    element.style.opacity = '0';
+    setTimeout(function() {
+      element.remove();
+    }, 500);
+  }, 2000);
+}
+
+var sidebarItems = document.querySelectorAll(".sidebar__item");
+
+    // Loop through each sidebar item and add a click event listener
+    sidebarItems.forEach(function(item) {
+        item.addEventListener("click", function(event) {
+            // Prevent the default behavior of following the link
+            // event.preventDefault();
+
+            // Remove the "active" class from any previously clicked items
+            var activeItem = document.querySelector(".sidebar__item.active");
+            if (activeItem) {
+                activeItem.classList.remove("active");
+            }
+
+            // Add the "active" class to the clicked item
+            this.classList.add("active");
+
+            // Perform any additional actions you want to take when the item is clicked
+            // For example, you can navigate to the link URL
+            // window.location.href = this.href;
+        });
+    });
 
     //Script form removing product from tables
     function removeProduct(prodid) {

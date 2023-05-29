@@ -373,8 +373,10 @@
   document.querySelector('#addfromcheckbox').style.display = 'none';
 
 }
-
+let calceladdproducts = document.getElementById('calceladdproducts');
+if(calceladdproducts){
 document.getElementById('calceladdproducts').addEventListener('click', hideTableAndForm);
+}
 
 const addProductButton = document.querySelector('#addProductButton');
     if (addProductButton) {
