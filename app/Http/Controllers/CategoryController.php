@@ -206,8 +206,8 @@ public function deleteSelectedMedia(Request $request)
 
         return redirect()->back()->with([
             'message' => 'Category Added Succesfully!',
-            'category_name' => $data->name,
-            'category_id' => $data->id,
+            'item_name' => $data->name,
+            'item_id' => $data->id,
         ]);
     }
 

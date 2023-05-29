@@ -40,12 +40,10 @@ main {
   position: relative;
   color: $black;
   height: 100%;
-  //de revizuit
-  // max-height: 55rem;
-  // overflow-x: auto;
   background-color: $white;
   border-radius: $BtnBorderRadius;
-  z-index: $z-index-medium;
+
+  z-index: 0;
 }
 
 .category-table.dataTable tbody td {

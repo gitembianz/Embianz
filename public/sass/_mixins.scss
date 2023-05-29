@@ -24,6 +24,7 @@
         }
     }
 
+    &.active,
     &:active,
     &:focus-visible {
         background-color: $activeEffect; //$secondColor
@@ -41,10 +42,6 @@
             stroke: $textColor; //$mainBg
         }
     }
-}
-
-.hover{
-    @include BtnHover;
 }
 
 @mixin standart-Font {

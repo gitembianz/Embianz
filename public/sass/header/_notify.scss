@@ -37,7 +37,7 @@
     border-radius: $BtnBorderRadius;
 
     overflow-y: scroll;
-    z-index: $z-index-0;
+    z-index: 5;
     list-style: none;
 
     transition: all $transition;
@@ -60,10 +60,9 @@
 
   // Notification when is OPENED
   &.open {
-    z-index: $z-index-big;
-
     &>.header__notify-list {
       opacity: 1;
+      z-index: $z-index-small;
     }
   }
 }

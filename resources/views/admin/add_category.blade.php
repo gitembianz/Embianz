@@ -1,9 +1,10 @@
 <x-dashboardheader />
 <x-dashboardnavbar />
-@if (session()->has('message') && session()->has('category_name') && session()->has('category_id'))
+{{-- Display session message --}}
+@if (session()->has('message') && session()->has('item_name') && session()->has('item_id'))
     <div class="alert__session" id="alertevent">
         <Span class="alert__session-text">{!! session('message') !!} , click for view - <a
-                href="{{ route('show_category', ['id' => session('category_id')]) }}">{{ session('category_name') }}</a></Span>
+                href="{{ route('show_category', ['id' => session('item_id')]) }}">{{ session('item_name') }}</a></Span>
         <button class="alert__session-btn" type="button"
             onclick="document.getElementById('alertevent').style.display='none'" data-bs-dismiss="alert"
             aria-hidden="true">
@@ -15,6 +16,7 @@
         </button>
     </div>
 @endif
+{{-- End Section session message --}}
 <x-dashboardsidebar />
 <x-dashboardmodals />
 {{-- Page content start --}}
