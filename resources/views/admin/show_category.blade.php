@@ -2,8 +2,10 @@
 <x-dashboardnavbar />
 <x-dashboardsidebar />
 <x-dashboardmodals />
-{{-- Display session message --}}
-{{-- @if (session()->has('message'))
+
+ {{-- Display session message --}}
+ {{-- @if (session()->has('message'))
+
  <div class="bg-secondary pos-rel talign-c ls-1 mb-1 br-xs p-1" id="alertevent">
      {{ session()->get('message') }}
      <button type="button" onclick="document.getElementById('alertevent').style.display='none'"
@@ -185,25 +187,25 @@
             <button class="collapsible"><Span> {{ __('Products ') }}<span
                         class="fw-600">({{ $count_products }})</span></Span></button>
 
-            <div class="contenttabb" id="contentDivp">
-                <div class="col-12-xs col-12-sm col-12-xl mt-1 talign-c">
-                    <form id="deleteProductsForm" action="{{ route('deleteSelectedProducts') }}" method="POST">
-                        @csrf
-                        <input type="submit" id="deletefromcheckbox" class="delete float-r mb-1"
-                            style="display: none" value="">
-                    </form>
-                    <button id="addProductButton" class="add float-r mr-1 mb-1"> Add new product</button>
-                </div>
-                <div class="col-12-xs col-12-sm col-12-xl mt-1  display-b talign-c">
-                    <form id="addProductsForm" class="mb-1 p-1" style="display: none"
-                        action="{{ route('addSelectedProducts') }}" method="POST">
-                        @csrf
-                        <button class="delete float-l" id="calceladdproducts"> Cancel</button>
-                        <input type="submit" id="addfromcheckbox" class="add float-r" style="display: none"
-                            value="">
-                    </form>
-                    <div id="tableContainerproducts" class="wid-10 bg-bg-light-9 p-1 mt-3 br-xs"
-                        style="display: none"></div>
+
+                <div class="contenttabb" id="contentDivp">
+                    <div class="col-12-xs col-12-sm col-12-xl mt-1 talign-c">
+                        <form id="deleteProductsForm" action="{{ route('deleteSelectedProducts') }}" method="POST">
+                            @csrf
+                            <input type="submit" id="deletefromcheckbox" class="delete float-r mb-1"
+                                style="display: none" value="">
+                        </form>
+                        <button id="addProductButton" class="add float-r mr-1 mb-1"> Add new product</button>
+                    </div>
+                    <div class="col-12-xs col-12-sm col-12-xl mt-1  display-b talign-c">
+                        <form id="addProductsForm" class="mb-1 p-1" style="display: none" action="{{ route('addSelectedProducts', $data->id) }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="productIdsadd">
+                            <button class="delete float-l" id="calceladdproducts"> Cancel</button>
+                            <input type="submit" id="addfromcheckbox" class="add float-r" style="display: none" value="">
+                        </form>
+                        <div id="tableContainerproducts" class="wid-10 bg-bg-light-9 p-1 mt-3 br-xs" style="display: none"></div>
+
 
                 </div>
                 @if ($products->first() != null)
