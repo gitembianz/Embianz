@@ -105,11 +105,27 @@
     var addMediaCat = document.getElementById('addmediacat');
     if (imgUpload) {
         imgUpload.addEventListener('click', function() {
-            if (addMediaCat) {
-                if (addMediaCat.style.display === 'none') {
-                    addMediaCat.style.display = 'block';
+            var tableimages = document.getElementById("imageTable");
+            if (tableimages) {
+                if (addMediaCat) {
+                    if (addMediaCat.style.display === 'none') {
+                        addMediaCat.style.display = 'block';
+                    }
                 }
             }
+
+            tableimages.addEventListener('change', function() {
+    var files = imgUpload.files;
+    if (files.length > 0) {
+      var tableimages = document.getElementById("imageTable");
+      if (tableimages && tableimages.getElementsByTagName('tr').length > 0) {
+        if (addMediaCat) {
+          addMediaCat.style.display = 'block';
+        }
+      }
+    }
+  });
+
         });
     }
 
@@ -200,6 +216,36 @@
 
     // Script for product tables
 
+    function Addproductsfromcheck(event) {
+  const productId = event.target.value; // Get the ID of the checked/unchecked product
+  const productIdsInput = document.querySelector('input[name="productIdsadd"]');
+
+  // Get the array of existing product IDs from the hidden input value
+  const productIds = productIdsInput.value ? JSON.parse(productIdsInput.value) : [];
+
+  if (event.target.checked) {
+    // Add the checked product ID to the array
+    productIds.push(productId);
+  } else {
+    // Remove the unchecked product ID from the array
+    const index = productIds.indexOf(productId);
+    if (index > -1) {
+      productIds.splice(index, 1);
+    }
+  }
+
+  // Update the hidden input value with the updated array of product IDs
+  productIdsInput.value = JSON.stringify(productIds);
+  const count = productIds.length;
+  const addButton = document.querySelector('#addfromcheckbox');
+  if (count > 0) {
+    addButton.style.display = 'block';
+    addButton.value = `Add ${count} product${count > 1 ? 's' : ''}`;
+  } else {
+    addButton.style.display = 'none';
+  }
+}
+
     function createtable(productsData) {
         // Create the table element
         const table = document.createElement('table');
@@ -246,6 +292,7 @@
             checkbox.setAttribute('type', 'checkbox');
             checkbox.setAttribute("class", 'addproduct-checkbox');
             checkbox.value = product.id;
+            checkbox.addEventListener('change', Addproductsfromcheck);
             checkboxCell.appendChild(checkbox);
             row.appendChild(checkboxCell);
 
@@ -279,8 +326,7 @@
         // Initialize DataTables
         $(document).ready(function() {
             $('#productTable').DataTable();
-            console.log('datatable created');
-            document.querySelector('#addProductButton').style.display= 'none';
+            document.querySelector('#addProductButton').style.display = 'none';
 
         });
 
@@ -304,84 +350,44 @@
                 document.getElementById('addProductsForm').style.display = 'block';
                 const productsData = response.products;
                 createtable(productsData);
-                const checkboxes = document.querySelectorAll('.addproduct-checkbox');
                 let productIds = [];
-            checkboxes.forEach(function(checkbox) {
-                checkbox.addEventListener('change', updateAddButton);
-                console.log('in foreach');
-            });
-
             },
             error: function(error) {},
         });
     }
 
 
-    function updateAddButton() {
-  const selectedProducts = document.querySelectorAll('.addproduct-checkbox:checked');
-  const checkedProducts = Array.from(selectedProducts);
-  const count = checkedProducts.length;
-  const addButton = document.querySelector('#addfromcheckbox');
-
-  // Update the button text and visibility
-  if (count > 0) {
-    addButton.style.display = 'block';
-    addButton.value = `Add ${count} product${count > 1 ? 's' : ''}`;
-  } else {
-    addButton.style.display = 'none';
-  }
-
-  const productIds = checkedProducts.map(checkbox => checkbox.value);
-
-  // Create a hidden input element
-  const hiddenInputt = document.createElement('input');
-  hiddenInputt.setAttribute('type', 'hidden');
-  hiddenInputt.setAttribute('name', 'productIdsp');
-  hiddenInputt.setAttribute('value', productIds.join(',')); // Join the productIds array into a comma-separated string
-  hiddenInputt.setAttribute('id', 'sssssss');
-  console.log(productIds);
-
-  // Remove any existing hidden input elements before appending the new one
-  const existingHiddenInputs = document.querySelectorAll('#addProductsForm input[type="hidden"][name="productIdsp"]');
-  existingHiddenInputs.forEach(input => input.remove());
-
-  // Append the hidden input to the desired location
-  const formElement = document.querySelector('#addProductsForm');
-  formElement.appendChild(hiddenInputt);
-}
 
 
     function hideTableAndForm(event) {
-  event.preventDefault(); // Prevent the default form submission behavior
+        event.preventDefault(); // Prevent the default form submission behavior
 
-  const tableContainer = document.getElementById('tableContainerproducts');
-  if (tableContainer) {
-    tableContainer.style.display = 'none';
-  }
+        const tableContainer = document.getElementById('tableContainerproducts');
+        if (tableContainer) {
+            tableContainer.style.display = 'none';
+        }
 
-  const addProductsForm = document.getElementById('addProductsForm');
-  if (addProductsForm) {
-    addProductsForm.style.display = 'none';
-  }
+        const addProductsForm = document.getElementById('addProductsForm');
+        if (addProductsForm) {
+            addProductsForm.style.display = 'none';
+        }
 
-  document.querySelector('#addProductButton').style.display = 'block';
+        document.querySelector('#addProductButton').style.display = 'block';
 
-  const selectedProducts = document.querySelectorAll('.addproduct-checkbox:checked');
-  selectedProducts.forEach(function(checkbox) {
-    checkbox.checked = false; // Uncheck each selected checkbox
-  });
-  document.querySelector('#addfromcheckbox').style.display = 'none';
+        const selectedProducts = document.querySelectorAll('.addproduct-checkbox:checked');
+        selectedProducts.forEach(function(checkbox) {
+            checkbox.checked = false; // Uncheck each selected checkbox
+        });
+        document.querySelector('#addfromcheckbox').style.display = 'none';
 
-}
-let calceladdproducts = document.getElementById('calceladdproducts');
-if(calceladdproducts){
-document.getElementById('calceladdproducts').addEventListener('click', hideTableAndForm);
-}
+    }
+    let calceladdproducts = document.getElementById('calceladdproducts');
+    if (calceladdproducts) {
+        document.getElementById('calceladdproducts').addEventListener('click', hideTableAndForm);
+    }
 
-const addProductButton = document.querySelector('#addProductButton');
+    const addProductButton = document.querySelector('#addProductButton');
     if (addProductButton) {
         addProductButton.addEventListener('click', fetchAllProductsData);
     }
-
-
 </script>

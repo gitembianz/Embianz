@@ -3,13 +3,13 @@
 <x-dashboardsidebar />
 <x-dashboardmodals />
  {{-- Display session message --}}
- @if (session()->has('message'))
+ {{-- @if (session()->has('message'))
  <div class="bg-secondary pos-rel talign-c ls-1 mb-1 br-xs p-1" id="alertevent">
      {{ session()->get('message') }}
      <button type="button" onclick="document.getElementById('alertevent').style.display='none'"
          class="exit font-lg bg-secondary float-r" data-bs-dismiss="alert" aria-hidden="true">x</button>
  </div>
-@endif
+@endif --}}
 {{-- End Section session message --}}
 {{-- Page content start --}}
 <section class="content">
@@ -223,8 +223,9 @@
                         <button id="addProductButton" class="add float-r mr-1 mb-1"> Add new product</button>
                     </div>
                     <div class="col-12-xs col-12-sm col-12-xl mt-1  display-b talign-c">
-                        <form id="addProductsForm" class="mb-1 p-1" style="display: none" action="{{ route('addSelectedProducts') }}" method="POST">
+                        <form id="addProductsForm" class="mb-1 p-1" style="display: none" action="{{ route('addSelectedProducts', $data->id) }}" method="POST">
                             @csrf
+                            <input type="hidden" name="productIdsadd">
                             <button class="delete float-l" id="calceladdproducts"> Cancel</button>
                             <input type="submit" id="addfromcheckbox" class="add float-r" style="display: none" value="">
                         </form>
