@@ -48,7 +48,7 @@
                 Upload Media
             </label>
 
-            <table id="imageTable" class="talign-c mt-2">
+            <table id="imageTable" class="table">
             </table>
         </div>
 
