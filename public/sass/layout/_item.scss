@@ -1,0 +1,91 @@
+// The product section
+.item {
+
+  // The product header (title and the buttons in top)
+  &__header {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: $gap;
+    margin-bottom: $margin;
+
+    &-title {
+      @include standart-Font;
+      color: $mainBg;
+      font-size: 2rem;
+      text-align: center
+    }
+
+    &-buttons {
+      @include centering;
+      gap: $gap;
+      justify-content: space-between
+    }
+
+    &-btn {
+      @include standart-Btn;
+      width: 100%;
+      border-radius: 1px solid black;
+    }
+  }
+
+  // This is Upload media content
+  &__upload {
+    display: flex;
+    flex-direction: column;
+    gap: $gap;
+
+    // Upload media button
+    &-btn {
+      @include standart-Btn;
+      width: 100%;
+      gap: $gap;
+    }
+
+    // Upload media content
+    &-content {
+      display: none;
+    }
+  }
+
+  // Product form (input, textarea, buttons)
+  &__form {
+    margin-top: $margin;
+    display: flex;
+    flex-direction: column;
+    gap: $gap;
+    align-content: start;
+    align-items: start;
+
+    // STYLE FOR EVERY INPUT IN FORM
+    &-input {
+      @include centering;
+      flex-direction: column;
+      width: 100%;
+
+      span {
+        @include standart-Font;
+        color: $mainBg;
+        line-height: $fSize;
+      }
+
+      select,
+      input {
+        @include standart-Input;
+      }
+
+      textarea {
+        @include standart-Input;
+        height: $BtnSize * 4;
+      }
+
+    }
+
+    // BUTTON IN CONTENT ("ADD NEW")
+    &-btn {
+      @include standart-Btn;
+      width: 100%;
+      border-radius: 1px solid black;
+    }
+  }
+
+}
