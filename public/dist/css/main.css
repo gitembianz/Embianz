@@ -1273,14 +1273,11 @@ th {
 .table th:nth-child(3) {
   width: 20%;
 }
-.table td video,
 .table td img,
-.table th video,
 .table th img {
   width: 100%;
   height: 100%;
-  -o-object-fit: contain;
-     object-fit: contain;
+  object-fit: contain;
 }
 .table td select,
 .table td input,
@@ -1404,7 +1401,6 @@ th {
 .table th input::-webkit-scrollbar-thumb {
   background: #20282d;
   border-radius: 10px;
-  -webkit-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
 }
 .table td select::-webkit-scrollbar-thumb:hover,
@@ -1494,6 +1490,8 @@ th {
   transition: all 0.3s ease-in-out;
   background-color: red;
   margin: 0 auto;
+  font-size: x-large;
+  font-weight: 700;
 }
 .table td button:hover,
 .table th button:hover {

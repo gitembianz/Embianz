@@ -236,11 +236,7 @@
 
   // Update the hidden input value with the updated array of product IDs
   productIdsInput.value = JSON.stringify(productIds);
-
-  // Get the count of product IDs
   const count = productIds.length;
-
-  // Update the submit button
   const addButton = document.querySelector('#addfromcheckbox');
   if (count > 0) {
     addButton.style.display = 'block';
@@ -249,30 +245,6 @@
     addButton.style.display = 'none';
   }
 }
-
-document.querySelector('#addfromcheckbox').addEventListener('click', function() {
-  const productIds = document.querySelector('#productIdsadd').value;
-  const categoryId = document.querySelector('#categoryid').value;
-
-  if (productIds) {
-    $.ajax({
-      url: '/add_selected_products/' + categoryId,
-      type: 'POST',
-      dataType: 'json',
-      data: { productIdsadd: productIds },
-      success: function(response) {
-        // Handle the response from the server
-        alert(response.message);
-      },
-      error: function(xhr, status, error) {
-        // Handle the error
-        alert("An error occurred. Please try again.");
-      }
-    });
-  }
-});
-
-
 
     function createtable(productsData) {
         // Create the table element
@@ -375,7 +347,7 @@ document.querySelector('#addfromcheckbox').addEventListener('click', function() 
             type: 'GET',
             success: function(response) {
                 document.getElementById('tableContainerproducts').style.display = 'block';
-                document.getElementById('calceladdproducts').style.display = 'block';
+                document.getElementById('addProductsForm').style.display = 'block';
                 const productsData = response.products;
                 createtable(productsData);
                 let productIds = [];

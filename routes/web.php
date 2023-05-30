@@ -42,7 +42,7 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'])-
     route::get('/prodd/{id}/', [CategoryController::class, 'deleteProduct']);
     Route::get('/get_all_products', [CategoryController::class, 'getAllProducts']);
     route::post('/delete_selected_products', [CategoryController::class, 'deleteSelectedProducts'])->name('deleteSelectedProducts');
-    route::post('/add_selected_products/{id}', [CategoryController::class, 'addSelectedProducts']);
+    route::post('/add_selected_products/{id}/', [CategoryController::class, 'addSelectedProducts'])->name('addSelectedProducts');
     route::post('/delete_selected_media', [CategoryController::class, 'deleteSelectedMedia'])->name('deleteSelectedMedia');
 
 
