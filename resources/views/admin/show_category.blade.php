@@ -3,7 +3,6 @@
 <x-dashboardsidebar />
 <x-dashboardmodals />
 {{-- Display session message --}}
-{{-- Display session message --}}
 {{-- @if (session()->has('message'))
  <div class="bg-secondary pos-rel talign-c ls-1 mb-1 br-xs p-1" id="alertevent">
      {{ session()->get('message') }}
