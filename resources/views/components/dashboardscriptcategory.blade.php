@@ -246,99 +246,126 @@
   }
 }
 
-    function createtable(productsData) {
-        // Create the table element
-        const table = document.createElement('table');
-        table.setAttribute('id', 'productTable');
+function createtable(productsData) {
+  // Create the table element
+  const table = document.createElement('table');
+  table.setAttribute('id', 'productTable');
 
-        // Create the table header
-        const thead = document.createElement('thead');
-        const headerRow = document.createElement('tr');
+  // Create the table header
+  const thead = document.createElement('thead');
+  const headerRow = document.createElement('tr');
 
-        // Add a checkbox column header
-        const checkboxHeader = document.createElement('th');
-        checkboxHeader.textContent = 'Action';
-        headerRow.appendChild(checkboxHeader);
-
-        // Add Name column header
-        const nameHeader = document.createElement('th');
-        nameHeader.textContent = 'Name';
-        headerRow.appendChild(nameHeader);
-
-        // Add Status column header
-        const statusHeader = document.createElement('th');
-        statusHeader.textContent = 'Status';
-        headerRow.appendChild(statusHeader);
-
-        // Add Quantity column header
-        const quantityHeader = document.createElement('th');
-        quantityHeader.textContent = 'Quantity';
-        headerRow.appendChild(quantityHeader);
-
-        // Add the header row to the table
-        thead.appendChild(headerRow);
-        table.appendChild(thead);
-
-        // Create the table body
-        const tbody = document.createElement('tbody');
-
-        // Iterate over the products data and create a row for each product
-        for (const product of productsData) {
-            const row = document.createElement('tr');
-
-            // Add a checkbox column for selecting the product
-            const checkboxCell = document.createElement('td');
-            const checkbox = document.createElement('input');
-            checkbox.setAttribute('type', 'checkbox');
-            checkbox.setAttribute("class", 'addproduct-checkbox');
-            checkbox.value = product.id;
-            checkbox.addEventListener('change', Addproductsfromcheck);
-            checkboxCell.appendChild(checkbox);
-            row.appendChild(checkboxCell);
-
-            // Add Name cell
-            const nameCell = document.createElement('td');
-            nameCell.textContent = product.name;
-            row.appendChild(nameCell);
-
-            // Add Status cell
-            const statusCell = document.createElement('td');
-            statusCell.textContent = product.product_status;
-            row.appendChild(statusCell);
-
-            // Add Quantity cell
-            const quantityCell = document.createElement('td');
-            quantityCell.textContent = product.quantity;
-            row.appendChild(quantityCell);
-
-            // Add the row to the table body
-            tbody.appendChild(row);
-        }
-
-        // Add the table body to the table
-        table.appendChild(tbody);
-
-        // Append the table to a container element in your HTML
-        const container = document.querySelector('#tableContainerproducts');
-        container.innerHTML = '';
-        container.appendChild(table);
-
-        // Initialize DataTables
-        $(document).ready(function() {
-            $('#productTable').DataTable();
-            document.querySelector('#addProductButton').style.display = 'none';
-
-        });
-
-        var contentDiv = document.getElementById('contentDivp');
-        if (contentDiv) {
-            contentDiv.style.maxHeight = '100%';
-            contentDiv.style.height = '100%';
-            window.addEventListener('resize', function() {
-                contentDiv.style.height = '100%';
-            });
-        }
+  // Add a checkbox column header for selecting all products
+  const selectAllCheckboxHeader = document.createElement('th');
+  const selectAllCheckbox = document.createElement('input');
+  selectAllCheckbox.setAttribute('type', 'checkbox');
+  selectAllCheckbox.addEventListener('change', function () {
+  const checkboxes = document.querySelectorAll('.addproduct-checkbox');
+  checkboxes.forEach(function (checkbox) {
+    checkbox.checked = selectAllCheckbox.checked;
+    if (checkbox.checked) {
+      // Add the value of the checked checkbox to the selectedProducts array
+      selectedProducts.push(checkbox.value);
+    } else {
+      // Remove the value from the selectedProducts array if the checkbox is unchecked
+      const index = selectedProducts.indexOf(checkbox.value);
+      if (index !== -1) {
+        selectedProducts.splice(index, 1);
+      }
     }
+  });
+});
+  selectAllCheckboxHeader.appendChild(selectAllCheckbox);
+  headerRow.appendChild(selectAllCheckboxHeader);
+
+  // Add Name column header
+  const nameHeader = document.createElement('th');
+  nameHeader.innerHTML = 'Name <span class="sortable"></span>';
+  nameHeader.setAttribute('data-sort', 'name');
+  headerRow.appendChild(nameHeader);
+
+  // Add Status column header
+  const statusHeader = document.createElement('th');
+  statusHeader.innerHTML = 'Status <span class="sortable"></span>';
+  statusHeader.setAttribute('data-sort', 'status');
+  headerRow.appendChild(statusHeader);
+
+  // Add Quantity column header
+  const quantityHeader = document.createElement('th');
+  quantityHeader.innerHTML = 'Quantity <span class="sortable"></span>';
+  quantityHeader.setAttribute('data-sort', 'quantity');
+  headerRow.appendChild(quantityHeader);
+
+  // Add the header row to the table
+  thead.appendChild(headerRow);
+  table.appendChild(thead);
+
+  // Create the table body
+  const tbody = document.createElement('tbody');
+
+  // Iterate over the products data and create a row for each product
+  for (const product of productsData) {
+    const row = document.createElement('tr');
+
+    // Add a checkbox column for selecting the product
+    const checkboxCell = document.createElement('td');
+    const checkbox = document.createElement('input');
+    checkbox.setAttribute('type', 'checkbox');
+    checkbox.setAttribute('class', 'addproduct-checkbox');
+    checkbox.value = product.id;
+    checkbox.addEventListener('change', Addproductsfromcheck);
+    checkboxCell.appendChild(checkbox);
+    row.appendChild(checkboxCell);
+
+    // Add Name cell
+    const nameCell = document.createElement('td');
+    nameCell.textContent = product.name;
+    row.appendChild(nameCell);
+
+    // Add Status cell
+    const statusCell = document.createElement('td');
+    statusCell.textContent = product.product_status;
+    row.appendChild(statusCell);
+
+    // Add Quantity cell
+    const quantityCell = document.createElement('td');
+    quantityCell.textContent = product.quantity;
+    row.appendChild(quantityCell);
+
+    // Add the row to the table body
+    tbody.appendChild(row);
+  }
+
+  // Add the table body to the table
+  table.appendChild(tbody);
+
+  // Append the table to a container element in your HTML
+  const container = document.querySelector('#tableContainerproducts');
+  container.innerHTML = '';
+  container.appendChild(table);
+
+  // Initialize DataTables
+  $(document).ready(function() {
+    $('#productTable').DataTable({
+      columnDefs: [
+        { orderDataType: 'dom-checkbox', targets: 'sort-checkbox' },
+      ],
+      order: [[1, 'asc']], // Sort by the second column (Name) in ascending order by default
+    });
+
+    document.querySelector('#addProductButton').style.display = 'none';
+  });
+
+  var contentDiv = document.getElementById('contentDivp');
+  if (contentDiv) {
+    contentDiv.style.maxHeight = '100%';
+    contentDiv.style.height = '100%';
+    window.addEventListener('resize', function() {
+      contentDiv.style.height = '100%';
+    });
+  }
+}
+
 
     //get all products
     function fetchAllProductsData() {
