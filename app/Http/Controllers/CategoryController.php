@@ -97,25 +97,23 @@ public function addSelectedProducts(Request $request, $id)
 {
     $productIds = $request->input('productIdsadd');
     $productIds = json_decode($productIds);
-    // dd($productIds);
-    // $productIdsArray = explode(',', $productIds);
+
     $count = count($productIds);
-    $productIdsArray = $productIds;
-    // $category = Category::find($id);
 
     if ($count > 0) {
         for ($i = 0; $i < $count; $i++) {
-            $prodid = $productIdsArray[$i];
+            $prodid = $productIds[$i];
             $productcategory = new products_categories();
             $productcategory->product_id = $prodid;
             $productcategory->category_id = Category::where('id', $id)->first()->id;
             $productcategory->save();
         }
-        return redirect()->back()->with('message', 'Products Added Successfully!');
+        return response()->json(['message' => 'Products Added Successfully!']);
     } else {
-        return redirect()->back()->with('message', 'No products selected!');
+        return response()->json(['message' => 'No products selected!']);
     }
 }
+
 public function deleteSelectedMedia(Request $request)
 {
     $mediaIds = $request->input('mediaIds');

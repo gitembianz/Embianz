@@ -223,12 +223,12 @@
                         <button id="addProductButton" class="add float-r mr-1 mb-1"> Add new product</button>
                     </div>
                     <div class="col-12-xs col-12-sm col-12-xl mt-1  display-b talign-c">
-                        <form id="addProductsForm" class="mb-1 p-1" style="display: none" action="{{ route('addSelectedProducts', $data->id) }}" method="POST">
-                            @csrf
-                            <input type="hidden" name="productIdsadd">
-                            <button class="delete float-l" id="calceladdproducts"> Cancel</button>
-                            <input type="submit" id="addfromcheckbox" class="add float-r" style="display: none" value="">
-                        </form>
+                      <input type="hidden" name="categoryid" id="categoryid" value="{{ $data->id }}">
+                      <input type="hidden" name="productIdsadd" id="productIdsadd">
+                      <button class="delete float-l" id="canceladdproducts" style="display: none">Cancel</button>
+                      <input type="button" id="addfromcheckbox" class="add float-r" style="display: none" value="Add Products">
+
+
                         <div id="tableContainerproducts" class="wid-10 bg-bg-light-9 p-1 mt-3 br-xs" style="display: none"></div>
 
                     </div>
