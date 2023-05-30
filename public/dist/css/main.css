@@ -2880,6 +2880,8 @@ th {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  align-content: start;
+  align-items: start;
 }
 .item__form-input {
   display: flex;

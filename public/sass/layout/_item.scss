@@ -53,6 +53,8 @@
     display: flex;
     flex-direction: column;
     gap: $gap;
+    align-content: start;
+    align-items: start;
 
     // STYLE FOR EVERY INPUT IN FORM
     &-input {
