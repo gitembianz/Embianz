@@ -1,39 +1,69 @@
-
 .button {
-    display: inline-block;
-    padding: $padding;
-    cursor: pointer;
-    border-radius: 5px;
-    border: 1px solid $mainBg;
-    color: $mainBg;
-    transition: .4s;
+  display: inline-block;
+  padding: $padding;
+  cursor: pointer;
+  border-radius: 5px;
+  border: 1px solid $mainBg;
+  color: $mainBg;
+  transition: .4s;
 }
-.buttonremove{
-    background: $white;
-    cursor: pointer;
-    color: $mainBg;
+
+.buttonremove {
+  background: $white;
+  cursor: pointer;
+  color: $mainBg;
 }
+
 #imgUpload {
-    display: none;
+  display: none;
 }
-#imageTable {
-    border-collapse: collapse;
-    width: 100%;
-  }
 
-  #imageTable th, #imageTable td {
-    padding: 0.5em;
-    border: 1px solid #ccc;
-  }
+.table {
+  width: 100%;
+  background-color: $darkBg;
+  border-collapse: collapse;
+  background-color: $mainBg;
+  color: #ffffff;
 
-  #imageTable th {
-    background-color: $white;
-  }
+  td,
+  th {
+    border: 2px solid $darkBg;
+    padding: 10px;
+    height: 70px;
 
-  #imageTable tr:hover {
-    .buttonremove{
-        background-color: #f5f5f5;
+    &:first-child {
+      display: flex;
+      align-items: center;
+      border: 1px solid $darkBg;
+      width: 80%;
     }
-    background-color: #f5f5f5;
 
+    &:nth-child(2),
+    &:nth-child(3) {
+      width: 20%;
+    }
+
+    video,
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    select,
+    input {
+      @include standart-Input;
+      margin: 0 auto;
+    }
+
+    button {
+      @include standart-Btn;
+      background-color: $alertColor;
+      margin: 0 auto;
+    }
   }
+
+  thead {
+    background-color: $darkBg;
+  }
+}
