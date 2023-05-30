@@ -3,13 +3,21 @@
 <x-dashboardsidebar />
 <x-dashboardmodals />
 {{-- Display session message --}}
-{{-- @if (session()->has('message'))
-    <div class="bg-secondary pos-rel talign-c ls-1 mb-1 br-xs p-1" id="alertevent">
-        {{ session()->get('message') }}
-        <button type="button" onclick="document.getElementById('alertevent').style.display='none'"
-            class="exit font-lg bg-secondary float-r" data-bs-dismiss="alert" aria-hidden="true">x</button>
+@if (session()->has('message') && session()->has('item_name') && session()->has('item_id'))
+    <div class="alert__session" id="alertevent">
+        <Span class="alert__session-text">{!! session('message') !!} , click for view - <a
+                href="{{ route('show_product', ['id' => session('item_id')]) }}">{{ session('item_name') }}</a></Span>
+        <button class="alert__session-btn" type="button"
+            onclick="document.getElementById('alertevent').style.display='none'" data-bs-dismiss="alert"
+            aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24" fill="none"
+                stroke="#BBFCDE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
     </div>
-@endif --}}
+@endif
 {{-- End Section session message --}}
 {{-- Page content start --}}
 <section class="content">
@@ -106,9 +114,9 @@
                                     <input type="file" name="media[]" id="imgUpload" multiple
                                         accept="image/*,video/*" onchange="filesManager(this.files)">
 
-                                    <label class="upload wid-3" for="imgUpload"><span><svg width="40px" height="40px"
-                                                viewBox="0 0 1024.00 1024.00" class="icon" version="1.1"
-                                                xmlns="http://www.w3.org/2000/svg" fill="#000000">
+                                    <label class="upload wid-3" for="imgUpload"><span><svg width="40px"
+                                                height="40px" viewBox="0 0 1024.00 1024.00" class="icon"
+                                                version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000">
                                                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                                                 <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
                                                     stroke-linejoin="round"></g>
