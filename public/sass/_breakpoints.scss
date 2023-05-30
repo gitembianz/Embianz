@@ -313,13 +313,7 @@
       margin-top: 0;
 
       // Short Description
-      &-input:nth-child(5),
-      // Long Description
-      &-input:nth-child(8),
-      // SEO title
-      &-input:nth-child(9),
-      // Button (ADD NEW)
-      &-btn {
+      &-long {
         grid-column: 1;
         grid-column-end: 3;
       }
