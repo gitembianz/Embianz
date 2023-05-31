@@ -45,7 +45,7 @@
             ]
         });
         // Script for toggle columns
-        var columnState = localStorage.getItem('columnState');
+        var columnState = localStorage.getItem('columnStatec');
         if (columnState) {
             var columnStates = JSON.parse(columnState);
             $.each(columnStates, function(columnIndex, visible) {
@@ -64,7 +64,7 @@
                 var column = table.column(columnIndex);
                 columnStates[columnIndex] = column.visible();
             });
-            localStorage.setItem('columnState', JSON.stringify(columnStates));
+            localStorage.setItem('columnStatec', JSON.stringify(columnStates));
         });
     });
 
