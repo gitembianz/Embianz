@@ -24,38 +24,38 @@ class ProductController extends Controller
     public function products(Request $request)
     {
         //Display all products
-        if ($request->ajax()) {
-            $data = Product::query();
-            return DataTables::eloquent($data)
-                ->addColumn('category', function ($data) {
+        // if ($request->ajax()) {
+        //     $data = Product::query();
+        //     return DataTables::eloquent($data)
+        //         ->addColumn('category', function ($data) {
 
-                    $testvar = $data->product_categories->first();
-                    if ($testvar != NULL) {
-                        if ($testvar->category != NULL) {
-                            $cat = $testvar->category->name;
-                        } else {
-                            $cat = "No category";
-                        }
-                    } else {
-                        $cat = "No category";
-                    };
+        //             $testvar = $data->product_categories->first();
+        //             if ($testvar != NULL) {
+        //                 if ($testvar->category != NULL) {
+        //                     $cat = $testvar->category->name;
+        //                 } else {
+        //                     $cat = "No category";
+        //                 }
+        //             } else {
+        //                 $cat = "No category";
+        //             };
 
-                    return $cat;
-                })->addColumn('image', function ($data) {
-                    $productType = class_basename(get_class($data));
-                    $type = Tabels::where('name', $productType)->first()->id;
-                    $files = Media::where('item_id', $data->id)->where('tabel_id', $type)->where('location_id', '2')->first();
-                    if($files){
-                        $path = $files->path .$files->name;
-                    } else{
-                        $path = "images/resets/product.svg";
-                    }
+        //             return $cat;
+        //         })->addColumn('image', function ($data) {
+        //             $productType = class_basename(get_class($data));
+        //             $type = Tabels::where('name', $productType)->first()->id;
+        //             $files = Media::where('item_id', $data->id)->where('tabel_id', $type)->where('location_id', '2')->first();
+        //             if($files){
+        //                 $path = $files->path .$files->name;
+        //             } else{
+        //                 $path = "images/resets/product.svg";
+        //             }
 
 
-                    return $path;
-                })
-                ->make(true);
-        }
+        //             return $path;
+        //         })
+        //         ->make(true);
+        // }
         return view('admin.products');
     }
 

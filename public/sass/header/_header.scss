@@ -19,9 +19,12 @@
     gap: $gap * 2;
   }
 
-  &__logo {
-    display: none;
-    height: $BtnSize;
+
+    &__logo {
+        display: none;
+        height: $BtnSize;
+        cursor: pointer;
+
 
     img {
       object-fit: contain;
