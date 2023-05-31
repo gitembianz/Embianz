@@ -7,7 +7,6 @@
   grid-template-columns: repeat(2, 1fr);
   gap: $gap;
   padding: $padding;
-  margin-top: $margin;
   background-color: lighten($mainBg, 5%);
   border: 1px solid $mainBg;
   border-bottom: none;

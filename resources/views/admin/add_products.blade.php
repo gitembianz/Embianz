@@ -52,36 +52,35 @@
         {{-- Item Form --}}
         <div class="item__form">
             <div class="item__form-input">
+                <input type="text" name="product_name" required>
                 <span> Product Name</span>
-                <input type="text" name="product_name" placeholder="Enter a Product name" required>
             </div>
             <div class="item__form-input">
-                <span>Product Category</span>
                 <select id="select-category" name="category">
                     <option value="" selected="">Select a category</option>
                     @foreach ($categories as $category_name)
                         <option value="{{ $category_name }}">{{ $category_name }}</option>
                     @endforeach
                 </select>
+                <span>Product Category</span>
             </div>
             <div class="item__form-input">
+                <input type="date" id="start_date" min="0" name="start_date">
                 <span>Product Start Date</span>
-                <input type="date" class="p-1" id="start_date" name="start_date" required>
             </div>
             <div class="item__form-input">
+                <input type="date" id="end_date" name="end_date">
                 <span>Product End Date</span>
-                <input type="date" id="end_date" class="p-1" name="end_date" required>
             </div>
             <div class="item__form-input item__form-long">
+                <input type="text" name="short_description" required>
                 <span>Product Short Description</span>
-                <input type="text" name="short_description" placeholder="Product short description" required>
             </div>
             <div class="item__form-input">
+                <input type="number" min="0" name="quantity" required>
                 <span>Product Quantity</span>
-                <input type="number" min="0" name="quantity" placeholder="Select Quantity" required>
             </div>
             <div class="item__form-input">
-                <span>Product Status</span>
                 <select id="select-category" name="status">
                     <?php
                     $status = ['active', 'inactive', 'low stock'];
@@ -91,14 +90,15 @@
                         <option value="{{ $status_name }}">{{ $status_name }}</option>
                     @endforeach
                 </select>
+                <span>Product Status</span>
             </div>
             <div class="item__form-input item__form-long">
+                <textarea name="long_description" required></textarea>
                 <span>Product Long Description</span>
-                <textarea name="long_description" placeholder="Enter a product Long description" required></textarea>
             </div>
             <div class="item__form-input item__form-long">
+                <input type="text" name="seo_title" required>
                 <span>SEO Title</span>
-                <input type="text" name="seo_title" placeholder="Enter SEO" required>
             </div>
             <input class="item__form-btn item__form-long" type="submit" value="Add new" name="submit">
         </div>
