@@ -102,20 +102,22 @@
  }
 
  @mixin standart-Input {
-   @include standart-Btn;
    @include scrollbar;
-   @include BtnHover($hoverEffect: darken($inputBackground, 10%), $activeEffect: darken($inputBackground, 10%), $textColor: $mainBg);
 
-   border: 1px solid $mainBg;
+   border: 1.5px solid $mainBg;
+   border-radius: $BtnBorderRadius;
    padding: $padding;
 
-   background: $inputBackground;
+   background: $white;
    color: $mainBg;
+   box-shadow: $BtnShadow;
 
    width: 100%;
    height: $BtnSize;
-   resize: none;
 
+   resize: none;
+   outline: none;
+   text-decoration: none;
    -webkit-appearance: none;
    -moz-appearance: none;
  }

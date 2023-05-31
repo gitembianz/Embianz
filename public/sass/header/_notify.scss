@@ -60,6 +60,8 @@
 
   // Notification when is OPENED
   &.open {
+    z-index: $z-index-medium + 1;
+
     &>.header__notify-list {
       opacity: 1;
       z-index: $z-index-small;
