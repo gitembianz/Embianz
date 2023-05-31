@@ -2,6 +2,7 @@
     <!-- Logo -->
     <a href="{{ route('redirect') }}" class="header__logo">
         <img src="/images/dashboard/navbar/logo.png" alt="logo">
+    </a>
 
 
     <!-- Header Buttons on mobile -->
