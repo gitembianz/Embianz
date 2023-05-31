@@ -40,5 +40,6 @@
     gap: $gap;
     padding: $padding;
     opacity: 1;
+    z-index: $z-index-medium +1;
   }
 }

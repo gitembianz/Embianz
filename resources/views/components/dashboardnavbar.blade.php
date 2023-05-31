@@ -5,9 +5,9 @@
     </button>
 
     <!-- Logo -->
-    <div class="header__logo">
+    <a href="{{ route('redirect') }}" class="header__logo">
         <img src="/images/dashboard/navbar/logo.png" alt="logo">
-    </div>
+    </a>
 
     <!-- Header Buttons on mobile -->
     <div class="header__buttons">
@@ -111,7 +111,7 @@
             </div>
             <!-- Profile Bottom part -->
             <div class="header__profile-bottom">
-                <button class="header__profile-btn">
+                <button class="header__profile-btn" onclick="window.location.href='{{ route('profile.show') }}'">
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"
                         fill="none" stroke="#BBFCDE" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
@@ -121,7 +121,7 @@
                         </path>
                     </svg>
                 </button>
-                <button class="header__profile-btn">
+                <button class="header__profile-btn" onclick="window.location.href='{{ route('logout') }}'">
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"
                         fill="none" stroke="#BBFCDE" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">

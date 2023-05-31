@@ -22,6 +22,7 @@
     &__logo {
         display: none;
         height: $BtnSize;
+        cursor: pointer;
 
         img {
             object-fit: contain;
