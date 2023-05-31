@@ -2400,30 +2400,15 @@ th {
 }
 
 .tab {
-  overflow: hidden;
-  border-top: 1px solid #35424B;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  padding: 10px;
+  margin-top: 10px;
+  background-color: #404f5a;
+  border: 1px solid #35424B;
+  border-bottom: none;
   border-radius: 10px 10px 0 0;
-}
-
-.tab button {
-  background-color: #35424B;
-  float: left;
-  border-top: 1px solid #BBFCDE;
-  border-bottom: 1px solid #BBFCDE;
-  outline: none;
-  color: #BBFCDE;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.tab button:hover {
-  background-color: #35424B;
-  color: #ffffff;
-}
-
-.tab button.active {
-  background-color: #BBFCDE;
-  color: #35424B;
 }
 
 .tabcontent {
@@ -3655,7 +3640,7 @@ th {
     grid-template-columns: 1fr 1fr;
     margin-top: 0;
   }
-  .item__form-input:nth-child(5), .item__form-input:nth-child(8), .item__form-input:nth-child(9), .item__form-btn {
+  .item__form-long {
     grid-column: 1;
     grid-column-end: 3;
   }

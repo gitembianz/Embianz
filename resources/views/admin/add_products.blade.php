@@ -28,12 +28,11 @@
         <div class="item__header">
             <h1 id="title" class="item__header-title">{{ __('New Product') }}</h1>
             <div class="item__header-buttons">
-                <a href="{{ route('products') }}"class="item__header-btn"> Go Back</a>
-                <button id="resetform" class="item__header-btn" type="reset">Clear form</button>
+                <a class="item__header-btn" href="{{ route('products') }}"> Go Back</a>
+                <button class="item__header-btn" id="resetform" type="reset">Clear form</button>
             </div>
         </div>
-
-
+        {{-- Item Upload --}}
         <div class="item__upload">
             <input type="file" name="media[]" id="imgUpload" multiple
                 accept="image/*,video/*"onchange="filesManager(this.files)">
@@ -48,10 +47,9 @@
                 Upload Media
             </label>
 
-            <table id="imageTable" class="table">
-            </table>
+            <table id="imageTable" class="table"></table>
         </div>
-
+        {{-- Item Form --}}
         <div class="item__form">
             <div class="item__form-input">
                 <span> Product Name</span>
@@ -74,13 +72,13 @@
                 <span>Product End Date</span>
                 <input type="date" id="end_date" class="p-1" name="end_date" required>
             </div>
-            <div class="item__form-input">
+            <div class="item__form-input item__form-long">
                 <span>Product Short Description</span>
                 <input type="text" name="short_description" placeholder="Product short description" required>
             </div>
             <div class="item__form-input">
                 <span>Product Quantity</span>
-                <input type="number" name="quantity" placeholder="Select Quantity" required>
+                <input type="number" min="0" name="quantity" placeholder="Select Quantity" required>
             </div>
             <div class="item__form-input">
                 <span>Product Status</span>
@@ -94,15 +92,15 @@
                     @endforeach
                 </select>
             </div>
-            <div class="item__form-input">
+            <div class="item__form-input item__form-long">
                 <span>Product Long Description</span>
                 <textarea name="long_description" placeholder="Enter a product Long description" required></textarea>
             </div>
-            <div class="item__form-input">
+            <div class="item__form-input item__form-long">
                 <span>SEO Title</span>
                 <input type="text" name="seo_title" placeholder="Enter SEO" required>
             </div>
-            <input class="item__form-btn" type="submit" value="Add new" name="submit">
+            <input class="item__form-btn item__form-long" type="submit" value="Add new" name="submit">
         </div>
     </form>
 </section>

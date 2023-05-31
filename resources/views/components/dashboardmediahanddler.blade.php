@@ -1,7 +1,7 @@
 <script type="text/javascript">
-
-//Script fot Table with media
+    //Script fot Table with media
     allFiles = new DataTransfer();
+
     function previewFile(file) {
         let imageType = /^image\/.*|^video\/.*/;
         if (file.type.match(imageType)) {
@@ -53,7 +53,8 @@
                     tdImage.appendChild(video);
                 }
 
-                let fileInfo = document.createTextNode(file.size / 1000 + " KB, " + file.type.split("/")[1] + " file");
+                let fileInfo = document.createTextNode(file.size / 1000 + " KB, " + file.type.split("/")[1] +
+                    " file");
                 allFiles.items.add(file);
                 document.getElementById('imgUpload').files = allFiles.files;
                 let fileSize = document.createElement('input');
@@ -76,8 +77,8 @@
 
                 let fileSequence = document.createElement('input');
                 fileSequence.setAttribute("type", "number");
+                fileSequence.setAttribute("min", "0");
                 fileSequence.setAttribute("required", "required");
-                fileSequence.setAttribute("class", " wid-6 p-1");
                 fileSequence.setAttribute("name", "file_sequence[]");
 
                 let removeBtn = document.createElement('button');
@@ -124,16 +125,16 @@
         files.forEach(previewFile);
         document.getElementById('imgUpload').files = allFiles.files;
         var contentDiv = document.getElementById('contentDiv');
-        if(contentDiv){
-        contentDiv.style.maxHeight = '100%';
-        contentDiv.style.height = '100%';
-        window.addEventListener('resize', function() {
+        if (contentDiv) {
+            contentDiv.style.maxHeight = '100%';
             contentDiv.style.height = '100%';
-        });
-    }
+            window.addEventListener('resize', function() {
+                contentDiv.style.height = '100%';
+            });
+        }
     }
 
-//Remove a media from table
+    //Remove a media from table
     function removeFile(fileId) {
         $.ajax({
             url: '/filesd/' + fileId,
@@ -145,5 +146,4 @@
             }
         });
     }
-
 </script>
