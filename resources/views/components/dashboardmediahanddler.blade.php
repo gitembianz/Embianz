@@ -82,7 +82,8 @@
                 fileSequence.setAttribute("name", "file_sequence[]");
 
                 let removeBtn = document.createElement('button');
-                removeBtn.innerHTML = 'x';
+                removeBtn.innerHTML =
+                    '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24" fill="none" stroke="#BBFCDE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>';
                 removeBtn.setAttribute("class", "buttonremove" + " font-xl");
                 removeBtn.onclick = function() {
                     tr.remove();
