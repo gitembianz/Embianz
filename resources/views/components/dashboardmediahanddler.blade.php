@@ -15,7 +15,6 @@
                 tableHeader.setAttribute('id', 'tableHeader');
 
                 let tr = document.createElement('tr');
-                tr.setAttribute("class", "font-md");
                 let thImage = document.createElement('th');
                 let thFileLocation = document.createElement('th');
                 let thFileSequence = document.createElement('th');
