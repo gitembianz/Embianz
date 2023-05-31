@@ -48,6 +48,7 @@
             <div class="item__form-input">
                 <label> Category Name</label>
                 <span id="category_name">{{ $data->name }}</span>
+
             </div>
             <div class="item__form-input">
                 <label>Category Parrent</label>

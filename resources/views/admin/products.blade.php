@@ -45,7 +45,7 @@
 
             </div>
             {{-- Table Products --}}
-            <table class="product-table" style="width: 100% !important" id="product-table">
+            {{-- <table class="product-table" style="width: 100% !important" id="product-table">
                 <thead>
                 <tr>
                     <th class="bg-white" style="text-align: center">Image</th>
@@ -60,7 +60,11 @@
             </thead>
             <tbody>
               </tbody>
-            </table>
+            </table> --}}
+
+            {{-- Tabel by Livewire start --}}
+            @livewire('productstable')
+              {{-- Tabel by Livewire end --}}
             {{--End Table Category --}}
         </div>
     </div>
