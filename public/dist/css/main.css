@@ -73,7 +73,6 @@ body::-webkit-scrollbar {
 body::-webkit-scrollbar-thumb {
   background: #20282d;
   border-radius: 10px;
-  -webkit-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
 }
 body::-webkit-scrollbar-thumb:hover {
@@ -530,8 +529,7 @@ main {
   height: 3rem;
 }
 .header__logo img {
-  -o-object-fit: contain;
-     object-fit: contain;
+  object-fit: contain;
   height: 100%;
 }
 .header.moved {
@@ -906,7 +904,6 @@ main {
 .header__notify-list::-webkit-scrollbar-thumb {
   background: #20282d;
   border-radius: 10px;
-  -webkit-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
 }
 .header__notify-list::-webkit-scrollbar-thumb:hover {
@@ -1279,8 +1276,7 @@ th {
 .table td img,
 .table th img {
   height: 100%;
-  -o-object-fit: contain;
-     object-fit: contain;
+  object-fit: contain;
 }
 .table td select,
 .table td input,
@@ -1404,7 +1400,6 @@ th {
 .table th input::-webkit-scrollbar-thumb {
   background: #20282d;
   border-radius: 10px;
-  -webkit-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
 }
 .table td select::-webkit-scrollbar-thumb:hover,
@@ -1494,6 +1489,8 @@ th {
   transition: all 0.3s ease-in-out;
   background-color: #e25b73;
   margin: 0 auto;
+  font-size: x-large;
+  font-weight: 700;
 }
 .table td button:hover,
 .table th button:hover {
@@ -2504,10 +2501,6 @@ th {
     height: auto;
   }
 }
-.content-category input::-moz-placeholder {
-  color: #BBFCDE;
-  opacity: 1;
-}
 .content-category input::placeholder {
   color: #BBFCDE;
   opacity: 1;
@@ -2635,10 +2628,6 @@ th {
   -webkit-transition: width 0.4s ease-in-out;
   color: #35424B;
   border: 1px solid #35424B;
-}
-.input_style::-moz-placeholder {
-  color: #35424B;
-  opacity: 1;
 }
 .input_style::placeholder {
   color: #35424B;
@@ -2783,9 +2772,7 @@ th {
   pointer-events: none;
 }
 .container-right .card_calendar .date-time-formate {
-  width: -moz-max-content;
   width: max-content;
-  height: -moz-max-content;
   height: max-content;
   position: relative;
   display: flex;
@@ -2799,9 +2786,7 @@ th {
 }
 .container-right .card_calendar .date-time-value {
   display: block;
-  height: -moz-max-content;
   height: max-content;
-  width: -moz-max-content;
   width: max-content;
   position: relative;
   left: 40%;
@@ -2905,8 +2890,7 @@ th {
   width: 3.5rem;
   height: auto;
   padding: 0.5rem;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
   align-items: center;
   background: #ffffff;
 }
@@ -3245,7 +3229,6 @@ th {
 .item__form-input input::-webkit-scrollbar-thumb {
   background: #20282d;
   border-radius: 10px;
-  -webkit-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
 }
 .item__form-input select::-webkit-scrollbar-thumb:hover,
@@ -3350,7 +3333,6 @@ th {
 .item__form-input textarea::-webkit-scrollbar-thumb {
   background: #20282d;
   border-radius: 10px;
-  -webkit-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
 }
 .item__form-input textarea::-webkit-scrollbar-thumb:hover {
@@ -3670,4 +3652,4 @@ th {
     grid-column: 1;
     grid-column-end: 3;
   }
-}/*# sourceMappingURL=main.css.map */
+}
