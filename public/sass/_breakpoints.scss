@@ -36,7 +36,7 @@
   // General Modifacation
   main {
     display: grid;
-    grid-template-columns: 1fr 20fr 0fr;
+    grid-template-columns: 0fr 1fr 0fr;
   }
 
   // Header Search BreakPoints
@@ -211,23 +211,27 @@
     // Sidebar Button in the right
     &__open {
       @include standart-Btn;
-      position: absolute;
-      top: calc(($BtnSize + $gap) / 2);
-      left: calc(100% - ($BtnSize / 2));
+      // Old Setting for Open Sidebar Button
+
+      // position: absolute;
+      // top: calc(($BtnSize + $gap) / 2);
+      // left: calc(100% - ($BtnSize / 2));
+      // border: calc($BtnSize / 10) solid $mainBg;
+      // border-radius: 100%;
 
       width: $BtnSize;
       height: $BtnSize;
-
-      border: calc($BtnSize / 10) solid $mainBg;
-      border-radius: 100%;
-      box-shadow: none;
-
-      transition: all $transition;
+      border-radius: 10px;
+      outline: none;
+      border: none;
+      justify-self: end;
 
       svg {
         height: $BtnSvgSize;
         width: $BtnSvgSize;
       }
+
+
     }
 
     // Sidebar Icon of Item
