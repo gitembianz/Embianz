@@ -18,7 +18,7 @@
   background-color: $mainBg;
   transform: translateY(-100%);
   transition: all $transition;
-  z-index: $z-index-medium;
+  z-index: $z-index-medium + 1;
 
   // Search Buttons (Open button, Close button, Search Button)
   &-btn {

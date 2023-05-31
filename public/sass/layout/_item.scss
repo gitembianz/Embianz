@@ -57,37 +57,66 @@
     align-items: start;
 
     // STYLE FOR EVERY INPUT IN FORM
-    &-input {
+    &-input,
+    &-input-close {
       @include centering;
       flex-direction: column;
       width: 100%;
       position: relative;
 
-      label,
+
       span {
         @include standart-Font;
         color: $mainBg;
-        line-height: $fSize;
-
         position: absolute;
-        left: 20px;
-        top: -5px;
-
-        z-index: 999;
-        background-color: $white;
-        padding: 0 $padding;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        transition: $transition;
       }
 
+      div,
+      textarea,
       select,
       input {
         @include standart-Input;
+
+        &:focus~span,
+        &:valid~span {
+          background-color: $white;
+          padding: 0 10px;
+          top: 0;
+        }
       }
 
       textarea {
-        @include standart-Input;
         height: $BtnSize * 4;
       }
 
+    }
+
+    &-input-close {
+      cursor: not-allowed;
+
+      span {
+        @include standart-Font;
+        color: $mainBg;
+        position: absolute;
+        left: 15px;
+        top: 0;
+        transform: translateY(-50%);
+        transition: $transition;
+        background-color: $white;
+        padding: 0 10px;
+      }
+
+      div,
+      textarea,
+      select,
+      input {
+        border-color: $gray;
+        color: $gray;
+      }
     }
 
     // BUTTON IN CONTENT ("ADD NEW")

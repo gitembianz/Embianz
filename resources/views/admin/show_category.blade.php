@@ -20,6 +20,10 @@
 <x-dashboardmodals />
 
 
+
+
+
+
 {{-- Page content start --}}
 <section class="content">
     <div class="item__header">
@@ -45,39 +49,42 @@
             enctype="multipart/form-data">
             @csrf
             {{-- content --}}
-            <div class="item__form-input">
-                <label> Category Name</label>
-                <span id="category_name">{{ $data->name }}</span>
+
+            <div class="item__form-input-close">
+                <div id="category_name">{{ $data->name }}</div>
+                <span>Category Name</span>
+
+       
 
             </div>
-            <div class="item__form-input">
-                <label>Category Parrent</label>
-                <span id="category_parrent">{{ $data->parrent }}</span>
+            <div class="item__form-input-close">
+                <div id="category_parrent">{{ $data->parrent }}</div>
+                <span>Category Parrent</span>
             </div>
-            <div class="item__form-input">
-                <label for="start_date">Category Start Date</label>
-                <span id="category_start_date">{{ $data->start_date }}</span>
+            <div class="item__form-input-close">
+                <div id="category_start_date">{{ $data->start_date }}</div>
+                <span for="start_date">Category Start Date</span>
             </div>
-            <div class="item__form-input">
-                <label>Category End Date </label>
-                <span id="category_end_date">{{ $data->end_date }}</span>
+            <div class="item__form-input-close">
+                <div id="category_end_date">{{ $data->end_date }}</div>
+                <span>Category End Date </span>
                 <input type="hidden" name="hidden_id" value="{{ $data->id }}" id="hidden_id">
             </div>
-            <div class="item__form-input">
-                <label>Category Sequence</label>
-                <span id="category_sequence">{{ $data->sequence }}</span>
+            <div class="item__form-input-close">
+                <div id="category_sequence">{{ $data->sequence }}</div>
+                <span>Category Sequence</span>
             </div>
-            <div class="item__form-input item__form-long">
-                <label>Category Short Description</label>
-                <span id="category_short_description">{{ $data->short_description }}</span>
+            <div class="item__form-input-close item__form-long">
+                <div id="category_short_description">{{ $data->short_description }}</div>
+                <span>Category Short Description</span>
             </div>
-            <div class="item__form-input item__form-long">
-                <label>Category Long Description</label>
-                <span id="category_long_description">{{ $data->long_description }}</span>
+            <div class="item__form-input-close item__form-long">
+                <div id="category_long_description">{{ $data->long_description }}</div>
+                <span>Category Long Description</span>
             </div>
-            <div class="item__form-input item__form-long">
-                <label>SEO Title</label>
-                <span id="seo_title">{{ $data->seo_title }}</span>
+            <div class="item__form-input-close item__form-long">
+                <div id="seo_title">{{ $data->seo_title }}</div>
+                <span>SEO Title</span>
             </div>
             <div class="item__form-input">
                 <label>Create date / time</label>
@@ -196,23 +203,26 @@
                         class="fw-600">({{ $count_products }})</span></Span></button>
 
 
-                <div class="contenttabb" id="contentDivp">
-                    <div class="col-12-xs col-12-sm col-12-xl mt-1 talign-c">
-                        <form id="deleteProductsForm" action="{{ route('deleteSelectedProducts') }}" method="POST">
-                            @csrf
-                            <input type="submit" id="deletefromcheckbox" class="delete float-r mb-1"
-                                style="display: none" value="">
-                        </form>
-                        <button id="addProductButton" class="add float-r mr-1 mb-1"> Add new product</button>
-                    </div>
-                    <div class="col-12-xs col-12-sm col-12-xl mt-1  display-b talign-c">
-                        <form id="addProductsForm" class="mb-1 p-1" style="display: none" action="{{ route('addSelectedProducts', $data->id) }}" method="POST">
-                            @csrf
-                            <input type="hidden" name="productIdsadd">
-                            <button class="delete float-l" id="calceladdproducts"> Cancel</button>
-                            <input type="submit" id="addfromcheckbox" class="add float-r" style="display: none" value="">
-                        </form>
-                        <div id="tableContainerproducts" class="wid-10 bg-bg-light-9 p-1 mt-3 br-xs" style="display: none"></div>
+            <div class="contenttabb" id="contentDivp">
+                <div class="col-12-xs col-12-sm col-12-xl mt-1 talign-c">
+                    <form id="deleteProductsForm" action="{{ route('deleteSelectedProducts') }}" method="POST">
+                        @csrf
+                        <input type="submit" id="deletefromcheckbox" class="delete float-r mb-1"
+                            style="display: none" value="">
+                    </form>
+                    <button id="addProductButton" class="add float-r mr-1 mb-1"> Add new product</button>
+                </div>
+                <div class="col-12-xs col-12-sm col-12-xl mt-1  display-b talign-c">
+                    <form id="addProductsForm" class="mb-1 p-1" style="display: none"
+                        action="{{ route('addSelectedProducts', $data->id) }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="productIdsadd">
+                        <button class="delete float-l" id="calceladdproducts"> Cancel</button>
+                        <input type="submit" id="addfromcheckbox" class="add float-r" style="display: none"
+                            value="">
+                    </form>
+                    <div id="tableContainerproducts" class="wid-10 bg-bg-light-9 p-1 mt-3 br-xs"
+                        style="display: none"></div>
 
 
                 </div>

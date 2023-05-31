@@ -1,16 +1,15 @@
 <header class="header">
-    <!-- Sidebar Button for mobile -->
-    <button class="sidebar__btn">
-        <img src="/images/dashboard/navbar/mini-logo.png" alt="logo">
-    </button>
-
     <!-- Logo -->
     <a href="{{ route('redirect') }}" class="header__logo">
         <img src="/images/dashboard/navbar/logo.png" alt="logo">
-    </a>
+
 
     <!-- Header Buttons on mobile -->
     <div class="header__buttons">
+        <!-- Sidebar Button for mobile -->
+        <button class="sidebar__btn">
+            <img src="/images/dashboard/navbar/mini-logo.png" alt="logo">
+        </button>
         <!-- Search button on mobile -->
         <button class="header__search-btn" id="openSearch">
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24" fill="none"

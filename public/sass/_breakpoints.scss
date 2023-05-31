@@ -48,6 +48,11 @@
     display: none;
   }
 
+  .header {
+    display: flex;
+    justify-content: space-between;
+  }
+
   .header__search {
     position: relative;
 
@@ -113,12 +118,17 @@
 
   // Header Profile Breakpoints
   .header__profile {
+    // display: flex;
     flex: 1;
     flex-direction: row;
 
     position: relative;
     opacity: 1;
     transform: unset;
+
+    &-top {
+      display: flex;
+    }
 
     &-bottom {
       button {
@@ -145,6 +155,7 @@
       }
 
       &>.header__profile {
+
 
         &-bottom,
         &-top {
@@ -283,18 +294,14 @@
 
   // New Product
   .item {
-    // display: grid; // Apare doar in cazul cind apare tabelul
     display: flex;
     flex-direction: column;
-    grid-template-columns: 1fr 1fr;
-    gap: calc($gap * 2);
 
     // The product header (title and the buttons in top)
     &__header {
-      grid-template-columns: 1fr calc($BtnSize * 4);
+      grid-template-columns: 3fr 1fr;
       grid-column-start: 1;
       grid-column-end: 3;
-      margin-bottom: 0;
 
       &-title {
         text-align: left;
@@ -310,7 +317,6 @@
     &__form {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      margin-top: 0;
 
       // Short Description
       &-long {

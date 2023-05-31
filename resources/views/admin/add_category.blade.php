@@ -55,41 +55,41 @@
         {{-- Item Form --}}
         <div class="item__form">
             <div class="item__form-input">
-                <label> Name</label>
-                <input type="text" name="category" placeholder="Enter a category name" required>
+                <input type="text" name="category" required>
+                <span> Name</span>
             </div>
             <div class="item__form-input">
-                <label>Parent</label>
                 <select id="select-category" name="parrent">
                     <option value="" selected="">Select a parrent</option>
                     @foreach ($categories as $category_name)
                         <option value="{{ $category_name }}">{{ $category_name }}</option>
                     @endforeach
                 </select>
+                <span>Parent</span>
             </div>
             <div class="item__form-input">
-                <label>Start Date</label>
-                <input type="date" id="start_date" name="start_date" required>
+                <input type="date" id="start_date" name="start_date">
+                <span>Start Date</span>
             </div>
             <div class="item__form-input">
-                <label>End Date</label>
-                <input type="date" id="end_date" name="end_date" required>
+                <input type="date" id="end_date" name="end_date">
+                <span>End Date</span>
             </div>
             <div class="item__form-input">
-                <label>Sequence</label>
-                <input type="number" name="sequence" placeholder="Catagory sequence" required>
+                <input type="number" min="0" name="sequence" required>
+                <span>Sequence</span>
             </div>
             <div class="item__form-input item__form-long">
-                <label>Short Description</label>
-                <input type="text" name="short_description" placeholder="Short description catagory name" required>
+                <input type="text" name="short_description" required>
+                <span>Short Description</span>
             </div>
             <div class="item__form-input item__form-long">
-                <label>Long Description</label>
-                <textarea name="long_description" placeholder="Long description catagory name" cols="30" rows="10" required></textarea>
+                <textarea name="long_description" required></textarea>
+                <span>Long Description</span>
             </div>
             <div class="item__form-input item__form-long">
-                <label>SEO Title</label>
-                <input type="text" name="seo_title" placeholder="Enter SEO" required>
+                <input type="text" name="seo_title" required>
+                <span>SEO Title</span>
             </div>
             <input class="item__form-btn item__form-long" type="submit" value="Add New" name="submit">
         </div>
