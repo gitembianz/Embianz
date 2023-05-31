@@ -2992,8 +2992,8 @@ th {
   display: flex;
   flex-direction: column;
   gap: 30px;
-  align-content: start;
-  align-items: start;
+  align-content: flex-start;
+  align-items: flex-start;
 }
 .item__form-input, .item__form-input-close {
   display: flex;
@@ -3181,7 +3181,7 @@ th {
   }
   main {
     display: grid;
-    grid-template-columns: 1fr 20fr 0fr;
+    grid-template-columns: 0fr 1fr 0fr;
   }
   #openSearch {
     display: none;
@@ -3304,15 +3304,12 @@ th {
     width: 3rem;
     height: 3rem;
     transition: all 0.3s ease-in-out;
-    position: absolute;
-    top: calc((3rem + 10px) / 2);
-    left: calc(100% - 1.5rem);
     width: 3rem;
     height: 3rem;
-    border: 0.3rem solid #35424B;
-    border-radius: 100%;
-    box-shadow: none;
-    transition: all 0.3s ease-in-out;
+    border-radius: 10px;
+    outline: none;
+    border: none;
+    justify-self: end;
   }
   .sidebar__open:hover {
     background-color: #0b0d0f;

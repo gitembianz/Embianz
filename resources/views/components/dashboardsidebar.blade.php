@@ -1,14 +1,14 @@
 <main>
     <div class="sidebar">
-        <!-- Sidebar Button in the right -->
-        <div class="sidebar__open">
-            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24" fill="none"
-                stroke="#BBFCDE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="9 18 15 12 9 6"></polyline>
-            </svg>
-        </div>
         <!-- Sidebar List of Items -->
         <ul class="sidebar__list">
+            <!-- Sidebar Button in the right -->
+            <li class="sidebar__open">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24" fill="none"
+                    stroke="#BBFCDE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </li>
             <li><a class="sidebar__item" href="{{ url('redirect') }}">
                     <button class="sidebar__icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"
