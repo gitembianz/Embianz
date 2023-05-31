@@ -983,7 +983,7 @@ main {
   right: -2.5px;
   width: 15px;
   height: 15px;
-  background-color: red;
+  background-color: #e25b73;
   outline: 3px solid #35424B;
   border-radius: 100%;
 }
@@ -1001,7 +1001,7 @@ main {
   right: -5px;
   width: 20px;
   height: 20px;
-  background: red;
+  background: #e25b73;
   outline: 4px solid #35424B;
   border-radius: 100%;
 }
@@ -1086,7 +1086,7 @@ main {
   width: 3rem;
   height: 3rem;
   transition: all 0.3s ease-in-out;
-  background-color: red;
+  background-color: #e25b73;
 }
 .alert__session-btn:hover {
   background-color: #0b0d0f;
@@ -1253,10 +1253,8 @@ th {
 
 .table {
   width: 100%;
-  background-color: #20282d;
   border-collapse: collapse;
-  background-color: #35424B;
-  color: #ffffff;
+  color: #000;
 }
 .table td,
 .table th {
@@ -1269,18 +1267,17 @@ th {
   display: flex;
   align-items: center;
   border: 1px solid #20282d;
-  width: 80%;
-}
-.table td:nth-child(2), .table td:nth-child(3),
-.table th:nth-child(2),
-.table th:nth-child(3) {
-  width: 20%;
-}
-.table td video,
-.table td img,
-.table th video,
-.table th img {
   width: 100%;
+  justify-content: space-between;
+}
+.table td:nth-child(2), .table td:nth-child(3), .table td:nth-child(4),
+.table th:nth-child(2),
+.table th:nth-child(3),
+.table th:nth-child(4) {
+  width: 10%;
+}
+.table td img,
+.table th img {
   height: 100%;
   -o-object-fit: contain;
      object-fit: contain;
@@ -1495,7 +1492,7 @@ th {
   width: 3rem;
   height: 3rem;
   transition: all 0.3s ease-in-out;
-  background-color: red;
+  background-color: #e25b73;
   margin: 0 auto;
 }
 .table td button:hover,
@@ -1544,6 +1541,7 @@ th {
 }
 .table thead {
   background-color: #20282d;
+  color: #ffffff;
 }
 
 .p-0 {
@@ -3138,7 +3136,7 @@ th {
   margin-top: 10px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 30px;
   align-content: start;
   align-items: start;
 }
@@ -3148,13 +3146,21 @@ th {
   justify-content: center;
   flex-direction: column;
   width: 100%;
+  position: relative;
 }
+.item__form-input label,
 .item__form-input span {
   font-size: 0.875rem;
   font-weight: 500;
   color: #BBFCDE;
   color: #35424B;
   line-height: 0.875rem;
+  position: absolute;
+  left: 20px;
+  top: -5px;
+  z-index: 999;
+  background-color: #ffffff;
+  padding: 0 10px;
 }
 .item__form-input select,
 .item__form-input input {

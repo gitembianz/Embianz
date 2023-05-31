@@ -52,7 +52,7 @@
     margin-top: $margin;
     display: flex;
     flex-direction: column;
-    gap: $gap;
+    gap: $gap * 3;
     align-content: start;
     align-items: start;
 
@@ -61,11 +61,21 @@
       @include centering;
       flex-direction: column;
       width: 100%;
+      position: relative;
 
+      label,
       span {
         @include standart-Font;
         color: $mainBg;
         line-height: $fSize;
+
+        position: absolute;
+        left: 20px;
+        top: -5px;
+
+        z-index: 999;
+        background-color: $white;
+        padding: 0 $padding;
       }
 
       select,
