@@ -10,24 +10,21 @@
 namespace PHPUnit\Runner;
 
 use function sprintf;
-use ReflectionException;
 use RuntimeException;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class ClassCannotBeInstantiatedException extends RuntimeException implements Exception
+final class ClassDoesNotExtendTestCaseException extends RuntimeException implements Exception
 {
-    public function __construct(string $className, ReflectionException $previous)
+    public function __construct(string $className, string $file)
     {
         parent::__construct(
             sprintf(
-                'Class "%s" cannot be instantiated: %s',
+                'Class %s declared in %s does not extend PHPUnit\Framework\TestCase',
                 $className,
-                $previous->getMessage()
+                $file,
             ),
-            $previous->getCode(),
-            $previous
         );
     }
 }

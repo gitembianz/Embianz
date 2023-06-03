@@ -7,17 +7,18 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Runner;
+namespace PHPUnit\TextUI\Output\Default\ProgressPrinter;
 
-use RuntimeException;
+use PHPUnit\Event\Test\ErrorTriggered;
+use PHPUnit\Event\Test\ErrorTriggeredSubscriber;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class NoTestCaseObjectOnCallStackException extends RuntimeException implements Exception
+final class TestTriggeredErrorSubscriber extends Subscriber implements ErrorTriggeredSubscriber
 {
-    public function __construct()
+    public function notify(ErrorTriggered $event): void
     {
-        parent::__construct('Cannot find TestCase object on call stack');
+        $this->printer()->testTriggeredError($event);
     }
 }
