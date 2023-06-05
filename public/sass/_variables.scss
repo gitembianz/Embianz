@@ -30,6 +30,8 @@ $font-size-xxl: $base-font-size * 3 !default;
 $mainBg: #35424B; // #35424B Embianz color
 $darkBg: darken($mainBg, 10%);
 $secondColor: #BBFCDE;
+$alertColor: #e25b73;
+$editColor: #ff9800;
 
 $inputBackground: $white;
 
@@ -68,7 +70,6 @@ $NotifyHeight: 60vh;
 
 //Alert
 $alertSize: 20px;
-$alertColor: #e25b73;
 
 // Sidebar Width on PC
 $sidebar-Width-Desktop-Min: 70px;

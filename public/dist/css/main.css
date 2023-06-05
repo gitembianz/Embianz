@@ -605,6 +605,50 @@ main {
   background-color: transparent;
   transition: all 0.3s ease-in-out;
 }
+.header__search-btn.delete {
+  background-color: #e25b73;
+}
+.header__search-btn.delete:hover {
+  background-color: #b7203b;
+}
+.header__search-btn.delete:hover > .sidebar__icon {
+  background-color: #b7203b;
+}
+.header__search-btn.delete.active, .header__search-btn.delete:active, .header__search-btn.delete:focus-visible {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.header__search-btn.delete.active > .sidebar__icon, .header__search-btn.delete:active > .sidebar__icon, .header__search-btn.delete:focus-visible > .sidebar__icon {
+  background-color: #BBFCDE;
+}
+.header__search-btn.delete.active > .sidebar__icon svg, .header__search-btn.delete:active > .sidebar__icon svg, .header__search-btn.delete:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.header__search-btn.delete.active svg, .header__search-btn.delete:active svg, .header__search-btn.delete:focus-visible svg {
+  stroke: #35424B;
+}
+.header__search-btn.edit {
+  background-color: #ff9800;
+}
+.header__search-btn.edit:hover {
+  background-color: #995b00;
+}
+.header__search-btn.edit:hover > .sidebar__icon {
+  background-color: #995b00;
+}
+.header__search-btn.edit.active, .header__search-btn.edit:active, .header__search-btn.edit:focus-visible {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.header__search-btn.edit.active > .sidebar__icon, .header__search-btn.edit:active > .sidebar__icon, .header__search-btn.edit:focus-visible > .sidebar__icon {
+  background-color: #BBFCDE;
+}
+.header__search-btn.edit.active > .sidebar__icon svg, .header__search-btn.edit:active > .sidebar__icon svg, .header__search-btn.edit:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.header__search-btn.edit.active svg, .header__search-btn.edit:active svg, .header__search-btn.edit:focus-visible svg {
+  stroke: #35424B;
+}
 .header__search-input {
   display: flex;
   align-items: center;
@@ -652,6 +696,50 @@ main {
   stroke-width: 1.5px;
   background-color: transparent;
   transition: all 0.3s ease-in-out;
+}
+.header__search-input.delete {
+  background-color: #e25b73;
+}
+.header__search-input.delete:hover {
+  background-color: #b7203b;
+}
+.header__search-input.delete:hover > .sidebar__icon {
+  background-color: #b7203b;
+}
+.header__search-input.delete.active, .header__search-input.delete:active, .header__search-input.delete:focus-visible {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.header__search-input.delete.active > .sidebar__icon, .header__search-input.delete:active > .sidebar__icon, .header__search-input.delete:focus-visible > .sidebar__icon {
+  background-color: #BBFCDE;
+}
+.header__search-input.delete.active > .sidebar__icon svg, .header__search-input.delete:active > .sidebar__icon svg, .header__search-input.delete:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.header__search-input.delete.active svg, .header__search-input.delete:active svg, .header__search-input.delete:focus-visible svg {
+  stroke: #35424B;
+}
+.header__search-input.edit {
+  background-color: #ff9800;
+}
+.header__search-input.edit:hover {
+  background-color: #995b00;
+}
+.header__search-input.edit:hover > .sidebar__icon {
+  background-color: #995b00;
+}
+.header__search-input.edit.active, .header__search-input.edit:active, .header__search-input.edit:focus-visible {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.header__search-input.edit.active > .sidebar__icon, .header__search-input.edit:active > .sidebar__icon, .header__search-input.edit:focus-visible > .sidebar__icon {
+  background-color: #BBFCDE;
+}
+.header__search-input.edit.active > .sidebar__icon svg, .header__search-input.edit:active > .sidebar__icon svg, .header__search-input.edit:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.header__search-input.edit.active svg, .header__search-input.edit:active svg, .header__search-input.edit:focus-visible svg {
+  stroke: #35424B;
 }
 .header__search-input:hover {
   background-color: #0b0d0f;
@@ -764,6 +852,50 @@ main {
   background-color: transparent;
   transition: all 0.3s ease-in-out;
 }
+.header__profile-btn.delete {
+  background-color: #e25b73;
+}
+.header__profile-btn.delete:hover {
+  background-color: #b7203b;
+}
+.header__profile-btn.delete:hover > .sidebar__icon {
+  background-color: #b7203b;
+}
+.header__profile-btn.delete.active, .header__profile-btn.delete:active, .header__profile-btn.delete:focus-visible {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.header__profile-btn.delete.active > .sidebar__icon, .header__profile-btn.delete:active > .sidebar__icon, .header__profile-btn.delete:focus-visible > .sidebar__icon {
+  background-color: #BBFCDE;
+}
+.header__profile-btn.delete.active > .sidebar__icon svg, .header__profile-btn.delete:active > .sidebar__icon svg, .header__profile-btn.delete:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.header__profile-btn.delete.active svg, .header__profile-btn.delete:active svg, .header__profile-btn.delete:focus-visible svg {
+  stroke: #35424B;
+}
+.header__profile-btn.edit {
+  background-color: #ff9800;
+}
+.header__profile-btn.edit:hover {
+  background-color: #995b00;
+}
+.header__profile-btn.edit:hover > .sidebar__icon {
+  background-color: #995b00;
+}
+.header__profile-btn.edit.active, .header__profile-btn.edit:active, .header__profile-btn.edit:focus-visible {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.header__profile-btn.edit.active > .sidebar__icon, .header__profile-btn.edit:active > .sidebar__icon, .header__profile-btn.edit:focus-visible > .sidebar__icon {
+  background-color: #BBFCDE;
+}
+.header__profile-btn.edit.active > .sidebar__icon svg, .header__profile-btn.edit:active > .sidebar__icon svg, .header__profile-btn.edit:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.header__profile-btn.edit.active svg, .header__profile-btn.edit:active svg, .header__profile-btn.edit:focus-visible svg {
+  stroke: #35424B;
+}
 .header__profile-name {
   display: flex;
   align-items: center;
@@ -810,6 +942,50 @@ main {
   stroke-width: 1.5px;
   background-color: transparent;
   transition: all 0.3s ease-in-out;
+}
+.header__profile-name.delete {
+  background-color: #e25b73;
+}
+.header__profile-name.delete:hover {
+  background-color: #b7203b;
+}
+.header__profile-name.delete:hover > .sidebar__icon {
+  background-color: #b7203b;
+}
+.header__profile-name.delete.active, .header__profile-name.delete:active, .header__profile-name.delete:focus-visible {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.header__profile-name.delete.active > .sidebar__icon, .header__profile-name.delete:active > .sidebar__icon, .header__profile-name.delete:focus-visible > .sidebar__icon {
+  background-color: #BBFCDE;
+}
+.header__profile-name.delete.active > .sidebar__icon svg, .header__profile-name.delete:active > .sidebar__icon svg, .header__profile-name.delete:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.header__profile-name.delete.active svg, .header__profile-name.delete:active svg, .header__profile-name.delete:focus-visible svg {
+  stroke: #35424B;
+}
+.header__profile-name.edit {
+  background-color: #ff9800;
+}
+.header__profile-name.edit:hover {
+  background-color: #995b00;
+}
+.header__profile-name.edit:hover > .sidebar__icon {
+  background-color: #995b00;
+}
+.header__profile-name.edit.active, .header__profile-name.edit:active, .header__profile-name.edit:focus-visible {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.header__profile-name.edit.active > .sidebar__icon, .header__profile-name.edit:active > .sidebar__icon, .header__profile-name.edit:focus-visible > .sidebar__icon {
+  background-color: #BBFCDE;
+}
+.header__profile-name.edit.active > .sidebar__icon svg, .header__profile-name.edit:active > .sidebar__icon svg, .header__profile-name.edit:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.header__profile-name.edit.active svg, .header__profile-name.edit:active svg, .header__profile-name.edit:focus-visible svg {
+  stroke: #35424B;
 }
 .header__profile.active {
   transform: translateY(0);
@@ -872,6 +1048,50 @@ main {
   stroke-width: 1.5px;
   background-color: transparent;
   transition: all 0.3s ease-in-out;
+}
+.header__notify-btn.delete {
+  background-color: #e25b73;
+}
+.header__notify-btn.delete:hover {
+  background-color: #b7203b;
+}
+.header__notify-btn.delete:hover > .sidebar__icon {
+  background-color: #b7203b;
+}
+.header__notify-btn.delete.active, .header__notify-btn.delete:active, .header__notify-btn.delete:focus-visible {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.header__notify-btn.delete.active > .sidebar__icon, .header__notify-btn.delete:active > .sidebar__icon, .header__notify-btn.delete:focus-visible > .sidebar__icon {
+  background-color: #BBFCDE;
+}
+.header__notify-btn.delete.active > .sidebar__icon svg, .header__notify-btn.delete:active > .sidebar__icon svg, .header__notify-btn.delete:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.header__notify-btn.delete.active svg, .header__notify-btn.delete:active svg, .header__notify-btn.delete:focus-visible svg {
+  stroke: #35424B;
+}
+.header__notify-btn.edit {
+  background-color: #ff9800;
+}
+.header__notify-btn.edit:hover {
+  background-color: #995b00;
+}
+.header__notify-btn.edit:hover > .sidebar__icon {
+  background-color: #995b00;
+}
+.header__notify-btn.edit.active, .header__notify-btn.edit:active, .header__notify-btn.edit:focus-visible {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.header__notify-btn.edit.active > .sidebar__icon, .header__notify-btn.edit:active > .sidebar__icon, .header__notify-btn.edit:focus-visible > .sidebar__icon {
+  background-color: #BBFCDE;
+}
+.header__notify-btn.edit.active > .sidebar__icon svg, .header__notify-btn.edit:active > .sidebar__icon svg, .header__notify-btn.edit:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.header__notify-btn.edit.active svg, .header__notify-btn.edit:active svg, .header__notify-btn.edit:focus-visible svg {
+  stroke: #35424B;
 }
 .header__notify-title {
   font-size: 0.875rem;
@@ -966,6 +1186,50 @@ main {
   background-color: transparent;
   transition: all 0.3s ease-in-out;
 }
+.header__notify-item.delete {
+  background-color: #e25b73;
+}
+.header__notify-item.delete:hover {
+  background-color: #b7203b;
+}
+.header__notify-item.delete:hover > .sidebar__icon {
+  background-color: #b7203b;
+}
+.header__notify-item.delete.active, .header__notify-item.delete:active, .header__notify-item.delete:focus-visible {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.header__notify-item.delete.active > .sidebar__icon, .header__notify-item.delete:active > .sidebar__icon, .header__notify-item.delete:focus-visible > .sidebar__icon {
+  background-color: #BBFCDE;
+}
+.header__notify-item.delete.active > .sidebar__icon svg, .header__notify-item.delete:active > .sidebar__icon svg, .header__notify-item.delete:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.header__notify-item.delete.active svg, .header__notify-item.delete:active svg, .header__notify-item.delete:focus-visible svg {
+  stroke: #35424B;
+}
+.header__notify-item.edit {
+  background-color: #ff9800;
+}
+.header__notify-item.edit:hover {
+  background-color: #995b00;
+}
+.header__notify-item.edit:hover > .sidebar__icon {
+  background-color: #995b00;
+}
+.header__notify-item.edit.active, .header__notify-item.edit:active, .header__notify-item.edit:focus-visible {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.header__notify-item.edit.active > .sidebar__icon, .header__notify-item.edit:active > .sidebar__icon, .header__notify-item.edit:focus-visible > .sidebar__icon {
+  background-color: #BBFCDE;
+}
+.header__notify-item.edit.active > .sidebar__icon svg, .header__notify-item.edit:active > .sidebar__icon svg, .header__notify-item.edit:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.header__notify-item.edit.active svg, .header__notify-item.edit:active svg, .header__notify-item.edit:focus-visible svg {
+  stroke: #35424B;
+}
 .header__notify.open {
   z-index: 6;
 }
@@ -1011,7 +1275,7 @@ main {
   border-radius: 100%;
 }
 
-.btn, .delete, .add, .upload, .addnew, .edit, .back, .viewbtn {
+.btn, .add, .upload, .addnew, .back, .viewbtn {
   text-decoration: none;
   cursor: pointer;
   border: none;
@@ -1025,16 +1289,10 @@ main {
   color: #35424B;
 }
 
-.add, .upload, .addnew, .edit {
+.add, .upload, .addnew {
   border: 1px solid #BBFCDE;
   background-color: #BBFCDE;
   color: #35424B;
-}
-
-.delete {
-  border: 1px solid #35424B;
-  color: #BBFCDE;
-  background-color: #35424B;
 }
 
 .addnew {
@@ -1120,6 +1378,50 @@ main {
   stroke-width: 1.5px;
   background-color: transparent;
   transition: all 0.3s ease-in-out;
+}
+.alert__session-btn.delete {
+  background-color: #e25b73;
+}
+.alert__session-btn.delete:hover {
+  background-color: #b7203b;
+}
+.alert__session-btn.delete:hover > .sidebar__icon {
+  background-color: #b7203b;
+}
+.alert__session-btn.delete.active, .alert__session-btn.delete:active, .alert__session-btn.delete:focus-visible {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.alert__session-btn.delete.active > .sidebar__icon, .alert__session-btn.delete:active > .sidebar__icon, .alert__session-btn.delete:focus-visible > .sidebar__icon {
+  background-color: #BBFCDE;
+}
+.alert__session-btn.delete.active > .sidebar__icon svg, .alert__session-btn.delete:active > .sidebar__icon svg, .alert__session-btn.delete:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.alert__session-btn.delete.active svg, .alert__session-btn.delete:active svg, .alert__session-btn.delete:focus-visible svg {
+  stroke: #35424B;
+}
+.alert__session-btn.edit {
+  background-color: #ff9800;
+}
+.alert__session-btn.edit:hover {
+  background-color: #995b00;
+}
+.alert__session-btn.edit:hover > .sidebar__icon {
+  background-color: #995b00;
+}
+.alert__session-btn.edit.active, .alert__session-btn.edit:active, .alert__session-btn.edit:focus-visible {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.alert__session-btn.edit.active > .sidebar__icon, .alert__session-btn.edit:active > .sidebar__icon, .alert__session-btn.edit:focus-visible > .sidebar__icon {
+  background-color: #BBFCDE;
+}
+.alert__session-btn.edit.active > .sidebar__icon svg, .alert__session-btn.edit:active > .sidebar__icon svg, .alert__session-btn.edit:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.alert__session-btn.edit.active svg, .alert__session-btn.edit:active svg, .alert__session-btn.edit:focus-visible svg {
+  stroke: #35424B;
 }
 
 li.dropdown {
@@ -1233,7 +1535,7 @@ th {
 
 .link-name {
   color: #000;
-  border-bottom: 1px solid #35424B;
+  text-decoration: underline;
 }
 
 .button {
@@ -1396,6 +1698,80 @@ th {
   stroke-width: 1.5px;
   background-color: transparent;
   transition: all 0.3s ease-in-out;
+}
+.table td button.delete,
+.table th button.delete {
+  background-color: #e25b73;
+}
+.table td button.delete:hover,
+.table th button.delete:hover {
+  background-color: #b7203b;
+}
+.table td button.delete:hover > .sidebar__icon,
+.table th button.delete:hover > .sidebar__icon {
+  background-color: #b7203b;
+}
+.table td button.delete.active, .table td button.delete:active, .table td button.delete:focus-visible,
+.table th button.delete.active,
+.table th button.delete:active,
+.table th button.delete:focus-visible {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.table td button.delete.active > .sidebar__icon, .table td button.delete:active > .sidebar__icon, .table td button.delete:focus-visible > .sidebar__icon,
+.table th button.delete.active > .sidebar__icon,
+.table th button.delete:active > .sidebar__icon,
+.table th button.delete:focus-visible > .sidebar__icon {
+  background-color: #BBFCDE;
+}
+.table td button.delete.active > .sidebar__icon svg, .table td button.delete:active > .sidebar__icon svg, .table td button.delete:focus-visible > .sidebar__icon svg,
+.table th button.delete.active > .sidebar__icon svg,
+.table th button.delete:active > .sidebar__icon svg,
+.table th button.delete:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.table td button.delete.active svg, .table td button.delete:active svg, .table td button.delete:focus-visible svg,
+.table th button.delete.active svg,
+.table th button.delete:active svg,
+.table th button.delete:focus-visible svg {
+  stroke: #35424B;
+}
+.table td button.edit,
+.table th button.edit {
+  background-color: #ff9800;
+}
+.table td button.edit:hover,
+.table th button.edit:hover {
+  background-color: #995b00;
+}
+.table td button.edit:hover > .sidebar__icon,
+.table th button.edit:hover > .sidebar__icon {
+  background-color: #995b00;
+}
+.table td button.edit.active, .table td button.edit:active, .table td button.edit:focus-visible,
+.table th button.edit.active,
+.table th button.edit:active,
+.table th button.edit:focus-visible {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.table td button.edit.active > .sidebar__icon, .table td button.edit:active > .sidebar__icon, .table td button.edit:focus-visible > .sidebar__icon,
+.table th button.edit.active > .sidebar__icon,
+.table th button.edit:active > .sidebar__icon,
+.table th button.edit:focus-visible > .sidebar__icon {
+  background-color: #BBFCDE;
+}
+.table td button.edit.active > .sidebar__icon svg, .table td button.edit:active > .sidebar__icon svg, .table td button.edit:focus-visible > .sidebar__icon svg,
+.table th button.edit.active > .sidebar__icon svg,
+.table th button.edit:active > .sidebar__icon svg,
+.table th button.edit:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.table td button.edit.active svg, .table td button.edit:active svg, .table td button.edit:focus-visible svg,
+.table th button.edit.active svg,
+.table th button.edit:active svg,
+.table th button.edit:focus-visible svg {
+  stroke: #35424B;
 }
 .table thead {
   background-color: #20282d;
@@ -2128,6 +2504,50 @@ th {
   background-color: transparent;
   transition: all 0.3s ease-in-out;
 }
+.sidebar__btn.delete {
+  background-color: #e25b73;
+}
+.sidebar__btn.delete:hover {
+  background-color: #b7203b;
+}
+.sidebar__btn.delete:hover > .sidebar__icon {
+  background-color: #b7203b;
+}
+.sidebar__btn.delete.active, .sidebar__btn.delete:active, .sidebar__btn.delete:focus-visible {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.sidebar__btn.delete.active > .sidebar__icon, .sidebar__btn.delete:active > .sidebar__icon, .sidebar__btn.delete:focus-visible > .sidebar__icon {
+  background-color: #BBFCDE;
+}
+.sidebar__btn.delete.active > .sidebar__icon svg, .sidebar__btn.delete:active > .sidebar__icon svg, .sidebar__btn.delete:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.sidebar__btn.delete.active svg, .sidebar__btn.delete:active svg, .sidebar__btn.delete:focus-visible svg {
+  stroke: #35424B;
+}
+.sidebar__btn.edit {
+  background-color: #ff9800;
+}
+.sidebar__btn.edit:hover {
+  background-color: #995b00;
+}
+.sidebar__btn.edit:hover > .sidebar__icon {
+  background-color: #995b00;
+}
+.sidebar__btn.edit.active, .sidebar__btn.edit:active, .sidebar__btn.edit:focus-visible {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.sidebar__btn.edit.active > .sidebar__icon, .sidebar__btn.edit:active > .sidebar__icon, .sidebar__btn.edit:focus-visible > .sidebar__icon {
+  background-color: #BBFCDE;
+}
+.sidebar__btn.edit.active > .sidebar__icon svg, .sidebar__btn.edit:active > .sidebar__icon svg, .sidebar__btn.edit:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.sidebar__btn.edit.active svg, .sidebar__btn.edit:active svg, .sidebar__btn.edit:focus-visible svg {
+  stroke: #35424B;
+}
 .sidebar__open {
   display: none;
 }
@@ -2177,6 +2597,50 @@ th {
   stroke-width: 1.5px;
   background-color: transparent;
   transition: all 0.3s ease-in-out;
+}
+.sidebar__item.delete {
+  background-color: #e25b73;
+}
+.sidebar__item.delete:hover {
+  background-color: #b7203b;
+}
+.sidebar__item.delete:hover > .sidebar__icon {
+  background-color: #b7203b;
+}
+.sidebar__item.delete.active, .sidebar__item.delete:active, .sidebar__item.delete:focus-visible {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.sidebar__item.delete.active > .sidebar__icon, .sidebar__item.delete:active > .sidebar__icon, .sidebar__item.delete:focus-visible > .sidebar__icon {
+  background-color: #BBFCDE;
+}
+.sidebar__item.delete.active > .sidebar__icon svg, .sidebar__item.delete:active > .sidebar__icon svg, .sidebar__item.delete:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.sidebar__item.delete.active svg, .sidebar__item.delete:active svg, .sidebar__item.delete:focus-visible svg {
+  stroke: #35424B;
+}
+.sidebar__item.edit {
+  background-color: #ff9800;
+}
+.sidebar__item.edit:hover {
+  background-color: #995b00;
+}
+.sidebar__item.edit:hover > .sidebar__icon {
+  background-color: #995b00;
+}
+.sidebar__item.edit.active, .sidebar__item.edit:active, .sidebar__item.edit:focus-visible {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.sidebar__item.edit.active > .sidebar__icon, .sidebar__item.edit:active > .sidebar__icon, .sidebar__item.edit:focus-visible > .sidebar__icon {
+  background-color: #BBFCDE;
+}
+.sidebar__item.edit.active > .sidebar__icon svg, .sidebar__item.edit:active > .sidebar__icon svg, .sidebar__item.edit:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.sidebar__item.edit.active svg, .sidebar__item.edit:active svg, .sidebar__item.edit:focus-visible svg {
+  stroke: #35424B;
 }
 .sidebar__item span {
   font-size: 0;
@@ -2233,6 +2697,50 @@ th {
   stroke-width: 1.5px;
   background-color: transparent;
   transition: all 0.3s ease-in-out;
+}
+.sidebar__icon.delete {
+  background-color: #e25b73;
+}
+.sidebar__icon.delete:hover {
+  background-color: #b7203b;
+}
+.sidebar__icon.delete:hover > .sidebar__icon {
+  background-color: #b7203b;
+}
+.sidebar__icon.delete.active, .sidebar__icon.delete:active, .sidebar__icon.delete:focus-visible {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.sidebar__icon.delete.active > .sidebar__icon, .sidebar__icon.delete:active > .sidebar__icon, .sidebar__icon.delete:focus-visible > .sidebar__icon {
+  background-color: #BBFCDE;
+}
+.sidebar__icon.delete.active > .sidebar__icon svg, .sidebar__icon.delete:active > .sidebar__icon svg, .sidebar__icon.delete:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.sidebar__icon.delete.active svg, .sidebar__icon.delete:active svg, .sidebar__icon.delete:focus-visible svg {
+  stroke: #35424B;
+}
+.sidebar__icon.edit {
+  background-color: #ff9800;
+}
+.sidebar__icon.edit:hover {
+  background-color: #995b00;
+}
+.sidebar__icon.edit:hover > .sidebar__icon {
+  background-color: #995b00;
+}
+.sidebar__icon.edit.active, .sidebar__icon.edit:active, .sidebar__icon.edit:focus-visible {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.sidebar__icon.edit.active > .sidebar__icon, .sidebar__icon.edit:active > .sidebar__icon, .sidebar__icon.edit:focus-visible > .sidebar__icon {
+  background-color: #BBFCDE;
+}
+.sidebar__icon.edit.active > .sidebar__icon svg, .sidebar__icon.edit:active > .sidebar__icon svg, .sidebar__icon.edit:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.sidebar__icon.edit.active svg, .sidebar__icon.edit:active svg, .sidebar__icon.edit:focus-visible svg {
+  stroke: #35424B;
 }
 .sidebar.open {
   width: 100%;
@@ -2845,6 +3353,50 @@ th {
   background-color: transparent;
   transition: all 0.3s ease-in-out;
 }
+.right__open.delete {
+  background-color: #e25b73;
+}
+.right__open.delete:hover {
+  background-color: #b7203b;
+}
+.right__open.delete:hover > .sidebar__icon {
+  background-color: #b7203b;
+}
+.right__open.delete.active, .right__open.delete:active, .right__open.delete:focus-visible {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.right__open.delete.active > .sidebar__icon, .right__open.delete:active > .sidebar__icon, .right__open.delete:focus-visible > .sidebar__icon {
+  background-color: #BBFCDE;
+}
+.right__open.delete.active > .sidebar__icon svg, .right__open.delete:active > .sidebar__icon svg, .right__open.delete:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.right__open.delete.active svg, .right__open.delete:active svg, .right__open.delete:focus-visible svg {
+  stroke: #35424B;
+}
+.right__open.edit {
+  background-color: #ff9800;
+}
+.right__open.edit:hover {
+  background-color: #995b00;
+}
+.right__open.edit:hover > .sidebar__icon {
+  background-color: #995b00;
+}
+.right__open.edit.active, .right__open.edit:active, .right__open.edit:focus-visible {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.right__open.edit.active > .sidebar__icon, .right__open.edit:active > .sidebar__icon, .right__open.edit:focus-visible > .sidebar__icon {
+  background-color: #BBFCDE;
+}
+.right__open.edit.active > .sidebar__icon svg, .right__open.edit:active > .sidebar__icon svg, .right__open.edit:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.right__open.edit.active svg, .right__open.edit:active svg, .right__open.edit:focus-visible svg {
+  stroke: #35424B;
+}
 .right__content {
   padding: 0px;
   background-color: #20282d;
@@ -2903,7 +3455,6 @@ th {
   height: 3rem;
   transition: all 0.3s ease-in-out;
   width: 100%;
-  border-radius: 1px solid black;
 }
 .item__header-btn:hover {
   background-color: #0b0d0f;
@@ -2932,6 +3483,50 @@ th {
   stroke-width: 1.5px;
   background-color: transparent;
   transition: all 0.3s ease-in-out;
+}
+.item__header-btn.delete {
+  background-color: #e25b73;
+}
+.item__header-btn.delete:hover {
+  background-color: #b7203b;
+}
+.item__header-btn.delete:hover > .sidebar__icon {
+  background-color: #b7203b;
+}
+.item__header-btn.delete.active, .item__header-btn.delete:active, .item__header-btn.delete:focus-visible {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.item__header-btn.delete.active > .sidebar__icon, .item__header-btn.delete:active > .sidebar__icon, .item__header-btn.delete:focus-visible > .sidebar__icon {
+  background-color: #BBFCDE;
+}
+.item__header-btn.delete.active > .sidebar__icon svg, .item__header-btn.delete:active > .sidebar__icon svg, .item__header-btn.delete:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.item__header-btn.delete.active svg, .item__header-btn.delete:active svg, .item__header-btn.delete:focus-visible svg {
+  stroke: #35424B;
+}
+.item__header-btn.edit {
+  background-color: #ff9800;
+}
+.item__header-btn.edit:hover {
+  background-color: #995b00;
+}
+.item__header-btn.edit:hover > .sidebar__icon {
+  background-color: #995b00;
+}
+.item__header-btn.edit.active, .item__header-btn.edit:active, .item__header-btn.edit:focus-visible {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.item__header-btn.edit.active > .sidebar__icon, .item__header-btn.edit:active > .sidebar__icon, .item__header-btn.edit:focus-visible > .sidebar__icon {
+  background-color: #BBFCDE;
+}
+.item__header-btn.edit.active > .sidebar__icon svg, .item__header-btn.edit:active > .sidebar__icon svg, .item__header-btn.edit:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.item__header-btn.edit.active svg, .item__header-btn.edit:active svg, .item__header-btn.edit:focus-visible svg {
+  stroke: #35424B;
 }
 .item__upload {
   display: flex;
@@ -2985,6 +3580,50 @@ th {
   stroke-width: 1.5px;
   background-color: transparent;
   transition: all 0.3s ease-in-out;
+}
+.item__upload-btn.delete {
+  background-color: #e25b73;
+}
+.item__upload-btn.delete:hover {
+  background-color: #b7203b;
+}
+.item__upload-btn.delete:hover > .sidebar__icon {
+  background-color: #b7203b;
+}
+.item__upload-btn.delete.active, .item__upload-btn.delete:active, .item__upload-btn.delete:focus-visible {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.item__upload-btn.delete.active > .sidebar__icon, .item__upload-btn.delete:active > .sidebar__icon, .item__upload-btn.delete:focus-visible > .sidebar__icon {
+  background-color: #BBFCDE;
+}
+.item__upload-btn.delete.active > .sidebar__icon svg, .item__upload-btn.delete:active > .sidebar__icon svg, .item__upload-btn.delete:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.item__upload-btn.delete.active svg, .item__upload-btn.delete:active svg, .item__upload-btn.delete:focus-visible svg {
+  stroke: #35424B;
+}
+.item__upload-btn.edit {
+  background-color: #ff9800;
+}
+.item__upload-btn.edit:hover {
+  background-color: #995b00;
+}
+.item__upload-btn.edit:hover > .sidebar__icon {
+  background-color: #995b00;
+}
+.item__upload-btn.edit.active, .item__upload-btn.edit:active, .item__upload-btn.edit:focus-visible {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.item__upload-btn.edit.active > .sidebar__icon, .item__upload-btn.edit:active > .sidebar__icon, .item__upload-btn.edit:focus-visible > .sidebar__icon {
+  background-color: #BBFCDE;
+}
+.item__upload-btn.edit.active > .sidebar__icon svg, .item__upload-btn.edit:active > .sidebar__icon svg, .item__upload-btn.edit:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.item__upload-btn.edit.active svg, .item__upload-btn.edit:active svg, .item__upload-btn.edit:focus-visible svg {
+  stroke: #35424B;
 }
 .item__upload-content {
   display: none;
@@ -3160,6 +3799,50 @@ th {
   stroke-width: 1.5px;
   background-color: transparent;
   transition: all 0.3s ease-in-out;
+}
+.item__form-btn.delete {
+  background-color: #e25b73;
+}
+.item__form-btn.delete:hover {
+  background-color: #b7203b;
+}
+.item__form-btn.delete:hover > .sidebar__icon {
+  background-color: #b7203b;
+}
+.item__form-btn.delete.active, .item__form-btn.delete:active, .item__form-btn.delete:focus-visible {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.item__form-btn.delete.active > .sidebar__icon, .item__form-btn.delete:active > .sidebar__icon, .item__form-btn.delete:focus-visible > .sidebar__icon {
+  background-color: #BBFCDE;
+}
+.item__form-btn.delete.active > .sidebar__icon svg, .item__form-btn.delete:active > .sidebar__icon svg, .item__form-btn.delete:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.item__form-btn.delete.active svg, .item__form-btn.delete:active svg, .item__form-btn.delete:focus-visible svg {
+  stroke: #35424B;
+}
+.item__form-btn.edit {
+  background-color: #ff9800;
+}
+.item__form-btn.edit:hover {
+  background-color: #995b00;
+}
+.item__form-btn.edit:hover > .sidebar__icon {
+  background-color: #995b00;
+}
+.item__form-btn.edit.active, .item__form-btn.edit:active, .item__form-btn.edit:focus-visible {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.item__form-btn.edit.active > .sidebar__icon, .item__form-btn.edit:active > .sidebar__icon, .item__form-btn.edit:focus-visible > .sidebar__icon {
+  background-color: #BBFCDE;
+}
+.item__form-btn.edit.active > .sidebar__icon svg, .item__form-btn.edit:active > .sidebar__icon svg, .item__form-btn.edit:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.item__form-btn.edit.active svg, .item__form-btn.edit:active svg, .item__form-btn.edit:focus-visible svg {
+  stroke: #35424B;
 }
 
 @media (max-height: 375px) {
@@ -3341,6 +4024,50 @@ th {
     background-color: transparent;
     transition: all 0.3s ease-in-out;
   }
+  .sidebar__open.delete {
+    background-color: #e25b73;
+  }
+  .sidebar__open.delete:hover {
+    background-color: #b7203b;
+  }
+  .sidebar__open.delete:hover > .sidebar__icon {
+    background-color: #b7203b;
+  }
+  .sidebar__open.delete.active, .sidebar__open.delete:active, .sidebar__open.delete:focus-visible {
+    background-color: #BBFCDE;
+    color: #35424B;
+  }
+  .sidebar__open.delete.active > .sidebar__icon, .sidebar__open.delete:active > .sidebar__icon, .sidebar__open.delete:focus-visible > .sidebar__icon {
+    background-color: #BBFCDE;
+  }
+  .sidebar__open.delete.active > .sidebar__icon svg, .sidebar__open.delete:active > .sidebar__icon svg, .sidebar__open.delete:focus-visible > .sidebar__icon svg {
+    stroke: #35424B;
+  }
+  .sidebar__open.delete.active svg, .sidebar__open.delete:active svg, .sidebar__open.delete:focus-visible svg {
+    stroke: #35424B;
+  }
+  .sidebar__open.edit {
+    background-color: #ff9800;
+  }
+  .sidebar__open.edit:hover {
+    background-color: #995b00;
+  }
+  .sidebar__open.edit:hover > .sidebar__icon {
+    background-color: #995b00;
+  }
+  .sidebar__open.edit.active, .sidebar__open.edit:active, .sidebar__open.edit:focus-visible {
+    background-color: #BBFCDE;
+    color: #35424B;
+  }
+  .sidebar__open.edit.active > .sidebar__icon, .sidebar__open.edit:active > .sidebar__icon, .sidebar__open.edit:focus-visible > .sidebar__icon {
+    background-color: #BBFCDE;
+  }
+  .sidebar__open.edit.active > .sidebar__icon svg, .sidebar__open.edit:active > .sidebar__icon svg, .sidebar__open.edit:focus-visible > .sidebar__icon svg {
+    stroke: #35424B;
+  }
+  .sidebar__open.edit.active svg, .sidebar__open.edit:active svg, .sidebar__open.edit:focus-visible svg {
+    stroke: #35424B;
+  }
   .sidebar__open svg {
     height: 23px;
     width: 23px;
@@ -3390,7 +4117,7 @@ th {
     flex-direction: column;
   }
   .item__header {
-    grid-template-columns: 3fr 1fr;
+    grid-template-columns: 70% 1fr;
     grid-column-start: 1;
     grid-column-end: 3;
   }
