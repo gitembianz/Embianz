@@ -68,6 +68,7 @@
     opacity: 0;
     width: 0;
     height: 0;
+    transition: box-shadow .0s ease-in-out;
   }
 
   // SideBar Opened
@@ -99,6 +100,7 @@
         opacity: 1;
         width: $BtnSize;
         height: $BtnSize;
+        box-shadow: none;
       }
     }
   }

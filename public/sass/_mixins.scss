@@ -60,6 +60,7 @@
    outline: none;
    text-decoration: none;
    box-shadow: $BtnShadow;
+   text-align: center;
 
    border: none;
    border-radius: $BtnBorderRadius;
@@ -85,12 +86,6 @@
    &.delete {
      @include BtnHover($hoverEffect: darken($alertColor, 20%));
      background-color: $alertColor;
-   }
-
-   //  Edit button for mixin
-   &.edit {
-     @include BtnHover($hoverEffect: darken($editColor, 20%));
-     background-color: $editColor;
    }
  }
 
