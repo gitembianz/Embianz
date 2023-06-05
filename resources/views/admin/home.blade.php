@@ -10,6 +10,6 @@
 </div>
 </section>
 {{-- page content end --}}
-<x-dashboardright />
+<x-dashboardright></x-dashboardright>
 <x-dashboardscript />
 <x-dashboardfooter />
