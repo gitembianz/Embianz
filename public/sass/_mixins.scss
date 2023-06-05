@@ -80,6 +80,18 @@
      background-color: transparent;
      transition: all $transition;
    }
+
+   //  Delete button for mixin
+   &.delete {
+     @include BtnHover($hoverEffect: darken($alertColor, 20%));
+     background-color: $alertColor;
+   }
+
+   //  Edit button for mixin
+   &.edit {
+     @include BtnHover($hoverEffect: darken($editColor, 20%));
+     background-color: $editColor;
+   }
  }
 
  @mixin scrollbar {
