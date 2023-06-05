@@ -72,7 +72,7 @@
                     </form>
                     {{-- if tasks exist --}}
 
-                    @if ($todolists)
+                    @if ($todolists !=NULL)
                     <div class="list-group-div mb-1">
                         <ul class="list-group">
                             @foreach ($todolists as $todolist)
