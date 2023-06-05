@@ -1352,6 +1352,7 @@ li.dropdown {
   border-radius: 10px;
   position: relative;
   padding: 20px;
+  margin: 0 15px;
   outline: none;
 }
 .modal-content-title {
@@ -3178,16 +3179,9 @@ th {
   width: 3rem;
   height: 3rem;
   transition: all 0.3s ease-in-out;
-  top: calc(-3rem / 2.3);
   display: block;
-  position: absolute;
-  right: calc(100% + 10px);
   cursor: pointer;
   z-index: 99;
-  border: 3px solid #35424B;
-  outline: 2px solid #35424B;
-  border-radius: 100%;
-  box-shadow: none;
 }
 .right__open:hover {
   background-color: #0b0d0f;
@@ -3240,8 +3234,6 @@ th {
   stroke: #35424B;
 }
 .right__content {
-  padding: 0px;
-  background-color: #20282d;
   border-radius: 10px;
   color: white;
   display: none;
@@ -3873,7 +3865,6 @@ th {
     top: 0;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
-    width: 50px;
     background-color: #20282d;
     margin-left: 10px;
     transform: translateX(0%);
