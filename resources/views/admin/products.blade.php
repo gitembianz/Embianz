@@ -5,6 +5,12 @@
 
 {{-- Page content start --}}
 <section  class="content">
+  <div class="item__header" style="grid-template-columns: 1fr 7rem">
+    <h1 id="title" class="item__header-title">{{ __('All products') }}</h1>
+    <div class="item__header-buttons">
+      <a href="{{ route('add_products') }}" class="item__header-btn">{{ __('Add new') }}</a>
+    </div>
+  </div>
     <div class="row">
     {{-- Display session message --}}
     @if (session()->has('message'))
@@ -15,10 +21,10 @@
     @endif
     {{-- End Section session message --}}
 
-        <div class="col-12-xs col-12-sm col-12-xl">
-            <a href="{{ route('add_products') }}" class="addnew">{{ __('Add new') }}</a>
 
-            <h1 id="title" class="talign-c font-xl ls-1 text-bg">{{ __('All products') }}</h1>
+
+
+        <div class="col-12-xs col-12-sm col-12-xl">
 
             {{-- Tabel by Livewire start --}}
             @livewire('productstable')

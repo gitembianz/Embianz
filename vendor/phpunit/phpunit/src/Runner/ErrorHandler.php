@@ -16,12 +16,11 @@ use const E_USER_DEPRECATED;
 use const E_USER_NOTICE;
 use const E_USER_WARNING;
 use const E_WARNING;
-use function debug_backtrace;
 use function error_reporting;
 use function restore_error_handler;
 use function set_error_handler;
 use PHPUnit\Event;
-use PHPUnit\Framework\TestCase;
+use PHPUnit\Event\Code\NoTestCaseObjectOnCallStackException;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -43,78 +42,81 @@ final class ErrorHandler
     {
         $suppressed = !($errorNumber & error_reporting());
 
-        if ($suppressed) {
-            return false;
-        }
-
         switch ($errorNumber) {
             case E_NOTICE:
             case E_STRICT:
                 Event\Facade::emitter()->testTriggeredPhpNotice(
-                    $this->testValueObjectForEvents(),
+                    Event\Code\TestMethodBuilder::fromCallStack(),
                     $errorString,
                     $errorFile,
-                    $errorLine
+                    $errorLine,
+                    $suppressed,
                 );
 
-                return true;
+                break;
 
             case E_USER_NOTICE:
                 Event\Facade::emitter()->testTriggeredNotice(
-                    $this->testValueObjectForEvents(),
+                    Event\Code\TestMethodBuilder::fromCallStack(),
                     $errorString,
                     $errorFile,
-                    $errorLine
+                    $errorLine,
+                    $suppressed,
                 );
 
                 break;
 
             case E_WARNING:
                 Event\Facade::emitter()->testTriggeredPhpWarning(
-                    $this->testValueObjectForEvents(),
+                    Event\Code\TestMethodBuilder::fromCallStack(),
                     $errorString,
                     $errorFile,
-                    $errorLine
+                    $errorLine,
+                    $suppressed,
                 );
 
                 break;
 
             case E_USER_WARNING:
                 Event\Facade::emitter()->testTriggeredWarning(
-                    $this->testValueObjectForEvents(),
+                    Event\Code\TestMethodBuilder::fromCallStack(),
                     $errorString,
                     $errorFile,
-                    $errorLine
+                    $errorLine,
+                    $suppressed,
                 );
 
                 break;
 
             case E_DEPRECATED:
                 Event\Facade::emitter()->testTriggeredPhpDeprecation(
-                    $this->testValueObjectForEvents(),
+                    Event\Code\TestMethodBuilder::fromCallStack(),
                     $errorString,
                     $errorFile,
-                    $errorLine
+                    $errorLine,
+                    $suppressed,
                 );
 
                 break;
 
             case E_USER_DEPRECATED:
                 Event\Facade::emitter()->testTriggeredDeprecation(
-                    $this->testValueObjectForEvents(),
+                    Event\Code\TestMethodBuilder::fromCallStack(),
                     $errorString,
                     $errorFile,
-                    $errorLine
+                    $errorLine,
+                    $suppressed,
                 );
 
                 break;
 
             case E_USER_ERROR:
                 Event\Facade::emitter()->testTriggeredError(
-                    $this->testValueObjectForEvents(),
+                    Event\Code\TestMethodBuilder::fromCallStack(),
                     $errorString,
                     $errorFile,
-                    $errorLine
+                    $errorLine,
+                    $suppressed,
                 );
 
                 break;
@@ -152,19 +154,5 @@ final class ErrorHandler
         restore_error_handler();
 
         $this->enabled = false;
-    }
-
-    /**
-     * @throws NoTestCaseObjectOnCallStackException
-     */
-    private function testValueObjectForEvents(): Event\Code\Test
-    {
-        foreach (debug_backtrace() as $frame) {
-            if (isset($frame['object']) && $frame['object'] instanceof TestCase) {
-                return $frame['object']->valueObjectForEvents();
-            }
-        }
-
-        throw new NoTestCaseObjectOnCallStackException;
     }
 }
