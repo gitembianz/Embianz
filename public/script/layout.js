@@ -17,7 +17,7 @@ sidebarBtn.addEventListener('click', () => {
 sidebarOpen.addEventListener('click', () => {
   sidebar.classList.toggle('open');
   search.classList.remove('active');
-  right.classList.remove('open');
+  // right.classList.remove('open');
   profile.classList.remove('active');
   header.classList.remove('moved');
   notify.classList.remove('open');
