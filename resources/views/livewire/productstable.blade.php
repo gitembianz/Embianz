@@ -1,24 +1,26 @@
 <div>
   <div class="wid-5 display-f m-a jus-sb">
       <div class="">
-          <input wire:model.debounce.200ms="search" type="text" placeholder="Search users...">
+          <input wire:model.debounce.200ms="search" type="text" placeholder="Search product...">
       </div>
       <div class="">
-        <label for=""></label>
-          <select wire:model="orderBy">
+        <label for="orderBy"> Order by:</label>
+          <select id="orderBy" wire:model="orderBy">
               <option value="id">ID</option>
               <option value="name">Name</option>
               <option value="short_description">Short Description</option>
               <option value="created_at">Created At Date</option>
           </select>
-          <select wire:model="orderAsc">
+          <label for="orderAsc"> Order direction: </label>
+          <select id="orderAsc" wire:model="orderAsc">
             <option value="1">Ascending</option>
             <option value="0">Descending</option>
         </select>
       </div>
 
       <div class="">
-          <select wire:model="perPage">
+        <label for="perPage"> Per Page : </label>
+          <select id="perPage" wire:model="perPage">
               <option>10</option>
               <option>25</option>
               <option>50</option>
