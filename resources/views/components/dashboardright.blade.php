@@ -71,7 +71,8 @@
                         </div>
                     </form>
                     {{-- if tasks exist --}}
-                    @if (count($todolists))
+
+                    @if ($todolists)
                     <div class="list-group-div mb-1">
                         <ul class="list-group">
                             @foreach ($todolists as $todolist)
