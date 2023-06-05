@@ -106,7 +106,7 @@
                     </svg>
                 </button>
                 <div class="header__profile-name">
-                    {{ __('test') }}
+                    {{ $user }}
                 </div>
             </div>
             <!-- Profile Bottom part -->
