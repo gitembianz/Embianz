@@ -88,7 +88,8 @@
         event.preventDefault();
         const input = document.getElementById('hidden_id');
         var id = input.value;
-        document.getElementById('confirmmodal-category').style.display = 'block';
+        document.getElementById('confirmmodal-category').style.display = 'flex';
+
         $('#hiddenid').val(id);
     });
 

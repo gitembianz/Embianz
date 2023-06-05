@@ -31,8 +31,8 @@
         <div class="item__header-buttons">
             <a class="item__header-btn" href="{{ route('category') }}">Back</a>
             <a class="item__header-btn" href="{{ route('newcategory') }}">New</a>
+            <input class="item__header-btn" type="button" value="Edit" name="edit" id="edit">
             <input class="item__header-btn delete" type="button" value="Delete" name="delete" id="deletecat">
-            <input class="item__header-btn edit" type="button" value="Edit" name="edit" id="edit">
         </div>
     </div>
 
@@ -83,19 +83,19 @@
                 <div id="seo_title">{{ $data->seo_title }}</div>
                 <span>SEO Title</span>
             </div>
-            <div class="item__form-input-close">
+            <div class="item__form-close">
                 <div>{{ $data->created_at }}</div>
                 <span>Create date / time</span>
             </div>
-            <div class="item__form-input-close">
+            <div class="item__form-close">
                 <div>{{ $data->createdby }}</div>
                 <span>Create by</span>
             </div>
-            <div class="item__form-input-close">
+            <div class="item__form-close">
                 <div>{{ $data->updated_at }}</div>
                 <span>Updated date / time</span>
             </div>
-            <div class="item__form-input-close">
+            <div class="item__form-close">
                 <div>{{ $data->lastmodifiedby }}</div>
                 <span>Last modified by</span>
             </div>

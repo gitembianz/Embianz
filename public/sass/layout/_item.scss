@@ -118,11 +118,17 @@
       }
     }
 
+    &-close {
+      @extend .item__form-input-close;
+    }
+
     // BUTTON IN CONTENT ("ADD NEW")
     &-btn {
       @include standart-Btn;
       width: 100%;
-      border-radius: 1px solid black;
+      color: $mainBg;
+      background-color: $secondColor;
+      border: 1px solid black;
     }
   }
 

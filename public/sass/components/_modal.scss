@@ -1,50 +1,73 @@
+// The dark part of Modal
 .modal {
-    z-index: 99;
-    display: none;
-    position: fixed;
-    left: 0;
-    top: 0;
-    @include wh(100%, 100vh);
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.6);
+  @include wh(100%, 100vh);
+  @include centering;
+  display: none;
+  position: fixed;
+  left: 0;
+  top: 0;
 
-   & .modal-content {
-        margin: auto;
-        background-color: $white;
-        opacity: 100%;
-        display: flex;
-        flex-direction: column;
-        position: relative;
-        padding: 0;
-        outline: 0;
-        text-align: center;
-        box-shadow: 0px 0px 15px $secondColor;
-        background: $white;
-    color: $mainBg;
-      top: 40%;
-      @include wh(40%, 20%);
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 99;
 
-      &  .exit {
-        @include wh(3rem, auto);
-        cursor: pointer;
-        font-size: 28px;
-        font-weight: bold;
+  // Modal content
+  &-content {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 1fr 0fr;
+    gap: $gap;
+
+    background-color: $white;
+    border-radius: $base-border-radius;
+
+    position: relative;
+    padding: $padding * 2;
+    outline: none;
+
+    // Modal title
+    &-title {
+      @include standart-Font;
+      grid-column-start: 1;
+      grid-column-end: 3;
+
+      text-align: center;
+      color: $mainBg;
+      font-size: calc($fSize * 2);
+      font-weight: $font-weight-bold;
+    }
+
+    // Modal Buttons
+    &-btn {
+      @include standart-Btn;
+      width: 100%;
+      cursor: pointer;
+      font-weight: $font-weight-bold;
+
+      // Submit Button
+      &.submit {
+        @include BtnHover($hoverEffect: darken($secondColor, 30%), $activeEffect: darken($secondColor, 30%));
+        background-color: $secondColor;
         color: $mainBg;
-        float: right;
       }
 
-      .submit {
-        background: $secondColor;
-        color: $mainBg;
-        box-shadow: 0px 0px 2px $mainBg;
-        font-size: 18px;
-        @include wh(20%, auto);
-        @media (max-width: 662px) {
-          @include wh(30%, auto);
-        }
+      // Cancel Button
+      &.close,
+      &.cancel {
+        @include BtnHover($hoverEffect: darken($alertColor, 30%), $activeEffect: darken($alertColor, 30%), $textColor: $secondColor);
+        background-color: $alertColor;
+      }
+
+      // Closing Button in the corner
+      &.close {
+        position: absolute;
+        border-radius: 100%;
+
+        width: calc($BtnSize / 1.5);
+        height: calc($BtnSize / 1.5);
+
+        top: - calc($BtnSize / 4);
+        right: - calc($BtnSize / 4);
       }
     }
+  }
 }
-
-
-
