@@ -9,7 +9,7 @@ use Livewire\WithPagination;
 class Productstable extends Component
 {
 
-  //use WithPagination;
+  use WithPagination;
 
   public $perPage = 10;
   public $search = '';

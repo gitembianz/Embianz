@@ -211,14 +211,6 @@
     // Sidebar Button in the right
     &__open {
       @include standart-Btn;
-      // Old Setting for Open Sidebar Button
-
-      // position: absolute;
-      // top: calc(($BtnSize + $gap) / 2);
-      // left: calc(100% - ($BtnSize / 2));
-      // border: calc($BtnSize / 10) solid $mainBg;
-      // border-radius: 100%;
-
       width: $BtnSize;
       height: $BtnSize;
       border-radius: 10px;

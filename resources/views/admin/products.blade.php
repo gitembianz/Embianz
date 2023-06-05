@@ -27,7 +27,8 @@
         <div class="col-12-xs col-12-sm col-12-xl">
 
             {{-- Tabel by Livewire start --}}
-            @livewire('productstable')
+            {{-- @livewire('productstable') --}}
+            <livewire:productstable>
               {{-- Tabel by Livewire end --}}
             {{--End Table Category --}}
         </div>
