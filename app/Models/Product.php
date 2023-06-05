@@ -27,4 +27,10 @@ class Product extends Model
         'seo_title'
     ];
 
+    public static function search($search) {
+      return empty($search) ? static::query()
+            : static::query()->where('id', 'like', '%'.$search.'%')
+                ->orWhere('name', 'like', '%'.$search.'%')
+                ->orWhere('short_description', 'like', '%'.$search.'%');
+    }
 }

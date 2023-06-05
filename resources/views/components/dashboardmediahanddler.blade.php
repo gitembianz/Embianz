@@ -1,8 +1,9 @@
 <script type="text/javascript">
+    //Script fot Table with media
+    allFiles = new DataTransfer();
 
-const allFiles = [];
     function previewFile(file) {
-        let imageType = /image.*/;
+        let imageType = /^image\/.*|^video\/.*/;
         if (file.type.match(imageType)) {
             let fReader = new FileReader();
             let imageTable = document.getElementById('imageTable');
@@ -14,13 +15,12 @@ const allFiles = [];
                 tableHeader.setAttribute('id', 'tableHeader');
 
                 let tr = document.createElement('tr');
-                tr.setAttribute("class", "font-lg");
                 let thImage = document.createElement('th');
                 let thFileLocation = document.createElement('th');
                 let thFileSequence = document.createElement('th');
                 let thRemoveBtn = document.createElement('th');
 
-                thImage.innerHTML = "Image";
+                thImage.innerHTML = "Media";
                 thFileLocation.innerHTML = "Location";
                 thFileSequence.innerHTML = "Sequence";
                 thRemoveBtn.innerHTML = "Action";
@@ -32,35 +32,40 @@ const allFiles = [];
                 tableHeader.appendChild(tr);
                 imageTable.appendChild(tableHeader);
             }
-
-            // reads the contents of the specified Blob. the result attribute of this
-            // with hold a data: URL representing the file's data
             fReader.readAsDataURL(file);
-            // handler for the loadend event, triggered when the reading operation is
-            // completed (whether success or failure)
 
             fReader.onloadend = function() {
-                //create <tr> and <td>
                 let tr = document.createElement('tr');
                 let tdImage = document.createElement('td');
                 let tdFileLocation = document.createElement('td');
                 let tdFileSequence = document.createElement('td');
                 let tdRemoveBtn = document.createElement('td');
-                let img = document.createElement('img');
+                if (file.type.includes('image')) {
+                    let img = document.createElement('img');
+                    img.src = fReader.result;
+                    img.width = 100;
+                    tdImage.appendChild(img);
+                } else if (file.type.includes('video')) {
+                    let video = document.createElement('video');
+                    video.src = fReader.result;
+                    video.width = 100;
+                    video.controls = true;
+                    tdImage.appendChild(video);
+                }
 
-                // set the img src attribute to the file's contents (from read operation)
-                img.src = fReader.result;
-                img.width = 150;
-
-                // Add image size and extension info
                 let fileInfo = document.createTextNode(file.size / 1000 + " KB, " + file.type.split("/")[1] +
                     " file");
-                allFiles.push(file);
+                allFiles.items.add(file);
+                document.getElementById('imgUpload').files = allFiles.files;
+                let fileSize = document.createElement('input');
+                fileSize.setAttribute("type", "hidden");
+                fileSize.setAttribute("name", "file_size[]");
+                fileSize.value = file.size;
 
-                //create select with location value
                 let fileLocation = document.createElement('select');
-                fileLocation.setAttribute("class", "wid-60 p-1");
-                fileLocation.setAttribute("name", "file_location[]"); // add name attribute
+                fileLocation.setAttribute("class", "p-1");
+                fileLocation.setAttribute("required", "required");
+                fileLocation.setAttribute("name", "file_location[]");
                 const medialocations = {!! json_encode($medialocations) !!};
 
                 medialocations.forEach((medialocation, categoryIndex) => {
@@ -70,32 +75,38 @@ const allFiles = [];
                     fileLocation.add(option);
                 });
 
-                //create inputs for sequence
                 let fileSequence = document.createElement('input');
                 fileSequence.setAttribute("type", "number");
-                fileSequence.setAttribute("class", "wid-60 p-1");
-                fileSequence.setAttribute("placeholder", "image sequence");
-                fileSequence.setAttribute("name", "file_sequence[]"); // add name attribute
+                fileSequence.setAttribute("min", "0");
+                fileSequence.setAttribute("required", "required");
+                fileSequence.setAttribute("name", "file_sequence[]");
 
-                //add remove button
                 let removeBtn = document.createElement('button');
-                removeBtn.innerHTML = 'x';
+                removeBtn.innerHTML =
+                    '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24" fill="none" stroke="#BBFCDE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>';
                 removeBtn.setAttribute("class", "buttonremove" + " font-xl");
                 removeBtn.onclick = function() {
-  tr.remove();
-  if (imageTable.rows.length === 1) {
-    tableHeader.remove();
-  }
- let index = allFiles.indexOf(file);
-  if (index > -1) {
-    allFiles.splice(index, 1);
-    document.getElementById('allFiles').value = JSON.stringify(allFiles);
-    console.log(allFiles);
-  }
-};
-                tdImage.setAttribute("class", "font-md")
-                tdImage.appendChild(img);
+                    tr.remove();
+                    if (imageTable.rows.length === 1) {
+                        var addMediaCat = document.getElementById('addmediacat');
+                        if (addMediaCat) {
+                            addMediaCat.style.display = 'none';
+                        }
+                        tableHeader.remove();
+                    }
+                    let name = file.name;
+                    for (let i = 0; i < allFiles.items.length; i++) {
+                        if (name === allFiles.items[i].getAsFile().name) {
+                            allFiles.items.remove(i);
+                            continue;
+                        }
+                    }
+                    document.getElementById('imgUpload').files = allFiles.files;
+                };
+
+                tdImage.setAttribute("class", "font-md");
                 tdImage.appendChild(fileInfo);
+                tdImage.appendChild(fileSize);
                 tdFileLocation.appendChild(fileLocation);
                 tdFileSequence.appendChild(fileSequence);
                 tdRemoveBtn.appendChild(removeBtn);
@@ -104,7 +115,7 @@ const allFiles = [];
                 tr.appendChild(tdFileSequence);
                 tr.appendChild(tdRemoveBtn);
                 imageTable.appendChild(tr);
-            }
+            };
         } else {
             console.error("Only images are allowed!", file);
         }
@@ -113,6 +124,27 @@ const allFiles = [];
     function filesManager(files) {
         files = [...files];
         files.forEach(previewFile);
-        document.getElementById('allFiles').value = JSON.stringify(allFiles);
+        document.getElementById('imgUpload').files = allFiles.files;
+        var contentDiv = document.getElementById('contentDiv');
+        if (contentDiv) {
+            contentDiv.style.maxHeight = '100%';
+            contentDiv.style.height = '100%';
+            window.addEventListener('resize', function() {
+                contentDiv.style.height = '100%';
+            });
+        }
+    }
+
+    //Remove a media from table
+    function removeFile(fileId) {
+        $.ajax({
+            url: '/filesd/' + fileId,
+            success: function(data) {
+                location.reload();
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+            }
+        });
     }
 </script>

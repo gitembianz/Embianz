@@ -11,6 +11,11 @@ class Media extends Model
 
     public function tabel()
     {
-        return $this->hasMany(Tabels::class, 'item_id');
+        return $this->belongsTo(Tabels::class, 'tabel_id');
+    }
+
+    public function location()
+    {
+        return $this->belongsTo(MediaLocation::class, 'location_id');
     }
 }

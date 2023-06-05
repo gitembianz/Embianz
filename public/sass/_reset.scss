@@ -1,94 +1,51 @@
-*,*:before,*:after{
-  color:inherit;
+*,
+*:before,
+*:after {
+  color: inherit;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   list-style-type: none;
   text-decoration: none;
-  font-family:'Roboto-thin', sans-serif !important;
-
-}
-input{
-font-family:'Roboto-thin', sans-serif !important;
-border: 1px solid $bg;
-}
-body{
-  font-family:'Roboto-thin', sans-serif !important;
+  font-family: 'Roboto-thin', sans-serif !important;
   font-weight: normal;
-  background: $bg;
 }
 
-.textareamin{
-    min-height: 15rem;
+body {
+  background: $mainBg;
+  overflow-x: hidden;
+  @include scrollbar;
+}
+
+.overflow {
+  overflow: hidden;
+}
+
+.stop-height {
+  height: 65vh;
+}
+
+main {
+  position: relative;
+}
+
+
+.textareamin {
+  min-height: 10rem;
+}
+
+// The big part for all main content
+.content {
+  padding: $contentPadding;
+  position: relative;
+  color: $black;
+  height: 100%;
+  background-color: $white;
+  border-radius: $BtnBorderRadius;
+
+  z-index: $z-index-medium;
 }
 
 .category-table.dataTable tbody td {
-    padding: 0 !important;
-}
-
-html{
-  scroll-behavior: smooth;
-
-}
-
-img{
-  max-width: 100%;
-}
-.section-heading{
-  color: $secondary;
-}
-
-button{
-  border: none;
-  margin: 0;
-  padding: 0;
-  transition: $transition;
-}
-@font-face {
-  font-family: "Roboto-black";
-  src: url("/fonts/Roboto/Roboto-Black.ttf");
-}
-@font-face {
-  font-family: "Roboto-blackitalic";
-  src: url("/fonts/Roboto/Roboto-BlackItalic.ttf");
-}
-@font-face {
-  font-family: "Roboto-bold";
-  src: url("/fonts/Roboto/Roboto-Bold.ttf");
-}
-@font-face {
-  font-family: "Roboto-bolditalic";
-  src: url("/fonts/Roboto/Roboto-BoldItalic.ttf");
-}
-@font-face {
-  font-family: "Roboto-italic";
-  src: url("/fonts/Roboto/Roboto-Italic.ttf");
-}
-@font-face {
-  font-family: "Roboto-light";
-  src: url("/fonts/Roboto/Roboto-Light.ttf");
-}
-@font-face {
-  font-family: "Roboto-lightitalic";
-  src: url("/fonts/Roboto/Roboto-LightItalic.ttf");
-}
-@font-face {
-  font-family: "Roboto-medium";
-  src: url("/fonts/Roboto/Roboto-Medium.ttf");
-}
-@font-face {
-  font-family: "Roboto-mediumitalic";
-  src: url("/fonts/Roboto/Roboto-MediumItalic.ttf");
-}
-@font-face {
-  font-family: "Roboto-regular";
-  src: url("/fonts/Roboto/Roboto-Regular.ttf");
-}
-@font-face {
-  font-family: "Roboto-thin";
-  src: url("/fonts/Roboto/Roboto-Thin.ttf");
-}
-@font-face {
-  font-family: "Roboto-thinitalic";
-  src: url("/fonts/Roboto/Roboto-ThinItalic.ttf");
+  padding: 0 !important;
 }

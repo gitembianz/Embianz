@@ -1,398 +1,500 @@
 //style for rightsidebar
 .list-group-div {
-    max-height: 10vw; /* set a maximum width */
-    @media only screen and (min-height:10.1vw) {
+  max-height: 10vw;
 
-            overflow-y: auto; /* add scrollbar when width is greater than 600px */
+  /* set a maximum width */
+  @media only screen and (min-height:10.1vw) {
 
-    }
+    overflow-y: auto;
+    /* add scrollbar when width is greater than 600px */
+
+  }
 }
+
 .list-group-div::-webkit-scrollbar {
-    width: 8px; /* Set width of scrollbar */
+  width: 8px;
+  /* Set width of scrollbar */
 }
 
 .list-group-div::-webkit-scrollbar-track {
-    background: #f1f1f1; /* Set color of scrollbar track */
+  background: #f1f1f1;
+  /* Set color of scrollbar track */
 }
 
 .list-group-div::-webkit-scrollbar-thumb {
-    background: #888; /* Set color of scrollbar thumb */
-    border-radius: 10px; /* Set border radius of scrollbar thumb */
+  background: #888;
+  /* Set color of scrollbar thumb */
+  border-radius: 10px;
+  /* Set border radius of scrollbar thumb */
 }
 
 .list-group-div::-webkit-scrollbar-thumb:hover {
-    background: #555; /* Set color of scrollbar thumb when hovered */
+  background: #555;
+  /* Set color of scrollbar thumb when hovered */
 }
 
-@keyframes to-top{
-        0%{
-            transform: translateY(0);
-            opacity: 0;
-        }100%{
-            transform: translateY(100%);
-            opacity: 1;
-        }
-    }
-    @keyframes to-left{
-        0%{
-            transform: translateY(230%);
-            opacity: 1;
-        }100%{
-            transform: translateY(230%);
-            opacity: 1;
-        }
-    }
-    @keyframes to-right{
-        0%{
-            transform: translateY(0%);
-            opacity: 1;
-        }100%{
-            transform: translateY(-150%);
-            opacity: 1;
-        }
-    }
-    @keyframes showtime{
-        0%{
-            transform: translateY(250%);
-            opacity: 1;
-        }100%{
-            transform: translateY(0%);
-            opacity: 1;
-        }
-    }
-    @keyframes hidetime{
-        0%{
-            transform: translateY(0%);
-            opacity: 1;
-        }100%{
-            transform: translateY(-370%);
-            opacity: 1;
-        }
-    }
+@keyframes to-top {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(100%);
+    opacity: 1;
+  }
+}
+
+@keyframes to-left {
+  0% {
+    transform: translateY(230%);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(230%);
+    opacity: 1;
+  }
+}
+
+@keyframes to-right {
+  0% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(-150%);
+    opacity: 1;
+  }
+}
+
+@keyframes showtime {
+  0% {
+    transform: translateY(250%);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+
+@keyframes hidetime {
+  0% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(-370%);
+    opacity: 1;
+  }
+}
 
 .input_style {
-    @include wh(10vw, auto);
-    background-color: $white;
+  @include wh(10vw, auto);
+  background-color: $white;
 
-    &::placeholder {
-        color: $bg;
-        opacity: 1;
-    }
+  &::placeholder {
+    color: $mainBg;
+    opacity: 1;
+  }
 
-    transition: $transition;
-    -webkit-transition: width 0.4s ease-in-out;
-    color: $bg;
-    border: 1px solid $bg;
+  transition: $transition;
+  -webkit-transition: width 0.4s ease-in-out;
+  color: $mainBg;
+  border: 1px solid $mainBg;
 }
 
 .container-right {
-    @extend %fixed-layout;
-    align-items: flex-end;
-    position: fixed;
-    right: 0;
-    top: 5rem;
-    z-index: 1;
-    overflow-y: hidden;
-    @include wh(22rem, 100%);
 
+  .card_calendar {
+    padding: $padding;
+    margin: $margin;
 
-    .card_calendar {
-        box-shadow: 0px 0px 15px $secondary;
-       // border: 1px solid $secondary;
-        padding: $base-padding;
-        margin: $base-margin;
-        height: 30rem;
-
-          .calendar-header {
-            //background: #9796f0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: 700;
-            color: var(--white);
-            padding: 10px;
-          }
-          .calendar-body {
-            pad: 10px;
-          }
-          .calendar-week-days {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            font-weight: 600;
-            cursor: pointer;
-            color:rgb(104, 104, 104);
-          }
-          .calendar-week-days div:hover {
-          color:black;
-          transform: scale(1.2);
-          transition: all .2s ease-in-out;
-          }
-          .calendar-week-days div {
-            display: grid;
-            place-items: center;
-            color: var(--bg-second);
-            height: 50px;
-          }
-          .calendar-days {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 2px;
-            color: var(--color-txt);
-          }
-          .calendar-days div {
-            width: 37px;
-            height: 33px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 5px;
-            position: relative;
-            cursor: pointer;
-            animation: to-top 1s forwards;
-          }
-          .month-picker {
-            padding: 5px 10px;
-            border-radius: 10px;
-            cursor: pointer;
-          }
-          .month-picker:hover {
-            background-color: var(--color-hover);
-          }
-          .month-picker:hover {
-            color: var(--color-txt);
-          }
-          .year-picker {
-            display: flex;
-            align-items: center;
-          }
-          .year-change {
-            height: 30px;
-            width: 30px;
-            border-radius: 50%;
-            display: grid;
-            place-items: center;
-            margin: 0px 10px;
-            cursor: pointer;
-          }
-          .year-change:hover {
-            background-color: var(--light-btn);
-            transition:all .2s ease-in-out ;
-            transform: scale(1.12);
-          }
-          .year-change:hover pre {
-            color: var(--bg-body);
-          }
-          .calendar-footer {
-            padding: 10px;
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-          }
-          #year:hover{
-            cursor: pointer;
-            transform: scale(1.2);
-            transition: all 0.2 ease-in-out;
-          }
-          .calendar-days div span {
-            position: absolute;
-          }
-           .calendar-days div:hover {
-            transition: width 0.2s ease-in-out, height 0.2s ease-in-out;
-            background-color: $secondary;
-            border-radius: 20%;
-            color: var(--dark-text);
-          }
-          .calendar-days div.current-date {
-            color: var(--dark-text);
-            background-color: var(--light-btn);
-            border-radius: 20%;
-          }
-          .month-list {
-            position: relative;
-            left: 0;
-            top: -50px;
-            color: var(--light-text);
-            display: grid;
-            grid-template-columns: repeat(3, auto);
-            border-radius: 20px;
-          }
-          .month-list > div {
-            display: grid;
-            place-content: center;
-            margin-bottom: $base-margin;
-            transition: all 0.2s ease-in-out;
-          }
-          .month-list > div > div {
-            border-radius: 15px;
-           // padding: 10px;
-            cursor: pointer;
-          }
-          .month-list > div > div:hover {
-            background-color:var(--light-btn);
-            color: var(--dark-text);
-            transform: scale(0.9);
-            transition: all 0.2s ease-in-out;
-          }
-          .month-list.show {
-            visibility: visible;
-            pointer-events: visible;
-            transition: 0.6s ease-in-out;
-            animation: to-left .71s forwards;
-          }
-          .month-list.hideonce{
-            visibility: hidden;
-          }
-          .month-list.hide {
-            animation: to-right 1s forwards;
-            visibility: none;
-            pointer-events: none;
-          }
-          .date-time-formate {
-            width: max-content;
-            height: max-content;
-            position: relative;
-            display: flex;
-            top: 5rem;
-            justify-content: center;
-
-          }
-          .day-text-formate {
-            position: absolute;
-            left: -1rem;
-          }
-          .date-time-value {
-            display: block;
-            height: max-content;
-            width: max-content;
-            position: relative;
-            left: 40%;
-            top: -18px;
-            text-align: center;
-          }
-          .time-formate {
-            font-size: 1.5rem;
-          }
-          .time-formate.hideTime {
-            animation: hidetime 1.5s forwards;
-          }
-          .day-text-formate.hidetime {
-            animation: hidetime 1.5s forwards;
-          }
-          .date-formate.hideTime {
-            animation: hidetime 1.5s forwards;
-          }
-          .day-text-formate.showtime{
-            animation: showtime 1s forwards;
-          }
-          .time-formate.showtime {
-            animation: showtime 1s forwards;
-          }
-          .date-formate.showtime {
-            animation: showtime 1s forwards;
-          }
-          @keyframes to-top {
-            0% {
-              transform: translateY(0);
-              opacity: 0;
-            }
-            100% {
-              transform: translateY(100%);
-              opacity: 1;
-            }
-          }
-          @keyframes to-left {
-            0% {
-              transform: translatex(230%);
-              opacity: 1;
-            }
-            100% {
-              transform: translatex(0);
-              opacity: 1;
-            }
-          }
-          @keyframes to-right {
-            10% {
-              transform: translatex(0);
-              opacity: 1;
-            }
-            100% {
-              transform: translatex(-150%);
-              opacity: 1;
-            }
-          }
-          @keyframes showtime {
-            0% {
-              transform: translatex(250%);
-              opacity: 1;
-            }
-            100% {
-              transform: translatex(0%);
-              opacity: 1;
-            }
-          }
-          @keyframes hidetime {
-            0% {
-              transform: translatex(0%);
-              opacity: 1;
-            }
-            100% {
-              transform: translatex(-370%);
-              opacity: 1;
-            }
-          }
-          @media (max-width:375px) {
-            .month-list>div{
-
-              margin: 5px 0px;
-            }
-          }
+    .calendar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 700;
+      color: $black;
+      padding: 10px;
     }
 
-    .card_todo {
-        //border: 1px solid $secondarydark;
-        padding: $base-padding;
-        margin: $base-margin;
-        margin-top: 0;
-        padding-top: 0;
-        box-shadow: 0px 0px 15px $secondary;
-        //border: $base-border-thickness solid $secondary;
-
-
-        .input-grups {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-        }
-
-        .list-task-item {
-
-            .formtodo {
-                display: flex;
-                align-items: center;
-                text-align: center;
-                justify-content: space-between;
-
-                & svg {
-                    @include wh(3.5rem, auto);
-                    padding: 0.5rem;
-                    object-fit: cover;
-                    align-items: center;
-                    background: $white;
-
-                    path {
-                        fill: $bg;
-                    }
-
-                    &:hover {
-                        @include wh(3.6rem, auto);
-                    }
-                }
-            }
-        }
-
-        .count {
-            border-top: 1px solid $bg;
-        }
+    .calendar-week-days {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      font-weight: 600;
+      cursor: pointer;
+      color: $black;
     }
+
+    .calendar-week-days div:hover {
+      color: black;
+      transform: scale(1.2);
+      transition: all .2s ease-in-out;
+    }
+
+    .calendar-week-days div {
+      display: grid;
+      place-items: center;
+      color: $mainBg;
+      height: 50px;
+    }
+
+    .calendar-days {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 2px;
+      color: $black;
+    }
+
+    .calendar-days div {
+      width: 37px;
+      height: 33px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 5px;
+      position: relative;
+      cursor: pointer;
+      animation: to-top 1s forwards;
+    }
+
+    .month-picker {
+      padding: 5px 10px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .year-picker {
+      display: flex;
+      align-items: center;
+    }
+
+    .year-change {
+      height: 30px;
+      width: 30px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      margin: 0px 10px;
+      cursor: pointer;
+    }
+
+    .year-change:hover {
+      background-color: var(--light-btn);
+      transition: all .2s ease-in-out;
+      transform: scale(1.12);
+    }
+
+    .year-change:hover pre {
+      color: $mainBg;
+    }
+
+    .calendar-footer {
+      padding: 10px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    #year:hover {
+      cursor: pointer;
+      transform: scale(1.2);
+      transition: all 0.2 ease-in-out;
+    }
+
+    .calendar-days div span {
+      position: absolute;
+    }
+
+    .calendar-days div:hover {
+      transition: width 0.2s ease-in-out, height 0.2s ease-in-out;
+      background-color: $secondColor;
+      border-radius: 20%;
+      color: $black;
+    }
+
+    .calendar-days div.current-date {
+      color: $black;
+      background-color: $white;
+      border-radius: 20%;
+    }
+
+    .month-list {
+      position: relative;
+      left: 0;
+      top: -50px;
+      color: $mainBg;
+      display: grid;
+      grid-template-columns: repeat(3, auto);
+      border-radius: 20px;
+    }
+
+    .month-list>div {
+      display: grid;
+      place-content: center;
+      margin-bottom: $margin;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .month-list>div>div {
+      border-radius: 15px;
+      // padding: 10px;
+      cursor: pointer;
+    }
+
+    .month-list>div>div:hover {
+      background-color: $white;
+      color: $black;
+      transform: scale(0.9);
+      transition: all 0.2s ease-in-out;
+    }
+
+    .month-list.show {
+      visibility: visible;
+      pointer-events: visible;
+      transition: 0.6s ease-in-out;
+      animation: to-left .71s forwards;
+    }
+
+    .month-list.hideonce {
+      visibility: hidden;
+    }
+
+    .month-list.hide {
+      animation: to-right 1s forwards;
+      visibility: none;
+      pointer-events: none;
+    }
+
+    .date-time-formate {
+      width: max-content;
+      height: max-content;
+      position: relative;
+      display: flex;
+      top: 5rem;
+      justify-content: center;
+      color: $black;
+
+    }
+
+    .day-text-formate {
+      position: absolute;
+      left: -1rem;
+    }
+
+    .date-time-value {
+      display: block;
+      height: max-content;
+      width: max-content;
+      position: relative;
+      left: 40%;
+      top: -18px;
+      text-align: center;
+    }
+
+    .time-formate {
+      font-size: 1.5rem;
+    }
+
+    .time-formate.hideTime {
+      animation: hidetime 1.5s forwards;
+    }
+
+    .day-text-formate.hidetime {
+      animation: hidetime 1.5s forwards;
+    }
+
+    .date-formate.hideTime {
+      animation: hidetime 1.5s forwards;
+    }
+
+    .day-text-formate.showtime {
+      animation: showtime 1s forwards;
+    }
+
+    .time-formate.showtime {
+      animation: showtime 1s forwards;
+    }
+
+    .date-formate.showtime {
+      animation: showtime 1s forwards;
+    }
+
+    @keyframes to-top {
+      0% {
+        transform: translateY(0);
+        opacity: 0;
+      }
+
+      100% {
+        transform: translateY(100%);
+        opacity: 1;
+      }
+    }
+
+    @keyframes to-left {
+      0% {
+        transform: translatex(230%);
+        opacity: 1;
+      }
+
+      100% {
+        transform: translatex(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes to-right {
+      10% {
+        transform: translatex(0);
+        opacity: 1;
+      }
+
+      100% {
+        transform: translatex(-150%);
+        opacity: 1;
+      }
+    }
+
+    @keyframes showtime {
+      0% {
+        transform: translatex(250%);
+        opacity: 1;
+      }
+
+      100% {
+        transform: translatex(0%);
+        opacity: 1;
+      }
+    }
+
+    @keyframes hidetime {
+      0% {
+        transform: translatex(0%);
+        opacity: 1;
+      }
+
+      100% {
+        transform: translatex(-370%);
+        opacity: 1;
+      }
+    }
+
+    @media (max-width:375px) {
+      .month-list>div {
+
+        margin: 5px 0px;
+      }
+    }
+  }
+
+  .card_todo {
+    //border: 1px solid $secondColordark;
+    padding: $padding;
+    margin: $margin;
+    margin-top: 0;
+    padding-top: 0;
+
+
+    .input-grups {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+    }
+
+    .list-task-item {
+
+      .formtodo {
+        display: flex;
+        align-items: center;
+        text-align: center;
+        justify-content: space-between;
+
+        & svg {
+          @include wh(3.5rem, auto);
+          padding: 0.5rem;
+          object-fit: cover;
+          align-items: center;
+          background: $white;
+
+          path {
+            fill: $mainBg;
+          }
+
+          &:hover {
+            @include wh(3.6rem, auto);
+          }
+        }
+      }
+    }
+
+    .count {
+      border-top: 1px solid $mainBg;
+    }
+  }
+}
+
+.right {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+
+  width: 0;
+  height: 100%;
+
+  background-color: $mainBg;
+  transition: all $transition;
+  transform: translateX(90%);
+
+  z-index: $z-index-medium + 1;
+
+
+  // Sidebar Button in Header
+  &__open {
+    @include standart-Btn;
+    top: calc(-#{$BtnSize} / 2.3);
+
+    display: block;
+    position: absolute;
+    right: calc(100% + 10px);
+    cursor: pointer;
+    z-index: $z-index-big;
+
+    border: 3px solid $mainBg;
+    outline: 2px solid $mainBg;
+
+    border-radius: 100%;
+    box-shadow: none;
+  }
+
+  &__content {
+    padding: 0px;
+    background-color: $darkBg;
+    border-radius: $BtnBorderRadius;
+    color: white;
+    display: none;
+  }
+
+  // SideBar Opened
+  &.open {
+    width: 100%;
+    transform: translateX(0%);
+
+    &>.right {
+      &__open {
+        right: unset;
+        left: $margin;
+      }
+
+      &__content {
+        display: block;
+      }
+    }
+  }
 }

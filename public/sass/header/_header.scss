@@ -1,0 +1,44 @@
+.header {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+
+  position: relative;
+
+  width: 100%;
+  height: $headerHeight;
+  padding: 0 $padding;
+
+  background: $mainBg;
+
+  transition: all $transition;
+
+  // Here is the Search and Profile Buttons on Mobile
+  &__buttons {
+    @include centering;
+    gap: $gap * 2;
+  }
+
+
+    &__logo {
+        display: none;
+        height: $BtnSize;
+        cursor: pointer;
+
+
+    img {
+      object-fit: contain;
+      height: 100%;
+    }
+  }
+
+  /*  This is function for Profile (When i open the bottom
+    part of Profile) to increase the height of Header */
+  &.moved {
+    height: calc($headerHeight + ($gap * 2));
+
+    &.content {
+      height: calc(100vh - ($headerHeight + ($gap * 2)));
+    }
+  }
+}

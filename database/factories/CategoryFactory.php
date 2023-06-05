@@ -25,7 +25,8 @@ class CategoryFactory extends Factory
             'start_date' => $this->faker->date(),
             'end_date' => $this->faker->date(),
             'createdby' => 'admin',
-            'lastmodifiedby' => $this->faker->name(),
+            'lastmodifiedby' => 'admin',
+            'seo_title' => $this->faker->word(),
 
         ];
     }

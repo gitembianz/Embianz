@@ -1,39 +1,326 @@
-$breakpoints: (
-  "xs": 0,
-  "sm": 480px,
-  "md": 720px,
-  "lg": 960px,
-  "xl": 1200px
-);
+@media (max-height: 375px) {
 
-@mixin xs {
-  @media (min-width: map-get($breakpoints, "xs")) {
-    @content;
-  }
-}
-@mixin sm {
-  @media (min-width: map-get($breakpoints, "sm")) {
-    @content;
-  }
-}
-@mixin md {
-  @media (min-width: map-get($breakpoints, "md")) {
-    @content;
-  }
-}
-@mixin lg {
-  @media (min-width: map-get($breakpoints, "lg")) {
-    @content;
-  }
-}
-@mixin xl {
-  @media (min-width: map-get($breakpoints, "xl")) {
-    @content;
+  // Sidebar BreakPoints
+  .sidebar {
+
+    // Sidebar List of Items
+    &__list {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 }
 
-@mixin  breakpoint($bp: 0) {
-  @media(min-width: $bp){
-    @content;
+@media (min-width: 768px) {
+
+  // Notification Button
+  .header__notify {
+
+    // Notification list
+    &-list {
+      width: $notifyWidth;
+      right: $notifyPosition;
+      transform: translateX(0);
+    }
   }
 }
+
+@media (min-width: 1024px) {
+  .content {
+    z-index: $z-index-medium;
+  }
+
+  .header__logo {
+    display: block;
+  }
+
+  // General Modifacation
+  main {
+    display: grid;
+    grid-template-columns: 0fr 1fr 0fr;
+  }
+
+  // Header Search BreakPoints
+  #openSearch {
+    display: none;
+  }
+
+  #openProfile {
+    display: none;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .header__search {
+    position: relative;
+
+    width: $BtnSize;
+    height: $BtnSize;
+
+    opacity: 1;
+    transform: translateY(0);
+
+    // Search Buttons (Open button, Close button, Search Button)
+    &-btn {
+
+      // Close Button
+      &:first-child {
+        opacity: 0;
+        width: 0;
+      }
+    }
+
+    // Search Input
+    &-input {
+      border-radius: 0;
+      opacity: 0;
+      padding: 0;
+    }
+
+    // Searchbar active mode
+    &.active {
+      width: $searchWidth;
+
+      gap: 0;
+      padding: 0;
+
+      &>.header__search {
+
+        // Search Input in active mode
+        &-input {
+          opacity: 1;
+          padding: initial;
+        }
+
+        // Search Buttons in active mode
+        &-btn {
+
+          // Close Button
+          &:first-child {
+            opacity: 1;
+            width: $BtnSize;
+
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+          }
+
+          // Search Button
+          &:last-child {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+          }
+        }
+      }
+    }
+  }
+
+  // Header Profile Breakpoints
+  .header__profile {
+    // display: flex;
+    flex: 1;
+    flex-direction: row;
+
+    position: relative;
+    opacity: 1;
+    transform: unset;
+
+    &-top {
+      display: flex;
+    }
+
+    &-bottom {
+      button {
+        width: 0;
+        opacity: 0;
+      }
+    }
+
+    &-name {
+      width: 0px;
+      opacity: 0;
+      font-size: 0;
+    }
+
+    //  Header Profile in Active mode
+    &.active {
+      display: flex;
+
+      .header__profile-name {
+        width: $ProfileNameWidth;
+        opacity: 1;
+        font-size: initial;
+        border-radius: 0;
+      }
+
+      &>.header__profile {
+
+
+        &-bottom,
+        &-top {
+          gap: 0;
+          padding: 0;
+
+          button {
+            width: $BtnSize;
+            border-radius: 0;
+          }
+        }
+
+        &-top {
+          button {
+            &:first-child {
+              border-top-left-radius: $BtnBorderRadius;
+              border-bottom-left-radius: $BtnBorderRadius;
+            }
+          }
+        }
+
+        &-bottom {
+          button {
+            width: $BtnSize;
+            opacity: 1;
+
+            &:last-child {
+              border-top-right-radius: $BtnBorderRadius;
+              border-bottom-right-radius: $BtnBorderRadius;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Sidebar BreakPoints
+  .sidebar {
+    width: $sidebar-Width-Desktop-Min; // Sidebar-close Width on big Screen
+    position: relative;
+
+    // Sidebar List of Items
+    &__list {
+      justify-items: center;
+      grid-template-columns: repeat(1, 1fr);
+    }
+
+    // Sidebar Button in Header
+    &__btn {
+      display: none;
+    }
+
+    // Sidebar Button in the right
+    &__open {
+      @include standart-Btn;
+      width: $BtnSize;
+      height: $BtnSize;
+      border-radius: 10px;
+      outline: none;
+      border: none;
+      justify-self: end;
+
+      svg {
+        height: $BtnSvgSize;
+        width: $BtnSvgSize;
+      }
+
+
+    }
+
+    // Sidebar Icon of Item
+    &__icon {
+      opacity: 1;
+      width: $BtnSize;
+      height: $BtnSize;
+    }
+
+    // Sidebar Item
+    &__item {
+      width: $BtnSize;
+    }
+
+    // SideBar Opened
+    &.open {
+      width: $sidebar-Width-Desktop-Max; // Sidebar-Open Width on big Screen
+
+      // Sidebar Button in the right
+      .sidebar__open {
+        svg {
+          transform: rotateY(180deg);
+        }
+      }
+    }
+  }
+
+  .right {
+    position: relative;
+    right: 0;
+    top: 0;
+
+    border-top-left-radius: $BtnBorderRadius;
+    border-bottom-left-radius: $BtnBorderRadius;
+
+    width: 50px;
+    background-color: $darkBg;
+    margin-left: $margin;
+    transform: translateX(0%);
+
+    &__open {
+      top: calc(($BtnSize + $gap) / 2);
+      right: calc(100% - ($BtnSize / 2.5));
+    }
+
+    &.open {
+      width: $calendarWidth;
+
+      &>.right {
+        &__open {
+          left: unset;
+          top: calc(($BtnSize + $gap) / 2);
+          right: calc(100% - ($BtnSize / 2.5));
+        }
+
+        &__content {
+          height: 100%;
+        }
+      }
+
+
+    }
+  }
+
+  // New Product
+  .item {
+    display: flex;
+    flex-direction: column;
+
+    // The product header (title and the buttons in top)
+    &__header {
+      grid-template-columns: 3fr 1fr;
+      grid-column-start: 1;
+      grid-column-end: 3;
+
+      &-title {
+        text-align: left;
+      }
+    }
+
+    // This is Upload media content
+    &__upload {
+      margin-top: $fSize;
+    }
+
+    // Product form (input, textarea, buttons)
+    &__form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+
+      // Short Description
+      &-long {
+        grid-column: 1;
+        grid-column-end: 3;
+      }
+    }
+  }
+}
+
+// EU am fost pe aici

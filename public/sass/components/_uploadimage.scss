@@ -1,60 +1,71 @@
-
-///upload component
-///
-
-
-#dropBox {
-    min-width: 450px;
-    max-width: 100%;
-    min-height: auto;
-    text-align: center;
-    padding: $base-padding;
-}
-
 .button {
-    display: inline-block;
-    padding: $base-padding;
-    cursor: pointer;
-    border-radius: 5px;
-    border: 1px solid $bg;
-    color: $bg;
-    transition: .4s;
+  display: inline-block;
+  padding: $padding;
+  cursor: pointer;
+  border-radius: 5px;
+  border: 1px solid $mainBg;
+  color: $mainBg;
+  transition: .4s;
 }
-.buttonremove{
-    background: $white;
-    cursor: pointer;
-    color: $bg;
+
+.buttonremove {
+  background: $white;
+  cursor: pointer;
+  color: $mainBg;
 }
+
 #imgUpload {
-    display: none;
+  display: none;
 }
-#gallery {
-    text-align: center;
-}
-#gallery div {
-    display: inline-block;
-}
-#gallery img {
-    max-height: 150px;
-}
-#imageTable {
-    border-collapse: collapse;
-    width: 100%;
-  }
 
-  #imageTable th, #imageTable td {
-    padding: 0.5em;
-    border: 1px solid #ccc;
-  }
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  // background-color: transparent;
+  color: $black;
 
-  #imageTable th {
-    background-color: $white;
-  }
+  td,
+  th {
+    border: 2px solid $darkBg;
+    padding: 10px;
+    height: 70px;
 
-  #imageTable tr:hover {
-    .buttonremove{
-        background-color: #f5f5f5;
+    &:first-child {
+      display: flex;
+      align-items: center;
+      border: 1px solid $darkBg;
+      width: 100%;
+      justify-content: space-between;
     }
-    background-color: #f5f5f5;
 
+    &:nth-child(2),
+    &:nth-child(3),
+    &:nth-child(4) {
+      width: 10%;
+    }
+
+    img {
+      height: 100%;
+      object-fit: contain;
+    }
+
+    select,
+    input {
+      @include standart-Input;
+      margin: 0 auto;
+    }
+
+    button {
+      @include standart-Btn;
+      background-color: $alertColor;
+      margin: 0 auto;
+      font-size:x-large;
+      font-weight: 700;
+    }
   }
+
+  thead {
+    background-color: $darkBg;
+    color: $white;
+  }
+}
