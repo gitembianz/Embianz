@@ -13,4 +13,4 @@ jobs:
       with:
         server: ftp.embianz.com
         username: gituser@dev.embianz.com
-        password: ${{ secrets.devftp}}
+        password: ${{secrets.devftp}}
