@@ -71,6 +71,7 @@
                         </div>
                     </form>
                     {{-- if tasks exist --}}
+                    <?php $todolists = "test";?>
                     <span style="z-index: 9999">ttt= {{ $todolists }}</span>
                     @if (count($todolists))
                     <div class="list-group-div mb-1">
