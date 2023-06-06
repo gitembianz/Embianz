@@ -71,6 +71,7 @@
                         </div>
                     </form>
                     {{-- if tasks exist --}}
+                    {{-- <span>{{ $todolists }}</span> --}}
                                 @if (count($todolists))
                     <div class="list-group-div mb-1">
                         <ul class="list-group">
