@@ -24,7 +24,7 @@ Route::get('/', function () {
 
 Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'])->group(function () {
     Route::get('/dashboard', function () {return view('dashboard');})->name('dashboard');
-
+  });
     //Strore Image
 
 
@@ -56,7 +56,7 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'])-
     route::post('/new', [TodolistController::class, 'store'])->name('store');
     route::delete('/{todolist:id}', [TodolistController::class, 'destroy'])->name('destroy');
 
-});
+
 route::get('/redirect', [HomeController::class, 'redirect'])->middleware('auth','verified')->name('redirect');
 
 

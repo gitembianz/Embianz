@@ -37,8 +37,8 @@ class Productstable extends Component
             $id = $product->id;
             $producttodel = Product::find($id);
             $productcat = Products_categories::where('product_id', $id)->first();
+if($productcat != NULL){$productcat->delete();}
 
-            $productcat->delete();
 
             $producttodel->delete();
         }
