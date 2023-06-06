@@ -27,6 +27,6 @@ class dashboardnavbar extends Component
         $user =Auth::user()->name;
         //$bg="color: red";
         //add '$bg' to make it work!
-        return view('components.dashboardnavbar',compact('user'));
+        return view('components.dashboardnavbar', compact('user'));
     }
 }
