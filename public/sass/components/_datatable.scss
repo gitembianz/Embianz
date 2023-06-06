@@ -8,6 +8,9 @@ th {
   text-decoration: underline;
 }
 
+.th_checked{
+  background: #03a9f4a8 !important;
+}
 
 
 .livewire-table {
@@ -37,12 +40,13 @@ th {
       color: $secondColor;
       font-size: $fSize;
 
-      td:first-child {
+      &:first-child {
         display: flex;
         gap: 10px;
-        flex-direction: column;
       }
     }
+
+
   }
 
   tbody tr:nth-child(even) {
