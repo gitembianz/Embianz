@@ -4,7 +4,6 @@ namespace App\View\Components;
 
 use App\Models\Todolist;
 use Illuminate\View\Component;
-use Illuminate\Support\Facades\Http;
 
 class dashboardright extends Component
 {
@@ -28,6 +27,6 @@ class dashboardright extends Component
     public function render()
     {
         $todolists = Todolist::all();
-        return Http::get(view('components.dashboardright', compact('todolists')));
+        return view('components.dashboardright', compact('todolists'));
     }
 }
