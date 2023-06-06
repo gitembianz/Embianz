@@ -1,5 +1,5 @@
 <x-dashboardheader />
-<x-dashboardnavbar:user="$user"></x-dashboardnavbar>
+<x-dashboardnavbar />
 <x-dashboardsidebar />
 <x-dashboardmodals />
 {{-- Page content start --}}
@@ -10,6 +10,6 @@
 </div>
 </section>
 {{-- page content end --}}
-<x-dashboardright :todolists="$todolists"></x-dashboardright>
+<x-dashboardright />
 <x-dashboardscript />
 <x-dashboardfooter />

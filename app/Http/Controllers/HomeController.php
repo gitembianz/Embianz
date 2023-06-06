@@ -11,9 +11,8 @@ class HomeController extends Controller
 {
     public function redirect(){
         $usertype=Auth::user()->usertype;
-        $todolists = Todolist::all();
         if($usertype=='1'){
-            return view('admin.home', compact('todolists'));
+            return view('admin.home');
         } else{
             return view('site.home');
         }
