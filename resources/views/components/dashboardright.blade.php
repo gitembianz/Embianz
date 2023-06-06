@@ -64,35 +64,34 @@
                         </div>
                     </form>
                     {{-- if tasks exist --}}
-                    @if (count($todolists))
-                        <div class="list-group-div mb-1">
-                            <ul class="list-group">
-                                @foreach ($todolists as $todolist)
-                                    <li class="list-task-item talign-c">
-                                        <form class="formtodo" action="{{ route('destroy', $todolist->id) }}"
-                                            method="post">
-                                            <span class="text-black bg-white fw-500 talign-l pl-2"
-                                                style="display: inline-block; width: 200px; word-wrap: break-word;">{{ $todolist->content }}
-                                            </span>
-                                            @csrf
-                                            @method('delete')
-                                            <button type="submit"><span class="bg-white"><svg fill="#ffffff"
-                                                        width="64px" height="64px" viewBox="0 0 1024 1024"
-                                                        xmlns="http://www.w3.org/2000/svg">
-                                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
-                                                            stroke-linejoin="round"></g>
-                                                        <g id="SVGRepo_iconCarrier">
-                                                            <path
-                                                                d="M589 307v-51H435v51H307v51h410v-51M333 410v358h358V410H333zm102 307h-51V461h51v256zm103 0h-52V461h52v256zm102 0h-51V461h51v256z">
-                                                            </path>
-                                                        </g>
-                                                    </svg></span></button>
-                                        </form>
-                                    </li>
-                                @endforeach
-                            </ul>
-                        </div>
+
+
+                                @if (count($todolists))
+                    <div class="list-group-div mb-1">
+                        <ul class="list-group">
+                            @foreach ($todolists as $todolist)
+                                <li class="list-task-item talign-c">
+                                    <form class="formtodo" action="{{ route('destroy', $todolist->id) }}" method="post">
+                                        <span class="text-black bg-white fw-500 talign-l pl-2" style="display: inline-block; width: 200px; word-wrap: break-word;">{{ $todolist->content }} </span>
+                                        @csrf
+                                        @method('delete')
+                                        <button type="submit"><span class="bg-white"><svg fill="#ffffff" width="64px" height="64px"
+                                                    viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+                                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
+                                                        stroke-linejoin="round"></g>
+                                                    <g id="SVGRepo_iconCarrier">
+                                                        <path
+                                                            d="M589 307v-51H435v51H307v51h410v-51M333 410v358h358V410H333zm102 307h-51V461h51v256zm103 0h-52V461h52v256zm102 0h-51V461h51v256z">
+                                                        </path>
+                                                    </g>
+                                                </svg></span></button>
+                                    </form>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+
                         <p class="count talign-c text-bg pt-1">You have {{ count($todolists) }} tasks active!</p>
                     @else
                         <p class="talign-c text-bg mt-1">You have no tasks!</p>

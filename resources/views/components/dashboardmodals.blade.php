@@ -9,10 +9,10 @@
         </h1>
         <input type="hidden" name="hiddenid" id="hiddenid">
         <input class="modal-content-btn submit" type="submit" value="Confirm" name="submit">
-        <input class="modal-content-btn cancel"
+        <input class="modal-content-btn delete"
             onclick="document.getElementById('confirmmodal-category').style.display='none'" value="Cancel">
 
-        <span class="modal-content-btn close"
+        <span class="modal-content-btn delete"
             onclick="document.getElementById('confirmmodal-category').style.display='none'">
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24" fill="none"
                 stroke="#BBFCDE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
