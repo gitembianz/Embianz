@@ -1,5 +1,5 @@
 <x-dashboardheader />
-<x-dashboardnavbar />
+<x-dashboardnavbar  />
 <x-dashboardsidebar />
 <x-dashboardmodals />
 

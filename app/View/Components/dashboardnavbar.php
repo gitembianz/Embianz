@@ -14,11 +14,9 @@ class dashboardnavbar extends Component
      * @return void
      */
 
-     public $user;
-
-    public function __construct($user)
+    public function __construct()
     {
-      $this->user = $user;
+      //
     }
 
     /**
@@ -28,9 +26,9 @@ class dashboardnavbar extends Component
      */
     public function render()
     {
-
+        $user = Auth::user()->name;
         //$bg="color: red";
         //add '$bg' to make it work!
-        return view('components.dashboardnavbar');
+        return view('components.dashboardnavbar', compact('user'));
     }
 }
