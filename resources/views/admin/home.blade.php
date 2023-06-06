@@ -1,5 +1,5 @@
 <x-dashboardheader />
-<x-dashboardnavbar :user="$user"></x-dashboardnavbar>
+<x-dashboardnavbar:user="$user"></x-dashboardnavbar>
 <x-dashboardsidebar />
 <x-dashboardmodals />
 {{-- Page content start --}}
