@@ -73,6 +73,7 @@ body::-webkit-scrollbar {
 body::-webkit-scrollbar-thumb {
   background: #20282d;
   border-radius: 10px;
+  -webkit-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
 }
 body::-webkit-scrollbar-thumb:hover {
@@ -530,7 +531,8 @@ main {
   cursor: pointer;
 }
 .header__logo img {
-  object-fit: contain;
+  -o-object-fit: contain;
+     object-fit: contain;
   height: 100%;
 }
 .header.moved {
@@ -626,6 +628,29 @@ main {
 .header__search-btn.delete.active svg, .header__search-btn.delete:active svg, .header__search-btn.delete:focus-visible svg {
   stroke: #35424B;
 }
+.header__search-btn.submit {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.header__search-btn.submit:hover {
+  background-color: #28f697;
+}
+.header__search-btn.submit:hover > .sidebar__icon {
+  background-color: #28f697;
+}
+.header__search-btn.submit.active, .header__search-btn.submit:active, .header__search-btn.submit:focus-visible {
+  background-color: #28f697;
+  color: #35424B;
+}
+.header__search-btn.submit.active > .sidebar__icon, .header__search-btn.submit:active > .sidebar__icon, .header__search-btn.submit:focus-visible > .sidebar__icon {
+  background-color: #28f697;
+}
+.header__search-btn.submit.active > .sidebar__icon svg, .header__search-btn.submit:active > .sidebar__icon svg, .header__search-btn.submit:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.header__search-btn.submit.active svg, .header__search-btn.submit:active svg, .header__search-btn.submit:focus-visible svg {
+  stroke: #35424B;
+}
 .header__search-input {
   display: flex;
   align-items: center;
@@ -697,6 +722,29 @@ main {
 .header__search-input.delete.active svg, .header__search-input.delete:active svg, .header__search-input.delete:focus-visible svg {
   stroke: #35424B;
 }
+.header__search-input.submit {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.header__search-input.submit:hover {
+  background-color: #28f697;
+}
+.header__search-input.submit:hover > .sidebar__icon {
+  background-color: #28f697;
+}
+.header__search-input.submit.active, .header__search-input.submit:active, .header__search-input.submit:focus-visible {
+  background-color: #28f697;
+  color: #35424B;
+}
+.header__search-input.submit.active > .sidebar__icon, .header__search-input.submit:active > .sidebar__icon, .header__search-input.submit:focus-visible > .sidebar__icon {
+  background-color: #28f697;
+}
+.header__search-input.submit.active > .sidebar__icon svg, .header__search-input.submit:active > .sidebar__icon svg, .header__search-input.submit:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.header__search-input.submit.active svg, .header__search-input.submit:active svg, .header__search-input.submit:focus-visible svg {
+  stroke: #35424B;
+}
 .header__search-input:hover {
   background-color: #0b0d0f;
 }
@@ -738,7 +786,7 @@ main {
   background-color: #35424B;
   transform: translateY(-100%);
   transition: all 0.3s ease-in-out;
-  z-index: 5;
+  z-index: 6;
 }
 .header__profile-top, .header__profile-bottom {
   display: grid;
@@ -831,6 +879,29 @@ main {
 .header__profile-btn.delete.active svg, .header__profile-btn.delete:active svg, .header__profile-btn.delete:focus-visible svg {
   stroke: #35424B;
 }
+.header__profile-btn.submit {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.header__profile-btn.submit:hover {
+  background-color: #28f697;
+}
+.header__profile-btn.submit:hover > .sidebar__icon {
+  background-color: #28f697;
+}
+.header__profile-btn.submit.active, .header__profile-btn.submit:active, .header__profile-btn.submit:focus-visible {
+  background-color: #28f697;
+  color: #35424B;
+}
+.header__profile-btn.submit.active > .sidebar__icon, .header__profile-btn.submit:active > .sidebar__icon, .header__profile-btn.submit:focus-visible > .sidebar__icon {
+  background-color: #28f697;
+}
+.header__profile-btn.submit.active > .sidebar__icon svg, .header__profile-btn.submit:active > .sidebar__icon svg, .header__profile-btn.submit:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.header__profile-btn.submit.active svg, .header__profile-btn.submit:active svg, .header__profile-btn.submit:focus-visible svg {
+  stroke: #35424B;
+}
 .header__profile-name {
   display: flex;
   align-items: center;
@@ -899,6 +970,29 @@ main {
   stroke: #35424B;
 }
 .header__profile-name.delete.active svg, .header__profile-name.delete:active svg, .header__profile-name.delete:focus-visible svg {
+  stroke: #35424B;
+}
+.header__profile-name.submit {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.header__profile-name.submit:hover {
+  background-color: #28f697;
+}
+.header__profile-name.submit:hover > .sidebar__icon {
+  background-color: #28f697;
+}
+.header__profile-name.submit.active, .header__profile-name.submit:active, .header__profile-name.submit:focus-visible {
+  background-color: #28f697;
+  color: #35424B;
+}
+.header__profile-name.submit.active > .sidebar__icon, .header__profile-name.submit:active > .sidebar__icon, .header__profile-name.submit:focus-visible > .sidebar__icon {
+  background-color: #28f697;
+}
+.header__profile-name.submit.active > .sidebar__icon svg, .header__profile-name.submit:active > .sidebar__icon svg, .header__profile-name.submit:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.header__profile-name.submit.active svg, .header__profile-name.submit:active svg, .header__profile-name.submit:focus-visible svg {
   stroke: #35424B;
 }
 .header__profile.active {
@@ -986,6 +1080,29 @@ main {
 .header__notify-btn.delete.active svg, .header__notify-btn.delete:active svg, .header__notify-btn.delete:focus-visible svg {
   stroke: #35424B;
 }
+.header__notify-btn.submit {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.header__notify-btn.submit:hover {
+  background-color: #28f697;
+}
+.header__notify-btn.submit:hover > .sidebar__icon {
+  background-color: #28f697;
+}
+.header__notify-btn.submit.active, .header__notify-btn.submit:active, .header__notify-btn.submit:focus-visible {
+  background-color: #28f697;
+  color: #35424B;
+}
+.header__notify-btn.submit.active > .sidebar__icon, .header__notify-btn.submit:active > .sidebar__icon, .header__notify-btn.submit:focus-visible > .sidebar__icon {
+  background-color: #28f697;
+}
+.header__notify-btn.submit.active > .sidebar__icon svg, .header__notify-btn.submit:active > .sidebar__icon svg, .header__notify-btn.submit:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.header__notify-btn.submit.active svg, .header__notify-btn.submit:active svg, .header__notify-btn.submit:focus-visible svg {
+  stroke: #35424B;
+}
 .header__notify-title {
   font-size: 0.875rem;
   font-weight: 500;
@@ -1021,6 +1138,7 @@ main {
 .header__notify-list::-webkit-scrollbar-thumb {
   background: #20282d;
   border-radius: 10px;
+  -webkit-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
 }
 .header__notify-list::-webkit-scrollbar-thumb:hover {
@@ -1099,6 +1217,29 @@ main {
   stroke: #35424B;
 }
 .header__notify-item.delete.active svg, .header__notify-item.delete:active svg, .header__notify-item.delete:focus-visible svg {
+  stroke: #35424B;
+}
+.header__notify-item.submit {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.header__notify-item.submit:hover {
+  background-color: #28f697;
+}
+.header__notify-item.submit:hover > .sidebar__icon {
+  background-color: #28f697;
+}
+.header__notify-item.submit.active, .header__notify-item.submit:active, .header__notify-item.submit:focus-visible {
+  background-color: #28f697;
+  color: #35424B;
+}
+.header__notify-item.submit.active > .sidebar__icon, .header__notify-item.submit:active > .sidebar__icon, .header__notify-item.submit:focus-visible > .sidebar__icon {
+  background-color: #28f697;
+}
+.header__notify-item.submit.active > .sidebar__icon svg, .header__notify-item.submit:active > .sidebar__icon svg, .header__notify-item.submit:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.header__notify-item.submit.active svg, .header__notify-item.submit:active svg, .header__notify-item.submit:focus-visible svg {
   stroke: #35424B;
 }
 .header__notify.open {
@@ -1273,26 +1414,166 @@ main {
 .alert__session-btn.delete.active svg, .alert__session-btn.delete:active svg, .alert__session-btn.delete:focus-visible svg {
   stroke: #35424B;
 }
-
-li.dropdown {
-  display: inline-block;
+.alert__session-btn.submit {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.alert__session-btn.submit:hover {
+  background-color: #28f697;
+}
+.alert__session-btn.submit:hover > .sidebar__icon {
+  background-color: #28f697;
+}
+.alert__session-btn.submit.active, .alert__session-btn.submit:active, .alert__session-btn.submit:focus-visible {
+  background-color: #28f697;
+  color: #35424B;
+}
+.alert__session-btn.submit.active > .sidebar__icon, .alert__session-btn.submit:active > .sidebar__icon, .alert__session-btn.submit:focus-visible > .sidebar__icon {
+  background-color: #28f697;
+}
+.alert__session-btn.submit.active > .sidebar__icon svg, .alert__session-btn.submit:active > .sidebar__icon svg, .alert__session-btn.submit:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.alert__session-btn.submit.active svg, .alert__session-btn.submit:active svg, .alert__session-btn.submit:focus-visible svg {
+  stroke: #35424B;
 }
 
+.dropdown {
+  width: 100%;
+  height: 3rem;
+  position: relative;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  border-radius: 10px;
+}
+.dropdown-name {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #BBFCDE;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  color: #35424B;
+  background-color: #ffffff;
+  border-radius: 10px;
+  border: 1.5px solid #35424B;
+  z-index: 154;
+}
 .dropdown-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   display: none;
   position: absolute;
-  min-width: 10vh;
-  z-index: 1;
+  top: 85%;
+  left: 0;
+  gap: 10px;
+  padding: 20px 10px 10px;
+  border: 1.5px solid #35424B;
+  width: 100%;
+  background: white;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  border-radius: 0 0 10px 10px;
+  flex-direction: column;
+  z-index: 44;
 }
-
-.dropdown-content a {
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #BBFCDE;
+  background: #20282d;
+  outline: none;
   text-decoration: none;
-  display: block;
-  text-align: left;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  text-align: center;
+  border: none;
+  border-radius: 10px;
+  padding: 0;
+  width: 3rem;
+  height: 3rem;
+  transition: all 0.3s ease-in-out;
+  width: 100%;
 }
-
+.dropdown-item:hover {
+  background-color: #0b0d0f;
+}
+.dropdown-item:hover > .sidebar__icon {
+  background-color: #0b0d0f;
+}
+.dropdown-item.active, .dropdown-item:active, .dropdown-item:focus-visible {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.dropdown-item.active > .sidebar__icon, .dropdown-item:active > .sidebar__icon, .dropdown-item:focus-visible > .sidebar__icon {
+  background-color: #BBFCDE;
+}
+.dropdown-item.active > .sidebar__icon svg, .dropdown-item:active > .sidebar__icon svg, .dropdown-item:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.dropdown-item.active svg, .dropdown-item:active svg, .dropdown-item:focus-visible svg {
+  stroke: #35424B;
+}
+.dropdown-item img,
+.dropdown-item svg {
+  width: 23px;
+  height: 23px;
+  stroke: #BBFCDE;
+  stroke-width: 1.5px;
+  background-color: transparent;
+  transition: all 0.3s ease-in-out;
+}
+.dropdown-item.delete {
+  background-color: #e25b73;
+}
+.dropdown-item.delete:hover {
+  background-color: #b7203b;
+}
+.dropdown-item.delete:hover > .sidebar__icon {
+  background-color: #b7203b;
+}
+.dropdown-item.delete.active, .dropdown-item.delete:active, .dropdown-item.delete:focus-visible {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.dropdown-item.delete.active > .sidebar__icon, .dropdown-item.delete:active > .sidebar__icon, .dropdown-item.delete:focus-visible > .sidebar__icon {
+  background-color: #BBFCDE;
+}
+.dropdown-item.delete.active > .sidebar__icon svg, .dropdown-item.delete:active > .sidebar__icon svg, .dropdown-item.delete:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.dropdown-item.delete.active svg, .dropdown-item.delete:active svg, .dropdown-item.delete:focus-visible svg {
+  stroke: #35424B;
+}
+.dropdown-item.submit {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.dropdown-item.submit:hover {
+  background-color: #28f697;
+}
+.dropdown-item.submit:hover > .sidebar__icon {
+  background-color: #28f697;
+}
+.dropdown-item.submit.active, .dropdown-item.submit:active, .dropdown-item.submit:focus-visible {
+  background-color: #28f697;
+  color: #35424B;
+}
+.dropdown-item.submit.active > .sidebar__icon, .dropdown-item.submit:active > .sidebar__icon, .dropdown-item.submit:focus-visible > .sidebar__icon {
+  background-color: #28f697;
+}
+.dropdown-item.submit.active > .sidebar__icon svg, .dropdown-item.submit:active > .sidebar__icon svg, .dropdown-item.submit:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.dropdown-item.submit.active svg, .dropdown-item.submit:active svg, .dropdown-item.submit:focus-visible svg {
+  stroke: #35424B;
+}
 .dropdown:hover .dropdown-content {
-  display: block;
+  display: flex;
 }
 
 .collapsible {
@@ -1349,6 +1630,7 @@ li.dropdown {
   border-radius: 10px;
   position: relative;
   padding: 20px;
+  margin: 0 15px;
   outline: none;
 }
 .modal-content-title {
@@ -1457,29 +1739,7 @@ li.dropdown {
 .modal-content-btn.submit.active svg, .modal-content-btn.submit:active svg, .modal-content-btn.submit:focus-visible svg {
   stroke: #35424B;
 }
-.modal-content-btn.close, .modal-content-btn.cancel {
-  background-color: #e25b73;
-}
-.modal-content-btn.close:hover, .modal-content-btn.cancel:hover {
-  background-color: #8b192d;
-}
-.modal-content-btn.close:hover > .sidebar__icon, .modal-content-btn.cancel:hover > .sidebar__icon {
-  background-color: #8b192d;
-}
-.modal-content-btn.close.active, .modal-content-btn.close:active, .modal-content-btn.close:focus-visible, .modal-content-btn.cancel.active, .modal-content-btn.cancel:active, .modal-content-btn.cancel:focus-visible {
-  background-color: #8b192d;
-  color: #BBFCDE;
-}
-.modal-content-btn.close.active > .sidebar__icon, .modal-content-btn.close:active > .sidebar__icon, .modal-content-btn.close:focus-visible > .sidebar__icon, .modal-content-btn.cancel.active > .sidebar__icon, .modal-content-btn.cancel:active > .sidebar__icon, .modal-content-btn.cancel:focus-visible > .sidebar__icon {
-  background-color: #8b192d;
-}
-.modal-content-btn.close.active > .sidebar__icon svg, .modal-content-btn.close:active > .sidebar__icon svg, .modal-content-btn.close:focus-visible > .sidebar__icon svg, .modal-content-btn.cancel.active > .sidebar__icon svg, .modal-content-btn.cancel:active > .sidebar__icon svg, .modal-content-btn.cancel:focus-visible > .sidebar__icon svg {
-  stroke: #BBFCDE;
-}
-.modal-content-btn.close.active svg, .modal-content-btn.close:active svg, .modal-content-btn.close:focus-visible svg, .modal-content-btn.cancel.active svg, .modal-content-btn.cancel:active svg, .modal-content-btn.cancel:focus-visible svg {
-  stroke: #BBFCDE;
-}
-.modal-content-btn.close {
+.modal-content span {
   position: absolute;
   border-radius: 100%;
   width: 2rem;
@@ -1497,6 +1757,173 @@ th {
   text-decoration: underline;
 }
 
+.livewire-table {
+  border-collapse: collapse;
+  margin: 0;
+  width: 100%;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  margin: 30px 0;
+}
+.livewire-table tr {
+  padding: 10px;
+}
+.livewire-table th,
+.livewire-table td {
+  font-size: 0.875rem;
+  padding: 10px;
+  text-align: center;
+}
+.livewire-table thead tr {
+  background-color: #35424B;
+}
+.livewire-table thead th {
+  color: #BBFCDE;
+  font-size: 0.875rem;
+}
+.livewire-table thead th td:first-child {
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+}
+.livewire-table tbody tr:nth-child(even) {
+  background-color: #BBFCDE;
+}
+.livewire-table button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #BBFCDE;
+  background: #20282d;
+  outline: none;
+  text-decoration: none;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  text-align: center;
+  border: none;
+  border-radius: 10px;
+  padding: 0;
+  width: 3rem;
+  height: 3rem;
+  transition: all 0.3s ease-in-out;
+  width: 2.5rem;
+  height: 2.5rem;
+}
+.livewire-table button:hover {
+  background-color: #0b0d0f;
+}
+.livewire-table button:hover > .sidebar__icon {
+  background-color: #0b0d0f;
+}
+.livewire-table button.active, .livewire-table button:active, .livewire-table button:focus-visible {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.livewire-table button.active > .sidebar__icon, .livewire-table button:active > .sidebar__icon, .livewire-table button:focus-visible > .sidebar__icon {
+  background-color: #BBFCDE;
+}
+.livewire-table button.active > .sidebar__icon svg, .livewire-table button:active > .sidebar__icon svg, .livewire-table button:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.livewire-table button.active svg, .livewire-table button:active svg, .livewire-table button:focus-visible svg {
+  stroke: #35424B;
+}
+.livewire-table button img,
+.livewire-table button svg {
+  width: 23px;
+  height: 23px;
+  stroke: #BBFCDE;
+  stroke-width: 1.5px;
+  background-color: transparent;
+  transition: all 0.3s ease-in-out;
+}
+.livewire-table button.delete {
+  background-color: #e25b73;
+}
+.livewire-table button.delete:hover {
+  background-color: #b7203b;
+}
+.livewire-table button.delete:hover > .sidebar__icon {
+  background-color: #b7203b;
+}
+.livewire-table button.delete.active, .livewire-table button.delete:active, .livewire-table button.delete:focus-visible {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.livewire-table button.delete.active > .sidebar__icon, .livewire-table button.delete:active > .sidebar__icon, .livewire-table button.delete:focus-visible > .sidebar__icon {
+  background-color: #BBFCDE;
+}
+.livewire-table button.delete.active > .sidebar__icon svg, .livewire-table button.delete:active > .sidebar__icon svg, .livewire-table button.delete:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.livewire-table button.delete.active svg, .livewire-table button.delete:active svg, .livewire-table button.delete:focus-visible svg {
+  stroke: #35424B;
+}
+.livewire-table button.submit {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.livewire-table button.submit:hover {
+  background-color: #28f697;
+}
+.livewire-table button.submit:hover > .sidebar__icon {
+  background-color: #28f697;
+}
+.livewire-table button.submit.active, .livewire-table button.submit:active, .livewire-table button.submit:focus-visible {
+  background-color: #28f697;
+  color: #35424B;
+}
+.livewire-table button.submit.active > .sidebar__icon, .livewire-table button.submit:active > .sidebar__icon, .livewire-table button.submit:focus-visible > .sidebar__icon {
+  background-color: #28f697;
+}
+.livewire-table button.submit.active > .sidebar__icon svg, .livewire-table button.submit:active > .sidebar__icon svg, .livewire-table button.submit:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.livewire-table button.submit.active svg, .livewire-table button.submit:active svg, .livewire-table button.submit:focus-visible svg {
+  stroke: #35424B;
+}
+.livewire-table a {
+  text-decoration: underline;
+}
+
+@media (max-width: 450px) {
+  .livewire-table {
+    border: 3px solid #35424B;
+  }
+  .livewire-table thead tr {
+    display: none;
+  }
+  .livewire-table tr {
+    display: block;
+  }
+  .livewire-table th,
+  .livewire-table td {
+    padding: 5px;
+  }
+  .livewire-table td {
+    text-align: right;
+    display: block;
+  }
+  .livewire-table td::before {
+    content: attr(data-title) ": ";
+    float: left;
+    font-weight: 900;
+    font-size: 1rem;
+    margin-right: 10px;
+  }
+  .livewire-table tbody tr:nth-child(even) td:nth-child(even) {
+    background-color: #8afac6;
+  }
+  .livewire-table tbody tr:nth-child(odd) {
+    background-color: #f2f2f2;
+  }
+  .livewire-table tbody tr:nth-child(odd) td:nth-child(even) {
+    background-color: #e6e6e6;
+  }
+  .livewire-table button {
+    display: unset;
+  }
+}
 .button {
   display: inline-block;
   padding: 10px;
@@ -1545,7 +1972,8 @@ th {
 .table td img,
 .table th img {
   height: 100%;
-  object-fit: contain;
+  -o-object-fit: contain;
+     object-fit: contain;
 }
 .table td select,
 .table td input,
@@ -1581,6 +2009,7 @@ th {
 .table th input::-webkit-scrollbar-thumb {
   background: #20282d;
   border-radius: 10px;
+  -webkit-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
 }
 .table td select::-webkit-scrollbar-thumb:hover,
@@ -1692,6 +2121,44 @@ th {
 .table th button.delete.active svg,
 .table th button.delete:active svg,
 .table th button.delete:focus-visible svg {
+  stroke: #35424B;
+}
+.table td button.submit,
+.table th button.submit {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.table td button.submit:hover,
+.table th button.submit:hover {
+  background-color: #28f697;
+}
+.table td button.submit:hover > .sidebar__icon,
+.table th button.submit:hover > .sidebar__icon {
+  background-color: #28f697;
+}
+.table td button.submit.active, .table td button.submit:active, .table td button.submit:focus-visible,
+.table th button.submit.active,
+.table th button.submit:active,
+.table th button.submit:focus-visible {
+  background-color: #28f697;
+  color: #35424B;
+}
+.table td button.submit.active > .sidebar__icon, .table td button.submit:active > .sidebar__icon, .table td button.submit:focus-visible > .sidebar__icon,
+.table th button.submit.active > .sidebar__icon,
+.table th button.submit:active > .sidebar__icon,
+.table th button.submit:focus-visible > .sidebar__icon {
+  background-color: #28f697;
+}
+.table td button.submit.active > .sidebar__icon svg, .table td button.submit:active > .sidebar__icon svg, .table td button.submit:focus-visible > .sidebar__icon svg,
+.table th button.submit.active > .sidebar__icon svg,
+.table th button.submit:active > .sidebar__icon svg,
+.table th button.submit:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.table td button.submit.active svg, .table td button.submit:active svg, .table td button.submit:focus-visible svg,
+.table th button.submit.active svg,
+.table th button.submit:active svg,
+.table th button.submit:focus-visible svg {
   stroke: #35424B;
 }
 .table thead {
@@ -2448,6 +2915,29 @@ th {
 .sidebar__btn.delete.active svg, .sidebar__btn.delete:active svg, .sidebar__btn.delete:focus-visible svg {
   stroke: #35424B;
 }
+.sidebar__btn.submit {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.sidebar__btn.submit:hover {
+  background-color: #28f697;
+}
+.sidebar__btn.submit:hover > .sidebar__icon {
+  background-color: #28f697;
+}
+.sidebar__btn.submit.active, .sidebar__btn.submit:active, .sidebar__btn.submit:focus-visible {
+  background-color: #28f697;
+  color: #35424B;
+}
+.sidebar__btn.submit.active > .sidebar__icon, .sidebar__btn.submit:active > .sidebar__icon, .sidebar__btn.submit:focus-visible > .sidebar__icon {
+  background-color: #28f697;
+}
+.sidebar__btn.submit.active > .sidebar__icon svg, .sidebar__btn.submit:active > .sidebar__icon svg, .sidebar__btn.submit:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.sidebar__btn.submit.active svg, .sidebar__btn.submit:active svg, .sidebar__btn.submit:focus-visible svg {
+  stroke: #35424B;
+}
 .sidebar__open {
   display: none;
 }
@@ -2521,6 +3011,29 @@ th {
 .sidebar__item.delete.active svg, .sidebar__item.delete:active svg, .sidebar__item.delete:focus-visible svg {
   stroke: #35424B;
 }
+.sidebar__item.submit {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.sidebar__item.submit:hover {
+  background-color: #28f697;
+}
+.sidebar__item.submit:hover > .sidebar__icon {
+  background-color: #28f697;
+}
+.sidebar__item.submit.active, .sidebar__item.submit:active, .sidebar__item.submit:focus-visible {
+  background-color: #28f697;
+  color: #35424B;
+}
+.sidebar__item.submit.active > .sidebar__icon, .sidebar__item.submit:active > .sidebar__icon, .sidebar__item.submit:focus-visible > .sidebar__icon {
+  background-color: #28f697;
+}
+.sidebar__item.submit.active > .sidebar__icon svg, .sidebar__item.submit:active > .sidebar__icon svg, .sidebar__item.submit:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.sidebar__item.submit.active svg, .sidebar__item.submit:active svg, .sidebar__item.submit:focus-visible svg {
+  stroke: #35424B;
+}
 .sidebar__item span {
   font-size: 0;
   padding: 0;
@@ -2549,7 +3062,7 @@ th {
   opacity: 0;
   width: 0;
   height: 0;
-  transition: box-shadow 0s ease-in-out;
+  transition: 0.3s ease-in-out, box-shadow 0s ease-in-out;
 }
 .sidebar__icon:hover {
   background-color: #0b0d0f;
@@ -2599,6 +3112,29 @@ th {
   stroke: #35424B;
 }
 .sidebar__icon.delete.active svg, .sidebar__icon.delete:active svg, .sidebar__icon.delete:focus-visible svg {
+  stroke: #35424B;
+}
+.sidebar__icon.submit {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.sidebar__icon.submit:hover {
+  background-color: #28f697;
+}
+.sidebar__icon.submit:hover > .sidebar__icon {
+  background-color: #28f697;
+}
+.sidebar__icon.submit.active, .sidebar__icon.submit:active, .sidebar__icon.submit:focus-visible {
+  background-color: #28f697;
+  color: #35424B;
+}
+.sidebar__icon.submit.active > .sidebar__icon, .sidebar__icon.submit:active > .sidebar__icon, .sidebar__icon.submit:focus-visible > .sidebar__icon {
+  background-color: #28f697;
+}
+.sidebar__icon.submit.active > .sidebar__icon svg, .sidebar__icon.submit:active > .sidebar__icon svg, .sidebar__icon.submit:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.sidebar__icon.submit.active svg, .sidebar__icon.submit:active svg, .sidebar__icon.submit:focus-visible svg {
   stroke: #35424B;
 }
 .sidebar.open {
@@ -2727,6 +3263,10 @@ th {
     height: auto;
   }
 }
+.content-category input::-moz-placeholder {
+  color: #BBFCDE;
+  opacity: 1;
+}
 .content-category input::placeholder {
   color: #BBFCDE;
   opacity: 1;
@@ -2854,6 +3394,10 @@ th {
   -webkit-transition: width 0.4s ease-in-out;
   color: #35424B;
   border: 1px solid #35424B;
+}
+.input_style::-moz-placeholder {
+  color: #35424B;
+  opacity: 1;
 }
 .input_style::placeholder {
   color: #35424B;
@@ -2998,7 +3542,9 @@ th {
   pointer-events: none;
 }
 .container-right .card_calendar .date-time-formate {
+  width: -moz-max-content;
   width: max-content;
+  height: -moz-max-content;
   height: max-content;
   position: relative;
   display: flex;
@@ -3012,7 +3558,9 @@ th {
 }
 .container-right .card_calendar .date-time-value {
   display: block;
+  height: -moz-max-content;
   height: max-content;
+  width: -moz-max-content;
   width: max-content;
   position: relative;
   left: 40%;
@@ -3116,7 +3664,8 @@ th {
   width: 3.5rem;
   height: auto;
   padding: 0.5rem;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
   align-items: center;
   background: #ffffff;
 }
@@ -3160,16 +3709,9 @@ th {
   width: 3rem;
   height: 3rem;
   transition: all 0.3s ease-in-out;
-  top: calc(-3rem / 2.3);
   display: block;
-  position: absolute;
-  right: calc(100% + 10px);
   cursor: pointer;
-  z-index: 99;
-  border: 3px solid #35424B;
-  outline: 2px solid #35424B;
-  border-radius: 100%;
-  box-shadow: none;
+  z-index: 5;
 }
 .right__open:hover {
   background-color: #0b0d0f;
@@ -3221,9 +3763,30 @@ th {
 .right__open.delete.active svg, .right__open.delete:active svg, .right__open.delete:focus-visible svg {
   stroke: #35424B;
 }
+.right__open.submit {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.right__open.submit:hover {
+  background-color: #28f697;
+}
+.right__open.submit:hover > .sidebar__icon {
+  background-color: #28f697;
+}
+.right__open.submit.active, .right__open.submit:active, .right__open.submit:focus-visible {
+  background-color: #28f697;
+  color: #35424B;
+}
+.right__open.submit.active > .sidebar__icon, .right__open.submit:active > .sidebar__icon, .right__open.submit:focus-visible > .sidebar__icon {
+  background-color: #28f697;
+}
+.right__open.submit.active > .sidebar__icon svg, .right__open.submit:active > .sidebar__icon svg, .right__open.submit:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.right__open.submit.active svg, .right__open.submit:active svg, .right__open.submit:focus-visible svg {
+  stroke: #35424B;
+}
 .right__content {
-  padding: 0px;
-  background-color: #20282d;
   border-radius: 10px;
   color: white;
   display: none;
@@ -3244,7 +3807,7 @@ th {
   display: grid;
   grid-template-columns: 1fr;
   gap: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 .item__header-title {
   font-size: 0.875rem;
@@ -3331,6 +3894,29 @@ th {
 .item__header-btn.delete.active svg, .item__header-btn.delete:active svg, .item__header-btn.delete:focus-visible svg {
   stroke: #35424B;
 }
+.item__header-btn.submit {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.item__header-btn.submit:hover {
+  background-color: #28f697;
+}
+.item__header-btn.submit:hover > .sidebar__icon {
+  background-color: #28f697;
+}
+.item__header-btn.submit.active, .item__header-btn.submit:active, .item__header-btn.submit:focus-visible {
+  background-color: #28f697;
+  color: #35424B;
+}
+.item__header-btn.submit.active > .sidebar__icon, .item__header-btn.submit:active > .sidebar__icon, .item__header-btn.submit:focus-visible > .sidebar__icon {
+  background-color: #28f697;
+}
+.item__header-btn.submit.active > .sidebar__icon svg, .item__header-btn.submit:active > .sidebar__icon svg, .item__header-btn.submit:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.item__header-btn.submit.active svg, .item__header-btn.submit:active svg, .item__header-btn.submit:focus-visible svg {
+  stroke: #35424B;
+}
 .item__upload {
   display: flex;
   flex-direction: column;
@@ -3405,6 +3991,29 @@ th {
   stroke: #35424B;
 }
 .item__upload-btn.delete.active svg, .item__upload-btn.delete:active svg, .item__upload-btn.delete:focus-visible svg {
+  stroke: #35424B;
+}
+.item__upload-btn.submit {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.item__upload-btn.submit:hover {
+  background-color: #28f697;
+}
+.item__upload-btn.submit:hover > .sidebar__icon {
+  background-color: #28f697;
+}
+.item__upload-btn.submit.active, .item__upload-btn.submit:active, .item__upload-btn.submit:focus-visible {
+  background-color: #28f697;
+  color: #35424B;
+}
+.item__upload-btn.submit.active > .sidebar__icon, .item__upload-btn.submit:active > .sidebar__icon, .item__upload-btn.submit:focus-visible > .sidebar__icon {
+  background-color: #28f697;
+}
+.item__upload-btn.submit.active > .sidebar__icon svg, .item__upload-btn.submit:active > .sidebar__icon svg, .item__upload-btn.submit:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.item__upload-btn.submit.active svg, .item__upload-btn.submit:active svg, .item__upload-btn.submit:focus-visible svg {
   stroke: #35424B;
 }
 .item__upload-content {
@@ -3488,6 +4097,7 @@ th {
 .item__form-close input::-webkit-scrollbar-thumb {
   background: #20282d;
   border-radius: 10px;
+  -webkit-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
 }
 .item__form-input div::-webkit-scrollbar-thumb:hover,
@@ -3625,6 +4235,29 @@ th {
   stroke: #35424B;
 }
 .item__form-btn.delete.active svg, .item__form-btn.delete:active svg, .item__form-btn.delete:focus-visible svg {
+  stroke: #35424B;
+}
+.item__form-btn.submit {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.item__form-btn.submit:hover {
+  background-color: #28f697;
+}
+.item__form-btn.submit:hover > .sidebar__icon {
+  background-color: #28f697;
+}
+.item__form-btn.submit.active, .item__form-btn.submit:active, .item__form-btn.submit:focus-visible {
+  background-color: #28f697;
+  color: #35424B;
+}
+.item__form-btn.submit.active > .sidebar__icon, .item__form-btn.submit:active > .sidebar__icon, .item__form-btn.submit:focus-visible > .sidebar__icon {
+  background-color: #28f697;
+}
+.item__form-btn.submit.active > .sidebar__icon svg, .item__form-btn.submit:active > .sidebar__icon svg, .item__form-btn.submit:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.item__form-btn.submit.active svg, .item__form-btn.submit:active svg, .item__form-btn.submit:focus-visible svg {
   stroke: #35424B;
 }
 
@@ -3830,6 +4463,29 @@ th {
   .sidebar__open.delete.active svg, .sidebar__open.delete:active svg, .sidebar__open.delete:focus-visible svg {
     stroke: #35424B;
   }
+  .sidebar__open.submit {
+    background-color: #BBFCDE;
+    color: #35424B;
+  }
+  .sidebar__open.submit:hover {
+    background-color: #28f697;
+  }
+  .sidebar__open.submit:hover > .sidebar__icon {
+    background-color: #28f697;
+  }
+  .sidebar__open.submit.active, .sidebar__open.submit:active, .sidebar__open.submit:focus-visible {
+    background-color: #28f697;
+    color: #35424B;
+  }
+  .sidebar__open.submit.active > .sidebar__icon, .sidebar__open.submit:active > .sidebar__icon, .sidebar__open.submit:focus-visible > .sidebar__icon {
+    background-color: #28f697;
+  }
+  .sidebar__open.submit.active > .sidebar__icon svg, .sidebar__open.submit:active > .sidebar__icon svg, .sidebar__open.submit:focus-visible > .sidebar__icon svg {
+    stroke: #35424B;
+  }
+  .sidebar__open.submit.active svg, .sidebar__open.submit:active svg, .sidebar__open.submit:focus-visible svg {
+    stroke: #35424B;
+  }
   .sidebar__open svg {
     height: 23px;
     width: 23px;
@@ -3854,7 +4510,6 @@ th {
     top: 0;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
-    width: 50px;
     background-color: #20282d;
     margin-left: 10px;
     transform: translateX(0%);
@@ -3897,4 +4552,4 @@ th {
     grid-column: 1;
     grid-column-end: 3;
   }
-}
+}/*# sourceMappingURL=main.css.map */

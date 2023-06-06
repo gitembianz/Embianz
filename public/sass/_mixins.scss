@@ -87,6 +87,12 @@
      @include BtnHover($hoverEffect: darken($alertColor, 20%));
      background-color: $alertColor;
    }
+
+   &.submit {
+     @include BtnHover($hoverEffect: darken($secondColor, 30%), $activeEffect: darken($secondColor, 30%));
+     background-color: $secondColor;
+     color: $mainBg;
+   }
  }
 
  @mixin scrollbar {

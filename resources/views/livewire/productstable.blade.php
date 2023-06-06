@@ -1,80 +1,94 @@
-<div>
-  <div class="wid-5 display-f m-a jus-sb">
-      <div class="">
-          <input wire:model.debounce.200ms="search" type="text" placeholder="Search product...">
-      </div>
-      <div class="">
-        <label for="orderBy"> Order by:</label>
-          <select id="orderBy" wire:model="orderBy">
-              <option value="id">ID</option>
-              <option value="name">Name</option>
-              <option value="short_description">Short Description</option>
-              <option value="created_at">Created At Date</option>
-          </select>
-          <label for="orderAsc"> Order direction: </label>
-          <select id="orderAsc" wire:model="orderAsc">
-            <option value="1">Ascending</option>
-            <option value="0">Descending</option>
-        </select>
-      </div>
-
-      <div class="">
-        <label for="perPage"> Per Page : </label>
-          <select id="perPage" wire:model="perPage">
-              <option>10</option>
-              <option>25</option>
-              <option>50</option>
-              <option>100</option>
-          </select>
-      </div>
-      <div>
-        @if ($checked)
-        <div class="dropdown ml-4">
-            <button class="" data-toggle="dropdown">With Checked({{ count($checked) }})</button>
-            <div class="dropdown-content">
-                <a href="#" class="dropdown-item" type="button"
-                    onclick="confirm('Are you sure you want to delete these Records?') || event.stopImmediatePropagation()"
-                    wire:click="deleteRecords()">
-                    Delete
-                </a>
-                <a href="#" class="dropdown-content" type="button"
-                    onclick="confirm('Are you sure you want to export these Records?') || event.stopImmediatePropagation()"
-                    wire:click="exportSelected()">
-                    Export
-                </a>
-
-            </div>
+<div class="item">
+    <div class="item__form">
+        <div class="item__form-input">
+            <input wire:model.debounce.200ms="search" type="text" required>
+            <span>Search product...</span>
         </div>
+        <div class="item__form-input">
+            <select id="orderBy" wire:model="orderBy">
+                <option value="id">ID</option>
+                <option value="name">Name</option>
+                <option value="short_description">Short Description</option>
+                <option value="created_at">Created At Date</option>
+            </select>
+            <span>Search product...</span>
+        </div>
+        <div class="item__form-input">
+            <select id="orderAsc" wire:model="orderAsc">
+                <option value="1">Ascending</option>
+                <option value="0">Descending</option>
+            </select>
+            <span>Order direction:</span>
+        </div>
+        <div class="item__form-input">
+            <select id="perPage" wire:model="perPage">
+                <option>10</option>
+                <option>25</option>
+                <option>50</option>
+                <option>100</option>
+            </select>
+            <span>Per Page :</span>
+        </div>
+
+        {{-- If you want to delete, its message --}}
+        @if ($checked)
+            <div class="dropdown">
+                <span class="dropdown-name">With Checked ({{ count($checked) }})</span>
+
+                <div class="dropdown-content">
+                    <button class="dropdown-item delete" type="button"
+                        onclick="confirm('Are you sure you want to delete these Records?') || event.stopImmediatePropagation()"
+                        wire:click="deleteRecords()">
+                        Delete
+                    </button>
+                    <button class="dropdown-item submit" type="button"
+                        onclick="confirm('Are you sure you want to export these Records?') || event.stopImmediatePropagation()"
+                        wire:click="exportSelected()">
+                        Export
+                    </button>
+                </div>
+            </div>
         @endif
     </div>
-  </div>
-  <table class="wid-10 mt-1 p-1">
-      <thead>
-          <tr>
-            <th><input type="checkbox" wire:model="selectPage"></th>
-              <th class="wid-1">ID</th>
-              <th class="wid-2">Name</th>
-              <th class="wid-3">Short Description</th>
-              <th class="wid-2">Created At</th>
-              <th class="wid-2">Action</th>
-          </tr>
-      </thead>
-      <tbody>
-          @foreach($products as $product)
-              <tr >
-                <td><input type="checkbox" value="{{ $product->id }}" wire:model="checked"></td>
-                  <td class="wid-1">{{ $product->id }}</td>
-                  <td class="wid-2"><a href="/show_product/{{ $product->id }}'" class="link-name">{{ $product->name }}</a></td>
-                  <td class="wid-3">{{ $product->short_description }}</td>
-                  <td class="wid-2">{{ $product->created_at }}</td>
-                  <td>
-                    <button class="btn btn-danger btn-sm"
-                        onclick="confirm('Are you sure you want to delete this record?') || event.stopImmediatePropagation()"
-                        wire:click="deleteSingleRecord({{ $product->id }})">x</button>
-                </td>
-              </tr>
-          @endforeach
-      </tbody>
-  </table>
-   <div class="">{{ $products->links() }}</div>
+
+
+    {{-- Livewire Table --}}
+    <table class="livewire-table">
+        <thead>
+            <tr>
+                <th>Check<input type="checkbox" wire:model="selectPage"></th>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Short Description</th>
+                <th>Created At</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($products as $product)
+                <tr>
+                    <td data-title="Check"><input type="checkbox" value="{{ $product->id }}" wire:model="checked"></td>
+                    <td data-title="ID">{{ $product->id }}</td>
+                    <td data-title="Name"><a href="/show_product/{{ $product->id }}'">{{ $product->name }}</a></td>
+                    <td data-title="Short Description">{{ $product->short_description }}</td>
+                    <td data-title="Created At">{{ $product->created_at }}</td>
+                    <td data-title="Action">
+                        <button class="delete"
+                            onclick="confirm('Are you sure you want to delete this record?') || event.stopImmediatePropagation()"
+                            wire:click="deleteSingleRecord({{ $product->id }})">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
+                                fill="none" stroke="#BBFCDE" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="15" y1="9" x2="9" y2="15"></line>
+                                <line x1="9" y1="9" x2="15" y2="15"></line>
+                            </svg>
+                        </button>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+
+    <div class="">{{ $products->links() }}</div>
 </div>

@@ -22,6 +22,7 @@
 
     position: relative;
     padding: $padding * 2;
+    margin: 0 calc($margin * 1.5);
     outline: none;
 
     // Modal title
@@ -42,32 +43,18 @@
       width: 100%;
       cursor: pointer;
       font-weight: $font-weight-bold;
+    }
 
-      // Submit Button
-      &.submit {
-        @include BtnHover($hoverEffect: darken($secondColor, 30%), $activeEffect: darken($secondColor, 30%));
-        background-color: $secondColor;
-        color: $mainBg;
-      }
+    //Modal closing button in the corner
+    span {
+      position: absolute;
+      border-radius: 100%;
 
-      // Cancel Button
-      &.close,
-      &.cancel {
-        @include BtnHover($hoverEffect: darken($alertColor, 30%), $activeEffect: darken($alertColor, 30%), $textColor: $secondColor);
-        background-color: $alertColor;
-      }
+      width: calc($BtnSize / 1.5);
+      height: calc($BtnSize / 1.5);
 
-      // Closing Button in the corner
-      &.close {
-        position: absolute;
-        border-radius: 100%;
-
-        width: calc($BtnSize / 1.5);
-        height: calc($BtnSize / 1.5);
-
-        top: - calc($BtnSize / 4);
-        right: - calc($BtnSize / 4);
-      }
+      top: - calc($BtnSize / 4);
+      right: - calc($BtnSize / 4);
     }
   }
 }

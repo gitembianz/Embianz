@@ -6,7 +6,7 @@
     display: grid;
     grid-template-columns: 1fr;
     gap: $gap;
-    margin-bottom: $margin;
+    margin-bottom: $margin * 2;
 
     &-title {
       @include standart-Font;
@@ -131,5 +131,4 @@
       border: 1px solid black;
     }
   }
-
 }
