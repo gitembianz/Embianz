@@ -1754,6 +1754,10 @@ th {
   text-decoration: underline;
 }
 
+.th_checked {
+  background: rgba(3, 169, 244, 0.6588235294) !important;
+}
+
 .livewire-table {
   border-collapse: collapse;
   margin: 0;

@@ -8,6 +8,9 @@ th {
   text-decoration: underline;
 }
 
+.th_checked{
+  background: #03a9f4a8 !important;
+}
 
 
 .livewire-table {
@@ -42,6 +45,8 @@ th {
         gap: 10px;
       }
     }
+
+
   }
 
   tbody tr:nth-child(even) {

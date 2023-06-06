@@ -66,7 +66,9 @@
         </thead>
         <tbody>
             @foreach ($products as $product)
-                <tr>
+                <tr class="@if ($this->isChecked($product->id))
+                  th_checked
+              @endif">
                     <td data-title="Check"><input type="checkbox" value="{{ $product->id }}" wire:model="checked"></td>
                     <td data-title="ID">{{ $product->id }}</td>
                     <td data-title="Name"><a href="/show_product/{{ $product->id }}'">{{ $product->name }}</a></td>

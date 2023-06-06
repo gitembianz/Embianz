@@ -17,6 +17,8 @@ class Productstable extends Component
   public $orderBy = 'id';
   public $orderAsc = true;
   public $checked = [];
+  public $selectPage = false;
+    public $selectAll = false;
 
   public function render()
   {
@@ -33,18 +35,37 @@ class Productstable extends Component
 
     $products = Product::whereKey($this->checked)->get();
 
-        foreach ($products as $product) {
-            $id = $product->id;
-            $producttodel = Product::find($id);
-            $productcat = Products_categories::where('product_id', $id)->first();
-if($productcat != NULL){$productcat->delete();}
+    foreach ($products as $product) {
+      $id = $product->id;
+      $producttodel = Product::find($id);
+      $productcat = Products_categories::where('product_id', $id)->first();
+      if ($productcat != NULL) {
+        $productcat->delete();
+      }
 
 
-            $producttodel->delete();
-        }
+      $producttodel->delete();
+    }
 
     $this->checked = [];
-    session()
-      ->flash('message', 'Selected product deleted succesfuly');
+    session()->flash('info', 'Selected product deleted succesfuly');
   }
+
+  public function deleteSingleRecord($id)
+  {
+    $product = Product::findOrFail($id);
+    $productcat = Products_categories::where('product_id', $id)->first();
+    if ($productcat != NULL) {
+      $productcat->delete();
+    }
+    $product->delete();
+    $this->checked = array_diff($this->checked, [$id]);
+    session()->flash('info', 'Record deleted Successfully');
+  }
+
+  public function isChecked($id)
+  {
+      return in_array($id, $this->checked);
+  }
+
 }
