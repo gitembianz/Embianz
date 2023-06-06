@@ -24,9 +24,10 @@ class dashboardnavbar extends Component
      */
     public function render()
     {
-        $user =Auth::user()->name;
+        $client =Auth::user()->id;
+        $client = [1,3];
         //$bg="color: red";
         //add '$bg' to make it work!
-        return view('components.dashboardnavbar', compact('user'));
+        return view('components.dashboardnavbar')->with('user', 'test');
     }
 }
