@@ -10,6 +10,6 @@
 </div>
 </section>
 {{-- page content end --}}
-<x-dashboardright :todolists="$todolists">
+<x-dashboardright :todolists="$todolists" />
 <x-dashboardscript />
 <x-dashboardfooter />
