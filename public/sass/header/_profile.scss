@@ -18,7 +18,7 @@
   transform: translateY(-100%);
   transition: all $transition;
 
-  z-index: $z-index-medium;
+  z-index: $z-index-medium + 1;
 
   // The both side of Profile (the same options)
   &-top,

@@ -15,11 +15,9 @@
 
 .tabcontent {
   display: none;
-  padding: 6px 12px;
+  padding: $padding;
   border: 1px solid $mainBg;
   border-top: none;
-  height: 100%;
-  max-height: 100% !important;
   border-radius: 0 0 $base-border-radius $base-border-radius;
 }
 

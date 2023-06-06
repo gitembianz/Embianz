@@ -1,29 +1,25 @@
 {{--                   Modals           --}}
 
 {{-- Confirm Delete Category modal --}}
-<div id="confirmmodal-category" class="modal">
-    <div class="modal-content br-xs">
-            <span onclick="document.getElementById('confirmmodal-category').style.display='none'"
-                class="exit">&times;</span>
-            <ul class="p-1">
-                <li>
-                    <h1 class="title talign-c font-xl ls-1 text-white">
-                        {{ __('Are you sure to delete this category ?') }}
-                    </h1>
-                </li>
-                <li>
-                    <form id="deletecategory_form" action="{{ url('/delete_category') }}" method="POST">
-                        @csrf
-                        <ul>
-                            <li class="p-1 font-xl">
-                                <input type="hidden" name="hiddenid" id="hiddenid">
-                                <input type="submit" class="submit br-xs cursor-p" value="Confirm" name="submit">
-                                <input onclick="document.getElementById('confirmmodal-category').style.display='none'"
-                                    class="submit cursor-p br-xs talign-c" value="Cancel">
-                            </li>
-                        </ul>
-                    </form>
-                </li>
-            </ul>
-    </div>
+<div class="modal" id="confirmmodal-category">
+    <form class="modal-content" id="deletecategory_form" action="{{ url('/delete_category') }}" method="POST">
+        @csrf
+        <h1 class="modal-content-title">
+            {{ __('Are you sure to delete this category ?') }}
+        </h1>
+        <input type="hidden" name="hiddenid" id="hiddenid">
+        <input class="modal-content-btn submit" type="submit" value="Confirm" name="submit">
+        <input class="modal-content-btn delete"
+            onclick="document.getElementById('confirmmodal-category').style.display='none'" value="Cancel">
+
+        <span class="modal-content-btn delete"
+            onclick="document.getElementById('confirmmodal-category').style.display='none'">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24" fill="none"
+                stroke="#BBFCDE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </span>
+    </form>
+</div>
 </div>

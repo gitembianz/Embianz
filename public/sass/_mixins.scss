@@ -60,6 +60,7 @@
    outline: none;
    text-decoration: none;
    box-shadow: $BtnShadow;
+   text-align: center;
 
    border: none;
    border-radius: $BtnBorderRadius;
@@ -87,10 +88,10 @@
      background-color: $alertColor;
    }
 
-   //  Edit button for mixin
-   &.edit {
-     @include BtnHover($hoverEffect: darken($editColor, 20%));
-     background-color: $editColor;
+   &.submit {
+     @include BtnHover($hoverEffect: darken($secondColor, 30%), $activeEffect: darken($secondColor, 30%));
+     background-color: $secondColor;
+     color: $mainBg;
    }
  }
 
