@@ -27,26 +27,54 @@
               <option>100</option>
           </select>
       </div>
+      <div>
+        @if ($checked)
+        <div class="dropdown ml-4">
+            <button class="" data-toggle="dropdown">With Checked({{ count($checked) }})</button>
+            <div class="dropdown-content">
+                <a href="#" class="dropdown-item" type="button"
+                    onclick="confirm('Are you sure you want to delete these Records?') || event.stopImmediatePropagation()"
+                    wire:click="deleteRecords()">
+                    Delete
+                </a>
+                <a href="#" class="dropdown-content" type="button"
+                    onclick="confirm('Are you sure you want to export these Records?') || event.stopImmediatePropagation()"
+                    wire:click="exportSelected()">
+                    Export
+                </a>
+
+            </div>
+        </div>
+        @endif
+    </div>
   </div>
   <table class="wid-10 mt-1 p-1">
       <thead>
           <tr>
+            <th><input type="checkbox" wire:model="selectPage"></th>
               <th class="wid-1">ID</th>
               <th class="wid-2">Name</th>
               <th class="wid-3">Short Description</th>
               <th class="wid-2">Created At</th>
+              <th class="wid-2">Action</th>
           </tr>
       </thead>
       <tbody>
           @foreach($products as $product)
-              <tr>
+              <tr >
+                <td><input type="checkbox" value="{{ $product->id }}" wire:model="checked"></td>
                   <td class="wid-1">{{ $product->id }}</td>
                   <td class="wid-2"><a href="/show_product/{{ $product->id }}'" class="link-name">{{ $product->name }}</a></td>
                   <td class="wid-3">{{ $product->short_description }}</td>
                   <td class="wid-2">{{ $product->created_at }}</td>
+                  <td>
+                    <button class="btn btn-danger btn-sm"
+                        onclick="confirm('Are you sure you want to delete this record?') || event.stopImmediatePropagation()"
+                        wire:click="deleteSingleRecord({{ $product->id }})">x</button>
+                </td>
               </tr>
           @endforeach
       </tbody>
   </table>
-   <div class="">{!! $products->links() !!}</div>
+   <div class="">{{ $products->links() }}</div>
 </div>

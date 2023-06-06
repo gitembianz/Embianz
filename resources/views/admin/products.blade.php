@@ -28,7 +28,7 @@
 
             {{-- Tabel by Livewire start --}}
             {{-- @livewire('productstable') --}}
-            <livewire:productstable>
+            <livewire:productstable />
               {{-- Tabel by Livewire end --}}
             {{--End Table Category --}}
         </div>

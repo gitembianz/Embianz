@@ -31,8 +31,8 @@
         <div class="item__header-buttons">
             <a class="item__header-btn" href="{{ route('category') }}">Back</a>
             <a class="item__header-btn" href="{{ route('newcategory') }}">New</a>
-            <input class="item__header-btn" type="button" value="Delete" name="delete" id="deletecat">
-            <input class="item__header-btn" type="button" value="Edit" name="edit" id="edit">
+            <input class="item__header-btn delete" type="button" value="Delete" name="delete" id="deletecat">
+            <input class="item__header-btn edit" type="button" value="Edit" name="edit" id="edit">
         </div>
     </div>
 
@@ -53,9 +53,6 @@
             <div class="item__form-input-close">
                 <div id="category_name">{{ $data->name }}</div>
                 <span>Category Name</span>
-
-       
-
             </div>
             <div class="item__form-input-close">
                 <div id="category_parrent">{{ $data->parrent }}</div>
@@ -86,21 +83,21 @@
                 <div id="seo_title">{{ $data->seo_title }}</div>
                 <span>SEO Title</span>
             </div>
-            <div class="item__form-input">
-                <label>Create date / time</label>
-                <span>{{ $data->created_at }}</span>
+            <div class="item__form-input-close">
+                <div>{{ $data->created_at }}</div>
+                <span>Create date / time</span>
             </div>
-            <div class="item__form-input">
-                <label>Create by</label>
-                <span>{{ $data->createdby }}</span>
+            <div class="item__form-input-close">
+                <div>{{ $data->createdby }}</div>
+                <span>Create by</span>
             </div>
-            <div class="item__form-input">
-                <label>Updated date / time</label>
-                <span>{{ $data->updated_at }}</span>
+            <div class="item__form-input-close">
+                <div>{{ $data->updated_at }}</div>
+                <span>Updated date / time</span>
             </div>
-            <div class="item__form-input">
-                <label>Last mofified by</label>
-                <span>{{ $data->lastmodifiedby }}</span>
+            <div class="item__form-input-close">
+                <div>{{ $data->lastmodifiedby }}</div>
+                <span>Last modified by</span>
             </div>
 
             <input class="item__form-btn item__form-long" type="submit" style="display: none" value="Update"
@@ -123,9 +120,9 @@
                                     <input type="file" name="media[]" id="imgUpload" multiple
                                         accept="image/*,video/*" onchange="filesManager(this.files)">
 
-                                    <label class="upload wid-3" for="imgUpload"><span><svg width="40px" height="40px"
-                                                viewBox="0 0 1024.00 1024.00" class="icon" version="1.1"
-                                                xmlns="http://www.w3.org/2000/svg" fill="#000000">
+                                    <label class="upload wid-3" for="imgUpload"><span><svg width="40px"
+                                                height="40px" viewBox="0 0 1024.00 1024.00" class="icon"
+                                                version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000">
                                                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                                                 <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
                                                     stroke-linejoin="round"></g>
