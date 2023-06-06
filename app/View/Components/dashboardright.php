@@ -7,6 +7,8 @@ use Illuminate\View\Component;
 
 class dashboardright extends Component
 {
+
+ // public $todolists;
     /**
      * Create a new component instance.
      *
@@ -14,7 +16,7 @@ class dashboardright extends Component
      */
     public function __construct()
     {
-        // $this->$todolists = Todolist::all();
+      //   $this->todolists = $todolists;
     }
 
     /**
