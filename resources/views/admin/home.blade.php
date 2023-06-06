@@ -10,6 +10,7 @@
 </div>
 </section>
 {{-- page content end --}}
-<x-dashboardright />
+<?php $todolists = ""; ?>
+<x-dashboardright :todolists="$todolists" />
 <x-dashboardscript />
 <x-dashboardfooter />

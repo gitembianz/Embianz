@@ -14,7 +14,7 @@ class dashboardright extends Component
      */
     public function __construct()
     {
-        //
+        // $this->$todolists = Todolist::all();
     }
 
     /**
@@ -25,6 +25,6 @@ class dashboardright extends Component
     public function render()
     {
         $todolists = Todolist::all();
-        return view('components.dashboardright', ['todolists' => $todolists]);
+        return view('components.dashboardright', compact('todolists'));
     }
 }
