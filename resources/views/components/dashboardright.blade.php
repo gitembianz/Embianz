@@ -71,8 +71,7 @@
                         </div>
                     </form>
                     {{-- if tasks exist --}}
-                    {{-- <span style="z-index: 9999">ttt= {{ $content }}</span> --}}
-                                {{-- @if (!$todolists)
+                                @if (count($todolists))
                     <div class="list-group-div mb-1">
                         <ul class="list-group">
                             @foreach ($todolists as $todolist)
@@ -100,7 +99,7 @@
                         <p class="count talign-c text-bg pt-1">You have {{ count($todolists) }} tasks active!</p>
                     @else
                         <p class="talign-c text-bg mt-1">You have no tasks!</p>
-                    @endif --}}
+                    @endif
                 </div>
 
             </div>
