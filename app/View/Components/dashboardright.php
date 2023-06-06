@@ -25,8 +25,6 @@ class dashboardright extends Component
     public function render()
     {
         $todolists = Todolist::all();
-        $content = $todolists->first();
-        $content = $content->content;
-        return view('components.dashboardright')->with('content','123');
+        return view('components.dashboardright', compact('todolists'));
     }
 }
