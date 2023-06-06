@@ -68,7 +68,7 @@
     opacity: 0;
     width: 0;
     height: 0;
-    transition: box-shadow .0s ease-in-out;
+    transition: $transition, box-shadow .0s ease-in-out;
   }
 
   // SideBar Opened

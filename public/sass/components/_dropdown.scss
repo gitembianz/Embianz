@@ -1,24 +1,55 @@
-li.dropdown {
-  display: inline-block;
-}
+.dropdown {
 
-.dropdown-content {
-  display: none;
-  position: absolute;
-  min-width: 10vh;
-  z-index: 1;
-}
+  width: 100%;
+  height: $BtnSize;
+  position: relative;
+  box-shadow: $BtnShadow;
+  border-radius: $BtnBorderRadius;
 
-.dropdown-content a {
-  text-decoration: none;
-  display: block;
-  text-align: left;
+  &-name {
+    @include centering;
+    @include standart-Font;
+    width: 100%;
+    height: 100%;
 
-}
+    position: relative;
+    color: $mainBg;
+    background-color: $white;
+    border-radius: $BtnBorderRadius;
+    border: 1.5px solid $mainBg;
+
+    z-index: $z-index-big + 55;
+  }
 
 
-.dropdown:hover .dropdown-content {
-  display: block;
+  &-content {
+    @include centering;
+    display: none;
+    position: absolute;
+    top: 85%;
+    left: 0;
+    gap: $gap;
+    padding: 20px 10px 10px;
+    border: 1.5px solid $mainBg;
+
+    width: 100%;
+    background: white;
+    box-shadow: $BtnShadow;
+    border-radius: 0 0 $BtnBorderRadius $BtnBorderRadius;
+    flex-direction: column;
+    z-index: $z-index-big - 55;
+  }
+
+  &-item {
+    @include standart-Btn;
+    width: 100%;
+  }
+
+  &:hover {
+    .dropdown-content {
+      display: flex;
+    }
+  }
 }
 
 

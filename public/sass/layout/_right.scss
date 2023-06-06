@@ -460,7 +460,7 @@
     @include standart-Btn;
     display: block;
     cursor: pointer;
-    z-index: $z-index-big;
+    z-index: $z-index-medium;
   }
 
   &__content {
