@@ -2,7 +2,7 @@ on: push
 name: Deploy Dev to dev.embianz.com on push
 jobs:
   web-deploy:
-    name: Deploy
+    name: Deploy to Dev
     runs-on: ubuntu-latest
     steps:
     - name: Get latest code
