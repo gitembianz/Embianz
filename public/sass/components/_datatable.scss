@@ -8,10 +8,6 @@ th {
   text-decoration: underline;
 }
 
-.th_checked{
-  background: #03a9f4a8 !important;
-}
-
 
 .livewire-table {
   border-collapse: collapse;
@@ -19,6 +15,7 @@ th {
   width: 100%;
   box-shadow: $BtnShadow;
   margin: calc($gap * 3) 0;
+  font-weight: bold;
 
   tr {
     padding: $padding;
@@ -42,6 +39,8 @@ th {
 
       &:first-child {
         display: flex;
+        flex-direction: row-reverse;
+        align-items: center;
         gap: 10px;
       }
     }
@@ -50,7 +49,7 @@ th {
   }
 
   tbody tr:nth-child(even) {
-    background-color: $secondColor;
+    background-color: lighten($gray, 25);
   }
 
   button {
@@ -64,7 +63,7 @@ th {
   }
 }
 
-@media (max-width: 450px) {
+@media (max-width: 530px) {
   .livewire-table {
     border: 3px solid $mainBg;
 
@@ -94,22 +93,13 @@ th {
       margin-right: 10px;
     }
 
-    tbody tr:nth-child(even) {
-      td:nth-child(even) {
-        background-color: darken($secondColor, 10%);
-      }
-    }
-
-    tbody tr:nth-child(odd) {
-      background-color: darken($white, 5%);
-
-      td:nth-child(even) {
-        background-color: darken($white, 10%);
-      }
-    }
-
     button {
       display: unset;
     }
   }
+}
+
+.th_checked {
+  background: lighten($checkColor, 40) !important;
+  border: 1px solid lighten($checkColor, 20);
 }
