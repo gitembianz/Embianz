@@ -1438,6 +1438,64 @@ main {
   stroke: #35424B;
 }
 
+input[type=checkbox] {
+  position: relative;
+  border: 1px solid #20282d;
+  border-radius: 10px;
+  background: none;
+  cursor: pointer;
+  height: 2.5rem;
+  width: 2.5rem;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  transition: 0.3s ease-in-out;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+}
+input[type=checkbox]:hover {
+  background-color: rgba(146, 220, 254, 0.6588235294);
+}
+input[type=checkbox]:hover > .sidebar__icon {
+  background-color: rgba(146, 220, 254, 0.6588235294);
+}
+input[type=checkbox].active, input[type=checkbox]:active, input[type=checkbox]:focus-visible {
+  background-color: rgba(3, 169, 244, 0.6588235294);
+  color: #35424B;
+}
+input[type=checkbox].active > .sidebar__icon, input[type=checkbox]:active > .sidebar__icon, input[type=checkbox]:focus-visible > .sidebar__icon {
+  background-color: rgba(3, 169, 244, 0.6588235294);
+}
+input[type=checkbox].active > .sidebar__icon svg, input[type=checkbox]:active > .sidebar__icon svg, input[type=checkbox]:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+input[type=checkbox].active svg, input[type=checkbox]:active svg, input[type=checkbox]:focus-visible svg {
+  stroke: #35424B;
+}
+
+input[type=checkbox]:before {
+  content: "";
+  position: absolute;
+  right: 45%;
+  top: 45%;
+  width: 8px;
+  height: 16px;
+  border: solid #FFF;
+  border-width: 0 3px 3px 0;
+  margin: 0px 0px 0 0px;
+  transform: rotate(45deg) translate(-50%, -50%);
+  z-index: 2;
+  opacity: 0.3;
+  transition: 0.3s ease-in-out;
+}
+
+input[type=checkbox]:checked {
+  background-color: rgb(3, 169, 244);
+}
+
+input[type=checkbox]:checked:before {
+  opacity: 1;
+}
+
 .dropdown {
   width: 100%;
   height: 3rem;
@@ -1757,16 +1815,13 @@ th {
   text-decoration: underline;
 }
 
-.th_checked {
-  background: rgba(3, 169, 244, 0.6588235294) !important;
-}
-
 .livewire-table {
   border-collapse: collapse;
   margin: 0;
   width: 100%;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   margin: 30px 0;
+  font-weight: bold;
 }
 .livewire-table tr {
   padding: 10px;
@@ -1786,10 +1841,12 @@ th {
 }
 .livewire-table thead th:first-child {
   display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
   gap: 10px;
 }
 .livewire-table tbody tr:nth-child(even) {
-  background-color: #BBFCDE;
+  background-color: #e9e9e9;
 }
 .livewire-table button {
   display: flex;
@@ -1889,7 +1946,7 @@ th {
   text-decoration: underline;
 }
 
-@media (max-width: 450px) {
+@media (max-width: 530px) {
   .livewire-table {
     border: 3px solid #35424B;
   }
@@ -1914,19 +1971,15 @@ th {
     font-size: 1rem;
     margin-right: 10px;
   }
-  .livewire-table tbody tr:nth-child(even) td:nth-child(even) {
-    background-color: #8afac6;
-  }
-  .livewire-table tbody tr:nth-child(odd) {
-    background-color: #f2f2f2;
-  }
-  .livewire-table tbody tr:nth-child(odd) td:nth-child(even) {
-    background-color: #e6e6e6;
-  }
   .livewire-table button {
     display: unset;
   }
 }
+.th_checked {
+  background: rgba(197, 236, 254, 0.6588235294) !important;
+  border: 1px solid rgba(96, 204, 253, 0.6588235294);
+}
+
 .button {
   display: inline-block;
   padding: 10px;
