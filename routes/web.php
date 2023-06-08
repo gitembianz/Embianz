@@ -1,11 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UploadController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\TodolistController;
-use App\Http\Controllers\UploadController;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,3 +61,24 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'])-
 route::get('/redirect', [HomeController::class, 'redirect'])->middleware('auth','verified')->name('redirect');
 
 
+//Clear Cache
+
+Route::get('/cleareverything', function () {
+  $clearcache = Artisan::call('cache:clear');
+  echo "Cache cleared<br>";
+
+  $clearview = Artisan::call('view:clear');
+  echo "View cleared<br>";
+
+  $clearconfig = Artisan::call('config:cache');
+  echo "Config cleared<br>";
+
+  $cleardebugbar = Artisan::call('debugbar:clear');
+  echo "Debug Bar cleared<br>";
+});
+
+Route::get('/updateapp', function()
+{
+    exec('composer dump-autoload');
+    echo 'composer dump-autoload complete';
+});

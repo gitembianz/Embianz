@@ -5,7 +5,7 @@ namespace App\View\Components;
 use App\Models\Todolist;
 use Illuminate\View\Component;
 
-class dashboardright extends Component
+class Dashboardright extends Component
 {
 
  // public $todolists;

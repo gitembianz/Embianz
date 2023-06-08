@@ -4,7 +4,7 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class dashboardmodals extends Component
+class Dashboardmodals extends Component
 {
     /**
      * Create a new component instance.

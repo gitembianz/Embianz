@@ -5,7 +5,7 @@ namespace App\View\Components;
 use App\Models\Category;
 use Illuminate\View\Component;
 
-class dashboardscriptcategory extends Component
+class Dashboardscriptcategory extends Component
 {
     /**
      * Create a new component instance.

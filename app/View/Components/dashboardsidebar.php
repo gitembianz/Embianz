@@ -4,7 +4,7 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class dashboardsidebar extends Component
+class Dashboardsidebar extends Component
 {
     /**
      * Create a new component instance.

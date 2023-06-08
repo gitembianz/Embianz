@@ -4,7 +4,7 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class dashboardscriptproduct extends Component
+class Dashboardscriptproduct extends Component
 {
     /**
      * Create a new component instance.

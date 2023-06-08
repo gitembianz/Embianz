@@ -5,7 +5,7 @@ namespace App\View\Components;
 use Illuminate\View\Component;
 use Illuminate\Support\Facades\Auth;
 
-class dashboardnavbar extends Component
+class Dashboardnavbar extends Component
 {
     /**
      * Create a new component instance.
