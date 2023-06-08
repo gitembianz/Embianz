@@ -1951,10 +1951,10 @@ th {
     border: 3px solid #35424B;
   }
   .livewire-table thead tr {
-    display: none;
-  }
-  .livewire-table tr {
     display: block;
+  }
+  .livewire-table thead th:not(:first-child) {
+    display: none;
   }
   .livewire-table th,
   .livewire-table td {

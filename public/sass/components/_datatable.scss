@@ -68,12 +68,13 @@ th {
     border: 3px solid $mainBg;
 
     thead tr {
+      display: block;
+    }
+
+    thead th:not(:first-child) {
       display: none;
     }
 
-    tr {
-      display: block;
-    }
 
     th,
     td {
