@@ -16,7 +16,7 @@ class Dashboardright extends Component
      */
     public function __construct()
     {
-
+//
     }
 
     /**
