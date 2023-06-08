@@ -75,10 +75,14 @@
         <thead>
             <tr>
                 <th>Check<input type="checkbox" wire:model="selectPage"></th>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Short Description</th>
-                <th>Created At</th>
+                <th class="cursor-p" wire:click="sortBy('id')">ID
+                </th>
+                <th class="cursor-p" wire:click="sortBy('name')">Name
+                </th>
+                <th class="cursor-p" wire:click="sortBy('short_description')">Short Description
+                </th>
+                <th class="cursor-p" wire:click="sortBy('created_at')">Created At
+                </th>
                 <th>Action</th>
             </tr>
         </thead>

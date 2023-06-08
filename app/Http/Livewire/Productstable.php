@@ -21,6 +21,7 @@ class Productstable extends Component
   public $selectPage = false;
   public $selectAll = false;
 
+
   public function render()
   {
     return view('livewire.productstable', [
@@ -41,6 +42,24 @@ class Productstable extends Component
   public function updatedChecked()
   {
     $this->selectPage = false;
+  }
+
+  public function sortBy($columnName){
+
+    if($this->orderBy === $columnName){
+      $this->orderAsc = $this->swapSortDirection();
+    }else{
+      $this->orderAsc = '1';
+    }
+
+    $this->orderBy = $columnName;
+
+  }
+
+  public function swapSortDirection(){
+
+    return $this->orderAsc === '1' ? '0' : '1';
+
   }
 
 
