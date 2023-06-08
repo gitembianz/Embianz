@@ -13,7 +13,7 @@ class Dashboardscriptproduct extends Component
      */
     public function __construct()
     {
-        //
+        //test
     }
 
     /**

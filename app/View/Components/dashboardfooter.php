@@ -13,7 +13,7 @@ class Dashboardfooter extends Component
      */
     public function __construct()
     {
-        //
+        //.
     }
 
     /**
