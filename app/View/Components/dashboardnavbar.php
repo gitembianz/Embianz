@@ -19,16 +19,13 @@ class Dashboardnavbar extends Component
       //
     }
 
-    /**
-     * Get the view / contents that represent the component.
-     *
-     * @return \Illuminate\Contracts\View\View|\Closure|string
-     */
+
     public function render()
     {
         $user = Auth::user()->name;
         //$bg="color: red";
         //add '$bg' to make it work!
+        dd($user);
         return view('components.dashboardnavbar', compact('user'));
     }
 }
