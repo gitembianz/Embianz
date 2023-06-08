@@ -51,9 +51,27 @@
         @endif
     </div>
 
+    @if ($selectPage)
+    <div class="pt-2 talign-c">
+
+      @if ($selectAll)
+        <div>
+            You have selected all <strong>{{ $products->total() }}</strong> items.
+        </div>
+        @else
+        <div>
+            You have selected <strong>{{ count($checked) }}</strong> items, Do you want to Select All?
+            <a href="#" class="ml-2" wire:click="selectAll">Select All</a>
+        </div>
+        @endif
+
+    </div>
+    @endif
+
 
     {{-- Livewire Table --}}
     <table class="livewire-table">
+
         <thead>
             <tr>
                 <th>Check<input type="checkbox" wire:model="selectPage"></th>

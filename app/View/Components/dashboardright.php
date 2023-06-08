@@ -8,7 +8,7 @@ use Illuminate\View\Component;
 class Dashboardright extends Component
 {
 
- // public $todolists;
+
     /**
      * Create a new component instance.
      *
