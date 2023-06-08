@@ -72,9 +72,6 @@ Route::get('/cleareverything', function () {
 
   $clearconfig = Artisan::call('config:cache');
   echo "Config cleared<br>";
-
-  $cleardebugbar = Artisan::call('debugbar:clear');
-  echo "Debug Bar cleared<br>";
 });
 
 Route::get('/updateapp', function()
