@@ -56,7 +56,7 @@
 
       @if ($selectAll)
         <div>
-            You have selected all <strong>{{ $products->total() }}</strong> items.
+            You have selected all <strong>{{ count($checked) }}</strong> items.
         </div>
         @else
         <div>
