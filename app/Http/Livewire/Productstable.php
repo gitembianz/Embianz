@@ -20,6 +20,7 @@ class Productstable extends Component
   public $checked = [];
   public $selectPage = false;
   public $selectAll = false;
+  public $productidbeingremoved = null;
 
 
   public function render()
@@ -97,11 +98,12 @@ class Productstable extends Component
     }
 
     $this->checked = [];
-    session()->flash('info', 'Selected product deleted succesfuly');
+    session()->flash('message', 'Product product deleted succesfuly');
   }
 
-  public function deleteSingleRecord($id)
+  public function deleteSingleRecord()
   {
+    $id = $this->productidbeingremoved;
     $product = Product::findOrFail($id);
     $productcat = Products_categories::where('product_id', $id)->first();
     if ($productcat != NULL) {
@@ -109,7 +111,13 @@ class Productstable extends Component
     }
     $product->delete();
     $this->checked = array_diff($this->checked, [$id]);
-    session()->flash('info', 'Record deleted Successfully');
+    session()->flash('message', 'Record deleted Successfully');
+
+  }
+
+  public function confirmProductRemoval($productid){
+    $this->productidbeingremoved = $productid;
+    $this->dispatchBrowserEvent('show-delete-modal');
   }
 
   public function isChecked($id)
