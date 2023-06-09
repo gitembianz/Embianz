@@ -1,4 +1,10 @@
 <script>
+  //script for alerttable
+window.addEventListener('show-delete-modal', event =>{
+  document.getElementById('confirmationmodal').style.display = 'flex';
+
+
+})
     // Script for all dropdown
     var dropdown = document.getElementsByClassName("dropdown-btn");
     var i;
@@ -57,6 +63,8 @@ if (element) {
     }, 500);
   }, 2000);
 }
+
+
 
  // Get all the elements with class "sidebar__item"
  var sidebarItems = document.querySelectorAll(".sidebar__item");
@@ -139,6 +147,6 @@ formElement.appendChild(hiddenInput);
 </script>
 
 {{-- script for DataTables --}}
-<script src="/script/cdn.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="></script>
-    <script src="/script/datatable.js" defer></script>
+<script src="/script/cdn.js"></script>
+    <script src="/script/datatable.js"></script>
 

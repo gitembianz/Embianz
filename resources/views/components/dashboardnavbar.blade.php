@@ -1,6 +1,6 @@
 <header class="header">
     <!-- Logo -->
-    <a href="{{ route('redirect') }}" class="header__logo">
+    <a href="{{ route('dashboard') }}" class="header__logo">
         <img src="/images/dashboard/navbar/logo.png" alt="logo">
     </a>
 

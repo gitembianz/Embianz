@@ -1975,6 +1975,13 @@ th {
   border: 1px solid rgba(96, 204, 253, 0.6588235294);
 }
 
+.alerttable {
+  position: absolute;
+  top: -120%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 .button {
   display: inline-block;
   padding: 10px;
