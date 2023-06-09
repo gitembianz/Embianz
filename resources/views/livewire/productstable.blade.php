@@ -5,22 +5,6 @@
             <span>Search product...</span>
         </div>
         <div class="item__form-input">
-            <select id="orderBy" wire:model="orderBy">
-                <option value="id">ID</option>
-                <option value="name">Name</option>
-                <option value="short_description">Short Description</option>
-                <option value="created_at">Created At Date</option>
-            </select>
-            <span>Search product...</span>
-        </div>
-        <div class="item__form-input">
-            <select id="orderAsc" wire:model="orderAsc">
-                <option value="1">Ascending</option>
-                <option value="0">Descending</option>
-            </select>
-            <span>Order direction:</span>
-        </div>
-        <div class="item__form-input">
             <select id="perPage" wire:model="perPage">
                 <option>10</option>
                 <option>25</option>
