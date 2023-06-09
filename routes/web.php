@@ -74,6 +74,9 @@ Route::get('/cleareverything', function () {
 
   $clearconfig = Artisan::call('config:cache');
   echo "Config cleared<br>";
+
+  $optimize = Artisan::call('optimize:clear');
+  echo "Optimize clear<br>";
 });
 
 //Update app
