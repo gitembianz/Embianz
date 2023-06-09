@@ -3,9 +3,10 @@
 namespace App\Http\Livewire;
 
 use App\Models\Product;
-use App\Models\Products_categories;
 use Livewire\Component;
 use Livewire\WithPagination;
+use App\Exports\ProductsExport;
+use App\Models\Products_categories;
 
 class Productstable extends Component
 {
@@ -18,16 +19,65 @@ class Productstable extends Component
   public $orderAsc = true;
   public $checked = [];
   public $selectPage = false;
-    public $selectAll = false;
+  public $selectAll = false;
+
 
   public function render()
   {
     return view('livewire.productstable', [
-      'products' => Product::search($this->search)
-        ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')
-        ->simplePaginate($this->perPage),
+      'products' => $this->products,
       'categories' => Products_categories::all()
     ]);
+  }
+
+  public function updatedSelectPage($value)
+  {
+    if ($value) {
+      $this->checked = $this->products->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+    } else {
+      $this->checked = [];
+    }
+  }
+
+  public function updatedChecked()
+  {
+    $this->selectPage = false;
+  }
+
+  public function sortBy($columnName){
+
+    if($this->orderBy === $columnName){
+      $this->orderAsc = $this->swapSortDirection();
+    }else{
+      $this->orderAsc = '1';
+    }
+
+    $this->orderBy = $columnName;
+
+  }
+
+  public function swapSortDirection(){
+
+    return $this->orderAsc === '1' ? '0' : '1';
+
+  }
+
+
+  public function selectAll()
+  {
+    $this->selectAll = true;
+    $this->checked = $this->productsQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+  }
+
+  public function getProductsProperty()
+  {
+    return $this->productsQuery->simplePaginate($this->perPage);
+  }
+
+  public function getProductsQueryProperty()
+  {
+    return Product::search($this->search)
+      ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc');
   }
 
   public function deleteRecords()
@@ -42,7 +92,6 @@ class Productstable extends Component
       if ($productcat != NULL) {
         $productcat->delete();
       }
-
 
       $producttodel->delete();
     }
@@ -65,7 +114,15 @@ class Productstable extends Component
 
   public function isChecked($id)
   {
-      return in_array($id, $this->checked);
+    return in_array($id, $this->checked);
   }
 
+  public function exportSelected()
+  {
+
+    $export = new ProductsExport($this->checked);
+    $this->checked = [];
+    $this->selectPage = false;
+    return $export->download('products.xlsx');
+  }
 }
