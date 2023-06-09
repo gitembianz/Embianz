@@ -24,7 +24,7 @@ th {
   th,
   td {
     font-size: $fSize;
-    padding: $padding;
+    padding: $padding calc($padding / 2);
     text-align: center;
   }
 
@@ -36,12 +36,15 @@ th {
     th {
       color: $secondColor;
       font-size: $fSize;
+      border: 1px solid white;
+      border-bottom: none;
 
       &:first-child {
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        gap: 10px;
+        border-left: 0;
+      }
+
+      &:last-child {
+        border-right: 0;
       }
     }
 
@@ -54,6 +57,7 @@ th {
 
   button {
     @include standart-Btn;
+    display: unset;
     width: 2.5rem;
     height: 2.5rem;
   }

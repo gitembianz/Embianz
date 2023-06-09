@@ -52,20 +52,20 @@
     </div>
 
     @if ($selectPage)
-    <div class="pt-2 talign-c">
+        <div class="pt-2 talign-c">
 
-      @if ($selectAll)
-        <div>
-            You have selected all <strong>{{ count($checked) }}</strong> items.
-        </div>
-        @else
-        <div>
-            You have selected <strong>{{ count($checked) }}</strong> items, Do you want to Select All?
-            <a href="#" class="ml-2" wire:click="selectAll">Select All</a>
-        </div>
-        @endif
+            @if ($selectAll)
+                <div>
+                    You have selected all <strong>{{ count($checked) }}</strong> items.
+                </div>
+            @else
+                <div>
+                    You have selected <strong>{{ count($checked) }}</strong> items, Do you want to Select All?
+                    <a href="#" class="ml-2" wire:click="selectAll">Select All</a>
+                </div>
+            @endif
 
-    </div>
+        </div>
     @endif
 
 
@@ -74,7 +74,7 @@
 
         <thead>
             <tr>
-                <th>Check<input type="checkbox" wire:model="selectPage"></th>
+                <th><input type="checkbox" wire:model="selectPage"></th>
                 <th class="cursor-p" wire:click="sortBy('id')">ID
                 </th>
                 <th class="cursor-p" wire:click="sortBy('name')">Name
@@ -83,14 +83,12 @@
                 </th>
                 <th class="cursor-p" wire:click="sortBy('created_at')">Created At
                 </th>
-                <th>Action</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
             @foreach ($products as $product)
-                <tr class="@if ($this->isChecked($product->id))
-                  th_checked
-              @endif">
+                <tr class="@if ($this->isChecked($product->id)) th_checked @endif">
                     <td data-title="Check"><input type="checkbox" value="{{ $product->id }}" wire:model="checked"></td>
                     <td data-title="ID">{{ $product->id }}</td>
                     <td data-title="Name"><a href="/show_product/{{ $product->id }}'">{{ $product->name }}</a></td>
