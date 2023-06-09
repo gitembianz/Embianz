@@ -33,4 +33,5 @@ class Product extends Model
                 ->orWhere('name', 'like', '%'.$search.'%')
                 ->orWhere('short_description', 'like', '%'.$search.'%');
     }
+
 }
