@@ -22,4 +22,3 @@
         </span>
     </form>
 </div>
-</div>

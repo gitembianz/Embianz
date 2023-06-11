@@ -7,7 +7,7 @@
             processing: true,
             serverSide: true,
             orderable: true,
-            ajax: "{{ route('category') }}",
+            ajax: "{{ url('/category') }}",
             columns: [{
                     data: 'image',
                     name: 'image',

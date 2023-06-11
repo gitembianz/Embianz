@@ -30,7 +30,7 @@ class CategoryController extends Controller
                 ->addColumn('image', function ($data) {
                     $productType = class_basename(get_class($data));
                     $type = Tabels::where('name', $productType)->first()->id;
-                    $files = Media::where('item_id', $data->id)->where('tabel_id', $type)->where('location_id', '3')->first();
+                    $files = Media::where('item_id', $data->id)->where('tabel_id', $type)->where('location_id', '2')->first();
                     if($files){
                         $path = $files->path .$files->name;
                     } else{
@@ -97,11 +97,8 @@ public function addSelectedProducts(Request $request, $id)
 {
     $productIds = $request->input('productIdsadd');
     $productIds = json_decode($productIds);
-    // dd($productIds);
-    // $productIdsArray = explode(',', $productIds);
     $count = count($productIds);
     $productIdsArray = $productIds;
-    // $category = Category::find($id);
 
     if ($count > 0) {
         for ($i = 0; $i < $count; $i++) {
@@ -116,27 +113,6 @@ public function addSelectedProducts(Request $request, $id)
         return redirect()->back()->with('message', 'No products selected!');
     }
 }
-public function deleteSelectedMedia(Request $request)
-{
-    $mediaIds = $request->input('mediaIds');
-    dd($mediaIds);
-    // $productIdsArray = explode(',', $productIds);
-    // $count = count($productIdsArray);
-
-    // if ($count > 0) {
-    //     for ($i = 0; $i < $count; $i++) {
-    //         $id = $productIdsArray[$i];
-    //         $product = Product::find($id);
-    //         $productcat = Products_categories::where('product_id', $id)->first();
-    //         $productcat->delete();
-    //         $product->delete();
-    //     }
-    //     return redirect()->back()->with('message', 'Products Deleted Successfully!');
-    // } else {
-    //     return redirect()->back()->with('message', 'No products selected for deletion.');
-    // }
-}
-
 
     public function add_category(Request $request)
     {       //add a new category to dbase
