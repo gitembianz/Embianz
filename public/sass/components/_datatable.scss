@@ -38,6 +38,59 @@ th {
       font-size: $fSize;
       border: 1px solid white;
       border-bottom: none;
+      position: relative;
+      padding-right: 25px;
+
+
+      &::before,
+      &::after {
+        content: "";
+        position: absolute;
+        transform: translateY(-50%);
+        right: 5px;
+        width: 0;
+        height: 0px;
+        border-left: 6px;
+        border-right: 6px;
+        border-style: solid;
+        border-color: $mainBg;
+      }
+
+      &::before {
+        top: 35%;
+        border-bottom: 10px solid #ffffff;
+        transform: translateY(-40%);
+      }
+
+      &::after {
+        top: 65%;
+        border-top: 10px solid #ffffff;
+        transform: translateY(-60%);
+      }
+
+      &[data-symbol="down"] {
+        &::before {
+          border-color: transparent;
+          border-bottom: 10px solid $gray;
+        }
+      }
+
+      &[data-symbol="up"] {
+        &::after {
+          border-color: transparent;
+          border-top: 10px solid $gray;
+        }
+      }
+
+      &:first-child,
+      &:last-child {
+        padding: inherit;
+
+        &::after,
+        &::before {
+          display: none;
+        }
+      }
 
       &:first-child {
         border-left: 0;

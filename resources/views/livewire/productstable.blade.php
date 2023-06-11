@@ -1,5 +1,5 @@
 <div class="item">
-    <div class="item__form">
+    <div class="item__form form-table">
         <div class="item__form-input">
             <input wire:model.debounce.200ms="search" type="text" required>
             <span>Search product...</span>
@@ -59,9 +59,9 @@
         <thead>
             <tr>
                 <th><input type="checkbox" wire:model="selectPage"></th>
-                <th class="cursor-p" wire:click="sortBy('id')">ID
+                <th class="cursor-p" data-symbol="up" wire:click="sortBy('id')">ID
                 </th>
-                <th class="cursor-p" wire:click="sortBy('name')">Name
+                <th class="cursor-p" data-symbol="down" wire:click="sortBy('name')">Name
                 </th>
                 <th class="cursor-p" wire:click="sortBy('short_description')">Short Description
                 </th>
