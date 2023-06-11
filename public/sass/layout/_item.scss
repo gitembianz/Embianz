@@ -24,6 +24,7 @@
     &-btn {
       @include standart-Btn;
       width: 100%;
+      background-color: $mainBg;
     }
   }
 

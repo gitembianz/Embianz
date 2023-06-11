@@ -313,6 +313,15 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
 
+      &.form-table {
+        grid-auto-flow: column;
+        grid-template-columns: 2fr 1fr;
+
+        & div:first-child {
+          grid-column: 1/2;
+        }
+      }
+
       // Short Description
       &-long {
         grid-column: 1;
