@@ -28,7 +28,7 @@
                 <div class="display-f">
                     <a href="{{ route('products') }}" class="boxsha bg-secondary display-f align-center br-xs p-1"> Go
                         Back</a>
-                    <a href="{{ route('add_products') }}"
+                    <a href="{{ route('add_product') }}"
                         class="boxsha bg-secondary ml-1 display-f align-center br-xs p-1"><span
                             class="bg-secondary"></span> Add new</a>
                 </div>
