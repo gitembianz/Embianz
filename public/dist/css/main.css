@@ -2033,40 +2033,6 @@ th {
   transform: translateX(-50%);
 }
 
-.pagination {
-  display: flex;
-  justify-content: center;
-}
-
-.pagination-list {
-  list-style: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-}
-
-.pagination-item {
-  margin-right: 5px;
-  padding: 5px 10px;
-  border: 1px solid #ccc;
-  background-color: #f1f1f1;
-}
-
-.pagination-item:hover a {
-  text-decoration: none;
-}
-
-.pagination-item-active {
-  font-weight: bold;
-  background-color: #ccc;
-}
-
-.pagination-item-disabled {
-  color: #999;
-  cursor: not-allowed;
-}
-
 .button {
   display: inline-block;
   padding: 10px;
