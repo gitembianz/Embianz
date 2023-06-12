@@ -35,8 +35,7 @@
 
                 <div class="dropdown-content">
                     <button class="dropdown-item delete" type="button"
-                        onclick="confirm('Are you sure you want to delete these Records?') || event.stopImmediatePropagation()"
-                        wire:click="deleteRecords()">
+                        wire:click="confirmProductsRemovalmultiple()">
                         Delete
                     </button>
                     <button class="dropdown-item submit" type="button"
@@ -66,7 +65,8 @@
         </div>
     @endif
 
-    {{-- modal --}}
+    {{-- modals --}}
+    {{-- delete single record --}}
     <div class="modal" id="confirmationmodal">
       <div class="modal-content">
           <h1 class="modal-content-title">
@@ -87,8 +87,29 @@
       </div>
   </div>
 
-    {{-- end modal --}}
+  {{-- delete myltiple records --}}
+  <div class="modal" id="confirmationmodalmultiple">
+    <div class="modal-content">
+        <h1 class="modal-content-title">
+            {{ __('Are you sure to delete those product?') }}
+        </h1>
+        <input wire:click.prevent="deleteRecords()" class="modal-content-btn submit" type="button" value="Confirm">
+        <input class="modal-content-btn delete" type="button"
+            onclick="document.getElementById('confirmationmodalmultiple').style.display='none'" value="Cancel">
 
+        <span class="modal-content-btn delete"
+            onclick="document.getElementById('confirmationmodalmultiple').style.display='none'">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24" fill="none"
+                stroke="#BBFCDE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </span>
+    </div>
+</div>
+
+
+    {{-- end modals --}}
 
     {{-- Livewire Table --}}
     <table class="livewire-table">
@@ -97,13 +118,36 @@
         <thead>
             <tr>
                 <th><input type="checkbox" wire:model="selectPage"></th>
-                <th class="cursor-p" data-symbol="up" wire:click="sortBy('id')">ID
+                <th class="cursor-p" @if ($orderBy === 'id' && $orderAsc === '1')
+                data-symbol="up"
+            @else
+                data-symbol="down"
+            @endif wire:click="sortBy('id')">ID
                 </th>
-                <th class="cursor-p" data-symbol="down" wire:click="sortBy('name')">Name
+                <th class="cursor-p" @if ($orderBy === 'name' && $orderAsc === '1')
+                data-symbol="up"
+            @else
+                data-symbol="down"
+            @endif wire:click="sortBy('name')">Name
                 </th>
-                <th class="cursor-p" wire:click="sortBy('short_description')">Short Description
+                <th class="cursor-p" @if ($orderBy === 'name' && $orderAsc === '1')
+                data-symbol="up"
+            @else
+                data-symbol="down"
+            @endif wire:click="sortBy('name')">Category
                 </th>
-                <th class="cursor-p" wire:click="sortBy('created_at')">Created At
+
+                <th class="cursor-p" @if ($orderBy === 'short_description' && $orderAsc === '1')
+                data-symbol="up"
+            @else
+                data-symbol="down"
+            @endif wire:click="sortBy('short_description')">Short Description
+                </th>
+                <th class="cursor-p" @if ($orderBy === 'created_at' && $orderAsc === '1')
+                data-symbol="up"
+            @else
+                data-symbol="down"
+            @endif wire:click="sortBy('created_at')">Created At
                 </th>
                 <th></th>
             </tr>
@@ -114,6 +158,18 @@
                     <td data-title="Check"><input type="checkbox" value="{{ $product->id }}" wire:model="checked"></td>
                     <td data-title="ID">{{ $product->id }}</td>
                     <td data-title="Name"><a href="/show_product/{{ $product->id }}'">{{ $product->name }}</a></td>
+                    <td data-title="Category"> <?php $testvar = $product->product_categories->first();
+                                  if ($testvar != NULL) {
+                                      if ($testvar->category != NULL) {
+                                          $cat = $testvar->category->name;
+                                      } else {
+                                          $cat = "No category";
+                                      }
+                                  } else {
+                                      $cat = "No category";
+                                  };
+
+                                   ?> {{ $cat }}</td>
                     <td data-title="Short Description">{{ $product->short_description }}</td>
                     <td data-title="Created At">{{ $product->created_at }}</td>
                     <td data-title="Action">
@@ -132,5 +188,27 @@
         </tbody>
     </table>
 
-    <div class="">{{ $products->links() }}</div>
+    {{-- <div class="pagination">
+      <ul class="pagination-list">
+          @if ($products->onFirstPage())
+              <li class="pagination-item pagination-item-disabled">&laquo;</li>
+          @else
+              <li class="pagination-item"><a href="{{ $products->previousPageUrl() }}" class="pagination-link">&laquo; Previous Page</a></li>
+          @endif
+
+          @foreach ($products as $page => $url)
+              @if ($page == $products->currentPage())
+                  <li class="pagination-item pagination-item-active">{{ $page }}</li>
+              @endif
+          @endforeach
+
+          @if ($products->hasMorePages())
+              <li class="pagination-item"><a href="{{ $products->nextPageUrl() }}" class="pagination-link"> Next Page &raquo;</a></li>
+          @else
+              <li class="pagination-item pagination-item-disabled">&raquo;</li>
+          @endif
+      </ul>
+  </div> --}}
+  <div>{{ $products->links() }} </div>
+
 </div>

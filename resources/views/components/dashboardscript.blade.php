@@ -2,8 +2,9 @@
   //script for alerttable
 window.addEventListener('show-delete-modal', event =>{
   document.getElementById('confirmationmodal').style.display = 'flex';
-
-
+})
+window.addEventListener('show-delete-modal-multiple', event =>{
+  document.getElementById('confirmationmodalmultiple').style.display = 'flex';
 })
     // Script for all dropdown
     var dropdown = document.getElementsByClassName("dropdown-btn");
