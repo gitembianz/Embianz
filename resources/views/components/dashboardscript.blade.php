@@ -1,25 +1,5 @@
 <script>
-    //script for alerttable
-    window.addEventListener('show-delete-modal', event => {
-        document.getElementById('confirmationmodal').style.display = 'flex';
-    })
-    window.addEventListener('show-delete-modal-multiple', event => {
-        document.getElementById('confirmationmodalmultiple').style.display = 'flex';
-    })
-    // Script for all dropdown
-    var dropdown = document.getElementsByClassName("dropdown-btn");
-    var i;
-    for (i = 0; i < dropdown.length; i++) {
-        dropdown[i].addEventListener("click", function() {
-            this.classList.toggle("active");
-            var dropdownContent = this.nextElementSibling;
-            if (dropdownContent.style.display === "block") {
-                dropdownContent.style.display = "none";
-            } else {
-                dropdownContent.style.display = "block";
-            }
-        });
-    }
+
     // Script for tabs working
     function opentab(evt, tabName) {
         var i, tabcontent, tablinks;

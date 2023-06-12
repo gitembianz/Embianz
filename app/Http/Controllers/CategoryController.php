@@ -14,34 +14,14 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
-use Yajra\DataTables\Facades\DataTables;
 
 
 class CategoryController extends Controller
 {
 
-    public function category(Request $request)
+    public function category()
     {
-
-        if ($request->ajax()) {
-            $data = Category::query();
-
-            return DataTables::eloquent($data)
-                ->addColumn('image', function ($data) {
-                    $productType = class_basename(get_class($data));
-                    $type = Tabels::where('name', $productType)->first()->id;
-                    $files = Media::where('item_id', $data->id)->where('tabel_id', $type)->where('location_id', '2')->first();
-                    if($files){
-                        $path = $files->path .$files->name;
-                    } else{
-                        $path = "images/resets/category.svg";
-                    }
-                    return $path;
-
-                })
-
-                ->make(true);
-        } return view('admin.category');
+        return view('admin.category');
     }
     public function deleteMedia($id)
 {

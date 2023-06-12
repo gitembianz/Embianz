@@ -54,7 +54,6 @@
                         Delete
                     </button>
                     <button class="dropdown-item submit" type="button"
-                        onclick="confirm('Are you sure you want to export these Records?') || event.stopImmediatePropagation()"
                         wire:click="exportSelected()">
                         Export
                     </button>

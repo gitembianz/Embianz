@@ -1,56 +1,40 @@
 <x-dashboardheader />
 <x-dashboardnavbar  />
+{{-- Display session message --}}
+
+@if (session()->has('message'))
+    <div class="alert__session" id="alertevent">
+        <span class="alert__session-text">{!! session('message') !!}</span>
+        <button class="alert__session-btn" type="button"
+            onclick="document.getElementById('alertevent').style.display='none'" data-bs-dismiss="alert"
+            aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24" fill="none"
+                stroke="#BBFCDE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+    </div>
+@endif
+{{-- End Section session message --}}
 <x-dashboardsidebar />
 <x-dashboardmodals />
 
 
 {{-- Page content start --}}
-<section  class="content">
-    <div class="row">
-        <div class="col-12-xs col-12-sm col-12-xl">
-            <a href="{{ route('newcategory') }}" class="addnew">{{ __('Add') }}</a>
-            <div class="form-group mb-1">
-                <form>
-                    <div class="multiselect bg-white">
-                        <div class="selectBox br-xs bg-white" onclick="showCheckboxes()">
-                            <select class="p-1  bg-white">
-                                <option>Columns</option>
-                            </select>
-                            <div class="overSelect br-xs"></div>
-                        </div>
-                        <div id="checkboxes">
-                            <?php
-                            $columns = ['Images','ID', 'Name', 'Parent', 'Short Description','Sequence'];
-                            for ($i = 0; $i < count($columns); $i++) {
-                                echo "<label data-column='$i' class='talign-l pt-1' for='$i'>$columns[$i]
-                                                      <input type='checkbox' class='checkbox float-r' id='$i' /></label>";
-                            }
-                            ?>
-                        </div>
-                    </div>
-    <h1  class="title talign-c font-xl ls-1 text-bg">{{ __('All categories') }}</h1>
+<section class="content">
+  <div class="item__header">
+      <h1 id="title" class="item__header-title">{{ __('All categories') }}</h1>
+      <div class="item__header-buttons">
+          <a href="{{ route('newcategory') }}" class="item__header-btn">{{ __('Add new') }}</a>
+      </div>
+  </div>
 
-                </form>
-            </div>
-            {{-- Table Categorys --}}
-            <table class="category-table" style="width: 100% !important" id="category_table">
-                <thead>
-                    <tr>
-                        <th class="bg-white">Image</th>
-                        <th class="bg-white">Id</th>
-                        <th class="bg-white">Name</th>
-                        <th class="bg-white">Catagory Parrent</th>
-                        <th class="bg-white">Short Description</th>
-                        <th class="bg-white">Squence</th>
-                    </tr>
-                </thead>
-                <tbody>
-                  </tbody>
-            </table>
-            {{-- End Table Category --}}
-        </div>
-    </div>
+  {{-- Tabel by Livewire start --}}
+  @livewire('categoriestable')
+  {{-- Tabel by Livewire end --}}
 </section>
+
 {{-- page content end --}}
 <x-dashboardright />
 <x-dashboardscript />

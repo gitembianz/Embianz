@@ -3,85 +3,17 @@
     $(document).ready(function() {
         $('#productsTable').DataTable();
         $('#mediaTable').DataTable();
-        var table = $('#category_table').DataTable({
-            processing: true,
-            serverSide: true,
-            orderable: true,
-            ajax: "{{ url('/category') }}",
-            columns: [{
-                    data: 'image',
-                    name: 'image',
-                    orderable: false,
-                    searchable: false,
-                    render: function(data, type, row) {
-                        return '<img src="' + data + '" width="50" height="50">';
-                    }
-                },
-                {
-                    data: 'id',
-                    name: 'id'
-                },
 
-                {
-                    data: 'name',
-                    name: 'name',
-                    render: function(data, type, row) {
-                        return '<a href="/show_category/' + row.id + '" class="link-name">' +
-                            data + '</a>';
-                    }
-                },
-                {
-                    data: 'parrent',
-                    name: 'parrent'
-                },
-                {
-                    data: 'short_description',
-                    name: 'short_description'
-                },
-                {
-                    data: 'sequence',
-                    name: 'sequence'
-                },
-            ]
-        });
-        // Script for toggle columns
-        var columnState = localStorage.getItem('columnStatec');
-        if (columnState) {
-            var columnStates = JSON.parse(columnState);
-            $.each(columnStates, function(columnIndex, visible) {
-                var column = table.column(columnIndex);
-                column.visible(visible);
-                $('#' + columnIndex).prop('checked', visible);
-            });
-        }
-        $('.checkbox').on('click', function() {
-            var columnIndex = $(this).attr('id');
-            var column = table.column(columnIndex);
-            column.visible(!column.visible());
-            var columnStates = {};
-            $('.checkbox').each(function() {
-                var columnIndex = $(this).attr('id');
-                var column = table.column(columnIndex);
-                columnStates[columnIndex] = column.visible();
-            });
-            localStorage.setItem('columnStatec', JSON.stringify(columnStates));
-        });
+
     });
+//script form categories modals
+    window.addEventListener('show-delete-modal-category', event =>{
+  document.getElementById('confirmationmodalcategory').style.display = 'flex';
+})
+window.addEventListener('show-delete-modal-category-multiple', event =>{
+  document.getElementById('confirmationmodalcategorymultiple').style.display = 'flex';
+})
 
-
-    //script for droplist with checkboxes
-    var expanded = false;
-
-    function showCheckboxes() {
-        var checkboxes = document.getElementById("checkboxes");
-        if (!expanded) {
-            checkboxes.style.display = "block";
-            expanded = true;
-        } else {
-            checkboxes.style.display = "none";
-            expanded = false;
-        }
-    }
 
     //delete script
     $(document).on('click', '#deletecat', function(event) {
