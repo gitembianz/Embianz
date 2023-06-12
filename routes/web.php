@@ -82,5 +82,6 @@ Route::get('/cleareverything', function () {
 
 Route::get('/updateapp', function () {
   exec('composer dump-autoload');
+  exec('composer update -W');
   echo 'composer dump-autoload complete';
 });
