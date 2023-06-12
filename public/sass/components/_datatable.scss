@@ -42,43 +42,24 @@ th {
       padding-right: 25px;
 
 
-      &::before,
+
       &::after {
         content: "";
         position: absolute;
-        transform: translateY(-50%);
-        right: 5px;
-        width: 0;
-        height: 0px;
-        border-left: 6px;
-        border-right: 6px;
-        border-style: solid;
-        border-color: $mainBg;
-      }
-
-      &::before {
-        top: 35%;
-        border-bottom: 10px solid #ffffff;
-        transform: translateY(-40%);
-      }
-
-      &::after {
-        top: 65%;
-        border-top: 10px solid #ffffff;
-        transform: translateY(-60%);
-      }
-
-      &[data-symbol="down"] {
-        &::before {
-          border-color: transparent;
-          border-bottom: 10px solid $gray;
-        }
+        transform: translateY(-50%) rotate(45deg);
+        right: 8px;
+        width: 10px;
+        height: 10px;
+        border: 2px solid white;
+        border-left: none;
+        border-top: none;
+        top: 45%;
       }
 
       &[data-symbol="up"] {
         &::after {
-          border-color: transparent;
-          border-top: 10px solid $gray;
+          content: "";
+          transform: rotateZ(225deg);
         }
       }
 
@@ -162,10 +143,11 @@ th {
   border: 1px solid lighten($checkColor, 20);
 }
 
-.alerttable{
+.alerttable {
   position: absolute;
   top: -120%;
   left: 50%;
   transform: translateX(-50%);
 }
+
 

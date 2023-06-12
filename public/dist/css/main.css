@@ -73,6 +73,7 @@ body::-webkit-scrollbar {
 body::-webkit-scrollbar-thumb {
   background: #20282d;
   border-radius: 10px;
+  -webkit-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
 }
 body::-webkit-scrollbar-thumb:hover {
@@ -530,7 +531,8 @@ main {
   cursor: pointer;
 }
 .header__logo img {
-  object-fit: contain;
+  -o-object-fit: contain;
+     object-fit: contain;
   height: 100%;
 }
 .header.moved {
@@ -1141,6 +1143,7 @@ main {
 .header__notify-list::-webkit-scrollbar-thumb {
   background: #20282d;
   border-radius: 10px;
+  -webkit-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
 }
 .header__notify-list::-webkit-scrollbar-thumb:hover {
@@ -1452,7 +1455,9 @@ input[type=checkbox] {
   width: 2.5rem;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   transition: 0.3s ease-in-out;
-  appearance: none;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
 }
 input[type=checkbox]:hover {
   background-color: rgba(146, 220, 254, 0.6588235294);
@@ -1847,35 +1852,21 @@ th {
   position: relative;
   padding-right: 25px;
 }
-.livewire-table thead th::before, .livewire-table thead th::after {
+.livewire-table thead th::after {
   content: "";
   position: absolute;
-  transform: translateY(-50%);
-  right: 5px;
-  width: 0;
-  height: 0px;
-  border-left: 6px;
-  border-right: 6px;
-  border-style: solid;
-  border-color: #35424B;
-}
-.livewire-table thead th::before {
-  top: 35%;
-  border-bottom: 10px solid #ffffff;
-  transform: translateY(-40%);
-}
-.livewire-table thead th::after {
-  top: 65%;
-  border-top: 10px solid #ffffff;
-  transform: translateY(-60%);
-}
-.livewire-table thead th[data-symbol=down]::before {
-  border-color: transparent;
-  border-bottom: 10px solid rgb(169, 169, 169);
+  transform: translateY(-50%) rotate(45deg);
+  right: 8px;
+  width: 10px;
+  height: 10px;
+  border: 2px solid white;
+  border-left: none;
+  border-top: none;
+  top: 45%;
 }
 .livewire-table thead th[data-symbol=up]::after {
-  border-color: transparent;
-  border-top: 10px solid rgb(169, 169, 169);
+  content: "";
+  transform: rotateZ(225deg);
 }
 .livewire-table thead th:first-child, .livewire-table thead th:last-child {
   padding: inherit;
@@ -2081,7 +2072,8 @@ th {
 .table td img,
 .table th img {
   height: 100%;
-  object-fit: contain;
+  -o-object-fit: contain;
+     object-fit: contain;
 }
 .table td select,
 .table td input,
@@ -2117,6 +2109,7 @@ th {
 .table th input::-webkit-scrollbar-thumb {
   background: #20282d;
   border-radius: 10px;
+  -webkit-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
 }
 .table td select::-webkit-scrollbar-thumb:hover,
@@ -3374,6 +3367,10 @@ th {
     height: auto;
   }
 }
+.content-category input::-moz-placeholder {
+  color: #BBFCDE;
+  opacity: 1;
+}
 .content-category input::placeholder {
   color: #BBFCDE;
   opacity: 1;
@@ -3501,6 +3498,10 @@ th {
   -webkit-transition: width 0.4s ease-in-out;
   color: #35424B;
   border: 1px solid #35424B;
+}
+.input_style::-moz-placeholder {
+  color: #35424B;
+  opacity: 1;
 }
 .input_style::placeholder {
   color: #35424B;
@@ -3645,7 +3646,9 @@ th {
   pointer-events: none;
 }
 .container-right .card_calendar .date-time-formate {
+  width: -moz-max-content;
   width: max-content;
+  height: -moz-max-content;
   height: max-content;
   position: relative;
   display: flex;
@@ -3659,7 +3662,9 @@ th {
 }
 .container-right .card_calendar .date-time-value {
   display: block;
+  height: -moz-max-content;
   height: max-content;
+  width: -moz-max-content;
   width: max-content;
   position: relative;
   left: 40%;
@@ -3763,7 +3768,8 @@ th {
   width: 3.5rem;
   height: auto;
   padding: 0.5rem;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
   align-items: center;
   background: #ffffff;
 }
@@ -4200,6 +4206,7 @@ th {
 .item__form-close input::-webkit-scrollbar-thumb {
   background: #20282d;
   border-radius: 10px;
+  -webkit-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
 }
 .item__form-input div::-webkit-scrollbar-thumb:hover,
@@ -4666,4 +4673,4 @@ th {
     grid-column: 1;
     grid-column-end: 3;
   }
-}
+}/*# sourceMappingURL=main.css.map */
