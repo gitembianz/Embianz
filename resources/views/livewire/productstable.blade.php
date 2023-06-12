@@ -118,32 +118,32 @@
         <thead>
             <tr>
                 <th><input type="checkbox" wire:model="selectPage"></th>
-                <th class="cursor-p" @if ($orderBy === 'id' && $orderAsc === '0')
+                <th class="cursor-p" @if ($orderBy === 'id' && $orderAsc === '1')
                 data-symbol="up"
             @else
                 data-symbol="down"
             @endif wire:click="sortBy('id')">ID
                 </th>
-                <th class="cursor-p" @if ($orderBy === 'name' && $orderAsc === '0')
+                <th class="cursor-p" @if ($orderBy === 'name' && $orderAsc === '1')
                 data-symbol="up"
             @else
                 data-symbol="down"
             @endif wire:click="sortBy('name')">Name
                 </th>
-                <th class="cursor-p" @if ($orderBy === 'name' && $orderAsc === '0')
+                <th class="cursor-p" @if ($orderBy === 'name' && $orderAsc === '1')
                 data-symbol="up"
             @else
                 data-symbol="down"
             @endif wire:click="sortBy('name')">Category
                 </th>
 
-                <th class="cursor-p" @if ($orderBy === 'short_description' && $orderAsc === '0')
+                <th class="cursor-p" @if ($orderBy === 'short_description' && $orderAsc === '1')
                 data-symbol="up"
             @else
                 data-symbol="down"
             @endif wire:click="sortBy('short_description')">Short Description
                 </th>
-                <th class="cursor-p" @if ($orderBy === 'created_at' && $orderAsc === '0')
+                <th class="cursor-p" @if ($orderBy === 'created_at' && $orderAsc === '1')
                 data-symbol="up"
             @else
                 data-symbol="down"
