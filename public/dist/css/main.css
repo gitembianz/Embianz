@@ -4782,10 +4782,7 @@ th {
   }
   .item__form.form-table {
     grid-auto-flow: column;
-    grid-template-columns: 2fr 1fr;
-  }
-  .item__form.form-table div:first-child {
-    grid-column: 1/2;
+    grid-template-columns: 5fr 1fr;
   }
   .item__form-long {
     grid-column: 1;
