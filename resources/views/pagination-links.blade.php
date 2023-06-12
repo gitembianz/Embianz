@@ -13,7 +13,7 @@
             @if (is_array($element))
                 @foreach ($element as $page => $url)
                     @if ($page == $paginator->currentPage())
-                        <button class="pagination__item"
+                        <button class="pagination__item active"
                             wire:click="gotoPage({{ $page }})">{{ $page }}</button>
                     @else
                         <button class="pagination__item"
