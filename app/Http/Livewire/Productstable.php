@@ -7,6 +7,7 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use App\Exports\ProductsExport;
 use App\Models\Products_categories;
+use Illuminate\Support\Facades\File;
 
 class Productstable extends Component
 {
@@ -103,6 +104,11 @@ class Productstable extends Component
       if ($productcat != NULL) {
         $productcat->delete();
       }
+      $productType = class_basename(get_class($producttodel));
+      $filespath = 'media/' . $productType . '/' . $producttodel->id;
+      if (File::exists($filespath)) {
+        File::deleteDirectory($filespath);
+      }
 
       $producttodel->delete();
     }
@@ -118,6 +124,11 @@ class Productstable extends Component
     $productcat = Products_categories::where('product_id', $id)->first();
     if ($productcat != NULL) {
       $productcat->delete();
+    }
+    $productType = class_basename(get_class($product));
+    $filespath = 'media/' . $productType . '/' . $product->id;
+    if (File::exists($filespath)) {
+      File::deleteDirectory($filespath);
     }
     $product->delete();
     $this->checked = array_diff($this->checked, [$id]);
