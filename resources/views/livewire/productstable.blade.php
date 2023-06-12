@@ -130,13 +130,6 @@
                 data-symbol="down"
             @endif wire:click="sortBy('name')">Name
                 </th>
-                <th class="cursor-p" @if ($orderBy === 'name' && $orderAsc === '1')
-                data-symbol="up"
-            @else
-                data-symbol="down"
-            @endif wire:click="sortBy('name')">Category
-                </th>
-
                 <th class="cursor-p" @if ($orderBy === 'short_description' && $orderAsc === '1')
                 data-symbol="up"
             @else
@@ -158,18 +151,6 @@
                     <td data-title="Check"><input type="checkbox" value="{{ $product->id }}" wire:model="checked"></td>
                     <td data-title="ID">{{ $product->id }}</td>
                     <td data-title="Name"><a href="/show_product/{{ $product->id }}'">{{ $product->name }}</a></td>
-                    <td data-title="Category"> <?php $testvar = $product->product_categories->first();
-                                  if ($testvar != NULL) {
-                                      if ($testvar->category != NULL) {
-                                          $cat = $testvar->category->name;
-                                      } else {
-                                          $cat = "No category";
-                                      }
-                                  } else {
-                                      $cat = "No category";
-                                  };
-
-                                   ?> {{ $cat }}</td>
                     <td data-title="Short Description">{{ $product->short_description }}</td>
                     <td data-title="Created At">{{ $product->created_at }}</td>
                     <td data-title="Action">
@@ -187,28 +168,5 @@
             @endforeach
         </tbody>
     </table>
-
-    {{-- <div class="pagination">
-      <ul class="pagination-list">
-          @if ($products->onFirstPage())
-              <li class="pagination-item pagination-item-disabled">&laquo;</li>
-          @else
-              <li class="pagination-item"><a href="{{ $products->previousPageUrl() }}" class="pagination-link">&laquo; Previous Page</a></li>
-          @endif
-
-          @foreach ($products as $page => $url)
-              @if ($page == $products->currentPage())
-                  <li class="pagination-item pagination-item-active">{{ $page }}</li>
-              @endif
-          @endforeach
-
-          @if ($products->hasMorePages())
-              <li class="pagination-item"><a href="{{ $products->nextPageUrl() }}" class="pagination-link"> Next Page &raquo;</a></li>
-          @else
-              <li class="pagination-item pagination-item-disabled">&raquo;</li>
-          @endif
-      </ul>
-  </div> --}}
-  <div>{{ $products->links() }} </div>
-
+  <div>{{ $products->links('pagination-links') }} </div>
 </div>
