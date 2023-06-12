@@ -72,7 +72,7 @@ class Productstable extends Component
 
   public function getProductsProperty()
   {
-    return $this->productsQuery->simplePaginate($this->perPage);
+    return $this->productsQuery->paginate($this->perPage);
   }
 
   public function getProductsQueryProperty()
@@ -118,6 +118,11 @@ class Productstable extends Component
   public function confirmProductRemoval($productid){
     $this->productidbeingremoved = $productid;
     $this->dispatchBrowserEvent('show-delete-modal');
+  }
+
+  public function confirmProductsRemovalmultiple(){
+    $this->dispatchBrowserEvent('show-delete-modal-multiple');
+
   }
 
   public function isChecked($id)
