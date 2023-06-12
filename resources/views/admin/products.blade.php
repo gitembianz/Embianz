@@ -20,15 +20,6 @@
 <x-dashboardsidebar />
 <x-dashboardmodals />
 
-<script>
-  document.addEventListener('livewire:load', function () {
-
-          if (document.getElementById('alertevent')) {
-              document.getElementById('alertevent').style.display = 'block';
-          }
-  });
-</script>
-
 {{-- Page content start --}}
 <section class="content">
     <div class="item__header">
@@ -40,9 +31,7 @@
 
     {{-- Tabel by Livewire start --}}
     @livewire('productstable')
-    {{-- <livewire:productstable /> --}}
     {{-- Tabel by Livewire end --}}
-    {{-- End Table Category --}}
 </section>
 {{-- page content end --}}
 <x-dashboardright />

@@ -26,8 +26,7 @@ class Productstable extends Component
   public function render()
   {
     return view('livewire.productstable', [
-      'products' => $this->products,
-      'categories' => Products_categories::all()
+      'products' => $this->products
     ]);
   }
 
