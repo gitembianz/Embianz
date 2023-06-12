@@ -1,36 +1,35 @@
 @if ($paginator->hasPages())
-<ul class="">
-    <!-- prev -->
-    @if ($paginator->onFirstPage())
-    <li class="">Prev</li>
-    @else
-    <li class="" wire:click="previousPage">Prev</li>
-    @endif
-    <!-- prev end -->
-
-    <!-- numbers -->
-    @foreach ($elements as $element)
-    <div class="flex">
-        @if (is_array($element))
-        @foreach ($element as $page => $url)
-        @if ($page == $paginator->currentPage())
-        <li class="" wire:click="gotoPage({{$page}})">{{$page}}</li>
+    <div class="pagination">
+        <!-- prev -->
+        @if ($paginator->onFirstPage())
+            <button class="pagination__item">&#60;</button>
         @else
-        <li class="" wire:click="gotoPage({{$page}})">{{$page}}</li>
+            <button class="pagination__item" wire:click="previousPage">&#60;</button>
         @endif
+        <!-- prev end -->
+
+        <!-- numbers -->
+        @foreach ($elements as $element)
+            @if (is_array($element))
+                @foreach ($element as $page => $url)
+                    @if ($page == $paginator->currentPage())
+                        <button class="pagination__item active"
+                            wire:click="gotoPage({{ $page }})">{{ $page }}</button>
+                    @else
+                        <button class="pagination__item"
+                            wire:click="gotoPage({{ $page }})">{{ $page }}</button>
+                    @endif
+                @endforeach
+            @endif
         @endforeach
+        <!-- end numbers -->
+
+        <!-- next  -->
+        @if ($paginator->hasMorePages())
+            <button class="pagination__item" wire:click="nextPage">&#62;</button>
+        @else
+            <button class="pagination__item">&#62;</button>
         @endif
+        <!-- next end -->
     </div>
-    @endforeach
-    <!-- end numbers -->
-
-
-    <!-- next  -->
-    @if ($paginator->hasMorePages())
-    <li class="" wire:click="nextPage">Next</li>
-    @else
-    <li class="">Next</li>
-    @endif
-    <!-- next end -->
-</ul>
 @endif

@@ -13,7 +13,10 @@
             </button>
         </div>
     @endif
-    <div class="item__form form-table">
+
+    <div class="item__form form-table"
+        @if ($checked) style="grid-template-columns: 5fr 1fr 1fr 1fr" @endif>
+
         <div class="item__form-input">
             <input wire:model.debounce.200ms="search" type="text" required>
             <span>Search product...</span>
@@ -110,9 +113,11 @@
 
             <span class="modal-content-btn delete"
                 onclick="document.getElementById('confirmationmodalmultiple').style.display='none'">
+
                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"
                     fill="none" stroke="#BBFCDE" stroke-width="2" stroke-linecap="round"
                     stroke-linejoin="round">
+
                     <line x1="18" y1="6" x2="6" y2="18"></line>
                     <line x1="6" y1="6" x2="18" y2="18"></line>
                 </svg>
@@ -130,6 +135,7 @@
         <thead>
             <tr>
                 <th><input type="checkbox" wire:model="selectPage"></th>
+
                 @if ($this->showColumn('Id'))
                     <th class="cursor-p"
                         @if ($orderBy === 'id' && $orderAsc === '1') data-symbol="up"
@@ -163,6 +169,7 @@
                     </th>
                 @endif
 
+
                 <th></th>
             </tr>
         </thead>
@@ -171,6 +178,7 @@
                 <tr class="@if ($this->isChecked($product->id)) th_checked @endif">
                     <td data-title="Check"><input type="checkbox" value="{{ $product->id }}" wire:model="checked">
                     </td>
+
                     @if ($this->showColumn('Id'))
                         <td data-title="ID">{{ $product->id }}</td>
                     @endif
