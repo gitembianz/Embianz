@@ -3,6 +3,8 @@
     $(document).ready(function() {
         $('#productsTable').DataTable();
         $('#mediaTable').DataTable();
+
+
     });
 //script form categories modals
     window.addEventListener('show-delete-modal-category', event =>{
