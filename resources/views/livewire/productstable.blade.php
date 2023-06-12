@@ -13,8 +13,10 @@
             </button>
         </div>
     @endif
+
     <div class="item__form form-table"
         @if ($checked) style="grid-template-columns: 5fr 1fr 1fr 1fr" @endif>
+
         <div class="item__form-input">
             <input wire:model.debounce.200ms="search" type="text" required>
             <span>Search product...</span>
@@ -29,7 +31,18 @@
             <span>Per Page :</span>
         </div>
 
-        {{-- If you want to delete, its message --}}
+        <div class="dropdown">
+          <span class="dropdown-name">Columns</span>
+
+          <div class="dropdown-content">
+              @foreach ($columns as $column)
+                  <input class="dropdown-item" type="checkbox" wire:model="selectedColumns"
+                      value="{{ $column }}" {{ in_array($column, $selectedColumns) ? 'checked' : '' }}>
+                  <label>{{ $column }}</label>
+              @endforeach
+          </div>
+      </div>
+
         @if ($checked)
             <div class="dropdown">
                 <span class="dropdown-name">With Checked ({{ count($checked) }})</span>
@@ -100,8 +113,11 @@
 
             <span class="modal-content-btn delete"
                 onclick="document.getElementById('confirmationmodalmultiple').style.display='none'">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24" fill="none"
-                    stroke="#BBFCDE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"
+                    fill="none" stroke="#BBFCDE" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+
                     <line x1="18" y1="6" x2="6" y2="18"></line>
                     <line x1="6" y1="6" x2="18" y2="18"></line>
                 </svg>
@@ -119,30 +135,41 @@
         <thead>
             <tr>
                 <th><input type="checkbox" wire:model="selectPage"></th>
-                <th class="cursor-p"
-                    @if ($orderBy === 'id' && $orderAsc === '1') data-symbol="up"
+
+                @if ($this->showColumn('Id'))
+                    <th class="cursor-p"
+                        @if ($orderBy === 'id' && $orderAsc === '1') data-symbol="up"
             @else
                 data-symbol="down" @endif
-                    wire:click="sortBy('id')">ID
-                </th>
-                <th class="cursor-p"
-                    @if ($orderBy === 'name' && $orderAsc === '1') data-symbol="up"
+                        wire:click="sortBy('id')">ID
+                    </th>
+                @endif
+                @if ($this->showColumn('Name'))
+                    <th class="cursor-p"
+                        @if ($orderBy === 'name' && $orderAsc === '1') data-symbol="up"
+        @else
+            data-symbol="down" @endif
+                        wire:click="sortBy('name')">Name
+                    </th>
+                @endif
+                @if ($this->showColumn('Short Description'))
+                    <th class="cursor-p"
+                        @if ($orderBy === 'short_description' && $orderAsc === '1') data-symbol="up"
+    @else
+        data-symbol="down" @endif
+                        wire:click="sortBy('short_description')">Short Description
+                    </th>
+                @endif
+                @if ($this->showColumn('Created At'))
+                    <th class="cursor-p"
+                        @if ($orderBy === 'created_at' && $orderAsc === '1') data-symbol="up"
             @else
                 data-symbol="down" @endif
-                    wire:click="sortBy('name')">Name
-                </th>
-                <th class="cursor-p"
-                    @if ($orderBy === 'short_description' && $orderAsc === '1') data-symbol="up"
-            @else
-                data-symbol="down" @endif
-                    wire:click="sortBy('short_description')">Short Description
-                </th>
-                <th class="cursor-p"
-                    @if ($orderBy === 'created_at' && $orderAsc === '1') data-symbol="up"
-            @else
-                data-symbol="down" @endif
-                    wire:click="sortBy('created_at')">Created At
-                </th>
+                        wire:click="sortBy('created_at')">Created At
+                    </th>
+                @endif
+
+
                 <th></th>
             </tr>
         </thead>
@@ -151,11 +178,22 @@
                 <tr class="@if ($this->isChecked($product->id)) th_checked @endif">
                     <td data-title="Check"><input type="checkbox" value="{{ $product->id }}" wire:model="checked">
                     </td>
-                    <td data-title="ID">{{ $product->id }}</td>
-                    <td data-title="Name"><a href="/show_product/{{ $product->id }}'">{{ $product->name }}</a>
-                    </td>
-                    <td data-title="Short Description">{{ $product->short_description }}</td>
-                    <td data-title="Created At">{{ $product->created_at }}</td>
+
+                    @if ($this->showColumn('Id'))
+                        <td data-title="ID">{{ $product->id }}</td>
+                    @endif
+                    @if ($this->showColumn('Name'))
+                        <td data-title="Name"><a href="/show_product/{{ $product->id }}'">{{ $product->name }}</a>
+                        </td>
+                    @endif
+                    @if ($this->showColumn('Short Description'))
+                        <td data-title="Short Description">{{ $product->short_description }}</td>
+                    @endif
+                    @if ($this->showColumn('Created At'))
+                        <td data-title="Created At">{{ $product->created_at }}</td>
+                    @endif
+
+
                     <td data-title="Action">
                         <button class="delete" wire:click.prevent="confirmProductRemoval({{ $product->id }})">
                             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"

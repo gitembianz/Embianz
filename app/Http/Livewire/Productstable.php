@@ -21,6 +21,8 @@ class Productstable extends Component
   public $selectPage = false;
   public $selectAll = false;
   public $productidbeingremoved = null;
+  public $columns = ['Id', 'Name', 'Short Description', 'Created At'];
+  public $selectedColumns = [];
 
 
   public function render()
@@ -28,6 +30,15 @@ class Productstable extends Component
     return view('livewire.productstable', [
       'products' => $this->products
     ]);
+  }
+  public function mount()
+  {
+    $this->selectedColumns = $this->columns;
+  }
+
+  public function showColumn($column)
+  {
+    return in_array($column, $this->selectedColumns);
   }
 
   public function updatedSelectPage($value)
@@ -44,22 +55,22 @@ class Productstable extends Component
     $this->selectPage = false;
   }
 
-  public function sortBy($columnName){
+  public function sortBy($columnName)
+  {
 
-    if($this->orderBy === $columnName){
+    if ($this->orderBy === $columnName) {
       $this->orderAsc = $this->swapSortDirection();
-    }else{
+    } else {
       $this->orderAsc = '1';
     }
 
     $this->orderBy = $columnName;
-
   }
 
-  public function swapSortDirection(){
+  public function swapSortDirection()
+  {
 
     return $this->orderAsc === '1' ? '0' : '1';
-
   }
 
 
@@ -111,17 +122,17 @@ class Productstable extends Component
     $product->delete();
     $this->checked = array_diff($this->checked, [$id]);
     session()->flash('message', 'Record deleted Successfully');
-
   }
 
-  public function confirmProductRemoval($productid){
+  public function confirmProductRemoval($productid)
+  {
     $this->productidbeingremoved = $productid;
     $this->dispatchBrowserEvent('show-delete-modal');
   }
 
-  public function confirmProductsRemovalmultiple(){
+  public function confirmProductsRemovalmultiple()
+  {
     $this->dispatchBrowserEvent('show-delete-modal-multiple');
-
   }
 
   public function isChecked($id)
