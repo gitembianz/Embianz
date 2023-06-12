@@ -40,15 +40,14 @@
     z-index: $z-index-big - 55;
   }
 
+  &-content.show {
+    display: flex
+  }
+
+
   &-item {
     @include standart-Btn;
     width: 100%;
-  }
-
-  &:hover {
-    .dropdown-content {
-      display: flex;
-    }
   }
 }
 

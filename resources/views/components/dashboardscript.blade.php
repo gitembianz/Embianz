@@ -1,11 +1,11 @@
 <script>
-  //script for alerttable
-window.addEventListener('show-delete-modal', event =>{
-  document.getElementById('confirmationmodal').style.display = 'flex';
-})
-window.addEventListener('show-delete-modal-multiple', event =>{
-  document.getElementById('confirmationmodalmultiple').style.display = 'flex';
-})
+    //script for alerttable
+    window.addEventListener('show-delete-modal', event => {
+        document.getElementById('confirmationmodal').style.display = 'flex';
+    })
+    window.addEventListener('show-delete-modal-multiple', event => {
+        document.getElementById('confirmationmodalmultiple').style.display = 'flex';
+    })
     // Script for all dropdown
     var dropdown = document.getElementsByClassName("dropdown-btn");
     var i;
@@ -55,44 +55,44 @@ window.addEventListener('show-delete-modal-multiple', event =>{
 
     //Script for alert desepear
     var element = document.getElementById('alertevent');
-if (element) {
-  element.style.transition = 'opacity 0.5s ease';
-  setTimeout(function() {
-    element.style.opacity = '0';
-    setTimeout(function() {
-      element.remove();
-    }, 500);
-  }, 2000);
-}
+    if (element) {
+        element.style.transition = 'opacity 0.5s ease';
+        setTimeout(function() {
+            element.style.opacity = '0';
+            setTimeout(function() {
+                element.remove();
+            }, 500);
+        }, 2000);
+    }
 
 
 
- // Get all the elements with class "sidebar__item"
- var sidebarItems = document.querySelectorAll(".sidebar__item");
+    // Get all the elements with class "sidebar__item"
+    var sidebarItems = document.querySelectorAll(".sidebar__item");
 
-// Retrieve the index of the previously active item from local storage
-var activeIndex = localStorage.getItem("activeIndex");
-if (activeIndex !== null) {
-    // Remove the "active" class from any previously clicked items
-    var activeItem = sidebarItems[activeIndex];
-    activeItem.classList.add("active");
-}
-
-// Loop through each sidebar item and add a click event listener
-sidebarItems.forEach(function(item, index) {
-    item.addEventListener("click", function() {
+    // Retrieve the index of the previously active item from local storage
+    var activeIndex = localStorage.getItem("activeIndex");
+    if (activeIndex !== null) {
         // Remove the "active" class from any previously clicked items
-        var activeItem = document.querySelector(".sidebar__item.active");
-        if (activeItem) {
-            activeItem.classList.remove("active");
-        }
-        // Add the "active" class to the clicked item
-        this.classList.add("active");
+        var activeItem = sidebarItems[activeIndex];
+        activeItem.classList.add("active");
+    }
 
-        // Store the index of the active item in local storage
-        localStorage.setItem("activeIndex", index.toString());
+    // Loop through each sidebar item and add a click event listener
+    sidebarItems.forEach(function(item, index) {
+        item.addEventListener("click", function() {
+            // Remove the "active" class from any previously clicked items
+            var activeItem = document.querySelector(".sidebar__item.active");
+            if (activeItem) {
+                activeItem.classList.remove("active");
+            }
+            // Add the "active" class to the clicked item
+            this.classList.add("active");
+
+            // Store the index of the active item in local storage
+            localStorage.setItem("activeIndex", index.toString());
+        });
     });
-});
 
     //Script form removing product from tables
     function removeProduct(prodid) {
@@ -123,15 +123,15 @@ sidebarItems.forEach(function(item, index) {
         }
         const productIds = Array.from(selectedProducts).map(checkbox => checkbox.value);
 
-// Create a hidden input element
-const hiddenInput = document.createElement('input');
-hiddenInput.setAttribute('type', 'hidden');
-hiddenInput.setAttribute('name', 'productIds');
-hiddenInput.setAttribute('value', productIds);
+        // Create a hidden input element
+        const hiddenInput = document.createElement('input');
+        hiddenInput.setAttribute('type', 'hidden');
+        hiddenInput.setAttribute('name', 'productIds');
+        hiddenInput.setAttribute('value', productIds);
 
-// Append the hidden input to the desired location
-const formElement = document.querySelector('#deleteProductsForm');
-formElement.appendChild(hiddenInput);
+        // Append the hidden input to the desired location
+        const formElement = document.querySelector('#deleteProductsForm');
+        formElement.appendChild(hiddenInput);
 
     }
     // Add event listener to the checkboxes to trigger the update of the "Delete selected products" button
@@ -142,12 +142,11 @@ formElement.appendChild(hiddenInput);
 
     // Add event listener to the delete button
     const deleteButton = document.querySelector('#deletefromcheckbox');
-    if(deleteButton){
-    deleteButton.addEventListener('click', deleteSelectedProducts);
+    if (deleteButton) {
+        deleteButton.addEventListener('click', deleteSelectedProducts);
     }
 </script>
 
 {{-- script for DataTables --}}
 <script src="/script/cdn.js"></script>
-    <script src="/script/datatable.js"></script>
-
+<script src="/script/datatable.js"></script>
