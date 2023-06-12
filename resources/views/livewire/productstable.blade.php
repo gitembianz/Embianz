@@ -36,9 +36,11 @@
 
           <div class="dropdown-content">
               @foreach ($columns as $column)
-                  <input class="dropdown-item" type="checkbox" wire:model="selectedColumns"
+              <div class="display-f jus-fs wid-10 align-center">
+                  <input class="dropdown-item mr-1" type="checkbox" wire:model="selectedColumns"
                       value="{{ $column }}" {{ in_array($column, $selectedColumns) ? 'checked' : '' }}>
                   <label>{{ $column }}</label>
+              </div>
               @endforeach
           </div>
       </div>
