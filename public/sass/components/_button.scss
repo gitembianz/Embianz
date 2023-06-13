@@ -114,3 +114,21 @@ input[type=checkbox]:checked {
 input[type=checkbox]:checked:before {
   opacity: 1;
 }
+
+
+// to top up button
+.top-up-btn {
+  @include standart-Btn;
+  border-radius: 100%;
+
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  opacity: 0;
+  pointer-events: none;
+
+  &.actived {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}

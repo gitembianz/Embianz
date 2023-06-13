@@ -17,6 +17,10 @@ body {
   @include scrollbar;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 .overflow {
   overflow: hidden;
 }

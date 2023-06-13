@@ -1,5 +1,5 @@
 <x-dashboardheader />
-<x-dashboardnavbar  />
+<x-dashboardnavbar />
 {{-- Display session message --}}
 
 @if (session()->has('message'))
@@ -23,16 +23,23 @@
 
 {{-- Page content start --}}
 <section class="content">
-  <div class="item__header">
-      <h1 id="title" class="item__header-title">{{ __('All categories') }}</h1>
-      <div class="item__header-buttons">
-          <a href="{{ route('newcategory') }}" class="item__header-btn">{{ __('Add new') }}</a>
-      </div>
-  </div>
+    <div class="item__header">
+        <h1 id="title" class="item__header-title">{{ __('All categories') }}</h1>
+        <div class="item__header-buttons">
+            <a href="{{ route('newcategory') }}" class="item__header-btn">{{ __('Add new') }}</a>
+        </div>
+    </div>
 
-  {{-- Tabel by Livewire start --}}
-  @livewire('categoriestable')
-  {{-- Tabel by Livewire end --}}
+    {{-- Tabel by Livewire start --}}
+    @livewire('categoriestable')
+    {{-- Tabel by Livewire end --}}
+
+    <a href="#" class="top-up-btn" id="topUp">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+            stroke="#BBFCDE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="18 15 12 9 6 15"></polyline>
+        </svg>
+    </a>
 </section>
 
 {{-- page content end --}}
