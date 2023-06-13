@@ -1509,6 +1509,7 @@ input[type=checkbox]:checked:before {
   position: relative;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   border-radius: 10px;
+  cursor: pointer;
 }
 .dropdown-name {
   display: flex;
@@ -1524,6 +1525,7 @@ input[type=checkbox]:checked:before {
   background-color: #ffffff;
   border-radius: 10px;
   border: 1.5px solid #35424B;
+  cursor: pointer;
   z-index: 154;
 }
 .dropdown-content {
@@ -1543,6 +1545,14 @@ input[type=checkbox]:checked:before {
   border-radius: 0 0 10px 10px;
   flex-direction: column;
   z-index: 44;
+}
+.dropdown-content input {
+  width: 2rem;
+  height: 2rem;
+}
+.dropdown-content label {
+  flex: 1;
+  text-align: start;
 }
 .dropdown-content.show {
   display: flex;

@@ -15,7 +15,7 @@
     @endif
 
     <div class="item__form form-table"
-        @if ($checked) style="grid-template-columns: 5fr 1fr 1fr 1fr" @endif>
+        @if ($checked) style="grid-template-columns: 40% 1fr 1fr 1fr" @endif>
 
         <div class="item__form-input">
             <input wire:model.debounce.200ms="search" type="text" required>
@@ -31,7 +31,7 @@
             <span>Per Page :</span>
         </div>
 
-        <div class="dropdown" onclick="OpenDropdown()()">
+        <div class="dropdown" onclick="OpenDropdown()">
             <span class="dropdown-name">Columns</span>
 
             <div class="dropdown-content">
@@ -53,8 +53,7 @@
                     <button class="dropdown-item delete" type="button" wire:click="confirmProductsRemovalmultiple()">
                         Delete
                     </button>
-                    <button class="dropdown-item submit" type="button"
-                        wire:click="exportSelected()">
+                    <button class="dropdown-item submit" type="button" wire:click="exportSelected()">
                         Export
                     </button>
                 </div>
