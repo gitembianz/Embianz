@@ -1,0 +1,75 @@
+@media (max-height: 375px) {
+
+  // Sidebar BreakPoints
+  .sidebar {
+
+
+    // Sidebar List of Items
+    &__list {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+}
+
+@media (min-width: 1024px) {
+
+  // Sidebar BreakPoints
+  .sidebar {
+    width: $sidebar-Width-Desktop-Min; // Sidebar-close Width on big Screen
+    position: relative;
+    z-index: 5;
+
+    // Sidebar List of Items
+    &__list {
+      justify-items: center;
+      grid-template-columns: repeat(1, 1fr);
+    }
+
+    // Sidebar Button in Header
+    &__btn {
+      display: none;
+    }
+
+    // Sidebar Button in the right
+    &__open {
+      @include standart-Btn;
+      width: $BtnSize;
+      height: $BtnSize;
+      border-radius: 10px;
+      outline: none;
+      border: none;
+      justify-self: end;
+
+      svg {
+        height: $BtnSvgSize;
+        width: $BtnSvgSize;
+      }
+
+
+    }
+
+    // Sidebar Icon of Item
+    &__icon {
+      opacity: 1;
+      width: $BtnSize;
+      height: $BtnSize;
+    }
+
+    // Sidebar Item
+    &__item {
+      width: $BtnSize;
+    }
+
+    // SideBar Opened
+    &.open {
+      width: $sidebar-Width-Desktop-Max; // Sidebar-Open Width on big Screen
+
+      // Sidebar Button in the right
+      .sidebar__open {
+        svg {
+          transform: rotateY(180deg);
+        }
+      }
+    }
+  }
+}

@@ -1,10 +1,10 @@
 <div class="item">
+
+    {{-- Asta trebuie de facut componenta --}}
     @if (session()->has('message'))
-        <div class="alert__session" id="alertevent">
+        <div class="alert__session liveAlert" id="alertevent">
             <span class="alert__session-text">{!! session('message') !!}</span>
-            <button class="alert__session-btn" type="button"
-                onclick="document.getElementById('alertevent').style.display='none'" data-bs-dismiss="alert"
-                aria-hidden="true">
+            <button class="alert__session-btn" type="button" data-bs-dismiss="alert" aria-hidden="true">
                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24" fill="none"
                     stroke="#BBFCDE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -12,6 +12,19 @@
                 </svg>
             </button>
         </div>
+        <script>
+            const alertEvent = document.getElementById("alertevent");
+            header.style.marginBottom = '3rem';
+            alertEvent.style.opacity = '1';
+
+            setTimeout(function() {
+                alertEvent.style.opacity = '0';
+                setTimeout(function() {
+                    alertEvent.remove();
+                    header.style.marginBottom = '0';
+                }, 500);
+            }, 2000);
+        </script>
     @endif
 
     <div class="item__form form-table"
@@ -86,7 +99,7 @@
                 {{ __('Are you sure to delete this product?') }}
             </h1>
             <input wire:click.prevent="deleteSingleRecord()" class="modal-content-btn submit" type="button"
-                value="Confirm">
+                value="Confirm" id="confirmLoad">
             <input class="modal-content-btn delete" type="button"
                 onclick="document.getElementById('confirmationmodal').style.display='none'" value="Cancel">
 
@@ -107,7 +120,8 @@
             <h1 class="modal-content-title">
                 {{ __('Are you sure to delete those product?') }}
             </h1>
-            <input wire:click.prevent="deleteRecords()" class="modal-content-btn submit" type="button" value="Confirm">
+            <input wire:click.prevent="deleteRecords()" class="modal-content-btn submit" type="button" value="Confirm"
+                id="confirmLoad">
             <input class="modal-content-btn delete" type="button"
                 onclick="document.getElementById('confirmationmodalmultiple').style.display='none'" value="Cancel">
 

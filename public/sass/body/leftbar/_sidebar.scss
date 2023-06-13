@@ -1,10 +1,3 @@
-%fixed-layout {
-  position: fixed;
-  @include wh(20rem, 100%);
-  overflow-y: scroll;
-  background: $mainBg;
-}
-
 .sidebar {
   position: absolute;
   bottom: 0;

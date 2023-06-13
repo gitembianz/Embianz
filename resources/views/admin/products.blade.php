@@ -32,7 +32,6 @@
     {{-- Tabel by Livewire start --}}
     @livewire('productstable')
     {{-- Tabel by Livewire end --}}
-
     <a href="#" class="top-up-btn" id="topUp">
         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
             stroke="#BBFCDE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -40,6 +39,7 @@
         </svg>
     </a>
 </section>
+
 {{-- page content end --}}
 <x-dashboardright />
 <x-dashboardscript />
