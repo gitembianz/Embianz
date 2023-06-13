@@ -115,23 +115,24 @@
                     <form action="{{ route('add_media', $data->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="item__upload">
-                          <input type="file" name="media[]" id="imgUpload" multiple
-                              accept="image/*,video/*"onchange="filesManager(this.files)">
+                            <input type="file" name="media[]" id="imgUpload" multiple
+                                accept="image/*,video/*"onchange="filesManager(this.files)">
 
-                          <label class="item__upload-btn" for="imgUpload">
-                              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24" fill="none"
-                                  stroke="#BBFCDE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                                  <polyline points="17 8 12 3 7 8"></polyline>
-                                  <line x1="12" y1="3" x2="12" y2="15"></line>
-                              </svg>
-                              Upload Media
-                          </label>
-                          <input type="submit" id="addmediacat" style="display: none" class="upload"
-                                        value="Save Media">
+                            <label class="item__upload-btn" for="imgUpload">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+                                    viewbox="0 0 24 24" fill="none" stroke="#BBFCDE" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="17 8 12 3 7 8"></polyline>
+                                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                                </svg>
+                                Upload Media
+                            </label>
+                            <input type="submit" id="addmediacat" style="display: none" class="upload"
+                                value="Save Media">
 
-                          <table id="imageTable" class="table"></table>
-                      </div>
+                            <table id="imageTable" class="table"></table>
+                        </div>
 
                     </form>
                 </div>
@@ -247,6 +248,12 @@
             </div>
         </div>
     </div>
+    <a href="#" class="top-up-btn" id="topUp">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+            stroke="#BBFCDE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="18 15 12 9 6 15"></polyline>
+        </svg>
+    </a>
 </section>
 {{-- page content end --}}
 <x-dashboardright />

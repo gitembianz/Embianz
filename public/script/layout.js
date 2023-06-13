@@ -134,3 +134,13 @@ function OpenDropdown(){
   });
   });
 }
+
+// The Top Up Button
+const topUpBtn = document.getElementById('topUp');
+window.addEventListener('scroll', () => {
+  if(window.pageYOffset > 100){
+    topUpBtn.classList.add("actived");
+  } else {
+    topUpBtn.classList.remove("actived");
+  }
+})
