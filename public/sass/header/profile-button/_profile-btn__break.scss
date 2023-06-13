@@ -1,0 +1,80 @@
+@media (min-width: 1024px) {
+  #openProfile {
+    display: none;
+  }
+
+  .header__profile {
+    // display: flex;
+    flex: 1;
+    flex-direction: row;
+
+    position: relative;
+    opacity: 1;
+    transform: unset;
+
+    &-top {
+      display: flex;
+    }
+
+    &-bottom {
+      button {
+        width: 0;
+        opacity: 0;
+      }
+    }
+
+    &-name {
+      width: 0px;
+      opacity: 0;
+      font-size: 0;
+    }
+
+    //  Header Profile in Active mode
+    &.active {
+      display: flex;
+
+      .header__profile-name {
+        width: $ProfileNameWidth;
+        opacity: 1;
+        font-size: initial;
+        border-radius: 0;
+      }
+
+      &>.header__profile {
+
+
+        &-bottom,
+        &-top {
+          gap: 0;
+          padding: 0;
+
+          button {
+            width: $BtnSize;
+            border-radius: 0;
+          }
+        }
+
+        &-top {
+          button {
+            &:first-child {
+              border-top-left-radius: $BtnBorderRadius;
+              border-bottom-left-radius: $BtnBorderRadius;
+            }
+          }
+        }
+
+        &-bottom {
+          button {
+            width: $BtnSize;
+            opacity: 1;
+
+            &:last-child {
+              border-top-right-radius: $BtnBorderRadius;
+              border-bottom-right-radius: $BtnBorderRadius;
+            }
+          }
+        }
+      }
+    }
+  }
+}

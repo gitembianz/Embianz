@@ -1,37 +1,54 @@
-//variables & functions
-@import './variables';
-@import './fonts';
-@import './mixins';
+//-------------------------------------------------------------General Settings (Variables ,Mixins, Fonts, Reset)
+@import 'general/variables';
+@import 'general/mixins';
+@import 'general/fonts';
+@import 'general/reset';
+//-------------------------------------------------------------(utilities)
+@import 'general/grid';
+@import 'general/colors';
+@import 'general/utilities';
+@import 'general/breakpoints';
 
-// base &layout
-@import './reset';
 
-@import './grid';
 
-//colors
-@import './colors';
 
-// Header Part
-@import 'header/header';
-@import 'header/search';
-@import 'header/profile';
-@import 'header/notify';
-
-//components(button, card, navbar)
-@import 'components/button';
+//-------------------------------------------------------------Drop-Down (component)
 @import 'components/dropdown';
+//-------------------------------------------------------------Alert-Session (component)
+@import 'components/alert';
+//-------------------------------------------------------------Tabs (component)
+@import 'components/tabs';
+//-------------------------------------------------------------Modal (component)
 @import 'components/modal';
+//-------------------------------------------------------------Checkbox (component)
+@import 'components/checkbox';
+//-------------------------------------------------------------top-Up (component)
+@import 'components/top-up';
+//-------------------------------------------------------------Data-Table (component)
 @import 'components/datatable';
+//-------------------------------------------------------------Pagination (component)
+@import 'components/pagination';
+//-------------------------------------------------------------UploadImage (component) "Is need to change"
 @import 'components/uploadimage';
-
-//utilities(margin, padding, opacity)
-@import './utilities';
-
-//layout
-@import 'layout/sidebar';
-@import 'layout/category';
-@import 'layout/right';
-@import 'layout/item';
-@import './breakpoints';
-
-//comentariu
+//-------------------------------------------------------------Header Part
+@import 'header/header';
+@import 'header/header__break';
+//-------------------------------------------------------------Notification Button (Header)
+@import 'header/notification-button/notification-btn';
+@import 'header/notification-button/notification-btn__break';
+//-------------------------------------------------------------Profile Button (Header)
+@import 'header/profile-button/profile-btn';
+@import 'header/profile-button/profile-btn__break';
+//-------------------------------------------------------------Search Button (Header)
+@import 'header/search-button/search-btn';
+@import 'header/search-button/search-btn__break';
+//-------------------------------------------------------------Left-Bar (body)
+@import 'body/leftbar/sidebar';
+@import 'body/leftbar/sidebar__break';
+//-------------------------------------------------------------Item (body)
+@import 'body/item/item';
+@import 'body/item/item__break';
+//-------------------------------------------------------------Right-Bar (calendar)
+@import 'body/rightbar/rightbar';
+@import 'body/rightbar/rightbar__break';
+@import 'body/calendar/calendar';

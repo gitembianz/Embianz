@@ -1,0 +1,11 @@
+@media (min-width: 1024px) {
+  .content {
+    z-index: $z-index-medium;
+  }
+
+  // General Modifacation
+  main {
+    display: grid;
+    grid-template-columns: 0fr 1fr 0fr;
+  }
+}

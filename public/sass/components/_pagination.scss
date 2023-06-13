@@ -1,0 +1,24 @@
+//pagination
+.pagination {
+  @include centering;
+  gap: $gap * 1.5;
+  background: $mainBg;
+  padding: $padding;
+  border-radius: $BtnBorderRadius;
+  box-shadow: $BtnShadow;
+
+  &__item {
+    @include standart-Btn;
+    width: 2rem;
+    height: 2rem;
+
+    &:nth-last-child(-n+4):not(:last-child) {
+      display: none;
+    }
+
+    &.active {
+      background-color: #BBFCDE;
+      color: #35424B;
+    }
+  }
+}

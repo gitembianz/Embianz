@@ -1,0 +1,80 @@
+// Old Buttons on Tabs
+@mixin btn {
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  padding: $padding;
+  border-radius: calc($base-border-radius / 3);
+}
+
+.btn {
+  @include btn;
+}
+
+.add {
+  @extend .btn;
+  border: 1px solid $secondColor;
+  background-color: $secondColor;
+  color: $mainBg;
+}
+
+.addnew {
+  @extend .add;
+  float: right;
+  margin-bottom: calc($margin / 2);
+}
+
+// ------------------------------------
+.tab {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: $gap;
+  padding: $padding;
+  background-color: lighten($mainBg, 5%);
+  border: 1px solid $mainBg;
+  border-bottom: none;
+  border-radius: $base-border-radius $base-border-radius 0 0;
+}
+
+.tabcontent {
+  display: none;
+  padding: $padding;
+  border: 1px solid $mainBg;
+  border-top: none;
+  border-radius: 0 0 $base-border-radius $base-border-radius;
+}
+
+
+// Taburile de la Category
+.collapsible {
+  background-color: $mainBg;
+  color: $white;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: $font-size-md;
+}
+
+.collapsible:after {
+  content: '\002B';
+  color: $white;
+  font-weight: $font-weight-bold;
+  float: right;
+  margin-left: $margin;
+}
+
+.collapsible.active:after {
+  content: "\2212";
+}
+
+//cpntentul pentru taburi
+.contenttabb {
+  padding: 0 $padding;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+  background-color: $white;
+}

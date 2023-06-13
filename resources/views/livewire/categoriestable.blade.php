@@ -1,10 +1,8 @@
 <div class="item">
     @if (session()->has('message'))
-        <div class="alert__session" id="alertevent">
+        <div class="alert__session liveAlert" id="alertevent">
             <span class="alert__session-text">{!! session('message') !!}</span>
-            <button class="alert__session-btn" type="button"
-                onclick="document.getElementById('alertevent').style.display='none'" data-bs-dismiss="alert"
-                aria-hidden="true">
+            <button class="alert__session-btn" type="button" data-bs-dismiss="alert" aria-hidden="true">
                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24" fill="none"
                     stroke="#BBFCDE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -12,6 +10,19 @@
                 </svg>
             </button>
         </div>
+        <script>
+            const alertEvent = document.getElementById("alertevent");
+            header.style.marginBottom = '3rem';
+            alertEvent.style.opacity = '1';
+
+            setTimeout(function() {
+                alertEvent.style.opacity = '0';
+                setTimeout(function() {
+                    alertEvent.remove();
+                    header.style.marginBottom = '0';
+                }, 500);
+            }, 2000);
+        </script>
     @endif
 
     <div class="item__form form-table"
@@ -211,7 +222,7 @@
                         <td data-title="Short Description">{{ $category->short_description }}</td>
                     @endif
                     @if ($this->showColumn('Sequence'))
-                        <td data-title="Short Description">{{ $category->sequence }}</td>
+                        <td data-title="Sequence">{{ $category->sequence }}</td>
                     @endif
                     @if ($this->showColumn('Created At'))
                         <td data-title="Created At">{{ $category->created_at }}</td>

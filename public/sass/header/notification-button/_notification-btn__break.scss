@@ -1,0 +1,13 @@
+@media (min-width: 768px) {
+
+  // Notification Button
+  .header__notify {
+
+    // Notification list
+    &-list {
+      width: $notifyWidth;
+      right: $notifyPosition;
+      transform: translateX(0);
+    }
+  }
+}

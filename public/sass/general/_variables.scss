@@ -99,3 +99,18 @@ $z-index-0: 0;
 $z-index-small: 1;
 $z-index-medium: 5;
 $z-index-big: 99;
+
+
+
+// The new Z-index Manager:
+$z-index-header: 100;
+$z-index-sidebar: 100;
+$z-index-calendar: 100;
+
+$z-index-content: 200;
+
+$z-index-active: 300;
+$z-index-dropdown: 300;
+
+$z-index-modal: 500;
+$z-index-error: 700;
