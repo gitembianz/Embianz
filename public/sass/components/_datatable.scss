@@ -109,6 +109,10 @@ th {
       display: block;
     }
 
+    thead th {
+      border: none;
+    }
+
     thead th:not(:first-child) {
       display: none;
     }
@@ -181,5 +185,3 @@ th {
     display: block;
   }
 }
-
-

@@ -15,7 +15,7 @@
     @endif
 
     <div class="item__form form-table"
-        @if ($checked) style="grid-template-columns: 5fr 1fr 1fr 1fr" @endif>
+        @if ($checked) style="grid-template-columns: 40% 1fr 1fr 1fr" @endif>
 
         <div class="item__form-input">
             <input wire:model.debounce.200ms="search" type="text" required>
@@ -31,30 +31,29 @@
             <span>Per Page :</span>
         </div>
 
-        <div class="dropdown">
-          <span class="dropdown-name">Columns</span>
+        <div class="dropdown" onclick="OpenDropdown()">
+            <span class="dropdown-name">Columns</span>
 
-          <div class="dropdown-content">
-              @foreach ($columns as $column)
-              <div class="display-f jus-fs wid-10 align-center">
-                  <input class="dropdown-item mr-1" type="checkbox" wire:model="selectedColumns"
-                      value="{{ $column }}" {{ in_array($column, $selectedColumns) ? 'checked' : '' }}>
-                  <label>{{ $column }}</label>
-              </div>
-              @endforeach
-          </div>
-      </div>
+            <div class="dropdown-content">
+                @foreach ($columns as $column)
+                    <div class="display-f jus-fs wid-10 align-center">
+                        <input class="dropdown-item mr-1" type="checkbox" wire:model="selectedColumns"
+                            value="{{ $column }}" {{ in_array($column, $selectedColumns) ? 'checked' : '' }}>
+                        <label>{{ $column }}</label>
+                    </div>
+                @endforeach
+            </div>
+        </div>
 
         @if ($checked)
-            <div class="dropdown">
-                <span class="dropdown-name">With Checked ({{ count($checked) }})</span>
+            <div class="dropdown" onclick="OpenDropdown()()">
+                <span class="dropdown-name" onclick="dropdown()">With Checked ({{ count($checked) }})</span>
 
                 <div class="dropdown-content">
                     <button class="dropdown-item delete" type="button" wire:click="confirmProductsRemovalmultiple()">
                         Delete
                     </button>
-                    <button class="dropdown-item submit" type="button"
-                        wire:click="exportSelected()">
+                    <button class="dropdown-item submit" type="button" wire:click="exportSelected()">
                         Export
                     </button>
                 </div>
