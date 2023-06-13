@@ -114,26 +114,6 @@ calendarBtn.addEventListener('click', () => {
     sidebar.classList.remove('open');
 });
 
-//  myfunc = function dropdown(){
-//   const dropdownButtons = document.querySelectorAll(".dropdown-name");
-
-// dropdownButtons.forEach(function(button) {
-//   button.addEventListener("click", function() {
-//     const dropdownContent = this.nextElementSibling;
-
-//     dropdownContent.classList.toggle("show");
-
-//     const otherDropdowns = document.querySelectorAll(".dropdown-content");
-
-//     otherDropdowns.forEach(function(content) {
-//       if (content !== dropdownContent) {
-//         content.classList.remove("show");
-//       }
-//     });
-//   });
-// });
-// }
-
 function OpenDropdown(){
 
   const dropdownButtons = document.querySelectorAll(".dropdown-name");
@@ -154,12 +134,3 @@ function OpenDropdown(){
   });
   });
 }
-
-
-
-
-
-
-
-
-
