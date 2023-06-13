@@ -114,41 +114,25 @@
                 <div class="col-12-xs col-12-sm col-12-xl talign-c">
                     <form action="{{ route('add_media', $data->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
-                        <ul>
-                            <li>
-                                <div class="col-12-xs col-12-sm col-12-xl display-f jus-c">
-                                    <input type="file" name="media[]" id="imgUpload" multiple
-                                        accept="image/*,video/*" onchange="filesManager(this.files)">
+                        <div class="item__upload">
+                          <input type="file" name="media[]" id="imgUpload" multiple
+                              accept="image/*,video/*"onchange="filesManager(this.files)">
 
-                                    <label class="upload wid-3" for="imgUpload"><span><svg width="40px"
-                                                height="40px" viewBox="0 0 1024.00 1024.00" class="icon"
-                                                version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000">
-                                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
-                                                    stroke-linejoin="round"></g>
-                                                <g id="SVGRepo_iconCarrier">
-                                                    <path d="M77.312 286.208h503.808v559.104H77.312z" fill="35424b">
-                                                    </path>
-                                                    <path d="M133.632 342.016h391.68v335.36H133.632z" fill="#FFFFFF">
-                                                    </path>
-                                                    <path
-                                                        d="M189.44 621.568h93.184L236.032 537.6zM375.808 453.632l-93.184 167.936h186.88z"
-                                                        fill="#82b09b"></path>
-                                                    <path
-                                                        d="M637.44 621.568v83.456l337.408-165.376-211.456-432.64-252.928 122.88h110.08l120.32-58.368 127.488 259.584-230.912 113.152z"
-                                                        fill="35424b"></path>
-                                                </g>
-                                            </svg></span> <span class="ml-1">Upload Media</span></label>
-                                    <input type="submit" id="addmediacat" style="display: none" class="upload"
+                          <label class="item__upload-btn" for="imgUpload">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24" fill="none"
+                                  stroke="#BBFCDE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                  <polyline points="17 8 12 3 7 8"></polyline>
+                                  <line x1="12" y1="3" x2="12" y2="15"></line>
+                              </svg>
+                              Upload Media
+                          </label>
+                          <input type="submit" id="addmediacat" style="display: none" class="upload"
                                         value="Save Media">
 
-                                </div>
-                                <div class="col-12-xs col-12-sm col-12-xl align-center">
-                                    <table id="imageTable" class="talign-c mt-2">
-                                    </table>
-                                </div>
-                            </li>
-                        </ul>
+                          <table id="imageTable" class="table"></table>
+                      </div>
+
                     </form>
                 </div>
                 @if ($files->first() != null)
