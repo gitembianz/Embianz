@@ -71,7 +71,7 @@
    width: $BtnSize;
    height: $BtnSize;
 
-   transition: all $transition;
+   transition: $transition;
 
    img,
    svg {
@@ -107,7 +107,7 @@
    &::-webkit-scrollbar-thumb {
      background: $darkBg;
      border-radius: $BtnBorderRadius;
-     transition: all $transition;
+     transition: $transition;
    }
 
    &::-webkit-scrollbar-thumb:hover {
@@ -134,4 +134,117 @@
    text-decoration: none;
    -webkit-appearance: none;
    -moz-appearance: none;
+ }
+
+ // Header Button (Profile and Search)
+ @mixin headBtn {
+   & {
+     top: 0;
+     left: 0;
+     gap: $gap;
+     opacity: 0;
+     width: 100%;
+     height: 100%;
+     display: grid;
+     padding: $padding;
+     position: absolute;
+     align-items: center;
+     transition: $transition;
+     z-index: $z-index-content;
+     background-color: $mainBg;
+     transform: translateY(-100%);
+     grid-template-columns: repeat(4, 1fr);
+
+     & input {
+       @include BtnHover($darkBg, $darkBg , $secondColor);
+       text-align: left;
+       padding: 0 $padding;
+     }
+
+     &__item,
+     &__icon {
+       @include standart-Btn;
+     }
+
+     &__item {
+       width: 100%;
+
+       &:nth-child(2) {
+         grid-column: 2/max;
+       }
+
+       &:nth-child(3) {
+         grid-column: 1/3;
+       }
+
+       &:last-child {
+         grid-column: 3/max;
+       }
+     }
+
+     &.active {
+       opacity: 1;
+       transform: translateY(0);
+       z-index: $z-index-active;
+     }
+   }
+
+   @media (min-width: 1024px) {
+     & {
+       gap: 0;
+       padding: 0;
+       opacity: 1;
+       display: flex;
+       width: $BtnSize;
+       transform: unset;
+       position: relative;
+
+       &__icon {
+         display: none;
+       }
+
+       &__item {
+         &:nth-child(2) {
+           font-size: 0;
+           padding: 0;
+           white-space: nowrap;
+         }
+
+         &:nth-child(2),
+         &:nth-child(3),
+         &:last-child {
+           width: 0;
+           opacity: 0;
+           border-radius: 0;
+           visibility: hidden;
+         }
+
+         &:last-child {
+           border-radius: 0 $BtnBorderRadius $BtnBorderRadius 0;
+         }
+       }
+
+       &.active {
+         width: $headBtnWidth;
+
+         &>.profile__item,
+         &>.search__item {
+           opacity: 1;
+           width: $BtnSize;
+           visibility: visible;
+
+           &:first-child {
+             border-radius: $BtnBorderRadius 0 0 $BtnBorderRadius;
+           }
+
+           &:nth-child(2) {
+             flex: 1;
+             width: unset;
+             font-size: unset;
+             padding: 0 $padding;
+           }
+         }
+       }
+     }
+   }
  }

@@ -10,7 +10,7 @@
   transition: all $transition;
   transform: translateX(90%);
 
-  z-index: $z-index-medium + 1;
+  z-index: $z-index-content;
 
 
   // Sidebar Button in Header
@@ -18,7 +18,6 @@
     @include standart-Btn;
     display: block;
     cursor: pointer;
-    z-index: $z-index-medium;
   }
 
   &__content {
@@ -31,6 +30,7 @@
   &.open {
     width: 100%;
     transform: translateX(0%);
+    z-index: $z-index-active;
 
     &>.right {
       &__open {

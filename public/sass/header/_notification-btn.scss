@@ -1,0 +1,100 @@
+.notify {
+  position: relative;
+  z-index: $z-index-content;
+
+  &__btn,
+  &__item {
+    @include standart-Btn;
+  }
+
+  &__title {
+    @include standart-Font;
+  }
+
+  &__list {
+    gap: $gap;
+    left: 50%;
+    opacity: 0;
+    width: 100%;
+    padding: $gap;
+    position: fixed;
+    visibility: hidden;
+    top: $headerHeight;
+    overflow-y: auto;
+    @include centering;
+    @include scrollbar;
+    background: $mainBg;
+    flex-direction: column;
+    transition: $transition;
+    justify-content: flex-start;
+    height: calc(100% - $headerHeight);
+    transform: translateX(-50%) translateY(-150%);
+    z-index: 0;
+
+    li {
+      width: 100%;
+    }
+  }
+
+  &__item {
+    width: 100%;
+    padding: 0 $padding;
+    justify-content: space-between;
+    background-color: lighten($mainBg, 5%);
+  }
+
+  &.open>.notify__list {
+    opacity: 1;
+    visibility: visible;
+    z-index: $z-index-active;
+    transform: translateX(-50%) translateY(0%);
+  }
+}
+
+@media (min-width: 1024px) {
+  .notify {
+    &__list {
+      left: 75%;
+      width: $notifyWidth;
+      height: $NotifyHeight;
+      border-radius: $BtnBorderRadius ;
+      box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+    }
+
+    &.open>.notify__list {
+      transform: translateX(-50%) translateY(10%);
+    }
+  }
+}
+
+.alert {
+
+  &-circle::after,
+  &-count {
+    width: $alertSize;
+    height: $alertSize;
+    position: absolute;
+    background: $alertColor;
+    outline: 3px solid $mainBg;
+    border-radius: 100%
+  }
+
+  &-circle {
+    background-color: darken($mainBg, 15%);
+    position: relative;
+
+    &::after {
+      content: "";
+      width: calc($alertSize / 2);
+      height: calc($alertSize / 2);
+      top: 0;
+      right: 0;
+    }
+  }
+
+  &-count {
+    @include centering;
+    top: calc($alertSize / -2);
+    right: calc($alertSize / -2);
+  }
+}
