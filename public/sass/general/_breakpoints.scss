@@ -1,6 +1,6 @@
 @media (min-width: 1024px) {
-  .content {
-    z-index: $z-index-medium;
+  .overflow {
+    overflow: visible;
   }
 
   // General Modifacation

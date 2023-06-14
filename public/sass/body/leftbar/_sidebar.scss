@@ -2,22 +2,18 @@
   position: absolute;
   bottom: 0;
   left: 0;
-
   width: 0;
   height: 100%;
-
   background-color: $mainBg;
   transition: all $transition;
-  z-index: $z-index-medium + 1;
+  z-index: $z-index-content;
 
   // Sidebar List of Items
   &__list {
     display: grid;
     grid-template-columns: 1fr;
-
     justify-content: center;
     align-content: start;
-
     gap: $gap;
     padding: 0 calc($padding * 2);
     padding-bottom: $padding;
@@ -67,6 +63,7 @@
   // SideBar Opened
   &.open {
     width: 100%;
+    z-index: $z-index-active;
 
     .sidebar {
 

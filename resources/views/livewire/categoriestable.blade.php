@@ -12,7 +12,7 @@
         </div>
         <script>
             const alertEvent = document.getElementById("alertevent");
-            header.style.marginBottom = '3rem';
+            header.style.marginBottom = '4rem';
             alertEvent.style.opacity = '1';
 
             setTimeout(function() {

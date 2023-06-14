@@ -15,6 +15,19 @@
             </svg>
         </button>
     </div>
+    <script>
+        const alertEvent = document.getElementById("alertevent");
+        header.style.marginBottom = '4rem';
+        alertEvent.style.opacity = '1';
+
+        setTimeout(function() {
+            alertEvent.style.opacity = '0';
+            setTimeout(function() {
+                alertEvent.remove();
+                header.style.marginBottom = '0';
+            }, 500);
+        }, 2000);
+    </script>
 @endif
 {{-- End Section session message --}}
 <x-dashboardsidebar />

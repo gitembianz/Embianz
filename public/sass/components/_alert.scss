@@ -9,6 +9,7 @@
   margin-bottom: $margin;
   background-color: $darkBg;
   border-radius: $BtnBorderRadius;
+  z-index: $z-index-error;
 
 
   &-text {
@@ -34,5 +35,6 @@
     bottom: 100%;
     opacity: 0;
     transition: $transition;
+    z-index: $z-index-error;
   }
 }

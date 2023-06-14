@@ -1,5 +1,4 @@
 <script>
-
     // Script for tabs working
     function opentab(evt, tabName) {
         var i, tabcontent, tablinks;
@@ -32,20 +31,6 @@
             }
         });
     }
-
-    //Script for alert desepear
-    var element = document.getElementById('alertevent');
-    if (element) {
-        element.style.transition = 'opacity 0.5s ease';
-        setTimeout(function() {
-            element.style.opacity = '0';
-            setTimeout(function() {
-                element.remove();
-            }, 500);
-        }, 2000);
-    }
-
-
 
     // Get all the elements with class "sidebar__item"
     var sidebarItems = document.querySelectorAll(".sidebar__item");
