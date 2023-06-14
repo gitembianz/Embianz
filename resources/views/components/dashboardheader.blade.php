@@ -11,6 +11,7 @@
         <link rel="stylesheet" href="/dist/css/main.css">
         <link href="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.13.4/datatables.min.css" rel="stylesheet"/>
         <script src="/script/calendar.js" defer></script>
+        {{-- <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script> --}}
 
         @livewireStyles
     </head>
