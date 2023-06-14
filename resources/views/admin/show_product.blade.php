@@ -17,7 +17,6 @@
 @endif
 {{-- End Section session message --}}
 <x-dashboardsidebar />
-<x-dashboardmodals />
 {{-- Page content start --}}
 <section class="content">
 

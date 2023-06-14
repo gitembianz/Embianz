@@ -1673,7 +1673,9 @@ input[type=checkbox]:checked:before {
 
 .contenttabb {
   padding: 0 10px;
-  max-height: 0;
+  max-height: auto;
+  display: block;
+  display: block;
   overflow: hidden;
   transition: max-height 0.2s ease-out;
   background-color: #ffffff;

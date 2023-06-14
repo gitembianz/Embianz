@@ -654,6 +654,8 @@ class ComposerStaticInitdbceb679be78fc0f2f620fcaf24d3e3e
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
         'App\\Http\\Livewire\\Categoriestable' => __DIR__ . '/../..' . '/app/Http/Livewire/Categoriestable.php',
         'App\\Http\\Livewire\\Productstable' => __DIR__ . '/../..' . '/app/Http/Livewire/Productstable.php',
+        'App\\Http\\Livewire\\RelatedMediaCategory' => __DIR__ . '/../..' . '/app/Http/Livewire/RelatedMediaCategory.php',
+        'App\\Http\\Livewire\\ShowCategory' => __DIR__ . '/../..' . '/app/Http/Livewire/ShowCategory.php',
         'App\\Http\\Middleware\\Authenticate' => __DIR__ . '/../..' . '/app/Http/Middleware/Authenticate.php',
         'App\\Http\\Middleware\\EncryptCookies' => __DIR__ . '/../..' . '/app/Http/Middleware/EncryptCookies.php',
         'App\\Http\\Middleware\\PreventRequestsDuringMaintenance' => __DIR__ . '/../..' . '/app/Http/Middleware/PreventRequestsDuringMaintenance.php',

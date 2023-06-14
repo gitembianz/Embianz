@@ -28,6 +28,8 @@ return array(
     'App\\Http\\Kernel' => $baseDir . '/app/Http/Kernel.php',
     'App\\Http\\Livewire\\Categoriestable' => $baseDir . '/app/Http/Livewire/Categoriestable.php',
     'App\\Http\\Livewire\\Productstable' => $baseDir . '/app/Http/Livewire/Productstable.php',
+    'App\\Http\\Livewire\\RelatedMediaCategory' => $baseDir . '/app/Http/Livewire/RelatedMediaCategory.php',
+    'App\\Http\\Livewire\\ShowCategory' => $baseDir . '/app/Http/Livewire/ShowCategory.php',
     'App\\Http\\Middleware\\Authenticate' => $baseDir . '/app/Http/Middleware/Authenticate.php',
     'App\\Http\\Middleware\\EncryptCookies' => $baseDir . '/app/Http/Middleware/EncryptCookies.php',
     'App\\Http\\Middleware\\PreventRequestsDuringMaintenance' => $baseDir . '/app/Http/Middleware/PreventRequestsDuringMaintenance.php',

@@ -23,76 +23,6 @@ class CategoryController extends Controller
   {
     return view('admin.category');
   }
-  public function deleteMedia($id)
-  {
-    // Find the media file by ID
-    $media = Media::findOrFail($id);
-    $path = $media->path . $media->name;
-
-    if (File::exists($path)) {
-      File::delete($path);
-    }
-
-    // Delete the media file from the database
-    $media->delete();
-    $folder = $media->path;
-    if (File::isDirectory($folder) && count(File::allFiles($folder)) === 0) {
-      File::deleteDirectory($folder);
-    }
-
-    return response()->json(['message' => $path]);
-  }
-
-  public function deleteProduct($id)
-  {
-    // Find the media file by ID
-    $product = Products_categories::where('product_id', $id)->first();
-    $product->delete();
-
-
-    return response()->json(['message' => 'Product deleted succesfully']);
-  }
-
-  public function deleteSelectedProducts(Request $request)
-  {
-    $productIds = $request->input('productIds');
-    $productIdsArray = explode(',', $productIds);
-    $count = count($productIdsArray);
-
-    if ($count > 0) {
-      for ($i = 0; $i < $count; $i++) {
-        $id = $productIdsArray[$i];
-        $product = Product::find($id);
-        $productcat = Products_categories::where('product_id', $id)->first();
-        $productcat->delete();
-        $product->delete();
-      }
-      return redirect()->back()->with('message', 'Products Deleted Successfully!');
-    } else {
-      return redirect()->back()->with('message', 'No products selected for deletion.');
-    }
-  }
-
-  public function addSelectedProducts(Request $request, $id)
-  {
-    $productIds = $request->input('productIdsadd');
-    $productIds = json_decode($productIds);
-    $count = count($productIds);
-    $productIdsArray = $productIds;
-
-    if ($count > 0) {
-      for ($i = 0; $i < $count; $i++) {
-        $prodid = $productIdsArray[$i];
-        $productcategory = new products_categories();
-        $productcategory->product_id = $prodid;
-        $productcategory->category_id = Category::where('id', $id)->first()->id;
-        $productcategory->save();
-      }
-      return redirect()->back()->with('message', 'Products Added Successfully!');
-    } else {
-      return redirect()->back()->with('message', 'No products selected!');
-    }
-  }
 
   public function add_category(Request $request)
   {       //add a new category to dbase
@@ -181,8 +111,6 @@ class CategoryController extends Controller
       }
     }
 
-
-
     return redirect()->back()->with([
       'message' => 'Category Added Succesfully!',
       'item_name' => $data->name,
@@ -201,62 +129,16 @@ class CategoryController extends Controller
 
   public function new()
   {
-
     $categories = Category::pluck('name', 'id');
     return view('admin.add_category', compact('categories'));
   }
 
-
-  public function update(Request $request, $id)
-  {
-    // Retrieve the file with the given ID
-    $file = Media::findOrFail($id);
-
-    // Update the file's properties based on the request data
-    $file->location_id = MediaLocation::where('location', $request->input('location'))->first()->id;
-    $file->sequence = $request->input('sequence');
-
-
-    // Save the changes to the database
-    $file->save();
-
-    // Return a JSON response indicating success
-    return response()->json(['success' => true]);
-  }
-
-
   public function show($id)
   {
     $data = Category::find($id);
-
-    // $productType = class_basename(get_class($data));
-    // $type = Tabels::where('name', $productType)->first()->id;
-    // $files = Media::where('item_id', $data->id)->where('tabel_id', $type)->with('location')->get();
-    // $products = Products_categories::where('category_id', $data->id)->with('product')->get();
-    // $count_media = $files->count();
-    // $count_products = $products->count();
-    // return view('admin.show_category', compact('data', 'count_media', 'files', 'count_products', 'products'));
     return view('admin.show_category', compact('data'));
   }
 
-  public function delete(Request $request)
-  {
-    $id = $request->hiddenid;
-    $category = category::find($id);
-    $productType = class_basename(get_class($category));
-    $filespath = 'media/' . $productType . '/' . $category->id;
-    if (File::exists($filespath)) {
-      File::deleteDirectory($filespath);
-    }
-    $products = Products_categories::where('category_id', $category->id)->get();
-    foreach ($products as $product) {
-      $product->delete();
-    }
-    $category->delete();
-
-
-    return view('admin.category')->with('message', 'Category Deleted Successfully!');
-  }
   public function getAllProducts()
   {
     $products = Product::all();

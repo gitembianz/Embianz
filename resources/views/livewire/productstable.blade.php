@@ -46,7 +46,7 @@
         </div>
 
         @if ($checked)
-            <div class="dropdown" onclick="OpenDropdown()()">
+            <div class="dropdown" onclick="OpenDropdown()">
                 <span class="dropdown-name" onclick="dropdown()">With Checked ({{ count($checked) }})</span>
 
                 <div class="dropdown-content">

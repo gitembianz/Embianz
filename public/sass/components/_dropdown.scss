@@ -91,7 +91,9 @@
 //cpntentul pentru taburi
 .contenttabb {
   padding: 0 $padding;
-  max-height: 0;
+  max-height: auto;
+  display: block;
+  display: block;
   overflow: hidden;
   transition: max-height 0.2s ease-out;
   background-color: $white;
