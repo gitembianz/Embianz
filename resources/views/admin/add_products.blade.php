@@ -15,6 +15,19 @@
             </svg>
         </button>
     </div>
+    <script>
+        const alertEvent = document.getElementById("alertevent");
+        header.style.marginBottom = '4rem';
+        alertEvent.style.opacity = '1';
+
+        setTimeout(function() {
+            alertEvent.style.opacity = '0';
+            setTimeout(function() {
+                alertEvent.remove();
+                header.style.marginBottom = '0';
+            }, 500);
+        }, 2000);
+    </script>
 @endif
 {{-- End Section session message --}}
 <x-dashboardsidebar />
@@ -102,6 +115,12 @@
             <input class="item__form-btn item__form-long" type="submit" value="Add new" name="submit">
         </div>
     </form>
+    <a href="#" class="top-up-btn" id="topUp">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+            stroke="#BBFCDE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="18 15 12 9 6 15"></polyline>
+        </svg>
+    </a>
 </section>
 {{-- page content end --}}
 <x-dashboardright />

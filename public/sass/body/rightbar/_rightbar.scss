@@ -1,0 +1,46 @@
+.right {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+
+  width: 0;
+  height: 100%;
+
+  background-color: $mainBg;
+  transition: all $transition;
+  transform: translateX(90%);
+
+  z-index: $z-index-content;
+
+
+  // Sidebar Button in Header
+  &__open {
+    @include standart-Btn;
+    display: block;
+    cursor: pointer;
+  }
+
+  &__content {
+    border-radius: $BtnBorderRadius;
+    color: white;
+    display: none;
+  }
+
+  // SideBar Opened
+  &.open {
+    width: 100%;
+    transform: translateX(0%);
+    z-index: $z-index-active;
+
+    &>.right {
+      &__open {
+        right: unset;
+        left: $margin;
+      }
+
+      &__content {
+        display: block;
+      }
+    }
+  }
+}

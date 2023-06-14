@@ -48,7 +48,7 @@ $fWeight: $font-weight-medium;
 $gap: 10px;
 
 // Transitions
-$transition: .3s ease-in-out;
+$transition: all .3s ease-in-out;
 
 // Button Variables
 $BtnColorText: $secondColor;
@@ -60,13 +60,8 @@ $btnSvgBold: 1.5px;
 $BtnBorderRadius: $base-border-radius;
 $BtnShadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 
-// Notification//
-// Notification for Button
-$notifyPosition: 5%;
-// Notification Width on PC
-$notifyWidth: 400px;
-// Notification Height
-$NotifyHeight: 60vh;
+$notifyWidth: 30rem;
+$NotifyHeight: 15rem;
 
 //Alert
 $alertSize: 20px;
@@ -75,13 +70,11 @@ $alertSize: 20px;
 $sidebar-Width-Desktop-Min: 70px;
 $sidebar-Width-Desktop-Max: 200px;
 
-// Searchbar
-$searchWidth: 500px;
+// Search and Profile button
+$headBtnWidth: 25rem;
 
-// Profile Name Section width
-$ProfileNameWidth: 150px;
 
-//Roght-calendar
+//Right-calendar
 $calendarWidth: 400px;
 
 
@@ -94,8 +87,9 @@ $colors: (
   "white": $white,
 );
 
-
-$z-index-0: 0;
-$z-index-small: 1;
-$z-index-medium: 5;
-$z-index-big: 99;
+// The new Z-index Manager:
+$z-index-content: 200;
+$z-index-active: 300;
+$z-index-dropdown: 300;
+$z-index-modal: 500;
+$z-index-error: 700;

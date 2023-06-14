@@ -24,72 +24,63 @@ sidebarOpen.addEventListener('click', () => {
 })
 
 
-// Opening the Searchbar
-const search = document.querySelector('.header__search');
-const searchOpen = document.querySelector('#openSearch');
-const searchClose = document.querySelector('#closeSearch');
-const searchToggle = document.querySelector('#toggleSearch');
-// function for open the Searchbar on mobile
-searchOpen.addEventListener('click', () => {
-    search.classList.add('active');
-    right.classList.remove('open');
-    profile.classList.remove('active');
-    header.classList.remove('moved');
-    notify.classList.remove('open');
-    sidebar.classList.remove('open');
-})
-// function for open/close the Searchbar on Desktop version
-searchToggle.addEventListener('click', () => {
-  search.classList.toggle('active');
-  right.classList.remove('open');
-  profile.classList.remove('active');
-  header.classList.remove('moved');
-  notify.classList.remove('open');
-  sidebar.classList.remove('open');
-})
-// function for close the Searchbar on mobile
-searchClose.addEventListener('click', () => {
-    right.classList.remove('open');
-    profile.classList.remove('active');
-    header.classList.remove('moved');
-    search.classList.remove('active');
-    notify.classList.remove('open');
-    sidebar.classList.remove('open');
-})
 
-
-// Header for increase Profile height
 const header = document.querySelector('header');
-// Opening the Profile button
-const profile = document.querySelector('.header__profile');
+const profile = document.querySelector('.profile');
 const profileOpen = document.querySelector('#openProfile');
 const profileClose = document.querySelector('#closeProfile');
-// Opening the Profile bottom part
-const profileTop = document.querySelector('.header__profile-top');
-const profileBottom = document.querySelector('.header__profile-bottom');
+
 // Function for to open profile section
 profileOpen.addEventListener('click', () => {
     profile.classList.add('active');
     header.classList.add('moved');
-    right.classList.remove('open');
     search.classList.remove('active');
+
+    right.classList.remove('open');
     notify.classList.remove('open');
     sidebar.classList.remove('open');
 })
 // Function what is closing everethink of Profile
 profileClose.addEventListener('click', () => {
-  profile.classList.toggle('active');
-  right.classList.remove('open');
   header.classList.remove('moved');
+  profile.classList.toggle('active');
   search.classList.remove('active');
+
+  right.classList.remove('open');
   notify.classList.remove('open');
   sidebar.classList.remove('open');
 })
 
-const notify = document.querySelector('.header__notify');
-const notifyBtn = document.querySelector('.header__notify-btn');
+const search = document.querySelector('.search');
+const searchOpen = document.querySelector('#openSearch');
+const searchClose = document.querySelector('#closeSearch');
+
+searchOpen.addEventListener('click', () => {
+  search.classList.add('active');
+  profile.classList.remove('active');
+  header.classList.remove('moved');
+
+  right.classList.remove('open');
+  notify.classList.remove('open');
+  sidebar.classList.remove('open');
+})
+// Function what is closing everethink of Profile
+searchClose.addEventListener('click', () => {
+  search.classList.toggle('active');
+  header.classList.remove('moved');
+  profile.classList.remove('active');
+
+  right.classList.remove('open');
+  notify.classList.remove('open');
+  sidebar.classList.remove('open');
+})
+
+
+const notify = document.querySelector('.notify');
+const notifyBtn = document.querySelector('.notify__btn');
 
 notifyBtn.addEventListener('click', () => {
+  document.querySelector('body').classList.toggle("overflow")
   notify.classList.toggle('open');
     right.classList.remove('open');
     profile.classList.remove('active');
@@ -101,7 +92,7 @@ notifyBtn.addEventListener('click', () => {
 
 
 
-///script for rightside
+// /script for rightside
 const right = document.querySelector('.right');
 const calendarBtn = document.querySelector('.right__open');
 
@@ -134,3 +125,13 @@ function OpenDropdown(){
   });
   });
 }
+
+// The Top Up Button
+const topUpBtn = document.getElementById('topUp');
+window.addEventListener('scroll', () => {
+  if(window.pageYOffset > 100){
+    topUpBtn.classList.add("actived");
+  } else {
+    topUpBtn.classList.remove("actived");
+  }
+})

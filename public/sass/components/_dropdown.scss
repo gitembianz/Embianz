@@ -5,6 +5,7 @@
   box-shadow: $BtnShadow;
   border-radius: $BtnBorderRadius;
   cursor: pointer;
+  z-index: $z-index-content;
 
   &-name {
     @include centering;
@@ -18,7 +19,7 @@
     border-radius: $BtnBorderRadius;
     border: 1.5px solid $mainBg;
     cursor: pointer;
-    z-index: $z-index-big + 55;
+    z-index: $z-index-dropdown;
   }
 
 
@@ -37,7 +38,7 @@
     box-shadow: $BtnShadow;
     border-radius: 0 0 $BtnBorderRadius $BtnBorderRadius;
     flex-direction: column;
-    z-index: $z-index-big - 55;
+    z-index: $z-index-content;
 
     input {
       width: 2rem;
@@ -59,42 +60,7 @@
     @include standart-Btn;
     width: 100%;
   }
+
+
 }
 
-
-.collapsible {
-  background-color: $mainBg;
-  color: $white;
-  cursor: pointer;
-  padding: 18px;
-  width: 100%;
-  border: none;
-  text-align: left;
-  outline: none;
-  font-size: $font-size-md;
-}
-
-
-
-.collapsible:after {
-  content: '\002B';
-  color: $white;
-  font-weight: $font-weight-bold;
-  float: right;
-  margin-left: $margin;
-}
-
-.collapsible.active:after {
-  content: "\2212";
-}
-
-//cpntentul pentru taburi
-.contenttabb {
-  padding: 0 $padding;
-  max-height: auto;
-  display: block;
-  display: block;
-  overflow: hidden;
-  transition: max-height 0.2s ease-out;
-  background-color: $white;
-}

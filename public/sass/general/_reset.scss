@@ -17,6 +17,20 @@ body {
   @include scrollbar;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+svg {
+  width: 32;
+  height: 32px;
+  fill: none;
+  stroke: #BBFCDE;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 .overflow {
   overflow: hidden;
 }
@@ -42,8 +56,7 @@ main {
   height: 100%;
   background-color: $white;
   border-radius: $BtnBorderRadius;
-
-  z-index: $z-index-medium;
+  z-index: $z-index-content;
 }
 
 .category-table.dataTable tbody td {

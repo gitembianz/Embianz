@@ -1,17 +1,11 @@
 .header {
-  align-items: center;
-  display: flex;
-  justify-content: center;
-
+  @include centering;
   position: relative;
-
-  width: 100%;
   height: $headerHeight;
   padding: 0 $padding;
-
   background: $mainBg;
-
-  transition: all $transition;
+  transition: $transition;
+  z-index: $z-index-content;
 
   // Here is the Search and Profile Buttons on Mobile
   &__buttons {
@@ -19,12 +13,9 @@
     gap: $gap * 2;
   }
 
-
-    &__logo {
-        display: none;
-        height: $BtnSize;
-        cursor: pointer;
-
+  &__logo {
+    display: none;
+    height: $BtnSize;
 
     img {
       object-fit: contain;
@@ -35,10 +26,26 @@
   /*  This is function for Profile (When i open the bottom
     part of Profile) to increase the height of Header */
   &.moved {
-    height: calc($headerHeight + ($gap * 2));
+    height: calc($headerHeight + ($gap * 3));
 
     &.content {
-      height: calc(100vh - ($headerHeight + ($gap * 2)));
+      height: calc(100vh - ($headerHeight + ($gap * 3)));
     }
+  }
+}
+
+// Profile and Search Button
+.search,
+.profile {
+  @include headBtn;
+}
+
+.search {
+  grid-template-columns: $BtnSize 1fr $BtnSize;
+
+  &__item,
+  &__item:last-child,
+  &__item:nth-child(2) {
+    grid-column: unset;
   }
 }

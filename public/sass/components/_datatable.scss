@@ -1,14 +1,4 @@
-th {
-  text-align: center !important;
-}
-
-.link-name {
-  color: $black;
-
-  text-decoration: underline;
-}
-
-
+// this is the new Table
 .livewire-table {
   border-collapse: collapse;
   margin: 0;
@@ -101,7 +91,7 @@ th {
   }
 }
 
-@media (max-width: 530px) {
+@media (max-width: 660px) {
   .livewire-table {
     border: 3px solid $mainBg;
 
@@ -147,41 +137,56 @@ th {
   border: 1px solid lighten($checkColor, 20);
 }
 
-.alerttable {
-  position: absolute;
-  top: -120%;
-  left: 50%;
-  transform: translateX(-50%);
-}
 
+// The old table, is need to change on the .livewire-table
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  // background-color: transparent;
+  color: $black;
 
-//pagination
-.pagination {
-  @include centering;
-  gap: $gap * 1.5;
-  background: $mainBg;
-  padding: $padding;
-  border-radius: $BtnBorderRadius;
-  box-shadow: $BtnShadow;
+  td,
+  th {
+    border: 2px solid $darkBg;
+    padding: 10px;
+    height: 70px;
 
-  &__item {
-    @include standart-Btn;
-    width: 2rem;
-    height: 2rem;
-
-    &:nth-last-child(-n+4):not(:last-child) {
-      display: none;
+    &:first-child {
+      display: flex;
+      align-items: center;
+      border: 1px solid $darkBg;
+      width: 100%;
+      justify-content: space-between;
     }
 
-    &.active {
-      background-color: #BBFCDE;
-      color: #35424B;
+    &:nth-child(2),
+    &:nth-child(3),
+    &:nth-child(4) {
+      width: 10%;
+    }
+
+    img {
+      height: 100%;
+      object-fit: contain;
+    }
+
+    select,
+    input {
+      @include standart-Input;
+      margin: 0 auto;
+    }
+
+    button {
+      @include standart-Btn;
+      background-color: $alertColor;
+      margin: 0 auto;
+      font-size: x-large;
+      font-weight: 700;
     }
   }
-}
 
-@media (min-width: 530px) {
-  .pagination__item:nth-last-child(-n+4):not(:last-child) {
-    display: block;
+  thead {
+    background-color: $darkBg;
+    color: $white;
   }
 }
