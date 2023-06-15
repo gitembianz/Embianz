@@ -5,7 +5,6 @@
   padding: 0 $padding;
   background: $mainBg;
   transition: $transition;
-  z-index: $z-index-content;
 
   // Here is the Search and Profile Buttons on Mobile
   &__buttons {

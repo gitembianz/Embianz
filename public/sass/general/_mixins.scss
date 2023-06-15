@@ -81,7 +81,7 @@
      stroke: $BtnSvgColor;
      stroke-width: $btnSvgBold;
      background-color: transparent;
-     transition: all $transition;
+     transition: $transition;
    }
 
    //  Delete button for mixin
@@ -151,7 +151,6 @@
      position: absolute;
      align-items: center;
      transition: $transition;
-     z-index: $z-index-content;
      background-color: $mainBg;
      transform: translateY(-100%);
      grid-template-columns: repeat(4, 1fr);
