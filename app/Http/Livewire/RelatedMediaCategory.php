@@ -7,9 +7,11 @@ use App\Models\Tabels;
 use Livewire\Component;
 use App\Models\Category;
 use Illuminate\Support\Facades\File;
+use Livewire\WithPagination;
 
 class RelatedMediaCategory extends Component
 {
+  use WithPagination;
   public $categoryId;
   public $category;
   public $showmedia = false;
