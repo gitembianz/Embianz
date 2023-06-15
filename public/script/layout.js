@@ -105,26 +105,50 @@ calendarBtn.addEventListener('click', () => {
     sidebar.classList.remove('open');
 });
 
-function OpenDropdown(){
+// function OpenDropdown(){
 
-  const dropdownButtons = document.querySelectorAll(".dropdown-name");
+//   const dropdownButtons = document.querySelectorAll(".dropdown-name");
+
+//   dropdownButtons.forEach(function(button) {
+//   button.addEventListener("click", function() {
+//     const dropdownContent = this.nextElementSibling;
+
+//     dropdownContent.classList.toggle("show");
+
+//     const otherDropdowns = document.querySelectorAll(".dropdown-content");
+
+//     otherDropdowns.forEach(function(content) {
+//       if (content !== dropdownContent) {
+//         content.classList.remove("show");
+//       }
+//     });
+//   });
+//   });
+// }
+
+// Select all buttons with the class "dropdown-button"
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Select all buttons with the class "dropdown-button"
+  const dropdownButtons = document.querySelectorAll('.dropdown-button');
 
   dropdownButtons.forEach(function(button) {
-  button.addEventListener("click", function() {
-    const dropdownContent = this.nextElementSibling;
+    button.addEventListener('click', function() {
+      const dropdown = button.closest('.dropdown');
+      dropdown.classList.toggle('open');
 
-    dropdownContent.classList.toggle("show");
-
-    const otherDropdowns = document.querySelectorAll(".dropdown-content");
-
-    otherDropdowns.forEach(function(content) {
-      if (content !== dropdownContent) {
-        content.classList.remove("show");
-      }
+      // Remove the class "open" from other buttons
+      dropdownButtons.forEach(function(otherButton) {
+        if (otherButton !== button) {
+          const otherDropdown = otherButton.closest('.dropdown');
+          otherDropdown.classList.remove('open');
+        }
+      });
     });
   });
-  });
-}
+});
+
+
 
 // The Top Up Button
 const topUpBtn = document.getElementById('topUp');
