@@ -41,10 +41,9 @@
             <span>Per Page :</span>
         </div>
 
-        <div class="dropdown" onclick="OpenDropdown()">
-            <span class="dropdown-name">Columns</span>
-
-            <div class="dropdown-content">
+        <div class="dropdown">
+            <button class="dropdown-button">Columns</button>
+            <div class="dropdown-list">
                 @foreach ($columns as $column)
                     <div class="dropdown-item">
                         <input type="checkbox" wire:model="selectedColumns" value="{{ $column }}"
@@ -55,11 +54,11 @@
             </div>
         </div>
 
-        @if ($checked)
-            <div class="dropdown" onclick="OpenDropdown()">
-                <span class="dropdown-name">With Checked ({{ count($checked) }})</span>
-
-                <div class="dropdown-content">
+        <div class="dropdown none" @if ($checked) style="display: unset" @endif>
+            <button class="dropdown-button none" @if ($checked) style="display: flex" @endif>With
+                Checked({{ count($checked) }})</button>
+            @if ($checked)
+                <div class="dropdown-list">
                     <button class="dropdown-item delete" type="button" wire:click="confirmCategoriesRemovalmultiple()">
                         Delete
                     </button>
@@ -67,8 +66,8 @@
                         Export
                     </button>
                 </div>
-            </div>
-        @endif
+            @endif
+        </div>
     </div>
 
     @if ($selectPage)

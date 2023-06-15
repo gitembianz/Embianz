@@ -72,8 +72,8 @@ body::-webkit-scrollbar {
 body::-webkit-scrollbar-thumb {
   background: #20282d;
   border-radius: 10px;
-  -webkit-transition: all 0.3s ease-in-out;
-  transition: all 0.3s ease-in-out;
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 body::-webkit-scrollbar-thumb:hover {
   background: #151b1e;
@@ -1182,9 +1182,8 @@ main {
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   border-radius: 10px;
   cursor: pointer;
-  z-index: 2;
 }
-.dropdown-name {
+.dropdown-button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1201,12 +1200,12 @@ main {
   cursor: pointer;
   z-index: 2;
 }
-.dropdown-content {
+.dropdown-list {
   display: flex;
   align-items: center;
   justify-content: center;
-  display: none;
   position: absolute;
+  display: none;
   top: 85%;
   left: 0;
   gap: 10px;
@@ -1218,15 +1217,15 @@ main {
   border-radius: 0 0 10px 10px;
   flex-direction: column;
 }
-.dropdown-content input {
+.dropdown-list input {
   width: 2rem;
   height: 2rem;
 }
-.dropdown-content label {
+.dropdown-list label {
   flex: 1;
   text-align: start;
 }
-.dropdown-content button {
+.dropdown-list button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1244,87 +1243,84 @@ main {
   padding: 0;
   width: 3rem;
   height: 3rem;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
   width: 100%;
 }
-.dropdown-content button:hover {
+.dropdown-list button:hover {
   background-color: #0b0d0f;
   color: #BBFCDE;
 }
-.dropdown-content button:hover > .sidebar__icon {
+.dropdown-list button:hover > .sidebar__icon {
   background-color: #0b0d0f;
 }
-.dropdown-content button.active, .dropdown-content button:active, .dropdown-content button:focus-visible {
+.dropdown-list button.active, .dropdown-list button:active, .dropdown-list button:focus-visible {
   background-color: #BBFCDE;
   color: #35424B;
 }
-.dropdown-content button.active > .sidebar__icon, .dropdown-content button:active > .sidebar__icon, .dropdown-content button:focus-visible > .sidebar__icon {
+.dropdown-list button.active > .sidebar__icon, .dropdown-list button:active > .sidebar__icon, .dropdown-list button:focus-visible > .sidebar__icon {
   background-color: #BBFCDE;
 }
-.dropdown-content button.active > .sidebar__icon svg, .dropdown-content button:active > .sidebar__icon svg, .dropdown-content button:focus-visible > .sidebar__icon svg {
+.dropdown-list button.active > .sidebar__icon svg, .dropdown-list button:active > .sidebar__icon svg, .dropdown-list button:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-.dropdown-content button.active svg, .dropdown-content button:active svg, .dropdown-content button:focus-visible svg {
+.dropdown-list button.active svg, .dropdown-list button:active svg, .dropdown-list button:focus-visible svg {
   stroke: #35424B;
 }
-.dropdown-content button img,
-.dropdown-content button svg {
+.dropdown-list button img,
+.dropdown-list button svg {
   width: 23px;
   height: 23px;
   stroke: #BBFCDE;
   stroke-width: 1.5px;
   background-color: transparent;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
-.dropdown-content button.delete {
+.dropdown-list button.delete {
   background-color: #e25b73;
 }
-.dropdown-content button.delete:hover {
+.dropdown-list button.delete:hover {
   background-color: #b7203b;
   color: #BBFCDE;
 }
-.dropdown-content button.delete:hover > .sidebar__icon {
+.dropdown-list button.delete:hover > .sidebar__icon {
   background-color: #b7203b;
 }
-.dropdown-content button.delete.active, .dropdown-content button.delete:active, .dropdown-content button.delete:focus-visible {
+.dropdown-list button.delete.active, .dropdown-list button.delete:active, .dropdown-list button.delete:focus-visible {
   background-color: #BBFCDE;
   color: #35424B;
 }
-.dropdown-content button.delete.active > .sidebar__icon, .dropdown-content button.delete:active > .sidebar__icon, .dropdown-content button.delete:focus-visible > .sidebar__icon {
+.dropdown-list button.delete.active > .sidebar__icon, .dropdown-list button.delete:active > .sidebar__icon, .dropdown-list button.delete:focus-visible > .sidebar__icon {
   background-color: #BBFCDE;
 }
-.dropdown-content button.delete.active > .sidebar__icon svg, .dropdown-content button.delete:active > .sidebar__icon svg, .dropdown-content button.delete:focus-visible > .sidebar__icon svg {
+.dropdown-list button.delete.active > .sidebar__icon svg, .dropdown-list button.delete:active > .sidebar__icon svg, .dropdown-list button.delete:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-.dropdown-content button.delete.active svg, .dropdown-content button.delete:active svg, .dropdown-content button.delete:focus-visible svg {
+.dropdown-list button.delete.active svg, .dropdown-list button.delete:active svg, .dropdown-list button.delete:focus-visible svg {
   stroke: #35424B;
 }
-.dropdown-content button.submit {
+.dropdown-list button.submit {
   background-color: #BBFCDE;
   color: #35424B;
 }
-.dropdown-content button.submit:hover {
+.dropdown-list button.submit:hover {
   background-color: #28f697;
   color: #BBFCDE;
 }
-.dropdown-content button.submit:hover > .sidebar__icon {
+.dropdown-list button.submit:hover > .sidebar__icon {
   background-color: #28f697;
 }
-.dropdown-content button.submit.active, .dropdown-content button.submit:active, .dropdown-content button.submit:focus-visible {
+.dropdown-list button.submit.active, .dropdown-list button.submit:active, .dropdown-list button.submit:focus-visible {
   background-color: #28f697;
   color: #35424B;
 }
-.dropdown-content button.submit.active > .sidebar__icon, .dropdown-content button.submit:active > .sidebar__icon, .dropdown-content button.submit:focus-visible > .sidebar__icon {
+.dropdown-list button.submit.active > .sidebar__icon, .dropdown-list button.submit:active > .sidebar__icon, .dropdown-list button.submit:focus-visible > .sidebar__icon {
   background-color: #28f697;
 }
-.dropdown-content button.submit.active > .sidebar__icon svg, .dropdown-content button.submit:active > .sidebar__icon svg, .dropdown-content button.submit:focus-visible > .sidebar__icon svg {
+.dropdown-list button.submit.active > .sidebar__icon svg, .dropdown-list button.submit:active > .sidebar__icon svg, .dropdown-list button.submit:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-.dropdown-content button.submit.active svg, .dropdown-content button.submit:active svg, .dropdown-content button.submit:focus-visible svg {
+.dropdown-list button.submit.active svg, .dropdown-list button.submit:active svg, .dropdown-list button.submit:focus-visible svg {
   stroke: #35424B;
-}
-.dropdown-content.show {
-  display: flex;
 }
 .dropdown-item {
   display: flex;
@@ -1332,6 +1328,20 @@ main {
   justify-content: space-between;
   gap: 10px;
   width: 100%;
+}
+.dropdown.open {
+  z-index: 5;
+}
+.dropdown.open.dropdown-list {
+  display: flex;
+}
+
+.dropdown.open .dropdown-list {
+  display: flex;
+}
+
+.none {
+  display: none;
 }
 
 .alert__session {
@@ -1376,7 +1386,7 @@ main {
   padding: 0;
   width: 3rem;
   height: 3rem;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
   background-color: #e25b73;
 }
 .alert__session-btn:hover {
@@ -1406,7 +1416,7 @@ main {
   stroke: #BBFCDE;
   stroke-width: 1.5px;
   background-color: transparent;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 .alert__session-btn.delete {
   background-color: #e25b73;
@@ -1462,7 +1472,7 @@ main {
   width: 85%;
   bottom: 100%;
   opacity: 0;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
   z-index: 700;
 }
 
@@ -1501,7 +1511,7 @@ main {
   padding: 0 10px;
   display: block;
   overflow: hidden;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
   background-color: #ffffff;
 }
 
@@ -1559,7 +1569,7 @@ main {
   padding: 0;
   width: 3rem;
   height: 3rem;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
   width: 100%;
   cursor: pointer;
   font-weight: 700;
@@ -1591,7 +1601,7 @@ main {
   stroke: #BBFCDE;
   stroke-width: 1.5px;
   background-color: transparent;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 .modal-content-btn.delete {
   background-color: #e25b73;
@@ -1718,7 +1728,7 @@ input[type=checkbox]:checked:before {
   padding: 0;
   width: 3rem;
   height: 3rem;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
   border-radius: 100%;
   position: fixed;
   bottom: 1rem;
@@ -1753,7 +1763,7 @@ input[type=checkbox]:checked:before {
   stroke: #BBFCDE;
   stroke-width: 1.5px;
   background-color: transparent;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 .top-up-btn.delete {
   background-color: #e25b73;
@@ -1884,7 +1894,7 @@ input[type=checkbox]:checked:before {
   padding: 0;
   width: 3rem;
   height: 3rem;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
   display: unset;
   width: 2.5rem;
   height: 2.5rem;
@@ -1916,7 +1926,7 @@ input[type=checkbox]:checked:before {
   stroke: #BBFCDE;
   stroke-width: 1.5px;
   background-color: transparent;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 .livewire-table button.delete {
   background-color: #e25b73;
@@ -2071,8 +2081,8 @@ input[type=checkbox]:checked:before {
 .table th input::-webkit-scrollbar-thumb {
   background: #20282d;
   border-radius: 10px;
-  -webkit-transition: all 0.3s ease-in-out;
-  transition: all 0.3s ease-in-out;
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 .table td select::-webkit-scrollbar-thumb:hover,
 .table td input::-webkit-scrollbar-thumb:hover,
@@ -2099,7 +2109,7 @@ input[type=checkbox]:checked:before {
   padding: 0;
   width: 3rem;
   height: 3rem;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
   background-color: #e25b73;
   margin: 0 auto;
   font-size: x-large;
@@ -2148,7 +2158,7 @@ input[type=checkbox]:checked:before {
   stroke: #BBFCDE;
   stroke-width: 1.5px;
   background-color: transparent;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 .table td button.delete,
 .table th button.delete {
@@ -2260,7 +2270,7 @@ input[type=checkbox]:checked:before {
   padding: 0;
   width: 3rem;
   height: 3rem;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
   width: 2rem;
   height: 2rem;
 }
@@ -2291,7 +2301,7 @@ input[type=checkbox]:checked:before {
   stroke: #BBFCDE;
   stroke-width: 1.5px;
   background-color: transparent;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 .pagination__item.delete {
   background-color: #e25b73;
@@ -2356,7 +2366,7 @@ input[type=checkbox]:checked:before {
   height: 100px;
   padding: 0 10px;
   background: #35424B;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
   /*  This is function for Profile (When i open the bottom
     part of Profile) to increase the height of Header */
 }
@@ -2394,7 +2404,7 @@ input[type=checkbox]:checked:before {
   padding: 10px;
   position: absolute;
   align-items: center;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
   background-color: #35424B;
   transform: translateY(-100%);
   grid-template-columns: repeat(4, 1fr);
@@ -2458,7 +2468,7 @@ input[type=checkbox]:checked:before {
   padding: 0;
   width: 3rem;
   height: 3rem;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 .search__item:hover, .search__icon:hover,
 .profile__item:hover,
@@ -2520,7 +2530,7 @@ input[type=checkbox]:checked:before {
   stroke: #BBFCDE;
   stroke-width: 1.5px;
   background-color: transparent;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 .search__item.delete, .search__icon.delete,
 .profile__item.delete,
@@ -2747,7 +2757,7 @@ input[type=checkbox]:checked:before {
   padding: 0;
   width: 3rem;
   height: 3rem;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 .notify__btn:hover, .notify__item:hover {
   background-color: #0b0d0f;
@@ -2777,7 +2787,7 @@ input[type=checkbox]:checked:before {
   stroke: #BBFCDE;
   stroke-width: 1.5px;
   background-color: transparent;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 .notify__btn.delete, .notify__item.delete {
   background-color: #e25b73;
@@ -2846,7 +2856,7 @@ input[type=checkbox]:checked:before {
   justify-content: center;
   background: #35424B;
   flex-direction: column;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
   justify-content: flex-start;
   height: calc(100% - 100px);
   transform: translateX(-50%) translateY(-150%);
@@ -2860,8 +2870,8 @@ input[type=checkbox]:checked:before {
 .notify__list::-webkit-scrollbar-thumb {
   background: #20282d;
   border-radius: 10px;
-  -webkit-transition: all 0.3s ease-in-out;
-  transition: all 0.3s ease-in-out;
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 .notify__list::-webkit-scrollbar-thumb:hover {
   background: #151b1e;
@@ -2928,7 +2938,7 @@ input[type=checkbox]:checked:before {
   width: 0;
   height: 100%;
   background-color: #35424B;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 .sidebar__list {
   display: grid;
@@ -2962,7 +2972,7 @@ input[type=checkbox]:checked:before {
   padding: 0;
   width: 3rem;
   height: 3rem;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 .sidebar__btn:hover {
   background-color: #0b0d0f;
@@ -2991,7 +3001,7 @@ input[type=checkbox]:checked:before {
   stroke: #BBFCDE;
   stroke-width: 1.5px;
   background-color: transparent;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 .sidebar__btn.delete {
   background-color: #e25b73;
@@ -3061,7 +3071,7 @@ input[type=checkbox]:checked:before {
   padding: 0;
   width: 3rem;
   height: 3rem;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
   width: 0;
 }
 .sidebar__item:hover {
@@ -3091,7 +3101,7 @@ input[type=checkbox]:checked:before {
   stroke: #BBFCDE;
   stroke-width: 1.5px;
   background-color: transparent;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 .sidebar__item.delete {
   background-color: #e25b73;
@@ -3145,7 +3155,7 @@ input[type=checkbox]:checked:before {
   padding: 0;
   flex: 0;
   opacity: 0;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 .sidebar__icon {
   display: flex;
@@ -3165,11 +3175,11 @@ input[type=checkbox]:checked:before {
   padding: 0;
   width: 3rem;
   height: 3rem;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
   opacity: 0;
   width: 0;
   height: 0;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 .sidebar__icon:hover {
   background-color: #0b0d0f;
@@ -3198,7 +3208,7 @@ input[type=checkbox]:checked:before {
   stroke: #BBFCDE;
   stroke-width: 1.5px;
   background-color: transparent;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 .sidebar__icon.delete {
   background-color: #e25b73;
@@ -3306,7 +3316,7 @@ input[type=checkbox]:checked:before {
     padding: 0;
     width: 3rem;
     height: 3rem;
-    transition: all 0.3s ease-in-out;
+    transition: all 0.2s ease-in-out;
     width: 3rem;
     height: 3rem;
     border-radius: 10px;
@@ -3341,7 +3351,7 @@ input[type=checkbox]:checked:before {
     stroke: #BBFCDE;
     stroke-width: 1.5px;
     background-color: transparent;
-    transition: all 0.3s ease-in-out;
+    transition: all 0.2s ease-in-out;
   }
   .sidebar__open.delete {
     background-color: #e25b73;
@@ -3448,7 +3458,7 @@ input[type=checkbox]:checked:before {
   padding: 0;
   width: 3rem;
   height: 3rem;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
   width: 100%;
   background-color: #35424B;
 }
@@ -3479,7 +3489,7 @@ input[type=checkbox]:checked:before {
   stroke: #BBFCDE;
   stroke-width: 1.5px;
   background-color: transparent;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 .item__header-btn.delete {
   background-color: #e25b73;
@@ -3554,7 +3564,7 @@ input[type=checkbox]:checked:before {
   padding: 0;
   width: 3rem;
   height: 3rem;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
   background-color: #35424B;
   width: 100%;
   gap: 10px;
@@ -3586,7 +3596,7 @@ input[type=checkbox]:checked:before {
   stroke: #BBFCDE;
   stroke-width: 1.5px;
   background-color: transparent;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 .item__upload-btn.delete {
   background-color: #e25b73;
@@ -3661,7 +3671,7 @@ input[type=checkbox]:checked:before {
   left: 15px;
   top: 50%;
   transform: translateY(-50%);
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 .item__form-input div,
 .item__form-input textarea,
@@ -3714,8 +3724,8 @@ input[type=checkbox]:checked:before {
 .item__form-close input::-webkit-scrollbar-thumb {
   background: #20282d;
   border-radius: 10px;
-  -webkit-transition: all 0.3s ease-in-out;
-  transition: all 0.3s ease-in-out;
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 .item__form-input div::-webkit-scrollbar-thumb:hover,
 .item__form-input textarea::-webkit-scrollbar-thumb:hover,
@@ -3767,7 +3777,7 @@ input[type=checkbox]:checked:before {
   left: 15px;
   top: 0;
   transform: translateY(-50%);
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
   background-color: #ffffff;
   padding: 0 10px;
 }
@@ -3802,7 +3812,7 @@ input[type=checkbox]:checked:before {
   padding: 0;
   width: 3rem;
   height: 3rem;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
   color: #35424B;
   width: 100%;
   background-color: #BBFCDE;
@@ -3835,7 +3845,7 @@ input[type=checkbox]:checked:before {
   stroke: #BBFCDE;
   stroke-width: 1.5px;
   background-color: transparent;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 .item__form-btn.delete {
   background-color: #e25b73;
@@ -3921,7 +3931,7 @@ input[type=checkbox]:checked:before {
   width: 0;
   height: 100%;
   background-color: #35424B;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
   transform: translateX(90%);
 }
 .right__open {
@@ -3942,7 +3952,7 @@ input[type=checkbox]:checked:before {
   padding: 0;
   width: 3rem;
   height: 3rem;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
   display: block;
   cursor: pointer;
 }
@@ -3973,7 +3983,7 @@ input[type=checkbox]:checked:before {
   stroke: #BBFCDE;
   stroke-width: 1.5px;
   background-color: transparent;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 .right__open.delete {
   background-color: #e25b73;
@@ -4089,7 +4099,7 @@ input[type=checkbox]:checked:before {
 .container-right .card_calendar .calendar-week-days div:hover {
   color: black;
   transform: scale(1.2);
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 .container-right .card_calendar .calendar-week-days div {
   display: grid;
@@ -4134,7 +4144,7 @@ input[type=checkbox]:checked:before {
 }
 .container-right .card_calendar .year-change:hover {
   background-color: var(--light-btn);
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
   transform: scale(1.12);
 }
 .container-right .card_calendar .year-change:hover pre {
@@ -4149,13 +4159,13 @@ input[type=checkbox]:checked:before {
 .container-right .card_calendar #year:hover {
   cursor: pointer;
   transform: scale(1.2);
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 .container-right .card_calendar .calendar-days div span {
   position: absolute;
 }
 .container-right .card_calendar .calendar-days div:hover {
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
   background-color: #BBFCDE;
   border-radius: 20%;
   color: #000;
@@ -4178,7 +4188,7 @@ input[type=checkbox]:checked:before {
   display: grid;
   place-content: center;
   margin-bottom: 10px;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 .container-right .card_calendar .month-list > div > div {
   border-radius: 15px;
@@ -4188,12 +4198,12 @@ input[type=checkbox]:checked:before {
   background-color: #ffffff;
   color: #000;
   transform: scale(0.9);
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 .container-right .card_calendar .month-list.show {
   visibility: visible;
   pointer-events: visible;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
   animation: to-left 0.71s forwards;
 }
 .container-right .card_calendar .month-list.hideonce {
