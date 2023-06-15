@@ -34,17 +34,18 @@
     flex-direction: column;
     gap: $gap;
 
+    input{
+      display: none;
+    }
+
     // Upload media button
     &-btn {
       @include standart-Btn;
+      background-color: $mainBg;
       width: 100%;
       gap: $gap;
     }
 
-    // Upload media content
-    &-content {
-      display: none;
-    }
   }
 
   // Product form (input, textarea, buttons)
@@ -132,8 +133,8 @@
     // BUTTON IN CONTENT ("ADD NEW")
     &-btn {
       @include standart-Btn;
-      width: 100%;
       color: $mainBg;
+      width: 100%;
       background-color: $secondColor;
       border: 1px solid black;
     }

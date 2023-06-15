@@ -134,17 +134,4 @@
             });
         }
     }
-
-    //Remove a media from table
-    function removeFile(fileId) {
-        $.ajax({
-            url: '/filesd/' + fileId,
-            success: function(data) {
-                location.reload();
-            },
-            error: function(xhr, status, error) {
-                console.error(error);
-            }
-        });
-    }
 </script>

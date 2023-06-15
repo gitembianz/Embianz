@@ -97,7 +97,7 @@ class Categoriestable extends Component
       $id = $category->id;
       $cattodel = Category::find($id);
       $productcat = Products_categories::where('category_id', $id)->first();
-      if ($productcat) {
+      if ($productcat != NULL) {
         $productcat->delete();
       }
 
@@ -120,7 +120,7 @@ class Categoriestable extends Component
     $category = Category::findOrFail($id);
     $productcat = Products_categories::where('category_id', $id)->first();
 
-    if ($productcat) {
+    if ($productcat != NULL) {
       $productcat->delete();
     }
     $productType = class_basename(get_class($category));

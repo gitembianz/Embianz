@@ -7,7 +7,7 @@
   box-sizing: border-box;
   list-style-type: none;
   text-decoration: none;
-  font-family: 'Roboto', sans-serif !important;
+  font-family: 'Roboto', sans-serif;
   font-weight: normal;
 }
 
@@ -44,10 +44,6 @@ main {
 }
 
 
-.textareamin {
-  min-height: 10rem;
-}
-
 // The big part for all main content
 .content {
   padding: $contentPadding;
@@ -57,8 +53,4 @@ main {
   background-color: $white;
   border-radius: $BtnBorderRadius;
   z-index: $z-index-content;
-}
-
-.category-table.dataTable tbody td {
-  padding: 0 !important;
 }

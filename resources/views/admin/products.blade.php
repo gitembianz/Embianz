@@ -8,8 +8,7 @@
         <button class="alert__session-btn" type="button"
             onclick="document.getElementById('alertevent').style.display='none'" data-bs-dismiss="alert"
             aria-hidden="true">
-            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24" fill="none"
-                stroke="#BBFCDE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg>
                 <line x1="18" y1="6" x2="6" y2="18"></line>
                 <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
@@ -31,7 +30,6 @@
 @endif
 {{-- End Section session message --}}
 <x-dashboardsidebar />
-<x-dashboardmodals />
 
 {{-- Page content start --}}
 <section class="content">
@@ -46,8 +44,7 @@
     @livewire('productstable')
     {{-- Tabel by Livewire end --}}
     <a href="#" class="top-up-btn" id="topUp">
-        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
-            stroke="#BBFCDE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg>
             <polyline points="18 15 12 9 6 15"></polyline>
         </svg>
     </a>
