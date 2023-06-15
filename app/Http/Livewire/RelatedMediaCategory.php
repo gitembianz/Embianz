@@ -6,7 +6,6 @@ use App\Models\Media;
 use App\Models\Tabels;
 use Livewire\Component;
 use App\Models\Category;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
 class RelatedMediaCategory extends Component
@@ -33,7 +32,6 @@ class RelatedMediaCategory extends Component
       $this->category = Category::find($categoryId);
       $this->productType = class_basename(get_class($this->category));
       $this->type = Tabels::where('name', $this->productType)->first()->id;
-      // $this->files = Media::where('item_id', $categoryId)->where('tabel_id', $this->type)->with('location')->get();
       $this->selectedColumns = $this->columns;
   }
 
@@ -140,7 +138,6 @@ class RelatedMediaCategory extends Component
   {
     $this->mediaidbeingremoved = $id;
     $this->dispatchBrowserEvent('show-delete-modal-media');
-    // dd($this->mediaidbeingremoved);
   }
 
   public function confirmFilesRemovalmultiple(){
@@ -154,11 +151,5 @@ class RelatedMediaCategory extends Component
         return view('livewire.related-media-category',[
           'files' => $this->files
         ]);
-    }
-
-    public function addmedia(Request $request){
-
-      dd($request->file('media'));
-
     }
 }
