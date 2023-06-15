@@ -26,7 +26,7 @@
     @endif
 
     <div class="item__form form-table"
-        @if ($checked) style="grid-template-columns: 40% 1fr 1fr 1fr" @endif>
+        @if ($checked) style="grid-template-columns: 2fr 1fr 1fr 1fr" @endif>
 
         <div class="item__form-input">
             <input wire:model.debounce.200ms="search" type="text" required>
@@ -47,9 +47,9 @@
 
             <div class="dropdown-content">
                 @foreach ($columns as $column)
-                    <div class="display-f jus-fs wid-10 align-center">
-                        <input class="dropdown-item mr-1" type="checkbox" wire:model="selectedColumns"
-                            value="{{ $column }}" {{ in_array($column, $selectedColumns) ? 'checked' : '' }}>
+                    <div class="dropdown-item">
+                        <input type="checkbox" wire:model="selectedColumns" value="{{ $column }}"
+                            {{ in_array($column, $selectedColumns) ? 'checked' : '' }}>
                         <label>{{ $column }}</label>
                     </div>
                 @endforeach

@@ -49,6 +49,11 @@
       flex: 1;
       text-align: start;
     }
+
+    button {
+      @include standart-Btn;
+      width: 100%;
+    }
   }
 
   &-content.show {
@@ -57,7 +62,10 @@
 
 
   &-item {
-    @include standart-Btn;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $gap;
     width: 100%;
   }
 
