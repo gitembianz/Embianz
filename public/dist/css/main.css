@@ -1227,10 +1227,7 @@ main {
   flex: 1;
   text-align: start;
 }
-.dropdown-content.show {
-  display: flex;
-}
-.dropdown-item {
+.dropdown-content button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1251,28 +1248,28 @@ main {
   transition: all 0.3s ease-in-out;
   width: 100%;
 }
-.dropdown-item:hover {
+.dropdown-content button:hover {
   background-color: #0b0d0f;
   color: #BBFCDE;
 }
-.dropdown-item:hover > .sidebar__icon {
+.dropdown-content button:hover > .sidebar__icon {
   background-color: #0b0d0f;
 }
-.dropdown-item.active, .dropdown-item:active, .dropdown-item:focus-visible {
+.dropdown-content button.active, .dropdown-content button:active, .dropdown-content button:focus-visible {
   background-color: #BBFCDE;
   color: #35424B;
 }
-.dropdown-item.active > .sidebar__icon, .dropdown-item:active > .sidebar__icon, .dropdown-item:focus-visible > .sidebar__icon {
+.dropdown-content button.active > .sidebar__icon, .dropdown-content button:active > .sidebar__icon, .dropdown-content button:focus-visible > .sidebar__icon {
   background-color: #BBFCDE;
 }
-.dropdown-item.active > .sidebar__icon svg, .dropdown-item:active > .sidebar__icon svg, .dropdown-item:focus-visible > .sidebar__icon svg {
+.dropdown-content button.active > .sidebar__icon svg, .dropdown-content button:active > .sidebar__icon svg, .dropdown-content button:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-.dropdown-item.active svg, .dropdown-item:active svg, .dropdown-item:focus-visible svg {
+.dropdown-content button.active svg, .dropdown-content button:active svg, .dropdown-content button:focus-visible svg {
   stroke: #35424B;
 }
-.dropdown-item img,
-.dropdown-item svg {
+.dropdown-content button img,
+.dropdown-content button svg {
   width: 23px;
   height: 23px;
   stroke: #BBFCDE;
@@ -1280,52 +1277,62 @@ main {
   background-color: transparent;
   transition: all all 0.3s ease-in-out;
 }
-.dropdown-item.delete {
+.dropdown-content button.delete {
   background-color: #e25b73;
 }
-.dropdown-item.delete:hover {
+.dropdown-content button.delete:hover {
   background-color: #b7203b;
   color: #BBFCDE;
 }
-.dropdown-item.delete:hover > .sidebar__icon {
+.dropdown-content button.delete:hover > .sidebar__icon {
   background-color: #b7203b;
 }
-.dropdown-item.delete.active, .dropdown-item.delete:active, .dropdown-item.delete:focus-visible {
+.dropdown-content button.delete.active, .dropdown-content button.delete:active, .dropdown-content button.delete:focus-visible {
   background-color: #BBFCDE;
   color: #35424B;
 }
-.dropdown-item.delete.active > .sidebar__icon, .dropdown-item.delete:active > .sidebar__icon, .dropdown-item.delete:focus-visible > .sidebar__icon {
+.dropdown-content button.delete.active > .sidebar__icon, .dropdown-content button.delete:active > .sidebar__icon, .dropdown-content button.delete:focus-visible > .sidebar__icon {
   background-color: #BBFCDE;
 }
-.dropdown-item.delete.active > .sidebar__icon svg, .dropdown-item.delete:active > .sidebar__icon svg, .dropdown-item.delete:focus-visible > .sidebar__icon svg {
+.dropdown-content button.delete.active > .sidebar__icon svg, .dropdown-content button.delete:active > .sidebar__icon svg, .dropdown-content button.delete:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-.dropdown-item.delete.active svg, .dropdown-item.delete:active svg, .dropdown-item.delete:focus-visible svg {
+.dropdown-content button.delete.active svg, .dropdown-content button.delete:active svg, .dropdown-content button.delete:focus-visible svg {
   stroke: #35424B;
 }
-.dropdown-item.submit {
+.dropdown-content button.submit {
   background-color: #BBFCDE;
   color: #35424B;
 }
-.dropdown-item.submit:hover {
+.dropdown-content button.submit:hover {
   background-color: #28f697;
   color: #BBFCDE;
 }
-.dropdown-item.submit:hover > .sidebar__icon {
+.dropdown-content button.submit:hover > .sidebar__icon {
   background-color: #28f697;
 }
-.dropdown-item.submit.active, .dropdown-item.submit:active, .dropdown-item.submit:focus-visible {
+.dropdown-content button.submit.active, .dropdown-content button.submit:active, .dropdown-content button.submit:focus-visible {
   background-color: #28f697;
   color: #35424B;
 }
-.dropdown-item.submit.active > .sidebar__icon, .dropdown-item.submit:active > .sidebar__icon, .dropdown-item.submit:focus-visible > .sidebar__icon {
+.dropdown-content button.submit.active > .sidebar__icon, .dropdown-content button.submit:active > .sidebar__icon, .dropdown-content button.submit:focus-visible > .sidebar__icon {
   background-color: #28f697;
 }
-.dropdown-item.submit.active > .sidebar__icon svg, .dropdown-item.submit:active > .sidebar__icon svg, .dropdown-item.submit:focus-visible > .sidebar__icon svg {
+.dropdown-content button.submit.active > .sidebar__icon svg, .dropdown-content button.submit:active > .sidebar__icon svg, .dropdown-content button.submit:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-.dropdown-item.submit.active svg, .dropdown-item.submit:active svg, .dropdown-item.submit:focus-visible svg {
+.dropdown-content button.submit.active svg, .dropdown-content button.submit:active svg, .dropdown-content button.submit:focus-visible svg {
   stroke: #35424B;
+}
+.dropdown-content.show {
+  display: flex;
+}
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
 }
 
 .alert__session {
@@ -3878,34 +3885,35 @@ input[type=checkbox]:checked:before {
   stroke: #35424B;
 }
 
-.item {
-  display: flex;
-  flex-direction: column;
+@media (min-width: 1024px) {
+  .item {
+    display: flex;
+    flex-direction: column;
+  }
+  .item__header {
+    grid-template-columns: 70% 1fr;
+    grid-column-start: 1;
+    grid-column-end: 3;
+  }
+  .item__header-title {
+    text-align: left;
+  }
+  .item__upload {
+    margin-top: 0.875rem;
+  }
+  .item__form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .item__form.form-table {
+    grid-auto-flow: column;
+    grid-template-columns: 3fr 1fr 1fr;
+  }
+  .item__form-long {
+    grid-column: 1;
+    grid-column-end: 3;
+  }
 }
-.item__header {
-  grid-template-columns: 70% 1fr;
-  grid-column-start: 1;
-  grid-column-end: 3;
-}
-.item__header-title {
-  text-align: left;
-}
-.item__upload {
-  margin-top: 0.875rem;
-}
-.item__form {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-}
-.item__form.form-table {
-  grid-auto-flow: column;
-  grid-template-columns: 5fr 1fr 1fr;
-}
-.item__form-long {
-  grid-column: 1;
-  grid-column-end: 3;
-}
-
 .right {
   position: absolute;
   bottom: 0;
