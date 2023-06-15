@@ -6,17 +6,21 @@ use App\Models\Media;
 use App\Models\Tabels;
 use Livewire\Component;
 use App\Models\Category;
+use App\Models\MediaLocation;
 use Illuminate\Support\Facades\File;
+use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 
 class RelatedMediaCategory extends Component
 {
+  use WithFileUploads;
   use WithPagination;
   public $categoryId;
   public $category;
   public $showmedia = false;
   public $productType;
   public $type;
+  public $medias = [];
   public $perPage = 10;
   public $search = '';
   public $orderBy = 'id';
@@ -27,6 +31,7 @@ class RelatedMediaCategory extends Component
   public $mediaidbeingremoved = null;
   public $columns = ['Id', 'Name', 'Media', 'Media Location', 'Sequence'];
   public $selectedColumns = [];
+  public $locations;
 
   public function mount($categoryId)
   {
@@ -35,6 +40,7 @@ class RelatedMediaCategory extends Component
       $this->productType = class_basename(get_class($this->category));
       $this->type = Tabels::where('name', $this->productType)->first()->id;
       $this->selectedColumns = $this->columns;
+      $this->locations = MediaLocation::all();
   }
 
   public function showColumn($column)
@@ -55,6 +61,24 @@ class RelatedMediaCategory extends Component
   {
     $this->selectPage = false;
   }
+
+  public function save()
+    {
+
+      $this->validate([
+        'medias.*' => 'mimetypes:image/jpeg,image/png,image/svg+xml,video/mp4,video/quicktime|max:10240', // Max 10MB for all files
+    ]);
+
+        foreach ($this->medias as $media) {
+            dd($media);
+        }
+    }
+
+    public function removemedia($index){
+
+      array_splice($this->medias, $index, 1);
+
+    }
 
   public function sortBy($columnName)
   {

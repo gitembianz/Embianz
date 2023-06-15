@@ -1,7 +1,7 @@
 <script type="text/javascript">
     //Script fot Table with media
     allFiles = new DataTransfer();
-
+//function for simple add
     function previewFile(file) {
         let imageType = /^image\/.*|^video\/.*/;
         if (file.type.match(imageType)) {
@@ -88,9 +88,9 @@
                 removeBtn.onclick = function() {
                     tr.remove();
                     if (imageTable.rows.length === 1) {
-                        var addMediaCat = document.getElementById('addmediacat');
-                        if (addMediaCat) {
-                            addMediaCat.style.display = 'none';
+                      var buton = document.getElementById('add_media_related');
+                        if (buton) {
+                          buton.style.display = 'none';
                         }
                         tableHeader.remove();
                     }
@@ -126,7 +126,9 @@
         files.forEach(previewFile);
         document.getElementById('imgUpload').files = allFiles.files;
         var contentDiv = document.getElementById('contentDiv');
+        var buton = document.getElementById('add_media_related');
         if (contentDiv) {
+          buton.style.display = 'block';
             contentDiv.style.maxHeight = '100%';
             contentDiv.style.height = '100%';
             window.addEventListener('resize', function() {
