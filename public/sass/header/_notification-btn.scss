@@ -1,6 +1,6 @@
 .notify {
   position: relative;
-  z-index: $z-index-content;
+  // z-index: $z-index-content;
 
   &__btn,
   &__item {
@@ -29,7 +29,7 @@
     justify-content: flex-start;
     height: calc(100% - $headerHeight);
     transform: translateX(-50%) translateY(-150%);
-    z-index: 0;
+    // z-index: 0;
 
     li {
       width: 100%;

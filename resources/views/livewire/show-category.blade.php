@@ -5,30 +5,30 @@
             <a class="item__header-btn" href="{{ route('category') }}">Back</a>
             <a class="item__header-btn" href="{{ route('newcategory') }}">New</a>
             <input class="item__header-btn" type="button" value="Edit" name="edit" id="edit">
-            <input class="item__header-btn delete" type="button" value="Delete" name="delete" wire:click.prevent="confirmCategoryRemoval({{ $category->id }})">
+            <input class="item__header-btn delete" type="button" value="Delete" name="delete"
+                wire:click.prevent="confirmCategoryRemoval({{ $category->id }})">
         </div>
     </div>
-     {{-- delete single record --}}
-     <div class="modal" id="confirmationmodalcategory">
-      <div class="modal-content">
-          <h1 class="modal-content-title">
-              {{ __('Are you sure to delete this category?') }}
-          </h1>
-          <input wire:click.prevent="deleteSingleRecord()" class="modal-content-btn submit" type="button"
-              value="Confirm">
-          <input class="modal-content-btn delete" type="button"
-              onclick="document.getElementById('confirmationmodalcategory').style.display='none'" value="Cancel">
+    {{-- delete single record --}}
+    <div class="modal" id="confirmationmodalcategory">
+        <div class="modal-content">
+            <h1 class="modal-content-title">
+                {{ __('Are you sure to delete this category?') }}
+            </h1>
+            <input wire:click.prevent="deleteSingleRecord()" class="modal-content-btn submit" type="button"
+                value="Confirm">
+            <input class="modal-content-btn delete" type="button"
+                onclick="document.getElementById('confirmationmodalcategory').style.display='none'" value="Cancel">
 
-          <span class="modal-content-btn delete"
-              onclick="document.getElementById('confirmationmodalcategory').style.display='none'">
-              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24" fill="none"
-                  stroke="#BBFCDE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <line x1="18" y1="6" x2="6" y2="18"></line>
-                  <line x1="6" y1="6" x2="18" y2="18"></line>
-              </svg>
-          </span>
-      </div>
-  </div>
+            <span class="modal-content-btn delete"
+                onclick="document.getElementById('confirmationmodalcategory').style.display='none'">
+                <svg>
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </span>
+        </div>
+    </div>
     {{-- adding tab-bar --}}
     <div class="tab ">
         <button class="tablinks item__header-btn" onclick="opentab(event, 'Details')" id="defaultOpen">Details</button>

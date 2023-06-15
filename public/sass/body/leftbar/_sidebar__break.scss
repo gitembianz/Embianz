@@ -17,7 +17,6 @@
   .sidebar {
     width: $sidebar-Width-Desktop-Min; // Sidebar-close Width on big Screen
     position: relative;
-    z-index: 5;
 
     // Sidebar List of Items
     &__list {
