@@ -5,9 +5,8 @@
   box-shadow: $BtnShadow;
   border-radius: $BtnBorderRadius;
   cursor: pointer;
-  z-index: 2;
 
-  &-name {
+  &-button {
     @include centering;
     @include standart-Font;
     width: 100%;
@@ -21,11 +20,10 @@
     z-index: 2;
   }
 
-
-  &-content {
+  &-list {
     @include centering;
-    display: none;
     position: absolute;
+    display: none;
     top: 85%;
     left: 0;
     gap: $gap;
@@ -53,10 +51,6 @@
     }
   }
 
-  &-content.show {
-    display: flex
-  }
-
   &-item {
     display: flex;
     align-items: center;
@@ -64,4 +58,20 @@
     gap: $gap;
     width: 100%;
   }
+
+  &.open {
+    z-index: 5;
+
+    &.dropdown-list {
+      display: flex;
+    }
+  }
+}
+
+.dropdown.open .dropdown-list {
+  display: flex;
+}
+
+.none {
+  display: none;
 }
