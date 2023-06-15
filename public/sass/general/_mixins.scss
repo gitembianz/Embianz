@@ -18,6 +18,7 @@
 
    &:hover {
      background-color: $hoverEffect; //$BtnHover
+     color: $secondColor;
 
      &>.sidebar__icon {
        background-color: $hoverEffect; //$BtnHover
@@ -47,7 +48,7 @@
  @mixin standart-Font {
    font-size: $fSize;
    font-weight: $fWeight;
-   color: $secondColor
+   color: $secondColor;
  }
 
  @mixin standart-Btn {

@@ -1,7 +1,6 @@
 <x-dashboardheader />
 <x-dashboardnavbar />
 <x-dashboardsidebar />
-<x-dashboardmodals />
 {{-- Page content start --}}
 <section class="section-container bg-bg">
     <div>
