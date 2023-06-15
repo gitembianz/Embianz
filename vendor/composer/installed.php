@@ -472,6 +472,7 @@
         'laravel/laravel' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
+
             'reference' => '1588b0f4771914ec817af2f03827c52a21bddd21',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
