@@ -34,7 +34,7 @@
     flex-direction: column;
     gap: $gap;
 
-    input{
+    input[type="file"] {
       display: none;
     }
 

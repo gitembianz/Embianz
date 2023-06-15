@@ -3534,7 +3534,7 @@ input[type=checkbox]:checked:before {
   flex-direction: column;
   gap: 10px;
 }
-.item__upload input {
+.item__upload input[type=file] {
   display: none;
 }
 .item__upload-btn {
