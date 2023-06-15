@@ -59,7 +59,6 @@ return array(
     'App\\View\\Components\\Dashboardfooter' => $baseDir . '/app/View/Components/Dashboardfooter.php',
     'App\\View\\Components\\Dashboardheader' => $baseDir . '/app/View/Components/Dashboardheader.php',
     'App\\View\\Components\\Dashboardmediahanddler' => $baseDir . '/app/View/Components/Dashboardmediahanddler.php',
-    'App\\View\\Components\\Dashboardmodals' => $baseDir . '/app/View/Components/Dashboardmodals.php',
     'App\\View\\Components\\Dashboardnavbar' => $baseDir . '/app/View/Components/Dashboardnavbar.php',
     'App\\View\\Components\\Dashboardright' => $baseDir . '/app/View/Components/Dashboardright.php',
     'App\\View\\Components\\Dashboardscript' => $baseDir . '/app/View/Components/Dashboardscript.php',

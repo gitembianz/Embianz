@@ -685,7 +685,6 @@ class ComposerStaticInitdbceb679be78fc0f2f620fcaf24d3e3e
         'App\\View\\Components\\Dashboardfooter' => __DIR__ . '/../..' . '/app/View/Components/Dashboardfooter.php',
         'App\\View\\Components\\Dashboardheader' => __DIR__ . '/../..' . '/app/View/Components/Dashboardheader.php',
         'App\\View\\Components\\Dashboardmediahanddler' => __DIR__ . '/../..' . '/app/View/Components/Dashboardmediahanddler.php',
-        'App\\View\\Components\\Dashboardmodals' => __DIR__ . '/../..' . '/app/View/Components/Dashboardmodals.php',
         'App\\View\\Components\\Dashboardnavbar' => __DIR__ . '/../..' . '/app/View/Components/Dashboardnavbar.php',
         'App\\View\\Components\\Dashboardright' => __DIR__ . '/../..' . '/app/View/Components/Dashboardright.php',
         'App\\View\\Components\\Dashboardscript' => __DIR__ . '/../..' . '/app/View/Components/Dashboardscript.php',
