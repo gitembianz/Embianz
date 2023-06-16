@@ -34,7 +34,6 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
 
 
   //mediaroutes
-  route::post('/add_media/{id}', [CategoryController::class, 'add_media'])->name('add_media');
   route::get('/media/{id}/', [CategoryController::class, 'media'])->name('media');
 
 

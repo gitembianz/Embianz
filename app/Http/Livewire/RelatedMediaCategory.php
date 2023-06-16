@@ -2,14 +2,18 @@
 
 namespace App\Http\Livewire;
 
+use getID3;
 use App\Models\Media;
 use App\Models\Tabels;
 use Livewire\Component;
 use App\Models\Category;
-use App\Models\MediaLocation;
-use Illuminate\Support\Facades\File;
-use Livewire\WithFileUploads;
 use Livewire\WithPagination;
+use App\Models\MediaLocation;
+use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
 
 class RelatedMediaCategory extends Component
 {
@@ -32,6 +36,8 @@ class RelatedMediaCategory extends Component
   public $columns = ['Id', 'Name', 'Media', 'Media Location', 'Sequence'];
   public $selectedColumns = [];
   public $locations;
+  public $file_sequences = [];
+public $file_locations = [];
 
   public function mount($categoryId)
   {
@@ -41,6 +47,7 @@ class RelatedMediaCategory extends Component
       $this->type = Tabels::where('name', $this->productType)->first()->id;
       $this->selectedColumns = $this->columns;
       $this->locations = MediaLocation::all();
+      $this->file_locations[] = '';
   }
 
   public function showColumn($column)
@@ -62,16 +69,91 @@ class RelatedMediaCategory extends Component
     $this->selectPage = false;
   }
 
-  public function save()
+  public function save( )
     {
-
       $this->validate([
         'medias.*' => 'mimetypes:image/jpeg,image/png,image/svg+xml,video/mp4,video/quicktime|max:10240', // Max 10MB for all files
     ]);
+    //old code
+    $data = Category::find($this->categoryId);
+    $productType = class_basename(get_class($data));
+    $filespath = 'media/' . $productType . '/';
+    if (!File::exists($filespath)) {
+      File::makeDirectory($filespath, 0755, true);
+    }
 
-        foreach ($this->medias as $media) {
-            dd($media);
+    //verify and create a folder with product id name
+    if (!File::exists($filespath . "$data->id")) {
+      File::makeDirectory($filespath . "$data->id", 0755, true);
+    }
+    $path = $filespath . "$this->categoryId" . "/";
+    $i = 0;
+    foreach ($this->medias as $file) {
+      $media = new Media();
+      //verify the type of media
+      $type = $file->getClientOriginalExtension();
+
+      if ($type === 'mp4' || $type === 'ogg') {
+        $filePath = $file->getRealPath();
+
+        // Read the contents of the video file
+        $contents = Storage::get($filePath);
+
+        // Initialize getID3
+        $getID3 = new getID3();
+
+        // Analyze the video file
+        $fileInfo = $getID3->analyze($contents);
+        if (isset($fileInfo['video']) && isset($fileInfo['video']['resolution_x']) && isset($fileInfo['video']['resolution_y'])) {
+          // Retrieve the width and height
+          $width = $fileInfo['video']['resolution_x'];
+          $height = $fileInfo['video']['resolution_y'];
+      } else {
+         $width = "0";
+         $height= "0";
+      }
+    } elseif ($type === 'svg') {
+        $dom = new \DOMDocument();
+        $dom->load($file->getRealPath());
+        $svgElement = $dom->getElementsByTagName('svg')->item(0);
+        $width = $svgElement->getAttribute('width');
+        $height = $svgElement->getAttribute('height');
+    } else {
+        $image = Image::make($file);
+        $width = $image->width();
+        $height = $image->height();
+    }
+      //save the path and the name
+      $media->item_id = $data->id;
+      $media->path = $path;
+      $media->name = $file->getClientOriginalName();
+      //store the media
+      $filename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+      $media->name = $filename . '.' . $type;
+      // Verify if media name exist
+      if (file_exists($path . $media->name)) {
+        $i = 1;
+        while (file_exists($path . $filename . '(' . $i . ').' . $type)) {
+          $i++;
         }
+        $media->name = $filename . '(' . $i . ').' . $type;
+      }
+      $file->store($path);
+      $media->tabel_id = Tabels::where('name', $productType)->first()->id;
+      $media->sequence = $this->file_sequences[$i];
+      $media->location_id = MediaLocation::where('id', $this->file_locations[$i])->first()->id;
+      $media->type = $type;
+      $media->width = $width;
+      $media->height =  $height;
+      $media->size = $file->getSize();
+      $media->createdby = Auth::user()->name;
+      $media->lastmodifiedby = Auth::user()->name;
+      $media->save();
+      $i += 1;
+    }
+    $this->medias = [];
+    session()->flash('message', 'Media Update Successfully!');
+
     }
 
     public function removemedia($index){
