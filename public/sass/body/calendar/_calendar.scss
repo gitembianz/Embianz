@@ -24,7 +24,7 @@
     .calendar-week-days div:hover {
       color: black;
       transform: scale(1.2);
-      transition: all .2s ease-in-out;
+      transition: $transition;
     }
 
     .calendar-week-days div {
@@ -76,7 +76,7 @@
 
     .year-change:hover {
       background-color: var(--light-btn);
-      transition: all .2s ease-in-out;
+      transition: $transition;
       transform: scale(1.12);
     }
 
@@ -94,7 +94,7 @@
     #year:hover {
       cursor: pointer;
       transform: scale(1.2);
-      transition: all 0.2 ease-in-out;
+      transition: $transition;
     }
 
     .calendar-days div span {
@@ -102,7 +102,7 @@
     }
 
     .calendar-days div:hover {
-      transition: width 0.2s ease-in-out, height 0.2s ease-in-out;
+      transition: $transition;
       background-color: $secondColor;
       border-radius: 20%;
       color: $black;
@@ -128,7 +128,7 @@
       display: grid;
       place-content: center;
       margin-bottom: $margin;
-      transition: all 0.2s ease-in-out;
+      transition: $transition;
     }
 
     .month-list>div>div {
@@ -141,13 +141,13 @@
       background-color: $white;
       color: $black;
       transform: scale(0.9);
-      transition: all 0.2s ease-in-out;
+      transition: $transition;
     }
 
     .month-list.show {
       visibility: visible;
       pointer-events: visible;
-      transition: 0.6s ease-in-out;
+      transition: $transition;
       animation: to-left .71s forwards;
     }
 

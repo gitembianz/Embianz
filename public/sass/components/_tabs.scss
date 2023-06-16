@@ -35,6 +35,6 @@
   padding: 0 $padding;
   display: block;
   overflow: hidden;
-  transition: max-height 0.2s ease-out;
+  transition: $transition;
   background-color: $white;
 }

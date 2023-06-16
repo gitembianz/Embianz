@@ -7,10 +7,9 @@
   height: 100%;
 
   background-color: $mainBg;
-  transition: all $transition;
+  transition: $transition;
   transform: translateX(90%);
 
-  z-index: $z-index-content;
 
 
   // Sidebar Button in Header

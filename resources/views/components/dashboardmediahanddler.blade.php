@@ -1,7 +1,7 @@
 <script type="text/javascript">
     //Script fot Table with media
     allFiles = new DataTransfer();
-
+//function for simple add
     function previewFile(file) {
         let imageType = /^image\/.*|^video\/.*/;
         if (file.type.match(imageType)) {
@@ -83,14 +83,14 @@
 
                 let removeBtn = document.createElement('button');
                 removeBtn.innerHTML =
-                    '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24" fill="none" stroke="#BBFCDE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>';
+                    '<svg><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>';
                 removeBtn.setAttribute("class", "buttonremove" + " font-xl");
                 removeBtn.onclick = function() {
                     tr.remove();
                     if (imageTable.rows.length === 1) {
-                        var addMediaCat = document.getElementById('addmediacat');
-                        if (addMediaCat) {
-                            addMediaCat.style.display = 'none';
+                      var buton = document.getElementById('add_media_related');
+                        if (buton) {
+                          buton.style.display = 'none';
                         }
                         tableHeader.remove();
                     }
@@ -126,7 +126,9 @@
         files.forEach(previewFile);
         document.getElementById('imgUpload').files = allFiles.files;
         var contentDiv = document.getElementById('contentDiv');
+        var buton = document.getElementById('add_media_related');
         if (contentDiv) {
+          buton.style.display = 'block';
             contentDiv.style.maxHeight = '100%';
             contentDiv.style.height = '100%';
             window.addEventListener('resize', function() {

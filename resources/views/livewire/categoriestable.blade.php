@@ -3,8 +3,7 @@
         <div class="alert__session liveAlert" id="alertevent">
             <span class="alert__session-text">{!! session('message') !!}</span>
             <button class="alert__session-btn" type="button" data-bs-dismiss="alert" aria-hidden="true">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24" fill="none"
-                    stroke="#BBFCDE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg>
                     <line x1="18" y1="6" x2="6" y2="18"></line>
                     <line x1="6" y1="6" x2="18" y2="18"></line>
                 </svg>
@@ -42,10 +41,9 @@
             <span>Per Page :</span>
         </div>
 
-        <div class="dropdown" onclick="OpenDropdown()">
-            <span class="dropdown-name">Columns</span>
-
-            <div class="dropdown-content">
+        <div class="dropdown">
+            <button class="dropdown-button">Columns</button>
+            <div class="dropdown-list">
                 @foreach ($columns as $column)
                     <div class="dropdown-item">
                         <input type="checkbox" wire:model="selectedColumns" value="{{ $column }}"
@@ -56,11 +54,11 @@
             </div>
         </div>
 
-        @if ($checked)
-            <div class="dropdown" onclick="OpenDropdown()">
-                <span class="dropdown-name">With Checked ({{ count($checked) }})</span>
-
-                <div class="dropdown-content">
+        <div class="dropdown none" @if ($checked) style="display: unset" @endif>
+            <button class="dropdown-button none" @if ($checked) style="display: flex" @endif>With
+                Checked({{ count($checked) }})</button>
+            @if ($checked)
+                <div class="dropdown-list">
                     <button class="dropdown-item delete" type="button" wire:click="confirmCategoriesRemovalmultiple()">
                         Delete
                     </button>
@@ -68,8 +66,8 @@
                         Export
                     </button>
                 </div>
-            </div>
-        @endif
+            @endif
+        </div>
     </div>
 
     @if ($selectPage)
@@ -103,8 +101,7 @@
 
             <span class="modal-content-btn delete"
                 onclick="document.getElementById('confirmationmodalcategory').style.display='none'">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24" fill="none"
-                    stroke="#BBFCDE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg>
                     <line x1="18" y1="6" x2="6" y2="18"></line>
                     <line x1="6" y1="6" x2="18" y2="18"></line>
                 </svg>
@@ -126,10 +123,7 @@
             <span class="modal-content-btn delete"
                 onclick="document.getElementById('confirmationmodalcategorymultiple').style.display='none'">
 
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"
-                    fill="none" stroke="#BBFCDE" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round">
-
+                <svg>
                     <line x1="18" y1="6" x2="6" y2="18"></line>
                     <line x1="6" y1="6" x2="18" y2="18"></line>
                 </svg>
@@ -142,8 +136,6 @@
 
     {{-- Livewire Table --}}
     <table class="livewire-table">
-
-
         <thead>
             <tr>
                 <th><input type="checkbox" wire:model="selectPage"></th>
@@ -231,9 +223,7 @@
 
                     <td data-title="Action">
                         <button class="delete" wire:click.prevent="confirmCategoryRemoval({{ $category->id }})">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
-                                viewBox="0 0 24 24" fill="none" stroke="#BBFCDE" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round">
+                            <svg>
                                 <circle cx="12" cy="12" r="10"></circle>
                                 <line x1="15" y1="9" x2="9" y2="15"></line>
                                 <line x1="9" y1="9" x2="15" y2="15"></line>
