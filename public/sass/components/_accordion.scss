@@ -1,0 +1,40 @@
+.accordion {
+  &__btn {
+    @include standart-Btn;
+    display: block;
+    padding: 0 $padding;
+    text-align: left;
+    width: 100%;
+    position: relative;
+
+    &::after {
+      content: "+";
+      width: 2rem;
+      height: 2rem;
+      font-size: 1.5rem;
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      color: white;
+    }
+
+    &.open::after {
+      content: "-";
+    }
+  }
+
+  //We use this only just for to know the size of Accordion Content
+  &__wrapper {
+    height: 0;
+    overflow: hidden;
+    transition: $transition;
+  }
+
+  &__content {
+    border: 1px solid $mainBg;
+    border-top: 0;
+    border-radius: 0 0 $base-border-radius $base-border-radius;
+    padding: $padding;
+  }
+}
