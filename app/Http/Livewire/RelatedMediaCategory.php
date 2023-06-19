@@ -49,7 +49,7 @@ class RelatedMediaCategory extends Component
     $this->type = Tabels::where('name', $this->productType)->first()->id;
     $this->selectedColumns = $this->columns;
     $this->locations = MediaLocation::all();
-    $this->file_locations[] = '';
+    $this->file_locations[] = '1';
   }
 
   public function showColumn($column)
@@ -105,22 +105,14 @@ class RelatedMediaCategory extends Component
           $width = $fileInfo['video']['resolution_x'];
           $height = $fileInfo['video']['resolution_y'];
         } else {
-          $width = "0";
-          $height = "0";
+          $width = "unnable to get";
+          $height = "unnable to get";
         }
       } elseif ($type === 'svg') {
         $svg = simplexml_load_file($file->getRealPath());
         $width = (string) $svg['width'];
         $height = (string) $svg['height'];
       } else {
-         $width = "unnable to get";
-         $height= "unnable to get";
-      }
-    } elseif ($type === 'svg') {
-      $svg = simplexml_load_file($file->getRealPath());
-      $width = (string) $svg['width'];
-      $height = (string) $svg['height'];
-  } else {
         $image = Image::make($file);
         $width = $image->width();
         $height = $image->height();
@@ -141,8 +133,11 @@ class RelatedMediaCategory extends Component
         }
         $media->name = $filename . '(' . $i . ').' . $type;
       }
+
       $file->storeAs($path, $media->name, 'public_upload');
+
       $media->tabel_id = Tabels::where('name', $productType)->first()->id;
+      // dd($this->file_sequences[$i]);
       $media->sequence = $this->file_sequences[$i];
       $media->location_id = MediaLocation::where('id', $this->file_locations[$i])->first()->id;
       $media->type = $type;
@@ -155,7 +150,6 @@ class RelatedMediaCategory extends Component
       $i += 1;
     }
     $this->medias = [];
-    $this->file_sequences = [];
     session()->flash('message', 'Media Update Successfully!');
   }
 
