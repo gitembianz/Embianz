@@ -2246,20 +2246,6 @@ input[type=checkbox]:checked:before {
   padding: 10px;
   height: 70px;
 }
-.table td:first-child,
-.table th:first-child {
-  display: flex;
-  align-items: center;
-  border: 1px solid #20282d;
-  width: 100%;
-  justify-content: space-between;
-}
-.table td:nth-child(2), .table td:nth-child(3), .table td:nth-child(4),
-.table th:nth-child(2),
-.table th:nth-child(3),
-.table th:nth-child(4) {
-  width: 10%;
-}
 .table td img,
 .table th img {
   height: 100%;
