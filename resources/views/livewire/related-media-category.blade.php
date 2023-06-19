@@ -35,26 +35,38 @@
                                     <tbody>
                                         @foreach ($medias as $media)
                                             <tr>
-                                                <td>@if (str_starts_with($media->getMimeType(), 'image'))
-                                                  <img src="{{ $media->temporaryUrl() }}" width="50px">
-                                              @elseif (str_starts_with($media->getMimeType(), 'video'))
-                                                  <video width="100px" controls>
-                                                      <source src="{{ $media->temporaryUrl() }}" type="{{ $media->getMimeType() }}">
-                                                     <span>{{ __('Your browser not suport video tag')}}</span>
-                                                  </video>
-                                              @endif</td>
+                                                <td>
+                                                    @if (str_starts_with($media->getMimeType(), 'image'))
+                                                        <img src="{{ $media->temporaryUrl() }}" width="50px">
+                                                    @elseif (str_starts_with($media->getMimeType(), 'video'))
+                                                        <video width="100px" controls>
+                                                            <source src="{{ $media->temporaryUrl() }}"
+                                                                type="{{ $media->getMimeType() }}">
+                                                            <span>{{ __('Your browser not suport video tag') }}</span>
+                                                        </video>
+                                                    @endif
+                                                </td>
                                                 <td>{{ $media->getClientOriginalName() }}</td>
                                                 <td>{{ $media->getSize() }} KB</td>
                                                 <td>{{ $media->getClientOriginalExtension() }}</td>
-                                                <td><input type="number" placeholder="Media sequence" min="0" required wire:model="file_sequences.{{ $loop->index }}"></td>
-<td>
-    <select required wire:model="file_locations.{{ $loop->index }}">
-      <option value="">Select a location</option>
-        @foreach ($locations as $location)
-            <option value="{{ $location->id }}">{{ $location->location }}</option>
-        @endforeach
-    </select>
-</td>
+                                                <td><input type="number" placeholder="Media sequence" min="0"
+                                                        required wire:model="file_sequences.{{ $loop->index }}"></td>
+                                                <td>
+                                                    <select required wire:model="file_locations.{{ $loop->index }}">
+                                                        @php
+                                                            $firstLocation = $locations->first();
+                                                        @endphp
+                                                        <option value="{{ $firstLocation->id }}" selected>
+                                                            {{ $firstLocation->location }}</option>
+                                                        @foreach ($locations as $index => $location)
+                                                            @if ($loop->first)
+                                                                @continue
+                                                            @endif
+                                                            <option value="{{ $location->id }}">
+                                                                {{ $location->location }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </td>
                                                 <td><button class="delete"
                                                         wire:click.prevent="removemedia({{ $loop->index }})">
                                                         <svg>
@@ -101,8 +113,10 @@
                         </div>
 
                         <div class="dropdown">
-                            <button class="dropdown-button">Columns</button>
-                            <div class="dropdown-list">
+                            <button  wire:click.prevent="@if ($col === false) $set('col', true) @else $set('col', false) @endif" class="dropdown-button">Columns</button>
+                            @if ($col)
+
+                            <div class="dropdown-list" style="display: block; z-index: 220">
                                 @foreach ($columns as $column)
                                     <div class="dropdown-item">
                                         <input type="checkbox" wire:model="selectedColumns" value="{{ $column }}"
@@ -111,22 +125,26 @@
                                     </div>
                                 @endforeach
                             </div>
+                            @endif
                         </div>
 
                         <div class="dropdown none" @if ($checked) style="display: unset" @endif>
-                            <button class="dropdown-button none"
+                            <button  wire:click.prevent="@if ($all === false) $set('all', true); $set('col', false) @else $set('all', false) @endif" class="dropdown-button none"
                                 @if ($checked) style="display: flex" @endif>With
                                 Checked({{ count($checked) }})</button>
                             @if ($checked)
-                                <div class="dropdown-list">
+                            @if ($all)
+
+                                <div class="dropdown-list" style="display: block; z-index: 220">
                                     <button class="dropdown-item delete" type="button"
-                                        wire:click="confirmCategoriesRemovalmultiple()">
+                                        wire:click="confirmFilesRemovalmultiple()">
                                         Delete
                                     </button>
                                     <button class="dropdown-item submit" type="button" wire:click="exportSelected()">
                                         Export
                                     </button>
                                 </div>
+                                @endif
                             @endif
                         </div>
                     </div>
@@ -298,12 +316,12 @@
                     </table>
                     <div>{{ $files->links('pagination-links') }} </div>
                 @else
-                @if ($medias)
-                @else
-                    <div class="col-12-xs col-12-sm col-12-xl mt-1 talign-c">
-                        <span class="mt-1 m-a display-b text-bg wid-7 p-1 br-xs mb-2 bg-bg-light-9">No Media
-                            related</span>
-                    </div>
+                    @if ($medias)
+                    @else
+                        <div class="col-12-xs col-12-sm col-12-xl mt-1 talign-c">
+                            <span class="mt-1 m-a display-b text-bg wid-7 p-1 br-xs mb-2 bg-bg-light-9">No Media
+                                related</span>
+                        </div>
                     @endif
                 @endif
             </div>
