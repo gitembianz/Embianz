@@ -95,7 +95,7 @@ class CategoryController extends Controller
         $media->sequence =  $sequences[$i];
         $media->tabel_id = Tabels::where('name', $productType)->first()->id;
         if ($locations[$i] != NULL) {
-          $media->location_id = MediaLocation::where('location', $locations[$i])->first()->id;
+          $media->location_id = MediaLocation::where('location', $locations[$i])->id;
         } else {
           $media->location_id = NULL;
         }
@@ -159,78 +159,5 @@ class CategoryController extends Controller
       'seo_title' => $request->seo_title
     ]);
     return redirect()->back()->with('message', 'Category Update Successfully!');
-  }
-  public function add_media(Request $request, $id)
-  {
-    $data = Category::find($id);
-    $locations = $request->input('file_location');
-    $sequences = $request->input('file_sequence');
-    $size = $request->input('file_size');
-    $files = $request->file('media');
-    $productType = class_basename(get_class($data));
-    $filespath = 'media/' . $productType . '/';
-    if (!File::exists($filespath)) {
-      File::makeDirectory($filespath, 0755, true);
-    }
-
-    //verify and create a folder with product id name
-    if (!File::exists($filespath . "$data->id")) {
-      File::makeDirectory($filespath . "$data->id", 0755, true);
-    }
-    $path = $filespath . "$data->id" . "/";
-    $i = 0;
-    foreach ($files as $file) {
-      $media = new Media();
-      //verify the type of media
-      $type = $file->getClientOriginalExtension();
-      if ($type === "svg") {
-        $svg = simplexml_load_file($file);
-        $attributes = $svg->attributes();
-        $width = (float) $attributes->width;
-        $height = (float) $attributes->height;
-      } elseif ($type === "mp4" || $type === " ogg") {
-        $getID3 = new getID3;
-        $fileinfo = $getID3->analyze($file);
-        $width = $fileinfo['video']['resolution_x'];
-        $height = $fileinfo['video']['resolution_y'];
-      } else {
-        $image = Image::make($file);
-        $width = $image->width();
-        $height = $image->height();
-      }
-      //save the path and the name
-      $media->item_id = $data->id;
-      $media->path = $path;
-      $media->name = $file->getClientOriginalName();
-      //store the media
-      $filename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-      $media->name = $filename . '.' . $type;
-      // Verify if media name exist
-      if (file_exists($path . $media->name)) {
-        $i = 1;
-        while (file_exists($path . $filename . '(' . $i . ').' . $type)) {
-          $i++;
-        }
-        $media->name = $filename . '(' . $i . ').' . $type;
-      }
-      $file->move($path, $media->name);
-      $media->sequence =  $sequences[$i];
-      $media->tabel_id = Tabels::where('name', $productType)->first()->id;
-      if ($locations[$i] != NULL) {
-        $media->location_id = MediaLocation::where('location', $locations[$i])->first()->id;
-      } else {
-        $media->location_id = NULL;
-      }
-      $media->type = $type;
-      $media->width = $width;
-      $media->height =  $height;
-      $media->size = $size[$i];
-      $media->createdby = Auth::user()->name;
-      $media->lastmodifiedby = Auth::user()->name;
-      $media->save();
-      $i += 1;
-    }
-
-    return redirect()->back()->with('message', 'Media Update Successfully!');
   }
 }

@@ -46,12 +46,15 @@
                                                 <td>{{ $media->getClientOriginalName() }}</td>
                                                 <td>{{ $media->getSize() }} KB</td>
                                                 <td>{{ $media->getClientOriginalExtension() }}</td>
-                                                <td><input type="number"></td>
-                                                <td><select name="" id="">
-                                                        @foreach ($locations as $location)
-                                                            <option value="">{{ $location->location }}</option>
-                                                        @endforeach
-                                                    </select></td>
+                                                <td><input type="number" placeholder="Media sequence" min="0" required wire:model="file_sequences.{{ $loop->index }}"></td>
+<td>
+    <select required wire:model="file_locations.{{ $loop->index }}">
+      <option value="">Select a location</option>
+        @foreach ($locations as $location)
+            <option value="{{ $location->id }}">{{ $location->location }}</option>
+        @endforeach
+    </select>
+</td>
                                                 <td><button class="delete"
                                                         wire:click.prevent="removemedia({{ $loop->index }})">
                                                         <svg>
