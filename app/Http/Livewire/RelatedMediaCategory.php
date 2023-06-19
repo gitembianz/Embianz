@@ -37,7 +37,9 @@ class RelatedMediaCategory extends Component
   public $selectedColumns = [];
   public $locations;
   public $file_sequences = [];
-  public $file_locations = [];
+  public $file_locations = ['1'];
+  public $col = false;
+  public $all = false;
 
   public function mount($categoryId)
   {
@@ -95,14 +97,8 @@ class RelatedMediaCategory extends Component
 
       if ($type === 'mp4' || $type === 'ogg') {
         $filePath = $file->getRealPath();
-
-        // Read the contents of the video file
         $contents = Storage::get($filePath);
-
-        // Initialize getID3
         $getID3 = new getID3();
-
-        // Analyze the video file
         $fileInfo = $getID3->analyze($contents);
         if (isset($fileInfo['video']) && isset($fileInfo['video']['resolution_x']) && isset($fileInfo['video']['resolution_y'])) {
           // Retrieve the width and height
@@ -117,11 +113,20 @@ class RelatedMediaCategory extends Component
         $width = (string) $svg['width'];
         $height = (string) $svg['height'];
       } else {
+         $width = "unnable to get";
+         $height= "unnable to get";
+      }
+    } elseif ($type === 'svg') {
+      $svg = simplexml_load_file($file->getRealPath());
+      $width = (string) $svg['width'];
+      $height = (string) $svg['height'];
+  } else {
         $image = Image::make($file);
         $width = $image->width();
         $height = $image->height();
       }
       //save the path and the name
+      //storage\app\media
       $media->item_id = $data->id;
       $media->path = $path;
       $media->name = $file->getClientOriginalName();
@@ -150,6 +155,7 @@ class RelatedMediaCategory extends Component
       $i += 1;
     }
     $this->medias = [];
+    $this->file_sequences = [];
     session()->flash('message', 'Media Update Successfully!');
   }
 
@@ -158,6 +164,8 @@ class RelatedMediaCategory extends Component
 
     array_splice($this->medias, $index, 1);
   }
+
+
 
   public function sortBy($columnName)
   {

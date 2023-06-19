@@ -124,7 +124,7 @@ class Categoriestable extends Component
       $productcat->delete();
     }
     $productType = class_basename(get_class($category));
-        $filespath = 'media/' . $productType . '/' . $category->id;
+        $filespath = '.media/' . $productType . '/' . $category->id;
         if (File::exists($filespath)) {
             File::deleteDirectory($filespath);
         }

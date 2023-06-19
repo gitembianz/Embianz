@@ -95,7 +95,7 @@ class CategoryController extends Controller
         $media->sequence =  $sequences[$i];
         $media->tabel_id = Tabels::where('name', $productType)->first()->id;
         if ($locations[$i] != NULL) {
-          $media->location_id = MediaLocation::where('location', $locations[$i])->id;
+          $media->location_id = MediaLocation::where('location', $locations[$i])->first()->id;
         } else {
           $media->location_id = NULL;
         }
