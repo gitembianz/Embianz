@@ -179,36 +179,35 @@ tabs.forEach((tab, index) => {
 
 // Get all accordion buttons
 const accordionButtons = document.querySelectorAll('.accordion__btn');
+
 // Loop through each button and attach a click event listener
 accordionButtons.forEach(button => {
   button.addEventListener('click', function() {
     const accordionContent = this.nextElementSibling;
+
     // Check if the accordion content is currently active
     const isActive = accordionContent.classList.contains('active');
+
     // Close all accordions
     closeAllAccordions();
+
     // Toggle the visibility of the content
     if (!isActive) {
-      const contentHeight = accordionContent.scrollHeight + 'px';
-      console.log(contentHeight);
-      accordionContent.style.height = '0';
-      accordionContent.offsetHeight;
-      accordionContent.style.height = contentHeight;
+      accordionContent.style.display = 'block';
       accordionContent.classList.add('active');
-      button.classList.add('open')
     }
   });
 });
 
 // Function to close all accordions
 function closeAllAccordions() {
-  const activeAccordions = document.querySelectorAll('.accordion__wrapper.active');
-  const activeAccordionBtns = document.querySelectorAll('.accordion__btn.open');
+  const activeAccordions = document.querySelectorAll('.accordion__content.active');
+
   activeAccordions.forEach(accordion => {
-    accordion.style.height = '0';
+    accordion.style.display = 'none';
     accordion.classList.remove('active');
   });
-  activeAccordionBtns.forEach(button => {
-    button.classList.remove('open');
-  });
 }
+
+// Close all accordions by default on page load
+closeAllAccordions();

@@ -37,17 +37,17 @@ class RelatedMediaCategory extends Component
   public $selectedColumns = [];
   public $locations;
   public $file_sequences = [];
-public $file_locations = [];
+  public $file_locations = [];
 
   public function mount($categoryId)
   {
-      $this->categoryId = $categoryId;
-      $this->category = Category::find($categoryId);
-      $this->productType = class_basename(get_class($this->category));
-      $this->type = Tabels::where('name', $this->productType)->first()->id;
-      $this->selectedColumns = $this->columns;
-      $this->locations = MediaLocation::all();
-      $this->file_locations[] = '';
+    $this->categoryId = $categoryId;
+    $this->category = Category::find($categoryId);
+    $this->productType = class_basename(get_class($this->category));
+    $this->type = Tabels::where('name', $this->productType)->first()->id;
+    $this->selectedColumns = $this->columns;
+    $this->locations = MediaLocation::all();
+    $this->file_locations[] = '';
   }
 
   public function showColumn($column)
@@ -69,10 +69,10 @@ public $file_locations = [];
     $this->selectPage = false;
   }
 
-  public function save( )
-    {
-      $this->validate([
-        'medias.*' => 'mimetypes:image/jpeg,image/png,image/svg+xml,video/mp4,video/quicktime|max:10240', // Max 10MB for all files
+  public function save()
+  {
+    $this->validate([
+      'medias.*' => 'mimetypes:image/jpeg,image/png,image/svg+xml,video/mp4,video/quicktime|max:10240', // Max 10MB for all files
     ]);
     //old code
     $data = Category::find($this->categoryId);
@@ -108,21 +108,19 @@ public $file_locations = [];
           // Retrieve the width and height
           $width = $fileInfo['video']['resolution_x'];
           $height = $fileInfo['video']['resolution_y'];
+        } else {
+          $width = "0";
+          $height = "0";
+        }
+      } elseif ($type === 'svg') {
+        $svg = simplexml_load_file($file->getRealPath());
+        $width = (string) $svg['width'];
+        $height = (string) $svg['height'];
       } else {
-         $width = "0";
-         $height= "0";
-      }
-    } elseif ($type === 'svg') {
-        $dom = new \DOMDocument();
-        $dom->load($file->getRealPath());
-        $svgElement = $dom->getElementsByTagName('svg')->item(0);
-        $width = $svgElement->getAttribute('width');
-        $height = $svgElement->getAttribute('height');
-    } else {
         $image = Image::make($file);
         $width = $image->width();
         $height = $image->height();
-    }
+      }
       //save the path and the name
       $media->item_id = $data->id;
       $media->path = $path;
@@ -138,7 +136,7 @@ public $file_locations = [];
         }
         $media->name = $filename . '(' . $i . ').' . $type;
       }
-      $file->store($path);
+      $file->storeAs($path, $media->name, 'public_upload');
       $media->tabel_id = Tabels::where('name', $productType)->first()->id;
       $media->sequence = $this->file_sequences[$i];
       $media->location_id = MediaLocation::where('id', $this->file_locations[$i])->first()->id;
@@ -153,14 +151,13 @@ public $file_locations = [];
     }
     $this->medias = [];
     session()->flash('message', 'Media Update Successfully!');
+  }
 
-    }
+  public function removemedia($index)
+  {
 
-    public function removemedia($index){
-
-      array_splice($this->medias, $index, 1);
-
-    }
+    array_splice($this->medias, $index, 1);
+  }
 
   public function sortBy($columnName)
   {
@@ -179,7 +176,8 @@ public $file_locations = [];
 
     return $this->orderAsc === '1' ? '0' : '1';
   }
-   public function deleteSingleRecord(){
+  public function deleteSingleRecord()
+  {
 
     $media = Media::findOrFail($this->mediaidbeingremoved);
     $path = $media->path . $media->name;
@@ -196,32 +194,29 @@ public $file_locations = [];
     }
     $this->checked = array_diff($this->checked, [$this->mediaidbeingremoved]);
     session()->flash('message', 'Record deleted Successfully');
+  }
+  public function deleteRecords()
+  {
 
-   }
-   public function deleteRecords()
-   {
+    $medias = Media::whereKey($this->checked)->get();
 
-     $medias = Media::whereKey($this->checked)->get();
-
-     foreach ($medias as $media) {
+    foreach ($medias as $media) {
       //  $id = $media->id;
-       $path = $media->path . $media->name;
-       if (File::exists($path)) {
+      $path = $media->path . $media->name;
+      if (File::exists($path)) {
         File::delete($path);
       }
 
       $media->delete();
-    $folder = $media->path;
-    if (File::isDirectory($folder) && count(File::allFiles($folder)) === 0) {
-      File::deleteDirectory($folder);
+      $folder = $media->path;
+      if (File::isDirectory($folder) && count(File::allFiles($folder)) === 0) {
+        File::deleteDirectory($folder);
+      }
     }
 
-
-     }
-
-     $this->checked = [];
-     session()->flash('message', 'Files deleted succesfuly');
-   }
+    $this->checked = [];
+    session()->flash('message', 'Files deleted succesfuly');
+  }
 
 
   public function selectAll()
@@ -248,16 +243,16 @@ public $file_locations = [];
     $this->dispatchBrowserEvent('show-delete-modal-media');
   }
 
-  public function confirmFilesRemovalmultiple(){
+  public function confirmFilesRemovalmultiple()
+  {
 
     $this->dispatchBrowserEvent('show-delete-modal-media-multiple');
-
   }
 
-    public function render()
-    {
-        return view('livewire.related-media-category',[
-          'files' => $this->files
-        ]);
-    }
+  public function render()
+  {
+    return view('livewire.related-media-category', [
+      'files' => $this->files
+    ]);
+  }
 }

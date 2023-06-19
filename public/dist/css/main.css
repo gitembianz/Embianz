@@ -1717,11 +1717,6 @@ main {
 .accordion__btn.open::after {
   content: "-";
 }
-.accordion__wrapper {
-  overflow: hidden;
-  transition: all 0.2s ease-in-out;
-  max-height: 1200px;
-}
 .accordion__content {
   border: 1px solid #35424B;
   border-top: 0;
@@ -2059,6 +2054,10 @@ input[type=checkbox]:checked:before {
   position: relative;
   padding-right: 25px;
 }
+.livewire-table thead th input {
+  border-color: #BBFCDE;
+  border-width: 2px;
+}
 .livewire-table thead th::after {
   content: "";
   position: absolute;
@@ -2085,6 +2084,10 @@ input[type=checkbox]:checked:before {
   border-left: 0;
 }
 .livewire-table thead th:last-child {
+  border-right: 0;
+  border-left: 0;
+}
+.livewire-table thead th:nth-last-child(2) {
   border-right: 0;
 }
 .livewire-table tbody tr:nth-child(even) {
@@ -2194,17 +2197,20 @@ input[type=checkbox]:checked:before {
 }
 
 @media (max-width: 660px) {
-  .livewire-table {
-    border: 3px solid #35424B;
-  }
   .livewire-table thead tr {
     display: block;
+    padding-right: 5px;
   }
   .livewire-table thead th {
     border: none;
+    padding-right: 0;
   }
   .livewire-table thead th:not(:first-child) {
     display: none;
+  }
+  .livewire-table thead th:first-child {
+    width: 100vw;
+    text-align: end;
   }
   .livewire-table th,
   .livewire-table td {
@@ -2218,7 +2224,6 @@ input[type=checkbox]:checked:before {
     content: attr(data-title) ": ";
     float: left;
     font-weight: 900;
-    font-size: 1rem;
     margin-right: 10px;
   }
   .livewire-table button {

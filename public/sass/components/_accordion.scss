@@ -24,13 +24,6 @@
     }
   }
 
-  //We use this only just for to know the size of Accordion Content
-  &__wrapper {
-    overflow: hidden;
-    transition: $transition;
-    max-height: 1200px;
-  }
-
   &__content {
     border: 1px solid $mainBg;
     border-top: 0;
