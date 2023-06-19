@@ -26,9 +26,9 @@
 
   //We use this only just for to know the size of Accordion Content
   &__wrapper {
-    height: 0;
     overflow: hidden;
     transition: $transition;
+    max-height: 1200px;
   }
 
   &__content {

@@ -2,62 +2,50 @@
   font-family: "Roboto-black";
   src: url("/fonts/Roboto/Roboto-Black.ttf");
 }
-
 @font-face {
   font-family: "Roboto-blackitalic";
   src: url("/fonts/Roboto/Roboto-BlackItalic.ttf");
 }
-
 @font-face {
   font-family: "Roboto-bold";
   src: url("/fonts/Roboto/Roboto-Bold.ttf");
 }
-
 @font-face {
   font-family: "Roboto-bolditalic";
   src: url("/fonts/Roboto/Roboto-BoldItalic.ttf");
 }
-
 @font-face {
   font-family: "Roboto-italic";
   src: url("/fonts/Roboto/Roboto-Italic.ttf");
 }
-
 @font-face {
   font-family: "Roboto-light";
   src: url("/fonts/Roboto/Roboto-Light.ttf");
 }
-
 @font-face {
   font-family: "Roboto-lightitalic";
   src: url("/fonts/Roboto/Roboto-LightItalic.ttf");
 }
-
 @font-face {
   font-family: "Roboto-medium";
   src: url("/fonts/Roboto/Roboto-Medium.ttf");
 }
-
 @font-face {
   font-family: "Roboto-mediumitalic";
   src: url("/fonts/Roboto/Roboto-MediumItalic.ttf");
 }
-
 @font-face {
   font-family: "Roboto-regular";
   src: url("/fonts/Roboto/Roboto-Regular.ttf");
 }
-
 @font-face {
   font-family: "Roboto-thin";
   src: url("/fonts/Roboto/Roboto-Thin.ttf");
 }
-
 @font-face {
   font-family: "Roboto-thinitalic";
   src: url("/fonts/Roboto/Roboto-ThinItalic.ttf");
 }
-
 *,
 *:before,
 *:after {
@@ -75,20 +63,18 @@ body {
   background: #35424B;
   overflow-x: hidden;
 }
-
 body::-webkit-scrollbar {
   width: 10px;
   background: #2a353c;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
 }
-
 body::-webkit-scrollbar-thumb {
   background: #20282d;
   border-radius: 10px;
+  -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
 }
-
 body::-webkit-scrollbar-thumb:hover {
   background: #151b1e;
 }
@@ -140,370 +126,310 @@ main {
     flex-grow: 0;
     width: 8.3333333333%;
   }
-
   .col-2-xs {
     box-sizing: border-box;
     flex-grow: 0;
     width: 16.6666666667%;
   }
-
   .col-3-xs {
     box-sizing: border-box;
     flex-grow: 0;
     width: 25%;
   }
-
   .col-4-xs {
     box-sizing: border-box;
     flex-grow: 0;
     width: 33.3333333333%;
   }
-
   .col-5-xs {
     box-sizing: border-box;
     flex-grow: 0;
     width: 41.6666666667%;
   }
-
   .col-6-xs {
     box-sizing: border-box;
     flex-grow: 0;
     width: 50%;
   }
-
   .col-7-xs {
     box-sizing: border-box;
     flex-grow: 0;
     width: 58.3333333333%;
   }
-
   .col-8-xs {
     box-sizing: border-box;
     flex-grow: 0;
     width: 66.6666666667%;
   }
-
   .col-9-xs {
     box-sizing: border-box;
     flex-grow: 0;
     width: 75%;
   }
-
   .col-10-xs {
     box-sizing: border-box;
     flex-grow: 0;
     width: 83.3333333333%;
   }
-
   .col-11-xs {
     box-sizing: border-box;
     flex-grow: 0;
     width: 91.6666666667%;
   }
-
   .col-12-xs {
     box-sizing: border-box;
     flex-grow: 0;
     width: 100%;
   }
 }
-
 @media (min-width: 480px) {
   .col-1-sm {
     box-sizing: border-box;
     flex-grow: 0;
     width: 8.3333333333%;
   }
-
   .col-2-sm {
     box-sizing: border-box;
     flex-grow: 0;
     width: 16.6666666667%;
   }
-
   .col-3-sm {
     box-sizing: border-box;
     flex-grow: 0;
     width: 25%;
   }
-
   .col-4-sm {
     box-sizing: border-box;
     flex-grow: 0;
     width: 33.3333333333%;
   }
-
   .col-5-sm {
     box-sizing: border-box;
     flex-grow: 0;
     width: 41.6666666667%;
   }
-
   .col-6-sm {
     box-sizing: border-box;
     flex-grow: 0;
     width: 50%;
   }
-
   .col-7-sm {
     box-sizing: border-box;
     flex-grow: 0;
     width: 58.3333333333%;
   }
-
   .col-8-sm {
     box-sizing: border-box;
     flex-grow: 0;
     width: 66.6666666667%;
   }
-
   .col-9-sm {
     box-sizing: border-box;
     flex-grow: 0;
     width: 75%;
   }
-
   .col-10-sm {
     box-sizing: border-box;
     flex-grow: 0;
     width: 83.3333333333%;
   }
-
   .col-11-sm {
     box-sizing: border-box;
     flex-grow: 0;
     width: 91.6666666667%;
   }
-
   .col-12-sm {
     box-sizing: border-box;
     flex-grow: 0;
     width: 100%;
   }
 }
-
 @media (min-width: 720px) {
   .col-1-md {
     box-sizing: border-box;
     flex-grow: 0;
     width: 8.3333333333%;
   }
-
   .col-2-md {
     box-sizing: border-box;
     flex-grow: 0;
     width: 16.6666666667%;
   }
-
   .col-3-md {
     box-sizing: border-box;
     flex-grow: 0;
     width: 25%;
   }
-
   .col-4-md {
     box-sizing: border-box;
     flex-grow: 0;
     width: 33.3333333333%;
   }
-
   .col-5-md {
     box-sizing: border-box;
     flex-grow: 0;
     width: 41.6666666667%;
   }
-
   .col-6-md {
     box-sizing: border-box;
     flex-grow: 0;
     width: 50%;
   }
-
   .col-7-md {
     box-sizing: border-box;
     flex-grow: 0;
     width: 58.3333333333%;
   }
-
   .col-8-md {
     box-sizing: border-box;
     flex-grow: 0;
     width: 66.6666666667%;
   }
-
   .col-9-md {
     box-sizing: border-box;
     flex-grow: 0;
     width: 75%;
   }
-
   .col-10-md {
     box-sizing: border-box;
     flex-grow: 0;
     width: 83.3333333333%;
   }
-
   .col-11-md {
     box-sizing: border-box;
     flex-grow: 0;
     width: 91.6666666667%;
   }
-
   .col-12-md {
     box-sizing: border-box;
     flex-grow: 0;
     width: 100%;
   }
 }
-
 @media (min-width: 960px) {
   .col-1-lg {
     box-sizing: border-box;
     flex-grow: 0;
     width: 8.3333333333%;
   }
-
   .col-2-lg {
     box-sizing: border-box;
     flex-grow: 0;
     width: 16.6666666667%;
   }
-
   .col-3-lg {
     box-sizing: border-box;
     flex-grow: 0;
     width: 25%;
   }
-
   .col-4-lg {
     box-sizing: border-box;
     flex-grow: 0;
     width: 33.3333333333%;
   }
-
   .col-5-lg {
     box-sizing: border-box;
     flex-grow: 0;
     width: 41.6666666667%;
   }
-
   .col-6-lg {
     box-sizing: border-box;
     flex-grow: 0;
     width: 50%;
   }
-
   .col-7-lg {
     box-sizing: border-box;
     flex-grow: 0;
     width: 58.3333333333%;
   }
-
   .col-8-lg {
     box-sizing: border-box;
     flex-grow: 0;
     width: 66.6666666667%;
   }
-
   .col-9-lg {
     box-sizing: border-box;
     flex-grow: 0;
     width: 75%;
   }
-
   .col-10-lg {
     box-sizing: border-box;
     flex-grow: 0;
     width: 83.3333333333%;
   }
-
   .col-11-lg {
     box-sizing: border-box;
     flex-grow: 0;
     width: 91.6666666667%;
   }
-
   .col-12-lg {
     box-sizing: border-box;
     flex-grow: 0;
     width: 100%;
   }
 }
-
 @media (min-width: 1200px) {
   .col-1-xl {
     box-sizing: border-box;
     flex-grow: 0;
     width: 8.3333333333%;
   }
-
   .col-2-xl {
     box-sizing: border-box;
     flex-grow: 0;
     width: 16.6666666667%;
   }
-
   .col-3-xl {
     box-sizing: border-box;
     flex-grow: 0;
     width: 25%;
   }
-
   .col-4-xl {
     box-sizing: border-box;
     flex-grow: 0;
     width: 33.3333333333%;
   }
-
   .col-5-xl {
     box-sizing: border-box;
     flex-grow: 0;
     width: 41.6666666667%;
   }
-
   .col-6-xl {
     box-sizing: border-box;
     flex-grow: 0;
     width: 50%;
   }
-
   .col-7-xl {
     box-sizing: border-box;
     flex-grow: 0;
     width: 58.3333333333%;
   }
-
   .col-8-xl {
     box-sizing: border-box;
     flex-grow: 0;
     width: 66.6666666667%;
   }
-
   .col-9-xl {
     box-sizing: border-box;
     flex-grow: 0;
     width: 75%;
   }
-
   .col-10-xl {
     box-sizing: border-box;
     flex-grow: 0;
     width: 83.3333333333%;
   }
-
   .col-11-xl {
     box-sizing: border-box;
     flex-grow: 0;
     width: 91.6666666667%;
   }
-
   .col-12-xl {
     box-sizing: border-box;
     flex-grow: 0;
     width: 100%;
   }
 }
-
 .text-mainBg {
   color: #35424B;
 }
@@ -1244,13 +1170,11 @@ main {
   .overflow {
     overflow: visible;
   }
-
   main {
     display: grid;
     grid-template-columns: 0fr 1fr 0fr;
   }
 }
-
 .dropdown {
   width: 100%;
   height: 3rem;
@@ -1259,7 +1183,6 @@ main {
   border-radius: 10px;
   cursor: pointer;
 }
-
 .dropdown-button {
   display: flex;
   align-items: center;
@@ -1277,7 +1200,6 @@ main {
   cursor: pointer;
   z-index: 2;
 }
-
 .dropdown-list {
   display: flex;
   align-items: center;
@@ -1295,17 +1217,14 @@ main {
   border-radius: 0 0 10px 10px;
   flex-direction: column;
 }
-
 .dropdown-list input {
   width: 2rem;
   height: 2rem;
 }
-
 .dropdown-list label {
   flex: 1;
   text-align: start;
 }
-
 .dropdown-list button {
   display: flex;
   align-items: center;
@@ -1327,41 +1246,26 @@ main {
   transition: all 0.2s ease-in-out;
   width: 100%;
 }
-
 .dropdown-list button:hover {
   background-color: #0b0d0f;
   color: #BBFCDE;
 }
-
-.dropdown-list button:hover>.sidebar__icon {
+.dropdown-list button:hover > .sidebar__icon {
   background-color: #0b0d0f;
 }
-
-.dropdown-list button.active,
-.dropdown-list button:active,
-.dropdown-list button:focus-visible {
+.dropdown-list button.active, .dropdown-list button:active, .dropdown-list button:focus-visible {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
-.dropdown-list button.active>.sidebar__icon,
-.dropdown-list button:active>.sidebar__icon,
-.dropdown-list button:focus-visible>.sidebar__icon {
+.dropdown-list button.active > .sidebar__icon, .dropdown-list button:active > .sidebar__icon, .dropdown-list button:focus-visible > .sidebar__icon {
   background-color: #BBFCDE;
 }
-
-.dropdown-list button.active>.sidebar__icon svg,
-.dropdown-list button:active>.sidebar__icon svg,
-.dropdown-list button:focus-visible>.sidebar__icon svg {
+.dropdown-list button.active > .sidebar__icon svg, .dropdown-list button:active > .sidebar__icon svg, .dropdown-list button:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.dropdown-list button.active svg,
-.dropdown-list button:active svg,
-.dropdown-list button:focus-visible svg {
+.dropdown-list button.active svg, .dropdown-list button:active svg, .dropdown-list button:focus-visible svg {
   stroke: #35424B;
 }
-
 .dropdown-list button img,
 .dropdown-list button svg {
   width: 23px;
@@ -1371,84 +1275,53 @@ main {
   background-color: transparent;
   transition: all 0.2s ease-in-out;
 }
-
 .dropdown-list button.delete {
   background-color: #e25b73;
 }
-
 .dropdown-list button.delete:hover {
   background-color: #b7203b;
   color: #BBFCDE;
 }
-
-.dropdown-list button.delete:hover>.sidebar__icon {
+.dropdown-list button.delete:hover > .sidebar__icon {
   background-color: #b7203b;
 }
-
-.dropdown-list button.delete.active,
-.dropdown-list button.delete:active,
-.dropdown-list button.delete:focus-visible {
+.dropdown-list button.delete.active, .dropdown-list button.delete:active, .dropdown-list button.delete:focus-visible {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
-.dropdown-list button.delete.active>.sidebar__icon,
-.dropdown-list button.delete:active>.sidebar__icon,
-.dropdown-list button.delete:focus-visible>.sidebar__icon {
+.dropdown-list button.delete.active > .sidebar__icon, .dropdown-list button.delete:active > .sidebar__icon, .dropdown-list button.delete:focus-visible > .sidebar__icon {
   background-color: #BBFCDE;
 }
-
-.dropdown-list button.delete.active>.sidebar__icon svg,
-.dropdown-list button.delete:active>.sidebar__icon svg,
-.dropdown-list button.delete:focus-visible>.sidebar__icon svg {
+.dropdown-list button.delete.active > .sidebar__icon svg, .dropdown-list button.delete:active > .sidebar__icon svg, .dropdown-list button.delete:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.dropdown-list button.delete.active svg,
-.dropdown-list button.delete:active svg,
-.dropdown-list button.delete:focus-visible svg {
+.dropdown-list button.delete.active svg, .dropdown-list button.delete:active svg, .dropdown-list button.delete:focus-visible svg {
   stroke: #35424B;
 }
-
 .dropdown-list button.submit {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
 .dropdown-list button.submit:hover {
   background-color: #28f697;
   color: #BBFCDE;
 }
-
-.dropdown-list button.submit:hover>.sidebar__icon {
+.dropdown-list button.submit:hover > .sidebar__icon {
   background-color: #28f697;
 }
-
-.dropdown-list button.submit.active,
-.dropdown-list button.submit:active,
-.dropdown-list button.submit:focus-visible {
+.dropdown-list button.submit.active, .dropdown-list button.submit:active, .dropdown-list button.submit:focus-visible {
   background-color: #28f697;
   color: #35424B;
 }
-
-.dropdown-list button.submit.active>.sidebar__icon,
-.dropdown-list button.submit:active>.sidebar__icon,
-.dropdown-list button.submit:focus-visible>.sidebar__icon {
+.dropdown-list button.submit.active > .sidebar__icon, .dropdown-list button.submit:active > .sidebar__icon, .dropdown-list button.submit:focus-visible > .sidebar__icon {
   background-color: #28f697;
 }
-
-.dropdown-list button.submit.active>.sidebar__icon svg,
-.dropdown-list button.submit:active>.sidebar__icon svg,
-.dropdown-list button.submit:focus-visible>.sidebar__icon svg {
+.dropdown-list button.submit.active > .sidebar__icon svg, .dropdown-list button.submit:active > .sidebar__icon svg, .dropdown-list button.submit:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.dropdown-list button.submit.active svg,
-.dropdown-list button.submit:active svg,
-.dropdown-list button.submit:focus-visible svg {
+.dropdown-list button.submit.active svg, .dropdown-list button.submit:active svg, .dropdown-list button.submit:focus-visible svg {
   stroke: #35424B;
 }
-
 .dropdown-item {
   display: flex;
   align-items: center;
@@ -1456,11 +1329,9 @@ main {
   gap: 10px;
   width: 100%;
 }
-
 .dropdown.open {
   z-index: 5;
 }
-
 .dropdown.open.dropdown-list {
   display: flex;
 }
@@ -1487,7 +1358,6 @@ main {
   border-radius: 10px;
   z-index: 700;
 }
-
 .alert__session-text {
   font-size: 0.875rem;
   font-weight: 500;
@@ -1495,11 +1365,9 @@ main {
   text-align: center;
   flex: 1;
 }
-
 .alert__session-text a {
   text-decoration: underline;
 }
-
 .alert__session-btn {
   display: flex;
   align-items: center;
@@ -1521,41 +1389,26 @@ main {
   transition: all 0.2s ease-in-out;
   background-color: #e25b73;
 }
-
 .alert__session-btn:hover {
   background-color: #0b0d0f;
   color: #BBFCDE;
 }
-
-.alert__session-btn:hover>.sidebar__icon {
+.alert__session-btn:hover > .sidebar__icon {
   background-color: #0b0d0f;
 }
-
-.alert__session-btn.active,
-.alert__session-btn:active,
-.alert__session-btn:focus-visible {
+.alert__session-btn.active, .alert__session-btn:active, .alert__session-btn:focus-visible {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
-.alert__session-btn.active>.sidebar__icon,
-.alert__session-btn:active>.sidebar__icon,
-.alert__session-btn:focus-visible>.sidebar__icon {
+.alert__session-btn.active > .sidebar__icon, .alert__session-btn:active > .sidebar__icon, .alert__session-btn:focus-visible > .sidebar__icon {
   background-color: #BBFCDE;
 }
-
-.alert__session-btn.active>.sidebar__icon svg,
-.alert__session-btn:active>.sidebar__icon svg,
-.alert__session-btn:focus-visible>.sidebar__icon svg {
+.alert__session-btn.active > .sidebar__icon svg, .alert__session-btn:active > .sidebar__icon svg, .alert__session-btn:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.alert__session-btn.active svg,
-.alert__session-btn:active svg,
-.alert__session-btn:focus-visible svg {
+.alert__session-btn.active svg, .alert__session-btn:active svg, .alert__session-btn:focus-visible svg {
   stroke: #35424B;
 }
-
 .alert__session-btn img,
 .alert__session-btn svg {
   width: 23px;
@@ -1565,84 +1418,53 @@ main {
   background-color: transparent;
   transition: all 0.2s ease-in-out;
 }
-
 .alert__session-btn.delete {
   background-color: #e25b73;
 }
-
 .alert__session-btn.delete:hover {
   background-color: #b7203b;
   color: #BBFCDE;
 }
-
-.alert__session-btn.delete:hover>.sidebar__icon {
+.alert__session-btn.delete:hover > .sidebar__icon {
   background-color: #b7203b;
 }
-
-.alert__session-btn.delete.active,
-.alert__session-btn.delete:active,
-.alert__session-btn.delete:focus-visible {
+.alert__session-btn.delete.active, .alert__session-btn.delete:active, .alert__session-btn.delete:focus-visible {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
-.alert__session-btn.delete.active>.sidebar__icon,
-.alert__session-btn.delete:active>.sidebar__icon,
-.alert__session-btn.delete:focus-visible>.sidebar__icon {
+.alert__session-btn.delete.active > .sidebar__icon, .alert__session-btn.delete:active > .sidebar__icon, .alert__session-btn.delete:focus-visible > .sidebar__icon {
   background-color: #BBFCDE;
 }
-
-.alert__session-btn.delete.active>.sidebar__icon svg,
-.alert__session-btn.delete:active>.sidebar__icon svg,
-.alert__session-btn.delete:focus-visible>.sidebar__icon svg {
+.alert__session-btn.delete.active > .sidebar__icon svg, .alert__session-btn.delete:active > .sidebar__icon svg, .alert__session-btn.delete:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.alert__session-btn.delete.active svg,
-.alert__session-btn.delete:active svg,
-.alert__session-btn.delete:focus-visible svg {
+.alert__session-btn.delete.active svg, .alert__session-btn.delete:active svg, .alert__session-btn.delete:focus-visible svg {
   stroke: #35424B;
 }
-
 .alert__session-btn.submit {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
 .alert__session-btn.submit:hover {
   background-color: #28f697;
   color: #BBFCDE;
 }
-
-.alert__session-btn.submit:hover>.sidebar__icon {
+.alert__session-btn.submit:hover > .sidebar__icon {
   background-color: #28f697;
 }
-
-.alert__session-btn.submit.active,
-.alert__session-btn.submit:active,
-.alert__session-btn.submit:focus-visible {
+.alert__session-btn.submit.active, .alert__session-btn.submit:active, .alert__session-btn.submit:focus-visible {
   background-color: #28f697;
   color: #35424B;
 }
-
-.alert__session-btn.submit.active>.sidebar__icon,
-.alert__session-btn.submit:active>.sidebar__icon,
-.alert__session-btn.submit:focus-visible>.sidebar__icon {
+.alert__session-btn.submit.active > .sidebar__icon, .alert__session-btn.submit:active > .sidebar__icon, .alert__session-btn.submit:focus-visible > .sidebar__icon {
   background-color: #28f697;
 }
-
-.alert__session-btn.submit.active>.sidebar__icon svg,
-.alert__session-btn.submit:active>.sidebar__icon svg,
-.alert__session-btn.submit:focus-visible>.sidebar__icon svg {
+.alert__session-btn.submit.active > .sidebar__icon svg, .alert__session-btn.submit:active > .sidebar__icon svg, .alert__session-btn.submit:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.alert__session-btn.submit.active svg,
-.alert__session-btn.submit:active svg,
-.alert__session-btn.submit:focus-visible svg {
+.alert__session-btn.submit.active svg, .alert__session-btn.submit:active svg, .alert__session-btn.submit:focus-visible svg {
   stroke: #35424B;
 }
-
 .alert__session.liveAlert {
   position: absolute;
   left: 50%;
@@ -1658,7 +1480,6 @@ main {
   border: 1px solid #35424B;
   border-radius: 10px;
 }
-
 .tab__list {
   padding: 10px;
   gap: 10px;
@@ -1672,7 +1493,6 @@ main {
   padding: 10px;
   border-radius: 10px 10px 0 0;
 }
-
 .tabs__page {
   display: flex;
   align-items: center;
@@ -1694,41 +1514,26 @@ main {
   transition: all 0.2s ease-in-out;
   width: 100%;
 }
-
 .tabs__page:hover {
   background-color: #0b0d0f;
   color: #BBFCDE;
 }
-
-.tabs__page:hover>.sidebar__icon {
+.tabs__page:hover > .sidebar__icon {
   background-color: #0b0d0f;
 }
-
-.tabs__page.active,
-.tabs__page:active,
-.tabs__page:focus-visible {
+.tabs__page.active, .tabs__page:active, .tabs__page:focus-visible {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
-.tabs__page.active>.sidebar__icon,
-.tabs__page:active>.sidebar__icon,
-.tabs__page:focus-visible>.sidebar__icon {
+.tabs__page.active > .sidebar__icon, .tabs__page:active > .sidebar__icon, .tabs__page:focus-visible > .sidebar__icon {
   background-color: #BBFCDE;
 }
-
-.tabs__page.active>.sidebar__icon svg,
-.tabs__page:active>.sidebar__icon svg,
-.tabs__page:focus-visible>.sidebar__icon svg {
+.tabs__page.active > .sidebar__icon svg, .tabs__page:active > .sidebar__icon svg, .tabs__page:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.tabs__page.active svg,
-.tabs__page:active svg,
-.tabs__page:focus-visible svg {
+.tabs__page.active svg, .tabs__page:active svg, .tabs__page:focus-visible svg {
   stroke: #35424B;
 }
-
 .tabs__page img,
 .tabs__page svg {
   width: 23px;
@@ -1738,94 +1543,61 @@ main {
   background-color: transparent;
   transition: all 0.2s ease-in-out;
 }
-
 .tabs__page.delete {
   background-color: #e25b73;
 }
-
 .tabs__page.delete:hover {
   background-color: #b7203b;
   color: #BBFCDE;
 }
-
-.tabs__page.delete:hover>.sidebar__icon {
+.tabs__page.delete:hover > .sidebar__icon {
   background-color: #b7203b;
 }
-
-.tabs__page.delete.active,
-.tabs__page.delete:active,
-.tabs__page.delete:focus-visible {
+.tabs__page.delete.active, .tabs__page.delete:active, .tabs__page.delete:focus-visible {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
-.tabs__page.delete.active>.sidebar__icon,
-.tabs__page.delete:active>.sidebar__icon,
-.tabs__page.delete:focus-visible>.sidebar__icon {
+.tabs__page.delete.active > .sidebar__icon, .tabs__page.delete:active > .sidebar__icon, .tabs__page.delete:focus-visible > .sidebar__icon {
   background-color: #BBFCDE;
 }
-
-.tabs__page.delete.active>.sidebar__icon svg,
-.tabs__page.delete:active>.sidebar__icon svg,
-.tabs__page.delete:focus-visible>.sidebar__icon svg {
+.tabs__page.delete.active > .sidebar__icon svg, .tabs__page.delete:active > .sidebar__icon svg, .tabs__page.delete:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.tabs__page.delete.active svg,
-.tabs__page.delete:active svg,
-.tabs__page.delete:focus-visible svg {
+.tabs__page.delete.active svg, .tabs__page.delete:active svg, .tabs__page.delete:focus-visible svg {
   stroke: #35424B;
 }
-
 .tabs__page.submit {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
 .tabs__page.submit:hover {
   background-color: #28f697;
   color: #BBFCDE;
 }
-
-.tabs__page.submit:hover>.sidebar__icon {
+.tabs__page.submit:hover > .sidebar__icon {
   background-color: #28f697;
 }
-
-.tabs__page.submit.active,
-.tabs__page.submit:active,
-.tabs__page.submit:focus-visible {
+.tabs__page.submit.active, .tabs__page.submit:active, .tabs__page.submit:focus-visible {
   background-color: #28f697;
   color: #35424B;
 }
-
-.tabs__page.submit.active>.sidebar__icon,
-.tabs__page.submit:active>.sidebar__icon,
-.tabs__page.submit:focus-visible>.sidebar__icon {
+.tabs__page.submit.active > .sidebar__icon, .tabs__page.submit:active > .sidebar__icon, .tabs__page.submit:focus-visible > .sidebar__icon {
   background-color: #28f697;
 }
-
-.tabs__page.submit.active>.sidebar__icon svg,
-.tabs__page.submit:active>.sidebar__icon svg,
-.tabs__page.submit:focus-visible>.sidebar__icon svg {
+.tabs__page.submit.active > .sidebar__icon svg, .tabs__page.submit:active > .sidebar__icon svg, .tabs__page.submit:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.tabs__page.submit.active svg,
-.tabs__page.submit:active svg,
-.tabs__page.submit:focus-visible svg {
+.tabs__page.submit.active svg, .tabs__page.submit:active svg, .tabs__page.submit:focus-visible svg {
   stroke: #35424B;
 }
-
 .tabs__page.active {
   background-color: #BBFCDE;
 }
-
 .tabs__content {
   display: none;
   gap: 10px;
   flex-direction: column;
 }
-
 .tabs__content.active {
   display: flex;
 }
@@ -1855,41 +1627,26 @@ main {
   width: 100%;
   position: relative;
 }
-
 .accordion__btn:hover {
   background-color: #0b0d0f;
   color: #BBFCDE;
 }
-
-.accordion__btn:hover>.sidebar__icon {
+.accordion__btn:hover > .sidebar__icon {
   background-color: #0b0d0f;
 }
-
-.accordion__btn.active,
-.accordion__btn:active,
-.accordion__btn:focus-visible {
+.accordion__btn.active, .accordion__btn:active, .accordion__btn:focus-visible {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
-.accordion__btn.active>.sidebar__icon,
-.accordion__btn:active>.sidebar__icon,
-.accordion__btn:focus-visible>.sidebar__icon {
+.accordion__btn.active > .sidebar__icon, .accordion__btn:active > .sidebar__icon, .accordion__btn:focus-visible > .sidebar__icon {
   background-color: #BBFCDE;
 }
-
-.accordion__btn.active>.sidebar__icon svg,
-.accordion__btn:active>.sidebar__icon svg,
-.accordion__btn:focus-visible>.sidebar__icon svg {
+.accordion__btn.active > .sidebar__icon svg, .accordion__btn:active > .sidebar__icon svg, .accordion__btn:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.accordion__btn.active svg,
-.accordion__btn:active svg,
-.accordion__btn:focus-visible svg {
+.accordion__btn.active svg, .accordion__btn:active svg, .accordion__btn:focus-visible svg {
   stroke: #35424B;
 }
-
 .accordion__btn img,
 .accordion__btn svg {
   width: 23px;
@@ -1899,84 +1656,53 @@ main {
   background-color: transparent;
   transition: all 0.2s ease-in-out;
 }
-
 .accordion__btn.delete {
   background-color: #e25b73;
 }
-
 .accordion__btn.delete:hover {
   background-color: #b7203b;
   color: #BBFCDE;
 }
-
-.accordion__btn.delete:hover>.sidebar__icon {
+.accordion__btn.delete:hover > .sidebar__icon {
   background-color: #b7203b;
 }
-
-.accordion__btn.delete.active,
-.accordion__btn.delete:active,
-.accordion__btn.delete:focus-visible {
+.accordion__btn.delete.active, .accordion__btn.delete:active, .accordion__btn.delete:focus-visible {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
-.accordion__btn.delete.active>.sidebar__icon,
-.accordion__btn.delete:active>.sidebar__icon,
-.accordion__btn.delete:focus-visible>.sidebar__icon {
+.accordion__btn.delete.active > .sidebar__icon, .accordion__btn.delete:active > .sidebar__icon, .accordion__btn.delete:focus-visible > .sidebar__icon {
   background-color: #BBFCDE;
 }
-
-.accordion__btn.delete.active>.sidebar__icon svg,
-.accordion__btn.delete:active>.sidebar__icon svg,
-.accordion__btn.delete:focus-visible>.sidebar__icon svg {
+.accordion__btn.delete.active > .sidebar__icon svg, .accordion__btn.delete:active > .sidebar__icon svg, .accordion__btn.delete:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.accordion__btn.delete.active svg,
-.accordion__btn.delete:active svg,
-.accordion__btn.delete:focus-visible svg {
+.accordion__btn.delete.active svg, .accordion__btn.delete:active svg, .accordion__btn.delete:focus-visible svg {
   stroke: #35424B;
 }
-
 .accordion__btn.submit {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
 .accordion__btn.submit:hover {
   background-color: #28f697;
   color: #BBFCDE;
 }
-
-.accordion__btn.submit:hover>.sidebar__icon {
+.accordion__btn.submit:hover > .sidebar__icon {
   background-color: #28f697;
 }
-
-.accordion__btn.submit.active,
-.accordion__btn.submit:active,
-.accordion__btn.submit:focus-visible {
+.accordion__btn.submit.active, .accordion__btn.submit:active, .accordion__btn.submit:focus-visible {
   background-color: #28f697;
   color: #35424B;
 }
-
-.accordion__btn.submit.active>.sidebar__icon,
-.accordion__btn.submit:active>.sidebar__icon,
-.accordion__btn.submit:focus-visible>.sidebar__icon {
+.accordion__btn.submit.active > .sidebar__icon, .accordion__btn.submit:active > .sidebar__icon, .accordion__btn.submit:focus-visible > .sidebar__icon {
   background-color: #28f697;
 }
-
-.accordion__btn.submit.active>.sidebar__icon svg,
-.accordion__btn.submit:active>.sidebar__icon svg,
-.accordion__btn.submit:focus-visible>.sidebar__icon svg {
+.accordion__btn.submit.active > .sidebar__icon svg, .accordion__btn.submit:active > .sidebar__icon svg, .accordion__btn.submit:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.accordion__btn.submit.active svg,
-.accordion__btn.submit:active svg,
-.accordion__btn.submit:focus-visible svg {
+.accordion__btn.submit.active svg, .accordion__btn.submit:active svg, .accordion__btn.submit:focus-visible svg {
   stroke: #35424B;
 }
-
 .accordion__btn::after {
   content: "+";
   width: 2rem;
@@ -1988,17 +1714,14 @@ main {
   transform: translateY(-50%);
   color: white;
 }
-
 .accordion__btn.open::after {
   content: "-";
 }
-
 .accordion__wrapper {
-  height: 0;
   overflow: hidden;
   transition: all 0.2s ease-in-out;
+  max-height: 1200px;
 }
-
 .accordion__content {
   border: 1px solid #35424B;
   border-top: 0;
@@ -2019,7 +1742,6 @@ main {
   background-color: rgba(0, 0, 0, 0.6);
   z-index: 500;
 }
-
 .modal-content {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -2032,7 +1754,6 @@ main {
   margin: 0 15px;
   outline: none;
 }
-
 .modal-content-title {
   font-size: 0.875rem;
   font-weight: 500;
@@ -2044,7 +1765,6 @@ main {
   font-size: 1.75rem;
   font-weight: 700;
 }
-
 .modal-content-btn {
   display: flex;
   align-items: center;
@@ -2068,41 +1788,26 @@ main {
   cursor: pointer;
   font-weight: 700;
 }
-
 .modal-content-btn:hover {
   background-color: #0b0d0f;
   color: #BBFCDE;
 }
-
-.modal-content-btn:hover>.sidebar__icon {
+.modal-content-btn:hover > .sidebar__icon {
   background-color: #0b0d0f;
 }
-
-.modal-content-btn.active,
-.modal-content-btn:active,
-.modal-content-btn:focus-visible {
+.modal-content-btn.active, .modal-content-btn:active, .modal-content-btn:focus-visible {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
-.modal-content-btn.active>.sidebar__icon,
-.modal-content-btn:active>.sidebar__icon,
-.modal-content-btn:focus-visible>.sidebar__icon {
+.modal-content-btn.active > .sidebar__icon, .modal-content-btn:active > .sidebar__icon, .modal-content-btn:focus-visible > .sidebar__icon {
   background-color: #BBFCDE;
 }
-
-.modal-content-btn.active>.sidebar__icon svg,
-.modal-content-btn:active>.sidebar__icon svg,
-.modal-content-btn:focus-visible>.sidebar__icon svg {
+.modal-content-btn.active > .sidebar__icon svg, .modal-content-btn:active > .sidebar__icon svg, .modal-content-btn:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.modal-content-btn.active svg,
-.modal-content-btn:active svg,
-.modal-content-btn:focus-visible svg {
+.modal-content-btn.active svg, .modal-content-btn:active svg, .modal-content-btn:focus-visible svg {
   stroke: #35424B;
 }
-
 .modal-content-btn img,
 .modal-content-btn svg {
   width: 23px;
@@ -2112,84 +1817,53 @@ main {
   background-color: transparent;
   transition: all 0.2s ease-in-out;
 }
-
 .modal-content-btn.delete {
   background-color: #e25b73;
 }
-
 .modal-content-btn.delete:hover {
   background-color: #b7203b;
   color: #BBFCDE;
 }
-
-.modal-content-btn.delete:hover>.sidebar__icon {
+.modal-content-btn.delete:hover > .sidebar__icon {
   background-color: #b7203b;
 }
-
-.modal-content-btn.delete.active,
-.modal-content-btn.delete:active,
-.modal-content-btn.delete:focus-visible {
+.modal-content-btn.delete.active, .modal-content-btn.delete:active, .modal-content-btn.delete:focus-visible {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
-.modal-content-btn.delete.active>.sidebar__icon,
-.modal-content-btn.delete:active>.sidebar__icon,
-.modal-content-btn.delete:focus-visible>.sidebar__icon {
+.modal-content-btn.delete.active > .sidebar__icon, .modal-content-btn.delete:active > .sidebar__icon, .modal-content-btn.delete:focus-visible > .sidebar__icon {
   background-color: #BBFCDE;
 }
-
-.modal-content-btn.delete.active>.sidebar__icon svg,
-.modal-content-btn.delete:active>.sidebar__icon svg,
-.modal-content-btn.delete:focus-visible>.sidebar__icon svg {
+.modal-content-btn.delete.active > .sidebar__icon svg, .modal-content-btn.delete:active > .sidebar__icon svg, .modal-content-btn.delete:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.modal-content-btn.delete.active svg,
-.modal-content-btn.delete:active svg,
-.modal-content-btn.delete:focus-visible svg {
+.modal-content-btn.delete.active svg, .modal-content-btn.delete:active svg, .modal-content-btn.delete:focus-visible svg {
   stroke: #35424B;
 }
-
 .modal-content-btn.submit {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
 .modal-content-btn.submit:hover {
   background-color: #28f697;
   color: #BBFCDE;
 }
-
-.modal-content-btn.submit:hover>.sidebar__icon {
+.modal-content-btn.submit:hover > .sidebar__icon {
   background-color: #28f697;
 }
-
-.modal-content-btn.submit.active,
-.modal-content-btn.submit:active,
-.modal-content-btn.submit:focus-visible {
+.modal-content-btn.submit.active, .modal-content-btn.submit:active, .modal-content-btn.submit:focus-visible {
   background-color: #28f697;
   color: #35424B;
 }
-
-.modal-content-btn.submit.active>.sidebar__icon,
-.modal-content-btn.submit:active>.sidebar__icon,
-.modal-content-btn.submit:focus-visible>.sidebar__icon {
+.modal-content-btn.submit.active > .sidebar__icon, .modal-content-btn.submit:active > .sidebar__icon, .modal-content-btn.submit:focus-visible > .sidebar__icon {
   background-color: #28f697;
 }
-
-.modal-content-btn.submit.active>.sidebar__icon svg,
-.modal-content-btn.submit:active>.sidebar__icon svg,
-.modal-content-btn.submit:focus-visible>.sidebar__icon svg {
+.modal-content-btn.submit.active > .sidebar__icon svg, .modal-content-btn.submit:active > .sidebar__icon svg, .modal-content-btn.submit:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.modal-content-btn.submit.active svg,
-.modal-content-btn.submit:active svg,
-.modal-content-btn.submit:focus-visible svg {
+.modal-content-btn.submit.active svg, .modal-content-btn.submit:active svg, .modal-content-btn.submit:focus-visible svg {
   stroke: #35424B;
 }
-
 .modal-content span {
   position: absolute;
   border-radius: 100%;
@@ -2207,46 +1881,30 @@ input[type=checkbox] {
   cursor: pointer;
   height: 2.5rem;
   width: 2.5rem;
-
   -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
+     -moz-appearance: none;
+          appearance: none;
 }
-
 input[type=checkbox]:hover {
   background-color: rgba(146, 220, 254, 0.6588235294);
   color: #BBFCDE;
 }
-
-input[type=checkbox]:hover>.sidebar__icon {
+input[type=checkbox]:hover > .sidebar__icon {
   background-color: rgba(146, 220, 254, 0.6588235294);
 }
-
-input[type=checkbox].active,
-input[type=checkbox]:active,
-input[type=checkbox]:focus-visible {
+input[type=checkbox].active, input[type=checkbox]:active, input[type=checkbox]:focus-visible {
   background-color: rgba(3, 169, 244, 0.6588235294);
   color: #35424B;
 }
-
-input[type=checkbox].active>.sidebar__icon,
-input[type=checkbox]:active>.sidebar__icon,
-input[type=checkbox]:focus-visible>.sidebar__icon {
+input[type=checkbox].active > .sidebar__icon, input[type=checkbox]:active > .sidebar__icon, input[type=checkbox]:focus-visible > .sidebar__icon {
   background-color: rgba(3, 169, 244, 0.6588235294);
 }
-
-input[type=checkbox].active>.sidebar__icon svg,
-input[type=checkbox]:active>.sidebar__icon svg,
-input[type=checkbox]:focus-visible>.sidebar__icon svg {
+input[type=checkbox].active > .sidebar__icon svg, input[type=checkbox]:active > .sidebar__icon svg, input[type=checkbox]:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-input[type=checkbox].active svg,
-input[type=checkbox]:active svg,
-input[type=checkbox]:focus-visible svg {
+input[type=checkbox].active svg, input[type=checkbox]:active svg, input[type=checkbox]:focus-visible svg {
   stroke: #35424B;
 }
-
 input[type=checkbox]:before {
   content: "";
   position: absolute;
@@ -2259,11 +1917,9 @@ input[type=checkbox]:before {
   transform: rotate(45deg) translate(-50%, -50%);
   opacity: 0;
 }
-
 input[type=checkbox]:checked {
   background-color: rgb(3, 169, 244);
 }
-
 input[type=checkbox]:checked:before {
   opacity: 1;
 }
@@ -2294,41 +1950,26 @@ input[type=checkbox]:checked:before {
   opacity: 0;
   pointer-events: none;
 }
-
 .top-up-btn:hover {
   background-color: #0b0d0f;
   color: #BBFCDE;
 }
-
-.top-up-btn:hover>.sidebar__icon {
+.top-up-btn:hover > .sidebar__icon {
   background-color: #0b0d0f;
 }
-
-.top-up-btn.active,
-.top-up-btn:active,
-.top-up-btn:focus-visible {
+.top-up-btn.active, .top-up-btn:active, .top-up-btn:focus-visible {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
-.top-up-btn.active>.sidebar__icon,
-.top-up-btn:active>.sidebar__icon,
-.top-up-btn:focus-visible>.sidebar__icon {
+.top-up-btn.active > .sidebar__icon, .top-up-btn:active > .sidebar__icon, .top-up-btn:focus-visible > .sidebar__icon {
   background-color: #BBFCDE;
 }
-
-.top-up-btn.active>.sidebar__icon svg,
-.top-up-btn:active>.sidebar__icon svg,
-.top-up-btn:focus-visible>.sidebar__icon svg {
+.top-up-btn.active > .sidebar__icon svg, .top-up-btn:active > .sidebar__icon svg, .top-up-btn:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.top-up-btn.active svg,
-.top-up-btn:active svg,
-.top-up-btn:focus-visible svg {
+.top-up-btn.active svg, .top-up-btn:active svg, .top-up-btn:focus-visible svg {
   stroke: #35424B;
 }
-
 .top-up-btn img,
 .top-up-btn svg {
   width: 23px;
@@ -2338,84 +1979,53 @@ input[type=checkbox]:checked:before {
   background-color: transparent;
   transition: all 0.2s ease-in-out;
 }
-
 .top-up-btn.delete {
   background-color: #e25b73;
 }
-
 .top-up-btn.delete:hover {
   background-color: #b7203b;
   color: #BBFCDE;
 }
-
-.top-up-btn.delete:hover>.sidebar__icon {
+.top-up-btn.delete:hover > .sidebar__icon {
   background-color: #b7203b;
 }
-
-.top-up-btn.delete.active,
-.top-up-btn.delete:active,
-.top-up-btn.delete:focus-visible {
+.top-up-btn.delete.active, .top-up-btn.delete:active, .top-up-btn.delete:focus-visible {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
-.top-up-btn.delete.active>.sidebar__icon,
-.top-up-btn.delete:active>.sidebar__icon,
-.top-up-btn.delete:focus-visible>.sidebar__icon {
+.top-up-btn.delete.active > .sidebar__icon, .top-up-btn.delete:active > .sidebar__icon, .top-up-btn.delete:focus-visible > .sidebar__icon {
   background-color: #BBFCDE;
 }
-
-.top-up-btn.delete.active>.sidebar__icon svg,
-.top-up-btn.delete:active>.sidebar__icon svg,
-.top-up-btn.delete:focus-visible>.sidebar__icon svg {
+.top-up-btn.delete.active > .sidebar__icon svg, .top-up-btn.delete:active > .sidebar__icon svg, .top-up-btn.delete:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.top-up-btn.delete.active svg,
-.top-up-btn.delete:active svg,
-.top-up-btn.delete:focus-visible svg {
+.top-up-btn.delete.active svg, .top-up-btn.delete:active svg, .top-up-btn.delete:focus-visible svg {
   stroke: #35424B;
 }
-
 .top-up-btn.submit {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
 .top-up-btn.submit:hover {
   background-color: #28f697;
   color: #BBFCDE;
 }
-
-.top-up-btn.submit:hover>.sidebar__icon {
+.top-up-btn.submit:hover > .sidebar__icon {
   background-color: #28f697;
 }
-
-.top-up-btn.submit.active,
-.top-up-btn.submit:active,
-.top-up-btn.submit:focus-visible {
+.top-up-btn.submit.active, .top-up-btn.submit:active, .top-up-btn.submit:focus-visible {
   background-color: #28f697;
   color: #35424B;
 }
-
-.top-up-btn.submit.active>.sidebar__icon,
-.top-up-btn.submit:active>.sidebar__icon,
-.top-up-btn.submit:focus-visible>.sidebar__icon {
+.top-up-btn.submit.active > .sidebar__icon, .top-up-btn.submit:active > .sidebar__icon, .top-up-btn.submit:focus-visible > .sidebar__icon {
   background-color: #28f697;
 }
-
-.top-up-btn.submit.active>.sidebar__icon svg,
-.top-up-btn.submit:active>.sidebar__icon svg,
-.top-up-btn.submit:focus-visible>.sidebar__icon svg {
+.top-up-btn.submit.active > .sidebar__icon svg, .top-up-btn.submit:active > .sidebar__icon svg, .top-up-btn.submit:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.top-up-btn.submit.active svg,
-.top-up-btn.submit:active svg,
-.top-up-btn.submit:focus-visible svg {
+.top-up-btn.submit.active svg, .top-up-btn.submit:active svg, .top-up-btn.submit:focus-visible svg {
   stroke: #35424B;
 }
-
 .top-up-btn.actived {
   opacity: 1;
   pointer-events: auto;
@@ -2429,22 +2039,18 @@ input[type=checkbox]:checked:before {
   margin: 30px 0;
   font-weight: bold;
 }
-
 .livewire-table tr {
   padding: 10px;
 }
-
 .livewire-table th,
 .livewire-table td {
   font-size: 0.875rem;
   padding: 10px 5px;
   text-align: center;
 }
-
 .livewire-table thead tr {
   background-color: #35424B;
 }
-
 .livewire-table thead th {
   color: #BBFCDE;
   font-size: 0.875rem;
@@ -2453,7 +2059,6 @@ input[type=checkbox]:checked:before {
   position: relative;
   padding-right: 25px;
 }
-
 .livewire-table thead th::after {
   content: "";
   position: absolute;
@@ -2466,36 +2071,25 @@ input[type=checkbox]:checked:before {
   border-top: none;
   top: 45%;
 }
-
 .livewire-table thead th[data-symbol=up]::after {
   content: "";
   transform: rotateZ(225deg);
 }
-
-.livewire-table thead th:first-child,
-.livewire-table thead th:last-child {
+.livewire-table thead th:first-child, .livewire-table thead th:last-child {
   padding: inherit;
 }
-
-.livewire-table thead th:first-child::after,
-.livewire-table thead th:first-child::before,
-.livewire-table thead th:last-child::after,
-.livewire-table thead th:last-child::before {
+.livewire-table thead th:first-child::after, .livewire-table thead th:first-child::before, .livewire-table thead th:last-child::after, .livewire-table thead th:last-child::before {
   display: none;
 }
-
 .livewire-table thead th:first-child {
   border-left: 0;
 }
-
 .livewire-table thead th:last-child {
   border-right: 0;
 }
-
 .livewire-table tbody tr:nth-child(even) {
   background-color: #e9e9e9;
 }
-
 .livewire-table button {
   display: flex;
   align-items: center;
@@ -2519,41 +2113,26 @@ input[type=checkbox]:checked:before {
   width: 2.5rem;
   height: 2.5rem;
 }
-
 .livewire-table button:hover {
   background-color: #0b0d0f;
   color: #BBFCDE;
 }
-
-.livewire-table button:hover>.sidebar__icon {
+.livewire-table button:hover > .sidebar__icon {
   background-color: #0b0d0f;
 }
-
-.livewire-table button.active,
-.livewire-table button:active,
-.livewire-table button:focus-visible {
+.livewire-table button.active, .livewire-table button:active, .livewire-table button:focus-visible {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
-.livewire-table button.active>.sidebar__icon,
-.livewire-table button:active>.sidebar__icon,
-.livewire-table button:focus-visible>.sidebar__icon {
+.livewire-table button.active > .sidebar__icon, .livewire-table button:active > .sidebar__icon, .livewire-table button:focus-visible > .sidebar__icon {
   background-color: #BBFCDE;
 }
-
-.livewire-table button.active>.sidebar__icon svg,
-.livewire-table button:active>.sidebar__icon svg,
-.livewire-table button:focus-visible>.sidebar__icon svg {
+.livewire-table button.active > .sidebar__icon svg, .livewire-table button:active > .sidebar__icon svg, .livewire-table button:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.livewire-table button.active svg,
-.livewire-table button:active svg,
-.livewire-table button:focus-visible svg {
+.livewire-table button.active svg, .livewire-table button:active svg, .livewire-table button:focus-visible svg {
   stroke: #35424B;
 }
-
 .livewire-table button img,
 .livewire-table button svg {
   width: 23px;
@@ -2563,84 +2142,53 @@ input[type=checkbox]:checked:before {
   background-color: transparent;
   transition: all 0.2s ease-in-out;
 }
-
 .livewire-table button.delete {
   background-color: #e25b73;
 }
-
 .livewire-table button.delete:hover {
   background-color: #b7203b;
   color: #BBFCDE;
 }
-
-.livewire-table button.delete:hover>.sidebar__icon {
+.livewire-table button.delete:hover > .sidebar__icon {
   background-color: #b7203b;
 }
-
-.livewire-table button.delete.active,
-.livewire-table button.delete:active,
-.livewire-table button.delete:focus-visible {
+.livewire-table button.delete.active, .livewire-table button.delete:active, .livewire-table button.delete:focus-visible {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
-.livewire-table button.delete.active>.sidebar__icon,
-.livewire-table button.delete:active>.sidebar__icon,
-.livewire-table button.delete:focus-visible>.sidebar__icon {
+.livewire-table button.delete.active > .sidebar__icon, .livewire-table button.delete:active > .sidebar__icon, .livewire-table button.delete:focus-visible > .sidebar__icon {
   background-color: #BBFCDE;
 }
-
-.livewire-table button.delete.active>.sidebar__icon svg,
-.livewire-table button.delete:active>.sidebar__icon svg,
-.livewire-table button.delete:focus-visible>.sidebar__icon svg {
+.livewire-table button.delete.active > .sidebar__icon svg, .livewire-table button.delete:active > .sidebar__icon svg, .livewire-table button.delete:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.livewire-table button.delete.active svg,
-.livewire-table button.delete:active svg,
-.livewire-table button.delete:focus-visible svg {
+.livewire-table button.delete.active svg, .livewire-table button.delete:active svg, .livewire-table button.delete:focus-visible svg {
   stroke: #35424B;
 }
-
 .livewire-table button.submit {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
 .livewire-table button.submit:hover {
   background-color: #28f697;
   color: #BBFCDE;
 }
-
-.livewire-table button.submit:hover>.sidebar__icon {
+.livewire-table button.submit:hover > .sidebar__icon {
   background-color: #28f697;
 }
-
-.livewire-table button.submit.active,
-.livewire-table button.submit:active,
-.livewire-table button.submit:focus-visible {
+.livewire-table button.submit.active, .livewire-table button.submit:active, .livewire-table button.submit:focus-visible {
   background-color: #28f697;
   color: #35424B;
 }
-
-.livewire-table button.submit.active>.sidebar__icon,
-.livewire-table button.submit:active>.sidebar__icon,
-.livewire-table button.submit:focus-visible>.sidebar__icon {
+.livewire-table button.submit.active > .sidebar__icon, .livewire-table button.submit:active > .sidebar__icon, .livewire-table button.submit:focus-visible > .sidebar__icon {
   background-color: #28f697;
 }
-
-.livewire-table button.submit.active>.sidebar__icon svg,
-.livewire-table button.submit:active>.sidebar__icon svg,
-.livewire-table button.submit:focus-visible>.sidebar__icon svg {
+.livewire-table button.submit.active > .sidebar__icon svg, .livewire-table button.submit:active > .sidebar__icon svg, .livewire-table button.submit:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.livewire-table button.submit.active svg,
-.livewire-table button.submit:active svg,
-.livewire-table button.submit:focus-visible svg {
+.livewire-table button.submit.active svg, .livewire-table button.submit:active svg, .livewire-table button.submit:focus-visible svg {
   stroke: #35424B;
 }
-
 .livewire-table a {
   text-decoration: underline;
 }
@@ -2649,29 +2197,23 @@ input[type=checkbox]:checked:before {
   .livewire-table {
     border: 3px solid #35424B;
   }
-
   .livewire-table thead tr {
     display: block;
   }
-
   .livewire-table thead th {
     border: none;
   }
-
   .livewire-table thead th:not(:first-child) {
     display: none;
   }
-
   .livewire-table th,
   .livewire-table td {
     padding: 5px;
   }
-
   .livewire-table td {
     text-align: right;
     display: block;
   }
-
   .livewire-table td::before {
     content: attr(data-title) ": ";
     float: left;
@@ -2679,12 +2221,10 @@ input[type=checkbox]:checked:before {
     font-size: 1rem;
     margin-right: 10px;
   }
-
   .livewire-table button {
     display: unset;
   }
 }
-
 .th_checked {
   background: rgba(197, 236, 254, 0.6588235294) !important;
   border: 1px solid rgba(96, 204, 253, 0.6588235294);
@@ -2695,14 +2235,12 @@ input[type=checkbox]:checked:before {
   border-collapse: collapse;
   color: #000;
 }
-
 .table td,
 .table th {
   border: 2px solid #20282d;
   padding: 10px;
   height: 70px;
 }
-
 .table td:first-child,
 .table th:first-child {
   display: flex;
@@ -2711,22 +2249,18 @@ input[type=checkbox]:checked:before {
   width: 100%;
   justify-content: space-between;
 }
-
-.table td:nth-child(2),
-.table td:nth-child(3),
-.table td:nth-child(4),
+.table td:nth-child(2), .table td:nth-child(3), .table td:nth-child(4),
 .table th:nth-child(2),
 .table th:nth-child(3),
 .table th:nth-child(4) {
   width: 10%;
 }
-
 .table td img,
 .table th img {
   height: 100%;
-  object-fit: contain;
+  -o-object-fit: contain;
+     object-fit: contain;
 }
-
 .table td select,
 .table td input,
 .table th select,
@@ -2742,9 +2276,10 @@ input[type=checkbox]:checked:before {
   resize: none;
   outline: none;
   text-decoration: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
   margin: 0 auto;
 }
-
 .table td select::-webkit-scrollbar,
 .table td input::-webkit-scrollbar,
 .table th select::-webkit-scrollbar,
@@ -2754,23 +2289,21 @@ input[type=checkbox]:checked:before {
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
 }
-
 .table td select::-webkit-scrollbar-thumb,
 .table td input::-webkit-scrollbar-thumb,
 .table th select::-webkit-scrollbar-thumb,
 .table th input::-webkit-scrollbar-thumb {
   background: #20282d;
   border-radius: 10px;
+  -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
 }
-
 .table td select::-webkit-scrollbar-thumb:hover,
 .table td input::-webkit-scrollbar-thumb:hover,
 .table th select::-webkit-scrollbar-thumb:hover,
 .table th input::-webkit-scrollbar-thumb:hover {
   background: #151b1e;
 }
-
 .table td button,
 .table th button {
   display: flex;
@@ -2796,55 +2329,40 @@ input[type=checkbox]:checked:before {
   font-size: x-large;
   font-weight: 700;
 }
-
 .table td button:hover,
 .table th button:hover {
   background-color: #0b0d0f;
   color: #BBFCDE;
 }
-
-.table td button:hover>.sidebar__icon,
-.table th button:hover>.sidebar__icon {
+.table td button:hover > .sidebar__icon,
+.table th button:hover > .sidebar__icon {
   background-color: #0b0d0f;
 }
-
-.table td button.active,
-.table td button:active,
-.table td button:focus-visible,
+.table td button.active, .table td button:active, .table td button:focus-visible,
 .table th button.active,
 .table th button:active,
 .table th button:focus-visible {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
-.table td button.active>.sidebar__icon,
-.table td button:active>.sidebar__icon,
-.table td button:focus-visible>.sidebar__icon,
-.table th button.active>.sidebar__icon,
-.table th button:active>.sidebar__icon,
-.table th button:focus-visible>.sidebar__icon {
+.table td button.active > .sidebar__icon, .table td button:active > .sidebar__icon, .table td button:focus-visible > .sidebar__icon,
+.table th button.active > .sidebar__icon,
+.table th button:active > .sidebar__icon,
+.table th button:focus-visible > .sidebar__icon {
   background-color: #BBFCDE;
 }
-
-.table td button.active>.sidebar__icon svg,
-.table td button:active>.sidebar__icon svg,
-.table td button:focus-visible>.sidebar__icon svg,
-.table th button.active>.sidebar__icon svg,
-.table th button:active>.sidebar__icon svg,
-.table th button:focus-visible>.sidebar__icon svg {
+.table td button.active > .sidebar__icon svg, .table td button:active > .sidebar__icon svg, .table td button:focus-visible > .sidebar__icon svg,
+.table th button.active > .sidebar__icon svg,
+.table th button:active > .sidebar__icon svg,
+.table th button:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.table td button.active svg,
-.table td button:active svg,
-.table td button:focus-visible svg,
+.table td button.active svg, .table td button:active svg, .table td button:focus-visible svg,
 .table th button.active svg,
 .table th button:active svg,
 .table th button:focus-visible svg {
   stroke: #35424B;
 }
-
 .table td button img,
 .table td button svg,
 .table th button img,
@@ -2856,114 +2374,83 @@ input[type=checkbox]:checked:before {
   background-color: transparent;
   transition: all 0.2s ease-in-out;
 }
-
 .table td button.delete,
 .table th button.delete {
   background-color: #e25b73;
 }
-
 .table td button.delete:hover,
 .table th button.delete:hover {
   background-color: #b7203b;
   color: #BBFCDE;
 }
-
-.table td button.delete:hover>.sidebar__icon,
-.table th button.delete:hover>.sidebar__icon {
+.table td button.delete:hover > .sidebar__icon,
+.table th button.delete:hover > .sidebar__icon {
   background-color: #b7203b;
 }
-
-.table td button.delete.active,
-.table td button.delete:active,
-.table td button.delete:focus-visible,
+.table td button.delete.active, .table td button.delete:active, .table td button.delete:focus-visible,
 .table th button.delete.active,
 .table th button.delete:active,
 .table th button.delete:focus-visible {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
-.table td button.delete.active>.sidebar__icon,
-.table td button.delete:active>.sidebar__icon,
-.table td button.delete:focus-visible>.sidebar__icon,
-.table th button.delete.active>.sidebar__icon,
-.table th button.delete:active>.sidebar__icon,
-.table th button.delete:focus-visible>.sidebar__icon {
+.table td button.delete.active > .sidebar__icon, .table td button.delete:active > .sidebar__icon, .table td button.delete:focus-visible > .sidebar__icon,
+.table th button.delete.active > .sidebar__icon,
+.table th button.delete:active > .sidebar__icon,
+.table th button.delete:focus-visible > .sidebar__icon {
   background-color: #BBFCDE;
 }
-
-.table td button.delete.active>.sidebar__icon svg,
-.table td button.delete:active>.sidebar__icon svg,
-.table td button.delete:focus-visible>.sidebar__icon svg,
-.table th button.delete.active>.sidebar__icon svg,
-.table th button.delete:active>.sidebar__icon svg,
-.table th button.delete:focus-visible>.sidebar__icon svg {
+.table td button.delete.active > .sidebar__icon svg, .table td button.delete:active > .sidebar__icon svg, .table td button.delete:focus-visible > .sidebar__icon svg,
+.table th button.delete.active > .sidebar__icon svg,
+.table th button.delete:active > .sidebar__icon svg,
+.table th button.delete:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.table td button.delete.active svg,
-.table td button.delete:active svg,
-.table td button.delete:focus-visible svg,
+.table td button.delete.active svg, .table td button.delete:active svg, .table td button.delete:focus-visible svg,
 .table th button.delete.active svg,
 .table th button.delete:active svg,
 .table th button.delete:focus-visible svg {
   stroke: #35424B;
 }
-
 .table td button.submit,
 .table th button.submit {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
 .table td button.submit:hover,
 .table th button.submit:hover {
   background-color: #28f697;
   color: #BBFCDE;
 }
-
-.table td button.submit:hover>.sidebar__icon,
-.table th button.submit:hover>.sidebar__icon {
+.table td button.submit:hover > .sidebar__icon,
+.table th button.submit:hover > .sidebar__icon {
   background-color: #28f697;
 }
-
-.table td button.submit.active,
-.table td button.submit:active,
-.table td button.submit:focus-visible,
+.table td button.submit.active, .table td button.submit:active, .table td button.submit:focus-visible,
 .table th button.submit.active,
 .table th button.submit:active,
 .table th button.submit:focus-visible {
   background-color: #28f697;
   color: #35424B;
 }
-
-.table td button.submit.active>.sidebar__icon,
-.table td button.submit:active>.sidebar__icon,
-.table td button.submit:focus-visible>.sidebar__icon,
-.table th button.submit.active>.sidebar__icon,
-.table th button.submit:active>.sidebar__icon,
-.table th button.submit:focus-visible>.sidebar__icon {
+.table td button.submit.active > .sidebar__icon, .table td button.submit:active > .sidebar__icon, .table td button.submit:focus-visible > .sidebar__icon,
+.table th button.submit.active > .sidebar__icon,
+.table th button.submit:active > .sidebar__icon,
+.table th button.submit:focus-visible > .sidebar__icon {
   background-color: #28f697;
 }
-
-.table td button.submit.active>.sidebar__icon svg,
-.table td button.submit:active>.sidebar__icon svg,
-.table td button.submit:focus-visible>.sidebar__icon svg,
-.table th button.submit.active>.sidebar__icon svg,
-.table th button.submit:active>.sidebar__icon svg,
-.table th button.submit:focus-visible>.sidebar__icon svg {
+.table td button.submit.active > .sidebar__icon svg, .table td button.submit:active > .sidebar__icon svg, .table td button.submit:focus-visible > .sidebar__icon svg,
+.table th button.submit.active > .sidebar__icon svg,
+.table th button.submit:active > .sidebar__icon svg,
+.table th button.submit:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.table td button.submit.active svg,
-.table td button.submit:active svg,
-.table td button.submit:focus-visible svg,
+.table td button.submit.active svg, .table td button.submit:active svg, .table td button.submit:focus-visible svg,
 .table th button.submit.active svg,
 .table th button.submit:active svg,
 .table th button.submit:focus-visible svg {
   stroke: #35424B;
 }
-
 .table thead {
   background-color: #20282d;
   color: #ffffff;
@@ -2979,7 +2466,6 @@ input[type=checkbox]:checked:before {
   border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
-
 .pagination__item {
   display: flex;
   align-items: center;
@@ -3002,41 +2488,26 @@ input[type=checkbox]:checked:before {
   width: 2rem;
   height: 2rem;
 }
-
 .pagination__item:hover {
   background-color: #0b0d0f;
   color: #BBFCDE;
 }
-
-.pagination__item:hover>.sidebar__icon {
+.pagination__item:hover > .sidebar__icon {
   background-color: #0b0d0f;
 }
-
-.pagination__item.active,
-.pagination__item:active,
-.pagination__item:focus-visible {
+.pagination__item.active, .pagination__item:active, .pagination__item:focus-visible {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
-.pagination__item.active>.sidebar__icon,
-.pagination__item:active>.sidebar__icon,
-.pagination__item:focus-visible>.sidebar__icon {
+.pagination__item.active > .sidebar__icon, .pagination__item:active > .sidebar__icon, .pagination__item:focus-visible > .sidebar__icon {
   background-color: #BBFCDE;
 }
-
-.pagination__item.active>.sidebar__icon svg,
-.pagination__item:active>.sidebar__icon svg,
-.pagination__item:focus-visible>.sidebar__icon svg {
+.pagination__item.active > .sidebar__icon svg, .pagination__item:active > .sidebar__icon svg, .pagination__item:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.pagination__item.active svg,
-.pagination__item:active svg,
-.pagination__item:focus-visible svg {
+.pagination__item.active svg, .pagination__item:active svg, .pagination__item:focus-visible svg {
   stroke: #35424B;
 }
-
 .pagination__item img,
 .pagination__item svg {
   width: 23px;
@@ -3046,88 +2517,56 @@ input[type=checkbox]:checked:before {
   background-color: transparent;
   transition: all 0.2s ease-in-out;
 }
-
 .pagination__item.delete {
   background-color: #e25b73;
 }
-
 .pagination__item.delete:hover {
   background-color: #b7203b;
   color: #BBFCDE;
 }
-
-.pagination__item.delete:hover>.sidebar__icon {
+.pagination__item.delete:hover > .sidebar__icon {
   background-color: #b7203b;
 }
-
-.pagination__item.delete.active,
-.pagination__item.delete:active,
-.pagination__item.delete:focus-visible {
+.pagination__item.delete.active, .pagination__item.delete:active, .pagination__item.delete:focus-visible {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
-.pagination__item.delete.active>.sidebar__icon,
-.pagination__item.delete:active>.sidebar__icon,
-.pagination__item.delete:focus-visible>.sidebar__icon {
+.pagination__item.delete.active > .sidebar__icon, .pagination__item.delete:active > .sidebar__icon, .pagination__item.delete:focus-visible > .sidebar__icon {
   background-color: #BBFCDE;
 }
-
-.pagination__item.delete.active>.sidebar__icon svg,
-.pagination__item.delete:active>.sidebar__icon svg,
-.pagination__item.delete:focus-visible>.sidebar__icon svg {
+.pagination__item.delete.active > .sidebar__icon svg, .pagination__item.delete:active > .sidebar__icon svg, .pagination__item.delete:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.pagination__item.delete.active svg,
-.pagination__item.delete:active svg,
-.pagination__item.delete:focus-visible svg {
+.pagination__item.delete.active svg, .pagination__item.delete:active svg, .pagination__item.delete:focus-visible svg {
   stroke: #35424B;
 }
-
 .pagination__item.submit {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
 .pagination__item.submit:hover {
   background-color: #28f697;
   color: #BBFCDE;
 }
-
-.pagination__item.submit:hover>.sidebar__icon {
+.pagination__item.submit:hover > .sidebar__icon {
   background-color: #28f697;
 }
-
-.pagination__item.submit.active,
-.pagination__item.submit:active,
-.pagination__item.submit:focus-visible {
+.pagination__item.submit.active, .pagination__item.submit:active, .pagination__item.submit:focus-visible {
   background-color: #28f697;
   color: #35424B;
 }
-
-.pagination__item.submit.active>.sidebar__icon,
-.pagination__item.submit:active>.sidebar__icon,
-.pagination__item.submit:focus-visible>.sidebar__icon {
+.pagination__item.submit.active > .sidebar__icon, .pagination__item.submit:active > .sidebar__icon, .pagination__item.submit:focus-visible > .sidebar__icon {
   background-color: #28f697;
 }
-
-.pagination__item.submit.active>.sidebar__icon svg,
-.pagination__item.submit:active>.sidebar__icon svg,
-.pagination__item.submit:focus-visible>.sidebar__icon svg {
+.pagination__item.submit.active > .sidebar__icon svg, .pagination__item.submit:active > .sidebar__icon svg, .pagination__item.submit:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.pagination__item.submit.active svg,
-.pagination__item.submit:active svg,
-.pagination__item.submit:focus-visible svg {
+.pagination__item.submit.active svg, .pagination__item.submit:active svg, .pagination__item.submit:focus-visible svg {
   stroke: #35424B;
 }
-
 .pagination__item:nth-last-child(-n+4):not(:last-child) {
   display: none;
 }
-
 .pagination__item.active {
   background-color: #BBFCDE;
   color: #35424B;
@@ -3145,29 +2584,24 @@ input[type=checkbox]:checked:before {
   /*  This is function for Profile (When i open the bottom
     part of Profile) to increase the height of Header */
 }
-
 .header__buttons {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 20px;
 }
-
 .header__logo {
   display: none;
   height: 3rem;
 }
-
 .header__logo img {
   -o-object-fit: contain;
-  object-fit: contain;
+     object-fit: contain;
   height: 100%;
 }
-
 .header.moved {
   height: 130px;
 }
-
 .header.moved.content {
   height: calc(100vh - 130px);
 }
@@ -3189,63 +2623,46 @@ input[type=checkbox]:checked:before {
   transform: translateY(-100%);
   grid-template-columns: repeat(4, 1fr);
 }
-
 .search input,
 .profile input {
   text-align: left;
   padding: 0 10px;
 }
-
 .search input:hover,
 .profile input:hover {
   background-color: #20282d;
   color: #BBFCDE;
 }
-
-.search input:hover>.sidebar__icon,
-.profile input:hover>.sidebar__icon {
+.search input:hover > .sidebar__icon,
+.profile input:hover > .sidebar__icon {
   background-color: #20282d;
 }
-
-.search input.active,
-.search input:active,
-.search input:focus-visible,
+.search input.active, .search input:active, .search input:focus-visible,
 .profile input.active,
 .profile input:active,
 .profile input:focus-visible {
   background-color: #20282d;
   color: #BBFCDE;
 }
-
-.search input.active>.sidebar__icon,
-.search input:active>.sidebar__icon,
-.search input:focus-visible>.sidebar__icon,
-.profile input.active>.sidebar__icon,
-.profile input:active>.sidebar__icon,
-.profile input:focus-visible>.sidebar__icon {
+.search input.active > .sidebar__icon, .search input:active > .sidebar__icon, .search input:focus-visible > .sidebar__icon,
+.profile input.active > .sidebar__icon,
+.profile input:active > .sidebar__icon,
+.profile input:focus-visible > .sidebar__icon {
   background-color: #20282d;
 }
-
-.search input.active>.sidebar__icon svg,
-.search input:active>.sidebar__icon svg,
-.search input:focus-visible>.sidebar__icon svg,
-.profile input.active>.sidebar__icon svg,
-.profile input:active>.sidebar__icon svg,
-.profile input:focus-visible>.sidebar__icon svg {
+.search input.active > .sidebar__icon svg, .search input:active > .sidebar__icon svg, .search input:focus-visible > .sidebar__icon svg,
+.profile input.active > .sidebar__icon svg,
+.profile input:active > .sidebar__icon svg,
+.profile input:focus-visible > .sidebar__icon svg {
   stroke: #BBFCDE;
 }
-
-.search input.active svg,
-.search input:active svg,
-.search input:focus-visible svg,
+.search input.active svg, .search input:active svg, .search input:focus-visible svg,
 .profile input.active svg,
 .profile input:active svg,
 .profile input:focus-visible svg {
   stroke: #BBFCDE;
 }
-
-.search__item,
-.search__icon,
+.search__item, .search__icon,
 .profile__item,
 .profile__icon {
   display: flex;
@@ -3267,28 +2684,18 @@ input[type=checkbox]:checked:before {
   height: 3rem;
   transition: all 0.2s ease-in-out;
 }
-
-.search__item:hover,
-.search__icon:hover,
+.search__item:hover, .search__icon:hover,
 .profile__item:hover,
 .profile__icon:hover {
   background-color: #0b0d0f;
   color: #BBFCDE;
 }
-
-.search__item:hover>.sidebar__icon,
-.search__icon:hover>.sidebar__icon,
-.profile__item:hover>.sidebar__icon,
-.profile__icon:hover>.sidebar__icon {
+.search__item:hover > .sidebar__icon, .search__icon:hover > .sidebar__icon,
+.profile__item:hover > .sidebar__icon,
+.profile__icon:hover > .sidebar__icon {
   background-color: #0b0d0f;
 }
-
-.search__item.active,
-.search__item:active,
-.search__item:focus-visible,
-.search__icon.active,
-.search__icon:active,
-.search__icon:focus-visible,
+.search__item.active, .search__item:active, .search__item:focus-visible, .search__icon.active, .search__icon:active, .search__icon:focus-visible,
 .profile__item.active,
 .profile__item:active,
 .profile__item:focus-visible,
@@ -3298,43 +2705,25 @@ input[type=checkbox]:checked:before {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
-.search__item.active>.sidebar__icon,
-.search__item:active>.sidebar__icon,
-.search__item:focus-visible>.sidebar__icon,
-.search__icon.active>.sidebar__icon,
-.search__icon:active>.sidebar__icon,
-.search__icon:focus-visible>.sidebar__icon,
-.profile__item.active>.sidebar__icon,
-.profile__item:active>.sidebar__icon,
-.profile__item:focus-visible>.sidebar__icon,
-.profile__icon.active>.sidebar__icon,
-.profile__icon:active>.sidebar__icon,
-.profile__icon:focus-visible>.sidebar__icon {
+.search__item.active > .sidebar__icon, .search__item:active > .sidebar__icon, .search__item:focus-visible > .sidebar__icon, .search__icon.active > .sidebar__icon, .search__icon:active > .sidebar__icon, .search__icon:focus-visible > .sidebar__icon,
+.profile__item.active > .sidebar__icon,
+.profile__item:active > .sidebar__icon,
+.profile__item:focus-visible > .sidebar__icon,
+.profile__icon.active > .sidebar__icon,
+.profile__icon:active > .sidebar__icon,
+.profile__icon:focus-visible > .sidebar__icon {
   background-color: #BBFCDE;
 }
-
-.search__item.active>.sidebar__icon svg,
-.search__item:active>.sidebar__icon svg,
-.search__item:focus-visible>.sidebar__icon svg,
-.search__icon.active>.sidebar__icon svg,
-.search__icon:active>.sidebar__icon svg,
-.search__icon:focus-visible>.sidebar__icon svg,
-.profile__item.active>.sidebar__icon svg,
-.profile__item:active>.sidebar__icon svg,
-.profile__item:focus-visible>.sidebar__icon svg,
-.profile__icon.active>.sidebar__icon svg,
-.profile__icon:active>.sidebar__icon svg,
-.profile__icon:focus-visible>.sidebar__icon svg {
+.search__item.active > .sidebar__icon svg, .search__item:active > .sidebar__icon svg, .search__item:focus-visible > .sidebar__icon svg, .search__icon.active > .sidebar__icon svg, .search__icon:active > .sidebar__icon svg, .search__icon:focus-visible > .sidebar__icon svg,
+.profile__item.active > .sidebar__icon svg,
+.profile__item:active > .sidebar__icon svg,
+.profile__item:focus-visible > .sidebar__icon svg,
+.profile__icon.active > .sidebar__icon svg,
+.profile__icon:active > .sidebar__icon svg,
+.profile__icon:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.search__item.active svg,
-.search__item:active svg,
-.search__item:focus-visible svg,
-.search__icon.active svg,
-.search__icon:active svg,
-.search__icon:focus-visible svg,
+.search__item.active svg, .search__item:active svg, .search__item:focus-visible svg, .search__icon.active svg, .search__icon:active svg, .search__icon:focus-visible svg,
 .profile__item.active svg,
 .profile__item:active svg,
 .profile__item:focus-visible svg,
@@ -3343,10 +2732,8 @@ input[type=checkbox]:checked:before {
 .profile__icon:focus-visible svg {
   stroke: #35424B;
 }
-
 .search__item img,
-.search__item svg,
-.search__icon img,
+.search__item svg, .search__icon img,
 .search__icon svg,
 .profile__item img,
 .profile__item svg,
@@ -3359,35 +2746,23 @@ input[type=checkbox]:checked:before {
   background-color: transparent;
   transition: all 0.2s ease-in-out;
 }
-
-.search__item.delete,
-.search__icon.delete,
+.search__item.delete, .search__icon.delete,
 .profile__item.delete,
 .profile__icon.delete {
   background-color: #e25b73;
 }
-
-.search__item.delete:hover,
-.search__icon.delete:hover,
+.search__item.delete:hover, .search__icon.delete:hover,
 .profile__item.delete:hover,
 .profile__icon.delete:hover {
   background-color: #b7203b;
   color: #BBFCDE;
 }
-
-.search__item.delete:hover>.sidebar__icon,
-.search__icon.delete:hover>.sidebar__icon,
-.profile__item.delete:hover>.sidebar__icon,
-.profile__icon.delete:hover>.sidebar__icon {
+.search__item.delete:hover > .sidebar__icon, .search__icon.delete:hover > .sidebar__icon,
+.profile__item.delete:hover > .sidebar__icon,
+.profile__icon.delete:hover > .sidebar__icon {
   background-color: #b7203b;
 }
-
-.search__item.delete.active,
-.search__item.delete:active,
-.search__item.delete:focus-visible,
-.search__icon.delete.active,
-.search__icon.delete:active,
-.search__icon.delete:focus-visible,
+.search__item.delete.active, .search__item.delete:active, .search__item.delete:focus-visible, .search__icon.delete.active, .search__icon.delete:active, .search__icon.delete:focus-visible,
 .profile__item.delete.active,
 .profile__item.delete:active,
 .profile__item.delete:focus-visible,
@@ -3397,43 +2772,25 @@ input[type=checkbox]:checked:before {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
-.search__item.delete.active>.sidebar__icon,
-.search__item.delete:active>.sidebar__icon,
-.search__item.delete:focus-visible>.sidebar__icon,
-.search__icon.delete.active>.sidebar__icon,
-.search__icon.delete:active>.sidebar__icon,
-.search__icon.delete:focus-visible>.sidebar__icon,
-.profile__item.delete.active>.sidebar__icon,
-.profile__item.delete:active>.sidebar__icon,
-.profile__item.delete:focus-visible>.sidebar__icon,
-.profile__icon.delete.active>.sidebar__icon,
-.profile__icon.delete:active>.sidebar__icon,
-.profile__icon.delete:focus-visible>.sidebar__icon {
+.search__item.delete.active > .sidebar__icon, .search__item.delete:active > .sidebar__icon, .search__item.delete:focus-visible > .sidebar__icon, .search__icon.delete.active > .sidebar__icon, .search__icon.delete:active > .sidebar__icon, .search__icon.delete:focus-visible > .sidebar__icon,
+.profile__item.delete.active > .sidebar__icon,
+.profile__item.delete:active > .sidebar__icon,
+.profile__item.delete:focus-visible > .sidebar__icon,
+.profile__icon.delete.active > .sidebar__icon,
+.profile__icon.delete:active > .sidebar__icon,
+.profile__icon.delete:focus-visible > .sidebar__icon {
   background-color: #BBFCDE;
 }
-
-.search__item.delete.active>.sidebar__icon svg,
-.search__item.delete:active>.sidebar__icon svg,
-.search__item.delete:focus-visible>.sidebar__icon svg,
-.search__icon.delete.active>.sidebar__icon svg,
-.search__icon.delete:active>.sidebar__icon svg,
-.search__icon.delete:focus-visible>.sidebar__icon svg,
-.profile__item.delete.active>.sidebar__icon svg,
-.profile__item.delete:active>.sidebar__icon svg,
-.profile__item.delete:focus-visible>.sidebar__icon svg,
-.profile__icon.delete.active>.sidebar__icon svg,
-.profile__icon.delete:active>.sidebar__icon svg,
-.profile__icon.delete:focus-visible>.sidebar__icon svg {
+.search__item.delete.active > .sidebar__icon svg, .search__item.delete:active > .sidebar__icon svg, .search__item.delete:focus-visible > .sidebar__icon svg, .search__icon.delete.active > .sidebar__icon svg, .search__icon.delete:active > .sidebar__icon svg, .search__icon.delete:focus-visible > .sidebar__icon svg,
+.profile__item.delete.active > .sidebar__icon svg,
+.profile__item.delete:active > .sidebar__icon svg,
+.profile__item.delete:focus-visible > .sidebar__icon svg,
+.profile__icon.delete.active > .sidebar__icon svg,
+.profile__icon.delete:active > .sidebar__icon svg,
+.profile__icon.delete:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.search__item.delete.active svg,
-.search__item.delete:active svg,
-.search__item.delete:focus-visible svg,
-.search__icon.delete.active svg,
-.search__icon.delete:active svg,
-.search__icon.delete:focus-visible svg,
+.search__item.delete.active svg, .search__item.delete:active svg, .search__item.delete:focus-visible svg, .search__icon.delete.active svg, .search__icon.delete:active svg, .search__icon.delete:focus-visible svg,
 .profile__item.delete.active svg,
 .profile__item.delete:active svg,
 .profile__item.delete:focus-visible svg,
@@ -3442,36 +2799,24 @@ input[type=checkbox]:checked:before {
 .profile__icon.delete:focus-visible svg {
   stroke: #35424B;
 }
-
-.search__item.submit,
-.search__icon.submit,
+.search__item.submit, .search__icon.submit,
 .profile__item.submit,
 .profile__icon.submit {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
-.search__item.submit:hover,
-.search__icon.submit:hover,
+.search__item.submit:hover, .search__icon.submit:hover,
 .profile__item.submit:hover,
 .profile__icon.submit:hover {
   background-color: #28f697;
   color: #BBFCDE;
 }
-
-.search__item.submit:hover>.sidebar__icon,
-.search__icon.submit:hover>.sidebar__icon,
-.profile__item.submit:hover>.sidebar__icon,
-.profile__icon.submit:hover>.sidebar__icon {
+.search__item.submit:hover > .sidebar__icon, .search__icon.submit:hover > .sidebar__icon,
+.profile__item.submit:hover > .sidebar__icon,
+.profile__icon.submit:hover > .sidebar__icon {
   background-color: #28f697;
 }
-
-.search__item.submit.active,
-.search__item.submit:active,
-.search__item.submit:focus-visible,
-.search__icon.submit.active,
-.search__icon.submit:active,
-.search__icon.submit:focus-visible,
+.search__item.submit.active, .search__item.submit:active, .search__item.submit:focus-visible, .search__icon.submit.active, .search__icon.submit:active, .search__icon.submit:focus-visible,
 .profile__item.submit.active,
 .profile__item.submit:active,
 .profile__item.submit:focus-visible,
@@ -3481,43 +2826,25 @@ input[type=checkbox]:checked:before {
   background-color: #28f697;
   color: #35424B;
 }
-
-.search__item.submit.active>.sidebar__icon,
-.search__item.submit:active>.sidebar__icon,
-.search__item.submit:focus-visible>.sidebar__icon,
-.search__icon.submit.active>.sidebar__icon,
-.search__icon.submit:active>.sidebar__icon,
-.search__icon.submit:focus-visible>.sidebar__icon,
-.profile__item.submit.active>.sidebar__icon,
-.profile__item.submit:active>.sidebar__icon,
-.profile__item.submit:focus-visible>.sidebar__icon,
-.profile__icon.submit.active>.sidebar__icon,
-.profile__icon.submit:active>.sidebar__icon,
-.profile__icon.submit:focus-visible>.sidebar__icon {
+.search__item.submit.active > .sidebar__icon, .search__item.submit:active > .sidebar__icon, .search__item.submit:focus-visible > .sidebar__icon, .search__icon.submit.active > .sidebar__icon, .search__icon.submit:active > .sidebar__icon, .search__icon.submit:focus-visible > .sidebar__icon,
+.profile__item.submit.active > .sidebar__icon,
+.profile__item.submit:active > .sidebar__icon,
+.profile__item.submit:focus-visible > .sidebar__icon,
+.profile__icon.submit.active > .sidebar__icon,
+.profile__icon.submit:active > .sidebar__icon,
+.profile__icon.submit:focus-visible > .sidebar__icon {
   background-color: #28f697;
 }
-
-.search__item.submit.active>.sidebar__icon svg,
-.search__item.submit:active>.sidebar__icon svg,
-.search__item.submit:focus-visible>.sidebar__icon svg,
-.search__icon.submit.active>.sidebar__icon svg,
-.search__icon.submit:active>.sidebar__icon svg,
-.search__icon.submit:focus-visible>.sidebar__icon svg,
-.profile__item.submit.active>.sidebar__icon svg,
-.profile__item.submit:active>.sidebar__icon svg,
-.profile__item.submit:focus-visible>.sidebar__icon svg,
-.profile__icon.submit.active>.sidebar__icon svg,
-.profile__icon.submit:active>.sidebar__icon svg,
-.profile__icon.submit:focus-visible>.sidebar__icon svg {
+.search__item.submit.active > .sidebar__icon svg, .search__item.submit:active > .sidebar__icon svg, .search__item.submit:focus-visible > .sidebar__icon svg, .search__icon.submit.active > .sidebar__icon svg, .search__icon.submit:active > .sidebar__icon svg, .search__icon.submit:focus-visible > .sidebar__icon svg,
+.profile__item.submit.active > .sidebar__icon svg,
+.profile__item.submit:active > .sidebar__icon svg,
+.profile__item.submit:focus-visible > .sidebar__icon svg,
+.profile__icon.submit.active > .sidebar__icon svg,
+.profile__icon.submit:active > .sidebar__icon svg,
+.profile__icon.submit:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.search__item.submit.active svg,
-.search__item.submit:active svg,
-.search__item.submit:focus-visible svg,
-.search__icon.submit.active svg,
-.search__icon.submit:active svg,
-.search__icon.submit:focus-visible svg,
+.search__item.submit.active svg, .search__item.submit:active svg, .search__item.submit:focus-visible svg, .search__icon.submit.active svg, .search__icon.submit:active svg, .search__icon.submit:focus-visible svg,
 .profile__item.submit.active svg,
 .profile__item.submit:active svg,
 .profile__item.submit:focus-visible svg,
@@ -3526,36 +2853,29 @@ input[type=checkbox]:checked:before {
 .profile__icon.submit:focus-visible svg {
   stroke: #35424B;
 }
-
 .search__item,
 .profile__item {
   width: 100%;
 }
-
 .search__item:nth-child(2),
 .profile__item:nth-child(2) {
   grid-column: 2/max;
 }
-
 .search__item:nth-child(3),
 .profile__item:nth-child(3) {
   grid-column: 1/3;
 }
-
 .search__item:last-child,
 .profile__item:last-child {
   grid-column: 3/max;
 }
-
 .search.active,
 .profile.active {
   opacity: 1;
   transform: translateY(0);
   z-index: 300;
 }
-
 @media (min-width: 1024px) {
-
   .search,
   .profile {
     gap: 0;
@@ -3566,22 +2886,17 @@ input[type=checkbox]:checked:before {
     transform: unset;
     position: relative;
   }
-
   .search__icon,
   .profile__icon {
     display: none;
   }
-
   .search__item:nth-child(2),
   .profile__item:nth-child(2) {
     font-size: 0;
     padding: 0;
     white-space: nowrap;
   }
-
-  .search__item:nth-child(2),
-  .search__item:nth-child(3),
-  .search__item:last-child,
+  .search__item:nth-child(2), .search__item:nth-child(3), .search__item:last-child,
   .profile__item:nth-child(2),
   .profile__item:nth-child(3),
   .profile__item:last-child {
@@ -3590,37 +2905,29 @@ input[type=checkbox]:checked:before {
     border-radius: 0;
     visibility: hidden;
   }
-
   .search__item:last-child,
   .profile__item:last-child {
     border-radius: 0 10px 10px 0;
   }
-
   .search.active,
   .profile.active {
     width: 25rem;
   }
-
-  .search.active>.profile__item,
-  .search.active>.search__item,
-  .profile.active>.profile__item,
-  .profile.active>.search__item {
+  .search.active > .profile__item, .search.active > .search__item,
+  .profile.active > .profile__item,
+  .profile.active > .search__item {
     opacity: 1;
     width: 3rem;
     visibility: visible;
   }
-
-  .search.active>.profile__item:first-child,
-  .search.active>.search__item:first-child,
-  .profile.active>.profile__item:first-child,
-  .profile.active>.search__item:first-child {
+  .search.active > .profile__item:first-child, .search.active > .search__item:first-child,
+  .profile.active > .profile__item:first-child,
+  .profile.active > .search__item:first-child {
     border-radius: 10px 0 0 10px;
   }
-
-  .search.active>.profile__item:nth-child(2),
-  .search.active>.search__item:nth-child(2),
-  .profile.active>.profile__item:nth-child(2),
-  .profile.active>.search__item:nth-child(2) {
+  .search.active > .profile__item:nth-child(2), .search.active > .search__item:nth-child(2),
+  .profile.active > .profile__item:nth-child(2),
+  .profile.active > .search__item:nth-child(2) {
     flex: 1;
     width: unset;
     font-size: unset;
@@ -3631,10 +2938,7 @@ input[type=checkbox]:checked:before {
 .search {
   grid-template-columns: 3rem 1fr 3rem;
 }
-
-.search__item,
-.search__item:last-child,
-.search__item:nth-child(2) {
+.search__item, .search__item:last-child, .search__item:nth-child(2) {
   grid-column: unset;
 }
 
@@ -3642,18 +2946,14 @@ input[type=checkbox]:checked:before {
   .header {
     justify-content: space-between;
   }
-
   .header__logo {
     display: block;
   }
 }
-
 .notify {
   position: relative;
 }
-
-.notify__btn,
-.notify__item {
+.notify__btn, .notify__item {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3673,58 +2973,28 @@ input[type=checkbox]:checked:before {
   height: 3rem;
   transition: all 0.2s ease-in-out;
 }
-
-.notify__btn:hover,
-.notify__item:hover {
+.notify__btn:hover, .notify__item:hover {
   background-color: #0b0d0f;
   color: #BBFCDE;
 }
-
-.notify__btn:hover>.sidebar__icon,
-.notify__item:hover>.sidebar__icon {
+.notify__btn:hover > .sidebar__icon, .notify__item:hover > .sidebar__icon {
   background-color: #0b0d0f;
 }
-
-.notify__btn.active,
-.notify__btn:active,
-.notify__btn:focus-visible,
-.notify__item.active,
-.notify__item:active,
-.notify__item:focus-visible {
+.notify__btn.active, .notify__btn:active, .notify__btn:focus-visible, .notify__item.active, .notify__item:active, .notify__item:focus-visible {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
-.notify__btn.active>.sidebar__icon,
-.notify__btn:active>.sidebar__icon,
-.notify__btn:focus-visible>.sidebar__icon,
-.notify__item.active>.sidebar__icon,
-.notify__item:active>.sidebar__icon,
-.notify__item:focus-visible>.sidebar__icon {
+.notify__btn.active > .sidebar__icon, .notify__btn:active > .sidebar__icon, .notify__btn:focus-visible > .sidebar__icon, .notify__item.active > .sidebar__icon, .notify__item:active > .sidebar__icon, .notify__item:focus-visible > .sidebar__icon {
   background-color: #BBFCDE;
 }
-
-.notify__btn.active>.sidebar__icon svg,
-.notify__btn:active>.sidebar__icon svg,
-.notify__btn:focus-visible>.sidebar__icon svg,
-.notify__item.active>.sidebar__icon svg,
-.notify__item:active>.sidebar__icon svg,
-.notify__item:focus-visible>.sidebar__icon svg {
+.notify__btn.active > .sidebar__icon svg, .notify__btn:active > .sidebar__icon svg, .notify__btn:focus-visible > .sidebar__icon svg, .notify__item.active > .sidebar__icon svg, .notify__item:active > .sidebar__icon svg, .notify__item:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.notify__btn.active svg,
-.notify__btn:active svg,
-.notify__btn:focus-visible svg,
-.notify__item.active svg,
-.notify__item:active svg,
-.notify__item:focus-visible svg {
+.notify__btn.active svg, .notify__btn:active svg, .notify__btn:focus-visible svg, .notify__item.active svg, .notify__item:active svg, .notify__item:focus-visible svg {
   stroke: #35424B;
 }
-
 .notify__btn img,
-.notify__btn svg,
-.notify__item img,
+.notify__btn svg, .notify__item img,
 .notify__item svg {
   width: 23px;
   height: 23px;
@@ -3733,120 +3003,58 @@ input[type=checkbox]:checked:before {
   background-color: transparent;
   transition: all 0.2s ease-in-out;
 }
-
-.notify__btn.delete,
-.notify__item.delete {
+.notify__btn.delete, .notify__item.delete {
   background-color: #e25b73;
 }
-
-.notify__btn.delete:hover,
-.notify__item.delete:hover {
+.notify__btn.delete:hover, .notify__item.delete:hover {
   background-color: #b7203b;
   color: #BBFCDE;
 }
-
-.notify__btn.delete:hover>.sidebar__icon,
-.notify__item.delete:hover>.sidebar__icon {
+.notify__btn.delete:hover > .sidebar__icon, .notify__item.delete:hover > .sidebar__icon {
   background-color: #b7203b;
 }
-
-.notify__btn.delete.active,
-.notify__btn.delete:active,
-.notify__btn.delete:focus-visible,
-.notify__item.delete.active,
-.notify__item.delete:active,
-.notify__item.delete:focus-visible {
+.notify__btn.delete.active, .notify__btn.delete:active, .notify__btn.delete:focus-visible, .notify__item.delete.active, .notify__item.delete:active, .notify__item.delete:focus-visible {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
-.notify__btn.delete.active>.sidebar__icon,
-.notify__btn.delete:active>.sidebar__icon,
-.notify__btn.delete:focus-visible>.sidebar__icon,
-.notify__item.delete.active>.sidebar__icon,
-.notify__item.delete:active>.sidebar__icon,
-.notify__item.delete:focus-visible>.sidebar__icon {
+.notify__btn.delete.active > .sidebar__icon, .notify__btn.delete:active > .sidebar__icon, .notify__btn.delete:focus-visible > .sidebar__icon, .notify__item.delete.active > .sidebar__icon, .notify__item.delete:active > .sidebar__icon, .notify__item.delete:focus-visible > .sidebar__icon {
   background-color: #BBFCDE;
 }
-
-.notify__btn.delete.active>.sidebar__icon svg,
-.notify__btn.delete:active>.sidebar__icon svg,
-.notify__btn.delete:focus-visible>.sidebar__icon svg,
-.notify__item.delete.active>.sidebar__icon svg,
-.notify__item.delete:active>.sidebar__icon svg,
-.notify__item.delete:focus-visible>.sidebar__icon svg {
+.notify__btn.delete.active > .sidebar__icon svg, .notify__btn.delete:active > .sidebar__icon svg, .notify__btn.delete:focus-visible > .sidebar__icon svg, .notify__item.delete.active > .sidebar__icon svg, .notify__item.delete:active > .sidebar__icon svg, .notify__item.delete:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.notify__btn.delete.active svg,
-.notify__btn.delete:active svg,
-.notify__btn.delete:focus-visible svg,
-.notify__item.delete.active svg,
-.notify__item.delete:active svg,
-.notify__item.delete:focus-visible svg {
+.notify__btn.delete.active svg, .notify__btn.delete:active svg, .notify__btn.delete:focus-visible svg, .notify__item.delete.active svg, .notify__item.delete:active svg, .notify__item.delete:focus-visible svg {
   stroke: #35424B;
 }
-
-.notify__btn.submit,
-.notify__item.submit {
+.notify__btn.submit, .notify__item.submit {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
-.notify__btn.submit:hover,
-.notify__item.submit:hover {
+.notify__btn.submit:hover, .notify__item.submit:hover {
   background-color: #28f697;
   color: #BBFCDE;
 }
-
-.notify__btn.submit:hover>.sidebar__icon,
-.notify__item.submit:hover>.sidebar__icon {
+.notify__btn.submit:hover > .sidebar__icon, .notify__item.submit:hover > .sidebar__icon {
   background-color: #28f697;
 }
-
-.notify__btn.submit.active,
-.notify__btn.submit:active,
-.notify__btn.submit:focus-visible,
-.notify__item.submit.active,
-.notify__item.submit:active,
-.notify__item.submit:focus-visible {
+.notify__btn.submit.active, .notify__btn.submit:active, .notify__btn.submit:focus-visible, .notify__item.submit.active, .notify__item.submit:active, .notify__item.submit:focus-visible {
   background-color: #28f697;
   color: #35424B;
 }
-
-.notify__btn.submit.active>.sidebar__icon,
-.notify__btn.submit:active>.sidebar__icon,
-.notify__btn.submit:focus-visible>.sidebar__icon,
-.notify__item.submit.active>.sidebar__icon,
-.notify__item.submit:active>.sidebar__icon,
-.notify__item.submit:focus-visible>.sidebar__icon {
+.notify__btn.submit.active > .sidebar__icon, .notify__btn.submit:active > .sidebar__icon, .notify__btn.submit:focus-visible > .sidebar__icon, .notify__item.submit.active > .sidebar__icon, .notify__item.submit:active > .sidebar__icon, .notify__item.submit:focus-visible > .sidebar__icon {
   background-color: #28f697;
 }
-
-.notify__btn.submit.active>.sidebar__icon svg,
-.notify__btn.submit:active>.sidebar__icon svg,
-.notify__btn.submit:focus-visible>.sidebar__icon svg,
-.notify__item.submit.active>.sidebar__icon svg,
-.notify__item.submit:active>.sidebar__icon svg,
-.notify__item.submit:focus-visible>.sidebar__icon svg {
+.notify__btn.submit.active > .sidebar__icon svg, .notify__btn.submit:active > .sidebar__icon svg, .notify__btn.submit:focus-visible > .sidebar__icon svg, .notify__item.submit.active > .sidebar__icon svg, .notify__item.submit:active > .sidebar__icon svg, .notify__item.submit:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.notify__btn.submit.active svg,
-.notify__btn.submit:active svg,
-.notify__btn.submit:focus-visible svg,
-.notify__item.submit.active svg,
-.notify__item.submit:active svg,
-.notify__item.submit:focus-visible svg {
+.notify__btn.submit.active svg, .notify__btn.submit:active svg, .notify__btn.submit:focus-visible svg, .notify__item.submit.active svg, .notify__item.submit:active svg, .notify__item.submit:focus-visible svg {
   stroke: #35424B;
 }
-
 .notify__title {
   font-size: 0.875rem;
   font-weight: 500;
   color: #BBFCDE;
 }
-
 .notify__list {
   gap: 10px;
   left: 50%;
@@ -3867,36 +3075,31 @@ input[type=checkbox]:checked:before {
   height: calc(100% - 100px);
   transform: translateX(-50%) translateY(-150%);
 }
-
 .notify__list::-webkit-scrollbar {
   width: 10px;
   background: #2a353c;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
 }
-
 .notify__list::-webkit-scrollbar-thumb {
   background: #20282d;
   border-radius: 10px;
+  -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
 }
-
 .notify__list::-webkit-scrollbar-thumb:hover {
   background: #151b1e;
 }
-
 .notify__list li {
   width: 100%;
 }
-
 .notify__item {
   width: 100%;
   padding: 0 10px;
   justify-content: space-between;
   background-color: #404f5a;
 }
-
-.notify.open>.notify__list {
+.notify.open > .notify__list {
   opacity: 1;
   visibility: visible;
   z-index: 300;
@@ -3911,14 +3114,11 @@ input[type=checkbox]:checked:before {
     border-radius: 10px;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
   }
-
-  .notify.open>.notify__list {
+  .notify.open > .notify__list {
     transform: translateX(-50%) translateY(10%);
   }
 }
-
-.alert-circle::after,
-.alert-count {
+.alert-circle::after, .alert-count {
   width: 20px;
   height: 20px;
   position: absolute;
@@ -3926,12 +3126,10 @@ input[type=checkbox]:checked:before {
   outline: 3px solid #35424B;
   border-radius: 100%;
 }
-
 .alert-circle {
   background-color: #151b1e;
   position: relative;
 }
-
 .alert-circle::after {
   content: "";
   width: 10px;
@@ -3939,7 +3137,6 @@ input[type=checkbox]:checked:before {
   top: 0;
   right: 0;
 }
-
 .alert-count {
   display: flex;
   align-items: center;
@@ -3957,7 +3154,6 @@ input[type=checkbox]:checked:before {
   background-color: #35424B;
   transition: all 0.2s ease-in-out;
 }
-
 .sidebar__list {
   display: grid;
   grid-template-columns: 1fr;
@@ -3967,13 +3163,11 @@ input[type=checkbox]:checked:before {
   padding: 0 20px;
   padding-bottom: 10px;
 }
-
 .sidebar__list li {
   padding: 0;
   list-style: none;
   width: 100%;
 }
-
 .sidebar__btn {
   display: flex;
   align-items: center;
@@ -3994,41 +3188,26 @@ input[type=checkbox]:checked:before {
   height: 3rem;
   transition: all 0.2s ease-in-out;
 }
-
 .sidebar__btn:hover {
   background-color: #0b0d0f;
   color: #BBFCDE;
 }
-
-.sidebar__btn:hover>.sidebar__icon {
+.sidebar__btn:hover > .sidebar__icon {
   background-color: #0b0d0f;
 }
-
-.sidebar__btn.active,
-.sidebar__btn:active,
-.sidebar__btn:focus-visible {
+.sidebar__btn.active, .sidebar__btn:active, .sidebar__btn:focus-visible {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
-.sidebar__btn.active>.sidebar__icon,
-.sidebar__btn:active>.sidebar__icon,
-.sidebar__btn:focus-visible>.sidebar__icon {
+.sidebar__btn.active > .sidebar__icon, .sidebar__btn:active > .sidebar__icon, .sidebar__btn:focus-visible > .sidebar__icon {
   background-color: #BBFCDE;
 }
-
-.sidebar__btn.active>.sidebar__icon svg,
-.sidebar__btn:active>.sidebar__icon svg,
-.sidebar__btn:focus-visible>.sidebar__icon svg {
+.sidebar__btn.active > .sidebar__icon svg, .sidebar__btn:active > .sidebar__icon svg, .sidebar__btn:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.sidebar__btn.active svg,
-.sidebar__btn:active svg,
-.sidebar__btn:focus-visible svg {
+.sidebar__btn.active svg, .sidebar__btn:active svg, .sidebar__btn:focus-visible svg {
   stroke: #35424B;
 }
-
 .sidebar__btn img,
 .sidebar__btn svg {
   width: 23px;
@@ -4038,88 +3217,56 @@ input[type=checkbox]:checked:before {
   background-color: transparent;
   transition: all 0.2s ease-in-out;
 }
-
 .sidebar__btn.delete {
   background-color: #e25b73;
 }
-
 .sidebar__btn.delete:hover {
   background-color: #b7203b;
   color: #BBFCDE;
 }
-
-.sidebar__btn.delete:hover>.sidebar__icon {
+.sidebar__btn.delete:hover > .sidebar__icon {
   background-color: #b7203b;
 }
-
-.sidebar__btn.delete.active,
-.sidebar__btn.delete:active,
-.sidebar__btn.delete:focus-visible {
+.sidebar__btn.delete.active, .sidebar__btn.delete:active, .sidebar__btn.delete:focus-visible {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
-.sidebar__btn.delete.active>.sidebar__icon,
-.sidebar__btn.delete:active>.sidebar__icon,
-.sidebar__btn.delete:focus-visible>.sidebar__icon {
+.sidebar__btn.delete.active > .sidebar__icon, .sidebar__btn.delete:active > .sidebar__icon, .sidebar__btn.delete:focus-visible > .sidebar__icon {
   background-color: #BBFCDE;
 }
-
-.sidebar__btn.delete.active>.sidebar__icon svg,
-.sidebar__btn.delete:active>.sidebar__icon svg,
-.sidebar__btn.delete:focus-visible>.sidebar__icon svg {
+.sidebar__btn.delete.active > .sidebar__icon svg, .sidebar__btn.delete:active > .sidebar__icon svg, .sidebar__btn.delete:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.sidebar__btn.delete.active svg,
-.sidebar__btn.delete:active svg,
-.sidebar__btn.delete:focus-visible svg {
+.sidebar__btn.delete.active svg, .sidebar__btn.delete:active svg, .sidebar__btn.delete:focus-visible svg {
   stroke: #35424B;
 }
-
 .sidebar__btn.submit {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
 .sidebar__btn.submit:hover {
   background-color: #28f697;
   color: #BBFCDE;
 }
-
-.sidebar__btn.submit:hover>.sidebar__icon {
+.sidebar__btn.submit:hover > .sidebar__icon {
   background-color: #28f697;
 }
-
-.sidebar__btn.submit.active,
-.sidebar__btn.submit:active,
-.sidebar__btn.submit:focus-visible {
+.sidebar__btn.submit.active, .sidebar__btn.submit:active, .sidebar__btn.submit:focus-visible {
   background-color: #28f697;
   color: #35424B;
 }
-
-.sidebar__btn.submit.active>.sidebar__icon,
-.sidebar__btn.submit:active>.sidebar__icon,
-.sidebar__btn.submit:focus-visible>.sidebar__icon {
+.sidebar__btn.submit.active > .sidebar__icon, .sidebar__btn.submit:active > .sidebar__icon, .sidebar__btn.submit:focus-visible > .sidebar__icon {
   background-color: #28f697;
 }
-
-.sidebar__btn.submit.active>.sidebar__icon svg,
-.sidebar__btn.submit:active>.sidebar__icon svg,
-.sidebar__btn.submit:focus-visible>.sidebar__icon svg {
+.sidebar__btn.submit.active > .sidebar__icon svg, .sidebar__btn.submit:active > .sidebar__icon svg, .sidebar__btn.submit:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.sidebar__btn.submit.active svg,
-.sidebar__btn.submit:active svg,
-.sidebar__btn.submit:focus-visible svg {
+.sidebar__btn.submit.active svg, .sidebar__btn.submit:active svg, .sidebar__btn.submit:focus-visible svg {
   stroke: #35424B;
 }
-
 .sidebar__open {
   display: none;
 }
-
 .sidebar__item {
   display: flex;
   align-items: center;
@@ -4141,41 +3288,26 @@ input[type=checkbox]:checked:before {
   transition: all 0.2s ease-in-out;
   width: 0;
 }
-
 .sidebar__item:hover {
   background-color: #0b0d0f;
   color: #BBFCDE;
 }
-
-.sidebar__item:hover>.sidebar__icon {
+.sidebar__item:hover > .sidebar__icon {
   background-color: #0b0d0f;
 }
-
-.sidebar__item.active,
-.sidebar__item:active,
-.sidebar__item:focus-visible {
+.sidebar__item.active, .sidebar__item:active, .sidebar__item:focus-visible {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
-.sidebar__item.active>.sidebar__icon,
-.sidebar__item:active>.sidebar__icon,
-.sidebar__item:focus-visible>.sidebar__icon {
+.sidebar__item.active > .sidebar__icon, .sidebar__item:active > .sidebar__icon, .sidebar__item:focus-visible > .sidebar__icon {
   background-color: #BBFCDE;
 }
-
-.sidebar__item.active>.sidebar__icon svg,
-.sidebar__item:active>.sidebar__icon svg,
-.sidebar__item:focus-visible>.sidebar__icon svg {
+.sidebar__item.active > .sidebar__icon svg, .sidebar__item:active > .sidebar__icon svg, .sidebar__item:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.sidebar__item.active svg,
-.sidebar__item:active svg,
-.sidebar__item:focus-visible svg {
+.sidebar__item.active svg, .sidebar__item:active svg, .sidebar__item:focus-visible svg {
   stroke: #35424B;
 }
-
 .sidebar__item img,
 .sidebar__item svg {
   width: 23px;
@@ -4185,84 +3317,53 @@ input[type=checkbox]:checked:before {
   background-color: transparent;
   transition: all 0.2s ease-in-out;
 }
-
 .sidebar__item.delete {
   background-color: #e25b73;
 }
-
 .sidebar__item.delete:hover {
   background-color: #b7203b;
   color: #BBFCDE;
 }
-
-.sidebar__item.delete:hover>.sidebar__icon {
+.sidebar__item.delete:hover > .sidebar__icon {
   background-color: #b7203b;
 }
-
-.sidebar__item.delete.active,
-.sidebar__item.delete:active,
-.sidebar__item.delete:focus-visible {
+.sidebar__item.delete.active, .sidebar__item.delete:active, .sidebar__item.delete:focus-visible {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
-.sidebar__item.delete.active>.sidebar__icon,
-.sidebar__item.delete:active>.sidebar__icon,
-.sidebar__item.delete:focus-visible>.sidebar__icon {
+.sidebar__item.delete.active > .sidebar__icon, .sidebar__item.delete:active > .sidebar__icon, .sidebar__item.delete:focus-visible > .sidebar__icon {
   background-color: #BBFCDE;
 }
-
-.sidebar__item.delete.active>.sidebar__icon svg,
-.sidebar__item.delete:active>.sidebar__icon svg,
-.sidebar__item.delete:focus-visible>.sidebar__icon svg {
+.sidebar__item.delete.active > .sidebar__icon svg, .sidebar__item.delete:active > .sidebar__icon svg, .sidebar__item.delete:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.sidebar__item.delete.active svg,
-.sidebar__item.delete:active svg,
-.sidebar__item.delete:focus-visible svg {
+.sidebar__item.delete.active svg, .sidebar__item.delete:active svg, .sidebar__item.delete:focus-visible svg {
   stroke: #35424B;
 }
-
 .sidebar__item.submit {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
 .sidebar__item.submit:hover {
   background-color: #28f697;
   color: #BBFCDE;
 }
-
-.sidebar__item.submit:hover>.sidebar__icon {
+.sidebar__item.submit:hover > .sidebar__icon {
   background-color: #28f697;
 }
-
-.sidebar__item.submit.active,
-.sidebar__item.submit:active,
-.sidebar__item.submit:focus-visible {
+.sidebar__item.submit.active, .sidebar__item.submit:active, .sidebar__item.submit:focus-visible {
   background-color: #28f697;
   color: #35424B;
 }
-
-.sidebar__item.submit.active>.sidebar__icon,
-.sidebar__item.submit:active>.sidebar__icon,
-.sidebar__item.submit:focus-visible>.sidebar__icon {
+.sidebar__item.submit.active > .sidebar__icon, .sidebar__item.submit:active > .sidebar__icon, .sidebar__item.submit:focus-visible > .sidebar__icon {
   background-color: #28f697;
 }
-
-.sidebar__item.submit.active>.sidebar__icon svg,
-.sidebar__item.submit:active>.sidebar__icon svg,
-.sidebar__item.submit:focus-visible>.sidebar__icon svg {
+.sidebar__item.submit.active > .sidebar__icon svg, .sidebar__item.submit:active > .sidebar__icon svg, .sidebar__item.submit:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.sidebar__item.submit.active svg,
-.sidebar__item.submit:active svg,
-.sidebar__item.submit:focus-visible svg {
+.sidebar__item.submit.active svg, .sidebar__item.submit:active svg, .sidebar__item.submit:focus-visible svg {
   stroke: #35424B;
 }
-
 .sidebar__item span {
   font-size: 0;
   padding: 0;
@@ -4270,7 +3371,6 @@ input[type=checkbox]:checked:before {
   opacity: 0;
   transition: all 0.2s ease-in-out;
 }
-
 .sidebar__icon {
   display: flex;
   align-items: center;
@@ -4295,41 +3395,26 @@ input[type=checkbox]:checked:before {
   height: 0;
   transition: all 0.2s ease-in-out;
 }
-
 .sidebar__icon:hover {
   background-color: #0b0d0f;
   color: #BBFCDE;
 }
-
-.sidebar__icon:hover>.sidebar__icon {
+.sidebar__icon:hover > .sidebar__icon {
   background-color: #0b0d0f;
 }
-
-.sidebar__icon.active,
-.sidebar__icon:active,
-.sidebar__icon:focus-visible {
+.sidebar__icon.active, .sidebar__icon:active, .sidebar__icon:focus-visible {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
-.sidebar__icon.active>.sidebar__icon,
-.sidebar__icon:active>.sidebar__icon,
-.sidebar__icon:focus-visible>.sidebar__icon {
+.sidebar__icon.active > .sidebar__icon, .sidebar__icon:active > .sidebar__icon, .sidebar__icon:focus-visible > .sidebar__icon {
   background-color: #BBFCDE;
 }
-
-.sidebar__icon.active>.sidebar__icon svg,
-.sidebar__icon:active>.sidebar__icon svg,
-.sidebar__icon:focus-visible>.sidebar__icon svg {
+.sidebar__icon.active > .sidebar__icon svg, .sidebar__icon:active > .sidebar__icon svg, .sidebar__icon:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.sidebar__icon.active svg,
-.sidebar__icon:active svg,
-.sidebar__icon:focus-visible svg {
+.sidebar__icon.active svg, .sidebar__icon:active svg, .sidebar__icon:focus-visible svg {
   stroke: #35424B;
 }
-
 .sidebar__icon img,
 .sidebar__icon svg {
   width: 23px;
@@ -4339,97 +3424,63 @@ input[type=checkbox]:checked:before {
   background-color: transparent;
   transition: all 0.2s ease-in-out;
 }
-
 .sidebar__icon.delete {
   background-color: #e25b73;
 }
-
 .sidebar__icon.delete:hover {
   background-color: #b7203b;
   color: #BBFCDE;
 }
-
-.sidebar__icon.delete:hover>.sidebar__icon {
+.sidebar__icon.delete:hover > .sidebar__icon {
   background-color: #b7203b;
 }
-
-.sidebar__icon.delete.active,
-.sidebar__icon.delete:active,
-.sidebar__icon.delete:focus-visible {
+.sidebar__icon.delete.active, .sidebar__icon.delete:active, .sidebar__icon.delete:focus-visible {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
-.sidebar__icon.delete.active>.sidebar__icon,
-.sidebar__icon.delete:active>.sidebar__icon,
-.sidebar__icon.delete:focus-visible>.sidebar__icon {
+.sidebar__icon.delete.active > .sidebar__icon, .sidebar__icon.delete:active > .sidebar__icon, .sidebar__icon.delete:focus-visible > .sidebar__icon {
   background-color: #BBFCDE;
 }
-
-.sidebar__icon.delete.active>.sidebar__icon svg,
-.sidebar__icon.delete:active>.sidebar__icon svg,
-.sidebar__icon.delete:focus-visible>.sidebar__icon svg {
+.sidebar__icon.delete.active > .sidebar__icon svg, .sidebar__icon.delete:active > .sidebar__icon svg, .sidebar__icon.delete:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.sidebar__icon.delete.active svg,
-.sidebar__icon.delete:active svg,
-.sidebar__icon.delete:focus-visible svg {
+.sidebar__icon.delete.active svg, .sidebar__icon.delete:active svg, .sidebar__icon.delete:focus-visible svg {
   stroke: #35424B;
 }
-
 .sidebar__icon.submit {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
 .sidebar__icon.submit:hover {
   background-color: #28f697;
   color: #BBFCDE;
 }
-
-.sidebar__icon.submit:hover>.sidebar__icon {
+.sidebar__icon.submit:hover > .sidebar__icon {
   background-color: #28f697;
 }
-
-.sidebar__icon.submit.active,
-.sidebar__icon.submit:active,
-.sidebar__icon.submit:focus-visible {
+.sidebar__icon.submit.active, .sidebar__icon.submit:active, .sidebar__icon.submit:focus-visible {
   background-color: #28f697;
   color: #35424B;
 }
-
-.sidebar__icon.submit.active>.sidebar__icon,
-.sidebar__icon.submit:active>.sidebar__icon,
-.sidebar__icon.submit:focus-visible>.sidebar__icon {
+.sidebar__icon.submit.active > .sidebar__icon, .sidebar__icon.submit:active > .sidebar__icon, .sidebar__icon.submit:focus-visible > .sidebar__icon {
   background-color: #28f697;
 }
-
-.sidebar__icon.submit.active>.sidebar__icon svg,
-.sidebar__icon.submit:active>.sidebar__icon svg,
-.sidebar__icon.submit:focus-visible>.sidebar__icon svg {
+.sidebar__icon.submit.active > .sidebar__icon svg, .sidebar__icon.submit:active > .sidebar__icon svg, .sidebar__icon.submit:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.sidebar__icon.submit.active svg,
-.sidebar__icon.submit:active svg,
-.sidebar__icon.submit:focus-visible svg {
+.sidebar__icon.submit.active svg, .sidebar__icon.submit:active svg, .sidebar__icon.submit:focus-visible svg {
   stroke: #35424B;
 }
-
 .sidebar.open {
   width: 100%;
   z-index: 300;
 }
-
 .sidebar.open .sidebar__list {
   padding: 0 10px 10px;
 }
-
 .sidebar.open .sidebar__item {
   width: 100%;
 }
-
 .sidebar.open .sidebar__item span {
   font-size: 0.875rem;
   flex: 1;
@@ -4437,7 +3488,6 @@ input[type=checkbox]:checked:before {
   padding-left: 10px;
   font-weight: 500;
 }
-
 .sidebar.open .sidebar__icon {
   opacity: 1;
   width: 3rem;
@@ -4450,22 +3500,18 @@ input[type=checkbox]:checked:before {
     grid-template-columns: repeat(2, 1fr);
   }
 }
-
 @media (min-width: 1024px) {
   .sidebar {
     width: 70px;
     position: relative;
   }
-
   .sidebar__list {
     justify-items: center;
     grid-template-columns: repeat(1, 1fr);
   }
-
   .sidebar__btn {
     display: none;
   }
-
   .sidebar__open {
     display: flex;
     align-items: center;
@@ -4492,41 +3538,26 @@ input[type=checkbox]:checked:before {
     border: none;
     justify-self: end;
   }
-
   .sidebar__open:hover {
     background-color: #0b0d0f;
     color: #BBFCDE;
   }
-
-  .sidebar__open:hover>.sidebar__icon {
+  .sidebar__open:hover > .sidebar__icon {
     background-color: #0b0d0f;
   }
-
-  .sidebar__open.active,
-  .sidebar__open:active,
-  .sidebar__open:focus-visible {
+  .sidebar__open.active, .sidebar__open:active, .sidebar__open:focus-visible {
     background-color: #BBFCDE;
     color: #35424B;
   }
-
-  .sidebar__open.active>.sidebar__icon,
-  .sidebar__open:active>.sidebar__icon,
-  .sidebar__open:focus-visible>.sidebar__icon {
+  .sidebar__open.active > .sidebar__icon, .sidebar__open:active > .sidebar__icon, .sidebar__open:focus-visible > .sidebar__icon {
     background-color: #BBFCDE;
   }
-
-  .sidebar__open.active>.sidebar__icon svg,
-  .sidebar__open:active>.sidebar__icon svg,
-  .sidebar__open:focus-visible>.sidebar__icon svg {
+  .sidebar__open.active > .sidebar__icon svg, .sidebar__open:active > .sidebar__icon svg, .sidebar__open:focus-visible > .sidebar__icon svg {
     stroke: #35424B;
   }
-
-  .sidebar__open.active svg,
-  .sidebar__open:active svg,
-  .sidebar__open:focus-visible svg {
+  .sidebar__open.active svg, .sidebar__open:active svg, .sidebar__open:focus-visible svg {
     stroke: #35424B;
   }
-
   .sidebar__open img,
   .sidebar__open svg {
     width: 23px;
@@ -4536,119 +3567,78 @@ input[type=checkbox]:checked:before {
     background-color: transparent;
     transition: all 0.2s ease-in-out;
   }
-
   .sidebar__open.delete {
     background-color: #e25b73;
   }
-
   .sidebar__open.delete:hover {
     background-color: #b7203b;
     color: #BBFCDE;
   }
-
-  .sidebar__open.delete:hover>.sidebar__icon {
+  .sidebar__open.delete:hover > .sidebar__icon {
     background-color: #b7203b;
   }
-
-  .sidebar__open.delete.active,
-  .sidebar__open.delete:active,
-  .sidebar__open.delete:focus-visible {
+  .sidebar__open.delete.active, .sidebar__open.delete:active, .sidebar__open.delete:focus-visible {
     background-color: #BBFCDE;
     color: #35424B;
   }
-
-  .sidebar__open.delete.active>.sidebar__icon,
-  .sidebar__open.delete:active>.sidebar__icon,
-  .sidebar__open.delete:focus-visible>.sidebar__icon {
+  .sidebar__open.delete.active > .sidebar__icon, .sidebar__open.delete:active > .sidebar__icon, .sidebar__open.delete:focus-visible > .sidebar__icon {
     background-color: #BBFCDE;
   }
-
-  .sidebar__open.delete.active>.sidebar__icon svg,
-  .sidebar__open.delete:active>.sidebar__icon svg,
-  .sidebar__open.delete:focus-visible>.sidebar__icon svg {
+  .sidebar__open.delete.active > .sidebar__icon svg, .sidebar__open.delete:active > .sidebar__icon svg, .sidebar__open.delete:focus-visible > .sidebar__icon svg {
     stroke: #35424B;
   }
-
-  .sidebar__open.delete.active svg,
-  .sidebar__open.delete:active svg,
-  .sidebar__open.delete:focus-visible svg {
+  .sidebar__open.delete.active svg, .sidebar__open.delete:active svg, .sidebar__open.delete:focus-visible svg {
     stroke: #35424B;
   }
-
   .sidebar__open.submit {
     background-color: #BBFCDE;
     color: #35424B;
   }
-
   .sidebar__open.submit:hover {
     background-color: #28f697;
     color: #BBFCDE;
   }
-
-  .sidebar__open.submit:hover>.sidebar__icon {
+  .sidebar__open.submit:hover > .sidebar__icon {
     background-color: #28f697;
   }
-
-  .sidebar__open.submit.active,
-  .sidebar__open.submit:active,
-  .sidebar__open.submit:focus-visible {
+  .sidebar__open.submit.active, .sidebar__open.submit:active, .sidebar__open.submit:focus-visible {
     background-color: #28f697;
     color: #35424B;
   }
-
-  .sidebar__open.submit.active>.sidebar__icon,
-  .sidebar__open.submit:active>.sidebar__icon,
-  .sidebar__open.submit:focus-visible>.sidebar__icon {
+  .sidebar__open.submit.active > .sidebar__icon, .sidebar__open.submit:active > .sidebar__icon, .sidebar__open.submit:focus-visible > .sidebar__icon {
     background-color: #28f697;
   }
-
-  .sidebar__open.submit.active>.sidebar__icon svg,
-  .sidebar__open.submit:active>.sidebar__icon svg,
-  .sidebar__open.submit:focus-visible>.sidebar__icon svg {
+  .sidebar__open.submit.active > .sidebar__icon svg, .sidebar__open.submit:active > .sidebar__icon svg, .sidebar__open.submit:focus-visible > .sidebar__icon svg {
     stroke: #35424B;
   }
-
-  .sidebar__open.submit.active svg,
-  .sidebar__open.submit:active svg,
-  .sidebar__open.submit:focus-visible svg {
+  .sidebar__open.submit.active svg, .sidebar__open.submit:active svg, .sidebar__open.submit:focus-visible svg {
     stroke: #35424B;
   }
-
   .sidebar__open svg {
     height: 23px;
     width: 23px;
   }
-
   .sidebar__icon {
     opacity: 1;
     width: 3rem;
     height: 3rem;
   }
-
   .sidebar__item {
     width: 3rem;
   }
-
   .sidebar.open {
     width: 200px;
   }
-
   .sidebar.open .sidebar__open svg {
     transform: rotateY(180deg);
   }
 }
-
-.item {
-  gap: 10px;
-}
-
 .item__header {
   display: grid;
   grid-template-columns: 1fr;
   gap: 10px;
   margin-bottom: 20px;
 }
-
 .item__header-title {
   font-size: 0.875rem;
   font-weight: 500;
@@ -4657,7 +3647,6 @@ input[type=checkbox]:checked:before {
   font-size: 2rem;
   text-align: center;
 }
-
 .item__header-buttons {
   display: flex;
   align-items: center;
@@ -4665,7 +3654,6 @@ input[type=checkbox]:checked:before {
   gap: 10px;
   justify-content: space-between;
 }
-
 .item__header-btn {
   display: flex;
   align-items: center;
@@ -4688,41 +3676,26 @@ input[type=checkbox]:checked:before {
   width: 100%;
   background-color: #35424B;
 }
-
 .item__header-btn:hover {
   background-color: #0b0d0f;
   color: #BBFCDE;
 }
-
-.item__header-btn:hover>.sidebar__icon {
+.item__header-btn:hover > .sidebar__icon {
   background-color: #0b0d0f;
 }
-
-.item__header-btn.active,
-.item__header-btn:active,
-.item__header-btn:focus-visible {
+.item__header-btn.active, .item__header-btn:active, .item__header-btn:focus-visible {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
-.item__header-btn.active>.sidebar__icon,
-.item__header-btn:active>.sidebar__icon,
-.item__header-btn:focus-visible>.sidebar__icon {
+.item__header-btn.active > .sidebar__icon, .item__header-btn:active > .sidebar__icon, .item__header-btn:focus-visible > .sidebar__icon {
   background-color: #BBFCDE;
 }
-
-.item__header-btn.active>.sidebar__icon svg,
-.item__header-btn:active>.sidebar__icon svg,
-.item__header-btn:focus-visible>.sidebar__icon svg {
+.item__header-btn.active > .sidebar__icon svg, .item__header-btn:active > .sidebar__icon svg, .item__header-btn:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.item__header-btn.active svg,
-.item__header-btn:active svg,
-.item__header-btn:focus-visible svg {
+.item__header-btn.active svg, .item__header-btn:active svg, .item__header-btn:focus-visible svg {
   stroke: #35424B;
 }
-
 .item__header-btn img,
 .item__header-btn svg {
   width: 23px;
@@ -4732,94 +3705,61 @@ input[type=checkbox]:checked:before {
   background-color: transparent;
   transition: all 0.2s ease-in-out;
 }
-
 .item__header-btn.delete {
   background-color: #e25b73;
 }
-
 .item__header-btn.delete:hover {
   background-color: #b7203b;
   color: #BBFCDE;
 }
-
-.item__header-btn.delete:hover>.sidebar__icon {
+.item__header-btn.delete:hover > .sidebar__icon {
   background-color: #b7203b;
 }
-
-.item__header-btn.delete.active,
-.item__header-btn.delete:active,
-.item__header-btn.delete:focus-visible {
+.item__header-btn.delete.active, .item__header-btn.delete:active, .item__header-btn.delete:focus-visible {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
-.item__header-btn.delete.active>.sidebar__icon,
-.item__header-btn.delete:active>.sidebar__icon,
-.item__header-btn.delete:focus-visible>.sidebar__icon {
+.item__header-btn.delete.active > .sidebar__icon, .item__header-btn.delete:active > .sidebar__icon, .item__header-btn.delete:focus-visible > .sidebar__icon {
   background-color: #BBFCDE;
 }
-
-.item__header-btn.delete.active>.sidebar__icon svg,
-.item__header-btn.delete:active>.sidebar__icon svg,
-.item__header-btn.delete:focus-visible>.sidebar__icon svg {
+.item__header-btn.delete.active > .sidebar__icon svg, .item__header-btn.delete:active > .sidebar__icon svg, .item__header-btn.delete:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.item__header-btn.delete.active svg,
-.item__header-btn.delete:active svg,
-.item__header-btn.delete:focus-visible svg {
+.item__header-btn.delete.active svg, .item__header-btn.delete:active svg, .item__header-btn.delete:focus-visible svg {
   stroke: #35424B;
 }
-
 .item__header-btn.submit {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
 .item__header-btn.submit:hover {
   background-color: #28f697;
   color: #BBFCDE;
 }
-
-.item__header-btn.submit:hover>.sidebar__icon {
+.item__header-btn.submit:hover > .sidebar__icon {
   background-color: #28f697;
 }
-
-.item__header-btn.submit.active,
-.item__header-btn.submit:active,
-.item__header-btn.submit:focus-visible {
+.item__header-btn.submit.active, .item__header-btn.submit:active, .item__header-btn.submit:focus-visible {
   background-color: #28f697;
   color: #35424B;
 }
-
-.item__header-btn.submit.active>.sidebar__icon,
-.item__header-btn.submit:active>.sidebar__icon,
-.item__header-btn.submit:focus-visible>.sidebar__icon {
+.item__header-btn.submit.active > .sidebar__icon, .item__header-btn.submit:active > .sidebar__icon, .item__header-btn.submit:focus-visible > .sidebar__icon {
   background-color: #28f697;
 }
-
-.item__header-btn.submit.active>.sidebar__icon svg,
-.item__header-btn.submit:active>.sidebar__icon svg,
-.item__header-btn.submit:focus-visible>.sidebar__icon svg {
+.item__header-btn.submit.active > .sidebar__icon svg, .item__header-btn.submit:active > .sidebar__icon svg, .item__header-btn.submit:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.item__header-btn.submit.active svg,
-.item__header-btn.submit:active svg,
-.item__header-btn.submit:focus-visible svg {
+.item__header-btn.submit.active svg, .item__header-btn.submit:active svg, .item__header-btn.submit:focus-visible svg {
   stroke: #35424B;
 }
-
 .item__upload {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
-
 .item__upload input[type=file] {
   display: none;
 }
-
 .item__upload-btn {
   display: flex;
   align-items: center;
@@ -4843,41 +3783,26 @@ input[type=checkbox]:checked:before {
   width: 100%;
   gap: 10px;
 }
-
 .item__upload-btn:hover {
   background-color: #0b0d0f;
   color: #BBFCDE;
 }
-
-.item__upload-btn:hover>.sidebar__icon {
+.item__upload-btn:hover > .sidebar__icon {
   background-color: #0b0d0f;
 }
-
-.item__upload-btn.active,
-.item__upload-btn:active,
-.item__upload-btn:focus-visible {
+.item__upload-btn.active, .item__upload-btn:active, .item__upload-btn:focus-visible {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
-.item__upload-btn.active>.sidebar__icon,
-.item__upload-btn:active>.sidebar__icon,
-.item__upload-btn:focus-visible>.sidebar__icon {
+.item__upload-btn.active > .sidebar__icon, .item__upload-btn:active > .sidebar__icon, .item__upload-btn:focus-visible > .sidebar__icon {
   background-color: #BBFCDE;
 }
-
-.item__upload-btn.active>.sidebar__icon svg,
-.item__upload-btn:active>.sidebar__icon svg,
-.item__upload-btn:focus-visible>.sidebar__icon svg {
+.item__upload-btn.active > .sidebar__icon svg, .item__upload-btn:active > .sidebar__icon svg, .item__upload-btn:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.item__upload-btn.active svg,
-.item__upload-btn:active svg,
-.item__upload-btn:focus-visible svg {
+.item__upload-btn.active svg, .item__upload-btn:active svg, .item__upload-btn:focus-visible svg {
   stroke: #35424B;
 }
-
 .item__upload-btn img,
 .item__upload-btn svg {
   width: 23px;
@@ -4887,84 +3812,53 @@ input[type=checkbox]:checked:before {
   background-color: transparent;
   transition: all 0.2s ease-in-out;
 }
-
 .item__upload-btn.delete {
   background-color: #e25b73;
 }
-
 .item__upload-btn.delete:hover {
   background-color: #b7203b;
   color: #BBFCDE;
 }
-
-.item__upload-btn.delete:hover>.sidebar__icon {
+.item__upload-btn.delete:hover > .sidebar__icon {
   background-color: #b7203b;
 }
-
-.item__upload-btn.delete.active,
-.item__upload-btn.delete:active,
-.item__upload-btn.delete:focus-visible {
+.item__upload-btn.delete.active, .item__upload-btn.delete:active, .item__upload-btn.delete:focus-visible {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
-.item__upload-btn.delete.active>.sidebar__icon,
-.item__upload-btn.delete:active>.sidebar__icon,
-.item__upload-btn.delete:focus-visible>.sidebar__icon {
+.item__upload-btn.delete.active > .sidebar__icon, .item__upload-btn.delete:active > .sidebar__icon, .item__upload-btn.delete:focus-visible > .sidebar__icon {
   background-color: #BBFCDE;
 }
-
-.item__upload-btn.delete.active>.sidebar__icon svg,
-.item__upload-btn.delete:active>.sidebar__icon svg,
-.item__upload-btn.delete:focus-visible>.sidebar__icon svg {
+.item__upload-btn.delete.active > .sidebar__icon svg, .item__upload-btn.delete:active > .sidebar__icon svg, .item__upload-btn.delete:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.item__upload-btn.delete.active svg,
-.item__upload-btn.delete:active svg,
-.item__upload-btn.delete:focus-visible svg {
+.item__upload-btn.delete.active svg, .item__upload-btn.delete:active svg, .item__upload-btn.delete:focus-visible svg {
   stroke: #35424B;
 }
-
 .item__upload-btn.submit {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
 .item__upload-btn.submit:hover {
   background-color: #28f697;
   color: #BBFCDE;
 }
-
-.item__upload-btn.submit:hover>.sidebar__icon {
+.item__upload-btn.submit:hover > .sidebar__icon {
   background-color: #28f697;
 }
-
-.item__upload-btn.submit.active,
-.item__upload-btn.submit:active,
-.item__upload-btn.submit:focus-visible {
+.item__upload-btn.submit.active, .item__upload-btn.submit:active, .item__upload-btn.submit:focus-visible {
   background-color: #28f697;
   color: #35424B;
 }
-
-.item__upload-btn.submit.active>.sidebar__icon,
-.item__upload-btn.submit:active>.sidebar__icon,
-.item__upload-btn.submit:focus-visible>.sidebar__icon {
+.item__upload-btn.submit.active > .sidebar__icon, .item__upload-btn.submit:active > .sidebar__icon, .item__upload-btn.submit:focus-visible > .sidebar__icon {
   background-color: #28f697;
 }
-
-.item__upload-btn.submit.active>.sidebar__icon svg,
-.item__upload-btn.submit:active>.sidebar__icon svg,
-.item__upload-btn.submit:focus-visible>.sidebar__icon svg {
+.item__upload-btn.submit.active > .sidebar__icon svg, .item__upload-btn.submit:active > .sidebar__icon svg, .item__upload-btn.submit:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.item__upload-btn.submit.active svg,
-.item__upload-btn.submit:active svg,
-.item__upload-btn.submit:focus-visible svg {
+.item__upload-btn.submit.active svg, .item__upload-btn.submit:active svg, .item__upload-btn.submit:focus-visible svg {
   stroke: #35424B;
 }
-
 .item__form {
   margin-top: 10px;
   display: flex;
@@ -4973,10 +3867,7 @@ input[type=checkbox]:checked:before {
   align-content: flex-start;
   align-items: flex-start;
 }
-
-.item__form-input,
-.item__form-input-close,
-.item__form-close {
+.item__form-input, .item__form-input-close, .item__form-close {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -4985,10 +3876,7 @@ input[type=checkbox]:checked:before {
   position: relative;
   word-wrap: break-word;
 }
-
-.item__form-input span,
-.item__form-input-close span,
-.item__form-close span {
+.item__form-input span, .item__form-input-close span, .item__form-close span {
   font-size: 0.875rem;
   font-weight: 500;
   color: #BBFCDE;
@@ -4999,13 +3887,10 @@ input[type=checkbox]:checked:before {
   transform: translateY(-50%);
   transition: all 0.2s ease-in-out;
 }
-
 .item__form-input div,
 .item__form-input textarea,
 .item__form-input select,
-.item__form-input input,
-.item__form-input-close div,
-.item__form-close div,
+.item__form-input input, .item__form-input-close div, .item__form-close div,
 .item__form-input-close textarea,
 .item__form-close textarea,
 .item__form-input-close select,
@@ -5023,14 +3908,13 @@ input[type=checkbox]:checked:before {
   resize: none;
   outline: none;
   text-decoration: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
 }
-
 .item__form-input div::-webkit-scrollbar,
 .item__form-input textarea::-webkit-scrollbar,
 .item__form-input select::-webkit-scrollbar,
-.item__form-input input::-webkit-scrollbar,
-.item__form-input-close div::-webkit-scrollbar,
-.item__form-close div::-webkit-scrollbar,
+.item__form-input input::-webkit-scrollbar, .item__form-input-close div::-webkit-scrollbar, .item__form-close div::-webkit-scrollbar,
 .item__form-input-close textarea::-webkit-scrollbar,
 .item__form-close textarea::-webkit-scrollbar,
 .item__form-input-close select::-webkit-scrollbar,
@@ -5042,13 +3926,10 @@ input[type=checkbox]:checked:before {
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
 }
-
 .item__form-input div::-webkit-scrollbar-thumb,
 .item__form-input textarea::-webkit-scrollbar-thumb,
 .item__form-input select::-webkit-scrollbar-thumb,
-.item__form-input input::-webkit-scrollbar-thumb,
-.item__form-input-close div::-webkit-scrollbar-thumb,
-.item__form-close div::-webkit-scrollbar-thumb,
+.item__form-input input::-webkit-scrollbar-thumb, .item__form-input-close div::-webkit-scrollbar-thumb, .item__form-close div::-webkit-scrollbar-thumb,
 .item__form-input-close textarea::-webkit-scrollbar-thumb,
 .item__form-close textarea::-webkit-scrollbar-thumb,
 .item__form-input-close select::-webkit-scrollbar-thumb,
@@ -5057,15 +3938,13 @@ input[type=checkbox]:checked:before {
 .item__form-close input::-webkit-scrollbar-thumb {
   background: #20282d;
   border-radius: 10px;
+  -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
 }
-
 .item__form-input div::-webkit-scrollbar-thumb:hover,
 .item__form-input textarea::-webkit-scrollbar-thumb:hover,
 .item__form-input select::-webkit-scrollbar-thumb:hover,
-.item__form-input input::-webkit-scrollbar-thumb:hover,
-.item__form-input-close div::-webkit-scrollbar-thumb:hover,
-.item__form-close div::-webkit-scrollbar-thumb:hover,
+.item__form-input input::-webkit-scrollbar-thumb:hover, .item__form-input-close div::-webkit-scrollbar-thumb:hover, .item__form-close div::-webkit-scrollbar-thumb:hover,
 .item__form-input-close textarea::-webkit-scrollbar-thumb:hover,
 .item__form-close textarea::-webkit-scrollbar-thumb:hover,
 .item__form-input-close select::-webkit-scrollbar-thumb:hover,
@@ -5074,49 +3953,36 @@ input[type=checkbox]:checked:before {
 .item__form-close input::-webkit-scrollbar-thumb:hover {
   background: #151b1e;
 }
-
-.item__form-input div:focus~span,
-.item__form-input div:valid~span,
-.item__form-input textarea:focus~span,
-.item__form-input textarea:valid~span,
-.item__form-input select:focus~span,
-.item__form-input select:valid~span,
-.item__form-input input:focus~span,
-.item__form-input input:valid~span,
-.item__form-input-close div:focus~span,
-.item__form-close div:focus~span,
-.item__form-input-close div:valid~span,
-.item__form-close div:valid~span,
-.item__form-input-close textarea:focus~span,
-.item__form-close textarea:focus~span,
-.item__form-input-close textarea:valid~span,
-.item__form-close textarea:valid~span,
-.item__form-input-close select:focus~span,
-.item__form-close select:focus~span,
-.item__form-input-close select:valid~span,
-.item__form-close select:valid~span,
-.item__form-input-close input:focus~span,
-.item__form-close input:focus~span,
-.item__form-input-close input:valid~span,
-.item__form-close input:valid~span {
+.item__form-input div:focus ~ span, .item__form-input div:valid ~ span,
+.item__form-input textarea:focus ~ span,
+.item__form-input textarea:valid ~ span,
+.item__form-input select:focus ~ span,
+.item__form-input select:valid ~ span,
+.item__form-input input:focus ~ span,
+.item__form-input input:valid ~ span, .item__form-input-close div:focus ~ span, .item__form-close div:focus ~ span, .item__form-input-close div:valid ~ span, .item__form-close div:valid ~ span,
+.item__form-input-close textarea:focus ~ span,
+.item__form-close textarea:focus ~ span,
+.item__form-input-close textarea:valid ~ span,
+.item__form-close textarea:valid ~ span,
+.item__form-input-close select:focus ~ span,
+.item__form-close select:focus ~ span,
+.item__form-input-close select:valid ~ span,
+.item__form-close select:valid ~ span,
+.item__form-input-close input:focus ~ span,
+.item__form-close input:focus ~ span,
+.item__form-input-close input:valid ~ span,
+.item__form-close input:valid ~ span {
   background-color: #ffffff;
   padding: 0 10px;
   top: 0;
 }
-
-.item__form-input textarea,
-.item__form-input-close textarea,
-.item__form-close textarea {
+.item__form-input textarea, .item__form-input-close textarea, .item__form-close textarea {
   height: 12rem;
 }
-
-.item__form-input-close,
-.item__form-close {
+.item__form-input-close, .item__form-close {
   cursor: not-allowed;
 }
-
-.item__form-input-close span,
-.item__form-close span {
+.item__form-input-close span, .item__form-close span {
   font-size: 0.875rem;
   font-weight: 500;
   color: #BBFCDE;
@@ -5129,9 +3995,7 @@ input[type=checkbox]:checked:before {
   background-color: #ffffff;
   padding: 0 10px;
 }
-
-.item__form-input-close div,
-.item__form-close div,
+.item__form-input-close div, .item__form-close div,
 .item__form-input-close textarea,
 .item__form-close textarea,
 .item__form-input-close select,
@@ -5141,12 +4005,9 @@ input[type=checkbox]:checked:before {
   border-color: rgb(169, 169, 169);
   color: rgb(169, 169, 169);
 }
-
-.item__form-input-close div,
-.item__form-close div {
+.item__form-input-close div, .item__form-close div {
   height: 100%;
 }
-
 .item__form-btn {
   display: flex;
   align-items: center;
@@ -5171,41 +4032,26 @@ input[type=checkbox]:checked:before {
   background-color: #BBFCDE;
   border: 1px solid black;
 }
-
 .item__form-btn:hover {
   background-color: #0b0d0f;
   color: #BBFCDE;
 }
-
-.item__form-btn:hover>.sidebar__icon {
+.item__form-btn:hover > .sidebar__icon {
   background-color: #0b0d0f;
 }
-
-.item__form-btn.active,
-.item__form-btn:active,
-.item__form-btn:focus-visible {
+.item__form-btn.active, .item__form-btn:active, .item__form-btn:focus-visible {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
-.item__form-btn.active>.sidebar__icon,
-.item__form-btn:active>.sidebar__icon,
-.item__form-btn:focus-visible>.sidebar__icon {
+.item__form-btn.active > .sidebar__icon, .item__form-btn:active > .sidebar__icon, .item__form-btn:focus-visible > .sidebar__icon {
   background-color: #BBFCDE;
 }
-
-.item__form-btn.active>.sidebar__icon svg,
-.item__form-btn:active>.sidebar__icon svg,
-.item__form-btn:focus-visible>.sidebar__icon svg {
+.item__form-btn.active > .sidebar__icon svg, .item__form-btn:active > .sidebar__icon svg, .item__form-btn:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.item__form-btn.active svg,
-.item__form-btn:active svg,
-.item__form-btn:focus-visible svg {
+.item__form-btn.active svg, .item__form-btn:active svg, .item__form-btn:focus-visible svg {
   stroke: #35424B;
 }
-
 .item__form-btn img,
 .item__form-btn svg {
   width: 23px;
@@ -5215,81 +4061,51 @@ input[type=checkbox]:checked:before {
   background-color: transparent;
   transition: all 0.2s ease-in-out;
 }
-
 .item__form-btn.delete {
   background-color: #e25b73;
 }
-
 .item__form-btn.delete:hover {
   background-color: #b7203b;
   color: #BBFCDE;
 }
-
-.item__form-btn.delete:hover>.sidebar__icon {
+.item__form-btn.delete:hover > .sidebar__icon {
   background-color: #b7203b;
 }
-
-.item__form-btn.delete.active,
-.item__form-btn.delete:active,
-.item__form-btn.delete:focus-visible {
+.item__form-btn.delete.active, .item__form-btn.delete:active, .item__form-btn.delete:focus-visible {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
-.item__form-btn.delete.active>.sidebar__icon,
-.item__form-btn.delete:active>.sidebar__icon,
-.item__form-btn.delete:focus-visible>.sidebar__icon {
+.item__form-btn.delete.active > .sidebar__icon, .item__form-btn.delete:active > .sidebar__icon, .item__form-btn.delete:focus-visible > .sidebar__icon {
   background-color: #BBFCDE;
 }
-
-.item__form-btn.delete.active>.sidebar__icon svg,
-.item__form-btn.delete:active>.sidebar__icon svg,
-.item__form-btn.delete:focus-visible>.sidebar__icon svg {
+.item__form-btn.delete.active > .sidebar__icon svg, .item__form-btn.delete:active > .sidebar__icon svg, .item__form-btn.delete:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.item__form-btn.delete.active svg,
-.item__form-btn.delete:active svg,
-.item__form-btn.delete:focus-visible svg {
+.item__form-btn.delete.active svg, .item__form-btn.delete:active svg, .item__form-btn.delete:focus-visible svg {
   stroke: #35424B;
 }
-
 .item__form-btn.submit {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
 .item__form-btn.submit:hover {
   background-color: #28f697;
   color: #BBFCDE;
 }
-
-.item__form-btn.submit:hover>.sidebar__icon {
+.item__form-btn.submit:hover > .sidebar__icon {
   background-color: #28f697;
 }
-
-.item__form-btn.submit.active,
-.item__form-btn.submit:active,
-.item__form-btn.submit:focus-visible {
+.item__form-btn.submit.active, .item__form-btn.submit:active, .item__form-btn.submit:focus-visible {
   background-color: #28f697;
   color: #35424B;
 }
-
-.item__form-btn.submit.active>.sidebar__icon,
-.item__form-btn.submit:active>.sidebar__icon,
-.item__form-btn.submit:focus-visible>.sidebar__icon {
+.item__form-btn.submit.active > .sidebar__icon, .item__form-btn.submit:active > .sidebar__icon, .item__form-btn.submit:focus-visible > .sidebar__icon {
   background-color: #28f697;
 }
-
-.item__form-btn.submit.active>.sidebar__icon svg,
-.item__form-btn.submit:active>.sidebar__icon svg,
-.item__form-btn.submit:focus-visible>.sidebar__icon svg {
+.item__form-btn.submit.active > .sidebar__icon svg, .item__form-btn.submit:active > .sidebar__icon svg, .item__form-btn.submit:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.item__form-btn.submit.active svg,
-.item__form-btn.submit:active svg,
-.item__form-btn.submit:focus-visible svg {
+.item__form-btn.submit.active svg, .item__form-btn.submit:active svg, .item__form-btn.submit:focus-visible svg {
   stroke: #35424B;
 }
 
@@ -5298,37 +4114,30 @@ input[type=checkbox]:checked:before {
     display: flex;
     flex-direction: column;
   }
-
   .item__header {
     grid-template-columns: 70% 1fr;
     grid-column-start: 1;
     grid-column-end: 3;
   }
-
   .item__header-title {
     text-align: left;
   }
-
   .item__upload {
     margin-top: 0.875rem;
   }
-
   .item__form {
     display: grid;
     grid-template-columns: 1fr 1fr;
   }
-
   .item__form.form-table {
     grid-auto-flow: column;
     grid-template-columns: 3fr 1fr 1fr;
   }
-
   .item__form-long {
     grid-column: 1;
     grid-column-end: 3;
   }
 }
-
 .right {
   position: absolute;
   bottom: 0;
@@ -5339,7 +4148,6 @@ input[type=checkbox]:checked:before {
   transition: all 0.2s ease-in-out;
   transform: translateX(90%);
 }
-
 .right__open {
   display: flex;
   align-items: center;
@@ -5362,41 +4170,26 @@ input[type=checkbox]:checked:before {
   display: block;
   cursor: pointer;
 }
-
 .right__open:hover {
   background-color: #0b0d0f;
   color: #BBFCDE;
 }
-
-.right__open:hover>.sidebar__icon {
+.right__open:hover > .sidebar__icon {
   background-color: #0b0d0f;
 }
-
-.right__open.active,
-.right__open:active,
-.right__open:focus-visible {
+.right__open.active, .right__open:active, .right__open:focus-visible {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
-.right__open.active>.sidebar__icon,
-.right__open:active>.sidebar__icon,
-.right__open:focus-visible>.sidebar__icon {
+.right__open.active > .sidebar__icon, .right__open:active > .sidebar__icon, .right__open:focus-visible > .sidebar__icon {
   background-color: #BBFCDE;
 }
-
-.right__open.active>.sidebar__icon svg,
-.right__open:active>.sidebar__icon svg,
-.right__open:focus-visible>.sidebar__icon svg {
+.right__open.active > .sidebar__icon svg, .right__open:active > .sidebar__icon svg, .right__open:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.right__open.active svg,
-.right__open:active svg,
-.right__open:focus-visible svg {
+.right__open.active svg, .right__open:active svg, .right__open:focus-visible svg {
   stroke: #35424B;
 }
-
 .right__open img,
 .right__open svg {
   width: 23px;
@@ -5406,102 +4199,68 @@ input[type=checkbox]:checked:before {
   background-color: transparent;
   transition: all 0.2s ease-in-out;
 }
-
 .right__open.delete {
   background-color: #e25b73;
 }
-
 .right__open.delete:hover {
   background-color: #b7203b;
   color: #BBFCDE;
 }
-
-.right__open.delete:hover>.sidebar__icon {
+.right__open.delete:hover > .sidebar__icon {
   background-color: #b7203b;
 }
-
-.right__open.delete.active,
-.right__open.delete:active,
-.right__open.delete:focus-visible {
+.right__open.delete.active, .right__open.delete:active, .right__open.delete:focus-visible {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
-.right__open.delete.active>.sidebar__icon,
-.right__open.delete:active>.sidebar__icon,
-.right__open.delete:focus-visible>.sidebar__icon {
+.right__open.delete.active > .sidebar__icon, .right__open.delete:active > .sidebar__icon, .right__open.delete:focus-visible > .sidebar__icon {
   background-color: #BBFCDE;
 }
-
-.right__open.delete.active>.sidebar__icon svg,
-.right__open.delete:active>.sidebar__icon svg,
-.right__open.delete:focus-visible>.sidebar__icon svg {
+.right__open.delete.active > .sidebar__icon svg, .right__open.delete:active > .sidebar__icon svg, .right__open.delete:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.right__open.delete.active svg,
-.right__open.delete:active svg,
-.right__open.delete:focus-visible svg {
+.right__open.delete.active svg, .right__open.delete:active svg, .right__open.delete:focus-visible svg {
   stroke: #35424B;
 }
-
 .right__open.submit {
   background-color: #BBFCDE;
   color: #35424B;
 }
-
 .right__open.submit:hover {
   background-color: #28f697;
   color: #BBFCDE;
 }
-
-.right__open.submit:hover>.sidebar__icon {
+.right__open.submit:hover > .sidebar__icon {
   background-color: #28f697;
 }
-
-.right__open.submit.active,
-.right__open.submit:active,
-.right__open.submit:focus-visible {
+.right__open.submit.active, .right__open.submit:active, .right__open.submit:focus-visible {
   background-color: #28f697;
   color: #35424B;
 }
-
-.right__open.submit.active>.sidebar__icon,
-.right__open.submit:active>.sidebar__icon,
-.right__open.submit:focus-visible>.sidebar__icon {
+.right__open.submit.active > .sidebar__icon, .right__open.submit:active > .sidebar__icon, .right__open.submit:focus-visible > .sidebar__icon {
   background-color: #28f697;
 }
-
-.right__open.submit.active>.sidebar__icon svg,
-.right__open.submit:active>.sidebar__icon svg,
-.right__open.submit:focus-visible>.sidebar__icon svg {
+.right__open.submit.active > .sidebar__icon svg, .right__open.submit:active > .sidebar__icon svg, .right__open.submit:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-
-.right__open.submit.active svg,
-.right__open.submit:active svg,
-.right__open.submit:focus-visible svg {
+.right__open.submit.active svg, .right__open.submit:active svg, .right__open.submit:focus-visible svg {
   stroke: #35424B;
 }
-
 .right__content {
   border-radius: 10px;
   color: white;
   display: none;
 }
-
 .right.open {
   width: 100%;
   transform: translateX(0%);
   z-index: 300;
 }
-
-.right.open>.right__open {
+.right.open > .right__open {
   right: unset;
   left: 10px;
 }
-
-.right.open>.right__content {
+.right.open > .right__content {
   display: block;
 }
 
@@ -5516,32 +4275,26 @@ input[type=checkbox]:checked:before {
     margin-left: 10px;
     transform: translateX(0%);
   }
-
   .right__open {
     top: calc((3rem + 10px) / 2);
     right: calc(100% - 1.2rem);
   }
-
   .right.open {
     width: 400px;
   }
-
-  .right.open>.right__open {
+  .right.open > .right__open {
     left: unset;
     top: calc((3rem + 10px) / 2);
     right: calc(100% - 1.2rem);
   }
-
-  .right.open>.right__content {
+  .right.open > .right__content {
     height: 100%;
   }
 }
-
 .container-right .card_calendar {
   padding: 10px;
   margin: 10px;
 }
-
 .container-right .card_calendar .calendar-header {
   display: flex;
   justify-content: space-between;
@@ -5550,7 +4303,6 @@ input[type=checkbox]:checked:before {
   color: #000;
   padding: 10px;
 }
-
 .container-right .card_calendar .calendar-week-days {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -5558,27 +4310,23 @@ input[type=checkbox]:checked:before {
   cursor: pointer;
   color: #000;
 }
-
 .container-right .card_calendar .calendar-week-days div:hover {
   color: black;
   transform: scale(1.2);
   transition: all 0.2s ease-in-out;
 }
-
 .container-right .card_calendar .calendar-week-days div {
   display: grid;
   place-items: center;
   color: #35424B;
   height: 50px;
 }
-
 .container-right .card_calendar .calendar-days {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 2px;
   color: #000;
 }
-
 .container-right .card_calendar .calendar-days div {
   width: 37px;
   height: 33px;
@@ -5590,18 +4338,15 @@ input[type=checkbox]:checked:before {
   cursor: pointer;
   animation: to-top 1s forwards;
 }
-
 .container-right .card_calendar .month-picker {
   padding: 5px 10px;
   border-radius: 10px;
   cursor: pointer;
 }
-
 .container-right .card_calendar .year-picker {
   display: flex;
   align-items: center;
 }
-
 .container-right .card_calendar .year-change {
   height: 30px;
   width: 30px;
@@ -5611,47 +4356,39 @@ input[type=checkbox]:checked:before {
   margin: 0px 10px;
   cursor: pointer;
 }
-
 .container-right .card_calendar .year-change:hover {
   background-color: var(--light-btn);
   transition: all 0.2s ease-in-out;
   transform: scale(1.12);
 }
-
 .container-right .card_calendar .year-change:hover pre {
   color: #35424B;
 }
-
 .container-right .card_calendar .calendar-footer {
   padding: 10px;
   display: flex;
   justify-content: flex-end;
   align-items: center;
 }
-
 .container-right .card_calendar #year:hover {
   cursor: pointer;
   transform: scale(1.2);
   transition: all 0.2s ease-in-out;
 }
-
 .container-right .card_calendar .calendar-days div span {
   position: absolute;
 }
-
 .container-right .card_calendar .calendar-days div:hover {
   transition: all 0.2s ease-in-out;
   background-color: #BBFCDE;
   border-radius: 20%;
   color: #000;
 }
-
 .container-right .card_calendar .calendar-days div.current-date {
   color: #000;
   background-color: #ffffff;
   border-radius: 20%;
 }
-
 .container-right .card_calendar .month-list {
   position: relative;
   left: 0;
@@ -5661,45 +4398,40 @@ input[type=checkbox]:checked:before {
   grid-template-columns: repeat(3, auto);
   border-radius: 20px;
 }
-
-.container-right .card_calendar .month-list>div {
+.container-right .card_calendar .month-list > div {
   display: grid;
   place-content: center;
   margin-bottom: 10px;
   transition: all 0.2s ease-in-out;
 }
-
-.container-right .card_calendar .month-list>div>div {
+.container-right .card_calendar .month-list > div > div {
   border-radius: 15px;
   cursor: pointer;
 }
-
-.container-right .card_calendar .month-list>div>div:hover {
+.container-right .card_calendar .month-list > div > div:hover {
   background-color: #ffffff;
   color: #000;
   transform: scale(0.9);
   transition: all 0.2s ease-in-out;
 }
-
 .container-right .card_calendar .month-list.show {
   visibility: visible;
   pointer-events: visible;
   transition: all 0.2s ease-in-out;
   animation: to-left 0.71s forwards;
 }
-
 .container-right .card_calendar .month-list.hideonce {
   visibility: hidden;
 }
-
 .container-right .card_calendar .month-list.hide {
   animation: to-right 1s forwards;
   visibility: none;
   pointer-events: none;
 }
-
 .container-right .card_calendar .date-time-formate {
+  width: -moz-max-content;
   width: max-content;
+  height: -moz-max-content;
   height: max-content;
   position: relative;
   display: flex;
@@ -5707,157 +4439,130 @@ input[type=checkbox]:checked:before {
   justify-content: center;
   color: #000;
 }
-
 .container-right .card_calendar .day-text-formate {
   position: absolute;
   left: -1rem;
 }
-
 .container-right .card_calendar .date-time-value {
   display: block;
+  height: -moz-max-content;
   height: max-content;
+  width: -moz-max-content;
   width: max-content;
   position: relative;
   left: 40%;
   top: -18px;
   text-align: center;
 }
-
 .container-right .card_calendar .time-formate {
   font-size: 1.5rem;
 }
-
 .container-right .card_calendar .time-formate.hideTime {
   animation: hidetime 1.5s forwards;
 }
-
 .container-right .card_calendar .day-text-formate.hidetime {
   animation: hidetime 1.5s forwards;
 }
-
 .container-right .card_calendar .date-formate.hideTime {
   animation: hidetime 1.5s forwards;
 }
-
 .container-right .card_calendar .day-text-formate.showtime {
   animation: showtime 1s forwards;
 }
-
 .container-right .card_calendar .time-formate.showtime {
   animation: showtime 1s forwards;
 }
-
 .container-right .card_calendar .date-formate.showtime {
   animation: showtime 1s forwards;
 }
-
 @keyframes to-top {
   0% {
     transform: translateY(0);
     opacity: 0;
   }
-
   100% {
     transform: translateY(100%);
     opacity: 1;
   }
 }
-
 @keyframes to-left {
   0% {
     transform: translatex(230%);
     opacity: 1;
   }
-
   100% {
     transform: translatex(0);
     opacity: 1;
   }
 }
-
 @keyframes to-right {
   10% {
     transform: translatex(0);
     opacity: 1;
   }
-
   100% {
     transform: translatex(-150%);
     opacity: 1;
   }
 }
-
 @keyframes showtime {
   0% {
     transform: translatex(250%);
     opacity: 1;
   }
-
   100% {
     transform: translatex(0%);
     opacity: 1;
   }
 }
-
 @keyframes hidetime {
   0% {
     transform: translatex(0%);
     opacity: 1;
   }
-
   100% {
     transform: translatex(-370%);
     opacity: 1;
   }
 }
-
 @media (max-width: 375px) {
-  .container-right .card_calendar .month-list>div {
+  .container-right .card_calendar .month-list > div {
     margin: 5px 0px;
   }
 }
-
 .container-right .card_todo {
   padding: 10px;
   margin: 10px;
   margin-top: 0;
   padding-top: 0;
 }
-
 .container-right .card_todo .input-grups {
   display: flex;
   align-items: center;
   justify-content: center;
 }
-
 .container-right .card_todo .list-task-item .formtodo {
   display: flex;
   align-items: center;
   text-align: center;
   justify-content: space-between;
 }
-
 .container-right .card_todo .list-task-item .formtodo svg {
   width: 3.5rem;
   height: auto;
   padding: 0.5rem;
   -o-object-fit: cover;
-  object-fit: cover;
+     object-fit: cover;
   align-items: center;
   background: #ffffff;
 }
-
 .container-right .card_todo .list-task-item .formtodo svg path {
   fill: #35424B;
 }
-
 .container-right .card_todo .list-task-item .formtodo svg:hover {
   width: 3.6rem;
   height: auto;
 }
-
 .container-right .card_todo .count {
   border-top: 1px solid #35424B;
-}
-
-/*# sourceMappingURL=main.css.map */
+}/*# sourceMappingURL=main.css.map */

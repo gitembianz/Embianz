@@ -162,7 +162,7 @@ window.addEventListener('scroll', () => {
 
 // Tabs
 let tabs = document.querySelectorAll(".tabs__page");
-let tabContents = document.querySelectorAll(".tab__list div");
+let tabContents = document.querySelectorAll(".tabs__content");
 tabs.forEach((tab, index) => {
   tab.addEventListener("click", () => {
     tabContents.forEach((content) => {
@@ -190,6 +190,7 @@ accordionButtons.forEach(button => {
     // Toggle the visibility of the content
     if (!isActive) {
       const contentHeight = accordionContent.scrollHeight + 'px';
+      console.log(contentHeight);
       accordionContent.style.height = '0';
       accordionContent.offsetHeight;
       accordionContent.style.height = contentHeight;

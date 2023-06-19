@@ -29,18 +29,102 @@
             </span>
         </div>
     </div>
+
+
+
+
+    <div class="tab">
+        <div class="tabs">
+            <h3 class="tabs__page active">Details</h3>
+            <h3 class="tabs__page">Releated</h3>
+        </div>
+        <div class="tab__list">
+            <div class="tabs__content active">
+                <form class="item__form" action="{{ route('category_update', $category->id) }}" method="POST"
+                    enctype="multipart/form-data">
+                    @csrf
+                    <input class="item__form-btn item__form-long" type="submit" style="display: none" value="Update"
+                        id="Update">
+
+                    <div class="item__form-input-close">
+                        <div id="category_name">{{ $category->name }}</div>
+                        <span>Category Name</span>
+                    </div>
+                    <div class="item__form-input-close">
+                        <div id="category_parrent">{{ $category->parrent }}</div>
+                        <span>Category Parrent</span>
+                    </div>
+                    <div class="item__form-input-close">
+                        <div id="category_start_date">{{ $category->start_date }}</div>
+                        <span for="start_date">Category Start Date</span>
+                    </div>
+                    <div class="item__form-input-close">
+                        <div id="category_end_date">{{ $category->end_date }}</div>
+                        <span>Category End Date </span>
+                        <input type="hidden" name="hidden_id" value="{{ $category->id }}" id="hidden_id">
+                    </div>
+                    <div class="item__form-input-close">
+                        <div id="category_sequence">{{ $category->sequence }}</div>
+                        <span>Category Sequence</span>
+                    </div>
+                    <div class="item__form-input-close item__form-long">
+                        <div id="category_short_description">{{ $category->short_description }}</div>
+                        <span>Category Short Description</span>
+                    </div>
+                    <div class="item__form-input-close item__form-long">
+                        <div id="category_long_description">{{ $category->long_description }}</div>
+                        <span>Category Long Description</span>
+                    </div>
+                    <div class="item__form-input-close item__form-long">
+                        <div id="seo_title">{{ $category->seo_title }}</div>
+                        <span>SEO Title</span>
+                    </div>
+                    <div class="item__form-close">
+                        <div>{{ $category->created_at }}</div>
+                        <span>Create date / time</span>
+                    </div>
+                    <div class="item__form-close">
+                        <div>{{ $category->createdby }}</div>
+                        <span>Create by</span>
+                    </div>
+                    <div class="item__form-close">
+                        <div>{{ $category->updated_at }}</div>
+                        <span>Updated date / time</span>
+                    </div>
+                    <div class="item__form-close">
+                        <div>{{ $category->lastmodifiedby }}</div>
+                        <span>Last modified by</span>
+                    </div>
+                </form>
+            </div>
+            <div class="tabs__content">
+                <div class="accordion">
+                    <button class="accordion__btn">Accordion Button</button>
+                    <div class="accordion__wrapper">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis illo accusantium beatae veniam
+                        quaerat? Ducimus atque, ut eaque beatae saepe aspernatur enim eveniet earum quod! Sapiente
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis illo accusantium beatae veniam
+                        quaerat? Ducimus atque, ut eaque beatae saepe aspernatur enim eveniet earum quod! Sapiente
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis illo accusantium beatae veniam
+                        quaerat? Ducimus atque, ut eaque beatae saepe aspernatur enim eveniet earum quod! Sapiente
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
     {{-- adding tab-bar --}}
-    <div class="tab ">
+    {{-- <div class="tab ">
         <button class="tablinks item__header-btn" onclick="opentab(event, 'Details')" id="defaultOpen">Details</button>
         <button class="tablinks item__header-btn" onclick="opentab(event, 'Releated')">Releated</button>
     </div>
 
     <div class="tabcontent br-xs" id="Details">
-        {{-- Item Form --}}
         <form class="item__form" action="{{ route('category_update', $category->id) }}" method="POST"
             enctype="multipart/form-data">
             @csrf
-            {{-- content --}}
             <input class="item__form-btn item__form-long" type="submit" style="display: none" value="Update"
                 id="Update">
 
@@ -97,11 +181,6 @@
     </div>
 
     <div class="tabcontent" id="Releated">
-        {{-- related media --}}
-
         <livewire:related-media-category categoryId="{{ $category->id }}" />
-        {{-- related media end --}}
-        {{-- related products --}}
-        {{-- related products --}}
-    </div>
+    </div> --}}
 </div>
