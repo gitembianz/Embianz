@@ -37,7 +37,9 @@ class RelatedMediaCategory extends Component
   public $selectedColumns = [];
   public $locations;
   public $file_sequences = [];
-public $file_locations = [];
+  public $file_locations = ['1'];
+  public $col = false;
+  public $all = false;
 
   public function mount($categoryId)
   {
@@ -95,35 +97,28 @@ public $file_locations = [];
 
       if ($type === 'mp4' || $type === 'ogg') {
         $filePath = $file->getRealPath();
-
-        // Read the contents of the video file
         $contents = Storage::get($filePath);
-
-        // Initialize getID3
         $getID3 = new getID3();
-
-        // Analyze the video file
         $fileInfo = $getID3->analyze($contents);
         if (isset($fileInfo['video']) && isset($fileInfo['video']['resolution_x']) && isset($fileInfo['video']['resolution_y'])) {
           // Retrieve the width and height
           $width = $fileInfo['video']['resolution_x'];
           $height = $fileInfo['video']['resolution_y'];
       } else {
-         $width = "0";
-         $height= "0";
+         $width = "unnable to get";
+         $height= "unnable to get";
       }
     } elseif ($type === 'svg') {
-        $dom = new \DOMDocument();
-        $dom->load($file->getRealPath());
-        $svgElement = $dom->getElementsByTagName('svg')->item(0);
-        $width = $svgElement->getAttribute('width');
-        $height = $svgElement->getAttribute('height');
-    } else {
+      $svg = simplexml_load_file($file->getRealPath());
+      $width = (string) $svg['width'];
+      $height = (string) $svg['height'];
+  } else {
         $image = Image::make($file);
         $width = $image->width();
         $height = $image->height();
     }
       //save the path and the name
+      //storage\app\media
       $media->item_id = $data->id;
       $media->path = $path;
       $media->name = $file->getClientOriginalName();
@@ -138,7 +133,9 @@ public $file_locations = [];
         }
         $media->name = $filename . '(' . $i . ').' . $type;
       }
-      $file->store($path);
+
+      $file->storeAs($path, $media->name, 'public_upload');
+
       $media->tabel_id = Tabels::where('name', $productType)->first()->id;
       $media->sequence = $this->file_sequences[$i];
       $media->location_id = MediaLocation::where('id', $this->file_locations[$i])->first()->id;
@@ -152,6 +149,7 @@ public $file_locations = [];
       $i += 1;
     }
     $this->medias = [];
+    $this->file_sequences = [];
     session()->flash('message', 'Media Update Successfully!');
 
     }
@@ -161,6 +159,8 @@ public $file_locations = [];
       array_splice($this->medias, $index, 1);
 
     }
+
+
 
   public function sortBy($columnName)
   {

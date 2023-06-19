@@ -61,7 +61,7 @@ class ProductController extends Controller
         $size = $request->input('file_size');
         $files = $request->file('media');
         $productType = class_basename(get_class($newproduct));
-        $filespath = 'media/' . $productType . '/';
+        $filespath = '../storage/app/media/' . $productType . '/';
         //Verifi it is a folder name 'Products' in general 'media' folders
         if (!File::exists($filespath)) {
             File::makeDirectory($filespath, 0755, true);
