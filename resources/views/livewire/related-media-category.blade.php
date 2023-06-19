@@ -7,26 +7,79 @@
         @if ($showmedia)
             <div class="contenttabb" id="contentDiv">
                 <div class="col-12-xs col-12-sm col-12-xl talign-c">
-                    <form action="{{ route('add_media', $categoryId) }}" method="POST" enctype="multipart/form-data">
-                        @csrf
+                    <form wire:submit.prevent="save">
                         <div class="item__upload">
-                            <input type="file" name="media[]" id="imgUpload" multiple
-                                accept="image/*,video/*"onchange="filesManager(this.files)">
-
+                            <input id="imgUpload" accept="image/*,video/*" type="file" multiple wire:model="medias">
                             <label class="item__upload-btn" for="imgUpload">
                                 <svg>
                                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                                     <polyline points="17 8 12 3 7 8"></polyline>
                                     <line x1="12" y1="3" x2="12" y2="15"></line>
                                 </svg>
-                                Upload Media
+                                {{ __('Upload related media') }}
                             </label>
-                            <input type="submit" id="addmediacat" style="display: none" class="upload"
-                                value="Save Media">
 
-                            <table id="imageTable" class="table"></table>
+                            @if ($medias)
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Media</th>
+                                            <th>Name</th>
+                                            <th>Size</th>
+                                            <th>Type</th>
+                                            <th>Sequence</th>
+                                            <th>Location</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($medias as $media)
+                                            <tr>
+                                                <td>@if (str_starts_with($media->getMimeType(), 'image'))
+                                                  <img src="{{ $media->temporaryUrl() }}" width="50px">
+                                              @elseif (str_starts_with($media->getMimeType(), 'video'))
+                                                  <video width="100px" controls>
+                                                      <source src="{{ $media->temporaryUrl() }}" type="{{ $media->getMimeType() }}">
+                                                     <span>{{ __('Your browser not suport video tag')}}</span>
+                                                  </video>
+                                              @endif</td>
+                                                <td>{{ $media->getClientOriginalName() }}</td>
+                                                <td>{{ $media->getSize() }} KB</td>
+                                                <td>{{ $media->getClientOriginalExtension() }}</td>
+                                                <td><input type="number" placeholder="Media sequence" min="0" required wire:model="file_sequences.{{ $loop->index }}"></td>
+<td>
+    <select required wire:model="file_locations.{{ $loop->index }}">
+      <option value="">Select a location</option>
+        @foreach ($locations as $location)
+            <option value="{{ $location->id }}">{{ $location->location }}</option>
+        @endforeach
+    </select>
+</td>
+                                                <td><button class="delete"
+                                                        wire:click.prevent="removemedia({{ $loop->index }})">
+                                                        <svg>
+                                                            <circle cx="12" cy="12" r="10">
+                                                            </circle>
+                                                            <line x1="15" y1="9" x2="9"
+                                                                y2="15">
+                                                            </line>
+                                                            <line x1="9" y1="9" x2="15"
+                                                                y2="15">
+                                                            </line>
+                                                        </svg>
+                                                    </button></td>
+                                            </tr>
+                                        @endforeach
+                                        <input type="submit" id="add_media_related"
+                                            class="item__form-btn item__form-long" value="Save Media">
+                            @endif
+                            </tbody>
+                            </table>
+                            @error('medias.*')
+                                <span class="error">{{ $message }}</span>
+                            @enderror
+
                         </div>
-
                     </form>
                 </div>
                 @if (count($files) > 0)
@@ -112,7 +165,9 @@
 
                             <span class="modal-content-btn delete"
                                 onclick="document.getElementById('confirmationmodalmedia').style.display='none'">
-                                <svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+                                    viewbox="0 0 24 24" fill="none" stroke="#BBFCDE" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
                                     <line x1="18" y1="6" x2="6" y2="18"></line>
                                     <line x1="6" y1="6" x2="18" y2="18"></line>
                                 </svg>
@@ -126,8 +181,8 @@
                             <h1 class="modal-content-title">
                                 {{ __('Are you sure to delete those categories?') }}
                             </h1>
-                            <input wire:click.prevent="deleteRecords()" class="modal-content-btn submit" type="button"
-                                value="Confirm">
+                            <input wire:click.prevent="deleteRecords()" class="modal-content-btn submit"
+                                type="button" value="Confirm">
                             <input class="modal-content-btn delete" type="button"
                                 onclick="document.getElementById('confirmationmodalmediamultiple').style.display='none'"
                                 value="Cancel">
@@ -135,7 +190,10 @@
                             <span class="modal-content-btn delete"
                                 onclick="document.getElementById('confirmationmodalmediamultiple').style.display='none'">
 
-                                <svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+                                    viewbox="0 0 24 24" fill="none" stroke="#BBFCDE" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+
                                     <line x1="18" y1="6" x2="6" y2="18"></line>
                                     <line x1="6" y1="6" x2="18" y2="18"></line>
                                 </svg>
@@ -223,7 +281,9 @@
                                     <td data-title="Action">
                                         <button class="delete"
                                             wire:click.prevent="confirmFileRemoval({{ $file->id }})">
-                                            <svg>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+                                                viewBox="0 0 24 24" fill="none" stroke="#BBFCDE" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round">
                                                 <circle cx="12" cy="12" r="10"></circle>
                                                 <line x1="15" y1="9" x2="9" y2="15">
                                                 </line>
@@ -238,10 +298,13 @@
                     </table>
                     <div>{{ $files->links('pagination-links') }} </div>
                 @else
+                @if ($medias)
+                @else
                     <div class="col-12-xs col-12-sm col-12-xl mt-1 talign-c">
                         <span class="mt-1 m-a display-b text-bg wid-7 p-1 br-xs mb-2 bg-bg-light-9">No Media
                             related</span>
                     </div>
+                    @endif
                 @endif
             </div>
         @endif
