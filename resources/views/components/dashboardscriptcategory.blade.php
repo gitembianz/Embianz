@@ -1,24 +1,42 @@
 <script>
-//script form modals
-    window.addEventListener('show-delete-modal-category', event =>{
-  document.getElementById('confirmationmodalcategory').style.display = 'flex';
-});
-window.addEventListener('show-delete-modal-category-multiple', event =>{
-  document.getElementById('confirmationmodalcategorymultiple').style.display = 'flex';
-});
-window.addEventListener('show-delete-modal-media', event =>{
-  document.getElementById('confirmationmodalmedia').style.display = 'flex';
-});
-window.addEventListener('show-delete-modal-media-multiple', event =>{
-  document.getElementById('confirmationmodalmediamultiple').style.display = 'flex';
-});
+    //script form modals
+    window.addEventListener('show-delete-modal-category', event => {
+        document.getElementById('confirmationmodalcategory').style.display = 'flex';
+    });
+    window.addEventListener('show-delete-modal-category-multiple', event => {
+        document.getElementById('confirmationmodalcategorymultiple').style.display = 'flex';
+    });
+    window.addEventListener('show-delete-modal-media', event => {
+        document.getElementById('confirmationmodalmedia').style.display = 'flex';
+    });
+    window.addEventListener('show-delete-modal-media-multiple', event => {
+        document.getElementById('confirmationmodalmediamultiple').style.display = 'flex';
+    });
 
     //edit category script
     const editt = document.getElementById("edit");
     if (editt) {
         document.getElementById("edit").addEventListener("click", function() {
-            opentab(event, 'Details');
-            document.querySelector(".tablinks#defaultOpen").classList.add("active");
+            // opentab(event, 'Details');
+
+            let tabs = document.querySelectorAll(".tabs__page");
+            let tabContents = document.querySelectorAll(".tabs__content");
+
+            tabs.forEach((tab, index) => {
+                tabContents.forEach((content) => {
+                    content.classList.remove("active");
+                });
+                tabs.forEach((tab) => {
+                    tab.classList.remove("active");
+                });
+
+                // Add the following lines to activate the first tab and its content
+                tabs[0].classList.add("active");
+                tabContents[0].classList.add("active");
+            });
+
+
+            document.querySelector("#Details").classList.add("active");
             document.getElementById("edit").style.display = "none";
             document.getElementById("Update").style.display = "block";
 
