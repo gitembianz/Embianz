@@ -1,7 +1,6 @@
 @media (min-width: 1024px) {
   .item {
-    display: flex;
-    flex-direction: column;
+
 
     // The product header (title and the buttons in top)
     &__header {
@@ -14,10 +13,6 @@
       }
     }
 
-    // This is Upload media content
-    &__upload {
-      margin-top: $fSize;
-    }
 
     // Product form (input, textarea, buttons)
     &__form {
@@ -27,6 +22,7 @@
       &.form-table {
         grid-auto-flow: column;
         grid-template-columns: 3fr 1fr 1fr;
+        margin: 0;
       }
 
       // Short Description
