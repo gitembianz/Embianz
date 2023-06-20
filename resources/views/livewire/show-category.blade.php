@@ -15,7 +15,7 @@
     <div class="tab">
         <div class="tabs">
             <h3 class="tabs__page active">Details</h3>
-            <h3 class="tabs__page">Releated</h3>
+            <h3 class="tabs__page">Related</h3>
         </div>
         <div class="tab__list">
             <div class="tabs__content active" id="Details">
@@ -79,32 +79,6 @@
             <div class="tabs__content">
                 <livewire:related-media-category categoryId="{{ $category->id }}" />
             </div>
-
-            <div class="item__form-close">
-                <div>{{ $category->createdby }}</div>
-                <span>Create by</span>
-            </div>
-            <div class="item__form-close">
-                <div>{{ $category->updated_at }}</div>
-                <span>Updated date / time</span>
-            </div>
-            <div class="item__form-close">
-                <div>{{ $category->lastmodifiedby }}</div>
-                <span>Last modified by</span>
-            </div>
-        </form>
-    </div>
-
-
-
-    <div class="tabcontent" id="Related">
-        {{-- related media --}}
-
-        <livewire:related-media-category categoryId="{{ $category->id }}" />
-        {{-- related media end --}}
-        {{-- related products --}}
-
-
     </div>
     <div class="modal" id="confirmationmodalcategory">
       <div class="modal-content">

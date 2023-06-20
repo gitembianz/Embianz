@@ -6,7 +6,6 @@ const sidebarOpen = document.querySelector('.sidebar__open');
 sidebarBtn.addEventListener('click', () => {
   sidebar.classList.toggle('open');
   search.classList.remove('active');
-  right.classList.remove('open');
   profile.classList.remove('active');
   header.classList.remove('moved');
   notify.classList.remove('open');
@@ -17,10 +16,8 @@ sidebarBtn.addEventListener('click', () => {
 sidebarOpen.addEventListener('click', () => {
   sidebar.classList.toggle('open');
   search.classList.remove('active');
-  // right.classList.remove('open');
   profile.classList.remove('active');
   header.classList.remove('moved');
-  notify.classList.remove('open');
 })
 
 
@@ -35,20 +32,14 @@ profileOpen.addEventListener('click', () => {
     profile.classList.add('active');
     header.classList.add('moved');
     search.classList.remove('active');
-
-    right.classList.remove('open');
     notify.classList.remove('open');
-    sidebar.classList.remove('open');
 })
 // Function what is closing everethink of Profile
 profileClose.addEventListener('click', () => {
   header.classList.remove('moved');
   profile.classList.toggle('active');
   search.classList.remove('active');
-
-  right.classList.remove('open');
   notify.classList.remove('open');
-  sidebar.classList.remove('open');
 })
 
 const search = document.querySelector('.search');
@@ -59,20 +50,14 @@ searchOpen.addEventListener('click', () => {
   search.classList.add('active');
   profile.classList.remove('active');
   header.classList.remove('moved');
-
-  right.classList.remove('open');
   notify.classList.remove('open');
-  sidebar.classList.remove('open');
 })
 // Function what is closing everethink of Profile
 searchClose.addEventListener('click', () => {
   search.classList.toggle('active');
   header.classList.remove('moved');
   profile.classList.remove('active');
-
-  right.classList.remove('open');
   notify.classList.remove('open');
-  sidebar.classList.remove('open');
 })
 
 
@@ -82,11 +67,9 @@ const notifyBtn = document.querySelector('.notify__btn');
 notifyBtn.addEventListener('click', () => {
   document.querySelector('body').classList.toggle("overflow")
   notify.classList.toggle('open');
-    right.classList.remove('open');
     profile.classList.remove('active');
     header.classList.remove('moved');
     search.classList.remove('active');
-    sidebar.classList.remove('open');
 })
 
 
@@ -102,29 +85,9 @@ calendarBtn.addEventListener('click', () => {
     header.classList.remove('moved');
     search.classList.remove('active');
     notify.classList.remove('open');
-    sidebar.classList.remove('open');
 });
 
-// function OpenDropdown(){
 
-//   const dropdownButtons = document.querySelectorAll(".dropdown-name");
-
-//   dropdownButtons.forEach(function(button) {
-//   button.addEventListener("click", function() {
-//     const dropdownContent = this.nextElementSibling;
-
-//     dropdownContent.classList.toggle("show");
-
-//     const otherDropdowns = document.querySelectorAll(".dropdown-content");
-
-//     otherDropdowns.forEach(function(content) {
-//       if (content !== dropdownContent) {
-//         content.classList.remove("show");
-//       }
-//     });
-//   });
-//   });
-// }
 
 // Select all buttons with the class "dropdown-button"
 
