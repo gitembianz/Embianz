@@ -159,3 +159,55 @@ window.addEventListener('scroll', () => {
     topUpBtn.classList.remove("actived");
   }
 })
+
+// Tabs
+let tabs = document.querySelectorAll(".tabs__page");
+let tabContents = document.querySelectorAll(".tabs__content");
+tabs.forEach((tab, index) => {
+  tab.addEventListener("click", () => {
+    tabContents.forEach((content) => {
+      content.classList.remove("active");
+    });
+    tabs.forEach((tab) => {
+      tab.classList.remove("active");
+    });
+    tabContents[index].classList.add("active");
+    tabs[index].classList.add("active");
+  });
+});
+
+
+// Get all accordion buttons
+const accordionButtons = document.querySelectorAll('.accordion__btn');
+
+// Loop through each button and attach a click event listener
+accordionButtons.forEach(button => {
+  button.addEventListener('click', function() {
+    const accordionContent = this.nextElementSibling;
+
+    // Check if the accordion content is currently active
+    const isActive = accordionContent.classList.contains('active');
+
+    // Close all accordions
+    closeAllAccordions();
+
+    // Toggle the visibility of the content
+    if (!isActive) {
+      accordionContent.style.display = 'block';
+      accordionContent.classList.add('active');
+    }
+  });
+});
+
+// Function to close all accordions
+function closeAllAccordions() {
+  const activeAccordions = document.querySelectorAll('.accordion__content.active');
+
+  activeAccordions.forEach(accordion => {
+    accordion.style.display = 'none';
+    accordion.classList.remove('active');
+  });
+}
+
+// Close all accordions by default on page load
+closeAllAccordions();

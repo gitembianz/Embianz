@@ -31,7 +31,10 @@
       position: relative;
       padding-right: 25px;
 
-
+      input {
+        border-color: $secondColor;
+        border-width: 2px;
+      }
 
       &::after {
         content: "";
@@ -69,6 +72,11 @@
 
       &:last-child {
         border-right: 0;
+        border-left: 0;
+      }
+
+      &:nth-last-child(2) {
+        border-right: 0;
       }
     }
 
@@ -93,18 +101,25 @@
 
 @media (max-width: 660px) {
   .livewire-table {
-    border: 3px solid $mainBg;
+    // border: 3px solid $mainBg;
 
     thead tr {
       display: block;
+      padding-right: 5px;
     }
 
     thead th {
       border: none;
+      padding-right: 0;
     }
 
     thead th:not(:first-child) {
       display: none;
+    }
+
+    thead th:first-child {
+      width: 100vw;
+      text-align: end;
     }
 
 
@@ -122,7 +137,7 @@
       content: attr(data-title) ": ";
       float: left;
       font-weight: 900;
-      font-size: 1rem;
+      // font-size: 1rem;
       margin-right: 10px;
     }
 

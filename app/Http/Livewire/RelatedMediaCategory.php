@@ -54,6 +54,7 @@ class RelatedMediaCategory extends Component
     $this->selectedColumns = $this->columns;
     $this->locations = MediaLocation::all();
     $this->file_locations[] = '1';
+
   }
 
   public function editMedia($mediaIndex)
@@ -83,6 +84,7 @@ class RelatedMediaCategory extends Component
     }
     $this->filess = [];
     $this->editedMediaIndex = null;
+
   }
 
   public function showColumn($column)
@@ -172,6 +174,7 @@ class RelatedMediaCategory extends Component
 
       $file->storeAs($path, $media->name, 'public_upload');
       $media->tabel_id = Tabels::where('name', $productType)->first()->id;
+      // dd($this->file_sequences[$i]);
       $media->sequence = $this->file_sequences[$i];
       $media->location_id = MediaLocation::where('id', $this->file_locations[$i])->first()->id;
       $media->type = $type;
@@ -189,8 +192,10 @@ class RelatedMediaCategory extends Component
 
   public function removemedia($index)
   {
+
     array_splice($this->medias, $index, 1);
   }
+
 
   public function sortBy($columnName)
   {
@@ -229,8 +234,10 @@ class RelatedMediaCategory extends Component
     session()->flash('message', 'Record deleted Successfully');
   }
 
+
   public function deleteRecords()
   {
+
     $medias = Media::whereKey($this->checked)->get();
 
     foreach ($medias as $media) {
@@ -249,6 +256,7 @@ class RelatedMediaCategory extends Component
     $this->checked = [];
     session()->flash('message', 'Files deleted succesfuly');
   }
+
 
   public function selectAll()
   {
@@ -279,6 +287,7 @@ class RelatedMediaCategory extends Component
 
   public function confirmFilesRemovalmultiple()
   {
+
     $this->dispatchBrowserEvent('show-delete-modal-media-multiple');
   }
 
@@ -288,11 +297,14 @@ class RelatedMediaCategory extends Component
     $this->checked = [];
     $this->selectPage = false;
     return $export->download('medias.xlsx');
+
   }
 
   public function render()
   {
+
     $this->hasResults = $this->files->isNotEmpty();
+
     return view('livewire.related-media-category', [
       'files' => $this->files
     ]);
