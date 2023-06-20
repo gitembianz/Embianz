@@ -1,6 +1,6 @@
 <div>
 
-  @if (session()->has('message'))
+    @if (session()->has('message'))
         <div class="alert__session liveAlert" id="alertevent">
             <span class="alert__session-text">{!! session('message') !!}</span>
             <button class="alert__session-btn" type="button" data-bs-dismiss="alert" aria-hidden="true">
@@ -24,7 +24,7 @@
             }, 2000);
         </script>
     @endif
-  
+
     <div class="accordion">
         <button class="accordion__btn"
             wire:click.prevent="@if ($showmedia === false) $set('showmedia', true) @else $set('showmedia', false) @endif">
@@ -308,7 +308,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($files as $file)
+                                    @foreach ($files as $index => $file)
                                         <tr class="@if ($this->isChecked($file->id)) th_checked @endif">
                                             <td data-title="Check"><input type="checkbox"
                                                     value="{{ $file->id }}" wire:model="checked">
@@ -336,29 +336,63 @@
 
 
                                             @if ($this->showColumn('Media Location'))
-                                                <td data-title="Media Location">{{ $file->location->location }}</td>
+                                            <td data-title="Media Location">
+                                              @if ($editedMediaIndex !== $index)
+                                              <div class="cursor-p" wire:click.prevent="editMedia({{ $index }})">{{ $file->location->location }}</div>
+
+                                              @else
+                                              <select required wire:model.defer="filess.{{ $index }}.location_id">
+                                                @foreach ($locations as $location)
+
+                                                    <option value="{{ $location->id }}">
+                                                        {{ $location->location }}</option>
+                                                @endforeach
+                                            </select>
+                                              @endif
+                                            </td>
                                             @endif
                                             @if ($this->showColumn('Sequence'))
-                                                <td data-title="Sequence">{{ $file->sequence }}</td>
+                                            <td data-title="Sequence">
+                                              @if ($editedMediaIndex !== $index)
+                                              <div class="cursor-p" wire:click.prevent="editMedia({{ $index }})">{{ $file->sequence }}</div>
+                                              @else
+                                              <input type="number" min="0" required wire:model.defer="filess.{{ $index }}.sequence" value="{{ $file->sequence }}">
+                                              @if ($errors->has('filess.' . $index . '.sequence'))
+                                                <p>{{ $errors->first('filess.' . $index . '.sequence') }}</p>
+                                              @endif
+                                              @endif
+                                            </td>
                                             @endif
 
                                             <td data-title="Action">
+                                              @if ($editedMediaIndex !== $index)
+                                              <button class="edit"
+                                                    wire:click.prevent="editMedia({{ $index }})">
+                                                    <svg>
+                                                        <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
+                                                        </path>
+                                                    </svg>
+                                                </button>
                                                 <button class="delete"
                                                     wire:click.prevent="confirmFileRemoval({{ $file->id }})">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="32"
-                                                        height="32" viewBox="0 0 24 24" fill="none"
-                                                        stroke="#BBFCDE" stroke-width="2" stroke-linecap="round"
-                                                        stroke-linejoin="round">
-                                                        <circle cx="12" cy="12" r="10">
-                                                        </circle>
-                                                        <line x1="15" y1="9" x2="9"
-                                                            y2="15">
+                                                    <svg>
+                                                        <circle cx="12" cy="12" r="10"></circle>
+                                                        <line x1="15" y1="9" x2="9" y2="15">
                                                         </line>
-                                                        <line x1="9" y1="9" x2="15"
-                                                            y2="15">
+                                                        <line x1="9" y1="9" x2="15" y2="15">
                                                         </line>
                                                     </svg>
                                                 </button>
+                                              @else
+                                              <button class="edit"
+                                                wire:click.prevent="saveMedia({{ $index }} , {{ $file->id }})">
+                                                <svg><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                            </button>
+                                            <button class="save"
+                                                wire:click.prevent="cancelMedia()">
+                                                <svg><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                                            </button>
+                                              @endif
                                             </td>
                                         </tr>
                                     @endforeach
@@ -368,16 +402,12 @@
                         @else
                     </div>
                 </div>
-       
-=
-                @else
-                    <div class="col-12-xs col-12-sm col-12-xl mt-1 talign-c">
-                        <span class="mt-1 m-a display-b text-bg wid-7 p-1 br-xs mb-2 bg-bg-light-9">No Media
-                            related</span>
-                    </div>
-                @endif
+                <div class="col-12-xs col-12-sm col-12-xl mt-1 talign-c">
+                    <span class="mt-1 m-a display-b text-bg wid-7 p-1 br-xs mb-2 bg-bg-light-9">No Media
+                        related</span>
+                </div>
+        @endif
         @endif
     </div>
-    @endif
 </div>
 </div>
