@@ -4,7 +4,6 @@
   margin: 0;
   width: 100%;
   box-shadow: $BtnShadow;
-  margin: calc($gap * 3) 0;
   font-weight: bold;
 
   tr {
@@ -101,7 +100,6 @@
 
 @media (max-width: 660px) {
   .livewire-table {
-    // border: 3px solid $mainBg;
 
     thead tr {
       display: block;
@@ -137,7 +135,6 @@
       content: attr(data-title) ": ";
       float: left;
       font-weight: 900;
-      // font-size: 1rem;
       margin-right: 10px;
     }
 
@@ -165,20 +162,6 @@
     border: 2px solid $darkBg;
     padding: 10px;
     height: 70px;
-
-    &:first-child {
-      display: flex;
-      align-items: center;
-      border: 1px solid $darkBg;
-      width: 100%;
-      justify-content: space-between;
-    }
-
-    &:nth-child(2),
-    &:nth-child(3),
-    &:nth-child(4) {
-      width: 10%;
-    }
 
     img {
       height: 100%;
