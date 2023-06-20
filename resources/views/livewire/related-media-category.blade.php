@@ -1,4 +1,28 @@
 <div>
+  @if (session()->has('message'))
+        <div class="alert__session liveAlert" id="alertevent">
+            <span class="alert__session-text">{!! session('message') !!}</span>
+            <button class="alert__session-btn" type="button" data-bs-dismiss="alert" aria-hidden="true">
+                <svg>
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        <script>
+            const alertEvent = document.getElementById("alertevent");
+            header.style.marginBottom = '4rem';
+            alertEvent.style.opacity = '1';
+
+            setTimeout(function() {
+                alertEvent.style.opacity = '0';
+                setTimeout(function() {
+                    alertEvent.remove();
+                    header.style.marginBottom = '0';
+                }, 500);
+            }, 2000);
+        </script>
+    @endif
     <div class="releated wid-10 talign-c br-xs">
         <button
             wire:click.prevent="@if ($showmedia === false) $set('showmedia', true) @else $set('showmedia', false) @endif"
@@ -36,15 +60,16 @@
                                         @foreach ($medias as $media)
                                             <tr>
                                                 <td>
-                                                    @if (str_starts_with($media->getMimeType(), 'image'))
-                                                        <img src="{{ $media->temporaryUrl() }}" width="50px">
-                                                    @elseif (str_starts_with($media->getMimeType(), 'video'))
-                                                        <video width="100px" controls>
-                                                            <source src="{{ $media->temporaryUrl() }}"
-                                                                type="{{ $media->getMimeType() }}">
-                                                            <span>{{ __('Your browser not suport video tag') }}</span>
-                                                        </video>
-                                                    @endif
+                                                  @if (is_array($media))
+                                                  <span>{{ __('Invalid media object') }}</span>
+                                              @elseif (str_starts_with($media->getMimeType(), 'image'))
+                                                  <img src="{{ $media->temporaryUrl() }}" width="50px">
+                                              @elseif (str_starts_with($media->getMimeType(), 'video'))
+                                                  <video width="100px" controls>
+                                                      <source src="{{ $media->temporaryUrl() }}" type="{{ $media->getMimeType() }}">
+                                                      <span>{{ __('Your browser does not support the video tag') }}</span>
+                                                  </video>
+                                              @endif
                                                 </td>
                                                 <td>{{ $media->getClientOriginalName() }}</td>
                                                 <td>{{ $media->getSize() }} KB</td>
@@ -94,7 +119,7 @@
                         </div>
                     </form>
                 </div>
-                @if (count($files) > 0)
+                @if ($files && count($files) > 0)
                     <div class="item__form form-table"
                         @if ($checked) style="grid-template-columns: 40% 1fr 1fr 1fr" @endif>
 
@@ -113,37 +138,42 @@
                         </div>
 
                         <div class="dropdown">
-                            <button  wire:click.prevent="@if ($col === false) $set('col', true) @else $set('col', false) @endif" class="dropdown-button">Columns</button>
+                            <button
+                                wire:click.prevent="@if ($col === false) $set('col', true) @else $set('col', false) @endif"
+                                class="dropdown-button">Columns</button>
                             @if ($col)
 
-                            <div class="dropdown-list" style="display: block; z-index: 220">
-                                @foreach ($columns as $column)
-                                    <div class="dropdown-item">
-                                        <input type="checkbox" wire:model="selectedColumns" value="{{ $column }}"
-                                            {{ in_array($column, $selectedColumns) ? 'checked' : '' }}>
-                                        <label>{{ $column }}</label>
-                                    </div>
-                                @endforeach
-                            </div>
+                                <div class="dropdown-list" style="display: block; z-index: 220">
+                                    @foreach ($columns as $column)
+                                        <div class="dropdown-item">
+                                            <input type="checkbox" wire:model="selectedColumns"
+                                                value="{{ $column }}"
+                                                {{ in_array($column, $selectedColumns) ? 'checked' : '' }}>
+                                            <label>{{ $column }}</label>
+                                        </div>
+                                    @endforeach
+                                </div>
                             @endif
                         </div>
 
                         <div class="dropdown none" @if ($checked) style="display: unset" @endif>
-                            <button  wire:click.prevent="@if ($all === false) $set('all', true); $set('col', false) @else $set('all', false) @endif" class="dropdown-button none"
+                            <button
+                                wire:click.prevent="@if ($all === false) $set('all', true); $set('col', false) @else $set('all', false) @endif"
+                                class="dropdown-button none"
                                 @if ($checked) style="display: flex" @endif>With
                                 Checked({{ count($checked) }})</button>
                             @if ($checked)
-                            @if ($all)
-
-                                <div class="dropdown-list" style="display: block; z-index: 220">
-                                    <button class="dropdown-item delete" type="button"
-                                        wire:click="confirmFilesRemovalmultiple()">
-                                        Delete
-                                    </button>
-                                    <button class="dropdown-item submit" type="button" wire:click="exportSelected()">
-                                        Export
-                                    </button>
-                                </div>
+                                @if ($all)
+                                    <div class="dropdown-list" style="display: block; z-index: 220">
+                                        <button class="dropdown-item delete" type="button"
+                                            wire:click="confirmFilesRemovalmultiple()">
+                                            Delete
+                                        </button>
+                                        <button class="dropdown-item submit" type="button"
+                                            wire:click="exportSelected()">
+                                            Export
+                                        </button>
+                                    </div>
                                 @endif
                             @endif
                         </div>
@@ -263,7 +293,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($files as $file)
+                          @if ($hasResults)
+                            @foreach ($files as $index => $file)
                                 <tr class="@if ($this->isChecked($file->id)) th_checked @endif">
                                     <td data-title="Check"><input type="checkbox" value="{{ $file->id }}"
                                             wire:model="checked">
@@ -290,18 +321,46 @@
                                     @endif
 
                                     @if ($this->showColumn('Media Location'))
-                                        <td data-title="Media Location">{{ $file->location->location }}</td>
+                                        <td data-title="Media Location">
+                                          @if ($editedMediaIndex !== $index)
+                                          <div class="cursor-p" wire:click.prevent="editMedia({{ $index }})">{{ $file->location->location }}</div>
+
+                                          @else
+                                          <select required wire:model.defer="filess.{{ $index }}.location_id">
+                                            @foreach ($locations as $location)
+
+                                                <option value="{{ $location->id }}">
+                                                    {{ $location->location }}</option>
+                                            @endforeach
+                                        </select>
+                                          @endif
+                                        </td>
                                     @endif
                                     @if ($this->showColumn('Sequence'))
-                                        <td data-title="Sequence">{{ $file->sequence }}</td>
+                                        <td data-title="Sequence">
+                                          @if ($editedMediaIndex !== $index)
+                                          <div class="cursor-p" wire:click.prevent="editMedia({{ $index }})">{{ $file->sequence }}</div>
+                                          @else
+                                          <input type="number" min="0" required wire:model.defer="filess.{{ $index }}.sequence" value="{{ $file->sequence }}">
+                                          @if ($errors->has('filess.' . $index . '.sequence'))
+                                            <p>{{ $errors->first('filess.' . $index . '.sequence') }}</p>
+                                          @endif
+                                          @endif
+                                        </td>
                                     @endif
 
                                     <td data-title="Action">
+                                      @if ($editedMediaIndex !== $index)
+                                      <button class="edit"
+                                            wire:click.prevent="editMedia({{ $index }})">
+                                            <svg>
+                                                <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
+                                                </path>
+                                            </svg>
+                                        </button>
                                         <button class="delete"
                                             wire:click.prevent="confirmFileRemoval({{ $file->id }})">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
-                                                viewBox="0 0 24 24" fill="none" stroke="#BBFCDE" stroke-width="2"
-                                                stroke-linecap="round" stroke-linejoin="round">
+                                            <svg>
                                                 <circle cx="12" cy="12" r="10"></circle>
                                                 <line x1="15" y1="9" x2="9" y2="15">
                                                 </line>
@@ -309,9 +368,25 @@
                                                 </line>
                                             </svg>
                                         </button>
+                                      @else
+                                      <button class="edit"
+                                        wire:click.prevent="saveMedia({{ $index }} , {{ $file->id }})">
+                                        <svg><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                    </button>
+                                    <button class="save"
+                                        wire:click.prevent="cancelMedia()">
+                                        <svg><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                                    </button>
+                                      @endif
+
+
                                     </td>
                                 </tr>
                             @endforeach
+                            @else
+        <tr> <td colspan="7"> {{ __('No records found.') }}</td>
+         </tr>
+    @endif
                         </tbody>
                     </table>
                     <div>{{ $files->links('pagination-links') }} </div>

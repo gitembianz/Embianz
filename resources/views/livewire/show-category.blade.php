@@ -13,7 +13,7 @@
     {{-- adding tab-bar --}}
     <div class="tab ">
         <button class="tablinks item__header-btn" onclick="opentab(event, 'Details')" id="defaultOpen">Details</button>
-        <button class="tablinks item__header-btn" onclick="opentab(event, 'Releated')">Releated</button>
+        <button class="tablinks item__header-btn" onclick="opentab(event, 'Related')">Related</button>
     </div>
 
     <div class="tabcontent br-xs" id="Details">
@@ -79,7 +79,7 @@
 
 
 
-    <div class="tabcontent" id="Releated">
+    <div class="tabcontent" id="Related">
         {{-- related media --}}
 
         <livewire:related-media-category categoryId="{{ $category->id }}" />

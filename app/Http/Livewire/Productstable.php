@@ -22,7 +22,7 @@ class Productstable extends Component
   public $selectPage = false;
   public $selectAll = false;
   public $productidbeingremoved = null;
-  public $columns = ['Id', 'Name', 'Short Description', 'Created At'];
+  public $columns = ['Id', 'Short Description', 'Created At'];
   public $selectedColumns = [];
 
 
@@ -39,6 +39,9 @@ class Productstable extends Component
 
   public function showColumn($column)
   {
+    if ($column === 'Name') {
+      return true;
+  }
     return in_array($column, $this->selectedColumns);
   }
 

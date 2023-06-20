@@ -36,7 +36,7 @@
     <div class="item__header">
         <h1 id="title" class="item__header-title">{{ __('All products') }}</h1>
         <div class="item__header-buttons">
-            <a href="{{ route('add_product') }}" class="item__header-btn">{{ __('Add new') }}</a>
+            <a href="{{ route('add_product') }}" class="item__header-btn">{{ __('New') }}</a>
         </div>
     </div>
 

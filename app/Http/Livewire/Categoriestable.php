@@ -21,21 +21,26 @@ class Categoriestable extends Component
   public $selectPage = false;
   public $selectAll = false;
   public $catidbeingremoved = null;
-  public $columns = ['Id', 'Name','Category Parrent', 'Short Description','Sequence', 'Created At'];
+  public $columns = ['Id', 'Category Parrent', 'Short Description', 'Sequence', 'Created At'];
   public $selectedColumns = [];
-    public function render()
-    {
-        return view('livewire.categoriestable', [
-          'categories' => $this->categories
-        ]);
-    }
-    public function mount()
+
+
+  public function render()
+  {
+    return view('livewire.categoriestable', [
+      'categories' => $this->categories
+    ]);
+  }
+  public function mount()
   {
     $this->selectedColumns = $this->columns;
   }
 
   public function showColumn($column)
   {
+    if ($column === 'Name') {
+      return true;
+    }
     return in_array($column, $this->selectedColumns);
   }
 
@@ -66,10 +71,8 @@ class Categoriestable extends Component
 
   public function swapSortDirection()
   {
-
     return $this->orderAsc === '1' ? '0' : '1';
   }
-
 
   public function selectAll()
   {
@@ -102,10 +105,10 @@ class Categoriestable extends Component
       }
 
       $productType = class_basename(get_class($cattodel));
-        $filespath = 'media/' . $productType . '/' . $cattodel->id;
-        if (File::exists($filespath)) {
-            File::deleteDirectory($filespath);
-        }
+      $filespath = 'media/' . $productType . '/' . $cattodel->id;
+      if (File::exists($filespath)) {
+        File::deleteDirectory($filespath);
+      }
 
       $cattodel->delete();
     }
@@ -124,10 +127,10 @@ class Categoriestable extends Component
       $productcat->delete();
     }
     $productType = class_basename(get_class($category));
-        $filespath = '.media/' . $productType . '/' . $category->id;
-        if (File::exists($filespath)) {
-            File::deleteDirectory($filespath);
-        }
+    $filespath = '.media/' . $productType . '/' . $category->id;
+    if (File::exists($filespath)) {
+      File::deleteDirectory($filespath);
+    }
     $category->delete();
     $this->checked = array_diff($this->checked, [$id]);
     session()->flash('message', 'Record deleted Successfully');
@@ -151,7 +154,6 @@ class Categoriestable extends Component
 
   public function exportSelected()
   {
-
     $export = new CategoriesExport($this->checked);
     $this->checked = [];
     $this->selectPage = false;

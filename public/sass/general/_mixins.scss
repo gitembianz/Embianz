@@ -89,7 +89,13 @@
      @include BtnHover($hoverEffect: darken($alertColor, 20%));
      background-color: $alertColor;
    }
-
+   &.edit {
+    @include BtnHover($hoverEffect: darken($secondColor, 30%), $activeEffect: darken($secondColor, 30%));
+    background-color: $white;
+    svg{
+      stroke: $mainBg;
+    }
+  }
    &.submit {
      @include BtnHover($hoverEffect: darken($secondColor, 30%), $activeEffect: darken($secondColor, 30%));
      background-color: $secondColor;
