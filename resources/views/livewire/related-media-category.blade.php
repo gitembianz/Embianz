@@ -1,4 +1,5 @@
 <div>
+
   @if (session()->has('message'))
         <div class="alert__session liveAlert" id="alertevent">
             <span class="alert__session-text">{!! session('message') !!}</span>
@@ -23,13 +24,15 @@
             }, 2000);
         </script>
     @endif
-    <div class="releated wid-10 talign-c br-xs">
-        <button
-            wire:click.prevent="@if ($showmedia === false) $set('showmedia', true) @else $set('showmedia', false) @endif"
-            class="collapsible"><Span> {{ __('Media ') }}<span
-                    class="fw-600">({{ count($files) }})</span></Span></span></button>
+  
+    <div class="accordion">
+        <button class="accordion__btn"
+            wire:click.prevent="@if ($showmedia === false) $set('showmedia', true) @else $set('showmedia', false) @endif">
+            {{ __('Media ') }}({{ count($files) }})
+        </button>
+
         @if ($showmedia)
-            <div class="contenttabb" id="contentDiv">
+            <div class="accordion__content" id="contentDiv">
                 <div class="col-12-xs col-12-sm col-12-xl talign-c">
                     <form wire:submit.prevent="save">
                         <div class="item__upload">
@@ -78,6 +81,7 @@
                                                         required wire:model="file_sequences.{{ $loop->index }}"></td>
                                                 <td>
                                                     <select required wire:model="file_locations.{{ $loop->index }}">
+
                                                         @php
                                                             $firstLocation = $locations->first();
                                                         @endphp
@@ -262,8 +266,8 @@
                                 @if ($this->showColumn('Id'))
                                     <th class="cursor-p"
                                         @if ($orderBy === 'id' && $orderAsc === '1') data-symbol="up"
-        @else
-            data-symbol="down" @endif
+          @else
+              data-symbol="down" @endif
                                         wire:click="sortBy('id')">ID
                                     </th>
                                 @endif
@@ -274,8 +278,9 @@
                                 @if ($this->showColumn('Name'))
                                     <th class="cursor-p"
                                         @if ($orderBy === 'name' && $orderAsc === '1') data-symbol="up"
-    @else
-        data-symbol="down" @endif
+
+                                          @else
+          data-symbol="down" @endif
                                         wire:click="sortBy('name')">Name
                                     </th>
                                 @endif

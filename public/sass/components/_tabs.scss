@@ -1,40 +1,37 @@
 .tab {
+  border: 1px solid $mainBg;
+  border-radius: $base-border-radius;
+
+  &__list {
+    padding: $padding;
+    gap: $gap;
+  }
+}
+
+.tabs {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-auto-flow: column;
   gap: $gap;
-  padding: $padding;
-  background-color: lighten($mainBg, 5%);
-  border: 1px solid $mainBg;
-  border-bottom: none;
-  border-radius: $base-border-radius $base-border-radius 0 0;
-}
-
-.tabcontent {
-  display: none;
-  padding: $padding;
-  border: 1px solid $mainBg;
-  border-top: none;
-  border-radius: 0 0 $base-border-radius $base-border-radius;
-}
-
-
-// Taburile de la Category
-.collapsible {
   background-color: $mainBg;
-  color: $white;
-  cursor: pointer;
-  padding: 18px;
-  width: 100%;
-  border: none;
-  text-align: left;
-  outline: none;
-  font-size: $font-size-md;
-}
+  padding: $padding;
+  border-radius: $base-border-radius $base-border-radius 0 0;
 
-.contenttabb {
-  padding: 0 $padding;
-  display: block;
-  overflow: hidden;
-  transition: $transition;
-  background-color: $white;
+  &__page {
+    @include standart-Btn;
+    width: 100%;
+
+    &.active {
+      background-color: $secondColor;
+    }
+  }
+
+  &__content {
+    display: none;
+    gap: $gap;
+    flex-direction: column;
+
+    &.active {
+      display: flex;
+    }
+  }
 }
