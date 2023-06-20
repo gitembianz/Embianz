@@ -18,7 +18,7 @@
 
    &:hover {
      background-color: $hoverEffect; //$BtnHover
-     color: $secondColor;
+     color: $activeEffect;
 
      &>.sidebar__icon {
        background-color: $hoverEffect; //$BtnHover
@@ -86,7 +86,7 @@
 
    //  Delete button for mixin
    &.delete {
-     @include BtnHover($hoverEffect: darken($alertColor, 20%));
+     @include BtnHover(darken($alertColor, 20%), darken($alertColor, 40%), $secondColor);
      background-color: $alertColor;
    }
    &.edit {
@@ -97,7 +97,7 @@
     }
   }
    &.submit {
-     @include BtnHover($hoverEffect: darken($secondColor, 30%), $activeEffect: darken($secondColor, 30%));
+     @include BtnHover(darken($secondColor, 30%), darken($secondColor, 50%), $darkBg);
      background-color: $secondColor;
      color: $mainBg;
    }

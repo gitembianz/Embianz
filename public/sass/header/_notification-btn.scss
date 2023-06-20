@@ -23,7 +23,7 @@
     overflow-y: auto;
     @include centering;
     @include scrollbar;
-    background: $mainBg;
+    background: darken($mainBg, 7%);
     flex-direction: column;
     transition: $transition;
     justify-content: flex-start;
@@ -53,16 +53,45 @@
 
 @media (min-width: 1024px) {
   .notify {
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 50px;
+      right: 0.9rem;
+      transform: translateY(-1050%);
+      transition: $transition;
+      width: 0;
+      height: 0;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-bottom: 15px solid darken($mainBg, 7%);
+    }
+
+    &.open::after {
+      transform: translateY(0%);
+    }
+
     &__list {
-      left: 75%;
+      right: -30px;
+      top: 90px;
+      left: unset;
       width: $notifyWidth;
       height: $NotifyHeight;
       border-radius: $BtnBorderRadius ;
       box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
     }
 
+    // &__title {
+    //   position: relative;
+    //   width: 100%;
+    //   text-align: center;
+
+    // }
+
+
     &.open>.notify__list {
-      transform: translateX(-50%) translateY(10%);
+      transform: translateX(-50%);
     }
   }
 }

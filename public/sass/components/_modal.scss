@@ -17,6 +17,7 @@
     grid-template-rows: 1fr 0fr;
     gap: $gap;
 
+    font-weight: 400;
     background-color: $white;
     border-radius: $base-border-radius;
 
@@ -34,7 +35,7 @@
       text-align: center;
       color: $mainBg;
       font-size: calc($fSize * 2);
-      font-weight: $font-weight-bold;
+      // font-weight: $font-weight-bold;
     }
 
     // Modal Buttons
