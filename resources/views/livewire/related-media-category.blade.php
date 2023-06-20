@@ -250,7 +250,7 @@
                     </div>
                     {{-- end modals --}}
 
-                    {{-- Livewire table --}}
+                    {{-- Livewire table ---}}
 
                     <table class="livewire-table">
 
