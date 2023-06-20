@@ -1298,6 +1298,32 @@ main {
 .dropdown-list button.delete.active svg, .dropdown-list button.delete:active svg, .dropdown-list button.delete:focus-visible svg {
   stroke: #35424B;
 }
+.dropdown-list button.edit {
+  background-color: #ffffff;
+}
+.dropdown-list button.edit:hover {
+  background-color: #28f697;
+  color: #BBFCDE;
+}
+.dropdown-list button.edit:hover > .sidebar__icon {
+  background-color: #28f697;
+}
+.dropdown-list button.edit.active, .dropdown-list button.edit:active, .dropdown-list button.edit:focus-visible {
+  background-color: #28f697;
+  color: #35424B;
+}
+.dropdown-list button.edit.active > .sidebar__icon, .dropdown-list button.edit:active > .sidebar__icon, .dropdown-list button.edit:focus-visible > .sidebar__icon {
+  background-color: #28f697;
+}
+.dropdown-list button.edit.active > .sidebar__icon svg, .dropdown-list button.edit:active > .sidebar__icon svg, .dropdown-list button.edit:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.dropdown-list button.edit.active svg, .dropdown-list button.edit:active svg, .dropdown-list button.edit:focus-visible svg {
+  stroke: #35424B;
+}
+.dropdown-list button.edit svg {
+  stroke: #35424B;
+}
 .dropdown-list button.submit {
   background-color: #BBFCDE;
   color: #35424B;
@@ -1439,6 +1465,32 @@ main {
   stroke: #35424B;
 }
 .alert__session-btn.delete.active svg, .alert__session-btn.delete:active svg, .alert__session-btn.delete:focus-visible svg {
+  stroke: #35424B;
+}
+.alert__session-btn.edit {
+  background-color: #ffffff;
+}
+.alert__session-btn.edit:hover {
+  background-color: #28f697;
+  color: #BBFCDE;
+}
+.alert__session-btn.edit:hover > .sidebar__icon {
+  background-color: #28f697;
+}
+.alert__session-btn.edit.active, .alert__session-btn.edit:active, .alert__session-btn.edit:focus-visible {
+  background-color: #28f697;
+  color: #35424B;
+}
+.alert__session-btn.edit.active > .sidebar__icon, .alert__session-btn.edit:active > .sidebar__icon, .alert__session-btn.edit:focus-visible > .sidebar__icon {
+  background-color: #28f697;
+}
+.alert__session-btn.edit.active > .sidebar__icon svg, .alert__session-btn.edit:active > .sidebar__icon svg, .alert__session-btn.edit:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.alert__session-btn.edit.active svg, .alert__session-btn.edit:active svg, .alert__session-btn.edit:focus-visible svg {
+  stroke: #35424B;
+}
+.alert__session-btn.edit svg {
   stroke: #35424B;
 }
 .alert__session-btn.submit {
@@ -1835,6 +1887,32 @@ main {
 .modal-content-btn.delete.active svg, .modal-content-btn.delete:active svg, .modal-content-btn.delete:focus-visible svg {
   stroke: #35424B;
 }
+.modal-content-btn.edit {
+  background-color: #ffffff;
+}
+.modal-content-btn.edit:hover {
+  background-color: #28f697;
+  color: #BBFCDE;
+}
+.modal-content-btn.edit:hover > .sidebar__icon {
+  background-color: #28f697;
+}
+.modal-content-btn.edit.active, .modal-content-btn.edit:active, .modal-content-btn.edit:focus-visible {
+  background-color: #28f697;
+  color: #35424B;
+}
+.modal-content-btn.edit.active > .sidebar__icon, .modal-content-btn.edit:active > .sidebar__icon, .modal-content-btn.edit:focus-visible > .sidebar__icon {
+  background-color: #28f697;
+}
+.modal-content-btn.edit.active > .sidebar__icon svg, .modal-content-btn.edit:active > .sidebar__icon svg, .modal-content-btn.edit:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.modal-content-btn.edit.active svg, .modal-content-btn.edit:active svg, .modal-content-btn.edit:focus-visible svg {
+  stroke: #35424B;
+}
+.modal-content-btn.edit svg {
+  stroke: #35424B;
+}
 .modal-content-btn.submit {
   background-color: #BBFCDE;
   color: #35424B;
@@ -1995,6 +2073,32 @@ input[type=checkbox]:checked:before {
   stroke: #35424B;
 }
 .top-up-btn.delete.active svg, .top-up-btn.delete:active svg, .top-up-btn.delete:focus-visible svg {
+  stroke: #35424B;
+}
+.top-up-btn.edit {
+  background-color: #ffffff;
+}
+.top-up-btn.edit:hover {
+  background-color: #28f697;
+  color: #BBFCDE;
+}
+.top-up-btn.edit:hover > .sidebar__icon {
+  background-color: #28f697;
+}
+.top-up-btn.edit.active, .top-up-btn.edit:active, .top-up-btn.edit:focus-visible {
+  background-color: #28f697;
+  color: #35424B;
+}
+.top-up-btn.edit.active > .sidebar__icon, .top-up-btn.edit:active > .sidebar__icon, .top-up-btn.edit:focus-visible > .sidebar__icon {
+  background-color: #28f697;
+}
+.top-up-btn.edit.active > .sidebar__icon svg, .top-up-btn.edit:active > .sidebar__icon svg, .top-up-btn.edit:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.top-up-btn.edit.active svg, .top-up-btn.edit:active svg, .top-up-btn.edit:focus-visible svg {
+  stroke: #35424B;
+}
+.top-up-btn.edit svg {
   stroke: #35424B;
 }
 .top-up-btn.submit {
@@ -2166,6 +2270,32 @@ input[type=checkbox]:checked:before {
   stroke: #35424B;
 }
 .livewire-table button.delete.active svg, .livewire-table button.delete:active svg, .livewire-table button.delete:focus-visible svg {
+  stroke: #35424B;
+}
+.livewire-table button.edit {
+  background-color: #ffffff;
+}
+.livewire-table button.edit:hover {
+  background-color: #28f697;
+  color: #BBFCDE;
+}
+.livewire-table button.edit:hover > .sidebar__icon {
+  background-color: #28f697;
+}
+.livewire-table button.edit.active, .livewire-table button.edit:active, .livewire-table button.edit:focus-visible {
+  background-color: #28f697;
+  color: #35424B;
+}
+.livewire-table button.edit.active > .sidebar__icon, .livewire-table button.edit:active > .sidebar__icon, .livewire-table button.edit:focus-visible > .sidebar__icon {
+  background-color: #28f697;
+}
+.livewire-table button.edit.active > .sidebar__icon svg, .livewire-table button.edit:active > .sidebar__icon svg, .livewire-table button.edit:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.livewire-table button.edit.active svg, .livewire-table button.edit:active svg, .livewire-table button.edit:focus-visible svg {
+  stroke: #35424B;
+}
+.livewire-table button.edit svg {
   stroke: #35424B;
 }
 .livewire-table button.submit {
@@ -2417,6 +2547,48 @@ input[type=checkbox]:checked:before {
 .table th button.delete:focus-visible svg {
   stroke: #35424B;
 }
+.table td button.edit,
+.table th button.edit {
+  background-color: #ffffff;
+}
+.table td button.edit:hover,
+.table th button.edit:hover {
+  background-color: #28f697;
+  color: #BBFCDE;
+}
+.table td button.edit:hover > .sidebar__icon,
+.table th button.edit:hover > .sidebar__icon {
+  background-color: #28f697;
+}
+.table td button.edit.active, .table td button.edit:active, .table td button.edit:focus-visible,
+.table th button.edit.active,
+.table th button.edit:active,
+.table th button.edit:focus-visible {
+  background-color: #28f697;
+  color: #35424B;
+}
+.table td button.edit.active > .sidebar__icon, .table td button.edit:active > .sidebar__icon, .table td button.edit:focus-visible > .sidebar__icon,
+.table th button.edit.active > .sidebar__icon,
+.table th button.edit:active > .sidebar__icon,
+.table th button.edit:focus-visible > .sidebar__icon {
+  background-color: #28f697;
+}
+.table td button.edit.active > .sidebar__icon svg, .table td button.edit:active > .sidebar__icon svg, .table td button.edit:focus-visible > .sidebar__icon svg,
+.table th button.edit.active > .sidebar__icon svg,
+.table th button.edit:active > .sidebar__icon svg,
+.table th button.edit:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.table td button.edit.active svg, .table td button.edit:active svg, .table td button.edit:focus-visible svg,
+.table th button.edit.active svg,
+.table th button.edit:active svg,
+.table th button.edit:focus-visible svg {
+  stroke: #35424B;
+}
+.table td button.edit svg,
+.table th button.edit svg {
+  stroke: #35424B;
+}
 .table td button.submit,
 .table th button.submit {
   background-color: #BBFCDE;
@@ -2545,6 +2717,32 @@ input[type=checkbox]:checked:before {
 .pagination__item.delete.active svg, .pagination__item.delete:active svg, .pagination__item.delete:focus-visible svg {
   stroke: #35424B;
 }
+.pagination__item.edit {
+  background-color: #ffffff;
+}
+.pagination__item.edit:hover {
+  background-color: #28f697;
+  color: #BBFCDE;
+}
+.pagination__item.edit:hover > .sidebar__icon {
+  background-color: #28f697;
+}
+.pagination__item.edit.active, .pagination__item.edit:active, .pagination__item.edit:focus-visible {
+  background-color: #28f697;
+  color: #35424B;
+}
+.pagination__item.edit.active > .sidebar__icon, .pagination__item.edit:active > .sidebar__icon, .pagination__item.edit:focus-visible > .sidebar__icon {
+  background-color: #28f697;
+}
+.pagination__item.edit.active > .sidebar__icon svg, .pagination__item.edit:active > .sidebar__icon svg, .pagination__item.edit:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.pagination__item.edit.active svg, .pagination__item.edit:active svg, .pagination__item.edit:focus-visible svg {
+  stroke: #35424B;
+}
+.pagination__item.edit svg {
+  stroke: #35424B;
+}
 .pagination__item.submit {
   background-color: #BBFCDE;
   color: #35424B;
@@ -2568,9 +2766,6 @@ input[type=checkbox]:checked:before {
 }
 .pagination__item.submit.active svg, .pagination__item.submit:active svg, .pagination__item.submit:focus-visible svg {
   stroke: #35424B;
-}
-.pagination__item:nth-last-child(-n+4):not(:last-child) {
-  display: none;
 }
 .pagination__item.active {
   background-color: #BBFCDE;
@@ -2804,6 +2999,64 @@ input[type=checkbox]:checked:before {
 .profile__icon.delete:focus-visible svg {
   stroke: #35424B;
 }
+.search__item.edit, .search__icon.edit,
+.profile__item.edit,
+.profile__icon.edit {
+  background-color: #ffffff;
+}
+.search__item.edit:hover, .search__icon.edit:hover,
+.profile__item.edit:hover,
+.profile__icon.edit:hover {
+  background-color: #28f697;
+  color: #BBFCDE;
+}
+.search__item.edit:hover > .sidebar__icon, .search__icon.edit:hover > .sidebar__icon,
+.profile__item.edit:hover > .sidebar__icon,
+.profile__icon.edit:hover > .sidebar__icon {
+  background-color: #28f697;
+}
+.search__item.edit.active, .search__item.edit:active, .search__item.edit:focus-visible, .search__icon.edit.active, .search__icon.edit:active, .search__icon.edit:focus-visible,
+.profile__item.edit.active,
+.profile__item.edit:active,
+.profile__item.edit:focus-visible,
+.profile__icon.edit.active,
+.profile__icon.edit:active,
+.profile__icon.edit:focus-visible {
+  background-color: #28f697;
+  color: #35424B;
+}
+.search__item.edit.active > .sidebar__icon, .search__item.edit:active > .sidebar__icon, .search__item.edit:focus-visible > .sidebar__icon, .search__icon.edit.active > .sidebar__icon, .search__icon.edit:active > .sidebar__icon, .search__icon.edit:focus-visible > .sidebar__icon,
+.profile__item.edit.active > .sidebar__icon,
+.profile__item.edit:active > .sidebar__icon,
+.profile__item.edit:focus-visible > .sidebar__icon,
+.profile__icon.edit.active > .sidebar__icon,
+.profile__icon.edit:active > .sidebar__icon,
+.profile__icon.edit:focus-visible > .sidebar__icon {
+  background-color: #28f697;
+}
+.search__item.edit.active > .sidebar__icon svg, .search__item.edit:active > .sidebar__icon svg, .search__item.edit:focus-visible > .sidebar__icon svg, .search__icon.edit.active > .sidebar__icon svg, .search__icon.edit:active > .sidebar__icon svg, .search__icon.edit:focus-visible > .sidebar__icon svg,
+.profile__item.edit.active > .sidebar__icon svg,
+.profile__item.edit:active > .sidebar__icon svg,
+.profile__item.edit:focus-visible > .sidebar__icon svg,
+.profile__icon.edit.active > .sidebar__icon svg,
+.profile__icon.edit:active > .sidebar__icon svg,
+.profile__icon.edit:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.search__item.edit.active svg, .search__item.edit:active svg, .search__item.edit:focus-visible svg, .search__icon.edit.active svg, .search__icon.edit:active svg, .search__icon.edit:focus-visible svg,
+.profile__item.edit.active svg,
+.profile__item.edit:active svg,
+.profile__item.edit:focus-visible svg,
+.profile__icon.edit.active svg,
+.profile__icon.edit:active svg,
+.profile__icon.edit:focus-visible svg {
+  stroke: #35424B;
+}
+.search__item.edit svg, .search__icon.edit svg,
+.profile__item.edit svg,
+.profile__icon.edit svg {
+  stroke: #35424B;
+}
 .search__item.submit, .search__icon.submit,
 .profile__item.submit,
 .profile__icon.submit {
@@ -3031,6 +3284,32 @@ input[type=checkbox]:checked:before {
 .notify__btn.delete.active svg, .notify__btn.delete:active svg, .notify__btn.delete:focus-visible svg, .notify__item.delete.active svg, .notify__item.delete:active svg, .notify__item.delete:focus-visible svg {
   stroke: #35424B;
 }
+.notify__btn.edit, .notify__item.edit {
+  background-color: #ffffff;
+}
+.notify__btn.edit:hover, .notify__item.edit:hover {
+  background-color: #28f697;
+  color: #BBFCDE;
+}
+.notify__btn.edit:hover > .sidebar__icon, .notify__item.edit:hover > .sidebar__icon {
+  background-color: #28f697;
+}
+.notify__btn.edit.active, .notify__btn.edit:active, .notify__btn.edit:focus-visible, .notify__item.edit.active, .notify__item.edit:active, .notify__item.edit:focus-visible {
+  background-color: #28f697;
+  color: #35424B;
+}
+.notify__btn.edit.active > .sidebar__icon, .notify__btn.edit:active > .sidebar__icon, .notify__btn.edit:focus-visible > .sidebar__icon, .notify__item.edit.active > .sidebar__icon, .notify__item.edit:active > .sidebar__icon, .notify__item.edit:focus-visible > .sidebar__icon {
+  background-color: #28f697;
+}
+.notify__btn.edit.active > .sidebar__icon svg, .notify__btn.edit:active > .sidebar__icon svg, .notify__btn.edit:focus-visible > .sidebar__icon svg, .notify__item.edit.active > .sidebar__icon svg, .notify__item.edit:active > .sidebar__icon svg, .notify__item.edit:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.notify__btn.edit.active svg, .notify__btn.edit:active svg, .notify__btn.edit:focus-visible svg, .notify__item.edit.active svg, .notify__item.edit:active svg, .notify__item.edit:focus-visible svg {
+  stroke: #35424B;
+}
+.notify__btn.edit svg, .notify__item.edit svg {
+  stroke: #35424B;
+}
 .notify__btn.submit, .notify__item.submit {
   background-color: #BBFCDE;
   color: #35424B;
@@ -3245,6 +3524,32 @@ input[type=checkbox]:checked:before {
 .sidebar__btn.delete.active svg, .sidebar__btn.delete:active svg, .sidebar__btn.delete:focus-visible svg {
   stroke: #35424B;
 }
+.sidebar__btn.edit {
+  background-color: #ffffff;
+}
+.sidebar__btn.edit:hover {
+  background-color: #28f697;
+  color: #BBFCDE;
+}
+.sidebar__btn.edit:hover > .sidebar__icon {
+  background-color: #28f697;
+}
+.sidebar__btn.edit.active, .sidebar__btn.edit:active, .sidebar__btn.edit:focus-visible {
+  background-color: #28f697;
+  color: #35424B;
+}
+.sidebar__btn.edit.active > .sidebar__icon, .sidebar__btn.edit:active > .sidebar__icon, .sidebar__btn.edit:focus-visible > .sidebar__icon {
+  background-color: #28f697;
+}
+.sidebar__btn.edit.active > .sidebar__icon svg, .sidebar__btn.edit:active > .sidebar__icon svg, .sidebar__btn.edit:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.sidebar__btn.edit.active svg, .sidebar__btn.edit:active svg, .sidebar__btn.edit:focus-visible svg {
+  stroke: #35424B;
+}
+.sidebar__btn.edit svg {
+  stroke: #35424B;
+}
 .sidebar__btn.submit {
   background-color: #BBFCDE;
   color: #35424B;
@@ -3343,6 +3648,32 @@ input[type=checkbox]:checked:before {
   stroke: #35424B;
 }
 .sidebar__item.delete.active svg, .sidebar__item.delete:active svg, .sidebar__item.delete:focus-visible svg {
+  stroke: #35424B;
+}
+.sidebar__item.edit {
+  background-color: #ffffff;
+}
+.sidebar__item.edit:hover {
+  background-color: #28f697;
+  color: #BBFCDE;
+}
+.sidebar__item.edit:hover > .sidebar__icon {
+  background-color: #28f697;
+}
+.sidebar__item.edit.active, .sidebar__item.edit:active, .sidebar__item.edit:focus-visible {
+  background-color: #28f697;
+  color: #35424B;
+}
+.sidebar__item.edit.active > .sidebar__icon, .sidebar__item.edit:active > .sidebar__icon, .sidebar__item.edit:focus-visible > .sidebar__icon {
+  background-color: #28f697;
+}
+.sidebar__item.edit.active > .sidebar__icon svg, .sidebar__item.edit:active > .sidebar__icon svg, .sidebar__item.edit:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.sidebar__item.edit.active svg, .sidebar__item.edit:active svg, .sidebar__item.edit:focus-visible svg {
+  stroke: #35424B;
+}
+.sidebar__item.edit svg {
   stroke: #35424B;
 }
 .sidebar__item.submit {
@@ -3450,6 +3781,32 @@ input[type=checkbox]:checked:before {
   stroke: #35424B;
 }
 .sidebar__icon.delete.active svg, .sidebar__icon.delete:active svg, .sidebar__icon.delete:focus-visible svg {
+  stroke: #35424B;
+}
+.sidebar__icon.edit {
+  background-color: #ffffff;
+}
+.sidebar__icon.edit:hover {
+  background-color: #28f697;
+  color: #BBFCDE;
+}
+.sidebar__icon.edit:hover > .sidebar__icon {
+  background-color: #28f697;
+}
+.sidebar__icon.edit.active, .sidebar__icon.edit:active, .sidebar__icon.edit:focus-visible {
+  background-color: #28f697;
+  color: #35424B;
+}
+.sidebar__icon.edit.active > .sidebar__icon, .sidebar__icon.edit:active > .sidebar__icon, .sidebar__icon.edit:focus-visible > .sidebar__icon {
+  background-color: #28f697;
+}
+.sidebar__icon.edit.active > .sidebar__icon svg, .sidebar__icon.edit:active > .sidebar__icon svg, .sidebar__icon.edit:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.sidebar__icon.edit.active svg, .sidebar__icon.edit:active svg, .sidebar__icon.edit:focus-visible svg {
+  stroke: #35424B;
+}
+.sidebar__icon.edit svg {
   stroke: #35424B;
 }
 .sidebar__icon.submit {
@@ -3595,6 +3952,32 @@ input[type=checkbox]:checked:before {
   .sidebar__open.delete.active svg, .sidebar__open.delete:active svg, .sidebar__open.delete:focus-visible svg {
     stroke: #35424B;
   }
+  .sidebar__open.edit {
+    background-color: #ffffff;
+  }
+  .sidebar__open.edit:hover {
+    background-color: #28f697;
+    color: #BBFCDE;
+  }
+  .sidebar__open.edit:hover > .sidebar__icon {
+    background-color: #28f697;
+  }
+  .sidebar__open.edit.active, .sidebar__open.edit:active, .sidebar__open.edit:focus-visible {
+    background-color: #28f697;
+    color: #35424B;
+  }
+  .sidebar__open.edit.active > .sidebar__icon, .sidebar__open.edit:active > .sidebar__icon, .sidebar__open.edit:focus-visible > .sidebar__icon {
+    background-color: #28f697;
+  }
+  .sidebar__open.edit.active > .sidebar__icon svg, .sidebar__open.edit:active > .sidebar__icon svg, .sidebar__open.edit:focus-visible > .sidebar__icon svg {
+    stroke: #35424B;
+  }
+  .sidebar__open.edit.active svg, .sidebar__open.edit:active svg, .sidebar__open.edit:focus-visible svg {
+    stroke: #35424B;
+  }
+  .sidebar__open.edit svg {
+    stroke: #35424B;
+  }
   .sidebar__open.submit {
     background-color: #BBFCDE;
     color: #35424B;
@@ -3733,6 +4116,32 @@ input[type=checkbox]:checked:before {
 .item__header-btn.delete.active svg, .item__header-btn.delete:active svg, .item__header-btn.delete:focus-visible svg {
   stroke: #35424B;
 }
+.item__header-btn.edit {
+  background-color: #ffffff;
+}
+.item__header-btn.edit:hover {
+  background-color: #28f697;
+  color: #BBFCDE;
+}
+.item__header-btn.edit:hover > .sidebar__icon {
+  background-color: #28f697;
+}
+.item__header-btn.edit.active, .item__header-btn.edit:active, .item__header-btn.edit:focus-visible {
+  background-color: #28f697;
+  color: #35424B;
+}
+.item__header-btn.edit.active > .sidebar__icon, .item__header-btn.edit:active > .sidebar__icon, .item__header-btn.edit:focus-visible > .sidebar__icon {
+  background-color: #28f697;
+}
+.item__header-btn.edit.active > .sidebar__icon svg, .item__header-btn.edit:active > .sidebar__icon svg, .item__header-btn.edit:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.item__header-btn.edit.active svg, .item__header-btn.edit:active svg, .item__header-btn.edit:focus-visible svg {
+  stroke: #35424B;
+}
+.item__header-btn.edit svg {
+  stroke: #35424B;
+}
 .item__header-btn.submit {
   background-color: #BBFCDE;
   color: #35424B;
@@ -3838,6 +4247,32 @@ input[type=checkbox]:checked:before {
   stroke: #35424B;
 }
 .item__upload-btn.delete.active svg, .item__upload-btn.delete:active svg, .item__upload-btn.delete:focus-visible svg {
+  stroke: #35424B;
+}
+.item__upload-btn.edit {
+  background-color: #ffffff;
+}
+.item__upload-btn.edit:hover {
+  background-color: #28f697;
+  color: #BBFCDE;
+}
+.item__upload-btn.edit:hover > .sidebar__icon {
+  background-color: #28f697;
+}
+.item__upload-btn.edit.active, .item__upload-btn.edit:active, .item__upload-btn.edit:focus-visible {
+  background-color: #28f697;
+  color: #35424B;
+}
+.item__upload-btn.edit.active > .sidebar__icon, .item__upload-btn.edit:active > .sidebar__icon, .item__upload-btn.edit:focus-visible > .sidebar__icon {
+  background-color: #28f697;
+}
+.item__upload-btn.edit.active > .sidebar__icon svg, .item__upload-btn.edit:active > .sidebar__icon svg, .item__upload-btn.edit:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.item__upload-btn.edit.active svg, .item__upload-btn.edit:active svg, .item__upload-btn.edit:focus-visible svg {
+  stroke: #35424B;
+}
+.item__upload-btn.edit svg {
   stroke: #35424B;
 }
 .item__upload-btn.submit {
@@ -4089,6 +4524,32 @@ input[type=checkbox]:checked:before {
 .item__form-btn.delete.active svg, .item__form-btn.delete:active svg, .item__form-btn.delete:focus-visible svg {
   stroke: #35424B;
 }
+.item__form-btn.edit {
+  background-color: #ffffff;
+}
+.item__form-btn.edit:hover {
+  background-color: #28f697;
+  color: #BBFCDE;
+}
+.item__form-btn.edit:hover > .sidebar__icon {
+  background-color: #28f697;
+}
+.item__form-btn.edit.active, .item__form-btn.edit:active, .item__form-btn.edit:focus-visible {
+  background-color: #28f697;
+  color: #35424B;
+}
+.item__form-btn.edit.active > .sidebar__icon, .item__form-btn.edit:active > .sidebar__icon, .item__form-btn.edit:focus-visible > .sidebar__icon {
+  background-color: #28f697;
+}
+.item__form-btn.edit.active > .sidebar__icon svg, .item__form-btn.edit:active > .sidebar__icon svg, .item__form-btn.edit:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.item__form-btn.edit.active svg, .item__form-btn.edit:active svg, .item__form-btn.edit:focus-visible svg {
+  stroke: #35424B;
+}
+.item__form-btn.edit svg {
+  stroke: #35424B;
+}
 .item__form-btn.submit {
   background-color: #BBFCDE;
   color: #35424B;
@@ -4225,6 +4686,32 @@ input[type=checkbox]:checked:before {
   stroke: #35424B;
 }
 .right__open.delete.active svg, .right__open.delete:active svg, .right__open.delete:focus-visible svg {
+  stroke: #35424B;
+}
+.right__open.edit {
+  background-color: #ffffff;
+}
+.right__open.edit:hover {
+  background-color: #28f697;
+  color: #BBFCDE;
+}
+.right__open.edit:hover > .sidebar__icon {
+  background-color: #28f697;
+}
+.right__open.edit.active, .right__open.edit:active, .right__open.edit:focus-visible {
+  background-color: #28f697;
+  color: #35424B;
+}
+.right__open.edit.active > .sidebar__icon, .right__open.edit:active > .sidebar__icon, .right__open.edit:focus-visible > .sidebar__icon {
+  background-color: #28f697;
+}
+.right__open.edit.active > .sidebar__icon svg, .right__open.edit:active > .sidebar__icon svg, .right__open.edit:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.right__open.edit.active svg, .right__open.edit:active svg, .right__open.edit:focus-visible svg {
+  stroke: #35424B;
+}
+.right__open.edit svg {
   stroke: #35424B;
 }
 .right__open.submit {

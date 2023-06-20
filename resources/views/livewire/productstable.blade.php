@@ -61,7 +61,7 @@
                 Checked({{ count($checked) }})</button>
             @if ($checked)
                 <div class="dropdown-list">
-                    <button class="dropdown-item delete" type="button" wire:click="confirmCategoriesRemovalmultiple()">
+                    <button class="dropdown-item delete" type="button" wire:click="confirmProductsRemovalmultiple()">
                         Delete
                     </button>
                     <button class="dropdown-item submit" type="button" wire:click="exportSelected()">
