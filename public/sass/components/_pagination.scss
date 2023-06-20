@@ -12,9 +12,7 @@
     width: 2rem;
     height: 2rem;
 
-    &:nth-last-child(-n+4):not(:last-child) {
-      display: none;
-    }
+
 
     &.active {
       background-color: #BBFCDE;

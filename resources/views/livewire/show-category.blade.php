@@ -11,10 +11,11 @@
     </div>
 
 
+
     <div class="tab">
         <div class="tabs">
             <h3 class="tabs__page active">Details</h3>
-            <h3 class="tabs__page">Releated</h3>
+            <h3 class="tabs__page">Related</h3>
         </div>
         <div class="tab__list">
             <div class="tabs__content active" id="Details">
@@ -78,8 +79,6 @@
             <div class="tabs__content">
                 <livewire:related-media-category categoryId="{{ $category->id }}" />
             </div>
-        </div>
-
     </div>
     <div class="modal" id="confirmationmodalcategory">
       <div class="modal-content">

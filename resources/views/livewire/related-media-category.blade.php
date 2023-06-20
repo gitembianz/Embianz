@@ -1,9 +1,36 @@
 <div>
+
+  @if (session()->has('message'))
+        <div class="alert__session liveAlert" id="alertevent">
+            <span class="alert__session-text">{!! session('message') !!}</span>
+            <button class="alert__session-btn" type="button" data-bs-dismiss="alert" aria-hidden="true">
+                <svg>
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        <script>
+            const alertEvent = document.getElementById("alertevent");
+            header.style.marginBottom = '4rem';
+            alertEvent.style.opacity = '1';
+
+            setTimeout(function() {
+                alertEvent.style.opacity = '0';
+                setTimeout(function() {
+                    alertEvent.remove();
+                    header.style.marginBottom = '0';
+                }, 500);
+            }, 2000);
+        </script>
+    @endif
+  
     <div class="accordion">
         <button class="accordion__btn"
             wire:click.prevent="@if ($showmedia === false) $set('showmedia', true) @else $set('showmedia', false) @endif">
             {{ __('Media ') }}({{ count($files) }})
         </button>
+
         @if ($showmedia)
             <div class="accordion__content" id="contentDiv">
                 <div class="item">
@@ -25,6 +52,7 @@
                                     <table class="table">
                                         <thead>
                                             <tr>
+
                                                 <th>Media</th>
                                                 <th>Name</th>
                                                 <th>Size</th>
@@ -32,6 +60,7 @@
                                                 <th>Sequence</th>
                                                 <th>Location</th>
                                                 <th>Action</th>
+
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -57,6 +86,7 @@
                                                     <td>
                                                         <select required
                                                             wire:model="file_locations.{{ $loop->index }}">
+
 
                                                             @php
                                                                 $firstLocation = $locations->first();
@@ -98,6 +128,7 @@
 
                             </div>
                         </form>
+
                     </div>
                     <div class="item">
                         @if (count($files) > 0)
@@ -193,6 +224,7 @@
                                         onclick="document.getElementById('confirmationmodalmedia').style.display='none'"
                                         value="Cancel">
 
+
                                     <span class="modal-content-btn delete"
                                         onclick="document.getElementById('confirmationmodalmedia').style.display='none'">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
@@ -217,6 +249,7 @@
                                     <input class="modal-content-btn delete" type="button"
                                         onclick="document.getElementById('confirmationmodalmediamultiple').style.display='none'"
                                         value="Cancel">
+
 
                                     <span class="modal-content-btn delete"
                                         onclick="document.getElementById('confirmationmodalmediamultiple').style.display='none'">
@@ -260,6 +293,7 @@
                                             </th>
                                         @endif
 
+
                                         @if ($this->showColumn('Media Location'))
                                             <th class="cursor-p">Media Location
                                             </th>
@@ -268,6 +302,7 @@
                                             <th class="cursor-p">Sequence
                                             </th>
                                         @endif
+
 
                                         <th></th>
                                     </tr>
@@ -298,6 +333,7 @@
                                             @if ($this->showColumn('Name'))
                                                 <td data-title="Name">{{ $file->name }}</td>
                                             @endif
+
 
                                             @if ($this->showColumn('Media Location'))
                                                 <td data-title="Media Location">{{ $file->location->location }}</td>
@@ -332,7 +368,8 @@
                         @else
                     </div>
                 </div>
-                @if ($medias)
+       
+=
                 @else
                     <div class="col-12-xs col-12-sm col-12-xl mt-1 talign-c">
                         <span class="mt-1 m-a display-b text-bg wid-7 p-1 br-xs mb-2 bg-bg-light-9">No Media

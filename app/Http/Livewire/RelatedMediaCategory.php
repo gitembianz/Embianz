@@ -8,6 +8,7 @@ use App\Models\Tabels;
 use Livewire\Component;
 use App\Models\Category;
 use Livewire\WithPagination;
+use App\Exports\MediasExport;
 use App\Models\MediaLocation;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Auth;
@@ -25,6 +26,7 @@ class RelatedMediaCategory extends Component
   public $productType;
   public $type;
   public $medias = [];
+  public $filess = [];
   public $perPage = 10;
   public $search = '';
   public $orderBy = 'id';
@@ -33,13 +35,15 @@ class RelatedMediaCategory extends Component
   public $selectPage = false;
   public $selectAll = false;
   public $mediaidbeingremoved = null;
-  public $columns = ['Id', 'Name', 'Media', 'Media Location', 'Sequence'];
+  public $columns = ['Id', 'Media', 'Media Location', 'Sequence'];
   public $selectedColumns = [];
   public $locations;
   public $file_sequences = [];
   public $file_locations = ['1'];
   public $col = false;
   public $all = false;
+  public $hasResults;
+  public $editedMediaIndex = null;
 
   public function mount($categoryId)
   {
@@ -50,10 +54,46 @@ class RelatedMediaCategory extends Component
     $this->selectedColumns = $this->columns;
     $this->locations = MediaLocation::all();
     $this->file_locations[] = '1';
+
+  }
+
+  public function editMedia($mediaIndex)
+  {
+    $this->editedMediaIndex = $mediaIndex;
+  }
+
+  public function cancelMedia()
+  {
+    $this->editedMediaIndex = null;
+    $this->filess = [];
+  }
+
+  public function saveMedia($mediaIndex, $id)
+  {
+
+    $media_new = $this->filess[$mediaIndex] ?? NULL;
+    if(!is_null($media_new)){
+      $media_for_cat = Media::find($id);
+      if (array_key_exists('sequence', $media_new)) {
+        $media_for_cat->sequence = $media_new['sequence'];
+    }
+      if(array_key_exists('location_id', $media_new)){
+      $media_for_cat->location_id = $media_new['location_id'];}
+      $media_for_cat->save();
+      session()->flash('message', 'Media Edited Successfully!');
+    }
+    $this->filess = [];
+    $this->editedMediaIndex = null;
+
   }
 
   public function showColumn($column)
   {
+
+     // Always show the "Name" column
+     if ($column === 'Name') {
+      return true;
+  }
     return in_array($column, $this->selectedColumns);
   }
 
@@ -76,7 +116,6 @@ class RelatedMediaCategory extends Component
     $this->validate([
       'medias.*' => 'mimetypes:image/jpeg,image/png,image/svg+xml,video/mp4,video/quicktime|max:10240', // Max 10MB for all files
     ]);
-    //old code
     $data = Category::find($this->categoryId);
     $productType = class_basename(get_class($data));
     $filespath = 'media/' . $productType . '/';
@@ -118,7 +157,6 @@ class RelatedMediaCategory extends Component
         $height = $image->height();
       }
       //save the path and the name
-      //storage\app\media
       $media->item_id = $data->id;
       $media->path = $path;
       $media->name = $file->getClientOriginalName();
@@ -135,7 +173,6 @@ class RelatedMediaCategory extends Component
       }
 
       $file->storeAs($path, $media->name, 'public_upload');
-
       $media->tabel_id = Tabels::where('name', $productType)->first()->id;
       // dd($this->file_sequences[$i]);
       $media->sequence = $this->file_sequences[$i];
@@ -160,7 +197,6 @@ class RelatedMediaCategory extends Component
   }
 
 
-
   public function sortBy($columnName)
   {
 
@@ -175,9 +211,9 @@ class RelatedMediaCategory extends Component
 
   public function swapSortDirection()
   {
-
     return $this->orderAsc === '1' ? '0' : '1';
   }
+
   public function deleteSingleRecord()
   {
 
@@ -197,6 +233,8 @@ class RelatedMediaCategory extends Component
     $this->checked = array_diff($this->checked, [$this->mediaidbeingremoved]);
     session()->flash('message', 'Record deleted Successfully');
   }
+
+
   public function deleteRecords()
   {
 
@@ -208,7 +246,6 @@ class RelatedMediaCategory extends Component
       if (File::exists($path)) {
         File::delete($path);
       }
-
       $media->delete();
       $folder = $media->path;
       if (File::isDirectory($folder) && count(File::allFiles($folder)) === 0) {
@@ -226,19 +263,22 @@ class RelatedMediaCategory extends Component
     $this->selectAll = true;
     $this->checked = $this->filesQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
   }
+
   public function getFilesProperty()
   {
-    return $this->filesQuery->paginate($this->perPage);;
+    return $this->filesQuery->paginate($this->perPage);
   }
 
   public function getFilesQueryProperty()
   {
-    return Media::search($this->search)->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->where('item_id', $this->categoryId)->where('tabel_id', $this->type)->with('location');
+    return Media::search($this->search)->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->where('item_id', $this->categoryId)->where('tabel_id', $this->type)->with('location')->limit('1');
   }
+
   public function isChecked($id)
   {
     return in_array($id, $this->checked);
   }
+
   public function confirmFileRemoval($id)
   {
     $this->mediaidbeingremoved = $id;
@@ -251,8 +291,20 @@ class RelatedMediaCategory extends Component
     $this->dispatchBrowserEvent('show-delete-modal-media-multiple');
   }
 
+  public function exportSelected()
+  {
+    $export = new MediasExport($this->checked);
+    $this->checked = [];
+    $this->selectPage = false;
+    return $export->download('medias.xlsx');
+
+  }
+
   public function render()
   {
+
+    $this->hasResults = $this->files->isNotEmpty();
+
     return view('livewire.related-media-category', [
       'files' => $this->files
     ]);
