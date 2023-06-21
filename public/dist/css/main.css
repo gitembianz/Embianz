@@ -72,7 +72,6 @@ body::-webkit-scrollbar {
 body::-webkit-scrollbar-thumb {
   background: #20282d;
   border-radius: 10px;
-  -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
 }
 body::-webkit-scrollbar-thumb:hover {
@@ -898,6 +897,50 @@ main {
   letter-spacing: 10px;
 }
 
+.g-0 {
+  gap: 0;
+}
+
+.g-1 {
+  gap: 1rem;
+}
+
+.g-2 {
+  gap: 2rem;
+}
+
+.g-3 {
+  gap: 3rem;
+}
+
+.g-4 {
+  gap: 4rem;
+}
+
+.g-5 {
+  gap: 5rem;
+}
+
+.g-6 {
+  gap: 6rem;
+}
+
+.g-7 {
+  gap: 7rem;
+}
+
+.g-8 {
+  gap: 8rem;
+}
+
+.g-9 {
+  gap: 9rem;
+}
+
+.g-10 {
+  gap: 10rem;
+}
+
 .br {
   border-radius: 10px;
 }
@@ -1399,7 +1442,7 @@ main {
 }
 .dropdown-list button.edit:hover {
   background-color: #28f697;
-  color: #BBFCDE;
+  color: #28f697;
 }
 .dropdown-list button.edit:hover > .sidebar__icon {
   background-color: #28f697;
@@ -1568,7 +1611,7 @@ main {
 }
 .alert__session-btn.edit:hover {
   background-color: #28f697;
-  color: #BBFCDE;
+  color: #28f697;
 }
 .alert__session-btn.edit:hover > .sidebar__icon {
   background-color: #28f697;
@@ -1714,6 +1757,32 @@ main {
 .tabs__page.delete.active svg, .tabs__page.delete:active svg, .tabs__page.delete:focus-visible svg {
   stroke: #BBFCDE;
 }
+.tabs__page.edit {
+  background-color: #ffffff;
+}
+.tabs__page.edit:hover {
+  background-color: #28f697;
+  color: #28f697;
+}
+.tabs__page.edit:hover > .sidebar__icon {
+  background-color: #28f697;
+}
+.tabs__page.edit.active, .tabs__page.edit:active, .tabs__page.edit:focus-visible {
+  background-color: #28f697;
+  color: #35424B;
+}
+.tabs__page.edit.active > .sidebar__icon, .tabs__page.edit:active > .sidebar__icon, .tabs__page.edit:focus-visible > .sidebar__icon {
+  background-color: #28f697;
+}
+.tabs__page.edit.active > .sidebar__icon svg, .tabs__page.edit:active > .sidebar__icon svg, .tabs__page.edit:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.tabs__page.edit.active svg, .tabs__page.edit:active svg, .tabs__page.edit:focus-visible svg {
+  stroke: #35424B;
+}
+.tabs__page.edit svg {
+  stroke: #35424B;
+}
 .tabs__page.submit {
   background-color: #BBFCDE;
   color: #35424B;
@@ -1826,6 +1895,32 @@ main {
 }
 .accordion__btn.delete.active svg, .accordion__btn.delete:active svg, .accordion__btn.delete:focus-visible svg {
   stroke: #BBFCDE;
+}
+.accordion__btn.edit {
+  background-color: #ffffff;
+}
+.accordion__btn.edit:hover {
+  background-color: #28f697;
+  color: #28f697;
+}
+.accordion__btn.edit:hover > .sidebar__icon {
+  background-color: #28f697;
+}
+.accordion__btn.edit.active, .accordion__btn.edit:active, .accordion__btn.edit:focus-visible {
+  background-color: #28f697;
+  color: #35424B;
+}
+.accordion__btn.edit.active > .sidebar__icon, .accordion__btn.edit:active > .sidebar__icon, .accordion__btn.edit:focus-visible > .sidebar__icon {
+  background-color: #28f697;
+}
+.accordion__btn.edit.active > .sidebar__icon svg, .accordion__btn.edit:active > .sidebar__icon svg, .accordion__btn.edit:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.accordion__btn.edit.active svg, .accordion__btn.edit:active svg, .accordion__btn.edit:focus-visible svg {
+  stroke: #35424B;
+}
+.accordion__btn.edit svg {
+  stroke: #35424B;
 }
 .accordion__btn.submit {
   background-color: #BBFCDE;
@@ -1988,7 +2083,7 @@ main {
 }
 .modal-content-btn.edit:hover {
   background-color: #28f697;
-  color: #BBFCDE;
+  color: #28f697;
 }
 .modal-content-btn.edit:hover > .sidebar__icon {
   background-color: #28f697;
@@ -2050,9 +2145,7 @@ input[type=checkbox] {
   cursor: pointer;
   height: 2.5rem;
   width: 2.5rem;
-  -webkit-appearance: none;
-     -moz-appearance: none;
-          appearance: none;
+  appearance: none;
 }
 input[type=checkbox]:hover {
   background-color: rgba(146, 220, 254, 0.6588235294);
@@ -2176,7 +2269,7 @@ input[type=checkbox]:checked:before {
 }
 .top-up-btn.edit:hover {
   background-color: #28f697;
-  color: #BBFCDE;
+  color: #28f697;
 }
 .top-up-btn.edit:hover > .sidebar__icon {
   background-color: #28f697;
@@ -2372,7 +2465,7 @@ input[type=checkbox]:checked:before {
 }
 .livewire-table button.edit:hover {
   background-color: #28f697;
-  color: #BBFCDE;
+  color: #28f697;
 }
 .livewire-table button.edit:hover > .sidebar__icon {
   background-color: #28f697;
@@ -2474,8 +2567,7 @@ input[type=checkbox]:checked:before {
 .table td img,
 .table th img {
   height: 100%;
-  -o-object-fit: contain;
-     object-fit: contain;
+  object-fit: contain;
 }
 .table td select,
 .table td input,
@@ -2511,7 +2603,6 @@ input[type=checkbox]:checked:before {
 .table th input::-webkit-scrollbar-thumb {
   background: #20282d;
   border-radius: 10px;
-  -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
 }
 .table td select::-webkit-scrollbar-thumb:hover,
@@ -2635,7 +2726,7 @@ input[type=checkbox]:checked:before {
 .table td button.edit:hover,
 .table th button.edit:hover {
   background-color: #28f697;
-  color: #BBFCDE;
+  color: #28f697;
 }
 .table td button.edit:hover > .sidebar__icon,
 .table th button.edit:hover > .sidebar__icon {
@@ -2803,7 +2894,7 @@ input[type=checkbox]:checked:before {
 }
 .pagination__item.edit:hover {
   background-color: #28f697;
-  color: #BBFCDE;
+  color: #28f697;
 }
 .pagination__item.edit:hover > .sidebar__icon {
   background-color: #28f697;
@@ -2876,8 +2967,7 @@ input[type=checkbox]:checked:before {
   height: 3rem;
 }
 .header__logo img {
-  -o-object-fit: contain;
-     object-fit: contain;
+  object-fit: contain;
   height: 100%;
 }
 .header.moved {
@@ -3089,7 +3179,7 @@ input[type=checkbox]:checked:before {
 .profile__item.edit:hover,
 .profile__icon.edit:hover {
   background-color: #28f697;
-  color: #BBFCDE;
+  color: #28f697;
 }
 .search__item.edit:hover > .sidebar__icon, .search__icon.edit:hover > .sidebar__icon,
 .profile__item.edit:hover > .sidebar__icon,
@@ -3370,7 +3460,7 @@ input[type=checkbox]:checked:before {
 }
 .notify__btn.edit:hover, .notify__item.edit:hover {
   background-color: #28f697;
-  color: #BBFCDE;
+  color: #28f697;
 }
 .notify__btn.edit:hover > .sidebar__icon, .notify__item.edit:hover > .sidebar__icon {
   background-color: #28f697;
@@ -3449,7 +3539,6 @@ input[type=checkbox]:checked:before {
 .notify__list::-webkit-scrollbar-thumb {
   background: #20282d;
   border-radius: 10px;
-  -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
 }
 .notify__list::-webkit-scrollbar-thumb:hover {
@@ -3628,7 +3717,7 @@ input[type=checkbox]:checked:before {
 }
 .sidebar__btn.edit:hover {
   background-color: #28f697;
-  color: #BBFCDE;
+  color: #28f697;
 }
 .sidebar__btn.edit:hover > .sidebar__icon {
   background-color: #28f697;
@@ -3754,7 +3843,7 @@ input[type=checkbox]:checked:before {
 }
 .sidebar__item.edit:hover {
   background-color: #28f697;
-  color: #BBFCDE;
+  color: #28f697;
 }
 .sidebar__item.edit:hover > .sidebar__icon {
   background-color: #28f697;
@@ -3887,7 +3976,7 @@ input[type=checkbox]:checked:before {
 }
 .sidebar__icon.edit:hover {
   background-color: #28f697;
-  color: #BBFCDE;
+  color: #28f697;
 }
 .sidebar__icon.edit:hover > .sidebar__icon {
   background-color: #28f697;
@@ -4056,7 +4145,7 @@ input[type=checkbox]:checked:before {
   }
   .sidebar__open.edit:hover {
     background-color: #28f697;
-    color: #BBFCDE;
+    color: #28f697;
   }
   .sidebar__open.edit:hover > .sidebar__icon {
     background-color: #28f697;
@@ -4225,7 +4314,7 @@ input[type=checkbox]:checked:before {
 }
 .item__header-btn.edit:hover {
   background-color: #28f697;
-  color: #BBFCDE;
+  color: #28f697;
 }
 .item__header-btn.edit:hover > .sidebar__icon {
   background-color: #28f697;
@@ -4357,7 +4446,7 @@ input[type=checkbox]:checked:before {
 }
 .item__upload-btn.edit:hover {
   background-color: #28f697;
-  color: #BBFCDE;
+  color: #28f697;
 }
 .item__upload-btn.edit:hover > .sidebar__icon {
   background-color: #28f697;
@@ -4481,7 +4570,6 @@ input[type=checkbox]:checked:before {
 .item__form-close input::-webkit-scrollbar-thumb {
   background: #20282d;
   border-radius: 10px;
-  -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
 }
 .item__form-input div::-webkit-scrollbar-thumb:hover,
@@ -4632,7 +4720,7 @@ input[type=checkbox]:checked:before {
 }
 .item__form-btn.edit:hover {
   background-color: #28f697;
-  color: #BBFCDE;
+  color: #28f697;
 }
 .item__form-btn.edit:hover > .sidebar__icon {
   background-color: #28f697;
@@ -4790,7 +4878,7 @@ input[type=checkbox]:checked:before {
 }
 .right__open.edit:hover {
   background-color: #28f697;
-  color: #BBFCDE;
+  color: #28f697;
 }
 .right__open.edit:hover > .sidebar__icon {
   background-color: #28f697;
@@ -5018,9 +5106,7 @@ input[type=checkbox]:checked:before {
   pointer-events: none;
 }
 .container-right .card_calendar .date-time-formate {
-  width: -moz-max-content;
   width: max-content;
-  height: -moz-max-content;
   height: max-content;
   position: relative;
   display: flex;
@@ -5034,9 +5120,7 @@ input[type=checkbox]:checked:before {
 }
 .container-right .card_calendar .date-time-value {
   display: block;
-  height: -moz-max-content;
   height: max-content;
-  width: -moz-max-content;
   width: max-content;
   position: relative;
   left: 40%;
@@ -5140,8 +5224,7 @@ input[type=checkbox]:checked:before {
   width: 3.5rem;
   height: auto;
   padding: 0.5rem;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
   align-items: center;
   background: #ffffff;
 }
@@ -5154,4 +5237,4 @@ input[type=checkbox]:checked:before {
 }
 .container-right .card_todo .count {
   border-top: 1px solid #35424B;
-}/*# sourceMappingURL=main.css.map */
+}

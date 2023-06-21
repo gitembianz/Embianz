@@ -271,7 +271,7 @@ class RelatedMediaCategory extends Component
 
   public function getFilesQueryProperty()
   {
-    return Media::search($this->search)->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->where('item_id', $this->categoryId)->where('tabel_id', $this->type)->with('location')->limit('1');
+    return Media::search($this->search)->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->where('item_id', $this->categoryId)->where('tabel_id', $this->type)->with('location');
   }
 
   public function isChecked($id)

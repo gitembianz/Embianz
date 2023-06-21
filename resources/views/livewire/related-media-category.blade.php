@@ -402,9 +402,9 @@
                         @else
                     </div>
                 </div>
-                <div class="col-12-xs col-12-sm col-12-xl mt-1 talign-c">
-                    <span class="mt-1 m-a display-b text-bg wid-7 p-1 br-xs mb-2 bg-bg-light-9">No Media
-                        related</span>
+                <div class="item">
+                    <span class="talign-c p-1">
+                      No Media related</span>
                 </div>
         @endif
         @endif
