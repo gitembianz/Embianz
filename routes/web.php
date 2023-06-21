@@ -32,14 +32,8 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
   route::post('/category_update/{id}', [CategoryController::class, 'update_category'])->name('category_update');
   route::get('/new_categories', [CategoryController::class, 'new'])->name('newcategory');
 
-
-  //mediaroutes
-  route::get('/media/{id}/', [CategoryController::class, 'media'])->name('media');
-
-
   //Products routes
   route::get('/products', [ProductController::class, 'products'])->name('products');
-  Route::get('/get_all_products', [CategoryController::class, 'getAllProducts']);
   route::get('/add_product', [ProductController::class, 'add'])->name('add_product');
   route::post('/new_products', [ProductController::class, 'new'])->name('new_products');
   route::get('/show_product/{id}/', [ProductController::class, 'show'])->name('show_product');
@@ -48,7 +42,6 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
   route::post('/new', [TodolistController::class, 'store'])->name('store');
   route::delete('/{todolist:id}', [TodolistController::class, 'destroy'])->name('destroy');
 });
-
 
 route::get('/dashboard', [HomeController::class, 'redirect'])->middleware('auth', 'verified')->name('dashboard');
 

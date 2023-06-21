@@ -138,12 +138,6 @@ class CategoryController extends Controller
     return view('admin.show_category', compact('data'));
   }
 
-  public function getAllProducts()
-  {
-    $products = Product::all();
-    return response()->json(['products' => $products]);
-  }
-
   public function update_category(Request $request, $id)
   {
     $data = Category::find($id);

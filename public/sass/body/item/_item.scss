@@ -142,3 +142,10 @@
     }
   }
 }
+
+.table-edit{
+  @include standart-Input;
+  width: 6rem;
+  padding: 0;
+  height: 2rem;
+}

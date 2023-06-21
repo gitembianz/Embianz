@@ -343,7 +343,7 @@
                                                       wire:click.prevent="editMedia({{ $index }})">
                                                       {{ $file->name }}</div>
                                               @else
-                                                  <input type="text" required
+                                                  <input type="text" required class="table-edit wid-6"
                                                       wire:model.defer="filess.{{ $index }}.name"
                                                       value="{{ $file->name }}">
                                                   @if ($errors->has('filess.' . $index . '.name'))
@@ -362,7 +362,7 @@
                                                         wire:click.prevent="editMedia({{ $index }})">
                                                         {{ $file->location->location }}</div>
                                                 @else
-                                                    <select required
+                                                    <select required class="table-edit"
                                                         wire:model.defer="filess.{{ $index }}.location_id">
                                                         @foreach ($locations as $location)
                                                             <option value="{{ $location->id }}">
@@ -379,7 +379,7 @@
                                                         wire:click.prevent="editMedia({{ $index }})">
                                                         {{ $file->sequence }}</div>
                                                 @else
-                                                    <input type="number" min="0" required
+                                                    <input type="number" min="0" required class="table-edit"
                                                         wire:model.defer="filess.{{ $index }}.sequence"
                                                         value="{{ $file->sequence }}">
                                                     @if ($errors->has('filess.' . $index . '.sequence'))
