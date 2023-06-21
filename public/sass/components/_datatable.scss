@@ -157,9 +157,13 @@
   // background-color: transparent;
   color: $black;
 
+  &-scroll {
+    overflow-x: scroll;
+  }
+
   td,
   th {
-    border: 2px solid $darkBg;
+    border: 1px solid $darkBg;
     padding: 10px;
     height: 70px;
 
