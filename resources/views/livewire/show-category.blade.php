@@ -76,8 +76,10 @@
                     </div>
                 </form>
             </div>
-            <div class="tabs__content">
+            <div class="tabs__content display-f g-1">
                 <livewire:related-media-category categoryId="{{ $category->id }}" />
+
+                <livewire:related-product-category categoryId="{{ $category->id }}" />
             </div>
     </div>
     <div class="modal" id="confirmationmodalcategory">
