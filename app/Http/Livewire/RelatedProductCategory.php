@@ -2,9 +2,10 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Products_categories;
+use App\Models\Product;
 use Livewire\Component;
 use Livewire\WithPagination;
+use App\Models\Products_categories;
 
 class RelatedProductCategory extends Component
 {
@@ -19,14 +20,17 @@ class RelatedProductCategory extends Component
   public $checked = [];
   public $selectPage = false;
   public $selectAll = false;
-  public $columns = ['Id', 'Media', 'Media Location', 'Sequence'];
+  public $columns = ['Id', 'Short Description', 'Created At'];
   public $selectedColumns = [];
+  public $products_related = [];
+  public $products =[];
 
 
   public function mount($categoryId)
   {
     $this->categoryId = $categoryId;
     $this->selectedColumns = $this->columns;
+    $this->products_related = Products_categories::where('category_id', $this->categoryId)->get();
   }
 
   public function showColumn($column)
@@ -83,8 +87,16 @@ class RelatedProductCategory extends Component
     return $this->orderAsc === '1' ? '0' : '1';
   }
 
+  public function getproducts()
+  {
+  $this->products = Product::all();
+  // dd($this->products);
+  }
+
   public function render()
   {
-    return view('livewire.related-product-category');
+    return view('livewire.related-product-category', [
+      'products_related' => $this->products_related
+    ]);
   }
 }

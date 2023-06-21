@@ -4769,6 +4769,39 @@ input[type=checkbox]:checked:before {
   stroke: #20282d;
 }
 
+.table-edit {
+  border: 1.5px solid #35424B;
+  border-radius: 10px;
+  padding: 10px;
+  background: #ffffff;
+  color: #35424B;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  width: 100%;
+  height: 3rem;
+  resize: none;
+  outline: none;
+  text-decoration: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 6rem;
+  padding: 0;
+  height: 2rem;
+}
+.table-edit::-webkit-scrollbar {
+  width: 10px;
+  background: #2a353c;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+.table-edit::-webkit-scrollbar-thumb {
+  background: #20282d;
+  border-radius: 10px;
+  transition: all 0.2s ease-in-out;
+}
+.table-edit::-webkit-scrollbar-thumb:hover {
+  background: #151b1e;
+}
+
 @media (min-width: 1024px) {
   .item__header {
     grid-template-columns: 70% 1fr;

@@ -46,7 +46,7 @@
         </div>
 
         {{-- Item Upload --}}
-        <div class="item__upload">
+        <div class="item item__upload">
             <input type="file" name="media[]" id="imgUpload" multiple
                 accept="image/*,video/*"onchange="filesManager(this.files)">
 
