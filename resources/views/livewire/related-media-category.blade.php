@@ -337,7 +337,21 @@
                                             </td>
                                         @endif
                                         @if ($this->showColumn('Name'))
-                                            <td data-title="Name">{{ $file->name }}</td>
+                                            <td data-title="Name">
+                                              @if ($editedMediaIndex !== $index)
+                                                  <div class="cursor-p"
+                                                      wire:click.prevent="editMedia({{ $index }})">
+                                                      {{ $file->name }}</div>
+                                              @else
+                                                  <input type="text" required
+                                                      wire:model.defer="filess.{{ $index }}.name"
+                                                      value="{{ $file->name }}">
+                                                  @if ($errors->has('filess.' . $index . '.name'))
+                                                      <p>{{ $errors->first('filess.' . $index . '.name') }}
+                                                      </p>
+                                                  @endif
+                                              @endif
+                                          </td>
                                         @endif
 
 
