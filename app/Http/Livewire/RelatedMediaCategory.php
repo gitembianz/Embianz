@@ -78,7 +78,36 @@ class RelatedMediaCategory extends Component
         $media_for_cat->sequence = $media_new['sequence'];
     }
       if(array_key_exists('location_id', $media_new)){
-      $media_for_cat->location_id = $media_new['location_id'];}
+      $media_for_cat->location_id = $media_new['location_id'];
+    }
+    if (array_key_exists('name', $media_new)) {
+      $newName = $media_new['name'] . '.' . $media_for_cat->type;
+
+      $oldName = $media_for_cat->name;
+
+      if ($newName !== $oldName) {
+
+
+          // Rename the file in the file directory
+          $path = $media_for_cat->path;
+          if (file_exists($path . $newName)) {
+            $i = 1;
+            while (file_exists($path . $media_new['name'] . '(' . $i . ').' . $media_for_cat->type)) {
+              $i++;
+            }
+            $newName = $media_new['name'] . '(' . $i . ').' . $media_for_cat->type;
+          }
+          $oldFilePath = $path . $oldName;
+          $newFilePath = $path . $newName;
+           // Update the name attribute
+           $media_for_cat->name = $newName;
+           $media_for_cat->save();
+
+          if (file_exists($oldFilePath)) {
+              rename($oldFilePath, $newFilePath);
+          }
+      }
+  }
       $media_for_cat->save();
       session()->flash('message', 'Media Edited Successfully!');
     }
