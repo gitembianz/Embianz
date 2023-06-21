@@ -2558,9 +2558,12 @@ input[type=checkbox]:checked:before {
   border-collapse: collapse;
   color: #000;
 }
+.table-scroll {
+  overflow-x: scroll;
+}
 .table td,
 .table th {
-  border: 2px solid #20282d;
+  border: 1px solid #20282d;
   padding: 10px;
   height: 70px;
 }
