@@ -1,6 +1,5 @@
 .notify {
   position: relative;
-  // z-index: $z-index-content;
 
   &__btn,
   &__item {
@@ -29,7 +28,7 @@
     justify-content: flex-start;
     height: calc(100% - $headerHeight);
     transform: translateX(-50%) translateY(-150%);
-    z-index: $z-index-modal;
+    // z-index: $z-index-modal;
 
     li {
       width: 100%;
@@ -46,7 +45,7 @@
   &.open>.notify__list {
     opacity: 1;
     visibility: visible;
-    z-index: $z-index-active;
+    z-index: $z-index-modal;
     transform: translateX(-50%) translateY(0%);
   }
 }
@@ -81,14 +80,6 @@
       border-radius: $BtnBorderRadius ;
       box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
     }
-
-    // &__title {
-    //   position: relative;
-    //   width: 100%;
-    //   text-align: center;
-
-    // }
-
 
     &.open>.notify__list {
       transform: translateX(-50%);

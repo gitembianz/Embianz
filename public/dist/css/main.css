@@ -3536,7 +3536,6 @@ input[type=checkbox]:checked:before {
   justify-content: flex-start;
   height: calc(100% - 100px);
   transform: translateX(-50%) translateY(-150%);
-  z-index: 500;
 }
 .notify__list::-webkit-scrollbar {
   width: 10px;
@@ -3565,7 +3564,7 @@ input[type=checkbox]:checked:before {
 .notify.open > .notify__list {
   opacity: 1;
   visibility: visible;
-  z-index: 300;
+  z-index: 500;
   transform: translateX(-50%) translateY(0%);
 }
 
