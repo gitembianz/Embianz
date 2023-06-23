@@ -81,6 +81,7 @@
 
                 <livewire:related-product-category categoryId="{{ $category->id }}" />
             </div>
+
     </div>
     <div class="modal" id="confirmationmodalcategory">
       <div class="modal-content">

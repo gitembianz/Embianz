@@ -122,6 +122,5 @@
 {{-- page content end --}}
 <x-dashboardright />
 <x-dashboardmediahanddler />
-<x-dashboardscriptproduct />
 <x-dashboardscript />
 <x-dashboardfooter />

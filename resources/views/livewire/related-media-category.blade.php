@@ -379,7 +379,7 @@
                                                         wire:click.prevent="editMedia({{ $index }})">
                                                         {{ $file->sequence }}</div>
                                                 @else
-                                                    <input type="number" min="0" required class="table-edit"
+                                                    <input type="number" min="0" required class="table-edit wid-1"
                                                         wire:model.defer="filess.{{ $index }}.sequence"
                                                         value="{{ $file->sequence }}">
                                                     @if ($errors->has('filess.' . $index . '.sequence'))
@@ -445,5 +445,4 @@
         @endif
         @endif
     </div>
-</div>
 </div>

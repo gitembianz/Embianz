@@ -1,18 +1,4 @@
 <script>
-    //script form modals
-    window.addEventListener('show-delete-modal-category', event => {
-        document.getElementById('confirmationmodalcategory').style.display = 'flex';
-    });
-    window.addEventListener('show-delete-modal-category-multiple', event => {
-        document.getElementById('confirmationmodalcategorymultiple').style.display = 'flex';
-    });
-    window.addEventListener('show-delete-modal-media', event => {
-        document.getElementById('confirmationmodalmedia').style.display = 'flex';
-    });
-    window.addEventListener('show-delete-modal-media-multiple', event => {
-        document.getElementById('confirmationmodalmediamultiple').style.display = 'flex';
-    });
-
     //edit category script
     const editt = document.getElementById("edit");
     if (editt) {
