@@ -32,26 +32,10 @@
 {{-- Page content start --}}
 <section class="content">
 
-    <div class="row">
-        <div class="col-12-xs display-f jus-sb col-12-sm col-12-xl m-1 text-bg">
-            <h1 id="title" class="mt-1 font-xl ls-1 text-bg">View Product - <span
-                    class="text-black font-lg">{{ $data->name }}</span></h1>
-            <div class="display-f">
-                <a href="{{ route('products') }}" class="boxsha bg-secondary display-f align-center br-xs p-1"> Go
-                    Back</a>
-                <a href="{{ route('add_product') }}"
-                    class="boxsha bg-secondary ml-1 display-f align-center br-xs p-1"><span class="bg-secondary"></span>
-                    Add new</a>
-            </div>
-        </div>
-    </div>
-    <form action="#" method="POST" enctype="multipart/form-data">
-        @csrf
-        {{-- content --}}
-        <div class="row gap-4 justify-center">
+  {{-- Livewire component show --}}
 
-        </div>
-    </form>
+<livewire:show-product productId="{{ $data->id }}" />
+
     <a href="#" class="top-up-btn" id="topUp">
         <svg>
             <polyline points="18 15 12 9 6 15"></polyline>

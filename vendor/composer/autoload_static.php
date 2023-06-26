@@ -682,7 +682,6 @@ class ComposerStaticInitdbceb679be78fc0f2f620fcaf24d3e3e
         'App\\View\\Components\\Dashboardright' => __DIR__ . '/../..' . '/app/View/Components/Dashboardright.php',
         'App\\View\\Components\\Dashboardscript' => __DIR__ . '/../..' . '/app/View/Components/Dashboardscript.php',
         'App\\View\\Components\\Dashboardscriptcategory' => __DIR__ . '/../..' . '/app/View/Components/Dashboardscriptcategory.php',
-        'App\\View\\Components\\Dashboardscriptproduct' => __DIR__ . '/../..' . '/app/View/Components/Dashboardscriptproduct.php',
         'App\\View\\Components\\Dashboardsidebar' => __DIR__ . '/../..' . '/app/View/Components/Dashboardsidebar.php',
         'App\\View\\Components\\GuestLayout' => __DIR__ . '/../..' . '/app/View/Components/GuestLayout.php',
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
