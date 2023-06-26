@@ -36,7 +36,7 @@
                 <div class="item">
                     <div class="item">
                         <form wire:submit.prevent="save">
-                            <div class="item item__upload  mb-2 pb-3 bb-2">
+                            <div class="item item__upload  mb-2 pb-3 bb-1">
                                 <input id="imgUpload" accept="image/*,video/*" type="file" multiple
                                     wire:model="medias">
                                 <label class="item__upload-btn" for="imgUpload">

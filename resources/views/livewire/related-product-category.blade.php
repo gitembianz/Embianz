@@ -27,7 +27,9 @@
     <div class="accordion">
         <button class="accordion__btn"
             wire:click.prevent="@if ($showrelatedprod === false) $set('showrelatedprod', true) @else $set('showrelatedprod', false) @endif">
+
             {{ __('Products ') }}({{ count($relatedproducts) }})
+
         </button>
 
         @if ($showrelatedprod)
@@ -473,6 +475,7 @@
                         @else
                             <p>no products related</p>
                         @endif
+
                     </div>
                 </div>
             </div>
