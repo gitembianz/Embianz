@@ -103,9 +103,11 @@ class Productstable extends Component
     foreach ($products as $product) {
       $id = $product->id;
       $producttodel = Product::find($id);
-      $productcat = Products_categories::where('product_id', $id)->first();
-      if ($productcat != NULL) {
-        $productcat->delete();
+      $productcats = Products_categories::where('product_id', $id)->get();
+      if ($productcats != NULL) {
+        foreach($productcats as $productcat){
+          $productcat->delete();
+        }
       }
       $productType = class_basename(get_class($producttodel));
       $filespath = 'media/' . $productType . '/' . $producttodel->id;
@@ -124,9 +126,11 @@ class Productstable extends Component
   {
     $id = $this->productidbeingremoved;
     $product = Product::findOrFail($id);
-    $productcat = Products_categories::where('product_id', $id)->first();
-    if ($productcat != NULL) {
-      $productcat->delete();
+    $productcats = Products_categories::where('product_id', $id)->get();
+    if ($productcats != NULL) {
+      foreach($productcats as $productcat){
+        $productcat->delete();
+      }
     }
     $productType = class_basename(get_class($product));
     $filespath = 'media/' . $productType . '/' . $product->id;

@@ -55,9 +55,9 @@
    @include centering;
    @include BtnHover;
    @include standart-Font;
+   font-weight: 400 !important;
 
    background: $darkBg;
-
    outline: none;
    text-decoration: none;
    box-shadow: $BtnShadow;
@@ -132,6 +132,7 @@
    background: $white;
    color: $mainBg;
    box-shadow: $BtnShadow;
+   font-weight: 400 !important;
 
    width: 100%;
    height: $BtnSize;

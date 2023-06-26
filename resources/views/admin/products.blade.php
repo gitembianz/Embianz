@@ -53,5 +53,4 @@
 {{-- page content end --}}
 <x-dashboardright />
 <x-dashboardscript />
-<x-dashboardscriptproduct />
 <x-dashboardfooter />

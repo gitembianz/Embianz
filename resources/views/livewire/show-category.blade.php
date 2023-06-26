@@ -81,8 +81,9 @@
 
                 <livewire:related-product-category categoryId="{{ $category->id }}" />
             </div>
+
     </div>
-    <div class="modal" id="confirmationmodalcategory">
+    <div class="modal" id="confirmationmodalitem">
       <div class="modal-content">
           <h1 class="modal-content-title">
               {{ __('Are you sure to delete this category?') }}
@@ -90,10 +91,10 @@
           <input wire:click.prevent="deleteSingleRecord()" class="modal-content-btn submit" type="button"
               value="Confirm">
           <input class="modal-content-btn delete" type="button"
-              onclick="document.getElementById('confirmationmodalcategory').style.display='none'" value="Cancel">
+              onclick="document.getElementById('confirmationmodalitem').style.display='none'" value="Cancel">
 
           <span class="modal-content-btn delete"
-              onclick="document.getElementById('confirmationmodalcategory').style.display='none'">
+              onclick="document.getElementById('confirmationmodalitem').style.display='none'">
               <svg>
                   <line x1="18" y1="6" x2="6" y2="18"></line>
                   <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -101,4 +102,5 @@
           </span>
       </div>
   </div>
+</div>
 </div>

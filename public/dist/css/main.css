@@ -1328,7 +1328,7 @@ main {
   align-items: center;
   justify-content: center;
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 400;
   color: #BBFCDE;
   width: 100%;
   height: 100%;
@@ -1370,7 +1370,7 @@ main {
   align-items: center;
   justify-content: center;
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 400;
   color: #BBFCDE;
   background: #20282d;
   outline: none;
@@ -1512,7 +1512,7 @@ main {
 
 .alert__session {
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 400;
   color: #BBFCDE;
   display: flex;
   justify-content: space-between;
@@ -1526,7 +1526,7 @@ main {
 }
 .alert__session-text {
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 400;
   color: #BBFCDE;
   text-align: center;
   flex: 1;
@@ -1539,7 +1539,7 @@ main {
   align-items: center;
   justify-content: center;
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 400;
   color: #BBFCDE;
   background: #20282d;
   outline: none;
@@ -1690,7 +1690,7 @@ main {
   align-items: center;
   justify-content: center;
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 400;
   color: #BBFCDE;
   background: #20282d;
   outline: none;
@@ -1825,7 +1825,7 @@ main {
   align-items: center;
   justify-content: center;
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 400;
   color: #BBFCDE;
   background: #20282d;
   outline: none;
@@ -1996,7 +1996,7 @@ main {
 }
 .modal-content-title {
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 400;
   color: #BBFCDE;
   grid-column-start: 1;
   grid-column-end: 3;
@@ -2009,7 +2009,7 @@ main {
   align-items: center;
   justify-content: center;
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 400;
   color: #BBFCDE;
   background: #20282d;
   outline: none;
@@ -2025,7 +2025,7 @@ main {
   transition: all 0.2s ease-in-out;
   width: 100%;
   cursor: pointer;
-  font-weight: 700;
+  font-weight: 500;
 }
 .modal-content-btn:hover {
   background-color: #0b0d0f;
@@ -2194,7 +2194,7 @@ input[type=checkbox]:checked:before {
   align-items: center;
   justify-content: center;
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 400;
   color: #BBFCDE;
   background: #20282d;
   outline: none;
@@ -2391,7 +2391,7 @@ input[type=checkbox]:checked:before {
   align-items: center;
   justify-content: center;
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 400;
   color: #BBFCDE;
   background: #20282d;
   outline: none;
@@ -2584,6 +2584,7 @@ input[type=checkbox]:checked:before {
   background: #ffffff;
   color: #35424B;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  font-weight: 400 !important;
   width: 100%;
   height: 3rem;
   resize: none;
@@ -2623,7 +2624,7 @@ input[type=checkbox]:checked:before {
   align-items: center;
   justify-content: center;
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 400;
   color: #BBFCDE;
   background: #20282d;
   outline: none;
@@ -2826,7 +2827,7 @@ input[type=checkbox]:checked:before {
   align-items: center;
   justify-content: center;
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 400;
   color: #BBFCDE;
   background: #20282d;
   outline: none;
@@ -3047,7 +3048,7 @@ input[type=checkbox]:checked:before {
   align-items: center;
   justify-content: center;
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 400;
   color: #BBFCDE;
   background: #20282d;
   outline: none;
@@ -3394,7 +3395,7 @@ input[type=checkbox]:checked:before {
   align-items: center;
   justify-content: center;
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 400;
   color: #BBFCDE;
   background: #20282d;
   outline: none;
@@ -3514,7 +3515,7 @@ input[type=checkbox]:checked:before {
 }
 .notify__title {
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 400;
   color: #BBFCDE;
 }
 .notify__list {
@@ -3653,7 +3654,7 @@ input[type=checkbox]:checked:before {
   align-items: center;
   justify-content: center;
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 400;
   color: #BBFCDE;
   background: #20282d;
   outline: none;
@@ -3778,7 +3779,7 @@ input[type=checkbox]:checked:before {
   align-items: center;
   justify-content: center;
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 400;
   color: #BBFCDE;
   background: #20282d;
   outline: none;
@@ -3908,7 +3909,7 @@ input[type=checkbox]:checked:before {
   align-items: center;
   justify-content: center;
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 400;
   color: #BBFCDE;
   background: #20282d;
   outline: none;
@@ -4044,7 +4045,7 @@ input[type=checkbox]:checked:before {
   flex: 1;
   opacity: 1;
   padding-left: 10px;
-  font-weight: 500;
+  font-weight: 400;
 }
 .sidebar.open .sidebar__icon {
   opacity: 1;
@@ -4075,7 +4076,7 @@ input[type=checkbox]:checked:before {
     align-items: center;
     justify-content: center;
     font-size: 0.875rem;
-    font-weight: 500;
+    font-weight: 400;
     color: #BBFCDE;
     background: #20282d;
     outline: none;
@@ -4230,7 +4231,7 @@ input[type=checkbox]:checked:before {
 }
 .item__header-title {
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 400;
   color: #BBFCDE;
   color: #35424B;
   font-size: 2rem;
@@ -4248,7 +4249,7 @@ input[type=checkbox]:checked:before {
   align-items: center;
   justify-content: center;
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 400;
   color: #BBFCDE;
   background: #20282d;
   outline: none;
@@ -4379,7 +4380,7 @@ input[type=checkbox]:checked:before {
   align-items: center;
   justify-content: center;
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 400;
   color: #BBFCDE;
   background: #20282d;
   outline: none;
@@ -4518,7 +4519,7 @@ input[type=checkbox]:checked:before {
 }
 .item__form-input span, .item__form-input-close span, .item__form-close span {
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 400;
   color: #BBFCDE;
   color: #35424B;
   position: absolute;
@@ -4543,6 +4544,7 @@ input[type=checkbox]:checked:before {
   background: #ffffff;
   color: #35424B;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  font-weight: 400 !important;
   width: 100%;
   height: 3rem;
   resize: none;
@@ -4624,7 +4626,7 @@ input[type=checkbox]:checked:before {
 }
 .item__form-input-close span, .item__form-close span {
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 400;
   color: #BBFCDE;
   color: #35424B;
   position: absolute;
@@ -4653,7 +4655,7 @@ input[type=checkbox]:checked:before {
   align-items: center;
   justify-content: center;
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 400;
   color: #BBFCDE;
   background: #20282d;
   outline: none;
@@ -4775,6 +4777,40 @@ input[type=checkbox]:checked:before {
   stroke: #20282d;
 }
 
+.table-edit {
+  border: 1.5px solid #35424B;
+  border-radius: 10px;
+  padding: 10px;
+  background: #ffffff;
+  color: #35424B;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  font-weight: 400 !important;
+  width: 100%;
+  height: 3rem;
+  resize: none;
+  outline: none;
+  text-decoration: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 6rem;
+  padding: 0;
+  height: 2rem;
+}
+.table-edit::-webkit-scrollbar {
+  width: 10px;
+  background: #2a353c;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+.table-edit::-webkit-scrollbar-thumb {
+  background: #20282d;
+  border-radius: 10px;
+  transition: all 0.2s ease-in-out;
+}
+.table-edit::-webkit-scrollbar-thumb:hover {
+  background: #151b1e;
+}
+
 @media (min-width: 1024px) {
   .item__header {
     grid-template-columns: 70% 1fr;
@@ -4813,7 +4849,7 @@ input[type=checkbox]:checked:before {
   align-items: center;
   justify-content: center;
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 400;
   color: #BBFCDE;
   background: #20282d;
   outline: none;
