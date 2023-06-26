@@ -55,9 +55,9 @@
    @include centering;
    @include BtnHover;
    @include standart-Font;
+   font-weight: 400 !important;
 
    background: $darkBg;
-    font-weight: 400;
    outline: none;
    text-decoration: none;
    box-shadow: $BtnShadow;
