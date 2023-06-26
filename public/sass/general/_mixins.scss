@@ -132,7 +132,7 @@
    background: $white;
    color: $mainBg;
    box-shadow: $BtnShadow;
-   font-weight: 400;
+   font-weight: 400 !important;
 
    width: 100%;
    height: $BtnSize;
