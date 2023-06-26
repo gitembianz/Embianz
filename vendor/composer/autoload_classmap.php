@@ -65,7 +65,6 @@ return array(
     'App\\View\\Components\\Dashboardright' => $baseDir . '/app/View/Components/Dashboardright.php',
     'App\\View\\Components\\Dashboardscript' => $baseDir . '/app/View/Components/Dashboardscript.php',
     'App\\View\\Components\\Dashboardscriptcategory' => $baseDir . '/app/View/Components/Dashboardscriptcategory.php',
-    'App\\View\\Components\\Dashboardscriptproduct' => $baseDir . '/app/View/Components/Dashboardscriptproduct.php',
     'App\\View\\Components\\Dashboardsidebar' => $baseDir . '/app/View/Components/Dashboardsidebar.php',
     'App\\View\\Components\\GuestLayout' => $baseDir . '/app/View/Components/GuestLayout.php',
     'Attribute' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
