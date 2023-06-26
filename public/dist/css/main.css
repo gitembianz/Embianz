@@ -2582,6 +2582,7 @@ input[type=checkbox]:checked:before {
   background: #ffffff;
   color: #35424B;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  font-weight: 400;
   width: 100%;
   height: 3rem;
   resize: none;
@@ -4538,6 +4539,7 @@ input[type=checkbox]:checked:before {
   background: #ffffff;
   color: #35424B;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  font-weight: 400;
   width: 100%;
   height: 3rem;
   resize: none;
@@ -4776,6 +4778,7 @@ input[type=checkbox]:checked:before {
   background: #ffffff;
   color: #35424B;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  font-weight: 400;
   width: 100%;
   height: 3rem;
   resize: none;
