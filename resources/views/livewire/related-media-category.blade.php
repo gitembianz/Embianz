@@ -28,7 +28,11 @@
     <div class="accordion">
         <button class="accordion__btn"
             wire:click.prevent="@if ($showmedia === false) $set('showmedia', true) @else $set('showmedia', false) @endif">
-            {{ __('Media ') }}({{ count($files) }})
+            {{ __('Media ') }}(@if ($count)
+              {{ $count }}
+            @else
+              0
+            @endif)
         </button>
 
         @if ($showmedia)
