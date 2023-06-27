@@ -103,6 +103,8 @@ svg {
 
 main {
   position: relative;
+  margin-top: 100px;
+  transition: all 0.2s ease-in-out;
 }
 
 .content {
@@ -1311,8 +1313,13 @@ main {
     overflow: visible;
   }
   main {
-    display: grid;
-    grid-template-columns: 0fr 1fr 0fr;
+    margin-left: 70px;
+  }
+  main.ml {
+    margin-left: 200px;
+  }
+  main.mr {
+    margin-right: 410px;
   }
 }
 .dropdown {
@@ -3089,11 +3096,14 @@ input[type=checkbox]:checked:before {
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
+  position: fixed;
+  top: 0;
+  width: 100%;
   height: 100px;
   padding: 0 10px;
   background: #35424B;
   transition: all 0.2s ease-in-out;
+  z-index: 700;
   /*  This is function for Profile (When i open the bottom
     part of Profile) to increase the height of Header */
 }
@@ -3772,6 +3782,7 @@ input[type=checkbox]:checked:before {
   height: 100%;
   background-color: #35424B;
   transition: all 0.2s ease-in-out;
+  z-index: 300;
 }
 .sidebar__list {
   display: grid;
@@ -4173,7 +4184,6 @@ input[type=checkbox]:checked:before {
 }
 .sidebar.open {
   width: 100%;
-  z-index: 300;
 }
 .sidebar.open .sidebar__list {
   padding: 0 10px 10px;
@@ -4203,7 +4213,8 @@ input[type=checkbox]:checked:before {
 @media (min-width: 1024px) {
   .sidebar {
     width: 70px;
-    position: relative;
+    position: fixed;
+    top: 100px;
   }
   .sidebar__list {
     justify-items: center;
@@ -5135,9 +5146,9 @@ input[type=checkbox]:checked:before {
 
 @media (min-width: 1024px) {
   .right {
-    position: relative;
+    position: fixed;
     right: 0;
-    top: 0;
+    top: 100px;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
     background-color: #20282d;
@@ -5150,14 +5161,6 @@ input[type=checkbox]:checked:before {
   }
   .right.open {
     width: 400px;
-  }
-  .right.open > .right__open {
-    left: unset;
-    top: calc((3rem + 10px) / 2);
-    right: calc(100% - 1.2rem);
-  }
-  .right.open > .right__content {
-    height: 100%;
   }
 }
 .container-right .card_calendar {

@@ -5,7 +5,14 @@
 
   // General Modifacation
   main {
-    display: grid;
-    grid-template-columns: 0fr 1fr 0fr;
+    margin-left: $sidebar-Width-Desktop-Min;
+
+    &.ml {
+      margin-left: $sidebar-Width-Desktop-Max;
+    }
+
+    &.mr {
+      margin-right: 410px;
+    }
   }
 }

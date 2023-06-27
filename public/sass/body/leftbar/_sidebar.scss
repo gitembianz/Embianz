@@ -6,6 +6,7 @@
   height: 100%;
   background-color: $mainBg;
   transition: $transition;
+  z-index: $z-index-active;
 
   // Sidebar List of Items
   &__list {
@@ -62,7 +63,6 @@
   // SideBar Opened
   &.open {
     width: 100%;
-    z-index: $z-index-active;
 
     .sidebar {
 
