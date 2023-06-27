@@ -6,21 +6,11 @@
     text-align: left;
     width: 100%;
     position: relative;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
 
-    &::after {
-      content: "+";
-      width: 2rem;
-      height: 2rem;
-      font-size: 1.5rem;
-      position: absolute;
-      right: 0;
-      top: 50%;
-      transform: translateY(-50%);
-      color: white;
-    }
-
-    &.open::after {
-      content: "-";
+    &-flex {
+      display: flex;
     }
   }
 
@@ -29,5 +19,22 @@
     border-top: 0;
     border-radius: 0 0 $base-border-radius $base-border-radius;
     padding: $padding;
+  }
+
+  &__upload {
+    @include standart-Btn;
+    width: 3rem;
+    height: 3rem;
+    border: none;
+    background-color: $mainBg;
+    border-radius: 0 $BtnBorderRadius $BtnBorderRadius 0;
+
+    input {
+      display: none;
+    }
+
+    label {
+      border-radius: 0 $BtnBorderRadius $BtnBorderRadius 0;
+    }
   }
 }

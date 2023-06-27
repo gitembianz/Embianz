@@ -8,7 +8,6 @@ sidebarBtn.addEventListener('click', () => {
   search.classList.remove('active');
   profile.classList.remove('active');
   header.classList.remove('moved');
-  notify.classList.remove('open');
   document.querySelector('.content').classList.toggle("overflow");
   document.querySelector('main').classList.toggle("stop-height");
 })
@@ -18,6 +17,7 @@ sidebarOpen.addEventListener('click', () => {
   search.classList.remove('active');
   profile.classList.remove('active');
   header.classList.remove('moved');
+  document.querySelector("main").classList.toggle("ml");
 })
 
 
@@ -72,9 +72,6 @@ notifyBtn.addEventListener('click', () => {
     search.classList.remove('active');
 })
 
-
-
-
 // /script for rightside
 const right = document.querySelector('.right');
 const calendarBtn = document.querySelector('.right__open');
@@ -84,7 +81,7 @@ calendarBtn.addEventListener('click', () => {
     profile.classList.remove('active');
     header.classList.remove('moved');
     search.classList.remove('active');
-    notify.classList.remove('open');
+  document.querySelector("main").classList.toggle("mr");
 });
 
 
@@ -174,3 +171,21 @@ function closeAllAccordions() {
 
 // Close all accordions by default on page load
 closeAllAccordions();
+
+
+let prevScrollPos = window.pageYOffset;
+// const header = document.querySelector('header');
+
+window.addEventListener('scroll', () => {
+  const currentScrollPos = window.pageYOffset;
+
+  if (prevScrollPos > currentScrollPos) {
+    // Scrolling up
+    header.style.top = '0';
+  } else {
+    // Scrolling down
+    header.style.top = `-${header.offsetHeight}px`;
+  }
+
+  prevScrollPos = currentScrollPos;
+});
