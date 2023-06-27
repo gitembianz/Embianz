@@ -51,5 +51,4 @@
 <x-dashboardright />
 <x-dashboardscript />
 <x-dashboardmediahanddler />
-<x-dashboardscriptcategory />
 <x-dashboardfooter />

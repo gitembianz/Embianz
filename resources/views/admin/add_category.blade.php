@@ -114,5 +114,4 @@
 <x-dashboardright />
 <x-dashboardmediahanddler />
 <x-dashboardscript />
-<x-dashboardscriptcategory />
 <x-dashboardfooter />

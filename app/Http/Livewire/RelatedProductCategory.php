@@ -96,7 +96,7 @@ class RelatedProductCategory extends Component
 
   public function getProddsProperty()
   {
-    return $this->proddsQuery->Simplepaginate($this->perPageadd,['*'],  'products');
+    return $this->proddsQuery->paginate($this->perPageadd,['*'],  'products');
   }
   public function getProddsQueryProperty()
   {
@@ -183,7 +183,7 @@ class RelatedProductCategory extends Component
   }
   public function getRelatedproductsProperty()
   {
-    return $this->relatedproductsQuery->Simplepaginate($this->perPage,['*'], 'related');
+    return $this->relatedproductsQuery->paginate($this->perPage,['*'], 'related');
   }
   public function getRelatedproductsQueryProperty()
   {

@@ -45,5 +45,4 @@
 {{-- page content end --}}
 <x-dashboardright />
 <x-dashboardscript />
-<x-dashboardscriptcategory />
 <x-dashboardfooter />

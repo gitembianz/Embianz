@@ -60,9 +60,15 @@ Route::get('/cleareverything', function () {
 
   $cacheclear = Artisan::call('config:clear');
   echo "Config clear<br>";
+  $eventclear = Artisan::call('event:clear');
+  echo "event clear<br>";
+  $queueclear = Artisan::call('queue:clear');
+  echo "queue clear<br>";
 
   $optimize = Artisan::call('optimize:clear');
   echo "Optimize clear<br>";
+  $debugbar = Artisan::call('debugbar:clear');
+  echo "Debugbar clear<br>";
 });
 
 //Update app
