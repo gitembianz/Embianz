@@ -11,22 +11,7 @@
             <img src="/images/dashboard/navbar/mini-logo.png" alt="logo">
         </button>
 
-        <div class="notify">
-            <button class="notify__btn">
-                <svg>
-                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-                </svg>
-                <span class="alert-count">3</span>
-            </button>
-            <ul class="notify__list">
-                <h2 class="notify__title">Notification</h2>
-                <li><a class="notify__item alert-circle" href="#"><span>Lorem ipsum
-                            dolor</span><time>22.05.23<br>23:00</time></a></li>
-                <li><a class="notify__item" href="#"><span>Lorem ipsum
-                            dolor</span><time>22.05.23<br>23:00</time></a></li>
-            </ul>
-        </div>
+
 
         <button class="search__icon" id="openSearch">
             <svg>
@@ -55,6 +40,23 @@
                     <line x1="6" y1="6" x2="18" y2="18"></line>
                 </svg>
             </button>
+        </div>
+
+        <div class="notify">
+            <button class="notify__btn">
+                <svg>
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                </svg>
+                <span class="alert-count">3</span>
+            </button>
+            <ul class="notify__list">
+                <h2 class="notify__title">Notification</h2>
+                <li><a class="notify__item alert-circle" href="#"><span>Lorem ipsum
+                            dolor</span><time>22.05.23<br>23:00</time></a></li>
+                <li><a class="notify__item" href="#"><span>Lorem ipsum
+                            dolor</span><time>22.05.23<br>23:00</time></a></li>
+            </ul>
         </div>
 
         <div class="profile">

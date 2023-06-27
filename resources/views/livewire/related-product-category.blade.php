@@ -25,12 +25,19 @@
     @endif
 
     <div class="accordion">
-        <button class="accordion__btn"
-            wire:click.prevent="@if ($showrelatedprod === false) $set('showrelatedprod', true) @else $set('showrelatedprod', false) @endif">
-
-            {{ __('Products ') }}({{ count($relatedproducts) }})
-
-        </button>
+        <div class="accordion__btn-flex">
+            <button class="accordion__btn"
+                wire:click.prevent="@if ($showrelatedprod === false) $set('showrelatedprod', true) @else $set('showrelatedprod', false) @endif">
+                {{ __('Products ') }}({{ count($relatedproducts) }})
+            </button>
+            <button class="accordion__upload" wire:click="toggleTable">
+                <svg>
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="17 8 12 3 7 8"></polyline>
+                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+            </button>
+        </div>
 
         @if ($showrelatedprod)
             <div class="accordion__content">
@@ -38,9 +45,6 @@
                     <div class="item">
                         {{-- html for adding products --}}
                         @if ($showTable === false)
-                            <button class="item__upload-btn" wire:click="toggleTable">
-                                {{ __('Add related products') }}
-                            </button>
                         @else
                             <button class="item__upload-btn"
                                 wire:click="cancel">{{ __('Cancel and Save all') }}</button>
@@ -88,15 +92,15 @@
                                         @if ($checkedadd) style="display: flex" @endif>With
                                         Checked({{ count($checkedadd) }})</button>
                                     @if ($checkedadd)
-                                    @if ($alladd)
+                                        @if ($alladd)
+                                            <div class="dropdown-list" style="display: flex;">
+                                                <button class="dropdown-item submit" type="button"
+                                                    wire:click.prevent="confirmProductsLinkmultiple()">
+                                                    Add Multiple
+                                                </button>
 
-                                    <div class="dropdown-list" style="display: flex;">
-                                        <button class="dropdown-item submit" type="button"  wire:click.prevent="confirmProductsLinkmultiple()">
-                                            Add Multiple
-                                        </button>
-
-                                    </div>
-                                    @endif
+                                            </div>
+                                        @endif
                                     @endif
                                 </div>
                             </div>
@@ -123,28 +127,28 @@
                                 </div>
                             </div>
                             <div class="modal" id="confirmationmodallinkmultiple">
-                              <div class="modal-content">
-                                  <h1 class="modal-content-title">
-                                      {{ __('Are you sure to link those product?') }}
-                                  </h1>
-                                  <input wire:click.prevent="linkRecords()" class="modal-content-btn submit"
-                                      type="button" value="Confirm" id="confirmLoad">
-                                  <input class="modal-content-btn delete" type="button"
-                                      onclick="document.getElementById('confirmationmodallinkmultiple').style.display='none'"
-                                      value="Cancel">
+                                <div class="modal-content">
+                                    <h1 class="modal-content-title">
+                                        {{ __('Are you sure to link those product?') }}
+                                    </h1>
+                                    <input wire:click.prevent="linkRecords()" class="modal-content-btn submit"
+                                        type="button" value="Confirm" id="confirmLoad">
+                                    <input class="modal-content-btn delete" type="button"
+                                        onclick="document.getElementById('confirmationmodallinkmultiple').style.display='none'"
+                                        value="Cancel">
 
-                                  <span class="modal-content-btn delete"
-                                      onclick="document.getElementById('confirmationmodallinkmultiple').style.display='none'">
+                                    <span class="modal-content-btn delete"
+                                        onclick="document.getElementById('confirmationmodallinkmultiple').style.display='none'">
 
-                                      <svg>
-                                          <line x1="18" y1="6" x2="6" y2="18">
-                                          </line>
-                                          <line x1="6" y1="6" x2="18" y2="18">
-                                          </line>
-                                      </svg>
-                                  </span>
-                              </div>
-                          </div>
+                                        <svg>
+                                            <line x1="18" y1="6" x2="6" y2="18">
+                                            </line>
+                                            <line x1="6" y1="6" x2="18" y2="18">
+                                            </line>
+                                        </svg>
+                                    </span>
+                                </div>
+                            </div>
                             {{-- modals end --}}
 
                             @if ($selectPageadd)
@@ -215,8 +219,8 @@
                                 <tbody>
                                     @foreach ($prodds as $product)
                                         <tr class="@if ($this->isCheckedadd($product->id)) th_checked @endif">
-                                            <td data-title="Check"><input type="checkbox" value="{{ $product->id }}"
-                                                    wire:model="checkedadd">
+                                            <td data-title="Check"><input type="checkbox"
+                                                    value="{{ $product->id }}" wire:model="checkedadd">
                                             </td>
 
                                             @if ($this->showColumnadd('Id'))
@@ -252,8 +256,8 @@
                                         </tr>
                                     @endforeach
                                 </tbody>
-                              </table>
-                              <div>{{ $prodds->links('') }} </div>
+                            </table>
+                            <div>{{ $prodds->links('') }} </div>
                         @endif
                         {{-- end html for adding products --}}
                     </div>

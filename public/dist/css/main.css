@@ -1372,6 +1372,7 @@ main {
   font-size: 0.875rem;
   font-weight: 400;
   color: #BBFCDE;
+  font-weight: 400 !important;
   background: #20282d;
   outline: none;
   text-decoration: none;
@@ -1541,6 +1542,7 @@ main {
   font-size: 0.875rem;
   font-weight: 400;
   color: #BBFCDE;
+  font-weight: 400 !important;
   background: #20282d;
   outline: none;
   text-decoration: none;
@@ -1692,6 +1694,7 @@ main {
   font-size: 0.875rem;
   font-weight: 400;
   color: #BBFCDE;
+  font-weight: 400 !important;
   background: #20282d;
   outline: none;
   text-decoration: none;
@@ -1827,6 +1830,7 @@ main {
   font-size: 0.875rem;
   font-weight: 400;
   color: #BBFCDE;
+  font-weight: 400 !important;
   background: #20282d;
   outline: none;
   text-decoration: none;
@@ -1844,6 +1848,8 @@ main {
   text-align: left;
   width: 100%;
   position: relative;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
 }
 .accordion__btn:hover {
   background-color: #0b0d0f;
@@ -1947,25 +1953,148 @@ main {
 .accordion__btn.submit.active svg, .accordion__btn.submit:active svg, .accordion__btn.submit:focus-visible svg {
   stroke: #20282d;
 }
-.accordion__btn::after {
-  content: "+";
-  width: 2rem;
-  height: 2rem;
-  font-size: 1.5rem;
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  color: white;
-}
-.accordion__btn.open::after {
-  content: "-";
+.accordion__btn-flex {
+  display: flex;
 }
 .accordion__content {
   border: 1px solid #35424B;
   border-top: 0;
   border-radius: 0 0 10px 10px;
   padding: 10px;
+}
+.accordion__upload {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: #BBFCDE;
+  font-weight: 400 !important;
+  background: #20282d;
+  outline: none;
+  text-decoration: none;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  text-align: center;
+  cursor: pointer;
+  border: none;
+  border-radius: 10px;
+  padding: 0;
+  width: 3rem;
+  height: 3rem;
+  transition: all 0.2s ease-in-out;
+  width: 3rem;
+  height: 3rem;
+  border: none;
+  background-color: #35424B;
+  border-radius: 0 10px 10px 0;
+}
+.accordion__upload:hover {
+  background-color: #0b0d0f;
+  color: #BBFCDE;
+}
+.accordion__upload:hover > .sidebar__icon {
+  background-color: #0b0d0f;
+}
+.accordion__upload.active, .accordion__upload:active, .accordion__upload:focus-visible {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.accordion__upload.active > .sidebar__icon, .accordion__upload:active > .sidebar__icon, .accordion__upload:focus-visible > .sidebar__icon {
+  background-color: #BBFCDE;
+}
+.accordion__upload.active > .sidebar__icon svg, .accordion__upload:active > .sidebar__icon svg, .accordion__upload:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.accordion__upload.active svg, .accordion__upload:active svg, .accordion__upload:focus-visible svg {
+  stroke: #35424B;
+}
+.accordion__upload img,
+.accordion__upload svg {
+  width: 23px;
+  height: 23px;
+  stroke: #BBFCDE;
+  stroke-width: 1.5px;
+  background-color: transparent;
+  transition: all 0.2s ease-in-out;
+}
+.accordion__upload.delete {
+  background-color: #e25b73;
+}
+.accordion__upload.delete:hover {
+  background-color: #b7203b;
+  color: #60111f;
+}
+.accordion__upload.delete:hover > .sidebar__icon {
+  background-color: #b7203b;
+}
+.accordion__upload.delete.active, .accordion__upload.delete:active, .accordion__upload.delete:focus-visible {
+  background-color: #60111f;
+  color: #BBFCDE;
+}
+.accordion__upload.delete.active > .sidebar__icon, .accordion__upload.delete:active > .sidebar__icon, .accordion__upload.delete:focus-visible > .sidebar__icon {
+  background-color: #60111f;
+}
+.accordion__upload.delete.active > .sidebar__icon svg, .accordion__upload.delete:active > .sidebar__icon svg, .accordion__upload.delete:focus-visible > .sidebar__icon svg {
+  stroke: #BBFCDE;
+}
+.accordion__upload.delete.active svg, .accordion__upload.delete:active svg, .accordion__upload.delete:focus-visible svg {
+  stroke: #BBFCDE;
+}
+.accordion__upload.edit {
+  background-color: #ffffff;
+}
+.accordion__upload.edit:hover {
+  background-color: #28f697;
+  color: #28f697;
+}
+.accordion__upload.edit:hover > .sidebar__icon {
+  background-color: #28f697;
+}
+.accordion__upload.edit.active, .accordion__upload.edit:active, .accordion__upload.edit:focus-visible {
+  background-color: #28f697;
+  color: #35424B;
+}
+.accordion__upload.edit.active > .sidebar__icon, .accordion__upload.edit:active > .sidebar__icon, .accordion__upload.edit:focus-visible > .sidebar__icon {
+  background-color: #28f697;
+}
+.accordion__upload.edit.active > .sidebar__icon svg, .accordion__upload.edit:active > .sidebar__icon svg, .accordion__upload.edit:focus-visible > .sidebar__icon svg {
+  stroke: #35424B;
+}
+.accordion__upload.edit.active svg, .accordion__upload.edit:active svg, .accordion__upload.edit:focus-visible svg {
+  stroke: #35424B;
+}
+.accordion__upload.edit svg {
+  stroke: #35424B;
+}
+.accordion__upload.submit {
+  background-color: #BBFCDE;
+  color: #35424B;
+}
+.accordion__upload.submit:hover {
+  background-color: #28f697;
+  color: #08b062;
+}
+.accordion__upload.submit:hover > .sidebar__icon {
+  background-color: #28f697;
+}
+.accordion__upload.submit.active, .accordion__upload.submit:active, .accordion__upload.submit:focus-visible {
+  background-color: #08b062;
+  color: #20282d;
+}
+.accordion__upload.submit.active > .sidebar__icon, .accordion__upload.submit:active > .sidebar__icon, .accordion__upload.submit:focus-visible > .sidebar__icon {
+  background-color: #08b062;
+}
+.accordion__upload.submit.active > .sidebar__icon svg, .accordion__upload.submit:active > .sidebar__icon svg, .accordion__upload.submit:focus-visible > .sidebar__icon svg {
+  stroke: #20282d;
+}
+.accordion__upload.submit.active svg, .accordion__upload.submit:active svg, .accordion__upload.submit:focus-visible svg {
+  stroke: #20282d;
+}
+.accordion__upload input {
+  display: none;
+}
+.accordion__upload label {
+  border-radius: 0 10px 10px 0;
 }
 
 .modal {
@@ -2011,6 +2140,7 @@ main {
   font-size: 0.875rem;
   font-weight: 400;
   color: #BBFCDE;
+  font-weight: 400 !important;
   background: #20282d;
   outline: none;
   text-decoration: none;
@@ -2196,6 +2326,7 @@ input[type=checkbox]:checked:before {
   font-size: 0.875rem;
   font-weight: 400;
   color: #BBFCDE;
+  font-weight: 400 !important;
   background: #20282d;
   outline: none;
   text-decoration: none;
@@ -2393,6 +2524,7 @@ input[type=checkbox]:checked:before {
   font-size: 0.875rem;
   font-weight: 400;
   color: #BBFCDE;
+  font-weight: 400 !important;
   background: #20282d;
   outline: none;
   text-decoration: none;
@@ -2584,7 +2716,7 @@ input[type=checkbox]:checked:before {
   background: #ffffff;
   color: #35424B;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  font-weight: 400 !important;
+  font-weight: 400;
   width: 100%;
   height: 3rem;
   resize: none;
@@ -2626,6 +2758,7 @@ input[type=checkbox]:checked:before {
   font-size: 0.875rem;
   font-weight: 400;
   color: #BBFCDE;
+  font-weight: 400 !important;
   background: #20282d;
   outline: none;
   text-decoration: none;
@@ -2829,6 +2962,7 @@ input[type=checkbox]:checked:before {
   font-size: 0.875rem;
   font-weight: 400;
   color: #BBFCDE;
+  font-weight: 400 !important;
   background: #20282d;
   outline: none;
   text-decoration: none;
@@ -3050,6 +3184,7 @@ input[type=checkbox]:checked:before {
   font-size: 0.875rem;
   font-weight: 400;
   color: #BBFCDE;
+  font-weight: 400 !important;
   background: #20282d;
   outline: none;
   text-decoration: none;
@@ -3397,6 +3532,7 @@ input[type=checkbox]:checked:before {
   font-size: 0.875rem;
   font-weight: 400;
   color: #BBFCDE;
+  font-weight: 400 !important;
   background: #20282d;
   outline: none;
   text-decoration: none;
@@ -3570,7 +3706,7 @@ input[type=checkbox]:checked:before {
 }
 
 @media (min-width: 1024px) {
-  .notify::after {
+  .notify__btn::before {
     content: "";
     position: absolute;
     top: 50px;
@@ -3583,7 +3719,7 @@ input[type=checkbox]:checked:before {
     border-right: 10px solid transparent;
     border-bottom: 15px solid #263036;
   }
-  .notify.open::after {
+  .notify.open .notify__btn::before {
     transform: translateY(0%);
   }
   .notify__list {
@@ -3593,10 +3729,12 @@ input[type=checkbox]:checked:before {
     width: 30rem;
     height: 15rem;
     border-radius: 10px;
+    transform: translateX(-30%);
     box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
   }
   .notify.open > .notify__list {
-    transform: translateX(-50%);
+    transform: translateX(-30%);
+    z-index: 500;
   }
 }
 .alert-circle::after, .alert-count {
@@ -3656,6 +3794,7 @@ input[type=checkbox]:checked:before {
   font-size: 0.875rem;
   font-weight: 400;
   color: #BBFCDE;
+  font-weight: 400 !important;
   background: #20282d;
   outline: none;
   text-decoration: none;
@@ -3781,6 +3920,7 @@ input[type=checkbox]:checked:before {
   font-size: 0.875rem;
   font-weight: 400;
   color: #BBFCDE;
+  font-weight: 400 !important;
   background: #20282d;
   outline: none;
   text-decoration: none;
@@ -3911,6 +4051,7 @@ input[type=checkbox]:checked:before {
   font-size: 0.875rem;
   font-weight: 400;
   color: #BBFCDE;
+  font-weight: 400 !important;
   background: #20282d;
   outline: none;
   text-decoration: none;
@@ -4044,8 +4185,8 @@ input[type=checkbox]:checked:before {
   font-size: 0.875rem;
   flex: 1;
   opacity: 1;
-  padding-left: 10px;
   font-weight: 400;
+  margin-left: -3rem;
 }
 .sidebar.open .sidebar__icon {
   opacity: 1;
@@ -4078,6 +4219,7 @@ input[type=checkbox]:checked:before {
     font-size: 0.875rem;
     font-weight: 400;
     color: #BBFCDE;
+    font-weight: 400 !important;
     background: #20282d;
     outline: none;
     text-decoration: none;
@@ -4251,6 +4393,7 @@ input[type=checkbox]:checked:before {
   font-size: 0.875rem;
   font-weight: 400;
   color: #BBFCDE;
+  font-weight: 400 !important;
   background: #20282d;
   outline: none;
   text-decoration: none;
@@ -4382,6 +4525,7 @@ input[type=checkbox]:checked:before {
   font-size: 0.875rem;
   font-weight: 400;
   color: #BBFCDE;
+  font-weight: 400 !important;
   background: #20282d;
   outline: none;
   text-decoration: none;
@@ -4544,7 +4688,7 @@ input[type=checkbox]:checked:before {
   background: #ffffff;
   color: #35424B;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  font-weight: 400 !important;
+  font-weight: 400;
   width: 100%;
   height: 3rem;
   resize: none;
@@ -4657,6 +4801,7 @@ input[type=checkbox]:checked:before {
   font-size: 0.875rem;
   font-weight: 400;
   color: #BBFCDE;
+  font-weight: 400 !important;
   background: #20282d;
   outline: none;
   text-decoration: none;
@@ -4784,7 +4929,7 @@ input[type=checkbox]:checked:before {
   background: #ffffff;
   color: #35424B;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  font-weight: 400 !important;
+  font-weight: 400;
   width: 100%;
   height: 3rem;
   resize: none;
@@ -4805,6 +4950,7 @@ input[type=checkbox]:checked:before {
 .table-edit::-webkit-scrollbar-thumb {
   background: #20282d;
   border-radius: 10px;
+  -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
 }
 .table-edit::-webkit-scrollbar-thumb:hover {
@@ -4851,6 +4997,7 @@ input[type=checkbox]:checked:before {
   font-size: 0.875rem;
   font-weight: 400;
   color: #BBFCDE;
+  font-weight: 400 !important;
   background: #20282d;
   outline: none;
   text-decoration: none;
