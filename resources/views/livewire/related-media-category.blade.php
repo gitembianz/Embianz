@@ -26,15 +26,14 @@
     @endif
 
     <div class="accordion">
-<
         <div class="accordion__btn-flex">
             <button class="accordion__btn"
                 wire:click.prevent="@if ($showmedia === false) $set('showmedia', true) @else $set('showmedia', false) @endif">
                 {{ __('Media ') }}(@if ($count)
-              {{ $count }}
-            @else
-              0
-            @endif)
+                    {{ $count }}
+                @else
+                    0
+                @endif)
             </button>
             <button class="accordion__upload">
                 <input id="imgUpload" accept="image/*,video/*" type="file" multiple wire:model="medias">
