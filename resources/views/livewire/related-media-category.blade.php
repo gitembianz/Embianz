@@ -26,7 +26,6 @@
     @endif
 
     <div class="accordion">
-<
         <div class="accordion__btn-flex">
             <button class="accordion__btn"
                 wire:click.prevent="@if ($showmedia === false) $set('showmedia', true) @else $set('showmedia', false) @endif">
