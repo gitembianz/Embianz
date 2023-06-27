@@ -38,12 +38,14 @@ class RelatedMediaCategory extends Component
   public $columns = ['Id', 'Media', 'Media Location', 'Sequence'];
   public $selectedColumns = [];
   public $locations;
-  public $file_sequences = [];
+  public $file_sequences = ['0'];
   public $file_locations = ['1'];
   public $col = false;
   public $all = false;
   public $hasResults;
   public $editedMediaIndex = null;
+  public $i;
+  public $j;
 
   public function mount($categoryId)
   {
@@ -54,6 +56,10 @@ class RelatedMediaCategory extends Component
     $this->selectedColumns = $this->columns;
     $this->locations = MediaLocation::all();
     $this->file_locations[] = '1';
+    $this->i = null;
+    $this->j = null;
+
+
 
   }
 
@@ -157,7 +163,7 @@ class RelatedMediaCategory extends Component
       File::makeDirectory($filespath . "$data->id", 0755, true);
     }
     $path = $filespath . "$this->categoryId" . "/";
-    $i = 0;
+    $this->i = 0;
     foreach ($this->medias as $file) {
       $media = new Media();
       //verify the type of media
@@ -194,18 +200,18 @@ class RelatedMediaCategory extends Component
       $media->name = $filename . '.' . $type;
       // Verify if media name exist
       if (file_exists($path . $media->name)) {
-        $i = 1;
-        while (file_exists($path . $filename . '(' . $i . ').' . $type)) {
-          $i++;
+        $this->j = 1;
+        while (file_exists($path . $filename . '(' . $this->j . ').' . $type)) {
+          $this->j++;
         }
-        $media->name = $filename . '(' . $i . ').' . $type;
+        $media->name = $filename . '(' . $this->j . ').' . $type;
       }
 
       $file->storeAs($path, $media->name, 'public_upload');
       $media->tabel_id = Tabels::where('name', $productType)->first()->id;
       // dd($this->file_sequences[$i]);
-      $media->sequence = $this->file_sequences[$i];
-      $media->location_id = MediaLocation::where('id', $this->file_locations[$i])->first()->id;
+      $media->sequence = $this->file_sequences[$this->i ];
+      $media->location_id = MediaLocation::where('id', $this->file_locations[$this->i ])->first()->id;
       $media->type = $type;
       $media->width = $width;
       $media->height =  $height;
@@ -213,7 +219,7 @@ class RelatedMediaCategory extends Component
       $media->createdby = Auth::user()->name;
       $media->lastmodifiedby = Auth::user()->name;
       $media->save();
-      $i += 1;
+      $this->i += 1;
     }
     $this->medias = [];
     session()->flash('message', 'Media Update Successfully!');
