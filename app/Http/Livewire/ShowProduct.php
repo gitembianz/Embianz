@@ -69,14 +69,20 @@ class ShowProduct extends Component
       if (array_key_exists('seo_title', $product_new)) {
         $new->seo_title = $product_new['seo_title'];
       }
-      $new->lastmodifiedby = Auth::user()->name;
+      $new->last_modified_by = Auth::user()->name;
       $new->updated_at = now();
       $new->save();
+      $this->emit('itemSaved');
       session()->flash('message', 'Product Edited Successfully!');
     }
     $this->prod = [];
     $this->editproduct = null;
   }
+
+  public function updated()
+    {
+        $this->dispatchBrowserEvent('tabNavigation');
+    }
 
   public function cancelproduct()
   {

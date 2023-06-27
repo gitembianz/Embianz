@@ -146,7 +146,7 @@
                         </div>
                     @else
                         <div class="item__form-input item__form-long">
-                            <textarea wire:model.defer="long_description" required></textarea>
+                            <textarea wire:model.defer="prod.long_description" required></textarea>
                             <span>Product Long Description</span>
                         </div>
                     @endif
@@ -157,7 +157,7 @@
                         </div>
                     @else
                         <div class="item__form-input item__form-long">
-                            <input type="text" wire:model.defer="seo_title" required>
+                            <input type="text" wire:model.defer="prod.seo_title" required>
                             <span>SEO Title</span>
                         </div>
                     @endif
