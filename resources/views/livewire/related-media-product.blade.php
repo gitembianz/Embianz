@@ -26,14 +26,26 @@
   @endif
 
   <div class="accordion">
+    <div class="accordion__btn-flex">
       <button class="accordion__btn"
           wire:click.prevent="@if ($showmedia === false) $set('showmedia', true) @else $set('showmedia', false) @endif">
           {{ __('Media ') }}(@if ($count)
-            {{ $count }}
-          @else
-            0
-          @endif)
+        {{ $count }}
+      @else
+        0
+      @endif)
       </button>
+      <button class="accordion__upload">
+          <input id="imgUpload" accept="image/*,video/*" type="file" multiple wire:model="medias">
+          <label class="item__upload-btn" for="imgUpload">
+              <svg>
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="17 8 12 3 7 8"></polyline>
+                  <line x1="12" y1="3" x2="12" y2="15"></line>
+              </svg>
+          </label>
+      </button>
+  </div>
 
       @if ($showmedia)
           <div class="accordion__content" id="contentDiv">
@@ -41,16 +53,7 @@
                   <div class="item">
                       <form wire:submit.prevent="save">
                           <div class="item item__upload  mb-2 pb-3 bb-1">
-                              <input id="imgUpload" accept="image/*,video/*" type="file" multiple
-                                  wire:model="medias">
-                              <label class="item__upload-btn" for="imgUpload">
-                                  <svg>
-                                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                                      <polyline points="17 8 12 3 7 8"></polyline>
-                                      <line x1="12" y1="3" x2="12" y2="15"></line>
-                                  </svg>
-                                  {{ __('Upload related media') }}
-                              </label>
+
 
                               @if ($medias)
                                   <input type="submit" id="add_media_related" class="item__form-btn item__form-long"
