@@ -1,10 +1,13 @@
 .header {
   @include centering;
-  position: relative;
+  position: fixed;
+  top: 0;
+  width: 100%;
   height: $headerHeight;
   padding: 0 $padding;
   background: $mainBg;
   transition: $transition;
+  z-index: $z-index-error;
 
   // Here is the Search and Profile Buttons on Mobile
   &__buttons {
