@@ -67,8 +67,6 @@ Route::get('/cleareverything', function () {
 
   $optimize = Artisan::call('optimize:clear');
   echo "Optimize clear<br>";
-  $debugbar = Artisan::call('debugbar:clear');
-  echo "Debugbar clear<br>";
 });
 
 //Update app
