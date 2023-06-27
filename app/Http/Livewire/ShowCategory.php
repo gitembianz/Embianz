@@ -74,6 +74,7 @@ class ShowCategory extends Component
       $new->lastmodifiedby = Auth::user()->name;
       $new->updated_at = now();
       $new->save();
+      $this->emit('itemSaved');
       session()->flash('message', 'Category edited successfully!');
     }
     $this->cat = [];
