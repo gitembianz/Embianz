@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use getID3;
 use App\Models\Media;
 use App\Models\Tabels;
-use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\MediaLocation;
@@ -117,15 +116,6 @@ class CategoryController extends Controller
     ]);
   }
 
-  public function edit($id)
-  {
-    //edit category
-    if (request()->ajax()) {
-      $data = Category::findOrFail($id);
-      return response()->json(['result' => $data]);
-    }
-  }
-
   public function new()
   {
     $categories = Category::pluck('name', 'id');
@@ -136,22 +126,5 @@ class CategoryController extends Controller
   {
     $data = Category::find($id);
     return view('admin.show_category', compact('data'));
-  }
-
-  public function update_category(Request $request, $id)
-  {
-    $data = Category::find($id);
-    $data->update([
-      'name' => $request->category_name,
-      'parrent' => $request->category_parrent,
-      'long_description' => $request->category_long_description,
-      'short_description' => $request->category_short_description,
-      'sequence' => $request->category_sequence,
-      'start_date' => $request->category_start_date,
-      'end_date' => $request->category_end_date,
-      'lastmodifiedby' => Auth::user()->name,
-      'seo_title' => $request->seo_title
-    ]);
-    return redirect()->back()->with('message', 'Category Update Successfully!');
   }
 }

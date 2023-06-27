@@ -44,6 +44,9 @@
                 <div class="item">
                     <div class="item">
                         {{-- html for adding products --}}
+                        <button class="item__upload-btn" wire:click="toggleTable">
+                            {{ __('Add related products') }}
+                        </button>
                         @if ($showTable === false)
                         @else
                             <button class="item__upload-btn"

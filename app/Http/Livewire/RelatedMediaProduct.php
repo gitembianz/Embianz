@@ -5,8 +5,8 @@ namespace App\Http\Livewire;
 use getID3;
 use App\Models\Media;
 use App\Models\Tabels;
+use App\Models\Product;
 use Livewire\Component;
-use App\Models\Category;
 use Livewire\WithPagination;
 use App\Exports\MediasExport;
 use App\Models\MediaLocation;
@@ -16,12 +16,13 @@ use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 
-class RelatedMediaCategory extends Component
+class RelatedMediaProduct extends Component
 {
+
   use WithFileUploads;
   use WithPagination;
-  public $categoryId;
-  public $category;
+  public $productId;
+  public $product;
   public $showmedia = false;
   public $productType;
   public $type;
@@ -48,16 +49,16 @@ class RelatedMediaCategory extends Component
   public $j;
   public $count = 0;
 
-  public function mount($categoryId)
+  public function mount($productId)
   {
-    $this->categoryId = $categoryId;
-    $this->category = Category::find($categoryId);
-    $this->productType = class_basename(get_class($this->category));
+    $this->productId = $productId;
+    $this->product = Product::find($productId);
+    $this->productType = class_basename(get_class($this->product));
     $this->type = Tabels::where('name', $this->productType)->first()->id;
     $this->selectedColumns = $this->columns;
     $this->locations = MediaLocation::all();
     $this->file_locations[] = '1';
-    $this->count = Media::where('item_id', $this->categoryId)->where('tabel_id', $this->type)->count();
+    $this->count = Media::where('item_id', $this->productId)->where('tabel_id', $this->type)->count();
     $this->i = null;
     $this->j = null;
   }
@@ -78,47 +79,51 @@ class RelatedMediaCategory extends Component
 
     $media_new = $this->filess[$mediaIndex] ?? NULL;
     if(!is_null($media_new)){
-      $media_for_cat = Media::find($id);
+      $media_for_prod = Media::find($id);
       if (array_key_exists('sequence', $media_new)) {
-        $media_for_cat->sequence = $media_new['sequence'];
+        $media_for_prod->sequence = $media_new['sequence'];
     }
       if(array_key_exists('location_id', $media_new)){
-      $media_for_cat->location_id = $media_new['location_id'];
+      $media_for_prod->location_id = $media_new['location_id'];
     }
     if (array_key_exists('name', $media_new)) {
-      $newName = $media_new['name'] . '.' . $media_for_cat->type;
+      $newName = $media_new['name'] . '.' . $media_for_prod->type;
 
-      $oldName = $media_for_cat->name;
+      $oldName = $media_for_prod->name;
 
       if ($newName !== $oldName) {
 
 
           // Rename the file in the file directory
-          $path = $media_for_cat->path;
+          $path = $media_for_prod->path;
           if (file_exists($path . $newName)) {
             $i = 1;
-            while (file_exists($path . $media_new['name'] . '(' . $i . ').' . $media_for_cat->type)) {
+            while (file_exists($path . $media_new['name'] . '(' . $i . ').' . $media_for_prod->type)) {
               $i++;
             }
-            $newName = $media_new['name'] . '(' . $i . ').' . $media_for_cat->type;
+            $newName = $media_new['name'] . '(' . $i . ').' . $media_for_prod->type;
           }
           $oldFilePath = $path . $oldName;
           $newFilePath = $path . $newName;
            // Update the name attribute
-           $media_for_cat->name = $newName;
-           $media_for_cat->save();
+           $media_for_prod->name = $newName;
+           $media_for_prod->save();
 
           if (file_exists($oldFilePath)) {
               rename($oldFilePath, $newFilePath);
           }
       }
   }
-      $media_for_cat->save();
+      $media_for_prod->save();
       session()->flash('message', 'Media Edited Successfully!');
     }
     $this->filess = [];
     $this->editedMediaIndex = null;
 
+  }
+  public function updatedChecked()
+  {
+    $this->selectPage = false;
   }
 
   public function showColumn($column)
@@ -130,7 +135,6 @@ class RelatedMediaCategory extends Component
   }
     return in_array($column, $this->selectedColumns);
   }
-
   public function updatedSelectPage($value)
   {
     if ($value) {
@@ -140,17 +144,12 @@ class RelatedMediaCategory extends Component
     }
   }
 
-  public function updatedChecked()
-  {
-    $this->selectPage = false;
-  }
-
   public function save()
   {
     $this->validate([
       'medias.*' => 'mimetypes:image/jpeg,image/png,image/svg+xml,video/mp4,video/quicktime|max:10240', // Max 10MB for all files
     ]);
-    $data = Category::find($this->categoryId);
+    $data = Product::find($this->productId);
     $productType = class_basename(get_class($data));
     $filespath = 'media/' . $productType . '/';
     if (!File::exists($filespath)) {
@@ -161,7 +160,7 @@ class RelatedMediaCategory extends Component
     if (!File::exists($filespath . "$data->id")) {
       File::makeDirectory($filespath . "$data->id", 0755, true);
     }
-    $path = $filespath . "$this->categoryId" . "/";
+    $path = $filespath . "$this->productId" . "/";
     $this->i = 0;
     foreach ($this->medias as $file) {
       $media = new Media();
@@ -268,7 +267,6 @@ class RelatedMediaCategory extends Component
     session()->flash('message', 'Record deleted Successfully');
   }
 
-
   public function deleteRecords()
   {
 
@@ -290,22 +288,18 @@ class RelatedMediaCategory extends Component
     $this->checked = [];
     session()->flash('message', 'Files deleted succesfuly');
   }
-
-
   public function selectAll()
   {
     $this->selectAll = true;
     $this->checked = $this->filesQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
   }
-
   public function getFilesProperty()
   {
     return $this->filesQuery->paginate($this->perPage);
   }
-
   public function getFilesQueryProperty()
   {
-    return Media::orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->where('item_id', $this->categoryId)->where('tabel_id', $this->type)->with('location');
+    return Media::orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->where('item_id', $this->productId)->where('tabel_id', $this->type)->with('location');
   }
 
   public function isChecked($id)
@@ -324,7 +318,6 @@ class RelatedMediaCategory extends Component
 
     $this->dispatchBrowserEvent('show-delete-modal-media-multiple');
   }
-
   public function exportSelected()
   {
     $export = new MediasExport($this->checked);
@@ -334,14 +327,12 @@ class RelatedMediaCategory extends Component
 
   }
 
-  public function render()
-  {
-
-    $this->hasResults = $this->files->isNotEmpty();
-
-    return view('livewire.related-media-category', [
-      'files' => $this->files,
-      'count' => $this->count
-    ]);
-  }
+    public function render()
+    {
+      $this->hasResults = $this->files->isNotEmpty();
+        return view('livewire.related-media-product', [
+          'files' => $this->files,
+          'count' => $this->count
+        ]);
+    }
 }

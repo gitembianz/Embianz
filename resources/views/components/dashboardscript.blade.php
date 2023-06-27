@@ -1,7 +1,7 @@
 <script>
-  //script form modals
-  window.addEventListener('show-delete-modal-category', event => {
-        document.getElementById('confirmationmodalitem').style.display = 'flex';
+    //script form modals
+    window.addEventListener('show-delete-modal-category', event => {
+        document.getElementById('confirmationmodalcategory').style.display = 'flex';
     });
     window.addEventListener('show-delete-modal-category-multiple', event => {
         document.getElementById('confirmationmodalcategorymultiple').style.display = 'flex';
@@ -12,20 +12,20 @@
     window.addEventListener('show-delete-modal-media-multiple', event => {
         document.getElementById('confirmationmodalmediamultiple').style.display = 'flex';
     });
-       //script for products- modals
-       window.addEventListener('show-delete-modal', event =>{
-  document.getElementById('confirmationmodal').style.display = 'flex';
-});
-window.addEventListener('show-delete-modal-multiple', event =>{
-  document.getElementById('confirmationmodalmultiple').style.display = 'flex';
-});
-window.addEventListener('show-link-modal-multiple', event =>{
-  document.getElementById('confirmationmodallinkmultiple').style.display = 'flex';
-});
+    //script for products- modals
+    window.addEventListener('show-delete-modal', event => {
+        document.getElementById('confirmationmodal').style.display = 'flex';
+    });
+    window.addEventListener('show-delete-modal-multiple', event => {
+        document.getElementById('confirmationmodalmultiple').style.display = 'flex';
+    });
+    window.addEventListener('show-link-modal-multiple', event => {
+        document.getElementById('confirmationmodallinkmultiple').style.display = 'flex';
+    });
 
-window.addEventListener('show-link-modal', event =>{
-  document.getElementById('confirmationmodallink').style.display = 'flex';
-});
+    window.addEventListener('show-link-modal', event => {
+        document.getElementById('confirmationmodallink').style.display = 'flex';
+    });
     //Script for alert desepear
     var element = document.getElementById('alertevent');
     if (element) {
@@ -37,6 +37,28 @@ window.addEventListener('show-link-modal', event =>{
             }, 500);
         }, 2000);
     }
+
+    // JavaScript code
+    document.addEventListener('livewire:load', function() {
+        Livewire.on('itemSaved', () => {
+            let tabs = document.querySelectorAll(".tabs__page");
+            let tabContents = document.querySelectorAll(".tabs__content");
+            tabs.forEach((tab, index) => {
+                tab.addEventListener("click", () => {
+                    tabContents.forEach((content) => {
+                        content.classList.remove("active");
+                    });
+                    tabs.forEach((tab) => {
+                        tab.classList.remove("active");
+                    });
+                    tabContents[index].classList.add("active");
+                    tabs[index].classList.add("active");
+                });
+            });
+        });
+    });
+
+
 
     //script for active buttons in sidebar
     var sidebarItems = document.querySelectorAll(".sidebar__item");
