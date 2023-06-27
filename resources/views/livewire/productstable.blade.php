@@ -217,4 +217,3 @@
     </table>
     <div>{{ $products->links('pagination-links') }} </div>
 </div>
-{{-- coment --}}
