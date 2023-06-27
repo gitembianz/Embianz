@@ -42,7 +42,7 @@
     </div>
 
     {{-- Tabel by Livewire start --}}
-    @livewire('categoriestable')
+    <livewire:categoriestable />
     {{-- Tabel by Livewire end --}}
 
     <a href="#" class="top-up-btn" id="topUp">
