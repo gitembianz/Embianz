@@ -13,7 +13,7 @@
       <script>
           const alertEvent = document.getElementById("alertevent");
           header.style.marginBottom = '4rem';
-          alertEvent.style.opacity = '1';
+          alertEvent.style.opacity = '.9';
 
           setTimeout(function() {
               alertEvent.style.opacity = '0';
