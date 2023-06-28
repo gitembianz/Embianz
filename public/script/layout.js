@@ -6,6 +6,7 @@ function handleLocalStorage(name, value) {
   }
 }
 
+
 function togglePanel(element, className, mainClass, localStorageName) {
   element.classList.toggle(className);
   document.querySelector('main').classList.toggle(mainClass);

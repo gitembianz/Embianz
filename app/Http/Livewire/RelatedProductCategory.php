@@ -42,7 +42,6 @@ class RelatedProductCategory extends Component
   public $selectedColumnsadd = [];
   public $productidbeinglink = null;
   public $showTable = false;
-  public $paginator1;
 
   // function for add products
   public function toggleTable()
@@ -246,43 +245,11 @@ class RelatedProductCategory extends Component
 
   }
 
-  // Define methods for the first paginator
-public function previousPage1()
-{
-    $this->paginator1->previousPage();
-}
-
-public function gotoPage1($page)
-{
-    $this->paginator1->gotoPage($page);
-}
-
-public function nextPage1()
-{
-    $this->paginator1->nextPage();
-}
-
-// Define methods for the second paginator
-public function previousPage2()
-{
-    $this->paginator2->previousPage();
-}
-
-public function gotoPage2($page)
-{
-    $this->paginator2->gotoPage($page);
-}
-
-public function nextPage2()
-{
-    $this->paginator2->nextPage();
-}
-
-
   public function mount($categoryId)
   {
     $this->categoryId = $categoryId;
     $this->selectedColumns = $this->columns;
+    $this->selectedColumnsadd = $this->columnsadd;
   }
   public function exportSelected()
   {
