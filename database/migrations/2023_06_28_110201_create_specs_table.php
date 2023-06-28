@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('specs', function (Blueprint $table) {
             $table->id();
+            $table->string('name')->nullable();
+            $table->string('um')->nullable();
+            $table->string('createdby')->nullable();
+            $table->string('lastmodifiedby')->nullable();
             $table->timestamps();
         });
     }
