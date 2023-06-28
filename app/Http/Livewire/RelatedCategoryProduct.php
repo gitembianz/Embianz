@@ -9,6 +9,7 @@ class RelatedCategoryProduct extends Component
 {
 
   use WithPagination;
+
     public function render()
     {
         return view('livewire.related-category-product');
