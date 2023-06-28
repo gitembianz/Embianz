@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\SpecsController;
 use App\Http\Controllers\TodolistController;
 
 /*
@@ -41,6 +42,9 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
   route::delete('/{todolist:id}', [TodolistController::class, 'destroy'])->name('destroy');
 });
 
+//specs route
+route::get('/specs', [SpecsController::class, 'index'])->name('specs');
+
 route::get('/dashboard', [HomeController::class, 'redirect'])->middleware('auth', 'verified')->name('dashboard');
 
 
@@ -65,6 +69,8 @@ Route::get('/cleareverything', function () {
 
   $optimize = Artisan::call('optimize:clear');
   echo "Optimize clear<br>";
+  $updatetabels = Artisan::call('migrate');
+  echo "Databese updated<br>";
 });
 
 //Update app
