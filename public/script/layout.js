@@ -8,7 +8,6 @@ sidebarBtn.addEventListener('click', () => {
   search.classList.remove('active');
   profile.classList.remove('active');
   header.classList.remove('moved');
-  document.querySelector('.content').classList.toggle("overflow");
   document.querySelector('main').classList.toggle("stop-height");
 })
 // Toggle function to open the Sidebar on Desktop
