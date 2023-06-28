@@ -9,7 +9,7 @@ sidebarBtn.addEventListener('click', () => {
   profile.classList.remove('active');
   header.classList.remove('moved');
   document.querySelector("main").classList.toggle("ml");
-  // document.querySelector('main').classList.toggle("stop-height");
+
 })
 // Toggle function to open the Sidebar on Desktop
 sidebarOpen.addEventListener('click', () => {
