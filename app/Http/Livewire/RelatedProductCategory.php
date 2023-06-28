@@ -249,6 +249,7 @@ class RelatedProductCategory extends Component
   {
     $this->categoryId = $categoryId;
     $this->selectedColumns = $this->columns;
+    $this->selectedColumnsadd = $this->columnsadd;
   }
   public function exportSelected()
   {
