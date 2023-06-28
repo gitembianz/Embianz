@@ -69,6 +69,8 @@ Route::get('/cleareverything', function () {
 
   $optimize = Artisan::call('optimize:clear');
   echo "Optimize clear<br>";
+  $updatetabels = Artisan::call('migrate');
+  echo "Databese updated<br>";
 });
 
 //Update app
