@@ -58,6 +58,25 @@
         });
     });
 
+// Save the state of .right and .sidebar after refresh
+document.addEventListener('DOMContentLoaded', () => {
+  const rightPanel = document.querySelector('.right');
+  const sidebar = document.querySelector('.sidebar');
+
+  const rightPanelOpen = handleLocalStorage('rightPanelOpen');
+  const sidebarOpen = handleLocalStorage('sidebarOpen');
+
+  if (rightPanelOpen === 'true') {
+    rightPanel.classList.add('open');
+    document.querySelector('main').classList.add('mr');
+  }
+
+  if (sidebarOpen === 'true') {
+    sidebar.classList.add('open');
+    document.querySelector('main').classList.add('ml');
+  }
+});
+
 
 
     //script for active buttons in sidebar
