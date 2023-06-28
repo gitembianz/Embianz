@@ -10,22 +10,12 @@
         <button class="sidebar__btn">
             <img src="/images/dashboard/navbar/mini-logo.png" alt="logo">
         </button>
-
-
-
         <button class="search__icon" id="openSearch">
             <svg>
                 <circle cx="11" cy="11" r="8"></circle>
                 <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
         </button>
-        <button class="profile__icon" id="openProfile">
-            <svg>
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                <circle cx="12" cy="7" r="4"></circle>
-            </svg>
-        </button>
-
         <div class="search">
             <button class="search__item" id="closeSearch">
                 <svg>
@@ -41,7 +31,6 @@
                 </svg>
             </button>
         </div>
-
         <div class="notify">
             <button class="notify__btn">
                 <svg>
@@ -58,7 +47,25 @@
                             dolor</span><time>22.05.23<br>23:00</time></a></li>
             </ul>
         </div>
-
+        <button class="right__open">
+            <svg>
+                <line x1="4" y1="21" x2="4" y2="14"></line>
+                <line x1="4" y1="10" x2="4" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="12"></line>
+                <line x1="12" y1="8" x2="12" y2="3"></line>
+                <line x1="20" y1="21" x2="20" y2="16"></line>
+                <line x1="20" y1="12" x2="20" y2="3"></line>
+                <line x1="1" y1="14" x2="7" y2="14"></line>
+                <line x1="9" y1="8" x2="15" y2="8"></line>
+                <line x1="17" y1="16" x2="23" y2="16"></line>
+            </svg>
+        </button>
+        <button class="profile__icon" id="openProfile">
+            <svg>
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+        </button>
         <div class="profile">
             <button class="profile__item" id="closeProfile">
                 <svg>
@@ -85,19 +92,5 @@
                 </svg>
             </button>
         </div>
-
-        <button class="right__open">
-            <svg>
-                <line x1="4" y1="21" x2="4" y2="14"></line>
-                <line x1="4" y1="10" x2="4" y2="3"></line>
-                <line x1="12" y1="21" x2="12" y2="12"></line>
-                <line x1="12" y1="8" x2="12" y2="3"></line>
-                <line x1="20" y1="21" x2="20" y2="16"></line>
-                <line x1="20" y1="12" x2="20" y2="3"></line>
-                <line x1="1" y1="14" x2="7" y2="14"></line>
-                <line x1="9" y1="8" x2="15" y2="8"></line>
-                <line x1="17" y1="16" x2="23" y2="16"></line>
-            </svg>
-        </button>
     </div>
 </header>

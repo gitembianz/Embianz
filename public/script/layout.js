@@ -1,26 +1,39 @@
-// Opening the Sidebar
-const sidebar = document.querySelector('.sidebar');
-const sidebarBtn = document.querySelector('.sidebar__btn');
-const sidebarOpen = document.querySelector('.sidebar__open');
-// Toggle function to open the Sidebar on Mobile
-sidebarBtn.addEventListener('click', () => {
-  sidebar.classList.toggle('open');
-  search.classList.remove('active');
-  profile.classList.remove('active');
-  header.classList.remove('moved');
-  document.querySelector("main").classList.toggle("ml");
-  // document.querySelector('main').classList.toggle("stop-height");
-})
-// Toggle function to open the Sidebar on Desktop
-sidebarOpen.addEventListener('click', () => {
-  sidebar.classList.toggle('open');
-  search.classList.remove('active');
-  profile.classList.remove('active');
-  header.classList.remove('moved');
-  document.querySelector("main").classList.toggle("ml");
-})
+function handleLocalStorage(name, value) {
+  if (value) {
+      localStorage.setItem(name, value);
+  } else {
+      return localStorage.getItem(name);
+  }
+}
 
+function togglePanel(element, className, mainClass, localStorageName) {
+  element.classList.toggle(className);
+  document.querySelector('main').classList.toggle(mainClass);
+  const isOpen = element.classList.contains(className);
+  handleLocalStorage(localStorageName, isOpen.toString());
+}
 
+function initializePanel(element, className, mainClass, localStorageName, buttonSelector) {
+  const panelButton = document.querySelector(buttonSelector);
+  panelButton.addEventListener('click', () => {
+      togglePanel(element, className, mainClass, localStorageName);
+  });
+
+  const localStorageValue = handleLocalStorage(localStorageName);
+  if (localStorageValue === 'true') {
+      element.classList.add(className);
+      document.querySelector('main').classList.add(mainClass);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const rightPanel = document.querySelector('.right');
+  const sidebar = document.querySelector('.sidebar');
+
+  initializePanel(rightPanel, 'open', 'mr', 'rightPanelOpen', '.right__open');
+  initializePanel(sidebar, 'open', 'ml', 'sidebarOpen', '.sidebar__btn');
+  initializePanel(sidebar, 'open', 'ml', 'sidebarOpen', '.sidebar__open');
+});
 
 const header = document.querySelector('header');
 const profile = document.querySelector('.profile');
@@ -71,20 +84,6 @@ notifyBtn.addEventListener('click', () => {
     header.classList.remove('moved');
     search.classList.remove('active');
 })
-
-// /script for rightside
-const right = document.querySelector('.right');
-const calendarBtn = document.querySelector('.right__open');
-
-calendarBtn.addEventListener('click', () => {
-    right.classList.toggle('open');
-    profile.classList.remove('active');
-    header.classList.remove('moved');
-    search.classList.remove('active');
-  document.querySelector("main").classList.toggle("mr");
-});
-
-
 
 // Select all buttons with the class "dropdown-button"
 
