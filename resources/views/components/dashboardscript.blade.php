@@ -26,6 +26,9 @@
     window.addEventListener('show-link-modal', event => {
         document.getElementById('confirmationmodallink').style.display = 'flex';
     });
+    window.addEventListener('show-add-modal', event => {
+        document.getElementById('addmodal').style.display = 'flex';
+    });
     //Script for alert desepear
     var element = document.getElementById('alertevent');
     if (element) {
