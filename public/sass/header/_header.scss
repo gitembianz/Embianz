@@ -1,7 +1,7 @@
 .header {
   @include centering;
   position: fixed;
-  top: 2px;
+  top: 0;
   width: 100%;
   height: $headerHeight;
   padding: 0 $padding;

@@ -197,7 +197,7 @@ function closeAllAccordions() {
 closeAllAccordions();
 
 //==========================================================================================================================
-//previous scroll position
+// previous scroll position
 let previousScrollPosition = window.pageYOffset;
 
 if (header) {
@@ -207,7 +207,7 @@ if (header) {
     const currentScrollPosition = window.pageYOffset;
 
     // Check if the current scroll position is greater than or equal to 50
-    if (currentScrollPosition >= 50) {
+    if (currentScrollPosition >= 150) {
       // Update the 'top' property of the header element based on the scroll direction
       header.style.top = previousScrollPosition > currentScrollPosition ? '0' : `-${headerHeight}px`;
     }
