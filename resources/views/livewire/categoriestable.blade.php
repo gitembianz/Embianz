@@ -92,7 +92,7 @@
     <div class="modal" id="confirmationmodalcategory">
         <div class="modal-content">
             <h1 class="modal-content-title">
-                {{ __('Are you sure to delete this category?') }}
+                {{ __('Are you sure to delete this record?') }}
             </h1>
             <input wire:click.prevent="deleteSingleRecord()" class="modal-content-btn submit" type="button"
                 value="Confirm">
@@ -113,7 +113,7 @@
     <div class="modal" id="confirmationmodalcategorymultiple">
         <div class="modal-content">
             <h1 class="modal-content-title">
-                {{ __('Are you sure to delete those categories?') }}
+                {{ __('Are you sure to delete those records?') }}
             </h1>
             <input wire:click.prevent="deleteRecords()" class="modal-content-btn submit" type="button" value="Confirm">
             <input class="modal-content-btn delete" type="button"

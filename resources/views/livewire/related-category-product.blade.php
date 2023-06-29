@@ -31,8 +31,7 @@
               {{ __('Categories ') }}({{ count($relatedcats) }})
           </button>
           <button class="accordion__upload" wire:click="toggleTable">
-            <svg><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
-          </button>
+            <svg><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>          </button>
       </div>
 
       @if ($showrelatedcat)
@@ -43,7 +42,7 @@
                       @if ($showTable === false)
                       @else
                           <button class="item__upload-btn"
-                              wire:click="cancel">{{ __('Cancel and Save all') }}</button>
+                              wire:click="cancel">{{ __('Cancel & Save all') }}</button>
 
                           <div class="item__form form-table"
                               @if ($checkedadd) style="grid-template-columns: 40% 1fr 1fr 1fr" @endif>
@@ -105,7 +104,7 @@
                           <div class="modal" id="confirmationmodallink">
                               <div class="modal-content">
                                   <h1 class="modal-content-title">
-                                      {{ __('Are you sure to relate this Category?') }}
+                                      {{ __('Are you sure to relate this record?') }}
                                   </h1>
                                   <input wire:click.prevent="linkSingleRecord()" class="modal-content-btn submit"
                                       type="button" value="Confirm" id="confirmLoad">
@@ -125,7 +124,7 @@
                           <div class="modal" id="confirmationmodallinkmultiple">
                               <div class="modal-content">
                                   <h1 class="modal-content-title">
-                                      {{ __('Are you sure to link those Categories?') }}
+                                      {{ __('Are you sure to link those records?') }}
                                   </h1>
                                   <input wire:click.prevent="linkRecords()" class="modal-content-btn submit"
                                       type="button" value="Confirm" id="confirmLoad">
@@ -343,7 +342,7 @@
                           <div class="modal" id="confirmationmodal">
                               <div class="modal-content">
                                   <h1 class="modal-content-title">
-                                      {{ __('Are you sure to delete this category?') }}
+                                      {{ __('Are you sure to delete this record?') }}
                                   </h1>
                                   <input wire:click.prevent="deleteSingleRecord()" class="modal-content-btn submit"
                                       type="button" value="Confirm" id="confirmLoad">
@@ -369,7 +368,7 @@
                           <div class="modal" id="confirmationmodalmultiple">
                               <div class="modal-content">
                                   <h1 class="modal-content-title">
-                                      {{ __('Are you sure to delete those category?') }}
+                                      {{ __('Are you sure to delete those records?') }}
                                   </h1>
                                   <input wire:click.prevent="deleteRecords()" class="modal-content-btn submit"
                                       type="button" value="Confirm" id="confirmLoad">
