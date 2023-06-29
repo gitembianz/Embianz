@@ -8,6 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Specs extends Model
 {
     use HasFactory;
+
+    protected $table = 'specs';
+
+    protected $fillable = [
+        'name',
+        'um',
+    ];
     public static function search($search) {
       return empty($search) ? static::query()
             : static::query()->where('id', 'like', '%'.$search.'%')

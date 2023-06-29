@@ -103,6 +103,7 @@
         <input type="text" class="table-edit wid-6"
         wire:model.defer="addspec.name">
         <span> Name</span>
+        @error('name') <span>{{ $message }}</span> @enderror
         <input type="text" class="table-edit wid-6"
         wire:model.defer="addspec.unit">
         <span> Unit</span>
