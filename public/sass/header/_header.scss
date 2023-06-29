@@ -1,3 +1,7 @@
+header {
+  height: $headerHeight;
+}
+
 .header {
   @include centering;
   position: fixed;
