@@ -1,40 +1,64 @@
-function handleLocalStorage(name, value) {
+// This function handles storing and retrieving data from the local storage
+const handleLocalStorage = (name, value) => {
   if (value) {
-      localStorage.setItem(name, value);
+    // If a value is provided, store it in the local storage
+    localStorage.setItem(name, value);
   } else {
-      return localStorage.getItem(name);
+    // If no value is provided, retrieve the value from the local storage
+    return localStorage.getItem(name);
   }
-}
+};
 
-
-function togglePanel(element, className, mainClass, localStorageName) {
+// This function toggles the specified class on the given element and main element, and updates the value in local storage
+const togglePanel = (element, className, mainClass, localStorageName) => {
+  // Toggle the specified class on the element
   element.classList.toggle(className);
+  // Toggle the specified class on the main element
   document.querySelector('main').classList.toggle(mainClass);
-  const isOpen = element.classList.contains(className);
-  handleLocalStorage(localStorageName, isOpen.toString());
-}
+  // Update the value in local storage based on whether the class is present or not
+  handleLocalStorage(localStorageName, element.classList.contains(className).toString());
+};
 
-function initializePanel(element, className, mainClass, localStorageName, buttonSelector) {
+// This function initializes the panel by adding event listeners and handling resize events
+const initializePanel = (panelElement, className, mainClass, localStorageName, buttonSelector) => {
+  // Get the panel button element
   const panelButton = document.querySelector(buttonSelector);
-  panelButton.addEventListener('click', () => {
-      togglePanel(element, className, mainClass, localStorageName);
-  });
+  // Add a click event listener to the panel button
+  panelButton.addEventListener('click', () => togglePanel(panelElement, className, mainClass, localStorageName));
 
-  const localStorageValue = handleLocalStorage(localStorageName);
-  if (localStorageValue === 'true') {
-      element.classList.add(className);
+  // Define a resize event handler
+  const handleResize = () => {
+    // Check if the window width is greater than or equal to 1024 and the local storage value is true
+    if (window.innerWidth >= 1024 && handleLocalStorage(localStorageName) === 'true') {
+      // Add the specified class to the panel element
+      panelElement.classList.add(className);
+      // Add the specified class to the main element
       document.querySelector('main').classList.add(mainClass);
-  }
-}
+    } else {
+      // Remove the specified class from the panel element
+      panelElement.classList.remove(className);
+      // Remove the specified class from the main element
+      document.querySelector('main').classList.remove(mainClass);
+    }
+  };
 
+  // Add a resize event listener to the window
+  window.addEventListener('resize', handleResize);
+  // Call the handleResize function to initialize the panel based on the initial window size
+  handleResize();
+};
+
+// Wait for the DOM content to be loaded
 document.addEventListener('DOMContentLoaded', () => {
-  const rightPanel = document.querySelector('.right');
-  const sidebar = document.querySelector('.sidebar');
-
-  initializePanel(rightPanel, 'open', 'mr', 'rightPanelOpen', '.right__open');
-  initializePanel(sidebar, 'open', 'ml', 'sidebarOpen', '.sidebar__btn');
-  initializePanel(sidebar, 'open', 'ml', 'sidebarOpen', '.sidebar__open');
+  // Initialize the (right,sidebar panel, sidebar button on mobile) with the specified parameters
+  initializePanel(document.querySelector('.right'), 'open', 'mr', 'rightPanelOpen', '.right__open');
+  initializePanel(document.querySelector('.sidebar'), 'open', 'ml', 'sidebarOpen', '.sidebar__btn');
+  initializePanel(document.querySelector('.sidebar'), 'open', 'ml', 'sidebarOpen', '.sidebar__open');
 });
+
+
+
+
 
 const header = document.querySelector('header');
 const profile = document.querySelector('.profile');
