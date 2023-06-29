@@ -6,7 +6,6 @@ use App\Models\Specs;
 use Livewire\Component;
 use App\Exports\SpecsExport;
 use Livewire\WithPagination;
-use Illuminate\Support\Facades\Auth;
 
 class Specstable extends Component
 {
@@ -20,19 +19,9 @@ class Specstable extends Component
   public $selectPage = false;
   public $selectAll = false;
   public $specidbeingremoved = null;
-  public $columns = ['Id', 'Name', 'Unit', 'Created At'];
+  public $columns = ['Id', 'Unit', 'Created At'];
   public $selectedColumns = [];
   public $addspec =[];
-
-  protected $rules = [
-    'name' => 'required|string|min:6',
-            'um' => 'required|string',
-  ];
-
-protected $validationAttributes= [
-  ''
-];
-
 
     public function render()
     {
@@ -63,33 +52,6 @@ protected $validationAttributes= [
   public function updatedChecked()
   {
     $this->selectPage = false;
-  }
-
-  public function newitem()
-  {
-    $this->dispatchBrowserEvent('show-add-modal');
-  }
-
-  public function confirmnewitem(){
-   $this->validate();
-    $item_new = $this->addspec ?? NULL;
-    if (!is_null($item_new)) {
-      $new = new Specs();
-      if (array_key_exists('name', $item_new)) {
-        $new->name = $item_new['name'];
-      }
-      if (array_key_exists('unit', $item_new)) {
-        $new->um = $item_new['unit'];
-      }
-      $new->createdby = Auth::user()->name;
-      $new->lastmodifiedby = Auth::user()->name;
-      $new->created_at = now();
-      $new->updated_at = now();
-      $new->save();
-      session()->flash('message', 'Specification added successfully!');
-    }
-
-    $this->addspec = [];
   }
 
   public function sortBy($columnName)
