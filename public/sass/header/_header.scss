@@ -1,9 +1,13 @@
+header {
+  height: $headerHeight;
+}
+
 .header {
   @include centering;
   position: fixed;
   top: 0;
   width: 100%;
-  height: $headerHeight;
+  height: 100%;
   padding: 0 $padding;
   background: $mainBg;
   transition: $transition;
