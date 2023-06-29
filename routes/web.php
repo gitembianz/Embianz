@@ -44,6 +44,9 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
 
 //specs route
 route::get('/specs', [SpecsController::class, 'index'])->name('specs');
+route::get('/newspec', [SpecsController::class, 'create'])->name('newspec');
+route::post('/add_spec', [SpecsController::class, 'store']);
+
 
 route::get('/dashboard', [HomeController::class, 'redirect'])->middleware('auth', 'verified')->name('dashboard');
 
