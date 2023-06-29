@@ -3096,14 +3096,13 @@ input[type=checkbox]:checked:before {
   align-items: center;
   justify-content: center;
   position: fixed;
-  top: 0;
+  top: 2px;
   width: 100%;
   height: 100px;
   padding: 0 10px;
   background: #35424B;
   transition: all 0.2s ease-in-out;
   z-index: 700;
-  overflow: hidden;
   /*  This is function for Profile (When i open the bottom
     part of Profile) to increase the height of Header */
 }

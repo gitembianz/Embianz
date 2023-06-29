@@ -1,14 +1,13 @@
 .header {
   @include centering;
   position: fixed;
-  top: 0;
+  top: 2px;
   width: 100%;
   height: $headerHeight;
   padding: 0 $padding;
   background: $mainBg;
   transition: $transition;
   z-index: $z-index-error;
-  overflow: hidden;
   // -webkit-transform: translateZ(0);
   // Here is the Search and Profile Buttons on Mobile
 
