@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Specs;
-use App\Http\Requests\StoreSpecsRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+// use App\Http\Requests\StoreSpecsRequest;
 use App\Http\Requests\UpdateSpecsRequest;
 
 class SpecsController extends Controller
@@ -21,16 +23,27 @@ class SpecsController extends Controller
      */
     public function create()
     {
-        //
+      return view('admin.add_spec');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreSpecsRequest $request)
-    {
-        //
-    }
+    // public function store(StoreSpecsRequest $request)
+    // {
+    //     //
+    // }
+     public function store(Request $request){
+      $spec = new Specs();
+
+      $spec->name = $request->name;
+      $spec->um = $request->um;
+      $spec->createdby = Auth::user()->name;
+      $spec->lastmodifiedby = Auth::user()->name;
+      $spec->save();
+      return redirect()->back()->with('message', 'Spec add succesfully!');
+
+     }
 
     /**
      * Display the specified resource.

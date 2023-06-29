@@ -12,7 +12,7 @@
         <script>
             const alertEvent = document.getElementById("alertevent");
             header.style.marginBottom = '4rem';
-            alertEvent.style.opacity = '1';
+            alertEvent.style.opacity = '0.8';
 
             setTimeout(function() {
                 alertEvent.style.opacity = '0';
@@ -41,7 +41,7 @@
     <div class="modal" id="confirmationmodalitem">
         <div class="modal-content">
             <h1 class="modal-content-title">
-                {{ __('Are you sure to delete this product?') }}
+                {{ __('Are you sure to delete this record?') }}
             </h1>
             <input wire:click.prevent="deleteSingleRecord()" class="modal-content-btn submit" type="button"
                 value="Confirm">

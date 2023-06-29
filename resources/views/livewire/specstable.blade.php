@@ -26,7 +26,7 @@
   <div class="item__header">
     <h1 id="title" class="item__header-title">{{ __('All Specs') }}</h1>
     <div class="item__header-buttons">
-      <button wire:click="newitem()" class="item__header-btn">{{ __('New') }}</button>
+      <a href="{{ route('newspec') }}" class="item__header-btn">{{ __('New') }}</a>
   </div>
 </div>
 
@@ -94,38 +94,12 @@
   @endif
 
   {{-- modals --}}
-{{-- add a spec --}}
-  <div class="modal" id="addmodal">
-    <div class="modal-content">
-        <h1 class="modal-content-title">
-            {{ __('Add a new spec here') }}
-        </h1>
-        <input type="text" class="table-edit wid-6"
-        wire:model.defer="addspec.name">
-        <span> Name</span>
-        <input type="text" class="table-edit wid-6"
-        wire:model.defer="addspec.unit">
-        <span> Unit</span>
-        <input wire:click.prevent="confirmnewitem()" class="modal-content-btn submit" type="button"
-            value="Confirm">
-        <input class="modal-content-btn delete" type="button"
-            onclick="document.getElementById('addmodal').style.display='none'" value="Cancel">
-
-        <span class="modal-content-btn delete"
-            onclick="document.getElementById('addmodal').style.display='none'">
-            <svg>
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
-        </span>
-    </div>
-</div>
   {{-- delete single record --}}
 
   <div class="modal" id="confirmationmodal">
       <div class="modal-content">
           <h1 class="modal-content-title">
-              {{ __('Are you sure to delete this spec?') }}
+              {{ __('Are you sure to delete this record?') }}
           </h1>
           <input wire:click.prevent="deleteSingleRecord()" class="modal-content-btn submit" type="button"
               value="Confirm">
@@ -146,7 +120,7 @@
   <div class="modal" id="confirmationmodalmultiple">
       <div class="modal-content">
           <h1 class="modal-content-title">
-              {{ __('Are you sure to delete those specs?') }}
+              {{ __('Are you sure to delete those records?') }}
           </h1>
           <input wire:click.prevent="deleteRecords()" class="modal-content-btn submit" type="button" value="Confirm">
           <input class="modal-content-btn delete" type="button"

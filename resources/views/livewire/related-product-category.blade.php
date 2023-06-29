@@ -31,11 +31,7 @@
                 {{ __('Products ') }}({{ count($relatedproducts) }})
             </button>
             <button class="accordion__upload" wire:click="toggleTable">
-                <svg>
-                    <line x1="12" y1="5" x2="12" y2="19"></line>
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                </svg>
-            </button>
+              <svg><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>            </button>
         </div>
 
         @if ($showrelatedprod)
@@ -108,7 +104,7 @@
                             <div class="modal" id="confirmationmodallink">
                                 <div class="modal-content">
                                     <h1 class="modal-content-title">
-                                        {{ __('Are you sure to relate this product?') }}
+                                        {{ __('Are you sure to relate this record?') }}
                                     </h1>
                                     <input wire:click.prevent="linkSingleRecord()" class="modal-content-btn submit"
                                         type="button" value="Confirm" id="confirmLoad">
@@ -128,7 +124,7 @@
                             <div class="modal" id="confirmationmodallinkmultiple">
                                 <div class="modal-content">
                                     <h1 class="modal-content-title">
-                                        {{ __('Are you sure to link those product?') }}
+                                        {{ __('Are you sure to link those records?') }}
                                     </h1>
                                     <input wire:click.prevent="linkRecords()" class="modal-content-btn submit"
                                         type="button" value="Confirm" id="confirmLoad">

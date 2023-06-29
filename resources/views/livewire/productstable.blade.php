@@ -94,7 +94,7 @@
     <div class="modal" id="confirmationmodal">
         <div class="modal-content">
             <h1 class="modal-content-title">
-                {{ __('Are you sure to delete this product?') }}
+                {{ __('Are you sure to delete this record?') }}
             </h1>
             <input wire:click.prevent="deleteSingleRecord()" class="modal-content-btn submit" type="button"
                 value="Confirm" id="confirmLoad">
@@ -115,7 +115,7 @@
     <div class="modal" id="confirmationmodalmultiple">
         <div class="modal-content">
             <h1 class="modal-content-title">
-                {{ __('Are you sure to delete those product?') }}
+                {{ __('Are you sure to delete those records?') }}
             </h1>
             <input wire:click.prevent="deleteRecords()" class="modal-content-btn submit" type="button" value="Confirm"
                 id="confirmLoad">
