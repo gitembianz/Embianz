@@ -125,12 +125,20 @@
     }
 
     td {
-      text-align: right;
+      text-align: left;
       display: block;
+      margin-left: 50%;
+      border-left: 1px solid black;
+    }
+
+    tbody tr {
+      position: relative;
     }
 
     td::before {
       content: attr(data-title) ": ";
+      position: absolute;
+      left: 0;
       float: left;
       font-weight: 900;
       margin-right: 10px;

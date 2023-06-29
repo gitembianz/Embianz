@@ -2673,11 +2673,18 @@ input[type=checkbox]:checked:before {
     padding: 5px;
   }
   .livewire-table td {
-    text-align: right;
+    text-align: left;
     display: block;
+    margin-left: 50%;
+    border-left: 1px solid black;
+  }
+  .livewire-table tbody tr {
+    position: relative;
   }
   .livewire-table td::before {
     content: attr(data-title) ": ";
+    position: absolute;
+    left: 0;
     float: left;
     font-weight: 900;
     margin-right: 10px;
