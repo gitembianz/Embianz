@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initializePanel(document.querySelector('.sidebar'), 'open', 'ml', 'sidebarOpen', '.sidebar__btn');
   initializePanel(document.querySelector('.sidebar'), 'open', 'ml', 'sidebarOpen', '.sidebar__open');
 });
-
+//==========================================================================================================================
 
 
 
@@ -196,20 +196,23 @@ function closeAllAccordions() {
 // Close all accordions by default on page load
 closeAllAccordions();
 
+//==========================================================================================================================
+//previous scroll position
+let previousScrollPosition = window.pageYOffset;
 
-let prevScrollPos = window.pageYOffset;
-// const header = document.querySelector('header');
+if (header) {
+  const headerHeight = header.offsetHeight;
 
-window.addEventListener('scroll', () => {
-  const currentScrollPos = window.pageYOffset;
+  window.addEventListener('scroll', () => {
+    const currentScrollPosition = window.pageYOffset;
 
-  if (prevScrollPos > currentScrollPos) {
-    // Scrolling up
-    header.style.top = '0';
-  } else {
-    // Scrolling down
-    header.style.top = `-${header.offsetHeight}px`;
-  }
+    // Check if the current scroll position is greater than or equal to 50
+    if (currentScrollPosition >= 50) {
+      // Update the 'top' property of the header element based on the scroll direction
+      header.style.top = previousScrollPosition > currentScrollPosition ? '0' : `-${headerHeight}px`;
+    }
 
-  prevScrollPos = currentScrollPos;
-});
+    // Update the previous scroll position
+    previousScrollPosition = currentScrollPosition;
+  });
+}
