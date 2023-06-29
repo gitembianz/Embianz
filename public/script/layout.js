@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initializePanel(document.querySelector('.sidebar'), 'open', 'ml', 'sidebarOpen', '.sidebar__btn');
   initializePanel(document.querySelector('.sidebar'), 'open', 'ml', 'sidebarOpen', '.sidebar__open');
 });
-
+//==========================================================================================================================
 
 
 
@@ -200,16 +200,20 @@ closeAllAccordions();
 let prevScrollPos = window.pageYOffset;
 // const header = document.querySelector('header');
 
-window.addEventListener('scroll', () => {
-  const currentScrollPos = window.pageYOffset;
+if (header) {
+  window.addEventListener('scroll', () => {
+    const currentScrollPos = window.pageYOffset;
 
-  if (prevScrollPos > currentScrollPos) {
-    // Scrolling up
-    header.style.top = '0';
-  } else {
-    // Scrolling down
-    header.style.top = `-${header.offsetHeight}px`;
-  }
+    if (currentScrollPos >= 50) {
+      if (prevScrollPos > currentScrollPos) {
+        // Scrolling up
+        header.style.top = '0';
+      } else {
+        // Scrolling down
+        header.style.top = `-${header.offsetHeight}px`;
+      }
+    }
 
-  prevScrollPos = currentScrollPos;
-});
+    prevScrollPos = currentScrollPos;
+  });
+}
