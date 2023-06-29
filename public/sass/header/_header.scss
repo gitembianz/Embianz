@@ -8,8 +8,9 @@
   background: $mainBg;
   transition: $transition;
   z-index: $z-index-error;
+  -webkit-transform: translateX(0);
+  -webkit-transform: translateZ(0); // Here is the Search and Profile Buttons on Mobile
 
-  // Here is the Search and Profile Buttons on Mobile
   &__buttons {
     @include centering;
     gap: $gap * 2;
