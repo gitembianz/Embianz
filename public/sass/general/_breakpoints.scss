@@ -5,7 +5,7 @@
 
   // General Modifacation
   main {
-    margin-left: $sidebar-Width-Desktop-Min;
+    margin: 0 $margin $margin $sidebar-Width-Desktop-Min;
 
     &.ml {
       margin-left: $sidebar-Width-Desktop-Max;
