@@ -185,7 +185,11 @@
             </div>
             <div class="tabs__content display-f g-1">
                 <livewire:related-media-product productId="{{ $product->id }}" />
-                  <livewire:related-category-product productId="{{ $product->id }}" />
+
+                <livewire:related-category-product productId="{{ $product->id }}" />
+
+                <livewire:related-spec-product productId="{{ $product->id }}" />
+
             </div>
         </div>
     </div>

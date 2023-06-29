@@ -6,10 +6,8 @@ use getID3;
 use App\Models\Media;
 use App\Models\Tabels;
 use App\Models\Product;
-use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\MediaLocation;
-use App\Models\Products_categories;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -28,8 +26,7 @@ class ProductController extends Controller
     public function add()
     {
         //return a view where you cand add a new product
-        $categories = Category::pluck('name', 'id');
-        return view('admin.add_products', compact('categories'));
+        return view('admin.add_products');
     }
 
     public function new(Request $request)
@@ -48,12 +45,6 @@ class ProductController extends Controller
         $newproduct->created_by = Auth::user()->name;
         $newproduct->last_modified_by = Auth::user()->name;
         $newproduct->save();
-
-        //add product's category
-        $productcategory = new products_categories();
-        $productcategory->product_id = $newproduct->id;
-        $productcategory->category_id = Category::where('name', $request->category)->first()->id;
-        $productcategory->save();
 
         //get location/sequences/size/files from image component
         $locations = $request->input('file_location');

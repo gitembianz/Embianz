@@ -66,15 +66,6 @@
                 <span> Product Name</span>
             </div>
             <div class="item__form-input">
-                <select id="select-category" name="category">
-                    <option value="" selected="">Select a category</option>
-                    @foreach ($categories as $category_name)
-                        <option value="{{ $category_name }}">{{ $category_name }}</option>
-                    @endforeach
-                </select>
-                <span>Product Category</span>
-            </div>
-            <div class="item__form-input">
                 <input type="date" id="start_date" min="0" name="start_date">
                 <span>Product Start Date</span>
             </div>

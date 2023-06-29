@@ -22,4 +22,9 @@ class Specs extends Model
                 ->orWhere('um', 'like', '%'.$search.'%')
                 ->orWhere('created_at', 'like', '%'.$search.'%');
     }
+
+    public function product_spec()
+    {
+        return $this->hasMany(Product_Spec::class, 'spec_id');
+    }
 }
