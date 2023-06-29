@@ -38,6 +38,7 @@ class SpecsController extends Controller
 
       $spec->name = $request->name;
       $spec->um = $request->um;
+      $spec->spec_group = $request->spec_group;
       $spec->createdby = Auth::user()->name;
       $spec->lastmodifiedby = Auth::user()->name;
       $spec->save();
