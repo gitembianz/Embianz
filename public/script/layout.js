@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initializePanel(document.querySelector('.sidebar'), 'open', 'ml', 'sidebarOpen', '.sidebar__btn');
   initializePanel(document.querySelector('.sidebar'), 'open', 'ml', 'sidebarOpen', '.sidebar__open');
 });
-
+//==========================================================================================================================
 
 
 
@@ -196,20 +196,22 @@ function closeAllAccordions() {
 // Close all accordions by default on page load
 closeAllAccordions();
 
+//==========================================================================================================================
+//previous scroll position
+const SCROLL_THRESHOLD = 50;
 
-let prevScrollPos = window.pageYOffset;
-// const header = document.querySelector('header');
+const updateHeaderPosition = () => {
+  const currentScrollPosition = window.pageYOffset;
 
-window.addEventListener('scroll', () => {
-  const currentScrollPos = window.pageYOffset;
-
-  if (prevScrollPos > currentScrollPos) {
-    // Scrolling up
-    header.style.top = '0';
-  } else {
-    // Scrolling down
-    header.style.top = `-${header.offsetHeight}px`;
+  if (currentScrollPosition >= SCROLL_THRESHOLD) {
+    const headerElement = document.querySelector('.header');
+    let headerHeight = headerElement.offsetHeight;
+    headerElement.style.top = previousScrollPosition > currentScrollPosition ? '0' : `-${headerHeight}px`;
   }
 
-  prevScrollPos = currentScrollPos;
-});
+  previousScrollPosition = currentScrollPosition;
+};
+
+let previousScrollPosition = window.pageYOffset;
+
+window.addEventListener('scroll', updateHeaderPosition);

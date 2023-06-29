@@ -61,7 +61,6 @@
 
 body {
   background: #35424B;
-  overflow-x: hidden;
 }
 body::-webkit-scrollbar {
   width: 10px;
@@ -103,7 +102,6 @@ svg {
 
 main {
   position: relative;
-  margin-top: 100px;
   transition: all 0.2s ease-in-out;
 }
 
@@ -3090,6 +3088,10 @@ input[type=checkbox]:checked:before {
 .pagination__item.active {
   background-color: #BBFCDE;
   color: #35424B;
+}
+
+header {
+  height: 100px;
 }
 
 .header {
