@@ -19,7 +19,7 @@ class Specstable extends Component
   public $selectPage = false;
   public $selectAll = false;
   public $specidbeingremoved = null;
-  public $columns = ['Id', 'Unit', 'Created At'];
+  public $columns = ['Id', 'Unit','Group', 'Created At'];
   public $selectedColumns = [];
   public $indexspec = null;
   public $specss = [];
@@ -135,6 +135,9 @@ class Specstable extends Component
     }
       if(array_key_exists('um', $spec_new)){
       $spec->um = $spec_new['um'];
+    }
+    if(array_key_exists('spec_group', $spec_new)){
+      $spec->spec_group = $spec_new['spec_group'];
     }
       $spec->save();
       session()->flash('message', 'Record edited successfully!');
