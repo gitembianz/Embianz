@@ -196,24 +196,23 @@ function closeAllAccordions() {
 // Close all accordions by default on page load
 closeAllAccordions();
 
-
-let prevScrollPos = window.pageYOffset;
-// const header = document.querySelector('header');
+//==========================================================================================================================
+//previous scroll position
+let previousScrollPosition = window.pageYOffset;
 
 if (header) {
-  window.addEventListener('scroll', () => {
-    const currentScrollPos = window.pageYOffset;
+  const headerHeight = header.offsetHeight;
 
-    if (currentScrollPos >= 50) {
-      if (prevScrollPos > currentScrollPos) {
-        // Scrolling up
-        header.style.top = '0';
-      } else {
-        // Scrolling down
-        header.style.top = `-${header.offsetHeight}px`;
-      }
+  window.addEventListener('scroll', () => {
+    const currentScrollPosition = window.pageYOffset;
+
+    // Check if the current scroll position is greater than or equal to 50
+    if (currentScrollPosition >= 50) {
+      // Update the 'top' property of the header element based on the scroll direction
+      header.style.top = previousScrollPosition > currentScrollPosition ? '0' : `-${headerHeight}px`;
     }
 
-    prevScrollPos = currentScrollPos;
+    // Update the previous scroll position
+    previousScrollPosition = currentScrollPosition;
   });
 }
