@@ -183,7 +183,7 @@
           </tr>
       </thead>
       <tbody>
-          @foreach ($specs as $spec)
+          @foreach ($specs as $index => $spec)
               <tr class="@if ($this->isChecked($spec->id)) th_checked @endif">
                   <td data-title="Check"><input type="checkbox" value="{{ $spec->id }}" wire:model="checked">
                   </td>
@@ -192,11 +192,31 @@
                       <td data-title="ID">{{ $spec->id }}</td>
                   @endif
                   @if ($this->showColumn('Name'))
-                      <td data-title="Name">{{ $spec->name }}
+                      <td data-title="Name">
+
+                        @if ($indexspec !== $index)
+                        <div class="cursor-p"
+                            wire:click.prevent="edititem({{ $index }})">
+                            {{ $spec->name }}</div>
+                    @else
+                        <input type="text"
+                            class="table-edit wid-1"
+                            wire:model.defer="specss.{{ $index }}.name">
+                    @endif
                       </td>
                   @endif
                   @if ($this->showColumn('Unit'))
-                      <td data-title="Unit">{{ $spec->um }}</td>
+                      <td data-title="Unit">
+                        @if ($indexspec !== $index)
+                        <div class="cursor-p"
+                            wire:click.prevent="edititem({{ $index }})">
+                            {{ $spec->um }}</div>
+                    @else
+                        <input type="text"
+                            class="table-edit wid-1"
+                            wire:model.defer="specss.{{ $index }}.um">
+                    @endif
+                      </td>
                   @endif
 
                   @if ($this->showColumn('Created At'))
@@ -205,13 +225,39 @@
 
 
                   <td data-title="Action">
-                      <button class="delete" wire:click.prevent="confirmItemRemoval({{ $spec->id }})">
-                          <svg>
-                              <circle cx="12" cy="12" r="10"></circle>
-                              <line x1="15" y1="9" x2="9" y2="15"></line>
-                              <line x1="9" y1="9" x2="15" y2="15"></line>
-                          </svg>
-                      </button>
+                    @if ($indexspec !== $index)
+                    <button class="edit"
+                        wire:click.prevent="edititem({{ $index }})">
+                        <svg>
+                            <path
+                                d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
+                            </path>
+                        </svg>
+                    </button>
+                    <button class="delete" wire:click.prevent="confirmItemRemoval({{ $spec->id }})">
+                      <svg>
+                          <circle cx="12" cy="12" r="10"></circle>
+                          <line x1="15" y1="9" x2="9" y2="15"></line>
+                          <line x1="9" y1="9" x2="15" y2="15"></line>
+                      </svg>
+                  </button>
+                @else
+                    <button class="edit"
+                        wire:click.prevent="saveitem({{ $index }} , {{ $spec->id }})">
+                        <svg>
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                    </button>
+                    <button class="save" wire:click.prevent="cancelitem()">
+                        <svg>
+                            <line x1="18" y1="6" x2="6"
+                                y2="18"></line>
+                            <line x1="6" y1="6" x2="18"
+                                y2="18"></line>
+                        </svg>
+                    </button>
+                @endif
+
                   </td>
               </tr>
           @endforeach

@@ -21,15 +21,16 @@ class Specstable extends Component
   public $specidbeingremoved = null;
   public $columns = ['Id', 'Unit', 'Created At'];
   public $selectedColumns = [];
+  public $indexspec = null;
+  public $specss = [];
 
-    public function render()
-    {
-        return view('livewire.specstable', [
-          'specs' => $this->specs
-        ]);
-    }
-
-    public function mount()
+  public function render()
+  {
+    return view('livewire.specstable', [
+      'specs' => $this->specs
+    ]);
+  }
+  public function mount()
   {
     $this->selectedColumns = $this->columns;
   }
@@ -52,7 +53,6 @@ class Specstable extends Component
   {
     $this->selectPage = false;
   }
-
   public function sortBy($columnName)
   {
 
@@ -64,7 +64,6 @@ class Specstable extends Component
 
     $this->orderBy = $columnName;
   }
-
   public function swapSortDirection()
   {
     return $this->orderAsc === '1' ? '0' : '1';
@@ -78,7 +77,6 @@ class Specstable extends Component
   {
     return $this->specsQuery->paginate($this->perPage);
   }
-
   public function getSpecsQueryProperty()
   {
     return Specs::search($this->search)
@@ -95,7 +93,6 @@ class Specstable extends Component
     $this->checked = [];
     session()->flash('message', 'Records deleted succesfuly');
   }
-
   public function deleteSingleRecord()
   {
     $id = $this->specidbeingremoved;
@@ -109,7 +106,6 @@ class Specstable extends Component
     $this->specidbeingremoved = $id;
     $this->dispatchBrowserEvent('show-delete-modal');
   }
-
   public function confirmItemsRemovalmultiple()
   {
     $this->dispatchBrowserEvent('show-delete-modal-multiple');
@@ -118,12 +114,37 @@ class Specstable extends Component
   {
     return in_array($id, $this->checked);
   }
-
   public function exportSelected()
   {
     $export = new SpecsExport($this->checked);
     $this->checked = [];
     $this->selectPage = false;
     return $export->download('specs.xlsx');
+  }
+  public function edititem($itemIndex)
+  {
+    $this->indexspec = $itemIndex;
+  }
+  public function saveitem($index, $id)
+  {
+    $spec_new = $this->specss[$index] ?? NULL;
+    if(!is_null($spec_new)){
+      $spec = Specs::find($id);
+      if (array_key_exists('name', $spec_new)) {
+        $spec->name = $spec_new['name'];
+    }
+      if(array_key_exists('um', $spec_new)){
+      $spec->um = $spec_new['um'];
+    }
+      $spec->save();
+      session()->flash('message', 'Record edited successfully!');
+    }
+    $this->specss = [];
+    $this->indexspec = null;
+  }
+  public function cancelitem()
+  {
+    $this->indexspec = null;
+    $this->specss = [];
   }
 }
