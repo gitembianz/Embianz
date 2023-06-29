@@ -3104,7 +3104,7 @@ input[type=checkbox]:checked:before {
   background: #35424B;
   transition: all 0.2s ease-in-out;
   z-index: 700;
-  -webkit-transform: translateX(0);
+  -webkit-transform: translateZ(0);
   /*  This is function for Profile (When i open the bottom
     part of Profile) to increase the height of Header */
 }
