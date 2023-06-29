@@ -24,6 +24,16 @@ class Specstable extends Component
   public $selectedColumns = [];
   public $addspec =[];
 
+  protected $rules = [
+    'name' => 'required|string|min:6',
+            'um' => 'required|string',
+  ];
+
+protected $validationAttributes= [
+  ''
+];
+
+
     public function render()
     {
         return view('livewire.specstable', [
@@ -61,6 +71,7 @@ class Specstable extends Component
   }
 
   public function confirmnewitem(){
+   $this->validate();
     $item_new = $this->addspec ?? NULL;
     if (!is_null($item_new)) {
       $new = new Specs();
