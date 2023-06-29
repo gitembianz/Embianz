@@ -26,7 +26,7 @@
         <div class="item__header">
             <h1 class="item__header-title" id="title">{{ __('Add new spec') }}</h1>
             <div class="item__header-buttons">
-                <a class="item__header-btn" href="{{ route('specs') }}"> Go Back</a>
+                <a class="item__header-btn" href="{{ route('specs') }}">All Specs</a>
                 <button class="item__header-btn" id="resetform" type="reset">Clear form</button>
             </div>
         </div>
