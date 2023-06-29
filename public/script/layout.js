@@ -197,22 +197,21 @@ function closeAllAccordions() {
 closeAllAccordions();
 
 //==========================================================================================================================
-// previous scroll position
+//previous scroll position
+const SCROLL_THRESHOLD = 50;
+
+const updateHeaderPosition = () => {
+  const currentScrollPosition = window.pageYOffset;
+
+  if (currentScrollPosition >= SCROLL_THRESHOLD) {
+    const headerElement = document.querySelector('.header');
+    let headerHeight = headerElement.offsetHeight;
+    headerElement.style.top = previousScrollPosition > currentScrollPosition ? '0' : `-${headerHeight}px`;
+  }
+
+  previousScrollPosition = currentScrollPosition;
+};
+
 let previousScrollPosition = window.pageYOffset;
 
-if (header) {
-  const headerHeight = header.offsetHeight;
-
-  window.addEventListener('scroll', () => {
-    const currentScrollPosition = window.pageYOffset;
-
-    // Check if the current scroll position is greater than or equal to 50
-    if (currentScrollPosition >= 150) {
-      // Update the 'top' property of the header element based on the scroll direction
-      header.style.top = previousScrollPosition > currentScrollPosition ? '0' : `-${headerHeight}px`;
-    }
-
-    // Update the previous scroll position
-    previousScrollPosition = currentScrollPosition;
-  });
-}
+window.addEventListener('scroll', updateHeaderPosition);
