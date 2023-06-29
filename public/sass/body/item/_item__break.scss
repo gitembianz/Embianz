@@ -1,8 +1,5 @@
 @media (min-width: 1024px) {
   .item {
-
-
-    // The product header (title and the buttons in top)
     &__header {
       grid-template-columns: 70% 1fr;
       grid-column-start: 1;
@@ -13,8 +10,6 @@
       }
     }
 
-
-    // Product form (input, textarea, buttons)
     &__form {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -25,7 +20,6 @@
         margin: 0;
       }
 
-      // Short Description
       &-long {
         grid-column: 1;
         grid-column-end: 3;

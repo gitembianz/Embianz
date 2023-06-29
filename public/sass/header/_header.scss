@@ -1,37 +1,29 @@
-header {
-  height: $headerHeight;
+header,
+.header {
+  @include size(100%, $headerHeight);
 }
 
 .header {
-  @include centering;
-  position: fixed;
-  top: 0;
-  width: 100%;
-  height: $headerHeight;
+  @include flexbox(flex, row, center, center);
+  @include position(fixed, 0, auto, auto, auto);
   padding: 0 $padding;
   background: $mainBg;
   transition: $transition;
-  z-index: $z-index-error;
-  // -webkit-transform: translateZ(0);
-  // Here is the Search and Profile Buttons on Mobile
+  z-index: 301;
 
   &__buttons {
-    @include centering;
-    gap: $gap * 2;
+    @include flexbox(flex, row, center, center, $gap * 2);
   }
 
   &__logo {
     display: none;
-    height: $BtnSize;
 
     img {
-      object-fit: contain;
-      height: 100%;
+      @include size(250px, auto);
+      object-fit: cover;
     }
   }
 
-  /*  This is function for Profile (When i open the bottom
-    part of Profile) to increase the height of Header */
   &.moved {
     height: calc($headerHeight + ($gap * 3));
 
@@ -41,7 +33,6 @@ header {
   }
 }
 
-// Profile and Search Button
 .search,
 .profile {
   @include headBtn;

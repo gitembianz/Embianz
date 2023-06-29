@@ -11,22 +11,16 @@
   }
 
   &__list {
-    gap: $gap;
-    left: 50%;
-    opacity: 0;
-    width: 100%;
-    padding: $gap;
-    position: fixed;
-    visibility: hidden;
-    top: $headerHeight;
-    overflow-y: auto;
-    @include centering;
+    @include flexbox(flex, column, flex-start, center, $gap);
+    @include position(fixed, $headerHeight, auto, auto, 50%);
+    @include size($height: calc(100% - #{$headerHeight}));
     @include scrollbar;
+    opacity: 0;
+    padding: $gap;
+    visibility: hidden;
+    overflow-y: auto;
     background: darken($mainBg, 7%);
-    flex-direction: column;
     transition: $transition;
-    justify-content: flex-start;
-    height: calc(100% - $headerHeight);
     transform: translateX(-50%) translateY(-150%);
 
     li {
@@ -54,16 +48,10 @@
 
     &__btn::before {
       content: "";
-      position: absolute;
-      top: 50px;
-      right: 0.9rem;
+      @include position(absolute, 50px, 0.9rem);
+      @include triangle(15px, darken($mainBg, 7%), up);
       transform: translateY(-1050%);
       transition: $transition;
-      width: 0;
-      height: 0;
-      border-left: 10px solid transparent;
-      border-right: 10px solid transparent;
-      border-bottom: 15px solid darken($mainBg, 7%);
     }
 
     &.open &__btn::before {
@@ -71,18 +59,15 @@
     }
 
     &__list {
-      right: -30px;
-      top: 90px;
-      left: unset;
-      width: $notifyWidth;
-      height: $NotifyHeight;
+      @include position(absolute, 65px, -30px, unset, unset);
+      @include size($notifyWidth);
       border-radius: $BtnBorderRadius;
-      transform: translateX(-30%);
+      transform: translateX(0%);
       box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
     }
 
     &.open>.notify__list {
-      transform: translateX(-30%);
+      transform: translateX(-0%);
       z-index: $z-index-modal;
     }
   }
@@ -92,12 +77,9 @@
 
   &-circle::after,
   &-count {
-    width: $alertSize;
-    height: $alertSize;
-    position: absolute;
     background: $alertColor;
     outline: 3px solid $mainBg;
-    border-radius: 100%
+    border-radius: 100%;
   }
 
   &-circle {
@@ -106,16 +88,14 @@
 
     &::after {
       content: "";
-      width: calc($alertSize / 2);
-      height: calc($alertSize / 2);
-      top: 0;
-      right: 0;
+      @include position(absolute, 0, 0);
+      @include size(calc($alertSize / 2));
     }
   }
 
   &-count {
-    @include centering;
-    top: calc($alertSize / -2);
-    right: calc($alertSize / -2);
+    @include size(calc($alertSize / 1.2));
+    @include flexbox(flex, row, center, center);
+    @include position(absolute, calc(-#{$alertSize} / 2), calc(-#{$alertSize} / 2));
   }
 }

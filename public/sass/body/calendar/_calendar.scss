@@ -162,12 +162,15 @@
     }
 
     .date-time-formate {
-      width: max-content;
-      height: max-content;
+      @include size(max-content);
+      @include flexbox(flex, row, center);
+
+      // width: max-content;
+      // height: max-content;
       position: relative;
-      display: flex;
+      // display: flex;
       top: 5rem;
-      justify-content: center;
+      // justify-content: center;
       color: $black;
 
     }
@@ -179,8 +182,10 @@
 
     .date-time-value {
       display: block;
-      height: max-content;
-      width: max-content;
+      @include size(max-content);
+      // height: max-content;
+      // width: max-content;
+
       position: relative;
       left: 40%;
       top: -18px;
@@ -301,13 +306,15 @@
     .list-task-item {
 
       .formtodo {
-        display: flex;
-        align-items: center;
+        @include flexbox(flex, space-between, center);
+        // display: flex;
+        // align-items: center;
         text-align: center;
-        justify-content: space-between;
+        // justify-content: space-between;
 
         & svg {
-          @include wh(3.5rem, auto);
+          // @include wh(3.5rem, auto);
+          @include size(3.5rem, auto);
           padding: 0.5rem;
           object-fit: cover;
           align-items: center;
@@ -318,7 +325,7 @@
           }
 
           &:hover {
-            @include wh(3.6rem, auto);
+            @include size(3.6rem, auto);
           }
         }
       }

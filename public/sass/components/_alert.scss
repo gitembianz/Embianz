@@ -1,16 +1,12 @@
 // The Notification
 .alert__session {
   @include standart-Font;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 98%;
-  margin: 0 auto;
-  margin-bottom: $margin;
+  @include flexbox(flex, row, space-between, center);
+  @include size(98%, $BtnSize);
+  margin: 0 auto $margin;
   background-color: $darkBg;
   border-radius: $BtnBorderRadius;
   z-index: $z-index-error;
-
 
   &-text {
     @include standart-Font;
@@ -28,13 +24,11 @@
   }
 
   &.liveAlert {
-    position: absolute;
-    left: 50%;
+    @include position(absolute, auto, auto, 97%, 50%);
+    @include size(85%, $BtnSize);
     transform: translateX(-50%);
-    width: 85%;
-    bottom: 97.5%;
-    opacity: 0;
     transition: $transition;
     z-index: $z-index-error;
+    opacity: 0;
   }
 }
