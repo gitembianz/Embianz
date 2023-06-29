@@ -40,7 +40,7 @@
         <div class="item__header">
             <h1 class="item__header-title" id="title">{{ __('Create Category') }}</h1>
             <div class="item__header-buttons">
-                <a class="item__header-btn" href="{{ route('category') }}"> Go Back</a>
+                <a class="item__header-btn" href="{{ route('category') }}">All Categories</a>
                 <button class="item__header-btn" id="resetform" type="reset">Clear form</button>
             </div>
         </div>
