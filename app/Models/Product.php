@@ -13,6 +13,11 @@ class Product extends Model
         return $this->hasMany(Products_categories::class, 'product_id');
     }
 
+    public function product_specs()
+    {
+        return $this->hasMany(Product_Spec::class, 'product_id');
+    }
+
 
     protected $fillable = [
         'name',
