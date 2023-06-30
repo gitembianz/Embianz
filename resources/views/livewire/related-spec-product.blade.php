@@ -30,9 +30,28 @@
           wire:click.prevent="@if ($showrelatedspecs === false) $set('showrelatedspecs', true) @else $set('showrelatedspecs', false) @endif">
           {{ __('Specs ') }}({{ count($relatedspecs) }})
           </button>
-          <button class="accordion__upload" >
+          <button wire:click.prevent="addrelated()" class="accordion__upload" >
             <svg><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>          </button>
       </div>
+      {{-- add related specs --}}
+      <div class="modal" id="addspecsmodal">
+        <div class="modal-content">
+            <h1 class="modal-content-title">
+                {{ __('Add related Specs') }}
+            </h1>
+            <input class="modal-content-btn submit" type="button"
+                value="Confirm">
+            <input class="modal-content-btn delete" onclick="document.getElementById('addspecsmodal').style.display='none'" type="button" value="Cancel">
+
+            <span class="modal-content-btn delete" onclick="document.getElementById('addspecsmodal').style.display='none'">
+                <svg>
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </span>
+        </div>
+    </div>
+      {{-- end add related specs --}}
       @if ($showrelatedspecs)
       <div class="accordion__content">
           <div class="item">

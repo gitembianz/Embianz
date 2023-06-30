@@ -25,12 +25,19 @@ class RelatedSpecProduct extends Component
   public $columns = ['Id', 'Name', 'Unit', 'Value', 'Created At'];
   public $selectedColumns = [];
   public $specidbeingremoved = null;
+  public $addrelatedspecs = false;
+  //Add specs declaration
 
   public function render()
   {
     return view('livewire.related-spec-product', [
       'relatedspecs' => $this->relatedspecs
     ]);
+  }
+  public function mount($productId)
+  {
+    $this->productId = $productId;
+    $this->selectedColumns = $this->columns;
   }
   //function for realted
   public function showColumn($column)
@@ -111,4 +118,11 @@ class RelatedSpecProduct extends Component
   {
     $this->dispatchBrowserEvent('show-delete-modal-multiple');
   }
+  // add specs function
+  public function addrelated()
+{
+  $this->showrelatedspecs = true;
+  $this->dispatchBrowserEvent('showaddspec');
+}
+
 }
