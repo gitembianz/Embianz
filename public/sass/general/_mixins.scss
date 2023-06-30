@@ -4,9 +4,119 @@
    height: $h;
  }
 
- @mixin w($w) {
-   width: $w;
+ //=========================================================================================== The new mixins
+ //  The mixin for Width and height
+ @mixin size($width: 100%, $height: $width) {
+   width: $width;
+   height: $height;
  }
+
+ @mixin position($position, $top: null, $right: null, $bottom: null, $left: null) {
+   position: $position;
+
+   @if $top !=null {
+     top: $top;
+   }
+
+   @if $right !=null {
+     right: $right;
+   }
+
+   @if $bottom !=null {
+     bottom: $bottom;
+   }
+
+   @if $left !=null {
+     left: $left;
+   }
+ }
+
+
+ // The mixin for Flexbox
+ @mixin flexbox($display: flex,
+   $direction: row,
+   $justifyContent: null,
+   $alignItems: null,
+   $gap: null,
+   $placeContent: null,
+   $placeItems: null,
+   $wrap: nowrap,
+   $shrink: 0,
+   $grow: 0,
+   $alignContent: null,
+   $justifyItems: null) {
+
+   display: $display;
+   flex-direction: $direction;
+   gap: $gap;
+
+   @if $placeContent ==null {
+     @if $alignContent {
+       align-content: $alignContent;
+     }
+
+     @if $justifyContent {
+       justify-content: $justifyContent;
+     }
+   }
+
+   @else {
+     place-content: $placeContent;
+   }
+
+   @if $placeItems ==null {
+     @if $alignItems {
+       align-items: $alignItems;
+     }
+
+     @if $justifyItems {
+       justify-items: $justifyItems;
+     }
+   }
+
+   @else {
+     place-items: $placeItems;
+   }
+
+   flex-wrap: $wrap;
+   flex-shrink: $shrink;
+   flex-grow: $grow;
+ }
+
+ //  Mixin for triangle
+ @mixin triangle($size, $color, $direction: down) {
+   width: 0;
+   height: 0;
+
+   border-left: $size solid transparent;
+   border-right: $size solid transparent;
+
+   @if $direction ==down {
+     border-top: $size solid $color;
+   }
+
+   @else if $direction ==up {
+     border-bottom: $size solid $color;
+   }
+
+   @else if $direction ==left {
+     border-right: $size solid $color;
+     border-left: 0;
+   }
+
+   @else if $direction ==right {
+     border-left: $size solid $color;
+     border-right: 0;
+   }
+ }
+
+
+ //=======================================================================================================
+
+
+ //  @mixin w($w) {
+ //    width: $w;
+ //  }
 
  @mixin centering {
    display: flex;

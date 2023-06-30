@@ -1,10 +1,6 @@
-// The product section
 .item {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+  @include flexbox(flex, column, center, center, $gap);
 
-  // The product header (title and the buttons in top)
   &__header {
     display: grid;
     grid-template-columns: 1fr;
@@ -19,9 +15,7 @@
     }
 
     &-buttons {
-      @include centering;
-      gap: $gap;
-      justify-content: space-between
+      @include flexbox(flex, row, space-between, center, $gap);
     }
 
     &-btn {
@@ -31,51 +25,37 @@
     }
   }
 
-  // This is Upload media content
   &__upload {
-    display: flex;
-    flex-direction: column;
+    @include flexbox(flex, column);
 
     input[type="file"] {
       display: none;
     }
 
-    // Upload media button
     &-btn {
       @include standart-Btn;
       background-color: $mainBg;
       width: 100%;
       gap: $gap;
     }
-
   }
 
-  // Product form (input, textarea, buttons)
   &__form {
+    @include flexbox(flex, column, center, flex-start, $gap *3, $alignContent: flex-start);
     margin: 2rem 0;
-    display: flex;
-    flex-direction: column;
-    gap: $gap * 3;
-    align-content: flex-start;
-    align-items: flex-start;
+    width: 100%;
 
-    // STYLE FOR EVERY INPUT IN FORM
     &-input,
     &-input-close {
-      @include centering;
-      flex-direction: column;
+      @include flexbox(flex, column, center, center);
       width: 100%;
       position: relative;
       word-wrap: break-word;
 
-
-
       span {
+        @include position(absolute, 50%, auto, auto, 15px);
         @include standart-Font;
         color: $mainBg;
-        position: absolute;
-        left: 15px;
-        top: 50%;
         transform: translateY(-50%);
         transition: $transition;
       }
@@ -97,18 +77,15 @@
       textarea {
         height: $BtnSize * 4;
       }
-
     }
 
     &-input-close {
       cursor: not-allowed;
 
       span {
+        @include position(absolute, 0, auto, auto, 15px);
         @include standart-Font;
         color: $mainBg;
-        position: absolute;
-        left: 15px;
-        top: 0;
         transform: translateY(-50%);
         transition: $transition;
         background-color: $white;
@@ -132,7 +109,6 @@
       @extend .item__form-input-close;
     }
 
-    // BUTTON IN CONTENT ("ADD NEW")
     &-btn {
       @include standart-Btn;
       color: $mainBg;
@@ -143,9 +119,8 @@
   }
 }
 
-.table-edit{
+.table-edit {
   @include standart-Input;
-  width: 6rem;
+  @include size(6rem, 2rem);
   padding: 0;
-  height: 2rem;
 }

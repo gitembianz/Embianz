@@ -1,37 +1,13 @@
 @media (min-width: 1024px) {
   .right {
-    position: fixed;
-    right: 0;
-    top: $headerHeight;
-
-    border-top-left-radius: $BtnBorderRadius;
-    border-bottom-left-radius: $BtnBorderRadius;
-
+    @include position(fixed, $headerHeight, 0);
+    border-radius: $BtnBorderRadius 0 0 $BtnBorderRadius;
     background-color: $darkBg;
     margin-left: $margin;
     transform: translateX(0%);
 
-    &__open {
-      top: calc(($BtnSize + $gap) / 2);
-      right: calc(100% - ($BtnSize / 2.5));
-    }
-
     &.open {
       width: $calendarWidth;
-
-      // &>.right {
-      //   &__open {
-      //     left: unset;
-      //     top: calc(($BtnSize + $gap) / 2);
-      //     right: calc(100% - ($BtnSize / 2.5));
-      //   }
-
-      //   &__content {
-      //     height: 100%;
-      //   }
-      // }
-
-
     }
   }
 }

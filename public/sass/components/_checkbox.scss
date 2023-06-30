@@ -1,21 +1,17 @@
 input[type=checkbox] {
-  @include BtnHover($hoverEffect: lighten($checkColor, 30%), $activeEffect: $checkColor, $textColor: $mainBg );
+  @include BtnHover($hoverEffect: lighten($checkColor, 30%), $activeEffect: $checkColor, $textColor: $mainBg);
   position: relative;
   border: 1px solid $darkBg;
   border-radius: $BtnBorderRadius;
   background: none;
   cursor: pointer;
-  height: 2.5rem;
-  width: 2.5rem;
+  @include size(2.5rem);
   appearance: none;
 
   &:before {
     content: "";
-    position: absolute;
-    right: 45%;
-    top: 45%;
-    width: 8px;
-    height: 16px;
+    @include position(absolute, 45%, 45%);
+    @include size(8px, 16px);
     border: solid #FFF;
     border-width: 0 3px 3px 0;
     transform: rotate(45deg) translate(-50%, -50%);

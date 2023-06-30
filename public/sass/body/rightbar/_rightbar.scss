@@ -1,18 +1,10 @@
 .right {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-
-  width: 0;
-  height: 100%;
-
+  @include position(absolute, auto, 0, 0, auto);
+  @include size(0, 100%);
   background-color: $mainBg;
   transition: $transition;
   transform: translateX(90%);
 
-
-
-  // Sidebar Button in Header
   &__open {
     @include standart-Btn;
     display: block;
@@ -25,7 +17,6 @@
     display: none;
   }
 
-  // SideBar Opened
   &.open {
     width: 100%;
     transform: translateX(0%);

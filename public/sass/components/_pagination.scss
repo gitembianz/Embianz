@@ -1,7 +1,6 @@
 //pagination
 .pagination {
-  @include centering;
-  gap: $gap * 1.5;
+  @include flexbox(flex, row, center, center, $gap*1.5);
   background: $mainBg;
   padding: $padding;
   border-radius: $BtnBorderRadius;
@@ -9,8 +8,7 @@
 
   &__item {
     @include standart-Btn;
-    width: 2rem;
-    height: 2rem;
+    @include size(2rem);
 
     &.active {
       background-color: #BBFCDE;
