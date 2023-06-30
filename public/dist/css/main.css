@@ -2302,10 +2302,7 @@ input[type=checkbox] {
   cursor: pointer;
   width: 2.5rem;
   height: 2.5rem;
-  -webkit-appearance: none;
-     -moz-appearance: none;
-          appearance: none;
-
+  appearance: none;
 }
 input[type=checkbox]:hover {
   background-color: rgba(146, 220, 254, 0.6588235294);
@@ -3041,9 +3038,7 @@ header,
 .header__logo img {
   width: 250px;
   height: auto;
-  -o-object-fit: cover;
-     object-fit: cover;
-
+  object-fit: cover;
 }
 .header.moved {
   height: 130px;
@@ -5272,9 +5267,7 @@ header,
 }
 .container-right .card_calendar .date-time-value {
   display: block;
-  width: -moz-max-content;
   width: max-content;
-  height: -moz-max-content;
   height: max-content;
   position: relative;
   left: 40%;
