@@ -67,10 +67,10 @@ const profileClose = document.querySelector('#closeProfile');
 
 // Function for to open profile section
 profileOpen.addEventListener('click', () => {
-    profile.classList.add('active');
-    header.classList.add('moved');
-    search.classList.remove('active');
-    notify.classList.remove('open');
+  profile.classList.add('active');
+  header.classList.add('moved');
+  search.classList.remove('active');
+  notify.classList.remove('open');
 })
 // Function what is closing everethink of Profile
 profileClose.addEventListener('click', () => {
@@ -105,24 +105,24 @@ const notifyBtn = document.querySelector('.notify__btn');
 notifyBtn.addEventListener('click', () => {
   document.querySelector('body').classList.toggle("overflow")
   notify.classList.toggle('open');
-    profile.classList.remove('active');
-    header.classList.remove('moved');
-    search.classList.remove('active');
+  profile.classList.remove('active');
+  header.classList.remove('moved');
+  search.classList.remove('active');
 })
 
 // Select all buttons with the class "dropdown-button"
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   // Select all buttons with the class "dropdown-button"
   const dropdownButtons = document.querySelectorAll('.dropdown-button');
 
-  dropdownButtons.forEach(function(button) {
-    button.addEventListener('click', function() {
+  dropdownButtons.forEach(function (button) {
+    button.addEventListener('click', function () {
       const dropdown = button.closest('.dropdown');
       dropdown.classList.toggle('open');
 
       // Remove the class "open" from other buttons
-      dropdownButtons.forEach(function(otherButton) {
+      dropdownButtons.forEach(function (otherButton) {
         if (otherButton !== button) {
           const otherDropdown = otherButton.closest('.dropdown');
           otherDropdown.classList.remove('open');
@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // The Top Up Button
 const topUpBtn = document.getElementById('topUp');
 window.addEventListener('scroll', () => {
-  if(window.pageYOffset > 100){
+  if (window.pageYOffset > 100) {
     topUpBtn.classList.add("actived");
   } else {
     topUpBtn.classList.remove("actived");
@@ -166,7 +166,7 @@ const accordionButtons = document.querySelectorAll('.accordion__btn');
 
 // Loop through each button and attach a click event listener
 accordionButtons.forEach(button => {
-  button.addEventListener('click', function() {
+  button.addEventListener('click', function () {
     const accordionContent = this.nextElementSibling;
 
     // Check if the accordion content is currently active
