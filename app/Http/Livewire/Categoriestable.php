@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\File;
 class Categoriestable extends Component
 {
   use WithPagination;
-
   public $perPage = 10;
   public $search = '';
   public $orderBy = 'id';
@@ -24,7 +23,6 @@ class Categoriestable extends Component
   public $columns = ['Id', 'Category Parrent', 'Short Description', 'Sequence', 'Created At'];
   public $selectedColumns = [];
 
-
   public function render()
   {
     return view('livewire.categoriestable', [
@@ -35,7 +33,6 @@ class Categoriestable extends Component
   {
     $this->selectedColumns = $this->columns;
   }
-
   public function showColumn($column)
   {
     if ($column === 'Name') {
@@ -43,7 +40,6 @@ class Categoriestable extends Component
     }
     return in_array($column, $this->selectedColumns);
   }
-
   public function updatedSelectPage($value)
   {
     if ($value) {
@@ -56,7 +52,6 @@ class Categoriestable extends Component
   {
     $this->selectPage = false;
   }
-
   public function sortBy($columnName)
   {
 
@@ -68,29 +63,24 @@ class Categoriestable extends Component
 
     $this->orderBy = $columnName;
   }
-
   public function swapSortDirection()
   {
     return $this->orderAsc === '1' ? '0' : '1';
   }
-
   public function selectAll()
   {
     $this->selectAll = true;
     $this->checked = $this->categoriesQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
   }
-
   public function getCategoriesProperty()
   {
     return $this->categoriesQuery->paginate($this->perPage);
   }
-
   public function getCategoriesQueryProperty()
   {
     return Category::search($this->search)
       ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc');
   }
-
   public function deleteRecords()
   {
 
@@ -116,7 +106,6 @@ class Categoriestable extends Component
     $this->checked = [];
     session()->flash('message', 'Category deleted succesfuly');
   }
-
   public function deleteSingleRecord()
   {
     $id = $this->catidbeingremoved;
@@ -135,23 +124,19 @@ class Categoriestable extends Component
     $this->checked = array_diff($this->checked, [$id]);
     session()->flash('message', 'Record deleted Successfully');
   }
-
   public function confirmCategoryRemoval($id)
   {
     $this->catidbeingremoved = $id;
     $this->dispatchBrowserEvent('show-delete-modal-category');
   }
-
   public function confirmCategoriesRemovalmultiple()
   {
     $this->dispatchBrowserEvent('show-delete-modal-category-multiple');
   }
-
   public function isChecked($id)
   {
     return in_array($id, $this->checked);
   }
-
   public function exportSelected()
   {
     $export = new CategoriesExport($this->checked);

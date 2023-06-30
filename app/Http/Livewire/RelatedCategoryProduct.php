@@ -49,7 +49,6 @@ class RelatedCategoryProduct extends Component
   {
     $this->showrelatedcat = true;
       $this->showTable = !$this->showTable;
-
   }
   public function cancel()
   {
@@ -182,7 +181,6 @@ public function showColumn($column)
     $this->selectAll = true;
     $this->checked = $this->relatedcatsQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
   }
-
   public function getRelatedcatsProperty()
   {
     return $this->relatedcatsQuery->paginate($this->perPage,['*'], 'related');
@@ -197,7 +195,6 @@ public function showColumn($column)
     $this->catidbeingremoved = $itemid;
     $this->dispatchBrowserEvent('show-delete-modal');
   }
-
   public function deleteSingleRecord()
   {
     $id = $this->catidbeingremoved;
@@ -228,16 +225,13 @@ public function showColumn($column)
     $this->selectPage = false;
     return $export->download('categories.xlsx');
   }
-
   //render function
-
   public function mount($productId)
   {
     $this->productId = $productId;
     $this->selectedColumns = $this->columns;
     $this->selectedColumnsadd = $this->columnsadd;
   }
-
   public function render()
   {
     if($this->showTable === true){
@@ -250,7 +244,5 @@ public function showColumn($column)
         'relatedcats' => $this->relatedcats
       ]);
     }
-
-
   }
 }
