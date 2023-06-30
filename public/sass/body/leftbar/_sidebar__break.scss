@@ -9,7 +9,7 @@
 @media (min-width: 1024px) {
   .sidebar {
     width: $sidebar-Width-Desktop-Min;
-    @include position(fixed, $headerHeight);
+    @include position(fixed, $headerHeight, null, null, 0);
 
     &__list {
       justify-items: center;

@@ -192,6 +192,7 @@
      stroke-width: $btnSvgBold;
      background-color: transparent;
      transition: $transition;
+     pointer-events: none;
    }
 
    //  Delete button for mixin

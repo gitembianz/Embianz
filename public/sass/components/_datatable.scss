@@ -76,8 +76,10 @@
         border-right: 0;
       }
     }
+  }
 
-
+  tbody tr {
+    background-color: $white;
   }
 
   tbody tr:nth-child(even) {
@@ -98,6 +100,8 @@
 
 @media (max-width: 660px) {
   .livewire-table {
+    display: inline-block;
+    width: calc(100% + ($contentPadding * 2));
 
     thead tr {
       display: block;
@@ -117,7 +121,6 @@
       width: 100vw;
       text-align: end;
     }
-
 
     th,
     td {
@@ -154,7 +157,6 @@
   background: lighten($checkColor, 40) !important;
   border: 1px solid lighten($checkColor, 20);
 }
-
 
 // The old table, is need to change on the .livewire-table
 .table {
