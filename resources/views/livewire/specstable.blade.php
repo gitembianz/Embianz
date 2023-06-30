@@ -35,7 +35,7 @@
 
       <div class="item__form-input">
           <input wire:model.debounce.200ms="search" type="text" required>
-          <span>Search Category...</span>
+          <span>Search...</span>
       </div>
       <div class="item__form-input">
           <select id="perPage" wire:model="perPage">
@@ -171,6 +171,14 @@
                       wire:click="sortBy('um')">Unit
                   </th>
               @endif
+              @if ($this->showColumn('Group'))
+                  <th class="cursor-p"
+                      @if ($orderBy === 'spec_group' && $orderAsc === '1') data-symbol="up"
+@else
+    data-symbol="down" @endif
+                      wire:click="sortBy('spec_group')">Group
+                  </th>
+              @endif
               @if ($this->showColumn('Created At'))
                   <th class="cursor-p"
                       @if ($orderBy === 'created_at' && $orderAsc === '1') data-symbol="up"
@@ -199,10 +207,13 @@
                             wire:click.prevent="edititem({{ $index }})">
                             {{ $spec->name }}</div>
                     @else
+                    <div class="item__form-input">
                         <input type="text"
                             class="table-edit wid-1"
                             wire:model.defer="specss.{{ $index }}.name">
-                    @endif
+                            <span>Name</span>
+                          </div>
+                            @endif
                       </td>
                   @endif
                   @if ($this->showColumn('Unit'))
@@ -212,12 +223,37 @@
                             wire:click.prevent="edititem({{ $index }})">
                             {{ $spec->um }}</div>
                     @else
+                    <div class="item__form-input">
                         <input type="text"
                             class="table-edit wid-1"
                             wire:model.defer="specss.{{ $index }}.um">
+                            <span>Unit</span>
+                    </div>
                     @endif
                       </td>
                   @endif
+                  @if ($this->showColumn('Group'))
+                  <td data-title="Group">
+                    @if ($indexspec !== $index)
+                    <div class="cursor-p"
+                        wire:click.prevent="edititem({{ $index }})">
+                        {{ $spec->spec_group }}</div>
+                @else
+                <div class="item__form-input">
+                  <select name="spec_group" wire:model.defer="specss.{{ $index }}.spec_group">
+                    <?php
+                    $groups = ['details', 'feature', 'accessibility'];
+                    ?>
+                    <option>Select a group</option>
+                    @foreach ($groups as $group)
+                        <option value="{{ $group }}">{{ $group }}</option>
+                    @endforeach
+                </select>
+                <span>Group</span>
+              </div>
+                @endif
+                  </td>
+              @endif
 
                   @if ($this->showColumn('Created At'))
                       <td data-title="Created At">{{ $spec->created_at }}</td>

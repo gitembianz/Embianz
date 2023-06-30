@@ -71,7 +71,6 @@ body::-webkit-scrollbar {
 body::-webkit-scrollbar-thumb {
   background: #20282d;
   border-radius: 10px;
-  -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
 }
 body::-webkit-scrollbar-thumb:hover {
@@ -1311,7 +1310,7 @@ main {
     overflow: visible;
   }
   main {
-    margin-left: 70px;
+    margin: 0 10px 10px 70px;
   }
   main.ml {
     margin-left: 200px;
@@ -2306,6 +2305,7 @@ input[type=checkbox] {
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
+
 }
 input[type=checkbox]:hover {
   background-color: rgba(146, 220, 254, 0.6588235294);
@@ -2617,8 +2617,7 @@ input[type=checkbox]:checked:before {
 .table td img,
 .table th img {
   height: 100%;
-  -o-object-fit: contain;
-     object-fit: contain;
+  object-fit: contain;
 }
 .table td select,
 .table td input,
@@ -2655,7 +2654,6 @@ input[type=checkbox]:checked:before {
 .table th input::-webkit-scrollbar-thumb {
   background: #20282d;
   border-radius: 10px;
-  -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
 }
 .table td select::-webkit-scrollbar-thumb:hover,
@@ -3045,6 +3043,7 @@ header,
   height: auto;
   -o-object-fit: cover;
      object-fit: cover;
+
 }
 .header.moved {
   height: 130px;
@@ -3621,7 +3620,6 @@ header,
 .notify__list::-webkit-scrollbar-thumb {
   background: #20282d;
   border-radius: 10px;
-  -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
 }
 .notify__list::-webkit-scrollbar-thumb:hover {
@@ -4693,7 +4691,6 @@ header,
 .item__form-close input::-webkit-scrollbar-thumb {
   background: #20282d;
   border-radius: 10px;
-  -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
 }
 .item__form-input div::-webkit-scrollbar-thumb:hover,
@@ -4921,7 +4918,6 @@ header,
 .table-edit::-webkit-scrollbar-thumb {
   background: #20282d;
   border-radius: 10px;
-  -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
 }
 .table-edit::-webkit-scrollbar-thumb:hover {
@@ -5258,9 +5254,7 @@ header,
   pointer-events: none;
 }
 .container-right .card_calendar .date-time-formate {
-  width: -moz-max-content;
   width: max-content;
-  height: -moz-max-content;
   height: max-content;
   display: flex;
   flex-direction: row;
@@ -5387,8 +5381,7 @@ header,
   width: 3.5rem;
   height: auto;
   padding: 0.5rem;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
   align-items: center;
   background: #ffffff;
 }
@@ -5401,4 +5394,4 @@ header,
 }
 .container-right .card_todo .count {
   border-top: 1px solid #35424B;
-}/*# sourceMappingURL=main.css.map */
+}

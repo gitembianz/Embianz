@@ -47,7 +47,9 @@ class RelatedCategoryProduct extends Component
 //add new functions
   public function toggleTable()
   {
+    $this->showrelatedcat = true;
       $this->showTable = !$this->showTable;
+
   }
   public function cancel()
   {

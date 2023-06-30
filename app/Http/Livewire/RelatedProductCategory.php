@@ -45,7 +45,7 @@ class RelatedProductCategory extends Component
 
   // function for add products
   public function toggleTable()
-  {
+  {   $this->showrelatedprod = true;
       $this->showTable = !$this->showTable;
   }
   public function cancel()
