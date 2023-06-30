@@ -45,12 +45,13 @@ class RelatedProductCategory extends Component
 
   // function for add products
   public function toggleTable()
-  {   $this->showrelatedprod = true;
-      $this->showTable = !$this->showTable;
+  {
+    $this->showrelatedprod = true;
+    $this->showTable = !$this->showTable;
   }
   public function cancel()
   {
-      $this->showTable = false; // Set $showTable to false to hide the table
+    $this->showTable = false; // Set $showTable to false to hide the table
   }
   public function showColumnadd($column)
   {
@@ -86,16 +87,14 @@ class RelatedProductCategory extends Component
 
     $this->orderByadd = $columnName;
   }
-
   public function selectAlladd()
   {
     $this->selectAlladd = true;
     $this->checkedadd = $this->proddsQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
   }
-
   public function getProddsProperty()
   {
-    return $this->proddsQuery->paginate($this->perPageadd,['*'],  'products');
+    return $this->proddsQuery->paginate($this->perPageadd, ['*'],  'products');
   }
   public function getProddsQueryProperty()
   {
@@ -174,7 +173,6 @@ class RelatedProductCategory extends Component
 
     $this->orderBy = $columnName;
   }
-
   public function selectAll()
   {
     $this->selectAll = true;
@@ -182,7 +180,7 @@ class RelatedProductCategory extends Component
   }
   public function getRelatedproductsProperty()
   {
-    return $this->relatedproductsQuery->paginate($this->perPage,['*'], 'related');
+    return $this->relatedproductsQuery->paginate($this->perPage, ['*'], 'related');
   }
   public function getRelatedproductsQueryProperty()
   {
@@ -194,7 +192,6 @@ class RelatedProductCategory extends Component
     $this->productidbeingremoved = $productid;
     $this->dispatchBrowserEvent('show-delete-modal');
   }
-
   public function deleteSingleRecord()
   {
     $id = $this->productidbeingremoved;
@@ -217,8 +214,6 @@ class RelatedProductCategory extends Component
     $this->checked = [];
     session()->flash('message', 'Product product deleted succesfuly');
   }
-
-
   public function confirmProductsRemovalmultiple()
   {
     $this->dispatchBrowserEvent('show-delete-modal-multiple');
@@ -226,25 +221,20 @@ class RelatedProductCategory extends Component
   public function confirmProductsLinkmultiple()
   {
     $this->dispatchBrowserEvent('show-link-modal-multiple');
-
   }
-
   public function render()
   {
-    if($this->showTable === true){
+    if ($this->showTable === true) {
       return view('livewire.related-product-category', [
         'relatedproducts' => $this->relatedproducts,
-        'prodds' =>$this->prodds
+        'prodds' => $this->prodds
       ]);
-    }else{
+    } else {
       return view('livewire.related-product-category', [
         'relatedproducts' => $this->relatedproducts
       ]);
     }
-
-
   }
-
   public function mount($categoryId)
   {
     $this->categoryId = $categoryId;
@@ -253,7 +243,6 @@ class RelatedProductCategory extends Component
   }
   public function exportSelected()
   {
-
     $export = new ProductsExport($this->checked);
     $this->checked = [];
     $this->selectPage = false;

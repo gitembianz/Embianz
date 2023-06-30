@@ -28,17 +28,14 @@ class ShowProduct extends Component
   {
     $this->editproduct = true;
   }
-
   public function getProductProperty()
   {
     return $this->productQuery;
   }
-
   public function getProductQueryProperty()
   {
     return Product::find($this->productId);
   }
-
   public function saveproduct()
   {
     $product_new = $this->prod ?? NULL;
@@ -78,24 +75,20 @@ class ShowProduct extends Component
     $this->prod = [];
     $this->editproduct = null;
   }
-
   public function updated()
-    {
-        $this->dispatchBrowserEvent('tabNavigation');
-    }
-
+  {
+    $this->dispatchBrowserEvent('tabNavigation');
+  }
   public function cancelproduct()
   {
     $this->editproduct = null;
     $this->prod = [];
   }
-
   public function deleteSingleRecord()
   {
     $id = $this->productId;
     $product = Product::find($id);
     $productcats = Products_categories::where('product_id', $id)->get();
-
     if ($productcats != NULL) {
       foreach ($productcats as $productcat) {
         $productcat->delete();
@@ -109,8 +102,6 @@ class ShowProduct extends Component
     $product->delete();
     return redirect()->route('products')->with('message', 'Record deleted Successfully');
   }
-
-
   public function render()
   {
     return view('livewire.show-product', [

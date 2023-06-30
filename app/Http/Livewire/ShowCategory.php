@@ -13,12 +13,12 @@ class ShowCategory extends Component
 
   public $categoryId;
   public $editcategory = null;
-  public $cat =[];
+  public $cat = [];
   public $categories = [];
 
   public function mount($categoryId)
   {
-      $this->categoryId = $categoryId;
+    $this->categoryId = $categoryId;
   }
   public function confirmCategoryRemoval($id)
   {
@@ -29,7 +29,6 @@ class ShowCategory extends Component
   {
     return $this->categoryQuery;
   }
-
   public function editcategory()
   {
     $this->editcategory = true;
@@ -41,7 +40,6 @@ class ShowCategory extends Component
     $this->cat = [];
     $this->categories = [];
   }
-
   public function savecategory()
   {
     $category_new = $this->cat ?? NULL;
@@ -81,7 +79,6 @@ class ShowCategory extends Component
     $this->editcategory = null;
     $this->categories = [];
   }
-
   public function getCategoryQueryProperty()
   {
     return Category::find($this->categoryId);
@@ -91,26 +88,24 @@ class ShowCategory extends Component
     $id = $this->categoryId;
     $category = Category::findOrFail($id);
     $productcats = Products_categories::where('category_id', $id)->first();
-
     if ($productcats != NULL) {
-      foreach($productcats as $productcat) {
+      foreach ($productcats as $productcat) {
         $productcat->delete();
       }
       $productcat->delete();
     }
     $productType = class_basename(get_class($category));
-        $filespath = 'media/' . $productType . '/' . $category->id;
-        if (File::exists($filespath)) {
-            File::deleteDirectory($filespath);
-        }
+    $filespath = 'media/' . $productType . '/' . $category->id;
+    if (File::exists($filespath)) {
+      File::deleteDirectory($filespath);
+    }
     $category->delete();
     return redirect()->route('category')->with('message', 'Record deleted Successfully');
   }
-
   public function render()
   {
-      return view('livewire.show-category',[
-        'category' => $this->category
-      ]);
+    return view('livewire.show-category', [
+      'category' => $this->category
+    ]);
   }
 }
