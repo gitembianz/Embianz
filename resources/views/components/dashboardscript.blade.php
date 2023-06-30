@@ -29,9 +29,6 @@
     window.addEventListener('show-add-modal', event => {
         document.getElementById('addmodal').style.display = 'flex';
     });
-    window.addEventListener('showaddspec', event => {
-        document.getElementById('addspecsmodal').style.display = 'flex';
-    });
     //Script for alert desepear
     var element = document.getElementById('alertevent');
     if (element) {
@@ -64,24 +61,24 @@
         });
     });
 
-// Save the state of .right and .sidebar after refresh
-document.addEventListener('DOMContentLoaded', () => {
-  const rightPanel = document.querySelector('.right');
-  const sidebar = document.querySelector('.sidebar');
+    // Save the state of .right and .sidebar after refresh
+    document.addEventListener('DOMContentLoaded', () => {
+        const rightPanel = document.querySelector('.right');
+        const sidebar = document.querySelector('.sidebar');
 
-  const rightPanelOpen = handleLocalStorage('rightPanelOpen');
-  const sidebarOpen = handleLocalStorage('sidebarOpen');
+        const rightPanelOpen = handleLocalStorage('rightPanelOpen');
+        const sidebarOpen = handleLocalStorage('sidebarOpen');
 
-  if (rightPanelOpen === 'true') {
-    rightPanel.classList.add('open');
-    document.querySelector('main').classList.add('mr');
-  }
+        if (rightPanelOpen === 'true') {
+            rightPanel.classList.add('open');
+            document.querySelector('main').classList.add('mr');
+        }
 
-  if (sidebarOpen === 'true') {
-    sidebar.classList.add('open');
-    document.querySelector('main').classList.add('ml');
-  }
-});
+        if (sidebarOpen === 'true') {
+            sidebar.classList.add('open');
+            document.querySelector('main').classList.add('ml');
+        }
+    });
 
 
 

@@ -44,7 +44,7 @@
                 </h1>
                 {{-- add specs html --}}
                 <div class="item__form form-table"
-                    @if ($checkedadd) style="grid-template-columns: 40% 1fr 1fr 1fr" @endif>
+                    @if ($checkedadd) style="grid-template-columns: 50% 1fr 1fr 2fr" @endif>
                     <div class="item__form-input">
                         <input wire:model.debounce.200ms="searchadd" type="text" required>
                         <span>Search...</span>
@@ -63,7 +63,7 @@
                             wire:click.prevent="@if ($coladd === false) $set('coladd', true) @else $set('coladd', false) @endif"
                             class="dropdown-button">Columns</button>
                         @if ($coladd)
-                            <div class="dropdown-list" style="display: flex;">
+                            <div class="dropdown-list" style="display: flex; z-index: 5;">
                                 @foreach ($columnsadd as $column)
                                     <div class="dropdown-item">
                                         <input type="checkbox" wire:model="selectedColumnsadd"
@@ -75,22 +75,10 @@
                             </div>
                         @endif
                     </div>
-                    <div class="dropdown none"
-                        @if ($checkedadd) style="display: unset; z-index: 5;" @endif>
-                        <button class="dropdown-button none"
-                            wire:click.prevent="@if ($alladd === false) $set('alladd', true) @else $set('alladd', false) @endif"
-                            @if ($checkedadd) style="display: flex" @endif>With
-                            Checked({{ count($checkedadd) }})</button>
-                        @if ($checkedadd)
-                            @if ($alladd)
-                                <div class="dropdown-list" style="display: flex;">
-                                    <button class="dropdown-item submit" type="button">
-                                        Add Multiple
-                                    </button>
-                                </div>
-                            @endif
-                        @endif
-                    </div>
+                    @if ($checkedadd)
+                        <button class="modal-content-btn">Add
+                            Multiple({{ count($checkedadd) }})</button>
+                    @endif
                 </div>
                 @if ($selectPageadd)
                     <div class="pt-2 talign-c">
@@ -152,12 +140,16 @@
                                     wire:click="sortByadd('created_at')">Created At
                                 </th>
                             @endif
+                            @if ($this->showColumnadd('Created At'))
+                                <th>Value
+                                </th>
+                            @endif
 
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($addspecs as $spec)
+                        @foreach ($addspecs as $index => $spec)
                             <tr class="@if ($this->isCheckedadd($spec->id)) th_checked @endif">
                                 <td data-title="Check"><input type="checkbox" value="{{ $spec->id }}"
                                         wire:model="checkedadd">
@@ -181,16 +173,37 @@
                                 @if ($this->showColumnadd('Created At'))
                                     <td data-title="Created At">{{ $spec->created_at }}</td>
                                 @endif
+                                @if ($this->showColumnadd('Value'))
+                                    <td data-title="Value">
+                                        @if ($rowindex === $index)
+                                            <input type="text" class="table-edit wid-6"
+                                                wire:model.defer="spec.{{ $index }}.value">
+                                        @endif
+                                    </td>
+                                @endif
 
                                 <td data-title="Action">
-                                    <button class="edit">
-                                        <svg>
-                                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71">
-                                            </path>
-                                            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71">
-                                            </path>
-                                        </svg>
-                                    </button>
+
+                                    @if ($rowindex === $index)
+                                        <button class="save" wire:click.prevent="cancellink()">
+                                            <svg>
+                                                <line x1="18" y1="6" x2="6" y2="18">
+                                                </line>
+                                                <line x1="6" y1="6" x2="18" y2="18">
+                                                </line>
+                                            </svg>
+                                        </button>
+                                    @else
+                                        <button class="edit" wire:click.prevent="setlink({{ $index }})">
+                                            <svg>
+                                                <line x1="12" y1="5" x2="12" y2="19">
+                                                </line>
+                                                <line x1="5" y1="12" x2="19" y2="12">
+                                                </line>
+                                            </svg>
+                                        </button>
+                                    @endif
+
                                 </td>
                             </tr>
                         @endforeach
@@ -198,9 +211,12 @@
                 </table>
 
                 {{-- End add specs --}}
-                <div class="modal-content">
-                    <div>{{ $addspecs->links() }} </div>
-                    <input class="modal-content-btn submit" type="button" value="Confirm">
+                {{-- <div class="pagination">{{ $addspecs->links() }} </div> --}}
+                <div class="display-f wid-10">
+                    @if ($checkedadd || $islink)
+                        <input class="modal-content-btn submit" wire:click.prevent="savespecs()" type="button"
+                            value="Save">
+                    @endif
                     <input class="modal-content-btn delete" wire:click.prevent="closemodal()" type="button"
                         value="Cancel">
                 </div>

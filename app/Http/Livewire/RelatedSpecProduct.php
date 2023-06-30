@@ -35,10 +35,13 @@ class RelatedSpecProduct extends Component
   public $checkedadd = [];
   public $selectPageadd = false;
   public $selectAlladd = false;
-  public $columnsadd = ['Id', 'Unit', 'Group', 'Created At'];
+  public $columnsadd = ['Id', 'Unit', 'Group', 'Value', 'Created At'];
   public $selectedColumnsadd = [];
   public $coladd = false;
   public $alladd = false;
+  public $islink = false;
+  public $rowindex = null;
+  public $spec = [];
 
   public function render()
   {
@@ -52,7 +55,6 @@ class RelatedSpecProduct extends Component
     $this->productId = $productId;
     $this->selectedColumns = $this->columns;
     $this->selectedColumnsadd = $this->columnsadd;
-    $showrelatedspecs = $this->showrelatedspecs;
   }
   //function for realted
   public function showColumn($column)
@@ -139,9 +141,25 @@ class RelatedSpecProduct extends Component
     $this->showrelatedspecs = true;
     $this->addrelatedspecs = true;
   }
+  public function setlink($index)
+  {
+    $this->islink = true;
+    $this->rowindex = $index;
+  }
+  public function savespecs()
+  {
+  }
+  public function cancellink()
+  {
+    $this->rowindex = null;
+    $this->islink = false;
+  }
   public function closemodal()
   {
     $this->addrelatedspecs = false;
+    $this->rowindex = null;
+    $this->islink = false;
+    $this->checkedadd = [];
   }
   public function showColumnadd($column)
   {
@@ -180,7 +198,7 @@ class RelatedSpecProduct extends Component
   public function selectAlladd()
   {
     $this->selectAlladd = true;
-    $this->checkedadd = $this->specsQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+    $this->checkedadd = $this->addspecsQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
   }
   public function getAddspecsProperty()
   {
