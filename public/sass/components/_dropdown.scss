@@ -1,16 +1,14 @@
 .dropdown {
-  width: 100%;
-  height: $BtnSize;
+  @include size(100%, $BtnSize);
   position: relative;
   box-shadow: $BtnShadow;
   border-radius: $BtnBorderRadius;
   cursor: pointer;
 
   &-button {
-    @include centering;
+    @include flexbox(flex, row, center, center);
     @include standart-Font;
-    width: 100%;
-    height: 100%;
+    @include size(100%);
     position: relative;
     color: $mainBg;
     background-color: $white;
@@ -21,23 +19,17 @@
   }
 
   &-list {
-    @include centering;
-    position: absolute;
-    display: none;
-    top: 85%;
-    left: 0;
-    gap: $gap;
+    @include flexbox(none, column, center, center, $gap);
+    @include position(absolute, 85%, $left: 0);
+    @include size(100%, auto);
     padding: 20px 10px 10px;
     border: 1.5px solid $mainBg;
-    width: 100%;
     background: white;
     box-shadow: $BtnShadow;
     border-radius: 0 0 $BtnBorderRadius $BtnBorderRadius;
-    flex-direction: column;
 
     input {
-      width: 2rem;
-      height: 2rem;
+      @include size(2rem);
     }
 
     label {
@@ -52,11 +44,8 @@
   }
 
   &-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: $gap;
-    width: 100%;
+    @include flexbox(flex, row, space-between, center, $gap);
+    @include size(100%, auto);
   }
 
   &.open {

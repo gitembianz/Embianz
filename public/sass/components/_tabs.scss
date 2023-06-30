@@ -26,9 +26,7 @@
   }
 
   &__content {
-    display: none;
-    gap: $gap;
-    flex-direction: column;
+    @include flexbox(none, column, $gap: $gap);
 
     &.active {
       display: flex;
