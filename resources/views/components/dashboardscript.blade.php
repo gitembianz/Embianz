@@ -32,7 +32,6 @@
     window.addEventListener('showaddspec', event => {
         document.getElementById('addspecsmodal').style.display = 'flex';
     });
-    showaddspec
     //Script for alert desepear
     var element = document.getElementById('alertevent');
     if (element) {

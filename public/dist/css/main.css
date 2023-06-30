@@ -2136,7 +2136,7 @@ main {
   background-color: rgba(0, 0, 0, 0.6);
   z-index: 500;
 }
-.modal-content {
+.modal-content, .modal-content-spec {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: 1fr 0fr;
@@ -2148,6 +2148,16 @@ main {
   padding: 20px;
   margin: 0 15px;
   outline: none;
+}
+.modal-content-spec {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  flex-grow: 0;
 }
 .modal-content-title {
   font-size: 0.875rem;
@@ -2285,7 +2295,7 @@ main {
 .modal-content-btn.submit.active svg, .modal-content-btn.submit:active svg, .modal-content-btn.submit:focus-visible svg {
   stroke: #20282d;
 }
-.modal-content span {
+.modal-content span, .modal-content-spec span {
   position: absolute;
   top: -0.75rem;
   right: -0.75rem;
