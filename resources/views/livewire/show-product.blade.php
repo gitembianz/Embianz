@@ -189,7 +189,6 @@
                 <livewire:related-category-product productId="{{ $product->id }}" />
 
                 <livewire:related-spec-product productId="{{ $product->id }}" />
-
             </div>
         </div>
     </div>

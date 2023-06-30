@@ -1,7 +1,7 @@
   .modal {
     @include size(100%, 100vh);
     @include flexbox(none, row, center, center);
-    @include position(fixed, 0, 0);
+    @include position(fixed, 0, null, null, 0);
     background-color: rgba(0, 0, 0, 0.6);
     z-index: $z-index-modal;
 
@@ -36,8 +36,8 @@
 
       span {
         @include position(absolute, calc($BtnSize / -4), calc($BtnSize / -4));
-        border-radius: 100%;
         @include size(calc($BtnSize / 1.5));
+        border-radius: 100%;
       }
     }
   }

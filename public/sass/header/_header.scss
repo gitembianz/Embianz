@@ -5,22 +5,22 @@ header,
 
 .header {
   @include flexbox(flex, row, center, center);
-  @include position(fixed, 0, auto, auto, auto);
+  @include position(fixed, 0);
   padding: 0 $padding;
   background: $mainBg;
   transition: $transition;
   z-index: 301;
 
   &__buttons {
-    @include flexbox(flex, row, center, center, $gap * 2);
+    @include flexbox(flex, row, center, center, calc($gap * 2));
   }
 
   &__logo {
     display: none;
 
     img {
-      @include size(250px, auto);
       object-fit: cover;
+      @include size(250px, auto);
     }
   }
 
