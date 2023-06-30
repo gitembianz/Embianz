@@ -1,7 +1,7 @@
 <script>
     //script form modals
     window.addEventListener('show-delete-modal-category', event => {
-        document.getElementById('confirmationmodalcategory').style.display = 'flex';
+        document.getElementById('confirmationmodalitem').style.display = 'flex';
     });
     window.addEventListener('show-delete-modal-category-multiple', event => {
         document.getElementById('confirmationmodalcategorymultiple').style.display = 'flex';
