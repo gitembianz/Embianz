@@ -2547,8 +2547,8 @@ main {
   background-color: rgba(0, 0, 0, 0.6);
   z-index: 500;
 }
+.modal-content, .modal-content-spec {
 
-.modal-content {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: 1fr 0fr;
@@ -2560,6 +2560,17 @@ main {
   padding: 20px;
   margin: 0 15px;
   outline: none;
+}
+
+ .modal-content-spec {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  flex-grow: 0;
 }
 
 .modal-content-title {
@@ -2762,7 +2773,8 @@ main {
   stroke: #20282d;
 }
 
-.modal-content span {
+.modal-content span, .modal-content-spec span {
+
   position: absolute;
   top: -0.75rem;
   right: -0.75rem;
@@ -2782,7 +2794,6 @@ input[type=checkbox] {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-
 }
 
 input[type=checkbox]:hover {
@@ -3932,7 +3943,8 @@ header,
 }
 
 .header__logo img {
-  -o-object-fit: cover;
+  width: 250px;
+  height: auto;
   object-fit: cover;
 }
 
@@ -7070,9 +7082,7 @@ header,
 
 .container-right .card_calendar .date-time-value {
   display: block;
-  width: -moz-max-content;
   width: max-content;
-  height: -moz-max-content;
   height: max-content;
   position: relative;
   left: 40%;

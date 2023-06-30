@@ -18,6 +18,12 @@
       margin: 0 calc($margin * 1.5);
       outline: none;
 
+      &-spec {
+        @extend .modal-content;
+
+        @include flexbox(flex, column, center, center, 15px);
+      }
+
       &-title {
         @include standart-Font;
         grid-column-start: 1;

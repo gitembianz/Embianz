@@ -110,10 +110,13 @@ class Categoriestable extends Component
   {
     $id = $this->catidbeingremoved;
     $category = Category::findOrFail($id);
-    $productcat = Products_categories::where('category_id', $id)->first();
+    $productcats = Products_categories::where('category_id', $id)->get();
 
-    if ($productcat != NULL) {
-      $productcat->delete();
+    if ($productcats != NULL) {
+      foreach($productcats as $productcat){
+
+        $productcat->delete();
+      }
     }
     $productType = class_basename(get_class($category));
     $filespath = '.media/' . $productType . '/' . $category->id;

@@ -87,7 +87,7 @@ class ShowCategory extends Component
   {
     $id = $this->categoryId;
     $category = Category::findOrFail($id);
-    $productcats = Products_categories::where('category_id', $id)->first();
+    $productcats = Products_categories::where('category_id', $id)->get();
     if ($productcats != NULL) {
       foreach ($productcats as $productcat) {
         $productcat->delete();

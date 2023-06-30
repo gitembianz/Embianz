@@ -31,12 +31,14 @@
                 {{ __('Products ') }}({{ count($relatedproducts) }})
             </button>
             <button class="accordion__upload" wire:click="toggleTable">
-              <svg><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>            </button>
+                <svg>
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg> </button>
         </div>
 
         @if ($showrelatedprod)
             <div class="accordion__content">
-                <div class="item">
                     <div class="item">
                         {{-- html for adding products --}}
                         @if ($showTable === false)
@@ -476,7 +478,6 @@
                         @endif
 
                     </div>
-                </div>
             </div>
         @endif
     </div>

@@ -75,7 +75,7 @@ class RelatedCategoryProduct extends Component
   }
   public function isCheckedadd($id)
   {
-    return in_array($id, $this->checked);
+    return in_array($id, $this->checkedadd);
   }
   public function sortByadd($columnName)
   {
