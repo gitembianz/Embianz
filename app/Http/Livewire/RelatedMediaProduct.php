@@ -62,39 +62,30 @@ class RelatedMediaProduct extends Component
     $this->i = null;
     $this->j = null;
   }
-
   public function editMedia($mediaIndex)
   {
     $this->editedMediaIndex = $mediaIndex;
   }
-
   public function cancelMedia()
   {
     $this->editedMediaIndex = null;
     $this->filess = [];
   }
-
   public function saveMedia($mediaIndex, $id)
   {
-
     $media_new = $this->filess[$mediaIndex] ?? NULL;
-    if(!is_null($media_new)){
+    if (!is_null($media_new)) {
       $media_for_prod = Media::find($id);
       if (array_key_exists('sequence', $media_new)) {
         $media_for_prod->sequence = $media_new['sequence'];
-    }
-      if(array_key_exists('location_id', $media_new)){
-      $media_for_prod->location_id = $media_new['location_id'];
-    }
-    if (array_key_exists('name', $media_new)) {
-      $newName = $media_new['name'] . '.' . $media_for_prod->type;
-
-      $oldName = $media_for_prod->name;
-
-      if ($newName !== $oldName) {
-
-
-          // Rename the file in the file directory
+      }
+      if (array_key_exists('location_id', $media_new)) {
+        $media_for_prod->location_id = $media_new['location_id'];
+      }
+      if (array_key_exists('name', $media_new)) {
+        $newName = $media_new['name'] . '.' . $media_for_prod->type;
+        $oldName = $media_for_prod->name;
+        if ($newName !== $oldName) {
           $path = $media_for_prod->path;
           if (file_exists($path . $newName)) {
             $i = 1;
@@ -105,34 +96,28 @@ class RelatedMediaProduct extends Component
           }
           $oldFilePath = $path . $oldName;
           $newFilePath = $path . $newName;
-           // Update the name attribute
-           $media_for_prod->name = $newName;
-           $media_for_prod->save();
-
+          $media_for_prod->name = $newName;
+          $media_for_prod->save();
           if (file_exists($oldFilePath)) {
-              rename($oldFilePath, $newFilePath);
+            rename($oldFilePath, $newFilePath);
           }
+        }
       }
-  }
       $media_for_prod->save();
       session()->flash('message', 'Media Edited Successfully!');
     }
     $this->filess = [];
     $this->editedMediaIndex = null;
-
   }
   public function updatedChecked()
   {
     $this->selectPage = false;
   }
-
   public function showColumn($column)
   {
-
-     // Always show the "Name" column
-     if ($column === 'Name') {
+    if ($column === 'Name') {
       return true;
-  }
+    }
     return in_array($column, $this->selectedColumns);
   }
   public function updatedSelectPage($value)
@@ -143,7 +128,6 @@ class RelatedMediaProduct extends Component
       $this->checked = [];
     }
   }
-
   public function save()
   {
     $this->validate([
@@ -155,8 +139,6 @@ class RelatedMediaProduct extends Component
     if (!File::exists($filespath)) {
       File::makeDirectory($filespath, 0755, true);
     }
-
-    //verify and create a folder with product id name
     if (!File::exists($filespath . "$data->id")) {
       File::makeDirectory($filespath . "$data->id", 0755, true);
     }
@@ -164,16 +146,13 @@ class RelatedMediaProduct extends Component
     $this->i = 0;
     foreach ($this->medias as $file) {
       $media = new Media();
-      //verify the type of media
       $type = $file->getClientOriginalExtension();
-
       if ($type === 'mp4' || $type === 'ogg') {
         $filePath = $file->getRealPath();
         $contents = Storage::get($filePath);
         $getID3 = new getID3();
         $fileInfo = $getID3->analyze($contents);
         if (isset($fileInfo['video']) && isset($fileInfo['video']['resolution_x']) && isset($fileInfo['video']['resolution_y'])) {
-          // Retrieve the width and height
           $width = $fileInfo['video']['resolution_x'];
           $height = $fileInfo['video']['resolution_y'];
         } else {
@@ -189,14 +168,11 @@ class RelatedMediaProduct extends Component
         $width = $image->width();
         $height = $image->height();
       }
-      //save the path and the name
       $media->item_id = $data->id;
       $media->path = $path;
       $media->name = $file->getClientOriginalName();
-      //store the media
       $filename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
       $media->name = $filename . '.' . $type;
-      // Verify if media name exist
       if (file_exists($path . $media->name)) {
         $this->j = 1;
         while (file_exists($path . $filename . '(' . $this->j . ').' . $type)) {
@@ -204,12 +180,10 @@ class RelatedMediaProduct extends Component
         }
         $media->name = $filename . '(' . $this->j . ').' . $type;
       }
-
       $file->storeAs($path, $media->name, 'public_upload');
       $media->tabel_id = Tabels::where('name', $productType)->first()->id;
-      // dd($this->file_sequences[$i]);
-      $media->sequence = $this->file_sequences[$this->i ];
-      $media->location_id = MediaLocation::where('id', $this->file_locations[$this->i ])->first()->id;
+      $media->sequence = $this->file_sequences[$this->i];
+      $media->location_id = MediaLocation::where('id', $this->file_locations[$this->i])->first()->id;
       $media->type = $type;
       $media->width = $width;
       $media->height =  $height;
@@ -222,42 +196,30 @@ class RelatedMediaProduct extends Component
     $this->medias = [];
     session()->flash('message', 'Media Update Successfully!');
   }
-
   public function removemedia($index)
   {
-
     array_splice($this->medias, $index, 1);
   }
-
-
   public function sortBy($columnName)
   {
-
     if ($this->orderBy === $columnName) {
       $this->orderAsc = $this->swapSortDirection();
     } else {
       $this->orderAsc = '1';
     }
-
     $this->orderBy = $columnName;
   }
-
   public function swapSortDirection()
   {
     return $this->orderAsc === '1' ? '0' : '1';
   }
-
   public function deleteSingleRecord()
   {
-
     $media = Media::findOrFail($this->mediaidbeingremoved);
     $path = $media->path . $media->name;
-
     if (File::exists($path)) {
       File::delete($path);
     }
-
-    // Delete the media file from the database
     $media->delete();
     $folder = $media->path;
     if (File::isDirectory($folder) && count(File::allFiles($folder)) === 0) {
@@ -266,14 +228,10 @@ class RelatedMediaProduct extends Component
     $this->checked = array_diff($this->checked, [$this->mediaidbeingremoved]);
     session()->flash('message', 'Record deleted Successfully');
   }
-
   public function deleteRecords()
   {
-
     $medias = Media::whereKey($this->checked)->get();
-
     foreach ($medias as $media) {
-      //  $id = $media->id;
       $path = $media->path . $media->name;
       if (File::exists($path)) {
         File::delete($path);
@@ -284,7 +242,6 @@ class RelatedMediaProduct extends Component
         File::deleteDirectory($folder);
       }
     }
-
     $this->checked = [];
     session()->flash('message', 'Files deleted succesfuly');
   }
@@ -301,21 +258,17 @@ class RelatedMediaProduct extends Component
   {
     return Media::orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->where('item_id', $this->productId)->where('tabel_id', $this->type)->with('location');
   }
-
   public function isChecked($id)
   {
     return in_array($id, $this->checked);
   }
-
   public function confirmFileRemoval($id)
   {
     $this->mediaidbeingremoved = $id;
     $this->dispatchBrowserEvent('show-delete-modal-media');
   }
-
   public function confirmFilesRemovalmultiple()
   {
-
     $this->dispatchBrowserEvent('show-delete-modal-media-multiple');
   }
   public function exportSelected()
@@ -324,15 +277,14 @@ class RelatedMediaProduct extends Component
     $this->checked = [];
     $this->selectPage = false;
     return $export->download('medias.xlsx');
-
   }
 
-    public function render()
-    {
-      $this->hasResults = $this->files->isNotEmpty();
-        return view('livewire.related-media-product', [
-          'files' => $this->files,
-          'count' => $this->count
-        ]);
-    }
+  public function render()
+  {
+    $this->hasResults = $this->files->isNotEmpty();
+    return view('livewire.related-media-product', [
+      'files' => $this->files,
+      'count' => $this->count
+    ]);
+  }
 }

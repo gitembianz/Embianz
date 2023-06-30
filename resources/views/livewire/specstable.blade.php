@@ -207,12 +207,10 @@
                             wire:click.prevent="edititem({{ $index }})">
                             {{ $spec->name }}</div>
                     @else
-                    <div class="item__form-input">
                         <input type="text"
                             class="table-edit wid-1"
                             wire:model.defer="specss.{{ $index }}.name">
-                            <span>Name</span>
-                          </div>
+
                             @endif
                       </td>
                   @endif
@@ -223,12 +221,10 @@
                             wire:click.prevent="edititem({{ $index }})">
                             {{ $spec->um }}</div>
                     @else
-                    <div class="item__form-input">
                         <input type="text"
                             class="table-edit wid-1"
                             wire:model.defer="specss.{{ $index }}.um">
-                            <span>Unit</span>
-                    </div>
+
                     @endif
                       </td>
                   @endif
@@ -239,7 +235,6 @@
                         wire:click.prevent="edititem({{ $index }})">
                         {{ $spec->spec_group }}</div>
                 @else
-                <div class="item__form-input">
                   <select name="spec_group" wire:model.defer="specss.{{ $index }}.spec_group">
                     <?php
                     $groups = ['details', 'feature', 'accessibility'];
@@ -249,8 +244,7 @@
                         <option value="{{ $group }}">{{ $group }}</option>
                     @endforeach
                 </select>
-                <span>Group</span>
-              </div>
+
                 @endif
                   </td>
               @endif

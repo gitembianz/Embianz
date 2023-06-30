@@ -11,9 +11,7 @@ use Illuminate\Support\Facades\File;
 
 class Productstable extends Component
 {
-
   use WithPagination;
-
   public $perPage = 10;
   public $search = '';
   public $orderBy = 'id';
@@ -25,7 +23,6 @@ class Productstable extends Component
   public $columns = ['Id', 'Short Description', 'Created At'];
   public $selectedColumns = [];
 
-
   public function render()
   {
     return view('livewire.productstable', [
@@ -36,15 +33,13 @@ class Productstable extends Component
   {
     $this->selectedColumns = $this->columns;
   }
-
   public function showColumn($column)
   {
     if ($column === 'Name') {
       return true;
-  }
+    }
     return in_array($column, $this->selectedColumns);
   }
-
   public function updatedSelectPage($value)
   {
     if ($value) {
@@ -53,59 +48,46 @@ class Productstable extends Component
       $this->checked = [];
     }
   }
-
   public function updatedChecked()
   {
     $this->selectPage = false;
   }
-
   public function sortBy($columnName)
   {
-
     if ($this->orderBy === $columnName) {
       $this->orderAsc = $this->swapSortDirection();
     } else {
       $this->orderAsc = '1';
     }
-
     $this->orderBy = $columnName;
   }
-
   public function swapSortDirection()
   {
-
     return $this->orderAsc === '1' ? '0' : '1';
   }
-
-
   public function selectAll()
   {
     $this->selectAll = true;
     $this->checked = $this->productsQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
   }
-
   public function getProductsProperty()
   {
     return $this->productsQuery->paginate($this->perPage);
   }
-
   public function getProductsQueryProperty()
   {
     return Product::search($this->search)
       ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc');
   }
-
   public function deleteRecords()
   {
-
     $products = Product::whereKey($this->checked)->get();
-
     foreach ($products as $product) {
       $id = $product->id;
       $producttodel = Product::find($id);
       $productcats = Products_categories::where('product_id', $id)->get();
       if ($productcats != NULL) {
-        foreach($productcats as $productcat){
+        foreach ($productcats as $productcat) {
           $productcat->delete();
         }
       }
@@ -114,21 +96,18 @@ class Productstable extends Component
       if (File::exists($filespath)) {
         File::deleteDirectory($filespath);
       }
-
       $producttodel->delete();
     }
-
     $this->checked = [];
     session()->flash('message', 'Product product deleted succesfuly');
   }
-
   public function deleteSingleRecord()
   {
     $id = $this->productidbeingremoved;
     $product = Product::findOrFail($id);
     $productcats = Products_categories::where('product_id', $id)->get();
     if ($productcats != NULL) {
-      foreach($productcats as $productcat){
+      foreach ($productcats as $productcat) {
         $productcat->delete();
       }
     }
@@ -141,26 +120,21 @@ class Productstable extends Component
     $this->checked = array_diff($this->checked, [$id]);
     session()->flash('message', 'Record deleted Successfully');
   }
-
   public function confirmProductRemoval($productid)
   {
     $this->productidbeingremoved = $productid;
     $this->dispatchBrowserEvent('show-delete-modal');
   }
-
   public function confirmProductsRemovalmultiple()
   {
     $this->dispatchBrowserEvent('show-delete-modal-multiple');
   }
-
   public function isChecked($id)
   {
     return in_array($id, $this->checked);
   }
-
   public function exportSelected()
   {
-
     $export = new ProductsExport($this->checked);
     $this->checked = [];
     $this->selectPage = false;
