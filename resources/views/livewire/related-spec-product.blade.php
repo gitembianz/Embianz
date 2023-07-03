@@ -38,188 +38,57 @@
         </div>
         {{-- add related specs --}}
         <div class="modal" id="addspecsmodal" @if ($addrelatedspecs) style="display: flex;" @endif>
-            <div class="modal-content-spec">
-                <h1 class="modal-content-title">
+            <div class="modal-content-spec wid-2">
+                <h1>
                     {{ __('Add related Specs') }}
                 </h1>
-                {{-- add specs html --}}
-                <div class="item__form form-table"
-                    @if ($checkedadd) style="grid-template-columns: 50% 1fr 1fr 2fr" @endif>
-                    <div class="item__form-input">
-                        <input wire:model.debounce.200ms="searchadd" type="text" required>
-                        <span>Search...</span>
+                <div class="display-f align-center">
+                    <div>Product:</div>
+                    <div class="item__form-input item__form-long">
+                        <div>{{ $item->name }}</div>
                     </div>
-                    <div class="item__form-input">
-                        <select id="perPage" wire:model="perPageadd">
-                            <option>10</option>
-                            <option>25</option>
-                            <option>50</option>
-                            <option>100</option>
-                        </select>
-                        <span>Per Page :</span>
-                    </div>
-                    <div class="dropdown">
-                        <button
-                            wire:click.prevent="@if ($coladd === false) $set('coladd', true) @else $set('coladd', false) @endif"
-                            class="dropdown-button">Columns</button>
-                        @if ($coladd)
-                            <div class="dropdown-list" style="display: flex; z-index: 5;">
-                                @foreach ($columnsadd as $column)
-                                    <div class="dropdown-item">
-                                        <input type="checkbox" wire:model="selectedColumnsadd"
-                                            value="{{ $column }}"
-                                            {{ in_array($column, $selectedColumnsadd) ? 'checked' : '' }}>
-                                        <label>{{ $column }}</label>
-                                    </div>
-                                @endforeach
-                            </div>
-                        @endif
-                    </div>
-                    @if ($checkedadd)
-                        <button class="modal-content-btn">Add
-                            Multiple({{ count($checkedadd) }})</button>
-                    @endif
                 </div>
-                @if ($selectPageadd)
-                    <div class="pt-2 talign-c">
-                        @if ($selectAlladd)
-                            <div>
-                                You have selected all <strong>{{ count($checkedadd) }}</strong> items.
-                            </div>
-                        @else
-                            <div>
-                                You have selected <strong>{{ count($checkedadd) }}</strong> items, Do you
-                                want to Select All?
-                                <a class="ml-2" wire:click.prevent="selectAlladd">Select All</a>
-                            </div>
-                        @endif
+                <div class="display-f align-center">
+                    <div>Spec:</div>
+                    <div class="item__form-input item__form-long cursor-p">
+                        <div wire:click.prevent="allowselect()">
+                            @if ($itemselected)
+                                {{ $itemselected }}
+                            @else
+                                {{ __('Select a spec') }}
+                            @endif
+                        </div>
+                    </div>
+                </div>
+
+                {{-- add specs list with search --}}
+                @if ($allow)
+                    <div class="item__form-input">
+                        <input wire:model.debounce.200ms="searchadd" type="text">
+                        <ul>
+                            @foreach ($addspecs as $spec)
+                                <li class="cursor-p" wire:click.prevent="select({{ $spec->id }})">
+                                    {{ $spec->name }} ( {{ $spec->um }})</li>
+                            @endforeach
+                        </ul>
                     </div>
                 @endif
-                {{-- Livewire Table --}}
-                <table class="livewire-table">
-                    <thead>
-                        <tr>
-                            <th><input type="checkbox" wire:model="selectPageadd"></th>
-                            @if ($this->showColumnadd('Id'))
-                                <th class="cursor-p"
-                                    @if ($orderByadd === 'id' && $orderAscadd === '1') data-symbol="up"
-                            @else
-                                    data-symbol="down" @endif
-                                    wire:click="sortByadd('id')">ID
-                                </th>
-                            @endif
-                            @if ($this->showColumnadd('Name'))
-                                <th class="cursor-p"
-                                    @if ($orderByadd === 'name' && $orderAscadd === '1') data-symbol="up"
-                             @else
-                                     data-symbol="down" @endif
-                                    wire:click="sortByadd('name')">Name
-                                </th>
-                            @endif
-                            @if ($this->showColumnadd('Unit'))
-                                <th class="cursor-p"
-                                    @if ($orderByadd === 'um' && $orderAscadd === '1') data-symbol="up"
-                            @else
-                                     data-symbol="down" @endif
-                                    wire:click="sortByadd('um')">Unit
-                                </th>
-                            @endif
-                            @if ($this->showColumnadd('Group'))
-                                <th class="cursor-p"
-                                    @if ($orderByadd === 'spec_group' && $orderAscadd === '1') data-symbol="up"
-                             @else
-                                     data-symbol="down" @endif
-                                    wire:click="sortByadd('spec_group')">Group
-                                </th>
-                            @endif
-                            @if ($this->showColumnadd('Created At'))
-                                <th class="cursor-p"
-                                    @if ($orderByadd === 'created_at' && $orderAscadd === '1') data-symbol="up"
-                              @else
-                                        data-symbol="down" @endif
-                                    wire:click="sortByadd('created_at')">Created At
-                                </th>
-                            @endif
-                            @if ($this->showColumnadd('Created At'))
-                                <th>Value
-                                </th>
-                            @endif
-
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($addspecs as $index => $spec)
-                            <tr class="@if ($this->isCheckedadd($spec->id)) th_checked @endif">
-                                <td data-title="Check"><input type="checkbox" value="{{ $spec->id }}"
-                                        wire:model="checkedadd">
-                                </td>
-
-                                @if ($this->showColumnadd('Id'))
-                                    <td data-title="ID">{{ $spec->id }}</td>
-                                @endif
-                                @if ($this->showColumnadd('Name'))
-                                    <td data-title="Name">{{ $spec->name }}
-                                    </td>
-                                @endif
-                                @if ($this->showColumnadd('Unit'))
-                                    <td data-title="Unit">{{ $spec->um }}
-                                    </td>
-                                @endif
-                                @if ($this->showColumnadd('Group'))
-                                    <td data-title="Short Group">{{ $spec->spec_group }}
-                                    </td>
-                                @endif
-                                @if ($this->showColumnadd('Created At'))
-                                    <td data-title="Created At">{{ $spec->created_at }}</td>
-                                @endif
-                                @if ($this->showColumnadd('Value'))
-                                    <td data-title="Value">
-                                        @if ($rowindex === $index)
-                                            <input type="text" class="table-edit wid-6"
-                                                wire:model.defer="spec.{{ $index }}.value">
-                                        @endif
-                                    </td>
-                                @endif
-
-                                <td data-title="Action">
-
-                                    @if ($rowindex === $index)
-                                        <button class="save" wire:click.prevent="cancellink()">
-                                            <svg>
-                                                <line x1="18" y1="6" x2="6" y2="18">
-                                                </line>
-                                                <line x1="6" y1="6" x2="18" y2="18">
-                                                </line>
-                                            </svg>
-                                        </button>
-                                    @else
-                                        <button class="edit" wire:click.prevent="setlink({{ $index }})">
-                                            <svg>
-                                                <line x1="12" y1="5" x2="12" y2="19">
-                                                </line>
-                                                <line x1="5" y1="12" x2="19" y2="12">
-                                                </line>
-                                            </svg>
-                                        </button>
-                                    @endif
-
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-
-                {{-- End add specs --}}
-                {{-- <div class="pagination">{{ $addspecs->links() }} </div> --}}
+                @if ($value)
+                    <div class="display-f align-center">
+                        <div>Value:</div>
+                        <div class="item__form-input item__form-long">
+                            <input type="text"class="table-edit wid-6" wire:model.defer="spec.value">
+                        </div>
+                    </div>
+                @endif
+                {{-- end specs list with search --}}
                 <div class="display-f wid-10">
-                    @if ($checkedadd || $islink)
-                        <input class="modal-content-btn submit" wire:click.prevent="savespecs()" type="button"
-                            value="Save">
-                    @endif
+                    <input class="modal-content-btn submit" wire:click.prevent="savespecs()" type="button"
+                        value="Save">
                     <input class="modal-content-btn delete" wire:click.prevent="closemodal()" type="button"
                         value="Cancel">
                 </div>
+
                 <span class="modal-content-btn delete" wire:click.prevent="closemodal()">
                     <svg>
                         <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -302,7 +171,8 @@
                                         </div>
                                     @else
                                         <div>
-                                            You have selected <strong>{{ count($checked) }}</strong> items, Do you want
+                                            You have selected <strong>{{ count($checked) }}</strong> items, Do you
+                                            want
                                             to Select All?
                                             <a class="ml-2" wire:click.prevent="selectAll">Select All</a>
                                         </div>
@@ -416,12 +286,16 @@
                                                 <td data-title="Unit">
                                                     {{ $spec->spec->um }}</td>
                                             @endif
+                                            @if ($this->showColumn('Unit'))
+                                                <td data-title="Unit">
+                                                    {{ $spec->value }}</td>
+                                            @endif
                                             @if ($this->showColumn('Created At'))
                                                 <td data-title="Created At">{{ $spec->spec->created_at }}</td>
                                             @endif
                                             <td data-title="Action">
                                                 <button class="delete"
-                                                    wire:click.prevent="confirmItemRemoval({{ $spec->id }})">
+                                                    wire:click.prevent="confirmRemoval({{ $spec->id }})">
                                                     <svg>
                                                         <circle cx="12" cy="12" r="10">
                                                         </circle>
