@@ -167,6 +167,8 @@ class RelatedSpecProduct extends Component
       $this->allow = false;
       $this->specid = null;
       $this->value = false;
+      $this->spec = [];
+      $this->itemselected = null;
       session()->flash('message', 'Spec related succesfuly succesfuly');
     } else {
       session()->flash('message', 'Please provide a value!');
