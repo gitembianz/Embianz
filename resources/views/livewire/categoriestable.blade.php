@@ -231,5 +231,5 @@
             @endforeach
         </tbody>
     </table>
-    <div>{{ $categories->links('pagination-links') }} </div>
+    <div class="pagination">{{ $categories->links('pagination-links') }} </div>
 </div>
