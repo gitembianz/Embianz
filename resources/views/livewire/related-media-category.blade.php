@@ -29,11 +29,7 @@
         <div class="accordion__btn-flex">
             <button class="accordion__btn"
                 wire:click.prevent="@if ($showmedia === false) $set('showmedia', true) @else $set('showmedia', false) @endif">
-                {{ __('Media ') }}(@if ($count)
-                    {{ $count }}
-                @else
-                    0
-                @endif)
+                {{ __('Media ') }}({{ count($files) }})
             </button>
             <button class="accordion__upload">
                 <input id="imgUpload" accept="image/*,video/*" type="file" multiple wire:model="medias">
@@ -55,12 +51,10 @@
                         <form wire:submit.prevent="save">
                             <div class="item item__upload  mb-2 pb-3 bb-1">
 
-
                                 @if ($medias)
                                     <input type="submit" id="add_media_related" class="item__form-btn item__form-long"
                                         value="Save Media">
                                     <div class="table-scroll">
-
 
                                         <table class="table">
                                             <thead>
@@ -99,7 +93,6 @@
                                                         <td>
                                                             <select required
                                                                 wire:model="file_locations.{{ $loop->index }}">
-
 
                                                                 @php
                                                                     $firstLocation = $locations->first();
@@ -238,7 +231,6 @@
                                     onclick="document.getElementById('confirmationmodalmedia').style.display='none'"
                                     value="Cancel">
 
-
                                 <span class="modal-content-btn delete"
                                     onclick="document.getElementById('confirmationmodalmedia').style.display='none'">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
@@ -263,7 +255,6 @@
                                 <input class="modal-content-btn delete" type="button"
                                     onclick="document.getElementById('confirmationmodalmediamultiple').style.display='none'"
                                     value="Cancel">
-
 
                                 <span class="modal-content-btn delete"
                                     onclick="document.getElementById('confirmationmodalmediamultiple').style.display='none'">
@@ -307,7 +298,6 @@
                                         </th>
                                     @endif
 
-
                                     @if ($this->showColumn('Media Location'))
                                         <th class="cursor-p">Media Location
                                         </th>
@@ -316,7 +306,6 @@
                                         <th class="cursor-p">Sequence
                                         </th>
                                     @endif
-
 
                                     <th></th>
                                 </tr>
@@ -361,7 +350,6 @@
                                                 @endif
                                             </td>
                                         @endif
-
 
                                         @if ($this->showColumn('Media Location'))
                                             <td data-title="Media Location">

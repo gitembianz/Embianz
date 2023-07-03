@@ -37,7 +37,6 @@ class RelatedSpecProduct extends Component
   public $itemselected = null;
   public $specid;
   public $allow = false;
-  public $value = false;
 
 
   public function render()
@@ -97,7 +96,7 @@ class RelatedSpecProduct extends Component
   }
   public function getRelatedspecsProperty()
   {
-    return $this->relatedspecsQuery->paginate($this->perPage, ['*'], 'related');
+    return $this->relatedspecsQuery->paginate($this->perPage);
   }
   public function getRelatedspecsQueryProperty()
   {
@@ -143,7 +142,6 @@ class RelatedSpecProduct extends Component
     $this->itemselected = Specs::find($id)->name;
     $this->specid = $id;
     $this->allow = false;
-    $this->value = true;
   }
   public function allowselect()
   {
@@ -153,6 +151,7 @@ class RelatedSpecProduct extends Component
   {
     $this->addrelatedspecs = false;
     $this->allow = false;
+    $this->itemselected = null;
   }
   public function savespecs()
   {
@@ -166,9 +165,9 @@ class RelatedSpecProduct extends Component
       $this->addrelatedspecs = false;
       $this->allow = false;
       $this->specid = null;
-      $this->value = false;
       $this->spec = [];
       $this->itemselected = null;
+      $this->search = '';
       session()->flash('message', 'Spec related succesfuly succesfuly');
     } else {
       session()->flash('message', 'Please provide a value!');

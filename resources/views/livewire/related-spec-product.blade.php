@@ -63,24 +63,32 @@
 
                 {{-- add specs list with search --}}
                 @if ($allow)
-                    <div class="item__form-input">
-                        <input wire:model.debounce.200ms="searchadd" type="text">
+                    <div class="item__form-input b-1 bra-sm p-1">
+                        <input wire:model.debounce.200ms="searchadd" placeholder="Search.." type="text">
                         <ul>
                             @foreach ($addspecs as $spec)
                                 <li class="cursor-p" wire:click.prevent="select({{ $spec->id }})">
                                     {{ $spec->name }} ( {{ $spec->um }})</li>
                             @endforeach
                         </ul>
+                        <span class="modal-content-btn edit" style="left: 90%"
+                            wire:click.prevent="$set('allow', false)">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="feather feather-x">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </span>
                     </div>
                 @endif
-                @if ($value)
-                    <div class="display-f align-center">
-                        <div>Value:</div>
-                        <div class="item__form-input item__form-long">
-                            <input type="text"class="table-edit wid-6" wire:model.defer="spec.value">
-                        </div>
+
+                <div class="display-f align-center">
+                    <div>Value:</div>
+                    <div class="item__form-input item__form-long">
+                        <input type="text"class="table-edit wid-6" wire:model.defer="spec.value">
                     </div>
-                @endif
+                </div>
                 {{-- end specs list with search --}}
                 <div class="display-f wid-10">
                     <input class="modal-content-btn submit" wire:click.prevent="savespecs()" type="button"
