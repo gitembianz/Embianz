@@ -3,6 +3,7 @@
 
   &__header {
     display: grid;
+    width: 100%;
     grid-template-columns: 1fr;
     gap: $gap;
     margin: 2rem 0;
@@ -27,6 +28,7 @@
 
   &__upload {
     @include flexbox(flex, column);
+    width: 100%;
 
     input[type="file"] {
       display: none;

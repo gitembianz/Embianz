@@ -1,7 +1,9 @@
 .top-up-btn {
+  @include standart-Btn;
   @include position(fixed, auto, 1rem, 1rem, auto);
   opacity: 0;
   pointer-events: none;
+  border-radius: 100px;
 
   &.actived {
     opacity: 1;
