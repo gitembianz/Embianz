@@ -37,6 +37,7 @@ class RelatedSpecProduct extends Component
   public $itemselected = null;
   public $specid;
   public $allow = false;
+  public $update = false;
 
 
   public function render()
@@ -131,6 +132,32 @@ class RelatedSpecProduct extends Component
   {
     $this->dispatchBrowserEvent('show-delete-modal-multiple');
   }
+  public function editspec($id, $idspec)
+  {
+    $this->update = true;
+    $this->addrelatedspecs = true;
+    $this->itemselected = Specs::find($idspec)->name;
+    $this->specid = $id;
+  }
+  public function confirmspecs()
+  {
+    $val = $this->spec;
+    if (array_key_exists('value', $val)) {
+      $newspec = Product_Spec::find($this->specid);
+      $newspec->value = $val['value'];
+      $newspec->save();
+      $this->addrelatedspecs = false;
+      $this->allow = false;
+      $this->specid = null;
+      $this->spec = [];
+      $this->itemselected = null;
+      $this->search = '';
+      $this->update = false;
+      session()->flash('message', 'Spec related succesfuly succesfuly');
+    } else {
+      session()->flash('message', 'Please provide a value!');
+    }
+  }
   // add specs function
   public function addrelated()
   {
@@ -152,6 +179,7 @@ class RelatedSpecProduct extends Component
     $this->addrelatedspecs = false;
     $this->allow = false;
     $this->itemselected = null;
+    $this->update = false;
   }
   public function savespecs()
   {

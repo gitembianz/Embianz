@@ -40,7 +40,11 @@
         <div class="modal" id="addspecsmodal" @if ($addrelatedspecs) style="display: flex;" @endif>
             <div class="modal-content-spec wid-2">
                 <h1>
-                    {{ __('Add related Specs') }}
+                    @if ($update)
+                        {{ __('Edit related Specs') }}
+                    @else
+                        {{ __('Add related Specs') }}
+                    @endif
                 </h1>
                 <div class="display-f align-center">
                     <div>Product:</div>
@@ -91,8 +95,13 @@
                 </div>
                 {{-- end specs list with search --}}
                 <div class="display-f wid-10">
-                    <input class="modal-content-btn submit" wire:click.prevent="savespecs()" type="button"
-                        value="Save">
+                    @if ($update)
+                        <input class="modal-content-btn submit" wire:click.prevent="confirmspecs()" type="button"
+                            value="Edit">
+                    @else
+                        <input class="modal-content-btn submit" wire:click.prevent="savespecs()" type="button"
+                            value="Save">
+                    @endif
                     <input class="modal-content-btn delete" wire:click.prevent="closemodal()" type="button"
                         value="Cancel">
                 </div>
@@ -301,6 +310,13 @@
                                             <td data-title="Created At">{{ $spec->spec->created_at }}</td>
                                         @endif
                                         <td data-title="Action">
+                                            <button class="edit"
+                                                wire:click.prevent="editspec({{ $spec->id }}, {{ $spec->spec->id }})">
+                                                <svg>
+                                                    <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
+                                                    </path>
+                                                </svg>
+                                            </button>
                                             <button class="delete"
                                                 wire:click.prevent="confirmRemoval({{ $spec->id }})">
                                                 <svg>
