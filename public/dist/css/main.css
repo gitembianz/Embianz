@@ -941,31 +941,31 @@ main {
   gap: 10rem;
 }
 
-.br {
+.bra {
   border-radius: 10px;
 }
 
-.br-none {
+.bra-none {
   border-radius: 0;
 }
 
-.br-xs {
+.bra-xs {
   border-radius: 2.5px;
 }
 
-.br-sm {
+.bra-sm {
   border-radius: 5px;
 }
 
-.br-lg {
+.bra-lg {
   border-radius: 20px;
 }
 
-.br-xl {
+.bra-xl {
   border-radius: 40px;
 }
 
-.br-full {
+.bra-full {
   border-radius: 50%;
 }
 
@@ -991,6 +991,30 @@ main {
 
 .bt-5 {
   border-top: 5px solid black;
+}
+
+.b-0 {
+  border: 0;
+}
+
+.b-1 {
+  border: 1px solid black;
+}
+
+.b-2 {
+  border: 2px solid black;
+}
+
+.b-3 {
+  border: 3px solid black;
+}
+
+.b-4 {
+  border: 4px solid black;
+}
+
+.b-5 {
+  border: 5px solid black;
 }
 
 .bb-0 {

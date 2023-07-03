@@ -47,7 +47,6 @@ class RelatedMediaProduct extends Component
   public $editedMediaIndex = null;
   public $i;
   public $j;
-  public $count = 0;
 
   public function mount($productId)
   {
@@ -58,7 +57,6 @@ class RelatedMediaProduct extends Component
     $this->selectedColumns = $this->columns;
     $this->locations = MediaLocation::all();
     $this->file_locations[] = '1';
-    $this->count = Media::where('item_id', $this->productId)->where('tabel_id', $this->type)->count();
     $this->i = null;
     $this->j = null;
   }
@@ -278,13 +276,11 @@ class RelatedMediaProduct extends Component
     $this->selectPage = false;
     return $export->download('medias.xlsx');
   }
-
   public function render()
   {
     $this->hasResults = $this->files->isNotEmpty();
     return view('livewire.related-media-product', [
-      'files' => $this->files,
-      'count' => $this->count
+      'files' => $this->files
     ]);
   }
 }
