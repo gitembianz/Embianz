@@ -295,7 +295,7 @@
                                             @endif
                                             <td data-title="Action">
                                                 <button class="delete"
-                                                    wire:click.prevent="confirmItemRemoval({{ $spec->id }})">
+                                                    wire:click.prevent="confirmRemoval({{ $spec->id }})">
                                                     <svg>
                                                         <circle cx="12" cy="12" r="10">
                                                         </circle>

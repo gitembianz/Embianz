@@ -157,16 +157,20 @@ class RelatedSpecProduct extends Component
   public function savespecs()
   {
     $val = $this->spec;
-    $newspec = new Product_Spec();
-    $newspec->product_id = $this->productId;
-    $newspec->spec_id = $this->specid;
-    $newspec->value = $val['value'];
-    $newspec->save();
-    $this->addrelatedspecs = false;
-    $this->allow = false;
-    $this->specid = null;
-    $this->value = false;
-    session()->flash('message', 'Spec related succesfuly succesfuly');
+    if (array_key_exists('value', $val)) {
+      $newspec = new Product_Spec();
+      $newspec->product_id = $this->productId;
+      $newspec->spec_id = $this->specid;
+      $newspec->value = $val['value'];
+      $newspec->save();
+      $this->addrelatedspecs = false;
+      $this->allow = false;
+      $this->specid = null;
+      $this->value = false;
+      session()->flash('message', 'Spec related succesfuly succesfuly');
+    } else {
+      session()->flash('message', 'Please provide a value!');
+    }
   }
   public function getAddspecsProperty()
   {
