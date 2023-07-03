@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Product;
 use App\Models\Product_Spec;
 use App\Models\Specs;
 use Livewire\Component;
@@ -28,20 +29,16 @@ class RelatedSpecProduct extends Component
   public $specidbeingremoved = null;
   public $addrelatedspecs = false;
   //Add specs declaration
-  public $perPageadd = 10;
   public $searchadd = '';
-  public $orderByadd = 'id';
-  public $orderAscadd = true;
-  public $checkedadd = [];
-  public $selectPageadd = false;
-  public $selectAlladd = false;
-  public $columnsadd = ['Id', 'Unit', 'Group', 'Value', 'Created At'];
-  public $selectedColumnsadd = [];
-  public $coladd = false;
-  public $alladd = false;
-  public $islink = false;
-  public $rowindex = null;
+  public $orderByadd = 'updated_at';
+  public $orderAscadd = 'desc';
   public $spec = [];
+  public $item;
+  public $itemselected = null;
+  public $specid;
+  public $allow = false;
+  public $value = false;
+
 
   public function render()
   {
@@ -54,7 +51,7 @@ class RelatedSpecProduct extends Component
   {
     $this->productId = $productId;
     $this->selectedColumns = $this->columns;
-    $this->selectedColumnsadd = $this->columnsadd;
+    $this->item = Product::find($productId);
   }
   //function for realted
   public function showColumn($column)
@@ -141,75 +138,42 @@ class RelatedSpecProduct extends Component
     $this->showrelatedspecs = true;
     $this->addrelatedspecs = true;
   }
-  public function setlink($index)
+  public function select($id)
   {
-    $this->islink = true;
-    $this->rowindex = $index;
+    $this->itemselected = Specs::find($id)->name;
+    $this->specid = $id;
+    $this->allow = false;
+    $this->value = true;
   }
-  public function savespecs()
+  public function allowselect()
   {
-  }
-  public function cancellink()
-  {
-    $this->rowindex = null;
-    $this->islink = false;
+    $this->allow = true;
   }
   public function closemodal()
   {
     $this->addrelatedspecs = false;
-    $this->rowindex = null;
-    $this->islink = false;
-    $this->checkedadd = [];
+    $this->allow = false;
   }
-  public function showColumnadd($column)
+  public function savespecs()
   {
-    if ($column === 'Name') {
-      return true;
-    }
-    return in_array($column, $this->selectedColumnsadd);
-  }
-  public function updatedSelectPageadd($value)
-  {
-    if ($value) {
-      $this->checkedadd = $this->addspecs->pluck('id')->map(fn ($item) => (string) $item)->toArray();
-    } else {
-      $this->checkedadd = [];
-    }
-  }
-  public function swapSortDirectionadd()
-  {
-    return $this->orderAscadd === '1' ? '0' : '1';
-  }
-  public function isCheckedadd($id)
-  {
-    return in_array($id, $this->checkedadd);
-  }
-  public function sortByadd($columnName)
-  {
-
-    if ($this->orderByadd === $columnName) {
-      $this->orderAscadd = $this->swapSortDirectionadd();
-    } else {
-      $this->orderAscadd = '1';
-    }
-
-    $this->orderByadd = $columnName;
-  }
-  public function selectAlladd()
-  {
-    $this->selectAlladd = true;
-    $this->checkedadd = $this->addspecsQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+    $val = $this->spec;
+    $newspec = new Product_Spec();
+    $newspec->product_id = $this->productId;
+    $newspec->spec_id = $this->specid;
+    $newspec->value = $val['value'];
+    $newspec->save();
+    $this->addrelatedspecs = false;
+    $this->allow = false;
+    $this->specid = null;
+    $this->value = false;
+    session()->flash('message', 'Spec related succesfuly succesfuly');
   }
   public function getAddspecsProperty()
   {
-    return $this->addspecsQuery->paginate($this->perPageadd, ['*'],  'specs');
+    return $this->addspecsQuery->get();
   }
   public function getAddspecsQueryProperty()
   {
-    return Specs::search($this->searchadd)->orderBy($this->orderByadd, $this->orderAscadd ? 'asc' : 'desc');
-  }
-  public function updatedCheckedadd()
-  {
-    $this->selectPageadd = false;
+    return Specs::search($this->searchadd)->orderBy($this->orderByadd, $this->orderAscadd);
   }
 }

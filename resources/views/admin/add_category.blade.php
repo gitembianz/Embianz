@@ -32,13 +32,12 @@
 <x-dashboardsidebar />
 {{-- Page content start --}}
 
-
 <section class="content">
     <form class="item" action="{{ url('/add_category') }}" method="POST" enctype="multipart/form-data">
         @csrf
         {{-- Item Header --}}
         <div class="item__header">
-            <h1 class="item__header-title" id="title">{{ __('Create Category') }}</h1>
+            <h1 class="item__header" id="title">{{ __('Create Category') }}</h1>
             <div class="item__header-buttons">
                 <a class="item__header-btn" href="{{ route('category') }}">All Categories</a>
                 <button class="item__header-btn" id="resetform" type="reset">Clear form</button>
