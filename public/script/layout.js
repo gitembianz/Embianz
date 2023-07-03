@@ -131,18 +131,22 @@ function toggleClasses(event) {
 }
 //==========================================================================================================================
 
+
 document.addEventListener("click", toggleClasses);
 
 // Select all buttons with the class "dropdown-button"
 
 document.addEventListener("DOMContentLoaded", function () {
+
   // Select all buttons with the class "dropdown-button"
   const dropdownButtons = document.querySelectorAll(".dropdown-button");
 
   dropdownButtons.forEach(function (button) {
+
     button.addEventListener("click", function () {
       const dropdown = button.closest(".dropdown");
       dropdown.classList.toggle("open");
+
 
       // Remove the class "open" from other buttons
       dropdownButtons.forEach(function (otherButton) {
@@ -157,8 +161,10 @@ document.addEventListener("DOMContentLoaded", function () {
 //==========================================================================================================================
 
 // The Top Up Button
+
 const topUpBtn = document.getElementById("topUp");
 window.addEventListener("scroll", () => {
+
   if (window.pageYOffset > 100) {
     topUpBtn.classList.add("actived");
   } else {
@@ -188,8 +194,11 @@ tabs.forEach((tab, index) => {
 const accordionButtons = document.querySelectorAll(".accordion__btn");
 
 // Loop through each button and attach a click event listener
+
+
 accordionButtons.forEach((button) => {
   button.addEventListener("click", function () {
+
     const accordionContent = this.nextElementSibling;
 
     // Check if the accordion content is currently active

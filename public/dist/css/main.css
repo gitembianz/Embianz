@@ -942,31 +942,31 @@ main {
   gap: 10rem;
 }
 
-.br {
+.bra {
   border-radius: 10px;
 }
 
-.br-none {
+.bra-none {
   border-radius: 0;
 }
 
-.br-xs {
+.bra-xs {
   border-radius: 2.5px;
 }
 
-.br-sm {
+.bra-sm {
   border-radius: 5px;
 }
 
-.br-lg {
+.bra-lg {
   border-radius: 20px;
 }
 
-.br-xl {
+.bra-xl {
   border-radius: 40px;
 }
 
-.br-full {
+.bra-full {
   border-radius: 50%;
 }
 
@@ -992,6 +992,30 @@ main {
 
 .bt-5 {
   border-top: 5px solid black;
+}
+
+.b-0 {
+  border: 0;
+}
+
+.b-1 {
+  border: 1px solid black;
+}
+
+.b-2 {
+  border: 2px solid black;
+}
+
+.b-3 {
+  border: 3px solid black;
+}
+
+.b-4 {
+  border: 4px solid black;
+}
+
+.b-5 {
+  border: 5px solid black;
 }
 
 .bb-0 {
@@ -2319,9 +2343,11 @@ input[type=checkbox] {
   cursor: pointer;
   width: 2.5rem;
   height: 2.5rem;
+
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
+
 }
 input[type=checkbox]:hover {
   background-color: rgba(146, 220, 254, 0.6588235294);
@@ -2391,6 +2417,7 @@ input[type=checkbox]:checked:before {
   pointer-events: none;
   border-radius: 100px;
 }
+
 .top-up-btn:hover {
   background-color: #0b0d0f;
   color: #BBFCDE;
@@ -2494,6 +2521,7 @@ input[type=checkbox]:checked:before {
 .top-up-btn.submit.active svg, .top-up-btn.submit:active svg, .top-up-btn.submit:focus-visible svg {
   stroke: #20282d;
 }
+
 .top-up-btn.actived {
   opacity: 1;
   pointer-events: auto;
@@ -3188,8 +3216,10 @@ header,
   display: none;
 }
 .header__logo img {
+
   -o-object-fit: cover;
      object-fit: cover;
+
   width: 250px;
   height: auto;
 }
@@ -5092,6 +5122,7 @@ header,
   .item__header-title {
     text-align: left;
   }
+
   .item__header-buttons {
     display: flex;
     flex-direction: row;
@@ -5105,6 +5136,7 @@ header,
   .item__header-btn {
     max-width: 8rem;
   }
+
   .item__form {
     display: grid;
     grid-template-columns: 1fr 1fr;

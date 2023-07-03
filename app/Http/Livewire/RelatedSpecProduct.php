@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Product;
 use App\Models\Product_Spec;
 use App\Models\Specs;
 use Livewire\Component;
@@ -28,17 +29,15 @@ class RelatedSpecProduct extends Component
   public $specidbeingremoved = null;
   public $addrelatedspecs = false;
   //Add specs declaration
-  public $perPageadd = 10;
   public $searchadd = '';
-  public $orderByadd = 'id';
-  public $orderAscadd = true;
-  public $checkedadd = [];
-  public $selectPageadd = false;
-  public $selectAlladd = false;
-  public $columnsadd = ['Id', 'Unit', 'Group', 'Created At'];
-  public $selectedColumnsadd = [];
-  public $coladd = false;
-  public $alladd = false;
+  public $orderByadd = 'updated_at';
+  public $orderAscadd = 'desc';
+  public $spec = [];
+  public $item;
+  public $itemselected = null;
+  public $specid;
+  public $allow = false;
+
 
   public function render()
   {
@@ -51,8 +50,7 @@ class RelatedSpecProduct extends Component
   {
     $this->productId = $productId;
     $this->selectedColumns = $this->columns;
-    $this->selectedColumnsadd = $this->columnsadd;
-    $showrelatedspecs = $this->showrelatedspecs;
+    $this->item = Product::find($productId);
   }
   //function for realted
   public function showColumn($column)
@@ -98,7 +96,7 @@ class RelatedSpecProduct extends Component
   }
   public function getRelatedspecsProperty()
   {
-    return $this->relatedspecsQuery->paginate($this->perPage, ['*'], 'related');
+    return $this->relatedspecsQuery->paginate($this->perPage);
   }
   public function getRelatedspecsQueryProperty()
   {
@@ -139,59 +137,48 @@ class RelatedSpecProduct extends Component
     $this->showrelatedspecs = true;
     $this->addrelatedspecs = true;
   }
+  public function select($id)
+  {
+    $this->itemselected = Specs::find($id)->name;
+    $this->specid = $id;
+    $this->allow = false;
+  }
+  public function allowselect()
+  {
+    $this->allow = true;
+  }
   public function closemodal()
   {
     $this->addrelatedspecs = false;
+    $this->allow = false;
+    $this->itemselected = null;
   }
-  public function showColumnadd($column)
+  public function savespecs()
   {
-    if ($column === 'Name') {
-      return true;
-    }
-    return in_array($column, $this->selectedColumnsadd);
-  }
-  public function updatedSelectPageadd($value)
-  {
-    if ($value) {
-      $this->checkedadd = $this->addspecs->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+    $val = $this->spec;
+    if (array_key_exists('value', $val)) {
+      $newspec = new Product_Spec();
+      $newspec->product_id = $this->productId;
+      $newspec->spec_id = $this->specid;
+      $newspec->value = $val['value'];
+      $newspec->save();
+      $this->addrelatedspecs = false;
+      $this->allow = false;
+      $this->specid = null;
+      $this->spec = [];
+      $this->itemselected = null;
+      $this->search = '';
+      session()->flash('message', 'Spec related succesfuly succesfuly');
     } else {
-      $this->checkedadd = [];
+      session()->flash('message', 'Please provide a value!');
     }
-  }
-  public function swapSortDirectionadd()
-  {
-    return $this->orderAscadd === '1' ? '0' : '1';
-  }
-  public function isCheckedadd($id)
-  {
-    return in_array($id, $this->checkedadd);
-  }
-  public function sortByadd($columnName)
-  {
-
-    if ($this->orderByadd === $columnName) {
-      $this->orderAscadd = $this->swapSortDirectionadd();
-    } else {
-      $this->orderAscadd = '1';
-    }
-
-    $this->orderByadd = $columnName;
-  }
-  public function selectAlladd()
-  {
-    $this->selectAlladd = true;
-    $this->checkedadd = $this->specsQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
   }
   public function getAddspecsProperty()
   {
-    return $this->addspecsQuery->paginate($this->perPageadd, ['*'],  'specs');
+    return $this->addspecsQuery->get();
   }
   public function getAddspecsQueryProperty()
   {
-    return Specs::search($this->searchadd)->orderBy($this->orderByadd, $this->orderAscadd ? 'asc' : 'desc');
-  }
-  public function updatedCheckedadd()
-  {
-    $this->selectPageadd = false;
+    return Specs::search($this->searchadd)->orderBy($this->orderByadd, $this->orderAscadd);
   }
 }

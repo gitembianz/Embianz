@@ -1,4 +1,5 @@
 <div class="item">
+    {{-- sesssion html --}}
     @if (session()->has('message'))
         <div class="alert__session liveAlert" id="alertevent">
             <span class="alert__session-text">{!! session('message') !!}</span>
@@ -13,7 +14,6 @@
             const alertEvent = document.getElementById("alertevent");
             header.style.marginBottom = '4rem';
             alertEvent.style.opacity = '1';
-
             setTimeout(function() {
                 alertEvent.style.opacity = '0';
                 setTimeout(function() {
@@ -23,7 +23,7 @@
             }, 2000);
         </script>
     @endif
-
+    {{-- end sesssion html --}}
     <div class="item__form form-table"
         @if ($checked) style="grid-template-columns: 2fr 1fr 1fr 1fr" @endif>
 
@@ -131,7 +131,6 @@
         </div>
     </div>
 
-
     {{-- end modals --}}
 
     {{-- Livewire Table --}}
@@ -189,7 +188,6 @@
                     </th>
                 @endif
 
-
                 <th></th>
             </tr>
         </thead>
@@ -219,7 +217,6 @@
                     @if ($this->showColumn('Created At'))
                         <td data-title="Created At">{{ $category->created_at }}</td>
                     @endif
-
 
                     <td data-title="Action">
                         <button class="delete" wire:click.prevent="confirmCategoryRemoval({{ $category->id }})">
