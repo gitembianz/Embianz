@@ -79,6 +79,8 @@ Route::get('/cleareverything', function () {
   echo "Optimize clear<br>";
   $updatetabels = Artisan::call('migrate');
   echo "Databese updated<br>";
+});
+Route::get('/seeddatabase', function () {
   $seed = Artisan::call('db:seed --class=CurrencySeeder');
   echo "Databese seeded<br>";
 });
