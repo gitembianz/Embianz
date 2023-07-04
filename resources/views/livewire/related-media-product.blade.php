@@ -46,96 +46,93 @@
         @if ($showmedia)
             <div class="accordion__content" id="contentDiv">
                 <div class="item">
-                    <div class="item">
-                        <form wire:submit.prevent="save">
-                            <div class="item item__upload  mb-2 pb-3 bb-1">
+                    <form wire:submit.prevent="save">
+                        <div class="item item__upload  mb-2 pb-3 bb-1">
 
-                                @if ($medias)
-                                    <input type="submit" id="add_media_related" class="item__form-btn item__form-long"
-                                        value="Save Media">
-                                    <div class="table-scroll">
+                            @if ($medias)
+                                <input type="submit" id="add_media_related" class="item__form-btn item__form-long"
+                                    value="Save Media">
+                                <div class="table-scroll">
 
-                                        <table class="table">
-                                            <thead>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+
+                                                <th>Media</th>
+                                                <th>Name</th>
+                                                <th>Size</th>
+                                                <th>Type</th>
+                                                <th>Sequence</th>
+                                                <th>Location</th>
+                                                <th>Action</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($medias as $media)
                                                 <tr>
+                                                    <td>
+                                                        @if (str_starts_with($media->getMimeType(), 'image'))
+                                                            <img src="{{ $media->temporaryUrl() }}" width="50px">
+                                                        @elseif (str_starts_with($media->getMimeType(), 'video'))
+                                                            <video width="100px" controls>
+                                                                <source src="{{ $media->temporaryUrl() }}"
+                                                                    type="{{ $media->getMimeType() }}">
+                                                                <span>{{ __('Your browser not suport video tag') }}</span>
+                                                            </video>
+                                                        @endif
+                                                    </td>
+                                                    <td>{{ $media->getClientOriginalName() }}</td>
+                                                    <td>{{ $media->getSize() }} KB</td>
+                                                    <td>{{ $media->getClientOriginalExtension() }}</td>
+                                                    <td><input type="number" placeholder="Media sequence"
+                                                            min="0" required
+                                                            wire:model="file_sequences.{{ $loop->index }}"></td>
+                                                    <td>
+                                                        <select required
+                                                            wire:model="file_locations.{{ $loop->index }}">
 
-                                                    <th>Media</th>
-                                                    <th>Name</th>
-                                                    <th>Size</th>
-                                                    <th>Type</th>
-                                                    <th>Sequence</th>
-                                                    <th>Location</th>
-                                                    <th>Action</th>
-
+                                                            @php
+                                                                $firstLocation = $locations->first();
+                                                            @endphp
+                                                            <option value="{{ $firstLocation->id }}" selected>
+                                                                {{ $firstLocation->location }}</option>
+                                                            @foreach ($locations as $index => $location)
+                                                                @if ($loop->first)
+                                                                    @continue
+                                                                @endif
+                                                                <option value="{{ $location->id }}">
+                                                                    {{ $location->location }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </td>
+                                                    <td><button class="delete"
+                                                            wire:click.prevent="removemedia({{ $loop->index }})">
+                                                            <svg>
+                                                                <circle cx="12" cy="12" r="10">
+                                                                </circle>
+                                                                <line x1="15" y1="9" x2="9"
+                                                                    y2="15">
+                                                                </line>
+                                                                <line x1="9" y1="9" x2="15"
+                                                                    y2="15">
+                                                                </line>
+                                                            </svg>
+                                                        </button></td>
                                                 </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($medias as $media)
-                                                    <tr>
-                                                        <td>
-                                                            @if (str_starts_with($media->getMimeType(), 'image'))
-                                                                <img src="{{ $media->temporaryUrl() }}" width="50px">
-                                                            @elseif (str_starts_with($media->getMimeType(), 'video'))
-                                                                <video width="100px" controls>
-                                                                    <source src="{{ $media->temporaryUrl() }}"
-                                                                        type="{{ $media->getMimeType() }}">
-                                                                    <span>{{ __('Your browser not suport video tag') }}</span>
-                                                                </video>
-                                                            @endif
-                                                        </td>
-                                                        <td>{{ $media->getClientOriginalName() }}</td>
-                                                        <td>{{ $media->getSize() }} KB</td>
-                                                        <td>{{ $media->getClientOriginalExtension() }}</td>
-                                                        <td><input type="number" placeholder="Media sequence"
-                                                                min="0" required
-                                                                wire:model="file_sequences.{{ $loop->index }}"></td>
-                                                        <td>
-                                                            <select required
-                                                                wire:model="file_locations.{{ $loop->index }}">
+                                            @endforeach
 
-                                                                @php
-                                                                    $firstLocation = $locations->first();
-                                                                @endphp
-                                                                <option value="{{ $firstLocation->id }}" selected>
-                                                                    {{ $firstLocation->location }}</option>
-                                                                @foreach ($locations as $index => $location)
-                                                                    @if ($loop->first)
-                                                                        @continue
-                                                                    @endif
-                                                                    <option value="{{ $location->id }}">
-                                                                        {{ $location->location }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </td>
-                                                        <td><button class="delete"
-                                                                wire:click.prevent="removemedia({{ $loop->index }})">
-                                                                <svg>
-                                                                    <circle cx="12" cy="12"
-                                                                        r="10">
-                                                                    </circle>
-                                                                    <line x1="15" y1="9" x2="9"
-                                                                        y2="15">
-                                                                    </line>
-                                                                    <line x1="9" y1="9" x2="15"
-                                                                        y2="15">
-                                                                    </line>
-                                                                </svg>
-                                                            </button></td>
-                                                    </tr>
-                                                @endforeach
-
-                                @endif
-                                </tbody>
-                                </table>
-                            </div>
-                            @error('medias.*')
-                                <span class="error">{{ $message }}</span>
-                            @enderror
-
-                    </div>
-                    </form>
+                            @endif
+                            </tbody>
+                            </table>
+                        </div>
+                        @error('medias.*')
+                            <span class="error">{{ $message }}</span>
+                        @enderror
 
                 </div>
+                </form>
+
                 <div class="item">
                     @if (count($files) > 0)
                         <div class="item__form form-table"
@@ -432,11 +429,8 @@
                         </table>
                         <div>{{ $files->links('pagination-links') }} </div>
                     @else
+                        <p> No Media related </p>
                 </div>
-            </div>
-            <div class="item">
-                <span class="talign-c p-1">
-                    No Media related</span>
             </div>
         @endif
         @endif
