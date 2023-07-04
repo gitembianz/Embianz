@@ -55,7 +55,9 @@
                 <div class="display-f align-center">
                     <div>Spec:</div>
                     <div class="item__form-input item__form-long cursor-p">
-                        <div wire:click.prevent="allowselect()">
+                        <div
+                            @if ($update) @else
+                          wire:click.prevent="allowselect()" @endif>
                             @if ($itemselected)
                                 {{ $itemselected }}
                             @else
