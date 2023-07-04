@@ -68,7 +68,7 @@
                     <button class="dropdown-item delete" type="button" wire:click="confirmItemsRemovalmultiple()">
                         Delete
                     </button>
-                    <button class="dropdown-item submit" type="button">
+                    <button class="dropdown-item submit" type="button" wire:click="exportSelected()">
                         Export
                     </button>
                 </div>
@@ -184,16 +184,30 @@
                     @endif
                     @if ($this->showColumn('Name'))
                         <td data-title="Name">
-                            <div class="cursor-p">
-                                {{ $price->name }}</div>
+                            @if ($indexprice !== $index)
+                                <div class="cursor-p" wire:click.prevent="edititem({{ $index }})">
+                                    {{ $price->name }}</div>
+                            @else
+                                <input type="text" class="table-edit wid-1"
+                                    wire:model.defer="prices.{{ $index }}.name">
+                            @endif
 
                         </td>
                     @endif
                     @if ($this->showColumn('Currency'))
                         <td data-title="Currency">
-                            <div class="cursor-p">
-                                {{ $price->currency->name }}</div>
-
+                            @if ($indexprice !== $index)
+                                <div class="cursor-p" wire:click.prevent="edititem({{ $index }})">
+                                    {{ $price->currency->name }}</div>
+                            @else
+                                <select class="table-edit" wire:model.defer="prices.{{ $index }}.currency">
+                                    <option>Select currency</option>
+                                    @foreach ($currencies as $curency)
+                                        <option value="{{ $curency->id }}">
+                                            {{ $curency->name }}</option>
+                                    @endforeach
+                                </select>
+                            @endif
                         </td>
                     @endif
 
@@ -202,13 +216,34 @@
                     @endif
 
                     <td data-title="Action">
-                        <button class="delete" wire:click.prevent="confirmItemRemoval({{ $price->id }})">
-                            <svg>
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <line x1="15" y1="9" x2="9" y2="15"></line>
-                                <line x1="9" y1="9" x2="15" y2="15"></line>
-                            </svg>
-                        </button>
+                        @if ($indexprice !== $index)
+                            <button class="edit" wire:click.prevent="edititem({{ $index }})">
+                                <svg>
+                                    <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
+                                    </path>
+                                </svg>
+                            </button>
+                            <button class="delete" wire:click.prevent="confirmItemRemoval({{ $price->id }})">
+                                <svg>
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="15" y1="9" x2="9" y2="15"></line>
+                                    <line x1="9" y1="9" x2="15" y2="15"></line>
+                                </svg>
+                            </button>
+                        @else
+                            <button class="edit"
+                                wire:click.prevent="saveitem({{ $index }} , {{ $price->id }})">
+                                <svg>
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </button>
+                            <button class="save" wire:click.prevent="cancelitem()">
+                                <svg>
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            </button>
+                        @endif
                     </td>
                 </tr>
             @endforeach
