@@ -1,5 +1,4 @@
 <div class="item">
-    {{-- sesssion html --}}
     @if (session()->has('message'))
         <div class="alert__session liveAlert" id="alertevent">
             <span class="alert__session-text">{!! session('message') !!}</span>
@@ -14,6 +13,7 @@
             const alertEvent = document.getElementById("alertevent");
             header.style.marginBottom = '4rem';
             alertEvent.style.opacity = '1';
+
             setTimeout(function() {
                 alertEvent.style.opacity = '0';
                 setTimeout(function() {
@@ -23,13 +23,19 @@
             }, 2000);
         </script>
     @endif
-    {{-- end sesssion html --}}
+    <div class="item__header">
+        <h1 id="title" class="item__header-title">{{ __('All Price Lists') }}</h1>
+        <div class="item__header-buttons">
+            <a href="{{ route('newpricelist') }}" class="item__header-btn">{{ __('New') }}</a>
+        </div>
+    </div>
+
     <div class="item__form form-table"
         @if ($checked) style="grid-template-columns: 2fr 1fr 1fr 1fr" @endif>
 
         <div class="item__form-input">
             <input wire:model.debounce.200ms="search" type="text" required>
-            <span>Search Category...</span>
+            <span>Search...</span>
         </div>
         <div class="item__form-input">
             <select id="perPage" wire:model="perPage">
@@ -59,7 +65,7 @@
                 Checked({{ count($checked) }})</button>
             @if ($checked)
                 <div class="dropdown-list">
-                    <button class="dropdown-item delete" type="button" wire:click="confirmCategoriesRemovalmultiple()">
+                    <button class="dropdown-item delete" type="button" wire:click="confirmItemsRemovalmultiple()">
                         Delete
                     </button>
                     <button class="dropdown-item submit" type="button" wire:click="exportSelected()">
@@ -89,7 +95,8 @@
 
     {{-- modals --}}
     {{-- delete single record --}}
-    <div class="modal" id="confirmationmodalcategory">
+
+    <div class="modal" id="confirmationmodal">
         <div class="modal-content">
             <h1 class="modal-content-title">
                 {{ __('Are you sure to delete this record?') }}
@@ -97,10 +104,10 @@
             <input wire:click.prevent="deleteSingleRecord()" class="modal-content-btn submit" type="button"
                 value="Confirm">
             <input class="modal-content-btn delete" type="button"
-                onclick="document.getElementById('confirmationmodalcategory').style.display='none'" value="Cancel">
+                onclick="document.getElementById('confirmationmodal').style.display='none'" value="Cancel">
 
             <span class="modal-content-btn delete"
-                onclick="document.getElementById('confirmationmodalcategory').style.display='none'">
+                onclick="document.getElementById('confirmationmodal').style.display='none'">
                 <svg>
                     <line x1="18" y1="6" x2="6" y2="18"></line>
                     <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -110,18 +117,17 @@
     </div>
 
     {{-- delete myltiple records --}}
-    <div class="modal" id="confirmationmodalcategorymultiple">
+    <div class="modal" id="confirmationmodalmultiple">
         <div class="modal-content">
             <h1 class="modal-content-title">
                 {{ __('Are you sure to delete those records?') }}
             </h1>
             <input wire:click.prevent="deleteRecords()" class="modal-content-btn submit" type="button" value="Confirm">
             <input class="modal-content-btn delete" type="button"
-                onclick="document.getElementById('confirmationmodalcategorymultiple').style.display='none'"
-                value="Cancel">
+                onclick="document.getElementById('confirmationmodalmultiple').style.display='none'" value="Cancel">
 
             <span class="modal-content-btn delete"
-                onclick="document.getElementById('confirmationmodalcategorymultiple').style.display='none'">
+                onclick="document.getElementById('confirmationmodalmultiple').style.display='none'">
 
                 <svg>
                     <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -141,95 +147,107 @@
 
                 @if ($this->showColumn('Id'))
                     <th class="cursor-p"
-                        @if ($orderBy === 'id' && $orderAsc === '1') data-symbol="up"
-          @else
-              data-symbol="down" @endif
+                        @if ($orderBy === 'id' && $orderAsc === '1') data-symbol="up" @else data-symbol="down" @endif
                         wire:click="sortBy('id')">ID
                     </th>
                 @endif
                 @if ($this->showColumn('Name'))
                     <th class="cursor-p"
-                        @if ($orderBy === 'name' && $orderAsc === '1') data-symbol="up"
-      @else
-          data-symbol="down" @endif
+                        @if ($orderBy === 'name' && $orderAsc === '1') data-symbol="up" @else
+                    data-symbol="down" @endif
                         wire:click="sortBy('name')">Name
                     </th>
                 @endif
-                @if ($this->showColumn('Category Parrent'))
-                    <th class="cursor-p"
-                        @if ($orderBy === 'parrent' && $orderAsc === '1') data-symbol="up"
-  @else
-      data-symbol="down" @endif
-                        wire:click="sortBy('parrent')">Parrent
-                    </th>
-                @endif
-                @if ($this->showColumn('Short Description'))
-                    <th class="cursor-p"
-                        @if ($orderBy === 'short_description' && $orderAsc === '1') data-symbol="up"
-  @else
-      data-symbol="down" @endif
-                        wire:click="sortBy('short_description')">Short Description
-                    </th>
-                @endif
-                @if ($this->showColumn('Sequence'))
-                    <th class="cursor-p"
-                        @if ($orderBy === 'sequence' && $orderAsc === '1') data-symbol="up"
-  @else
-      data-symbol="down" @endif
-                        wire:click="sortBy('sequence')">Sequence
+                @if ($this->showColumn('Currency'))
+                    <th class="cursor-p">
+                        Currency
                     </th>
                 @endif
                 @if ($this->showColumn('Created At'))
                     <th class="cursor-p"
-                        @if ($orderBy === 'created_at' && $orderAsc === '1') data-symbol="up"
-          @else
-              data-symbol="down" @endif
+                        @if ($orderBy === 'created_at' && $orderAsc === '1') data-symbol="up" @else
+                    data-symbol="down" @endif
                         wire:click="sortBy('created_at')">Created At
                     </th>
                 @endif
-
                 <th></th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($categories as $category)
-                <tr class="@if ($this->isChecked($category->id)) th_checked @endif">
-                    <td data-title="Check"><input type="checkbox" value="{{ $category->id }}" wire:model="checked">
+            @foreach ($pricelists as $index => $price)
+                <tr class="@if ($this->isChecked($price->id)) th_checked @endif">
+                    <td data-title="Check"><input type="checkbox" value="{{ $price->id }}" wire:model="checked">
                     </td>
 
                     @if ($this->showColumn('Id'))
-                        <td data-title="ID">{{ $category->id }}</td>
+                        <td data-title="ID">{{ $price->id }}</td>
                     @endif
                     @if ($this->showColumn('Name'))
-                        <td data-title="Name"><a
-                                href="/show_category/{{ $category->id }}'">{{ $category->name }}</a>
+                        <td data-title="Name">
+                            @if ($indexprice !== $index)
+                                <div class="cursor-p" wire:click.prevent="edititem({{ $index }})">
+                                    {{ $price->name }}</div>
+                            @else
+                                <input type="text" class="table-edit wid-1"
+                                    wire:model.defer="prices.{{ $index }}.name">
+                            @endif
+
                         </td>
                     @endif
-                    @if ($this->showColumn('Category Parrent'))
-                        <td data-title="Category Parrent">{{ $category->parrent }}</td>
+                    @if ($this->showColumn('Currency'))
+                        <td data-title="Currency">
+                            @if ($indexprice !== $index)
+                                <div class="cursor-p" wire:click.prevent="edititem({{ $index }})">
+                                    {{ $price->currency->name }}</div>
+                            @else
+                                <select class="table-edit" wire:model.defer="prices.{{ $index }}.currency">
+                                    <option>Select currency</option>
+                                    @foreach ($currencies as $curency)
+                                        <option value="{{ $curency->id }}">
+                                            {{ $curency->name }}</option>
+                                    @endforeach
+                                </select>
+                            @endif
+                        </td>
                     @endif
-                    @if ($this->showColumn('Short Description'))
-                        <td data-title="Short Description">{{ $category->short_description }}</td>
-                    @endif
-                    @if ($this->showColumn('Sequence'))
-                        <td data-title="Sequence">{{ $category->sequence }}</td>
-                    @endif
+
                     @if ($this->showColumn('Created At'))
-                        <td data-title="Created At">{{ $category->created_at }}</td>
+                        <td data-title="Created At">{{ $price->created_at }}</td>
                     @endif
 
                     <td data-title="Action">
-                        <button class="delete" wire:click.prevent="confirmCategoryRemoval({{ $category->id }})">
-                            <svg>
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <line x1="15" y1="9" x2="9" y2="15"></line>
-                                <line x1="9" y1="9" x2="15" y2="15"></line>
-                            </svg>
-                        </button>
+                        @if ($indexprice !== $index)
+                            <button class="edit" wire:click.prevent="edititem({{ $index }})">
+                                <svg>
+                                    <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
+                                    </path>
+                                </svg>
+                            </button>
+                            <button class="delete" wire:click.prevent="confirmItemRemoval({{ $price->id }})">
+                                <svg>
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="15" y1="9" x2="9" y2="15"></line>
+                                    <line x1="9" y1="9" x2="15" y2="15"></line>
+                                </svg>
+                            </button>
+                        @else
+                            <button class="edit"
+                                wire:click.prevent="saveitem({{ $index }} , {{ $price->id }})">
+                                <svg>
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </button>
+                            <button class="save" wire:click.prevent="cancelitem()">
+                                <svg>
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            </button>
+                        @endif
                     </td>
                 </tr>
             @endforeach
         </tbody>
     </table>
-    <div class="pagination">{{ $categories->links('pagination-links') }} </div>
+    <div>{{ $pricelists->links('pagination-links') }} </div>
 </div>

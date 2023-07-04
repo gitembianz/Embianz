@@ -2,12 +2,13 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Specs;
+use App\Exports\PriceListExport;
+use App\Models\Currency;
+use App\Models\PriceList;
 use Livewire\Component;
-use App\Exports\SpecsExport;
 use Livewire\WithPagination;
 
-class Specstable extends Component
+class Priceliststable extends Component
 {
 
   use WithPagination;
@@ -18,21 +19,23 @@ class Specstable extends Component
   public $checked = [];
   public $selectPage = false;
   public $selectAll = false;
-  public $specidbeingremoved = null;
-  public $columns = ['Id', 'Unit', 'Group', 'Created At'];
+  public $itemidbeingremoved = null;
+  public $columns = ['Id', 'Currency', 'Created At'];
   public $selectedColumns = [];
-  public $indexspec = null;
-  public $specss = [];
+  public $indexprice = null;
+  public $prices = [];
+  public $currencies;
 
   public function render()
   {
-    return view('livewire.specstable', [
-      'specs' => $this->specs
+    return view('livewire.priceliststable', [
+      'pricelists' => $this->pricelists
     ]);
   }
   public function mount()
   {
     $this->selectedColumns = $this->columns;
+    $this->currencies = Currency::get();
   }
   public function showColumn($column)
   {
@@ -44,7 +47,7 @@ class Specstable extends Component
   public function updatedSelectPage($value)
   {
     if ($value) {
-      $this->checked = $this->specs->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+      $this->checked = $this->pricelists->pluck('id')->map(fn ($item) => (string) $item)->toArray();
     } else {
       $this->checked = [];
     }
@@ -55,13 +58,11 @@ class Specstable extends Component
   }
   public function sortBy($columnName)
   {
-
     if ($this->orderBy === $columnName) {
       $this->orderAsc = $this->swapSortDirection();
     } else {
       $this->orderAsc = '1';
     }
-
     $this->orderBy = $columnName;
   }
   public function swapSortDirection()
@@ -71,39 +72,39 @@ class Specstable extends Component
   public function selectAll()
   {
     $this->selectAll = true;
-    $this->checked = $this->specsQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+    $this->checked = $this->pricelistsQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
   }
-  public function getSpecsProperty()
+  public function getPricelistsProperty()
   {
-    return $this->specsQuery->paginate($this->perPage);
+    return $this->pricelistsQuery->paginate($this->perPage);
   }
-  public function getSpecsQueryProperty()
+  public function getPricelistsQueryProperty()
   {
-    return Specs::search($this->search)
-      ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc');
+    return PriceList::search($this->search)
+      ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->with('currency');
   }
   public function deleteRecords()
   {
-    $items = Specs::whereKey($this->checked)->get();
+    $items = PriceList::whereKey($this->checked)->get();
     foreach ($items as $item) {
       $id = $item->id;
-      $specdel = Specs::find($id);
-      $specdel->delete();
+      $itemdel = PriceList::find($id);
+      $itemdel->delete();
     }
     $this->checked = [];
     session()->flash('message', 'Records deleted succesfuly');
   }
   public function deleteSingleRecord()
   {
-    $id = $this->specidbeingremoved;
-    $item = Specs::findOrFail($id);
+    $id = $this->itemidbeingremoved;
+    $item = PriceList::findOrFail($id);
     $item->delete();
     $this->checked = array_diff($this->checked, [$id]);
     session()->flash('message', 'Record deleted Successfully');
   }
   public function confirmItemRemoval($id)
   {
-    $this->specidbeingremoved = $id;
+    $this->itemidbeingremoved = $id;
     $this->dispatchBrowserEvent('show-delete-modal');
   }
   public function confirmItemsRemovalmultiple()
@@ -114,40 +115,37 @@ class Specstable extends Component
   {
     return in_array($id, $this->checked);
   }
-  public function exportSelected()
-  {
-    $export = new SpecsExport($this->checked);
-    $this->checked = [];
-    $this->selectPage = false;
-    return $export->download('specs.xlsx');
-  }
   public function edititem($itemIndex)
   {
-    $this->indexspec = $itemIndex;
+    $this->indexprice = $itemIndex;
   }
   public function saveitem($index, $id)
   {
-    $spec_new = $this->specss[$index] ?? NULL;
-    if (!is_null($spec_new)) {
-      $spec = Specs::find($id);
-      if (array_key_exists('name', $spec_new)) {
-        $spec->name = $spec_new['name'];
+    $new = $this->prices[$index] ?? NULL;
+    if (!is_null($new)) {
+      $price = PriceList::find($id);
+      if (array_key_exists('name', $new)) {
+        $price->name = $new['name'];
       }
-      if (array_key_exists('um', $spec_new)) {
-        $spec->um = $spec_new['um'];
+      if (array_key_exists('currency', $new)) {
+        $price->currency_id = $new['currency'];
       }
-      if (array_key_exists('spec_group', $spec_new)) {
-        $spec->spec_group = $spec_new['spec_group'];
-      }
-      $spec->save();
+      $price->save();
       session()->flash('message', 'Record edited successfully!');
     }
-    $this->specss = [];
-    $this->indexspec = null;
+    $this->prices = [];
+    $this->indexprice = null;
   }
   public function cancelitem()
   {
-    $this->indexspec = null;
-    $this->specss = [];
+    $this->indexprice = null;
+    $this->prices = [];
+  }
+  public function exportSelected()
+  {
+    $export = new PriceListExport($this->checked);
+    $this->checked = [];
+    $this->selectPage = false;
+    return $export->download('pricelists.xlsx');
   }
 }

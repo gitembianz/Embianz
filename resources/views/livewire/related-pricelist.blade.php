@@ -27,8 +27,8 @@
     <div class="accordion">
         <div class="accordion__btn-flex">
             <button class="accordion__btn"
-                wire:click.prevent="@if ($showrelatedspecs === false) $set('showrelatedspecs', true) @else $set('showrelatedspecs', false) @endif">
-                {{ __('Specs ') }}({{ count($relatedspecs) }})
+                wire:click.prevent="@if ($showrelatedprice === false) $set('showrelatedprice', true) @else $set('showrelatedprice', false) @endif">
+                {{ __('Price List ') }}({{ count($relatedprices) }})
             </button>
             <button wire:click.prevent="addrelated()" class="accordion__upload">
                 <svg>
@@ -37,13 +37,13 @@
                 </svg> </button>
         </div>
         {{-- add related specs --}}
-        <div class="modal" id="addspecsmodal" @if ($addrelatedspecs) style="display: flex;" @endif>
+        <div class="modal" @if ($addrelatedprice) style="display: flex;" @endif>
             <div class="modal-content-spec wid-2">
                 <h1>
                     @if ($update)
-                        {{ __('Edit related Specs') }}
+                        {{ __('Edit related Pricelist') }}
                     @else
-                        {{ __('Add related Specs') }}
+                        {{ __('Add related Pricelist') }}
                     @endif
                 </h1>
                 <div class="display-f align-center">
@@ -53,7 +53,7 @@
                     </div>
                 </div>
                 <div class="display-f align-center">
-                    <div>Spec:</div>
+                    <div>Price List:</div>
                     <div class="item__form-input item__form-long cursor-p">
                         <div
                             @if ($update) @else
@@ -61,7 +61,7 @@
                             @if ($itemselected)
                                 {{ $itemselected }}
                             @else
-                                {{ __('Select a spec') }}
+                                {{ __('Select a price list') }}
                             @endif
                         </div>
                     </div>
@@ -72,9 +72,9 @@
                     <div class="item__form-input b-1 bra-sm p-1">
                         <input wire:model.debounce.200ms="searchadd" placeholder="Search.." type="text">
                         <ul>
-                            @foreach ($addspecs as $spec)
-                                <li class="cursor-p" wire:click.prevent="select({{ $spec->id }})">
-                                    {{ $spec->name }} ( {{ $spec->um }})</li>
+                            @foreach ($addprices as $pri)
+                                <li class="cursor-p" wire:click.prevent="select({{ $pri->id }})">
+                                    {{ $pri->name }} ( {{ $pri->currency->name }})</li>
                             @endforeach
                         </ul>
                         <span class="modal-content-btn edit" style="left: 90%"
@@ -92,16 +92,16 @@
                 <div class="display-f align-center">
                     <div>Value:</div>
                     <div class="item__form-input item__form-long">
-                        <input type="text"class="table-edit wid-6" wire:model.defer="spec.value">
+                        <input type="text"class="table-edit wid-6" wire:model.defer="price.value">
                     </div>
                 </div>
                 {{-- end specs list with search --}}
                 <div class="display-f wid-10">
                     @if ($update)
-                        <input class="modal-content-btn submit" wire:click.prevent="confirmspecs()" type="button"
+                        <input class="modal-content-btn submit" wire:click.prevent="confirmitem()" type="button"
                             value="Edit">
                     @else
-                        <input class="modal-content-btn submit" wire:click.prevent="savespecs()" type="button"
+                        <input class="modal-content-btn submit" wire:click.prevent="saveitem()" type="button"
                             value="Save">
                     @endif
                     <input class="modal-content-btn delete" wire:click.prevent="closemodal()" type="button"
@@ -117,10 +117,10 @@
             </div>
         </div>
         {{-- end add related specs --}}
-        @if ($showrelatedspecs)
+        @if ($showrelatedprice)
             <div class="accordion__content">
                 <div class="item">
-                    @if ($relatedspecs && count($relatedspecs) > 0)
+                    @if ($relatedprices && count($relatedprices) > 0)
                         <div class="item__form form-table"
                             @if ($checked) style="grid-template-columns: 40% 1fr 1fr 1fr" @endif>
 
@@ -267,7 +267,7 @@
                                         <th>Name
                                         </th>
                                     @endif
-                                    @if ($this->showColumn('Unit'))
+                                    @if ($this->showColumn('Currency'))
                                         <th>Unit
                                         </th>
                                     @endif
@@ -287,40 +287,40 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($relatedspecs as $spec)
-                                    <tr class="@if ($this->isChecked($spec->id)) th_checked @endif">
-                                        <td data-title="Check"><input type="checkbox" value="{{ $spec->id }}"
+                                @foreach ($relatedprices as $prices)
+                                    <tr class="@if ($this->isChecked($prices->id)) th_checked @endif">
+                                        <td data-title="Check"><input type="checkbox" value="{{ $prices->id }}"
                                                 wire:model="checked">
                                         </td>
 
                                         @if ($this->showColumn('Id'))
-                                            <td data-title="ID">{{ $spec->id }}</td>
+                                            <td data-title="ID">{{ $prices->id }}</td>
                                         @endif
                                         @if ($this->showColumn('Name'))
-                                            <td data-title="Name">{{ $spec->spec->name }}
+                                            <td data-title="Name">{{ $prices->pricelist->name }}
                                             </td>
                                         @endif
-                                        @if ($this->showColumn('Unit'))
-                                            <td data-title="Unit">
-                                                {{ $spec->spec->um }}</td>
+                                        @if ($this->showColumn('Currency'))
+                                            <td data-title="Currency">
+                                                {{ $prices->pricelist->currency->name }}</td>
                                         @endif
-                                        @if ($this->showColumn('Unit'))
-                                            <td data-title="Unit">
-                                                {{ $spec->value }}</td>
+                                        @if ($this->showColumn('Value'))
+                                            <td data-title="Value">
+                                                {{ $prices->value }}</td>
                                         @endif
                                         @if ($this->showColumn('Created At'))
-                                            <td data-title="Created At">{{ $spec->spec->created_at }}</td>
+                                            <td data-title="Created At">{{ $prices->pricelist->created_at }}</td>
                                         @endif
                                         <td data-title="Action">
                                             <button class="edit"
-                                                wire:click.prevent="editspec({{ $spec->id }}, {{ $spec->spec->id }})">
+                                                wire:click.prevent="edititem({{ $prices->id }}, {{ $prices->pricelist->id }})">
                                                 <svg>
                                                     <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
                                                     </path>
                                                 </svg>
                                             </button>
                                             <button class="delete"
-                                                wire:click.prevent="confirmRemoval({{ $spec->id }})">
+                                                wire:click.prevent="confirmRemoval({{ $prices->id }})">
                                                 <svg>
                                                     <circle cx="12" cy="12" r="10">
                                                     </circle>
@@ -335,9 +335,9 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        <div>{{ $relatedspecs->links() }} </div>
+                        <div>{{ $relatedprices->links() }} </div>
                     @else
-                        <p>no Specs related</p>
+                        <p>no Price List related</p>
                     @endif
                 </div>
             </div>

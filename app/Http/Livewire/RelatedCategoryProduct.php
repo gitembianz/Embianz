@@ -44,15 +44,15 @@ class RelatedCategoryProduct extends Component
   public $selectedColumnsadd = [];
   public $catidbeinglink = null;
 
-//add new functions
+  //add new functions
   public function toggleTable()
   {
     $this->showrelatedcat = true;
-      $this->showTable = !$this->showTable;
+    $this->showTable = !$this->showTable;
   }
   public function cancel()
   {
-      $this->showTable = false;
+    $this->showTable = false;
   }
   public function showColumnadd($column)
   {
@@ -95,7 +95,7 @@ class RelatedCategoryProduct extends Component
   }
   public function getCatsProperty()
   {
-    return $this->catsQuery->paginate($this->perPageadd,['*'],  'categories');
+    return $this->catsQuery->paginate($this->perPageadd, ['*'],  'categories');
   }
   public function getCatsQueryProperty()
   {
@@ -137,8 +137,8 @@ class RelatedCategoryProduct extends Component
     $this->selectPageadd = false;
   }
 
-//Related item function
-public function showColumn($column)
+  //Related item function
+  public function showColumn($column)
   {
     if ($column === 'Name') {
       return true;
@@ -148,7 +148,7 @@ public function showColumn($column)
   public function updatedSelectPage($value)
   {
     if ($value) {
-      $this->checked = $this->relatecats->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+      $this->checked = $this->relatedcats->pluck('id')->map(fn ($item) => (string) $item)->toArray();
     } else {
       $this->checked = [];
     }
@@ -183,7 +183,7 @@ public function showColumn($column)
   }
   public function getRelatedcatsProperty()
   {
-    return $this->relatedcatsQuery->paginate($this->perPage,['*'], 'related');
+    return $this->relatedcatsQuery->paginate($this->perPage, ['*'], 'related');
   }
   public function getRelatedcatsQueryProperty()
   {
@@ -234,12 +234,12 @@ public function showColumn($column)
   }
   public function render()
   {
-    if($this->showTable === true){
+    if ($this->showTable === true) {
       return view('livewire.related-category-product', [
         'relatedcats' => $this->relatedcats,
-        'cats' =>$this->cats
+        'cats' => $this->cats
       ]);
-    }else{
+    } else {
       return view('livewire.related-category-product', [
         'relatedcats' => $this->relatedcats
       ]);
