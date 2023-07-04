@@ -2,7 +2,9 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\PricelistEntries;
 use App\Models\Product;
+use App\Models\Product_Spec;
 use Livewire\Component;
 use App\Models\Products_categories;
 use Illuminate\Support\Facades\Auth;
@@ -92,6 +94,18 @@ class ShowProduct extends Component
     if ($productcats != NULL) {
       foreach ($productcats as $productcat) {
         $productcat->delete();
+      }
+    }
+    $productspecs = Product_Spec::where('product_id', $id)->get();
+    if ($productspecs != NULL) {
+      foreach ($productspecs as $productspec) {
+        $productspec->delete();
+      }
+    }
+    $productpricelists = PricelistEntries::where('product_id', $id)->get();
+    if ($productpricelists != NULL) {
+      foreach ($productpricelists as $productpricelist) {
+        $productpricelist->delete();
       }
     }
     $productType = class_basename(get_class($product));
