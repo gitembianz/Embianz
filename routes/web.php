@@ -80,6 +80,10 @@ Route::get('/cleareverything', function () {
   $updatetabels = Artisan::call('migrate');
   echo "Databese updated<br>";
 });
+Route::get('/seeddatabase', function () {
+  $seed = Artisan::call('db:seed --class=CurrencySeeder');
+  echo "Databese seeded<br>";
+});
 
 //Update app
 
