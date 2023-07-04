@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\PriceListController;
 use App\Http\Controllers\SpecsController;
 use App\Http\Controllers\TodolistController;
 
@@ -47,6 +48,10 @@ route::get('/specs', [SpecsController::class, 'index'])->name('specs');
 route::get('/newspec', [SpecsController::class, 'create'])->name('newspec');
 route::post('/add_spec', [SpecsController::class, 'store']);
 
+//pricelist route
+route::get('/pricelists', [PriceListController::class, 'index'])->name('pricelists');
+route::get('/newpricelist', [PriceListController::class, 'create'])->name('newpricelist');
+route::post('/add_pricelist', [PriceListController::class, 'store']);
 
 route::get('/dashboard', [HomeController::class, 'redirect'])->middleware('auth', 'verified')->name('dashboard');
 
