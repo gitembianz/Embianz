@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire;
 
+use App\Exports\PriceListExport;
+use App\Models\Currency;
 use App\Models\PriceList;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -22,6 +24,7 @@ class Priceliststable extends Component
   public $selectedColumns = [];
   public $indexprice = null;
   public $prices = [];
+  public $currencies;
 
   public function render()
   {
@@ -32,6 +35,7 @@ class Priceliststable extends Component
   public function mount()
   {
     $this->selectedColumns = $this->columns;
+    $this->currencies = Currency::get();
   }
   public function showColumn($column)
   {
@@ -110,5 +114,38 @@ class Priceliststable extends Component
   public function isChecked($id)
   {
     return in_array($id, $this->checked);
+  }
+  public function edititem($itemIndex)
+  {
+    $this->indexprice = $itemIndex;
+  }
+  public function saveitem($index, $id)
+  {
+    $new = $this->prices[$index] ?? NULL;
+    if (!is_null($new)) {
+      $price = PriceList::find($id);
+      if (array_key_exists('name', $new)) {
+        $price->name = $new['name'];
+      }
+      if (array_key_exists('currency', $new)) {
+        $price->currency_id = $new['currency'];
+      }
+      $price->save();
+      session()->flash('message', 'Record edited successfully!');
+    }
+    $this->prices = [];
+    $this->indexprice = null;
+  }
+  public function cancelitem()
+  {
+    $this->indexprice = null;
+    $this->prices = [];
+  }
+  public function exportSelected()
+  {
+    $export = new PriceListExport($this->checked);
+    $this->checked = [];
+    $this->selectPage = false;
+    return $export->download('pricelists.xlsx');
   }
 }
