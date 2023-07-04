@@ -14,6 +14,11 @@ class PriceList extends Model
     return $this->belongsTo(Currency::class, 'currency_id');
   }
 
+  public function pricelistentries()
+  {
+    return $this->hasMany(PricelistEntries::class, 'pricelist_id');
+  }
+
   public static function search($search)
   {
     return empty($search) ? static::query()
