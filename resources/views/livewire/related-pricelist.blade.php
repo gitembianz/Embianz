@@ -55,7 +55,9 @@
                 <div class="display-f align-center">
                     <div>Price List:</div>
                     <div class="item__form-input item__form-long cursor-p">
-                        <div wire:click.prevent="allowselect()">
+                        <div
+                            @if ($update) @else
+                          wire:click.prevent="allowselect()" @endif>
                             @if ($itemselected)
                                 {{ $itemselected }}
                             @else
@@ -292,7 +294,7 @@
                                         </td>
 
                                         @if ($this->showColumn('Id'))
-                                            <td data-title="ID">{{ $prices->pricelist->id }}</td>
+                                            <td data-title="ID">{{ $prices->id }}</td>
                                         @endif
                                         @if ($this->showColumn('Name'))
                                             <td data-title="Name">{{ $prices->pricelist->name }}
