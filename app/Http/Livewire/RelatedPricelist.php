@@ -2,13 +2,13 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\PriceList;
+use App\Models\PricelistEntries;
 use App\Models\Product;
-use App\Models\Product_Spec;
-use App\Models\Specs;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class RelatedSpecProduct extends Component
+class RelatedPricelist extends Component
 {
 
   use WithPagination;
@@ -20,31 +20,30 @@ class RelatedSpecProduct extends Component
   public $checked = [];
   public $selectPage = false;
   public $selectAll = false;
-  public $showrelatedspecs = false;
+  public $showrelatedprice = false;
   public $productId;
   public $col = false;
   public $all = false;
-  public $columns = ['Id', 'Unit', 'Value', 'Created At'];
+  public $columns = ['Id', 'Currency', 'Value', 'Created At'];
   public $selectedColumns = [];
-  public $specidbeingremoved = null;
-  public $addrelatedspecs = false;
+  public $priceidbeingremoved = null;
+  public $addrelatedprice = false;
   //Add specs declaration
   public $searchadd = '';
   public $orderByadd = 'updated_at';
   public $orderAscadd = 'desc';
-  public $spec = [];
+  public $price = [];
   public $item;
   public $itemselected = null;
-  public $specid;
+  public $priceid;
   public $allow = false;
   public $update = false;
 
-
   public function render()
   {
-    return view('livewire.related-spec-product', [
-      'relatedspecs' => $this->relatedspecs,
-      'addspecs' => $this->addspecs,
+    return view('livewire.related-pricelist', [
+      'relatedprices' => $this->relatedprices,
+      'addprices' => $this->addprices,
     ]);
   }
   public function mount($productId)
@@ -53,6 +52,7 @@ class RelatedSpecProduct extends Component
     $this->selectedColumns = $this->columns;
     $this->item = Product::find($productId);
   }
+
   //function for realted
   public function showColumn($column)
   {
@@ -64,7 +64,7 @@ class RelatedSpecProduct extends Component
   public function updatedSelectPage($value)
   {
     if ($value) {
-      $this->checked = $this->relatedspecs->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+      $this->checked = $this->relatedprices->pluck('id')->map(fn ($item) => (string) $item)->toArray();
     } else {
       $this->checked = [];
     }
@@ -93,36 +93,36 @@ class RelatedSpecProduct extends Component
   public function selectAll()
   {
     $this->selectAll = true;
-    $this->checked = $this->relatedspecsQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+    $this->checked = $this->relatedpricesQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
   }
-  public function getRelatedspecsProperty()
+  public function getRelatedpricesProperty()
   {
-    return $this->relatedspecsQuery->paginate($this->perPage);
+    return $this->relatedpricesQuery->paginate($this->perPage);
   }
-  public function getRelatedspecsQueryProperty()
+  public function getRelatedpricesQueryProperty()
   {
-    return Product_Spec::where('product_id', $this->productId)
-      ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->with('spec');
+    return PricelistEntries::where('product_id', $this->productId)
+      ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->with('pricelist');
   }
-  public function confirmRemoval($specid)
+  public function confirmRemoval($id)
   {
-    $this->specidbeingremoved = $specid;
+    $this->priceidbeingremoved = $id;
     $this->dispatchBrowserEvent('show-delete-modal');
   }
   public function deleteSingleRecord()
   {
-    $id = $this->specidbeingremoved;
-    $item = Product_Spec::findOrFail($id);
+    $id = $this->priceidbeingremoved;
+    $item = PricelistEntries::findOrFail($id);
     $item->delete();
     $this->checked = array_diff($this->checked, [$id]);
     session()->flash('message', 'Record deleted Successfully');
   }
   public function deleteRecords()
   {
-    $items = Product_Spec::whereKey($this->checked)->get();
+    $items = PricelistEntries::whereKey($this->checked)->get();
     foreach ($items as $item) {
       $id = $item->id;
-      $itemtodel = Product_Spec::find($id);
+      $itemtodel = PricelistEntries::find($id);
       $itemtodel->delete();
     }
     $this->checked = [];
@@ -132,24 +132,24 @@ class RelatedSpecProduct extends Component
   {
     $this->dispatchBrowserEvent('show-delete-modal-multiple');
   }
-  public function editspec($id, $idspec)
+  public function edititem($id, $idspec)
   {
     $this->update = true;
-    $this->addrelatedspecs = true;
-    $this->itemselected = Specs::find($idspec)->name;
-    $this->specid = $id;
+    $this->addrelatedprice = true;
+    $this->itemselected = PriceList::find($idspec)->name;
+    $this->priceid = $id;
   }
-  public function confirmspecs()
+  public function confirmitem()
   {
-    $val = $this->spec;
+    $val = $this->price;
     if (array_key_exists('value', $val)) {
-      $newspec = Product_Spec::find($this->specid);
-      $newspec->value = $val['value'];
-      $newspec->save();
-      $this->addrelatedspecs = false;
+      $new = PricelistEntries::find($this->priceid);
+      $new->value = $val['value'];
+      $new->save();
+      $this->addrelatedprice = false;
       $this->allow = false;
-      $this->specid = null;
-      $this->spec = [];
+      $this->priceid = null;
+      $this->price = [];
       $this->itemselected = null;
       $this->search = '';
       $this->update = false;
@@ -158,16 +158,17 @@ class RelatedSpecProduct extends Component
       session()->flash('message', 'Please provide a value!');
     }
   }
-  // add specs function
+
+  //function for add new pricelist
   public function addrelated()
   {
-    $this->showrelatedspecs = true;
-    $this->addrelatedspecs = true;
+    $this->showrelatedprice = true;
+    $this->addrelatedprice = true;
   }
   public function select($id)
   {
-    $this->itemselected = Specs::find($id)->name;
-    $this->specid = $id;
+    $this->itemselected = PriceList::find($id)->name;
+    $this->priceid = $id;
     $this->allow = false;
   }
   public function allowselect()
@@ -176,37 +177,37 @@ class RelatedSpecProduct extends Component
   }
   public function closemodal()
   {
-    $this->addrelatedspecs = false;
+    $this->addrelatedprice = false;
     $this->allow = false;
     $this->itemselected = null;
     $this->update = false;
   }
-  public function savespecs()
+  public function saveitem()
   {
-    $val = $this->spec;
+    $val = $this->price;
     if (array_key_exists('value', $val)) {
-      $newspec = new Product_Spec();
-      $newspec->product_id = $this->productId;
-      $newspec->spec_id = $this->specid;
-      $newspec->value = $val['value'];
-      $newspec->save();
-      $this->addrelatedspecs = false;
+      $new = new PricelistEntries();
+      $new->product_id = $this->productId;
+      $new->pricelist_id = $this->priceid;
+      $new->value = $val['value'];
+      $new->save();
+      $this->addrelatedprice = false;
       $this->allow = false;
-      $this->specid = null;
-      $this->spec = [];
+      $this->priceid = null;
+      $this->price = [];
       $this->itemselected = null;
       $this->search = '';
-      session()->flash('message', 'Spec related succesfuly succesfuly');
+      session()->flash('message', 'Price related succesfuly succesfuly');
     } else {
       session()->flash('message', 'Please provide a value!');
     }
   }
-  public function getAddspecsProperty()
+  public function getAddpricesProperty()
   {
-    return $this->addspecsQuery->get();
+    return $this->addpricesQuery->get();
   }
-  public function getAddspecsQueryProperty()
+  public function getAddpricesQueryProperty()
   {
-    return Specs::search($this->searchadd)->orderBy($this->orderByadd, $this->orderAscadd);
+    return PriceList::search($this->searchadd)->orderBy($this->orderByadd, $this->orderAscadd)->with('currency');
   }
 }
