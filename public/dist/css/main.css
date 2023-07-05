@@ -1719,6 +1719,11 @@ main {
   opacity: 0;
 }
 
+p.real-time-validation {
+  position: relative;
+  color: #e25b73;
+}
+
 .tab {
   border: 1px solid #35424B;
   border-radius: 10px;
