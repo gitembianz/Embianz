@@ -71,7 +71,6 @@ body::-webkit-scrollbar {
 body::-webkit-scrollbar-thumb {
   background: #20282d;
   border-radius: 10px;
-  -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
 }
 body::-webkit-scrollbar-thumb:hover {
@@ -2343,11 +2342,7 @@ input[type=checkbox] {
   cursor: pointer;
   width: 2.5rem;
   height: 2.5rem;
-
-  -webkit-appearance: none;
-     -moz-appearance: none;
-          appearance: none;
-
+  appearance: none;
 }
 input[type=checkbox]:hover {
   background-color: rgba(146, 220, 254, 0.6588235294);
@@ -2417,7 +2412,6 @@ input[type=checkbox]:checked:before {
   pointer-events: none;
   border-radius: 100px;
 }
-
 .top-up-btn:hover {
   background-color: #0b0d0f;
   color: #BBFCDE;
@@ -2521,7 +2515,6 @@ input[type=checkbox]:checked:before {
 .top-up-btn.submit.active svg, .top-up-btn.submit:active svg, .top-up-btn.submit:focus-visible svg {
   stroke: #20282d;
 }
-
 .top-up-btn.actived {
   opacity: 1;
   pointer-events: auto;
@@ -2792,8 +2785,7 @@ input[type=checkbox]:checked:before {
 .table td img,
 .table th img {
   height: 100%;
-  -o-object-fit: contain;
-     object-fit: contain;
+  object-fit: contain;
 }
 .table td select,
 .table td input,
@@ -2830,7 +2822,6 @@ input[type=checkbox]:checked:before {
 .table th input::-webkit-scrollbar-thumb {
   background: #20282d;
   border-radius: 10px;
-  -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
 }
 .table td select::-webkit-scrollbar-thumb:hover,
@@ -3216,10 +3207,7 @@ header,
   display: none;
 }
 .header__logo img {
-
-  -o-object-fit: cover;
-     object-fit: cover;
-
+  object-fit: cover;
   width: 250px;
   height: auto;
 }
@@ -3800,7 +3788,6 @@ header,
 .notify__list::-webkit-scrollbar-thumb {
   background: #20282d;
   border-radius: 10px;
-  -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
 }
 .notify__list::-webkit-scrollbar-thumb:hover {
@@ -4037,7 +4024,7 @@ header,
 .sidebar__open {
   display: none;
 }
-.sidebar__item {
+.sidebar__item, .sidebar__subitem {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -4059,28 +4046,29 @@ header,
   transition: all 0.2s ease-in-out;
   width: 0;
 }
-.sidebar__item:hover {
+.sidebar__item:hover, .sidebar__subitem:hover {
   background-color: #0b0d0f;
   color: #BBFCDE;
 }
-.sidebar__item:hover > .sidebar__icon {
+.sidebar__item:hover > .sidebar__icon, .sidebar__subitem:hover > .sidebar__icon {
   background-color: #0b0d0f;
 }
-.sidebar__item.active, .sidebar__item:active, .sidebar__item:focus-visible {
+.sidebar__item.active, .active.sidebar__subitem, .sidebar__item:active, .sidebar__subitem:active, .sidebar__item:focus-visible, .sidebar__subitem:focus-visible {
   background-color: #BBFCDE;
   color: #35424B;
 }
-.sidebar__item.active > .sidebar__icon, .sidebar__item:active > .sidebar__icon, .sidebar__item:focus-visible > .sidebar__icon {
+.sidebar__item.active > .sidebar__icon, .active.sidebar__subitem > .sidebar__icon, .sidebar__item:active > .sidebar__icon, .sidebar__subitem:active > .sidebar__icon, .sidebar__item:focus-visible > .sidebar__icon, .sidebar__subitem:focus-visible > .sidebar__icon {
   background-color: #BBFCDE;
 }
-.sidebar__item.active > .sidebar__icon svg, .sidebar__item:active > .sidebar__icon svg, .sidebar__item:focus-visible > .sidebar__icon svg {
+.sidebar__item.active > .sidebar__icon svg, .active.sidebar__subitem > .sidebar__icon svg, .sidebar__item:active > .sidebar__icon svg, .sidebar__subitem:active > .sidebar__icon svg, .sidebar__item:focus-visible > .sidebar__icon svg, .sidebar__subitem:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-.sidebar__item.active svg, .sidebar__item:active svg, .sidebar__item:focus-visible svg {
+.sidebar__item.active svg, .active.sidebar__subitem svg, .sidebar__item:active svg, .sidebar__subitem:active svg, .sidebar__item:focus-visible svg, .sidebar__subitem:focus-visible svg {
   stroke: #35424B;
 }
-.sidebar__item img,
-.sidebar__item svg {
+.sidebar__item img, .sidebar__subitem img,
+.sidebar__item svg,
+.sidebar__subitem svg {
   width: 23px;
   height: 23px;
   stroke: #BBFCDE;
@@ -4089,80 +4077,80 @@ header,
   transition: all 0.2s ease-in-out;
   pointer-events: none;
 }
-.sidebar__item.delete {
+.sidebar__item.delete, .delete.sidebar__subitem {
   background-color: #e25b73;
 }
-.sidebar__item.delete:hover {
+.sidebar__item.delete:hover, .delete.sidebar__subitem:hover {
   background-color: #b7203b;
   color: #60111f;
 }
-.sidebar__item.delete:hover > .sidebar__icon {
+.sidebar__item.delete:hover > .sidebar__icon, .delete.sidebar__subitem:hover > .sidebar__icon {
   background-color: #b7203b;
 }
-.sidebar__item.delete.active, .sidebar__item.delete:active, .sidebar__item.delete:focus-visible {
+.sidebar__item.delete.active, .delete.active.sidebar__subitem, .sidebar__item.delete:active, .delete.sidebar__subitem:active, .sidebar__item.delete:focus-visible, .delete.sidebar__subitem:focus-visible {
   background-color: #60111f;
   color: #BBFCDE;
 }
-.sidebar__item.delete.active > .sidebar__icon, .sidebar__item.delete:active > .sidebar__icon, .sidebar__item.delete:focus-visible > .sidebar__icon {
+.sidebar__item.delete.active > .sidebar__icon, .delete.active.sidebar__subitem > .sidebar__icon, .sidebar__item.delete:active > .sidebar__icon, .delete.sidebar__subitem:active > .sidebar__icon, .sidebar__item.delete:focus-visible > .sidebar__icon, .delete.sidebar__subitem:focus-visible > .sidebar__icon {
   background-color: #60111f;
 }
-.sidebar__item.delete.active > .sidebar__icon svg, .sidebar__item.delete:active > .sidebar__icon svg, .sidebar__item.delete:focus-visible > .sidebar__icon svg {
+.sidebar__item.delete.active > .sidebar__icon svg, .delete.active.sidebar__subitem > .sidebar__icon svg, .sidebar__item.delete:active > .sidebar__icon svg, .delete.sidebar__subitem:active > .sidebar__icon svg, .sidebar__item.delete:focus-visible > .sidebar__icon svg, .delete.sidebar__subitem:focus-visible > .sidebar__icon svg {
   stroke: #BBFCDE;
 }
-.sidebar__item.delete.active svg, .sidebar__item.delete:active svg, .sidebar__item.delete:focus-visible svg {
+.sidebar__item.delete.active svg, .delete.active.sidebar__subitem svg, .sidebar__item.delete:active svg, .delete.sidebar__subitem:active svg, .sidebar__item.delete:focus-visible svg, .delete.sidebar__subitem:focus-visible svg {
   stroke: #BBFCDE;
 }
-.sidebar__item.edit {
+.sidebar__item.edit, .edit.sidebar__subitem {
   background-color: #ffffff;
 }
-.sidebar__item.edit:hover {
+.sidebar__item.edit:hover, .edit.sidebar__subitem:hover {
   background-color: #28f697;
   color: #28f697;
 }
-.sidebar__item.edit:hover > .sidebar__icon {
+.sidebar__item.edit:hover > .sidebar__icon, .edit.sidebar__subitem:hover > .sidebar__icon {
   background-color: #28f697;
 }
-.sidebar__item.edit.active, .sidebar__item.edit:active, .sidebar__item.edit:focus-visible {
+.sidebar__item.edit.active, .edit.active.sidebar__subitem, .sidebar__item.edit:active, .edit.sidebar__subitem:active, .sidebar__item.edit:focus-visible, .edit.sidebar__subitem:focus-visible {
   background-color: #28f697;
   color: #35424B;
 }
-.sidebar__item.edit.active > .sidebar__icon, .sidebar__item.edit:active > .sidebar__icon, .sidebar__item.edit:focus-visible > .sidebar__icon {
+.sidebar__item.edit.active > .sidebar__icon, .edit.active.sidebar__subitem > .sidebar__icon, .sidebar__item.edit:active > .sidebar__icon, .edit.sidebar__subitem:active > .sidebar__icon, .sidebar__item.edit:focus-visible > .sidebar__icon, .edit.sidebar__subitem:focus-visible > .sidebar__icon {
   background-color: #28f697;
 }
-.sidebar__item.edit.active > .sidebar__icon svg, .sidebar__item.edit:active > .sidebar__icon svg, .sidebar__item.edit:focus-visible > .sidebar__icon svg {
+.sidebar__item.edit.active > .sidebar__icon svg, .edit.active.sidebar__subitem > .sidebar__icon svg, .sidebar__item.edit:active > .sidebar__icon svg, .edit.sidebar__subitem:active > .sidebar__icon svg, .sidebar__item.edit:focus-visible > .sidebar__icon svg, .edit.sidebar__subitem:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-.sidebar__item.edit.active svg, .sidebar__item.edit:active svg, .sidebar__item.edit:focus-visible svg {
+.sidebar__item.edit.active svg, .edit.active.sidebar__subitem svg, .sidebar__item.edit:active svg, .edit.sidebar__subitem:active svg, .sidebar__item.edit:focus-visible svg, .edit.sidebar__subitem:focus-visible svg {
   stroke: #35424B;
 }
-.sidebar__item.edit svg {
+.sidebar__item.edit svg, .edit.sidebar__subitem svg {
   stroke: #35424B;
 }
-.sidebar__item.submit {
+.sidebar__item.submit, .submit.sidebar__subitem {
   background-color: #BBFCDE;
   color: #35424B;
 }
-.sidebar__item.submit:hover {
+.sidebar__item.submit:hover, .submit.sidebar__subitem:hover {
   background-color: #28f697;
   color: #08b062;
 }
-.sidebar__item.submit:hover > .sidebar__icon {
+.sidebar__item.submit:hover > .sidebar__icon, .submit.sidebar__subitem:hover > .sidebar__icon {
   background-color: #28f697;
 }
-.sidebar__item.submit.active, .sidebar__item.submit:active, .sidebar__item.submit:focus-visible {
+.sidebar__item.submit.active, .submit.active.sidebar__subitem, .sidebar__item.submit:active, .submit.sidebar__subitem:active, .sidebar__item.submit:focus-visible, .submit.sidebar__subitem:focus-visible {
   background-color: #08b062;
   color: #20282d;
 }
-.sidebar__item.submit.active > .sidebar__icon, .sidebar__item.submit:active > .sidebar__icon, .sidebar__item.submit:focus-visible > .sidebar__icon {
+.sidebar__item.submit.active > .sidebar__icon, .submit.active.sidebar__subitem > .sidebar__icon, .sidebar__item.submit:active > .sidebar__icon, .submit.sidebar__subitem:active > .sidebar__icon, .sidebar__item.submit:focus-visible > .sidebar__icon, .submit.sidebar__subitem:focus-visible > .sidebar__icon {
   background-color: #08b062;
 }
-.sidebar__item.submit.active > .sidebar__icon svg, .sidebar__item.submit:active > .sidebar__icon svg, .sidebar__item.submit:focus-visible > .sidebar__icon svg {
+.sidebar__item.submit.active > .sidebar__icon svg, .submit.active.sidebar__subitem > .sidebar__icon svg, .sidebar__item.submit:active > .sidebar__icon svg, .submit.sidebar__subitem:active > .sidebar__icon svg, .sidebar__item.submit:focus-visible > .sidebar__icon svg, .submit.sidebar__subitem:focus-visible > .sidebar__icon svg {
   stroke: #20282d;
 }
-.sidebar__item.submit.active svg, .sidebar__item.submit:active svg, .sidebar__item.submit:focus-visible svg {
+.sidebar__item.submit.active svg, .submit.active.sidebar__subitem svg, .sidebar__item.submit:active svg, .submit.sidebar__subitem:active svg, .sidebar__item.submit:focus-visible svg, .submit.sidebar__subitem:focus-visible svg {
   stroke: #20282d;
 }
-.sidebar__item span {
+.sidebar__item span, .sidebar__subitem span {
   font-size: 0;
   padding: 0;
   flex: 0;
@@ -4303,10 +4291,10 @@ header,
 .sidebar.open .sidebar__list {
   padding: 0 10px 10px;
 }
-.sidebar.open .sidebar__item {
+.sidebar.open .sidebar__item, .sidebar.open .sidebar__subitem {
   width: 100%;
 }
-.sidebar.open .sidebar__item span {
+.sidebar.open .sidebar__item span, .sidebar.open .sidebar__subitem span {
   font-size: 0.875rem;
   flex: 1;
   opacity: 1;
@@ -4478,7 +4466,7 @@ header,
     width: 3rem;
     height: 3rem;
   }
-  .sidebar__item {
+  .sidebar__item, .sidebar__subitem {
     width: 3rem;
   }
   .sidebar.open {
@@ -4877,7 +4865,6 @@ header,
 .item__form-close input::-webkit-scrollbar-thumb {
   background: #20282d;
   border-radius: 10px;
-  -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
 }
 .item__form-input div::-webkit-scrollbar-thumb:hover,
@@ -5106,7 +5093,6 @@ header,
 .table-edit::-webkit-scrollbar-thumb {
   background: #20282d;
   border-radius: 10px;
-  -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
 }
 .table-edit::-webkit-scrollbar-thumb:hover {
@@ -5122,7 +5108,6 @@ header,
   .item__header-title {
     text-align: left;
   }
-
   .item__header-buttons {
     display: flex;
     flex-direction: row;
@@ -5136,7 +5121,6 @@ header,
   .item__header-btn {
     max-width: 8rem;
   }
-
   .item__form {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -5459,9 +5443,7 @@ header,
   pointer-events: none;
 }
 .container-right .card_calendar .date-time-formate {
-  width: -moz-max-content;
   width: max-content;
-  height: -moz-max-content;
   height: max-content;
   display: flex;
   flex-direction: row;
@@ -5479,9 +5461,7 @@ header,
 }
 .container-right .card_calendar .date-time-value {
   display: block;
-  width: -moz-max-content;
   width: max-content;
-  height: -moz-max-content;
   height: max-content;
   position: relative;
   left: 40%;
@@ -5588,8 +5568,7 @@ header,
   width: 3.5rem;
   height: auto;
   padding: 0.5rem;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
   align-items: center;
   background: #ffffff;
 }
@@ -5602,4 +5581,4 @@ header,
 }
 .container-right .card_todo .count {
   border-top: 1px solid #35424B;
-}/*# sourceMappingURL=main.css.map */
+}
