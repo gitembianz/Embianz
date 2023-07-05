@@ -7,7 +7,10 @@ use App\Http\Controllers\Controller;
 
 class AdminController extends Controller
 {
-    //admin function
+  //admin function
 
-
+  public function storesettings()
+  {
+    return view('admin.store_settings');
+  }
 }

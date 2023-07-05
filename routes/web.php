@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\HomeController;
@@ -41,6 +42,9 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
   //todolist routes
   route::post('/new', [TodolistController::class, 'store'])->name('store');
   route::delete('/{todolist:id}', [TodolistController::class, 'destroy'])->name('destroy');
+
+  //general routes
+  route::get('/storesettings', [AdminController::class, 'storesettings'])->name('storesettings');
 });
 
 //specs route
