@@ -163,6 +163,11 @@
                         Currency
                     </th>
                 @endif
+                @if ($this->showColumn('Active'))
+                    <th class="cursor-p">
+                        Is Active
+                    </th>
+                @endif
                 @if ($this->showColumn('Created At'))
                     <th class="cursor-p"
                         @if ($orderBy === 'created_at' && $orderAsc === '1') data-symbol="up" @else
@@ -207,6 +212,21 @@
                                             {{ $curency->name }}</option>
                                     @endforeach
                                 </select>
+                            @endif
+                        </td>
+                    @endif
+                    @if ($this->showColumn('Active'))
+                        <td data-title="Active">
+                            @if ($indexprice !== $index)
+                                <div class="cursor-p" wire:click.prevent="edititem({{ $index }})">
+                                    @if ($price->active === 1)
+                                        True
+                                    @else
+                                        False
+                                    @endif
+                                </div>
+                            @else
+                                <input type="checkbox" wire:model.defer="prices.{{ $index }}.active" checked>
                             @endif
                         </td>
                     @endif

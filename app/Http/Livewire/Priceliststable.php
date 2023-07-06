@@ -20,7 +20,7 @@ class Priceliststable extends Component
   public $selectPage = false;
   public $selectAll = false;
   public $itemidbeingremoved = null;
-  public $columns = ['Id', 'Currency', 'Created At'];
+  public $columns = ['Id', 'Currency', 'Active', 'Created At'];
   public $selectedColumns = [];
   public $indexprice = null;
   public $prices = [];
@@ -126,6 +126,9 @@ class Priceliststable extends Component
       $price = PriceList::find($id);
       if (array_key_exists('name', $new)) {
         $price->name = $new['name'];
+      }
+      if (array_key_exists('active', $new)) {
+        $price->active = $new['active'];
       }
       if (array_key_exists('currency', $new)) {
         $price->currency_id = $new['currency'];
