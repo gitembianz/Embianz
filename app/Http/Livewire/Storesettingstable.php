@@ -22,6 +22,7 @@ class Storesettingstable extends Component
   public $columns = ['Id', 'Value', 'Description', 'Created At'];
   public $selectedColumns = [];
   public $indexstoresettings = null;
+  public $stores = [];
 
   public function render()
   {
@@ -118,5 +119,34 @@ class Storesettingstable extends Component
     $this->checked = [];
     $this->selectPage = false;
     return $export->download('storesettings.xlsx');
+  }
+  public function edititem($itemIndex)
+  {
+    $this->indexstoresettings = $itemIndex;
+  }
+  public function saveitem($index, $id)
+  {
+    $update = $this->stores[$index] ?? NULL;
+    if (!is_null($update)) {
+      $item = Store_Settings::find($id);
+      if (array_key_exists('parameter', $update)) {
+        $item->parameter = $update['parameter'];
+      }
+      if (array_key_exists('value', $update)) {
+        $item->value = $update['value'];
+      }
+      if (array_key_exists('description', $update)) {
+        $item->description = $update['description'];
+      }
+      $item->save();
+      session()->flash('message', 'Record edited successfully!');
+    }
+    $this->stores = [];
+    $this->indexstoresettings = null;
+  }
+  public function cancelitem()
+  {
+    $this->indexstoresettings = null;
+    $this->stores = [];
   }
 }
