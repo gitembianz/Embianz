@@ -24,9 +24,9 @@
         </script>
     @endif
     <div class="item__header">
-        <h1 id="title" class="item__header-title">{{ __('All Price Lists') }}</h1>
+        <h1 id="title" class="item__header-title">{{ __('All Store Settings') }}</h1>
         <div class="item__header-buttons">
-            <a href="{{ route('newpricelist') }}" class="item__header-btn">{{ __('New') }}</a>
+            <a href="{{ route('addstoresetting') }}" class="item__header-btn">{{ __('New') }}</a>
         </div>
     </div>
 
@@ -151,21 +151,27 @@
                         wire:click="sortBy('id')">ID
                     </th>
                 @endif
-                @if ($this->showColumn('Name'))
+                @if ($this->showColumn('Parameter'))
                     <th class="cursor-p"
-                        @if ($orderBy === 'name' && $orderAsc === '1') data-symbol="up" @else
+                        @if ($orderBy === 'parameter' && $orderAsc === '1') data-symbol="up" @else
                     data-symbol="down" @endif
-                        wire:click="sortBy('name')">Name
+                        wire:click="sortBy('parameter')">Parameter
                     </th>
                 @endif
-                @if ($this->showColumn('Currency'))
-                    <th class="cursor-p">
-                        Currency
+                @if ($this->showColumn('Value'))
+                    <th class="cursor-p"
+                        @if ($orderBy === 'value' && $orderAsc === '1') data-symbol="up" @else
+                    data-symbol="down" @endif
+                        wire:click="sortBy('value')">
+                        Value
                     </th>
                 @endif
-                @if ($this->showColumn('Active'))
-                    <th class="cursor-p">
-                        Is Active
+                @if ($this->showColumn('Description'))
+                    <th class="cursor-p"
+                        @if ($orderBy === 'description' && $orderAsc === '1') data-symbol="up" @else
+                    data-symbol="down" @endif
+                        wire:click="sortBy('description')">
+                        Description
                     </th>
                 @endif
                 @if ($this->showColumn('Created At'))
@@ -179,95 +185,49 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($pricelists as $index => $price)
-                <tr class="@if ($this->isChecked($price->id)) th_checked @endif">
-                    <td data-title="Check"><input type="checkbox" value="{{ $price->id }}" wire:model="checked">
+            @foreach ($storesettings as $index => $store)
+                <tr class="@if ($this->isChecked($store->id)) th_checked @endif">
+                    <td data-title="Check"><input type="checkbox" value="{{ $store->id }}" wire:model="checked">
                     </td>
 
                     @if ($this->showColumn('Id'))
-                        <td data-title="ID">{{ $price->id }}</td>
+                        <td data-title="ID">{{ $store->id }}</td>
                     @endif
-                    @if ($this->showColumn('Name'))
-                        <td data-title="Name">
-                            @if ($indexprice !== $index)
-                                <div><a href="/show_pricelist/{{ $price->id }}'">{{ $price->name }}</a>
-                                </div>
-                            @else
-                                <input type="text" class="table-edit wid-1"
-                                    wire:model.defer="prices.{{ $index }}.name">
-                            @endif
-
+                    @if ($this->showColumn('Parameter'))
+                        <td data-title="Parameter">
+                            <div>{{ $store->parameter }}
+                            </div>
                         </td>
                     @endif
-                    @if ($this->showColumn('Currency'))
-                        <td data-title="Currency">
-                            @if ($indexprice !== $index)
-                                <div class="cursor-p" wire:click.prevent="edititem({{ $index }})">
-                                    {{ $price->currency->name }}</div>
-                            @else
-                                <select class="table-edit" wire:model.defer="prices.{{ $index }}.currency">
-                                    <option>Select currency</option>
-                                    @foreach ($currencies as $curency)
-                                        <option value="{{ $curency->id }}">
-                                            {{ $curency->name }}</option>
-                                    @endforeach
-                                </select>
-                            @endif
+                    @if ($this->showColumn('Value'))
+                        <td data-title="Value">
+                            <div>
+                                {{ $store->value }}</div>
                         </td>
                     @endif
-                    @if ($this->showColumn('Active'))
-                        <td data-title="Active">
-                            @if ($indexprice !== $index)
-                                <div class="cursor-p" wire:click.prevent="edititem({{ $index }})">
-                                    @if ($price->active === 1)
-                                        True
-                                    @else
-                                        False
-                                    @endif
-                                </div>
-                            @else
-                                <input type="checkbox" wire:model.defer="prices.{{ $index }}.active" checked>
-                            @endif
+                    @if ($this->showColumn('Description'))
+                        <td data-title="Description">
+                            <div>
+                                {{ $store->value }}</div>
                         </td>
                     @endif
 
                     @if ($this->showColumn('Created At'))
-                        <td data-title="Created At">{{ $price->created_at }}</td>
+                        <td data-title="Created At">{{ $store->created_at }}</td>
                     @endif
 
                     <td data-title="Action">
-                        @if ($indexprice !== $index)
-                            <button class="edit" wire:click.prevent="edititem({{ $index }})">
-                                <svg>
-                                    <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
-                                    </path>
-                                </svg>
-                            </button>
-                            <button class="delete" wire:click.prevent="confirmItemRemoval({{ $price->id }})">
-                                <svg>
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <line x1="15" y1="9" x2="9" y2="15"></line>
-                                    <line x1="9" y1="9" x2="15" y2="15"></line>
-                                </svg>
-                            </button>
-                        @else
-                            <button class="edit"
-                                wire:click.prevent="saveitem({{ $index }} , {{ $price->id }})">
-                                <svg>
-                                    <polyline points="20 6 9 17 4 12"></polyline>
-                                </svg>
-                            </button>
-                            <button class="save" wire:click.prevent="cancelitem()">
-                                <svg>
-                                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                                </svg>
-                            </button>
-                        @endif
+                        <button class="delete" wire:click.prevent="confirmItemRemoval({{ $store->id }})">
+                            <svg>
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="15" y1="9" x2="9" y2="15"></line>
+                                <line x1="9" y1="9" x2="15" y2="15"></line>
+                            </svg>
+                        </button>
                     </td>
                 </tr>
             @endforeach
         </tbody>
     </table>
-    <div>{{ $pricelists->links('pagination-links') }} </div>
+    <div>{{ $storesettings->links('pagination-links') }} </div>
 </div>

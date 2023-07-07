@@ -12,12 +12,8 @@ class Storesettingsform extends Component
   public $value;
   public $description;
 
-  public $totalSteps = 3;
-  public $currentStep = 1;
-
   public function mount()
   {
-    $this->currentStep = 1;
   }
 
   public function render()
@@ -25,46 +21,14 @@ class Storesettingsform extends Component
     return view('livewire.storesettingsform');
   }
 
-  public function increaseStep()
-  {
-    $this->resetErrorBag();
-    $this->validateData();
-    $this->currentStep++;
-    if ($this->currentStep >= $this->totalSteps) {
-      $this->currentStep = $this->totalSteps;
-    }
-  }
-
-  public function decreaseStep()
-  {
-    $this->resetErrorBag();
-    $this->currentStep--;
-    if ($this->currentStep < 1) {
-      $this->currentStep = 1;
-    }
-  }
-
-  public function validateData()
-  {
-    if ($this->currentStep == 1) {
-      $this->validate([
-        'parameter' => 'required|string|min:5'
-      ]);
-    } elseif ($this->currentStep == 2) {
-      $this->validate([
-        'value' => 'required|string'
-      ]);
-    }
-  }
-
   public function store()
   {
     $this->resetErrorBag();
-    if ($this->currentStep == 3) {
-      $this->validate([
-        'description' => 'required|string|min:20'
-      ]);
-    }
+    $this->validate([
+      'description' => 'required|string|min:20',
+      'parameter' => 'required|string|min:5',
+      'value' => 'required|string'
+    ]);
     $values = array(
       "parameter" => $this->parameter,
       "value" => $this->value,
@@ -78,7 +42,6 @@ class Storesettingsform extends Component
 
     Store_Settings::insert($values);
     $this->reset();
-    $this->currentStep == 1;
     session()->flash('message', 'Record added successfully!');
   }
 }

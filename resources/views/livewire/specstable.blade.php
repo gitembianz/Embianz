@@ -194,8 +194,8 @@
                         <td data-title="Name">
 
                             @if ($indexspec !== $index)
-                                <div class="cursor-p" wire:click.prevent="edititem({{ $index }})">
-                                    {{ $spec->name }}</div>
+                                <div><a href="/show_spec/{{ $spec->id }}'">{{ $spec->name }}</a>
+                                </div>
                             @else
                                 <input type="text" class="table-edit wid-1"
                                     wire:model.defer="specss.{{ $index }}.name">
