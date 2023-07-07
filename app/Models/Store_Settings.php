@@ -22,4 +22,14 @@ class Store_Settings extends Model
     'updated_at'
 
   ];
+
+  public static function search($search)
+  {
+    return empty($search) ? static::query()
+      : static::query()->where('id', 'like', '%' . $search . '%')
+      ->orWhere('parameter', 'like', '%' . $search . '%')
+      ->orWhere('value', 'like', '%' . $search . '%')
+      ->orWhere('description', 'like', '%' . $search . '%')
+      ->orWhere('created_at', 'like', '%' . $search . '%');
+  }
 }

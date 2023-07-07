@@ -46,9 +46,10 @@ class PriceListController extends Controller
   /**
    * Display the specified resource.
    */
-  public function show(PriceList $priceList)
+  public function show($id)
   {
-    //
+    $data = PriceList::find($id);
+    return view('admin.show_pricelist', compact('data'));
   }
 
   /**

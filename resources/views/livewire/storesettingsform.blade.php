@@ -23,78 +23,44 @@
             }, 2000);
         </script>
     @endif
-    <div class="item__header">
-        <h1 id="title" class="item__header-title">{{ __('Store Settings') }}</h1>
-        <div class="item__header-buttons">
-            <a href="{{ route('dashboard') }}" class="item__header-btn">{{ __('Back') }}</a>
+
+    <form wire:submit.prevent="store" class="item wid-10">
+        <div class="item__header">
+            <h1 id="title" class="item__header-title">{{ __('Store Settings') }}</h1>
+            <div class="item__header-buttons">
+                <a href="{{ route('storesettings') }}" class="item__header-btn">{{ __('All Store Settings') }}</a>
+                <button class="item__header-btn" type="reset">Clear form</button>
+            </div>
         </div>
-    </div>
-    <form wire:submit.prevent="store">
-        {{-- Step 1 --}}
-        @if ($currentStep == 1)
-            <div class="item__form">
-                <div class="item__form-input item__form-long">
-                    <p>Pasul 1</p>
-                </div>
-                <div class="item__form-input item__form-long">
-                    <input type="text" wire:model="parameter" required>
-                    <span>Parameter</span>
-                    <p class="real-time-validation">
-                        @error('parameter')
-                            {{ $message }}
-                        @enderror
-                    </p>
-                </div>
+        <div class="item__form">
+            <div class="item__form-input">
+                <input type="text" wire:model="parameter" required>
+                <span>Parameter</span>
+                <p class="real-time-validation">
+                    @error('parameter')
+                        {{ $message }}
+                    @enderror
+                </p>
             </div>
-        @endif
-        {{-- Step 2 --}}
-        @if ($currentStep == 2)
-            <div class="item__form">
-                <div class="item__form-input item__form-long">
-                    <p>Pasul 2</p>
-                </div>
-                <div class="item__form-input item__form-long">
-                    <input type="text" wire:model="value">
-                    <span>Value</span>
-                    <p class="real-time-validation">
-                        @error('value')
-                            {{ $message }}
-                        @enderror
-                    </p>
-                </div>
+            <div class="item__form-input">
+                <input type="text" wire:model="value">
+                <span>Value</span>
+                <p class="real-time-validation">
+                    @error('value')
+                        {{ $message }}
+                    @enderror
+                </p>
             </div>
-        @endif
-        {{-- Step 3 --}}
-        @if ($currentStep == 3)
-            <div class="item__form">
-                <div class="item__form-input item__form-long">
-                    <p>Pasul 3</p>
-                </div>
-                <div class="item__form-input item__form-long">
-                    <textarea wire:model="description"></textarea>
-                    <span>Description</span>
-                    <p class="real-time-validation">
-                        @error('description')
-                            {{ $message }}
-                        @enderror
-                    </p>
-                </div>
+            <div class="item__form-input item__form-long">
+                <textarea wire:model="description"></textarea>
+                <span>Description</span>
+                <p class="real-time-validation">
+                    @error('description')
+                        {{ $message }}
+                    @enderror
+                </p>
             </div>
-        @endif
-        <div class="action-buttons display-f jus-sb">
-            @if ($currentStep == 1)
-                <div></div>
-            @endif
-            @if ($currentStep == 2 || $currentStep == 3)
-                <button type="button" wire:click.prevent="decreaseStep()">Back</button>
-            @endif
-            @if ($currentStep == 1 || $currentStep == 2)
-                <input type="button" wire:click="increaseStep()" value="Next">
-            @endif
-            @if ($currentStep == 3)
-                <button type="submit">Submit</button>
-            @endif
+            <input class="item__form-btn item__form-long" type="submit" value="Add New">
         </div>
     </form>
-
 </div>

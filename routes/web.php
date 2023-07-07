@@ -45,17 +45,20 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
 
   //general routes
   route::get('/storesettings', [AdminController::class, 'storesettings'])->name('storesettings');
+  route::get('/addstoresettings', [AdminController::class, 'addstoresetting'])->name('addstoresetting');
 });
 
 //specs route
 route::get('/specs', [SpecsController::class, 'index'])->name('specs');
 route::get('/newspec', [SpecsController::class, 'create'])->name('newspec');
 route::post('/add_spec', [SpecsController::class, 'store']);
+route::get('/show_spec/{id}/', [SpecsController::class, 'show'])->name('show_spec');
 
 //pricelist route
 route::get('/pricelists', [PriceListController::class, 'index'])->name('pricelists');
 route::get('/newpricelist', [PriceListController::class, 'create'])->name('newpricelist');
 route::post('/add_pricelist', [PriceListController::class, 'store']);
+route::get('/show_pricelist/{id}/', [PriceListController::class, 'show'])->name('show_pricelis');
 
 route::get('/dashboard', [HomeController::class, 'redirect'])->middleware('auth', 'verified')->name('dashboard');
 
