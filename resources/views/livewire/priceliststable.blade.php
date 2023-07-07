@@ -194,7 +194,8 @@
                                 </div>
                             @else
                                 <input type="text" class="table-edit wid-1"
-                                    wire:model.defer="prices.{{ $index }}.name">
+                                    wire:model.defer="prices.{{ $index }}.name"
+                                    placeholder="{{ $price->name }}">
                             @endif
 
                         </td>

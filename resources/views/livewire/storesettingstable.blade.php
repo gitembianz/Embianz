@@ -195,20 +195,41 @@
                     @endif
                     @if ($this->showColumn('Parameter'))
                         <td data-title="Parameter">
-                            <div>{{ $store->parameter }}
-                            </div>
+                            @if ($indexstoresettings !== $index)
+                                <div class="cursor-p" wire:click.prevent="edititem({{ $index }})">
+                                    {{ $store->parameter }}
+                                </div>
+                            @else
+                                <input type="text" class="table-edit wid-1"
+                                    wire:model.defer="stores.{{ $index }}.parameter"
+                                    placeholder="{{ $store->parameter }}">
+                            @endif
                         </td>
                     @endif
                     @if ($this->showColumn('Value'))
                         <td data-title="Value">
-                            <div>
-                                {{ $store->value }}</div>
+                            @if ($indexstoresettings !== $index)
+                                <div class="cursor-p" wire:click.prevent="edititem({{ $index }})">
+                                    {{ $store->value }}
+                                </div>
+                            @else
+                                <input type="text" class="table-edit wid-1"
+                                    wire:model.defer="stores.{{ $index }}.value"
+                                    placeholder="{{ $store->value }}">
+                            @endif
+
                         </td>
                     @endif
                     @if ($this->showColumn('Description'))
                         <td data-title="Description">
-                            <div>
-                                {{ $store->value }}</div>
+                            @if ($indexstoresettings !== $index)
+                                <div class="cursor-p" wire:click.prevent="edititem({{ $index }})">
+                                    {{ $store->description }}
+                                </div>
+                            @else
+                                <textarea wire:model.defer="stores.{{ $index }}.description" placeholder="{{ $store->description }}"></textarea>
+                            @endif
+
                         </td>
                     @endif
 
@@ -217,13 +238,34 @@
                     @endif
 
                     <td data-title="Action">
-                        <button class="delete" wire:click.prevent="confirmItemRemoval({{ $store->id }})">
-                            <svg>
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <line x1="15" y1="9" x2="9" y2="15"></line>
-                                <line x1="9" y1="9" x2="15" y2="15"></line>
-                            </svg>
-                        </button>
+                        @if ($indexstoresettings !== $index)
+                            <button class="edit" wire:click.prevent="edititem({{ $index }})">
+                                <svg>
+                                    <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
+                                    </path>
+                                </svg>
+                            </button>
+                            <button class="delete" wire:click.prevent="confirmItemRemoval({{ $store->id }})">
+                                <svg>
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="15" y1="9" x2="9" y2="15"></line>
+                                    <line x1="9" y1="9" x2="15" y2="15"></line>
+                                </svg>
+                            </button>
+                        @else
+                            <button class="edit"
+                                wire:click.prevent="saveitem({{ $index }} , {{ $store->id }})">
+                                <svg>
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </button>
+                            <button class="save" wire:click.prevent="cancelitem()">
+                                <svg>
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            </button>
+                        @endif
                     </td>
                 </tr>
             @endforeach

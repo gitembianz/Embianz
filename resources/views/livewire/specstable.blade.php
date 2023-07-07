@@ -198,7 +198,8 @@
                                 </div>
                             @else
                                 <input type="text" class="table-edit wid-1"
-                                    wire:model.defer="specss.{{ $index }}.name">
+                                    wire:model.defer="specss.{{ $index }}.name"
+                                    placeholder="{{ $spec->name }}">
                             @endif
                         </td>
                     @endif
@@ -209,7 +210,8 @@
                                     {{ $spec->um }}</div>
                             @else
                                 <input type="text" class="table-edit wid-1"
-                                    wire:model.defer="specss.{{ $index }}.um">
+                                    wire:model.defer="specss.{{ $index }}.um"
+                                    placeholder="{{ $spec->um }}">
                             @endif
                         </td>
                     @endif
@@ -223,8 +225,9 @@
                                     wire:model.defer="specss.{{ $index }}.spec_group">
                                     <?php
                                     $groups = ['details', 'feature', 'accessibility'];
+                                    $groups = array_diff($groups, [$spec->spec_group]);
                                     ?>
-                                    <option>Select a group</option>
+                                    <option>{{ $spec->spec_group }}</option>
                                     @foreach ($groups as $group)
                                         <option value="{{ $group }}">{{ $group }}</option>
                                     @endforeach
