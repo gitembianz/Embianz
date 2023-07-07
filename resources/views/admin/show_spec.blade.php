@@ -32,9 +32,8 @@
 
 {{-- Page content start --}}
 <section class="content">
-    {{ $data->name }}
     {{-- livewire tabs --}}
-    {{-- <livewire:show-category categoryId="{{ $data->id }}" /> --}}
+    <livewire:show-spec itemId="{{ $data->id }}" />
 
     {{-- end livewire tabs --}}
     <a href="#" class="top-up-btn" id="topUp">
