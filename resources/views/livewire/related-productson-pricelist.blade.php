@@ -27,8 +27,8 @@
     <div class="accordion">
         <div class="accordion__btn-flex">
             <button class="accordion__btn"
-                wire:click.prevent="@if ($showrelatedprice === false) $set('showrelatedprice', true) @else $set('showrelatedprice', false) @endif">
-                {{ __('Price List ') }}({{ count($relatedprices) }})
+                wire:click.prevent="@if ($showrelatedprods === false) $set('showrelatedprods', true) @else $set('showrelatedprods', false) @endif">
+                {{ __('Products ') }}({{ count($relatedprods) }})
             </button>
             <button wire:click.prevent="addrelated()" class="accordion__upload">
                 <svg>
@@ -37,23 +37,23 @@
                 </svg> </button>
         </div>
         {{-- add related specs --}}
-        <div class="modal" @if ($addrelatedprice) style="display: flex;" @endif>
+        <div class="modal" id="addspecsmodal" @if ($addrelatedproducts) style="display: flex;" @endif>
             <div class="modal-content-spec wid-2">
                 <h1>
                     @if ($update)
-                        {{ __('Edit related Pricelist') }}
+                        {{ __('Edit related product value') }}
                     @else
-                        {{ __('Add related Pricelist') }}
+                        {{ __('Add related product value') }}
                     @endif
                 </h1>
                 <div class="display-f align-center">
-                    <div>Product:</div>
+                    <div>Pricelist:</div>
                     <div class="item__form-input item__form-long">
                         <div>{{ $item->name }}</div>
                     </div>
                 </div>
                 <div class="display-f align-center">
-                    <div>Price List:</div>
+                    <div>Product:</div>
                     <div class="item__form-input item__form-long cursor-p">
                         <div
                             @if ($update) @else
@@ -61,7 +61,7 @@
                             @if ($itemselected)
                                 {{ $itemselected }}
                             @else
-                                {{ __('Select a price list') }}
+                                {{ __('Select a Product') }}
                             @endif
                         </div>
                     </div>
@@ -71,10 +71,10 @@
                 @if ($allow)
                     <div class="item__form-input b-1 bra-sm p-1">
                         <input wire:model.debounce.200ms="searchadd" placeholder="Search.." type="text">
-                        <ul>
-                            @foreach ($addprices as $pri)
-                                <li class="cursor-p" wire:click.prevent="select({{ $pri->id }})">
-                                    {{ $pri->name }} ( {{ $pri->currency->name }})</li>
+                        <ul style="max-height: 50px; z-index: 999;">
+                            @foreach ($addprods as $product)
+                                <li class="cursor-p" wire:click.prevent="select({{ $product->id }})">
+                                    {{ $product->name }}</li>
                             @endforeach
                         </ul>
                         <span class="modal-content-btn edit" style="left: 90%"
@@ -92,16 +92,16 @@
                 <div class="display-f align-center">
                     <div>Value:</div>
                     <div class="item__form-input item__form-long">
-                        <input type="text"class="table-edit wid-6" wire:model.defer="price.value">
+                        <input type="text"class="table-edit wid-6" wire:model.defer="prod.value">
                     </div>
                 </div>
                 {{-- end specs list with search --}}
                 <div class="display-f wid-10">
                     @if ($update)
-                        <input class="modal-content-btn submit" wire:click.prevent="confirmitem()" type="button"
+                        <input class="modal-content-btn submit" wire:click.prevent="confirmprod()" type="button"
                             value="Edit">
                     @else
-                        <input class="modal-content-btn submit" wire:click.prevent="saveitem()" type="button"
+                        <input class="modal-content-btn submit" wire:click.prevent="saveprod()" type="button"
                             value="Save">
                     @endif
                     <input class="modal-content-btn delete" wire:click.prevent="closemodal()" type="button"
@@ -117,10 +117,10 @@
             </div>
         </div>
         {{-- end add related specs --}}
-        @if ($showrelatedprice)
+        @if ($showrelatedprods)
             <div class="accordion__content">
                 <div class="item">
-                    @if ($relatedprices && count($relatedprices) > 0)
+                    @if ($relatedprods && count($relatedprods) > 0)
                         <div class="item__form form-table"
                             @if ($checked) style="grid-template-columns: 40% 1fr 1fr 1fr" @endif>
 
@@ -263,8 +263,8 @@
                                             wire:click="sortBy('id')">ID
                                         </th>
                                     @endif
-                                    @if ($this->showColumn('Name'))
-                                        <th>Name
+                                    @if ($this->showColumn('Product name'))
+                                        <th>Product name
                                         </th>
                                     @endif
                                     @if ($this->showColumn('Currency'))
@@ -287,42 +287,42 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($relatedprices as $prices)
-                                    <tr class="@if ($this->isChecked($prices->id)) th_checked @endif">
-                                        <td data-title="Check"><input type="checkbox" value="{{ $prices->id }}"
+                                @foreach ($relatedprods as $prod)
+                                    <tr class="@if ($this->isChecked($prod->id)) th_checked @endif">
+                                        <td data-title="Check"><input type="checkbox" value="{{ $prod->id }}"
                                                 wire:model="checked">
                                         </td>
 
                                         @if ($this->showColumn('Id'))
-                                            <td data-title="ID">{{ $prices->id }}</td>
+                                            <td data-title="ID">{{ $prod->id }}</td>
                                         @endif
-                                        @if ($this->showColumn('Name'))
-                                            <td data-title="Name">
+                                        @if ($this->showColumn('Product name'))
+                                            <td data-title="Product name">
                                                 <a
-                                                    href="/show_pricelist/{{ $prices->pricelist->id }}'">{{ $prices->pricelist->name }}</a>
+                                                    href="/show_product/{{ $prod->product->id }}'">{{ $prod->product->name }}</a>
                                             </td>
                                         @endif
                                         @if ($this->showColumn('Currency'))
                                             <td data-title="Currency">
-                                                {{ $prices->pricelist->currency->name }}</td>
+                                                {{ $prod->pricelist->currency->name }}</td>
                                         @endif
                                         @if ($this->showColumn('Value'))
                                             <td data-title="Value">
-                                                {{ $prices->value }}</td>
+                                                {{ $prod->value }}</td>
                                         @endif
                                         @if ($this->showColumn('Created At'))
-                                            <td data-title="Created At">{{ $prices->pricelist->created_at }}</td>
+                                            <td data-title="Created At">{{ $prod->created_at }}</td>
                                         @endif
                                         <td data-title="Action">
                                             <button class="edit"
-                                                wire:click.prevent="edititem({{ $prices->id }}, {{ $prices->pricelist->id }})">
+                                                wire:click.prevent="editprod({{ $prod->id }}, {{ $prod->product->id }})">
                                                 <svg>
                                                     <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
                                                     </path>
                                                 </svg>
                                             </button>
                                             <button class="delete"
-                                                wire:click.prevent="confirmRemoval({{ $prices->id }})">
+                                                wire:click.prevent="confirmRemoval({{ $prod->id }})">
                                                 <svg>
                                                     <circle cx="12" cy="12" r="10">
                                                     </circle>
@@ -337,9 +337,9 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        <div>{{ $relatedprices->links() }} </div>
+                        <div>{{ $relatedprods->links() }} </div>
                     @else
-                        <p>no Price List related</p>
+                        <p>No products related</p>
                     @endif
                 </div>
             </div>

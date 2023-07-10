@@ -32,11 +32,7 @@
 
 {{-- Page content start --}}
 <section class="content">
-    {{ $data->name }}
-    {{-- livewire tabs --}}
-    {{-- <livewire:show-category categoryId="{{ $data->id }}" /> --}}
-
-    {{-- end livewire tabs --}}
+    <livewire:show-pricelist itemId="{{ $data->id }}" />
     <a href="#" class="top-up-btn" id="topUp">
 
         <svg>
