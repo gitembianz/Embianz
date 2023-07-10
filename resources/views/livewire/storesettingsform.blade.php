@@ -23,7 +23,11 @@
             }, 2000);
         </script>
     @endif
-
+    <div wire:loading>
+        <div class="modal" style="display:flex;">
+            <div class="loader"></div>
+        </div>
+    </div>
     <form wire:submit.prevent="store" class="item wid-10">
         <div class="item__header">
             <h1 id="title" class="item__header-title">{{ __('Store Settings') }}</h1>
