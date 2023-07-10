@@ -25,7 +25,11 @@
             }, 2000);
         </script>
     @endif
-
+    <div wire:loading>
+        <div class="modal" style="display:flex;">
+            <div class="loader"></div>
+        </div>
+    </div>
     <div class="item__form form-table"
         @if ($checked) style="grid-template-columns: 40% 1fr 1fr 1fr" @endif>
 
@@ -133,12 +137,10 @@
         </div>
     </div>
 
-
     {{-- end modals --}}
 
     {{-- Livewire Table --}}
     <table class="livewire-table">
-
 
         <thead>
             <tr>
@@ -177,7 +179,6 @@
                     </th>
                 @endif
 
-
                 <th></th>
             </tr>
         </thead>
@@ -200,7 +201,6 @@
                     @if ($this->showColumn('Created At'))
                         <td data-title="Created At">{{ $product->created_at }}</td>
                     @endif
-
 
                     <td data-title="Action">
                         <button class="delete" wire:click.prevent="confirmProductRemoval({{ $product->id }})">

@@ -23,6 +23,11 @@
             }, 2000);
         </script>
     @endif
+    <div wire:loading>
+        <div class="modal" style="display:flex;">
+            <div class="loader"></div>
+        </div>
+    </div>
     {{-- end sesssion html --}}
     <div class="item__form form-table"
         @if ($checked) style="grid-template-columns: 2fr 1fr 1fr 1fr" @endif>

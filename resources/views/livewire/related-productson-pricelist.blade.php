@@ -23,7 +23,11 @@
             }, 2000);
         </script>
     @endif
-
+    <div wire:loading>
+        <div class="modal" style="display:flex;">
+            <div class="loader"></div>
+        </div>
+    </div>
     <div class="accordion">
         <div class="accordion__btn-flex">
             <button class="accordion__btn"

@@ -45,6 +45,10 @@
                 </select>
                 <span>Currency</span>
             </div>
+            <div class="wid-2 display-f align-center jus-s">
+                <input type="checkbox" name="active">
+                <span class="ml-1"> it's active</span>
+            </div>
 
             <input class="item__form-btn  item__form-long" type="submit" value="Add New" name="submit">
         </div>

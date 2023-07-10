@@ -23,6 +23,11 @@
             }, 2000);
         </script>
     @endif
+    <div wire:loading>
+        <div class="modal" style="display:flex;">
+            <div class="loader"></div>
+        </div>
+    </div>
     <div class="item__header">
         <h1 id="title" class="item__header-title">{{ __('All Store Settings') }}</h1>
         <div class="item__header-buttons">

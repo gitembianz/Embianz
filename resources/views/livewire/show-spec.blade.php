@@ -23,6 +23,11 @@
             }, 2000);
         </script>
     @endif
+    <div wire:loading>
+        <div class="modal" style="display:flex;">
+            <div class="loader"></div>
+        </div>
+    </div>
     <div class="item__header">
         <h1 class="item__header-title" id="title">Spec - {{ $spec->name }}</h1>
         <div class="item__header-buttons">
