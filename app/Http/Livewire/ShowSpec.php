@@ -2,15 +2,17 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Product_Spec;
 use App\Models\Specs;
 use Livewire\Component;
+use App\Models\Product_Spec;
+use Illuminate\Support\Facades\Auth;
 
 class ShowSpec extends Component
 {
 
   public $itemId;
   public $edititem = null;
+  public $record = [];
 
   public function render()
   {
@@ -18,12 +20,10 @@ class ShowSpec extends Component
       'spec' => $this->spec
     ]);
   }
-
   public function mount($itemId)
   {
     $this->itemId = $itemId;
   }
-
   public function confirmItemRemoval()
   {
     $this->dispatchBrowserEvent('show-delete-modal');
@@ -48,5 +48,37 @@ class ShowSpec extends Component
     }
     $record->delete();
     return redirect()->route('specs')->with('message', 'Record deleted Successfully');
+  }
+  public function edititem()
+  {
+    $this->edititem = true;
+  }
+  public function cancelitem()
+  {
+    $this->edititem = null;
+    $this->record = [];
+  }
+  public function saveitem()
+  {
+    $rec = $this->record ?? NULL;
+    if (!is_null($rec)) {
+      $new = Specs::find($this->itemId);
+      if (array_key_exists('name', $rec)) {
+        $new->name = $rec['name'];
+      }
+      if (array_key_exists('um', $rec)) {
+        $new->um = $rec['um'];
+      }
+      if (array_key_exists('spec_group', $rec)) {
+        $new->spec_group = $rec['spec_group'];
+      }
+      $new->lastmodifiedby = Auth::user()->name;
+      $new->updated_at = now();
+      $new->save();
+      $this->emit('itemSaved');
+      session()->flash('message', 'Record edited successfully!');
+    }
+    $this->record = [];
+    $this->edititem = null;
   }
 }

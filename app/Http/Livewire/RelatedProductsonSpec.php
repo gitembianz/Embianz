@@ -8,7 +8,7 @@ use App\Models\Specs;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class RelatedSpecProduct extends Component
+class RelatedProductsonSpec extends Component
 {
 
   use WithPagination;
@@ -20,43 +20,44 @@ class RelatedSpecProduct extends Component
   public $checked = [];
   public $selectPage = false;
   public $selectAll = false;
-  public $showrelatedspecs = false;
-  public $productId;
+  public $showrelatedprods = false;
+  public $specId;
   public $col = false;
   public $all = false;
   public $columns = ['Id', 'Unit', 'Value', 'Created At'];
   public $selectedColumns = [];
-  public $specidbeingremoved = null;
-  public $addrelatedspecs = false;
+  public $idtodel = null;
+  public $addrelatedproducts  = false;
+
   //Add specs declaration
   public $searchadd = '';
   public $orderByadd = 'updated_at';
   public $orderAscadd = 'desc';
-  public $spec = [];
+  public $prod = [];
   public $item;
   public $itemselected = null;
-  public $specid;
+  public $productid;
   public $allow = false;
   public $update = false;
 
-
   public function render()
   {
-    return view('livewire.related-spec-product', [
-      'relatedspecs' => $this->relatedspecs,
-      'addspecs' => $this->addspecs,
+    return view('livewire.related-productson-spec', [
+      'relatedprods' => $this->relatedprods,
+      'addprods' => $this->addprods
     ]);
   }
-  public function mount($productId)
+  public function mount($specId)
   {
-    $this->productId = $productId;
+    $this->specId = $specId;
     $this->selectedColumns = $this->columns;
-    $this->item = Product::find($productId);
+    $this->item = Specs::find($specId);
   }
+
   //function for realted
   public function showColumn($column)
   {
-    if ($column === 'Name') {
+    if ($column === 'Product name') {
       return true;
     }
     return in_array($column, $this->selectedColumns);
@@ -64,7 +65,7 @@ class RelatedSpecProduct extends Component
   public function updatedSelectPage($value)
   {
     if ($value) {
-      $this->checked = $this->relatedspecs->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+      $this->checked = $this->relatedprods->pluck('id')->map(fn ($item) => (string) $item)->toArray();
     } else {
       $this->checked = [];
     }
@@ -93,25 +94,25 @@ class RelatedSpecProduct extends Component
   public function selectAll()
   {
     $this->selectAll = true;
-    $this->checked = $this->relatedspecsQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+    $this->checked = $this->relatedprodsQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
   }
-  public function getRelatedspecsProperty()
+  public function getRelatedprodsProperty()
   {
-    return $this->relatedspecsQuery->paginate($this->perPage);
+    return $this->relatedprodsQuery->paginate($this->perPage);
   }
-  public function getRelatedspecsQueryProperty()
+  public function getRelatedprodsQueryProperty()
   {
-    return Product_Spec::where('product_id', $this->productId)
-      ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->with('spec');
+    return Product_Spec::where('spec_id', $this->specId)
+      ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->with('product');
   }
-  public function confirmRemoval($specid)
+  public function confirmRemoval($id)
   {
-    $this->specidbeingremoved = $specid;
+    $this->idtodel = $id;
     $this->dispatchBrowserEvent('show-delete-modal');
   }
   public function deleteSingleRecord()
   {
-    $id = $this->specidbeingremoved;
+    $id = $this->idtodel;
     $item = Product_Spec::findOrFail($id);
     $item->delete();
     $this->checked = array_diff($this->checked, [$id]);
@@ -132,42 +133,43 @@ class RelatedSpecProduct extends Component
   {
     $this->dispatchBrowserEvent('show-delete-modal-multiple');
   }
-  public function editspec($id, $idspec)
+  public function editprod($id, $idprod)
   {
     $this->update = true;
-    $this->addrelatedspecs = true;
-    $this->itemselected = Specs::find($idspec)->name;
-    $this->specid = $id;
+    $this->addrelatedproducts = true;
+    $this->itemselected = Product::find($idprod)->name;
+    $this->productid = $id;
   }
-  public function confirmspecs()
+  public function confirmprod()
   {
-    $val = $this->spec;
+    $val = $this->prod;
     if (array_key_exists('value', $val)) {
-      $newspec = Product_Spec::find($this->specid);
-      $newspec->value = $val['value'];
-      $newspec->save();
-      $this->addrelatedspecs = false;
+      $new = Product_Spec::find($this->productid);
+      $new->value = $val['value'];
+      $new->save();
+      $this->addrelatedproducts = false;
       $this->allow = false;
-      $this->specid = null;
-      $this->spec = [];
+      $this->productid = null;
+      $this->prod = [];
       $this->itemselected = null;
       $this->search = '';
       $this->update = false;
-      session()->flash('message', 'Spec related succesfuly succesfuly');
+      session()->flash('message', 'Related product edited succesfuly');
     } else {
       session()->flash('message', 'Please provide a value!');
     }
   }
+
   // add specs function
   public function addrelated()
   {
-    $this->showrelatedspecs = true;
-    $this->addrelatedspecs = true;
+    $this->showrelatedprods = true;
+    $this->addrelatedproducts = true;
   }
   public function select($id)
   {
-    $this->itemselected = Specs::find($id)->name;
-    $this->specid = $id;
+    $this->itemselected = Product::find($id)->name;
+    $this->productid = $id;
     $this->allow = false;
   }
   public function allowselect()
@@ -176,37 +178,37 @@ class RelatedSpecProduct extends Component
   }
   public function closemodal()
   {
-    $this->addrelatedspecs = false;
+    $this->addrelatedproducts = false;
     $this->allow = false;
     $this->itemselected = null;
     $this->update = false;
   }
-  public function savespecs()
+  public function saveprod()
   {
-    $val = $this->spec;
+    $val = $this->prod;
     if (array_key_exists('value', $val)) {
       $newspec = new Product_Spec();
-      $newspec->product_id = $this->productId;
-      $newspec->spec_id = $this->specid;
+      $newspec->product_id = $this->productid;
+      $newspec->spec_id = $this->specId;
       $newspec->value = $val['value'];
       $newspec->save();
-      $this->addrelatedspecs = false;
+      $this->addrelatedproducts = false;
       $this->allow = false;
-      $this->specid = null;
-      $this->spec = [];
+      $this->productid = null;
+      $this->prod = [];
       $this->itemselected = null;
       $this->search = '';
-      session()->flash('message', 'Spec related succesfuly succesfuly');
+      session()->flash('message', 'Product related succesfuly succesfuly');
     } else {
       session()->flash('message', 'Please provide a value!');
     }
   }
-  public function getAddspecsProperty()
+  public function getAddprodsProperty()
   {
-    return $this->addspecsQuery->get();
+    return $this->addprodsQuery->get();
   }
-  public function getAddspecsQueryProperty()
+  public function getAddprodsQueryProperty()
   {
-    return Specs::search($this->searchadd)->orderBy($this->orderByadd, $this->orderAscadd);
+    return Product::search($this->searchadd)->orderBy($this->orderByadd, $this->orderAscadd);
   }
 }
