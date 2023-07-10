@@ -41,9 +41,9 @@
             <div class="modal-content-spec wid-2">
                 <h1>
                     @if ($update)
-                        {{ __('Edit related Specs') }}
+                        {{ __('Edit related product value') }}
                     @else
-                        {{ __('Add related Specs') }}
+                        {{ __('Add related product value') }}
                     @endif
                 </h1>
                 <div class="display-f align-center">
