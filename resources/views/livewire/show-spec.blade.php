@@ -29,10 +29,10 @@
             <a class="item__header-btn" href="{{ route('specs') }}">All Specs</a>
             <a class="item__header-btn" href="{{ route('newspec') }}">New</a>
             @if ($edititem === null)
-                <input class="item__header-btn" type="button" value="Edit" wire:click.prevent="editcategory()">
+                <input class="item__header-btn" type="button" value="Edit" wire:click.prevent="edititem()">
             @else
-                <input class="item__header-btn" type="button" wire:click.prevent="savecategory()" value="Save">
-                <input class="item__header-btn" type="button" wire:click.prevent="cancelcategory()" value="Cancel">
+                <input class="item__header-btn" type="button" wire:click.prevent="saveitem()" value="Save">
+                <input class="item__header-btn" type="button" wire:click.prevent="cancelitem()" value="Cancel">
             @endif
             <input class="item__header-btn delete" type="button" value="Delete" name="delete"
                 wire:click.prevent="confirmItemRemoval({{ $spec->id }})">
@@ -54,7 +54,7 @@
                         </div>
                     @else
                         <div class="item__form-input">
-                            <input type="text">
+                            <input type="text" wire:model.defer="record.name">
                             <span> Name</span>
                         </div>
                     @endif
@@ -65,7 +65,7 @@
                         </div>
                     @else
                         <div class="item__form-input">
-                            <input type="text">
+                            <input type="text" wire:model.defer="record.um">
                             <span> Unit</span>
                         </div>
                     @endif
@@ -77,7 +77,15 @@
                         </div>
                     @else
                         <div class="item__form-input">
-
+                            <select wire:model.defer="record.spec_group">
+                                <?php
+                                $groups = ['details', 'feature', 'accessibility'];
+                                ?>
+                                <option>Select a group</option>
+                                @foreach ($groups as $group)
+                                    <option value="{{ $group }}">{{ $group }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     @endif
 
@@ -98,13 +106,13 @@
                         <span>Last modified by</span>
                     </div>
                     @if ($edititem != null)
-                        <input class="item__form-btn item__form-long" wire:click.prevent="savecategory()" type="button"
+                        <input class="item__form-btn item__form-long" wire:click.prevent="saveitem()" type="button"
                             value="Save">
                     @endif
                 </div>
             </div>
             <div class="tabs__content display-f g-1">
-
+                <livewire:related-productson-spec specId="{{ $spec->id }}" />
             </div>
 
         </div>
