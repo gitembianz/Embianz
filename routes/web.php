@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\HomeController;
@@ -7,6 +8,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PriceListController;
 use App\Http\Controllers\SpecsController;
+use App\Http\Controllers\StoreController;
 use App\Http\Controllers\TodolistController;
 
 /*
@@ -41,17 +43,32 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
   //todolist routes
   route::post('/new', [TodolistController::class, 'store'])->name('store');
   route::delete('/{todolist:id}', [TodolistController::class, 'destroy'])->name('destroy');
+
+  //general routes
+  route::get('/storesettings', [AdminController::class, 'storesettings'])->name('storesettings');
+  route::get('/addstoresettings', [AdminController::class, 'addstoresetting'])->name('addstoresetting');
 });
+
+//store routes
+route::get('/home', [StoreController::class, 'index'])->name('home');
+route::get('/cart', [StoreController::class, 'cart'])->name('cart');
+route::get('/complete', [StoreController::class, 'complete'])->name('complete');
+route::get('/checking', [StoreController::class, 'checking'])->name('checking');
+route::get('/order', [StoreController::class, 'order'])->name('order');
+route::get('/product', [StoreController::class, 'show'])->name('product');
+
 
 //specs route
 route::get('/specs', [SpecsController::class, 'index'])->name('specs');
 route::get('/newspec', [SpecsController::class, 'create'])->name('newspec');
 route::post('/add_spec', [SpecsController::class, 'store']);
+route::get('/show_spec/{id}/', [SpecsController::class, 'show'])->name('show_spec');
 
 //pricelist route
 route::get('/pricelists', [PriceListController::class, 'index'])->name('pricelists');
 route::get('/newpricelist', [PriceListController::class, 'create'])->name('newpricelist');
 route::post('/add_pricelist', [PriceListController::class, 'store']);
+route::get('/show_pricelist/{id}/', [PriceListController::class, 'show'])->name('show_pricelis');
 
 route::get('/dashboard', [HomeController::class, 'redirect'])->middleware('auth', 'verified')->name('dashboard');
 

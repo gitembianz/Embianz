@@ -23,6 +23,11 @@
             }, 2000);
         </script>
     @endif
+    <div wire:loading>
+        <div class="modal" style="display:flex;">
+            <div class="loader"></div>
+        </div>
+    </div>
     <div class="item__header">
         <h1 id="title" class="item__header-title">{{ __('All Price Lists') }}</h1>
         <div class="item__header-buttons">
@@ -163,6 +168,11 @@
                         Currency
                     </th>
                 @endif
+                @if ($this->showColumn('Active'))
+                    <th class="cursor-p">
+                        Is Active
+                    </th>
+                @endif
                 @if ($this->showColumn('Created At'))
                     <th class="cursor-p"
                         @if ($orderBy === 'created_at' && $orderAsc === '1') data-symbol="up" @else
@@ -185,11 +195,12 @@
                     @if ($this->showColumn('Name'))
                         <td data-title="Name">
                             @if ($indexprice !== $index)
-                                <div class="cursor-p" wire:click.prevent="edititem({{ $index }})">
-                                    {{ $price->name }}</div>
+                                <div><a href="/show_pricelist/{{ $price->id }}'">{{ $price->name }}</a>
+                                </div>
                             @else
                                 <input type="text" class="table-edit wid-1"
-                                    wire:model.defer="prices.{{ $index }}.name">
+                                    wire:model.defer="prices.{{ $index }}.name"
+                                    placeholder="{{ $price->name }}">
                             @endif
 
                         </td>
@@ -207,6 +218,21 @@
                                             {{ $curency->name }}</option>
                                     @endforeach
                                 </select>
+                            @endif
+                        </td>
+                    @endif
+                    @if ($this->showColumn('Active'))
+                        <td data-title="Active">
+                            @if ($indexprice !== $index)
+                                <div class="cursor-p" wire:click.prevent="edititem({{ $index }})">
+                                    @if ($price->active === 1)
+                                        True
+                                    @else
+                                        False
+                                    @endif
+                                </div>
+                            @else
+                                <input type="checkbox" wire:model.defer="prices.{{ $index }}.active" checked>
                             @endif
                         </td>
                     @endif

@@ -35,8 +35,14 @@ class PriceListController extends Controller
   {
     $item = new PriceList();
 
+
     $item->name = $request->name;
     $item->currency_id = $request->currency;
+    if ($request->active) {
+      $item->active = true;
+    } else {
+      $item->active = false;
+    }
     $item->createdby = Auth::user()->name;
     $item->lastmodifiedby = Auth::user()->name;
     $item->save();
@@ -46,9 +52,10 @@ class PriceListController extends Controller
   /**
    * Display the specified resource.
    */
-  public function show(PriceList $priceList)
+  public function show($id)
   {
-    //
+    $data = PriceList::find($id);
+    return view('admin.show_pricelist', compact('data'));
   }
 
   /**

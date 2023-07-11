@@ -23,6 +23,11 @@
             }, 2000);
         </script>
     @endif
+    <div wire:loading>
+        <div class="modal" style="display:flex;">
+            <div class="loader"></div>
+        </div>
+    </div>
     {{-- end sesssion html --}}
     <div class="item__form form-table"
         @if ($checked) style="grid-template-columns: 2fr 1fr 1fr 1fr" @endif>
@@ -89,7 +94,7 @@
 
     {{-- modals --}}
     {{-- delete single record --}}
-    <div class="modal" id="confirmationmodalcategory">
+    <div class="modal" id="confirmationmodalitem">
         <div class="modal-content">
             <h1 class="modal-content-title">
                 {{ __('Are you sure to delete this record?') }}
@@ -97,10 +102,10 @@
             <input wire:click.prevent="deleteSingleRecord()" class="modal-content-btn submit" type="button"
                 value="Confirm">
             <input class="modal-content-btn delete" type="button"
-                onclick="document.getElementById('confirmationmodalcategory').style.display='none'" value="Cancel">
+                onclick="document.getElementById('confirmationmodalitem').style.display='none'" value="Cancel">
 
             <span class="modal-content-btn delete"
-                onclick="document.getElementById('confirmationmodalcategory').style.display='none'">
+                onclick="document.getElementById('confirmationmodalitem').style.display='none'">
                 <svg>
                     <line x1="18" y1="6" x2="6" y2="18"></line>
                     <line x1="6" y1="6" x2="18" y2="18"></line>

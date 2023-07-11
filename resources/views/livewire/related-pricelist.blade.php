@@ -23,7 +23,11 @@
             }, 2000);
         </script>
     @endif
-
+    <div wire:loading>
+        <div class="modal" style="display:flex;">
+            <div class="loader"></div>
+        </div>
+    </div>
     <div class="accordion">
         <div class="accordion__btn-flex">
             <button class="accordion__btn"
@@ -268,7 +272,7 @@
                                         </th>
                                     @endif
                                     @if ($this->showColumn('Currency'))
-                                        <th>Unit
+                                        <th>Currency
                                         </th>
                                     @endif
                                     @if ($this->showColumn('Value'))
@@ -297,7 +301,9 @@
                                             <td data-title="ID">{{ $prices->id }}</td>
                                         @endif
                                         @if ($this->showColumn('Name'))
-                                            <td data-title="Name">{{ $prices->pricelist->name }}
+                                            <td data-title="Name">
+                                                <a
+                                                    href="/show_pricelist/{{ $prices->pricelist->id }}'">{{ $prices->pricelist->name }}</a>
                                             </td>
                                         @endif
                                         @if ($this->showColumn('Currency'))

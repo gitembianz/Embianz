@@ -23,6 +23,11 @@
             }, 2000);
         </script>
     @endif
+    <div wire:loading>
+        <div class="modal" style="display:flex;">
+            <div class="loader"></div>
+        </div>
+    </div>
     <div class="item__header">
         <h1 id="title" class="item__header-title">{{ __('All Specs') }}</h1>
         <div class="item__header-buttons">
@@ -194,11 +199,12 @@
                         <td data-title="Name">
 
                             @if ($indexspec !== $index)
-                                <div class="cursor-p" wire:click.prevent="edititem({{ $index }})">
-                                    {{ $spec->name }}</div>
+                                <div><a href="/show_spec/{{ $spec->id }}'">{{ $spec->name }}</a>
+                                </div>
                             @else
                                 <input type="text" class="table-edit wid-1"
-                                    wire:model.defer="specss.{{ $index }}.name">
+                                    wire:model.defer="specss.{{ $index }}.name"
+                                    placeholder="{{ $spec->name }}">
                             @endif
                         </td>
                     @endif
@@ -209,7 +215,8 @@
                                     {{ $spec->um }}</div>
                             @else
                                 <input type="text" class="table-edit wid-1"
-                                    wire:model.defer="specss.{{ $index }}.um">
+                                    wire:model.defer="specss.{{ $index }}.um"
+                                    placeholder="{{ $spec->um }}">
                             @endif
                         </td>
                     @endif
@@ -223,8 +230,9 @@
                                     wire:model.defer="specss.{{ $index }}.spec_group">
                                     <?php
                                     $groups = ['details', 'feature', 'accessibility'];
+                                    $groups = array_diff($groups, [$spec->spec_group]);
                                     ?>
-                                    <option>Select a group</option>
+                                    <option>{{ $spec->spec_group }}</option>
                                     @foreach ($groups as $group)
                                         <option value="{{ $group }}">{{ $group }}</option>
                                     @endforeach

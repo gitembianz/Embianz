@@ -20,10 +20,10 @@ class ShowCategory extends Component
   {
     $this->categoryId = $categoryId;
   }
-  public function confirmCategoryRemoval($id)
+  public function confirmItemRemoval($id)
   {
     $this->categoryId = $id;
-    $this->dispatchBrowserEvent('show-delete-modal-category');
+    $this->dispatchBrowserEvent('show-delete-modal');
   }
   public function getCategoryProperty()
   {
