@@ -23,7 +23,7 @@ use App\Http\Controllers\TodolistController;
 */
 
 Route::get('/', function () {
-  return view('welcome');
+  return view('store.home');
 });
 
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
