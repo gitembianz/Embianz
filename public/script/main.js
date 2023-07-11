@@ -155,40 +155,45 @@ if (nextButton) {
   });
 }
 
-// let counter = 1;
-// const counterInput = document.getElementById("count");
-// const incrementBtn = document.getElementById("countIncrease");
-// const decrementBtn = document.getElementById("countDecrease");
 
-// function updateCounterValue() {
-//   counterInput.value = counter;
-// }
+// Counter
+if(count,countIncrease,countDecrease){
 
-// function incrementCounter() {
-//   counter++;
-//   updateCounterValue();
-// }
+let counter = 1;
+const counterInput = document.getElementById("count");
+const incrementBtn = document.getElementById("countIncrease");
+const decrementBtn = document.getElementById("countDecrease");
 
-// function decrementCounter() {
-//   if (counter > 1) {
-//     counter--;
-//     updateCounterValue();
-//   }
-// }
+function updateCounterValue() {
+  counterInput.value = counter;
+}
 
-// function validateAndSetCounterValue() {
-//   const inputValue = parseInt(counterInput.value);
-//   if (!isNaN(inputValue)) {
-//     counter = Math.max(inputValue, 1);
-//   } else {
-//     counter = 0;
-//   }
-//   updateCounterValue();
-// }
+function incrementCounter() {
+  counter++;
+  updateCounterValue();
+}
 
-// incrementBtn.addEventListener("click", incrementCounter);
-// decrementBtn.addEventListener("click", decrementCounter);
-// counterInput.addEventListener("input", validateAndSetCounterValue);
+function decrementCounter() {
+  if (counter > 1) {
+    counter--;
+    updateCounterValue();
+  }
+}
+
+function validateAndSetCounterValue() {
+  const inputValue = parseInt(counterInput.value);
+  if (!isNaN(inputValue)) {
+    counter = Math.max(inputValue, 1);
+  } else {
+    counter = 0;
+  }
+  updateCounterValue();
+}
+
+incrementBtn.addEventListener("click", incrementCounter);
+decrementBtn.addEventListener("click", decrementCounter);
+counterInput.addEventListener("input", validateAndSetCounterValue);
+}
 
 
 
@@ -216,7 +221,7 @@ function initializeTabs(buttons, panes) {
 }
 
 // Call the function to initialize the tabs
-// initializeTabs(".tab__header--btn", ".tab__pane");
+initializeTabs(".tab__header--btn", ".tab__pane");
 initializeTabs(".details__tab--btn", ".details__tab--pane");
 
 
@@ -261,15 +266,17 @@ const btnModal = document.getElementById("openModal");
 const prevModal = document.querySelector(".product__modal-prev");
 const nextModal = document.querySelector(".product__modal-next");
 
-btnModal.onclick = function () {
-  modal.classList.toggle("active");
-};
-
-window.onclick = function (event) {
-  if (event.target == modal) {
+if(btnModal){
+  btnModal.onclick = function () {
     modal.classList.toggle("active");
-  }
-};
+  };
+  window.onclick = function (event) {
+    if (event.target == modal) {
+      modal.classList.toggle("active");
+    }
+  };
+}
+
 
 
 
