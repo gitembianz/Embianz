@@ -1,0 +1,125 @@
+@mixin box($width, $height: $width) {
+  width: $width;
+  height: $height;
+}
+
+@mixin flexer($direction: row, $justify: flex-start, $align-items: stretch, $gap: 0, $flex: 0 1 auto, $wrap: nowrap) {
+  display: flex;
+  flex-direction: $direction;
+  flex-wrap: $wrap;
+  justify-content: $justify;
+  align-items: $align-items;
+  flex: $flex;
+  gap: $gap;
+}
+
+@mixin font-face($font-family, $ttf-font-path, $font-weight: normal, $font-style: normal) {
+  @font-face {
+    font-family: #{$font-family};
+    src: url('#{$ttf-font-path}') format('truetype');
+    font-weight: $font-weight;
+    font-style: $font-style;
+  }
+}
+
+@mixin fade($type) {
+  @if $type=="hide" {
+    visibility: hidden;
+    opacity: 0;
+    transition: all .2s ease-in-out;
+  }
+
+  @else if $type=="show" {
+    visibility: visible;
+    opacity: 1;
+    transition: all .2s ease-in-out;
+  }
+}
+
+@mixin abs-position ($position: absolute, $top, $right, $bottom, $left) {
+  position: $position;
+  top: $top;
+  right: $right;
+  bottom: $bottom;
+  left: $left;
+}
+
+
+@mixin breakpoint($point) {
+  @if $point =="xx-large" {
+    @media (min-width: 1400px) {
+      .container {
+        max-width: 1320px;
+      }
+
+      @content;
+    }
+  }
+
+  @if $point =="x-large" {
+    @media (min-width: 1200px) {
+      .container {
+        max-width: 1140px;
+      }
+
+      @content;
+    }
+  }
+
+  @else if $point =="large" {
+    @media (min-width: 992px) {
+      .container {
+        max-width: 960px;
+      }
+
+      @content;
+    }
+  }
+
+  @else if $point =="medium" {
+    @media (min-width: 768px) {
+      @content;
+    }
+  }
+
+  @else if $point =="small" {
+    @media (min-width: 576px) {
+      @content;
+    }
+  }
+
+  @else if $point =="extra-small" {
+    @media (min-width: 425px) {
+      @content;
+    }
+  }
+}
+
+
+
+
+@mixin font($weight: 500, $color: $text, $position: center) {
+  font-weight: $weight;
+  text-align: $position;
+  color: $color;
+}
+
+
+@mixin btn {
+  @include box(45px);
+  @include flexer(row, center, center);
+  background-color: $text;
+  border-radius: $border-radius-big;
+  transition: all .3s ease-in-out;
+  cursor: pointer;
+
+  svg {
+    pointer-events: none;
+  }
+}
+
+@mixin darken-background($background-color, $percentage) {
+  &:hover {
+    background-color: darken($background-color, $percentage);
+  }
+}

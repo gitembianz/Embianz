@@ -1,0 +1,333 @@
+// Details Page "add, edit, or check information about delivering a product"
+.details {
+  @include flexer(column, center, center, 20px);
+
+  &__steps {
+    @include flexer(row, center, center);
+    @include box(100%, auto);
+
+    &--item {
+      @include flexer(row, center, center);
+      @include font(600);
+      @include box(40px);
+      border-radius: 200px;
+      border: 2px solid $text;
+      background-color: $background;
+
+      &.active {
+        background-color: $text;
+        color: $background;
+      }
+    }
+
+    &--line {
+      flex: 1;
+      @include box(auto, 3px);
+      background-color: lighten($text, 80%);
+
+      &.activeOld {
+        background-color: $text;
+      }
+
+      &.active {
+        background: rgb(0, 0, 0);
+        background: -moz-linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(130, 130, 130, 1) 51%, rgba(176, 176, 176, 1) 100%);
+        background: -webkit-linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(130, 130, 130, 1) 51%, rgba(176, 176, 176, 1) 100%);
+        background: linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(130, 130, 130, 1) 51%, rgba(176, 176, 176, 1) 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#000000", endColorstr="#b0b0b0", GradientType=1);
+      }
+    }
+  }
+
+  &__content--checkbox {
+    @extend .details__tab--btn;
+    @include flexer(row, space-between, center);
+    // @include responsive-spacing(padding, 0.01);
+    grid-column: 1/3;
+    width: 100%;
+    position: relative;
+
+    /* Customize the label (the container) */
+    .checkbox {
+      display: block;
+      cursor: pointer;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+
+      /* Hide the browser's default checkbox */
+      input {
+        @include abs-position (absolute, 0, 0, unset, unset);
+        @include box(100%);
+        opacity: 0;
+        cursor: pointer;
+
+
+        /* When the checkbox is checked, add a blue background */
+        &:checked~span {
+          background-color: $text;
+
+          /* Show thespan when checked */
+          &:after {
+            display: block;
+          }
+        }
+      }
+
+      /* Create a custom checkbox */
+      span {
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+        @include box(25px);
+        border-radius: 100%;
+        background-color: #f2f2f2;
+
+        /* Style thespan/indicator (hidden when not checked) */
+        &:after {
+          display: none;
+          @include abs-position (absolute, 50%, unset, unset, 50%);
+          content: url("/img/check.svg");
+          @include box(15px);
+          transform: translate(-50%, -50%);
+        }
+      }
+    }
+  }
+
+  // this is the content in create mode
+  &__content-add {
+    @include flexer(column, space-between, center, 20px);
+    @include responsive-spacing(padding, 0.01);
+    @include box(100%);
+    background-color: #f2f2f2;
+    border-radius: 10px;
+    position: relative;
+
+    @include breakpoint(small) {
+      @include flexer(row, space-between, flex-start, 20px);
+    }
+
+    &--number {
+      @include abs-position (absolute, 10px, unset, unset, 10px);
+      @include flexer(row, center, center);
+      @include box(30px);
+      @include font(600, $text);
+      border-radius: 100%;
+      border: 1.5px solid $text;
+      background-color: transparent;
+      border-color: $text;
+    }
+
+    &--text {
+      @include font(500, lighten($text, 30%), left);
+      flex: 1;
+
+      &:first-child {
+        grid-column: 1/3;
+        @include flexer(row, center, center);
+        height: 30px;
+      }
+    }
+
+    &--input {
+      @include box(100%, 40px);
+      border: none;
+      border-radius: 0;
+      border-bottom: 1.2px solid $text;
+      outline: none;
+      background: transparent;
+    }
+
+    &--btn {
+      @include flexer(row, center, center);
+      @include responsive-spacing(padding, 0.001);
+      @include font(600, $text);
+      min-width: 100px;
+      border-radius: 5px;
+      background-color: #f2f2f2;
+
+      svg {
+        stroke: $text;
+      }
+    }
+
+    &--column {
+      @include flexer(column, center, center, 15px);
+      width: 100%;
+      flex: 1;
+
+      @include breakpoint(small) {
+        display: grid;
+        gap: 15px;
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  }
+
+  // this is the tabs for Individual and Legal Person
+  &__tab {
+    @include flexer(column, null, null, 10px);
+    width: 100%;
+
+    &--header {
+      @include flexer(row, unset, center, 20px);
+    }
+
+    &--btn {
+      @include font(400, #f2f2f2);
+      @include box(auto, 50px);
+      @include responsive-spacing(padding-left, 0.01);
+      @include responsive-spacing(padding-right, 0.01);
+      @include darken-background($text, 5%);
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      background-color: lighten($text, 30%);
+      transition: $transition;
+
+      &.active {
+        background-color: darken($text, 10%);
+      }
+
+    }
+
+    &--activate {
+      @extend .details__tab--btn;
+      text-decoration: line-through;
+
+      &.active {
+        background-color: darken($text, 10%);
+        text-decoration: none;
+      }
+    }
+
+    &--pane {
+      display: none;
+
+      &.active {
+        @include flexer(column, flex-start, stretch, 20px);
+
+        @include breakpoint(large) {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          align-items: start;
+          gap: 20px;
+        }
+      }
+
+    }
+
+  }
+
+
+  // This is Accordion for payment method
+  &__accordion {
+    @include flexer(column, center, center, 10px);
+    width: 100%;
+    flex: 1;
+
+    &--item {
+      width: 100%;
+      background-color: #f2f2f2;
+      border: 1.5px solid #f2f2f2;
+      border-radius: 10px;
+
+      &:first-child {
+        .details__accordion-content {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 20px;
+        }
+      }
+    }
+
+    &-header {
+      @include flexer(row, space-between, center, 10px);
+      @include responsive-spacing(padding, 0.01);
+      transition: $transition;
+      cursor: pointer;
+
+      &--number {
+        @extend .details__content-add--number;
+      }
+
+      &--text {
+        @extend .details__content-add--text;
+      }
+
+      &--img {
+        @extend .details__content-add--number;
+        position: static;
+        transition: $transition;
+
+        svg {
+          stroke: $text;
+          scale: .8;
+        }
+      }
+
+      &--svg {
+        @include flexer(row, space-between, center, 10px);
+
+        svg {
+          @include box(35px);
+        }
+      }
+
+      &.active {
+
+        &>.details__accordion-header--img {
+          @extend .details__content-add--number;
+          position: static;
+          background-color: $text;
+
+          svg {
+            stroke: #f2f2f2;
+          }
+        }
+      }
+    }
+
+    &-wrap {
+      max-height: 0;
+      overflow: hidden;
+      transition: $transition;
+      background-color: #f2f2f2;
+      border-radius: 0 0 10px 10px;
+    }
+
+    &-content {
+      @include responsive-spacing(padding, 0.01);
+
+      &--text {
+        color: $text;
+      }
+
+      &--span {
+        color: red;
+      }
+
+      &--input {
+        @extend .details__content-add--input;
+
+        &:first-child,
+        &:last-child {
+          grid-column: 1/3 !important;
+        }
+      }
+    }
+  }
+
+  // this is buttons to prev or next page
+  &__btns {
+    @include flexer(row, center, center, 15px);
+
+    a {
+      @extend .details__content-add--btn;
+      background-color: #f2f2f2;
+    }
+  }
+}

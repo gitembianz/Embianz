@@ -8,6 +8,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PriceListController;
 use App\Http\Controllers\SpecsController;
+use App\Http\Controllers\StoreController;
 use App\Http\Controllers\TodolistController;
 
 /*
@@ -47,6 +48,15 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
   route::get('/storesettings', [AdminController::class, 'storesettings'])->name('storesettings');
   route::get('/addstoresettings', [AdminController::class, 'addstoresetting'])->name('addstoresetting');
 });
+
+//store routes
+route::get('/home', [StoreController::class, 'index'])->name('home');
+route::get('/cart', [StoreController::class, 'cart'])->name('cart');
+route::get('/complete', [StoreController::class, 'complete'])->name('complete');
+route::get('/checking', [StoreController::class, 'checking'])->name('checking');
+route::get('/order', [StoreController::class, 'order'])->name('order');
+route::get('/product', [StoreController::class, 'show'])->name('product');
+
 
 //specs route
 route::get('/specs', [SpecsController::class, 'index'])->name('specs');

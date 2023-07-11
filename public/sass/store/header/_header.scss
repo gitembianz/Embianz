@@ -1,0 +1,126 @@
+header {
+  border-bottom: 1px solid $text;
+}
+
+.header {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  justify-items: center;
+  gap: 15px;
+  transition: $transition;
+
+  @include breakpoint(medium) {
+    @include flexer(row, space-between, center, 10px);
+  }
+}
+
+.logo {
+  @include font(900);
+  font-family: 'Dancing-Script', cursive;
+  transition: $transition;
+  grid-area: 1;
+  grid-column: 1/5;
+
+  @include breakpoint(medium) {
+    flex: 1;
+    text-align: left;
+  }
+}
+
+.search {
+  @include btn;
+  @include abs-position(absolute, 50%, -1.5px, auto, auto);
+  transform: translateY(-50%);
+  z-index: 1;
+
+  &-box {
+    @include box(45px);
+    position: relative;
+    border-radius: $border-radius-big;
+    background-color: transparent;
+    transition: $transition;
+
+    &.active {
+      width: 100%;
+      grid-column: 1/max-content;
+
+      @include breakpoint(large) {
+        width: 500px;
+      }
+    }
+
+    input {
+      @include box(100%, 45px);
+      @include fade(hide);
+      @include font(100, $secondary);
+      border: none;
+      border-radius: $border-radius-big;
+      background: transparent;
+      outline: none;
+      opacity: 0;
+      background-color: $text;
+      color: $background;
+
+      &.active {
+        @include fade(show);
+        padding: 0 60px 0 20px;
+      }
+
+      &::placeholder {
+        color: $background;
+        font-weight: 100;
+      }
+    }
+  }
+}
+
+.menu {
+  @include flexer($align-items: flex-start);
+
+  @include breakpoint(large) {
+    @include fade(show);
+    position: relative;
+    width: 100%;
+    background-color: $text;
+  }
+
+  &__list {
+    @include flexer(column, center, center, 40px);
+
+    @include breakpoint(large) {
+      @include fade(show);
+      @include flexer(row, space-between, center);
+      transform: unset;
+      position: relative;
+      background-color: transparent;
+      width: 960px;
+      @include responsive-spacing(padding-top, 0.001);
+      @include responsive-spacing(padding-bottom, 0.001);
+      margin: 0 auto;
+    }
+  }
+
+  &__item {
+    @include font(500);
+    font-size: 35px;
+    cursor: pointer;
+
+    @include breakpoint(large) {
+      @include font(500, $secondary);
+      font-size: 20px;
+      transform: unset;
+      padding: 0;
+    }
+  }
+}
+
+#menuOpen {
+  @include breakpoint(large) {
+    display: none;
+  }
+}
+
+.heart {
+  @include btn;
+}

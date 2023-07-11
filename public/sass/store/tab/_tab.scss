@@ -1,0 +1,88 @@
+// Tab for Product
+.tab {
+  @include flexer(column, null, null, 20px);
+  // margin-top: 20px;
+  width: 100%;
+
+  // Tab Header
+  &__header {
+    @include flexer(row, unset, center, 20px);
+
+    // Tabs Button in the header
+    &--btn {
+      @include box(100%, 50px);
+      border: none;
+      cursor: pointer;
+      color: $background;
+      border-radius: 100px;
+      background-color: lighten($text, 20%);
+
+      &.active {
+        background-color: $text;
+      }
+    }
+  }
+
+  // Tab Pane
+  &__pane {
+    @include fade(hide);
+    height: 0;
+
+    &.active {
+      @include fade(show);
+      height: unset;
+    }
+  }
+}
+
+/* Table information for Product */
+.table__info {
+  border-collapse: collapse;
+  font-size: 1rem;
+  width: 100%;
+
+  /* Table header */
+  thead tr {
+    background-color: $text;
+    color: #ffffff;
+    text-align: left;
+
+    /* arrounded corners for Table Header */
+    & th {
+      &:first-child {
+        border-radius: 10px 0 0 0;
+      }
+
+      &:last-child {
+        border-radius: 0 10px 0 0;
+      }
+    }
+  }
+
+  /* Styles for the table body */
+  tbody {
+
+    /* Border at the bottom of each table row, except the last row */
+    tr:not(:last-child) {
+      border-bottom: 1px solid $text;
+    }
+
+    /* Alternate background-color for even table rows */
+    tr:nth-of-type(even) {
+      background-color: lightgray;
+    }
+  }
+
+  /* Table cells */
+  th,
+  td {
+    padding: 15px 10px;
+    width: 50%;
+  }
+}
+
+/* Table wrapper */
+.table__wrapper {
+  border: 1px solid black;
+  border-radius: 12px 12px 0 0;
+}

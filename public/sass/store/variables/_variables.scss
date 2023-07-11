@@ -1,0 +1,33 @@
+// Color Pallete
+$text: #202124;
+$background: #f8edeb;
+$background: #ffffff;
+$primary: #ffb5a7;
+$secondary: #fcd5ce;
+$accent: #ffb5a7;
+// Modal and Shadow
+$modal: rgba(23, 15, 13, 0.5);
+$shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+
+$border-radius-small: 40px;
+$border-radius-big: 200px;
+
+$transition: all .2s ease-in-out;
+
+
+
+
+@mixin responsive-spacing($property, $ratio) {
+  $minimum-value: 10px;
+  $maximum-value: 50px;
+  $container-width: 100vw; // Customize this based on your layout
+
+  #{$property}: clamp($minimum-value,
+      ($container-width * $ratio),
+      $maximum-value );
+}
+
+// .element {
+//     @include responsive-spacing(margin-top, 0.05); // Adjust ratio as needed
+//     @include responsive-spacing(padding, 0.05); // Adjust ratio as needed
+// }

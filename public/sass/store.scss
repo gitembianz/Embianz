@@ -1,0 +1,19 @@
+//------------------------------Variables,Functions,Mixins
+@import 'store/variables/variables';
+@import 'store/mixins/mixins';
+//------------------------------General Options and Fonts
+@import 'store/fonts/fonts';
+@import 'store/general/general';
+//------------------------------Header and Footer
+@import 'store/header/header';
+@import 'store/footer/footer';
+@import 'store/tab/tab';
+//------------------------------Products list page
+@import 'store/header/cart';
+@import 'store/products/products';
+//------------------------------Product landing page
+@import 'store/products/product-landing';
+@import 'store/payment/details';
+@import 'store/payment/checking';
+//------------------------------Cookies
+@import"store/general/cookies";
