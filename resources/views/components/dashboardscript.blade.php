@@ -29,6 +29,9 @@
     window.addEventListener('show-add-modal', event => {
         document.getElementById('addmodal').style.display = 'flex';
     });
+    window.addEventListener('media', event => {
+        document.getElementById('uploadmedia').style.display = 'flex';
+    });
     //Script for alert desepear
     var element = document.getElementById('alertevent');
     if (element) {
