@@ -41,12 +41,15 @@ class RelatedMediaProduct extends Component
   public $locations;
   public $file_sequences = ['0'];
   public $file_locations = ['1'];
+  public $file_link = [];
   public $col = false;
   public $all = false;
   public $hasResults;
   public $editedMediaIndex = null;
   public $i;
   public $j;
+  public $row = 1;
+  public $externalmedia = false;
 
   public function mount($productId)
   {
@@ -63,6 +66,21 @@ class RelatedMediaProduct extends Component
   public function editMedia($mediaIndex)
   {
     $this->editedMediaIndex = $mediaIndex;
+  }
+
+  public function uploadmedia()
+  {
+    $this->showmedia = true;
+    $this->dispatchBrowserEvent('media');
+  }
+  public function external()
+  {
+    $this->row = 1;
+    $this->externalmedia = true;
+  }
+  public function plus()
+  {
+    $this->row++;
   }
   public function cancelMedia()
   {
@@ -126,6 +144,26 @@ class RelatedMediaProduct extends Component
       $this->checked = [];
     }
   }
+  public function saveexternal()
+  {
+    $data = Product::find($this->productId);
+    $productType = class_basename(get_class($data));
+
+    for ($i = 1; $i <= $this->row; $i++) {
+      $media = new Media();
+      $media->sequence = $this->file_sequences[$i];
+      $media->location_id = $this->file_locations[$i];
+      $media->path = $this->file_link[$i];
+      $media->extrenal = true;
+      $media->createdby = Auth::user()->name;
+      $media->lastmodifiedby = Auth::user()->name;
+      $media->item_id = $this->productId;
+      $media->tabel_id = Tabels::where('name', $productType)->first()->id;
+
+      $media->save();
+      session()->flash('message', 'Media Update Successfully!');
+    }
+  }
   public function save()
   {
     $this->validate([
@@ -183,6 +221,7 @@ class RelatedMediaProduct extends Component
       $media->sequence = $this->file_sequences[$this->i];
       $media->location_id = MediaLocation::where('id', $this->file_locations[$this->i])->first()->id;
       $media->type = $type;
+      $media->extrenal = false;
       $media->width = $width;
       $media->height =  $height;
       $media->size = $file->getSize();

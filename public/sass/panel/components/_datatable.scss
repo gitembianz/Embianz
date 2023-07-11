@@ -200,3 +200,11 @@
     color: $white;
   }
 }
+
+.table-external {
+  @extend .table;
+
+  td {
+    border: none !important;
+  }
+}
