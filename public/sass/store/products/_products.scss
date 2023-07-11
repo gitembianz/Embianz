@@ -1,0 +1,124 @@
+.products {
+  @include flexer(column, $gap: 40px);
+
+  &__control {
+    @include flexer(row, space-between, center);
+  }
+
+  &__select {
+    position: relative;
+    width: 150px;
+
+    select {
+      @include btn;
+      @include box(100%, 40px);
+      @include font(700, $background, start);
+      padding: 0 20px;
+      --moz-appearance: none;
+      --webkit-appearance: none;
+
+      &::-ms-expand {
+        display: none;
+      }
+    }
+
+    svg {
+      @include abs-position(absolute, 50%, 10px, auto, auto);
+      transform: translateY(-50%);
+    }
+
+  }
+
+  &__items {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
+
+.product__catalog {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 15px;
+
+  @include breakpoint(small) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @include breakpoint(medium) {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+.product__item {
+  @include flexer(column, space-between, center);
+  @include responsive-spacing(padding, 0.001);
+  min-height: 400px;
+  position: relative;
+  background-color: #f2f2f2;
+  border-radius: 10px;
+  width: 100%;
+
+  &--price {
+    @include flexer(row, space-between, center, 15px);
+
+    span:last-child {
+      @include font(400px, red);
+      font-size: 20px;
+    }
+
+    span.deleted {
+      text-decoration: line-through;
+    }
+  }
+
+  span.percent {
+    @include abs-position (absolute, 10px, unset, unset, 10px);
+    @include flexer(row, center, center);
+    @include box(3rem);
+    scale: 1.2;
+    color: $background;
+    background-color: red;
+    border-radius: 100%;
+  }
+
+  img {
+    height: 100px;
+    object-fit: cover;
+  }
+
+  &--buttons {
+    @include flexer(row, center, center, 15px);
+    width: 100%;
+  }
+
+  &--btn {
+    @include flexer(row, center, center);
+    color: #f2f2f2;
+    background: $text;
+    border-radius: 10px;
+    height: 3rem;
+
+    &:first-child {
+      width: 100%;
+      flex: 1;
+    }
+
+    &:last-child {
+      @include box(3rem, 3rem);
+      padding: 0;
+
+      svg {
+        scale: .7;
+      }
+    }
+  }
+
+  &--heart {
+    @include abs-position (absolute, 10px, 10px, unset, unset);
+    @include responsive-spacing(padding, 0.00001);
+    @include flexer(row, center, center);
+    border-radius: 100%;
+    background-color: $text;
+  }
+}
