@@ -42,6 +42,7 @@ class RelatedMediaProduct extends Component
   public $file_sequences = ['0'];
   public $file_locations = ['1'];
   public $file_link = [];
+  public $file_name = [];
   public $col = false;
   public $all = false;
   public $hasResults;
@@ -153,12 +154,13 @@ class RelatedMediaProduct extends Component
       $this->validate([
         'file_sequences.*' => 'required',
         'file_locations.*' => 'required',
-        'file_link.*' => 'required|url'
+        'file_link.*' => 'required|url',
+        'file_name.*' => 'required'
       ]);
 
       $media = new Media();
       // if (isset($this->file_sequences[$i]) && isset($this->file_locations[$i]) && isset($this->file_link[$i])) {
-
+      $media->name = $this->file_name[$i];
       $media->sequence = $this->file_sequences[$i];
       $media->location_id = $this->file_locations[$i];
       $media->path = $this->file_link[$i];
@@ -178,6 +180,7 @@ class RelatedMediaProduct extends Component
     $this->externalmedia = false;
     $this->file_sequences = [];
     $this->file_link = [];
+    $this->file_name = [];
   }
   public function save()
   {
