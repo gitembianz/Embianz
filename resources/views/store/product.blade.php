@@ -18,10 +18,10 @@
                     </button>
                 </div>
                 <div class="product__nails">
-                    <img class="thumbnail" src="/images/store/bottle1.png" alt="Thumbnail 1">
-                    <img class="thumbnail" src="/images/store/bottle2.png" alt="Thumbnail 2">
-                    <img class="thumbnail" src="/images/store/bottle3.png" alt="Thumbnail 3">
-                    <img class="thumbnail" src="/images/store/bottle1.png" alt="Thumbnail 1">
+                    <img class="thumbnail" src="/images/store/bottle-img1.jpeg" alt="Thumbnail 1">
+                    <img class="thumbnail" src="/images/store/bottle-img2.webp" alt="Thumbnail 2">
+                    <img class="thumbnail" src="/images/store/bottle-img3.webp" alt="Thumbnail 3">
+                    <img class="thumbnail" src="/images/store/bottle-img4.png" alt="Thumbnail 1">
                     <img class="thumbnail" src="/images/store/bottle2.png" alt="Thumbnail 2">
                     <img class="thumbnail" src="/images/store/bottle3.png" alt="Thumbnail 3">
                     <img class="thumbnail" src="/images/store/bottle1.png" alt="Thumbnail 1">
@@ -29,17 +29,50 @@
                     <img class="thumbnail" src="/images/store/bottle3.png" alt="Thumbnail 3">
                 </div>
                 <div class="product__modal" id="modal">
-                    <button class="product__modal-prev">
-                        <svg>
-                            <polyline points="15 18 9 12 15 6"></polyline>
-                        </svg>
+                  <div class="slideshow">
+                    <!-- Full-width images with number and caption text -->
+                    <div class="slideshow--slides">
+                      <img src="/images/store/bottle-img1.jpeg">
+                    </div>
+                    <div class="slideshow--slides">
+                      <img src="/images/store/bottle-img2.webp">
+                    </div>
+                    <div class="slideshow--slides">
+                      <img src="/images/store/bottle-img3.webp">
+                    </div>
+                    <div class="slideshow--slides">
+                      <img src="/images/store/bottle-img4.png">
+                    </div>
+                    <div class="slideshow--slides">
+                      <img src="/images/store/bottle2.png">
+                    </div>
+
+                    <div class="slideshow--slides">
+                      <img src="/images/store/bottle3.png">
+                    </div>
+
+
+                    <!-- Next and previous buttons -->
+                    <a class="prev" onclick="plusSlides(-1)">
+                      <svg>
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                      </svg>
+                    </a>
+                    <a class="next" onclick="plusSlides(1)">
+                      <svg>
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                      </svg>
+                    </a>
+                    <!-- Dots buttons -->
+                    <div class="dots" id="dots">
+                    </div>
+                    <button id="closeModal">
+                      <svg>
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
                     </button>
-                    <img class="product__modal-img" src="img/bottle2.png" alt="Product Image">
-                    <button class="product__modal-next">
-                        <svg>
-                            <polyline points="9 18 15 12 9 6"></polyline>
-                        </svg>
-                    </button>
+                  </div>
                 </div>
             </div>
             <div class="product__info">

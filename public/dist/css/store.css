@@ -1425,8 +1425,8 @@ footer {
   height: 100%;
 }
 .product__image-prev, .product__image-next {
-  width: 50px;
-  height: 50px;
+  width: clamp(10px, 30vw, 50px);
+  height: clamp(10px, 30vw, 50px);
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -1471,16 +1471,12 @@ footer {
 }
 @media (min-width: 1200px) {
   .product__nails {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    align-items: center;
-    flex: 0 1 auto;
-    gap: 10px;
     gap: 10px;
     width: 120px;
     height: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
     margin-bottom: 0;
     padding-bottom: 0;
     overflow-y: auto;
@@ -1516,9 +1512,12 @@ footer {
   opacity: 1;
   transition: all 0.2s ease-in-out;
 }
-.product__modal-next, .product__modal-prev {
-  width: 45px;
-  height: 45px;
+.product__modal #closeModal {
+  width: clamp(10px, 30vw, 50px);
+  height: clamp(10px, 30vw, 50px);
+  position: absolute;
+  top: 15px;
+  right: 15px;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -1527,40 +1526,8 @@ footer {
   flex: 0 1 auto;
   gap: 0;
   background-color: #202124;
-  border-radius: 200px;
-  transition: all 0.3s ease-in-out;
-  cursor: pointer;
-  z-index: 99;
-  position: absolute;
-}
-.product__modal-next svg, .product__modal-prev svg {
-  pointer-events: none;
-}
-.product__modal-prev {
-  left: 10px;
-}
-.product__modal-next {
-  right: 10px;
-}
-.product__modal-img {
-  width: 100%;
-  max-width: 300px;
-  background-color: white;
-  border-radius: 20px;
-  z-index: 15;
-  scale: 1;
-  transition: all 0.3s ease-in-out;
-}
-.product__modal-img:first-child, .product__modal-img:last-child {
-  scale: 0.65;
-  z-index: 10;
-  filter: brightness(0.7);
-}
-.product__modal-img:first-child {
-  transform: rotate(-15deg) translate(35%, 15%);
-}
-.product__modal-img:last-child {
-  transform: rotate(15deg) translate(-35%, 15%);
+  color: #ffffff;
+  border-radius: 100%;
 }
 .product__info {
   display: flex;
@@ -1661,6 +1628,7 @@ footer {
 .product__count #count {
   width: 100%;
   flex: 1;
+  min-width: 20px;
   border: none;
   background-color: transparent;
   border-radius: 0;
@@ -1698,33 +1666,148 @@ footer {
 .thumbnail {
   width: 100%;
   height: 100%;
+  -o-object-fit: cover !important;
+     object-fit: cover !important;
+  -o-object-position: center;
+     object-position: center;
+  border-radius: 15px;
+  background-color: #f2f2f2;
+  cursor: pointer;
+}
+@media (min-width: 1200px) {
+  .thumbnail {
+    height: 90px !important;
+  }
+  .thumbnail .container {
+    max-width: 1140px;
+  }
+}
+.thumbnail-active {
+  width: 100%;
+  height: 100%;
   -o-object-fit: cover;
      object-fit: cover;
   -o-object-position: center;
      object-position: center;
   border-radius: 15px;
   background-color: #f2f2f2;
-  cursor: pointer;
-  max-width: 70px;
+  cursor: zoom-in;
 }
-.thumbnail-active {
+
+.slideshow {
+  width: 90%;
+  height: 90%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  flex: 0 1 auto;
+  gap: 0;
+  background-color: #f2f2f2;
+  border-radius: 10px;
+  position: relative;
+}
+
+/* Hide the images by default */
+.slideshow--slides {
+  display: none;
+  width: 100%;
+  height: 100%;
+}
+.slideshow--slides img {
   width: 100%;
   height: 100%;
   -o-object-fit: contain;
      object-fit: contain;
-  -o-object-position: center;
-     object-position: center;
-  border-radius: 15px;
-  background-color: #f2f2f2;
-  cursor: zoom-in;
 }
-@media (min-width: 1200px) {
-  .thumbnail-active {
-    height: 100%;
-  }
-  .thumbnail-active .container {
-    max-width: 1140px;
-  }
+
+/* Next & previous buttons */
+.prev,
+.next {
+  width: 45px;
+  height: 45px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  flex: 0 1 auto;
+  gap: 0;
+  background-color: #202124;
+  border-radius: 200px;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+  width: clamp(10px, 10vw, 50px);
+  height: clamp(10px, 10vw, 50px);
+  z-index: 99;
+  position: absolute;
+}
+.prev svg,
+.next svg {
+  pointer-events: none;
+}
+.prev:hover,
+.next:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.prev {
+  left: 10%;
+}
+
+/* Position the "next button" to the right */
+.next {
+  right: 10%;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+/* Caption text */
+.text {
+  color: #f2f2f2;
+  font-size: 15px;
+  padding: 8px 12px;
+  position: absolute;
+  bottom: 8px;
+  width: 100%;
+  text-align: center;
+}
+
+.dots {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  flex: 0 1 auto;
+  gap: 15px;
+  padding-top: clamp(10px, 0.1vw, 50px);
+  padding-bottom: clamp(10px, 0.1vw, 50px);
+  padding-left: clamp(10px, 3vw, 50px);
+  padding-right: clamp(10px, 3vw, 50px);
+  position: absolute;
+  top: unset;
+  right: unset;
+  bottom: 0;
+  left: unset;
+  background-color: #f2f2f2;
+  opacity: 0.7;
+  border-radius: 10px 10px 0 0;
+}
+
+/* The dots/bullets/indicators */
+.dot {
+  width: clamp(10px, 2vw, 50px);
+  height: clamp(10px, 2vw, 50px);
+  background-color: transparent;
+  outline: 2px solid #202124;
+  border-radius: 100%;
+  outline-offset: 2px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+.dot.active, .dot:hover {
+  background-color: #202124;
 }
 
 .details {

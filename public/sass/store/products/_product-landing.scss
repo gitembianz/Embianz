@@ -31,7 +31,9 @@
     // The buttons to prev and next for Image Preview
     &-prev,
     &-next {
-      @include box(50px);
+      // @include box(50px);
+      @include responsive-spacing(width, 0.3);
+      @include responsive-spacing(height, 0.3);
       @include flexer(row, center, center);
       background-color: $text;
       color: $background;
@@ -60,10 +62,12 @@
     overflow-x: auto;
 
     @include breakpoint(x-large) {
-      @include flexer(column, flex-start, center, 10px);
       gap: 10px;
       width: 120px;
       height: 100%;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
       margin-bottom: 0;
       padding-bottom: 0;
       overflow-y: auto;
@@ -86,46 +90,14 @@
       @include fade(show);
     }
 
-    &-next,
-    &-prev {
-      @include btn;
-      z-index: 99;
-      position: absolute;
-    }
-
-    &-prev {
-      left: 10px;
-    }
-
-    &-next {
-      right: 10px;
-    }
-
-    &-img {
-      width: 100%;
-      max-width: 300px;
-      background-color: white;
-      border-radius: 20px;
-      z-index: 15;
-      scale: 1;
-      transition: all 0.3s ease-in-out;
-
-
-
-      &:first-child,
-      &:last-child {
-        scale: .65;
-        z-index: 10;
-        filter: brightness(.7);
-      }
-
-      &:first-child {
-        transform: rotate(-15deg) translate(35%, 15%);
-      }
-
-      &:last-child {
-        transform: rotate(15deg) translate(-35%, 15%);
-      }
+    #closeModal {
+      @include responsive-spacing(width, 0.3);
+      @include responsive-spacing(height, 0.3);
+      @include abs-position (absolute, 15px, 15px, null, null);
+      @include flexer(row, center, center);
+      background-color: $text;
+      color: $background;
+      border-radius: 100%;
     }
   }
 
@@ -203,6 +175,7 @@
     #count {
       width: 100%;
       flex: 1;
+      min-width: 20px;
       border: none;
       background-color: transparent;
       border-radius: 0;
@@ -242,23 +215,111 @@
 // Thumbnails of Image Preview
 .thumbnail {
   @include box(100%);
-  object-fit: cover;
+  object-fit: cover !important;
   object-position: center;
   border-radius: 15px;
   background-color: #f2f2f2;
   cursor: pointer;
-  max-width: 70px;
+
+  @include breakpoint(x-large) {
+    height: 90px !important;
+  }
 
   &-active {
     @include box(100%, 100%);
-    object-fit: contain;
+    object-fit: cover;
     object-position: center;
     border-radius: 15px;
     background-color: #f2f2f2;
     cursor: zoom-in;
+  }
+}
 
-    @include breakpoint(x-large) {
-      height: 100%
-    }
+
+.slideshow {
+  @include box(90%);
+  @include flexer(row, center, center);
+  // @include responsive-spacing(padding, 0.1);
+  background-color: #f2f2f2;
+  border-radius: 10px;
+  position: relative;
+}
+
+
+/* Hide the images by default */
+.slideshow--slides {
+  display: none;
+  @include box(100%);
+
+  img {
+    @include box(100%);
+    object-fit: contain;
+  }
+}
+
+/* Next & previous buttons */
+.prev,
+.next {
+  @include btn;
+  @include responsive-spacing(width, .1);
+  @include responsive-spacing(height, .1);
+  z-index: 99;
+  position: absolute;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+}
+
+.prev {
+  left: 10%;
+}
+
+/* Position the "next button" to the right */
+.next {
+  right: 10%;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+
+/* Caption text */
+.text {
+  color: #f2f2f2;
+  font-size: 15px;
+  padding: 8px 12px;
+  position: absolute;
+  bottom: 8px;
+  width: 100%;
+  text-align: center;
+}
+
+
+.dots {
+  @include flexer(row, center, center, 15px);
+  @include responsive-spacing(padding-top, 0.001);
+  @include responsive-spacing(padding-bottom, 0.001);
+  @include responsive-spacing(padding-left, 0.03);
+  @include responsive-spacing(padding-right, 0.03);
+  @include abs-position (absolute, unset, unset, 0, unset);
+  background-color: #f2f2f2;
+  opacity: 0.7;
+  border-radius: 10px 10px 0 0;
+}
+
+/* The dots/bullets/indicators */
+.dot {
+  @include responsive-spacing(width, 0.02);
+  @include responsive-spacing(height, 0.02);
+  background-color: transparent;
+  outline: 2px solid $text;
+  border-radius: 100%;
+  outline-offset: 2px;
+  cursor: pointer;
+  transition: $transition;
+
+
+  &.active,
+  &:hover {
+    background-color: $text;
   }
 }
