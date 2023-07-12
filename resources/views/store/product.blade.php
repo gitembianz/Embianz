@@ -21,6 +21,12 @@
                     <img class="thumbnail" src="/images/store/bottle1.png" alt="Thumbnail 1">
                     <img class="thumbnail" src="/images/store/bottle2.png" alt="Thumbnail 2">
                     <img class="thumbnail" src="/images/store/bottle3.png" alt="Thumbnail 3">
+                    <img class="thumbnail" src="/images/store/bottle1.png" alt="Thumbnail 1">
+                    <img class="thumbnail" src="/images/store/bottle2.png" alt="Thumbnail 2">
+                    <img class="thumbnail" src="/images/store/bottle3.png" alt="Thumbnail 3">
+                    <img class="thumbnail" src="/images/store/bottle1.png" alt="Thumbnail 1">
+                    <img class="thumbnail" src="/images/store/bottle2.png" alt="Thumbnail 2">
+                    <img class="thumbnail" src="/images/store/bottle3.png" alt="Thumbnail 3">
                 </div>
                 <div class="product__modal" id="modal">
                     <button class="product__modal-prev">
@@ -44,22 +50,23 @@
                     your beverages at the ideal temperature for hours. Whether you're hitting the gym, hiking, or
                     simply running errands, HydraMax 24 ensures you stay refreshed and energized throughout the day.
                 </p>
-                <span>50.00€</span>
-            </div>
-            <div class="product__count">
-                <button id="countDecrease">
-                    <svg>
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                    </svg>
-                </button>
-                <input type="number" name="count" id="count" min="1" value="1">
-                <button id="countIncrease">
-                    <svg>
-                        <line x1="12" y1="5" x2="12" y2="19"></line>
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                    </svg>
-                </button>
-            </div>
+                <div class="product__price">
+                  <div class="product__count">
+                      <button id="countDecrease">
+                          <svg>
+                              <line x1="5" y1="12" x2="19" y2="12"></line>
+                          </svg>
+                      </button>
+                      <input type="number" name="count" id="count" min="1" value="1">
+                      <button id="countIncrease">
+                          <svg>
+                              <line x1="12" y1="5" x2="12" y2="19"></line>
+                              <line x1="5" y1="12" x2="19" y2="12"></line>
+                          </svg>
+                      </button>
+                  </div>
+                  <h3>50.00€</h3>
+                </div>
             <div class="product__buttons">
                 <button class="product__btn">Add to cart</button>
                 <button class="product__btn">
@@ -70,6 +77,7 @@
                     </svg>
                 </button>
             </div>
+          </div>
         </div>
 
         <div class="tab">
@@ -79,7 +87,7 @@
             </div>
             <div class="tab__content">
                 <div class="tab__pane active">
-                    <p class="product__description-long">
+                    <p>
                         Introducing the HydraMax 24: The Ultimate Quenching Companion for Active Lifestyles
                         <br>
                         The HydraMax 24 is not just an ordinary water bottle; it's a game-changer for those who

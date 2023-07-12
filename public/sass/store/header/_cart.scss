@@ -142,9 +142,10 @@
       }
     }
 
-    button {
+    a {
       @include responsive-spacing(padding, .01);
       background-color: $text;
+      text-align: center;
       border-radius: 10px;
       color: $background;
       width: 100%;
@@ -180,6 +181,8 @@
       button {
         @include flexer(row, center, center);
         @include box(2.5rem);
+        background-color: $text;
+        border-radius: 10px;
         padding: 0;
         margin: 0
       }
