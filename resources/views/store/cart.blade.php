@@ -4,8 +4,8 @@
     <h2 class="section__title">Your Cart</h2>
     <div class="cart-page__list">
         <article class="cart-page__item">
-            <img src="/img/bottle2.png" alt="bottle number 1">
-            <h5 class="cart-page__title">Navy Italy - 1000 ML</h5>
+            <img src="/images/store/bottle2.png" alt="bottle number 1">
+            <h3 class="cart-page__title">Navy Italy - 1000 ML</h3>
             <p class="cart-page__descr">#UrbanBottle</p>
             <span class="cart-page__price">89,99 lei</span>
             <div class="cart-page__buttons">
@@ -39,8 +39,8 @@
             </div>
         </article>
         <article class="cart-page__item">
-            <img src="/img/bottle2.png" alt="bottle number 1">
-            <h5 class="cart-page__title">Navy Italy - 1000 ML</h5>
+            <img src="/images/store/bottle2.png" alt="bottle number 1">
+            <h3 class="cart-page__title">Navy Italy - 1000 ML</h3>
             <p class="cart-page__descr">#UrbanBottle</p>
             <span class="cart-page__price">89,99 lei</span>
             <div class="cart-page__buttons">
@@ -74,8 +74,8 @@
             </div>
         </article>
         <article class="cart-page__item">
-            <img src="/img/bottle2.png" alt="bottle number 1">
-            <h5 class="cart-page__title">Navy Italy - 1000 ML</h5>
+            <img src="/images/store/bottle2.png" alt="bottle number 1">
+            <h3 class="cart-page__title">Navy Italy - 1000 ML</h3>
             <p class="cart-page__descr">#UrbanBottle</p>
             <span class="cart-page__price">89,99 lei</span>
             <div class="cart-page__buttons">
@@ -109,8 +109,8 @@
             </div>
         </article>
         <article class="cart-page__item">
-            <img src="/img/bottle2.png" alt="bottle number 1">
-            <h5 class="cart-page__title">Navy Italy - 1000 ML</h5>
+            <img src="/images/store/bottle2.png" alt="bottle number 1">
+            <h3 class="cart-page__title">Navy Italy - 1000 ML</h3>
             <p class="cart-page__descr">#UrbanBottle</p>
             <span class="cart-page__price">89,99 lei</span>
             <div class="cart-page__buttons">

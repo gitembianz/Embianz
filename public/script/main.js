@@ -195,6 +195,83 @@ decrementBtn.addEventListener("click", decrementCounter);
 counterInput.addEventListener("input", validateAndSetCounterValue);
 }
 
+const imgModal = document.getElementById("modal");
+const btnModal = document.getElementById("openModal");
+const prevModal = document.querySelector(".product__modal-prev");
+const nextModal = document.querySelector(".product__modal-next");
+
+if (btnModal) {
+  btnModal.onclick = function () {
+    imgModal.classList.toggle("active");
+  };
+
+  window.onclick = function (event) {
+    if (event.target == imgModal) {
+      imgModal.classList.toggle("active");
+    }
+  };
+
+  const closeModal = document.getElementById("closeModal");
+  if (closeModal) {
+    closeModal.onclick = function () {
+      imgModal.classList.toggle("active");
+    };
+  }
+}
+
+
+let slideIndex = 1;
+showSlides(slideIndex);
+
+function plusSlides(n) {
+  const numSlides = document.getElementsByClassName("slideshow--slides").length;
+
+  slideIndex += n;
+
+  // Handle looping back to the first slide
+  if (slideIndex > numSlides) {
+    slideIndex = 1;
+  } else if (slideIndex < 1) {
+    slideIndex = numSlides;
+  }
+
+  showSlides(slideIndex);
+}
+
+
+function currentSlide(n) {
+  showSlides(slideIndex = n);
+}
+
+function showSlides(n) {
+  const slides = document.getElementsByClassName("slideshow--slides");
+  const dotsContainer = document.getElementById("dots");
+  const numSlides = slides.length;
+
+  slideIndex = Math.max(1, Math.min(n, numSlides));
+
+  Array.from(slides).forEach((slide, index) => {
+    slide.style.display = index === slideIndex - 1 ? "block" : "none";
+  });
+
+  dotsContainer.innerHTML = "";
+
+  for (let i = 0; i < numSlides; i++) {
+    const dot = document.createElement("span");
+    dot.className = "dot";
+    dot.addEventListener("click", () => currentSlide(i + 1));
+    dotsContainer.appendChild(dot);
+  }
+
+  const dots = document.getElementsByClassName("dot");
+  Array.from(dots).forEach((dot, index) => {
+    dot.classList.toggle("active", index === slideIndex - 1);
+  });
+}
+
+
+
+
 
 
 
@@ -261,21 +338,7 @@ function toggleAccordion() {
 
 
 
-const imgModal = document.getElementById("Modal");
-const btnModal = document.getElementById("openModal");
-const prevModal = document.querySelector(".product__modal-prev");
-const nextModal = document.querySelector(".product__modal-next");
 
-if(btnModal){
-  btnModal.onclick = function () {
-    modal.classList.toggle("active");
-  };
-  window.onclick = function (event) {
-    if (event.target == modal) {
-      modal.classList.toggle("active");
-    }
-  };
-}
 
 
 
