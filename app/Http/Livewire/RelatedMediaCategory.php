@@ -78,6 +78,14 @@ class RelatedMediaCategory extends Component
   {
     $this->row++;
   }
+  public function clear()
+  {
+    $this->row = 0;
+    $this->externalmedia = false;
+    $this->file_sequences = [];
+    $this->file_link = [];
+    $this->file_name = [];
+  }
   public function saveexternal()
   {
     $data = Category::find($this->categoryId);

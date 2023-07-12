@@ -144,6 +144,14 @@ class RelatedMediaProduct extends Component
       $this->checked = [];
     }
   }
+  public function clear()
+  {
+    $this->row = 0;
+    $this->externalmedia = false;
+    $this->file_sequences = [];
+    $this->file_link = [];
+    $this->file_name = [];
+  }
   public function saveexternal()
   {
     $data = Product::find($this->productId);
