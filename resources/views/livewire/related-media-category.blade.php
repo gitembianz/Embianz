@@ -35,108 +35,197 @@
                 wire:click.prevent="@if ($showmedia === false) $set('showmedia', true) @else $set('showmedia', false) @endif">
                 {{ __('Media ') }}({{ count($files) }})
             </button>
-            <button class="accordion__upload">
-                <input id="imgUpload" accept="image/*,video/*" type="file" multiple wire:model="medias">
-                <label class="item__upload-btn" for="imgUpload">
+            <button class="accordion__upload" wire:click="uploadmedia">
+                <div class="item__upload-btn">
                     <svg>
                         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                         <polyline points="17 8 12 3 7 8"></polyline>
                         <line x1="12" y1="3" x2="12" y2="15"></line>
                     </svg>
-                </label>
+                </div>
+
             </button>
+        </div>
+        <div class="modal" id="uploadmedia">
+            <div class="modal-content">
+                <h1 class="modal-content-title">
+                    {{ __('How you will upload?') }}
+                </h1>
+                <input id="imgUpload" accept="image/*,video/*" type="file" multiple wire:model="medias"
+                    style="display: none">
+                <label class="item__upload-btn" for="imgUpload">
+                    Local
+                </label>
+                <input class="modal-content-btn save" wire:click="external" type="button" value="External">
+
+                <span class="modal-content-btn delete"
+                    onclick="document.getElementById('uploadmedia').style.display='none'">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"
+                        fill="none" stroke="#BBFCDE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18">
+                        </line>
+                        <line x1="6" y1="6" x2="18" y2="18">
+                        </line>
+                    </svg>
+                </span>
+            </div>
         </div>
 
         @if ($showmedia)
 
             <div class="accordion__content" id="contentDiv">
-                <div class="item">
-                    <form wire:submit.prevent="save">
-                        <div class="item item__upload  mb-2 pb-3 bb-1">
+                <form wire:submit.prevent="save">
+                    <div class="item__upload">
 
-                            @if ($medias)
-                                <input type="submit" id="add_media_related" class="item__form-btn item__form-long"
-                                    value="Save Media">
-                                <div class="table-scroll">
+                        @if ($medias)
+                            <input type="submit" id="add_media_related" class="item__form-btn item__form-long"
+                                value="Save Media">
+                            <div class="table-scroll">
 
-                                    <table class="table">
-                                        <thead>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+
+                                            <th>Media</th>
+                                            <th>Name</th>
+                                            <th>Size</th>
+                                            <th>Type</th>
+                                            <th>Sequence</th>
+                                            <th>Location</th>
+                                            <th>Action</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($medias as $media)
                                             <tr>
+                                                <td>
+                                                    @if (str_starts_with($media->getMimeType(), 'image'))
+                                                        <img src="{{ $media->temporaryUrl() }}" width="50px">
+                                                    @elseif (str_starts_with($media->getMimeType(), 'video'))
+                                                        <video width="100px" controls>
+                                                            <source src="{{ $media->temporaryUrl() }}"
+                                                                type="{{ $media->getMimeType() }}">
+                                                            <span>{{ __('Your browser not suport video tag') }}</span>
+                                                        </video>
+                                                    @endif
+                                                </td>
+                                                <td>{{ $media->getClientOriginalName() }}</td>
+                                                <td>{{ $media->getSize() }} KB</td>
+                                                <td>{{ $media->getClientOriginalExtension() }}</td>
+                                                <td><input type="number" placeholder="Media sequence" min="0"
+                                                        required wire:model="file_sequences.{{ $loop->index }}"></td>
+                                                <td>
+                                                    <select required wire:model="file_locations.{{ $loop->index }}">
 
-                                                <th>Media</th>
-                                                <th>Name</th>
-                                                <th>Size</th>
-                                                <th>Type</th>
-                                                <th>Sequence</th>
-                                                <th>Location</th>
-                                                <th>Action</th>
-
+                                                        @php
+                                                            $firstLocation = $locations->first();
+                                                        @endphp
+                                                        <option value="{{ $firstLocation->id }}" selected>
+                                                            {{ $firstLocation->location }}</option>
+                                                        @foreach ($locations as $index => $location)
+                                                            @if ($loop->first)
+                                                                @continue
+                                                            @endif
+                                                            <option value="{{ $location->id }}">
+                                                                {{ $location->location }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </td>
+                                                <td><button class="delete"
+                                                        wire:click.prevent="removemedia({{ $loop->index }})">
+                                                        <svg>
+                                                            <circle cx="12" cy="12" r="10">
+                                                            </circle>
+                                                            <line x1="15" y1="9" x2="9"
+                                                                y2="15">
+                                                            </line>
+                                                            <line x1="9" y1="9" x2="15"
+                                                                y2="15">
+                                                            </line>
+                                                        </svg>
+                                                    </button></td>
                                             </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($medias as $media)
-                                                <tr>
-                                                    <td>
-                                                        @if (str_starts_with($media->getMimeType(), 'image'))
-                                                            <img src="{{ $media->temporaryUrl() }}" width="50px">
-                                                        @elseif (str_starts_with($media->getMimeType(), 'video'))
-                                                            <video width="100px" controls>
-                                                                <source src="{{ $media->temporaryUrl() }}"
-                                                                    type="{{ $media->getMimeType() }}">
-                                                                <span>{{ __('Your browser not suport video tag') }}</span>
-                                                            </video>
+                                        @endforeach
+
+                        @endif
+                        </tbody>
+                        </table>
+                    </div>
+                    @error('medias.*')
+                        <span class="error">{{ $message }}</span>
+                    @enderror
+
+                </form>
+                @if ($externalmedia)
+                    <form wire:submit.prevent="saveexternal">
+                        <div class="item">
+                            <input type="submit" id="add_media_related" class="item__form-btn item__form-long"
+                                value="Save Media">
+                            <table class="table-external">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Link</th>
+                                        <th>Sequence</th>
+                                        <th>Location</th>
+                                        <th>Action</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for ($i = 1; $i <= $row; $i++)
+                                        <tr>
+                                            <td>
+                                                <input required type="text"
+                                                    wire:model="file_name.{{ $i }}">
+                                            </td>
+                                            <td>
+                                                <input required type="url"
+                                                    wire:model="file_link.{{ $i }}">
+                                            </td>
+                                            <td>
+                                                <input required type="number" min="0"
+                                                    wire:model="file_sequences.{{ $i }}">
+
+                                            </td>
+                                            <td>
+                                                <select required wire:model="file_locations.{{ $i }}">
+                                                    @php
+                                                        $firstLocation = $locations->first();
+                                                    @endphp
+                                                    <option value="{{ $firstLocation->id }}" selected>
+                                                        {{ $firstLocation->location }}</option>
+                                                    @foreach ($locations as $index => $location)
+                                                        @if ($loop->first)
+                                                            @continue
                                                         @endif
-                                                    </td>
-                                                    <td>{{ $media->getClientOriginalName() }}</td>
-                                                    <td>{{ $media->getSize() }} KB</td>
-                                                    <td>{{ $media->getClientOriginalExtension() }}</td>
-                                                    <td><input type="number" placeholder="Media sequence"
-                                                            min="0" required
-                                                            wire:model="file_sequences.{{ $loop->index }}"></td>
-                                                    <td>
-                                                        <select required
-                                                            wire:model="file_locations.{{ $loop->index }}">
-
-                                                            @php
-                                                                $firstLocation = $locations->first();
-                                                            @endphp
-                                                            <option value="{{ $firstLocation->id }}" selected>
-                                                                {{ $firstLocation->location }}</option>
-                                                            @foreach ($locations as $index => $location)
-                                                                @if ($loop->first)
-                                                                    @continue
-                                                                @endif
-                                                                <option value="{{ $location->id }}">
-                                                                    {{ $location->location }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </td>
-                                                    <td><button class="delete"
-                                                            wire:click.prevent="removemedia({{ $loop->index }})">
-                                                            <svg>
-                                                                <circle cx="12" cy="12" r="10">
-                                                                </circle>
-                                                                <line x1="15" y1="9" x2="9"
-                                                                    y2="15">
-                                                                </line>
-                                                                <line x1="9" y1="9" x2="15"
-                                                                    y2="15">
-                                                                </line>
-                                                            </svg>
-                                                        </button></td>
-                                                </tr>
-                                            @endforeach
-
-                            @endif
-                            </tbody>
+                                                        <option value="{{ $location->id }}">
+                                                            {{ $location->location }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </td>
+                                            <td>
+                                                @if ($i == 1)
+                                                    <button type="button" class="edit" wire:click="plus">
+                                                        <svg>
+                                                            <line x1="12" y1="5" x2="12"
+                                                                y2="19">
+                                                            </line>
+                                                            <line x1="5" y1="12" x2="19"
+                                                                y2="12">
+                                                            </line>
+                                                        </svg>
+                                                    </button>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endfor
+                                </tbody>
                             </table>
                         </div>
-                        @error('medias.*')
-                            <span class="error">{{ $message }}</span>
-                        @enderror
-
                     </form>
-                </div>
+                @endif
                 <div class="item">
                     @if (count($files) > 0)
                         <div class="item__form form-table"
@@ -329,7 +418,7 @@
                                             <video src="/{{ $file->path . $file->name }}" width="150"
                                                 controls="true"></video>
                                         @else
-                                            {{ $file->name }}
+                                            <img src="{{ $file->path }}" width="100" alt="">
                                         @endif
                                     </td>
                                 @endif
@@ -430,7 +519,6 @@
             @else
                 <p>No media related</p>
             </div>
-
     </div>
     @endif
     @endif
