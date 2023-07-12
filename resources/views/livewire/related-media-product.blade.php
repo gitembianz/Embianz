@@ -227,10 +227,10 @@
                         @for ($i = 1; $i <= $row; $i++)
                             <tr>
                                 <td>
-                                    <input type="url" wire:model="file_link.{{ $i }}">
+                                    <input required type="url" wire:model="file_link.{{ $i }}">
                                 </td>
                                 <td>
-                                    <input type="number" min="0"
+                                    <input required type="number" min="0"
                                         wire:model="file_sequences.{{ $i }}">
 
                                 </td>
@@ -331,21 +331,20 @@
             </div>
 
             @if ($selectPage)
-                <div class="pt-2 talign-c">
 
-                    @if ($selectAll)
-                        <div>
-                            You have selected all <strong>{{ count($checked) }}</strong> items.
-                        </div>
-                    @else
-                        <div>
-                            You have selected <strong>{{ count($checked) }}</strong> items, Do you want
-                            to
-                            Select
-                            All?
-                            <a href="#" class="ml-2" wire:click="selectAll">Select All</a>
-                        </div>
-                    @endif
+                @if ($selectAll)
+                    <div>
+                        You have selected all <strong>{{ count($checked) }}</strong> items.
+                    </div>
+                @else
+                    <div>
+                        You have selected <strong>{{ count($checked) }}</strong> items, Do you want
+                        to
+                        Select
+                        All?
+                        <a href="#" class="ml-2" wire:click="selectAll">Select All</a>
+                    </div>
+                @endif
 
             @endif
 
