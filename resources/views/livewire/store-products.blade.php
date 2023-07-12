@@ -1,3 +1,4 @@
+<div>
     <div class="products__control">
         <button class="sidebar__open" id="filterOpen">
             <svg>
@@ -22,107 +23,57 @@
                 <option value="BMW">BMW</option>
                 <option value="Porsche">Porsche</option>
             </select>
+            <svg>
+                <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
         </div>
     </div>
-    <div class="product__catalog">
-        <article class="product__item">
-            <img src="/images/store/bottle1.png" alt="bottle number 1">
-            <h3>Navy Italy - 1000 ML</h3>
-            <p>Urban Bottle</p>
-            <span>89,99 lei</span>
-            <div class="product__item--buttons">
-                <button class="product__item--btn">Cumpara acum</button>
-                <button class="product__item--btn">
+    <div class="product__catalog p-4">
+        @foreach ($products as $product)
+            <article class="product__item"@if ($loop->last) id="last_record" @endif>
+                <img src="/images/store/bottle1.png" alt="bottle number 1">
+                <h3>{{ $product->name }}</h3>
+                <p>{{ $product->short_description }}</p>
+                <div class="product__item--price">
+                    <span class="deleted">99,99 lei</span>
+                    <span>89,99 lei</span>
+                </div>
+                <span class="percent">-10%</span>
+                <div class="product__item--buttons">
+                    <button class="product__item--btn">Cumpara acum</button>
+                    <button class="product__item--btn">
+                        <svg>
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6">
+                            </path>
+                        </svg>
+                    </button>
+                </div>
+                <button class="product__item--heart">
                     <svg>
-                        <circle cx="9" cy="21" r="1"></circle>
-                        <circle cx="20" cy="21" r="1"></circle>
-                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6">
+                        <path
+                            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
                         </path>
                     </svg>
                 </button>
-            </div>
-            <button class="product__item--heart">
-                <svg>
-                    <path
-                        d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
-                    </path>
-                </svg>
-            </button>
-        </article>
-        <article class="product__item">
-            <img src="/images/store/bottle1.png" alt="bottle number 1">
-            <h3>Navy Italy - 1000 ML</h3>
-            <p>Urban Bottle</p>
-            <span>89,99 lei</span>
-            <div class="product__item--buttons">
-                <button class="product__item--btn">Cumpara acum</button>
-                <button class="product__item--btn">
-                    <svg>
-                        <circle cx="9" cy="21" r="1"></circle>
-                        <circle cx="20" cy="21" r="1"></circle>
-                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6">
-                        </path>
-                    </svg>
-                </button>
-            </div>
-            <button class="product__item--heart">
-                <svg>
-                    <path
-                        d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
-                    </path>
-                </svg>
-            </button>
-        </article>
-        <article class="product__item">
-            <img src="/images/store/bottle1.png" alt="bottle number 1">
-            <h3>Navy Italy - 1000 ML</h3>
-            <p>Urban Bottle</p>
-            <span>89,99 lei</span>
-            <div class="product__item--buttons">
-                <button class="product__item--btn">Cumpara acum</button>
-                <button class="product__item--btn">
-                    <svg>
-                        <circle cx="9" cy="21" r="1"></circle>
-                        <circle cx="20" cy="21" r="1"></circle>
-                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6">
-                        </path>
-                    </svg>
-                </button>
-            </div>
-            <button class="product__item--heart">
-                <svg>
-                    <path
-                        d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
-                    </path>
-                </svg>
-            </button>
-        </article>
-        <article class="product__item">
-            <img src="/images/store/bottle1.png" alt="bottle number 1">
-            <h3>Navy Italy - 1000 ML</h3>
-            <p>Urban Bottle</p>
-            <div class="product__item--price">
-                <span class="deleted">99,99 lei</span>
-                <span>89,99 lei</span>
-            </div>
-            <span class="percent">-10%</span>
-            <div class="product__item--buttons">
-                <button class="product__item--btn">Cumpara acum</button>
-                <button class="product__item--btn">
-                    <svg>
-                        <circle cx="9" cy="21" r="1"></circle>
-                        <circle cx="20" cy="21" r="1"></circle>
-                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6">
-                        </path>
-                    </svg>
-                </button>
-            </div>
-            <button class="product__item--heart">
-                <svg>
-                    <path
-                        d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
-                    </path>
-                </svg>
-            </button>
-        </article>
+            </article>
+        @endforeach
     </div>
+    <script>
+        const lastRecord = document.getElementById('last_record');
+        const options = {
+            root: null,
+            threshold: 1,
+            rootMargin: '0px'
+        }
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    @this.loadMore()
+                }
+            });
+        });
+        observer.observe(lastRecord);
+    </script>
+</div>

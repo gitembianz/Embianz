@@ -81,6 +81,7 @@
                       distributed without the express written permission of Eztem-Corp.</i></q></span>
       </div>
   </footer>
+  @livewireScripts
   </body>
 
   <script src="/script/main.js"></script>
