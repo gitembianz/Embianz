@@ -1,7 +1,6 @@
 // Tab for Product
 .tab {
-  @include flexer(column, null, null, 20px);
-  // margin-top: 20px;
+  @include flexer(column, null, null, 10px);
   width: 100%;
 
   // Tab Header
@@ -10,15 +9,19 @@
 
     // Tabs Button in the header
     &--btn {
-      @include box(100%, 50px);
+      @include font(400, #f2f2f2);
+      @include box(auto, 50px);
+      @include responsive-spacing(padding-left, 0.01);
+      @include responsive-spacing(padding-right, 0.01);
+      @include darken-background($text, 5%);
       border: none;
       cursor: pointer;
-      color: $background;
-      border-radius: 100px;
-      background-color: lighten($text, 20%);
+      border-radius: 5px;
+      background-color: lighten($text, 30%);
+      transition: $transition;
 
       &.active {
-        background-color: $text;
+        background-color: darken($text, 10%);
       }
     }
   }
@@ -26,10 +29,13 @@
   // Tab Pane
   &__pane {
     @include fade(hide);
+    background-color: #f2f2f2;
+    border-radius: 10px;
     height: 0;
 
     &.active {
       @include fade(show);
+      @include responsive-spacing(padding, 0.02);
       height: unset;
     }
   }
@@ -84,5 +90,5 @@
 /* Table wrapper */
 .table__wrapper {
   border: 1px solid black;
-  border-radius: 12px 12px 0 0;
+  border-radius: 10px 10px 0 0;
 }

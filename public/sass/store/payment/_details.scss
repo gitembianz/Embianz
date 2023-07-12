@@ -41,8 +41,7 @@
 
   &__content--checkbox {
     @extend .details__tab--btn;
-    @include flexer(row, space-between, center);
-    // @include responsive-spacing(padding, 0.01);
+    @include flexer(row, center, center);
     grid-column: 1/3;
     width: 100%;
     position: relative;
@@ -79,7 +78,7 @@
       span {
         position: absolute;
         top: 50%;
-        right: 10px;
+        left: 10px;
         transform: translateY(-50%);
         @include box(25px);
         border-radius: 100%;
@@ -89,7 +88,7 @@
         &:after {
           display: none;
           @include abs-position (absolute, 50%, unset, unset, 50%);
-          content: url("/img/check.svg");
+          content: url("/images/store/check.svg");
           @include box(15px);
           transform: translate(-50%, -50%);
         }

@@ -116,12 +116,12 @@
                     </div>
                 </div>
                 <div class="details__content--checkbox"
-                    data-tooltip="Click if you want to purchase this item as a gift for someone special.">Shipping
-                    address
+                    data-tooltip="Click if you want to purchase this item as a gift for someone special.">
                     <label class="checkbox">
-                        <input type="checkbox">
-                        <span></span>
+                      <input type="checkbox">
+                      <span></span>
                     </label>
+                    Shipping address
                 </div>
                 <!-- here is delivery contact -->
                 <div class="details__content-add">

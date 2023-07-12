@@ -1,132 +1,245 @@
 .product {
-  @include flexer(column, center, center, 15px);
+  @include flexer(column, center, center, 25px);
 
+  @include breakpoint(medium) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    @include responsive-spacing(margin-bottom, 0.1);
+  }
+
+  @include breakpoint(x-large) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  // Preview is content in the left with images
+  &__preview {
+    @include flexer(column, center, flex-start, 10px);
+    @include box(100%);
+
+    @include breakpoint(x-large) {
+      @include flexer(row-reverse, center, flex-start);
+      height: 650px;
+    }
+  }
+
+  // The image in Preview
+  &__image {
+    position: relative;
+    @include box(100%);
+
+    // The buttons to prev and next for Image Preview
+    &-prev,
+    &-next {
+      @include box(50px);
+      @include flexer(row, center, center);
+      background-color: $text;
+      color: $background;
+      font-weight: bold;
+      cursor: pointer;
+      transform: translateY(-50%);
+      border-radius: 100px;
+    }
+
+    &-prev {
+      @include abs-position(absolute, 50%, auto, auto, 10px);
+    }
+
+    &-next {
+      @include abs-position(absolute, 50%, 10px, auto, auto);
+    }
+  }
+
+  // Nails section in the left for Image Preview
+  &__nails {
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    @include flexer(row, flex-start, center, 10px);
+    height: 120px;
+    width: 100%;
+    overflow-x: auto;
+
+    @include breakpoint(x-large) {
+      @include flexer(column, flex-start, center, 10px);
+      gap: 10px;
+      width: 120px;
+      height: 100%;
+      margin-bottom: 0;
+      padding-bottom: 0;
+      overflow-y: auto;
+      padding-right: 10px;
+      margin-right: 10px;
+    }
+  }
+
+  // The Modal for Image Preview
+  &__modal {
+    @include abs-position (fixed, 0, 0, null, null);
+    @include flexer(row, center, center);
+    @include fade(hide);
+    @include box(100%);
+    background-color: $modal;
+    transition: $transition;
+    z-index: 99;
+
+    &.active {
+      @include fade(show);
+    }
+
+    &-next,
+    &-prev {
+      @include btn;
+      z-index: 99;
+      position: absolute;
+    }
+
+    &-prev {
+      left: 10px;
+    }
+
+    &-next {
+      right: 10px;
+    }
+
+    &-img {
+      width: 100%;
+      max-width: 300px;
+      background-color: white;
+      border-radius: 20px;
+      z-index: 15;
+      scale: 1;
+      transition: all 0.3s ease-in-out;
+
+
+
+      &:first-child,
+      &:last-child {
+        scale: .65;
+        z-index: 10;
+        filter: brightness(.7);
+      }
+
+      &:first-child {
+        transform: rotate(-15deg) translate(35%, 15%);
+      }
+
+      &:last-child {
+        transform: rotate(15deg) translate(-35%, 15%);
+      }
+    }
+  }
+
+  // The information about the product
   &__info {
+    @include flexer(column, space-between, center, 25px);
+    @include responsive-spacing(padding, 0.02);
+    @include responsive-spacing(margin-bottom, 0.1);
+    background-color: #f2f2f2;
     text-align: center;
-    @include flexer(column, flex-start, center, 15px);
+    border-radius: 10px;
+    height: 100%;
+
+    @include breakpoint(medium) {
+      margin-bottom: 0;
+    }
+
+    @include breakpoint(x-large) {
+      height: 100%;
+      gap: 0;
+      justify-content: space-between;
+    }
 
     span {
       @include font(700, $text, center);
     }
   }
 
-  &__preview {
-    @include flexer(column, center, flex-start, 10px);
-    margin: 30px 0;
+  // Price and buttons from the product information
+  &__price {
+    @include flexer(row, space-between, center, 15px);
+    width: 100%;
+
+    &>.product__count {
+      width: 100%;
+      max-width: 250px;
+    }
+
+    h3 {
+      width: 100%;
+    }
   }
 
-  &__image {
-    position: relative;
-    @include box(100%);
+  &__buttons {
+    @include flexer(row, space-between, center, 15px);
+    width: 100%;
   }
 
   &__btn {
     @include flexer(row, center, center);
-    @include responsive-spacing(padding, .01);
-    @include box(auto, 2rem);
+    @include responsive-spacing(padding-top, .01);
+    @include responsive-spacing(padding-bottom, .01);
+    @include responsive-spacing(height, .3);
     background-color: $text;
     color: $background;
     border-radius: 10px;
-  }
-}
-
-.product__buttons {
-  @include flexer(row, unset, center, 15px);
-}
-
-.product__modal {
-  @include abs-position (fixed, 0, 0, null, null);
-  @include flexer(row, center, center);
-  @include fade(hide);
-  @include box(100%);
-  background-color: $modal;
-  transition: $transition;
-  z-index: 99;
-
-  &.active {
-    @include fade(show);
-  }
-
-  &-next,
-  &-prev {
-    @include btn;
-    z-index: 99;
-    position: absolute;
-  }
-
-  &-prev {
-    left: 10px;
-  }
-
-  &-next {
-    right: 10px;
-  }
-
-  &-img {
-    width: 100%;
-    max-width: 300px;
-    background-color: white;
-    border-radius: 20px;
-    z-index: 15;
-    scale: 1;
-    transition: all 0.3s ease-in-out;
-
-
-
-    &:first-child,
-    &:last-child {
-      scale: .65;
-      z-index: 10;
-      filter: brightness(.7);
-    }
 
     &:first-child {
-      transform: rotate(-15deg) translate(35%, 15%);
+      width: 100%;
+      flex: 1;
     }
 
     &:last-child {
-      transform: rotate(15deg) translate(-35%, 15%);
+      @include responsive-spacing(width, .3);
+    }
+  }
+
+  // Count for Product
+  &__count {
+    @include flexer(row, space-between, center, 10px);
+    border-radius: 10px;
+    border: 1.5px solid $text;
+    @include responsive-spacing(padding, .0001);
+
+    #count {
+      width: 100%;
+      flex: 1;
+      border: none;
+      background-color: transparent;
+      border-radius: 0;
+      text-align: center;
+      outline: none;
+
+      &::-webkit-outer-spin-button,
+      &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+
+      &[type=number] {
+        --moz-appearance: textfield;
+      }
+
+      &Decrease,
+      &Increase {
+        @include flexer(row, center, center);
+        background-color: $text;
+        border-radius: 100%;
+        @include responsive-spacing(width, .1);
+        @include responsive-spacing(height, .1);
+        border: none;
+        outline: none;
+        cursor: pointer;
+
+        svg {
+          scale: .9;
+          stroke: $background;
+        }
+      }
     }
   }
 }
 
-// @include breakpoint(small) {
-//     .product__modal-img {
-//         max-width: 500px;
-//     }
-// }
-
-// @include breakpoint(medium) {
-//     .product__modal-img {
-//         max-width: 700px;
-//     }
-// }
-
-
-.product__cart,
-.product__heart {
-  @include flexer(row, center, center);
-  @include font(unset, $background, unset);
-  @include box(3rem);
-  background-color: $text;
-  padding: 10px 0;
-  border-radius: 100px;
-}
-
-.product__cart {
-  @include box(auto, 3rem);
-  flex: 1;
-}
-
-.thumbnail-active {
-  @include box(100%, 400px);
-  object-fit: contain;
-  object-position: center;
-  border-radius: 15px;
-  background-color: #f2f2f2;
-  cursor: zoom-in;
-}
-
+// Thumbnails of Image Preview
 .thumbnail {
   @include box(100%);
   object-fit: cover;
@@ -134,128 +247,18 @@
   border-radius: 15px;
   background-color: #f2f2f2;
   cursor: pointer;
-}
+  max-width: 70px;
 
+  &-active {
+    @include box(100%, 100%);
+    object-fit: contain;
+    object-position: center;
+    border-radius: 15px;
+    background-color: #f2f2f2;
+    cursor: zoom-in;
 
-
-.product__name {
-  @include font(unset, color, unset);
-  display: none;
-}
-
-.product__price {
-  display: none;
-  @include font(700, $text, unset);
-
-  & del {
-    text-decoration: line-through;
-    font-weight: 300;
-    margin-right: 10px;
-  }
-}
-
-.product__nails {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px
-}
-
-.product__image-prev,
-.product__image-next {
-  @include box(50px);
-  background-color: $text;
-  color: $background;
-  font-weight: bold;
-  cursor: pointer;
-  transform: translateY(-50%);
-  border-radius: 100px;
-}
-
-.product__image-prev {
-  @include abs-position(absolute, 50%, auto, auto, 10px);
-}
-
-.product__image-next {
-  @include abs-position(absolute, 50%, 10px, auto, auto);
-}
-
-
-// @include breakpoint(tablet) {
-//     .product__preview {
-//         @include flexer(row-reverse, center, flex-start, 10px);
-//     }
-
-//     .product__nails {
-//         @include flexer(column, center, flex-start, 10px);
-//     }
-
-//     .thumbnail {
-//         @include box(60px);
-//         object-fit: cover;
-//         object-position: center;
-//         border-radius: 15px;
-//         background-color: white;
-//         cursor: pointer;
-//     }
-
-//     .product {
-//         grid-template-columns: 1fr 1fr;
-//         gap: 20px;
-
-//         &__price-mobile,
-//         &__name-mobile {
-//             display: none;
-//         }
-
-//         &__price,
-//         &__name {
-//             display: block;
-//         }
-
-//         &__preview {
-//             margin: 0;
-//         }
-//     }
-// }
-
-
-.product__count {
-  @include flexer(row, center, center, 10px);
-  border-radius: 10px;
-  border: 1px solid $text;
-  @include responsive-spacing(padding, .0001);
-}
-
-#count {
-  width: 30px;
-  border: none;
-  background-color: transparent;
-  border-radius: 0;
-  text-align: center;
-  outline: none;
-
-  &::-webkit-outer-spin-button,
-  &::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-
-  &[type=number] {
-    --moz-appearance: textfield;
-  }
-}
-
-#countDecrease,
-#countIncrease {
-  @include flexer(row, center, center);
-  background-color: $text;
-  border-radius: 100%;
-  border: none;
-  outline: none;
-  cursor: pointer;
-
-  svg {
-    scale: .7;
-    stroke: $background;
+    @include breakpoint(x-large) {
+      height: 100%
+    }
   }
 }
