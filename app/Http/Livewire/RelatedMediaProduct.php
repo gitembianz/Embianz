@@ -67,7 +67,6 @@ class RelatedMediaProduct extends Component
   {
     $this->editedMediaIndex = $mediaIndex;
   }
-
   public function uploadmedia()
   {
     $this->showmedia = true;
@@ -150,7 +149,16 @@ class RelatedMediaProduct extends Component
     $productType = class_basename(get_class($data));
 
     for ($i = 1; $i <= $this->row; $i++) {
+      $this->resetErrorBag();
+      $this->validate([
+        'file_sequences.*' => 'required',
+        'file_locations.*' => 'required',
+        'file_link.*' => 'required|url'
+      ]);
+
       $media = new Media();
+      // if (isset($this->file_sequences[$i]) && isset($this->file_locations[$i]) && isset($this->file_link[$i])) {
+
       $media->sequence = $this->file_sequences[$i];
       $media->location_id = $this->file_locations[$i];
       $media->path = $this->file_link[$i];
@@ -162,7 +170,14 @@ class RelatedMediaProduct extends Component
 
       $media->save();
       session()->flash('message', 'Media Update Successfully!');
+      // } else {
+      //   session()->flash('message', 'Please provide the all information');
+      // }
     }
+    $this->row = 0;
+    $this->externalmedia = false;
+    $this->file_sequences = [];
+    $this->file_link = [];
   }
   public function save()
   {
