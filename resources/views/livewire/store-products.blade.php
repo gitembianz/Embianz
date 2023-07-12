@@ -1,4 +1,4 @@
-<div>
+<div class="products">
     <div class="products__control">
         <button class="sidebar__open" id="filterOpen">
             <svg>
@@ -28,7 +28,7 @@
             </svg>
         </div>
     </div>
-    <div class="product__catalog p-4">
+    <div class="product__catalog">
         @foreach ($products as $product)
             <article class="product__item"@if ($loop->last) id="last_record" @endif>
                 <img src="/images/store/bottle1.png" alt="bottle number 1">
