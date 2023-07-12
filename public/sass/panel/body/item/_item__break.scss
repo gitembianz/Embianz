@@ -22,6 +22,7 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
 
+
       &.form-table {
         grid-auto-flow: column;
         grid-template-columns: 3fr 1fr 1fr;

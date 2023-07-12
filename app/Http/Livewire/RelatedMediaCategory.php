@@ -40,12 +40,17 @@ class RelatedMediaCategory extends Component
   public $locations;
   public $file_sequences = ['0'];
   public $file_locations = ['1'];
+  public $file_link = [];
+  public $file_name = [];
   public $col = false;
   public $all = false;
   public $hasResults;
   public $editedMediaIndex = null;
   public $i;
   public $j;
+  public $row = 1;
+  public $externalmedia = false;
+
 
   public function mount($categoryId)
   {
@@ -58,6 +63,66 @@ class RelatedMediaCategory extends Component
     $this->file_locations[] = '1';
     $this->i = null;
     $this->j = null;
+  }
+  public function uploadmedia()
+  {
+    $this->showmedia = true;
+    $this->dispatchBrowserEvent('media');
+  }
+  public function external()
+  {
+    $this->row = 1;
+    $this->externalmedia = true;
+  }
+  public function plus()
+  {
+    $this->row++;
+  }
+  public function clear()
+  {
+    $this->row = 0;
+    $this->externalmedia = false;
+    $this->file_sequences = [];
+    $this->file_link = [];
+    $this->file_name = [];
+  }
+  public function saveexternal()
+  {
+    $data = Category::find($this->categoryId);
+    $productType = class_basename(get_class($data));
+
+    for ($i = 1; $i <= $this->row; $i++) {
+      $this->resetErrorBag();
+      $this->validate([
+        'file_sequences.*' => 'required',
+        'file_locations.*' => 'required',
+        'file_link.*' => 'required|url',
+        'file_name.*' => 'required'
+      ]);
+
+      $media = new Media();
+      // if (isset($this->file_sequences[$i]) && isset($this->file_locations[$i]) && isset($this->file_link[$i])) {
+      $media->name = $this->file_name[$i];
+      $media->sequence = $this->file_sequences[$i];
+      $media->location_id = $this->file_locations[$i];
+      $media->path = $this->file_link[$i];
+      $media->extrenal = true;
+      $media->createdby = Auth::user()->name;
+      $media->lastmodifiedby = Auth::user()->name;
+      $media->item_id = $this->categoryId;
+      $media->tabel_id = Tabels::where('name', $productType)->first()->id;
+
+      $media->save();
+      session()->flash('message', 'Media Update Successfully!');
+      // } else {
+      //   session()->flash('message', 'Please provide the all information');
+      // }
+    }
+    $this->row = 0;
+    $this->externalmedia = false;
+    $this->file_sequences = [];
+    $this->file_link = [];
+    $this->file_name = [];
   }
   public function editMedia($mediaIndex)
   {

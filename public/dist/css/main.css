@@ -2795,7 +2795,7 @@ input[type=checkbox]:checked:before {
   border: 1px solid rgba(96, 204, 253, 0.6588235294);
 }
 
-.table {
+.table, .table-external {
   width: 100%;
   border-collapse: collapse;
   color: #000;
@@ -2803,22 +2803,27 @@ input[type=checkbox]:checked:before {
 .table-scroll {
   overflow-x: scroll;
 }
-.table td,
-.table th {
+.table td, .table-external td,
+.table th,
+.table-external th {
   border: 1px solid #20282d;
   padding: 10px;
   height: 70px;
 }
-.table td img,
-.table th img {
+.table td img, .table-external td img,
+.table th img,
+.table-external th img {
   height: 100%;
   -o-object-fit: contain;
      object-fit: contain;
 }
-.table td select,
+.table td select, .table-external td select,
 .table td input,
+.table-external td input,
 .table th select,
-.table th input {
+.table-external th select,
+.table th input,
+.table-external th input {
   border: 1.5px solid #35424B;
   border-radius: 10px;
   padding: 10px;
@@ -2835,32 +2840,42 @@ input[type=checkbox]:checked:before {
   -moz-appearance: none;
   margin: 0 auto;
 }
-.table td select::-webkit-scrollbar,
+.table td select::-webkit-scrollbar, .table-external td select::-webkit-scrollbar,
 .table td input::-webkit-scrollbar,
+.table-external td input::-webkit-scrollbar,
 .table th select::-webkit-scrollbar,
-.table th input::-webkit-scrollbar {
+.table-external th select::-webkit-scrollbar,
+.table th input::-webkit-scrollbar,
+.table-external th input::-webkit-scrollbar {
   width: 10px;
   background: #2a353c;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
 }
-.table td select::-webkit-scrollbar-thumb,
+.table td select::-webkit-scrollbar-thumb, .table-external td select::-webkit-scrollbar-thumb,
 .table td input::-webkit-scrollbar-thumb,
+.table-external td input::-webkit-scrollbar-thumb,
 .table th select::-webkit-scrollbar-thumb,
-.table th input::-webkit-scrollbar-thumb {
+.table-external th select::-webkit-scrollbar-thumb,
+.table th input::-webkit-scrollbar-thumb,
+.table-external th input::-webkit-scrollbar-thumb {
   background: #20282d;
   border-radius: 10px;
   -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
 }
-.table td select::-webkit-scrollbar-thumb:hover,
+.table td select::-webkit-scrollbar-thumb:hover, .table-external td select::-webkit-scrollbar-thumb:hover,
 .table td input::-webkit-scrollbar-thumb:hover,
+.table-external td input::-webkit-scrollbar-thumb:hover,
 .table th select::-webkit-scrollbar-thumb:hover,
-.table th input::-webkit-scrollbar-thumb:hover {
+.table-external th select::-webkit-scrollbar-thumb:hover,
+.table th input::-webkit-scrollbar-thumb:hover,
+.table-external th input::-webkit-scrollbar-thumb:hover {
   background: #151b1e;
 }
-.table td button,
-.table th button {
+.table td button, .table-external td button,
+.table th button,
+.table-external th button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2885,44 +2900,61 @@ input[type=checkbox]:checked:before {
   font-size: x-large;
   font-weight: 700;
 }
-.table td button:hover,
-.table th button:hover {
+.table td button:hover, .table-external td button:hover,
+.table th button:hover,
+.table-external th button:hover {
   background-color: #0b0d0f;
   color: #BBFCDE;
 }
-.table td button:hover > .sidebar__icon,
-.table th button:hover > .sidebar__icon {
+.table td button:hover > .sidebar__icon, .table-external td button:hover > .sidebar__icon,
+.table th button:hover > .sidebar__icon,
+.table-external th button:hover > .sidebar__icon {
   background-color: #0b0d0f;
 }
-.table td button.active, .table td button:active, .table td button:focus-visible,
+.table td button.active, .table-external td button.active, .table td button:active, .table-external td button:active, .table td button:focus-visible, .table-external td button:focus-visible,
 .table th button.active,
+.table-external th button.active,
 .table th button:active,
-.table th button:focus-visible {
+.table-external th button:active,
+.table th button:focus-visible,
+.table-external th button:focus-visible {
   background-color: #BBFCDE;
   color: #35424B;
 }
-.table td button.active > .sidebar__icon, .table td button:active > .sidebar__icon, .table td button:focus-visible > .sidebar__icon,
+.table td button.active > .sidebar__icon, .table-external td button.active > .sidebar__icon, .table td button:active > .sidebar__icon, .table-external td button:active > .sidebar__icon, .table td button:focus-visible > .sidebar__icon, .table-external td button:focus-visible > .sidebar__icon,
 .table th button.active > .sidebar__icon,
+.table-external th button.active > .sidebar__icon,
 .table th button:active > .sidebar__icon,
-.table th button:focus-visible > .sidebar__icon {
+.table-external th button:active > .sidebar__icon,
+.table th button:focus-visible > .sidebar__icon,
+.table-external th button:focus-visible > .sidebar__icon {
   background-color: #BBFCDE;
 }
-.table td button.active > .sidebar__icon svg, .table td button:active > .sidebar__icon svg, .table td button:focus-visible > .sidebar__icon svg,
+.table td button.active > .sidebar__icon svg, .table-external td button.active > .sidebar__icon svg, .table td button:active > .sidebar__icon svg, .table-external td button:active > .sidebar__icon svg, .table td button:focus-visible > .sidebar__icon svg, .table-external td button:focus-visible > .sidebar__icon svg,
 .table th button.active > .sidebar__icon svg,
+.table-external th button.active > .sidebar__icon svg,
 .table th button:active > .sidebar__icon svg,
-.table th button:focus-visible > .sidebar__icon svg {
+.table-external th button:active > .sidebar__icon svg,
+.table th button:focus-visible > .sidebar__icon svg,
+.table-external th button:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-.table td button.active svg, .table td button:active svg, .table td button:focus-visible svg,
+.table td button.active svg, .table-external td button.active svg, .table td button:active svg, .table-external td button:active svg, .table td button:focus-visible svg, .table-external td button:focus-visible svg,
 .table th button.active svg,
+.table-external th button.active svg,
 .table th button:active svg,
-.table th button:focus-visible svg {
+.table-external th button:active svg,
+.table th button:focus-visible svg,
+.table-external th button:focus-visible svg {
   stroke: #35424B;
 }
-.table td button img,
+.table td button img, .table-external td button img,
 .table td button svg,
+.table-external td button svg,
 .table th button img,
-.table th button svg {
+.table-external th button img,
+.table th button svg,
+.table-external th button svg {
   width: 23px;
   height: 23px;
   stroke: #BBFCDE;
@@ -2931,128 +2963,178 @@ input[type=checkbox]:checked:before {
   transition: all 0.2s ease-in-out;
   pointer-events: none;
 }
-.table td button.delete,
-.table th button.delete {
+.table td button.delete, .table-external td button.delete,
+.table th button.delete,
+.table-external th button.delete {
   background-color: #e25b73;
 }
-.table td button.delete:hover,
-.table th button.delete:hover {
+.table td button.delete:hover, .table-external td button.delete:hover,
+.table th button.delete:hover,
+.table-external th button.delete:hover {
   background-color: #b7203b;
   color: #60111f;
 }
-.table td button.delete:hover > .sidebar__icon,
-.table th button.delete:hover > .sidebar__icon {
+.table td button.delete:hover > .sidebar__icon, .table-external td button.delete:hover > .sidebar__icon,
+.table th button.delete:hover > .sidebar__icon,
+.table-external th button.delete:hover > .sidebar__icon {
   background-color: #b7203b;
 }
-.table td button.delete.active, .table td button.delete:active, .table td button.delete:focus-visible,
+.table td button.delete.active, .table-external td button.delete.active, .table td button.delete:active, .table-external td button.delete:active, .table td button.delete:focus-visible, .table-external td button.delete:focus-visible,
 .table th button.delete.active,
+.table-external th button.delete.active,
 .table th button.delete:active,
-.table th button.delete:focus-visible {
+.table-external th button.delete:active,
+.table th button.delete:focus-visible,
+.table-external th button.delete:focus-visible {
   background-color: #60111f;
   color: #BBFCDE;
 }
-.table td button.delete.active > .sidebar__icon, .table td button.delete:active > .sidebar__icon, .table td button.delete:focus-visible > .sidebar__icon,
+.table td button.delete.active > .sidebar__icon, .table-external td button.delete.active > .sidebar__icon, .table td button.delete:active > .sidebar__icon, .table-external td button.delete:active > .sidebar__icon, .table td button.delete:focus-visible > .sidebar__icon, .table-external td button.delete:focus-visible > .sidebar__icon,
 .table th button.delete.active > .sidebar__icon,
+.table-external th button.delete.active > .sidebar__icon,
 .table th button.delete:active > .sidebar__icon,
-.table th button.delete:focus-visible > .sidebar__icon {
+.table-external th button.delete:active > .sidebar__icon,
+.table th button.delete:focus-visible > .sidebar__icon,
+.table-external th button.delete:focus-visible > .sidebar__icon {
   background-color: #60111f;
 }
-.table td button.delete.active > .sidebar__icon svg, .table td button.delete:active > .sidebar__icon svg, .table td button.delete:focus-visible > .sidebar__icon svg,
+.table td button.delete.active > .sidebar__icon svg, .table-external td button.delete.active > .sidebar__icon svg, .table td button.delete:active > .sidebar__icon svg, .table-external td button.delete:active > .sidebar__icon svg, .table td button.delete:focus-visible > .sidebar__icon svg, .table-external td button.delete:focus-visible > .sidebar__icon svg,
 .table th button.delete.active > .sidebar__icon svg,
+.table-external th button.delete.active > .sidebar__icon svg,
 .table th button.delete:active > .sidebar__icon svg,
-.table th button.delete:focus-visible > .sidebar__icon svg {
+.table-external th button.delete:active > .sidebar__icon svg,
+.table th button.delete:focus-visible > .sidebar__icon svg,
+.table-external th button.delete:focus-visible > .sidebar__icon svg {
   stroke: #BBFCDE;
 }
-.table td button.delete.active svg, .table td button.delete:active svg, .table td button.delete:focus-visible svg,
+.table td button.delete.active svg, .table-external td button.delete.active svg, .table td button.delete:active svg, .table-external td button.delete:active svg, .table td button.delete:focus-visible svg, .table-external td button.delete:focus-visible svg,
 .table th button.delete.active svg,
+.table-external th button.delete.active svg,
 .table th button.delete:active svg,
-.table th button.delete:focus-visible svg {
+.table-external th button.delete:active svg,
+.table th button.delete:focus-visible svg,
+.table-external th button.delete:focus-visible svg {
   stroke: #BBFCDE;
 }
-.table td button.edit,
-.table th button.edit {
+.table td button.edit, .table-external td button.edit,
+.table th button.edit,
+.table-external th button.edit {
   background-color: #ffffff;
 }
-.table td button.edit:hover,
-.table th button.edit:hover {
+.table td button.edit:hover, .table-external td button.edit:hover,
+.table th button.edit:hover,
+.table-external th button.edit:hover {
   background-color: #28f697;
   color: #28f697;
 }
-.table td button.edit:hover > .sidebar__icon,
-.table th button.edit:hover > .sidebar__icon {
+.table td button.edit:hover > .sidebar__icon, .table-external td button.edit:hover > .sidebar__icon,
+.table th button.edit:hover > .sidebar__icon,
+.table-external th button.edit:hover > .sidebar__icon {
   background-color: #28f697;
 }
-.table td button.edit.active, .table td button.edit:active, .table td button.edit:focus-visible,
+.table td button.edit.active, .table-external td button.edit.active, .table td button.edit:active, .table-external td button.edit:active, .table td button.edit:focus-visible, .table-external td button.edit:focus-visible,
 .table th button.edit.active,
+.table-external th button.edit.active,
 .table th button.edit:active,
-.table th button.edit:focus-visible {
+.table-external th button.edit:active,
+.table th button.edit:focus-visible,
+.table-external th button.edit:focus-visible {
   background-color: #28f697;
   color: #35424B;
 }
-.table td button.edit.active > .sidebar__icon, .table td button.edit:active > .sidebar__icon, .table td button.edit:focus-visible > .sidebar__icon,
+.table td button.edit.active > .sidebar__icon, .table-external td button.edit.active > .sidebar__icon, .table td button.edit:active > .sidebar__icon, .table-external td button.edit:active > .sidebar__icon, .table td button.edit:focus-visible > .sidebar__icon, .table-external td button.edit:focus-visible > .sidebar__icon,
 .table th button.edit.active > .sidebar__icon,
+.table-external th button.edit.active > .sidebar__icon,
 .table th button.edit:active > .sidebar__icon,
-.table th button.edit:focus-visible > .sidebar__icon {
+.table-external th button.edit:active > .sidebar__icon,
+.table th button.edit:focus-visible > .sidebar__icon,
+.table-external th button.edit:focus-visible > .sidebar__icon {
   background-color: #28f697;
 }
-.table td button.edit.active > .sidebar__icon svg, .table td button.edit:active > .sidebar__icon svg, .table td button.edit:focus-visible > .sidebar__icon svg,
+.table td button.edit.active > .sidebar__icon svg, .table-external td button.edit.active > .sidebar__icon svg, .table td button.edit:active > .sidebar__icon svg, .table-external td button.edit:active > .sidebar__icon svg, .table td button.edit:focus-visible > .sidebar__icon svg, .table-external td button.edit:focus-visible > .sidebar__icon svg,
 .table th button.edit.active > .sidebar__icon svg,
+.table-external th button.edit.active > .sidebar__icon svg,
 .table th button.edit:active > .sidebar__icon svg,
-.table th button.edit:focus-visible > .sidebar__icon svg {
+.table-external th button.edit:active > .sidebar__icon svg,
+.table th button.edit:focus-visible > .sidebar__icon svg,
+.table-external th button.edit:focus-visible > .sidebar__icon svg {
   stroke: #35424B;
 }
-.table td button.edit.active svg, .table td button.edit:active svg, .table td button.edit:focus-visible svg,
+.table td button.edit.active svg, .table-external td button.edit.active svg, .table td button.edit:active svg, .table-external td button.edit:active svg, .table td button.edit:focus-visible svg, .table-external td button.edit:focus-visible svg,
 .table th button.edit.active svg,
+.table-external th button.edit.active svg,
 .table th button.edit:active svg,
-.table th button.edit:focus-visible svg {
+.table-external th button.edit:active svg,
+.table th button.edit:focus-visible svg,
+.table-external th button.edit:focus-visible svg {
   stroke: #35424B;
 }
-.table td button.edit svg,
-.table th button.edit svg {
+.table td button.edit svg, .table-external td button.edit svg,
+.table th button.edit svg,
+.table-external th button.edit svg {
   stroke: #35424B;
 }
-.table td button.submit,
-.table th button.submit {
+.table td button.submit, .table-external td button.submit,
+.table th button.submit,
+.table-external th button.submit {
   background-color: #BBFCDE;
   color: #35424B;
 }
-.table td button.submit:hover,
-.table th button.submit:hover {
+.table td button.submit:hover, .table-external td button.submit:hover,
+.table th button.submit:hover,
+.table-external th button.submit:hover {
   background-color: #28f697;
   color: #08b062;
 }
-.table td button.submit:hover > .sidebar__icon,
-.table th button.submit:hover > .sidebar__icon {
+.table td button.submit:hover > .sidebar__icon, .table-external td button.submit:hover > .sidebar__icon,
+.table th button.submit:hover > .sidebar__icon,
+.table-external th button.submit:hover > .sidebar__icon {
   background-color: #28f697;
 }
-.table td button.submit.active, .table td button.submit:active, .table td button.submit:focus-visible,
+.table td button.submit.active, .table-external td button.submit.active, .table td button.submit:active, .table-external td button.submit:active, .table td button.submit:focus-visible, .table-external td button.submit:focus-visible,
 .table th button.submit.active,
+.table-external th button.submit.active,
 .table th button.submit:active,
-.table th button.submit:focus-visible {
+.table-external th button.submit:active,
+.table th button.submit:focus-visible,
+.table-external th button.submit:focus-visible {
   background-color: #08b062;
   color: #20282d;
 }
-.table td button.submit.active > .sidebar__icon, .table td button.submit:active > .sidebar__icon, .table td button.submit:focus-visible > .sidebar__icon,
+.table td button.submit.active > .sidebar__icon, .table-external td button.submit.active > .sidebar__icon, .table td button.submit:active > .sidebar__icon, .table-external td button.submit:active > .sidebar__icon, .table td button.submit:focus-visible > .sidebar__icon, .table-external td button.submit:focus-visible > .sidebar__icon,
 .table th button.submit.active > .sidebar__icon,
+.table-external th button.submit.active > .sidebar__icon,
 .table th button.submit:active > .sidebar__icon,
-.table th button.submit:focus-visible > .sidebar__icon {
+.table-external th button.submit:active > .sidebar__icon,
+.table th button.submit:focus-visible > .sidebar__icon,
+.table-external th button.submit:focus-visible > .sidebar__icon {
   background-color: #08b062;
 }
-.table td button.submit.active > .sidebar__icon svg, .table td button.submit:active > .sidebar__icon svg, .table td button.submit:focus-visible > .sidebar__icon svg,
+.table td button.submit.active > .sidebar__icon svg, .table-external td button.submit.active > .sidebar__icon svg, .table td button.submit:active > .sidebar__icon svg, .table-external td button.submit:active > .sidebar__icon svg, .table td button.submit:focus-visible > .sidebar__icon svg, .table-external td button.submit:focus-visible > .sidebar__icon svg,
 .table th button.submit.active > .sidebar__icon svg,
+.table-external th button.submit.active > .sidebar__icon svg,
 .table th button.submit:active > .sidebar__icon svg,
-.table th button.submit:focus-visible > .sidebar__icon svg {
+.table-external th button.submit:active > .sidebar__icon svg,
+.table th button.submit:focus-visible > .sidebar__icon svg,
+.table-external th button.submit:focus-visible > .sidebar__icon svg {
   stroke: #20282d;
 }
-.table td button.submit.active svg, .table td button.submit:active svg, .table td button.submit:focus-visible svg,
+.table td button.submit.active svg, .table-external td button.submit.active svg, .table td button.submit:active svg, .table-external td button.submit:active svg, .table td button.submit:focus-visible svg, .table-external td button.submit:focus-visible svg,
 .table th button.submit.active svg,
+.table-external th button.submit.active svg,
 .table th button.submit:active svg,
-.table th button.submit:focus-visible svg {
+.table-external th button.submit:active svg,
+.table th button.submit:focus-visible svg,
+.table-external th button.submit:focus-visible svg {
   stroke: #20282d;
 }
-.table thead {
+.table thead, .table-external thead {
   background-color: #20282d;
   color: #ffffff;
+}
+
+.table-external td {
+  border: none !important;
 }
 
 .pagination {
