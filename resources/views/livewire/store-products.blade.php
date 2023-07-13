@@ -31,57 +31,66 @@
     <div class="product__catalog">
 
         @foreach ($products as $product)
-            <article class="product__item" @if ($loop->last) id="last_record" @endif>
-                <?php
-                $foundMedia = false; // Variable to track if matching media is found
-                $mediaPath = null; // Variable to store the media path
-                ?>
+            <a href="/product/{{ $product->id }}'">
+                <article class="product__item" @if ($loop->last) id="last_record" @endif>
+                    <?php
+                    $foundMedia = false; // Variable to track if matching media is found
+                    $mediaPath = null; // Variable to store the media path
+                    ?>
 
-                @foreach ($medias as $media)
-                    @if ($media->item_id == $product->id)
-                        <?php
-                        $foundMedia = true;
-                        $mediaPath = $media->extrenal ? $media->path : "/{$media->path}{$media->name}";
-                        ?>
-                    @break
+                    @foreach ($medias as $media)
+                        @if ($media->item_id == $product->id)
+                            <?php
+                            $foundMedia = true;
+                            $mediaPath = $media->extrenal ? $media->path : "/{$media->path}{$media->name}";
+                            ?>
+                        @break
 
-                    // Exit the inner loop once a matching media is found
+                        // Exit the inner loop once a matching media is found
+                    @endif
+                @endforeach
+
+                @if ($foundMedia)
+                    <img src="{{ $mediaPath }}" alt="something wrong">
+                @else
+                    <img src="/images/store/default/product.png" alt="something wrong">
                 @endif
-            @endforeach
 
-            @if ($foundMedia)
-                <img src="{{ $mediaPath }}" alt="something wrong">
-            @else
-                <img src="/images/store/default/product.png" alt="something wrong">
-            @endif
-
-            <h3>{{ $product->name }}</h3>
-            <p>{{ $product->short_description }}</p>
-            <div class="product__item--price">
-                {{-- <span class="deleted">99,99 lei</span>
+                <h3>{{ $product->name }}</h3>
+                <p>{{ $product->short_description }}</p>
+                <div class="product__item--price">
+                    {{-- <span class="deleted">99,99 lei</span>
                     <span>89,99 lei</span> --}}
-                <span>99,99</span>
-            </div>
-            {{-- <span class="percent">-10%</span> --}}
-            <div class="product__item--buttons">
-                <button class="product__item--btn">Buy now</button>
-                <button class="product__item--btn">
+                    <span>
+                        @if ($product->product_prices->first() !== null)
+                            {{ $product->product_prices->first()->value }}
+                            {{ $product->product_prices->first()->pricelist->currency->first()->name }}
+                        @else
+                            no price
+                        @endif
+                    </span>
+                </div>
+                {{-- <span class="percent">-10%</span> --}}
+                <div class="product__item--buttons">
+                    <button class="product__item--btn">Buy now</button>
+                    <button class="product__item--btn">
+                        <svg>
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6">
+                            </path>
+                        </svg>
+                    </button>
+                </div>
+                <button class="product__item--heart">
                     <svg>
-                        <circle cx="9" cy="21" r="1"></circle>
-                        <circle cx="20" cy="21" r="1"></circle>
-                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6">
+                        <path
+                            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
                         </path>
                     </svg>
                 </button>
-            </div>
-            <button class="product__item--heart">
-                <svg>
-                    <path
-                        d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
-                    </path>
-                </svg>
-            </button>
-        </article>
+            </article>
+        </a>
     @endforeach
 </div>
 {{-- script for lazy load --}}
