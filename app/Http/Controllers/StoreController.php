@@ -6,6 +6,7 @@ use App\Models\Store;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreStoreRequest;
 use App\Http\Requests\UpdateStoreRequest;
+use App\Models\Product;
 
 class StoreController extends Controller
 {
@@ -52,9 +53,10 @@ class StoreController extends Controller
   /**
    * Display the specified resource.
    */
-  public function show(Store $store)
+  public function show($id)
   {
-    return view('store.product');
+    $data = Product::find($id);
+    return view('store.product', compact('data'));
   }
 
   /**
