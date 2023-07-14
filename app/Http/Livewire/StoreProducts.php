@@ -14,7 +14,6 @@ class StoreProducts extends Component
   public $totalRecords;
   public $loadAmount = 9;
   public $medias = [];
-  public $type;
   public $product;
 
   public function loadMore()
