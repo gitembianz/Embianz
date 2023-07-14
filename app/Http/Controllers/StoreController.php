@@ -33,6 +33,10 @@ class StoreController extends Controller
   {
     return view('store.complete');
   }
+  public function products()
+  {
+    return view('store.products');
+  }
 
   /**
    * Show the form for creating a new resource.
