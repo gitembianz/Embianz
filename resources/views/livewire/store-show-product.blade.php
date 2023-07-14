@@ -79,19 +79,21 @@
                         </div>
                     @endforeach
                     <!-- Next and previous buttons -->
-                    <a class="prev" onclick="plusSlides(-1)">
-                        <svg>
-                            <polyline points="15 18 9 12 15 6"></polyline>
-                        </svg>
-                    </a>
-                    <a class="next" onclick="plusSlides(1)">
-                        <svg>
-                            <polyline points="9 18 15 12 9 6"></polyline>
-                        </svg>
-                    </a>
-                    <!-- Dots buttons -->
-                    <div class="dots" id="dots">
-                    </div>
+                    @if (count($medias) > 1)
+                        <a class="prev" onclick="plusSlides(-1)">
+                            <svg>
+                                <polyline points="15 18 9 12 15 6"></polyline>
+                            </svg>
+                        </a>
+                        <a class="next" onclick="plusSlides(1)">
+                            <svg>
+                                <polyline points="9 18 15 12 9 6"></polyline>
+                            </svg>
+                        </a>
+                        <!-- Dots buttons -->
+                        <div class="dots" id="dots">
+                        </div>
+                    @endif
                     <button id="closeModal">
                         <svg>
                             <line x1="18" y1="6" x2="6" y2="18"></line>
