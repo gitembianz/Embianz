@@ -49,6 +49,8 @@ return array(
     'App\\Http\\Livewire\\ShowProduct' => $baseDir . '/app/Http/Livewire/ShowProduct.php',
     'App\\Http\\Livewire\\ShowSpec' => $baseDir . '/app/Http/Livewire/ShowSpec.php',
     'App\\Http\\Livewire\\Specstable' => $baseDir . '/app/Http/Livewire/Specstable.php',
+    'App\\Http\\Livewire\\StoreProducts' => $baseDir . '/app/Http/Livewire/StoreProducts.php',
+    'App\\Http\\Livewire\\StoreShowProduct' => $baseDir . '/app/Http/Livewire/StoreShowProduct.php',
     'App\\Http\\Livewire\\Storesettingsform' => $baseDir . '/app/Http/Livewire/Storesettingsform.php',
     'App\\Http\\Livewire\\Storesettingstable' => $baseDir . '/app/Http/Livewire/Storesettingstable.php',
     'App\\Http\\Middleware\\Authenticate' => $baseDir . '/app/Http/Middleware/Authenticate.php',
