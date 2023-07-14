@@ -270,38 +270,7 @@ function showSlides(n) {
 }
 
 
-
-
-
-
-
-
-function initializeTabs(buttons, panes) {
-  const tabButtons = document.querySelectorAll(buttons);
-  const tabPanes = document.querySelectorAll(panes);
-
-  // Add 'active' class to the first tab button and pane
-  tabButtons[0].classList.add("active");
-  tabPanes[0].classList.add("active");
-
-  tabButtons.forEach((button, index) => {
-    button.addEventListener("click", () => {
-      // Remove 'active' class from all tab buttons and panes
-      tabButtons.forEach((button) => button.classList.remove("active"));
-      tabPanes.forEach((pane) => pane.classList.remove("active"));
-
-      // Add 'active' class to clicked tab button and pane
-      button.classList.add("active");
-      tabPanes[index].classList.add("active");
-    });
-  });
-}
-
-// Call the function to initialize the tabs
-initializeTabs(".tab__header--btn", ".tab__pane");
-initializeTabs(".details__tab--btn", ".details__tab--pane");
-
-
+//order
 var accordions = document.getElementsByClassName('details__accordion');
 
 for (var i = 0; i < accordions.length; i++) {

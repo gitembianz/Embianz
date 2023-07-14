@@ -15,7 +15,7 @@
                 </button>
             </div>
             <div class="product__nails">
-                <img class="thumbnail" src="/images/store/bottle-img1.jpeg" alt="Thumbnail 1">
+                <img class="thumbnail" src="/images/store/bottle1.png" alt="Thumbnail 1">
                 <img class="thumbnail" src="/images/store/bottle-img2.webp" alt="Thumbnail 2">
                 <img class="thumbnail" src="/images/store/bottle-img3.webp" alt="Thumbnail 3">
                 <img class="thumbnail" src="/images/store/bottle-img4.png" alt="Thumbnail 1">
@@ -73,6 +73,7 @@
         </div>
         <div class="product__info">
             <h1>{{ $product->name }}</h1>
+            {{-- {{ $medias->first() }} --}}
             <p>{{ $product->short_description }}</p>
             <div class="product__price">
                 <div class="product__count">
@@ -89,7 +90,14 @@
                         </svg>
                     </button>
                 </div>
-                <h3>50.00€</h3>
+                <h3>
+                    @if ($product->product_prices->first() !== null)
+                        {{ $product->product_prices->first()->value }}
+                        {{ $product->product_prices->first()->pricelist->currency->first()->name }}
+                    @else
+                        no price
+                    @endif
+                </h3>
             </div>
             <div class="product__buttons">
                 <button class="product__btn">Add to cart</button>
@@ -106,14 +114,16 @@
 
     <div class="tab">
         <div class="tab__header">
-            <button class="tab__header--btn">Description</button>
-            <button class="tab__header--btn">Details</button>
+            <button class="tab__header--btn @if ($activeTab === 0) active @endif"
+                wire:click="switchTab(0)">Description</button>
+            <button class="tab__header--btn @if ($activeTab === 1) active @endif"
+                wire:click="switchTab(1)">Details</button>
         </div>
         <div class="tab__content">
-            <div class="tab__pane active">
+            <div class="tab__pane @if ($activeTab === 0) active @endif">
                 <p>{{ $product->long_description }}</p>
             </div>
-            <div class="tab__pane">
+            <div class="tab__pane @if ($activeTab === 1) active @endif">
                 <div class="table__wrapper">
                     <table class="table__info">
                         <thead>

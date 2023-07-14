@@ -1,11 +1,11 @@
-  <div class="cookie" id="cookieConsent">
+  {{-- <div class="cookie" id="cookieConsent">
       <img class="cookie--img" src="/images/store/cookie.svg" alt="cookie">
       <p class="cookie--text" id="cookieConsentText">
           We use cookies to improve your experience. By continuing to visit this site, you agree to our use of
           cookies.
       </p>
       <button class="cookie--btn" href="#" id="cookieConsentButton">Got it!</button>
-  </div>
+  </div> --}}
   <footer>
       <div class="footer container">
           <div class="footer__header">

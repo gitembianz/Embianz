@@ -7,7 +7,9 @@
                 <line x1="3" y1="18" x2="21" y2="18"></line>
             </svg>
         </button>
-        <a class="logo" href="{{ route('store') }}">Embianz</a>
+        <a class="logo" href="{{ route('store') }}">
+            <h1 class="logo">Embianz</h1>
+        </a>
         <div class="search-box">
             <input type="text" placeholder="Type to search..">
             <div class="search">
