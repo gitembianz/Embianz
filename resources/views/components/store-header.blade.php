@@ -7,7 +7,9 @@
                 <line x1="3" y1="18" x2="21" y2="18"></line>
             </svg>
         </button>
-        <h1 class="logo">Embianz</h1>
+        <a class="logo" href="{{ route('store') }}">
+            <h1 class="logo">Embianz</h1>
+        </a>
         <div class="search-box">
             <input type="text" placeholder="Type to search..">
             <div class="search">
@@ -38,7 +40,8 @@
                     </a>
                 </li>
                 <li><a class="cart__list--item" href="#">
-                        <img class="cart__list--img" src="images/store/bottle1.png" alt="Sustainable Sips: Reusable Bottles">
+                        <img class="cart__list--img" src="images/store/bottle1.png"
+                            alt="Sustainable Sips: Reusable Bottles">
                         <span class="cart__list--text">Sustainable Sips: Reusable Bottles</span>
                         <span class="cart__list--much">x2</span>
                         <span class="cart__list--much">20$</span>
@@ -50,7 +53,8 @@
                         </button>
                     </a></li>
                 <li><a class="cart__list--item" href="#">
-                        <img class="cart__list--img" src="images/store/bottle2.png" alt="Sustainable Sips: Reusable Bottles">
+                        <img class="cart__list--img" src="images/store/bottle2.png"
+                            alt="Sustainable Sips: Reusable Bottles">
                         <span class="cart__list--text">Sustainable Sips: Reusable Bottles</span>
                         <span class="cart__list--much">x5</span>
                         <span class="cart__list--much">40$</span>

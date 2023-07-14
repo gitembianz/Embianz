@@ -29,18 +29,50 @@
         </div>
     </div>
     <div class="product__catalog">
+
         @foreach ($products as $product)
-            <article class="product__item"@if ($loop->last) id="last_record" @endif>
-                <img src="/images/store/bottle1.png" alt="bottle number 1">
+            <a href="/product/{{ $product->id }}'">
+                <article class="product__item" @if ($loop->last) id="last_record" @endif>
+                    <?php
+                    $foundMedia = false; // Variable to track if matching media is found
+                    $mediaPath = null; // Variable to store the media path
+                    ?>
+
+                    @foreach ($medias as $media)
+                        @if ($media->item_id == $product->id)
+                            <?php
+                            $foundMedia = true;
+                            $mediaPath = $media->extrenal ? $media->path : "/{$media->path}{$media->name}";
+                            ?>
+                        @break
+
+                        // Exit the inner loop once a matching media is found
+                    @endif
+                @endforeach
+
+                @if ($foundMedia)
+                    <img src="{{ $mediaPath }}" alt="something wrong">
+                @else
+                    <img src="/images/store/default/product.png" alt="something wrong">
+                @endif
+
                 <h3>{{ $product->name }}</h3>
                 <p>{{ $product->short_description }}</p>
                 <div class="product__item--price">
-                    <span class="deleted">99,99 lei</span>
-                    <span>89,99 lei</span>
+                    {{-- <span class="deleted">99,99 lei</span>
+                    <span>89,99 lei</span> --}}
+                    <span>
+                        @if ($product->product_prices->first() !== null)
+                            {{ $product->product_prices->first()->value }}
+                            {{ $product->product_prices->first()->pricelist->currency->first()->name }}
+                        @else
+                            no price
+                        @endif
+                    </span>
                 </div>
-                <span class="percent">-10%</span>
+                {{-- <span class="percent">-10%</span> --}}
                 <div class="product__item--buttons">
-                    <button class="product__item--btn">Cumpara acum</button>
+                    <button class="product__item--btn">Buy now</button>
                     <button class="product__item--btn">
                         <svg>
                             <circle cx="9" cy="21" r="1"></circle>
@@ -58,22 +90,25 @@
                     </svg>
                 </button>
             </article>
-        @endforeach
-    </div>
-    <script>
-        const lastRecord = document.getElementById('last_record');
-        const options = {
-            root: null,
-            threshold: 1,
-            rootMargin: '0px'
-        }
-        const observer = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    @this.loadMore()
-                }
-            });
+        </a>
+    @endforeach
+</div>
+{{-- script for lazy load --}}
+<script>
+    const lastRecord = document.getElementById('last_record');
+    const options = {
+        root: null,
+        threshold: 1,
+        rootMargin: '0px'
+    }
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                @this.loadMore()
+            }
         });
-        observer.observe(lastRecord);
-    </script>
+    });
+    observer.observe(lastRecord);
+</script>
+{{-- end script --}}
 </div>

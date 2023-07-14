@@ -2,8 +2,9 @@
 <x-store-header />
 <main>
     <section class="products container">
+        <livewire:store-products />
         {{-- filter part --}}
-        <livewire:store-main />
+
     </section>
 </main>
 <x-store-footer />

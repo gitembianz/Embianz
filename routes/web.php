@@ -55,8 +55,8 @@ route::get('/cart', [StoreController::class, 'cart'])->name('cart');
 route::get('/complete', [StoreController::class, 'complete'])->name('complete');
 route::get('/checking', [StoreController::class, 'checking'])->name('checking');
 route::get('/order', [StoreController::class, 'order'])->name('order');
-route::get('/product', [StoreController::class, 'show'])->name('product');
-
+route::get('/product/{id}/', [StoreController::class, 'show'])->name('product');
+route::get('/storeproducts', [StoreController::class, 'products']);
 
 //specs route
 route::get('/specs', [SpecsController::class, 'index'])->name('specs');
