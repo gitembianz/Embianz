@@ -500,10 +500,6 @@ header {
   transition: all 0.2s ease-in-out;
   padding: 0 60px 0 20px;
 }
-.search-box input::-moz-placeholder {
-  color: #ffffff;
-  font-weight: 100;
-}
 .search-box input::placeholder {
   color: #ffffff;
   font-weight: 100;
@@ -936,8 +932,7 @@ footer {
 .cart__list--img {
   width: 30px;
   height: 30px;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
 }
 .cart__list--text {
   flex: 1;
@@ -1145,8 +1140,7 @@ footer {
 }
 .cart-page__item img {
   height: 100px;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
 }
 .cart-page__buttons {
   display: flex;
@@ -1312,8 +1306,7 @@ footer {
 }
 .product__item img {
   height: 100px;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
 }
 .product__item--buttons {
   display: flex;
@@ -1474,8 +1467,13 @@ footer {
     gap: 10px;
     width: 120px;
     height: 100%;
-    display: grid;
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: stretch;
+    flex: 0 1 auto;
+    gap: 0;
     gap: 10px;
     margin-bottom: 0;
     padding-bottom: 0;
@@ -1666,10 +1664,8 @@ footer {
 .thumbnail {
   width: 100%;
   height: 100%;
-  -o-object-fit: cover !important;
-     object-fit: cover !important;
-  -o-object-position: center;
-     object-position: center;
+  object-fit: cover !important;
+  object-position: center;
   border-radius: 15px;
   background-color: #f2f2f2;
   cursor: pointer;
@@ -1685,10 +1681,8 @@ footer {
 .thumbnail-active {
   width: 100%;
   height: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
-  -o-object-position: center;
-     object-position: center;
+  object-fit: cover;
+  object-position: center;
   border-radius: 15px;
   background-color: #f2f2f2;
   cursor: zoom-in;
@@ -1718,8 +1712,7 @@ footer {
 .slideshow--slides img {
   width: 100%;
   height: 100%;
-  -o-object-fit: contain;
-     object-fit: contain;
+  object-fit: contain;
 }
 
 /* Next & previous buttons */
@@ -1862,6 +1855,8 @@ footer {
 }
 .details__steps--line.active {
   background: rgb(0, 0, 0);
+  background: -moz-linear-gradient(90deg, rgb(0, 0, 0) 0%, rgb(130, 130, 130) 51%, rgb(176, 176, 176) 100%);
+  background: -webkit-linear-gradient(90deg, rgb(0, 0, 0) 0%, rgb(130, 130, 130) 51%, rgb(176, 176, 176) 100%);
   background: linear-gradient(90deg, rgb(0, 0, 0) 0%, rgb(130, 130, 130) 51%, rgb(176, 176, 176) 100%);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#000000", endColorstr="#b0b0b0", GradientType=1);
 }
@@ -1883,6 +1878,7 @@ footer {
   cursor: pointer;
   -webkit-user-select: none;
   -moz-user-select: none;
+  -ms-user-select: none;
   user-select: none;
   /* Hide the browser's default checkbox */
   /* Create a custom checkbox */
@@ -2370,4 +2366,4 @@ footer {
   .cookie--btn {
     width: unset;
   }
-}/*# sourceMappingURL=store.css.map */
+}

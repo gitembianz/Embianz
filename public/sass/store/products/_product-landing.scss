@@ -65,8 +65,9 @@
       gap: 10px;
       width: 120px;
       height: 100%;
-      display: grid;
-      grid-template-columns: 1fr;
+      // display: grid;
+      // grid-template-columns: 1fr;
+      @include flexer(column);
       gap: 10px;
       margin-bottom: 0;
       padding-bottom: 0;

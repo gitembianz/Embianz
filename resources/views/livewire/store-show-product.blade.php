@@ -3,11 +3,13 @@
         <div class="product__preview">
             <div class="product__image">
                 @if ($medias->first())
-                    <button class="product__image-prev">
-                        <svg>
-                            <polyline points="15 18 9 12 15 6"></polyline>
-                        </svg>
-                    </button>
+                    @if (count($medias) > 1)
+                        <button class="product__image-prev">
+                            <svg>
+                                <polyline points="15 18 9 12 15 6"></polyline>
+                            </svg>
+                        </button>
+                    @endif
                     <?php
                     $foundMedia = false; // Variable to track if matching media is found
                     $mediaPath = null; // Variable to store the media path
@@ -29,29 +31,39 @@
                     <img class="thumbnail-active" src="/images/store/default/product.png" alt="Product Image"
                         id="openModal">
                 @endif
-
-                <button class="product__image-next">
-                    <svg>
-                        <polyline points="9 18 15 12 9 6"></polyline>
-                    </svg>
-                </button>
+                @if (count($medias) > 1)
+                    <button class="product__image-next">
+                        <svg>
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </button>
+                @endif
             @else
                 <img class="thumbnail-active" src="/images/store/default/product.png" alt="Product Image"
                     id="openModal">
             @endif
 
         </div>
-        @if ($medias->first() && count($medias) > 1)
+        @if (count($medias) > 1)
             <div class="product__nails">
-                <img class="thumbnail" src="/images/store/bottle1.png" alt="Thumbnail 1">
-                <img class="thumbnail" src="/images/store/bottle-img2.webp" alt="Thumbnail 2">
-                <img class="thumbnail" src="/images/store/bottle-img3.webp" alt="Thumbnail 3">
-                <img class="thumbnail" src="/images/store/bottle-img4.png" alt="Thumbnail 1">
-                <img class="thumbnail" src="/images/store/bottle2.png" alt="Thumbnail 2">
-                <img class="thumbnail" src="/images/store/bottle3.png" alt="Thumbnail 3">
-                <img class="thumbnail" src="/images/store/bottle1.png" alt="Thumbnail 1">
-                <img class="thumbnail" src="/images/store/bottle2.png" alt="Thumbnail 2">
-                <img class="thumbnail" src="/images/store/bottle3.png" alt="Thumbnail 3">
+                @foreach ($medias as $media)
+                    @if ($media->location->location == 'main')
+                        <?php
+                        $foundMedia = true;
+                        $mediaPath = $media->extrenal ? $media->path : "/{$media->path}{$media->name}";
+                        ?>
+                        <img class="thumbnail" src="{{ $mediaPath }}" alt="Thumbnail 1">
+                    @endif
+                @endforeach
+                @foreach ($medias as $media)
+                    @if ($media->location->location == 'details')
+                        <?php
+                        $foundMedia = true;
+                        $mediaPath = $media->extrenal ? $media->path : "/{$media->path}{$media->name}";
+                        ?>
+                        <img class="thumbnail" src="{{ $mediaPath }}" alt="Thumbnail 1">
+                    @endif
+                @endforeach
             </div>
         @else
         @endif
