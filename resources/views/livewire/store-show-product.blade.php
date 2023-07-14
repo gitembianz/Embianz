@@ -44,7 +44,7 @@
             @endif
 
         </div>
-        @if (count($medias) > 1)
+        @if (count($medias) >= 1)
             <div class="product__nails">
                 @foreach ($medias as $media)
                     @if ($media->location->location == 'main')
@@ -65,31 +65,19 @@
                     @endif
                 @endforeach
             </div>
-        @else
-        @endif
-        {{-- <div class="product__modal" id="modal">
+
+            <div class="product__modal" id="modal">
                 <div class="slideshow">
                     <!-- Full-width images with number and caption text -->
-                    <div class="slideshow--slides">
-                        <img src="/images/store/bottle-img1.jpeg">
-                    </div>
-                    <div class="slideshow--slides">
-                        <img src="/images/store/bottle-img2.webp">
-                    </div>
-                    <div class="slideshow--slides">
-                        <img src="/images/store/bottle-img3.webp">
-                    </div>
-                    <div class="slideshow--slides">
-                        <img src="/images/store/bottle-img4.png">
-                    </div>
-                    <div class="slideshow--slides">
-                        <img src="/images/store/bottle2.png">
-                    </div>
 
-                    <div class="slideshow--slides">
-                        <img src="/images/store/bottle3.png">
-                    </div>
-
+                    @foreach ($medias as $media)
+                        <?php
+                        $mediaPath = $media->extrenal ? $media->path : "/{$media->path}{$media->name}";
+                        ?>
+                        <div class="slideshow--slides">
+                            <img src="{{ $mediaPath }}" alt="Thumbnail 1">
+                        </div>
+                    @endforeach
                     <!-- Next and previous buttons -->
                     <a class="prev" onclick="plusSlides(-1)">
                         <svg>
@@ -111,7 +99,9 @@
                         </svg>
                     </button>
                 </div>
-            </div> --}}
+            </div>
+        @else
+        @endif
     </div>
     <div class="product__info">
         <h1>{{ $product->name }}</h1>
@@ -135,7 +125,7 @@
             <h3>
                 @if ($product->product_prices->first() !== null)
                     {{ $product->product_prices->first()->value }}
-                    {{ $product->product_prices->first()->pricelist->currency->first()->name }}
+                    {{ $product->product_prices->first()->pricelist->currency->name }}
                 @else
                     no price
                 @endif
@@ -186,12 +176,10 @@
                             <tr>
                                 <td colspan="2">No Specs for this product</td>
                             </tr>
-
                         @endif
                     </tbody>
                 </table>
             </div>
-
         </div>
     </div>
 </div>
