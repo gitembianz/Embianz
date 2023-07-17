@@ -111,19 +111,24 @@
         <p>{{ $product->short_description }}</p>
         <div class="product__price">
             <div class="product__count">
-                <button id="countDecrease">
+                <button id="countDecrease" wire:click="decrementCounter">
                     <svg>
                         <line x1="5" y1="12" x2="19" y2="12"></line>
                     </svg>
                 </button>
-                <input type="number" name="count" id="count" min="1" value="1">
-                <button id="countIncrease">
+                <input type="number" name="count" id="count" wire:model="quantity">
+                <button id="countIncrease" wire:click="incrementCounter">
                     <svg>
                         <line x1="12" y1="5" x2="12" y2="19"></line>
                         <line x1="5" y1="12" x2="19" y2="12"></line>
                     </svg>
                 </button>
+
             </div>
+            @if ($maxlimit)
+                <label for="count">Quantity limit products reach / {{ $limit }}</label>
+            @endif
+
             <h3>
                 @if ($product->product_prices->first() !== null)
                     {{ $product->product_prices->first()->value }}
