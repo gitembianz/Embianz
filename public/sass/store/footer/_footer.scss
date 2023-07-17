@@ -1,5 +1,5 @@
 footer {
-  background-color: $text;
+  background-color: darken(#1a691a, 20%);
 }
 
 .footer {
@@ -81,15 +81,19 @@ footer {
 
 
 .footer__subscribe {
-  @include flexer(column, center, center);
+  @include flexer(column, center, center, 15px);
   @include responsive-spacing(padding, .01);
   @include responsive-spacing(padding-bottom, .02);
   width: 100%;
 
+  h2 {
+    font-weight: 400;
+  }
+
   @include breakpoint(medium) {
     padding: 0;
     @include responsive-spacing(padding-top, .01);
-    @include responsive-spacing(padding-bottom, .01);
+    @include responsive-spacing(padding-bottom, .04);
   }
 
 
@@ -101,6 +105,11 @@ footer {
 .footer__subscribe--form {
   @include flexer(row, space-between, center);
   width: 100%;
+  transition: $transition;
+
+  @include breakpoint(medium) {
+    max-width: 500px;
+  }
 
   input {
     background-color: transparent;

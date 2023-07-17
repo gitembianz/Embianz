@@ -106,15 +106,26 @@
 
 
 @mixin btn {
-  @include box(45px);
+  background-color: darken(#1a691a, 10%);
+  border-radius: 10px;
+  @include responsive-spacing(width, 0.15);
+  @include responsive-spacing(height, 0.15);
   @include flexer(row, center, center);
-  background-color: $text;
-  border-radius: $border-radius-big;
-  transition: all .3s ease-in-out;
-  cursor: pointer;
+  transition: $transition;
+  border: 2.5px solid darken(#1a691a, 10%);
+  outline: none;
 
   svg {
     pointer-events: none;
+  }
+
+  &:hover,
+  &:focus {
+    background-color: transparent;
+
+    svg {
+      stroke: darken(#1a691a, 10%);
+    }
   }
 }
 
