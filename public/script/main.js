@@ -110,11 +110,6 @@ function toggleDropdown(buttonId, dropdownId) {
 
 toggleDropdown(".cart__btn", ".cart__list");
 
-
-
-
-
-
 const imgModal = document.getElementById("modal");
 const btnModal = document.getElementById("openModal");
 const prevModal = document.querySelector(".product__modal-prev");

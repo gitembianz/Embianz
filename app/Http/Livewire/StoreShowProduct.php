@@ -44,29 +44,7 @@ class StoreShowProduct extends Component
     $this->path = '1';
     $this->mainpath = $id;
   }
-  public function nextpreview($pathid)
-  {
-    $found = false;
-    $nextPath = null;
 
-    foreach ($this->relatedphotos as $media) {
-      if ($found) {
-        $nextPath = $media;
-        break;
-      }
-      if ($media == $pathid) {
-        $found = true;
-        $this->path = null;
-      }
-    }
-    if ($found) {
-
-      $this->mainpath = $nextPath;
-    } else {
-
-      // $this->mainpath = $this->medias->firstWhere('location.location', 'main')->values();
-    }
-  }
 
   public function incrementCounter()
   {

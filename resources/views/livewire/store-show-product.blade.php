@@ -17,7 +17,7 @@
                         id="openModal">
                 @endif
                 @if (count($medias) > 1)
-                    <button class="product__image-next" wire:click="nextpreview('{{ $mainpath }}')">
+                    <button class="product__image-next">
                         <svg>
                             <polyline points="9 18 15 12 9 6"></polyline>
                         </svg>
