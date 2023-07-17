@@ -1,0 +1,139 @@
+// @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+.cards {
+  @include flexer(column, unset, unset, 20px);
+}
+
+.card-wrapper {
+  // max-width: 1100px;
+  width: 100%;
+  position: relative;
+}
+
+.card-button {
+  @include box(40px);
+  @include abs-position (absolute, 50%, unset, unset, unset);
+  @include flexer(row, center, center);
+  cursor: pointer;
+  border-radius: 50%;
+  transform: translateY(-50%);
+  transition: $transition;
+  background: rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(4px);
+  // outline: 2px solid $background;
+  // outline-offset: -10px;
+  z-index: 1;
+}
+
+.card-button:active {
+  transform: translateY(-50%) scale(0.8);
+}
+
+.card-button:first-child {
+  left: 10px;
+
+  @include breakpoint(medium) {
+    left: -20px;
+  }
+}
+
+.card-button:last-child {
+  right: 10px;
+
+  @include breakpoint(medium) {
+    right: -20px;
+  }
+}
+
+.card-wrapper .card-carousel {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 100%;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  gap: 16px;
+  border-radius: 8px;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+
+  @include breakpoint(small) {
+    grid-auto-columns: calc((100% / 2) - 9px);
+  }
+
+  @include breakpoint(medium) {
+    grid-auto-columns: calc((100% / 3) - 12px);
+  }
+
+  @include breakpoint(x-large) {
+    grid-auto-columns: calc((100% / 4) - 12px);
+  }
+}
+
+.card-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.card-carousel.no-transition {
+  scroll-behavior: auto;
+}
+
+.card-carousel.dragging {
+  scroll-snap-type: none;
+  scroll-behavior: auto;
+}
+
+.card-carousel.dragging .card {
+  cursor: grab;
+  user-select: none;
+}
+
+
+
+.card {
+  @include responsive-spacing(padding, .01);
+  @include responsive-spacing(padding-top, .1);
+  @include responsive-spacing(padding-bottom, .1);
+  @include flexer(column, space-between, center, 15px);
+  scroll-snap-align: start;
+  height: 100%;
+  background: #f2f2f2;
+  cursor: pointer;
+  border-radius: 15px;
+  text-align: center;
+  position: relative;
+
+  img {
+    @include box(120px);
+    border-radius: 50%;
+    object-fit: cover;
+    outline: 3px solid $text;
+    padding: 5px;
+  }
+
+  &__fire {
+    @include box(40px);
+    @include flexer(row, center, center);
+    @include abs-position (absolute, 15px, unset, unset, 15px);
+    border-radius: 50%;
+    background: pink;
+
+    img {
+      outline: none;
+      // border: none;
+      @include box(100%);
+      object-fit: contain;
+    }
+  }
+
+
+
+  &>.price {
+    color: red;
+
+    span {
+      margin-right: 15px;
+      color: $text;
+      text-decoration: line-through;
+    }
+  }
+}

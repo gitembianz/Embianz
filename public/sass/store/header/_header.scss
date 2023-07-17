@@ -4,76 +4,121 @@ header {
 
 .header {
   position: relative;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  justify-items: center;
+  @include flexer(column, space-between, center, 15px);
   gap: 15px;
   transition: $transition;
+  padding: 0;
+  width: 100%;
+  padding-bottom: 15px;
 
-  @include breakpoint(medium) {
+  @include breakpoint(extra-small) {
     @include flexer(row, space-between, center, 10px);
+    padding: clamp(10px, 1vw, 50px);
+    padding-bottom: 0;
+    padding-top: 0;
+  }
+
+  @include breakpoint(large) {
+    gap: 50px;
+    padding: 0;
+  }
+
+  &__buttons {
+    @include flexer(row, space-between, center, 15px);
+    // width: 100%;
+
+    @include breakpoint(small) {
+      @include flexer(row, center, center, 10px);
+      width: auto;
+    }
+  }
+
+  &__top {
+    background-image: linear-gradient(120deg, #a6c0fe 0%, #f68084 100%);
+    color: $background;
+
+    &--flex {
+      @include flexer(row, space-between, center, 20px);
+      width: 100%;
+      @include responsive-spacing(padding, 0.01);
+
+      @include breakpoint(medium) {
+        padding: 0;
+        @include responsive-spacing(padding-top, 0.001);
+        @include responsive-spacing(padding-bottom, 0.001);
+      }
+    }
+
+    button {
+      @include responsive-spacing(padding, 0.0001);
+      border-radius: 10px;
+      background-color: $background;
+      color: $text;
+      cursor: pointer;
+    }
   }
 }
 
 .logo {
   @include font(900);
+  @include box(5rem, 100%);
   font-family: 'Dancing-Script', cursive;
   transition: $transition;
-  grid-area: 1;
-  grid-column: 1/5;
+}
 
-  @include breakpoint(medium) {
-    flex: 1;
-    text-align: left;
-  }
+.search__open {
+  @include btn;
 }
 
 .search {
-  @include btn;
-  @include abs-position(absolute, 50%, -1.5px, auto, auto);
-  transform: translateY(-50%);
-  z-index: 1;
+  @include abs-position (fixed, 0, unset, unset, 0);
+  @include flexer(row, center, flex-start);
+  @include fade(hide);
+  @include box(100%);
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 99;
+  backdrop-filter: blur(2px);
 
-  &-box {
-    @include box(45px);
-    position: relative;
-    border-radius: $border-radius-big;
-    background-color: transparent;
+  &.active {
+    @include fade(show);
+  }
+
+  &__content {
+    @include flexer(row, center, center, 20px);
+    @include responsive-spacing(padding, 0.01);
+    @include responsive-spacing(padding-left, 0.03);
+    @include responsive-spacing(padding-right, 0.03);
+    @include box(100%, auto);
     transition: $transition;
+    background-color: $background;
 
-    &.active {
-      width: 100%;
-      grid-column: 1/max-content;
-
-      @include breakpoint(large) {
-        width: 500px;
-      }
+    button {
+      @include btn;
     }
 
-    input {
-      @include box(100%, 45px);
-      @include fade(hide);
-      @include font(100, $secondary);
-      border: none;
-      border-radius: $border-radius-big;
-      background: transparent;
-      outline: none;
-      opacity: 0;
-      background-color: $text;
-      color: $background;
+    @include breakpoint(small) {
+      @include box(90%, auto);
+      border-radius: 0 0 15px 15px;
+    }
 
-      &.active {
-        @include fade(show);
-        padding: 0 60px 0 20px;
-      }
-
-      &::placeholder {
-        color: $background;
-        font-weight: 100;
-      }
+    @include breakpoint(medium) {
+      @include box(80%, auto);
+      border-radius: 0 0 15px 15px;
     }
   }
+
+  &__input {
+    @include box(100%, 50px);
+    flex: 1;
+    border: none;
+    border-radius: 0;
+    border-bottom: 2px solid darken(#1a691a, 10%);
+    outline: none;
+  }
 }
+
+
+
 
 .menu {
   @include flexer($align-items: flex-start);
@@ -82,33 +127,31 @@ header {
     @include fade(show);
     position: relative;
     width: 100%;
-    background-color: $text;
+    background-color: $background;
   }
 
   &__list {
-    @include flexer(column, center, center, 40px);
+    @include flexer(column, center, center, 30px);
 
     @include breakpoint(large) {
       @include fade(show);
-      @include flexer(row, space-between, center);
+      @include flexer(row, center, center, 30px);
       transform: unset;
       position: relative;
       background-color: transparent;
-      width: 960px;
-      @include responsive-spacing(padding-top, 0.001);
-      @include responsive-spacing(padding-bottom, 0.001);
+      padding: 0;
       margin: 0 auto;
     }
   }
 
   &__item {
-    @include font(500);
-    font-size: 35px;
+    color: darken(#1a691a, 10%);
+    font-size: 25px;
+    font-weight: 500;
     cursor: pointer;
 
     @include breakpoint(large) {
-      @include font(500, $secondary);
-      font-size: 20px;
+      font-size: unset;
       transform: unset;
       padding: 0;
     }
