@@ -17,10 +17,6 @@ document.addEventListener('DOMContentLoaded', function () {
   cookieConsentButton.addEventListener('click', hideCookieConsent);
 });
 
-
-
-
-
 const searchBox = document.querySelector(".search-box");
 const searchBtn = document.querySelector(".search");
 const searchInput = document.querySelector("input");
@@ -153,46 +149,6 @@ if (nextButton) {
     const nextIndex = activeIndex === thumbnails.length - 1 ? 0 : activeIndex + 1;
     thumbnails[nextIndex].click();
   });
-}
-
-
-// Counter
-if (count, countIncrease, countDecrease) {
-
-  let counter = 1;
-  const counterInput = document.getElementById("count");
-  const incrementBtn = document.getElementById("countIncrease");
-  const decrementBtn = document.getElementById("countDecrease");
-
-  function updateCounterValue() {
-    counterInput.value = counter;
-  }
-
-  function incrementCounter() {
-    counter++;
-    updateCounterValue();
-  }
-
-  function decrementCounter() {
-    if (counter > 1) {
-      counter--;
-      updateCounterValue();
-    }
-  }
-
-  function validateAndSetCounterValue() {
-    const inputValue = parseInt(counterInput.value);
-    if (!isNaN(inputValue)) {
-      counter = Math.max(inputValue, 1);
-    } else {
-      counter = 0;
-    }
-    updateCounterValue();
-  }
-
-  incrementBtn.addEventListener("click", incrementCounter);
-  decrementBtn.addEventListener("click", decrementCounter);
-  counterInput.addEventListener("input", validateAndSetCounterValue);
 }
 
 const imgModal = document.getElementById("modal");
