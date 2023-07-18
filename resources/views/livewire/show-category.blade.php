@@ -65,18 +65,13 @@
                     @endif
                     @if ($editcategory === null)
                         <div class="item__form-input-close">
-                            <div>{{ $category->parrent }}</div>
-                            <span>Category Parrent</span>
+                            <div>{{ $category->sequence }}</div>
+                            <span>Category Sequence</span>
                         </div>
                     @else
                         <div class="item__form-input">
-                            <select wire:model.defer="cat.parrent">
-                                <option>Select a parrent</option>
-                                @foreach ($categories as $category_name)
-                                    <option value="{{ $category_name }}">{{ $category_name }}</option>
-                                @endforeach
-                            </select>
-                            <span>Parent</span>
+                            <input type="number" min="0" wire:model.defer="cat.sequence">
+                            <span>Sequence</span>
                         </div>
                     @endif
 
@@ -102,17 +97,7 @@
                             <span>End Date</span>
                         </div>
                     @endif
-                    @if ($editcategory === null)
-                        <div class="item__form-input-close">
-                            <div>{{ $category->sequence }}</div>
-                            <span>Category Sequence</span>
-                        </div>
-                    @else
-                        <div class="item__form-input">
-                            <input type="number" min="0" wire:model.defer="cat.sequence">
-                            <span>Sequence</span>
-                        </div>
-                    @endif
+
                     @if ($editcategory === null)
                         <div class="item__form-input-close item__form-long">
                             <div>{{ $category->short_description }}</div>
@@ -173,6 +158,8 @@
                 <livewire:related-media-category categoryId="{{ $category->id }}" />
 
                 <livewire:related-product-category categoryId="{{ $category->id }}" />
+
+                <livewire:related-subcategory categoryId="{{ $category->id }}" />
             </div>
 
         </div>

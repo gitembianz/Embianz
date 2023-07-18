@@ -160,14 +160,7 @@
                         wire:click="sortBy('name')">Name
                     </th>
                 @endif
-                @if ($this->showColumn('Category Parrent'))
-                    <th class="cursor-p"
-                        @if ($orderBy === 'parrent' && $orderAsc === '1') data-symbol="up"
-  @else
-      data-symbol="down" @endif
-                        wire:click="sortBy('parrent')">Parrent
-                    </th>
-                @endif
+
                 @if ($this->showColumn('Short Description'))
                     <th class="cursor-p"
                         @if ($orderBy === 'short_description' && $orderAsc === '1') data-symbol="up"
@@ -209,9 +202,6 @@
                         <td data-title="Name"><a
                                 href="/show_category/{{ $category->id }}'">{{ $category->name }}</a>
                         </td>
-                    @endif
-                    @if ($this->showColumn('Category Parrent'))
-                        <td data-title="Category Parrent">{{ $category->parrent }}</td>
                     @endif
                     @if ($this->showColumn('Short Description'))
                         <td data-title="Short Description">{{ $category->short_description }}</td>

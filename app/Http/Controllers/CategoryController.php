@@ -26,7 +26,6 @@ class CategoryController extends Controller
   {       //add a new category to dbase
     $data = new category;
     $data->name = $request->category;
-    $data->parrent = $request->parrent;
     $data->long_description = $request->long_description;
     $data->short_description = $request->short_description;
     $data->sequence = $request->sequence;
@@ -118,8 +117,7 @@ class CategoryController extends Controller
 
   public function new()
   {
-    $categories = Category::pluck('name', 'id');
-    return view('admin.add_category', compact('categories'));
+    return view('admin.add_category');
   }
 
   public function show($id)
