@@ -107,44 +107,45 @@ toggleDropdown(".cart__btn", ".cart__list");
 
 
 // Get references to DOM elements
-const mainImage = document.querySelector(".thumbnail-active");
-const thumbnails = document.querySelectorAll(".thumbnail");
-const prevButton = document.querySelector(".product__image-prev");
-const nextButton = document.querySelector(".product__image-next");
+// const thumbnails = document.querySelectorAll(".thumbnail");
+// const prevButton = document.querySelector(".product__image-prev");
+// const nextButton = document.querySelector(".product__image-next");
 
-// Attach click event listener to each thumbnail
-thumbnails.forEach((thumbnail, index) => {
-  thumbnail.addEventListener("click", function () {
-    // Update main image source with clicked thumbnail's source
-    const thumbnailSrc = this.getAttribute("src");
-    mainImage.setAttribute("src", thumbnailSrc);
+// // Attach click event listener to each thumbnail
+// thumbnails.forEach((thumbnail, index) => {
+//   thumbnail.addEventListener("click", function () {
+//     // Update main image source with clicked thumbnail's source
+//     const thumbnailSrc = this.getAttribute("src");
+//     mainImage.setAttribute("src", thumbnailSrc);
 
-    // Remove 'thumbnail-active' class from all thumbnails
-    thumbnails.forEach((t) => t.classList.remove("thumbnail-active"));
+//     // Remove 'thumbnail-active' class from all thumbnails
+//     thumbnails.forEach((t) => t.classList.remove("thumbnail-active"));
 
-    // Add 'thumbnail-active' class to the clicked thumbnail
-    this.classList.add("thumbnail-active");
-  });
-});
-if (prevButton) {
-  prevButton.addEventListener("click", function () {
-    const activeIndex = Array.from(thumbnails).findIndex((t) =>
-      t.classList.contains("thumbnail-active")
-    );
-    const previousIndex =
-      activeIndex === 0 ? thumbnails.length - 1 : activeIndex - 1;
-    thumbnails[previousIndex].click();
-  });
-}
-if (nextButton) {
-  nextButton.addEventListener("click", function () {
-    const activeIndex = Array.from(thumbnails).findIndex((t) =>
-      t.classList.contains("thumbnail-active")
-    );
-    const nextIndex = activeIndex === thumbnails.length - 1 ? 0 : activeIndex + 1;
-    thumbnails[nextIndex].click();
-  });
-}
+//     // Add 'thumbnail-active' class to the clicked thumbnail
+//     this.classList.add("thumbnail-active");
+//   });
+// });
+// if (prevButton) {
+//   prevButton.addEventListener("click", function () {
+//     const activeIndex = Array.from(thumbnails).findIndex((t) =>
+//       t.classList.contains("thumbnail-active")
+//     );
+//     const previousIndex =
+//       activeIndex === 0 ? thumbnails.length - 1 : activeIndex - 1;
+//     thumbnails[previousIndex].click();
+//   });
+// }
+// if (nextButton) {
+//   nextButton.addEventListener("click", function () {
+//     const activeIndex = Array.from(thumbnails).findIndex((t) =>
+//       t.classList.contains("thumbnail-active")
+//     );
+//     const nextIndex = activeIndex === thumbnails.length - 1 ? 0 : activeIndex + 1;
+//     thumbnails[nextIndex].click();
+//   });
+// }
+
+
 
 const imgModal = document.getElementById("modal");
 const btnModal = document.getElementById("openModal");
