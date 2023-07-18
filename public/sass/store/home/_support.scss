@@ -1,0 +1,28 @@
+.support {}
+
+.support__flex {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 15px;
+}
+
+.support__item {
+  @include responsive-spacing(padding, 0.01);
+  @include flexer(column, space-between, center, 15px);
+  @include box(100%);
+  text-align: center;
+  background-color: #f2f2f2;
+  border-radius: 10px;
+}
+
+.support__icon {
+  @include flexer(row, center, center);
+  @include responsive-spacing(width, 0.3);
+  @include responsive-spacing(height, 0.3);
+  border: 1.5px solid $text;
+  border-radius: 100%;
+
+  svg {
+    stroke: $text;
+  }
+}

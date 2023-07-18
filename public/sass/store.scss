@@ -6,14 +6,18 @@
 @import 'store/general/general';
 //------------------------------Header and Footer
 @import 'store/header/header';
-@import 'store/footer/footer';
-@import 'store/tab/tab';
-//------------------------------Products list page
 @import 'store/header/cart';
+@import 'store/footer/footer';
+//------------------------------Main Components
+@import "store/home/home";
+@import "store/home/support";
+//------------------------------Products list page
 @import 'store/products/products';
-//------------------------------Product landing page
 @import 'store/products/product-landing';
+//------------------------------Product landing page
 @import 'store/payment/details';
 @import 'store/payment/checking';
 //------------------------------Cookies
 @import"store/general/cookies";
+@import 'store/tab/tab';
+@import 'store/carousel/carousel';

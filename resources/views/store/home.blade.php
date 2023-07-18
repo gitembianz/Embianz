@@ -1,9 +1,7 @@
 <x-store-head />
 <x-store-header />
 <main>
-    <section class="products container">
         {{-- filter part --}}
         <livewire:store-main />
-    </section>
 </main>
 <x-store-footer />

@@ -17,48 +17,43 @@ document.addEventListener('DOMContentLoaded', function () {
   cookieConsentButton.addEventListener('click', hideCookieConsent);
 });
 
-const searchBox = document.querySelector(".search-box");
-const searchBtn = document.querySelector(".search");
-const searchInput = document.querySelector("input");
+
+const search = document.getElementById("search");
+const searchOpen = document.getElementById("searchOpen");
+const searchClose = document.getElementById("searchClose");
+
+searchOpen.addEventListener("click", function(){
+  search.classList.add("active");
+})
+searchClose.addEventListener("click", function(){
+  search.classList.remove("active");
+})
+window.onclick = function(event) {
+  if (event.target == search) {
+    search.classList.remove("active");
+  }
+}
+window.addEventListener("keydown", function(event) {
+  if (event.keyCode === 27) {
+    search.classList.remove("active");
+  }
+  if (event.keyCode === 191) {
+    search.classList.add("active");
+  }
+});
+
+
+
+
 const logo = document.querySelector(".logo");
 const menu = document.querySelector("#menuOpen");
 const cartBtn = document.querySelector(".cart");
 const heart = document.querySelector(".heart");
 const headerRight = document.querySelector(".header__right");
 
-searchBtn.onclick = () => {
-  searchBox.classList.toggle("active");
-  searchBtn.classList.toggle("active");
-  searchInput.classList.toggle("active");
-  if (window.innerWidth < 1024) {
-    logo.classList.toggle("none");
-    menu.classList.toggle("none");
-    cartBtn.classList.toggle("none");
-    heart.classList.toggle("none");
 
-    if (headerRight.style.width === "100%") {
-      headerRight.style.width = "auto";
-    } else {
-      headerRight.style.width = "100%";
-    }
-  }
-};
 
-document.addEventListener("click", (event) => {
-  if (
-    !searchBox.contains(event.target) &&
-    !searchBtn.contains(event.target) &&
-    window.innerWidth < 1024
-  ) {
-    searchBox.classList.remove("active");
-    searchBtn.classList.remove("active");
-    searchInput.classList.remove("active");
-    logo.classList.remove("none");
-    menu.classList.remove("none");
-    cartBtn.classList.remove("none");
-    heart.classList.remove("none");
-  }
-});
+
 
 
 function initializeMenu(open, close, menuId, content) {
