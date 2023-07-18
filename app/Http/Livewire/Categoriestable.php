@@ -20,7 +20,7 @@ class Categoriestable extends Component
   public $selectPage = false;
   public $selectAll = false;
   public $catidbeingremoved = null;
-  public $columns = ['Id', 'Category Parrent', 'Short Description', 'Sequence', 'Created At'];
+  public $columns = ['Id', 'Short Description', 'Sequence', 'Created At'];
   public $selectedColumns = [];
 
   public function render()
@@ -113,7 +113,7 @@ class Categoriestable extends Component
     $productcats = Products_categories::where('category_id', $id)->get();
 
     if ($productcats != NULL) {
-      foreach($productcats as $productcat){
+      foreach ($productcats as $productcat) {
 
         $productcat->delete();
       }
