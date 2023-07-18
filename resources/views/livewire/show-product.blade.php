@@ -134,6 +134,17 @@
                         </div>
                     @endif
                     @if ($editproduct === null)
+                        <div class="item__form-input-close">
+                            <div>{{ $product->popularity }}</div>
+                            <span>Product Popularity</span>
+                        </div>
+                    @else
+                        <div class="item__form-input">
+                            <input type="number" min="0" wire:model.defer="prod.popularity" required>
+                            <span>Product Popularity</span>
+                        </div>
+                    @endif
+                    @if ($editproduct === null)
                         <div class="item__form-input-close item__form-long">
                             <div id="category_short_description">{{ $product->short_description }}</div>
                             <span>Product Short Description</span>

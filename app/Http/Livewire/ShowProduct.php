@@ -62,6 +62,9 @@ class ShowProduct extends Component
       if (array_key_exists('short_description', $product_new)) {
         $new->short_description = $product_new['short_description'];
       }
+      if (array_key_exists('popularity', $product_new)) {
+        $new->popularity = $product_new['popularity'];
+      }
       if (array_key_exists('long_description', $product_new)) {
         $new->long_description = $product_new['long_description'];
       }
