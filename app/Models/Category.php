@@ -8,38 +8,42 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-    use HasFactory;
+  use HasFactory;
 
-    protected $guarded = [];
+  protected $guarded = [];
 
-    public function product_categories()
-    {
-        return $this->hasMany(Products_categories::class, 'category_id');
-    }
+  public function product_categories()
+  {
+    return $this->hasMany(Products_categories::class, 'category_id');
+  }
+
+  public function subcategory()
+  {
+    return $this->hasMany(Subcategory::class, 'parrent_id');
+  }
 
 
 
-    protected $fillable = [
-        'name',
-        'parrent',
-        'long_description',
-        'short_description',
-        'sequence',
-        'start_date',
-        'end_date',
-        'createdby',
-        'lastmodifiedby',
-        'seo_title',
-    ];
+  protected $fillable = [
+    'name',
+    'parrent',
+    'long_description',
+    'short_description',
+    'sequence',
+    'start_date',
+    'end_date',
+    'createdby',
+    'lastmodifiedby',
+    'seo_title',
+  ];
 
-    public static function search($search) {
-      return empty($search) ? static::query()
-            : static::query()->where('id', 'like', '%'.$search.'%')
-                ->orWhere('name', 'like', '%'.$search.'%')
-                ->orWhere('parrent', 'like', '%'.$search.'%')
-                ->orWhere('sequence', 'like', '%'.$search.'%')
-                ->orWhere('short_description', 'like', '%'.$search.'%');
-    }
-
+  public static function search($search)
+  {
+    return empty($search) ? static::query()
+      : static::query()->where('id', 'like', '%' . $search . '%')
+      ->orWhere('name', 'like', '%' . $search . '%')
+      ->orWhere('parrent', 'like', '%' . $search . '%')
+      ->orWhere('sequence', 'like', '%' . $search . '%')
+      ->orWhere('short_description', 'like', '%' . $search . '%');
+  }
 }
-

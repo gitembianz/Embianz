@@ -14,7 +14,6 @@ class ShowCategory extends Component
   public $categoryId;
   public $editcategory = null;
   public $cat = [];
-  public $categories = [];
 
   public function mount($categoryId)
   {
@@ -32,13 +31,11 @@ class ShowCategory extends Component
   public function editcategory()
   {
     $this->editcategory = true;
-    $this->categories = Category::pluck('name');
   }
   public function cancelcategory()
   {
     $this->editcategory = null;
     $this->cat = [];
-    $this->categories = [];
   }
   public function savecategory()
   {
@@ -47,9 +44,6 @@ class ShowCategory extends Component
       $new = Category::find($this->categoryId);
       if (array_key_exists('name', $category_new)) {
         $new->name = $category_new['name'];
-      }
-      if (array_key_exists('parrent', $category_new)) {
-        $new->parrent = $category_new['parrent'];
       }
       if (array_key_exists('start_date', $category_new)) {
         $new->start_date = $category_new['start_date'];
@@ -77,7 +71,6 @@ class ShowCategory extends Component
     }
     $this->cat = [];
     $this->editcategory = null;
-    $this->categories = [];
   }
   public function getCategoryQueryProperty()
   {

@@ -11,8 +11,8 @@ return new class extends Migration
    */
   public function up(): void
   {
-    Schema::table('media', function (Blueprint $table) {
-      $table->boolean('extrenal');
+    Schema::table('categories', function (Blueprint $table) {
+      $table->boolean('store_tab');
     });
   }
 
@@ -21,8 +21,8 @@ return new class extends Migration
    */
   public function down(): void
   {
-    Schema::table('media', function (Blueprint $table) {
-      $table->dropColumn('extrenal');
+    Schema::table('categories', function (Blueprint $table) {
+      $table->boolean('store_tab');
     });
   }
 };

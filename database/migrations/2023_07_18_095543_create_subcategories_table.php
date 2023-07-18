@@ -11,8 +11,12 @@ return new class extends Migration
    */
   public function up(): void
   {
-    Schema::table('products', function (Blueprint $table) {
-      $table->integer('popularity');
+    Schema::create('subcategories', function (Blueprint $table) {
+      $table->id();
+      $table->unsignedBigInteger('parrent_id')->index();
+      $table->foreign('parrent_id')->references('id')->on('categories');
+      $table->string('category')->nullable();
+      $table->timestamps();
     });
   }
 
@@ -21,8 +25,6 @@ return new class extends Migration
    */
   public function down(): void
   {
-    Schema::table('products', function (Blueprint $table) {
-      $table->integer('quapopularityntity');
-    });
+    Schema::dropIfExists('subcategories');
   }
 };
