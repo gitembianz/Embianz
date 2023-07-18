@@ -14,12 +14,12 @@
   }
 
   &__video {
-    @include box(100%, 400px);
+    @include box(100%, 500px);
     border-radius: 10px;
     position: relative;
 
     video {
-      @include box(100%, 400px);
+      @include box(100%, 500px);
       object-fit: cover;
       filter: brightness(0.3);
     }
@@ -29,6 +29,11 @@
       transform: translate(-50%, -50%);
       width: 100%;
       @include flexer(column, center, center, 35px);
+
+      img {
+        height: 70px;
+        opacity: 0.5;
+      }
 
       h1,
       span {

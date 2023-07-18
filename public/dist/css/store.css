@@ -1292,13 +1292,13 @@ footer {
 }
 .home__video {
   width: 100%;
-  height: 400px;
+  height: 500px;
   border-radius: 10px;
   position: relative;
 }
 .home__video video {
   width: 100%;
-  height: 400px;
+  height: 500px;
   -o-object-fit: cover;
      object-fit: cover;
   filter: brightness(0.3);
@@ -1318,6 +1318,10 @@ footer {
   align-items: center;
   flex: 0 1 auto;
   gap: 35px;
+}
+.home__video--text img {
+  height: 70px;
+  opacity: 0.5;
 }
 .home__video--text h1,
 .home__video--text span {
