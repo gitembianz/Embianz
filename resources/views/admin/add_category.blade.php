@@ -68,13 +68,8 @@
                 <span> Name</span>
             </div>
             <div class="item__form-input">
-                <select id="select-category" name="parrent">
-                    <option value="" selected="">Select a parrent</option>
-                    @foreach ($categories as $category_name)
-                        <option value="{{ $category_name }}">{{ $category_name }}</option>
-                    @endforeach
-                </select>
-                <span>Parent</span>
+                <input type="number" min="0" name="sequence" required>
+                <span>Sequence</span>
             </div>
             <div class="item__form-input">
                 <input type="date" id="start_date" name="start_date">
@@ -83,10 +78,6 @@
             <div class="item__form-input">
                 <input type="date" id="end_date" name="end_date">
                 <span>End Date</span>
-            </div>
-            <div class="item__form-input">
-                <input type="number" min="0" name="sequence" required>
-                <span>Sequence</span>
             </div>
             <div class="item__form-input item__form-long">
                 <input type="text" name="short_description" required>
