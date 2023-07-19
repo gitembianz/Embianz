@@ -42,7 +42,6 @@ class Category extends Model
     return empty($search) ? static::query()
       : static::query()->where('id', 'like', '%' . $search . '%')
       ->orWhere('name', 'like', '%' . $search . '%')
-      ->orWhere('parrent', 'like', '%' . $search . '%')
       ->orWhere('sequence', 'like', '%' . $search . '%')
       ->orWhere('short_description', 'like', '%' . $search . '%');
   }
