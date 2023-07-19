@@ -275,8 +275,7 @@ body {
   height: 100%;
   z-index: 50;
   background-color: rgba(23, 15, 13, 0.5);
-  -webkit-backdrop-filter: blur(3px);
-          backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
 }
 .sidebar.active {
   visibility: visible;
@@ -617,8 +616,7 @@ header {
   height: 100%;
   background: rgba(0, 0, 0, 0.7);
   z-index: 99;
-  -webkit-backdrop-filter: blur(2px);
-          backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
 }
 .search.active {
   visibility: visible;
@@ -866,8 +864,7 @@ header {
 .cart__list--img {
   width: 30px;
   height: 30px;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
 }
 .cart__list--text {
   flex: 1;
@@ -1079,8 +1076,7 @@ header {
 }
 .cart-page__item img {
   height: 100px;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
 }
 .cart-page__buttons {
   display: flex;
@@ -1238,6 +1234,9 @@ footer {
 .footer__subscribe h2 {
   color: #ffffff;
 }
+.footer__subscribe p {
+  color: #ffffff;
+}
 
 .footer__subscribe--form {
   display: flex;
@@ -1299,8 +1298,7 @@ footer {
 .home__video video {
   width: 100%;
   height: 500px;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
   filter: brightness(0.3);
 }
 .home__video--text {
@@ -1341,8 +1339,7 @@ footer {
   opacity: 0;
   animation: showContentBlur 0.3s ease-in-out 0.3s 1 forwards;
   background: rgba(0, 0, 0, 0.3);
-  -webkit-backdrop-filter: blur(5px);
-          backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
   width: 100%;
   min-height: 310px;
 }
@@ -1368,8 +1365,7 @@ footer {
   gap: 15px;
   transform: translateX(-50%);
   background: rgba(0, 0, 0, 0.3);
-  -webkit-backdrop-filter: blur(5px);
-          backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
   padding: clamp(10px, 0.01vw, 50px);
   border-radius: 150px;
   z-index: 20;
@@ -1683,8 +1679,7 @@ footer {
 }
 .product__item img {
   height: 100px;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
 }
 .product__item--buttons {
   display: flex;
@@ -2042,10 +2037,8 @@ footer {
 .thumbnail {
   width: 100%;
   height: 100%;
-  -o-object-fit: cover !important;
-     object-fit: cover !important;
-  -o-object-position: center;
-     object-position: center;
+  object-fit: cover !important;
+  object-position: center;
   border-radius: 15px;
   background-color: #f2f2f2;
   cursor: pointer;
@@ -2061,10 +2054,8 @@ footer {
 .thumbnail-active {
   width: 100%;
   height: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
-  -o-object-position: center;
-     object-position: center;
+  object-fit: cover;
+  object-position: center;
   border-radius: 15px;
   background-color: #f2f2f2;
   cursor: zoom-in;
@@ -2094,8 +2085,7 @@ footer {
 .slideshow--slides img {
   width: 100%;
   height: 100%;
-  -o-object-fit: contain;
-     object-fit: contain;
+  object-fit: contain;
 }
 
 /* Next & previous buttons */
@@ -2249,6 +2239,8 @@ footer {
 }
 .details__steps--line.active {
   background: rgb(0, 0, 0);
+  background: -moz-linear-gradient(90deg, rgb(0, 0, 0) 0%, rgb(130, 130, 130) 51%, rgb(176, 176, 176) 100%);
+  background: -webkit-linear-gradient(90deg, rgb(0, 0, 0) 0%, rgb(130, 130, 130) 51%, rgb(176, 176, 176) 100%);
   background: linear-gradient(90deg, rgb(0, 0, 0) 0%, rgb(130, 130, 130) 51%, rgb(176, 176, 176) 100%);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#000000", endColorstr="#b0b0b0", GradientType=1);
 }
@@ -2270,6 +2262,7 @@ footer {
   cursor: pointer;
   -webkit-user-select: none;
   -moz-user-select: none;
+  -ms-user-select: none;
   user-select: none;
   /* Hide the browser's default checkbox */
   /* Create a custom checkbox */
@@ -2891,8 +2884,7 @@ footer {
   transition: all 0.2s ease-in-out;
   background: rgba(0, 0, 0, 0.3);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  -webkit-backdrop-filter: blur(4px);
-          backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
   z-index: 1;
 }
 
@@ -2963,9 +2955,7 @@ footer {
 
 .card-carousel.dragging .card {
   cursor: grab;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-          user-select: none;
+  user-select: none;
 }
 
 .card {
@@ -2991,8 +2981,7 @@ footer {
   width: 120px;
   height: 120px;
   border-radius: 50%;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
   outline: 3px solid #202124;
   padding: 5px;
 }
@@ -3018,8 +3007,7 @@ footer {
   outline: none;
   width: 100%;
   height: 100%;
-  -o-object-fit: contain;
-     object-fit: contain;
+  object-fit: contain;
 }
 .card > .price {
   color: red;
@@ -3028,4 +3016,4 @@ footer {
   margin-right: 15px;
   color: #202124;
   text-decoration: line-through;
-}/*# sourceMappingURL=store.css.map */
+}
