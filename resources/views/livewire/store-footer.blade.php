@@ -46,6 +46,9 @@
             <input type="email" wire:model="email" placeholder="Enter your email">
             <button type="submit">Subscribe</button>
         </form>
+        @if ($response)
+            <p>{{ $response }}</p>
+        @endif
         <p>
             @error('email')
                 {{ $message }}

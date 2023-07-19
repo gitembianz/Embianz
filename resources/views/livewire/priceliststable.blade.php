@@ -1,4 +1,4 @@
-<div class="item">
+<div>
     @if (session()->has('message'))
         <div class="alert__session liveAlert" id="alertevent">
             <span class="alert__session-text">{!! session('message') !!}</span>

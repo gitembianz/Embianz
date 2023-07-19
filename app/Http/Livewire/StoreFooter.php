@@ -9,6 +9,7 @@ class StoreFooter extends Component
 {
 
   public $email;
+  public $response = null;
 
   public function render()
   {
@@ -27,5 +28,6 @@ class StoreFooter extends Component
 
     $this->reset();
     session()->flash('message', 'Subscription successful!');
+    $this->response = "Thank you for subscription!";
   }
 }

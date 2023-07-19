@@ -95,7 +95,7 @@ class RelatedCategoryProduct extends Component
   }
   public function getCatsProperty()
   {
-    return $this->catsQuery->paginate($this->perPageadd, ['*'],  'categories');
+    return $this->catsQuery->paginate($this->perPageadd);
   }
   public function getCatsQueryProperty()
   {
@@ -183,7 +183,7 @@ class RelatedCategoryProduct extends Component
   }
   public function getRelatedcatsProperty()
   {
-    return $this->relatedcatsQuery->paginate($this->perPage, ['*'], 'related');
+    return $this->relatedcatsQuery->paginate($this->perPage);
   }
   public function getRelatedcatsQueryProperty()
   {
