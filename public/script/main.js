@@ -14,7 +14,9 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // Add an event listener to the consent button
-  cookieConsentButton.addEventListener('click', hideCookieConsent);
+  if (cookieConsentButton) {
+    cookieConsentButton.addEventListener('click', hideCookieConsent);
+  }
 });
 
 
@@ -22,18 +24,18 @@ const search = document.getElementById("search");
 const searchOpen = document.getElementById("searchOpen");
 const searchClose = document.getElementById("searchClose");
 
-searchOpen.addEventListener("click", function(){
+searchOpen.addEventListener("click", function () {
   search.classList.add("active");
 })
-searchClose.addEventListener("click", function(){
+searchClose.addEventListener("click", function () {
   search.classList.remove("active");
 })
-window.onclick = function(event) {
+window.onclick = function (event) {
   if (event.target == search) {
     search.classList.remove("active");
   }
 }
-window.addEventListener("keydown", function(event) {
+window.addEventListener("keydown", function (event) {
   if (event.keyCode === 27) {
     search.classList.remove("active");
   }
@@ -205,8 +207,9 @@ function showSlides(n) {
   Array.from(slides).forEach((slide, index) => {
     slide.style.display = index === slideIndex - 1 ? "block" : "none";
   });
-
-  dotsContainer.innerHTML = "";
+  if (dotsContainer) {
+    dotsContainer.innerHTML = "";
+  }
 
   for (let i = 0; i < numSlides; i++) {
     const dot = document.createElement("span");

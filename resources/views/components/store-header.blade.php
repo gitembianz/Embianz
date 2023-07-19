@@ -9,7 +9,7 @@
     </div>
     <div class="container header">
 
-        <img class="logo" src="images/store/logo.svg" alt="ecosticle.ro">
+        <img class="logo" src="/images/store/logo.svg" alt="ecosticle.ro">
         <nav class="menu sidebar" id="menu">
             <ul class="menu__list sidebar__content container" id="menuContent">
                 <button class="sidebar__close" id="menuClose">
@@ -61,7 +61,8 @@
                         </a>
                     </li>
                     <li><a class="cart__list--item" href="#">
-                            <img class="cart__list--img" src="img/bottle1.png" alt="Sustainable Sips: Reusable Bottles">
+                            <img class="cart__list--img" src="/images/store/bottle1.png"
+                                alt="Sustainable Sips: Reusable Bottles">
                             <span class="cart__list--text">Sustainable Sips: Reusable Bottles</span>
                             <span class="cart__list--much">x2</span>
                             <span class="cart__list--much">20$</span>
@@ -73,7 +74,8 @@
                             </button>
                         </a></li>
                     <li><a class="cart__list--item" href="#">
-                            <img class="cart__list--img" src="img/bottle2.png" alt="Sustainable Sips: Reusable Bottles">
+                            <img class="cart__list--img" src="/images/store/bottle2.png"
+                                alt="Sustainable Sips: Reusable Bottles">
                             <span class="cart__list--text">Sustainable Sips: Reusable Bottles</span>
                             <span class="cart__list--much">x5</span>
                             <span class="cart__list--much">40$</span>
