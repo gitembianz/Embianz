@@ -1,4 +1,4 @@
-<div class="item">
+<div>
     {{-- sesssion html --}}
     @if (session()->has('message'))
         <div class="alert__session liveAlert" id="alertevent">
@@ -226,5 +226,5 @@
             @endforeach
         </tbody>
     </table>
-    <div class="pagination">{{ $categories->links('pagination-links') }} </div>
+    <div>{{ $categories->links('pagination-links') }} </div>
 </div>
