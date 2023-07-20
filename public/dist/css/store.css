@@ -275,7 +275,8 @@ body {
   height: 100%;
   z-index: 50;
   background-color: rgba(23, 15, 13, 0.5);
-  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+          backdrop-filter: blur(3px);
 }
 .sidebar.active {
   visibility: visible;
@@ -484,6 +485,7 @@ header {
   transition: all 0.2s ease-in-out;
   padding: 0;
   width: 100%;
+  height: 70px;
   padding-bottom: 15px;
 }
 @media (min-width: 425px) {
@@ -564,7 +566,7 @@ header {
   font-weight: 900;
   text-align: center;
   color: #202124;
-  width: 5rem;
+  width: unset;
   height: 100%;
   font-family: "Dancing-Script", cursive;
   transition: all 0.2s ease-in-out;
@@ -616,7 +618,8 @@ header {
   height: 100%;
   background: rgba(0, 0, 0, 0.7);
   z-index: 99;
-  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+          backdrop-filter: blur(2px);
 }
 .search.active {
   visibility: visible;
@@ -714,10 +717,11 @@ header {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   flex: 0 1 auto;
-  gap: 30px;
+  gap: 10px;
+  padding-top: 120px;
 }
 @media (min-width: 992px) {
   .menu__list {
@@ -730,7 +734,7 @@ header {
     justify-content: center;
     align-items: center;
     flex: 0 1 auto;
-    gap: 30px;
+    gap: 50px;
     transform: unset;
     position: relative;
     background-color: transparent;
@@ -741,11 +745,97 @@ header {
     max-width: 960px;
   }
 }
-.menu__item {
+.menu__list li {
+  width: 90%;
+}
+@media (min-width: 992px) {
+  .menu__list li {
+    width: -moz-min-content;
+    width: min-content;
+  }
+  .menu__list li .container {
+    max-width: 960px;
+  }
+}
+.menu__link {
   color: #104010;
   font-size: 25px;
   font-weight: 500;
   cursor: pointer;
+  width: 100%;
+  border-bottom: 1.5px solid #104010;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  flex: 0 1 auto;
+  gap: 0;
+}
+@media (min-width: 992px) {
+  .menu__link {
+    font-size: unset;
+    border: none;
+    display: block;
+    width: -moz-min-content;
+    width: min-content;
+  }
+  .menu__link .container {
+    max-width: 960px;
+  }
+}
+.menu__item {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  flex: 0 1 auto;
+  gap: 0;
+  width: 100%;
+  border-bottom: 1.5px solid #104010;
+}
+@media (min-width: 992px) {
+  .menu__item {
+    border-bottom: none;
+    width: -moz-min-content;
+    width: min-content;
+  }
+  .menu__item .container {
+    max-width: 960px;
+  }
+}
+.menu__item.active button {
+  transform: rotateX(180deg);
+}
+.menu__item a {
+  color: #104010;
+  font-size: 25px;
+  font-weight: 500;
+  cursor: pointer;
+}
+@media (min-width: 992px) {
+  .menu__item a {
+    font-size: unset;
+  }
+  .menu__item a .container {
+    max-width: 960px;
+  }
+}
+.menu__item button {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  flex: 0 1 auto;
+  gap: 15px;
+  border: none;
+  transition: all 0.2s ease-in-out;
+  background-color: transparent;
+}
+.menu__item button svg {
+  stroke: #202124;
 }
 @media (min-width: 992px) {
   .menu__item {
@@ -756,6 +846,64 @@ header {
   .menu__item .container {
     max-width: 960px;
   }
+}
+.menu__sub {
+  display: grid;
+  grid-template-rows: 0;
+}
+.menu__sub--wrapper {
+  overflow: hidden;
+  height: 0;
+  transition: all 0.6s ease-in-out;
+}
+.menu__sub--list {
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex: 0 1 auto;
+  gap: 0;
+  padding-left: 15px;
+}
+.menu__sub--item {
+  cursor: pointer;
+  border-left: 1px solid #104010;
+  padding: 30px;
+  color: #104010;
+  position: relative;
+}
+.menu__sub--item::after {
+  content: "";
+  width: 10px;
+  height: 1px;
+  background-color: #104010;
+  position: absolute;
+  top: 50%;
+  right: unset;
+  bottom: unset;
+  left: 0;
+  transform: translateY(-50%);
+}
+.menu__sub.active {
+  display: grid;
+  grid-template-rows: 1fr;
+}
+@media (min-width: 992px) {
+  .menu__sub.active {
+    position: fixed;
+    top: 100%;
+    background-color: #ffffff;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 0px 20px 40px -10px black;
+  }
+  .menu__sub.active .container {
+    max-width: 960px;
+  }
+}
+.menu__sub.active > .menu__sub--wrapper {
+  height: 100%;
 }
 
 @media (min-width: 992px) {
@@ -864,7 +1012,8 @@ header {
 .cart__list--img {
   width: 30px;
   height: 30px;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 .cart__list--text {
   flex: 1;
@@ -1076,7 +1225,8 @@ header {
 }
 .cart-page__item img {
   height: 100px;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 .cart-page__buttons {
   display: flex;
@@ -1298,7 +1448,8 @@ footer {
 .home__video video {
   width: 100%;
   height: 500px;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
   filter: brightness(0.3);
 }
 .home__video--text {
@@ -1339,7 +1490,8 @@ footer {
   opacity: 0;
   animation: showContentBlur 0.3s ease-in-out 0.3s 1 forwards;
   background: rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+          backdrop-filter: blur(5px);
   width: 100%;
   min-height: 310px;
 }
@@ -1365,7 +1517,8 @@ footer {
   gap: 15px;
   transform: translateX(-50%);
   background: rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+          backdrop-filter: blur(5px);
   padding: clamp(10px, 0.01vw, 50px);
   border-radius: 150px;
   z-index: 20;
@@ -1679,7 +1832,8 @@ footer {
 }
 .product__item img {
   height: 100px;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 .product__item--buttons {
   display: flex;
@@ -2037,8 +2191,10 @@ footer {
 .thumbnail {
   width: 100%;
   height: 100%;
-  object-fit: cover !important;
-  object-position: center;
+  -o-object-fit: cover !important;
+     object-fit: cover !important;
+  -o-object-position: center;
+     object-position: center;
   border-radius: 15px;
   background-color: #f2f2f2;
   cursor: pointer;
@@ -2054,8 +2210,10 @@ footer {
 .thumbnail-active {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center;
+     object-position: center;
   border-radius: 15px;
   background-color: #f2f2f2;
   cursor: zoom-in;
@@ -2085,7 +2243,8 @@ footer {
 .slideshow--slides img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  -o-object-fit: contain;
+     object-fit: contain;
 }
 
 /* Next & previous buttons */
@@ -2239,8 +2398,6 @@ footer {
 }
 .details__steps--line.active {
   background: rgb(0, 0, 0);
-  background: -moz-linear-gradient(90deg, rgb(0, 0, 0) 0%, rgb(130, 130, 130) 51%, rgb(176, 176, 176) 100%);
-  background: -webkit-linear-gradient(90deg, rgb(0, 0, 0) 0%, rgb(130, 130, 130) 51%, rgb(176, 176, 176) 100%);
   background: linear-gradient(90deg, rgb(0, 0, 0) 0%, rgb(130, 130, 130) 51%, rgb(176, 176, 176) 100%);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#000000", endColorstr="#b0b0b0", GradientType=1);
 }
@@ -2262,7 +2419,6 @@ footer {
   cursor: pointer;
   -webkit-user-select: none;
   -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
   /* Hide the browser's default checkbox */
   /* Create a custom checkbox */
@@ -2884,7 +3040,8 @@ footer {
   transition: all 0.2s ease-in-out;
   background: rgba(0, 0, 0, 0.3);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+          backdrop-filter: blur(4px);
   z-index: 1;
 }
 
@@ -2955,7 +3112,9 @@ footer {
 
 .card-carousel.dragging .card {
   cursor: grab;
-  user-select: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
 }
 
 .card {
@@ -2981,7 +3140,8 @@ footer {
   width: 120px;
   height: 120px;
   border-radius: 50%;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
   outline: 3px solid #202124;
   padding: 5px;
 }
@@ -3007,7 +3167,8 @@ footer {
   outline: none;
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  -o-object-fit: contain;
+     object-fit: contain;
 }
 .card > .price {
   color: red;
@@ -3016,4 +3177,4 @@ footer {
   margin-right: 15px;
   color: #202124;
   text-decoration: line-through;
-}
+}/*# sourceMappingURL=store.css.map */
