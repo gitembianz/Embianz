@@ -51,20 +51,20 @@
                     @endif
                 </h1>
                 <div class="item__form-input-close">
-                      <span>Product:</span>
-                        <div>{{ $item->name }}</div>
-                    </div>
-                    <div class="item__form-input">
-                        <div
-                            @if ($update) @else
+                    <span>Product:</span>
+                    <div>{{ $item->name }}</div>
+                </div>
+                <div class="item__form-input">
+                    <div
+                        @if ($update) @else
                           wire:click.prevent="allowselect()" @endif>
-                            @if ($itemselected)
-                                {{ $itemselected }}
-                            @else
-                                {{ __('Select a spec') }}
-                            @endif
-                        </div>
+                        @if ($itemselected)
+                            {{ $itemselected }}
+                        @else
+                            {{ __('Select a spec') }}
+                        @endif
                     </div>
+                </div>
 
                 {{-- add specs list with search --}}
                 @if ($allow)
@@ -87,10 +87,11 @@
                         </span>
                     </div>
                 @endif
-
-                <div class="item__form-input">
-                  <input type="text"class="table-edit wid-6" wire:model.defer="spec.value" required>
-                  <span>Value:</span>
+                <div>
+                    <div class="item__form-input">
+                        <input type="text" wire:model.defer="spec.value">
+                        <span>Value:</span>
+                    </div>
                 </div>
                 {{-- end specs list with search --}}
                 <div class="display-f wid-10">
