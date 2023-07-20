@@ -24,7 +24,7 @@
         </script>
     @endif
     <div wire:loading>
-        <div class="modal" style="display:flex;">
+        <div class="modal" style="display:flex; z-index: 99999;">
             <div class="loader"></div>
         </div>
     </div>
@@ -55,18 +55,11 @@
                                         wire:click="cancel">{{ __('Cancel & Save all') }}</button>
 
                                     <div class="item__form form-table"
-                                        @if ($checkedadd) style="grid-template-columns: 40% 1fr 1fr 1fr" @endif>
+                                        @if ($checkedadd) style="grid-template-columns: 50% 1fr 1fr" @endif>
 
                                         <div class="item__form-input">
-                                            <input wire:model.debounce.200ms="searchadd" type="text" required>
-                                        </div>
-                                        <div class="item__form-input">
-                                            <select id="perPage" wire:model="perPageadd">
-                                                <option>10</option>
-                                                <option>25</option>
-                                                <option>50</option>
-                                                <option>100</option>
-                                            </select>
+                                            <input wire:model.debounce.200ms="searchadd" type="text"
+                                                placeholder="Search here" required>
                                         </div>
 
                                         <div class="dropdown">
@@ -133,8 +126,7 @@
                                                 onclick="document.getElementById('confirmationmodallinkmultiple').style.display='none'">
 
                                                 <svg>
-                                                    <line x1="18" y1="6" x2="6"
-                                                        y2="18">
+                                                    <line x1="18" y1="6" x2="6" y2="18">
                                                     </line>
                                                     <line x1="6" y1="6" x2="18"
                                                         y2="18">
@@ -211,7 +203,8 @@
                                         </thead>
                                         <tbody style="max-height: 100px !important;">
                                             @foreach ($cats as $cat)
-                                                <tr class="@if ($this->isCheckedadd($cat->id)) th_checked @endif">
+                                                <tr class="@if ($this->isCheckedadd($cat->id)) th_checked @endif"
+                                                    @if ($loop->last) id="last_record" @endif>
                                                     <td data-title="Check"><input type="checkbox"
                                                             value="{{ $cat->id }}" wire:model="checkedadd">
                                                     </td>
@@ -251,16 +244,33 @@
                                         </tbody>
                                     </table>
 
+                                    <a href="#cancelbutton" id="topUp">
+                                        <svg>
+                                            <polyline points="18 15 12 9 6 15"></polyline>
+                                        </svg>
+                                    </a>
                                 </div>
-                                <a href="#cancelbutton" id="topUp">
-                                    <svg>
-                                        <polyline points="18 15 12 9 6 15"></polyline>
-                                    </svg>
-                                </a>
                             </div>
                         </div>
 
+                        <script>
+                            const lastRecord = document.getElementById('last_record');
+                            const options = {
+                                root: null,
+                                threshold: 1,
+                                rootMargin: '0px'
+                            }
+                            const observer = new IntersectionObserver((entries, observer) => {
+                                entries.forEach(entry => {
+                                    if (entry.isIntersecting) {
+                                        @this.loadMore()
+                                    }
+                                });
+                            });
+                            observer.observe(lastRecord);
+                        </script>
                     @endif
+                    {{-- end script --}}
                     {{-- end html for adding products --}}
                 </div>
                 <div class="item">
