@@ -12,9 +12,6 @@ class Storesettingsform extends Component
   public $value;
   public $description;
 
-  public function mount()
-  {
-  }
 
   public function render()
   {

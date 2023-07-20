@@ -1,5 +1,4 @@
-<div class="item">
-
+<div>
     {{-- Asta trebuie de facut componenta --}}
     @if (session()->has('message'))
         <div class="alert__session liveAlert" id="alertevent">
@@ -215,5 +214,5 @@
             @endforeach
         </tbody>
     </table>
-    <div class="pagination">{{ $products->links('pagination-links') }} </div>
+    <div>{{ $products->links('pagination-links') }} </div>
 </div>
