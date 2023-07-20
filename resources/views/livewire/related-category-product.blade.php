@@ -23,8 +23,8 @@
             }, 2000);
         </script>
     @endif
-    <div wire:loading>
-        <div class="modal" style="display:flex;">
+    <div wire:loading.delay>
+        <div class="modal" style="display:flex; z-index: 99999;">
             <div class="loader"></div>
         </div>
     </div>
@@ -48,24 +48,18 @@
                     @if ($showTable === false)
                     @else
                         <div class="modal" style="display: block">
-                            <div class="modal-content" style="margin: 0 auto; width:80%; top: 50%; transform: translateY(-50%); display: flex; max-height: 80vh; overflow-y: auto; align-items: flex-start">
+                            <div class="modal-content"
+                                style="margin: 0 auto; width:80%; top: 50%; transform: translateY(-50%); display: flex; max-height: 80vh; overflow-y: auto; align-items: flex-start">
                                 <div class="item" style="width: 100%">
-                                    <button class="item__upload-btn"
+                                    <button id="cancelbutton" class="item__upload-btn"
                                         wire:click="cancel">{{ __('Cancel & Save all') }}</button>
 
                                     <div class="item__form form-table"
-                                        @if ($checkedadd) style="grid-template-columns: 40% 1fr 1fr 1fr" @endif>
+                                        @if ($checkedadd) style="grid-template-columns: 50% 1fr 1fr" @endif>
 
                                         <div class="item__form-input">
-                                            <input wire:model.debounce.200ms="searchadd" type="text" required>
-                                        </div>
-                                        <div class="item__form-input">
-                                            <select id="perPage" wire:model="perPageadd">
-                                                <option>10</option>
-                                                <option>25</option>
-                                                <option>50</option>
-                                                <option>100</option>
-                                            </select>
+                                            <input wire:model.debounce.200ms="searchadd" type="text"
+                                                placeholder="Search here" required>
                                         </div>
 
                                         <div class="dropdown">
@@ -209,7 +203,8 @@
                                         </thead>
                                         <tbody style="max-height: 100px !important;">
                                             @foreach ($cats as $cat)
-                                                <tr class="@if ($this->isCheckedadd($cat->id)) th_checked @endif">
+                                                <tr class="@if ($this->isCheckedadd($cat->id)) th_checked @endif"
+                                                    @if ($loop->last) id="last_record" @endif>
                                                     <td data-title="Check"><input type="checkbox"
                                                             value="{{ $cat->id }}" wire:model="checkedadd">
                                                     </td>
@@ -248,11 +243,34 @@
                                             @endforeach
                                         </tbody>
                                     </table>
+
+                                    <a href="#cancelbutton" id="topUp">
+                                        <svg>
+                                            <polyline points="18 15 12 9 6 15"></polyline>
+                                        </svg>
+                                    </a>
                                 </div>
                             </div>
                         </div>
 
+                        <script>
+                            const lastRecord = document.getElementById('last_record');
+                            const options = {
+                                root: null,
+                                threshold: 1,
+                                rootMargin: '0px'
+                            }
+                            const observer = new IntersectionObserver((entries, observer) => {
+                                entries.forEach(entry => {
+                                    if (entry.isIntersecting) {
+                                        @this.loadMore()
+                                    }
+                                });
+                            });
+                            observer.observe(lastRecord);
+                        </script>
                     @endif
+                    {{-- end script --}}
                     {{-- end html for adding products --}}
                 </div>
                 <div class="item">
@@ -473,4 +491,5 @@
             </div>
         @endif
     </div>
+
 </div>

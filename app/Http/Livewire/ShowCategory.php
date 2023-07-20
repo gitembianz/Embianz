@@ -45,6 +45,12 @@ class ShowCategory extends Component
       if (array_key_exists('name', $category_new)) {
         $new->name = $category_new['name'];
       }
+      if (array_key_exists('active', $category_new)) {
+        $new->active = $category_new['active'];
+      }
+      if (array_key_exists('visible', $category_new)) {
+        $new->store_tab = $category_new['visible'];
+      }
       if (array_key_exists('start_date', $category_new)) {
         $new->start_date = $category_new['start_date'];
       }

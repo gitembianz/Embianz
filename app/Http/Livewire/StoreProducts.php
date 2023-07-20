@@ -20,6 +20,7 @@ class StoreProducts extends Component
   {
     $this->loadAmount += 10;
   }
+  //
 
   public function mount()
   {

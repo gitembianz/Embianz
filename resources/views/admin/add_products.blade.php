@@ -39,6 +39,7 @@
         <div class="item__header">
             <h1 id="title" class="item__header-title">{{ __('New Product') }}</h1>
             <div class="item__header-buttons">
+                <input class="item__header-btn" type="submit" value="Add New" name="submit">
                 <a class="item__header-btn" href="{{ route('products') }}">All Products</a>
                 <button class="item__header-btn" id="resetform" type="reset">Clear form</button>
             </div>
@@ -64,6 +65,16 @@
             <div class="item__form-input">
                 <input type="text" name="product_name" required>
                 <span> Product Name</span>
+            </div>
+            <div class="display-f align-center jus-s g-2 wid-10">
+                <div class="wid-2 display-f align-center jus-s">
+                    <input type="checkbox" name="active">
+                    <span class="ml-1"> is active</span>
+                </div>
+                <div class="item__form-input">
+                    <input type="number" min="0" name="popularity" required>
+                    <span>Popularity</span>
+                </div>
             </div>
             <div class="item__form-input">
                 <input type="date" id="start_date" min="0" name="start_date">

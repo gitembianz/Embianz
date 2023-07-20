@@ -133,17 +133,33 @@
                             <span>Product Quantity</span>
                         </div>
                     @endif
-                    @if ($editproduct === null)
-                        <div class="item__form-input-close">
-                            <div>{{ $product->popularity }}</div>
-                            <span>Product Popularity</span>
-                        </div>
-                    @else
-                        <div class="item__form-input">
-                            <input type="number" min="0" wire:model.defer="prod.popularity" required>
-                            <span>Product Popularity</span>
-                        </div>
-                    @endif
+                    <div class="display-f align-center jus-s g-2 wid-10">
+                        @if ($editproduct === null)
+                            <div class="item__form-input-close">
+                                <div>
+                                    @if ($product->active)
+                                        {{ _('Active') }}
+                                    @else
+                                        {{ _('Inactive') }}
+                                    @endif
+                                </div>
+                                <span>Is Active</span>
+                            </div>
+                            <div class="item__form-input-close">
+                                <div>{{ $product->popularity }}</div>
+                                <span>Product Popularity</span>
+                            </div>
+                        @else
+                            <div class=" display-f align-center jus-s">
+                                <input type="checkbox" wire:model.defer="prod.active">
+                                <span class="ml-1"> is active</span>
+                            </div>
+                            <div class="item__form-input">
+                                <input type="number" min="0" wire:model.defer="prod.popularity" required>
+                                <span>Product Popularity</span>
+                            </div>
+                        @endif
+                    </div>
                     @if ($editproduct === null)
                         <div class="item__form-input-close item__form-long">
                             <div id="category_short_description">{{ $product->short_description }}</div>

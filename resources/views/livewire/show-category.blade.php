@@ -63,18 +63,47 @@
                             <span> Name</span>
                         </div>
                     @endif
-                    @if ($editcategory === null)
-                        <div class="item__form-input-close">
-                            <div>{{ $category->sequence }}</div>
-                            <span>Category Sequence</span>
-                        </div>
-                    @else
-                        <div class="item__form-input">
-                            <input type="number" min="0" wire:model.defer="cat.sequence">
-                            <span>Sequence</span>
-                        </div>
-                    @endif
-
+                    <div class="display-f align-center jus-s g-2 wid-10">
+                        @if ($editcategory === null)
+                            <div class="item__form-input-close">
+                                <div>
+                                    @if ($category->active)
+                                        {{ _('Active') }}
+                                    @else
+                                        {{ _('Inactive') }}
+                                    @endif
+                                </div>
+                                <span>Is Active</span>
+                            </div>
+                            <div class="item__form-input-close">
+                                <div>
+                                    @if ($category->store_tab)
+                                        {{ _('Visible') }}
+                                    @else
+                                        {{ _('None') }}
+                                    @endif
+                                </div>
+                                <span>Visible on Store Tab</span>
+                            </div>
+                            <div class="item__form-input-close">
+                                <div>{{ $category->sequence }}</div>
+                                <span>Category Sequence</span>
+                            </div>
+                        @else
+                            <div class=" display-f align-center jus-s">
+                                <input type="checkbox" wire:model.defer="cat.active">
+                                <span class="ml-1"> is active</span>
+                            </div>
+                            <div class="display-f align-center jus-s">
+                                <input type="checkbox" wire:model.defer="cat.visible">
+                                <span class="ml-1">Displayed on Store Tab?</span>
+                            </div>
+                            <div class="item__form-input">
+                                <input type="number" min="0" wire:model.defer="cat.sequence">
+                                <span>Sequence</span>
+                            </div>
+                        @endif
+                    </div>
                     @if ($editcategory === null)
                         <div class="item__form-input-close">
                             <div>{{ $category->start_date }}</div>

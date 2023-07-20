@@ -31,7 +31,6 @@ class RelatedCategoryProduct extends Component
   public $selectedColumns = [];
 
   //add variables
-  public $perPageadd = 10;
   public $searchadd = '';
   public $orderByadd = 'id';
   public $orderAscadd = true;
@@ -43,12 +42,18 @@ class RelatedCategoryProduct extends Component
   public $columnsadd = ['Id', 'Short Description', 'Created At'];
   public $selectedColumnsadd = [];
   public $catidbeinglink = null;
+  public $totalRecords;
+  public $loadAmount = 10;
 
-  //add new functions
+  //add new functionss
   public function toggleTable()
   {
     $this->showrelatedcat = true;
     $this->showTable = !$this->showTable;
+  }
+  public function loadMore()
+  {
+    $this->loadAmount += 10;
   }
   public function cancel()
   {
@@ -95,7 +100,7 @@ class RelatedCategoryProduct extends Component
   }
   public function getCatsProperty()
   {
-    return $this->catsQuery->paginate($this->perPageadd);
+    return $this->catsQuery->limit($this->loadAmount)->get();
   }
   public function getCatsQueryProperty()
   {
