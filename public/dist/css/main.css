@@ -4922,6 +4922,8 @@ header,
   font-size: 0.875rem;
   font-weight: 400;
   color: #BBFCDE;
+  width: auto;
+  height: auto;
   color: #35424B;
   transform: translateY(-50%);
   transition: all 0.2s ease-in-out;
