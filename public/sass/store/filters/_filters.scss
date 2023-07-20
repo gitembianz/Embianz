@@ -1,69 +1,189 @@
-// .filter {}
-
-.filter__open {
-  @include flexer(row, space-between, center, 10px);
-  background: transparent;
-  border: none;
-  cursor: pointer;
+// Filter Section
+.filter {
+  position: relative;
   width: 100%;
-  border-radius: 0;
-  border-bottom: 2px solid $text;
 
-  svg {
-    stroke: $text;
-    scale: .7;
-  }
-}
+  // buttons for Apply or reset the fillter changes
+  &__buttons {
+    @include flexer(row, space-between, center, 10px);
 
-.filter__content {
-  background-color: wheat;
-  @include abs-position (fixed, 0, unset, unset, 0);
-  @include box(100%);
-  @include responsive-spacing(padding, 0.1);
-  @include flexer(column, flex-start, flex-start, 20px);
-  z-index: 999;
-}
+    button {
+      @include flexer(row, center, center);
+      @include responsive-spacing(padding, 0.001);
+      // @include responsive-spacing(padding-left, 0.001);
+      // @include responsive-spacing(padding-right, 0.001);
+      width: 100%;
+      color: $background;
 
-.filter__close {
-  @extend .filter__open;
-
-  svg {
-    scale: 1;
-  }
-}
-
-// .filter__list {}
-
-.filter__item {
-  input {
-    // display: none;
-    opacity: 0;
-    cursor: pointer;
-    position: absolute;
-  }
-
-  label {
-    cursor: pointer;
-    padding-left: 35px;
-    position: relative;
-
-    &::after {
-      content: '';
-      @include box(18px);
-      @include abs-position (absolute, 50%, unset, unset, 0);
-      background-color: transparent;
-      border-radius: 5px;
+      background: $text;
       border: 2px solid $text;
-      transform: translateY(-50%);
+      font-weight: 600;
+      border-radius: 10px;
+
+      @include breakpoint(mobile) {
+        //  content
+        color: lightgray;
+
+      }
+
+      &:last-child {
+        background-color: $background;
+        color: $text;
+        background-color: transparent
+      }
     }
   }
 
-  input:checked+label:before {
-    content: '';
-    @include abs-position (absolute, 50%, unset, unset, 4px);
-    @include box(10px);
-    background-color: $text;
-    border-radius: 2px;
-    transform: translateY(-50%);
+  // dropdown styles of filter menu
+  &__dropdown {
+    @include box(100%, auto);
+    @include flexer(column, flex-start, flex-start);
+
+    &--btn {
+      @include flexer(row, space-between, center, 10px);
+      @include responsive-spacing(padding-top, 0.00001);
+      @include responsive-spacing(padding-bottom, 0.00001);
+      @include box(100%, auto);
+      border: none;
+      background-color: transparent;
+      font-weight: 600;
+      cursor: pointer;
+      border-bottom: 3px solid $text;
+
+      svg {
+        stroke: $text;
+        stroke-width: 3px;
+      }
+    }
+
+    &--content {
+      display: grid;
+      grid-template-rows: 0;
+      overflow: hidden;
+      @include fade(hide);
+      @include box(100%, auto);
+
+      &.show {
+        grid-template-rows: 1fr;
+        @include fade(show);
+      }
+    }
+  }
+
+  // button to open Filter,
+  &__open {
+    @include flexer(row, space-between, center, 10px);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    border-radius: 0;
+    border-bottom: 2px solid $text;
+
+    svg {
+      stroke: $text;
+      scale: .7;
+    }
+  }
+
+  // button to close Filter,
+  &__close {
+    @extend .filter__open;
+    border: none;
+    margin-bottom: 50px;
+
+    @include breakpoint(small) {
+      display: none;
+    }
+
+    svg {
+      scale: 1;
+    }
+  }
+
+  // Styles of dropdown content, (grid System of dropdown content)
+  &__content {
+    transform: translateX(0);
+    overflow-y: auto;
+    background-color: $background;
+    @include abs-position (fixed, 0, unset, unset, 0);
+    @include box(100%);
+    @include responsive-spacing(padding, 0.03);
+    @include flexer(column, flex-start, flex-start, 25px);
+    z-index: 999;
+    @include fade(hide);
+
+    &.show {
+      @include fade(show);
+    }
+
+    @include breakpoint(small) {
+      @include abs-position (absolute, 100%, unset, unset, 0);
+      @include box(100%, auto);
+      overflow-y: auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      top: 150%;
+      border: 2px solid $text;
+      border-radius: 10px;
+      @include responsive-spacing(padding, 0.015);
+      // Glassmorphism
+      background: rgba(85, 80, 80, 0.4);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+
+    @include breakpoint(medium) {
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      @include responsive-spacing(padding, 0.01);
+
+    }
+  }
+
+  // List with checkboxes for filters
+  &__list {
+    @include box(100%, auto);
+    @include responsive-spacing(padding, 0.01);
+    background: white;
+    @include flexer(column, flex-start, flex-start, 10px);
+    border-radius: 0 0 10px 10px;
+    // Glassmorphism
+    background: transparent;
+  }
+
+  // Checkboxes with labels
+  &__item {
+    position: relative;
+
+    input {
+      display: none;
+
+      &:checked+label::after {
+        content: '';
+        display: inline-block;
+        @include box(10px);
+        @include abs-position (absolute, 50%, unset, unset, 5px);
+        background-color: $text;
+        border-radius: 2.5px;
+        transform: translateY(-50%);
+      }
+    }
+
+    label {
+      cursor: pointer;
+      padding-left: 35px;
+      position: relative;
+
+      &::before {
+        content: '';
+        display: inline-block;
+        @include box(20px);
+        @include abs-position (absolute, 50%, unset, unset, 0);
+        background-color: transparent;
+        border-radius: 5px;
+        border: 2.5px solid $text;
+        transform: translateY(-50%);
+      }
+    }
   }
 }
