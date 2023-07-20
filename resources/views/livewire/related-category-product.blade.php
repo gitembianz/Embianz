@@ -24,7 +24,7 @@
         </script>
     @endif
     <div wire:loading>
-        <div class="modal" style="display:flex;">
+        <div class="modal" style="display:flex; z-index: 99999;">
             <div class="loader"></div>
         </div>
     </div>
