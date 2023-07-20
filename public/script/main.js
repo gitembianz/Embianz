@@ -46,12 +46,52 @@ window.addEventListener("keydown", function (event) {
 
 
 
+// Function on Header Items
+const menuItems = document.querySelectorAll(".menu__item");
 
-const logo = document.querySelector(".logo");
+menuItems.forEach(item => {
+  item.addEventListener("click", function() {
+    const nextElementSibling = item.nextElementSibling;
+    const isActive = nextElementSibling.classList.contains("active");
+    const isActiveBTN = item.classList.contains("active");
+
+
+    menuItems.forEach(otherItem => {
+      otherItem.classList.remove("active");
+    });
+
+    // Add or remove "active" class based on current state
+    if (!isActiveBTN) {
+      item.classList.add("active");
+    }
+
+    // Remove "active" class from all items
+    menuItems.forEach(otherItem => {
+      otherItem.nextElementSibling.classList.remove("active");
+    });
+
+    // Add or remove "active" class based on current state
+    if (!isActive) {
+      nextElementSibling.classList.add("active");
+    }
+  });
+
+  window.addEventListener("resize", function() {
+    if (window.innerWidth <= 768) {
+      menuItems.forEach(item => {
+        item.classList.remove("active");
+        item.nextElementSibling.classList.remove("active");
+      });
+    }
+  });
+});
+
+
+// const logo = document.querySelector(".logo");
 const menu = document.querySelector("#menuOpen");
 const cartBtn = document.querySelector(".cart");
-const heart = document.querySelector(".heart");
-const headerRight = document.querySelector(".header__right");
+// const heart = document.querySelector(".heart");
+// const headerRight = document.querySelector(".header__right");
 
 
 
