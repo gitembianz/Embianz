@@ -59,6 +59,7 @@
       span {
         @include position(absolute, 50%, auto, auto, 15px);
         @include standart-Font;
+        @include size(auto);
         color: $mainBg;
         transform: translateY(-50%);
         transition: $transition;

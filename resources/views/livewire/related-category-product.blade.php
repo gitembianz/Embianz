@@ -48,7 +48,7 @@
                     @if ($showTable === false)
                     @else
                         <div class="modal" style="display: block">
-                            <div class="modal-content" style="margin: auto; width:50%; top: 5%; display: flex;">
+                            <div class="modal-content" style="margin: 0 auto; width:80%; top: 50%; transform: translateY(-50%); display: flex; max-height: 80vh; overflow-y: auto; align-items: flex-start">
                                 <div class="item" style="width: 100%">
                                     <button class="item__upload-btn"
                                         wire:click="cancel">{{ __('Cancel & Save all') }}</button>
