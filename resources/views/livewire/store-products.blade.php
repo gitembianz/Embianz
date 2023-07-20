@@ -1,11 +1,52 @@
 <div class="products">
     <div class="products__control">
-        <button class="sidebar__open" id="filterOpen">
-            <svg>
-                <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
-            </svg>
+      <div class="filter">
+        {{-- Filter Button --}}
+        <button class="filter__open" id="filterOpen">
+          Filters
+          <svg>
+            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+          </svg>
         </button>
-        <nav class="sidebar" id="filter">
+        {{-- Filter Content --}}
+        <div class="filter__content">
+          <button class="filter__close" id="filterClose">
+            Filters
+            <svg>
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+          <ul class="filter__list">
+            <li class="filter__item">
+              <input type="checkbox" name="size" id="filter">
+              <label for="filter">1200</label>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      {{-- <span class="filter__quantity">81 products</span>
+
+      <div class="sort">
+        <button class="sort__open" id="sortOpen">
+          <svg>
+            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+          </svg>
+        </button>
+        <div class="sort__content">
+          <button class="sort__close" id="sortClose">
+            <svg>
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+      </div> --}}
+
+
+      {{--
+      <nav class="sidebar" id="filter">
             <div class="filter__list sidebar__content" id="filterContent">
                 <button class="sidebar__close" id="filterClose">
                     <svg>
@@ -26,7 +67,7 @@
             <svg>
                 <polyline points="6 9 12 15 18 9"></polyline>
             </svg>
-        </div>
+        </div> --}}
     </div>
     <div class="product__catalog">
 
