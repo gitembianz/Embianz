@@ -23,7 +23,7 @@
             }, 2000);
         </script>
     @endif
-    <div wire:loading>
+    <div wire:loading.delay>
         <div class="modal" style="display:flex; z-index: 99999;">
             <div class="loader"></div>
         </div>
