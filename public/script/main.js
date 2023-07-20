@@ -98,6 +98,8 @@ const cartBtn = document.querySelector(".cart");
 
 
 
+
+
 function initializeMenu(open, close, menuId, content) {
   const menuOpen = document.getElementById(open);
   const menuClose = document.getElementById(close);
@@ -146,6 +148,8 @@ function toggleDropdown(buttonId, dropdownId) {
 }
 
 toggleDropdown(".cart__btn", ".cart__list");
+
+// toggleDropdown("","");
 
 
 // Get references to DOM elements
