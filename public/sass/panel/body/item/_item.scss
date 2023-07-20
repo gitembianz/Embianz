@@ -50,6 +50,8 @@
     &-input,
     &-input-close {
       @include flexbox(flex, column, center, center);
+      flex-shrink: unset;
+      flex: 1;
       width: 100%;
       position: relative;
       word-wrap: break-word;

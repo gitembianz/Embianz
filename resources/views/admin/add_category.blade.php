@@ -37,7 +37,7 @@
         @csrf
         {{-- Item Header --}}
         <div class="item__header">
-            <h1 class="item__header" id="title">{{ __('Create Category') }}</h1>
+            <h1 class="item__header-title" id="title">{{ __('Create Category') }}</h1>
             <div class="item__header-buttons">
                 <a class="item__header-btn" href="{{ route('category') }}">All Categories</a>
                 <button class="item__header-btn" type="reset">Clear form</button>
@@ -67,9 +67,19 @@
                 <input type="text" name="category" required>
                 <span> Name</span>
             </div>
-            <div class="item__form-input">
-                <input type="number" min="0" name="sequence" required>
-                <span>Sequence</span>
+            <div class="display-f align-center jus-s g-2 wid-10">
+                <div class=" display-f align-center jus-s">
+                    <input type="checkbox" name="active">
+                    <span class="ml-1"> is active</span>
+                </div>
+                <div class="display-f align-center jus-s">
+                    <input type="checkbox" name="visible">
+                    <span class="ml-1">Displayed on Store Tab?</span>
+                </div>
+                <div class="item__form-input">
+                    <input type="number" min="0" name="sequence" required>
+                    <span>Sequence</span>
+                </div>
             </div>
             <div class="item__form-input">
                 <input type="date" id="start_date" name="start_date">

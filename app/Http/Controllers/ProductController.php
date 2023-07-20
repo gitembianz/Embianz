@@ -42,8 +42,14 @@ class ProductController extends Controller
     $newproduct->start_date = $request->start_date;
     $newproduct->end_date = $request->end_date;
     $newproduct->seo_title = $request->seo_title;
+    $newproduct->popularity = $request->popularity;
     $newproduct->created_by = Auth::user()->name;
     $newproduct->last_modified_by = Auth::user()->name;
+    if ($request->active) {
+      $newproduct->active = true;
+    } else {
+      $newproduct->active = false;
+    }
     $newproduct->save();
 
     //get location/sequences/size/files from image component
