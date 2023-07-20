@@ -42,7 +42,7 @@
         </div>
         {{-- add related specs --}}
         <div class="modal" id="addspecsmodal" @if ($addrelatedspecs) style="display: flex;" @endif>
-            <div class="modal-content-spec wid-2">
+            <div class="modal-content-spec">
                 <h1>
                     @if ($update)
                         {{ __('Edit related Specs') }}
@@ -50,24 +50,19 @@
                         {{ __('Add related Specs') }}
                     @endif
                 </h1>
-                <div class="display-f align-center">
-                    <div>Product:</div>
-                    <div class="item__form-input item__form-long">
-                        <div>{{ $item->name }}</div>
-                    </div>
+                <div class="item__form-input-close">
+                    <span>Product:</span>
+                    <div>{{ $item->name }}</div>
                 </div>
-                <div class="display-f align-center">
-                    <div>Spec:</div>
-                    <div class="item__form-input item__form-long cursor-p">
-                        <div
-                            @if ($update) @else
+                <div class="item__form-input">
+                    <div
+                        @if ($update) @else
                           wire:click.prevent="allowselect()" @endif>
-                            @if ($itemselected)
-                                {{ $itemselected }}
-                            @else
-                                {{ __('Select a spec') }}
-                            @endif
-                        </div>
+                        @if ($itemselected)
+                            {{ $itemselected }}
+                        @else
+                            {{ __('Select a spec') }}
+                        @endif
                     </div>
                 </div>
 
@@ -92,11 +87,10 @@
                         </span>
                     </div>
                 @endif
-
-                <div class="display-f align-center">
-                    <div>Value:</div>
-                    <div class="item__form-input item__form-long">
-                        <input type="text"class="table-edit wid-6" wire:model.defer="spec.value">
+                <div>
+                    <div class="item__form-input">
+                        <input type="text" wire:model.defer="spec.value">
+                        <span>Value:</span>
                     </div>
                 </div>
                 {{-- end specs list with search --}}

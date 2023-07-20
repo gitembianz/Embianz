@@ -48,9 +48,10 @@
                     @if ($showTable === false)
                     @else
                         <div class="modal" style="display: block">
-                            <div class="modal-content" style="margin: auto; width:50%; top: 5%; display: flex;">
+                            <div class="modal-content"
+                                style="margin: 0 auto; width:80%; top: 50%; transform: translateY(-50%); display: flex; max-height: 80vh; overflow-y: auto; align-items: flex-start">
                                 <div class="item" style="width: 100%">
-                                    <button class="item__upload-btn"
+                                    <button id="cancelbutton" class="item__upload-btn"
                                         wire:click="cancel">{{ __('Cancel & Save all') }}</button>
 
                                     <div class="item__form form-table"
@@ -132,7 +133,8 @@
                                                 onclick="document.getElementById('confirmationmodallinkmultiple').style.display='none'">
 
                                                 <svg>
-                                                    <line x1="18" y1="6" x2="6" y2="18">
+                                                    <line x1="18" y1="6" x2="6"
+                                                        y2="18">
                                                     </line>
                                                     <line x1="6" y1="6" x2="18"
                                                         y2="18">
@@ -248,7 +250,13 @@
                                             @endforeach
                                         </tbody>
                                     </table>
+
                                 </div>
+                                <a href="#cancelbutton" id="topUp">
+                                    <svg>
+                                        <polyline points="18 15 12 9 6 15"></polyline>
+                                    </svg>
+                                </a>
                             </div>
                         </div>
 
@@ -473,4 +481,5 @@
             </div>
         @endif
     </div>
+
 </div>
