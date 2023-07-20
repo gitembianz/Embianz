@@ -55,7 +55,7 @@
                                         wire:click="cancel">{{ __('Cancel & Save all') }}</button>
 
                                     <div class="item__form form-table"
-                                        @if ($checkedadd) style="grid-template-columns: 50% 1fr 1fr" @endif>
+                                        @if ($checkedadd) style="grid-template-columns: 3fr 1fr 1fr" @else style="grid-template-columns: 3fr 1fr" @endif>
 
                                         <div class="item__form-input">
                                             <input wire:model.debounce.200ms="searchadd" type="text"
@@ -81,7 +81,7 @@
 
                                         </div>
                                         <button
-                                            @if ($checkedadd) style="display: unset; z-index: 5;" @else style="display: none;" @endif
+                                            @if ($checkedadd) style="display: unset; z-index: 5; height: 3rem;" @else style="display: none;" @endif
                                             class="dropdown-button" wire:click.prevent="confirmItemsLinkmultiple()"
                                             @if ($checkedadd) style="display: flex" @endif> Add
                                             ({{ count($checkedadd) }}) records</button>
@@ -159,7 +159,7 @@
                                     @endif
 
                                     {{-- Livewire Table --}}
-                                    <table class="livewire-table">
+                                    <table class="livewire-table livewire-table--modal">
 
                                         <thead>
                                             <tr>
@@ -244,13 +244,13 @@
                                         </tbody>
                                     </table>
 
-                                    <a href="#cancelbutton" id="topUp">
-                                        <svg>
-                                            <polyline points="18 15 12 9 6 15"></polyline>
-                                        </svg>
-                                    </a>
+                                  </div>
                                 </div>
-                            </div>
+                                <a href="#cancelbutton" class="top-up-modal" id="topUp">
+                                    <svg>
+                                        <polyline points="18 15 12 9 6 15"></polyline>
+                                    </svg>
+                                </a>
                         </div>
 
                         <script>

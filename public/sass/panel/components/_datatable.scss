@@ -103,6 +103,10 @@
     display: inline-block;
     width: calc(100% + ($contentPadding * 2));
 
+    &--modal {
+      width: 100%;
+    }
+
     thead tr {
       display: block;
       padding-right: 5px;

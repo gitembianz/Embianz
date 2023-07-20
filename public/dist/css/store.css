@@ -3183,4 +3183,86 @@ footer {
   margin-right: 15px;
   color: #202124;
   text-decoration: line-through;
+}
+
+.filter__open, .filter__close {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  flex: 0 1 auto;
+  gap: 10px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  border-radius: 0;
+  border-bottom: 2px solid #202124;
+}
+.filter__open svg, .filter__close svg {
+  stroke: #202124;
+  scale: 0.7;
+}
+
+.filter__content {
+  background-color: wheat;
+  position: fixed;
+  top: 0;
+  right: unset;
+  bottom: unset;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: clamp(10px, 10vw, 50px);
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex: 0 1 auto;
+  gap: 20px;
+  z-index: 999;
+}
+
+.filter__close svg {
+  scale: 1;
+}
+
+.filter__item input {
+  opacity: 0;
+  cursor: pointer;
+  position: absolute;
+}
+.filter__item label {
+  cursor: pointer;
+  padding-left: 35px;
+  position: relative;
+}
+.filter__item label::after {
+  content: "";
+  width: 18px;
+  height: 18px;
+  position: absolute;
+  top: 50%;
+  right: unset;
+  bottom: unset;
+  left: 0;
+  background-color: transparent;
+  border-radius: 5px;
+  border: 2px solid #202124;
+  transform: translateY(-50%);
+}
+.filter__item input:checked + label:before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: unset;
+  bottom: unset;
+  left: 4px;
+  width: 10px;
+  height: 10px;
+  background-color: #202124;
+  border-radius: 2px;
+  transform: translateY(-50%);
 }/*# sourceMappingURL=store.css.map */
