@@ -39,6 +39,7 @@
         <div class="item__header">
             <h1 class="item__header-title" id="title">{{ __('Create Category') }}</h1>
             <div class="item__header-buttons">
+                <input class="item__header-btn" type="submit" value="Add New" name="submit">
                 <a class="item__header-btn" href="{{ route('category') }}">All Categories</a>
                 <button class="item__header-btn" type="reset">Clear form</button>
             </div>

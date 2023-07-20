@@ -39,6 +39,7 @@
         <div class="item__header">
             <h1 id="title" class="item__header-title">{{ __('New Product') }}</h1>
             <div class="item__header-buttons">
+                <input class="item__header-btn" type="submit" value="Add New" name="submit">
                 <a class="item__header-btn" href="{{ route('products') }}">All Products</a>
                 <button class="item__header-btn" id="resetform" type="reset">Clear form</button>
             </div>
