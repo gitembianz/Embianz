@@ -166,16 +166,19 @@ function dropdown(dropdown) {
       dropdown.classList.toggle("show");
     });
   });
+}
 
-  document.querySelector(".filter__close").addEventListener("click", function () {
-    var dropdown = this.parentElement.nextElementSibling;
-    dropdown.classList.remove("show");
-  })
+function closeDrop(){
+  var dropContent = document.querySelector(".filter__content");
+  dropContent.classList.remove("show");
 }
 
 
 dropdown(".filter__dropdown--btn");
 dropdown(".filter__open");
+// dropdown(".filter__close");
+dropdown(".filter__sort--btn");
+
 
 
 
