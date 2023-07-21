@@ -15,7 +15,7 @@ class ShowProduct extends Component
 
   public $productId;
   public $editproduct = null;
-  public $prod = [];
+  public $prod;
 
   public function mount($productId)
   {
@@ -28,6 +28,19 @@ class ShowProduct extends Component
   }
   public function editproduct()
   {
+    $this->prod = [
+      'product_name' => $this->product->name,
+      'active' => $this->product->active,
+      'product_status' => $this->product->product_status,
+      'start_date' => $this->product->start_date,
+      'end_date' => $this->product->end_date,
+      'popularity' => $this->product->popularity,
+      'short_description' => $this->product->short_description,
+      'long_description' => $this->product->long_description,
+      'seo_title' => $this->product->seo_title,
+      'quantity' => $this->product->quantity,
+      // Add other properties as needed
+    ];
     $this->editproduct = true;
   }
   public function getProductProperty()

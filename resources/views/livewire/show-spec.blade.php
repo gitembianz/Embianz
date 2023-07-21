@@ -23,7 +23,7 @@
             }, 2000);
         </script>
     @endif
-    <div wire:loading>
+    <div wire:loading.delay>
         <div class="modal" style="display:flex;">
             <div class="loader"></div>
         </div>
@@ -60,7 +60,7 @@
                     @else
                         <div class="item__form-input">
                             <input type="text" wire:model.defer="record.name">
-                            <span> Name</span>
+                            <span>Name</span>
                         </div>
                     @endif
                     @if ($edititem === null)
@@ -71,7 +71,7 @@
                     @else
                         <div class="item__form-input">
                             <input type="text" wire:model.defer="record.um">
-                            <span> Unit</span>
+                            <span>Unit</span>
                         </div>
                     @endif
 
@@ -86,7 +86,6 @@
                                 <?php
                                 $groups = ['details', 'feature', 'accessibility'];
                                 ?>
-                                <option>Select a group</option>
                                 @foreach ($groups as $group)
                                     <option value="{{ $group }}">{{ $group }}</option>
                                 @endforeach

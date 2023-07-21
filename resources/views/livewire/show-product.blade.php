@@ -23,7 +23,7 @@
             }, 2000);
         </script>
     @endif
-    <div wire:loading>
+    <div wire:loading.delay>
         <div class="modal" style="display:flex;">
             <div class="loader"></div>
         </div>
@@ -92,7 +92,6 @@
                                 <?php
                                 $status = ['active', 'inactive', 'low stock'];
                                 ?>
-                                <option value="" selected="">Select a status</option>
                                 @foreach ($status as $status_name)
                                     <option value="{{ $status_name }}">{{ $status_name }}</option>
                                 @endforeach
