@@ -38,6 +38,7 @@ class ShowProduct extends Component
       'short_description' => $this->product->short_description,
       'long_description' => $this->product->long_description,
       'seo_title' => $this->product->seo_title,
+      'quantity' => $this->product->quantity,
       // Add other properties as needed
     ];
     $this->editproduct = true;
