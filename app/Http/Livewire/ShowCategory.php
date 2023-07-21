@@ -13,7 +13,7 @@ class ShowCategory extends Component
 
   public $categoryId;
   public $editcategory = null;
-  public $cat = [];
+  public $cat;
 
   public function mount($categoryId)
   {
@@ -30,6 +30,18 @@ class ShowCategory extends Component
   }
   public function editcategory()
   {
+    $this->cat = [
+      'name' => $this->category->name,
+      'active' => $this->category->active,
+      'visible' => $this->category->store_tab,
+      'start_date' => $this->category->start_date,
+      'end_date' => $this->category->end_date,
+      'sequence' => $this->category->sequence,
+      'short_description' => $this->category->short_description,
+      'long_description' => $this->category->long_description,
+      'seo_title' => $this->category->seo_title,
+      // Add other properties as needed
+    ];
     $this->editcategory = true;
   }
   public function cancelcategory()

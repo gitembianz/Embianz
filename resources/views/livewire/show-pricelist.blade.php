@@ -63,22 +63,36 @@
                             <span> Name</span>
                         </div>
                     @endif
-                    @if ($edititem === null)
-                        <div class="item__form-input-close">
-                            <div>{{ $pricelist->currency->name }}</div>
-                            <span>Currency</span>
-                        </div>
-                    @else
-                        <div class="item__form-input">
-                            <select wire:model.defer="record.currency">
-                                <option>Select a currency</option>
-                                @foreach ($currencies as $currency)
-                                    <option value="{{ $currency->id }}">{{ $currency->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    @endif
-
+                    <div class="display-f align-center jus-s g-2 wid-10">
+                        @if ($edititem === null)
+                            <div class="item__form-input-close">
+                                <div>{{ $pricelist->currency->name }}</div>
+                                <span>Currency</span>
+                            </div>
+                            <div class="item__form-input-close">
+                                <div>
+                                    @if ($pricelist->active)
+                                        {{ _('Active') }}
+                                    @else
+                                        {{ _('Inactive') }}
+                                    @endif
+                                </div>
+                                <span>Is Active</span>
+                            </div>
+                        @else
+                            <div class="item__form-input">
+                                <select wire:model.defer="record.currency">
+                                    @foreach ($currencies as $currency)
+                                        <option value="{{ $currency->id }}">{{ $currency->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class=" display-f align-center jus-s">
+                                <input type="checkbox" wire:model.defer="record.active">
+                                <span class="ml-1"> is active</span>
+                            </div>
+                        @endif
+                    </div>
                     <div class="item__form-close">
                         <div>{{ $pricelist->created_at }}</div>
                         <span>Create date / time</span>

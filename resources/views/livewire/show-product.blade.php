@@ -92,7 +92,6 @@
                                 <?php
                                 $status = ['active', 'inactive', 'low stock'];
                                 ?>
-                                <option value="" selected="">Select a status</option>
                                 @foreach ($status as $status_name)
                                     <option value="{{ $status_name }}">{{ $status_name }}</option>
                                 @endforeach
