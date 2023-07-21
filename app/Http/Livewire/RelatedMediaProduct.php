@@ -144,13 +144,20 @@ class RelatedMediaProduct extends Component
       $this->checked = [];
     }
   }
-  public function clear()
+  public function clearall()
   {
     $this->row = 0;
     $this->externalmedia = false;
     $this->file_sequences = [];
     $this->file_link = [];
     $this->file_name = [];
+  }
+  public function clear($i)
+  {
+    array_splice($this->file_sequences, $i, 1);
+    array_splice($this->file_link, $i, 1);
+    array_splice($this->file_name, $i, 1);
+    $this->row--;
   }
   public function saveexternal()
   {
@@ -192,9 +199,6 @@ class RelatedMediaProduct extends Component
   }
   public function save()
   {
-    $this->validate([
-      'medias.*' => 'mimetypes:image/jpeg,image/png,image/svg+xml,video/mp4,video/quicktime|max:10240', // Max 10MB for all files
-    ]);
     $data = Product::find($this->productId);
     $productType = class_basename(get_class($data));
     $filespath = 'media/' . $productType . '/';
@@ -262,6 +266,12 @@ class RelatedMediaProduct extends Component
   public function removemedia($index)
   {
     array_splice($this->medias, $index, 1);
+  }
+  public function cancel()
+  {
+    $this->medias = [];
+    $this->file_sequences = ['0'];
+    $this->file_locations = ['1'];
   }
   public function sortBy($columnName)
   {

@@ -49,11 +49,9 @@
                     @else
                         <div class="modal" id="modalelements" style="display: block">
                             <div class="modal-content"
-                                style="margin: 0 auto; width:80%; top: 50%; transform: translateY(-50%); display: flex; max-height: 98vh; overflow-y: auto; align-items: flex-start">
+                                style="margin: 0 auto; width:80%; top: 50%; transform: translateY(-50%); display: flex; height: 98vh; overflow-y: auto; align-items: flex-start">
                                 <div class="item" style="width: 100%">
-                                    <button id="cancelbutton" class="item__upload-btn"
-                                        wire:click="cancel">{{ __('Cancel') }}</button>
-
+                                    <p id="top"></p>
                                     <div class="item__form form-table"
                                         @if ($checkedadd) style="grid-template-columns: 3fr 1fr 1fr" @else style="grid-template-columns: 3fr 1fr" @endif>
 
@@ -246,7 +244,7 @@
 
                                 </div>
                             </div>
-                            <span class="top-up-modal delete" style="top: 0%; right: 9%" wire:click="cancel">
+                            <span class="top-up-modal delete" style="right: 5%" wire:click="cancel">
 
                                 <svg>
                                     <line x1="18" y1="6" x2="6" y2="18">
@@ -255,7 +253,7 @@
                                     </line>
                                 </svg>
                             </span>
-                            <a href="#cancelbutton" class="top-up-modal" id="topUp">
+                            <a href="#top" class="top-up-modal" id="topUp">
                                 <svg>
                                     <polyline points="18 15 12 9 6 15"></polyline>
                                 </svg>
