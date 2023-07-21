@@ -1810,7 +1810,7 @@ footer {
   gap: 0;
   min-height: 500px;
   position: relative;
-  border-radius: 20px;
+  border-radius: 10px;
   box-shadow: 0 8px 15px 0 rgba(0, 0, 0, 0.37);
   width: 100%;
 }
@@ -1830,7 +1830,7 @@ footer {
   height: auto;
   -webkit-backdrop-filter: blur(15px);
           backdrop-filter: blur(15px);
-  border-radius: 0 0 20px 20px;
+  border-radius: 0 0 10px 10px;
   background: rgba(255, 255, 255, 0.4);
 }
 .product__item--price {
@@ -1878,7 +1878,7 @@ footer {
   height: 500px;
   -o-object-fit: cover;
      object-fit: cover;
-  border-radius: 20px;
+  border-radius: 10px;
 }
 .product__item--buttons {
   display: flex;
