@@ -17,57 +17,71 @@
               <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
           </button>
-          <ul class="filter__list">
-            <li class="filter__item">
-              <input type="checkbox" name="size" id="filter">
-              <label for="filter">1200</label>
-            </li>
-          </ul>
+          <div class="filter__dropdown">
+            <button class="filter__dropdown--btn">
+              Quantity
+              <svg><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <div class="filter__dropdown--content">
+              <ul class="filter__list">
+                <li class="filter__item">
+                  <input type="checkbox" name="size" id="filter">
+                  <label for="filter">1200</label>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="filter__dropdown">
+            <button class="filter__dropdown--btn">
+              size
+              <svg><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <div class="filter__dropdown--content">
+              <ul class="filter__list">
+                <li class="filter__item">
+                  <input type="checkbox" name="size" id="filter">
+                  <label for="filter">250 ml</label>
+                </li>
+                <li class="filter__item">
+                  <input type="checkbox" name="size" id="filter">
+                  <label for="filter">500 ml</label>
+                </li>
+                <li class="filter__item">
+                  <input type="checkbox" name="size" id="filter">
+                  <label for="filter">1000 ml</label>
+                </li>
+                <li class="filter__item">
+                  <input type="checkbox" name="size" >
+                  <label >250 ml</label>
+                </li>
+
+              </ul>
+            </div>
+          </div>
+          <div class="filter__dropdown">
+            <button class="filter__dropdown--btn">
+              Color
+              <svg><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <div class="filter__dropdown--content">
+              <ul class="filter__list">
+                <li class="filter__item">
+                  <input type="checkbox" name="size" id="filter">
+                  <label for="filter">blue</label>
+                </li>
+                <li class="filter__item">
+                  <input type="checkbox" name="size" id="filter">
+                  <label for="filter">red</label>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="filter__buttons">
+            <button>Apply</button>
+            <button>Reset</button>
+          </div>
         </div>
       </div>
-
-      {{-- <span class="filter__quantity">81 products</span>
-
-      <div class="sort">
-        <button class="sort__open" id="sortOpen">
-          <svg>
-            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
-          </svg>
-        </button>
-        <div class="sort__content">
-          <button class="sort__close" id="sortClose">
-            <svg>
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
-          </button>
-        </div>
-      </div> --}}
-
-
-      {{--
-      <nav class="sidebar" id="filter">
-            <div class="filter__list sidebar__content" id="filterContent">
-                <button class="sidebar__close" id="filterClose">
-                    <svg>
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                </button>
-            </div>
-        </nav>
-        <div class="products__select">
-            <select name="cars" id="cars">
-                <option value="none" selected disabled>Select By</option>
-                <option value="Ford">Ford</option>
-                <option value="Ferrari">Ferrari</option>
-                <option value="BMW">BMW</option>
-                <option value="Porsche">Porsche</option>
-            </select>
-            <svg>
-                <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
-        </div> --}}
     </div>
     <div class="product__catalog">
 

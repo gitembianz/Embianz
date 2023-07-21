@@ -1,48 +1,52 @@
-document.addEventListener('DOMContentLoaded', function () {
-  var cookieConsentElement = document.getElementById('cookieConsent');
-  var cookieConsentButton = document.getElementById('cookieConsentButton');
+// document.addEventListener('DOMContentLoaded', function () {
+//   var cookieConsentElement = document.getElementById('cookieConsent');
+//   var cookieConsentButton = document.getElementById('cookieConsentButton');
 
-  // Check if the consent is already given
-  if (!localStorage.getItem('cookieConsent')) {
-    cookieConsentElement.style.display = 'flex';
-  }
+//   // Check if the consent is already given
+//   if (!localStorage.getItem('cookieConsent')) {
+//     cookieConsentElement.style.display = 'flex';
+//   }
 
-  // Function to hide the cookie consent message and store the consent in localStorage
-  function hideCookieConsent() {
-    localStorage.setItem('cookieConsent', 'true');
-    cookieConsentElement.style.display = 'none';
-  }
+//   // Function to hide the cookie consent message and store the consent in localStorage
+//   function hideCookieConsent() {
+//     localStorage.setItem('cookieConsent', 'true');
+//     cookieConsentElement.style.display = 'none';
+//   }
 
-  // Add an event listener to the consent button
-  if (cookieConsentButton) {
-    cookieConsentButton.addEventListener('click', hideCookieConsent);
-  }
-});
+//   // Add an event listener to the consent button
+//   if (cookieConsentButton) {
+//     cookieConsentButton.addEventListener('click', hideCookieConsent);
+//   }
+// });
 
 
 const search = document.getElementById("search");
 const searchOpen = document.getElementById("searchOpen");
 const searchClose = document.getElementById("searchClose");
 
-searchOpen.addEventListener("click", function () {
+searchOpen.addEventListener("click", () => {
   search.classList.add("active");
-})
-searchClose.addEventListener("click", function () {
+});
+
+searchClose.addEventListener("click", () => {
   search.classList.remove("active");
-})
-window.onclick = function (event) {
-  if (event.target == search) {
+});
+
+window.onclick = (event) => {
+  if (event.target === search) {
     search.classList.remove("active");
   }
-}
-window.addEventListener("keydown", function (event) {
-  if (event.keyCode === 27) {
+};
+
+window.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
     search.classList.remove("active");
   }
-  if (event.keyCode === 191) {
+  if (event.key === "/") {
     search.classList.add("active");
   }
 });
+
 
 
 
@@ -138,16 +142,43 @@ function toggleDropdown(buttonId, dropdownId) {
     dropdown.classList.toggle("show");
   });
 
-  window.addEventListener("click", function (event) {
-    if (!event.target.matches(buttonId)) {
-      if (dropdown.classList.contains("show")) {
-        dropdown.classList.remove("show");
-      }
-    }
-  });
+  // window.addEventListener("click", function (event) {
+  //   if (!event.target.matches(buttonId)) {
+  //     if (dropdown.classList.contains("show")) {
+  //       dropdown.classList.remove("show");
+  //     }
+  //   }
+  // });
 }
 
 toggleDropdown(".cart__btn", ".cart__list");
+
+
+
+
+
+function dropdown(dropdown) {
+  var buttons = document.querySelectorAll(dropdown);
+
+  buttons.forEach(function(button) {
+    button.addEventListener("click", function () {
+      var dropdown = this.nextElementSibling;
+      dropdown.classList.toggle("show");
+    });
+  });
+
+  document.querySelector(".filter__close").addEventListener("click", function () {
+    var dropdown = this.parentElement.nextElementSibling;
+    dropdown.classList.remove("show");
+  })
+}
+
+
+dropdown(".filter__dropdown--btn");
+dropdown(".filter__open");
+
+
+
 
 // toggleDropdown("","");
 
