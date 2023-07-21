@@ -12,7 +12,7 @@ class StoreProducts extends Component
 {
 
   public $totalRecords;
-  public $loadAmount = 9;
+  public $loadAmount = 12;
   public $medias = [];
   public $product;
 
