@@ -87,7 +87,7 @@ class StoreShowProduct extends Component
       $this->mainMedia = $this->medias->firstWhere('location.location', 'main');
       if ($this->mainMedia) {
         if (!$this->path) {
-          $this->mainpath = $this->mainMedia->external
+          $this->mainpath = $this->mainMedia->extrenal
             ? $this->mainMedia->path
             : "/{$this->mainMedia->path}{$this->mainMedia->name}";
         }
@@ -99,7 +99,7 @@ class StoreShowProduct extends Component
         ->values();
 
       $this->relatedphotos = $this->mainimages->map(function ($image) {
-        return $image->external
+        return $image->extrenal
           ? $image->path
           : "/{$image->path}{$image->name}";
       });
