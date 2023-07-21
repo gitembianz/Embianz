@@ -82,6 +82,51 @@
           </div>
         </div>
       </div>
+      <div class="filter__search">
+        <input type="text" placeholder="Search...">
+        <button><svg><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></button>
+      </div>
+      <div class="filter__sort">
+        <button class="filter__sort--btn">Sort
+          <svg><line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line></svg>
+        </button>
+        <div class="filter__sort--content">
+          <ul class="filter__sort--list">
+            <li class="filter__sort--item">
+              <input type="checkbox" name="size" id="sort">
+              <label for="sort">Featured</label>
+            </li>
+            <li class="filter__sort--item">
+              <input type="checkbox" name="size" id="sort">
+              <label for="sort">Best selling</label>
+            </li>
+            <li class="filter__sort--item">
+              <input type="checkbox" name="size" id="sort">
+              <label for="sort">Alphabetically, A-Z</label>
+            </li>
+            <li class="filter__sort--item">
+              <input type="checkbox" name="size" id="sort">
+              <label for="sort">Alphabetically, Z-A</label>
+            </li>
+            <li class="filter__sort--item">
+              <input type="checkbox" name="size" id="sort">
+              <label for="sort">Price, low to high</label>
+            </li>
+            <li class="filter__sort--item">
+              <input type="checkbox" name="size" id="sort">
+              <label for="sort">Price, high to low</label>
+            </li>
+            <li class="filter__sort--item">
+              <input type="checkbox" name="size" id="sort">
+              <label for="sort">Date, old to new</label>
+            </li>
+            <li class="filter__sort--item">
+              <input type="checkbox" name="size" id="sort">
+              <label for="sort">Date, new to old</label>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
     <div class="product__catalog">
 

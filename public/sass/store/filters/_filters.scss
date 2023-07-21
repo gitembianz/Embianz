@@ -1,7 +1,7 @@
 // Filter Section
 .filter {
-  position: relative;
-  width: 100%;
+  // width: 100%;
+  @include box(auto, 100%);
 
   // buttons for Apply or reset the fillter changes
   &__buttons {
@@ -10,8 +10,6 @@
     button {
       @include flexer(row, center, center);
       @include responsive-spacing(padding, 0.001);
-      // @include responsive-spacing(padding-left, 0.001);
-      // @include responsive-spacing(padding-right, 0.001);
       width: 100%;
       color: $background;
 
@@ -20,10 +18,8 @@
       font-weight: 600;
       border-radius: 10px;
 
-      @include breakpoint(mobile) {
-        //  content
+      @include breakpoint(small) {
         color: lightgray;
-
       }
 
       &:last-child {
@@ -184,6 +180,76 @@
         border: 2.5px solid $text;
         transform: translateY(-50%);
       }
+    }
+  }
+}
+
+// Filter search
+.filter__search {
+  @include box(40%, 2.5rem);
+  @include flexer(row, flex-start, flex-start);
+  position: relative;
+
+  input {
+    background-color: transparent;
+    @include box(100%);
+    border: none;
+    border-radius: 0;
+    border-bottom: 2px solid $text;
+    flex: 1;
+    padding-left: 10px;
+    outline: none;
+  }
+
+  button {
+    @include box(2.5rem);
+    @include flexer(row, center, center);
+    border: none;
+    background-color: transparent;
+    position: absolute;
+    right: 0;
+
+    svg {
+      stroke: $text;
+      scale: .8;
+    }
+  }
+}
+
+// Filter Sortifications
+.filter__sort {
+  @extend .filter;
+
+  &--btn {
+    @extend .filter__open;
+  }
+
+  &--content {
+    @extend .filter__content;
+    width: min-content;
+    left: unset;
+    right: 0;
+  }
+
+  &--list {
+    @include flexer(column, flex-start, center, 10px);
+    padding: 0;
+  }
+
+  &--item {
+    width: 100%;
+
+    input {
+      display: none;
+    }
+
+    label {
+      @extend .filter__item;
+      text-align: left;
+      padding: 0;
+      width: 100%;
+      font-weight: 600;
+      cursor: pointer;
     }
   }
 }

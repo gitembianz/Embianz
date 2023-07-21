@@ -176,6 +176,8 @@ function dropdown(dropdown) {
 
 dropdown(".filter__dropdown--btn");
 dropdown(".filter__open");
+dropdown(".filter__sort--btn");
+
 
 
 
