@@ -192,9 +192,6 @@ class RelatedMediaProduct extends Component
   }
   public function save()
   {
-    $this->validate([
-      'medias.*' => 'mimetypes:image/jpeg,image/png,image/svg+xml,video/mp4,video/quicktime|max:10240', // Max 10MB for all files
-    ]);
     $data = Product::find($this->productId);
     $productType = class_basename(get_class($data));
     $filespath = 'media/' . $productType . '/';
@@ -262,6 +259,9 @@ class RelatedMediaProduct extends Component
   public function removemedia($index)
   {
     array_splice($this->medias, $index, 1);
+  }
+  public function cancel()
+  {
   }
   public function sortBy($columnName)
   {
