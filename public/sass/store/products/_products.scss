@@ -54,26 +54,39 @@
     grid-template-columns: 1fr 1fr 1fr 1fr;
   }
 
-  @include breakpoint(x-large) {
+  @include breakpoint(xx-large) {
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   }
 }
 
 .product__item {
   @include flexer(column, space-between, center);
-  @include responsive-spacing(padding, 0.001);
-  min-height: 400px;
+  min-height: 500px;
   position: relative;
-  background-color: #f2f2f2;
-  border-radius: 10px;
+  border-radius: 20px;
+  box-shadow: 0 8px 15px 0 rgb(0 0 0 / 37%);
   width: 100%;
+
+  &--bundle {
+    @include responsive-spacing(padding, 0.001);
+    @include flexer(column, flex-start, flex-start, 10px);
+    @include abs-position (absolute, null, null, 0, 0);
+    @include box(100%, auto);
+    backdrop-filter: blur(15px);
+    border-radius: 0 0 20px 20px;
+    background: rgba(255, 255, 255, 0.4);
+  }
 
   &--price {
     @include flexer(row, space-between, center, 15px);
+    width: 100%;
+    text-align: center;
+    color: #104010;
+    font-weight: 500;
 
     span:last-child {
-      @include font(400px, red);
       font-size: 20px;
+      width: 100%;
     }
 
     span.deleted {
@@ -92,8 +105,9 @@
   }
 
   img {
-    height: 100px;
+    @include box(100%, 500px);
     object-fit: cover;
+    border-radius: 20px;
   }
 
   &--buttons {
@@ -104,7 +118,8 @@
   &--btn {
     @include flexer(row, center, center);
     color: #f2f2f2;
-    background: $text;
+    background: #104010;
+    font-weight: 500;
     border-radius: 10px;
     height: 3rem;
 
@@ -119,6 +134,7 @@
 
       svg {
         scale: .7;
+        stroke-width: 2.5px;
       }
     }
   }
@@ -128,6 +144,6 @@
     @include responsive-spacing(padding, 0.00001);
     @include flexer(row, center, center);
     border-radius: 100%;
-    background-color: $text;
+    background-color: #104010;
   }
 }

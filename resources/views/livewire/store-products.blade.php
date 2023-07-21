@@ -155,33 +155,35 @@
                 @else
                     <img src="/images/store/default/product.png" alt="something wrong">
                 @endif
+                <div class="product__item--bundle">
+                  <h3>{{ $product->name }}</h3>
+                  <p>{{ $product->short_description }}</p>
+                  <div class="product__item--price">
+                      {{-- <span class="deleted">99,99 lei</span>
+                      <span>89,99 lei</span> --}}
+                      <span>
+                          @if ($product->product_prices->first() !== null)
+                              {{ $product->product_prices->first()->value }}
+                              {{ $product->product_prices->first()->pricelist->currency->first()->name }}
+                          @else
+                              no price
+                          @endif
+                      </span>
+                  </div>
+                  {{-- <span class="percent">-10%</span> --}}
+                  <div class="product__item--buttons">
+                      <button class="product__item--btn">Buy now</button>
+                      <button class="product__item--btn">
+                          <svg>
+                              <circle cx="9" cy="21" r="1"></circle>
+                              <circle cx="20" cy="21" r="1"></circle>
+                              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6">
+                              </path>
+                          </svg>
+                      </button>
+                  </div>
+                </div>
 
-                <h3>{{ $product->name }}</h3>
-                <p>{{ $product->short_description }}</p>
-                <div class="product__item--price">
-                    {{-- <span class="deleted">99,99 lei</span>
-                    <span>89,99 lei</span> --}}
-                    <span>
-                        @if ($product->product_prices->first() !== null)
-                            {{ $product->product_prices->first()->value }}
-                            {{ $product->product_prices->first()->pricelist->currency->first()->name }}
-                        @else
-                            no price
-                        @endif
-                    </span>
-                </div>
-                {{-- <span class="percent">-10%</span> --}}
-                <div class="product__item--buttons">
-                    <button class="product__item--btn">Buy now</button>
-                    <button class="product__item--btn">
-                        <svg>
-                            <circle cx="9" cy="21" r="1"></circle>
-                            <circle cx="20" cy="21" r="1"></circle>
-                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6">
-                            </path>
-                        </svg>
-                    </button>
-                </div>
                 <button class="product__item--heart">
                     <svg>
                         <path
