@@ -57,12 +57,10 @@
     </div>
     <div class="footer__middle">
         <ul class="footer__list">
-            <h3>Produse</h3>
-            <li><a class="footer__list--item" href="#">Sticle Pentru Apă</a></li>
-            <li><a class="footer__list--item" href="#">Cupe Termoizolate</a></li>
-            <li><a class="footer__list--item" href="#">Sticluțe Pentru Copii</a></li>
-            <li><a class="footer__list--item" href="#">Sticle Pentru Apă Termoizolate</a></li>
-            <li><a class="footer__list--item" href="#">Cutii Pentru Prânz Termoizolate</a></li>
+            <h3>Categorii Populare</h3>
+            @foreach ($categories as $category)
+                <li><a class="footer__list--item" href="#">{{ $category }}</a></li>
+            @endforeach
         </ul>
         <ul class="footer__list">
             <h3>Serviciu clienți</h3>
