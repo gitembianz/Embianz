@@ -1783,6 +1783,22 @@ footer {
     grid-template-columns: 1fr 1fr 1fr;
   }
 }
+@media (min-width: 992px) {
+  .product__catalog {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+  .product__catalog .container {
+    max-width: 960px;
+  }
+}
+@media (min-width: 1200px) {
+  .product__catalog {
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  }
+  .product__catalog .container {
+    max-width: 1140px;
+  }
+}
 
 .product__item {
   display: flex;

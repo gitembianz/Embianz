@@ -49,6 +49,14 @@
   @include breakpoint(medium) {
     grid-template-columns: 1fr 1fr 1fr;
   }
+
+  @include breakpoint(large) {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+
+  @include breakpoint(x-large) {
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  }
 }
 
 .product__item {
