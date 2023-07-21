@@ -2,7 +2,8 @@
   @include flexer(column, $gap: 40px);
 
   &__control {
-    @include flexer(row, space-between, center);
+    @include flexer(row, space-between, flex-end, 30px);
+    position: relative;
   }
 
   &__select {
