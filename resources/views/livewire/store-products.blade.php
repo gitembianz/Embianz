@@ -10,7 +10,7 @@
         </button>
         {{-- Filter Content --}}
         <div class="filter__content">
-          <button class="filter__close" id="filterClose">
+          <button class="filter__close" id="filterClose" onclick="closeDrop()">
             Filters
             <svg>
               <line x1="18" y1="6" x2="6" y2="18"></line>

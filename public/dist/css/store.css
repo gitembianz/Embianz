@@ -3287,6 +3287,14 @@ footer {
   cursor: pointer;
   border-radius: 0;
   border-bottom: 2px solid #202124;
+  font-size: 0;
+  gap: 0;
+}
+@media (min-width: 576px) {
+  .filter__open, .filter__sort--btn, .filter__close {
+    font-size: initial;
+    gap: 10px;
+  }
 }
 .filter__open svg, .filter__sort--btn svg, .filter__close svg {
   stroke: #202124;
@@ -3304,7 +3312,7 @@ footer {
 .filter__close svg {
   scale: 1;
 }
-.filter__content, .filter__sort--content {
+.filter__content {
   transform: translateX(0);
   overflow-y: auto;
   background-color: #ffffff;
@@ -3328,13 +3336,13 @@ footer {
   opacity: 0;
   transition: all 0.2s ease-in-out;
 }
-.filter__content.show, .show.filter__sort--content {
+.filter__content.show {
   visibility: visible;
   opacity: 1;
   transition: all 0.2s ease-in-out;
 }
 @media (min-width: 576px) {
-  .filter__content, .filter__sort--content {
+  .filter__content {
     position: absolute;
     top: 100%;
     right: unset;
@@ -3357,7 +3365,7 @@ footer {
   }
 }
 @media (min-width: 768px) {
-  .filter__content, .filter__sort--content {
+  .filter__content {
     grid-template-columns: 1fr 1fr 1fr 1fr;
     padding: clamp(10px, 1vw, 50px);
   }
@@ -3419,7 +3427,7 @@ footer {
 }
 
 .filter__search {
-  width: 40%;
+  width: 80%;
   height: 2.5rem;
   display: flex;
   flex-direction: row;
@@ -3440,10 +3448,13 @@ footer {
   flex: 1;
   padding-left: 10px;
   outline: none;
+  font-size: 14px;
 }
 .filter__search button {
-  width: 2.5rem;
-  height: 2.5rem;
+  width: -moz-min-content;
+  width: min-content;
+  height: -moz-min-content;
+  height: min-content;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -3455,17 +3466,44 @@ footer {
   background-color: transparent;
   position: absolute;
   right: 0;
+  bottom: 3px;
 }
 .filter__search button svg {
   stroke: #202124;
-  scale: 0.8;
+  scale: 0.7;
 }
 
 .filter__sort--content {
-  width: -moz-min-content;
-  width: min-content;
-  left: unset;
+  position: absolute;
+  top: 150%;
   right: 0;
+  bottom: unset;
+  left: unset;
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  padding: clamp(10px, 1.5vw, 50px);
+  z-index: 99;
+  background: rgba(85, 80, 80, 0.4);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  -webkit-backdrop-filter: blur(15px);
+          backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.2s ease-in-out;
+}
+@media (min-width: 576px) {
+  .filter__sort--content {
+    width: -moz-min-content;
+    width: min-content;
+  }
+}
+.filter__sort--content.show {
+  transform: none;
+  visibility: visible;
+  opacity: 1;
+  transition: all 0.2s ease-in-out;
 }
 .filter__sort--list {
   display: flex;

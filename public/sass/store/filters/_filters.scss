@@ -75,6 +75,15 @@
     border-radius: 0;
     border-bottom: 2px solid $text;
 
+    font-size: 0;
+    gap: 0;
+
+    @include breakpoint(small) {
+      //  content
+      font-size: initial;
+      gap: 10px;
+    }
+
     svg {
       stroke: $text;
       scale: .7;
@@ -186,7 +195,7 @@
 
 // Filter search
 .filter__search {
-  @include box(40%, 2.5rem);
+  @include box(80%, 2.5rem);
   @include flexer(row, flex-start, flex-start);
   position: relative;
 
@@ -199,19 +208,21 @@
     flex: 1;
     padding-left: 10px;
     outline: none;
+    font-size: 14px
   }
 
   button {
-    @include box(2.5rem);
+    @include box(min-content);
     @include flexer(row, center, center);
     border: none;
     background-color: transparent;
     position: absolute;
     right: 0;
+    bottom: 3px;
 
     svg {
       stroke: $text;
-      scale: .8;
+      scale: .7;
     }
   }
 }
@@ -225,10 +236,25 @@
   }
 
   &--content {
-    @extend .filter__content;
-    width: min-content;
-    left: unset;
-    right: 0;
+    @include abs-position (absolute, 150%, 0, unset, unset);
+    @include box(100%, auto);
+    border-radius: 10px;
+    @include responsive-spacing(padding, 0.015);
+    z-index: 99;
+    background: rgba(85, 80, 80, 0.4);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    @include fade(hide);
+
+    @include breakpoint(small) {
+      width: min-content;
+    }
+
+    &.show {
+      transform: none;
+      @include fade(show);
+    }
   }
 
   &--list {
