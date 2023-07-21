@@ -121,10 +121,11 @@
     @include flexer(column, flex-start, flex-start, 25px);
     z-index: 999;
     @include fade(hide);
+    transform: translate(0, -100%);
 
     &.show {
       @include fade(show);
-      transform: none !important;
+      transform: translate(0);
     }
 
     @include breakpoint(small) {
@@ -254,6 +255,8 @@
     backdrop-filter: blur(15px);
     border: 1px solid rgba(255, 255, 255, 0.18);
     @include fade(hide);
+    transform: translate(0, -100%);
+
 
     @include breakpoint(small) {
       width: min-content;
@@ -262,6 +265,7 @@
     &.show {
       transform: none;
       @include fade(show);
+      transform: translate(0, 0);
     }
   }
 
@@ -272,9 +276,16 @@
 
   &--item {
     width: 100%;
+    @include flexer(row, flex-start, flex-start);
 
     input {
-      display: none;
+      // display: none;
+      @include fade(hide);
+      @include box(0);
+
+      &:checked+label {
+        color: $text;
+      }
     }
 
     label {
@@ -282,6 +293,8 @@
       text-align: left;
       padding: 0;
       width: 100%;
+      transition: $transition;
+      color: #f3f3f3;
       font-weight: 600;
       cursor: pointer;
     }
