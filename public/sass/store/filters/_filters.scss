@@ -139,7 +139,7 @@
       border-radius: 10px;
       @include responsive-spacing(padding, 0.015);
       // Glassmorphism
-      background: rgba(85, 80, 80, 0.4);
+      background: rgba(255, 255, 255, 0.6);
       box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
       backdrop-filter: blur(15px);
       border: 1px solid rgba(255, 255, 255, 0.18);
@@ -250,7 +250,7 @@
     border-radius: 10px;
     @include responsive-spacing(padding, 0.015);
     z-index: 99;
-    background: rgba(85, 80, 80, 0.4);
+    background: rgba(255, 255, 255, 0.6);
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
     backdrop-filter: blur(15px);
     border: 1px solid rgba(255, 255, 255, 0.18);
@@ -294,7 +294,7 @@
       padding: 0;
       width: 100%;
       transition: $transition;
-      color: #f3f3f3;
+      color: #959595;
       font-weight: 600;
       cursor: pointer;
     }

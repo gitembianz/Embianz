@@ -63,7 +63,7 @@
   @include flexer(column, space-between, center);
   min-height: 500px;
   position: relative;
-  border-radius: 20px;
+  border-radius: 10px;
   box-shadow: 0 8px 15px 0 rgb(0 0 0 / 37%);
   width: 100%;
 
@@ -73,7 +73,7 @@
     @include abs-position (absolute, null, null, 0, 0);
     @include box(100%, auto);
     backdrop-filter: blur(15px);
-    border-radius: 0 0 20px 20px;
+    border-radius: 0 0 10px 10px;
     background: rgba(255, 255, 255, 0.4);
   }
 
@@ -107,7 +107,7 @@
   img {
     @include box(100%, 500px);
     object-fit: cover;
-    border-radius: 20px;
+    border-radius: 10px;
   }
 
   &--buttons {
