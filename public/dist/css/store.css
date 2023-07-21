@@ -3250,13 +3250,13 @@ footer {
   height: auto;
   border: none;
   background-color: transparent;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
-  border-bottom: 3px solid #202124;
+  border-bottom: 2.5px solid #202124;
 }
 .filter__dropdown--btn svg {
   stroke: #202124;
-  stroke-width: 3px;
+  stroke-width: 2.5px;
 }
 .filter__dropdown--content {
   display: grid;
@@ -3273,6 +3273,7 @@ footer {
   visibility: visible;
   opacity: 1;
   transition: all 0.2s ease-in-out;
+  transform: none !important;
 }
 .filter__open, .filter__sort--btn, .filter__close {
   display: flex;
@@ -3303,6 +3304,16 @@ footer {
 .filter__close {
   border: none;
   margin-bottom: 50px;
+  font-size: initial;
+  border-bottom: 2px solid #202124;
+  padding-bottom: clamp(10px, 0.1vw, 50px);
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  flex: 0 1 auto;
+  gap: 10px;
 }
 @media (min-width: 576px) {
   .filter__close {
@@ -3313,7 +3324,6 @@ footer {
   scale: 1;
 }
 .filter__content {
-  transform: translateX(0);
   overflow-y: auto;
   background-color: #ffffff;
   position: fixed;
@@ -3340,6 +3350,7 @@ footer {
   visibility: visible;
   opacity: 1;
   transition: all 0.2s ease-in-out;
+  transform: none !important;
 }
 @media (min-width: 576px) {
   .filter__content {
@@ -3384,6 +3395,7 @@ footer {
   gap: 10px;
   border-radius: 0 0 10px 10px;
   background: transparent;
+  transform: none !important;
 }
 .filter__item, .filter__sort--item label {
   position: relative;

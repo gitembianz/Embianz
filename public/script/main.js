@@ -174,7 +174,7 @@ function closeDrop(){
 }
 
 
-
+dropdown(".filter__dropdown--btn");
 dropdown(".filter__open");
 // dropdown(".filter__close");
 dropdown(".filter__sort--btn");
