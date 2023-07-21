@@ -49,10 +49,10 @@
                     @else
                         <div class="modal" style="display: block">
                             <div class="modal-content"
-                                style="margin: 0 auto; width:80%; top: 50%; transform: translateY(-50%); display: flex; max-height: 80vh; overflow-y: auto; align-items: flex-start">
+                                style="margin: 0 auto; width:80%; top: 50%; transform: translateY(-50%); display: flex; max-height: 98vh; overflow-y: auto; align-items: flex-start">
                                 <div class="item" style="width: 100%">
                                     <button id="cancelbutton" class="item__upload-btn"
-                                        wire:click="cancel">{{ __('Cancel & Save all') }}</button>
+                                        wire:click="cancel">{{ __('Close Modal') }}</button>
 
                                     <div class="item__form form-table"
                                         @if ($checkedadd) style="grid-template-columns: 3fr 1fr 1fr" @else style="grid-template-columns: 3fr 1fr" @endif>
@@ -244,15 +244,25 @@
                                         </tbody>
                                     </table>
 
-                                  </div>
                                 </div>
-                                <a href="#cancelbutton" class="top-up-modal" id="topUp">
-                                    <svg>
-                                        <polyline points="18 15 12 9 6 15"></polyline>
-                                    </svg>
-                                </a>
-                        </div>
+                            </div>
+                            <span class="modal-content-btn delete"
+                                onclick="document.getElementById('confirmationmodallinkmultiple').style.display='none'">
 
+                                <svg>
+                                    <line x1="18" y1="6" x2="6" y2="18">
+                                    </line>
+                                    <line x1="6" y1="6" x2="18" y2="18">
+                                    </line>
+                                </svg>
+                            </span>
+                            <a href="#cancelbutton" class="top-up-modal" id="topUp">
+                                <svg>
+                                    <polyline points="18 15 12 9 6 15"></polyline>
+                                </svg>
+                            </a>
+                        </div>
+                        {{-- script for lazy load data --}}
                         <script>
                             const lastRecord = document.getElementById('last_record');
                             const options = {

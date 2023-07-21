@@ -13,7 +13,7 @@ class ShowPricelist extends Component
 
   public $itemId;
   public $edititem = null;
-  public $record = [];
+  public $record;
   public $currencies;
 
   public function render()
@@ -55,6 +55,12 @@ class ShowPricelist extends Component
   }
   public function edititem()
   {
+    $this->record = [
+      'name' => $this->pricelist->name,
+      'currency' => $this->pricelist->currency->id,
+      'active' => $this->pricelist->active,
+      // Add other properties as needed
+    ];
     $this->edititem = true;
   }
   public function cancelitem()
@@ -72,6 +78,9 @@ class ShowPricelist extends Component
       }
       if (array_key_exists('currency', $rec)) {
         $new->currency_id = $rec['currency'];
+      }
+      if (array_key_exists('active', $rec)) {
+        $new->active = $rec['active'];
       }
       $new->lastmodifiedby = Auth::user()->name;
       $new->updated_at = now();

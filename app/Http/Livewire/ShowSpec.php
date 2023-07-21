@@ -12,7 +12,7 @@ class ShowSpec extends Component
 
   public $itemId;
   public $edititem = null;
-  public $record = [];
+  public $record;
 
   public function render()
   {
@@ -51,6 +51,12 @@ class ShowSpec extends Component
   }
   public function edititem()
   {
+    $this->record = [
+      'name' => $this->spec->name,
+      'um' => $this->spec->um,
+      'spec_group' => $this->spec->spec_group,
+      // Add other properties as needed
+    ];
     $this->edititem = true;
   }
   public function cancelitem()
