@@ -156,20 +156,21 @@
                     <img src="/images/store/default/product.png" alt="something wrong">
                 @endif
                 <div class="product__item--bundle">
-                  <h3>{{ $product->name }}</h3>
-                  <p>{{ $product->short_description }}</p>
+                  <h4>{{ $product->name }}</h4>
                   <div class="product__item--price">
-                      {{-- <span class="deleted">99,99 lei</span>
-                      <span>89,99 lei</span> --}}
-                      <span>
-                          @if ($product->product_prices->first() !== null)
-                              {{ $product->product_prices->first()->value }}
-                              {{ $product->product_prices->first()->pricelist->currency->first()->name }}
-                          @else
-                              no price
-                          @endif
-                      </span>
+                    {{-- <span class="deleted">99,99 lei</span>
+                    <span>89,99 lei</span> --}}
+                    <span>
+                      @if ($product->product_prices->first() !== null)
+                      {{ $product->product_prices->first()->value }}
+                      {{ $product->product_prices->first()->pricelist->currency->first()->name }}
+                      @else
+                      no price
+                      @endif
+                    </span>
                   </div>
+                  <p>{{ $product->short_description }}</p>
+                  <span>1000ml</span>
                   {{-- <span class="percent">-10%</span> --}}
                   <div class="product__item--buttons">
                       <button class="product__item--btn">Buy now</button>
@@ -191,6 +192,9 @@
                         </path>
                     </svg>
                 </button>
+                <p class="product__item--stock">
+                  Out of the stock!
+                </p>
             </article>
         </a>
     @endforeach
