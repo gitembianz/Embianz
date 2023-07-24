@@ -41,79 +41,92 @@
                 </svg> </button>
         </div>
         {{-- add related specs --}}
-        <div class="modal" id="addspecsmodal" @if ($addrelatedspecs) style="display: flex;" @endif>
-            <div class="modal-content-spec">
-                <h1>
-                    @if ($update)
-                        {{ __('Edit related Specs') }}
-                    @else
-                        {{ __('Add related Specs') }}
-                    @endif
-                </h1>
-                <div class="item__form-input-close">
-                    <span>Product:</span>
-                    <div>{{ $item->name }}</div>
-                </div>
-                <div class="item__form-input">
-                    <div
-                        @if ($update) @else
+        @if ($addrelatedspecs)
+            <div class="modal" id="modalelements" style="display: block">
+                <div class="modal-content"
+                    style="margin: 0 auto; width:80%; top: 50%; transform: translateY(-50%); display: flex; height: 98vh; overflow-y: auto; align-items: flex-start">
+                    <div class="item" style="width: 100%">
+                        <h1 id="top1">
+                            @if ($update)
+                                {{ __('Edit related Specs') }}
+                            @else
+                                {{ __('Add related Specs') }}
+                            @endif
+                        </h1>
+                        <div class="item__form-input-close">
+                            <span>Product:</span>
+                            <div>{{ $item->name }}</div>
+                        </div>
+                        <div class="item__form-input">
+                            <div
+                                @if ($update) @else
                           wire:click.prevent="allowselect()" @endif>
-                        @if ($itemselected)
-                            {{ $itemselected }}
-                        @else
-                            {{ __('Select a spec') }}
+                                @if ($itemselected)
+                                    {{ $itemselected }}
+                                @else
+                                    {{ __('Select a spec') }}
+                                @endif
+                            </div>
+                        </div>
+
+                        {{-- add specs list with search --}}
+                        @if ($allow)
+                            <div class="item__form-input b-1 bra-sm p-1">
+                                <input wire:model.debounce.200ms="searchadd" placeholder="Search.." type="text">
+                                <ul>
+                                    @foreach ($addspecs as $spec)
+                                        <li class="cursor-p" wire:click.prevent="select({{ $spec->id }})">
+                                            {{ $spec->name }} ( {{ $spec->um }})</li>
+                                    @endforeach
+                                </ul>
+                                <span class="modal-content-btn edit" style="left: 90%"
+                                    wire:click.prevent="$set('allow', false)">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" class="feather feather-x">
+                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                    </svg>
+                                </span>
+                            </div>
                         @endif
-                    </div>
-                </div>
+                        <div>
+                            <div class="item__form-input">
+                                <input type="text" wire:model.defer="spec.value">
+                                <span>Value:</span>
+                            </div>
+                        </div>
+                        {{-- end specs list with search --}}
+                        <div class="display-f wid-10">
+                            @if ($update)
+                                <input class="modal-content-btn submit" wire:click.prevent="confirmspecs()"
+                                    type="button" value="Edit">
+                            @else
+                                <input class="modal-content-btn submit" wire:click.prevent="savespecs()" type="button"
+                                    value="Save">
+                            @endif
+                            <input class="modal-content-btn delete" wire:click.prevent="closemodal()" type="button"
+                                value="Cancel">
+                        </div>
 
-                {{-- add specs list with search --}}
-                @if ($allow)
-                    <div class="item__form-input b-1 bra-sm p-1">
-                        <input wire:model.debounce.200ms="searchadd" placeholder="Search.." type="text">
-                        <ul>
-                            @foreach ($addspecs as $spec)
-                                <li class="cursor-p" wire:click.prevent="select({{ $spec->id }})">
-                                    {{ $spec->name }} ( {{ $spec->um }})</li>
-                            @endforeach
-                        </ul>
-                        <span class="modal-content-btn edit" style="left: 90%"
-                            wire:click.prevent="$set('allow', false)">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="feather feather-x">
-                                <line x1="18" y1="6" x2="6" y2="18"></line>
-                                <line x1="6" y1="6" x2="18" y2="18"></line>
-                            </svg>
-                        </span>
-                    </div>
-                @endif
-                <div>
-                    <div class="item__form-input">
-                        <input type="text" wire:model.defer="spec.value">
-                        <span>Value:</span>
                     </div>
                 </div>
-                {{-- end specs list with search --}}
-                <div class="display-f wid-10">
-                    @if ($update)
-                        <input class="modal-content-btn submit" wire:click.prevent="confirmspecs()" type="button"
-                            value="Edit">
-                    @else
-                        <input class="modal-content-btn submit" wire:click.prevent="savespecs()" type="button"
-                            value="Save">
-                    @endif
-                    <input class="modal-content-btn delete" wire:click.prevent="closemodal()" type="button"
-                        value="Cancel">
-                </div>
+                <span class="top-up-modal delete" style="right: 5%" wire:click="closemodal">
 
-                <span class="modal-content-btn delete" wire:click.prevent="closemodal()">
                     <svg>
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                        <line x1="18" y1="6" x2="6" y2="18">
+                        </line>
+                        <line x1="6" y1="6" x2="18" y2="18">
+                        </line>
                     </svg>
                 </span>
+                <a href="#top1" class="top-up-modal" id="topUp">
+                    <svg>
+                        <polyline points="18 15 12 9 6 15"></polyline>
+                    </svg>
+                </a>
             </div>
-        </div>
+        @endif
         {{-- end add related specs --}}
         @if ($showrelatedspecs)
             <div class="accordion__content">

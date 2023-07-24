@@ -49,7 +49,7 @@
                     @else
                         <div class="modal" id="modalelements" style="display: block">
                             <div class="modal-content"
-                                style="margin: 0 auto; width:80%; top: 50%; transform: translateY(-50%); display: flex; max-height: 98vh; overflow-y: auto; align-items: flex-start">
+                                style="margin: 0 auto; width:80%; top: 50%; transform: translateY(-50%); display: flex; height: 98vh; overflow-y: auto; align-items: flex-start">
                                 <div class="item" style="width: 100%">
                                     <p id="top"></p>
                                     <div class="item__form form-table"
