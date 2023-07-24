@@ -269,9 +269,11 @@ class RelatedMediaProduct extends Component
   }
   public function cancel()
   {
+
     $this->medias = [];
     $this->file_sequences = ['0'];
     $this->file_locations = ['1'];
+
   }
   public function sortBy($columnName)
   {
