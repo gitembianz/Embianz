@@ -51,11 +51,11 @@
     grid-template-columns: 1fr 1fr;
   }
 
-  @include breakpoint(medium) {
+  @include breakpoint(large) {
     grid-template-columns: 1fr 1fr 1fr;
   }
 
-  @include breakpoint(large) {
+  @include breakpoint(x-large) {
     grid-template-columns: 1fr 1fr 1fr 1fr;
   }
 

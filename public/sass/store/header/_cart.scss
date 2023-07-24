@@ -114,6 +114,9 @@
     @include btn;
   }
 
+
+
+
   &__page {
     @include flexer(column, flex-start, flex-start, 15px);
 
@@ -142,10 +145,11 @@
       }
     }
 
-    button {
+    a {
       @include responsive-spacing(padding, .01);
       background-color: $text;
       border-radius: 10px;
+      text-align: center;
       color: $background;
       width: 100%;
       color: #f2f2f2;
@@ -169,11 +173,11 @@
       width: 100%;
 
       input {
-        @include box(auto, 2.5rem);
+        @include box(100%, 2.5rem);
         background-color: #f2f2f2;
         border-radius: 10px;
+        border: 2px solid $text;
         padding: 0 10px;
-        width: 100%;
         flex: 1;
       }
 
@@ -181,6 +185,8 @@
         @include flexer(row, center, center);
         @include box(2.5rem);
         padding: 0;
+        background-color: $text;
+        border-radius: 10px;
         margin: 0
       }
     }
@@ -195,7 +201,57 @@
 
 
 
+// .cart-page {
+//   &__list {
+//     display: grid;
+//     grid-template-columns: 1fr;
+//     width: 100%;
+//     gap: 15px;
+
+//     @include breakpoint(small) {
+//       grid-template-columns: 1fr 1fr;
+//     }
+
+
+//   }
+
+//   &__item {
+//     @include flexer(column, space-between, center, 15px);
+//     @include responsive-spacing(padding, .01);
+//     background-color: #f2f2f2;
+//     border-radius: 10px;
+//     width: 100%;
+
+//     img {
+//       height: 100px;
+//       object-fit: cover;
+//     }
+//   }
+
+//   &__buttons {
+//     @include flexer(row, center, center, 15px);
+//   }
+
+//   &__delete,
+//   &__heart {
+//     @include flexer(row, center, center);
+//     @include responsive-spacing(padding, 0.001);
+//     border-radius: 100%;
+//     background-color: $text;
+
+//     svg {
+//       scale: .7;
+//     }
+//   }
+
+//   &__heart {
+//     background-color: red;
+//   }
+// }
+
+
 .cart-page {
+
   &__list {
     display: grid;
     grid-template-columns: 1fr;
@@ -205,40 +261,126 @@
     @include breakpoint(small) {
       grid-template-columns: 1fr 1fr;
     }
-
-
   }
+
 
   &__item {
-    @include flexer(column, space-between, center, 15px);
-    @include responsive-spacing(padding, .01);
     background-color: #f2f2f2;
+    @include responsive-spacing(padding, .01);
+    @include responsive-spacing(padding-top, .03);
+    position: relative;
     border-radius: 10px;
     width: 100%;
+    @include flexer(column, space-between, center, 20px);
 
     img {
-      height: 100px;
-      object-fit: cover;
+      @include box(70px);
+      object-fit: contain;
+      background-color: #114011;
+      outline-offset: 3px;
+      border-radius: 100%;
+      outline: 1.5px solid $text;
+
     }
   }
 
-  &__buttons {
-    @include flexer(row, center, center, 15px);
+  &--text {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    row-gap: 20px;
+
+    span {
+      width: 100%;
+      text-align: end;
+
+      span {
+        color: red;
+        text-decoration: line-through;
+      }
+    }
+
+
+
+    &>.product__count {
+      padding: 5px;
+      gap: 0;
+      border: none;
+      background-color: #d8d8d8;
+      justify-content: unset;
+
+      input {
+        max-width: 50px;
+      }
+
+      #countIncrease,
+      #countDecrease {
+        @include box(2rem);
+
+        svg {
+          scale: .7 !important;
+        }
+      }
+    }
   }
 
-  &__delete,
-  &__heart {
+  &__delete {
+    @include box(2.5rem);
     @include flexer(row, center, center);
-    @include responsive-spacing(padding, 0.001);
+    background-color: #d8d8d8;
     border-radius: 100%;
-    background-color: $text;
+    justify-self: end;
 
     svg {
-      scale: .7;
+      scale: .8;
+      stroke: $text;
     }
   }
 
   &__heart {
-    background-color: red;
+    @extend .cart-page__delete;
+    @include abs-position (absolute, 10px, 10px, unset, unset);
+
+    svg {
+      // fill: #fb0101;
+      stroke: $text;
+      stroke-width: 3px;
+    }
+  }
+
+  &__sale {
+    @include abs-position (absolute, 10px, unset, unset, 10px);
+    @include box(2.5rem);
+    padding: 7px;
+    border-radius: 100%;
+    background-color: pink;
+    z-index: 9;
+
+    img {
+      @include box(100%);
+      background: transparent;
+      object-fit: contain;
+      outline: none;
+    }
+
+    &::after {
+      content: attr(data-sale);
+      @include flexer(row, center, center);
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 0;
+      height: 100%;
+      border-radius: 0 50px 50px 0;
+      background-color: pink;
+      color: #fb0101;
+      z-index: -1;
+      @include fade(hide);
+    }
+
+    &:hover::after {
+      @include fade(show);
+      width: 100px;
+    }
   }
 }
