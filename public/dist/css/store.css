@@ -1810,7 +1810,7 @@ footer {
   gap: 0;
   min-height: 500px;
   position: relative;
-  border-radius: 20px;
+  border-radius: 10px;
   box-shadow: 0 8px 15px 0 rgba(0, 0, 0, 0.37);
   width: 100%;
 }
@@ -1830,7 +1830,7 @@ footer {
   height: auto;
   -webkit-backdrop-filter: blur(15px);
           backdrop-filter: blur(15px);
-  border-radius: 0 0 20px 20px;
+  border-radius: 0 0 10px 10px;
   background: rgba(255, 255, 255, 0.4);
 }
 .product__item--price {
@@ -1878,7 +1878,7 @@ footer {
   height: 500px;
   -o-object-fit: cover;
      object-fit: cover;
-  border-radius: 20px;
+  border-radius: 10px;
 }
 .product__item--buttons {
   display: flex;
@@ -3409,7 +3409,7 @@ footer {
     border: 2px solid #202124;
     border-radius: 10px;
     padding: clamp(10px, 1.5vw, 50px);
-    background: rgba(85, 80, 80, 0.4);
+    background: rgba(255, 255, 255, 0.6);
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
     -webkit-backdrop-filter: blur(15px);
             backdrop-filter: blur(15px);
@@ -3537,7 +3537,7 @@ footer {
   border-radius: 10px;
   padding: clamp(10px, 1.5vw, 50px);
   z-index: 99;
-  background: rgba(85, 80, 80, 0.4);
+  background: rgba(255, 255, 255, 0.6);
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
   -webkit-backdrop-filter: blur(15px);
           backdrop-filter: blur(15px);
@@ -3595,7 +3595,7 @@ footer {
   padding: 0;
   width: 100%;
   transition: all 0.2s ease-in-out;
-  color: #f3f3f3;
+  color: #959595;
   font-weight: 600;
   cursor: pointer;
 }/*# sourceMappingURL=store.css.map */
