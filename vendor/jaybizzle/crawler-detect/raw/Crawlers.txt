@@ -403,6 +403,7 @@ flynxapp
 forensiq
 ForusP
 FoundSeoTool
+fragFINN\.de
 free thumbnails
 Freeuploader
 FreshRSS
@@ -1106,9 +1107,11 @@ SpaceBison
 SpamExperts
 Spammen
 Spanner
+Spawning-AI
 spaziodati
 SPDYCheck
 Specificfeeds
+SpeedKit
 speedy
 SPEng
 Spinn3r
