@@ -1702,7 +1702,7 @@ footer {
   justify-content: flex-start;
   align-items: stretch;
   flex: 0 1 auto;
-  gap: 40px;
+  gap: 30px;
 }
 .products__control {
   display: flex;
@@ -1713,6 +1713,11 @@ footer {
   flex: 0 1 auto;
   gap: 30px;
   position: relative;
+  display: grid;
+  grid-template-columns: 0fr 1fr 0fr;
+  justify-items: start;
+  gap: 30px;
+  row-gap: 10px;
 }
 .products__select {
   position: relative;
@@ -3348,6 +3353,7 @@ footer {
   cursor: pointer;
   border-radius: 0;
   border-bottom: 2px solid #202124;
+  width: 100%;
   font-size: 0;
   gap: 0;
 }
@@ -3425,7 +3431,7 @@ footer {
     overflow-y: auto;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    top: 150%;
+    top: 110%;
     border: 2px solid #202124;
     border-radius: 10px;
     padding: clamp(10px, 1.5vw, 50px);
@@ -3500,8 +3506,8 @@ footer {
 }
 
 .filter__search {
-  width: 80%;
-  height: 2.5rem;
+  width: 100%;
+  height: 1.5rem;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -3548,7 +3554,7 @@ footer {
 
 .filter__sort--content {
   position: absolute;
-  top: 150%;
+  top: 110%;
   right: 0;
   bottom: unset;
   left: unset;
@@ -3618,4 +3624,46 @@ footer {
   color: #959595;
   font-weight: 600;
   cursor: pointer;
+}
+
+.filter__applied {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex: unset;
+  gap: 10px;
+  grid-column: 1/4;
+}
+.filter__applied--item, .filter__applied--clear {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  flex: 0 1 auto;
+  gap: 10px;
+  height: 1.5rem;
+  border-radius: 3px;
+  padding: 5px;
+  padding-right: clamp(10px, 0.1vw, 50px);
+  padding-left: clamp(10px, 0.1vw, 50px);
+  background-color: #202124;
+  font-size: 14px;
+  border: 2px solid black;
+  color: #ffffff;
+}
+.filter__applied--item:hover, .filter__applied--clear:hover {
+  border-color: #1a691a;
+  background-color: #1a691a;
+  color: #ffffff;
+  transition: all 0.2s ease-in-out;
+}
+.filter__applied--item svg, .filter__applied--clear svg {
+  scale: 0.7;
+}
+.filter__applied--clear {
+  background-color: transparent;
+  color: #202124;
 }/*# sourceMappingURL=store.css.map */
