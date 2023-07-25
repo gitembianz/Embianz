@@ -227,7 +227,7 @@
                     </button>
                     <ul class="cart__list" id="cartContent">
                         <li>
-                            <a href="/cart.html" class="cart__list--item">
+                            <a href="{{ url('/cart') }}" class="cart__list--item">
                                 <h4 class="cart__list--name">Your cart</h4>
                                 <svg>
                                     <circle cx="9" cy="21" r="1"></circle>

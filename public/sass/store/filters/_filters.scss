@@ -1,6 +1,5 @@
 // Filter Section
 .filter {
-  // width: 100%;
   @include box(auto, 100%);
 
   // buttons for Apply or reset the fillter changes
@@ -12,7 +11,7 @@
       @include responsive-spacing(padding, 0.001);
       width: 100%;
       color: $background;
-
+      font-size: 14px;
       background: $text;
       border: 2px solid $text;
       font-weight: 600;
@@ -40,6 +39,7 @@
       @include responsive-spacing(padding-top, 0.00001);
       @include responsive-spacing(padding-bottom, 0.00001);
       @include box(100%, auto);
+      font-size: 14px;
       border: none;
       background-color: transparent;
       font-weight: 500;
