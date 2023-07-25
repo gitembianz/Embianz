@@ -1,8 +1,8 @@
 <div>
     {{-- Asta trebuie de facut componenta --}}
     @if (session()->has('message'))
-        <div class="alert__session liveAlert" id="alertevent">
-            <span class="alert__session-text">{!! session('message') !!}</span>
+        {{-- <div class="alert__session liveAlert" id="alertevent">
+            <span class="alert__session-text">blabla{!! session('message') !!}</span>
             <button class="alert__session-btn" type="button" data-bs-dismiss="alert" aria-hidden="true">
                 <svg>
                     <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -22,7 +22,16 @@
                     header.style.marginBottom = '0';
                 }, 500);
             }, 2000);
-        </script>
+        </script> --}}
+        <div class="notifications">
+            <div class="toast">
+                <div class="toast__text">
+                    <div class="title">title</div>
+                    <span>text notification</span>
+                </div>
+                <button>X</button>
+            </div>
+        </div>
     @endif
     <div wire:loading.delay>
         <div class="modal" style="display:flex;">

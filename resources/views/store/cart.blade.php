@@ -6,13 +6,13 @@
         <article class="cart-page__item">
             <img src="/images/store/bottle2.png" alt="bottle number 1">
             <div class="cart-page--text">
-              <h3>Navy Italy - 1000 ML</h3>
-              <span>
-                <span>107.98 lei</span>
-                89,99 lei
-              </span>
-              <p>#UrbanBottle</p>
-              <span>1000ml</span>
+                <h3>Navy Italy - 1000 ML</h3>
+                <span>
+                    <span>107.98 lei</span>
+                    89,99 lei
+                </span>
+                <p>#UrbanBottle</p>
+                <span>1000ml</span>
 
                 <div class="product__count">
                     <button id="countDecrease">
@@ -29,51 +29,11 @@
                     </button>
                 </div>
                 <button class="cart-page__delete">
-                  <svg>
-                    <polyline points="3 6 5 6 21 6"></polyline>
-                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                  </svg>
+                    <svg>
+                        <polyline points="3 6 5 6 21 6"></polyline>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    </svg>
                 </button>
-              </div>
-              <button class="cart-page__heart">
-                  <svg>
-                      <path
-                          d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
-                      </path>
-                  </svg>
-              </button>
-              <button class="cart-page__sale" data-sale="20%">
-                <img src="images/store/fire.svg" alt="">
-            </button>
-        </article>
-        <article class="cart-page__item">
-          <img src="/images/store/bottle2.png" alt="bottle number 1">
-          <div class="cart-page--text">
-            <h3>Navy Italy - 1000 ML</h3>
-            <span>89,99 lei</span>
-            <p>#UrbanBottle</p>
-            <span>1000ml</span>
-
-              <div class="product__count">
-                  <button id="countDecrease">
-                      <svg>
-                          <line x1="5" y1="12" x2="19" y2="12"></line>
-                      </svg>
-                  </button>
-                  <input type="number" name="count" id="count" min="1" value="1">
-                  <button id="countIncrease">
-                      <svg>
-                          <line x1="12" y1="5" x2="12" y2="19"></line>
-                          <line x1="5" y1="12" x2="19" y2="12"></line>
-                      </svg>
-                  </button>
-              </div>
-              <button class="cart-page__delete">
-                <svg>
-                  <polyline points="3 6 5 6 21 6"></polyline>
-                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                </svg>
-              </button>
             </div>
             <button class="cart-page__heart">
                 <svg>
@@ -82,80 +42,121 @@
                     </path>
                 </svg>
             </button>
-      </article>
-      <article class="cart-page__item">
-        <img src="/images/store/bottle2.png" alt="bottle number 1">
-        <div class="cart-page--text">
-          <h3>Navy Italy - 1000 ML</h3>
-          <span>89,99 lei</span>
-          <p>#UrbanBottle</p>
-          <span>1000ml</span>
+            <button class="cart-page__sale" data-sale="20%">
+                <img src="images/store/fire.svg" alt="">
+            </button>
+        </article>
+        <article class="cart-page__item">
+            <img src="/images/store/bottle2.png" alt="bottle number 1">
+            <div class="cart-page--text">
+                <h3>Navy Italy - 1000 ML</h3>
+                <span>89,99 lei</span>
+                <p>#UrbanBottle</p>
+                <span>1000ml</span>
 
-            <div class="product__count">
-                <button id="countDecrease">
+                <div class="product__count">
+                    <button id="countDecrease">
+                        <svg>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                    </button>
+                    <input type="number" name="count" id="count" min="1" value="1">
+                    <button id="countIncrease">
+                        <svg>
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                    </button>
+                </div>
+                <button class="cart-page__delete">
                     <svg>
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                    </svg>
-                </button>
-                <input type="number" name="count" id="count" min="1" value="1">
-                <button id="countIncrease">
-                    <svg>
-                        <line x1="12" y1="5" x2="12" y2="19"></line>
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="3 6 5 6 21 6"></polyline>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
                     </svg>
                 </button>
             </div>
-            <button class="cart-page__delete">
-              <svg>
-                <polyline points="3 6 5 6 21 6"></polyline>
-                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-              </svg>
+            <button class="cart-page__heart">
+                <svg>
+                    <path
+                        d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                    </path>
+                </svg>
             </button>
-          </div>
-          <button class="cart-page__heart">
-              <svg>
-                  <path
-                      d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
-                  </path>
-              </svg>
-          </button>
-    </article>
-    <article class="cart-page__item">
-      <img src="/images/store/bottle2.png" alt="bottle number 1">
-      <div class="cart-page--text">
-        <h3>Navy Italy - 1000 ML</h3>
-        <span>89,99 lei</span>
-        <p>#UrbanBottle</p>
-        <span>1000ml</span>
-          <div class="product__count">
-              <button id="countDecrease">
-                  <svg>
-                      <line x1="5" y1="12" x2="19" y2="12"></line>
-                  </svg>
-              </button>
-              <input type="number" name="count" id="count" min="1" value="1">
-              <button id="countIncrease">
-                  <svg>
-                      <line x1="12" y1="5" x2="12" y2="19"></line>
-                      <line x1="5" y1="12" x2="19" y2="12"></line>
-                  </svg>
-              </button>
-          </div>
-          <button class="cart-page__delete">
-            <svg>
-              <polyline points="3 6 5 6 21 6"></polyline>
-              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-            </svg>
-          </button>
-        </div>
-        <button class="cart-page__heart">
-            <svg>
-                <path
-                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
-                </path>
-            </svg>
-        </button>
-  </article>
+        </article>
+        <article class="cart-page__item">
+            <img src="/images/store/bottle2.png" alt="bottle number 1">
+            <div class="cart-page--text">
+                <h3>Navy Italy - 1000 ML</h3>
+                <span>89,99 lei</span>
+                <p>#UrbanBottle</p>
+                <span>1000ml</span>
+
+                <div class="product__count">
+                    <button id="countDecrease">
+                        <svg>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                    </button>
+                    <input type="number" name="count" id="count" min="1" value="1">
+                    <button id="countIncrease">
+                        <svg>
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                    </button>
+                </div>
+                <button class="cart-page__delete">
+                    <svg>
+                        <polyline points="3 6 5 6 21 6"></polyline>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    </svg>
+                </button>
+            </div>
+            <button class="cart-page__heart">
+                <svg>
+                    <path
+                        d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                    </path>
+                </svg>
+            </button>
+        </article>
+        <article class="cart-page__item">
+            <img src="/images/store/bottle2.png" alt="bottle number 1">
+            <div class="cart-page--text">
+                <h3>Navy Italy - 1000 ML</h3>
+                <span>89,99 lei</span>
+                <p>#UrbanBottle</p>
+                <span>1000ml</span>
+                <div class="product__count">
+                    <button id="countDecrease">
+                        <svg>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                    </button>
+                    <input type="number" name="count" id="count" min="1" value="1">
+                    <button id="countIncrease">
+                        <svg>
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                    </button>
+                </div>
+                <button class="cart-page__delete">
+                    <svg>
+                        <polyline points="3 6 5 6 21 6"></polyline>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+            <button class="cart-page__heart">
+                <svg>
+                    <path
+                        d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                    </path>
+                </svg>
+            </button>
+        </article>
     </div>
     <div class="cart__column">
         <div class="cart__buy">
@@ -197,5 +198,6 @@
         </div>
     </div>
 
-  </main>
+
+</main>
 <x-store-footer />

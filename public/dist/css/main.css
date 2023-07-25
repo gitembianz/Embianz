@@ -1572,178 +1572,58 @@ main {
   display: none;
 }
 
-.alert__session {
-  font-size: 0.875rem;
-  font-weight: 400;
-  color: #BBFCDE;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: nowrap;
-  flex-shrink: 0;
-  flex-grow: 0;
-  width: 98%;
-  height: 3rem;
-  margin: 0 auto 10px;
-  background-color: #20282d;
-  border-radius: 10px;
-  z-index: 700;
-}
-.alert__session-text {
-  font-size: 0.875rem;
-  font-weight: 400;
-  color: #BBFCDE;
-  text-align: center;
-  flex: 1;
-}
-.alert__session-text a {
-  text-decoration: underline;
-}
-.alert__session-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.875rem;
-  font-weight: 400;
-  color: #BBFCDE;
-  font-weight: 400 !important;
-  background: #20282d;
-  outline: none;
-  text-decoration: none;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  text-align: center;
-  cursor: pointer;
-  border: none;
-  border-radius: 10px;
-  padding: 0;
-  width: 3rem;
-  height: 3rem;
-  transition: all 0.2s ease-in-out;
-  background-color: #e25b73;
-}
-.alert__session-btn:hover {
-  background-color: #0b0d0f;
-  color: #BBFCDE;
-}
-.alert__session-btn:hover > .sidebar__icon {
-  background-color: #0b0d0f;
-}
-.alert__session-btn.active, .alert__session-btn:active, .alert__session-btn:focus-visible {
-  background-color: #BBFCDE;
-  color: #35424B;
-}
-.alert__session-btn.active > .sidebar__icon, .alert__session-btn:active > .sidebar__icon, .alert__session-btn:focus-visible > .sidebar__icon {
-  background-color: #BBFCDE;
-}
-.alert__session-btn.active > .sidebar__icon svg, .alert__session-btn:active > .sidebar__icon svg, .alert__session-btn:focus-visible > .sidebar__icon svg {
-  stroke: #35424B;
-}
-.alert__session-btn.active svg, .alert__session-btn:active svg, .alert__session-btn:focus-visible svg {
-  stroke: #35424B;
-}
-.alert__session-btn img,
-.alert__session-btn svg {
-  width: 23px;
-  height: 23px;
-  stroke: #BBFCDE;
-  stroke-width: 1.5px;
-  background-color: transparent;
-  transition: all 0.2s ease-in-out;
-  pointer-events: none;
-}
-.alert__session-btn.delete {
-  background-color: #e25b73;
-}
-.alert__session-btn.delete:hover {
-  background-color: #b7203b;
-  color: #60111f;
-}
-.alert__session-btn.delete:hover > .sidebar__icon {
-  background-color: #b7203b;
-}
-.alert__session-btn.delete.active, .alert__session-btn.delete:active, .alert__session-btn.delete:focus-visible {
-  background-color: #60111f;
-  color: #BBFCDE;
-}
-.alert__session-btn.delete.active > .sidebar__icon, .alert__session-btn.delete:active > .sidebar__icon, .alert__session-btn.delete:focus-visible > .sidebar__icon {
-  background-color: #60111f;
-}
-.alert__session-btn.delete.active > .sidebar__icon svg, .alert__session-btn.delete:active > .sidebar__icon svg, .alert__session-btn.delete:focus-visible > .sidebar__icon svg {
-  stroke: #BBFCDE;
-}
-.alert__session-btn.delete.active svg, .alert__session-btn.delete:active svg, .alert__session-btn.delete:focus-visible svg {
-  stroke: #BBFCDE;
-}
-.alert__session-btn.edit {
-  background-color: #ffffff;
-}
-.alert__session-btn.edit:hover {
-  background-color: #28f697;
-  color: #28f697;
-}
-.alert__session-btn.edit:hover > .sidebar__icon {
-  background-color: #28f697;
-}
-.alert__session-btn.edit.active, .alert__session-btn.edit:active, .alert__session-btn.edit:focus-visible {
-  background-color: #28f697;
-  color: #35424B;
-}
-.alert__session-btn.edit.active > .sidebar__icon, .alert__session-btn.edit:active > .sidebar__icon, .alert__session-btn.edit:focus-visible > .sidebar__icon {
-  background-color: #28f697;
-}
-.alert__session-btn.edit.active > .sidebar__icon svg, .alert__session-btn.edit:active > .sidebar__icon svg, .alert__session-btn.edit:focus-visible > .sidebar__icon svg {
-  stroke: #35424B;
-}
-.alert__session-btn.edit.active svg, .alert__session-btn.edit:active svg, .alert__session-btn.edit:focus-visible svg {
-  stroke: #35424B;
-}
-.alert__session-btn.edit svg {
-  stroke: #35424B;
-}
-.alert__session-btn.submit {
-  background-color: #BBFCDE;
-  color: #35424B;
-}
-.alert__session-btn.submit:hover {
-  background-color: #28f697;
-  color: #08b062;
-}
-.alert__session-btn.submit:hover > .sidebar__icon {
-  background-color: #28f697;
-}
-.alert__session-btn.submit.active, .alert__session-btn.submit:active, .alert__session-btn.submit:focus-visible {
-  background-color: #08b062;
-  color: #20282d;
-}
-.alert__session-btn.submit.active > .sidebar__icon, .alert__session-btn.submit:active > .sidebar__icon, .alert__session-btn.submit:focus-visible > .sidebar__icon {
-  background-color: #08b062;
-}
-.alert__session-btn.submit.active > .sidebar__icon svg, .alert__session-btn.submit:active > .sidebar__icon svg, .alert__session-btn.submit:focus-visible > .sidebar__icon svg {
-  stroke: #20282d;
-}
-.alert__session-btn.submit.active svg, .alert__session-btn.submit:active svg, .alert__session-btn.submit:focus-visible svg {
-  stroke: #20282d;
-}
-.alert__session.liveAlert {
-  position: absolute;
-  top: auto;
-  right: auto;
-  bottom: 97%;
-  left: 50%;
-  width: 85%;
-  height: 3rem;
-  transform: translateX(-50%);
-  transition: all 0.2s ease-in-out;
-  z-index: 700;
-  opacity: 0;
+.notifications {
+  position: fixed;
+  top: 30px;
+  right: 20px;
+  z-index: 99999;
 }
 
-p.real-time-validation {
+.toast {
   position: relative;
-  color: #e25b73;
+  padding: 10px;
+  color: #fff;
+  margin-bottom: 10px;
+  width: 400px;
+  display: grid;
+  grid-template-columns: 70px 1fr 70px;
+  border-radius: 5px;
+  --color: #0abf30;
+  background-image: linear-gradient(to right, #0abf31, #22242f 30%);
+  animation: show 0.3s ease 1 forwards;
 }
 
+@keyframes show {
+  0% {
+    transform: translateX(100%);
+  }
+  40% {
+    transform: translateX(-5%);
+  }
+  80% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-10%);
+  }
+}
+.toast::before {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background-color: var(--color);
+  width: 100%;
+  height: 3px;
+  content: "";
+  box-shadow: 0 0 10px var(--color);
+  animation: timeOut 5s linear 1 forwards;
+}
+
+@keyframes timeOut {
+  to {
+    width: 0;
+  }
+}
 .tab {
   border: 1px solid #35424B;
   border-radius: 10px;
