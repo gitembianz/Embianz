@@ -533,7 +533,7 @@
                                             @endif
                                         </td>
                                     @endif
-
+                                    {{--  --}}
                                     <td data-title="Action">
                                         @if ($editedMediaIndex !== $index)
                                             <button class="edit"

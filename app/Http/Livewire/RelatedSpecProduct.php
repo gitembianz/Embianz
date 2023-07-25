@@ -28,16 +28,21 @@ class RelatedSpecProduct extends Component
   public $selectedColumns = [];
   public $specidbeingremoved = null;
   public $addrelatedspecs = false;
+  public $itemselected;
   //Add specs declaration
   public $searchadd = '';
   public $orderByadd = 'updated_at';
   public $orderAscadd = 'desc';
-  public $spec = [];
   public $item;
-  public $itemselected = null;
   public $specid;
   public $allow = false;
   public $update = false;
+  public $specsAndValues = [];
+  public $row = 1;
+  public $editedrow;
+  public $specification;
+  public $editmultiple = false;
+  public $itemstoedit;
 
 
   public function render()
@@ -52,6 +57,11 @@ class RelatedSpecProduct extends Component
     $this->productId = $productId;
     $this->selectedColumns = $this->columns;
     $this->item = Product::find($productId);
+    $this->specsAndValues[] = [
+      'allow' => false,
+      'itemselected' => null,
+      'spec' => ['name' => null, 'value' => null],
+    ];
   }
   //function for realted
   public function showColumn($column)
@@ -132,30 +142,63 @@ class RelatedSpecProduct extends Component
   {
     $this->dispatchBrowserEvent('show-delete-modal-multiple');
   }
-  public function editspec($id, $idspec)
+  public function editspec($id, $idspec, $index)
   {
-    $this->update = true;
-    $this->addrelatedspecs = true;
-    $this->itemselected = Specs::find($idspec)->name;
-    $this->specid = $id;
+
+    $this->itemselected = Specs::find($idspec);
+    $val = Product_Spec::find($id);
+    $this->specid = $idspec;
+    $this->editedrow = $index;
+    $this->specification = [
+      $index . '.name' => $this->itemselected,
+      $index . '.value' => $val->value,
+    ];
+  }
+  public function canceledit()
+  {
+    $this->editedrow = null;
+    $this->allow = false;
+    $this->itemselected = null;
+    $this->specification = [];
   }
   public function confirmspecs()
   {
-    $val = $this->spec;
-    if (array_key_exists('value', $val)) {
-      $newspec = Product_Spec::find($this->specid);
-      $newspec->value = $val['value'];
-      $newspec->save();
-      $this->addrelatedspecs = false;
-      $this->allow = false;
-      $this->specid = null;
-      $this->spec = [];
-      $this->itemselected = null;
-      $this->search = '';
-      $this->update = false;
-      session()->flash('message', 'Spec related succesfuly succesfuly');
-    } else {
-      session()->flash('message', 'Please provide a value!');
+    dd($this->specsAndValues);
+    foreach ($this->specsAndValues as $index =>  $specAndValue) {
+      $val = $specAndValue;
+      if (array_key_exists('value', $val)) {
+        $newspec = new Product_Spec();
+        $newspec->product_id = $this->productId;
+        $newspec->spec_id = $specAndValue['spec']['idrel'];
+        $newspec->value = $specAndValue['spec']['value'];
+        $newspec->save();
+      } else {
+        session()->flash('message', 'Please provide a value!');
+        return;
+      }
+    }
+
+    $this->specsAndValues = [
+      [
+        'allow' => false,
+        'itemselected' => null,
+        'spec' => ['name' => null, 'value' => null],
+      ]
+    ];
+    $this->row = 1;
+    $this->addrelatedspecs = false;
+    session()->flash('message', 'Specs related successfully.');
+  }
+  public function editSelected()
+  {
+    $this->itemstoedit = $this->checked;
+    $this->editmultiple = true;
+    foreach ($this->itemstoedit  as $index => $item) {
+      $test = Product_Spec::find($item);
+      $this->specsAndValues[$index]['itemselected'] = $test->spec->name;
+      $this->specsAndValues[$index]['spec']['id'] = $test->id;
+      $this->specsAndValues[$index]['spec']['value'] = $test->value;
+      $this->specsAndValues[$index]['allow'] = false;
     }
   }
   // add specs function
@@ -166,40 +209,87 @@ class RelatedSpecProduct extends Component
   }
   public function select($id)
   {
-    $this->itemselected = Specs::find($id)->name;
+    $this->itemselected = Specs::find($id);
     $this->specid = $id;
     $this->allow = false;
   }
-  public function allowselect()
+  public function selectSpec($index, $id, $name)
+  {
+    $this->specsAndValues[$index]['itemselected'] = $name;
+    $this->specsAndValues[$index]['spec']['idrel'] = $id;
+    $this->specsAndValues[$index]['allow'] = false;
+  }
+  public function plus()
+  {
+    $this->row++;
+    $this->specsAndValues[] = [
+      'allow' => false,
+      'itemselected' => null,
+      'spec' => ['name' => null, 'value' => null],
+    ];
+  }
+  public function allowselect($index)
+  {
+    $this->specsAndValues[$index]['allow'] = true;
+  }
+  public function allow()
   {
     $this->allow = true;
+    $this->searchadd = $this->itemselected->name;
   }
   public function closemodal()
   {
+    $this->specsAndValues = [
+      [
+        'allow' => false,
+        'itemselected' => null,
+        'spec' => ['name' => null, 'value' => null],
+      ]
+    ];
+    $this->row = 1;
+    $this->checked = [];
+    $this->all = false;
+    $this->editmultiple = false;
     $this->addrelatedspecs = false;
-    $this->allow = false;
-    $this->itemselected = null;
-    $this->update = false;
   }
+  public function clear($index)
+  {
+    // Remove the row from the array
+    unset($this->specsAndValues[$index]);
+
+    // Reset the keys of the array
+    $this->specsAndValues = array_values($this->specsAndValues);
+
+    // Decrement the total row count
+    $this->row--;
+  }
+
   public function savespecs()
   {
-    $val = $this->spec;
-    if (array_key_exists('value', $val)) {
-      $newspec = new Product_Spec();
-      $newspec->product_id = $this->productId;
-      $newspec->spec_id = $this->specid;
-      $newspec->value = $val['value'];
-      $newspec->save();
-      $this->addrelatedspecs = false;
-      $this->allow = false;
-      $this->specid = null;
-      $this->spec = [];
-      $this->itemselected = null;
-      $this->search = '';
-      session()->flash('message', 'Spec related succesfuly succesfuly');
-    } else {
-      session()->flash('message', 'Please provide a value!');
+    foreach ($this->specsAndValues as $index =>  $specAndValue) {
+      $val = $specAndValue['spec'];
+      if (array_key_exists('value', $val)) {
+        $newspec = new Product_Spec();
+        $newspec->product_id = $this->productId;
+        $newspec->spec_id = $specAndValue['spec']['name'];
+        $newspec->value = $specAndValue['spec']['value'];
+        $newspec->save();
+      } else {
+        session()->flash('message', 'Please provide a value!');
+        return;
+      }
     }
+
+    $this->specsAndValues = [
+      [
+        'allow' => false,
+        'itemselected' => null,
+        'spec' => ['name' => null, 'value' => null],
+      ]
+    ];
+    $this->row = 1;
+    $this->addrelatedspecs = false;
+    session()->flash('message', 'Specs related successfully.');
   }
   public function getAddspecsProperty()
   {
