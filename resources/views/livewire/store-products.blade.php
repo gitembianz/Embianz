@@ -127,6 +127,45 @@
           </ul>
         </div>
       </div>
+      <ul class="filter__applied">
+        <li>
+          <button class="filter__applied--item">
+            Color: Red
+            <svg>
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </li>
+        <li>
+          <button class="filter__applied--item">
+            Color: Blue
+            <svg>
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </li>
+        <li>
+          <button class="filter__applied--item">
+            Color: Green
+            <svg>
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </li>
+        <li>
+          <button class="filter__applied--clear">
+            Load more...
+        </li>
+        <li>
+          <button class="filter__applied--clear">
+            Clear all
+          </button>
+        </li>
+
+      </ul>
     </div>
     <div class="product__catalog">
 

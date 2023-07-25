@@ -1,9 +1,14 @@
 .products {
-  @include flexer(column, $gap: 40px);
+  @include flexer(column, $gap: 30px);
 
   &__control {
     @include flexer(row, space-between, flex-end, 30px);
     position: relative;
+    display: grid;
+    grid-template-columns: 0fr 1fr 0fr;
+    justify-items: start;
+    gap: 30px;
+    row-gap: 10px;
   }
 
   &__select {
@@ -46,11 +51,11 @@
     grid-template-columns: 1fr 1fr;
   }
 
-  @include breakpoint(medium) {
+  @include breakpoint(large) {
     grid-template-columns: 1fr 1fr 1fr;
   }
 
-  @include breakpoint(large) {
+  @include breakpoint(x-large) {
     grid-template-columns: 1fr 1fr 1fr 1fr;
   }
 
@@ -60,12 +65,18 @@
 }
 
 .product__item {
-  @include flexer(column, space-between, center);
+  // @include flexer(column, space-between, center);
   // min-height: 500px;
   position: relative;
   border-radius: 10px;
   box-shadow: 0 8px 15px 0 rgb(0 0 0 / 37%);
-  width: 100%;
+  // width: 100%;
+  overflow: hidden;
+  @include box(100%, 600px);
+
+  &:hover img {
+    scale: (1.1);
+  }
 
   &--bundle {
     @include responsive-spacing(padding, 0.001);
@@ -98,7 +109,6 @@
     font-weight: 500;
 
     span:last-child {
-      // font-size: 20px;
       width: 100%;
       text-align: end;
     }
@@ -119,9 +129,10 @@
   }
 
   img {
-    @include box(100%, 600px);
+    @include box(100%, 100%);
     object-fit: cover;
     border-radius: 10px;
+    transition: scale .5s ease-in-out;
   }
 
   &--buttons {

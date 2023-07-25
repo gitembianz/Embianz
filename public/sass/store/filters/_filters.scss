@@ -1,6 +1,5 @@
 // Filter Section
 .filter {
-  // width: 100%;
   @include box(auto, 100%);
 
   // buttons for Apply or reset the fillter changes
@@ -12,7 +11,7 @@
       @include responsive-spacing(padding, 0.001);
       width: 100%;
       color: $background;
-
+      font-size: 14px;
       background: $text;
       border: 2px solid $text;
       font-weight: 600;
@@ -40,6 +39,7 @@
       @include responsive-spacing(padding-top, 0.00001);
       @include responsive-spacing(padding-bottom, 0.00001);
       @include box(100%, auto);
+      font-size: 14px;
       border: none;
       background-color: transparent;
       font-weight: 500;
@@ -75,7 +75,7 @@
     cursor: pointer;
     border-radius: 0;
     border-bottom: 2px solid $text;
-
+    width: 100%;
     font-size: 0;
     gap: 0;
 
@@ -134,7 +134,7 @@
       overflow-y: auto;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      top: 150%;
+      top: 110%;
       border: 2px solid $text;
       border-radius: 10px;
       @include responsive-spacing(padding, 0.015);
@@ -204,7 +204,7 @@
 
 // Filter search
 .filter__search {
-  @include box(80%, 2.5rem);
+  @include box(100%, 1.5rem);
   @include flexer(row, flex-start, flex-start);
   position: relative;
 
@@ -225,6 +225,7 @@
     @include flexer(row, center, center);
     border: none;
     background-color: transparent;
+
     position: absolute;
     right: 0;
     bottom: 3px;
@@ -245,7 +246,7 @@
   }
 
   &--content {
-    @include abs-position (absolute, 150%, 0, unset, unset);
+    @include abs-position (absolute, 110%, 0, unset, unset);
     @include box(100%, auto);
     border-radius: 10px;
     @include responsive-spacing(padding, 0.015);
@@ -298,5 +299,40 @@
       font-weight: 600;
       cursor: pointer;
     }
+  }
+}
+
+.filter__applied {
+  @include flexer(row, flex-start, flex-start, 10px, unset, wrap);
+  grid-column: 1/4;
+
+  &--item {
+    @include flexer(row, center, center, 10px);
+    height: 1.5rem;
+    border-radius: 3px;
+    padding: 5px;
+    @include responsive-spacing(padding-right, 0.001);
+    @include responsive-spacing(padding-left, 0.001);
+    background-color: $text;
+    font-size: 14px;
+    border: 2px solid black;
+    color: $background;
+
+    &:hover {
+      border-color: #1a691a;
+      background-color: #1a691a;
+      color: $background;
+      transition: $transition;
+    }
+
+    svg {
+      scale: .7;
+    }
+  }
+
+  &--clear {
+    @extend .filter__applied--item;
+    background-color: transparent;
+    color: $text;
   }
 }
