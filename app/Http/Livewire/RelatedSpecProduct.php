@@ -188,9 +188,38 @@ class RelatedSpecProduct extends Component
       $test = Product_Spec::find($item);
       $this->specsAndValues[$index]['itemselected'] = $test->spec->name;
       $this->specsAndValues[$index]['spec']['id'] = $test->id;
+      $this->specsAndValues[$index]['spec']['idrel'] = $test->spec->id;
       $this->specsAndValues[$index]['spec']['value'] = $test->value;
       $this->specsAndValues[$index]['allow'] = false;
     }
+  }
+  public function confirmspecsmultiple()
+  {
+
+    foreach ($this->specsAndValues as $index =>  $specAndValue) {
+      if (isset($specAndValue['spec']['value'])) {
+        $spec = Product_Spec::find($specAndValue['spec']['id']);
+        $spec->spec_id = $specAndValue['spec']['idrel'];
+        $spec->value = $specAndValue['spec']['value'];
+        $spec->save();
+      } else {
+        session()->flash('message', 'Please provide a value!');
+        return;
+      }
+    }
+
+    $this->specsAndValues = [
+      [
+        'allow' => false,
+        'itemselected' => null,
+        'spec' => ['name' => null, 'value' => null],
+      ]
+    ];
+    $this->row = 1;
+    $this->checked = [];
+    $this->all = false;
+    $this->editmultiple = false;
+    session()->flash('message', 'Specs related successfully.');
   }
   // add specs function
   public function addrelated()

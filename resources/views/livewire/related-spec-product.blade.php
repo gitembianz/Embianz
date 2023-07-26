@@ -171,7 +171,7 @@
 
                         </h1>
                         <div class="display-f wid-10">
-                            <input class="modal-content-btn submit" wire:click.prevent="confirmspecs()"
+                            <input class="modal-content-btn submit" wire:click.prevent="confirmspecsmultiple()"
                                 type="button" value="Edit">
 
                         </div>
