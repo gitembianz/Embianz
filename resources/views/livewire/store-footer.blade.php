@@ -49,11 +49,9 @@
         @if ($response)
             <p>{{ $response }}</p>
         @endif
-        <p>
-            @error('email')
+        <p> @error('email')
                 {{ $message }}
-            @enderror
-        </p>
+            @enderror </p>
     </div>
     <div class="footer__middle">
         <ul class="footer__list">
@@ -73,7 +71,6 @@
             <li><a class="footer__list--item" href="#">Contacte</a></li>
             <li><a class="footer__list--item" href="#">Despre Noi</a></li>
         </ul>
-    </div>
-    <span><q><i>Embianz©. All rights reserved. This material may not be reproduced, displayed, modified, or
+    </div> <span><q><i>Embianz©. All rights reserved. This material may not be reproduced, displayed, modified, or
                 distributed without the express written permission of Eztem-Corp.</i></q></span>
 </div>

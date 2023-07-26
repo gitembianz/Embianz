@@ -5,12 +5,10 @@
                 <div class="container home__content--flex">
                     <h2>ASTER - 500 ML</h2>
                     <p>
-                        Elevate your hydration game with this stylish 500 ML bottle. Crafted with a perfect
-                        balance
-                        of fashion and function, it offers a sleek and convenient solution for quenching your
-                        thirst
-                        on the go. With its generous capacity, it ensures you stay hydrated throughout the day,
-                        whether you're hitting the gym, exploring the outdoors, or simply running errands.
+                        Elevate your hydration game with this stylish 500 ML bottle. Crafted with a perfect balance of
+                        fashion and function, it offers a sleek and convenient solution for quenching your thirst on the
+                        go. With its generous capacity, it ensures you stay hydrated throughout the day, whether you're
+                        hitting the gym, exploring the outdoors, or simply running errands.
                     </p>
                     <button>See more</button>
                 </div>
@@ -21,12 +19,10 @@
                 <div class="container home__content--flex">
                     <h2>BEGONIA - 500 ML</h2>
                     <p>
-                        Experience the perfect blend of trendiness and practicality with this 500 ML bottle. Its
-                        compact and lightweight design makes it an ideal choice for carrying your favorite
-                        beverages
-                        wherever you go. The durable construction ensures long-lasting use, while the vibrant
-                        and
-                        eye-catching design adds a touch of personality to your hydration routine.
+                        Experience the perfect blend of trendiness and practicality with this 500 ML bottle. Its compact
+                        and lightweight design makes it an ideal choice for carrying your favorite beverages wherever
+                        you go. The durable construction ensures long-lasting use, while the vibrant and eye-catching
+                        design adds a touch of personality to your hydration routine.
                     </p>
                     <button>See more</button>
                 </div>
@@ -37,11 +33,10 @@
                 <div class="container home__content--flex">
                     <h2>EBONY ROSE - 500 ML</h2>
                     <p>
-                        Embrace elegance and sophistication with this stunning 500 ML bottle. The sleek black
-                        exterior and delicate rose-inspired accents make it a fashionable accessory that
-                        complements
-                        any style. Whether you're attending a special event or simply going about your daily
-                        routine, this bottle is the perfect companion for staying hydrated in style.
+                        Embrace elegance and sophistication with this stunning 500 ML bottle. The sleek black exterior
+                        and delicate rose-inspired accents make it a fashionable accessory that complements any style.
+                        Whether you're attending a special event or simply going about your daily routine, this bottle
+                        is the perfect companion for staying hydrated in style.
                     </p>
                     <button>See more</button>
                 </div>
@@ -52,11 +47,10 @@
                 <div class="container home__content--flex">
                     <h2>GRACE - 500 ML</h2>
                     <p>
-                        Discover the embodiment of grace and functionality in this 500 ML bottle. Its ergonomic
-                        design offers a comfortable grip, allowing you to stay hydrated with ease. The ample
-                        capacity ensures you have enough hydration to keep you going throughout the day, making
-                        it
-                        an essential companion for busy individuals who value both convenience and elegance.
+                        Discover the embodiment of grace and functionality in this 500 ML bottle. Its ergonomic design
+                        offers a comfortable grip, allowing you to stay hydrated with ease. The ample capacity ensures
+                        you have enough hydration to keep you going throughout the day, making it an essential companion
+                        for busy individuals who value both convenience and elegance.
                     </p>
                     <button>See more</button>
                 </div>
@@ -67,13 +61,10 @@
                 <div class="container home__content--flex">
                     <h2>LITTLE BUDS - 500 ML</h2>
                     <p>
-                        Add a dash of cheerfulness to your hydration routine with this adorable 500 ML bottle.
-                        The
-                        compact size and vibrant floral patterns make it a delightful accessory that brings a
-                        smile
-                        to your face every time you take a sip. Perfect for carrying your preferred drinks
-                        wherever
-                        you go, this bottle is a reminder to embrace the small joys in life.
+                        Add a dash of cheerfulness to your hydration routine with this adorable 500 ML bottle. The
+                        compact size and vibrant floral patterns make it a delightful accessory that brings a smile to
+                        your face every time you take a sip. Perfect for carrying your preferred drinks wherever you go,
+                        this bottle is a reminder to embrace the small joys in life.
                     </p>
                     <button>See more</button>
                 </div>
@@ -84,15 +75,10 @@
                 <div class="container home__content--flex">
                     <h2>LOTUS - 500 ML</h2>
                     <p>
-                        Immerse yourself in tranquility and beauty with this exquisite 500 ML bottle. Inspired
-                        by
-                        the enchanting lotus flower, its design evokes a sense of serenity and calmness. Crafted
-                        to
-                        provide a soothing drinking experience, it combines functionality with a touch of
-                        elegance,
-                        making it a perfect choice for yoga sessions, meditation, or simply unwinding after a
-                        long
-                        day.
+                        Immerse yourself in tranquility and beauty with this exquisite 500 ML bottle. Inspired by the
+                        enchanting lotus flower, its design evokes a sense of serenity and calmness. Crafted to provide
+                        a soothing drinking experience, it combines functionality with a touch of elegance, making it a
+                        perfect choice for yoga sessions, meditation, or simply unwinding after a long day.
                     </p>
                     <button>See more</button>
                 </div>
@@ -211,15 +197,15 @@
         </button>
     </div>
 </div>
-{{-- <div class="home__video">
-    <video autoplay loop muted playsinline defaultmuted preload="auto">
-        <source src="images/store/myVideo.mp4" type="video/mp4">
-        Your browser does not support HTML5 video.
-    </video>
-    <div class="home__video--text container">
-        <h1>Verdele este pasiunea noastră - Descoperă colecția noastră de sticle eco-friendly și fă o
-            alegere sustenabilă!</h1>
-        <span><q><i>20% din profitul nostru susține protecția mediului!</i></q></span>
-        <img src="images/store/white-logo.svg" alt="logo">
-    </div>
+{{--
+<div class="home__video">
+  <video autoplay loop muted playsinline defaultmuted preload="auto">
+      <source src="images/store/myVideo.mp4" type="video/mp4"> Your browser does not support HTML5 video.
+  </video>
+  <div class="home__video--text container">
+      <h1>Verdele este pasiunea noastră - Descoperă colecția noastră de sticle eco-friendly și fă o
+          alegere sustenabilă!</h1>
+      <span><q><i>20% din profitul nostru susține protecția mediului!</i></q></span>
+      <img src="images/store/white-logo.svg" alt="logo">
+  </div>
 </div> --}}
