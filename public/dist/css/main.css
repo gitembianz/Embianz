@@ -1585,12 +1585,39 @@ main {
   color: #fff;
   margin-bottom: 10px;
   width: 400px;
-  display: grid;
-  grid-template-columns: 70px 1fr 70px;
-  border-radius: 5px;
-  --color: #0abf30;
+  border-radius: 10px;
   background-image: linear-gradient(to right, #0abf31, #22242f 30%);
   animation: show 0.3s ease 1 forwards;
+}
+.toast__text {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  flex-grow: 0;
+}
+.toast button {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  bottom: unset;
+  left: unset;
+  background-color: red;
+  border: unset;
+  display: row;
+  flex-direction: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  flex-grow: 0;
+  width: 20px;
+  height: 20px;
+}
+.toast button svg {
+  scale: 0.7;
 }
 
 @keyframes show {

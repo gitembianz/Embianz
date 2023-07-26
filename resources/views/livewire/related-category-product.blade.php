@@ -1,6 +1,6 @@
 <div>
     @if (session()->has('message'))
-        <div class="alert__session liveAlert" id="alertevent">
+        {{--   <div class="alert__session liveAlert" id="alertevent">
             <span class="alert__session-text">{!! session('message') !!}</span>
             <button class="alert__session-btn" type="button" data-bs-dismiss="alert" aria-hidden="true">
                 <svg>
@@ -21,7 +21,21 @@
                     header.style.marginBottom = '0';
                 }, 500);
             }, 2000);
-        </script>
+        </script> --}}
+        <div class="notifications">
+            <div class="toast">
+                <div class="toast__text">
+                    <h3>Notification Name</h3>
+                    <span>Notification Description</span>
+                </div>
+                <button>
+                    <svg>
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
     @endif
     <div wire:loading.delay>
         <div class="modal" style="display:flex; z-index: 99999;">
@@ -126,8 +140,7 @@
                                                 <svg>
                                                     <line x1="18" y1="6" x2="6" y2="18">
                                                     </line>
-                                                    <line x1="6" y1="6" x2="18"
-                                                        y2="18">
+                                                    <line x1="6" y1="6" x2="18" y2="18">
                                                     </line>
                                                 </svg>
                                             </span>

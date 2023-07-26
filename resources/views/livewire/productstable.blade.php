@@ -26,10 +26,15 @@
         <div class="notifications">
             <div class="toast">
                 <div class="toast__text">
-                    <div class="title">title</div>
-                    <span>text notification</span>
+                    <h3>Notification Name</h3>
+                    <span>Notification Description</span>
                 </div>
-                <button>X</button>
+                <button>
+                    <svg>
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
             </div>
         </div>
     @endif

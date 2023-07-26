@@ -54,13 +54,30 @@
   color: #fff;
   margin-bottom: 10px;
   width: 400px;
-  display: grid;
-  grid-template-columns: 70px 1fr 70px;
-  border-radius: 5px;
-  --color: #0abf30;
-  background-image:
-    linear-gradient(to right, #0abf31, #22242f 30%);
-  animation: show 0.3s ease 1 forwards
+  // display: grid;
+  // grid-template-columns: 70px 1fr 70px;
+  border-radius: 10px;
+  // --color: #0abf30;
+  background-image: linear-gradient(to right, #0abf31, #22242f 30%);
+  animation: show 0.3s ease 1 forwards;
+
+  &__text {
+    @include flexbox(flex, column, space-between, center, 15px);
+  }
+
+  button {
+    @include position(absolute, -10px, -10px, unset, unset);
+    background-color: red;
+    border: unset;
+    @include flexbox(row, center, center);
+    width: 20px;
+    height: 20px;
+
+    // @include box(20px);
+    svg {
+      scale: .7;
+    }
+  }
 }
 
 @keyframes show {
