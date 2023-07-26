@@ -187,6 +187,20 @@ body {
   &__close,
   &__open {
     @include btn;
+    background-color: transparent;
+    border: none;
+    @include box(auto);
+    padding: 0;
+    border-radius: 0;
+
+    svg {
+      stroke: $text;
+    }
+
+    &:hover {
+      border-bottom: 1.5px solid $text;
+      padding-bottom: 5px;
+    }
   }
 
   &__close {

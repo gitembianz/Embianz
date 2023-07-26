@@ -299,6 +299,12 @@ body {
   transition: all 0.2s ease-in-out;
   border: 2.5px solid #104010;
   outline: none;
+  background-color: transparent;
+  border: none;
+  width: auto;
+  height: auto;
+  padding: 0;
+  border-radius: 0;
 }
 .sidebar__close svg, .sidebar__open svg {
   pointer-events: none;
@@ -308,6 +314,13 @@ body {
 }
 .sidebar__close:hover svg, .sidebar__close:focus svg, .sidebar__open:hover svg, .sidebar__open:focus svg {
   stroke: #104010;
+}
+.sidebar__close svg, .sidebar__open svg {
+  stroke: #202124;
+}
+.sidebar__close:hover, .sidebar__open:hover {
+  border-bottom: 1.5px solid #202124;
+  padding-bottom: 5px;
 }
 .sidebar__close {
   position: absolute;
@@ -519,7 +532,7 @@ header {
   justify-content: space-between;
   align-items: center;
   flex: 0 1 auto;
-  gap: 15px;
+  gap: 25px;
 }
 @media (min-width: 576px) {
   .header__buttons {
@@ -529,7 +542,7 @@ header {
     justify-content: center;
     align-items: center;
     flex: 0 1 auto;
-    gap: 10px;
+    gap: 25px;
     width: auto;
   }
 }
@@ -558,7 +571,6 @@ header {
 .header__top button {
   padding: clamp(10px, 0.01vw, 50px);
   border-radius: 10px;
-  background-color: #ffffff;
   color: #202124;
   cursor: pointer;
 }
@@ -594,6 +606,12 @@ header {
   transition: all 0.2s ease-in-out;
   border: 2.5px solid #104010;
   outline: none;
+  background-color: transparent;
+  border: none;
+  width: auto;
+  height: auto;
+  padding: 0;
+  border-radius: 0;
 }
 .search__open svg {
   pointer-events: none;
@@ -603,6 +621,13 @@ header {
 }
 .search__open:hover svg, .search__open:focus svg {
   stroke: #104010;
+}
+.search__open svg {
+  stroke: #202124;
+}
+.search__open:hover {
+  border-bottom: 1.5px solid #202124;
+  padding-bottom: 5px;
 }
 
 .search {
@@ -861,7 +886,6 @@ header {
 .menu__sub--wrapper {
   overflow: hidden;
   height: 0;
-  transition: all 0.6s ease-in-out;
 }
 .menu__sub--list {
   transition: all 0.2s ease-in-out;
@@ -937,6 +961,12 @@ header {
   transition: all 0.2s ease-in-out;
   border: 2.5px solid #104010;
   outline: none;
+  background-color: transparent;
+  border: none;
+  width: auto;
+  height: auto;
+  padding: 0;
+  border-radius: 0;
 }
 .heart svg {
   pointer-events: none;
@@ -947,9 +977,17 @@ header {
 .heart:hover svg, .heart:focus svg {
   stroke: #104010;
 }
+.heart svg {
+  stroke: #202124;
+}
+.heart:hover {
+  border-bottom: 1.5px solid #202124;
+  padding-bottom: 5px;
+}
 
 .cart {
   /* Cart List */
+  /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
 }
 .cart__list {
   position: absolute;
@@ -1052,17 +1090,14 @@ header {
 .cart__list--name {
   color: #f2f2f2;
 }
-
-/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
-.show {
+.cart .show {
   visibility: visible;
   opacity: 1;
   transition: all 0.2s ease-in-out;
   transform: translateX(50%);
 }
-
 @media (min-width: 768px) {
-  .cart__list {
+  .cart .cart__list {
     position: absolute;
     top: 120%;
     right: 0;
@@ -1070,10 +1105,11 @@ header {
     left: auto;
     transform: translateY(-100%) translateX(0);
   }
-  .show {
+  .cart .show {
     transform: translateX(0);
   }
 }
+
 .cart__btn {
   background-color: #104010;
   border-radius: 10px;
@@ -1089,6 +1125,12 @@ header {
   transition: all 0.2s ease-in-out;
   border: 2.5px solid #104010;
   outline: none;
+  background-color: transparent;
+  border: none;
+  width: auto;
+  height: auto;
+  padding: 0;
+  border-radius: 0;
 }
 .cart__btn svg {
   pointer-events: none;
@@ -1098,6 +1140,13 @@ header {
 }
 .cart__btn:hover svg, .cart__btn:focus svg {
   stroke: #104010;
+}
+.cart__btn svg {
+  stroke: #202124;
+}
+.cart__btn:hover {
+  border-bottom: 1.5px solid #202124;
+  padding-bottom: 5px;
 }
 .cart__page {
   display: flex;
