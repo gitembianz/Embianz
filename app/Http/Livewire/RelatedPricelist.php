@@ -180,25 +180,6 @@ class RelatedPricelist extends Component
     $this->search = '';
     session()->flash('message', 'Records edited succesfuly');
   }
-  // public function confirmitem()
-  // {
-  //   $val = $this->price;
-  //   if (array_key_exists('value', $val)) {
-  //     $new = PricelistEntries::find($this->priceid);
-  //     $new->value = $val['value'];
-  //     $new->save();
-  //     $this->addrelatedprice = false;
-  //     $this->allow = false;
-  //     $this->priceid = null;
-  //     $this->price = [];
-  //     $this->itemselected = null;
-  //     $this->search = '';
-  //     $this->update = false;
-  //     session()->flash('message', 'Spec related succesfuly succesfuly');
-  //   } else {
-  //     session()->flash('message', 'Please provide a value!');
-  //   }
-  // }
 
   //function for add new pricelist
   public function addrelated()
