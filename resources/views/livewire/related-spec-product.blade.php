@@ -75,10 +75,10 @@
                                         <td>
                                             <div class="item__form-input">
                                                 @if ($specAndValue['allow'])
-                                                    <input
-                                                        wire:model.debounce.200ms="specsAndValues.{{ $index }}.itemselected"
-                                                        placeholder="Search.." type="text">
-                                                    <ul class="pos-abs wid-10" style="top: 3rem; z-index: 99999">
+                                                    <input wire:model.debounce.200ms="searchadd" placeholder="Search.."
+                                                        type="text">
+                                                    <ul class="pos-abs wid-10 b-1 bra-sm p-1"
+                                                        style="top: 3rem; z-index: 99999; background: white">
                                                         @if (count($addspecs) >= 1)
                                                             @foreach ($addspecs as $spec)
                                                                 <li class="cursor-p"

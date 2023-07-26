@@ -238,6 +238,7 @@ class RelatedSpecProduct extends Component
     $this->specsAndValues[$index]['itemselected'] = $name;
     $this->specsAndValues[$index]['spec']['idrel'] = $id;
     $this->specsAndValues[$index]['allow'] = false;
+    $this->searchadd = '';
   }
   public function plus()
   {
@@ -251,6 +252,7 @@ class RelatedSpecProduct extends Component
   public function allowselect($index)
   {
     $this->specsAndValues[$index]['allow'] = true;
+    $this->searchadd = $this->specsAndValues[$index]['itemselected'];
   }
   public function allow()
   {
