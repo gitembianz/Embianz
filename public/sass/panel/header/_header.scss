@@ -24,13 +24,13 @@ header,
     }
   }
 
-  &.moved {
-    height: calc($headerHeight + ($gap * 3));
+  // &.moved {
+  //   height: calc($headerHeight + ($gap * 3));
 
-    &.content {
-      height: calc(100vh - ($headerHeight + ($gap * 3)));
-    }
-  }
+  //   &.content {
+  //     height: calc(100vh - ($headerHeight + ($gap * 3)));
+  //   }
+  // }
 }
 
 .search,

@@ -87,24 +87,25 @@
       color: #f2f2f2;
     }
   }
-}
 
-/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
-.show {
-  @include fade(show);
-  transform: translateX(50%);
-}
-
-@include breakpoint(medium) {
-  .cart__list {
-    @include abs-position(absolute, 120%, 0, auto, auto);
-    transform: translateY(-100%) translateX(0);
-  }
-
+  /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
   .show {
-    transform: translateX(0);
+    @include fade(show);
+    transform: translateX(50%);
+  }
+
+  @include breakpoint(medium) {
+    .cart__list {
+      @include abs-position(absolute, 120%, 0, auto, auto);
+      transform: translateY(-100%) translateX(0);
+    }
+
+    .show {
+      transform: translateX(0);
+    }
   }
 }
+
 
 
 
@@ -112,6 +113,20 @@
 
   &__btn {
     @include btn;
+    background-color: transparent;
+    border: none;
+    @include box(auto);
+    padding: 0;
+    border-radius: 0;
+
+    svg {
+      stroke: $text;
+    }
+
+    &:hover {
+      border-bottom: 1.5px solid $text;
+      padding-bottom: 5px;
+    }
   }
 
 
@@ -191,64 +206,7 @@
       }
     }
   }
-
-
 }
-
-
-
-
-
-
-
-// .cart-page {
-//   &__list {
-//     display: grid;
-//     grid-template-columns: 1fr;
-//     width: 100%;
-//     gap: 15px;
-
-//     @include breakpoint(small) {
-//       grid-template-columns: 1fr 1fr;
-//     }
-
-
-//   }
-
-//   &__item {
-//     @include flexer(column, space-between, center, 15px);
-//     @include responsive-spacing(padding, .01);
-//     background-color: #f2f2f2;
-//     border-radius: 10px;
-//     width: 100%;
-
-//     img {
-//       height: 100px;
-//       object-fit: cover;
-//     }
-//   }
-
-//   &__buttons {
-//     @include flexer(row, center, center, 15px);
-//   }
-
-//   &__delete,
-//   &__heart {
-//     @include flexer(row, center, center);
-//     @include responsive-spacing(padding, 0.001);
-//     border-radius: 100%;
-//     background-color: $text;
-
-//     svg {
-//       scale: .7;
-//     }
-//   }
-
-//   &__heart {
-//     background-color: red;
-//   }
-// }
-
 
 .cart-page {
 
