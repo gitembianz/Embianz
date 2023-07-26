@@ -441,10 +441,12 @@
                                                         {{ $spec->spec->name }}</div>
                                                 @else
                                                     @if ($allow)
-                                                        <div class="item__form-input pos-abs b-1 bra-sm p-1">
-                                                            <input wire:model.debounce.200ms="searchadd"
+                                                        <div>
+                                                            <input class="wid-10 p-1"
+                                                                wire:model.debounce.200ms="searchadd"
                                                                 placeholder="Search.." type="text">
-                                                            <ul>
+                                                            <ul class="pos-abs b-1 bra-sm p-1"
+                                                                style="z-index: 99999; background: white">
                                                                 @foreach ($addspecs as $speci)
                                                                     <li class="cursor-p"
                                                                         wire:click.prevent="select({{ $speci->id }})">
@@ -454,10 +456,9 @@
                                                             </span>
                                                         </div>
                                                     @else
-                                                        <div class="item__form-input cursor-p" style="padding: 0%">
-                                                            <div wire:click.prevent="allow" style="padding: 0%">
-                                                                {{ $itemselected->name }}
-                                                            </div>
+                                                        <div wire:click.prevent="allow"
+                                                            class="cursor-p b-1 bra-sm p-1" style="background: white">
+                                                            {{ $itemselected->name }}
                                                         </div>
                                                     @endif
                                                 @endif
