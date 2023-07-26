@@ -4,19 +4,12 @@ header {
 
 .header {
   position: relative;
-  // @include flexer(column, space-between, center, 15px);
-  // gap: 15px;
-  // transition: $transition;
-  // padding: 0;
   width: 100%;
-  // padding-bottom: 15px;
   @include flexer(row, space-between, center, 10px);
   padding: clamp(10px, 1vw, 50px);
   height: 70px;
   padding-bottom: 0;
   padding-top: 0;
-
-  @include breakpoint(extra-small) {}
 
   @include breakpoint(large) {
     gap: 50px;
@@ -25,7 +18,6 @@ header {
 
   &__buttons {
     @include flexer(row, space-between, center, 25px);
-    // width: 100%;
 
     @include breakpoint(small) {
       @include flexer(row, center, center, 25px);
