@@ -38,6 +38,12 @@ class RelatedPricelist extends Component
   public $priceid;
   public $allow = false;
   public $update = false;
+  public $editmultiple = false;
+  public $itemstoedit;
+  public $priceAndValues = [];
+  public $row = 1;
+  public $editedrow;
+  public $pricelist;
 
   public function render()
   {
@@ -51,6 +57,11 @@ class RelatedPricelist extends Component
     $this->productId = $productId;
     $this->selectedColumns = $this->columns;
     $this->item = Product::find($productId);
+    $this->priceAndValues[] = [
+      'allow' => false,
+      'itemselected' => null,
+      'price' => ['idrel' => null, 'value' => null],
+    ];
   }
 
   //function for realted
@@ -132,32 +143,62 @@ class RelatedPricelist extends Component
   {
     $this->dispatchBrowserEvent('show-delete-modal-multiple');
   }
-  public function edititem($id, $idspec)
+  public function edititem($id, $iditem, $index)
   {
-    $this->update = true;
-    $this->addrelatedprice = true;
-    $this->itemselected = PriceList::find($idspec)->name;
-    $this->priceid = $id;
+    $this->itemselected = PriceList::find($iditem);
+    $val = PricelistEntries::find($id);
+    $this->priceid = $iditem;
+    $this->editedrow = $index;
+    $this->pricelist = [
+      $index . '.name' => $this->itemselected,
+      $index . '.value' => $val->value,
+    ];
   }
-  public function confirmitem()
+  public function canceledit()
   {
-    $val = $this->price;
-    if (array_key_exists('value', $val)) {
-      $new = PricelistEntries::find($this->priceid);
-      $new->value = $val['value'];
-      $new->save();
-      $this->addrelatedprice = false;
-      $this->allow = false;
-      $this->priceid = null;
-      $this->price = [];
-      $this->itemselected = null;
-      $this->search = '';
-      $this->update = false;
-      session()->flash('message', 'Spec related succesfuly succesfuly');
-    } else {
-      session()->flash('message', 'Please provide a value!');
+    $this->editedrow = null;
+    $this->allow = false;
+    $this->itemselected = null;
+    $this->pricelist = [];
+  }
+  public function confirmprice($index, $id)
+  {
+    $new = PricelistEntries::find($id);
+    $new->pricelist_id = $this->priceid;
+    $val = $this->pricelist;
+    if (isset($val["$index"]['value'])) {
+
+      $new->value = $val["$index"]['value'];
     }
+
+    $new->save();
+    $this->allow = false;
+    $this->priceid = null;
+    $this->pricelist = [];
+    $this->itemselected = null;
+    $this->editedrow = null;
+    $this->search = '';
+    session()->flash('message', 'Records edited succesfuly');
   }
+  // public function confirmitem()
+  // {
+  //   $val = $this->price;
+  //   if (array_key_exists('value', $val)) {
+  //     $new = PricelistEntries::find($this->priceid);
+  //     $new->value = $val['value'];
+  //     $new->save();
+  //     $this->addrelatedprice = false;
+  //     $this->allow = false;
+  //     $this->priceid = null;
+  //     $this->price = [];
+  //     $this->itemselected = null;
+  //     $this->search = '';
+  //     $this->update = false;
+  //     session()->flash('message', 'Spec related succesfuly succesfuly');
+  //   } else {
+  //     session()->flash('message', 'Please provide a value!');
+  //   }
+  // }
 
   //function for add new pricelist
   public function addrelated()
@@ -165,42 +206,133 @@ class RelatedPricelist extends Component
     $this->showrelatedprice = true;
     $this->addrelatedprice = true;
   }
+  public function editSelected()
+  {
+    $this->itemstoedit = $this->checked;
+    $this->editmultiple = true;
+    foreach ($this->itemstoedit  as $index => $item) {
+      $test = PricelistEntries::find($item);
+      $this->priceAndValues[$index]['itemselected'] = $test->pricelist->name;
+      $this->priceAndValues[$index]['price']['id'] = $test->id;
+      $this->priceAndValues[$index]['price']['idrel'] = $test->pricelist->id;
+      $this->priceAndValues[$index]['price']['value'] = $test->value;
+      $this->priceAndValues[$index]['allow'] = false;
+    }
+  }
+  public function confirmpricemultiple()
+  {
+
+    foreach ($this->priceAndValues as  $priceAndValue) {
+      if (isset($priceAndValue['price']['value'])) {
+        $item = PricelistEntries::find($priceAndValue['price']['id']);
+        $item->pricelist_id = $priceAndValue['price']['idrel'];
+        $item->value = $priceAndValue['price']['value'];
+        $item->save();
+      } else {
+        session()->flash('message', 'Please provide a value!');
+        return;
+      }
+    }
+
+    $this->priceAndValues = [
+      [
+        'allow' => false,
+        'itemselected' => null,
+        'price' => ['name' => null, 'value' => null],
+      ]
+    ];
+    $this->row = 1;
+    $this->checked = [];
+    $this->all = false;
+    $this->editmultiple = false;
+    session()->flash('message', 'Pricelist edited successfully.');
+  }
+  public function allow()
+  {
+    $this->allow = true;
+    $this->searchadd = $this->itemselected->name;
+  }
+
   public function select($id)
   {
-    $this->itemselected = PriceList::find($id)->name;
+    $this->itemselected = PriceList::find($id);
     $this->priceid = $id;
     $this->allow = false;
   }
-  public function allowselect()
-  {
-    $this->allow = true;
-  }
   public function closemodal()
   {
+    $this->priceAndValues = [
+      [
+        'allow' => false,
+        'itemselected' => null,
+        'spec' => ['name' => null, 'value' => null],
+      ]
+    ];
+    $this->row = 1;
+    $this->checked = [];
+    $this->all = false;
+    $this->editmultiple = false;
     $this->addrelatedprice = false;
-    $this->allow = false;
-    $this->itemselected = null;
-    $this->update = false;
   }
-  public function saveitem()
+  public function allowselect($index)
   {
-    $val = $this->price;
-    if (array_key_exists('value', $val)) {
-      $new = new PricelistEntries();
-      $new->product_id = $this->productId;
-      $new->pricelist_id = $this->priceid;
-      $new->value = $val['value'];
-      $new->save();
-      $this->addrelatedprice = false;
-      $this->allow = false;
-      $this->priceid = null;
-      $this->price = [];
-      $this->itemselected = null;
-      $this->search = '';
-      session()->flash('message', 'Price related succesfuly succesfuly');
-    } else {
-      session()->flash('message', 'Please provide a value!');
+    $this->priceAndValues[$index]['allow'] = true;
+    $this->searchadd = $this->priceAndValues[$index]['itemselected'];
+  }
+  public function selectSpec($index, $id, $name)
+  {
+    $this->priceAndValues[$index]['itemselected'] = $name;
+    $this->priceAndValues[$index]['price']['idrel'] = $id;
+    $this->priceAndValues[$index]['allow'] = false;
+    $this->searchadd = '';
+  }
+  public function plus()
+  {
+    $this->row++;
+    $this->priceAndValues[] = [
+      'allow' => false,
+      'itemselected' => null,
+      'price' => ['name' => null, 'value' => null],
+    ];
+  }
+  //clear one row in modal
+  public function clear($index)
+  {
+    // Remove the row from the array
+    unset($this->priceAndValues[$index]);
+
+    // Reset the keys of the array
+    $this->priceAndValues = array_values($this->priceAndValues);
+
+    // Decrement the total row count
+    $this->row--;
+  }
+
+  public function saveitems()
+  {
+    foreach ($this->priceAndValues as $index =>  $priceAndValue) {
+      if (isset($priceAndValue['price']['value'])) {
+        $new = new PricelistEntries();
+        $new->product_id = $this->productId;
+        $new->pricelist_id = $priceAndValue['price']['idrel'];
+        $new->value = $priceAndValue['price']['value'];
+        $new->save();
+      } else {
+        session()->flash('message', 'Please provide a value!');
+        return;
+      }
     }
+
+    $this->priceAndValues = [
+      [
+        'allow' => false,
+        'itemselected' => null,
+        'price' => ['name' => null, 'value' => null],
+      ]
+    ];
+    $this->row = 1;
+    $this->addrelatedprice = false;
+    session()->flash('message', 'Pricelists related successfully.');
   }
   public function getAddpricesProperty()
   {
