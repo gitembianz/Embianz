@@ -6,10 +6,10 @@ header {
   position: relative;
   width: 100%;
   @include flexer(row, space-between, center, 10px);
-  padding: clamp(10px, 1vw, 50px);
+  @include responsive-spacing(padding-left, 0.01);
+  @include responsive-spacing(padding-right, 0.01);
   height: 70px;
-  padding-bottom: 0;
-  padding-top: 0;
+
 
   @include breakpoint(large) {
     gap: 50px;
@@ -44,7 +44,6 @@ header {
     button {
       @include responsive-spacing(padding, 0.0001);
       border-radius: 10px;
-      // background-color: $background;
       color: $text;
       cursor: pointer;
     }
@@ -52,25 +51,20 @@ header {
 }
 
 .logo {
-  @include font(900);
   @include box(unset, 100%);
-  font-family: 'Dancing-Script', cursive;
-  transition: $transition;
   max-height: 70px;
 
   @include breakpoint(extra-small) {
-    //  content
     max-height: unset;
   }
 }
 
 .search__open {
-  @include btn;
+  cursor: pointer;
   background-color: transparent;
   border: none;
-  @include box(auto);
-  padding: 0;
   border-radius: 0;
+  padding: 0;
 
   svg {
     stroke: $text;
@@ -96,7 +90,7 @@ header {
   }
 
   &__content {
-    @include flexer(row, center, center, 20px);
+    @include flexer(row, space-between, flex-start, 20px);
     @include responsive-spacing(padding, 0.01);
     @include responsive-spacing(padding-left, 0.03);
     @include responsive-spacing(padding-right, 0.03);
@@ -105,7 +99,15 @@ header {
     background-color: $background;
 
     button {
-      @include btn;
+      cursor: pointer;
+      background-color: transparent;
+      border: none;
+      border-radius: 0;
+      padding: 0;
+
+      svg {
+        stroke: $text;
+      }
     }
 
     @include breakpoint(small) {
@@ -120,17 +122,14 @@ header {
   }
 
   &__input {
-    @include box(100%, 50px);
+    @include box(100%, 25px);
     flex: 1;
     border: none;
     border-radius: 0;
-    border-bottom: 2px solid darken(#1a691a, 10%);
+    border-bottom: 1px solid $text;
     outline: none;
   }
 }
-
-
-
 
 .menu {
   @include flexer($align-items: flex-start);
@@ -144,7 +143,7 @@ header {
 
   &__list {
 
-    @include flexer(column, flex-start, center, 10px);
+    @include flexer(column, flex-start, center);
     padding-top: 120px;
 
     @include breakpoint(large) {
@@ -154,7 +153,6 @@ header {
       position: relative;
       background-color: transparent;
       padding: 0;
-      margin: 0 auto;
     }
 
     li {
@@ -167,14 +165,12 @@ header {
   }
 
   &__link {
-    color: darken(#1a691a, 10%);
     font-size: 25px;
     font-weight: 500;
     cursor: pointer;
     width: 100%;
-    border-bottom: 1.5px solid darken(#1a691a, 10%);
+    border-bottom: 1.5px solid $text ;
     @include flexer(row, space-between, center);
-
 
     @include breakpoint(large) {
       font-size: unset;
@@ -187,8 +183,7 @@ header {
   &__item {
     @include flexer(row, space-between, center);
     width: 100%;
-    border-bottom: 1.5px solid darken(#1a691a, 10%);
-
+    border-bottom: 1.5px solid $text;
 
     @include breakpoint(large) {
       border-bottom: none;
@@ -202,7 +197,6 @@ header {
     }
 
     a {
-      color: darken(#1a691a, 10%);
       font-size: 25px;
       font-weight: 500;
       cursor: pointer;
@@ -239,7 +233,6 @@ header {
     &--wrapper {
       overflow: hidden;
       height: 0;
-      // transition: all .6s ease-in-out;
     }
 
     &--list {
@@ -251,7 +244,7 @@ header {
     &--item {
       cursor: pointer;
       border-left: 1px solid darken(#1a691a, 10%);
-      padding: 30px;
+      padding: 10px;
       color: darken(#1a691a, 10%);
       position: relative;
 
