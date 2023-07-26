@@ -271,7 +271,7 @@ class RelatedSpecProduct extends Component
       if (array_key_exists('value', $val)) {
         $newspec = new Product_Spec();
         $newspec->product_id = $this->productId;
-        $newspec->spec_id = $specAndValue['spec']['name'];
+        $newspec->spec_id = $specAndValue['spec']['idrel'];
         $newspec->value = $specAndValue['spec']['value'];
         $newspec->save();
       } else {
