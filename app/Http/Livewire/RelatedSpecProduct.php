@@ -227,6 +227,7 @@ class RelatedSpecProduct extends Component
     $this->showrelatedspecs = true;
     $this->addrelatedspecs = true;
   }
+  //select function from list
   public function select($id)
   {
     $this->itemselected = Specs::find($id);
@@ -249,6 +250,7 @@ class RelatedSpecProduct extends Component
       'spec' => ['name' => null, 'value' => null],
     ];
   }
+  //alow function for selecting new items
   public function allowselect($index)
   {
     $this->specsAndValues[$index]['allow'] = true;
@@ -274,6 +276,7 @@ class RelatedSpecProduct extends Component
     $this->editmultiple = false;
     $this->addrelatedspecs = false;
   }
+  //clear one row in modal
   public function clear($index)
   {
     // Remove the row from the array
@@ -285,7 +288,7 @@ class RelatedSpecProduct extends Component
     // Decrement the total row count
     $this->row--;
   }
-
+  //save the spec form a modal
   public function savespecs()
   {
     foreach ($this->specsAndValues as $index =>  $specAndValue) {
@@ -313,6 +316,7 @@ class RelatedSpecProduct extends Component
     $this->addrelatedspecs = false;
     session()->flash('message', 'Specs related successfully.');
   }
+  //gett specs for list with search
   public function getAddspecsProperty()
   {
     return $this->addspecsQuery->get();
