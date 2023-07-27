@@ -1,5 +1,7 @@
 .cards {
-  @include flexer(column, unset, unset, 20px);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .card-wrapper {
@@ -9,37 +11,41 @@
 
 .card-button {
   @include box(40px);
-  @include abs-position (absolute, 50%, unset, unset, unset);
-  @include flexer(row, center, center);
+  position: absolute;
+  top: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
   border-radius: 50%;
   transform: translateY(-50%);
   transition: $transition;
   background: rgba(0, 0, 0, 0.3);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(4px);
   z-index: 1;
-}
 
-.card-button:active {
-  transform: translateY(-50%) scale(0.8);
-}
+  &:active {
+    transform: translateY(-50%) scale(0.8);
+  }
 
-.card-button:first-child {
-  left: 10px;
+  &:first-child {
+    left: 10px;
 
-  @include breakpoint(medium) {
-    left: -20px;
+    @include breakpoint(medium) {
+      left: -20px;
+    }
+  }
+
+  &:last-child {
+    right: 10px;
+
+    @include breakpoint(medium) {
+      right: -20px;
+    }
   }
 }
 
-.card-button:last-child {
-  right: 10px;
 
-  @include breakpoint(medium) {
-    right: -20px;
-  }
-}
 
 .card-wrapper .card-carousel {
   display: grid;
@@ -89,7 +95,12 @@
   @include responsive-spacing(padding, .01);
   @include responsive-spacing(padding-top, .1);
   @include responsive-spacing(padding-bottom, .1);
-  @include flexer(column, space-between, center, 15px);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+
   scroll-snap-align: start;
   height: 100%;
   background: #f2f2f2;
@@ -108,8 +119,12 @@
 
   &__fire {
     @include box(40px);
-    @include flexer(row, center, center);
-    @include abs-position (absolute, 15px, unset, unset, 15px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 15px;
+    left: 15px;
     border-radius: 50%;
     background: pink;
 
