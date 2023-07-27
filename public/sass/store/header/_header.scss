@@ -51,7 +51,7 @@ header {
 }
 
 .logo {
-  @include box(auto, 100%);
+  @include box(63px, 50px);
 }
 
 .search__open {
