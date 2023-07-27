@@ -2,12 +2,14 @@
 
 namespace App\Http\Livewire;
 
+use Livewire\Component;
 use App\Models\Category;
 use App\Models\Subcategory;
-use Livewire\Component;
+use Livewire\WithPagination;
 
 class RelatedSubcategory extends Component
 {
+  use WithPagination;
 
   //related delclaration
   public $perPage = 10;
