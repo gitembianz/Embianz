@@ -179,7 +179,7 @@ class RelatedMediaProduct extends Component
       $media->sequence = $this->file_sequences[$i];
       $media->location_id = $this->file_locations[$i];
       $media->path = $this->file_link[$i];
-      $media->extrenal = true;
+      $media->external = true;
       $media->createdby = Auth::user()->name;
       $media->lastmodifiedby = Auth::user()->name;
       $media->item_id = $this->productId;
@@ -251,7 +251,7 @@ class RelatedMediaProduct extends Component
       $media->sequence = $this->file_sequences[$this->i];
       $media->location_id = MediaLocation::where('id', $this->file_locations[$this->i])->first()->id;
       $media->type = $type;
-      $media->extrenal = false;
+      $media->external = false;
       $media->width = $width;
       $media->height =  $height;
       $media->size = $file->getSize();
