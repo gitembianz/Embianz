@@ -62,19 +62,25 @@
     </div>
     <div class="footer__middle">
         <ul class="footer__list">
-            <h3>Categorii Populare</h3>
+            <li>
+                <h3>Categorii Populare</h3>
+            </li>
             @foreach ($categories as $category)
                 <li><a class="footer__list--item" href="#">{{ $category }}</a></li>
             @endforeach
         </ul>
         <ul class="footer__list">
-            <h3>Serviciu clienți</h3>
+            <li>
+                <h3>Serviciu clienți</h3>
+            </li>
             <li><a class="footer__list--item" href="#">Termeni și Condiții</a></li>
             <li><a class="footer__list--item" href="#">Întrebări Frecvente</a></li>
             <li><a class="footer__list--item" href="#">Politica de confidențialitate</a></li>
         </ul>
         <ul class="footer__list">
-            <h3>Informații</h3>
+            <li>
+                <h3>Informații</h3>
+            </li>
             <li><a class="footer__list--item" href="#">Contacte</a></li>
             <li><a class="footer__list--item" href="#">Despre Noi</a></li>
         </ul>

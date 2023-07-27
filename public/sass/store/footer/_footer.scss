@@ -73,6 +73,10 @@ footer {
     }
   }
 
+  li {
+    color: $background;
+  }
+
   &--item {
     color: $background;
   }
@@ -131,9 +135,6 @@ footer {
     background-color: $background;
     @include box(115px, 40px);
     border: none;
-    // @include responsive-spacing(padding, .0005);
     border-radius: 0 10px 10px 0;
   }
-
-
 }
