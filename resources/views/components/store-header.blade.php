@@ -50,11 +50,11 @@
                     <ul class="menu__sub" role="menu" aria-hidden="true" aria-expanded="false">
                         <div class="menu__sub--wrapper">
                             <div class="menu__sub--list">
-                                <a class="menu__sub--item" role="menuitem">Sticle Termice</a>
-                                <a class="menu__sub--item" role="menuitem">Cutii De Pranz</a>
-                                <a class="menu__sub--item" role="menuitem">Cani Termice</a>
-                                <a class="menu__sub--item" role="menuitem">Sticle Pentru Copii</a>
-                                <a class="menu__sub--item" role="menuitem">Accesorii</a>
+                                <a class="menu__sub--item" role="Sticle Termice">Sticle Termice</a>
+                                <a class="menu__sub--item" role="Cutii de Pranz">Cutii De Pranz</a>
+                                <a class="menu__sub--item" role="Cani Termice">Cani Termice</a>
+                                <a class="menu__sub--item" role="Sticle Pentru Copii">Sticle Pentru Copii</a>
+                                <a class="menu__sub--item" role="Accesorii">Accesorii</a>
                             </div>
                         </div>
                     </ul>
@@ -120,7 +120,7 @@
                         </a>
                     </li>
                     <li><a class="cart__list--item" href="#">
-                            <img class="cart__list--img" src="/images/store/bottle1.webp"
+                            <img class="cart__list--img" src="/images/store/bottle1-min.webp"
                                 alt="Sustainable Sips: Reusable Bottles">
                             <span class="cart__list--text">Sustainable Sips: Reusable Bottles</span>
                             <span class="cart__list--much">x2</span>
@@ -133,7 +133,7 @@
                             </button>
                         </a></li>
                     <li><a class="cart__list--item" href="#">
-                            <img class="cart__list--img" src="/images/store/bottle2.webp"
+                            <img class="cart__list--img" src="/images/store/bottle2-min.webp"
                                 alt="Sustainable Sips: Reusable Bottles">
                             <span class="cart__list--text">Sustainable Sips: Reusable Bottles</span>
                             <span class="cart__list--much">x5</span>
