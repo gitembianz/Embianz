@@ -93,12 +93,13 @@
                     <line x1="3" y1="18" x2="21" y2="18"></line>
                 </svg>
             </button>
-            <div class="search__open" id="searchOpen" data-tooltip="press ' / ' to open" aria-label="Open Search">
+            <button class="search__open" id="searchOpen" data-tooltip="press ' / ' to open"
+                aria-label="Open Search">
                 <svg aria-hidden="true">
                     <circle cx="11" cy="11" r="8"></circle>
                     <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                 </svg>
-            </div>
+            </button>
             <div class="cart">
                 <button class="cart__btn" id="cartBtn" aria-label="Open Cart">
                     <svg aria-hidden="true">
