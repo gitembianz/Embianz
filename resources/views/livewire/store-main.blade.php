@@ -213,4 +213,5 @@
       <span><q><i>20% din profitul nostru susține protecția mediului!</i></q></span>
       <img src="images/store/white-logo.svg" alt="logo">
   </div>
-</div> --}}
+</div>
+--}}
