@@ -45,10 +45,10 @@
     @include abs-position (absolute, 50%, unset, unset, 50%);
     transform: translate(-50%, -50%);
     transition: $transition;
-    // display: none;
+    display: none;
     color: #eee;
-    // opacity: 0;
-    // animation: showContentBlur .3s ease-in-out 0.3s 1 forwards;
+    opacity: 0;
+    animation: showContentBlur .3s ease-in-out 0.3s 1 forwards;
     background: rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(5px);
     width: 100%;
@@ -119,7 +119,7 @@
       border: none;
       opacity: 0;
       border-radius: 10px;
-      animation: showcontent .4s ease-in-out 0.4s 1 forwards;
+      animation: showcontent .5s ease-in-out .5s 1 forwards;
     }
 
     &:nth-child(2) .home__content {
@@ -175,29 +175,23 @@
 
 @keyframes showcontent {
   from {
-    opacity: 0;
-    transform: translateX(10000px);
-    scale: 0;
-    filter: blur(33px);
+    opacity: .3;
+    transform: translateX(-100%);
   }
 
   to {
     opacity: 1;
-    scale: 1;
     transform: translateX(0);
-    filter: blur(0);
   }
 }
 
 @keyframes showContentBlur {
   from {
-    width: 0;
     filter: blur(33px);
   }
 
   to {
     opacity: 1;
-    width: 100%;
     filter: blur(0);
   }
 }
