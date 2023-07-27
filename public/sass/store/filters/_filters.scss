@@ -1,13 +1,17 @@
 // Filter Section
 .filter {
-  @include box(auto, 100%);
+  height: 100%;
 
-  // buttons for Apply or reset the fillter changes
   &__buttons {
-    @include flexer(row, space-between, center, 10px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
 
     button {
-      @include flexer(row, center, center);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       @include responsive-spacing(padding, 0.001);
       width: 100%;
       color: $background;
@@ -69,7 +73,10 @@
 
   // button to open Filter,
   &__open {
-    @include flexer(row, space-between, center, 10px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
     background: transparent;
     border: none;
     cursor: pointer;

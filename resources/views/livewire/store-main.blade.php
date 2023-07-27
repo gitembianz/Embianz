@@ -120,7 +120,7 @@
             </li>
 
             <li class="card" role="listitem">
-                <img src="images/store/bottle2.webp"
+                <img src="images/store/bottle2-min.webp"
                     alt="The Urban Oasis water bottle is perfect for on-the-go hydration." draggable="false">
                 <h2>Urban Oasis</h2>
                 <p>The Urban Oasis water bottle is perfect for on-the-go hydration.</p>
@@ -132,7 +132,7 @@
             </li>
 
             <li class="card" role="listitem">
-                <img src="images/store/bottle3.webp" alt="AquaLite" draggable="false">
+                <img src="images/store/bottle3-min.webp" alt="AquaLite" draggable="false">
                 <h2>AquaLite</h2>
                 <p>The AquaLite water bottle offers lightweight and durable design.</p>
                 <span>Sports, Gym, Active lifestyle</span>
@@ -140,7 +140,7 @@
             </li>
 
             <li class="card" role="listitem">
-                <img src="images/store/background-bottle1.webp" alt="Pure Flow" draggable="false">
+                <img src="images/store/background-bottle-min1.webp" alt="Pure Flow" draggable="false">
                 <h2>Pure Flow</h2>
                 <p>Embrace pure hydration with the sleek Pure Flow water bottle.</p>
                 <span>Minimalist, BPA-free, Sustainable</span>
@@ -148,7 +148,7 @@
             </li>
 
             <li class="card" role="listitem">
-                <img src="images/store/background-bottle2.webp" alt="Oasis Pro" draggable="false">
+                <img src="images/store/background-bottle-min2.webp" alt="Oasis Pro" draggable="false">
                 <h2>Oasis Pro</h2>
                 <p>The Oasis Pro water bottle keeps your beverages at the perfect temperature.</p>
                 <span>Insulated, Outdoor, Hot and cold</span>
@@ -156,7 +156,7 @@
             </li>
 
             <li class="card" role="listitem">
-                <img src="images/store/background-bottle3.webp" alt="Terra Essence" draggable="false">
+                <img src="images/store/background-bottle-min3.webp" alt="Terra Essence" draggable="false">
                 <h2>Terra Essence</h2>
                 <p>Experience nature with the Terra Essence water bottle.</p>
                 <span>Nature-inspired, Sustainable</span>
@@ -164,7 +164,7 @@
             </li>
 
             <li class="card" role="listitem">
-                <img src="images/store/background-bottle4.webp" alt="AquaWave" draggable="false">
+                <img src="images/store/background-bottle-min4.webp" alt="AquaWave" draggable="false">
                 <h2>AquaWave</h2>
                 <p>Ride the waves of hydration with the AquaWave water bottle.</p>
                 <span>Surfing, Beach, Adventure</span>
@@ -172,7 +172,7 @@
             </li>
 
             <li class="card" role="listitem">
-                <img src="images/store/background-bottle5.webp" alt="Urban Sip" draggable="false">
+                <img src="images/store/background-bottle-min5.webp" alt="Urban Sip" draggable="false">
                 <h2>Urban Sip</h2>
                 <p>Sip in style with the Urban Sip water bottle.</p>
                 <span>Fashion, Trendy, Urban</span>
@@ -180,7 +180,7 @@
             </li>
 
             <li class="card" role="listitem">
-                <img src="images/store/background-bottle6.webp" alt="Fresh Spring" draggable="false">
+                <img src="images/store/background-bottle-min6.webp" alt="Fresh Spring" draggable="false">
                 <h2>Fresh Spring</h2>
                 <p>Quench your thirst with the Fresh Spring water bottle.</p>
                 <span>Refreshing, Nature, Hiking</span>
@@ -188,7 +188,7 @@
             </li>
 
             <li class="card" role="listitem">
-                <img src="images/store/bottle3.webp" alt="Summit Elite" draggable="false">
+                <img src="images/store/bottle1-min.webp" alt="Summit Elite" draggable="false">
                 <h2>Summit Elite</h2>
                 <p>Reach new heights with the Summit Elite water bottle.</p>
                 <span>Mountaineering, Climbing, Outdoor</span>
@@ -213,4 +213,5 @@
       <span><q><i>20% din profitul nostru susține protecția mediului!</i></q></span>
       <img src="images/store/white-logo.svg" alt="logo">
   </div>
-</div> --}}
+</div>
+--}}

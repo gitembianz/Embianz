@@ -71,6 +71,7 @@ body::-webkit-scrollbar {
 body::-webkit-scrollbar-thumb {
   background: #20282d;
   border-radius: 10px;
+  -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
 }
 body::-webkit-scrollbar-thumb:hover {
@@ -515,20 +516,11 @@ main {
   border-top: 5px solid #BBFCDE;
   width: 100px;
   height: 100px;
-  -webkit-animation: spin 2s linear infinite;
   /* Safari */
   animation: spin 2s linear infinite;
 }
 
 /* Safari */
-@-webkit-keyframes spin {
-  0% {
-    -webkit-transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-  }
-}
 @keyframes spin {
   0% {
     transform: rotate(0deg);
@@ -1645,7 +1637,6 @@ main {
   width: 100%;
   height: 5px;
   border-radius: 4px;
-  box-shadow: 0 0 10px red;
   animation: timeOut 5s linear 1 forwards;
 }
 .toast.error::before {
@@ -2291,7 +2282,9 @@ input[type=checkbox] {
   cursor: pointer;
   width: 2.5rem;
   height: 2.5rem;
-  appearance: none;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
 }
 input[type=checkbox]:hover {
   background-color: rgba(146, 220, 254, 0.6588235294);
@@ -2750,7 +2743,8 @@ input[type=checkbox]:checked:before {
 .table th img,
 .table-external th img {
   height: 100%;
-  object-fit: contain;
+  -o-object-fit: contain;
+     object-fit: contain;
 }
 .table td select, .table-external td select,
 .table td input,
@@ -2796,6 +2790,7 @@ input[type=checkbox]:checked:before {
 .table-external th input::-webkit-scrollbar-thumb {
   background: #20282d;
   border-radius: 10px;
+  -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
 }
 .table td select::-webkit-scrollbar-thumb:hover, .table-external td select::-webkit-scrollbar-thumb:hover,
@@ -3252,7 +3247,8 @@ header,
   display: none;
 }
 .header__logo img {
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
   width: 250px;
   height: auto;
 }
@@ -3827,6 +3823,7 @@ header,
 .notify__list::-webkit-scrollbar-thumb {
   background: #20282d;
   border-radius: 10px;
+  -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
 }
 .notify__list::-webkit-scrollbar-thumb:hover {
@@ -4908,6 +4905,7 @@ header,
 .item__form-close input::-webkit-scrollbar-thumb {
   background: #20282d;
   border-radius: 10px;
+  -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
 }
 .item__form-input div::-webkit-scrollbar-thumb:hover,
@@ -5136,6 +5134,7 @@ header,
 .table-edit::-webkit-scrollbar-thumb {
   background: #20282d;
   border-radius: 10px;
+  -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
 }
 .table-edit::-webkit-scrollbar-thumb:hover {
@@ -5486,7 +5485,9 @@ header,
   pointer-events: none;
 }
 .container-right .card_calendar .date-time-formate {
+  width: -moz-max-content;
   width: max-content;
+  height: -moz-max-content;
   height: max-content;
   display: flex;
   flex-direction: row;
@@ -5504,7 +5505,9 @@ header,
 }
 .container-right .card_calendar .date-time-value {
   display: block;
+  width: -moz-max-content;
   width: max-content;
+  height: -moz-max-content;
   height: max-content;
   position: relative;
   left: 40%;
@@ -5611,7 +5614,8 @@ header,
   width: 3.5rem;
   height: auto;
   padding: 0.5rem;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
   align-items: center;
   background: #ffffff;
 }
@@ -5624,4 +5628,4 @@ header,
 }
 .container-right .card_todo .count {
   border-top: 1px solid #35424B;
-}
+}/*# sourceMappingURL=main.css.map */

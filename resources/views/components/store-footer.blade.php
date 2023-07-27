@@ -12,6 +12,6 @@
   @livewireScripts
   </body>
 
-  <script src="/script/main.js"></script>
+  <script src="/script/main-less.js"></script>
 
   </html>
