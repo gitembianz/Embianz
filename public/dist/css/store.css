@@ -1648,7 +1648,7 @@ footer {
   border: none;
   opacity: 0;
   border-radius: 10px;
-  animation: showcontent 0.4s ease-in-out 0.4s 1 forwards;
+  animation: showcontent 0.5s ease-in-out 0.5s 1 forwards;
 }
 .home__item:nth-child(2) .home__content {
   display: flex;
@@ -1698,16 +1698,12 @@ footer {
 
 @keyframes showcontent {
   from {
-    opacity: 0;
-    transform: translateX(10000px);
-    scale: 0;
-    filter: blur(33px);
+    opacity: 0.3;
+    transform: translateX(-100%);
   }
   to {
     opacity: 1;
-    scale: 1;
     transform: translateX(0);
-    filter: blur(0);
   }
 }
 @keyframes showContentBlur {
