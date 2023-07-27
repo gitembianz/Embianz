@@ -51,12 +51,7 @@ header {
 }
 
 .logo {
-  @include box(unset, 100%);
-  max-height: 70px;
-
-  @include breakpoint(extra-small) {
-    max-height: unset;
-  }
+  @include box(auto, 100%);
 }
 
 .search__open {
