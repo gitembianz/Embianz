@@ -3280,10 +3280,8 @@ footer {
 .card__fire img {
   width: 100%;
   height: 100%;
-
   outline: none;
-  -o-object-fit: contain;
-     object-fit: contain;
+  object-fit: contain;
 }
 .card > .price {
   color: red;
@@ -3706,8 +3704,4 @@ footer {
 .filter__applied--clear {
   background-color: transparent;
   color: #202124;
-}
-
-.phpdebugbar {
-  display: none !important;
 }
