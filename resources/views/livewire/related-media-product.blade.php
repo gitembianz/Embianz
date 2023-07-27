@@ -1,5 +1,4 @@
 <div>
-
     @if (session()->has('message'))
         {{-- aici se afla notificarea noua --}}
         <div class="notifications">
@@ -62,9 +61,7 @@
                 </span>
             </div>
         </div>
-
         @if ($showmedia)
-
             <form wire:submit.prevent="save">
                 <div class="item__upload">
                     @if ($medias)
@@ -170,7 +167,6 @@
                     @endif
                 </div>
             </form>
-
             @if ($externalmedia)
                 <form wire:submit.prevent="saveexternal">
                     <div class="modal" id="modalelements" style="display: block">
@@ -275,7 +271,6 @@
                     </div>
                 </form>
             @endif
-
             <div class="item">
                 @if (count($files) > 0)
                     <div class="item__form form-table"
@@ -337,9 +332,7 @@
                             @endif
                         </div>
                     </div>
-
                     @if ($selectPage)
-
                         @if ($selectAll)
                             <div>
                                 You have selected all <strong>{{ count($checked) }}</strong> items.
@@ -353,9 +346,7 @@
                                 <a href="#" class="ml-2" wire:click="selectAll">Select All</a>
                             </div>
                         @endif
-
                     @endif
-
                     {{-- modals --}}
                     {{-- delete single record --}}
                     <div class="modal" id="confirmationmodalmedia">
@@ -410,7 +401,6 @@
                         </div>
                     </div>
                     {{-- end modals --}}
-
                     <table class="livewire-table">
                         <thead>
                             <tr>
@@ -574,7 +564,6 @@
                 @else
                     <p> No Media related </p>
                 @endif
-
             </div>
         @endif
     </div>
