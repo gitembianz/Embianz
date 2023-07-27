@@ -26,7 +26,6 @@ class RelatedSubcategory extends Component
   public $selectedColumns = [];
 
   //add declaration
-  public $perPageadd = 10;
   public $searchadd = '';
   public $orderByadd = 'id';
   public $orderAscadd = true;
@@ -39,6 +38,9 @@ class RelatedSubcategory extends Component
   public $selectedColumnsadd = [];
   public $catidbeinglink = null;
   public $showTable = false;
+  public $totalRecords;
+  public $loadAmount = 13;
+
 
   // function for add categories
   public function toggleTable()
@@ -49,6 +51,10 @@ class RelatedSubcategory extends Component
   public function cancel()
   {
     $this->showTable = false; // Set $showTable to false to hide the table
+  }
+  public function loadMore()
+  {
+    $this->loadAmount += 10;
   }
   public function showColumnadd($column)
   {
@@ -97,7 +103,7 @@ class RelatedSubcategory extends Component
   }
   public function getCategoriesProperty()
   {
-    return $this->categoriesQuery->paginate($this->perPageadd, ['*'],  'categories');
+    return $this->categoriesQuery->limit($this->loadAmount)->get();
   }
   public function getCategoriesQueryProperty()
   {
@@ -191,7 +197,7 @@ class RelatedSubcategory extends Component
   }
   public function getRelatedsubcatsProperty()
   {
-    return $this->relatedsubcatsQuery->paginate($this->perPage, ['*'], 'related');
+    return $this->relatedsubcatsQuery->paginate($this->perPage);
   }
   public function getRelatedsubcatsQueryProperty()
   {
