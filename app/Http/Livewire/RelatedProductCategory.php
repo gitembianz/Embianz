@@ -12,7 +12,7 @@ class RelatedProductCategory extends Component
 {
 
   use WithPagination;
-  //related delclaration
+  //related delclaration/
   public $perPage = 10;
   public $search = '';
   public $orderBy = 'id';
@@ -29,7 +29,6 @@ class RelatedProductCategory extends Component
   public $selectedColumns = [];
 
   //add declaration
-  public $perPageadd = 10;
   public $searchadd = '';
   public $orderByadd = 'id';
   public $orderAscadd = true;
@@ -42,12 +41,18 @@ class RelatedProductCategory extends Component
   public $selectedColumnsadd = [];
   public $productidbeinglink = null;
   public $showTable = false;
+  public $totalRecords;
+  public $loadAmount = 10;
 
   // function for add products
   public function toggleTable()
   {
     $this->showrelatedprod = true;
     $this->showTable = !$this->showTable;
+  }
+  public function loadMore()
+  {
+    $this->loadAmount += 10;
   }
   public function cancel()
   {
@@ -94,7 +99,7 @@ class RelatedProductCategory extends Component
   }
   public function getProddsProperty()
   {
-    return $this->proddsQuery->paginate($this->perPageadd, ['*'],  'products');
+    return $this->proddsQuery->limit($this->loadAmount)->get();
   }
   public function getProddsQueryProperty()
   {
@@ -180,7 +185,7 @@ class RelatedProductCategory extends Component
   }
   public function getRelatedproductsProperty()
   {
-    return $this->relatedproductsQuery->paginate($this->perPage, ['*'], 'related');
+    return $this->relatedproductsQuery->paginate($this->perPage);
   }
   public function getRelatedproductsQueryProperty()
   {
