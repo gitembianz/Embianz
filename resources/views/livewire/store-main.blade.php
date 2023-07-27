@@ -1,6 +1,6 @@
 <div class="home__container" id="homeContainer">
-    <div id="home__slide">
-        <div class="home__item" style="background-image: url(images/store/background-bottle1.webp);">
+    <div id="home__slide" role="list">
+        <div class="home__item" style="background-image: url(images/store/background-bottle1.webp);" role="listitem">
             <div class="home__content">
                 <div class="container home__content--flex">
                     <h2>ASTER - 500 ML</h2>
@@ -10,11 +10,11 @@
                         go. With its generous capacity, it ensures you stay hydrated throughout the day, whether you're
                         hitting the gym, exploring the outdoors, or simply running errands.
                     </p>
-                    <button>See more</button>
+                    <button aria-label="See more">See more</button>
                 </div>
             </div>
         </div>
-        <div class="home__item" style="background-image:  url(images/store/background-bottle2.webp);">
+        <div class="home__item" style="background-image:  url(images/store/background-bottle2.webp);" role="listitem">
             <div class="home__content">
                 <div class="container home__content--flex">
                     <h2>BEGONIA - 500 ML</h2>
@@ -24,11 +24,12 @@
                         you go. The durable construction ensures long-lasting use, while the vibrant and eye-catching
                         design adds a touch of personality to your hydration routine.
                     </p>
-                    <button>See more</button>
+                    <button aria-label="See more">See more</button>
                 </div>
             </div>
         </div>
-        <div class="home__item home__this" style="background-image:  url(images/store/background-bottle3.webp);">
+        <div class="home__item home__this" style="background-image:  url(images/store/background-bottle3.webp);"
+            role="listitem">
             <div class=" home__content">
                 <div class="container home__content--flex">
                     <h2>EBONY ROSE - 500 ML</h2>
@@ -38,11 +39,12 @@
                         Whether you're attending a special event or simply going about your daily routine, this bottle
                         is the perfect companion for staying hydrated in style.
                     </p>
-                    <button>See more</button>
+                    <button aria-label="See more">See more</button>
                 </div>
             </div>
         </div>
-        <div class="home__item home__this" style="background-image:  url(images/store/background-bottle4.webp);">
+        <div class="home__item home__this" style="background-image:  url(images/store/background-bottle4.webp);"
+            role="listitem">
             <div class=" home__content">
                 <div class="container home__content--flex">
                     <h2>GRACE - 500 ML</h2>
@@ -52,11 +54,12 @@
                         you have enough hydration to keep you going throughout the day, making it an essential companion
                         for busy individuals who value both convenience and elegance.
                     </p>
-                    <button>See more</button>
+                    <button aria-label="See more">See more</button>
                 </div>
             </div>
         </div>
-        <div class="home__item home__this" style="background-image:  url(images/store/background-bottle5.webp);">
+        <div class="home__item home__this" style="background-image:  url(images/store/background-bottle5.webp);"
+            role="listitem">
             <div class=" home__content">
                 <div class="container home__content--flex">
                     <h2>LITTLE BUDS - 500 ML</h2>
@@ -66,11 +69,12 @@
                         your face every time you take a sip. Perfect for carrying your preferred drinks wherever you go,
                         this bottle is a reminder to embrace the small joys in life.
                     </p>
-                    <button>See more</button>
+                    <button aria-label="See more">See more</button>
                 </div>
             </div>
         </div>
-        <div class="home__item home__this" style="background-image:  url(images/store/background-bottle6.webp);">
+        <div class="home__item home__this" style="background-image:  url(images/store/background-bottle6.webp);"
+            role="listitem">
             <div class=" home__content">
                 <div class="container home__content--flex">
                     <h2>LOTUS - 500 ML</h2>
@@ -80,18 +84,18 @@
                         a soothing drinking experience, it combines functionality with a touch of elegance, making it a
                         perfect choice for yoga sessions, meditation, or simply unwinding after a long day.
                     </p>
-                    <button>See more</button>
+                    <button aria-label="See more">See more</button>
                 </div>
             </div>
         </div>
     </div>
     <div class="home__buttons">
-        <button id="home__prev">
+        <button id="home__prev" aria-label="Previous slide">
             <svg>
                 <polyline points="15 18 9 12 15 6"></polyline>
             </svg>
         </button>
-        <button id="home__next">
+        <button id="home__next" aria-label="Next slide">
             <svg>
                 <polyline points="9 18 15 12 9 6"></polyline>
             </svg>
@@ -101,22 +105,23 @@
 <div class="container cards">
     <h2 class="section__title">Top products this month</h2>
     <div class="card-wrapper">
-        <button id="cardLeft" class="card-button">
+        <button id="cardLeft" class="card-button" aria-label="Previous product">
             <svg>
                 <polyline points="15 18 9 12 15 6"></polyline>
             </svg>
         </button>
-        <ul class="card-carousel">
-            <li class="card">
-                <img src="images/store/bottle1.webp" alt="img" draggable="false">
+        <ul class="card-carousel" role="list">
+            <li class="card" role="listitem">
+                <img src="images/store/bottle1.webp" alt="EcoPure water bottle by 24bottles" draggable="false">
                 <h2>EcoPure</h2>
                 <p>Stay hydrated with the EcoPure water bottle by 24bottles.</p>
                 <span>Eco-friendly, BPA-free, Reusable</span>
                 <p>$19.99</p>
             </li>
 
-            <li class="card">
-                <img src="images/store/bottle2.webp" alt="img" draggable="false">
+            <li class="card" role="listitem">
+                <img src="images/store/bottle2.webp"
+                    alt="The Urban Oasis water bottle is perfect for on-the-go hydration." draggable="false">
                 <h2>Urban Oasis</h2>
                 <p>The Urban Oasis water bottle is perfect for on-the-go hydration.</p>
                 <span>Travel, Leak-proof, Stainless steel</span>
@@ -126,71 +131,71 @@
                 </div>
             </li>
 
-            <li class="card">
-                <img src="images/store/bottle3.webp" alt="img" draggable="false">
+            <li class="card" role="listitem">
+                <img src="images/store/bottle3.webp" alt="AquaLite" draggable="false">
                 <h2>AquaLite</h2>
                 <p>The AquaLite water bottle offers lightweight and durable design.</p>
                 <span>Sports, Gym, Active lifestyle</span>
                 <p>$14.99</p>
             </li>
 
-            <li class="card">
-                <img src="images/store/background-bottle1.webp" alt="img" draggable="false">
+            <li class="card" role="listitem">
+                <img src="images/store/background-bottle1.webp" alt="Pure Flow" draggable="false">
                 <h2>Pure Flow</h2>
                 <p>Embrace pure hydration with the sleek Pure Flow water bottle.</p>
                 <span>Minimalist, BPA-free, Sustainable</span>
                 <p>$22.99</p>
             </li>
 
-            <li class="card">
-                <img src="images/store/background-bottle2.webp" alt="img" draggable="false">
+            <li class="card" role="listitem">
+                <img src="images/store/background-bottle2.webp" alt="Oasis Pro" draggable="false">
                 <h2>Oasis Pro</h2>
                 <p>The Oasis Pro water bottle keeps your beverages at the perfect temperature.</p>
                 <span>Insulated, Outdoor, Hot and cold</span>
                 <p>$34.99</p>
             </li>
 
-            <li class="card">
-                <img src="images/store/background-bottle3.webp" alt="img" draggable="false">
+            <li class="card" role="listitem">
+                <img src="images/store/background-bottle3.webp" alt="Terra Essence" draggable="false">
                 <h2>Terra Essence</h2>
                 <p>Experience nature with the Terra Essence water bottle.</p>
                 <span>Nature-inspired, Sustainable</span>
                 <p>$18.99</p>
             </li>
 
-            <li class="card">
-                <img src="images/store/background-bottle4.webp" alt="img" draggable="false">
+            <li class="card" role="listitem">
+                <img src="images/store/background-bottle4.webp" alt="AquaWave" draggable="false">
                 <h2>AquaWave</h2>
                 <p>Ride the waves of hydration with the AquaWave water bottle.</p>
                 <span>Surfing, Beach, Adventure</span>
                 <p>$16.99</p>
             </li>
 
-            <li class="card">
-                <img src="images/store/background-bottle5.webp" alt="img" draggable="false">
+            <li class="card" role="listitem">
+                <img src="images/store/background-bottle5.webp" alt="Urban Sip" draggable="false">
                 <h2>Urban Sip</h2>
                 <p>Sip in style with the Urban Sip water bottle.</p>
                 <span>Fashion, Trendy, Urban</span>
                 <p>$29.99</p>
             </li>
 
-            <li class="card">
-                <img src="images/store/background-bottle6.webp" alt="img" draggable="false">
+            <li class="card" role="listitem">
+                <img src="images/store/background-bottle6.webp" alt="Fresh Spring" draggable="false">
                 <h2>Fresh Spring</h2>
                 <p>Quench your thirst with the Fresh Spring water bottle.</p>
                 <span>Refreshing, Nature, Hiking</span>
                 <p>$12.99</p>
             </li>
 
-            <li class="card">
-                <img src="images/store/bottle3.webp" alt="img" draggable="false">
+            <li class="card" role="listitem">
+                <img src="images/store/bottle3.webp" alt="Summit Elite" draggable="false">
                 <h2>Summit Elite</h2>
                 <p>Reach new heights with the Summit Elite water bottle.</p>
                 <span>Mountaineering, Climbing, Outdoor</span>
                 <p>$27.99</p>
             </li>
         </ul>
-        <button id="cardRight" class="card-button">
+        <button id="cardRight" class="card-button" aria-label="Next product">
             <svg>
                 <polyline points="9 18 15 12 9 6"></polyline>
             </svg>
