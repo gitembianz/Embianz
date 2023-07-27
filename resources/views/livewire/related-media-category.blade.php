@@ -1,5 +1,4 @@
 <div>
-
     @if (session()->has('message'))
         {{-- aici se afla notificarea noua --}}
         <div class="notifications">
@@ -61,9 +60,7 @@
                 </span>
             </div>
         </div>
-
         @if ($showmedia)
-
             <div class="accordion__content" id="contentDiv">
                 <form wire:submit.prevent="save">
                     <div class="item__upload">
@@ -287,7 +284,6 @@
                                 @endif
                             </div>
                         </div>
-
                         @if ($selectPage)
                             <div class="pt-2 talign-c">
 
@@ -360,7 +356,6 @@
                             </div>
                         </div>
                         {{-- end modals --}}
-
                         <table class="livewire-table">
                             <thead>
                                 <tr>
