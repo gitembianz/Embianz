@@ -3,17 +3,17 @@
     @if (session()->has('message'))
         {{-- aici se afla notificarea noua --}}
         <div class="notifications">
-          <div class="toast" id="alertevent">
-              <img src="images/dashboard/succes.svg" alt="succes">
-              <div class="toast__text">
-                  <h3>Success</h3>
-                  <span>{!! session('message') !!}</span>
-              </div>
-              <button type="button" data-bs-dismiss="alert" aria-hidden="true">
-                  Close
-              </button>
-          </div>
-      </div>
+            <div class="toast" id="alertevent">
+                <img src="images/dashboard/succes.svg" alt="succes">
+                <div class="toast__text">
+                    <h3>Success</h3>
+                    <span>{!! session('message') !!}</span>
+                </div>
+                <button type="button" data-bs-dismiss="alert" aria-hidden="true">
+                    Close
+                </button>
+            </div>
+        </div>
     @endif
     <div wire:loading.delay>
         <div class="modal" style="display:flex;">
@@ -138,8 +138,8 @@
                                                                     <line x1="15" y1="9" x2="9"
                                                                         y2="15">
                                                                     </line>
-                                                                    <line x1="9" y1="9"
-                                                                        x2="15" y2="15">
+                                                                    <line x1="9" y1="9" x2="15"
+                                                                        y2="15">
                                                                     </line>
                                                                 </svg>
                                                             </button></td>
@@ -573,9 +573,9 @@
                     <div>{{ $files->links('pagination-links') }} </div>
                 @else
                     <p> No Media related </p>
+                @endif
+
             </div>
+        @endif
     </div>
-    @endif
-    @endif
-</div>
 </div>
