@@ -14,6 +14,7 @@ return new class extends Migration
     Schema::create('price_lists', function (Blueprint $table) {
       $table->id();
       $table->string('name');
+      $table->boolean('active');
       $table->unsignedBigInteger('currency_id')->index()->nullable();
       $table->foreign('currency_id')->references('id')->on('currencies');
       $table->string('createdby')->nullable();

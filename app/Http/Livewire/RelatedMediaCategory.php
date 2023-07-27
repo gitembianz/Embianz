@@ -106,7 +106,7 @@ class RelatedMediaCategory extends Component
       $media->sequence = $this->file_sequences[$i];
       $media->location_id = $this->file_locations[$i];
       $media->path = $this->file_link[$i];
-      $media->extrenal = true;
+      $media->external = true;
       $media->createdby = Auth::user()->name;
       $media->lastmodifiedby = Auth::user()->name;
       $media->item_id = $this->categoryId;
@@ -249,6 +249,7 @@ class RelatedMediaCategory extends Component
       $media->type = $type;
       $media->width = $width;
       $media->height =  $height;
+      $media->external = false;
       $media->size = $file->getSize();
       $media->createdby = Auth::user()->name;
       $media->lastmodifiedby = Auth::user()->name;

@@ -34,7 +34,8 @@ class Product extends Model
     'end_date',
     'createdby',
     'lastmodifiedby',
-    'seo_title'
+    'seo_title',
+    'popularity'
   ];
 
   public static function search($search)
