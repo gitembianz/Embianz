@@ -22,4 +22,8 @@
 @import 'store/tab/tab';
 @import 'store/carousel/carousel';
 @import 'store/filters/filters';
+
 //------------------------------
+.phpdebugbar {
+  display: none !important;
+}
