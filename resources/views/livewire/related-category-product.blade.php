@@ -44,7 +44,7 @@
                                 <div class="item" style="width: 100%">
                                     <p id="top"></p>
                                     <div class="item__form form-table"
-                                        @if ($checkedadd) style="grid-template-columns: 3fr 1fr 1fr" @else style="grid-template-columns: 3fr 1fr" @endif>
+                                        @if ($checkedadd) style="grid-template-columns: 40% 1fr 1fr" @else style="grid-template-columns: 3fr 1fr" @endif>
 
                                         <div class="item__form-input">
                                             <input wire:model.debounce.200ms="searchadd" type="text"
