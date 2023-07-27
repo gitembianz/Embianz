@@ -103,6 +103,11 @@ Route::get('/seeddatabase', function () {
 });
 
 //Update app
+Route::get('/remove', function () {
+  exec('composer remove barryvdh/laravel-debugbar -dev');
+  exec('composer update -W');
+  echo 'composer dump-autoload and update complete';
+});
 
 Route::get('/updateapp', function () {
   exec('composer dump-autoload');
