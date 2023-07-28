@@ -224,9 +224,8 @@
         </div>
         <div class="search" id="search">
             <form class="search__content">
-                <label for="searchInput" class="sr-only">Search:</label>
                 <input id="searchInput" class="search__input" type="text" name="search"
-                    aria-labelledby="searchInput">
+                    aria-labelledby="searchInput" placeholder="Search...">
                 <button type="submit" aria-label="Submit Search">
                     <svg aria-hidden="true">
                         <circle cx="11" cy="11" r="8"></circle>
@@ -241,6 +240,32 @@
                     </svg>
                 </button>
             </form>
+            <ul class="search__container">
+                <li>
+                    <a class="search__container--item">
+                        <img src="/images/store/bottle1-min.webp" alt="bottle">
+                        <p>Sustainable Sips: Reusable Bottles</p>
+                        <span>20$</span>
+                        <button>
+                            <svg>
+                                <polyline points="9 18 15 12 9 6"></polyline>
+                            </svg>
+                        </button>
+                    </a>
+                </li>
+                <li>
+                    <a class="search__container--item">
+                        <img src="/images/store/bottle1-min.webp" alt="bottle">
+                        <p>Sustainable Sips: Reusable Bottles</p>
+                        <span>20$</span>
+                        <button>
+                            <svg>
+                                <polyline points="9 18 15 12 9 6"></polyline>
+                            </svg>
+                        </button>
+                    </a>
+                </li>
+            </ul>
         </div>
     </div>
 </header>
