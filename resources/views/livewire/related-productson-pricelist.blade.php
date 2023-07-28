@@ -282,7 +282,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($relatedprods as $prod)
+                                @foreach ($relatedprods as $index => $prod)
                                     <tr class="@if ($this->isChecked($prod->id)) th_checked @endif">
                                         <td data-title="Check"><input type="checkbox" value="{{ $prod->id }}"
                                                 wire:model="checked">
@@ -293,8 +293,33 @@
                                         @endif
                                         @if ($this->showColumn('Product name'))
                                             <td data-title="Product name">
-                                                <a
-                                                    href="/show_product/{{ $prod->product->id }}'">{{ $prod->product->name }}</a>
+                                                @if ($editedrow !== $index)
+                                                    <div class="cursor-p"
+                                                        wire:click.prevent="edititem({{ $prod->id }}, {{ $prod->product->id }}, {{ $index }})">
+                                                        {{ $prod->product->name }}</div>
+                                                @else
+                                                    @if ($allow)
+                                                        <div>
+                                                            <input class="wid-10 p-1"
+                                                                wire:model.debounce.200ms="searchadd"
+                                                                placeholder="Search.." type="text">
+                                                            <ul class="pos-abs b-1 bra-sm p-1"
+                                                                style="z-index: 99999; background: white">
+                                                                @foreach ($addprods as $pri)
+                                                                    <li class="cursor-p"
+                                                                        wire:click.prevent="select({{ $pri->id }})">
+                                                                        {{ $pri->name }}</li>
+                                                                @endforeach
+                                                            </ul>
+                                                            </span>
+                                                        </div>
+                                                    @else
+                                                        <div wire:click.prevent="allow"
+                                                            class="cursor-p b-1 bra-sm p-1" style="background: white">
+                                                            {{ $itemselected }}
+                                                        </div>
+                                                    @endif
+                                                @endif
                                             </td>
                                         @endif
                                         @if ($this->showColumn('Currency'))
@@ -303,30 +328,59 @@
                                         @endif
                                         @if ($this->showColumn('Value'))
                                             <td data-title="Value">
-                                                {{ $prod->value }}</td>
+                                                @if ($editedrow !== $index)
+                                                    <div class="cursor-p"
+                                                        wire:click.prevent="edititem({{ $prod->id }}, {{ $prod->product->id }}, {{ $index }})">
+                                                        {{ $prod->value }}</div>
+                                                @else
+                                                    <input type="text" required class="table-edit wid-6"
+                                                        wire:model="product.{{ $index }}.value">
+                                                @endif
+                                            </td>
                                         @endif
                                         @if ($this->showColumn('Created At'))
                                             <td data-title="Created At">{{ $prod->created_at }}</td>
                                         @endif
                                         <td data-title="Action">
-                                            <button class="edit"
-                                                wire:click.prevent="editprod({{ $prod->id }}, {{ $prod->product->id }})">
-                                                <svg>
-                                                    <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
-                                                    </path>
-                                                </svg>
-                                            </button>
-                                            <button class="delete"
-                                                wire:click.prevent="confirmRemoval({{ $prod->id }})">
-                                                <svg>
-                                                    <circle cx="12" cy="12" r="10">
-                                                    </circle>
-                                                    <line x1="15" y1="9" x2="9"
-                                                        y2="15"></line>
-                                                    <line x1="9" y1="9" x2="15"
-                                                        y2="15"></line>
-                                                </svg>
-                                            </button>
+
+                                            @if ($editedrow !== $index)
+                                                <button class="edit"
+                                                    wire:click.prevent="edititem({{ $prod->id }}, {{ $prod->product->id }}, {{ $index }})">
+                                                    <svg>
+                                                        <path
+                                                            d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
+                                                        </path>
+                                                    </svg>
+                                                </button>
+                                                <button class="delete"
+                                                    wire:click.prevent="confirmRemoval({{ $prod->id }})">
+                                                    <svg>
+                                                        <circle cx="12" cy="12" r="10">
+                                                        </circle>
+                                                        <line x1="15" y1="9" x2="9"
+                                                            y2="15"></line>
+                                                        <line x1="9" y1="9" x2="15"
+                                                            y2="15"></line>
+                                                    </svg>
+                                                </button>
+                                            @else
+                                                <button class="edit"
+                                                    wire:click.prevent="confirmitem({{ $index }},{{ $prod->id }})">
+                                                    <svg>
+                                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                                    </svg>
+                                                </button>
+                                                <button class="save" wire:click.prevent="canceledit()">
+                                                    <svg>
+                                                        <line x1="18" y1="6" x2="6"
+                                                            y2="18">
+                                                        </line>
+                                                        <line x1="6" y1="6" x2="18"
+                                                            y2="18">
+                                                        </line>
+                                                    </svg>
+                                                </button>
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach
