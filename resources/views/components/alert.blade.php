@@ -1,11 +1,11 @@
-@if (session()->has('message'))
+@if (session()->has('notification'))
     {{-- aici se afla notificarea noua --}}
     <div class="notifications">
-        <div class="toast {{ session('type', 'info') }}" id="alertevent">
+        <div class="toast {{ session('notification.type', 'info') }}" id="alertevent">
             @php
                 // Determine the SVG code based on the type
                 $svg = '';
-                switch (session('type', 'info')) {
+                switch (session('notification.type', 'info')) {
                     case 'success':
                         $svg = '<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 50.00 50.00" xml:space="preserve" width="64px"
@@ -37,8 +37,8 @@
             {!! $svg !!}
 
             <div class="toast__text">
-                <h3><strong>{{ session('title', 'Info') }}</h3>
-                <span>{!! session('message') !!}</span>
+                <h3><strong>{{ session('notification.title', 'Info') }}</h3>
+                <span>{!! session('notification.message') !!}</span>
             </div>
             <button type="button" class="close-button cursor-p" data-bs-dismiss="alertevent" aria-hidden="true"
                 style="border: none">

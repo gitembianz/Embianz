@@ -1,19 +1,5 @@
 <div>
-    @if (session()->has('message'))
-        {{-- aici se afla notificarea noua --}}
-        <div class="notifications">
-            <div class="toast" id="alertevent">
-                <img src="images/dashboard/succes.svg" alt="succes">
-                <div class="toast__text">
-                    <h3>Success</h3>
-                    <span>{!! session('message') !!}</span>
-                </div>
-                <button type="button" data-bs-dismiss="alert" aria-hidden="true">
-                    Close
-                </button>
-            </div>
-        </div>
-    @endif
+    <x-alert />
     <div wire:loading.delay>
         <div class="modal" style="display:flex; z-index: 99999;">
             <div class="loader"></div>

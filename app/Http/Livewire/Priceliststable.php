@@ -92,7 +92,11 @@ class Priceliststable extends Component
       $itemdel->delete();
     }
     $this->checked = [];
-    session()->flash('message', 'Records deleted succesfuly');
+    session()->flash('notification', [
+      'message' => 'Records deleted successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
   }
   public function deleteSingleRecord()
   {
@@ -100,7 +104,11 @@ class Priceliststable extends Component
     $item = PriceList::findOrFail($id);
     $item->delete();
     $this->checked = array_diff($this->checked, [$id]);
-    session()->flash('message', 'Record deleted Successfully');
+    session()->flash('notification', [
+      'message' => 'Record deleted successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
   }
   public function confirmItemRemoval($id)
   {
@@ -135,6 +143,8 @@ class Priceliststable extends Component
       }
       $price->save();
       session()->flash('message', 'Record edited successfully!');
+      session()->flash('type', 'success');
+      session()->flash('title', 'Succes');
     }
     $this->prices = [];
     $this->indexprice = null;
@@ -149,6 +159,11 @@ class Priceliststable extends Component
     $export = new PriceListExport($this->checked);
     $this->checked = [];
     $this->selectPage = false;
+    session()->flash('notification', [
+      'message' => 'Report downloaded successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
     return $export->download('pricelists.xlsx');
   }
 }

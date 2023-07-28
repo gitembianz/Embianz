@@ -125,8 +125,7 @@
                 @if ($this->showColumn('Id'))
                     <th class="cursor-p"
                         @if ($orderBy === 'id' && $orderAsc === '1') data-symbol="up"
-          @else
-              data-symbol="down" @endif
+                 @else data-symbol="down" @endif
                         wire:click="sortBy('id')">ID
                     </th>
                 @endif
@@ -163,7 +162,6 @@
                         wire:click="sortBy('created_at')">Created At
                     </th>
                 @endif
-
                 <th></th>
             </tr>
         </thead>
@@ -189,7 +187,6 @@
                     @if ($this->showColumn('Created At'))
                         <td data-title="Created At">{{ $category->created_at }}</td>
                     @endif
-
                     <td data-title="Action">
                         <button class="delete" wire:click.prevent="confirmCategoryRemoval({{ $category->id }})">
                             <svg>
