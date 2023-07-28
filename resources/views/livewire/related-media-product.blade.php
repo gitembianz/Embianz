@@ -457,7 +457,8 @@
                                                 <video src="/{{ $file->path . $file->name }}" width="150"
                                                     controls="true"></video>
                                             @else
-                                                <img src="{{ $file->path }}" width="100" alt="">
+                                                <img src="{{ $file->path }}" width="100"
+                                                    alt="{{ $file->path }}">
                                             @endif
                                         </td>
                                     @endif

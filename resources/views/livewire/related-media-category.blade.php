@@ -144,82 +144,106 @@
                 </form>
                 @if ($externalmedia)
                     <form wire:submit.prevent="saveexternal">
-                        <div class="item">
-                            <input type="submit" id="add_media_related" class="item__form-btn item__form-long"
-                                value="Save Media">
-                            <table class="table-external">
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Link</th>
-                                        <th>Sequence</th>
-                                        <th>Location</th>
-                                        <th>Action</th>
+                        <div class="modal" id="modalelements" style="display: block">
+                            <div class="modal-content"
+                                style="margin: 0 auto; width:80%; top: 50%; transform: translateY(-50%); display: flex; height: 98vh; overflow-y: auto; align-items: flex-start">
+                                <div class="item" style="width: 100%">
+                                    <p id="top1"></p>
+                                    <input type="submit" class="item__form-btn" value="Save Media">
+                                    <table class="table-external">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Link</th>
+                                                <th>Sequence</th>
+                                                <th>Location</th>
+                                                <th>Action</th>
 
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @for ($i = 1; $i <= $row; $i++)
-                                        <tr>
-                                            <td>
-                                                <input required type="text"
-                                                    wire:model="file_name.{{ $i }}">
-                                            </td>
-                                            <td>
-                                                <input required type="url"
-                                                    wire:model="file_link.{{ $i }}">
-                                            </td>
-                                            <td>
-                                                <input required type="number" min="0"
-                                                    wire:model="file_sequences.{{ $i }}">
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @for ($i = 1; $i <= $row; $i++)
+                                                <tr>
+                                                    <td>
+                                                        <input required type="text"
+                                                            wire:model="file_name.{{ $i }}">
+                                                    </td>
+                                                    <td>
+                                                        <input required type="url"
+                                                            wire:model="file_link.{{ $i }}">
+                                                    </td>
+                                                    <td>
+                                                        <input required type="number" min="0"
+                                                            wire:model="file_sequences.{{ $i }}">
 
-                                            </td>
-                                            <td>
-                                                <select required wire:model="file_locations.{{ $i }}">
-                                                    @php
-                                                        $firstLocation = $locations->first();
-                                                    @endphp
-                                                    <option value="{{ $firstLocation->id }}" selected>
-                                                        {{ $firstLocation->location }}</option>
-                                                    @foreach ($locations as $index => $location)
-                                                        @if ($loop->first)
-                                                            @continue
-                                                        @endif
-                                                        <option value="{{ $location->id }}">
-                                                            {{ $location->location }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </td>
-                                            <td>
-                                                <div class="display-f jus-c">
-                                                    @if ($i == 1)
-                                                        <button type="button" class="edit" wire:click="plus">
-                                                            <svg>
-                                                                <line x1="12" y1="5" x2="12"
-                                                                    y2="19">
-                                                                </line>
-                                                                <line x1="5" y1="12" x2="19"
-                                                                    y2="12">
-                                                                </line>
-                                                            </svg>
-                                                        </button>
-                                                        <button type="button" class="save" wire:click="clear">
-                                                            <svg>
-                                                                <line x1="18" y1="6" x2="6"
-                                                                    y2="18">
-                                                                </line>
-                                                                <line x1="6" y1="6" x2="18"
-                                                                    y2="18">
-                                                                </line>
-                                                            </svg>
-                                                        </button>
-                                                    @endif
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endfor
-                                </tbody>
-                            </table>
+                                                    </td>
+                                                    <td>
+                                                        <select required
+                                                            wire:model="file_locations.{{ $i }}">
+                                                            @php
+                                                                $firstLocation = $locations->first();
+                                                            @endphp
+                                                            <option value="{{ $firstLocation->id }}" selected>
+                                                                {{ $firstLocation->location }}</option>
+                                                            @foreach ($locations as $index => $location)
+                                                                @if ($loop->first)
+                                                                    @continue
+                                                                @endif
+                                                                <option value="{{ $location->id }}">
+                                                                    {{ $location->location }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <div class="display-f jus-c">
+                                                            @if ($i == $row)
+                                                                <button type="button" class="edit"
+                                                                    wire:click="plus">
+                                                                    <svg>
+                                                                        <line x1="12" y1="5"
+                                                                            x2="12" y2="19">
+                                                                        </line>
+                                                                        <line x1="5" y1="12"
+                                                                            x2="19" y2="12">
+                                                                        </line>
+                                                                    </svg>
+                                                                </button>
+                                                            @endif
+                                                            @if ($i != $row)
+                                                                <button type="button" class="save"
+                                                                    wire:click="clear({{ $i }})">
+                                                                    <svg>
+                                                                        <line x1="18" y1="6"
+                                                                            x2="6" y2="18">
+                                                                        </line>
+                                                                        <line x1="6" y1="6"
+                                                                            x2="18" y2="18">
+                                                                        </line>
+                                                                    </svg>
+                                                                </button>
+                                                            @endif
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endfor
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <span class="top-up-modal delete" style="right: 5%" wire:click="clearall">
+
+                                <svg>
+                                    <line x1="18" y1="6" x2="6" y2="18">
+                                    </line>
+                                    <line x1="6" y1="6" x2="18" y2="18">
+                                    </line>
+                                </svg>
+                            </span>
+                            <a href="#top1" class="top-up-modal" id="topUp">
+                                <svg>
+                                    <polyline points="18 15 12 9 6 15"></polyline>
+                                </svg>
+                            </a>
                         </div>
                     </form>
                 @endif
