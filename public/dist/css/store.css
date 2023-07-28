@@ -469,6 +469,22 @@ div[data-tooltip-down]:hover::before {
   border-top: 5px solid #202124;
 }
 
+.terms h1 {
+  text-align: center;
+  margin-bottom: 50px;
+}
+.terms h4 {
+  color: rgb(57, 57, 57);
+}
+.terms p {
+  margin-bottom: 50px;
+  color: rgb(102, 102, 102);
+}
+.terms p a {
+  color: rgb(57, 57, 57);
+  font-weight: 600;
+}
+
 header {
   border-bottom: 1px solid #202124;
 }
