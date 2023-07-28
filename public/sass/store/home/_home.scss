@@ -202,17 +202,28 @@
 .home__discover {
   position: relative;
   width: 100%;
-  height: 70vh;
+  padding: 50px 0;
+  @include flexer(column, space-between, center, 30px);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center top;
+
+  img {
+    width: 80%;
+    height: auto;
+    object-fit: contain;
+    background-color: transparent;
+
+    @include breakpoint(any) {
+      width: 70%;
+    }
+  }
 }
 
 .home__discover--text {
-  @include abs-position (absolute, 10%, unset, unset, 50%);
-  transform: translateX(-50%);
   @include flexer(column, center, center, 50px);
   width: 80%;
+  text-align: center;
 
   h1 {
     color: $background;

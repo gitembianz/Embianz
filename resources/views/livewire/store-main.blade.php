@@ -202,11 +202,12 @@
         </button>
     </div>
 </div>
-<div class="home__discover" style="background-image: url(images/store/discover.webp)">
+<div class="home__discover" style="background-image: url(images/store/discover-background.webp)">
     <div class="home__discover--text">
         <h1>Explore our products and find the perfect one for you.</h1>
         <a href="#">Discover our products</a>
     </div>
+    <img src="images/store/discover-items.png" alt="discover items">
 </div>
 {{--
 <div class="home__video">
