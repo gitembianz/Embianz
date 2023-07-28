@@ -32,85 +32,217 @@
                 </svg> </button>
         </div>
         {{-- add related specs --}}
-        <div class="modal" id="addspecsmodal" @if ($addrelatedproducts) style="display: flex;" @endif>
-            <div class="modal-content-spec wid-2">
-                <h1>
-                    @if ($update)
-                        {{ __('Edit related product value') }}
-                    @else
-                        {{ __('Add related product value') }}
-                    @endif
-                </h1>
-                <div class="display-f align-center">
-                    <div>Pricelist:</div>
-                    <div class="item__form-input item__form-long">
-                        <div>{{ $item->name }}</div>
-                    </div>
-                </div>
-                <div class="display-f align-center">
-                    <div>Product:</div>
-                    <div class="item__form-input item__form-long cursor-p">
-                        <div
-                            @if ($update) @else
-                          wire:click.prevent="allowselect()" @endif>
-                            @if ($itemselected)
-                                {{ $itemselected }}
-                            @else
-                                {{ __('Select a Product') }}
-                            @endif
+        @if ($addrelatedproducts)
+
+            <div class="modal" id="modalelements" style="display: block">
+                <div class="modal-content"
+                    style="margin: 0 auto; width:80%; top: 50%; transform: translateY(-50%); display: flex; height: 98vh; overflow-y: auto; align-items: flex-start">
+                    <div class="item" style="width: 100%">
+                        <h1 id="top1">
+                            {{ __('Add related Products') }}
+                        </h1>
+                        <div class="display-f wid-10">
+
+                            <input class="modal-content-btn submit" wire:click.prevent="saveitems()" type="button"
+                                value="Save">
                         </div>
+                        <table class="table-external">
+                            <thead>
+                                <tr>
+                                    <th>Pricelist</th>
+                                    <th>Product</th>
+                                    <th>Value</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($prod as $index => $pro)
+                                    <tr wire:key="price-row-{{ $index }}">
+                                        <td>
+                                            <div class="item__form-input-close">
+                                                <div>{{ $item->name }}</div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="item__form-input">
+                                                @if ($pro['allow'])
+                                                    <input wire:model.debounce.200ms="searchadd" placeholder="Search.."
+                                                        type="text">
+                                                    <ul class="pos-abs wid-10 b-1 bra-sm p-1"
+                                                        style="top: 3rem; z-index: 99999; background: white">
+                                                        @if (count($addprods) >= 1)
+                                                            @foreach ($addprods as $pri)
+                                                                <li class="cursor-p"
+                                                                    wire:click.prevent="selectProduct({{ $index }}, {{ $pri->id }}, '{{ $pri->name }}')">
+                                                                    {{ $pri->name }}
+                                                                </li>
+                                                            @endforeach
+                                                        @else
+                                                            <li>{{ __('No product found') }}</li>
+                                                        @endif
+                                                    </ul>
+                                                @else
+                                                    <div wire:click.prevent="allowselect({{ $index }})">
+                                                        @if ($pro['itemselected'])
+                                                            {{ $pro['itemselected'] }}
+                                                            <input type="hidden"
+                                                                wire:model.defer="prod.{{ $index }}.product.name">
+                                                        @else
+                                                            {{ __('Select a product') }}
+                                                        @endif
+                                                    </div>
+                                                @endif
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="item__form-input">
+                                                <input type="text"
+                                                    wire:model.defer="prod.{{ $index }}.product.value">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="display-f jus-c">
+                                                @if ($index == $row - 1)
+                                                    <button type="button" class="edit" wire:click="plus">
+                                                        <svg>
+                                                            <line x1="12" y1="5" x2="12"
+                                                                y2="19">
+                                                            </line>
+                                                            <line x1="5" y1="12" x2="19"
+                                                                y2="12">
+                                                            </line>
+                                                        </svg>
+                                                    </button>
+                                                @endif
+                                                @if ($index != $row - 1)
+                                                    <button type="button" class="save"
+                                                        wire:click="clear({{ $index }})">
+                                                        <svg>
+                                                            <line x1="18" y1="6" x2="6"
+                                                                y2="18">
+                                                            </line>
+                                                            <line x1="6" y1="6" x2="18"
+                                                                y2="18">
+                                                            </line>
+                                                        </svg>
+                                                    </button>
+                                                @endif
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
+                <span class="top-up-modal delete" style="right: 5%" wire:click="closemodal">
 
-                {{-- add specs list with search --}}
-                @if ($allow)
-                    <div class="item__form-input b-1 bra-sm p-1">
-                        <input wire:model.debounce.200ms="searchadd" placeholder="Search.." type="text">
-                        <ul style="max-height: 50px; z-index: 999;">
-                            @foreach ($addprods as $product)
-                                <li class="cursor-p" wire:click.prevent="select({{ $product->id }})">
-                                    {{ $product->name }}</li>
-                            @endforeach
-                        </ul>
-                        <span class="modal-content-btn edit" style="left: 90%"
-                            wire:click.prevent="$set('allow', false)">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="feather feather-x">
-                                <line x1="18" y1="6" x2="6" y2="18"></line>
-                                <line x1="6" y1="6" x2="18" y2="18"></line>
-                            </svg>
-                        </span>
-                    </div>
-                @endif
-
-                <div class="display-f align-center">
-                    <div>Value:</div>
-                    <div class="item__form-input item__form-long">
-                        <input type="text"class="table-edit wid-6" wire:model.defer="prod.value">
-                    </div>
-                </div>
-                {{-- end specs list with search --}}
-                <div class="display-f wid-10">
-                    @if ($update)
-                        <input class="modal-content-btn submit" wire:click.prevent="confirmprod()" type="button"
-                            value="Edit">
-                    @else
-                        <input class="modal-content-btn submit" wire:click.prevent="saveprod()" type="button"
-                            value="Save">
-                    @endif
-                    <input class="modal-content-btn delete" wire:click.prevent="closemodal()" type="button"
-                        value="Cancel">
-                </div>
-
-                <span class="modal-content-btn delete" wire:click.prevent="closemodal()">
                     <svg>
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                        <line x1="18" y1="6" x2="6" y2="18">
+                        </line>
+                        <line x1="6" y1="6" x2="18" y2="18">
+                        </line>
                     </svg>
                 </span>
+                <a href="#top1" class="top-up-modal" id="topUp">
+                    <svg>
+                        <polyline points="18 15 12 9 6 15"></polyline>
+                    </svg>
+                </a>
             </div>
-        </div>
+        @endif
+        @if ($editmultiple)
+            <div class="modal" id="modalelements" style="display: block">
+                <div class="modal-content"
+                    style="margin: 0 auto; width:80%; top: 50%; transform: translateY(-50%); display: flex; height: 98vh; overflow-y: auto; align-items: flex-start">
+                    <div class="item" style="width: 100%">
+                        <h1 id="top">
+
+                            {{ __('Edit multiple related items') }}
+
+                        </h1>
+                        <div class="display-f wid-10">
+                            <input class="modal-content-btn submit" wire:click.prevent="confirmmultiple()"
+                                type="button" value="Edit">
+
+                        </div>
+                        <table class="table-external">
+                            <thead>
+                                <tr>
+                                    <th>Pricelist</th>
+                                    <th>Product</th>
+                                    <th>Value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach ($prod as $index => $pro)
+                                    <tr wire:key="price-row-{{ $index }}">
+                                        <td>
+                                            <div class="item__form-input-close">
+                                                <div>{{ $item->name }}</div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="item__form-input">
+                                                @if ($pro['allow'])
+                                                    <input wire:model.debounce.200ms="searchadd"
+                                                        placeholder="Search.." type="text">
+                                                    <ul class="pos-abs wid-10" style="top: 3rem; z-index: 99999">
+                                                        @if (count($addprods) >= 1)
+                                                            @foreach ($addprods as $pri)
+                                                                <li class="cursor-p"
+                                                                    wire:click.prevent="selectProduct({{ $index }}, {{ $pri->id }}, '{{ $pri->name }}')">
+                                                                    {{ $pri->name }}
+                                                                </li>
+                                                            @endforeach
+                                                        @else
+                                                            <li>{{ __('No product found') }}</li>
+                                                        @endif
+                                                    </ul>
+                                                @else
+                                                    <div wire:click.prevent="allowselect({{ $index }})">
+                                                        @if ($pro['itemselected'])
+                                                            {{ $pro['itemselected'] }}
+                                                            <input type="hidden"
+                                                                wire:model.defer="prod.{{ $index }}.product.name">
+                                                        @else
+                                                            {{ __('Select a product') }}
+                                                        @endif
+                                                    </div>
+                                                @endif
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="item__form-input">
+                                                <input type="text"
+                                                    wire:model.defer="prod.{{ $index }}.product.value">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+                <span class="top-up-modal delete" style="right: 5%" wire:click="closemodal">
+
+                    <svg>
+                        <line x1="18" y1="6" x2="6" y2="18">
+                        </line>
+                        <line x1="6" y1="6" x2="18" y2="18">
+                        </line>
+                    </svg>
+                </span>
+                <a href="#top" class="top-up-modal" id="topUp">
+                    <svg>
+                        <polyline points="18 15 12 9 6 15"></polyline>
+                    </svg>
+                </a>
+            </div>
+        @endif
         {{-- end add related specs --}}
         @if ($showrelatedprods)
             <div class="accordion__content">
@@ -166,8 +298,9 @@
                                                 wire:click="confirmRemovalmultiple()">
                                                 Delete
                                             </button>
-                                            <button class="dropdown-item submit" type="button">
-                                                Export
+                                            <button class="dropdown-item submit" type="button"
+                                                wire:click="editSelected">
+                                                Edit
                                             </button>
                                         </div>
                                     @endif

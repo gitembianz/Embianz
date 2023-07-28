@@ -201,36 +201,121 @@ class RelatedProductsonPricelist extends Component
     $this->productid = $id;
     $this->allow = false;
   }
-  public function allowselect()
-  {
-    $this->allow = true;
-  }
+
   public function closemodal()
   {
+    $this->prod = [
+      [
+        'allow' => false,
+        'itemselected' => null,
+        'spec' => ['name' => null, 'value' => null],
+      ]
+    ];
+    $this->row = 1;
+    $this->checked = [];
+    $this->all = false;
+    $this->editmultiple = false;
     $this->addrelatedproducts = false;
-    $this->allow = false;
-    $this->itemselected = null;
-    $this->update = false;
   }
-  public function saveprod()
+  public function saveitems()
   {
-    $val = $this->prod;
-    if (array_key_exists('value', $val)) {
-      $new = new PricelistEntries();
-      $new->product_id = $this->productid;
-      $new->pricelist_id = $this->priceId;
-      $new->value = $val['value'];
-      $new->save();
-      $this->addrelatedproducts = false;
-      $this->allow = false;
-      $this->productid = null;
-      $this->prod = [];
-      $this->itemselected = null;
-      $this->search = '';
-      session()->flash('message', 'Product related succesfuly succesfuly');
-    } else {
-      session()->flash('message', 'Please provide a value!');
+    foreach ($this->prod as  $pro) {
+      if (isset($pro['product']['value'])) {
+        $new = new PricelistEntries();
+        $new->product_id = $pro['product']['idrel'];
+        $new->pricelist_id =  $this->priceId;
+        $new->value = $pro['product']['value'];
+        $new->save();
+      } else {
+        session()->flash('message', 'Please provide a value!');
+        return;
+      }
     }
+
+    $this->prod = [
+      [
+        'allow' => false,
+        'itemselected' => null,
+        'price' => ['name' => null, 'value' => null],
+      ]
+    ];
+    $this->row = 1;
+    $this->addrelatedproducts = false;
+    session()->flash('message', 'Products related successfully.');
+  }
+  public function plus()
+  {
+    $this->row++;
+    $this->prod[] = [
+      'allow' => false,
+      'itemselected' => null,
+      'product' => ['name' => null, 'value' => null],
+    ];
+  }
+  //clear one row in modal
+  public function clear($index)
+  {
+    // Remove the row from the array
+    unset($this->prod[$index]);
+
+    // Reset the keys of the array
+    $this->prod = array_values($this->prod);
+
+    // Decrement the total row count
+    $this->row--;
+  }
+  public function allowselect($index)
+  {
+    $this->prod[$index]['allow'] = true;
+    $this->searchadd = $this->prod[$index]['itemselected'];
+  }
+  public function selectProduct($index, $id, $name)
+  {
+    $this->prod[$index]['itemselected'] = $name;
+    $this->prod[$index]['product']['idrel'] = $id;
+    $this->prod[$index]['allow'] = false;
+    $this->searchadd = '';
+  }
+  public function editSelected()
+  {
+    $this->itemstoedit = $this->checked;
+    $this->editmultiple = true;
+    foreach ($this->itemstoedit  as $index => $item) {
+      $test = PricelistEntries::find($item);
+      $this->prod[$index]['itemselected'] = $test->product->name;
+      $this->prod[$index]['product']['id'] = $test->id;
+      $this->prod[$index]['product']['idrel'] = $test->product->id;
+      $this->prod[$index]['product']['value'] = $test->value;
+      $this->prod[$index]['allow'] = false;
+    }
+  }
+  public function confirmmultiple()
+  {
+
+    foreach ($this->prod as  $pro) {
+      if (isset($pro['product']['value'])) {
+        $item = PricelistEntries::find($pro['product']['id']);
+        $item->product_id = $pro['product']['idrel'];
+        $item->value = $pro['product']['value'];
+        $item->save();
+      } else {
+        session()->flash('message', 'Please provide a value!');
+        return;
+      }
+    }
+
+    $this->prod = [
+      [
+        'allow' => false,
+        'itemselected' => null,
+        'product' => ['name' => null, 'value' => null],
+      ]
+    ];
+    $this->row = 1;
+    $this->checked = [];
+    $this->all = false;
+    $this->editmultiple = false;
+    session()->flash('message', 'Products edited successfully.');
   }
   public function getAddprodsProperty()
   {
