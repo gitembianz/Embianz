@@ -161,7 +161,6 @@ class RelatedMediaProduct extends Component
   }
   public function saveexternal()
   {
-    dd('here');
     $data = Product::find($this->productId);
     $productType = class_basename(get_class($data));
 

@@ -95,10 +95,8 @@ class RelatedMediaCategory extends Component
   }
   public function saveexternal()
   {
-    $data = Category::find($this->categoryId);
-    $productType = class_basename(get_class($data));
-
-    for ($i = 1; $i <= $this->row; $i++) {
+    $productType = class_basename(get_class($this->category));
+    for ($this->i = 1; $this->i <= $this->row; $this->i++) {
       $this->resetErrorBag();
       $this->validate([
         'file_sequences.*' => 'required',
@@ -107,14 +105,14 @@ class RelatedMediaCategory extends Component
         'file_name.*' => 'required'
       ]);
       $media = new Media();
-      $media->name = $this->file_name[$i];
-      $media->sequence = $this->file_sequences[$i];
-      $media->location_id = $this->file_locations[$i];
-      $media->path = $this->file_link[$i];
+      $media->name = $this->file_name[$this->i];
+      $media->sequence = $this->file_sequences[$this->i];
+      $media->location_id = $this->file_locations[$this->i];
+      $media->path = $this->file_link[$this->i];
       $media->external = true;
       $media->createdby = Auth::user()->name;
       $media->lastmodifiedby = Auth::user()->name;
-      $media->item_id = $this->productId;
+      $media->item_id = $this->categoryId;
       $media->tabel_id = Tabels::where('name', $productType)->first()->id;
       $media->save();
     }
@@ -128,6 +126,13 @@ class RelatedMediaCategory extends Component
   public function editMedia($mediaIndex)
   {
     $this->editedMediaIndex = $mediaIndex;
+  }
+  public function cancel()
+  {
+
+    $this->medias = [];
+    $this->file_sequences = ['0'];
+    $this->file_locations = ['1'];
   }
   public function cancelMedia()
   {
