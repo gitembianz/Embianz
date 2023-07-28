@@ -200,13 +200,15 @@
 
 
 .home__discover {
-  position: relative;
-  width: 100%;
-  padding: 50px 0;
-  @include flexer(column, space-between, center, 30px);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center top;
+  width: 100%;
+
+  &--flex {
+    width: 100%;
+    @include flexer(column, space-between, center, 30px);
+  }
 
   img {
     width: 80%;
@@ -222,12 +224,13 @@
 
 .home__discover--text {
   @include flexer(column, center, center, 50px);
-  width: 80%;
+  width: 100%;
   text-align: center;
 
   h1 {
     color: $background;
     text-align: center;
+    text-shadow: 0 0 20px black;
   }
 
   a {
