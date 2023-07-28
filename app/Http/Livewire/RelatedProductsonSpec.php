@@ -39,6 +39,11 @@ class RelatedProductsonSpec extends Component
   public $productid;
   public $allow = false;
   public $update = false;
+  public $row = 1;
+  public $editedrow;
+  public $product;
+  public $editmultiple = false;
+  public $itemstoedit;
 
   public function render()
   {
@@ -52,6 +57,11 @@ class RelatedProductsonSpec extends Component
     $this->specId = $specId;
     $this->selectedColumns = $this->columns;
     $this->item = Specs::find($specId);
+    $this->prod[] = [
+      'allow' => false,
+      'itemselected' => null,
+      'product' => ['idrel' => null, 'value' => null],
+    ];
   }
 
   //function for realted
@@ -133,31 +143,78 @@ class RelatedProductsonSpec extends Component
   {
     $this->dispatchBrowserEvent('show-delete-modal-multiple');
   }
-  public function editprod($id, $idprod)
+  public function editprod($id, $idprod, $index)
   {
-    $this->update = true;
-    $this->addrelatedproducts = true;
     $this->itemselected = Product::find($idprod)->name;
-    $this->productid = $id;
+    $val = Product_Spec::find($id);
+    $this->productid = $idprod;
+    $this->editedrow = $index;
+    $this->product = [
+      $index . '.name' => $this->itemselected,
+      $index . '.value' => $val->value,
+    ];
   }
-  public function confirmprod()
+  public function confirmprod($index, $id)
   {
-    $val = $this->prod;
-    if (array_key_exists('value', $val)) {
-      $new = Product_Spec::find($this->productid);
-      $new->value = $val['value'];
-      $new->save();
-      $this->addrelatedproducts = false;
-      $this->allow = false;
-      $this->productid = null;
-      $this->prod = [];
-      $this->itemselected = null;
-      $this->search = '';
-      $this->update = false;
-      session()->flash('message', 'Related product edited succesfuly');
-    } else {
-      session()->flash('message', 'Please provide a value!');
+    $prod = Product_Spec::find($id);
+    $prod->product_id = $this->productid;
+    $val = $this->product;
+    if (isset($val["$index"]['value'])) {
+
+      $prod->value = $val["$index"]['value'];
     }
+
+    $prod->save();
+    $this->allow = false;
+    $this->productid = null;
+    $this->product = [];
+    $this->itemselected = null;
+    $this->editedrow = null;
+    $this->search = '';
+    session()->flash('message', 'Records edited succesfuly');
+  }
+
+  public function editSelected()
+  {
+    $this->itemstoedit = $this->checked;
+    $this->editmultiple = true;
+    foreach ($this->itemstoedit  as $index => $item) {
+      $test = Product_Spec::find($item);
+      $this->prod[$index]['itemselected'] = $test->product->name;
+      $this->prod[$index]['product']['id'] = $test->id;
+      $this->prod[$index]['product']['idrel'] = $test->product->id;
+      $this->prod[$index]['product']['value'] = $test->value;
+      $this->prod[$index]['allow'] = false;
+    }
+  }
+
+  public function confirmmultiple()
+  {
+
+    foreach ($this->prod as $pro) {
+      if (isset($pro['product']['value'])) {
+        $prodd = Product_Spec::find($pro['product']['id']);
+        $prodd->product_id = $pro['product']['idrel'];
+        $prodd->value = $pro['product']['value'];
+        $prodd->save();
+      } else {
+        session()->flash('message', 'Please provide a value!');
+        return;
+      }
+    }
+
+    $this->prod = [
+      [
+        'allow' => false,
+        'itemselected' => null,
+        'product' => ['name' => null, 'value' => null],
+      ]
+    ];
+    $this->row = 1;
+    $this->checked = [];
+    $this->all = false;
+    $this->editmultiple = false;
+    session()->flash('message', 'Products edited successfully.');
   }
 
   // add specs function
@@ -166,46 +223,102 @@ class RelatedProductsonSpec extends Component
     $this->showrelatedprods = true;
     $this->addrelatedproducts = true;
   }
+  public function canceledit()
+  {
+    $this->editedrow = null;
+    $this->allow = false;
+    $this->itemselected = null;
+    $this->product = [];
+  }
+  public function allow()
+  {
+    $this->allow = true;
+    $this->searchadd = $this->itemselected;
+  }
   public function select($id)
   {
     $this->itemselected = Product::find($id)->name;
     $this->productid = $id;
     $this->allow = false;
   }
-  public function allowselect()
+  public function plus()
   {
-    $this->allow = true;
+    $this->row++;
+    $this->prod[] = [
+      'allow' => false,
+      'itemselected' => null,
+      'product' => ['name' => null, 'value' => null],
+    ];
+  }
+  public function selectProduct($index, $id, $name)
+  {
+    $this->prod[$index]['itemselected'] = $name;
+    $this->prod[$index]['product']['idrel'] = $id;
+    $this->prod[$index]['allow'] = false;
+    $this->searchadd = '';
+  }
+  public function allowselect($index)
+  {
+    $this->prod[$index]['allow'] = true;
+    $this->searchadd = $this->prod[$index]['itemselected'];
   }
   public function closemodal()
   {
+    $this->prod = [
+      [
+        'allow' => false,
+        'itemselected' => null,
+        'product' => ['name' => null, 'value' => null],
+      ]
+    ];
+    $this->row = 1;
+    $this->checked = [];
+    $this->all = false;
+    $this->editmultiple = false;
     $this->addrelatedproducts = false;
-    $this->allow = false;
-    $this->itemselected = null;
-    $this->update = false;
   }
+  public function clear($index)
+  {
+    // Remove the row from the array
+    unset($this->prod[$index]);
+
+    // Reset the keys of the array
+    $this->prod = array_values($this->prod);
+
+    // Decrement the total row count
+    $this->row--;
+  }
+
   public function saveprod()
   {
-    $val = $this->prod;
-    if (array_key_exists('value', $val)) {
-      $newspec = new Product_Spec();
-      $newspec->product_id = $this->productid;
-      $newspec->spec_id = $this->specId;
-      $newspec->value = $val['value'];
-      $newspec->save();
-      $this->addrelatedproducts = false;
-      $this->allow = false;
-      $this->productid = null;
-      $this->prod = [];
-      $this->itemselected = null;
-      $this->search = '';
-      session()->flash('message', 'Product related succesfuly succesfuly');
-    } else {
-      session()->flash('message', 'Please provide a value!');
+    foreach ($this->prod as $pro) {
+
+      if (isset($pro['product']['value'])) {
+        $news = new Product_Spec();
+        $news->product_id = $pro['product']['idrel'];
+        $news->spec_id = $this->specId;
+        $news->value = $pro['product']['value'];
+        $news->save();
+      } else {
+        session()->flash('message', 'Please provide a value!');
+        return;
+      }
     }
+
+    $this->prod = [
+      [
+        'allow' => false,
+        'itemselected' => null,
+        'spec' => ['name' => null, 'value' => null],
+      ]
+    ];
+    $this->row = 1;
+    $this->addrelatedproducts = false;
+    session()->flash('message', 'Products related successfully.');
   }
   public function getAddprodsProperty()
   {
-    return $this->addprodsQuery->get();
+    return $this->addprodsQuery->limit('5')->get();
   }
   public function getAddprodsQueryProperty()
   {
