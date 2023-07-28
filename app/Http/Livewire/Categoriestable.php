@@ -83,9 +83,7 @@ class Categoriestable extends Component
   }
   public function deleteRecords()
   {
-
     $categories = Category::whereKey($this->checked)->get();
-
     foreach ($categories as $category) {
       $id = $category->id;
       $cattodel = Category::find($id);
@@ -93,18 +91,19 @@ class Categoriestable extends Component
       if ($productcat != NULL) {
         $productcat->delete();
       }
-
       $productType = class_basename(get_class($cattodel));
       $filespath = 'media/' . $productType . '/' . $cattodel->id;
       if (File::exists($filespath)) {
         File::deleteDirectory($filespath);
       }
-
       $cattodel->delete();
     }
-
     $this->checked = [];
-    session()->flash('message', 'Category deleted succesfuly');
+    session()->flash('notification', [
+      'message' => 'Records deleted successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
   }
   public function deleteSingleRecord()
   {
@@ -125,9 +124,11 @@ class Categoriestable extends Component
     }
     $category->delete();
     $this->checked = array_diff($this->checked, [$id]);
-    session()->flash('message', 'Record deleted Successfully');
-    session()->flash('type', 'warning');
-    session()->flash('title', 'bau');
+    session()->flash('notification', [
+      'message' => 'Record deleted successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
   }
   public function confirmCategoryRemoval($id)
   {
@@ -147,6 +148,11 @@ class Categoriestable extends Component
     $export = new CategoriesExport($this->checked);
     $this->checked = [];
     $this->selectPage = false;
+    session()->flash('notification', [
+      'message' => 'Report downloaded successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
     return $export->download('categories.xlsx');
   }
 }

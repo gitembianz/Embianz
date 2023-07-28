@@ -113,7 +113,9 @@ class Productstable extends Component
       $producttodel->delete();
     }
     $this->checked = [];
-    session()->flash('message', 'Product product deleted succesfuly');
+    session()->flash('message', 'Records deleted succesfuly!');
+    session()->flash('type', 'success');
+    session()->flash('title', 'Succes');
   }
   public function deleteSingleRecord()
   {
@@ -145,6 +147,8 @@ class Productstable extends Component
     $product->delete();
     $this->checked = array_diff($this->checked, [$id]);
     session()->flash('message', 'Record deleted Successfully');
+    session()->flash('type', 'success');
+    session()->flash('title', 'Succes');
   }
   public function confirmProductRemoval($productid)
   {
@@ -164,6 +168,9 @@ class Productstable extends Component
     $export = new ProductsExport($this->checked);
     $this->checked = [];
     $this->selectPage = false;
+    session()->flash('message', 'Report downloaded successfully!');
+    session()->flash('type', 'success');
+    session()->flash('title', 'Succes');
     return $export->download('products.xlsx');
   }
 }
