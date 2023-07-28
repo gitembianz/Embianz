@@ -161,6 +161,7 @@ class RelatedMediaProduct extends Component
   }
   public function saveexternal()
   {
+    dd('here');
     $data = Product::find($this->productId);
     $productType = class_basename(get_class($data));
 
@@ -174,7 +175,6 @@ class RelatedMediaProduct extends Component
       ]);
 
       $media = new Media();
-      // if (isset($this->file_sequences[$i]) && isset($this->file_locations[$i]) && isset($this->file_link[$i])) {
       $media->name = $this->file_name[$i];
       $media->sequence = $this->file_sequences[$i];
       $media->location_id = $this->file_locations[$i];
@@ -187,9 +187,6 @@ class RelatedMediaProduct extends Component
 
       $media->save();
       session()->flash('message', 'Media Update Successfully!');
-      // } else {
-      //   session()->flash('message', 'Please provide the all information');
-      // }
     }
     $this->row = 0;
     $this->externalmedia = false;
