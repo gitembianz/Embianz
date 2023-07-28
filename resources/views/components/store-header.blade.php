@@ -133,7 +133,7 @@
                 <ul class="cart__list" id="cartContent" aria-label="Cart Items">
                     <li>
                         <a href="/cart.html" class="cart__list--item">
-                            <h4 class="cart__list--name">Your cart</h4>
+                            <h4 class="cart__list--name">Shopping Basket</h4>
                             <svg>
                                 <circle cx="9" cy="21" r="1"></circle>
                                 <circle cx="20" cy="21" r="1"></circle>
@@ -169,13 +169,58 @@
                         </a></li>
                 </ul>
             </div>
-            <a href="#" class="heart" aria-label="Favorites">
-                <svg aria-hidden="true">
-                    <path
-                        d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
-                    </path>
-                </svg>
-            </a>
+
+
+
+            <div class="heart">
+                <button class="heart__btn" id="heartBtn" aria-label="Open heart">
+                    <svg aria-hidden="true">
+                        <path
+                            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                        </path>
+                    </svg>
+                </button>
+                <ul class="heart__list" id="heartContent" aria-label="heart Items">
+                    <li>
+                        <a href="/cart.html" class="heart__list--item">
+                            <h4 class="heart__list--name">Favorites</h4>
+                            <svg>
+                                <path
+                                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                                </path>
+                            </svg>
+                        </a>
+                    </li>
+                    <li><a class="heart__list--item" href="#">
+                            <img class="heart__list--img" src="/images/store/bottle1-min.webp"
+                                alt="Sustainable Sips: Reusable Bottles">
+                            <span class="heart__list--text">Sustainable Sips: Reusable Bottles</span>
+                            <button class="heart__list--delete">
+                                <svg>
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            </button>
+                        </a></li>
+                    <li><a class="heart__list--item" href="#">
+                            <img class="heart__list--img" src="/images/store/bottle2-min.webp"
+                                alt="Sustainable Sips: Reusable Bottles">
+                            <span class="heart__list--text">Sustainable Sips: Reusable Bottles</span>
+                            <button class="heart__list--delete">
+                                <svg>
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            </button>
+                        </a></li>
+                </ul>
+            </div>
+
+
+
+            {{-- <a href="#" class="heart" aria-label="Favorites">
+
+            </a> --}}
         </div>
         <div class="search" id="search">
             <form class="search__content">
