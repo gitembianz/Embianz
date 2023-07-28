@@ -1,33 +1,6 @@
 <div>
     {{-- sesssion html --}}
-    @if (session()->has('message'))
-        {{-- aici se afla notificarea noua --}}
-        <div class="notifications">
-            <div class="toast" id="alertevent">
-                <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 50.00 50.00" xml:space="preserve" width="64px"
-                    height="64px" fill="#000000">
-                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC"
-                        stroke-width="0.3"></g>
-                    <g id="SVGRepo_iconCarrier">
-                        <circle style="fill:#25AE88;" cx="25" cy="25" r="25"></circle>
-                        <polyline
-                            style="fill:none;stroke:#FFFFFF;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;"
-                            points=" 38,15 22,33 12,25 "></polyline>
-                    </g>
-                </svg>
-
-                <div class="toast__text">
-                    <h3>Success</h3>
-                    <span>{!! session('message') !!}</span>
-                </div>
-                <button type="button" data-bs-dismiss="alert" aria-hidden="true">
-                    Close
-                </button>
-            </div>
-        </div>
-    @endif
+    <x-alert />
     <div wire:loading.delay>
         <div class="modal" style="display:flex;">
             <div class="loader"></div>
@@ -204,8 +177,7 @@
                         <td data-title="ID">{{ $category->id }}</td>
                     @endif
                     @if ($this->showColumn('Name'))
-                        <td data-title="Name"><a
-                                href="/show_category/{{ $category->id }}'">{{ $category->name }}</a>
+                        <td data-title="Name"><a href="/show_category/{{ $category->id }}'">{{ $category->name }}</a>
                         </td>
                     @endif
                     @if ($this->showColumn('Short Description'))
