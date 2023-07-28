@@ -126,6 +126,8 @@ class Categoriestable extends Component
     $category->delete();
     $this->checked = array_diff($this->checked, [$id]);
     session()->flash('message', 'Record deleted Successfully');
+    session()->flash('type', 'warning');
+    session()->flash('title', 'bau');
   }
   public function confirmCategoryRemoval($id)
   {
