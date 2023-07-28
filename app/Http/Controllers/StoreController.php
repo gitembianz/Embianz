@@ -37,6 +37,10 @@ class StoreController extends Controller
   {
     return view('store.products');
   }
+  public function terms()
+  {
+    return view('store.terms');
+  }
 
   /**
    * Show the form for creating a new resource.
