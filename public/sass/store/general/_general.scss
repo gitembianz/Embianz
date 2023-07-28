@@ -321,3 +321,26 @@ div[data-tooltip-down]:hover {
     border-top: 5px solid $text;
   }
 }
+
+
+.terms {
+
+  h1 {
+    text-align: center;
+    margin-bottom: 50px;
+  }
+
+  h4 {
+    color: rgb(57, 57, 57);
+  }
+
+  p {
+    margin-bottom: 50px;
+    color: rgb(102, 102, 102);
+
+    a {
+      color: rgb(57, 57, 57);
+      font-weight: 600;
+    }
+  }
+}
