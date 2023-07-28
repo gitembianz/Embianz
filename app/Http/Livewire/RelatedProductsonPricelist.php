@@ -39,6 +39,11 @@ class RelatedProductsonPricelist extends Component
   public $productid;
   public $allow = false;
   public $update = false;
+  public $row = 1;
+  public $editedrow;
+  public $product;
+  public $editmultiple = false;
+  public $itemstoedit;
 
 
 
@@ -54,6 +59,11 @@ class RelatedProductsonPricelist extends Component
     $this->priceId = $priceId;
     $this->selectedColumns = $this->columns;
     $this->item = PriceList::find($priceId);
+    $this->prod[] = [
+      'allow' => false,
+      'itemselected' => null,
+      'product' => ['idrel' => null, 'value' => null],
+    ];
   }
 
   //function for realted
@@ -135,32 +145,50 @@ class RelatedProductsonPricelist extends Component
   {
     $this->dispatchBrowserEvent('show-delete-modal-multiple');
   }
-  public function editprod($id, $idprod)
+  public function edititem($id, $iditem, $index)
   {
-    $this->update = true;
-    $this->addrelatedproducts = true;
-    $this->itemselected = Product::find($idprod)->name;
-    $this->productid = $id;
+    $this->itemselected = Product::find($iditem)->name;
+    $val = PricelistEntries::find($id);
+    $this->productid = $iditem;
+    $this->editedrow = $index;
+    $this->product = [
+      $index . '.name' => $this->itemselected,
+      $index . '.value' => $val->value,
+    ];
   }
-  public function confirmprod()
+  public function allow()
   {
-    $val = $this->prod;
-    if (array_key_exists('value', $val)) {
-      $new = PricelistEntries::find($this->productid);
-      $new->value = $val['value'];
-      $new->save();
-      $this->addrelatedproducts = false;
-      $this->allow = false;
-      $this->productid = null;
-      $this->prod = [];
-      $this->itemselected = null;
-      $this->search = '';
-      $this->update = false;
-      session()->flash('message', 'Related product edited succesfuly');
-    } else {
-      session()->flash('message', 'Please provide a value!');
+    $this->allow = true;
+    $this->searchadd = $this->itemselected;
+  }
+  public function confirmitem($index, $id)
+  {
+
+    $new = PricelistEntries::find($id);
+    $new->product_id = $this->productid;
+    $val = $this->product;
+    if (isset($val["$index"]['value'])) {
+
+      $new->value = $val["$index"]['value'];
     }
+
+    $new->save();
+    $this->allow = false;
+    $this->productid = null;
+    $this->product = [];
+    $this->itemselected = null;
+    $this->editedrow = null;
+    $this->search = '';
+    session()->flash('message', 'Records edited succesfuly');
   }
+  public function canceledit()
+  {
+    $this->editedrow = null;
+    $this->allow = false;
+    $this->itemselected = null;
+    $this->product = [];
+  }
+
   // add specs function
   public function addrelated()
   {
@@ -206,7 +234,7 @@ class RelatedProductsonPricelist extends Component
   }
   public function getAddprodsProperty()
   {
-    return $this->addprodsQuery->get();
+    return $this->addprodsQuery->limit('5')->get();
   }
   public function getAddprodsQueryProperty()
   {

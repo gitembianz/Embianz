@@ -423,12 +423,6 @@
                                         @if ($this->showColumn('Id'))
                                             <td data-title="ID">{{ $prices->id }}</td>
                                         @endif
-                                        {{-- @if ($this->showColumn('Name'))
-                                            <td data-title="Name">
-                                                <a
-                                                    href="/show_pricelist/{{ $prices->pricelist->id }}'">{{ $prices->pricelist->name }}</a>
-                                            </td>
-                                        @endif --}}
                                         @if ($this->showColumn('Name'))
                                             <td data-title="Name">
                                                 @if ($editedrow !== $index)
@@ -464,10 +458,6 @@
                                             <td data-title="Currency">
                                                 {{ $prices->pricelist->currency->name }}</td>
                                         @endif
-                                        {{-- @if ($this->showColumn('Value'))
-                                            <td data-title="Value">
-                                                {{ $prices->value }}</td>
-                                        @endif --}}
                                         @if ($this->showColumn('Value'))
                                             <td data-title="Value">
                                                 @if ($editedrow !== $index)
