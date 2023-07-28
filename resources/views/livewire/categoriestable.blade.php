@@ -9,6 +9,7 @@
     {{-- end sesssion html --}}
     <div class="item__form form-table"
         @if ($checked) style="grid-template-columns: 2fr 1fr 1fr 1fr" @endif>
+        <h1 id="title" class="item__header-title">{{ __('All categories') }}</h1>
 
         <div class="item__form-input">
             <input wire:model.debounce.200ms="search" type="text" required>
@@ -50,6 +51,9 @@
                     </button>
                 </div>
             @endif
+        </div>
+        <div class="item__header-buttons">
+            <a href="{{ route('newcategory') }}" class="item__header-btn">{{ __('New') }}</a>
         </div>
     </div>
 
