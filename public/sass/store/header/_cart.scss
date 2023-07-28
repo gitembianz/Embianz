@@ -1,3 +1,4 @@
+.heart,
 .cart {
 
   /* Cart List */
@@ -35,6 +36,7 @@
 
         svg {
           transition: $transition;
+          stroke: $background !important;
         }
 
         &:hover {
@@ -69,11 +71,15 @@
       border-radius: 100%;
       transition: $transition;
 
+      svg {
+        stroke: $background !important;
+      }
+
       &:hover {
         background-color: transparent;
 
         svg {
-          stroke: $text;
+          stroke: $text !important;
         }
       }
 
@@ -95,6 +101,8 @@
   }
 
   @include breakpoint(medium) {
+
+    .heart__list,
     .cart__list {
       @include abs-position(absolute, 120%, 0, auto, auto);
       transform: translateY(-100%) translateX(0);
@@ -108,9 +116,7 @@
 
 
 
-
 .cart {
-
   &__btn {
     @include btn;
     background-color: transparent;
@@ -342,3 +348,32 @@
     }
   }
 }
+
+
+
+
+.heart__btn {
+  @extend .cart__btn;
+  border: none !important;
+}
+
+//   &--item {
+//     @extend .cart__list--item;
+//   }
+
+//   &--name {
+//     @extend .cart__list--name;
+//   }
+
+//   &--img {
+//     @extend .cart__list--img;
+//   }
+
+//   &--text {
+//     @extend .cart__list--text;
+//   }
+
+//   &--delete {
+//     @extend .cart__list--delete;
+//   }
+// }
