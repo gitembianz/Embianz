@@ -31,15 +31,8 @@
 {{-- End Section session message --}}
 <x-dashboardsidebar />
 
-
 {{-- Page content start --}}
 <section class="content">
-    <div class="item__header">
-        <h1 id="title" class="item__header-title">{{ __('All categories') }}</h1>
-        <div class="item__header-buttons">
-            <a href="{{ route('newcategory') }}" class="item__header-btn">{{ __('New') }}</a>
-        </div>
-    </div>
 
     {{-- Tabel by Livewire start --}}
     <livewire:categoriestable />
