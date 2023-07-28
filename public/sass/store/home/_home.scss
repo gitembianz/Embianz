@@ -195,3 +195,59 @@
     filter: blur(0);
   }
 }
+
+
+
+
+.home__discover {
+  position: relative;
+  width: 100%;
+  height: 70vh;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center top;
+}
+
+.home__discover--text {
+  @include abs-position (absolute, 10%, unset, unset, 50%);
+  transform: translateX(-50%);
+  @include flexer(column, center, center, 50px);
+  width: 80%;
+
+  h1 {
+    color: $background;
+    text-align: center;
+  }
+
+  a {
+    text-align: center;
+    background-color: $background;
+    color: $text;
+    font-size: 20px;
+    padding: 10px 20px;
+    border-radius: 100px;
+    font-weight: 600;
+    box-shadow: 0 0 20px black;
+    animation: pulse 1.5s infinite;
+    outline: 3px solid white;
+  }
+
+  @keyframes pulse {
+    0% {
+      outline-color: transparent;
+      outline-offset: -1px;
+      outline-width: 0px;
+    }
+
+    50% {
+      outline-width: 3px;
+      outline-color: $background;
+    }
+
+    100% {
+      outline-color: transparent;
+      outline-offset: 10px;
+      outline-width: 0px;
+    }
+  }
+}
