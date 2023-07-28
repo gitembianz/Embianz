@@ -202,6 +202,12 @@
         </button>
     </div>
 </div>
+<div class="home__discover" style="background-image: url(images/store/discover.webp)">
+    <div class="home__discover--text">
+        <h1>Explore our products and find the perfect one for you.</h1>
+        <a href="#">Discover our products</a>
+    </div>
+</div>
 {{--
 <div class="home__video">
   <video autoplay loop muted playsinline defaultmuted preload="auto">

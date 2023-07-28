@@ -239,23 +239,23 @@ initializeMenu("menuOpen", "menuClose", "menu", "menuContent");
 // initializeMenu('filterOpen', 'filterClose', 'filter', "filterContent");
 
 function toggleDropdown(buttonId, dropdownId) {
-  var button = document.querySelector(buttonId);
-  var dropdown = document.querySelector(dropdownId);
+  const button = document.querySelector(buttonId);
+  const dropdown = document.querySelector(dropdownId);
 
-  button.addEventListener("click", function () {
-    dropdown.classList.toggle("show");
+  const toggleDropdown = () => dropdown.classList.toggle("show");
+
+  button.addEventListener("click", toggleDropdown);
+
+  document.addEventListener("click", (event) => {
+    if (!event.target.matches(buttonId) && dropdown.classList.contains("show")) {
+      toggleDropdown();
+    }
   });
-
-  // window.addEventListener("click", function (event) {
-  //   if (!event.target.matches(buttonId)) {
-  //     if (dropdown.classList.contains("show")) {
-  //       dropdown.classList.remove("show");
-  //     }
-  //   }
-  // });
 }
 
 toggleDropdown(".cart__btn", ".cart__list");
+toggleDropdown(".heart__btn", ".heart__list");
+
 
 
 

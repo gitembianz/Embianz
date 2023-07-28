@@ -124,6 +124,73 @@ header {
     border-bottom: 1px solid $text;
     outline: none;
   }
+
+  &__container {
+    @include flexer(column, flex-start, flex-start, 10px);
+    width: 100%;
+    position: absolute;
+    padding: 10px;
+    top: 45px;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: $transition;
+    background: white;
+    max-height: 300px;
+    overflow-y: auto;
+
+    li {
+      width: 100%;
+    }
+
+    @include breakpoint(small) {
+      width: 90%;
+      border-radius: 10px;
+      top: 80px;
+    }
+
+    @include breakpoint(medium) {
+      width: 80%;
+    }
+
+    &--item {
+      width: 100%;
+      @include flexer(row, space-between, center, 15px, 1);
+      padding: 10px;
+      background-color: #dfdfdf;
+      border-radius: 10px;
+      transition: $transition;
+
+      &:hover {
+        background-color: #cacaca;
+      }
+
+      img {
+        @include box(40px);
+      }
+
+      p {
+        width: 100%;
+        flex: 1;
+      }
+
+      button {
+        @include box(2rem);
+        @include flexer(row, center, center);
+        border-radius: 50%;
+        border: 1.5px solid $text;
+        background-color: $text;
+
+        &:hover {
+          background-color: transparent;
+
+          svg {
+            stroke: $text;
+          }
+        }
+
+      }
+    }
+  }
 }
 
 .menu {
