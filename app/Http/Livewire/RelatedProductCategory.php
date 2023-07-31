@@ -97,14 +97,18 @@ class RelatedProductCategory extends Component
     $this->selectAlladd = true;
     $this->checkedadd = $this->proddsQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
   }
+
   public function getProddsProperty()
   {
-    return $this->proddsQuery->limit($this->loadAmount)->get();
+    $ids = $this->relatedproducts->pluck('product_id')->toArray();
+    $unrelated = Product::whereNotIn('id', $ids);
+    if (!empty($this->searchadd)) {
+      $unrelated->where('name', 'like', '%' . $this->searchadd . '%');
+    }
+    $unrelated->orderBy($this->orderByadd, $this->orderAscadd ? 'asc' : 'desc');
+    return $unrelated->limit($this->loadAmount)->get();
   }
-  public function getProddsQueryProperty()
-  {
-    return Product::search($this->searchadd)->orderBy($this->orderByadd, $this->orderAscadd ? 'asc' : 'desc');
-  }
+
   public function confirmProductlink($productid)
   {
     $this->productidbeinglink = $productid;
