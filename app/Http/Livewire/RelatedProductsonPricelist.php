@@ -128,7 +128,11 @@ class RelatedProductsonPricelist extends Component
     $item = PricelistEntries::findOrFail($id);
     $item->delete();
     $this->checked = array_diff($this->checked, [$id]);
-    session()->flash('message', 'Record deleted Successfully');
+    session()->flash('notification', [
+      'message' => 'Record deleted successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
   }
   public function deleteRecords()
   {
@@ -139,7 +143,11 @@ class RelatedProductsonPricelist extends Component
       $itemtodel->delete();
     }
     $this->checked = [];
-    session()->flash('message', 'Related records deleted succesfuly');
+    session()->flash('notification', [
+      'message' => 'Records deleted successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
   }
   public function confirmRemovalmultiple()
   {
@@ -179,7 +187,11 @@ class RelatedProductsonPricelist extends Component
     $this->itemselected = null;
     $this->editedrow = null;
     $this->search = '';
-    session()->flash('message', 'Records edited succesfuly');
+    session()->flash('notification', [
+      'message' => 'Record edited successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
   }
   public function canceledit()
   {
@@ -227,7 +239,11 @@ class RelatedProductsonPricelist extends Component
         $new->value = $pro['product']['value'];
         $new->save();
       } else {
-        session()->flash('message', 'Please provide a value!');
+        session()->flash('notification', [
+          'message' => 'Please provide a value!',
+          'type' => 'warning',
+          'title' => 'Missing Values'
+        ]);
         return;
       }
     }
@@ -241,7 +257,11 @@ class RelatedProductsonPricelist extends Component
     ];
     $this->row = 1;
     $this->addrelatedproducts = false;
-    session()->flash('message', 'Products related successfully.');
+    session()->flash('notification', [
+      'message' => 'Record related successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
   }
   public function plus()
   {
@@ -299,7 +319,11 @@ class RelatedProductsonPricelist extends Component
         $item->value = $pro['product']['value'];
         $item->save();
       } else {
-        session()->flash('message', 'Please provide a value!');
+        session()->flash('notification', [
+          'message' => 'Please provide a value!',
+          'type' => 'warning',
+          'title' => 'Missing Values'
+        ]);
         return;
       }
     }
@@ -315,7 +339,11 @@ class RelatedProductsonPricelist extends Component
     $this->checked = [];
     $this->all = false;
     $this->editmultiple = false;
-    session()->flash('message', 'Products edited successfully.');
+    session()->flash('notification', [
+      'message' => 'Record edited successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
   }
   public function getAddprodsProperty()
   {

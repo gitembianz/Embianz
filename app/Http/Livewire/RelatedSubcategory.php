@@ -124,7 +124,11 @@ class RelatedSubcategory extends Component
     $rec->parrent_id = $this->categoryId;
     $rec->save();
     $this->checkedadd = array_diff($this->checkedadd, [$this->catidbeinglink]);
-    session()->flash('message', 'Record related Successfully');
+    session()->flash('notification', [
+      'message' => 'Record related successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
   }
   public function linkRecords()
   {
@@ -139,7 +143,11 @@ class RelatedSubcategory extends Component
     }
 
     $this->checkedadd = [];
-    session()->flash('message', 'Products related succesfuly');
+    session()->flash('notification', [
+      'message' => 'Records related successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
   }
   public function updatedCheckedadd()
   {
@@ -217,7 +225,11 @@ class RelatedSubcategory extends Component
     $record = Subcategory::findOrFail($id);
     $record->delete();
     $this->checked = array_diff($this->checked, [$id]);
-    session()->flash('message', 'Record deleted Successfully');
+    session()->flash('notification', [
+      'message' => 'Record deleted successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
   }
   public function deleteRecords()
   {
@@ -231,7 +243,11 @@ class RelatedSubcategory extends Component
     }
 
     $this->checked = [];
-    session()->flash('message', 'Product product deleted succesfuly');
+    session()->flash('notification', [
+      'message' => 'Records deleted successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
   }
   public function confirmItemsRemovalmultiple()
   {

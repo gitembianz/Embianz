@@ -85,7 +85,11 @@ class ShowCategory extends Component
       $new->updated_at = now();
       $new->save();
       $this->emit('itemSaved');
-      session()->flash('message', 'Category edited successfully!');
+      session()->flash('notification', [
+        'message' => 'Record edited successfully!',
+        'type' => 'success',
+        'title' => 'Success'
+      ]);
     }
     $this->cat = [];
     $this->editcategory = null;
@@ -103,7 +107,6 @@ class ShowCategory extends Component
       foreach ($productcats as $productcat) {
         $productcat->delete();
       }
-      $productcat->delete();
     }
     $productType = class_basename(get_class($category));
     $filespath = 'media/' . $productType . '/' . $category->id;
@@ -111,7 +114,11 @@ class ShowCategory extends Component
       File::deleteDirectory($filespath);
     }
     $category->delete();
-    return redirect()->route('category')->with('message', 'Record deleted Successfully');
+    return redirect()->route('category')->with('notification', [
+      'message' => 'Record deleted successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
   }
   public function render()
   {

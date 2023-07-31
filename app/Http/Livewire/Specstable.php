@@ -91,7 +91,11 @@ class Specstable extends Component
       $specdel->delete();
     }
     $this->checked = [];
-    session()->flash('message', 'Records deleted succesfuly');
+    session()->flash('notification', [
+      'message' => 'Records deleted successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
   }
   public function deleteSingleRecord()
   {
@@ -99,7 +103,11 @@ class Specstable extends Component
     $item = Specs::findOrFail($id);
     $item->delete();
     $this->checked = array_diff($this->checked, [$id]);
-    session()->flash('message', 'Record deleted Successfully');
+    session()->flash('notification', [
+      'message' => 'Record deleted successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
   }
   public function confirmItemRemoval($id)
   {
@@ -140,7 +148,11 @@ class Specstable extends Component
         $spec->spec_group = $spec_new['spec_group'];
       }
       $spec->save();
-      session()->flash('message', 'Record edited successfully!');
+      session()->flash('notification', [
+        'message' => 'Record edited successfully!',
+        'type' => 'success',
+        'title' => 'Success'
+      ]);
     }
     $this->specss = [];
     $this->indexspec = null;
