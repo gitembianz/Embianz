@@ -43,7 +43,7 @@
                 </button>
                 <li>
                     <div class="menu__item">
-                        <a role="menuitem">Sticle</a>
+                        <a role="sticle">Sticle</a>
                         <button aria-label="Expand Sticle Submenu">
                             <svg aria-hidden="true">
                                 <polyline points="6 9 12 15 18 9"></polyline>
@@ -62,7 +62,7 @@
                 </li>
                 <li>
                     <div class="menu__item">
-                        <a role="menuitem">Cutii</a>
+                        <a role="cutii">Cutii</a>
                         <button aria-label="Expand Cutii Submenu">
                             <svg aria-hidden="true">
                                 <polyline points="6 9 12 15 18 9"></polyline>
@@ -83,7 +83,7 @@
                 </li>
                 <li>
                     <div class="menu__item">
-                        <a role="menuitem">Cani</a>
+                        <a role="cani">Cani</a>
                         <button aria-label="Expand Cani Submenu">
                             <svg aria-hidden="true">
                                 <polyline points="6 9 12 15 18 9"></polyline>
@@ -103,7 +103,7 @@
                     </ul>
                 </li>
                 <li>
-                    <a class="menu__link" role="menuitem">Accesorii</a>
+                    <a class="menu__link" role="accesoriii">Accesorii</a>
                 </li>
             </ul>
         </nav>
