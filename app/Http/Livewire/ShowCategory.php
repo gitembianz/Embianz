@@ -107,7 +107,6 @@ class ShowCategory extends Component
       foreach ($productcats as $productcat) {
         $productcat->delete();
       }
-      $productcat->delete();
     }
     $productType = class_basename(get_class($category));
     $filespath = 'media/' . $productType . '/' . $category->id;
