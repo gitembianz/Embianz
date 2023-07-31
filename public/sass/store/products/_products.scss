@@ -44,15 +44,15 @@
 
 .product__catalog {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr 1fr;
   gap: 15px;
 
   @include breakpoint(small) {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
   }
 
   @include breakpoint(large) {
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
   }
 
   @include breakpoint(x-large) {
@@ -65,14 +65,15 @@
 }
 
 .product__item {
-  // @include flexer(column, space-between, center);
-  // min-height: 500px;
   position: relative;
   border-radius: 10px;
   box-shadow: 0 8px 15px 0 rgb(0 0 0 / 37%);
-  // width: 100%;
   overflow: hidden;
-  @include box(100%, 600px);
+  @include box(100%, 300px);
+
+  @include breakpoint(large) {
+    @include box(100%, 600px);
+  }
 
   &:hover img {
     scale: (1.1);
@@ -80,38 +81,41 @@
 
   &--bundle {
     @include responsive-spacing(padding, 0.001);
-    // @include flexer(column, flex-start, flex-start, 5px);
+    @include flexer(column, flex-start, flex-start, 5px);
     @include abs-position (absolute, null, null, 0, 0);
     @include box(100%, auto);
     backdrop-filter: blur(15px);
     border-radius: 0 0 10px 10px;
     background: rgba(255, 255, 255, 0.4);
 
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 5px;
+    @include breakpoint(large) {
+      display: grid;
+      align-items: flex-start;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+
+      p {
+        grid-column: 1/3;
+      }
+
+      &>span {
+        width: 100%;
+        text-align: end;
+      }
+    }
 
     p {
       font-size: 14px;
       width: 100%;
-    }
-
-    span {
-      width: 100%;
-      text-align: end;
     }
   }
 
   &--price {
     @include flexer(row, space-between, center, 15px);
     width: 100%;
+    flex: 1;
     color: #104010;
     font-weight: 500;
-
-    span:last-child {
-      width: 100%;
-      text-align: end;
-    }
 
     span.deleted {
       text-decoration: line-through;
@@ -137,57 +141,65 @@
 
   &--buttons {
     @include flexer(row, space-between, center, 5px);
-    grid-column: 1/3;
     width: 100%;
+    grid-column: 1/3;
   }
 
   &--btn {
-    @include flexer(row, flex-start, flex-start);
-    color: #104010;
-    background: transparent;
-    font-weight: 500;
-    border-bottom: 2px solid #104010;
-    font-size: 16px;
-    height: 1.5rem;
+    @include flexer(row, center, center);
+    background: $text;
+    @include box(2rem);
+    border-radius: 5px;
 
-    &:last-child {
-      padding: 0;
-
-      svg {
-        scale: .7;
-        stroke-width: 2.5px;
-        stroke: #104010;
-      }
+    svg {
+      scale: .8;
+      stroke-width: 1px;
+      stroke: white;
     }
   }
 
   &--heart {
-    @include abs-position (absolute, 10px, 10px, unset, unset);
     @include box(2.5rem);
     @include flexer(row, center, center);
-    border-radius: 100%;
-    background-color: transparent;
-    border: 2px solid #104010;
+    background-color: #f2f2f2;
+    border-bottom: 1px solid $text;
+    border-left: 1px solid $text;
 
     svg {
-      scale: .8;
+      // scale: .8;
       stroke: #104010;
       fill: #104010;
     }
   }
 
-  &--stock {
-    @include abs-position (absolute, 30px, unset, unset, 0);
-    @include flexer(row, center, center);
-    @include box(auto);
-    @include responsive-spacing(padding, 0.001);
+  &--header {
+    @include abs-position (absolute, 0, unset, unset, 0);
+    @include flexer(row, space-between, center, );
+    width: 100%;
 
-    // @include responsive-spacing(padding-left, 0.01);
-    // @include responsive-spacing(padding-right, 0.01);
+    @include breakpoint(large) {
+      padding: 10px;
+      gap: 10px;
+
+      button {
+        border-radius: 50%;
+        border: unset;
+      }
+    }
+  }
+
+  &--stock {
+    @include flexer(row, center, center);
+    flex: 1;
+    @include box(100%, 2.5rem);
     background-color: $text;
-    font-size: 16px;
+    font-size: 12px;
     font-weight: 500;
     text-decoration: underline;
     color: $background;
+
+    @include breakpoint(medium) {
+      font-size: 16px;
+    }
   }
 }
