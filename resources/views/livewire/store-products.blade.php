@@ -90,7 +90,7 @@
         </div>
         <div class="filter__search">
             <input type="text" placeholder="Search...">
-            <button><svg>
+            <button aria-label="search button"><svg>
                     <circle cx="11" cy="11" r="8"></circle>
                     <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                 </svg></button>
@@ -106,36 +106,36 @@
             <div class="filter__sort--content">
                 <ul class="filter__sort--list">
                     <li class="filter__sort--item">
-                        <input type="checkbox" name="size" id="sort">
-                        <label for="sort">Featured</label>
+                        <input type="checkbox" name="size" id="sort1">
+                        <label for="sort1">Featured</label>
                     </li>
                     <li class="filter__sort--item">
-                        <input type="checkbox" name="size" id="sort">
-                        <label for="sort">Best selling</label>
+                        <input type="checkbox" name="size" id="sort2">
+                        <label for="sort2">Best selling</label>
                     </li>
                     <li class="filter__sort--item">
-                        <input type="checkbox" name="size" id="sort">
-                        <label for="sort">Alphabetically, A-Z</label>
+                        <input type="checkbox" name="size" id="sort3">
+                        <label for="sort3">Alphabetically, A-Z</label>
                     </li>
                     <li class="filter__sort--item">
-                        <input type="checkbox" name="size" id="sort">
-                        <label for="sort">Alphabetically, Z-A</label>
+                        <input type="checkbox" name="size" id="sort4">
+                        <label for="sort4">Alphabetically, Z-A</label>
                     </li>
                     <li class="filter__sort--item">
-                        <input type="checkbox" name="size" id="sort">
-                        <label for="sort">Price, low to high</label>
+                        <input type="checkbox" name="size" id="sort5">
+                        <label for="sort5">Price, low to high</label>
                     </li>
                     <li class="filter__sort--item">
-                        <input type="checkbox" name="size" id="sort">
-                        <label for="sort">Price, high to low</label>
+                        <input type="checkbox" name="size" id="sort6">
+                        <label for="sort6">Price, high to low</label>
                     </li>
                     <li class="filter__sort--item">
-                        <input type="checkbox" name="size" id="sort">
-                        <label for="sort">Date, old to new</label>
+                        <input type="checkbox" name="size" id="sort7">
+                        <label for="sort7">Date, old to new</label>
                     </li>
                     <li class="filter__sort--item">
-                        <input type="checkbox" name="size" id="sort">
-                        <label for="sort">Date, new to old</label>
+                        <input type="checkbox" name="size" id="sort8">
+                        <label for="sort8">Date, new to old</label>
                     </li>
                 </ul>
             </div>
@@ -222,7 +222,7 @@
                                 @endif
                             </span>
                         </div>
-                        <button class="product__item--btn">
+                        <button class="product__item--btn" aria-label="product cart">
                             <svg>
                                 <circle cx="9" cy="21" r="1"></circle>
                                 <circle cx="20" cy="21" r="1"></circle>
@@ -236,7 +236,7 @@
                     <p class="product__item--stock">
                         Out of the stock!
                     </p>
-                    <button class="product__item--heart">
+                    <button class="product__item--heart" aria-label="add to favorites">
                         <svg>
                             <path
                                 d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
