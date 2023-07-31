@@ -344,12 +344,15 @@ class RelatedProductsonSpec extends Component
       'title' => 'Success'
     ]);
   }
+
   public function getAddprodsProperty()
   {
-    return $this->addprodsQuery->limit('5')->get();
-  }
-  public function getAddprodsQueryProperty()
-  {
-    return Product::search($this->searchadd)->orderBy($this->orderByadd, $this->orderAscadd);
+    $ids = $this->relatedprods->pluck('product_id')->toArray();
+    $unrelated = Product::whereNotIn('id', $ids);
+    if (!empty($this->searchadd)) {
+      $unrelated->where('name', 'like', '%' . $this->searchadd . '%');
+    }
+    $unrelated->orderBy($this->orderByadd, $this->orderAscadd ? 'asc' : 'desc');
+    return $unrelated->limit('5')->get();
   }
 }

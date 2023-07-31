@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\PriceList;
 use App\Models\Product;
 use App\Models\Product_Spec;
 use App\Models\Specs;
@@ -320,13 +321,16 @@ class RelatedSpecProduct extends Component
     $this->addrelatedspecs = false;
     session()->flash('message', 'Specs related successfully.');
   }
-  //gett specs for list with search
   public function getAddspecsProperty()
   {
-    return $this->addspecsQuery->get();
+    $ids = $this->relatedspecs->pluck('spec_id')->toArray();
+    $unrelated = Specs::whereNotIn('id', $ids);
+    if (!empty($this->searchadd)) {
+      $unrelated->where('name', 'like', '%' . $this->searchadd . '%');
+    }
+    $unrelated->orderBy($this->orderByadd, $this->orderAscadd ? 'asc' : 'desc');
+    return $unrelated->get();
   }
-  public function getAddspecsQueryProperty()
-  {
-    return Specs::search($this->searchadd)->orderBy($this->orderByadd, $this->orderAscadd);
-  }
+  //gett specs for list with search
+
 }
