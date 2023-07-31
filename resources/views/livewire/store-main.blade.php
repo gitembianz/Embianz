@@ -112,7 +112,7 @@
         </button>
         <ul class="card-carousel" role="list">
             <li class="card" role="listitem">
-                <img src="images/store/bottle1.webp" alt="EcoPure water bottle by 24bottles" draggable="false">
+                <img src="images/store/bottle1.webp" draggable="false" alt="EcoPure water bottle by 24bottles">
                 <h2>EcoPure</h2>
                 <p>Stay hydrated with the EcoPure water bottle by 24bottles.</p>
                 <span>Eco-friendly, BPA-free, Reusable</span>
@@ -208,7 +208,7 @@
             <h1>Explore our products and find the perfect one for you.</h1>
             <a href="#">Discover our products</a>
         </div>
-        <img src="images/store/discover-items.png" alt="discover items">
+        <img src="images/store/discover-items.webp" alt="discover items">
     </div>
 </div>
 {{--
