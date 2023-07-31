@@ -27,8 +27,8 @@
                     <div class="filter__dropdown--content">
                         <ul class="filter__list">
                             <li class="filter__item">
-                                <input type="checkbox" name="size" id="filter">
-                                <label for="filter">1200</label>
+                                <input type="checkbox" name="size" id="filter1">
+                                <label for="filter1">1200</label>
                             </li>
                         </ul>
                     </div>
@@ -43,16 +43,16 @@
                     <div class="filter__dropdown--content">
                         <ul class="filter__list">
                             <li class="filter__item">
-                                <input type="checkbox" name="size" id="filter">
-                                <label for="filter">250 ml</label>
+                                <input type="checkbox" name="size" id="filter2">
+                                <label for="filter2">250 ml</label>
                             </li>
                             <li class="filter__item">
-                                <input type="checkbox" name="size" id="filter">
-                                <label for="filter">500 ml</label>
+                                <input type="checkbox" name="size" id="filter3">
+                                <label for="filter3">500 ml</label>
                             </li>
                             <li class="filter__item">
-                                <input type="checkbox" name="size" id="filter">
-                                <label for="filter">1000 ml</label>
+                                <input type="checkbox" name="size" id="filter4">
+                                <label for="filter4">1000 ml</label>
                             </li>
                             <li class="filter__item">
                                 <input type="checkbox" name="size">
@@ -72,8 +72,8 @@
                     <div class="filter__dropdown--content">
                         <ul class="filter__list">
                             <li class="filter__item">
-                                <input type="checkbox" name="size" id="filter">
-                                <label for="filter">blue</label>
+                                <input type="checkbox" name="size" id="filter5">
+                                <label for="filter5">blue</label>
                             </li>
                             <li class="filter__item">
                                 <input type="checkbox" name="size" id="filter">
