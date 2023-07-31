@@ -119,7 +119,11 @@ class RelatedCategoryProduct extends Component
     $item->category_id = $id;
     $item->save();
     $this->checkedadd = array_diff($this->checkedadd, [$id]);
-    session()->flash('message', 'Record related Successfully');
+    session()->flash('notification', [
+      'message' => 'Record related successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
   }
   public function confirmItemsLinkmultiple()
   {
@@ -135,7 +139,11 @@ class RelatedCategoryProduct extends Component
       $itemadd->save();
     }
     $this->checkedadd = [];
-    session()->flash('message', 'Categories related succesfuly');
+    session()->flash('notification', [
+      'message' => 'Records related successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
   }
   public function updatedCheckedadd()
   {
@@ -206,7 +214,11 @@ class RelatedCategoryProduct extends Component
     $item = Products_categories::findOrFail($id);
     $item->delete();
     $this->checked = array_diff($this->checked, [$id]);
-    session()->flash('message', 'Record deleted Successfully');
+    session()->flash('notification', [
+      'message' => 'Record deleted successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
   }
   public function confirmItemsRemovalmultiple()
   {
@@ -221,13 +233,22 @@ class RelatedCategoryProduct extends Component
       $itemtodel->delete();
     }
     $this->checked = [];
-    session()->flash('message', 'Categories deleted succesfuly');
+    session()->flash('notification', [
+      'message' => 'Records deleted successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
   }
   public function exportSelected()
   {
     $export = new CategoriesExport($this->checked);
     $this->checked = [];
     $this->selectPage = false;
+    session()->flash('notification', [
+      'message' => 'Report download successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
     return $export->download('categories.xlsx');
   }
   //render function

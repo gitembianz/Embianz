@@ -126,7 +126,11 @@ class RelatedProductsonSpec extends Component
     $item = Product_Spec::findOrFail($id);
     $item->delete();
     $this->checked = array_diff($this->checked, [$id]);
-    session()->flash('message', 'Record deleted Successfully');
+    session()->flash('notification', [
+      'message' => 'Record deleted successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
   }
   public function deleteRecords()
   {
@@ -137,7 +141,11 @@ class RelatedProductsonSpec extends Component
       $itemtodel->delete();
     }
     $this->checked = [];
-    session()->flash('message', 'Related records deleted succesfuly');
+    session()->flash('notification', [
+      'message' => 'Records deleted successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
   }
   public function confirmRemovalmultiple()
   {
@@ -171,7 +179,11 @@ class RelatedProductsonSpec extends Component
     $this->itemselected = null;
     $this->editedrow = null;
     $this->search = '';
-    session()->flash('message', 'Records edited succesfuly');
+    session()->flash('notification', [
+      'message' => 'Record edited successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
   }
 
   public function editSelected()
@@ -198,7 +210,11 @@ class RelatedProductsonSpec extends Component
         $prodd->value = $pro['product']['value'];
         $prodd->save();
       } else {
-        session()->flash('message', 'Please provide a value!');
+        session()->flash('notification', [
+          'message' => 'Please provide a value!',
+          'type' => 'warning',
+          'title' => 'Missing Values'
+        ]);
         return;
       }
     }
@@ -214,7 +230,11 @@ class RelatedProductsonSpec extends Component
     $this->checked = [];
     $this->all = false;
     $this->editmultiple = false;
-    session()->flash('message', 'Products edited successfully.');
+    session()->flash('notification', [
+      'message' => 'Records edited successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
   }
 
   // add specs function
@@ -300,7 +320,11 @@ class RelatedProductsonSpec extends Component
         $news->value = $pro['product']['value'];
         $news->save();
       } else {
-        session()->flash('message', 'Please provide a value!');
+        session()->flash('notification', [
+          'message' => 'Please provide a value!',
+          'type' => 'warning',
+          'title' => 'Missing Values'
+        ]);
         return;
       }
     }
@@ -314,7 +338,11 @@ class RelatedProductsonSpec extends Component
     ];
     $this->row = 1;
     $this->addrelatedproducts = false;
-    session()->flash('message', 'Products related successfully.');
+    session()->flash('notification', [
+      'message' => 'Records related successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
   }
   public function getAddprodsProperty()
   {

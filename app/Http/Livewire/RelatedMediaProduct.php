@@ -120,7 +120,11 @@ class RelatedMediaProduct extends Component
         }
       }
       $media_for_prod->save();
-      session()->flash('message', 'Media Edited Successfully!');
+      session()->flash('notification', [
+        'message' => 'Record edited successfully!',
+        'type' => 'success',
+        'title' => 'Success'
+      ]);
     }
     $this->filess = [];
     $this->editedMediaIndex = null;
@@ -185,7 +189,11 @@ class RelatedMediaProduct extends Component
       $media->tabel_id = Tabels::where('name', $productType)->first()->id;
 
       $media->save();
-      session()->flash('message', 'Media Update Successfully!');
+      session()->flash('notification', [
+        'message' => 'Record related successfully!',
+        'type' => 'success',
+        'title' => 'Success'
+      ]);
     }
     $this->row = 0;
     $this->externalmedia = false;
@@ -257,7 +265,11 @@ class RelatedMediaProduct extends Component
       $this->i += 1;
     }
     $this->medias = [];
-    session()->flash('message', 'Media Update Successfully!');
+    session()->flash('notification', [
+      'message' => 'Record edited successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
   }
   public function removemedia($index)
   {
@@ -296,7 +308,11 @@ class RelatedMediaProduct extends Component
       File::deleteDirectory($folder);
     }
     $this->checked = array_diff($this->checked, [$this->mediaidbeingremoved]);
-    session()->flash('message', 'Record deleted Successfully');
+    session()->flash('notification', [
+      'message' => 'Record related successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
   }
   public function deleteRecords()
   {
@@ -313,7 +329,11 @@ class RelatedMediaProduct extends Component
       }
     }
     $this->checked = [];
-    session()->flash('message', 'Files deleted succesfuly');
+    session()->flash('notification', [
+      'message' => 'Records related successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
   }
   public function selectAll()
   {
@@ -346,6 +366,11 @@ class RelatedMediaProduct extends Component
     $export = new MediasExport($this->checked);
     $this->checked = [];
     $this->selectPage = false;
+    session()->flash('notification', [
+      'message' => 'Report dowland successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
     return $export->download('medias.xlsx');
   }
   public function render()

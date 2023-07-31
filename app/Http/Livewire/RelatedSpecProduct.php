@@ -203,7 +203,11 @@ class RelatedSpecProduct extends Component
         $spec->value = $specAndValue['spec']['value'];
         $spec->save();
       } else {
-        session()->flash('message', 'Please provide a value!');
+        session()->flash('notification', [
+          'message' => 'Please provide a value!',
+          'type' => 'warning',
+          'title' => 'Missing Values'
+        ]);
         return;
       }
     }

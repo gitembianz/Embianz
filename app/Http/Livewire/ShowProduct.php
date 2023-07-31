@@ -56,7 +56,6 @@ class ShowProduct extends Component
     $product_new = $this->prod ?? NULL;
     if (!is_null($product_new)) {
       $new = Product::find($this->productId);
-      // dd($product_new);
       if (array_key_exists('product_name', $product_new)) {
         $new->name = $product_new['product_name'];
       }
@@ -91,7 +90,11 @@ class ShowProduct extends Component
       $new->updated_at = now();
       $new->save();
       $this->emit('itemSaved');
-      session()->flash('message', 'Product Edited Successfully!');
+      session()->flash('notification', [
+        'message' => 'Record edited successfully!',
+        'type' => 'success',
+        'title' => 'Success'
+      ]);
     }
     $this->prod = [];
     $this->editproduct = null;
@@ -133,7 +136,11 @@ class ShowProduct extends Component
       File::deleteDirectory($filespath);
     }
     $product->delete();
-    return redirect()->route('products')->with('message', 'Record deleted Successfully');
+    return redirect()->route('products')->with('notification', [
+      'message' => 'Record deleted successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
   }
   public function render()
   {
