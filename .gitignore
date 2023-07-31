@@ -1,3 +1,5 @@
 public/media/
 node_modules
 public/dist/.DS_Store
+.DS_Store
+.gitignore
