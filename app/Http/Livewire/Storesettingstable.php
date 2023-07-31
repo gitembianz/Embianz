@@ -90,7 +90,11 @@ class Storesettingstable extends Component
       $itemdel->delete();
     }
     $this->checked = [];
-    session()->flash('message', 'Records deleted succesfuly');
+    session()->flash('notification', [
+      'message' => 'Records deleted successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
   }
   public function deleteSingleRecord()
   {
@@ -98,7 +102,11 @@ class Storesettingstable extends Component
     $item = Store_Settings::findOrFail($id);
     $item->delete();
     $this->checked = array_diff($this->checked, [$id]);
-    session()->flash('message', 'Record deleted Successfully');
+    session()->flash('notification', [
+      'message' => 'Record deleted successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
   }
   public function confirmItemRemoval($id)
   {
@@ -139,7 +147,11 @@ class Storesettingstable extends Component
         $item->description = $update['description'];
       }
       $item->save();
-      session()->flash('message', 'Record edited successfully!');
+      session()->flash('notification', [
+        'message' => 'Record edited successfully!',
+        'type' => 'success',
+        'title' => 'Success'
+      ]);
     }
     $this->stores = [];
     $this->indexstoresettings = null;

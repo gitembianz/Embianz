@@ -51,7 +51,11 @@ class ShowPricelist extends Component
       }
     }
     $record->delete();
-    return redirect()->route('pricelists')->with('message', 'Record deleted Successfully');
+    return redirect()->route('pricelists')->with('notification', [
+      'message' => 'Record deleted successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
   }
   public function edititem()
   {
@@ -59,7 +63,6 @@ class ShowPricelist extends Component
       'name' => $this->pricelist->name,
       'currency' => $this->pricelist->currency->id,
       'active' => $this->pricelist->active,
-      // Add other properties as needed
     ];
     $this->edititem = true;
   }
@@ -86,7 +89,11 @@ class ShowPricelist extends Component
       $new->updated_at = now();
       $new->save();
       $this->emit('itemSaved');
-      session()->flash('message', 'Record edited successfully!');
+      session()->flash('notification', [
+        'message' => 'Record edited successfully!',
+        'type' => 'success',
+        'title' => 'Success'
+      ]);
     }
     $this->record = [];
     $this->edititem = null;

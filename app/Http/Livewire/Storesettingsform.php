@@ -39,6 +39,10 @@ class Storesettingsform extends Component
 
     Store_Settings::insert($values);
     $this->reset();
-    session()->flash('message', 'Record added successfully!');
+    session()->flash('notification', [
+      'message' => 'Record added successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
   }
 }

@@ -126,7 +126,11 @@ class RelatedPricelist extends Component
     $item = PricelistEntries::findOrFail($id);
     $item->delete();
     $this->checked = array_diff($this->checked, [$id]);
-    session()->flash('message', 'Record deleted Successfully');
+    session()->flash('notification', [
+      'message' => 'Record deleted successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
   }
   public function deleteRecords()
   {
@@ -137,7 +141,11 @@ class RelatedPricelist extends Component
       $itemtodel->delete();
     }
     $this->checked = [];
-    session()->flash('message', 'Related records deleted succesfuly');
+    session()->flash('notification', [
+      'message' => 'Records deleted successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
   }
   public function confirmRemovalmultiple()
   {
@@ -178,7 +186,11 @@ class RelatedPricelist extends Component
     $this->itemselected = null;
     $this->editedrow = null;
     $this->search = '';
-    session()->flash('message', 'Records edited succesfuly');
+    session()->flash('notification', [
+      'message' => 'Record edited successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
   }
 
   //function for add new pricelist
@@ -209,8 +221,17 @@ class RelatedPricelist extends Component
         $item->pricelist_id = $priceAndValue['price']['idrel'];
         $item->value = $priceAndValue['price']['value'];
         $item->save();
+        session()->flash('notification', [
+          'message' => 'Record related successfully!',
+          'type' => 'success',
+          'title' => 'Success'
+        ]);
       } else {
-        session()->flash('message', 'Please provide a value!');
+        session()->flash('notification', [
+          'message' => 'Please provide a value!',
+          'type' => 'warning',
+          'title' => 'Missing Values'
+        ]);
         return;
       }
     }
@@ -226,7 +247,11 @@ class RelatedPricelist extends Component
     $this->checked = [];
     $this->all = false;
     $this->editmultiple = false;
-    session()->flash('message', 'Pricelist edited successfully.');
+    session()->flash('notification', [
+      'message' => 'Record edited successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
   }
   public function allow()
   {
@@ -299,7 +324,11 @@ class RelatedPricelist extends Component
         $new->value = $priceAndValue['price']['value'];
         $new->save();
       } else {
-        session()->flash('message', 'Please provide a value!');
+        session()->flash('notification', [
+          'message' => 'Please provide a value!',
+          'type' => 'warning',
+          'title' => 'Missing Values'
+        ]);
         return;
       }
     }
@@ -313,7 +342,11 @@ class RelatedPricelist extends Component
     ];
     $this->row = 1;
     $this->addrelatedprice = false;
-    session()->flash('message', 'Pricelists related successfully.');
+    session()->flash('notification', [
+      'message' => 'Record related successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
   }
   public function getAddpricesProperty()
   {
