@@ -17,7 +17,7 @@
                 <input class="item__header-btn" type="button" wire:click.prevent="cancelcategory()" value="Cancel">
             @endif
             <input class="item__header-btn delete" type="button" value="Delete" name="delete"
-                wire:click.prevent="confirmCategoryRemoval({{ $category->id }})">
+                wire:click.prevent="confirmItemRemoval({{ $category->id }})">
         </div>
     </div>
 
