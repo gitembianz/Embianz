@@ -100,12 +100,24 @@ class RelatedCategoryProduct extends Component
   }
   public function getCatsProperty()
   {
-    return $this->catsQuery->limit($this->loadAmount)->get();
+    $relatedcatsIds = $this->relatedcats->pluck('category_id')->toArray();
+
+    // Get the categories that are not related (the difference between all cats and related cats)
+    $unrelatedCatsQuery = Category::whereNotIn('id', $relatedcatsIds);
+
+    // Apply search on the unrelated categories if $this->searchadd is not empty
+    if (!empty($this->searchadd)) {
+      $unrelatedCatsQuery->where('name', 'like', '%' . $this->searchadd . '%');
+      // Replace 'your_search_column' with the actual column name you want to search on in the Category model.
+    }
+
+    // Apply ordering on the unrelated categories
+    $unrelatedCatsQuery->orderBy($this->orderByadd, $this->orderAscadd ? 'asc' : 'desc');
+
+    // Limit the results and get the collection
+    return $unrelatedCatsQuery->limit($this->loadAmount)->get();
   }
-  public function getCatsQueryProperty()
-  {
-    return Category::search($this->searchadd)->orderBy($this->orderByadd, $this->orderAscadd ? 'asc' : 'desc');
-  }
+
   public function confirmItemlink($itemtid)
   {
     $this->catidbeinglink = $itemtid;
@@ -210,15 +222,26 @@ class RelatedCategoryProduct extends Component
   }
   public function deleteSingleRecord()
   {
-    $id = $this->catidbeingremoved;
-    $item = Products_categories::findOrFail($id);
-    $item->delete();
-    $this->checked = array_diff($this->checked, [$id]);
-    session()->flash('notification', [
-      'message' => 'Record deleted successfully!',
-      'type' => 'success',
-      'title' => 'Success'
-    ]);
+    // $id = $this->catidbeingremoved;
+    // $item = Products_categories::findOrFail($id);
+    // $item->delete();
+    // $this->checked = array_diff($this->checked, [$id]);
+    // session()->flash('notification', [
+    //   'message' => 'Record deleted successfully!',
+    //   'type' => 'success',
+    //   'title' => 'Success'
+    // ]);
+    // Step 1: Get the arrays of `id` values for both `$cats` and `$relatedcats`
+    $catsIds = $this->cats->pluck('id')->toArray();
+    $relatedcatsIds = $this->relatedcats->pluck('category_id')->toArray();
+
+    // Step 2: Find the differences in the `id` values between the two arrays
+    $differences = [
+      'only_cats' => array_diff($catsIds, $relatedcatsIds)
+    ];
+
+    // Display the differences
+    dd($differences);
   }
   public function confirmItemsRemovalmultiple()
   {
