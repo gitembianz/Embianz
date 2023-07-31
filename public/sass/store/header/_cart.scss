@@ -143,7 +143,7 @@
 
     @include breakpoint(large) {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 3fr 1fr;
     }
 
     h2 {
@@ -181,8 +181,12 @@
     @include flexer(column, center, center, 15px);
     width: 100%;
 
+    @include breakpoint(medium) {
+      @include flexer(row, flex-start, flex-start, 15px);
+    }
+
     @include breakpoint(large) {
-      @include flexer(column, center, center, 15px);
+      @include flexer(column, flex-start, center, 15px);
     }
   }
 
@@ -222,59 +226,28 @@
     width: 100%;
     gap: 15px;
 
-    @include breakpoint(small) {
+    max-height: 405px;
+    overflow-y: auto;
+
+    @include breakpoint(medium) {
       grid-template-columns: 1fr 1fr;
     }
   }
 
-
-  &__item {
-    background-color: #f2f2f2;
-    @include responsive-spacing(padding, .01);
-    @include responsive-spacing(padding-top, .03);
-    position: relative;
-    border-radius: 10px;
+  &--bundle {
+    @include flexer(row, flex-start, center, 10px);
     width: 100%;
-    @include flexer(column, space-between, center, 20px);
-
-    img {
-      @include box(70px);
-      object-fit: contain;
-      background-color: #114011;
-      outline-offset: 3px;
-      border-radius: 100%;
-      outline: 1.5px solid $text;
-
-    }
-  }
-
-  &--text {
-    width: 100%;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    row-gap: 20px;
-
-    span {
-      width: 100%;
-      text-align: end;
-
-      span {
-        color: red;
-        text-decoration: line-through;
-      }
-    }
-
-
 
     &>.product__count {
       padding: 5px;
       gap: 0;
       border: none;
       background-color: #d8d8d8;
-      justify-content: unset;
+      justify-content: space-between;
+      width: min-content;
 
-      input {
-        max-width: 50px;
+      #count {
+        min-width: 50px;
       }
 
       #countIncrease,
@@ -286,6 +259,39 @@
         }
       }
     }
+  }
+
+  &__item {
+    background-color: #f2f2f2;
+    @include responsive-spacing(padding, .01);
+    position: relative;
+    border-radius: 10px;
+    width: 100%;
+    @include flexer(row, space-between, center, 10px);
+
+    img {
+      @include box(70px, 100%);
+      object-fit: cover;
+      background-color: lightgrey;
+      border-radius: 5px;
+    }
+  }
+
+  &--text {
+    width: 100%;
+    @include flexer(column, flex-start, flex-start, 10px);
+
+    span {
+
+      span {
+        color: red;
+        text-decoration: line-through;
+      }
+    }
+
+
+
+
   }
 
   &__delete {
@@ -303,10 +309,8 @@
 
   &__heart {
     @extend .cart-page__delete;
-    @include abs-position (absolute, 10px, 10px, unset, unset);
 
     svg {
-      // fill: #fb0101;
       stroke: $text;
       stroke-width: 3px;
     }
