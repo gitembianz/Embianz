@@ -7,27 +7,30 @@
         </div>
     </div>
     {{-- end sesssion html --}}
-    <div class="item__form form-table" style="grid-template-columns: 0fr 1fr 0fr 0fr 0fr"
-        @if ($checked) style="grid-template-columns: 1fr 3fr 1fr 1fr 1fr" @endif>
+    <div class=" @if ($checked) item__form form-table-mobile @else item__form form-table @endif">
         <h1 id="title" class="item__header-title">{{ __('Categories') }}</h1>
 
-        <div class="item__form-input">
+        <div class="item__form-input" id="searchInput">
             <input wire:model.debounce.200ms="search" required type="text" id="newInput"
-                placeholder="Search category... &#128269;">
+                placeholder="Search category...">
             {{-- <span>Search Category...</span> --}}
         </div>
-        <div class="item__form-input" style="width: 8rem">
+        <div class="item__form-input">
             <select id="perPage" wire:model="perPage">
                 <option>10</option>
                 <option>25</option>
                 <option>50</option>
                 <option>100</option>
             </select>
-            <span>Per Page :</span>
+            {{-- <span>Per Page :</span> --}}
         </div>
 
         <div class="dropdown">
-            <button class="dropdown-button">Columns</button>
+            <button class="dropdown-button">Columns
+                <svg>
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+            </button>
             <div class="dropdown-list">
                 @foreach ($columns as $column)
                     <div class="dropdown-item">
@@ -40,20 +43,27 @@
         </div>
 
         <div class="dropdown none" @if ($checked) style="display: unset" @endif>
-            <button class="dropdown-button none" @if ($checked) style="display: flex" @endif>With
-                Checked({{ count($checked) }})</button>
+            <button class="dropdown-button none" @if ($checked) style="display: flex" @endif>
+                Checked {{ count($checked) }}</button>
             @if ($checked)
                 <div class="dropdown-list">
-                    <button class="dropdown-item delete" type="button" wire:click="confirmCategoriesRemovalmultiple()">
+                    <button class="dropdown-item delete" style="width: 150px" type="button"
+                        wire:click="confirmCategoriesRemovalmultiple()">
                         Delete
                     </button>
-                    <button class="dropdown-item submit" type="button" wire:click="exportSelected()">
+                    <button class="dropdown-item submit" style="width: 150px" type="button"
+                        wire:click="exportSelected()">
                         Export
                     </button>
                 </div>
             @endif
         </div>
-        <a href="{{ route('newcategory') }}" class="item__header-btn">{{ __('+') }}</a>
+        <a href="{{ route('newcategory') }}" class="item__header-btn">
+            <svg>
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+        </a>
     </div>
 
     @if ($selectPage)
