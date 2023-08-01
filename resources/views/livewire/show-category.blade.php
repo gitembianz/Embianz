@@ -28,7 +28,7 @@
         </div>
         <div class="tab__list">
             <div class="tabs__content active" id="Details">
-                <div class="item__form">
+                <div class="tab__list--form">
                     @if ($editcategory === null)
                         <div class="item__form-input-close">
                             <div>{{ $category->name }}</div>
@@ -40,7 +40,7 @@
                             <span> Name</span>
                         </div>
                     @endif
-                    <div class="display-f align-center jus-s g-2 wid-10">
+                    <div class="tabs__form-input__bundle">
                         @if ($editcategory === null)
                             <div class="item__form-input-close">
                                 <div>

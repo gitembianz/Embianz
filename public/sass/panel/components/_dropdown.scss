@@ -1,8 +1,7 @@
 .dropdown {
-  @include size(100%, $BtnSize);
+  @include size(100%, 2.5rem);
   position: relative;
-  box-shadow: $BtnShadow;
-  border-radius: $BtnBorderRadius;
+  // box-shadow: $BtnShadow;
   cursor: pointer;
 
   &-button {
@@ -11,26 +10,30 @@
     @include size(auto, 100%);
     padding: 0 10px;
     position: relative;
-    color: $mainBg;
-    background-color: $white;
-    border-radius: $BtnBorderRadius;
-    border: 1.5px solid $mainBg;
+    color: white;
+    background-color: $mainBg;
+    border-radius: 5px;
+    border: 1px solid $mainBg;
     cursor: pointer;
     z-index: 2;
+
+    svg {
+      @include size(23px);
+    }
   }
 
   &-list {
     @include flexbox(none, column, center, center, $gap);
-    @include position(absolute, 85%, $left: 0);
-    @include size(100%, auto);
-    padding: 20px 10px 10px;
+    @include position(absolute, 110%, 0);
+    @include size(max-content, auto);
+    padding: 10px;
     border: 1.5px solid $mainBg;
     background: white;
-    box-shadow: $BtnShadow;
-    border-radius: 0 0 $BtnBorderRadius $BtnBorderRadius;
+    border-radius: 5px;
 
-    input {
+    input[type=checkbox] {
       @include size(2rem);
+      border-radius: 5px;
     }
 
     label {

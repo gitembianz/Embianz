@@ -33,3 +33,41 @@
     }
   }
 }
+
+
+.tab__list--form {
+  padding: 20px 0;
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+
+  &>div .item__form-input-close div,
+  &>.item__form-input-close div {
+    height: 2.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .tab__list--form {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: 1fr 1fr;
+
+    &>div .item__form-input-close div,
+    &>.item__form-input-close div {
+      height: 2.5rem;
+    }
+  }
+}
+
+.tabs__form-input__bundle {
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+}
+
+@media (min-width: 1024px) {
+  .tabs__form-input__bundle {
+    flex-direction: row;
+  }
+}
