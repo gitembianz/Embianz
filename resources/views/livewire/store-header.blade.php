@@ -74,7 +74,9 @@
                      <line x1="3" y1="18" x2="21" y2="18"></line>
                  </svg>
              </button>
-             <button class="search__open" id="searchOpen" data-tooltip="press ' / ' to open" aria-label="Open Search">
+             <button class="search__open"
+                 wire:click.prevent="@if ($active === false) $set('active', true) @else $set('active', false) @endif"
+                 id="searchOpen" data-tooltip="press ' / ' to open" aria-label="Open Search">
                  <svg aria-hidden="true">
                      <circle cx="11" cy="11" r="8"></circle>
                      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
@@ -174,11 +176,11 @@
 
              {{-- <a href="#" class="heart" aria-label="Favorites">
 
-            </a> --}}
+             </a> --}}
          </div>
-         <div class="search" id="search">
-             <form class="search__content">
-                 <input id="searchInput" class="search__input" type="text" name="search"
+         <div class="search @if ($active) active @endif" id="search">
+             <div class="search__content">
+                 <input id="searchInput" wire:model="search" class="search__input" type="text" name="search"
                      aria-labelledby="searchInput" placeholder="Search...">
                  <button type="submit" aria-label="Submit Search">
                      <svg aria-hidden="true">
@@ -186,39 +188,44 @@
                          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                      </svg>
                  </button>
-                 <button type="button" id="searchClose" data-tooltip-down="press ESC to close"
-                     aria-label="Close Search">
+                 <button type="button" wire:click.prevent="close" id="searchClose"
+                     data-tooltip-down="press ESC to close" aria-label="Close Search">
                      <svg aria-hidden="true">
                          <line x1="18" y1="6" x2="6" y2="18"></line>
                          <line x1="6" y1="6" x2="18" y2="18"></line>
                      </svg>
                  </button>
-             </form>
+             </div>
              <ul class="search__container">
-                 <li>
-                     <a class="search__container--item">
-                         <img src="/images/store/bottle1-min.webp" alt="bottle">
-                         <p>Sustainable Sips: Reusable Bottles</p>
-                         <span>20$</span>
-                         <button>
-                             <svg>
-                                 <polyline points="9 18 15 12 9 6"></polyline>
-                             </svg>
-                         </button>
-                     </a>
-                 </li>
-                 <li>
-                     <a class="search__container--item">
-                         <img src="/images/store/bottle1-min.webp" alt="bottle">
-                         <p>Sustainable Sips: Reusable Bottles</p>
-                         <span>20$</span>
-                         <button>
-                             <svg>
-                                 <polyline points="9 18 15 12 9 6"></polyline>
-                             </svg>
-                         </button>
-                     </a>
-                 </li>
+                 @if (count($objects) > 0)
+                     @foreach ($objects as $product)
+                         <li>
+                             <a class="search__container--item">
+                                 <img src="/images/store/bottle1-min.webp" alt="bottle">
+                                 <p>Product: {{ $product->name }}</p>
+                                 <span>
+                                     @if ($product->product_prices->first())
+                                         {{ $product->product_prices->first()->value }}
+                                         {{ $product->product_prices->first()->pricelist->currency->name }}
+                                     @else
+                                         no price
+                                     @endif
+                                 </span>
+                                 <button>
+                                     <svg>
+                                         <polyline points="9 18 15 12 9 6"></polyline>
+                                     </svg>
+                                 </button>
+                             </a>
+                         </li>
+                     @endforeach
+                 @else
+                     <li>
+                         <a class="search__container--item">
+                             No items found
+                         </a>
+                     </li>
+                 @endif
              </ul>
          </div>
      </div>
