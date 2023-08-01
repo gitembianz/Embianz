@@ -105,12 +105,15 @@ class RelatedSubcategory extends Component
   }
   public function getCategoriesProperty()
   {
-    return $this->categoriesQuery->limit($this->loadAmount)->get();
+    $relatedcatsIds = $this->relatedsubcats->pluck('category_id')->toArray();
+    $unrelatedCatsQuery = Category::whereNotIn('id', $relatedcatsIds);
+    if (!empty($this->searchadd)) {
+      $unrelatedCatsQuery->where('name', 'like', '%' . $this->searchadd . '%');
+    }
+    $unrelatedCatsQuery->orderBy($this->orderByadd, $this->orderAscadd ? 'asc' : 'desc');
+    return $unrelatedCatsQuery->limit($this->loadAmount)->get();
   }
-  public function getCategoriesQueryProperty()
-  {
-    return Category::search($this->searchadd)->orderBy($this->orderByadd, $this->orderAscadd ? 'asc' : 'desc');
-  }
+
   public function confirmitemlink($id)
   {
     $this->catidbeinglink = $id;
@@ -118,9 +121,10 @@ class RelatedSubcategory extends Component
   }
   public function linkSingleRecord()
   {
-    $category = Category::find($this->catidbeinglink)->first()->name;
+    $category = Category::find($this->catidbeinglink);
     $rec = new  Subcategory();
-    $rec->category = $category;
+    $rec->category = $category->name;
+    $rec->category_id = $category->id;
     $rec->parrent_id = $this->categoryId;
     $rec->save();
     $this->checkedadd = array_diff($this->checkedadd, [$this->catidbeinglink]);
@@ -138,6 +142,7 @@ class RelatedSubcategory extends Component
     foreach ($categories as $category) {
       $add = new Subcategory();
       $add->category = $category->name;
+      $add->category_id = $category->id;
       $add->parrent_id = $this->categoryId;
       $add->save();
     }
