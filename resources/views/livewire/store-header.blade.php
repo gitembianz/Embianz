@@ -200,7 +200,7 @@
                  @if (count($objects) > 0)
                      @foreach ($objects as $product)
                          <li>
-                             <a class="search__container--item">
+                             <a class="search__container--item" href="/product/{{ $product->id }}">
                                  <img src="/images/store/bottle1-min.webp" alt="bottle">
                                  <p>Product: {{ $product->name }}</p>
                                  <span>
@@ -211,11 +211,6 @@
                                          no price
                                      @endif
                                  </span>
-                                 <button>
-                                     <svg>
-                                         <polyline points="9 18 15 12 9 6"></polyline>
-                                     </svg>
-                                 </button>
                              </a>
                          </li>
                      @endforeach
