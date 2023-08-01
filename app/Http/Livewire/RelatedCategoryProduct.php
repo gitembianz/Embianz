@@ -222,26 +222,16 @@ class RelatedCategoryProduct extends Component
   }
   public function deleteSingleRecord()
   {
-    // $id = $this->catidbeingremoved;
-    // $item = Products_categories::findOrFail($id);
-    // $item->delete();
-    // $this->checked = array_diff($this->checked, [$id]);
-    // session()->flash('notification', [
-    //   'message' => 'Record deleted successfully!',
-    //   'type' => 'success',
-    //   'title' => 'Success'
-    // ]);
-    // Step 1: Get the arrays of `id` values for both `$cats` and `$relatedcats`
-    $catsIds = $this->cats->pluck('id')->toArray();
-    $relatedcatsIds = $this->relatedcats->pluck('category_id')->toArray();
+    $id = $this->catidbeingremoved;
+    $item = Products_categories::findOrFail($id);
+    $item->delete();
+    $this->checked = array_diff($this->checked, [$id]);
+    session()->flash('notification', [
+      'message' => 'Record deleted successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
 
-    // Step 2: Find the differences in the `id` values between the two arrays
-    $differences = [
-      'only_cats' => array_diff($catsIds, $relatedcatsIds)
-    ];
-
-    // Display the differences
-    dd($differences);
   }
   public function confirmItemsRemovalmultiple()
   {

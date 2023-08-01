@@ -348,12 +348,15 @@ class RelatedPricelist extends Component
       'title' => 'Success'
     ]);
   }
+
   public function getAddpricesProperty()
   {
-    return $this->addpricesQuery->get();
-  }
-  public function getAddpricesQueryProperty()
-  {
-    return PriceList::search($this->searchadd)->orderBy($this->orderByadd, $this->orderAscadd)->with('currency');
+    $ids = $this->relatedprices->pluck('pricelist_id')->toArray();
+    $unrelated = PriceList::whereNotIn('id', $ids);
+    if (!empty($this->searchadd)) {
+      $unrelated->where('name', 'like', '%' . $this->searchadd . '%');
+    }
+    $unrelated->orderBy($this->orderByadd, $this->orderAscadd ? 'asc' : 'desc');
+    return $unrelated->get();
   }
 }
