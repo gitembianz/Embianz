@@ -7,15 +7,16 @@
         </div>
     </div>
     {{-- end sesssion html --}}
-    <div class="item__form form-table"
-        @if ($checked) style="grid-template-columns: 2fr 1fr 1fr 1fr" @endif>
-        <h1 id="title" class="item__header-title">{{ __('All categories') }}</h1>
+    <div class="item__form form-table" style="grid-template-columns: 0fr 1fr 0fr 0fr 0fr"
+        @if ($checked) style="grid-template-columns: 1fr 3fr 1fr 1fr 1fr" @endif>
+        <h1 id="title" class="item__header-title">{{ __('Categories') }}</h1>
 
         <div class="item__form-input">
-            <input wire:model.debounce.200ms="search" type="text" required>
-            <span>Search Category...</span>
+            <input wire:model.debounce.200ms="search" required type="text" id="newInput"
+                placeholder="Search category... &#128269;">
+            {{-- <span>Search Category...</span> --}}
         </div>
-        <div class="item__form-input">
+        <div class="item__form-input" style="width: 8rem">
             <select id="perPage" wire:model="perPage">
                 <option>10</option>
                 <option>25</option>
@@ -52,9 +53,7 @@
                 </div>
             @endif
         </div>
-        <div class="item__header-buttons">
-            <a href="{{ route('newcategory') }}" class="item__header-btn">{{ __('New') }}</a>
-        </div>
+        <a href="{{ route('newcategory') }}" class="item__header-btn">{{ __('+') }}</a>
     </div>
 
     @if ($selectPage)
@@ -179,7 +178,8 @@
                         <td data-title="ID">{{ $category->id }}</td>
                     @endif
                     @if ($this->showColumn('Name'))
-                        <td data-title="Name"><a href="/show_category/{{ $category->id }}'">{{ $category->name }}</a>
+                        <td data-title="Name"><a
+                                href="/show_category/{{ $category->id }}'">{{ $category->name }}</a>
                         </td>
                     @endif
                     @if ($this->showColumn('Short Description'))
