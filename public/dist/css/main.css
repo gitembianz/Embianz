@@ -1382,8 +1382,9 @@ main {
   font-size: 0.875rem;
   font-weight: 400;
   color: #BBFCDE;
-  width: 100%;
+  width: auto;
   height: 100%;
+  padding: 0 10px;
   position: relative;
   color: #35424B;
   background-color: #ffffff;
@@ -4567,8 +4568,9 @@ header,
   width: 3rem;
   height: 3rem;
   transition: all 0.2s ease-in-out;
-  width: 100%;
   background-color: #35424B;
+  width: 3rem;
+  height: 3rem;
 }
 .item__header-btn:hover {
   background-color: #0b0d0f;
@@ -5141,6 +5143,22 @@ header,
   background: #151b1e;
 }
 
+#newInput {
+  border: none;
+  background: #f3f3f3;
+  box-shadow: none;
+  height: 2.5rem;
+  border-radius: 5px;
+  padding: 0 7px;
+  position: relative;
+  border: 1px solid lightgray;
+  transition: all 0.2s ease-in-out;
+}
+#newInput:focus {
+  border: 1px solid #35424B;
+  background: white;
+}
+
 @media (min-width: 1024px) {
   .item__header {
     grid-template-columns: 1fr 1fr;
@@ -5166,6 +5184,7 @@ header,
   .item__form {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    align-items: center;
   }
   .item__form.form-table {
     grid-auto-flow: column;

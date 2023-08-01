@@ -21,8 +21,9 @@
 
     &-btn {
       @include standart-Btn;
-      width: 100%;
       background-color: $mainBg;
+      width: 3rem;
+      height: 3rem;
     }
   }
 
@@ -128,4 +129,21 @@
   @include standart-Input;
   @include size(6rem, 2rem);
   padding: 0;
+}
+
+#newInput {
+  border: none;
+  background: #f3f3f3;
+  box-shadow: none;
+  height: 2.5rem;
+  border-radius: 5px;
+  padding: 0 7px;
+  position: relative;
+  border: 1px solid lightgray;
+  transition: $transition;
+
+  &:focus {
+    border: 1px solid $mainBg;
+    background: white;
+  }
 }

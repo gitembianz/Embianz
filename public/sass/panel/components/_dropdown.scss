@@ -8,7 +8,8 @@
   &-button {
     @include flexbox(flex, row, center, center);
     @include standart-Font;
-    @include size(100%);
+    @include size(auto, 100%);
+    padding: 0 10px;
     position: relative;
     color: $mainBg;
     background-color: $white;
