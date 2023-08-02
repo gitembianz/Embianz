@@ -31,7 +31,6 @@ class StoreFooter extends Component
     Subscribers::create($validatedData);
 
     $this->reset();
-    session()->flash('message', 'Subscription successful!');
     $this->response = "Thank you for subscription!";
   }
   public function getCategoriesProperty()
