@@ -182,12 +182,6 @@
              <div class="search__content">
                  <input id="searchInput" wire:model="search" class="search__input" type="text" name="search"
                      aria-labelledby="searchInput" placeholder="Search...">
-                 <button type="submit" aria-label="Submit Search">
-                     <svg aria-hidden="true">
-                         <circle cx="11" cy="11" r="8"></circle>
-                         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                     </svg>
-                 </button>
                  <button type="button" wire:click.prevent="close" id="searchClose"
                      data-tooltip-down="press ESC to close" aria-label="Close Search">
                      <svg aria-hidden="true">
@@ -196,32 +190,34 @@
                      </svg>
                  </button>
              </div>
-             <ul class="search__container">
+             @if ($search)
                  @if (count($objects) > 0)
-                     @foreach ($objects as $product)
-                         <li>
-                             <a class="search__container--item" href="/product/{{ $product->id }}">
-                                 <img src="/images/store/bottle1-min.webp" alt="bottle">
-                                 <p>Product: {{ $product->name }}</p>
-                                 <span>
-                                     @if ($product->product_prices->first())
-                                         {{ $product->product_prices->first()->value }}
-                                         {{ $product->product_prices->first()->pricelist->currency->name }}
-                                     @else
-                                         no price
-                                     @endif
-                                 </span>
-                             </a>
-                         </li>
-                     @endforeach
+                     <ul class="search__container">
+                         @foreach ($objects as $product)
+                             <li>
+                                 <a class="search__container--item" href="/product/{{ $product->id }}">
+                                     <img src="/images/store/bottle1-min.webp" alt="bottle">
+                                     <p> {{ $product->name }}</p>
+                                     <span>
+                                         @if ($product->product_prices->first())
+                                             {{ $product->product_prices->first()->value }}
+                                             {{ $product->product_prices->first()->pricelist->currency->name }}
+                                         @else
+                                             {{ __('no price') }}
+                                         @endif
+                                     </span>
+                                 </a>
+                             </li>
+                         @endforeach
+                     </ul>
                  @else
-                     <li>
-                         <a class="search__container--item">
-                             No items found
-                         </a>
-                     </li>
+                     <ul class="search__container">
+                         <li>
+                             {{ __('No elements found') }}
+                         </li>
+                     </ul>
                  @endif
-             </ul>
+             @endif
          </div>
      </div>
  </div>
