@@ -1988,7 +1988,7 @@ footer {
   justify-content: flex-start;
   align-items: stretch;
   flex: 0 1 auto;
-  gap: 30px;
+  gap: 20px;
 }
 .products__control {
   display: flex;
@@ -1999,11 +1999,7 @@ footer {
   flex: 0 1 auto;
   gap: 30px;
   position: relative;
-  display: grid;
-  grid-template-columns: 0fr 1fr 0fr;
-  justify-items: start;
   gap: 30px;
-  row-gap: 10px;
 }
 .products__select {
   position: relative;
