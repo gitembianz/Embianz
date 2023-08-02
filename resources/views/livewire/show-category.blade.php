@@ -105,7 +105,7 @@
                     @endif
 
                     @if ($editcategory === null)
-                        <div class="item__form-input-close item__form-long">
+                        <div class="item__form-input-close item__form-long tab__list--form--resize">
                             <div>{{ $category->short_description }}</div>
                             <span>Category Short Description</span>
                         </div>

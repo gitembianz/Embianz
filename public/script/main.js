@@ -19,6 +19,35 @@
 //   }
 // });
 
+function handleScroll() {
+  let prevScrollPos = window.pageYOffset;
+  const header = document.querySelector('header');
+  const scrollThreshold = 300;
+  let isHeaderVisible = true;
+
+  window.addEventListener('scroll', function () {
+    const currentScrollPos = window.pageYOffset;
+    const scrollDown = currentScrollPos > prevScrollPos;
+
+    if (scrollDown && currentScrollPos > scrollThreshold) {
+      header.classList.remove('show');
+      isHeaderVisible = false;
+    } else {
+      if (!isHeaderVisible) {
+        header.classList.add('show');
+        isHeaderVisible = true;
+      }
+    }
+
+    prevScrollPos = currentScrollPos;
+  });
+}
+
+handleScroll();
+
+
+
+
 
 document.getElementById('home__prev').onclick = function () {
   let lists = document.querySelectorAll('.home__item');
