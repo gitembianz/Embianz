@@ -46,6 +46,17 @@ function handleScroll() {
 handleScroll();
 
 
+function setMarginTop() {
+  const headerHeight = document.querySelector("header").offsetHeight;
+  const mainElement = document.querySelector("main");
+  mainElement.style.marginTop = `${headerHeight}px`;
+}
+window.addEventListener("resize", setMarginTop);
+setMarginTop();
+
+
+
+
 
 
 
