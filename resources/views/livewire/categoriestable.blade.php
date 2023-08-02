@@ -11,20 +11,8 @@
         <h1 id="title" class="item__header-title">{{ __('Categories') }}</h1>
 
         <div class="item__form-input" id="searchInput">
-            <input wire:model.debounce.200ms="search" required type="text" id="newInput"
-                placeholder="Search category...">
-            {{-- <span>Search Category...</span> --}}
+            <input wire:model.debounce.200ms="search" required type="text" id="newInput" placeholder="Search...">
         </div>
-        <div class="item__form-input">
-            <select id="perPage" wire:model="perPage">
-                <option>10</option>
-                <option>25</option>
-                <option>50</option>
-                <option>100</option>
-            </select>
-            {{-- <span>Per Page :</span> --}}
-        </div>
-
         <div class="dropdown">
             <button class="dropdown-button">Columns
                 <svg>
@@ -62,6 +50,17 @@
             <svg>
                 <line x1="12" y1="5" x2="12" y2="19"></line>
                 <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+        </a>
+        <a wire:click="$refresh" class="item__header-btn">
+            <svg>
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                <g id="SVGRepo_iconCarrier">
+                    <path
+                        d="M3 3V8M3 8H8M3 8L6 5.29168C7.59227 3.86656 9.69494 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.71683 21 4.13247 18.008 3.22302 14"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                </g>
             </svg>
         </a>
     </div>
@@ -180,7 +179,8 @@
         </thead>
         <tbody>
             @foreach ($categories as $category)
-                <tr class="@if ($this->isChecked($category->id)) th_checked @endif">
+                <tr @if ($loop->last) id="last_record" @endif
+                    class="@if ($this->isChecked($category->id)) th_checked @endif">
                     <td data-title="Check"><input type="checkbox" value="{{ $category->id }}" wire:model="checked">
                     </td>
 
@@ -213,6 +213,21 @@
                 </tr>
             @endforeach
         </tbody>
+        <script>
+            const lastRecord = document.getElementById('last_record');
+            const options = {
+                root: null,
+                threshold: 1,
+                rootMargin: '0px'
+            }
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        @this.loadMore()
+                    }
+                });
+            });
+            observer.observe(lastRecord);
+        </script>
     </table>
-    <div>{{ $categories->links('pagination-links') }} </div>
 </div>

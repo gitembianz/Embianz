@@ -11,7 +11,7 @@ class Specstable extends Component
 {
 
   use WithPagination;
-  public $perPage = 10;
+  public $loadAmount = 13;
   public $search = '';
   public $orderBy = 'id';
   public $orderAsc = true;
@@ -29,6 +29,10 @@ class Specstable extends Component
     return view('livewire.specstable', [
       'specs' => $this->specs
     ]);
+  }
+  public function loadMore()
+  {
+    $this->loadAmount += 10;
   }
   public function mount()
   {
@@ -75,7 +79,7 @@ class Specstable extends Component
   }
   public function getSpecsProperty()
   {
-    return $this->specsQuery->paginate($this->perPage);
+    return $this->specsQuery->limit($this->loadAmount)->get();
   }
   public function getSpecsQueryProperty()
   {
