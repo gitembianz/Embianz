@@ -3,7 +3,7 @@
         <div class="home__item" style="background-image: url(images/store/background-bottle1.webp);" role="listitem">
             <div class="home__content">
                 <div class="container home__content--flex">
-                    <h2>ASTER - 500 ML</h2>
+                    <h2>{{ $category->first()->products }}</h2>
                     <p>
                         Elevate your hydration game with this stylish 500 ML bottle. Crafted with a perfect balance of
                         fashion and function, it offers a sleek and convenient solution for quenching your thirst on the
@@ -111,105 +111,56 @@
             </svg>
         </button>
         <ul class="card-carousel" role="list">
-            <li class="card" role="listitem">
-                <img src="images/store/bottle1.webp" draggable="false" alt="EcoPure water bottle by 24bottles">
-                <h2>EcoPure</h2>
-                <p>Stay hydrated with the EcoPure water bottle by 24bottles.</p>
+            @foreach ($popproducts as $product)
+                <li class="card" role="listitem">
+                    @if (count($product->media) > 0)
+                        @foreach ($product->media as $media)
+                            @if ($media->location->location == 'main')
+                                @if ($media->external)
+                                    <img src="{{ $media->path }}" draggable="false" alt="{{ $media->path }}">
+                                @else
+                                    <img src="/{{ $media->path }}{{ $media->name }}" draggable="false"
+                                        alt="{{ $media->path }}">
+                                @endif
+                            @break
+                        @endif
+                    @endforeach
+                @else
+                    <img src="/images/store/default/default.svg" draggable="false" alt="something wrong">
+                @endif
+                <h2>{{ $product->name }}</h2>
+                <p>{{ $product->short_description }}</p>
                 <span>Eco-friendly, BPA-free, Reusable</span>
-                <p>$19.99</p>
-            </li>
-
-            <li class="card" role="listitem">
-                <img src="images/store/bottle2-min.webp"
-                    alt="The Urban Oasis water bottle is perfect for on-the-go hydration." draggable="false">
-                <h2>Urban Oasis</h2>
-                <p>The Urban Oasis water bottle is perfect for on-the-go hydration.</p>
-                <span>Travel, Leak-proof, Stainless steel</span>
-                <p class="price"><span>$24.99</span>$19.99</p>
+                <p>
+                    @if ($product->product_prices->first())
+                        {{ $product->product_prices->first()->pricelist->currency->name }}
+                        {{ $product->product_prices->first()->value }}
+                    @else
+                        {{ __('no price') }}
+                    @endif
+                </p>
+                {{-- <p class="price"><span>$24.99</span>$19.99</p> --}}
                 <div class="card__fire">
                     <img src="/images/store/fire.svg" alt="fire">
                 </div>
             </li>
-
-            <li class="card" role="listitem">
-                <img src="images/store/bottle3-min.webp" alt="AquaLite" draggable="false">
-                <h2>AquaLite</h2>
-                <p>The AquaLite water bottle offers lightweight and durable design.</p>
-                <span>Sports, Gym, Active lifestyle</span>
-                <p>$14.99</p>
-            </li>
-
-            <li class="card" role="listitem">
-                <img src="images/store/background-bottle-min1.webp" alt="Pure Flow" draggable="false">
-                <h2>Pure Flow</h2>
-                <p>Embrace pure hydration with the sleek Pure Flow water bottle.</p>
-                <span>Minimalist, BPA-free, Sustainable</span>
-                <p>$22.99</p>
-            </li>
-
-            <li class="card" role="listitem">
-                <img src="images/store/background-bottle-min2.webp" alt="Oasis Pro" draggable="false">
-                <h2>Oasis Pro</h2>
-                <p>The Oasis Pro water bottle keeps your beverages at the perfect temperature.</p>
-                <span>Insulated, Outdoor, Hot and cold</span>
-                <p>$34.99</p>
-            </li>
-
-            <li class="card" role="listitem">
-                <img src="images/store/background-bottle-min3.webp" alt="Terra Essence" draggable="false">
-                <h2>Terra Essence</h2>
-                <p>Experience nature with the Terra Essence water bottle.</p>
-                <span>Nature-inspired, Sustainable</span>
-                <p>$18.99</p>
-            </li>
-
-            <li class="card" role="listitem">
-                <img src="images/store/background-bottle-min4.webp" alt="AquaWave" draggable="false">
-                <h2>AquaWave</h2>
-                <p>Ride the waves of hydration with the AquaWave water bottle.</p>
-                <span>Surfing, Beach, Adventure</span>
-                <p>$16.99</p>
-            </li>
-
-            <li class="card" role="listitem">
-                <img src="images/store/background-bottle-min5.webp" alt="Urban Sip" draggable="false">
-                <h2>Urban Sip</h2>
-                <p>Sip in style with the Urban Sip water bottle.</p>
-                <span>Fashion, Trendy, Urban</span>
-                <p>$29.99</p>
-            </li>
-
-            <li class="card" role="listitem">
-                <img src="images/store/background-bottle-min6.webp" alt="Fresh Spring" draggable="false">
-                <h2>Fresh Spring</h2>
-                <p>Quench your thirst with the Fresh Spring water bottle.</p>
-                <span>Refreshing, Nature, Hiking</span>
-                <p>$12.99</p>
-            </li>
-
-            <li class="card" role="listitem">
-                <img src="images/store/bottle1-min.webp" alt="Summit Elite" draggable="false">
-                <h2>Summit Elite</h2>
-                <p>Reach new heights with the Summit Elite water bottle.</p>
-                <span>Mountaineering, Climbing, Outdoor</span>
-                <p>$27.99</p>
-            </li>
-        </ul>
-        <button id="cardRight" class="card-button" aria-label="Next product">
-            <svg>
-                <polyline points="9 18 15 12 9 6"></polyline>
-            </svg>
-        </button>
-    </div>
+        @endforeach
+    </ul>
+    <button id="cardRight" class="card-button" aria-label="Next product">
+        <svg>
+            <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+    </button>
+</div>
 </div>
 <div class="home__discover" style="background-image: url(images/store/discover-background.webp)">
-    <div class="container home__discover--flex">
-        <div class="home__discover--text">
-            <h1>Explore our products and find the perfect one for you.</h1>
-            <a href="#">Discover our products</a>
-        </div>
-        <img src="images/store/discover-items.webp" alt="discover items">
+<div class="container home__discover--flex">
+    <div class="home__discover--text">
+        <h1>Explore our products and find the perfect one for you.</h1>
+        <a href="#">Discover our products</a>
     </div>
+    <img src="images/store/discover-items.webp" alt="discover items">
+</div>
 </div>
 {{--
 <div class="home__video">
