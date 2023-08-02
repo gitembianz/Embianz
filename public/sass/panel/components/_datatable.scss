@@ -102,6 +102,7 @@
   .livewire-table {
     display: inline-block;
     width: calc(100% + ($contentPadding * 2));
+    margin-left: -30px;
 
     &--modal {
       width: 100%;
