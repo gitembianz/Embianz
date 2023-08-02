@@ -189,6 +189,7 @@ class RelatedMediaProduct extends Component
       $media->tabel_id = Tabels::where('name', $productType)->first()->id;
 
       $media->save();
+      $this->product->media()->attach($media->id);
       session()->flash('notification', [
         'message' => 'Record related successfully!',
         'type' => 'success',
@@ -262,6 +263,7 @@ class RelatedMediaProduct extends Component
       $media->createdby = Auth::user()->name;
       $media->lastmodifiedby = Auth::user()->name;
       $media->save();
+      $this->product->media()->attach($media->id);
       $this->i += 1;
     }
     $this->medias = [];

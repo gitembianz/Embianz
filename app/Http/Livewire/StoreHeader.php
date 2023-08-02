@@ -45,7 +45,7 @@ class StoreHeader extends Component
   }
   public function getObjectsQueryProperty()
   {
-    return Product::name($this->search)->with('product_prices')->with('product_categories');
+    return Product::name($this->search)->with('product_prices')->with('media');
   }
   public function getCatsProperty()
   {
@@ -53,6 +53,6 @@ class StoreHeader extends Component
   }
   public function getCatsQueryProperty()
   {
-    return Category::name($this->search);
+    return Category::name($this->search)->with('media');
   }
 }
