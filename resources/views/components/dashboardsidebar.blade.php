@@ -95,7 +95,8 @@
                     </button>
                     <span>Settings</span>
                 </a>
-                <div class="dropdown-list" style="background: none">
+                <div class="dropdown-list"
+                    style="background: none; width: 100%;padding: 0;margin-top: -10px;padding-top: 20px;">
                     <a class="sidebar__subitem" href="{{ route('storesettings') }}">
                         <button class="sidebar__icon">
                             <svg>
