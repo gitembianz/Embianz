@@ -210,7 +210,7 @@
                 <div class="product__item--bundle">
                     <h4>{{ $product->name }}</h4>
                     <span>1000ml</span>
-                    <p>{{ $product->short_description }}</p>
+                    {{-- <p>{{ $product->short_description }}</p> --}}
                     <div class="product__item--buttons">
                         <div class="product__item--price">
                             <span>

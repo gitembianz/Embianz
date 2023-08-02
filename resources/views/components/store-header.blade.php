@@ -1,4 +1,4 @@
-<header>
+<header class="show">
     <div class="header__top">
         <div class="container header__top--flex">
             <h4>

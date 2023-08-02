@@ -136,6 +136,7 @@
     @include box(100%, 100%);
     object-fit: cover;
     border-radius: 10px;
+    padding-bottom: 40%;
     transition: scale .5s ease-in-out;
   }
 
@@ -162,8 +163,7 @@
     @include box(2.5rem);
     @include flexer(row, center, center);
     background-color: #f2f2f2;
-    border-bottom: 1px solid $text;
-    border-left: 1px solid $text;
+    border-radius: 50%;
 
     svg {
       // scale: .8;
@@ -178,12 +178,11 @@
     width: 100%;
 
     @include breakpoint(large) {
-      padding: 10px;
+      padding-top: 15px;
       gap: 10px;
 
       button {
-        border-radius: 50%;
-        border: unset;
+        margin-right: 15px
       }
     }
   }
@@ -199,7 +198,9 @@
     color: $background;
 
     @include breakpoint(medium) {
-      font-size: 16px;
+      flex: unset;
+      width: auto;
+      padding: 5px 10px;
     }
   }
 }

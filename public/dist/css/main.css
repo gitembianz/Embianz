@@ -1820,6 +1820,11 @@ main {
   display: flex;
 }
 
+.tab__list--form--resize {
+  height: auto;
+  padding: 0 10px;
+}
+
 .tab__list--form {
   padding: 20px 0;
   display: flex;
@@ -4863,7 +4868,7 @@ header,
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   margin: 20px 0;
-  gap: 10px;
+  gap: 20px;
   width: 100%;
 }
 .item__form > h1 {
@@ -4967,28 +4972,28 @@ header,
 .item__form-input-close input:valid ~ span,
 .item__form-close input:valid ~ span {
   background: #f3f3f3;
-  top: 0;
+  top: -10px;
+  left: 0;
 }
 .item__form-input textarea, .item__form-input-close textarea, .item__form-close textarea {
   height: 12rem;
+  resize: vertical;
 }
 .item__form-input-close, .item__form-close {
   cursor: not-allowed;
 }
 .item__form-input-close span, .item__form-close span {
   position: absolute;
-  top: 0;
+  top: -10px;
   right: auto;
   bottom: auto;
-  left: 15px;
+  left: 0;
   font-size: 0.875rem;
   font-weight: 400;
   color: #BBFCDE;
   color: #35424B;
-  transform: translateY(-50%);
   transition: all 0.2s ease-in-out;
   background-color: #ffffff;
-  padding: 0 10px;
 }
 .item__form-input-close div, .item__form-close div,
 .item__form-input-close textarea,
@@ -5257,6 +5262,7 @@ header,
   .item__form-long {
     grid-column: 1;
     grid-column-end: 3;
+    padding: 0;
   }
   .item__form.form-table-mobile {
     grid-template-columns: 0fr 1fr 0fr 0fr 0fr 0fr;
