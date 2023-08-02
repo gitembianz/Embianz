@@ -61,7 +61,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     margin: 20px 0;
-    gap: 10px;
+    gap: 20px;
     width: 100%;
 
     &>h1 {
@@ -130,12 +130,15 @@
         &:focus~span,
         &:valid~span {
           background: #f3f3f3;
-          top: 0;
+          top: -10px;
+          left: 0;
+
         }
       }
 
       textarea {
         height: $BtnSize * 4;
+        resize: vertical;
       }
     }
 
@@ -143,13 +146,11 @@
       cursor: not-allowed;
 
       span {
-        @include position(absolute, 0, auto, auto, 15px);
+        @include position(absolute, -10px, auto, auto, 0);
         @include standart-Font;
         color: $mainBg;
-        transform: translateY(-50%);
         transition: $transition;
         background-color: $white;
-        padding: 0 10px;
       }
 
       div,

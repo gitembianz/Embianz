@@ -188,6 +188,10 @@ body {
   background-color: #ffffff;
 }
 
+main {
+  margin-top: 130px;
+}
+
 .container {
   max-width: 100%;
   padding: clamp(10px, 3vw, 50px);
@@ -487,6 +491,20 @@ div[data-tooltip-down]:hover::before {
 
 header {
   border-bottom: 1px solid #202124;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background: white;
+}
+
+header {
+  transition: transform 0.3s ease-out;
+}
+
+header:not(.show) {
+  transform: translateY(-100%);
 }
 
 .header {
@@ -2171,6 +2189,7 @@ footer {
   -o-object-fit: cover;
      object-fit: cover;
   border-radius: 10px;
+  padding-bottom: 40%;
   transition: scale 0.5s ease-in-out;
 }
 .product__item--buttons {
@@ -2213,8 +2232,7 @@ footer {
   flex: 0 1 auto;
   gap: 0;
   background-color: #f2f2f2;
-  border-bottom: 1px solid #202124;
-  border-left: 1px solid #202124;
+  border-radius: 50%;
 }
 .product__item--heart svg {
   stroke: #104010;
@@ -2237,15 +2255,14 @@ footer {
 }
 @media (min-width: 992px) {
   .product__item--header {
-    padding: 10px;
+    padding-top: 15px;
     gap: 10px;
   }
   .product__item--header .container {
     max-width: 960px;
   }
   .product__item--header button {
-    border-radius: 50%;
-    border: unset;
+    margin-right: 15px;
   }
 }
 .product__item--stock {
@@ -2267,7 +2284,9 @@ footer {
 }
 @media (min-width: 768px) {
   .product__item--stock {
-    font-size: 16px;
+    flex: unset;
+    width: auto;
+    padding: 5px 10px;
   }
 }
 

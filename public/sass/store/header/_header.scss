@@ -1,5 +1,19 @@
 header {
   border-bottom: 1px solid $text;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background: white;
+}
+
+header {
+  transition: transform 0.3s ease-out;
+}
+
+header:not(.show) {
+  transform: translateY(-100%);
 }
 
 .header {

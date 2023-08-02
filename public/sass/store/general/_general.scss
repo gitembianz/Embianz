@@ -127,6 +127,10 @@ body {
   background-color: $background;
 }
 
+main {
+  margin-top: 130px;
+}
+
 .container {
   max-width: 100%;
   @include responsive-spacing(padding, .03); // Adjust ratio as needed
