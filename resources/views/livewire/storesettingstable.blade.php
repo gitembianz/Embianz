@@ -6,21 +6,11 @@
         </div>
     </div>
     <div class=" @if ($checked) item__form form-table-mobile @else item__form form-table @endif">
-        <h1 id="title" class="item__header-title">{{ __('Products') }}</h1>
+        <h1 id="title" class="item__header-title">{{ __('Store settings') }}</h1>
 
         <div class="item__form-input" id="searchInput">
-            <input wire:model.debounce.200ms="search" required type="text" id="newInput"
-                placeholder="Search category...">
+            <input wire:model.debounce.200ms="search" required type="text" id="newInput" placeholder="Search...">
             {{-- <span>Search Category...</span> --}}
-        </div>
-        <div class="item__form-input">
-            <select id="perPage" wire:model="perPage">
-                <option>10</option>
-                <option>25</option>
-                <option>50</option>
-                <option>100</option>
-            </select>
-            {{-- <span>Per Page :</span> --}}
         </div>
 
         <div class="dropdown">
