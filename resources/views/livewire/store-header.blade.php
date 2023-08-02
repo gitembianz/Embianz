@@ -198,37 +198,65 @@
                              @foreach ($objects as $product)
                                  <li>
                                      <a class="search__container--item" href="/product/{{ $product->id }}">
-                                         <img src="/images/store/bottle1-min.webp" alt="bottle">
-                                         <p> {{ $product->name }}</p>
-                                         <span>
-                                             @if ($product->product_prices->first())
-                                                 {{ $product->product_prices->first()->value }}
-                                                 {{ $product->product_prices->first()->pricelist->currency->name }}
-                                             @else
-                                                 {{ __('no price') }}
+                                         @if (count($product->media) > 0)
+                                             @foreach ($product->media as $media)
+                                                 @if ($media->location->location == 'search')
+                                                     @if ($media->external)
+                                                         <img src="{{ $media->path }}" alt="{{ $media->path }}">
+                                                     @else
+                                                         <img src="/{{ $media->path }}{{ $media->name }}"
+                                                             alt="{{ $media->path }}">
+                                                     @endif
+                                                 @break
                                              @endif
-                                         </span>
-                                     </a>
-                                 </li>
-                             @endforeach
-                         @endif
-                         @if (count($cats) > 0)
-                             @foreach ($cats as $category)
-                                 <li>
-                                     <a class="search__container--item" href="">
-                                         <img alt="Image Categories">
-                                         <p> {{ $category->name }}</p>
-                                     </a>
-                                 </li>
-                             @endforeach
-                         @endif
-                     @else
-                         <li>
-                             {{ __('No elements found') }}
-                         </li>
+                                         @endforeach
+                                     @else
+                                         <img src="/images/store/default/default.svg" alt="something wrong">
+                                     @endif
+                                     <p> {{ $product->name }}</p>
+                                     <span>
+                                         @if ($product->product_prices->first())
+                                             {{ $product->product_prices->first()->value }}
+                                             {{ $product->product_prices->first()->pricelist->currency->name }}
+                                         @else
+                                             {{ __('no price') }}
+                                         @endif
+                                     </span>
+                                 </a>
+                             </li>
+                         @endforeach
                      @endif
-                 </ul>
+                     @if (count($cats) > 0)
+                         @foreach ($cats as $category)
+                             <li>
+                                 <a class="search__container--item" href="">
+                                     @if (count($category->media) > 0)
+                                         @foreach ($category->media as $media)
+                                             @if ($media->location->location == 'search')
+                                                 @if ($media->external)
+                                                     <img src="{{ $media->path }}" alt="{{ $media->path }}">
+                                                 @else
+                                                     <img src="/{{ $media->path }}{{ $media->name }}"
+                                                         alt="{{ $media->path }}">
+                                                 @endif
+                                             @break
+                                         @endif
+                                     @endforeach
+                                 @else
+                                     <img src="/images/store/default/default.svg" alt="something wrong">
+                                 @endif
+                                 <p> {{ $category->name }}</p>
+                             </a>
+                         </li>
+                     @endforeach
+                 @endif
+             @else
+                 <li>
+                     {{ __('No elements found') }}
+                 </li>
              @endif
-         </div>
-     </div>
+         </ul>
+     @endif
  </div>
+</div>
+</div>

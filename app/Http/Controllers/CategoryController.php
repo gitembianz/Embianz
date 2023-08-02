@@ -114,7 +114,9 @@ class CategoryController extends Controller
         $media->size = $size[$i];
         $media->createdby = Auth::user()->name;
         $media->lastmodifiedby = Auth::user()->name;
+        $media->external = false;
         $media->save();
+        $data->media()->attach($media->id);
         $i += 1;
       }
     }
