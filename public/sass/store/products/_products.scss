@@ -1,14 +1,10 @@
 .products {
-  @include flexer(column, $gap: 30px);
+  @include flexer(column, $gap: 20px);
 
   &__control {
     @include flexer(row, space-between, flex-end, 30px);
     position: relative;
-    display: grid;
-    grid-template-columns: 0fr 1fr 0fr;
-    justify-items: start;
     gap: 30px;
-    row-gap: 10px;
   }
 
   &__select {
