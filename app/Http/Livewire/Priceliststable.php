@@ -12,7 +12,7 @@ class Priceliststable extends Component
 {
 
   use WithPagination;
-  public $perPage = 10;
+  public $loadAmount = 13;
   public $search = '';
   public $orderBy = 'id';
   public $orderAsc = true;
@@ -69,6 +69,10 @@ class Priceliststable extends Component
   {
     return $this->orderAsc === '1' ? '0' : '1';
   }
+  public function loadMore()
+  {
+    $this->loadAmount += 10;
+  }
   public function selectAll()
   {
     $this->selectAll = true;
@@ -76,7 +80,7 @@ class Priceliststable extends Component
   }
   public function getPricelistsProperty()
   {
-    return $this->pricelistsQuery->paginate($this->perPage);
+    return $this->pricelistsQuery->limit($this->loadAmount)->get();
   }
   public function getPricelistsQueryProperty()
   {

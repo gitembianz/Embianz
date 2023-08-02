@@ -6,23 +6,11 @@
         </div>
     </div>
     <div class=" @if ($checked) item__form form-table-mobile @else item__form form-table @endif">
-        <h1 id="title" class="item__header-title">{{ __('Products') }}</h1>
+        <h1 id="title" class="item__header-title">{{ __('Pricelists') }}</h1>
 
         <div class="item__form-input" id="searchInput">
-            <input wire:model.debounce.200ms="search" required type="text" id="newInput"
-                placeholder="Search category...">
-            {{-- <span>Search Category...</span> --}}
+            <input wire:model.debounce.200ms="search" required type="text" id="newInput" placeholder="Search...">
         </div>
-        <div class="item__form-input">
-            <select id="perPage" wire:model="perPage">
-                <option>10</option>
-                <option>25</option>
-                <option>50</option>
-                <option>100</option>
-            </select>
-            {{-- <span>Per Page :</span> --}}
-        </div>
-
         <div class="dropdown">
             <button class="dropdown-button">Columns
                 <svg>
@@ -56,7 +44,7 @@
                 </div>
             @endif
         </div>
-        <a href="{{ route('newcategory') }}" class="item__header-btn">
+        <a href="{{ route('newpricelist') }}" class="item__header-btn">
             <svg>
                 <line x1="12" y1="5" x2="12" y2="19"></line>
                 <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -168,7 +156,8 @@
         </thead>
         <tbody>
             @foreach ($pricelists as $index => $price)
-                <tr class="@if ($this->isChecked($price->id)) th_checked @endif">
+                <tr @if ($loop->last) id="last_record" @endif
+                    class="@if ($this->isChecked($price->id)) th_checked @endif">
                     <td data-title="Check"><input type="checkbox" value="{{ $price->id }}" wire:model="checked">
                     </td>
 
@@ -257,6 +246,21 @@
                 </tr>
             @endforeach
         </tbody>
+        <script>
+            const lastRecord = document.getElementById('last_record');
+            const options = {
+                root: null,
+                threshold: 1,
+                rootMargin: '0px'
+            }
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        @this.loadMore()
+                    }
+                });
+            });
+            observer.observe(lastRecord);
+        </script>
     </table>
-    <div>{{ $pricelists->links('pagination-links') }} </div>
 </div>

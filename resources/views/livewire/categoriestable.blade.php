@@ -11,20 +11,8 @@
         <h1 id="title" class="item__header-title">{{ __('Categories') }}</h1>
 
         <div class="item__form-input" id="searchInput">
-            <input wire:model.debounce.200ms="search" required type="text" id="newInput"
-                placeholder="Search category...">
-            {{-- <span>Search Category...</span> --}}
+            <input wire:model.debounce.200ms="search" required type="text" id="newInput" placeholder="Search...">
         </div>
-        <div class="item__form-input">
-            <select id="perPage" wire:model="perPage">
-                <option>10</option>
-                <option>25</option>
-                <option>50</option>
-                <option>100</option>
-            </select>
-            {{-- <span>Per Page :</span> --}}
-        </div>
-
         <div class="dropdown">
             <button class="dropdown-button">Columns
                 <svg>
@@ -180,7 +168,8 @@
         </thead>
         <tbody>
             @foreach ($categories as $category)
-                <tr class="@if ($this->isChecked($category->id)) th_checked @endif">
+                <tr @if ($loop->last) id="last_record" @endif
+                    class="@if ($this->isChecked($category->id)) th_checked @endif">
                     <td data-title="Check"><input type="checkbox" value="{{ $category->id }}" wire:model="checked">
                     </td>
 
@@ -213,6 +202,21 @@
                 </tr>
             @endforeach
         </tbody>
+        <script>
+            const lastRecord = document.getElementById('last_record');
+            const options = {
+                root: null,
+                threshold: 1,
+                rootMargin: '0px'
+            }
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        @this.loadMore()
+                    }
+                });
+            });
+            observer.observe(lastRecord);
+        </script>
     </table>
-    <div>{{ $categories->links('pagination-links') }} </div>
 </div>
