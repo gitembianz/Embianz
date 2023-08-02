@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\File;
 class Categoriestable extends Component
 {
   use WithPagination;
-  public $perPage = 10;
+  public $loadAmount = 15;
   public $search = '';
   public $orderBy = 'id';
   public $orderAsc = true;
@@ -74,7 +74,11 @@ class Categoriestable extends Component
   }
   public function getCategoriesProperty()
   {
-    return $this->categoriesQuery->paginate($this->perPage);
+    return $this->categoriesQuery->limit($this->loadAmount)->get();
+  }
+  public function loadMore()
+  {
+    $this->loadAmount += 10;
   }
   public function getCategoriesQueryProperty()
   {

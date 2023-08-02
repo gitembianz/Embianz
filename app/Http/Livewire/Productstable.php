@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\File;
 class Productstable extends Component
 {
   use WithPagination;
-  public $perPage = 10;
+  public $loadAmount = 13;
   public $search = '';
   public $orderBy = 'id';
   public $orderAsc = true;
@@ -74,12 +74,16 @@ class Productstable extends Component
   }
   public function getProductsProperty()
   {
-    return $this->productsQuery->paginate($this->perPage);
+    return $this->productsQuery->limit($this->loadAmount)->get();
   }
   public function getProductsQueryProperty()
   {
     return Product::search($this->search)
       ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc');
+  }
+  public function loadMore()
+  {
+    $this->loadAmount += 10;
   }
   public function deleteRecords()
   {
