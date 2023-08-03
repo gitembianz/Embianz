@@ -415,9 +415,10 @@
                                         @if ($this->showColumn('Product name'))
                                             <td data-title="Product name">
                                                 @if ($editedrow !== $index)
-                                                    <div class="cursor-p"
-                                                        wire:click.prevent="editprod({{ $prod->id }}, {{ $prod->product->id }}, {{ $index }})">
-                                                        {{ $prod->product->name }}</div>
+                                                    <div>
+                                                        <a
+                                                            href="/show_product/{{ $prod->product->id }}">{{ $prod->product->name }}</a>
+                                                    </div>
                                                 @else
                                                     @if ($allow)
                                                         <div>
@@ -450,8 +451,7 @@
                                         @if ($this->showColumn('Value'))
                                             <td data-title="Value">
                                                 @if ($editedrow !== $index)
-                                                    <div class="cursor-p"
-                                                        wire:click.prevent="editprod({{ $prod->id }}, {{ $prod->product->id }}, {{ $index }})">
+                                                    <div>
                                                         {{ $prod->value }}</div>
                                                 @else
                                                     <input type="text" required class="table-edit wid-6"

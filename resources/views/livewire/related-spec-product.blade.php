@@ -413,9 +413,9 @@
                                         @if ($this->showColumn('Name'))
                                             <td data-title="Name">
                                                 @if ($editedrow !== $index)
-                                                    <div class="cursor-p"
-                                                        wire:click.prevent="editspec({{ $spec->id }}, {{ $spec->spec->id }}, {{ $index }})">
-                                                        {{ $spec->spec->name }}</div>
+                                                    <div><a class="cursor-p"
+                                                            href="/show_spec/{{ $spec->spec->id }}">{{ $spec->spec->name }}</a>
+                                                    </div>
                                                 @else
                                                     @if ($allow)
                                                         <div>
@@ -448,8 +448,7 @@
                                         @if ($this->showColumn('Value'))
                                             <td data-title="Value">
                                                 @if ($editedrow !== $index)
-                                                    <div class="cursor-p"
-                                                        wire:click.prevent="editspec({{ $spec->id }}, {{ $spec->spec->id }}, {{ $index }})">
+                                                    <div>
                                                         {{ $spec->value }}</div>
                                                 @else
                                                     <input type="text" required class="table-edit wid-6"

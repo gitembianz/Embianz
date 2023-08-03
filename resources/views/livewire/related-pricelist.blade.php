@@ -412,9 +412,9 @@
                                         @if ($this->showColumn('Name'))
                                             <td data-title="Name">
                                                 @if ($editedrow !== $index)
-                                                    <div class="cursor-p"
-                                                        wire:click.prevent="edititem({{ $prices->id }}, {{ $prices->pricelist->id }}, {{ $index }})">
-                                                        {{ $prices->pricelist->name }}</div>
+                                                    <div> <a
+                                                            href="/show_pricelist/{{ $prices->pricelist->id }}">{{ $prices->pricelist->name }}</a>
+                                                    </div>
                                                 @else
                                                     @if ($allow)
                                                         <div>
@@ -447,8 +447,7 @@
                                         @if ($this->showColumn('Value'))
                                             <td data-title="Value">
                                                 @if ($editedrow !== $index)
-                                                    <div class="cursor-p"
-                                                        wire:click.prevent="edititem({{ $prices->id }}, {{ $prices->pricelist->id }}, {{ $index }})">
+                                                    <div>
                                                         {{ $prices->value }}</div>
                                                 @else
                                                     <input type="text" required class="table-edit wid-6"
