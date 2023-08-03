@@ -24,7 +24,7 @@ class ShowProduct extends Component
   public function confirmProductRemoval($id)
   {
     $this->productId = $id;
-    $this->dispatchBrowserEvent('show-delete-modal-category');
+    $this->dispatchBrowserEvent('show-delete-modal');
   }
   public function editproduct()
   {

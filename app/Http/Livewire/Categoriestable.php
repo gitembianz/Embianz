@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\Category;
+use App\Models\Subcategory;
 use Livewire\WithPagination;
 use App\Exports\CategoriesExport;
 use App\Models\Products_categories;
@@ -95,6 +96,12 @@ class Categoriestable extends Component
       if ($productcat != NULL) {
         $productcat->delete();
       }
+      $subcategories = Subcategory::where('parrent_id', $id)->get();
+      if ($subcategories != NULL) {
+        foreach ($subcategories as $sub) {
+          $sub->delete();
+        }
+      }
       $productType = class_basename(get_class($cattodel));
       $filespath = 'media/' . $productType . '/' . $cattodel->id;
       if (File::exists($filespath)) {
@@ -121,6 +128,12 @@ class Categoriestable extends Component
         $productcat->delete();
       }
     }
+    $subcategories = Subcategory::where('parrent_id', $id)->get();
+    if ($subcategories != NULL) {
+      foreach ($subcategories as $sub) {
+        $sub->delete();
+      }
+    }
     $productType = class_basename(get_class($category));
     $filespath = '.media/' . $productType . '/' . $category->id;
     if (File::exists($filespath)) {
@@ -137,11 +150,11 @@ class Categoriestable extends Component
   public function confirmCategoryRemoval($id)
   {
     $this->catidbeingremoved = $id;
-    $this->dispatchBrowserEvent('show-delete-modal-category');
+    $this->dispatchBrowserEvent('show-delete-modal');
   }
   public function confirmCategoriesRemovalmultiple()
   {
-    $this->dispatchBrowserEvent('show-delete-modal-category-multiple');
+    $this->dispatchBrowserEvent('show-delete-modal-multiple');
   }
   public function isChecked($id)
   {

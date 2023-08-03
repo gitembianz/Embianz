@@ -335,7 +335,7 @@
                         {{-- modals --}}
 
                         {{-- delete single record --}}
-                        <div class="modal" id="confirmationmodalitem">
+                        <div class="modal" id="confirmationmodal">
                             <div class="modal-content">
                                 <h1 class="modal-content-title">
                                     {{ __('Are you sure to delete this record?') }}
