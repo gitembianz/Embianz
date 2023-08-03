@@ -357,11 +357,11 @@ class RelatedMediaProduct extends Component
   public function confirmFileRemoval($id)
   {
     $this->mediaidbeingremoved = $id;
-    $this->dispatchBrowserEvent('show-delete-modal-media');
+    $this->dispatchBrowserEvent('show-delete-modal');
   }
   public function confirmFilesRemovalmultiple()
   {
-    $this->dispatchBrowserEvent('show-delete-modal-media-multiple');
+    $this->dispatchBrowserEvent('show-delete-modal-multiple');
   }
   public function exportSelected()
   {

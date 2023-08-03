@@ -1,19 +1,6 @@
 <script>
     //script form modals
     window.addEventListener('show-delete-modal', event => {
-        document.getElementById('confirmationmodalitem').style.display = 'flex';
-    });
-    window.addEventListener('show-delete-modal-category-multiple', event => {
-        document.getElementById('confirmationmodalcategorymultiple').style.display = 'flex';
-    });
-    window.addEventListener('show-delete-modal-media', event => {
-        document.getElementById('confirmationmodalmedia').style.display = 'flex';
-    });
-    window.addEventListener('show-delete-modal-media-multiple', event => {
-        document.getElementById('confirmationmodalmediamultiple').style.display = 'flex';
-    });
-    //script for products- modals
-    window.addEventListener('show-delete-modal', event => {
         document.getElementById('confirmationmodal').style.display = 'flex';
     });
     window.addEventListener('show-delete-modal-multiple', event => {
@@ -22,27 +9,12 @@
     window.addEventListener('show-link-modal-multiple', event => {
         document.getElementById('confirmationmodallinkmultiple').style.display = 'flex';
     });
-
     window.addEventListener('show-link-modal', event => {
         document.getElementById('confirmationmodallink').style.display = 'flex';
     });
     window.addEventListener('show-add-modal', event => {
         document.getElementById('addmodal').style.display = 'flex';
     });
-    window.addEventListener('media', event => {
-        document.getElementById('uploadmedia').style.display = 'flex';
-    });
-    //Script for alert desepear
-    var element = document.getElementById('alertevent');
-    if (element) {
-        element.style.transition = 'opacity 0.5s ease';
-        setTimeout(function() {
-            element.style.opacity = '0';
-            setTimeout(function() {
-                element.remove();
-            }, 500);
-        }, 2000);
-    }
 
     // JavaScript code
     document.addEventListener('livewire:load', function() {

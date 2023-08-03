@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use App\Models\Category;
 use App\Models\Products_categories;
+use App\Models\Subcategory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 
@@ -106,6 +107,12 @@ class ShowCategory extends Component
     if ($productcats != NULL) {
       foreach ($productcats as $productcat) {
         $productcat->delete();
+      }
+    }
+    $subcategories = Subcategory::where('parrent_id', $id)->get();
+    if ($subcategories != NULL) {
+      foreach ($subcategories as $sub) {
+        $sub->delete();
       }
     }
     $productType = class_basename(get_class($category));
