@@ -23,8 +23,6 @@ class RelatedMediaCategory extends Component
   public $categoryId;
   public $category;
   public $showmedia = false;
-  public $productType;
-  public $type;
   public $medias = [];
   public $filess = [];
   public $perPage = 10;
@@ -44,7 +42,6 @@ class RelatedMediaCategory extends Component
   public $file_name = [];
   public $col = false;
   public $all = false;
-  public $hasResults;
   public $editedMediaIndex = null;
   public $i;
   public $j;
@@ -56,8 +53,6 @@ class RelatedMediaCategory extends Component
   {
     $this->categoryId = $categoryId;
     $this->category = Category::find($categoryId);
-    $this->productType = class_basename(get_class($this->category));
-    $this->type = Tabels::where('name', $this->productType)->first()->id;
     $this->selectedColumns = $this->columns;
     $this->locations = MediaLocation::all();
     $this->file_locations[] = '1';
@@ -95,7 +90,6 @@ class RelatedMediaCategory extends Component
   }
   public function saveexternal()
   {
-    $productType = class_basename(get_class($this->category));
     for ($this->i = 1; $this->i <= $this->row; $this->i++) {
       $this->resetErrorBag();
       $this->validate([
@@ -112,8 +106,6 @@ class RelatedMediaCategory extends Component
       $media->external = true;
       $media->createdby = Auth::user()->name;
       $media->lastmodifiedby = Auth::user()->name;
-      $media->item_id = $this->categoryId;
-      $media->tabel_id = Tabels::where('name', $productType)->first()->id;
       $media->save();
       $this->category->media()->attach($media->id);
     }
@@ -245,7 +237,6 @@ class RelatedMediaCategory extends Component
         $width = $image->width();
         $height = $image->height();
       }
-      $media->item_id = $data->id;
       $media->path = $path;
       $media->name = $file->getClientOriginalName();
       $filename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
@@ -258,7 +249,6 @@ class RelatedMediaCategory extends Component
         $media->name = $filename . '(' . $this->j . ').' . $type;
       }
       $file->storeAs($path, $media->name, 'public_upload');
-      $media->tabel_id = Tabels::where('name', $productType)->first()->id;
       $media->sequence = $this->file_sequences[$this->i];
       $media->location_id = MediaLocation::where('id', $this->file_locations[$this->i])->first()->id;
       $media->type = $type;
@@ -342,14 +332,7 @@ class RelatedMediaCategory extends Component
     $this->selectAll = true;
     $this->checked = $this->filesQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
   }
-  public function getFilesProperty()
-  {
-    return $this->filesQuery->paginate($this->perPage);
-  }
-  public function getFilesQueryProperty()
-  {
-    return Media::orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->where('item_id', $this->categoryId)->where('tabel_id', $this->type)->with('location');
-  }
+
   public function isChecked($id)
   {
     return in_array($id, $this->checked);
@@ -378,9 +361,8 @@ class RelatedMediaCategory extends Component
   }
   public function render()
   {
-    $this->hasResults = $this->files->isNotEmpty();
     return view('livewire.related-media-category', [
-      'files' => $this->files
+      'category' => $this->category
     ]);
   }
 }

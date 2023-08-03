@@ -697,6 +697,7 @@ class ComposerStaticInitdbceb679be78fc0f2f620fcaf24d3e3e
         'App\\Http\\Requests\\UpdateStoreRequest' => __DIR__ . '/../..' . '/app/Http/Requests/UpdateStoreRequest.php',
         'App\\Models\\Category' => __DIR__ . '/../..' . '/app/Models/Category.php',
         'App\\Models\\Currency' => __DIR__ . '/../..' . '/app/Models/Currency.php',
+        'App\\Models\\ItemMedia' => __DIR__ . '/../..' . '/app/Models/ItemMedia.php',
         'App\\Models\\Media' => __DIR__ . '/../..' . '/app/Models/Media.php',
         'App\\Models\\MediaLocation' => __DIR__ . '/../..' . '/app/Models/MediaLocation.php',
         'App\\Models\\PriceList' => __DIR__ . '/../..' . '/app/Models/PriceList.php',

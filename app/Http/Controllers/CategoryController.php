@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use getID3;
 use App\Models\Media;
-use App\Models\Tabels;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\MediaLocation;
@@ -86,7 +85,6 @@ class CategoryController extends Controller
           $height = $image->height();
         }
         //save the path and the name
-        $media->item_id = $data->id;
         $media->path = $path;
         $media->name = $file->getClientOriginalName();
         //store the media
@@ -102,7 +100,6 @@ class CategoryController extends Controller
         }
         $file->move($path, $media->name);
         $media->sequence =  $sequences[$i];
-        $media->tabel_id = Tabels::where('name', $productType)->first()->id;
         if ($locations[$i] != NULL) {
           $media->location_id = MediaLocation::where('location', $locations[$i])->first()->id;
         } else {
