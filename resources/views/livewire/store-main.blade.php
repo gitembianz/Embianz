@@ -23,6 +23,7 @@
                         and lightweight design makes it an ideal choice for carrying your favorite beverages wherever
                         you go. The durable construction ensures long-lasting use, while the vibrant and eye-catching
                         design adds a touch of personality to your hydration routine.
+
                     </p>
                     <button aria-label="See more">See more</button>
                 </div>

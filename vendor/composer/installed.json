@@ -1915,17 +1915,17 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v10.17.0",
-            "version_normalized": "10.17.0.0",
+            "version": "v10.17.1",
+            "version_normalized": "10.17.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "a0e3f5ac5b6258f6ede9a2a2c5cc3820baea24a2"
+                "reference": "a82d96fd94069e346eb8037d178e6ccc4daaf3f9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/a0e3f5ac5b6258f6ede9a2a2c5cc3820baea24a2",
-                "reference": "a0e3f5ac5b6258f6ede9a2a2c5cc3820baea24a2",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/a82d96fd94069e346eb8037d178e6ccc4daaf3f9",
+                "reference": "a82d96fd94069e346eb8037d178e6ccc4daaf3f9",
                 "shasum": ""
             },
             "require": {
@@ -2070,7 +2070,7 @@
                 "symfony/postmark-mailer": "Required to enable support for the Postmark mail transport (^6.2).",
                 "symfony/psr-http-message-bridge": "Required to use PSR-7 bridging features (^2.0)."
             },
-            "time": "2023-08-01T14:08:45+00:00",
+            "time": "2023-08-02T14:59:58+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -2260,22 +2260,22 @@
         },
         {
             "name": "laravel/prompts",
-            "version": "v0.1.1",
-            "version_normalized": "0.1.1.0",
+            "version": "v0.1.3",
+            "version_normalized": "0.1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/prompts.git",
-                "reference": "309b30157090a63c40152aa912d198d6aeb60ea6"
+                "reference": "562c26eb82c85789ef36291112cc27d730d3fed6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/prompts/zipball/309b30157090a63c40152aa912d198d6aeb60ea6",
-                "reference": "309b30157090a63c40152aa912d198d6aeb60ea6",
+                "url": "https://api.github.com/repos/laravel/prompts/zipball/562c26eb82c85789ef36291112cc27d730d3fed6",
+                "reference": "562c26eb82c85789ef36291112cc27d730d3fed6",
                 "shasum": ""
             },
             "require": {
                 "ext-mbstring": "*",
-                "illuminate/collections": "^10.0",
+                "illuminate/collections": "^10.0|^11.0",
                 "php": "^8.1",
                 "symfony/console": "^6.2"
             },
@@ -2288,7 +2288,7 @@
             "suggest": {
                 "ext-pcntl": "Required for the spinner to be animated."
             },
-            "time": "2023-07-31T15:03:02+00:00",
+            "time": "2023-08-02T19:57:10+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -2305,7 +2305,7 @@
             ],
             "support": {
                 "issues": "https://github.com/laravel/prompts/issues",
-                "source": "https://github.com/laravel/prompts/tree/v0.1.1"
+                "source": "https://github.com/laravel/prompts/tree/v0.1.3"
             },
             "install-path": "../laravel/prompts"
         },
@@ -2862,17 +2862,17 @@
         },
         {
             "name": "league/mime-type-detection",
-            "version": "1.11.0",
-            "version_normalized": "1.11.0.0",
+            "version": "1.12.0",
+            "version_normalized": "1.12.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/mime-type-detection.git",
-                "reference": "ff6248ea87a9f116e78edd6002e39e5128a0d4dd"
+                "reference": "c7f2872fb273bf493811473dafc88d60ae829f48"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/mime-type-detection/zipball/ff6248ea87a9f116e78edd6002e39e5128a0d4dd",
-                "reference": "ff6248ea87a9f116e78edd6002e39e5128a0d4dd",
+                "url": "https://api.github.com/repos/thephpleague/mime-type-detection/zipball/c7f2872fb273bf493811473dafc88d60ae829f48",
+                "reference": "c7f2872fb273bf493811473dafc88d60ae829f48",
                 "shasum": ""
             },
             "require": {
@@ -2884,7 +2884,7 @@
                 "phpstan/phpstan": "^0.12.68",
                 "phpunit/phpunit": "^8.5.8 || ^9.3"
             },
-            "time": "2022-04-17T13:12:02+00:00",
+            "time": "2023-08-03T07:14:11+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -2905,7 +2905,7 @@
             "description": "Mime-type detection for Flysystem",
             "support": {
                 "issues": "https://github.com/thephpleague/mime-type-detection/issues",
-                "source": "https://github.com/thephpleague/mime-type-detection/tree/1.11.0"
+                "source": "https://github.com/thephpleague/mime-type-detection/tree/1.12.0"
             },
             "funding": [
                 {
@@ -2921,17 +2921,17 @@
         },
         {
             "name": "livewire/livewire",
-            "version": "v2.12.4",
-            "version_normalized": "2.12.4.0",
+            "version": "v2.12.5",
+            "version_normalized": "2.12.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/livewire/livewire.git",
-                "reference": "cca62ce8f751279c36404886b74a02e6dd0110f2"
+                "reference": "96a249f5ab51d8377817d802f91d1e440869c1d6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/livewire/livewire/zipball/cca62ce8f751279c36404886b74a02e6dd0110f2",
-                "reference": "cca62ce8f751279c36404886b74a02e6dd0110f2",
+                "url": "https://api.github.com/repos/livewire/livewire/zipball/96a249f5ab51d8377817d802f91d1e440869c1d6",
+                "reference": "96a249f5ab51d8377817d802f91d1e440869c1d6",
                 "shasum": ""
             },
             "require": {
@@ -2951,7 +2951,7 @@
                 "phpunit/phpunit": "^8.4|^9.0",
                 "psy/psysh": "@stable"
             },
-            "time": "2023-07-28T20:46:24+00:00",
+            "time": "2023-08-02T06:31:31+00:00",
             "type": "library",
             "extra": {
                 "laravel": {
@@ -2985,7 +2985,7 @@
             "description": "A front-end framework for Laravel.",
             "support": {
                 "issues": "https://github.com/livewire/livewire/issues",
-                "source": "https://github.com/livewire/livewire/tree/v2.12.4"
+                "source": "https://github.com/livewire/livewire/tree/v2.12.5"
             },
             "funding": [
                 {
@@ -4936,17 +4936,17 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "10.2.6",
-            "version_normalized": "10.2.6.0",
+            "version": "10.2.7",
+            "version_normalized": "10.2.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "1c17815c129f133f3019cc18e8d0c8622e6d9bcd"
+                "reference": "a215d9ee8bac1733796e4ddff3306811f14414e5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/1c17815c129f133f3019cc18e8d0c8622e6d9bcd",
-                "reference": "1c17815c129f133f3019cc18e8d0c8622e6d9bcd",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/a215d9ee8bac1733796e4ddff3306811f14414e5",
+                "reference": "a215d9ee8bac1733796e4ddff3306811f14414e5",
                 "shasum": ""
             },
             "require": {
@@ -4971,7 +4971,7 @@
                 "sebastian/diff": "^5.0",
                 "sebastian/environment": "^6.0",
                 "sebastian/exporter": "^5.0",
-                "sebastian/global-state": "^6.0",
+                "sebastian/global-state": "^6.0.1",
                 "sebastian/object-enumerator": "^5.0",
                 "sebastian/recursion-context": "^5.0",
                 "sebastian/type": "^4.0",
@@ -4980,7 +4980,7 @@
             "suggest": {
                 "ext-soap": "To be able to generate mocks based on WSDL files"
             },
-            "time": "2023-07-17T12:08:28+00:00",
+            "time": "2023-08-02T06:46:08+00:00",
             "bin": [
                 "phpunit"
             ],
@@ -5020,7 +5020,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/10.2.6"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/10.2.7"
             },
             "funding": [
                 {
