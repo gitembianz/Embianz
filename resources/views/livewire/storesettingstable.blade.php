@@ -218,7 +218,7 @@
                     @endif
 
                     @if ($this->showColumn('Created At'))
-                        <td data-title="Created At">{{ $store->created_at }}</td>
+                        <td data-title="Created At">{{ $store->created_at->format('M, d, Y') }}</td>
                     @endif
 
                     <td data-title="Action">
