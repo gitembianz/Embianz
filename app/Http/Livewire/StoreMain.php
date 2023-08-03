@@ -10,10 +10,11 @@ class StoreMain extends Component
 {
   public $limit = 10;
   public $slider;
+  public $category;
 
   public function mount($slider_category)
   {
-    $this->slider = $slider_category;
+    $this->category = Category::find($slider_category);
   }
 
   public function render()
@@ -30,9 +31,5 @@ class StoreMain extends Component
   public function getPopProductsQueryProperty()
   {
     return Product::orderBy('popularity', 'desc')->with('media')->with('product_prices');
-  }
-  public function getCategoryProperty()
-  {
-    return Category::find($this->slider)->first()->with('product_categories');
   }
 }

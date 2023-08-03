@@ -1,94 +1,33 @@
 <div class="home__container" id="homeContainer">
     <div id="home__slide" role="list">
-        <div class="home__item" style="background-image: url(images/store/background-bottle1.webp);" role="listitem">
-            <div class="home__content">
-                <div class="container home__content--flex">
-                    <h2>{{ $category->first()->products }}</h2>
-                    <p>
-                        Elevate your hydration game with this stylish 500 ML bottle. Crafted with a perfect balance of
-                        fashion and function, it offers a sleek and convenient solution for quenching your thirst on the
-                        go. With its generous capacity, it ensures you stay hydrated throughout the day, whether you're
-                        hitting the gym, exploring the outdoors, or simply running errands.
-                    </p>
-                    <button aria-label="See more">See more</button>
-                </div>
-            </div>
-        </div>
-        <div class="home__item" style="background-image:  url(images/store/background-bottle2.webp);" role="listitem">
-            <div class="home__content">
-                <div class="container home__content--flex">
-                    <h2>BEGONIA - 500 ML</h2>
-                    <p>
-                        Experience the perfect blend of trendiness and practicality with this 500 ML bottle. Its compact
-                        and lightweight design makes it an ideal choice for carrying your favorite beverages wherever
-                        you go. The durable construction ensures long-lasting use, while the vibrant and eye-catching
-                        design adds a touch of personality to your hydration routine.
+        @foreach ($category->product_categories as $product)
+            <div class="home__item home__this"
+                style="background-image:
+                 @if (count($product->product->media) > 0) @foreach ($product->product->media as $media)
+                                                 @if ($media->location->location == 'main')
+                                                     @if ($media->external)
+                                                         url({{ $media->path }}" alt="{{ $media->path }})
+                                                     @else
+                                                         url(/{{ $media->path }}{{ $media->name }}) @endif
+@break
 
-                    </p>
-                    <button aria-label="See more">See more</button>
+@endif
+                                         @endforeach
+@else
+url(/images/store/default/default.svg)
+        @endif"
+                role="listitem">
+                <div class="home__content">
+                    <div class="container home__content--flex">
+                        <h2>{{ $product->product->name }}</h2>
+                        <p>
+                            {{ $product->product->short_description }}
+                        </p>
+                        <button aria-label="See more">See more</button>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="home__item home__this" style="background-image:  url(images/store/background-bottle3.webp);"
-            role="listitem">
-            <div class=" home__content">
-                <div class="container home__content--flex">
-                    <h2>EBONY ROSE - 500 ML</h2>
-                    <p>
-                        Embrace elegance and sophistication with this stunning 500 ML bottle. The sleek black exterior
-                        and delicate rose-inspired accents make it a fashionable accessory that complements any style.
-                        Whether you're attending a special event or simply going about your daily routine, this bottle
-                        is the perfect companion for staying hydrated in style.
-                    </p>
-                    <button aria-label="See more">See more</button>
-                </div>
-            </div>
-        </div>
-        <div class="home__item home__this" style="background-image:  url(images/store/background-bottle4.webp);"
-            role="listitem">
-            <div class=" home__content">
-                <div class="container home__content--flex">
-                    <h2>GRACE - 500 ML</h2>
-                    <p>
-                        Discover the embodiment of grace and functionality in this 500 ML bottle. Its ergonomic design
-                        offers a comfortable grip, allowing you to stay hydrated with ease. The ample capacity ensures
-                        you have enough hydration to keep you going throughout the day, making it an essential companion
-                        for busy individuals who value both convenience and elegance.
-                    </p>
-                    <button aria-label="See more">See more</button>
-                </div>
-            </div>
-        </div>
-        <div class="home__item home__this" style="background-image:  url(images/store/background-bottle5.webp);"
-            role="listitem">
-            <div class=" home__content">
-                <div class="container home__content--flex">
-                    <h2>LITTLE BUDS - 500 ML</h2>
-                    <p>
-                        Add a dash of cheerfulness to your hydration routine with this adorable 500 ML bottle. The
-                        compact size and vibrant floral patterns make it a delightful accessory that brings a smile to
-                        your face every time you take a sip. Perfect for carrying your preferred drinks wherever you go,
-                        this bottle is a reminder to embrace the small joys in life.
-                    </p>
-                    <button aria-label="See more">See more</button>
-                </div>
-            </div>
-        </div>
-        <div class="home__item home__this" style="background-image:  url(images/store/background-bottle6.webp);"
-            role="listitem">
-            <div class=" home__content">
-                <div class="container home__content--flex">
-                    <h2>LOTUS - 500 ML</h2>
-                    <p>
-                        Immerse yourself in tranquility and beauty with this exquisite 500 ML bottle. Inspired by the
-                        enchanting lotus flower, its design evokes a sense of serenity and calmness. Crafted to provide
-                        a soothing drinking experience, it combines functionality with a touch of elegance, making it a
-                        perfect choice for yoga sessions, meditation, or simply unwinding after a long day.
-                    </p>
-                    <button aria-label="See more">See more</button>
-                </div>
-            </div>
-        </div>
+        @endforeach
     </div>
     <div class="home__buttons">
         <button id="home__prev" aria-label="Previous slide">
@@ -124,6 +63,7 @@
                                         alt="{{ $media->path }}">
                                 @endif
                             @break
+
                         @endif
                     @endforeach
                 @else
