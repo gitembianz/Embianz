@@ -223,3 +223,13 @@
     grid-column: 1/5;
   }
 }
+
+
+
+
+.item__details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin: 20px 0;
+}
