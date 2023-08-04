@@ -7,6 +7,9 @@
         </div>
     </div>
 
+
+
+    {{-- Header of the table --}}
     <div class="panel__header">
         <h1 class="panel__header--title">
             {{ __('Categories') }}
@@ -82,7 +85,7 @@
     </div>
 
 
-    {{-- modals --}}
+
     {{-- delete single record --}}
     <div class="modal" id="confirmationmodalitem">
         <div class="modal-content">
@@ -103,7 +106,6 @@
             </span>
         </div>
     </div>
-
     {{-- delete myltiple records --}}
     <div class="modal" id="confirmationmodalcategorymultiple">
         <div class="modal-content">
@@ -126,9 +128,9 @@
         </div>
     </div>
 
-    {{-- end modals --}}
 
-    {{-- New Table --}}
+
+    {{-- Table --}}
     <table class="table">
         <thead>
             <tr>
