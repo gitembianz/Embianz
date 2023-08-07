@@ -2660,6 +2660,7 @@ input[type=checkbox]:checked:before {
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  white-space: nowrap;
   gap: 5px;
 }
 .table__time svg {

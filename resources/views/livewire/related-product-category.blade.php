@@ -20,7 +20,7 @@
 
         @if ($showrelatedprod)
             <div class="accordion__content">
-                <div class="item">
+                <div>
                     {{-- html for adding products --}}
                     @if ($showTable === false)
                     @else
@@ -78,7 +78,7 @@
                                 {{-- Header of the table --}}
                                 <div class="panel__header">
                                     <h1 class="panel__header--title">
-                                        {{ __('Add Categories') }}
+                                        {{ __('Add to Products') }}
                                     </h1>
                                     <input class="panel__header--input" type="text"
                                         wire:model.debounce.200ms="searchadd" placeholder="Search your category...">
