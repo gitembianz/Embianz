@@ -189,6 +189,7 @@ class RelatedMediaProduct extends Component
       $media->tabel_id = Tabels::where('name', $productType)->first()->id;
 
       $media->save();
+      $this->product->media()->attach($media->id);
       session()->flash('notification', [
         'message' => 'Record related successfully!',
         'type' => 'success',
@@ -262,6 +263,7 @@ class RelatedMediaProduct extends Component
       $media->createdby = Auth::user()->name;
       $media->lastmodifiedby = Auth::user()->name;
       $media->save();
+      $this->product->media()->attach($media->id);
       $this->i += 1;
     }
     $this->medias = [];
@@ -355,11 +357,11 @@ class RelatedMediaProduct extends Component
   public function confirmFileRemoval($id)
   {
     $this->mediaidbeingremoved = $id;
-    $this->dispatchBrowserEvent('show-delete-modal-media');
+    $this->dispatchBrowserEvent('show-delete-modal');
   }
   public function confirmFilesRemovalmultiple()
   {
-    $this->dispatchBrowserEvent('show-delete-modal-media-multiple');
+    $this->dispatchBrowserEvent('show-delete-modal-multiple');
   }
   public function exportSelected()
   {

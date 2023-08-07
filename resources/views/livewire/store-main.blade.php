@@ -1,93 +1,33 @@
 <div class="home__container" id="homeContainer">
     <div id="home__slide" role="list">
-        <div class="home__item" style="background-image: url(images/store/background-bottle1.webp);" role="listitem">
-            <div class="home__content">
-                <div class="container home__content--flex">
-                    <h2>ASTER - 500 ML</h2>
-                    <p>
-                        Elevate your hydration game with this stylish 500 ML bottle. Crafted with a perfect balance of
-                        fashion and function, it offers a sleek and convenient solution for quenching your thirst on the
-                        go. With its generous capacity, it ensures you stay hydrated throughout the day, whether you're
-                        hitting the gym, exploring the outdoors, or simply running errands.
-                    </p>
-                    <button aria-label="See more">See more</button>
+        @foreach ($category->product_categories as $product)
+            <div class="home__item home__this"
+                style="background-image:
+                 @if (count($product->product->media) > 0) @foreach ($product->product->media as $media)
+                                                 @if ($media->location->location == 'main')
+                                                     @if ($media->external)
+                                                         url({{ $media->path }}" alt="{{ $media->path }})
+                                                     @else
+                                                         url(/{{ $media->path }}{{ $media->name }}) @endif
+@break
+
+@endif
+                                         @endforeach
+@else
+url(/images/store/default/default.svg)
+        @endif"
+                role="listitem">
+                <div class="home__content">
+                    <div class="container home__content--flex">
+                        <h2>{{ $product->product->name }}</h2>
+                        <p>
+                            {{ $product->product->short_description }}
+                        </p>
+                        <button aria-label="See more">See more</button>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="home__item" style="background-image:  url(images/store/background-bottle2.webp);" role="listitem">
-            <div class="home__content">
-                <div class="container home__content--flex">
-                    <h2>BEGONIA - 500 ML</h2>
-                    <p>
-                        Experience the perfect blend of trendiness and practicality with this 500 ML bottle. Its compact
-                        and lightweight design makes it an ideal choice for carrying your favorite beverages wherever
-                        you go. The durable construction ensures long-lasting use, while the vibrant and eye-catching
-                        design adds a touch of personality to your hydration routine.
-                    </p>
-                    <button aria-label="See more">See more</button>
-                </div>
-            </div>
-        </div>
-        <div class="home__item home__this" style="background-image:  url(images/store/background-bottle3.webp);"
-            role="listitem">
-            <div class=" home__content">
-                <div class="container home__content--flex">
-                    <h2>EBONY ROSE - 500 ML</h2>
-                    <p>
-                        Embrace elegance and sophistication with this stunning 500 ML bottle. The sleek black exterior
-                        and delicate rose-inspired accents make it a fashionable accessory that complements any style.
-                        Whether you're attending a special event or simply going about your daily routine, this bottle
-                        is the perfect companion for staying hydrated in style.
-                    </p>
-                    <button aria-label="See more">See more</button>
-                </div>
-            </div>
-        </div>
-        <div class="home__item home__this" style="background-image:  url(images/store/background-bottle4.webp);"
-            role="listitem">
-            <div class=" home__content">
-                <div class="container home__content--flex">
-                    <h2>GRACE - 500 ML</h2>
-                    <p>
-                        Discover the embodiment of grace and functionality in this 500 ML bottle. Its ergonomic design
-                        offers a comfortable grip, allowing you to stay hydrated with ease. The ample capacity ensures
-                        you have enough hydration to keep you going throughout the day, making it an essential companion
-                        for busy individuals who value both convenience and elegance.
-                    </p>
-                    <button aria-label="See more">See more</button>
-                </div>
-            </div>
-        </div>
-        <div class="home__item home__this" style="background-image:  url(images/store/background-bottle5.webp);"
-            role="listitem">
-            <div class=" home__content">
-                <div class="container home__content--flex">
-                    <h2>LITTLE BUDS - 500 ML</h2>
-                    <p>
-                        Add a dash of cheerfulness to your hydration routine with this adorable 500 ML bottle. The
-                        compact size and vibrant floral patterns make it a delightful accessory that brings a smile to
-                        your face every time you take a sip. Perfect for carrying your preferred drinks wherever you go,
-                        this bottle is a reminder to embrace the small joys in life.
-                    </p>
-                    <button aria-label="See more">See more</button>
-                </div>
-            </div>
-        </div>
-        <div class="home__item home__this" style="background-image:  url(images/store/background-bottle6.webp);"
-            role="listitem">
-            <div class=" home__content">
-                <div class="container home__content--flex">
-                    <h2>LOTUS - 500 ML</h2>
-                    <p>
-                        Immerse yourself in tranquility and beauty with this exquisite 500 ML bottle. Inspired by the
-                        enchanting lotus flower, its design evokes a sense of serenity and calmness. Crafted to provide
-                        a soothing drinking experience, it combines functionality with a touch of elegance, making it a
-                        perfect choice for yoga sessions, meditation, or simply unwinding after a long day.
-                    </p>
-                    <button aria-label="See more">See more</button>
-                </div>
-            </div>
-        </div>
+        @endforeach
     </div>
     <div class="home__buttons">
         <button id="home__prev" aria-label="Previous slide">
@@ -111,105 +51,57 @@
             </svg>
         </button>
         <ul class="card-carousel" role="list">
-            <li class="card" role="listitem">
-                <img src="images/store/bottle1.webp" draggable="false" alt="EcoPure water bottle by 24bottles">
-                <h2>EcoPure</h2>
-                <p>Stay hydrated with the EcoPure water bottle by 24bottles.</p>
-                <span>Eco-friendly, BPA-free, Reusable</span>
-                <p>$19.99</p>
-            </li>
+            @foreach ($popproducts as $product)
+                <li class="card" role="listitem">
+                    @if (count($product->media) > 0)
+                        @foreach ($product->media as $media)
+                            @if ($media->location->location == 'main')
+                                @if ($media->external)
+                                    <img src="{{ $media->path }}" draggable="false" alt="{{ $media->path }}">
+                                @else
+                                    <img src="/{{ $media->path }}{{ $media->name }}" draggable="false"
+                                        alt="{{ $media->path }}">
+                                @endif
+                            @break
 
-            <li class="card" role="listitem">
-                <img src="images/store/bottle2-min.webp"
-                    alt="The Urban Oasis water bottle is perfect for on-the-go hydration." draggable="false">
-                <h2>Urban Oasis</h2>
-                <p>The Urban Oasis water bottle is perfect for on-the-go hydration.</p>
-                <span>Travel, Leak-proof, Stainless steel</span>
-                <p class="price"><span>$24.99</span>$19.99</p>
+                        @endif
+                    @endforeach
+                @else
+                    <img src="/images/store/default/default.svg" draggable="false" alt="something wrong">
+                @endif
+                <h2>{{ $product->name }}</h2>
+                <p>{{ $product->short_description }}</p>
+                <span>Eco-friendly, BPA-free, Reusable</span>
+                <p>
+                    @if ($product->product_prices->first())
+                        {{ $product->product_prices->first()->pricelist->currency->name }}
+                        {{ $product->product_prices->first()->value }}
+                    @else
+                        {{ __('no price') }}
+                    @endif
+                </p>
+                {{-- <p class="price"><span>$24.99</span>$19.99</p> --}}
                 <div class="card__fire">
                     <img src="/images/store/fire.svg" alt="fire">
                 </div>
             </li>
-
-            <li class="card" role="listitem">
-                <img src="images/store/bottle3-min.webp" alt="AquaLite" draggable="false">
-                <h2>AquaLite</h2>
-                <p>The AquaLite water bottle offers lightweight and durable design.</p>
-                <span>Sports, Gym, Active lifestyle</span>
-                <p>$14.99</p>
-            </li>
-
-            <li class="card" role="listitem">
-                <img src="images/store/background-bottle-min1.webp" alt="Pure Flow" draggable="false">
-                <h2>Pure Flow</h2>
-                <p>Embrace pure hydration with the sleek Pure Flow water bottle.</p>
-                <span>Minimalist, BPA-free, Sustainable</span>
-                <p>$22.99</p>
-            </li>
-
-            <li class="card" role="listitem">
-                <img src="images/store/background-bottle-min2.webp" alt="Oasis Pro" draggable="false">
-                <h2>Oasis Pro</h2>
-                <p>The Oasis Pro water bottle keeps your beverages at the perfect temperature.</p>
-                <span>Insulated, Outdoor, Hot and cold</span>
-                <p>$34.99</p>
-            </li>
-
-            <li class="card" role="listitem">
-                <img src="images/store/background-bottle-min3.webp" alt="Terra Essence" draggable="false">
-                <h2>Terra Essence</h2>
-                <p>Experience nature with the Terra Essence water bottle.</p>
-                <span>Nature-inspired, Sustainable</span>
-                <p>$18.99</p>
-            </li>
-
-            <li class="card" role="listitem">
-                <img src="images/store/background-bottle-min4.webp" alt="AquaWave" draggable="false">
-                <h2>AquaWave</h2>
-                <p>Ride the waves of hydration with the AquaWave water bottle.</p>
-                <span>Surfing, Beach, Adventure</span>
-                <p>$16.99</p>
-            </li>
-
-            <li class="card" role="listitem">
-                <img src="images/store/background-bottle-min5.webp" alt="Urban Sip" draggable="false">
-                <h2>Urban Sip</h2>
-                <p>Sip in style with the Urban Sip water bottle.</p>
-                <span>Fashion, Trendy, Urban</span>
-                <p>$29.99</p>
-            </li>
-
-            <li class="card" role="listitem">
-                <img src="images/store/background-bottle-min6.webp" alt="Fresh Spring" draggable="false">
-                <h2>Fresh Spring</h2>
-                <p>Quench your thirst with the Fresh Spring water bottle.</p>
-                <span>Refreshing, Nature, Hiking</span>
-                <p>$12.99</p>
-            </li>
-
-            <li class="card" role="listitem">
-                <img src="images/store/bottle1-min.webp" alt="Summit Elite" draggable="false">
-                <h2>Summit Elite</h2>
-                <p>Reach new heights with the Summit Elite water bottle.</p>
-                <span>Mountaineering, Climbing, Outdoor</span>
-                <p>$27.99</p>
-            </li>
-        </ul>
-        <button id="cardRight" class="card-button" aria-label="Next product">
-            <svg>
-                <polyline points="9 18 15 12 9 6"></polyline>
-            </svg>
-        </button>
-    </div>
+        @endforeach
+    </ul>
+    <button id="cardRight" class="card-button" aria-label="Next product">
+        <svg>
+            <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+    </button>
+</div>
 </div>
 <div class="home__discover" style="background-image: url(images/store/discover-background.webp)">
-    <div class="container home__discover--flex">
-        <div class="home__discover--text">
-            <h1>Explore our products and find the perfect one for you.</h1>
-            <a href="#">Discover our products</a>
-        </div>
-        <img src="images/store/discover-items.webp" alt="discover items">
+<div class="container home__discover--flex">
+    <div class="home__discover--text">
+        <h1>Explore our products and find the perfect one for you.</h1>
+        <a href="#">Discover our products</a>
     </div>
+    <img src="images/store/discover-items.webp" alt="discover items">
+</div>
 </div>
 {{--
 <div class="home__video">

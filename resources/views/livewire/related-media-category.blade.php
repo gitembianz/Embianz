@@ -9,7 +9,7 @@
         <div class="accordion__btn-flex">
             <button class="accordion__btn"
                 wire:click.prevent="@if ($showmedia === false) $set('showmedia', true) @else $set('showmedia', false) @endif">
-                {{ __('Media ') }}({{ count($files) }})
+                {{ __('Media ') }}({{ $category->media()->count() }})
             </button>
             <button class="accordion__upload" wire:click="uploadmedia">
                 <div class="item__upload-btn">
@@ -336,7 +336,7 @@
                         @endif
                         {{-- modals --}}
                         {{-- delete single record --}}
-                        <div class="modal" id="confirmationmodalmedia">
+                        <div class="modal" id="confirmationmodal">
                             <div class="modal-content">
                                 <h1 class="modal-content-title">
                                     {{ __('Are you sure to delete this record?') }}
@@ -344,11 +344,11 @@
                                 <input wire:click.prevent="deleteSingleRecord()" class="modal-content-btn submit"
                                     type="button" value="Confirm">
                                 <input class="modal-content-btn delete" type="button"
-                                    onclick="document.getElementById('confirmationmodalmedia').style.display='none'"
+                                    onclick="document.getElementById('confirmationmodal').style.display='none'"
                                     value="Cancel">
 
                                 <span class="modal-content-btn delete"
-                                    onclick="document.getElementById('confirmationmodalmedia').style.display='none'">
+                                    onclick="document.getElementById('confirmationmodal').style.display='none'">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
                                         viewbox="0 0 24 24" fill="none" stroke="#BBFCDE" stroke-width="2"
                                         stroke-linecap="round" stroke-linejoin="round">
@@ -361,7 +361,7 @@
                             </div>
                         </div>
                         {{-- delete myltiple records --}}
-                        <div class="modal" id="confirmationmodalmediamultiple">
+                        <div class="modal" id="confirmationmodalmultiple">
                             <div class="modal-content">
                                 <h1 class="modal-content-title">
                                     {{ __('Are you sure to delete those records?') }}
@@ -369,11 +369,11 @@
                                 <input wire:click.prevent="deleteRecords()" class="modal-content-btn submit"
                                     type="button" value="Confirm">
                                 <input class="modal-content-btn delete" type="button"
-                                    onclick="document.getElementById('confirmationmodalmediamultiple').style.display='none'"
+                                    onclick="document.getElementById('confirmationmodalmultiple').style.display='none'"
                                     value="Cancel">
 
                                 <span class="modal-content-btn delete"
-                                    onclick="document.getElementById('confirmationmodalmediamultiple').style.display='none'">
+                                    onclick="document.getElementById('confirmationmodalmultiple').style.display='none'">
 
                                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
                                         viewbox="0 0 24 24" fill="none" stroke="#BBFCDE" stroke-width="2"

@@ -191,12 +191,28 @@
                  </button>
              </div>
              @if ($search)
-                 @if (count($objects) > 0)
-                     <ul class="search__container">
-                         @foreach ($objects as $product)
-                             <li>
-                                 <a class="search__container--item" href="/product/{{ $product->id }}">
-                                     <img src="/images/store/bottle1-min.webp" alt="bottle">
+                 <ul class="search__container">
+                     @if (count($objects) > 0 || count($cats) > 0)
+                         @if (count($objects) > 0)
+
+                             @foreach ($objects as $product)
+                                 <li>
+                                     <a class="search__container--item" href="/product/{{ $product->id }}">
+                                         @if (count($product->media) > 0)
+                                             @foreach ($product->media as $media)
+                                                 @if ($media->location->location == 'search')
+                                                     @if ($media->external)
+                                                         <img src="{{ $media->path }}" alt="{{ $media->path }}">
+                                                     @else
+                                                         <img src="/{{ $media->path }}{{ $media->name }}"
+                                                             alt="{{ $media->path }}">
+                                                     @endif
+                                                 @break
+                                             @endif
+                                         @endforeach
+                                     @else
+                                         <img src="/images/store/default/default.svg" alt="something wrong">
+                                     @endif
                                      <p> {{ $product->name }}</p>
                                      <span>
                                          @if ($product->product_prices->first())
@@ -209,15 +225,38 @@
                                  </a>
                              </li>
                          @endforeach
-                     </ul>
-                 @else
-                     <ul class="search__container">
-                         <li>
-                             {{ __('No elements found') }}
+                     @endif
+                     @if (count($cats) > 0)
+                         @foreach ($cats as $category)
+                             <li>
+                                 <a class="search__container--item" href="">
+                                     @if (count($category->media) > 0)
+                                         @foreach ($category->media as $media)
+                                             @if ($media->location->location == 'search')
+                                                 @if ($media->external)
+                                                     <img src="{{ $media->path }}" alt="{{ $media->path }}">
+                                                 @else
+                                                     <img src="/{{ $media->path }}{{ $media->name }}"
+                                                         alt="{{ $media->path }}">
+                                                 @endif
+                                             @break
+                                         @endif
+                                     @endforeach
+                                 @else
+                                     <img src="/images/store/default/default.svg" alt="something wrong">
+                                 @endif
+                                 <p> {{ $category->name }}</p>
+                             </a>
                          </li>
-                     </ul>
+                     @endforeach
                  @endif
+             @else
+                 <li>
+                     {{ __('No elements found') }}
+                 </li>
              @endif
-         </div>
-     </div>
+         </ul>
+     @endif
  </div>
+</div>
+</div>

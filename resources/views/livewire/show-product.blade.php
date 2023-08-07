@@ -20,7 +20,7 @@
                 type="button" value="Delete" name="delete">
         </div>
     </div>
-    <div class="modal" id="confirmationmodalitem">
+    <div class="modal" id="confirmationmodal">
         <div class="modal-content">
             <h1 class="modal-content-title">
                 {{ __('Are you sure to delete this record?') }}
@@ -28,10 +28,10 @@
             <input wire:click.prevent="deleteSingleRecord()" class="modal-content-btn submit" type="button"
                 value="Confirm">
             <input class="modal-content-btn delete" type="button"
-                onclick="document.getElementById('confirmationmodalitem').style.display='none'" value="Cancel">
+                onclick="document.getElementById('confirmationmodal').style.display='none'" value="Cancel">
 
             <span class="modal-content-btn delete"
-                onclick="document.getElementById('confirmationmodalitem').style.display='none'">
+                onclick="document.getElementById('confirmationmodal').style.display='none'">
                 <svg>
                     <line x1="18" y1="6" x2="6" y2="18"></line>
                     <line x1="6" y1="6" x2="18" y2="18"></line>

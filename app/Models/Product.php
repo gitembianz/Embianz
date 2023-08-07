@@ -23,6 +23,10 @@ class Product extends Model
     return $this->hasMany(PricelistEntries::class, 'product_id');
   }
 
+  public function media()
+  {
+    return $this->morphToMany(Media::class, 'mediable', 'item_media');
+  }
 
   protected $fillable = [
     'name',

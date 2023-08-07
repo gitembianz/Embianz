@@ -22,6 +22,11 @@ class Category extends Model
     return $this->hasMany(Subcategory::class, 'parrent_id');
   }
 
+  public function media()
+  {
+    return $this->morphToMany(Media::class, 'mediable', 'item_media');
+  }
+
 
 
   protected $fillable = [
@@ -44,5 +49,10 @@ class Category extends Model
       ->orWhere('name', 'like', '%' . $search . '%')
       ->orWhere('sequence', 'like', '%' . $search . '%')
       ->orWhere('short_description', 'like', '%' . $search . '%');
+  }
+  public static function name($search)
+  {
+    return empty($search) ? static::query()
+      : static::query()->where('name', 'like', '%' . $search . '%');
   }
 }

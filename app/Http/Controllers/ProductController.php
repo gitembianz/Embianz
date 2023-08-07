@@ -115,12 +115,13 @@ class ProductController extends Controller
         }
         $media->type = $type;
         $media->width = $width;
-        $media->extrenal = false;
+        $media->external = false;
         $media->height =  $height;
         $media->size = $size[$i];
         $media->createdby = Auth::user()->name;
         $media->lastmodifiedby = Auth::user()->name;
         $media->save();
+        $newproduct->media()->attach($media->id);
         $i += 1;
       }
     }
