@@ -54,3 +54,10 @@ main {
   background-color: $white;
   border-radius: $BtnBorderRadius;
 }
+
+@media (max-width: 740px) {
+  .content {
+    padding: 0;
+    border-radius: 0;
+  }
+}
