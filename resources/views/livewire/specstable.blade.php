@@ -233,7 +233,7 @@
                                 <div wire:click.prevent="edititem({{ $index }})">
                                     {{ $spec->um }}</div>
                             @else
-                                <input type="text" class="table-edit wid-1"
+                                <input type="text" class="table__edit"
                                     wire:model.defer="specss.{{ $index }}.um"
                                     placeholder="{{ $spec->um }}">
                             @endif
@@ -246,7 +246,7 @@
                                 <div wire:click.prevent="edititem({{ $index }})">
                                     {{ $spec->spec_group }}</div>
                             @else
-                                <select name="spec_group" class="table-edit"
+                                <select name="spec_group" class="table__edit"
                                     wire:model.defer="specss.{{ $index }}.spec_group">
                                     <?php
                                     $groups = ['details', 'feature', 'accessibility'];
@@ -282,9 +282,10 @@
                             </button>
                             <button class="delete" wire:click.prevent="confirmItemRemoval({{ $spec->id }})">
                                 <svg>
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <line x1="15" y1="9" x2="9" y2="15"></line>
-                                    <line x1="9" y1="9" x2="15" y2="15"></line>
+                                    <polyline points="3 6 5 6 21 6"></polyline>
+                                    <path
+                                        d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                    </path>
                                 </svg>
                             </button>
                         @else

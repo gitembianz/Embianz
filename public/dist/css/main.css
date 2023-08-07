@@ -2561,7 +2561,7 @@ input[type=checkbox]:checked:before {
   color: var(--text);
   font-weight: 500;
   background-color: var(--primary);
-  text-wrap: nowrap;
+  white-space: nowrap;
 }
 .table thead input {
   border: 1.5px solid white;
@@ -2580,7 +2580,7 @@ input[type=checkbox]:checked:before {
   justify-content: flex-end;
   gap: 10px;
   width: 100%;
-  text-wrap: nowrap;
+  white-space: nowrap;
 }
 
 .table tbody tr:not(:last-child) {
@@ -2642,7 +2642,7 @@ input[type=checkbox]:checked:before {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  text-wrap: nowrap;
+  white-space: nowrap;
   gap: 5px;
 }
 .table__time svg {

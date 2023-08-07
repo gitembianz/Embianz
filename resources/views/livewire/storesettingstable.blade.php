@@ -206,7 +206,7 @@
                     class="@if ($this->isChecked($store->id)) table__row--selected @endif">
 
                     <td data-title="Check">
-                        <input type="checkbox" value="{{ $price->id }}" wire:model="checked">
+                        <input type="checkbox" value="{{ $store->id }}" wire:model="checked">
                     </td>
 
                     @if ($this->showColumn('Id'))
@@ -234,7 +234,7 @@
                                     {{ $store->value }}
                                 </div>
                             @else
-                                <input type="text" class="table-edit wid-1"
+                                <input type="text" class="table__edit"
                                     wire:model.defer="stores.{{ $index }}.value"
                                     placeholder="{{ $store->value }}">
                             @endif
@@ -248,7 +248,7 @@
                                     {{ $store->description }}
                                 </div>
                             @else
-                                <textarea wire:model.defer="stores.{{ $index }}.description" placeholder="{{ $store->description }}"></textarea>
+                                <textarea class="table__edit" wire:model.defer="stores.{{ $index }}.description" placeholder="{{ $store->description }}"></textarea>
                             @endif
                         </td>
                     @endif
@@ -274,9 +274,10 @@
                             </button>
                             <button class="delete" wire:click.prevent="confirmItemRemoval({{ $store->id }})">
                                 <svg>
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <line x1="15" y1="9" x2="9" y2="15"></line>
-                                    <line x1="9" y1="9" x2="15" y2="15"></line>
+                                    <polyline points="3 6 5 6 21 6"></polyline>
+                                    <path
+                                        d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                    </path>
                                 </svg>
                             </button>
                         @else

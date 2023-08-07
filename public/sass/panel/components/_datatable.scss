@@ -45,7 +45,7 @@
     color: var(--text);
     font-weight: 500;
     background-color: var(--primary);
-    text-wrap: nowrap;
+    white-space: nowrap;
   }
 
   input {
@@ -66,7 +66,7 @@
   justify-content: flex-end;
   gap: 10px;
   width: 100%;
-  text-wrap: nowrap;
+  white-space: nowrap;
 }
 
 .table tbody tr:not(:last-child) {
@@ -78,11 +78,12 @@
 }
 
 .table tbody tr:nth-child(even) {
-  background: #dde8e3;
+  background: #e6eeea;
 }
 
 .table tbody tr.table__row--selected {
-  background: #008fff30;
+  background: rgb(180 242 214);
+
 
 
   &>input[type=checkbox]:before {
@@ -130,7 +131,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  text-wrap: nowrap;
+  white-space: nowrap;
   gap: 5px;
 
   svg {
@@ -148,7 +149,12 @@
   resize: none;
   outline: none;
   text-decoration: none;
+  vertical-align: middle;
   height: 2rem;
+}
+
+textarea.table__edit {
+  padding-top: 7px;
 }
 
 .table__buttons {
@@ -247,6 +253,8 @@
       display: block;
       margin-left: 50%;
       border-left: 1px solid black;
+      display: flex;
+      justify-content: flex-start;
     }
 
     tbody tr {
@@ -369,6 +377,7 @@
 @media (max-width: 740px) {
   .panel__header {
     grid-template-columns: 1fr;
+    border-radius: 0;
 
     &--title {
       color: white;
