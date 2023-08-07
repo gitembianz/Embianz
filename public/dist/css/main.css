@@ -71,6 +71,7 @@ body::-webkit-scrollbar {
 body::-webkit-scrollbar-thumb {
   background: #20282d;
   border-radius: 10px;
+  -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
 }
 body::-webkit-scrollbar-thumb:hover {
@@ -113,6 +114,12 @@ main {
   border-radius: 10px;
 }
 
+@media (max-width: 740px) {
+  .content {
+    padding: 0;
+    border-radius: 0;
+  }
+}
 .row {
   display: flex;
   flex-flow: row wrap;
@@ -515,20 +522,11 @@ main {
   border-top: 5px solid #BBFCDE;
   width: 100px;
   height: 100px;
-  -webkit-animation: spin 2s linear infinite;
   /* Safari */
   animation: spin 2s linear infinite;
 }
 
 /* Safari */
-@-webkit-keyframes spin {
-  0% {
-    -webkit-transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-  }
-}
 @keyframes spin {
   0% {
     transform: rotate(0deg);
@@ -1415,6 +1413,7 @@ main {
   position: absolute;
   top: 110%;
   right: 0;
+  width: -moz-max-content;
   width: max-content;
   height: auto;
   padding: 10px;
@@ -2329,7 +2328,9 @@ input[type=checkbox] {
   cursor: pointer;
   width: 2.5rem;
   height: 2.5rem;
-  appearance: none;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
 }
 input[type=checkbox]:hover {
   background-color: rgba(146, 220, 254, 0.6588235294);
@@ -2518,598 +2519,350 @@ input[type=checkbox]:checked:before {
   stroke: #35424B;
 }
 
-.livewire-table {
-  border-collapse: collapse;
-  margin: 0;
+:root {
+  --text: #131b20;
+  --background: #ffffff;
+  --primary: #35424b;
+  --secondary: #c5d8d8;
+  --accent: #35424b;
+}
+
+.table {
   width: 100%;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  font-weight: bold;
+  border-collapse: collapse;
+  border-radius: 0 0 10px 10px;
+  color: #000000;
+  outline: 1px solid #35424B;
+  outline-offset: -1px;
+  text-align: left;
+  font-size: 13px;
 }
-.livewire-table tr {
-  padding: 10px;
+.table a {
+  font-weight: 500;
+  text-decoration: underline;
+  text-transform: uppercase;
 }
-.livewire-table th,
-.livewire-table td {
-  font-size: 0.875rem;
-  padding: 10px 5px;
-  text-align: center;
+.table td,
+.table th {
+  padding: 5px 10px;
+  vertical-align: middle;
 }
-.livewire-table thead tr {
-  background-color: #35424B;
+.table svg {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: black;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
-.livewire-table thead th {
-  color: #BBFCDE;
-  font-size: 0.875rem;
-  border: 1px solid white;
-  border-bottom: none;
-  position: relative;
+
+.table thead tr th {
+  color: var(--text);
+  font-weight: 500;
+  background-color: var(--primary);
+  text-wrap: nowrap;
 }
-.livewire-table thead th input {
-  border-color: #BBFCDE;
-  border-width: 2px;
+.table thead input {
+  border: 1.5px solid white;
 }
-.livewire-table thead th::after {
+
+.table thead tr th:first-child,
+.table thead tr th:nth-child(2),
+.table tbody tr th:first-child,
+.table tbody tr th:nth-child(2) {
+  width: 2rem;
+}
+
+.table__header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  width: 100%;
+  text-wrap: nowrap;
+}
+
+.table tbody tr:not(:last-child) {
+  border-bottom: 1px solid var(--primary);
+}
+
+.table tbody tr {
+  background: white;
+}
+
+.table tbody tr:nth-child(even) {
+  background: #e6eeea;
+}
+
+.table tbody tr.table__row--selected {
+  background: rgb(180, 242, 214);
+}
+.table tbody tr.table__row--selected > input[type=checkbox]:before {
   content: "";
-  transform: translateY(-50%) rotate(45deg);
-  width: 10px;
-  height: 10px;
-  border: 2px solid white;
-  border-left: none;
-  border-top: none;
-  display: inline-flex;
-  margin-left: 5px;
+  position: absolute;
+  top: 43%;
+  right: 43%;
+  width: 7px;
+  height: 13px;
+  border: solid #FFF;
+  border-width: 0 2.5px 2.5px 0;
+  transform: rotate(45deg) translate(-50%, -50%);
+  opacity: 0;
 }
-.livewire-table thead th[data-symbol=up]::after {
-  content: "";
-  transform: rotateZ(225deg);
-}
-.livewire-table thead th:first-child, .livewire-table thead th:last-child {
-  padding: inherit;
-}
-.livewire-table thead th:first-child::after, .livewire-table thead th:first-child::before, .livewire-table thead th:last-child::after, .livewire-table thead th:last-child::before {
-  display: none;
-}
-.livewire-table thead th:first-child {
-  border-left: 0;
-}
-.livewire-table thead th:last-child {
-  border-right: 0;
-  border-left: 0;
-}
-.livewire-table thead th:nth-last-child(2) {
-  border-right: 0;
-}
-.livewire-table tbody tr {
-  background-color: #ffffff;
-}
-.livewire-table tbody tr:nth-child(even) {
-  background-color: #e9e9e9;
-}
-.livewire-table button {
+
+.table tbody button {
+  width: 2rem;
+  height: 2rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.875rem;
-  font-weight: 400;
-  color: #BBFCDE;
-  font-weight: 400 !important;
-  background: #20282d;
-  outline: none;
-  text-decoration: none;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  text-align: center;
-  cursor: pointer;
+  background: var(--primary);
   border: none;
-  border-radius: 10px;
   padding: 0;
-  width: 3rem;
-  height: 3rem;
-  transition: all 0.2s ease-in-out;
-  display: unset;
-  width: 2.5rem;
-  height: 2.5rem;
-}
-.livewire-table button:hover {
-  background-color: #0b0d0f;
-  color: #BBFCDE;
-}
-.livewire-table button:hover > .sidebar__icon {
-  background-color: #0b0d0f;
-}
-.livewire-table button.active, .livewire-table button:active, .livewire-table button:focus-visible {
-  background-color: #BBFCDE;
-  color: #35424B;
-}
-.livewire-table button.active > .sidebar__icon, .livewire-table button:active > .sidebar__icon, .livewire-table button:focus-visible > .sidebar__icon {
-  background-color: #BBFCDE;
-}
-.livewire-table button.active > .sidebar__icon svg, .livewire-table button:active > .sidebar__icon svg, .livewire-table button:focus-visible > .sidebar__icon svg {
-  stroke: #35424B;
-}
-.livewire-table button.active svg, .livewire-table button:active svg, .livewire-table button:focus-visible svg {
-  stroke: #35424B;
-}
-.livewire-table button img,
-.livewire-table button svg {
-  width: 23px;
-  height: 23px;
-  stroke: #BBFCDE;
-  stroke-width: 1.5px;
-  background-color: transparent;
-  transition: all 0.2s ease-in-out;
-  pointer-events: none;
-}
-.livewire-table button.delete {
-  background-color: #e25b73;
-}
-.livewire-table button.delete:hover {
-  background-color: #b7203b;
-  color: #60111f;
-}
-.livewire-table button.delete:hover > .sidebar__icon {
-  background-color: #b7203b;
-}
-.livewire-table button.delete.active, .livewire-table button.delete:active, .livewire-table button.delete:focus-visible {
-  background-color: #60111f;
-  color: #BBFCDE;
-}
-.livewire-table button.delete.active > .sidebar__icon, .livewire-table button.delete:active > .sidebar__icon, .livewire-table button.delete:focus-visible > .sidebar__icon {
-  background-color: #60111f;
-}
-.livewire-table button.delete.active > .sidebar__icon svg, .livewire-table button.delete:active > .sidebar__icon svg, .livewire-table button.delete:focus-visible > .sidebar__icon svg {
-  stroke: #BBFCDE;
-}
-.livewire-table button.delete.active svg, .livewire-table button.delete:active svg, .livewire-table button.delete:focus-visible svg {
-  stroke: #BBFCDE;
-}
-.livewire-table button.edit {
-  background-color: #ffffff;
-}
-.livewire-table button.edit:hover {
-  background-color: #28f697;
-  color: #28f697;
-}
-.livewire-table button.edit:hover > .sidebar__icon {
-  background-color: #28f697;
-}
-.livewire-table button.edit.active, .livewire-table button.edit:active, .livewire-table button.edit:focus-visible {
-  background-color: #28f697;
-  color: #35424B;
-}
-.livewire-table button.edit.active > .sidebar__icon, .livewire-table button.edit:active > .sidebar__icon, .livewire-table button.edit:focus-visible > .sidebar__icon {
-  background-color: #28f697;
-}
-.livewire-table button.edit.active > .sidebar__icon svg, .livewire-table button.edit:active > .sidebar__icon svg, .livewire-table button.edit:focus-visible > .sidebar__icon svg {
-  stroke: #35424B;
-}
-.livewire-table button.edit.active svg, .livewire-table button.edit:active svg, .livewire-table button.edit:focus-visible svg {
-  stroke: #35424B;
-}
-.livewire-table button.edit svg {
-  stroke: #35424B;
-}
-.livewire-table button.submit {
-  background-color: #BBFCDE;
-  color: #35424B;
-}
-.livewire-table button.submit:hover {
-  background-color: #28f697;
-  color: #08b062;
-}
-.livewire-table button.submit:hover > .sidebar__icon {
-  background-color: #28f697;
-}
-.livewire-table button.submit.active, .livewire-table button.submit:active, .livewire-table button.submit:focus-visible {
-  background-color: #08b062;
-  color: #20282d;
-}
-.livewire-table button.submit.active > .sidebar__icon, .livewire-table button.submit:active > .sidebar__icon, .livewire-table button.submit:focus-visible > .sidebar__icon {
-  background-color: #08b062;
-}
-.livewire-table button.submit.active > .sidebar__icon svg, .livewire-table button.submit:active > .sidebar__icon svg, .livewire-table button.submit:focus-visible > .sidebar__icon svg {
-  stroke: #20282d;
-}
-.livewire-table button.submit.active svg, .livewire-table button.submit:active svg, .livewire-table button.submit:focus-visible svg {
-  stroke: #20282d;
-}
-.livewire-table a {
-  text-decoration: underline;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
 }
 
-@media (max-width: 660px) {
-  .livewire-table {
-    display: inline-block;
-    width: calc(100% + 60px);
-    margin-left: -30px;
-  }
-  .livewire-table--modal {
+.table button svg {
+  stroke: var(--background);
+  scale: 0.7;
+  pointer-events: none;
+}
+
+.table input[type=checkbox] {
+  width: 1.3rem;
+  height: 1.3rem;
+  border-radius: 3px;
+  vertical-align: middle;
+}
+
+.table__time {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  text-wrap: nowrap;
+  gap: 5px;
+}
+.table__time svg {
+  stroke-width: 1.5;
+  scale: 0.8;
+}
+
+.table__edit {
+  width: 100%;
+  border: 1px solid gray;
+  border-radius: 4px;
+  padding: 0 5px;
+  color: #35424B;
+  resize: none;
+  outline: none;
+  text-decoration: none;
+  vertical-align: middle;
+  height: 2rem;
+}
+
+textarea.table__edit {
+  padding-top: 7px;
+}
+
+.table__buttons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.table__header--btn {
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  border: none;
+  color: var(--background);
+  cursor: pointer;
+}
+.table__header--btn svg {
+  stroke: white !important;
+  transition: transform 0.2s ease-in-out;
+}
+.table__header--btn[data-symbol=up] svg {
+  transform: rotateX(180deg);
+}
+.table__header--btn[data-symbol=down] svg {
+  transform: rotateX(unset);
+}
+
+.table__description {
+  width: 100%;
+}
+
+@media (max-width: 740px) {
+  .table--modal {
     width: 100%;
   }
-  .livewire-table thead tr {
+  .table thead tr {
     display: block;
-    padding-right: 5px;
   }
-  .livewire-table thead th {
+  .table tbody tr {
+    outline: 1px solid #35424B;
+    outline-offset: -1px;
+  }
+  .table thead th {
     border: none;
-    padding-right: 0;
+    padding: 10px;
+    width: 100%;
   }
-  .livewire-table thead th:not(:first-child) {
+  .table thead th button {
+    font-size: 0;
+  }
+  .table thead th button svg {
     display: none;
   }
-  .livewire-table thead th:first-child {
-    width: 100vw;
-    text-align: end;
+  .table thead th input {
+    background: white;
+    position: relative;
   }
-  .livewire-table th,
-  .livewire-table td {
+  .table thead th input::after {
+    content: "Check All";
+    top: 50%;
+    transform: translateY(-50%);
+    left: 120%;
+    position: absolute;
+    color: white;
+  }
+  .table thead th:first-child {
+    text-align: start;
+  }
+  .table th,
+  .table td {
     padding: 5px;
   }
-  .livewire-table td {
+  .table td {
     text-align: left;
     display: block;
     margin-left: 50%;
     border-left: 1px solid black;
+    display: flex;
+    justify-content: flex-start;
   }
-  .livewire-table tbody tr {
+  .table tbody tr {
     position: relative;
   }
-  .livewire-table td::before {
+  .table td::before {
     content: attr(data-title) ": ";
     position: absolute;
-    left: 0;
+    left: 5px;
     float: left;
     font-weight: 900;
-    margin-right: 10px;
   }
-  .livewire-table button {
+  .table button {
     display: unset;
   }
 }
-.th_checked {
-  background: rgba(197, 236, 254, 0.6588235294) !important;
-  border: 1px solid rgba(96, 204, 253, 0.6588235294);
+.panel__header {
+  background-color: #35424B;
+  padding: 10px;
+  border-radius: 10px 10px 0 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  justify-items: flex-start;
+  align-items: center;
+  gap: 10px;
 }
-
-.table, .table-external {
+.panel__header--bundle {
   width: 100%;
-  border-collapse: collapse;
-  color: #000;
+  grid-column: 1/4;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
 }
-.table-scroll {
-  overflow-x: scroll;
-}
-.table td, .table-external td,
-.table th,
-.table-external th {
-  border: 1px solid #20282d;
-  padding: 10px;
-  height: 70px;
-}
-.table td img, .table-external td img,
-.table th img,
-.table-external th img {
-  height: 100%;
-  object-fit: contain;
-}
-.table td select, .table-external td select,
-.table td input,
-.table-external td input,
-.table th select,
-.table-external th select,
-.table th input,
-.table-external th input {
-  border: 1.5px solid #35424B;
-  border-radius: 10px;
-  padding: 10px;
-  background: #ffffff;
+.panel__header--bundle > .dropdown .dropdown-button {
+  width: 100%;
+  height: 2.5rem;
+  background-color: #f2f2f2;
+  border: none;
+  border-radius: 3px;
   color: #35424B;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  font-weight: 400;
-  width: 100%;
-  height: 3rem;
-  resize: none;
-  outline: none;
-  text-decoration: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  margin: 0 auto;
 }
-.table td select::-webkit-scrollbar, .table-external td select::-webkit-scrollbar,
-.table td input::-webkit-scrollbar,
-.table-external td input::-webkit-scrollbar,
-.table th select::-webkit-scrollbar,
-.table-external th select::-webkit-scrollbar,
-.table th input::-webkit-scrollbar,
-.table-external th input::-webkit-scrollbar {
-  width: 10px;
-  background: #2a353c;
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
+.panel__header--bundle > .dropdown .dropdown-button svg {
+  stroke: #35424B;
 }
-.table td select::-webkit-scrollbar-thumb, .table-external td select::-webkit-scrollbar-thumb,
-.table td input::-webkit-scrollbar-thumb,
-.table-external td input::-webkit-scrollbar-thumb,
-.table th select::-webkit-scrollbar-thumb,
-.table-external th select::-webkit-scrollbar-thumb,
-.table th input::-webkit-scrollbar-thumb,
-.table-external th input::-webkit-scrollbar-thumb {
-  background: #20282d;
-  border-radius: 10px;
-  transition: all 0.2s ease-in-out;
+.panel__header--bundle > .dropdown .dropdown-list {
+  left: 0;
+  right: unset;
 }
-.table td select::-webkit-scrollbar-thumb:hover, .table-external td select::-webkit-scrollbar-thumb:hover,
-.table td input::-webkit-scrollbar-thumb:hover,
-.table-external td input::-webkit-scrollbar-thumb:hover,
-.table th select::-webkit-scrollbar-thumb:hover,
-.table-external th select::-webkit-scrollbar-thumb:hover,
-.table th input::-webkit-scrollbar-thumb:hover,
-.table-external th input::-webkit-scrollbar-thumb:hover {
-  background: #151b1e;
+.panel__header--title {
+  color: white;
+  text-align: start;
 }
-.table td button, .table-external td button,
-.table th button,
-.table-external th button {
+.panel__header--button, .panel__header--input {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.875rem;
-  font-weight: 400;
-  color: #BBFCDE;
-  font-weight: 400 !important;
-  background: #20282d;
-  outline: none;
-  text-decoration: none;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  text-align: center;
-  cursor: pointer;
+  width: 100%;
+  height: 2.5rem;
   border: none;
-  border-radius: 10px;
-  padding: 0;
-  width: 3rem;
-  height: 3rem;
-  transition: all 0.2s ease-in-out;
-  background-color: #e25b73;
-  margin: 0 auto;
-  font-size: x-large;
-  font-weight: 700;
-}
-.table td button:hover, .table-external td button:hover,
-.table th button:hover,
-.table-external th button:hover {
-  background-color: #0b0d0f;
-  color: #BBFCDE;
-}
-.table td button:hover > .sidebar__icon, .table-external td button:hover > .sidebar__icon,
-.table th button:hover > .sidebar__icon,
-.table-external th button:hover > .sidebar__icon {
-  background-color: #0b0d0f;
-}
-.table td button.active, .table-external td button.active, .table td button:active, .table-external td button:active, .table td button:focus-visible, .table-external td button:focus-visible,
-.table th button.active,
-.table-external th button.active,
-.table th button:active,
-.table-external th button:active,
-.table th button:focus-visible,
-.table-external th button:focus-visible {
-  background-color: #BBFCDE;
+  background-color: #f2f2f2;
+  border-radius: 3px;
   color: #35424B;
+  cursor: pointer;
 }
-.table td button.active > .sidebar__icon, .table-external td button.active > .sidebar__icon, .table td button:active > .sidebar__icon, .table-external td button:active > .sidebar__icon, .table td button:focus-visible > .sidebar__icon, .table-external td button:focus-visible > .sidebar__icon,
-.table th button.active > .sidebar__icon,
-.table-external th button.active > .sidebar__icon,
-.table th button:active > .sidebar__icon,
-.table-external th button:active > .sidebar__icon,
-.table th button:focus-visible > .sidebar__icon,
-.table-external th button:focus-visible > .sidebar__icon {
-  background-color: #BBFCDE;
-}
-.table td button.active > .sidebar__icon svg, .table-external td button.active > .sidebar__icon svg, .table td button:active > .sidebar__icon svg, .table-external td button:active > .sidebar__icon svg, .table td button:focus-visible > .sidebar__icon svg, .table-external td button:focus-visible > .sidebar__icon svg,
-.table th button.active > .sidebar__icon svg,
-.table-external th button.active > .sidebar__icon svg,
-.table th button:active > .sidebar__icon svg,
-.table-external th button:active > .sidebar__icon svg,
-.table th button:focus-visible > .sidebar__icon svg,
-.table-external th button:focus-visible > .sidebar__icon svg {
+.panel__header--button svg, .panel__header--input svg {
   stroke: #35424B;
+  width: 24px;
+  height: 24px;
 }
-.table td button.active svg, .table-external td button.active svg, .table td button:active svg, .table-external td button:active svg, .table td button:focus-visible svg, .table-external td button:focus-visible svg,
-.table th button.active svg,
-.table-external th button.active svg,
-.table th button:active svg,
-.table-external th button:active svg,
-.table th button:focus-visible svg,
-.table-external th button:focus-visible svg {
-  stroke: #35424B;
-}
-.table td button img, .table-external td button img,
-.table td button svg,
-.table-external td button svg,
-.table th button img,
-.table-external th button img,
-.table th button svg,
-.table-external th button svg {
-  width: 23px;
-  height: 23px;
-  stroke: #BBFCDE;
-  stroke-width: 1.5px;
-  background-color: transparent;
-  transition: all 0.2s ease-in-out;
-  pointer-events: none;
-}
-.table td button.delete, .table-external td button.delete,
-.table th button.delete,
-.table-external th button.delete {
-  background-color: #e25b73;
-}
-.table td button.delete:hover, .table-external td button.delete:hover,
-.table th button.delete:hover,
-.table-external th button.delete:hover {
-  background-color: #b7203b;
-  color: #60111f;
-}
-.table td button.delete:hover > .sidebar__icon, .table-external td button.delete:hover > .sidebar__icon,
-.table th button.delete:hover > .sidebar__icon,
-.table-external th button.delete:hover > .sidebar__icon {
-  background-color: #b7203b;
-}
-.table td button.delete.active, .table-external td button.delete.active, .table td button.delete:active, .table-external td button.delete:active, .table td button.delete:focus-visible, .table-external td button.delete:focus-visible,
-.table th button.delete.active,
-.table-external th button.delete.active,
-.table th button.delete:active,
-.table-external th button.delete:active,
-.table th button.delete:focus-visible,
-.table-external th button.delete:focus-visible {
-  background-color: #60111f;
-  color: #BBFCDE;
-}
-.table td button.delete.active > .sidebar__icon, .table-external td button.delete.active > .sidebar__icon, .table td button.delete:active > .sidebar__icon, .table-external td button.delete:active > .sidebar__icon, .table td button.delete:focus-visible > .sidebar__icon, .table-external td button.delete:focus-visible > .sidebar__icon,
-.table th button.delete.active > .sidebar__icon,
-.table-external th button.delete.active > .sidebar__icon,
-.table th button.delete:active > .sidebar__icon,
-.table-external th button.delete:active > .sidebar__icon,
-.table th button.delete:focus-visible > .sidebar__icon,
-.table-external th button.delete:focus-visible > .sidebar__icon {
-  background-color: #60111f;
-}
-.table td button.delete.active > .sidebar__icon svg, .table-external td button.delete.active > .sidebar__icon svg, .table td button.delete:active > .sidebar__icon svg, .table-external td button.delete:active > .sidebar__icon svg, .table td button.delete:focus-visible > .sidebar__icon svg, .table-external td button.delete:focus-visible > .sidebar__icon svg,
-.table th button.delete.active > .sidebar__icon svg,
-.table-external th button.delete.active > .sidebar__icon svg,
-.table th button.delete:active > .sidebar__icon svg,
-.table-external th button.delete:active > .sidebar__icon svg,
-.table th button.delete:focus-visible > .sidebar__icon svg,
-.table-external th button.delete:focus-visible > .sidebar__icon svg {
-  stroke: #BBFCDE;
-}
-.table td button.delete.active svg, .table-external td button.delete.active svg, .table td button.delete:active svg, .table-external td button.delete:active svg, .table td button.delete:focus-visible svg, .table-external td button.delete:focus-visible svg,
-.table th button.delete.active svg,
-.table-external th button.delete.active svg,
-.table th button.delete:active svg,
-.table-external th button.delete:active svg,
-.table th button.delete:focus-visible svg,
-.table-external th button.delete:focus-visible svg {
-  stroke: #BBFCDE;
-}
-.table td button.edit, .table-external td button.edit,
-.table th button.edit,
-.table-external th button.edit {
-  background-color: #ffffff;
-}
-.table td button.edit:hover, .table-external td button.edit:hover,
-.table th button.edit:hover,
-.table-external th button.edit:hover {
-  background-color: #28f697;
-  color: #28f697;
-}
-.table td button.edit:hover > .sidebar__icon, .table-external td button.edit:hover > .sidebar__icon,
-.table th button.edit:hover > .sidebar__icon,
-.table-external th button.edit:hover > .sidebar__icon {
-  background-color: #28f697;
-}
-.table td button.edit.active, .table-external td button.edit.active, .table td button.edit:active, .table-external td button.edit:active, .table td button.edit:focus-visible, .table-external td button.edit:focus-visible,
-.table th button.edit.active,
-.table-external th button.edit.active,
-.table th button.edit:active,
-.table-external th button.edit:active,
-.table th button.edit:focus-visible,
-.table-external th button.edit:focus-visible {
-  background-color: #28f697;
-  color: #35424B;
-}
-.table td button.edit.active > .sidebar__icon, .table-external td button.edit.active > .sidebar__icon, .table td button.edit:active > .sidebar__icon, .table-external td button.edit:active > .sidebar__icon, .table td button.edit:focus-visible > .sidebar__icon, .table-external td button.edit:focus-visible > .sidebar__icon,
-.table th button.edit.active > .sidebar__icon,
-.table-external th button.edit.active > .sidebar__icon,
-.table th button.edit:active > .sidebar__icon,
-.table-external th button.edit:active > .sidebar__icon,
-.table th button.edit:focus-visible > .sidebar__icon,
-.table-external th button.edit:focus-visible > .sidebar__icon {
-  background-color: #28f697;
-}
-.table td button.edit.active > .sidebar__icon svg, .table-external td button.edit.active > .sidebar__icon svg, .table td button.edit:active > .sidebar__icon svg, .table-external td button.edit:active > .sidebar__icon svg, .table td button.edit:focus-visible > .sidebar__icon svg, .table-external td button.edit:focus-visible > .sidebar__icon svg,
-.table th button.edit.active > .sidebar__icon svg,
-.table-external th button.edit.active > .sidebar__icon svg,
-.table th button.edit:active > .sidebar__icon svg,
-.table-external th button.edit:active > .sidebar__icon svg,
-.table th button.edit:focus-visible > .sidebar__icon svg,
-.table-external th button.edit:focus-visible > .sidebar__icon svg {
-  stroke: #35424B;
-}
-.table td button.edit.active svg, .table-external td button.edit.active svg, .table td button.edit:active svg, .table-external td button.edit:active svg, .table td button.edit:focus-visible svg, .table-external td button.edit:focus-visible svg,
-.table th button.edit.active svg,
-.table-external th button.edit.active svg,
-.table th button.edit:active svg,
-.table-external th button.edit:active svg,
-.table th button.edit:focus-visible svg,
-.table-external th button.edit:focus-visible svg {
-  stroke: #35424B;
-}
-.table td button.edit svg, .table-external td button.edit svg,
-.table th button.edit svg,
-.table-external th button.edit svg {
-  stroke: #35424B;
-}
-.table td button.submit, .table-external td button.submit,
-.table th button.submit,
-.table-external th button.submit {
-  background-color: #BBFCDE;
-  color: #35424B;
-}
-.table td button.submit:hover, .table-external td button.submit:hover,
-.table th button.submit:hover,
-.table-external th button.submit:hover {
-  background-color: #28f697;
-  color: #08b062;
-}
-.table td button.submit:hover > .sidebar__icon, .table-external td button.submit:hover > .sidebar__icon,
-.table th button.submit:hover > .sidebar__icon,
-.table-external th button.submit:hover > .sidebar__icon {
-  background-color: #28f697;
-}
-.table td button.submit.active, .table-external td button.submit.active, .table td button.submit:active, .table-external td button.submit:active, .table td button.submit:focus-visible, .table-external td button.submit:focus-visible,
-.table th button.submit.active,
-.table-external th button.submit.active,
-.table th button.submit:active,
-.table-external th button.submit:active,
-.table th button.submit:focus-visible,
-.table-external th button.submit:focus-visible {
+.panel__header--checked {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  border: none;
   background-color: #08b062;
-  color: #20282d;
+  border-radius: 3px;
+  color: white;
+  cursor: pointer;
+  grid-column: 1/4;
+  padding: 10px 20px;
 }
-.table td button.submit.active > .sidebar__icon, .table-external td button.submit.active > .sidebar__icon, .table td button.submit:active > .sidebar__icon, .table-external td button.submit:active > .sidebar__icon, .table td button.submit:focus-visible > .sidebar__icon, .table-external td button.submit:focus-visible > .sidebar__icon,
-.table th button.submit.active > .sidebar__icon,
-.table-external th button.submit.active > .sidebar__icon,
-.table th button.submit:active > .sidebar__icon,
-.table-external th button.submit:active > .sidebar__icon,
-.table th button.submit:focus-visible > .sidebar__icon,
-.table-external th button.submit:focus-visible > .sidebar__icon {
-  background-color: #08b062;
+.panel__header--checked svg {
+  stroke: #35424B;
+  width: 24px;
+  height: 24px;
 }
-.table td button.submit.active > .sidebar__icon svg, .table-external td button.submit.active > .sidebar__icon svg, .table td button.submit:active > .sidebar__icon svg, .table-external td button.submit:active > .sidebar__icon svg, .table td button.submit:focus-visible > .sidebar__icon svg, .table-external td button.submit:focus-visible > .sidebar__icon svg,
-.table th button.submit.active > .sidebar__icon svg,
-.table-external th button.submit.active > .sidebar__icon svg,
-.table th button.submit:active > .sidebar__icon svg,
-.table-external th button.submit:active > .sidebar__icon svg,
-.table th button.submit:focus-visible > .sidebar__icon svg,
-.table-external th button.submit:focus-visible > .sidebar__icon svg {
-  stroke: #20282d;
+.panel__header--input {
+  border: 1.5px solid gray;
+  padding: 0 10px;
+  grid-column: 2/4;
 }
-.table td button.submit.active svg, .table-external td button.submit.active svg, .table td button.submit:active svg, .table-external td button.submit:active svg, .table td button.submit:focus-visible svg, .table-external td button.submit:focus-visible svg,
-.table th button.submit.active svg,
-.table-external th button.submit.active svg,
-.table th button.submit:active svg,
-.table-external th button.submit:active svg,
-.table th button.submit:focus-visible svg,
-.table-external th button.submit:focus-visible svg {
-  stroke: #20282d;
-}
-.table thead, .table-external thead {
-  background-color: #20282d;
-  color: #ffffff;
+.panel__header--input:focus {
+  border: 1.5px solid #000000;
+  background-color: white;
+  outline: none;
 }
 
-.table-external td {
-  border: none !important;
+@media (max-width: 740px) {
+  .panel__header {
+    grid-template-columns: 1fr;
+    border-radius: 0;
+  }
+  .panel__header--title {
+    color: white;
+    grid-column: unset;
+    text-align: center;
+  }
+  .panel__header--bundle {
+    grid-column: unset;
+  }
+  .panel__header--input {
+    grid-column: unset;
+  }
+  .panel__header--checked {
+    grid-column: unset;
+  }
 }
-
 .pagination {
   display: flex;
   flex-direction: row;
@@ -3291,7 +3044,8 @@ header,
   display: none;
 }
 .header__logo img {
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
   width: 250px;
   height: auto;
 }
@@ -3866,6 +3620,7 @@ header,
 .notify__list::-webkit-scrollbar-thumb {
   background: #20282d;
   border-radius: 10px;
+  -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
 }
 .notify__list::-webkit-scrollbar-thumb:hover {
@@ -5005,7 +4760,9 @@ header,
 .item__form-close input {
   border-color: rgb(169, 169, 169);
   color: rgb(169, 169, 169);
-  appearance: none;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
 }
 .item__form-input-close div, .item__form-close div {
   height: 100%;
@@ -5167,6 +4924,7 @@ header,
 .table-edit::-webkit-scrollbar-thumb {
   background: #20282d;
   border-radius: 10px;
+  -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
 }
 .table-edit::-webkit-scrollbar-thumb:hover {
@@ -5192,7 +4950,9 @@ header,
 #perPage {
   width: 4rem;
   background-color: #35424b;
-  appearance: none;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
   color: #fff;
 }
 
@@ -5205,6 +4965,13 @@ header,
 }
 .form-table-mobile > #searchInput {
   grid-column: 1/5;
+}
+
+.item__details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin: 20px 0;
 }
 
 @media (min-width: 1024px) {
@@ -5246,6 +5013,7 @@ header,
     grid-column: unset;
   }
   .item__form.form-table > .dropdown button, .item__form.form-table > div {
+    width: -moz-max-content;
     width: max-content;
   }
   .item__form.form-table #perPage {
@@ -5585,7 +5353,9 @@ header,
   pointer-events: none;
 }
 .container-right .card_calendar .date-time-formate {
+  width: -moz-max-content;
   width: max-content;
+  height: -moz-max-content;
   height: max-content;
   display: flex;
   flex-direction: row;
@@ -5603,7 +5373,9 @@ header,
 }
 .container-right .card_calendar .date-time-value {
   display: block;
+  width: -moz-max-content;
   width: max-content;
+  height: -moz-max-content;
   height: max-content;
   position: relative;
   left: 40%;
@@ -5710,7 +5482,8 @@ header,
   width: 3.5rem;
   height: auto;
   padding: 0.5rem;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
   align-items: center;
   background: #ffffff;
 }
@@ -5723,4 +5496,4 @@ header,
 }
 .container-right .card_todo .count {
   border-top: 1px solid #35424B;
-}
+}/*# sourceMappingURL=main.css.map */
