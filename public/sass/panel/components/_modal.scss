@@ -15,8 +15,8 @@
       border-radius: $base-border-radius;
       position: relative;
       padding: $padding * 2;
-      margin: 0 calc($margin * 1.5);
       outline: none;
+      margin: 30px;
 
       &-spec {
         @extend .modal-content;
