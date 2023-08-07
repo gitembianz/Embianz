@@ -73,11 +73,21 @@
   border-bottom: 1px solid var(--primary);
 }
 
-.table tbody tr {
+.table tbody tr td {
   background: white;
 }
 
-.table tbody tr:nth-child(even) {
+.table tbody tr:last-child {
+  & td:first-child {
+    border-radius: 0 0 0 10px;
+  }
+
+  & td:last-child {
+    border-radius: 0 0 10px 0;
+  }
+}
+
+.table tbody tr:nth-child(even) td {
   background: #e6eeea;
 }
 
@@ -211,7 +221,6 @@ textarea.table__edit {
 
     thead th {
       border: none;
-      // padding-right: 0;
       padding: 10px;
       width: 100%;
 
@@ -272,6 +281,22 @@ textarea.table__edit {
 
     button {
       display: unset;
+    }
+  }
+
+  .table tbody tr {
+    background: white;
+  }
+
+  .table tbody tr:nth-child(even) {
+    background: #e6eeea;
+  }
+
+  .table tbody tr:last-child {
+
+    & td:first-child,
+    & td:last-child {
+      border-radius: 0;
     }
   }
 }

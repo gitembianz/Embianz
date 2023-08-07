@@ -1420,6 +1420,7 @@ main {
   border: 1.5px solid #35424B;
   background: white;
   border-radius: 5px;
+  z-index: 9999;
 }
 .dropdown-list input[type=checkbox] {
   width: 2rem;
@@ -1450,7 +1451,8 @@ main {
   width: 3rem;
   height: 3rem;
   transition: all 0.2s ease-in-out;
-  width: 100%;
+  width: 6rem;
+  box-shadow: none;
 }
 .dropdown-list button:hover {
   background-color: #0b0d0f;
@@ -1554,6 +1556,9 @@ main {
 }
 .dropdown-list button.submit.active svg, .dropdown-list button.submit:active svg, .dropdown-list button.submit:focus-visible svg {
   stroke: #20282d;
+}
+.dropdown-list button.delete {
+  background: #7d0017;
 }
 .dropdown-item {
   display: flex;
@@ -1999,7 +2004,13 @@ main {
   border: 1px solid #35424B;
   border-top: 0;
   border-radius: 0 0 10px 10px;
-  padding: 10px;
+  padding: 20px 10px 10px;
+  margin-top: -10px;
+  background-color: #0f1315;
+}
+.accordion__content p {
+  text-align: center;
+  color: #fff;
 }
 .accordion__upload {
   display: flex;
@@ -2161,8 +2172,8 @@ main {
   border-radius: 10px;
   position: relative;
   padding: 20px;
-  margin: 0 15px;
   outline: none;
+  margin: 30px;
 }
 .modal-content-spec {
   display: flex;
@@ -2587,11 +2598,18 @@ input[type=checkbox]:checked:before {
   border-bottom: 1px solid var(--primary);
 }
 
-.table tbody tr {
+.table tbody tr td {
   background: white;
 }
 
-.table tbody tr:nth-child(even) {
+.table tbody tr:last-child td:first-child {
+  border-radius: 0 0 0 10px;
+}
+.table tbody tr:last-child td:last-child {
+  border-radius: 0 0 10px 0;
+}
+
+.table tbody tr:nth-child(even) td {
   background: #e6eeea;
 }
 
@@ -2759,6 +2777,15 @@ textarea.table__edit {
   }
   .table button {
     display: unset;
+  }
+  .table tbody tr {
+    background: white;
+  }
+  .table tbody tr:nth-child(even) {
+    background: #e6eeea;
+  }
+  .table tbody tr:last-child td:first-child, .table tbody tr:last-child td:last-child {
+    border-radius: 0;
   }
 }
 .panel__header {
