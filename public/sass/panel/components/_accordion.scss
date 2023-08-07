@@ -17,7 +17,14 @@
     border: 1px solid $mainBg;
     border-top: 0;
     border-radius: 0 0 $base-border-radius $base-border-radius;
-    padding: $padding;
+    padding: 20px 10px 10px;
+    margin-top: -10px;
+    background-color: #0f1315;
+
+    p {
+      text-align: center;
+      color: #fff
+    }
   }
 
 
@@ -41,5 +48,6 @@
     label {
       border-radius: 0 $BtnBorderRadius $BtnBorderRadius 0;
     }
+
   }
 }
