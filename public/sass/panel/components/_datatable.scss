@@ -45,7 +45,7 @@
     color: var(--text);
     font-weight: 500;
     background-color: var(--primary);
-    text-wrap: nowrap;
+    white-space: nowrap;
   }
 
   input {
@@ -66,7 +66,7 @@
   justify-content: flex-end;
   gap: 10px;
   width: 100%;
-  text-wrap: nowrap;
+  white-space: nowrap;
 }
 
 .table tbody tr:not(:last-child) {
@@ -131,7 +131,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  text-wrap: nowrap;
+  white-space: nowrap;
   gap: 5px;
 
   svg {
