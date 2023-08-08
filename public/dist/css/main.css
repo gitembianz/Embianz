@@ -2914,6 +2914,11 @@ textarea.table__edit {
   display: flex;
   align-items: center;
 }
+.table__drop--input.off {
+  background: #e1e1e1;
+  border: 1px solid #e1e1e1;
+  cursor: pointer;
+}
 
 .table__drop--list {
   position: absolute;
