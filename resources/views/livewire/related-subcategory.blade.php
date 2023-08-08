@@ -20,206 +20,255 @@
 
         @if ($showrelatedsub)
             <div class="accordion__content">
-                <div class="item">
-                    {{-- html for adding products --}}
-                    @if ($showTable === false)
-                    @else
-                        <div class="modal" id="modalelements" style="display: block">
-                            <div class="modal-content"
-                                style="margin: 0 auto; width:80%; top: 50%; transform: translateY(-50%); display: flex; height: 98vh; overflow-y: auto; align-items: flex-start">
-                                <div class="item" style="width: 100%">
-                                    <p id="top"></p>
 
-                                    <div class="item__form form-table"
-                                        @if ($checkedadd) style="grid-template-columns: 40% 1fr 1fr" @else style="grid-template-columns: 3fr 1fr" @endif>
+                {{-- html for adding products --}}
+                @if ($showTable === false)
+                @else
+                    <div class="modal" id="modalelements" style="display: block">
+                        <div class="modal-content"
+                            style="display: flex;justify-content: flex-start;flex-direction: column;gap: 0;max-height: calc(100vh - 60px); overflow-y: auto; background: none; padding: 0;">
+                            <div class="modal" id="confirmationmodallink">
+                                <div class="modal-content">
+                                    <h1 class="modal-content-title">
+                                        {{ __('Are you sure to relate this record?') }}
+                                    </h1>
+                                    <input wire:click.prevent="linkSingleRecord()" class="modal-content-btn submit"
+                                        type="button" value="Confirm" id="confirmLoad">
+                                    <input class="modal-content-btn delete" type="button"
+                                        onclick="document.getElementById('confirmationmodallink').style.display='none'"
+                                        value="Cancel">
 
-                                        <div class="item__form-input">
-                                            <input wire:model.debounce.200ms="searchadd" type="text" required>
-                                            <span>Search.....</span>
-                                        </div>
-                                        <div class="dropdown">
-                                            <button
-                                                wire:click.prevent="@if ($coladd === false) $set('coladd', true) @else $set('coladd', false) @endif"
-                                                class="dropdown-button">Columns</button>
-                                            @if ($coladd)
-                                                <div class="dropdown-list" style="display: flex;">
-                                                    @foreach ($columnsadd as $column)
-                                                        <div class="dropdown-item">
-                                                            <input type="checkbox" wire:model="selectedColumnsadd"
-                                                                value="{{ $column }}"
-                                                                {{ in_array($column, $selectedColumnsadd) ? 'checked' : '' }}>
-                                                            <label>{{ $column }}</label>
-                                                        </div>
-                                                    @endforeach
-                                                </div>
-                                            @endif
-
-                                        </div>
-
-                                        <button
-                                            @if ($checkedadd) style="display: unset; z-index: 5;" @else style="display: none;" @endif
-                                            class="dropdown-button" wire:click.prevent="confirmitemsLinkmultiple()"
-                                            @if ($checkedadd) style="display: flex" @endif> Add
-                                            ({{ count($checkedadd) }}) records</button>
-                                    </div>
-
-                                    {{-- modals start --}}
-                                    <div class="modal" id="confirmationmodallink">
-                                        <div class="modal-content">
-                                            <h1 class="modal-content-title">
-                                                {{ __('Are you sure to relate this record?') }}
-                                            </h1>
-                                            <input wire:click.prevent="linkSingleRecord()"
-                                                class="modal-content-btn submit" type="button" value="Confirm"
-                                                id="confirmLoad">
-                                            <input class="modal-content-btn delete" type="button"
-                                                onclick="document.getElementById('confirmationmodallink').style.display='none'"
-                                                value="Cancel">
-
-                                            <span class="modal-content-btn delete"
-                                                onclick="document.getElementById('confirmationmodallink').style.display='none'">
-                                                <svg>
-                                                    <line x1="18" y1="6" x2="6" y2="18">
-                                                    </line>
-                                                    <line x1="6" y1="6" x2="18" y2="18">
-                                                    </line>
-                                                </svg>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="modal" id="confirmationmodallinkmultiple">
-                                        <div class="modal-content">
-                                            <h1 class="modal-content-title">
-                                                {{ __('Are you sure to link those records?') }}
-                                            </h1>
-                                            <input wire:click.prevent="linkRecords()" class="modal-content-btn submit"
-                                                type="button" value="Confirm" id="confirmLoad">
-                                            <input class="modal-content-btn delete" type="button"
-                                                onclick="document.getElementById('confirmationmodallinkmultiple').style.display='none'"
-                                                value="Cancel">
-
-                                            <span class="modal-content-btn delete"
-                                                onclick="document.getElementById('confirmationmodallinkmultiple').style.display='none'">
-
-                                                <svg>
-                                                    <line x1="18" y1="6" x2="6" y2="18">
-                                                    </line>
-                                                    <line x1="6" y1="6" x2="18" y2="18">
-                                                    </line>
-                                                </svg>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    {{-- modals end --}}
-
-                                    @if ($selectPageadd)
-                                        <div class="pt-2 talign-c">
-
-                                            @if ($selectAlladd)
-                                                <div>
-                                                    You have selected all <strong>{{ count($checkedadd) }}</strong>
-                                                    items.
-                                                </div>
-                                            @else
-                                                <div>
-                                                    You have selected <strong>{{ count($checkedadd) }}</strong> items,
-                                                    Do you
-                                                    want to Select All?
-                                                    <a class="ml-2" wire:click.prevent="selectAlladd">Select All</a>
-                                                </div>
-                                            @endif
-
-                                        </div>
-                                    @endif
-
-                                    {{-- Livewire Table --}}
-                                    <table class="livewire-table">
-
-                                        <thead>
-                                            <tr>
-                                                <th><input type="checkbox" wire:model="selectPageadd"></th>
-
-                                                @if ($this->showColumnadd('Id'))
-                                                    <th class="cursor-p"
-                                                        @if ($orderByadd === 'id' && $orderAscadd === '1') data-symbol="up"
-                            @else
-                                data-symbol="down" @endif
-                                                        wire:click="sortByadd('id')">ID
-                                                    </th>
-                                                @endif
-                                                @if ($this->showColumnadd('Name'))
-                                                    <th class="cursor-p"
-                                                        @if ($orderByadd === 'name' && $orderAscadd === '1') data-symbol="up"
-                        @else
-                            data-symbol="down" @endif
-                                                        wire:click="sortByadd('name')">Name
-                                                    </th>
-                                                @endif
-                                                @if ($this->showColumnadd('Short Description'))
-                                                    <th class="cursor-p"
-                                                        @if ($orderByadd === 'short_description' && $orderAscadd === '1') data-symbol="up"
-                    @else
-                        data-symbol="down" @endif
-                                                        wire:click="sortByadd('short_description')">Short Description
-                                                    </th>
-                                                @endif
-                                                @if ($this->showColumnadd('Created At'))
-                                                    <th class="cursor-p"
-                                                        @if ($orderByadd === 'created_at' && $orderAscadd === '1') data-symbol="up"
-                            @else
-                                data-symbol="down" @endif
-                                                        wire:click="sortByadd('created_at')">Created At
-                                                    </th>
-                                                @endif
-
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($categories as $category)
-                                                <tr class="@if ($this->isCheckedadd($category->id)) th_checked @endif"
-                                                    @if ($loop->last) id="last_record" @endif>
-                                                    <td data-title="Check"><input type="checkbox"
-                                                            value="{{ $category->id }}" wire:model="checkedadd">
-                                                    </td>
-
-                                                    @if ($this->showColumnadd('Id'))
-                                                        <td data-title="ID">{{ $category->id }}</td>
-                                                    @endif
-                                                    @if ($this->showColumnadd('Name'))
-                                                        <td data-title="Name"><a
-                                                                href="/show_category/{{ $category->id }}'">{{ $category->name }}</a>
-                                                        </td>
-                                                    @endif
-                                                    @if ($this->showColumnadd('Short Description'))
-                                                        <td data-title="Short Description">
-                                                            {{ $category->short_description }}
-                                                        </td>
-                                                    @endif
-                                                    @if ($this->showColumnadd('Created At'))
-                                                        <td data-title="Created At">{{ $category->created_at }}</td>
-                                                    @endif
-
-                                                    <td data-title="Action">
-                                                        <button class="edit"
-                                                            wire:click.prevent="confirmitemlink({{ $category->id }})">
-                                                            <svg>
-                                                                <path
-                                                                    d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71">
-                                                                </path>
-                                                                <path
-                                                                    d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71">
-                                                                </path>
-                                                            </svg>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
+                                    <span class="modal-content-btn delete"
+                                        onclick="document.getElementById('confirmationmodallink').style.display='none'">
+                                        <svg>
+                                            <line x1="18" y1="6" x2="6" y2="18">
+                                            </line>
+                                            <line x1="6" y1="6" x2="18" y2="18">
+                                            </line>
+                                        </svg>
+                                    </span>
                                 </div>
                             </div>
-                            <span class="top-up-modal delete" style="right: 5%" wire:click="cancel">
+                            <div class="modal" id="confirmationmodallinkmultiple">
+                                <div class="modal-content">
+                                    <h1 class="modal-content-title">
+                                        {{ __('Are you sure to link those records?') }}
+                                    </h1>
+                                    <input wire:click.prevent="linkRecords()" class="modal-content-btn submit"
+                                        type="button" value="Confirm" id="confirmLoad">
+                                    <input class="modal-content-btn delete" type="button"
+                                        onclick="document.getElementById('confirmationmodallinkmultiple').style.display='none'"
+                                        value="Cancel">
+
+                                    <span class="modal-content-btn delete"
+                                        onclick="document.getElementById('confirmationmodallinkmultiple').style.display='none'">
+
+                                        <svg>
+                                            <line x1="18" y1="6" x2="6" y2="18">
+                                            </line>
+                                            <line x1="6" y1="6" x2="18" y2="18">
+                                            </line>
+                                        </svg>
+                                    </span>
+                                </div>
+                            </div>
+
+
+
+                            {{-- Header of the table --}}
+                            <div class="panel__header">
+                                <h1 class="panel__header--title">
+                                    {{ __('Add to Subcategories') }}
+                                </h1>
+                                <input class="panel__header--input" type="text" wire:model.debounce.200ms="searchadd"
+                                    placeholder="Search your subcategory...">
+                                <div class="panel__header--bundle">
+                                    <div class="dropdown">
+                                        <button
+                                            wire:click.prevent="@if ($coladd === false) $set('coladd', true) @else $set('coladd', false) @endif"
+                                            class="dropdown-button">Columns</button>
+                                        @if ($coladd)
+                                            <div class="dropdown-list" style="display: flex;">
+                                                @foreach ($columnsadd as $column)
+                                                    <div class="dropdown-item">
+                                                        <input type="checkbox" wire:model="selectedColumnsadd"
+                                                            value="{{ $column }}"
+                                                            {{ in_array($column, $selectedColumnsadd) ? 'checked' : '' }}>
+                                                        <label>{{ $column }}</label>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        @endif
+                                    </div>
+                                    <button
+                                        @if ($checkedadd) style="display: unset; z-index: 5;" @else style="display: none;" @endif
+                                        class="panel__header--button" wire:click.prevent="confirmProductsLinkmultiple()"
+                                        @if ($checkedadd) style="display: flex" @endif> Add
+                                        {{ count($checkedadd) }} records
+                                    </button>
+                                </div>
+                                @if ($selectPageadd)
+                                    <div class="panel__header--checked">
+                                        @if ($selectAlladd)
+                                            <p>
+                                                You selected <strong>{{ count($checkedadd) }}</strong> items.
+                                            </p>
+                                        @else
+                                            <a href="#" wire:click="selectAlladd">
+                                                <p>
+                                                    You selected <strong>{{ count($checkedadd) }}</strong> items,
+                                                    Do
+                                                    you
+                                                    want
+                                                    to Select All?
+                                                </p>
+                                            </a>
+                                        @endif
+                                    </div>
+                                @endif
+                            </div>
+                            {{-- Table --}}
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th><input type="checkbox" wire:model="selectPageadd"></th>
+                                        @if ($this->showColumnadd('Id'))
+                                            <th wire:click="sortByadd('id')">
+                                                <button class="table__header--btn"
+                                                    @if ($orderByadd === 'id' && $orderAscadd === '1') data-symbol="up"
+                                                  @else data-symbol="down" @endif>
+                                                    ID
+                                                    <svg>
+                                                        <line x1="12" y1="5" x2="12"
+                                                            y2="19"></line>
+                                                        <polyline points="19 12 12 19 5 12"></polyline>
+                                                    </svg>
+                                                </button>
+                                            </th>
+                                        @endif
+
+                                        @if ($this->showColumnadd('Name'))
+                                            <th wire:click="sortByadd('name')">
+                                                <button class="table__header--btn"
+                                                    @if ($orderByadd === 'name' && $orderAscadd === '1') data-symbol="up"
+                                                  @else data-symbol="down" @endif>
+                                                    Name
+                                                    <svg>
+                                                        <line x1="12" y1="5" x2="12"
+                                                            y2="19"></line>
+                                                        <polyline points="19 12 12 19 5 12"></polyline>
+                                                    </svg>
+                                                </button>
+                                            </th>
+                                        @endif
+
+                                        @if ($this->showColumnadd('Short Description'))
+                                            <th wire:click="sortByadd('short_description')">
+                                                <button class="table__header--btn"
+                                                    @if ($orderByadd === 'short_description' && $orderAscadd === '1') data-symbol="up"
+                                                  @else data-symbol="down" @endif>
+                                                    Description
+                                                    <svg>
+                                                        <line x1="12" y1="5" x2="12"
+                                                            y2="19"></line>
+                                                        <polyline points="19 12 12 19 5 12"></polyline>
+                                                    </svg>
+                                                </button>
+                                            </th>
+                                        @endif
+
+                                        @if ($this->showColumnadd('Created At'))
+                                            <th wire:click="sortByadd('created_at')">
+                                                <button class="table__header--btn"
+                                                    @if ($orderByadd === 'created_at' && $orderAscadd === '1') data-symbol="up"
+                                                  @else data-symbol="down" @endif>
+                                                    Created at
+                                                    <svg>
+                                                        <line x1="12" y1="5" x2="12"
+                                                            y2="19"></line>
+                                                        <polyline points="19 12 12 19 5 12"></polyline>
+                                                    </svg>
+                                                </button>
+                                            </th>
+                                        @endif
+                                        <th></th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    @foreach ($categories as $category)
+                                        <tr @if ($loop->last) id="last_record" @endif
+                                            class="@if ($this->isCheckedadd($category->id)) table__row--selected @endif">
+                                            <td data-title="Check">
+                                                <input type="checkbox" value="{{ $category->id }}"
+                                                    wire:model="checkedadd">
+                                            </td>
+
+                                            @if ($this->showColumnadd('Id'))
+                                                <td data-title="ID">{{ $category->id }}</td>
+                                            @endif
+
+                                            @if ($this->showColumnadd('Name'))
+                                                <td data-title="Name"><a
+                                                        href="/show_product/{{ $category->id }}'">{{ $category->name }}</a>
+                                                </td>
+                                            @endif
+
+                                            @if ($this->showColumnadd('Short Description'))
+                                                <td class="table__description" data-title="Description">
+                                                    {{ $category->short_description }}</td>
+                                            @endif
+
+                                            @if ($this->showColumnadd('Created At'))
+                                                <td data-title="Created At">
+                                                    <div class="table__time">
+                                                        <svg>
+                                                            <circle cx="12" cy="12" r="10">
+                                                            </circle>
+                                                            <polyline points="12 6 12 12 16 14"></polyline>
+                                                        </svg>
+                                                        {{ $category->created_at }}
+                                                </td>
+                                            @endif
+
+                                            <td data-title="Action">
+                                                <div class="table__buttons">
+                                                    <button class="edit"
+                                                        wire:click.prevent="confirmitemlink({{ $category->id }})">
+                                                        <svg>
+                                                            <path
+                                                                d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71">
+                                                            </path>
+                                                            <path
+                                                                d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71">
+                                                            </path>
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+
+                                <script>
+                                    const lastRecord = document.getElementById('last_record');
+                                    const options = {
+                                        root: null,
+                                        threshold: 1,
+                                        rootMargin: '0px'
+                                    }
+                                    const observer = new IntersectionObserver((entries, observer) => {
+                                        entries.forEach(entry => {
+                                            if (entry.isIntersecting) {
+                                                @this.loadMore()
+                                            }
+                                        });
+                                    });
+                                    observer.observe(lastRecord);
+                                </script>
+                            </table>
+                            <span class="top-up-modal delete" style="position: fixed; right: 15px; top: 15px;"
+                                wire:click="cancel">
 
                                 <svg>
                                     <line x1="18" y1="6" x2="6" y2="18">
@@ -228,31 +277,33 @@
                                     </line>
                                 </svg>
                             </span>
-                            <a href="#top" class="top-up-modal" id="topUp">
-                                <svg>
-                                    <polyline points="18 15 12 9 6 15"></polyline>
-                                </svg>
-                            </a>
                         </div>
-                        <script>
-                            const lastRecord = document.getElementById('last_record');
-                            const options = {
-                                root: null,
-                                threshold: 1,
-                                rootMargin: '0px'
-                            }
-                            const observer = new IntersectionObserver((entries, observer) => {
-                                entries.forEach(entry => {
-                                    if (entry.isIntersecting) {
-                                        @this.loadMore()
-                                    }
-                                });
+                        <a href="#top" class="top-up-modal" id="topUp">
+                            <svg>
+                                <polyline points="18 15 12 9 6 15"></polyline>
+                            </svg>
+                        </a>
+                    </div>
+                    {{-- script for lazy load data --}}
+                    <script>
+                        const lastRecord = document.getElementById('last_record');
+                        const options = {
+                            root: null,
+                            threshold: 1,
+                            rootMargin: '0px'
+                        }
+                        const observer = new IntersectionObserver((entries, observer) => {
+                            entries.forEach(entry => {
+                                if (entry.isIntersecting) {
+                                    @this.loadMore()
+                                }
                             });
-                            observer.observe(lastRecord);
-                        </script>
-                    @endif
-                    {{-- end html for adding products --}}
-                </div>
+                        });
+                        observer.observe(lastRecord);
+                    </script>
+                @endif
+                {{-- end html for adding products --}}
+
                 <div>
                     @if ($relatedsubcats && count($relatedsubcats) > 0)
                         {{-- delete single record --}}
@@ -473,17 +524,19 @@
                                         @endif
 
                                         <td data-title="Action">
-                                            <button class="edit"
-                                                wire:click.prevent="confirmItemRemoval({{ $subcat->id }})">
-                                                <svg>
-                                                    <path
-                                                        d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71">
-                                                    </path>
-                                                    <path
-                                                        d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71">
-                                                    </path>
-                                                </svg>
-                                            </button>
+                                            <div class="table__buttons">
+                                                <button class="edit"
+                                                    wire:click.prevent="confirmItemRemoval({{ $subcat->id }})">
+                                                    <svg>
+                                                        <path
+                                                            d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71">
+                                                        </path>
+                                                        <path
+                                                            d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71">
+                                                        </path>
+                                                    </svg>
+                                                </button>
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach
