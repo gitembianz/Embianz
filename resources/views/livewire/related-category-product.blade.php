@@ -26,7 +26,7 @@
                     @else
                         <div class="modal" id="modalelements" style="display: block">
                             <div class="modal-content"
-                                style="display: flex;justify-content: flex-start;flex-direction: column;gap: 0;max-height: calc(100vh - 60px); overflow-y: auto">
+                                style="display: flex;justify-content: flex-start;flex-direction: column;gap: 0;max-height: calc(100vh - 60px); overflow-y: auto; padding: 0; background: none;">
                                 <div class="modal" id="confirmationmodallink">
                                     <div class="modal-content">
                                         <h1 class="modal-content-title">
@@ -233,17 +233,19 @@
                                                 @endif
 
                                                 <td data-title="Action">
-                                                    <button class="edit"
-                                                        wire:click.prevent="confirmItemlink({{ $cat->id }})">
-                                                        <svg>
-                                                            <path
-                                                                d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71">
-                                                            </path>
-                                                            <path
-                                                                d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71">
-                                                            </path>
-                                                        </svg>
-                                                    </button>
+                                                    <div class="table__buttons">
+                                                        <button class="edit"
+                                                            wire:click.prevent="confirmItemlink({{ $cat->id }})">
+                                                            <svg>
+                                                                <path
+                                                                    d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71">
+                                                                </path>
+                                                                <path
+                                                                    d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71">
+                                                                </path>
+                                                            </svg>
+                                                        </button>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -524,15 +526,17 @@
                                         @endif
 
                                         <td data-title="Action">
-                                            <button class="delete"
-                                                wire:click.prevent="confirmItemRemoval({{ $categori->id }})">
-                                                <svg>
-                                                    <polyline points="3 6 5 6 21 6"></polyline>
-                                                    <path
-                                                        d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                                    </path>
-                                                </svg>
-                                            </button>
+                                            <div class="table__buttons">
+                                                <button class="delete"
+                                                    wire:click.prevent="confirmItemRemoval({{ $categori->id }})">
+                                                    <svg>
+                                                        <polyline points="3 6 5 6 21 6"></polyline>
+                                                        <path
+                                                            d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                                        </path>
+                                                    </svg>
+                                                </button>
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach

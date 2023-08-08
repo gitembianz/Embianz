@@ -91,10 +91,14 @@
   background: #e6eeea;
 }
 
-.table tbody tr.table__row--selected {
+
+.table tbody tr.table__row--selected td {
   background: rgb(180 242 214);
+}
 
 
+.table tbody tr.table__row--selected {
+  background: rgb(180 242 214) !important;
 
   &>input[type=checkbox]:before {
     content: "";
@@ -108,20 +112,6 @@
     transform: rotate(45deg) translate(-50%, -50%);
     opacity: 0;
   }
-}
-
-.table tbody button {
-  width: 2rem;
-  height: 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--primary);
-  border: none;
-  padding: 0;
-  border-radius: 5px;
-  color: white;
-  cursor: pointer;
 }
 
 .table button svg {
@@ -172,6 +162,20 @@ textarea.table__edit {
   align-items: center;
   justify-content: flex-end;
   gap: 10px;
+
+  button {
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary);
+    border: none;
+    padding: 0;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+  }
 }
 
 .table__header--btn {
@@ -412,7 +416,7 @@ textarea.table__edit {
     }
 
     &--bundle {
-      grid-column: unset;
+      grid-column: 1/4;
     }
 
     &--input {
@@ -421,6 +425,48 @@ textarea.table__edit {
 
     &--checked {
       grid-column: unset;
+      grid-column: 1/4;
     }
+  }
+}
+
+.table__drop {
+  position: relative;
+  width: 100%;
+  height: 2rem;
+}
+
+.table__drop--input {
+  width: 100%;
+  height: 2rem;
+  border: 1px solid gray;
+  background: white;
+  border-radius: 4px;
+  padding: 0 5px;
+  min-width: 10rem;
+  color: #35424B;
+  display: flex;
+  align-items: center;
+}
+
+.table__drop--list {
+  position: absolute;
+  top: 110%;
+  left: 0;
+  width: 100%;
+  height: auto;
+  max-height: 150px;
+  overflow-y: auto;
+  border: 1px solid gray;
+  border-radius: 4px;
+  background-color: white;
+  z-index: 99;
+}
+
+.table__drop--item {
+  padding: 10px;
+
+  &:not(:last-child) {
+    border-bottom: 1px solid gray;
   }
 }
