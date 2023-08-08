@@ -421,6 +421,7 @@ textarea.table__edit {
 
     &--input {
       grid-column: unset;
+      grid-column: 1/4;
     }
 
     &--checked {
@@ -447,6 +448,12 @@ textarea.table__edit {
   color: #35424B;
   display: flex;
   align-items: center;
+
+  &.off {
+    background: #e1e1e1;
+    border: 1px solid #e1e1e1;
+    cursor: pointer;
+  }
 }
 
 .table__drop--list {

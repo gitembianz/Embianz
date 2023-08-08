@@ -2889,6 +2889,7 @@ textarea.table__edit {
   }
   .panel__header--input {
     grid-column: unset;
+    grid-column: 1/4;
   }
   .panel__header--checked {
     grid-column: unset;
@@ -2912,6 +2913,11 @@ textarea.table__edit {
   color: #35424B;
   display: flex;
   align-items: center;
+}
+.table__drop--input.off {
+  background: #e1e1e1;
+  border: 1px solid #e1e1e1;
+  cursor: pointer;
 }
 
 .table__drop--list {
