@@ -2889,6 +2889,7 @@ textarea.table__edit {
   }
   .panel__header--input {
     grid-column: unset;
+    grid-column: 1/4;
   }
   .panel__header--checked {
     grid-column: unset;

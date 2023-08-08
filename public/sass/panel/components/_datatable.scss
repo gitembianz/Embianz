@@ -421,6 +421,7 @@ textarea.table__edit {
 
     &--input {
       grid-column: unset;
+      grid-column: 1/4;
     }
 
     &--checked {
