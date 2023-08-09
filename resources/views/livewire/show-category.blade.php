@@ -6,18 +6,42 @@
         </div>
     </div>
     <div class="item__header">
-        <h1 class="item__header-title" id="title">Category - {{ $category->name }}</h1>
+        <h1 class="item__header-title" id="title">Category: {{ $category->name }}</h1>
         <div class="item__header-buttons">
-            <a class="item__header-btn" href="{{ route('category') }}">All Categories</a>
-            <a class="item__header-btn" href="{{ route('newcategory') }}">New</a>
+            <a class="item__header-btn" href="{{ route('category') }}">
+                <svg>
+                    <polyline points="11 17 6 12 11 7"></polyline>
+                    <polyline points="18 17 13 12 18 7"></polyline>
+                </svg>
+            </a>
+            <a class="item__header-btn" href="{{ route('newcategory') }}">
+                <svg>
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="12" y1="18" x2="12" y2="12"></line>
+                    <line x1="9" y1="15" x2="15" y2="15"></line>
+                </svg>
+            </a>
             @if ($editcategory === null)
-                <input class="item__header-btn" type="button" value="Edit" wire:click.prevent="editcategory()">
+                <button class="item__header-btn" type="button" value="Edit" wire:click.prevent="editcategory()">
+                    <svg>
+                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                    </svg>
+                </button>
             @else
-                <input class="item__header-btn" type="button" wire:click.prevent="savecategory()" value="Save">
-                <input class="item__header-btn" type="button" wire:click.prevent="cancelcategory()" value="Cancel">
+                <button class="item__header-btn edit" type="button" wire:click.prevent="savecategory()"
+                    value="Save">Save</button>
+                <button class="item__header-btn edit" type="button" wire:click.prevent="cancelcategory()"
+                    value="Cancel">Cancel</button>
             @endif
-            <input class="item__header-btn delete" type="button" value="Delete" name="delete"
-                wire:click.prevent="confirmItemRemoval({{ $category->id }})">
+            <button wire:click.prevent="confirmItemRemoval({{ $category->id }})" class="item__header-btn delete"
+                type="button" value="Delete">
+                <svg>
+                    <polyline points="3 6 5 6 21 6"></polyline>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                </svg>
+            </button>
         </div>
     </div>
 
@@ -28,139 +52,150 @@
         </div>
         <div class="tab__list">
             <div class="tabs__content active" id="Details">
-                <div class="tab__list--form">
+                <div class="item__form">
                     @if ($editcategory === null)
                         <div class="item__form-input-close">
                             <div>{{ $category->name }}</div>
-                            <span>Category Name</span>
+                            <label>Category Name</label>
                         </div>
                     @else
                         <div class="item__form-input">
-                            <input type="text" wire:model.defer="cat.name">
-                            <span> Name</span>
+                            <input type="text" wire:model.defer="cat.name" required>
+                            <label>Category Name</label>
                         </div>
                     @endif
-                    <div class="tabs__form-input__bundle">
-                        @if ($editcategory === null)
-                            <div class="item__form-input-close">
-                                <div>
-                                    @if ($category->active)
-                                        {{ _('Active') }}
-                                    @else
-                                        {{ _('Inactive') }}
-                                    @endif
-                                </div>
-                                <span>Is Active</span>
-                            </div>
-                            <div class="item__form-input-close">
-                                <div>
-                                    @if ($category->store_tab)
-                                        {{ _('Visible') }}
-                                    @else
-                                        {{ _('None') }}
-                                    @endif
-                                </div>
-                                <span>Visible on Store Tab</span>
-                            </div>
-                            <div class="item__form-input-close">
-                                <div>{{ $category->sequence }}</div>
-                                <span>Category Sequence</span>
-                            </div>
-                        @else
-                            <div class=" display-f align-center jus-s">
-                                <input type="checkbox" wire:model.defer="cat.active">
-                                <span class="ml-1"> is active</span>
-                            </div>
-                            <div class="display-f align-center jus-s">
-                                <input type="checkbox" wire:model.defer="cat.visible">
-                                <span class="ml-1">Displayed on Store Tab?</span>
-                            </div>
-                            <div class="item__form-input">
-                                <input type="number" min="0" wire:model.defer="cat.sequence">
-                                <span>Sequence</span>
-                            </div>
-                        @endif
-                    </div>
+
                     @if ($editcategory === null)
                         <div class="item__form-input-close">
                             <div>{{ $category->start_date }}</div>
-                            <span for="start_date">Category Start Date</span>
+                            <label for="start_date">Category Start Date</label>
                         </div>
                     @else
                         <div class="item__form-input">
                             <input type="date" wire:model.defer="cat.start_date">
-                            <span>Start Date</span>
+                            <label>Category Start Date</label>
                         </div>
                     @endif
+
                     @if ($editcategory === null)
                         <div class="item__form-input-close">
                             <div>{{ $category->end_date }}</div>
-                            <span>Category End Date </span>
+                            <label>Category End Date </label>
                         </div>
                     @else
                         <div class="item__form-input">
                             <input type="date" wire:model.defer="cat.end_date">
-                            <span>End Date</span>
+                            <label>Category End Date</label>
                         </div>
                     @endif
 
                     @if ($editcategory === null)
-                        <div class="item__form-input-close item__form-long tab__list--form--resize">
+                        <div class="item__form-input-close">
+                            <div>{{ $category->sequence }}</div>
+                            <label>Sequence</label>
+                        </div>
+                    @else
+                        <div class="item__form-input">
+                            <input type="date" wire:model.defer="cat.sequence">
+                            <label>Sequence</label>
+                        </div>
+                    @endif
+
+                    @if ($editcategory === null)
+                        <div style="display: flex; align-items: center;justify-content: flex-start;gap: 10px">
+                            @if ($category->active)
+                                <input type="checkbox" checked disabled class="check--disabled">
+                                {{ _('Active') }}
+                            @else
+                                <input type="checkbox" disabled class="check--disabled">
+                                {{ _('Inactive') }}
+                            @endif
+                        </div>
+                    @else
+                        <div style="display: flex; align-items: center;justify-content: flex-start;gap: 10px">
+                            <input type="checkbox" wire:model.defer="cat.visible">
+                            <span>Active</span>
+                        </div>
+                    @endif
+
+                    @if ($editcategory === null)
+                        <div style="display: flex; align-items: center;justify-content: flex-start;gap: 10px">
+                            @if ($category->active)
+                                <input type="checkbox" checked disabled class="check--disabled">
+                                {{ _('Visible') }}
+                            @else
+                                <input type="checkbox" disabled class="check--disabled">
+                                {{ _('Hidden') }}
+                            @endif
+                        </div>
+                    @else
+                        <div style="display: flex; align-items: center;justify-content: flex-start;gap: 10px">
+                            <input type="checkbox" wire:model.defer="cat.active">
+                            <span>Display on Store?</span>
+                        </div>
+                    @endif
+
+                    @if ($editcategory === null)
+                        <div class="item__form-input-close item__form-long">
                             <div>{{ $category->short_description }}</div>
-                            <span>Category Short Description</span>
+                            <label>Product Short Description</label>
                         </div>
                     @else
                         <div class="item__form-input item__form-long">
-                            <input type="text" wire:model.defer="cat.short_description">
-                            <span>Short Description</span>
-                        </div>
-                    @endif
-                    @if ($editcategory === null)
-                        <div class="item__form-input-close item__form-long">
-                            <div>{{ $category->long_description }}</div>
-                            <span>Category Long Description</span>
-                        </div>
-                    @else
-                        <div class="item__form-input item__form-long">
-                            <textarea wire:model.defer="cat.long_description"></textarea>
-                            <span>Long Description</span>
-                        </div>
-                    @endif
-                    @if ($editcategory === null)
-                        <div class="item__form-input-close item__form-long">
-                            <div>{{ $category->seo_title }}</div>
-                            <span>SEO Title</span>
-                        </div>
-                    @else
-                        <div class="item__form-input item__form-long">
-                            <input type="text" wire:model.defer="cat.seo_title">
-                            <span>SEO Title</span>
+                            <input type="text" wire:model.defer="cat.short_description" required>
+                            <label>Product Short Description</label>
                         </div>
                     @endif
 
-                    <div class="item__form-close">
+                    @if ($editcategory === null)
+                        <div class="item__form-input-close item__form-textarea">
+                            <div>{{ $category->long_description }}</div>
+                            <label>Product Long Description</label>
+                        </div>
+                    @else
+                        <div class="item__form-input item__form-textarea">
+                            <textarea wire:model.defer="cat.long_description" required></textarea>
+                            <label>Product Long Description</label>
+                        </div>
+                    @endif
+
+                    @if ($editcategory === null)
+                        <div class="item__form-input-close item__form-long">
+                            <div id="seo_title">{{ $category->seo_title }}</div>
+                            <label>SEO Title</label>
+                        </div>
+                    @else
+                        <div class="item__form-input item__form-long">
+                            <input type="text" wire:model.defer="cat.seo_title" required>
+                            <label>SEO Title</label>
+                        </div>
+                    @endif
+
+                    <div class="item__form-input-close">
                         <div>{{ $category->created_at }}</div>
-                        <span>Create date / time</span>
+                        <label>Create date / time</label>
                     </div>
-                    <div class="item__form-close">
-                        <div>{{ $category->createdby }}</div>
-                        <span>Create by</span>
+                    <div class="item__form-input-close">
+                        <div>{{ $category->created_by }}</div>
+                        <label>Create by</label>
                     </div>
-                    <div class="item__form-close">
+                    <div class="item__form-input-close">
                         <div>{{ $category->updated_at }}</div>
-                        <span>Updated date / time</span>
+                        <label>Updated date / time</label>
                     </div>
-                    <div class="item__form-close">
-                        <div>{{ $category->lastmodifiedby }}</div>
-                        <span>Last modified by</span>
+                    <div class="item__form-input-close">
+                        <div>{{ $category->last_modified_by }}</div>
+                        <label>Last modified by</label>
                     </div>
                     @if ($editcategory != null)
-                        <input class="item__form-btn item__form-long" wire:click.prevent="savecategory()" type="button"
+                        <button class="item__form-btn item__form-long" wire:click.prevent="savecategory()"
                             value="Save">
+                            Save edited details
+                        </button>
                     @endif
                 </div>
             </div>
-            <div class="tabs__content display-f g-1">
+            <div class="tabs__content">
                 <livewire:related-media-category categoryId="{{ $category->id }}" />
 
                 <livewire:related-product-category categoryId="{{ $category->id }}" />

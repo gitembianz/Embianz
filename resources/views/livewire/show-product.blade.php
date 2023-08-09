@@ -219,7 +219,7 @@
                     @endif
                 </div>
             </div>
-            <div class="tabs__content display-f g-1">
+            <div class="tabs__content">
                 <livewire:related-media-product productId="{{ $product->id }}" />
 
                 <livewire:related-category-product productId="{{ $product->id }}" />
