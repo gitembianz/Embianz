@@ -8,13 +8,13 @@
     <div class="item__header">
         <h1 class="item__header-title" id="title">Category: {{ $category->name }}</h1>
         <div class="item__header-buttons">
-            <a class="item__header-btn" href="{{ route('category') }}">
+            <a class="item__header-btn" href="{{ route('category') }}" data-tooltip-left="Back to all Categories">
                 <svg>
                     <polyline points="11 17 6 12 11 7"></polyline>
                     <polyline points="18 17 13 12 18 7"></polyline>
                 </svg>
             </a>
-            <a class="item__header-btn" href="{{ route('newcategory') }}">
+            <a class="item__header-btn" href="{{ route('newcategory') }}" data-tooltip-center="Create a new Category">
                 <svg>
                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                     <polyline points="14 2 14 8 20 8"></polyline>
@@ -23,20 +23,21 @@
                 </svg>
             </a>
             @if ($editcategory === null)
-                <button class="item__header-btn" type="button" value="Edit" wire:click.prevent="editcategory()">
+                <button class="item__header-btn" type="button" value="Edit" wire:click.prevent="editcategory()"
+                    data-tooltip-center="Edit this Category">
                     <svg>
                         <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
                         <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
                     </svg>
                 </button>
             @else
-                <button class="item__header-btn edit" type="button" wire:click.prevent="savecategory()"
-                    value="Save">Save</button>
+                <button class="item__header-btn edit" type="button" wire:click.prevent="savecategory()" value="Save"
+                    data-tooltip-center="Save this changes">Save</button>
                 <button class="item__header-btn edit" type="button" wire:click.prevent="cancelcategory()"
-                    value="Cancel">Cancel</button>
+                    value="Cancel" data-tooltip-center="Cancel this changes">Cancel</button>
             @endif
             <button wire:click.prevent="confirmItemRemoval({{ $category->id }})" class="item__header-btn delete"
-                type="button" value="Delete">
+                type="button" value="Delete" data-tooltip-right="Delete this Category">
                 <svg>
                     <polyline points="3 6 5 6 21 6"></polyline>
                     <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
@@ -122,10 +123,10 @@
                         <div style="display: flex; align-items: center;justify-content: flex-start;gap: 10px">
                             @if ($category->active)
                                 <input type="checkbox" checked disabled class="check--disabled">
-                                {{ _('Visible') }}
+                                {{ _('Show in Store: Visible') }}
                             @else
                                 <input type="checkbox" disabled class="check--disabled">
-                                {{ _('Hidden') }}
+                                {{ _('Show in Store: Hidden') }}
                             @endif
                         </div>
                     @else

@@ -2,6 +2,8 @@
   .item {
     &__header {
       grid-template-columns: 1fr 1fr;
+      padding: 0;
+      padding-bottom: 1.5rem;
 
       &-title {
         text-align: left;
@@ -10,10 +12,6 @@
 
       &-buttons {
         @include flexbox(flex, row, flex-end, center, $gap);
-      }
-
-      &-btn {
-        max-width: 8rem;
       }
     }
 
