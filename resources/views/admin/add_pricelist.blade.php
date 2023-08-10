@@ -22,7 +22,6 @@
     <form action="{{ url('/add_pricelist') }}" method="POST">
         @csrf
         {{-- Item Header --}}
-
         <div class="item__header">
             <h1 class="item__header-title" id="title">{{ __('Add new price list') }}</h1>
             <div class="item__header-buttons">
