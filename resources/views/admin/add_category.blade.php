@@ -1,7 +1,7 @@
 <x-dashboardheader />
 <x-dashboardnavbar />
 {{-- Display session message --}}
-@if (session()->has('message') && session()->has('item_name') && session()->has('item_id'))
+{{-- @if (session()->has('message') && session()->has('item_name') && session()->has('item_id'))
     <div class="alert__session" id="alertevent">
         <Span class="alert__session-text">{!! session('message') !!} , click for view - <a
                 href="{{ route('show_category', ['id' => session('item_id')]) }}">{{ session('item_name') }}</a></Span>
@@ -27,26 +27,35 @@
             }, 500);
         }, 2000);
     </script>
-@endif
+@endif --}}
 {{-- End Section session message --}}
 <x-dashboardsidebar />
 {{-- Page content start --}}
 
 <section class="content">
-    <form class="item" action="{{ url('/add_category') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ url('/add_category') }}" method="POST" enctype="multipart/form-data">
         @csrf
         {{-- Item Header --}}
         <div class="item__header">
             <h1 class="item__header-title" id="title">{{ __('Create Category') }}</h1>
             <div class="item__header-buttons">
-                <input class="item__header-btn" type="submit" value="Add New" name="submit">
-                <a class="item__header-btn" href="{{ route('category') }}">All Categories</a>
-                <button class="item__header-btn" type="reset">Clear form</button>
+                <a class="item__header-btn" href="{{ route('category') }}" data-tooltip-center="Back to all Price lists">
+                    <svg>
+                        <polyline points="11 17 6 12 11 7"></polyline>
+                        <polyline points="18 17 13 12 18 7"></polyline>
+                    </svg>
+                </a>
+                <button class="item__header-btn" id="resetform" type="reset" data-tooltip-right="Clear Form">
+                    <svg>
+                        <polyline points="1 4 1 10 7 10"></polyline>
+                        <polyline points="23 20 23 14 17 14"></polyline>
+                        <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path>
+                    </svg>
+                </button>
             </div>
         </div>
 
-        {{-- Item Upload --}}
-        <div class="item item__upload">
+        {{-- <div class="item item__upload">
             <input type="file" name="media[]" id="imgUpload" multiple
                 accept="image/*,video/*"onchange="filesManager(this.files)">
 
@@ -60,47 +69,45 @@
             </label>
 
             <table id="imageTable" class="table"></table>
-        </div>
+        </div> --}}
 
         {{-- Item Form --}}
         <div class="item__form">
             <div class="item__form-input">
                 <input type="text" name="category" required>
-                <span> Name</span>
+                <label>Category Name</label>
             </div>
-            <div class="display-f align-center jus-s g-2 wid-10">
-                <div class=" display-f align-center jus-s">
-                    <input type="checkbox" name="active">
-                    <span class="ml-1"> is active</span>
-                </div>
-                <div class="display-f align-center jus-s">
-                    <input type="checkbox" name="visible">
-                    <span class="ml-1">Displayed on Store Tab?</span>
-                </div>
-                <div class="item__form-input">
-                    <input type="number" min="0" name="sequence" required>
-                    <span>Sequence</span>
-                </div>
+            <div class="item__form-input">
+                <input type="number" min="0" name="sequence" required>
+                <label>Sequence</label>
             </div>
             <div class="item__form-input">
                 <input type="date" id="start_date" name="start_date">
-                <span>Start Date</span>
+                <label>Start Date</label>
             </div>
             <div class="item__form-input">
                 <input type="date" id="end_date" name="end_date">
-                <span>End Date</span>
+                <label>End Date</label>
+            </div>
+            <div style="display: flex; align-items: center;justify-content: flex-start;gap: 10px">
+                <input type="checkbox" name="active">
+                <span>Active</span>
+            </div>
+            <div style="display: flex; align-items: center;justify-content: flex-start;gap: 10px">
+                <input type="checkbox" name="visible">
+                <span>Displayed on Store Tab?</span>
             </div>
             <div class="item__form-input item__form-long">
                 <input type="text" name="short_description" required>
-                <span>Short Description</span>
+                <label>Short Description</label>
             </div>
-            <div class="item__form-input item__form-long">
+            <div class="item__form-input item__form-textarea">
                 <textarea name="long_description" required></textarea>
-                <span>Long Description</span>
+                <label>Long Description</l>
             </div>
             <div class="item__form-input item__form-long">
                 <input type="text" name="seo_title" required>
-                <span>SEO Title</span>
+                <label>SEO Title</lab>
             </div>
             <input class="item__form-btn item__form-long" type="submit" value="Add New" name="submit">
         </div>

@@ -4502,6 +4502,7 @@ button[data-tooltip-center]::after {
   visibility: hidden;
   transition: all 0.2s ease-in-out;
   pointer-events: none;
+  z-index: 99;
 }
 a[data-tooltip-left]:hover::after, a[data-tooltip-right]:hover::after, a[data-tooltip-center]:hover::after,
 button[data-tooltip-left]:hover::after,

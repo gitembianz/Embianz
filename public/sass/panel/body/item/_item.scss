@@ -187,6 +187,7 @@ button {
       visibility: hidden;
       transition: $transition;
       pointer-events: none;
+      z-index: 99;
     }
 
     &:hover::after {
