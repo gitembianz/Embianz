@@ -225,7 +225,6 @@
             </div>
         @endif
 
-        {{-- end add related specs --}}
         @if ($showrelatedprods)
             <div class="accordion__content">
                 <div>
