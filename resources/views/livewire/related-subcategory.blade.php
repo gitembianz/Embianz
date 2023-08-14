@@ -26,7 +26,7 @@
                 @else
                     <div class="modal" id="modalelements" style="display: block">
                         <div class="modal-content"
-                            style="display: flex;justify-content: flex-start;flex-direction: column;gap: 0;max-height: calc(100vh - 60px); overflow-y: auto; background: none; padding: 0;">
+                            style="display: flex;justify-content: center;flex-direction: column;gap: 0;max-height: calc(100vh - 60px); overflow-y: auto; background: none; padding: 0;">
                             <div class="modal" id="confirmationmodallink">
                                 <div class="modal-content">
                                     <h1 class="modal-content-title">

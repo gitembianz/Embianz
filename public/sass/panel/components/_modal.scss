@@ -2,7 +2,7 @@
     @include size(100%, 100vh);
     @include flexbox(none, row, center, center);
     @include position(fixed, 0, null, null, 0);
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: rgba(0, 0, 0, 0.8);
     z-index: $z-index-modal;
 
     &-content {
@@ -17,6 +17,14 @@
       padding: $padding * 2;
       outline: none;
       margin: 30px;
+
+      &>.panel__header {
+        background-color: white;
+
+        &>.panel__header--title {
+          color: $mainBg;
+        }
+      }
 
       &-spec {
         @extend .modal-content;
