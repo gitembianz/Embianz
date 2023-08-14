@@ -1781,6 +1781,7 @@ main {
   text-align: left;
   width: 100%;
   position: relative;
+  background-color: #35424B;
   border-radius: 10px 0 0 10px;
 }
 .accordion__btn:hover {
@@ -1890,16 +1891,15 @@ main {
   display: flex;
 }
 .accordion__content {
-  border: 1px solid #35424B;
-  border-top: 0;
-  border-radius: 0 0 10px 10px;
-  padding: 20px 10px 10px;
   margin-top: -10px;
-  background-color: #0f1315;
+}
+.accordion__content > div .panel__header {
+  border-radius: 0;
+  padding-top: 15px;
 }
 .accordion__content p {
   text-align: center;
-  color: #fff;
+  color: #35424B;
 }
 .accordion__upload {
   display: flex;
@@ -2048,7 +2048,7 @@ main {
   position: fixed;
   top: 0;
   left: 0;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.8);
   z-index: 500;
 }
 .modal-content, .modal-content-spec {
@@ -2063,6 +2063,12 @@ main {
   padding: 20px;
   outline: none;
   margin: 30px;
+}
+.modal-content > .panel__header, .modal-content-spec > .panel__header {
+  background-color: white;
+}
+.modal-content > .panel__header > .panel__header--title, .modal-content-spec > .panel__header > .panel__header--title {
+  color: #35424B;
 }
 .modal-content-spec {
   display: flex;
@@ -2591,6 +2597,10 @@ textarea.table__edit {
   border-radius: 5px;
   color: white;
   cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+.table__buttons button:hover {
+  background: #0b0d0f;
 }
 
 .table__header--btn {
@@ -2749,12 +2759,16 @@ textarea.table__edit {
   justify-content: center;
   width: 100%;
   border: none;
-  background-color: #08b062;
+  background-color: #BBFCDE;
   border-radius: 3px;
-  color: white;
+  color: #35424B;
   cursor: pointer;
   grid-column: 1/4;
   padding: 10px 20px;
+  transition: all 0.3s ease-in-out;
+}
+.panel__header--checked:hover {
+  background-color: #72f9ba;
 }
 .panel__header--checked svg {
   stroke: #35424B;
@@ -2793,6 +2807,14 @@ textarea.table__edit {
     grid-column: unset;
     grid-column: 1/4;
   }
+  .table__drop--input {
+    min-width: unset;
+  }
+}
+@media (min-width: 740px) {
+  .table__drop--input {
+    min-width: 10rem;
+  }
 }
 .table__drop {
   position: relative;
@@ -2807,7 +2829,6 @@ textarea.table__edit {
   background: white;
   border-radius: 4px;
   padding: 0 5px;
-  min-width: 10rem;
   color: #35424B;
   display: flex;
   align-items: center;

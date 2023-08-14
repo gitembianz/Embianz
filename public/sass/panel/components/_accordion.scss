@@ -6,6 +6,7 @@
     text-align: left;
     width: 100%;
     position: relative;
+    background-color: $mainBg;
     border-radius: $BtnBorderRadius 0 0 $BtnBorderRadius;
 
     &-flex {
@@ -14,16 +15,20 @@
   }
 
   &__content {
-    border: 1px solid $mainBg;
-    border-top: 0;
-    border-radius: 0 0 $base-border-radius $base-border-radius;
-    padding: 20px 10px 10px;
+    // border: 1px solid $mainBg;
+    // border-top: 0;
+    // border-radius: 0 0 $base-border-radius $base-border-radius;
     margin-top: -10px;
-    background-color: #0f1315;
+    // background-color: #0f1315;
+
+    &>div .panel__header {
+      border-radius: 0;
+      padding-top: 15px;
+    }
 
     p {
       text-align: center;
-      color: #fff
+      color: $mainBg;
     }
   }
 

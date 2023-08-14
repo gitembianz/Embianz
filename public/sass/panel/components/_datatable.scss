@@ -175,6 +175,11 @@ textarea.table__edit {
     border-radius: 5px;
     color: white;
     cursor: pointer;
+    transition: all .3s ease-in-out;
+
+    &:hover {
+      background: darken($darkBg, 10%);
+    }
   }
 }
 
@@ -374,12 +379,17 @@ textarea.table__edit {
     justify-content: center;
     width: 100%;
     border: none;
-    background-color: #08b062;
+    background-color: #BBFCDE;
     border-radius: 3px;
-    color: white;
+    color: $mainBg;
     cursor: pointer;
     grid-column: 1/4;
     padding: 10px 20px;
+    transition: all .3s ease-in-out;
+
+    &:hover {
+      background-color: darken(#BBFCDE, 15%);
+    }
 
     svg {
       stroke: $mainBg;
@@ -429,6 +439,16 @@ textarea.table__edit {
       grid-column: 1/4;
     }
   }
+
+  .table__drop--input {
+    min-width: unset;
+  }
+}
+
+@media (min-width: 740px) {
+  .table__drop--input {
+    min-width: 10rem;
+  }
 }
 
 .table__drop {
@@ -444,7 +464,7 @@ textarea.table__edit {
   background: white;
   border-radius: 4px;
   padding: 0 5px;
-  min-width: 10rem;
+  // min-width: 10rem;
   color: #35424B;
   display: flex;
   align-items: center;

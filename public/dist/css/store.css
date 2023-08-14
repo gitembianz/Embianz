@@ -162,6 +162,7 @@ button {
   --preferred-font-size: 4vw;
   --maximum-font-size: 20px;
   transition: all 0.2s ease-in-out;
+  cursor: pointer;
 }
 
 input {
@@ -2231,8 +2232,9 @@ footer {
   border-radius: 50%;
 }
 .product__item--heart svg {
-  stroke: #104010;
-  fill: #104010;
+  stroke: #9a0000;
+  fill: #9a0000;
+  stroke-width: 1px;
 }
 .product__item--header {
   position: absolute;
