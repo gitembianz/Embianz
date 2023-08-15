@@ -20,8 +20,7 @@
         {{-- add related specs --}}
         @if ($addrelatedspecs)
             <div class="modal" id="modalelements" style="display: block">
-                <div class="modal-content"
-                    style="display: flex;justify-content: center;flex-direction: column;gap: 0;height: calc(100vh - 60px); overflow-y: auto; padding: 0; background: none;">
+                <div class="modal-content modal--tabel">
                     {{-- Header of the table --}}
                     <div class="panel__header">
                         <h1 class="panel__header--title">
@@ -118,9 +117,9 @@
                             @endforeach
                         </tbody>
                     </table>
-                    <span class="top-up-modal delete" style="position: fixed; right: 15px; top: 15px;"
+                    <span class="top-up-modal delete"
+                        style="position: fixed; right: 0; top: 0; width: 2.5rem; height: 2.5rem;"
                         wire:click="closemodal">
-
                         <svg>
                             <line x1="18" y1="6" x2="6" y2="18">
                             </line>
@@ -139,8 +138,7 @@
 
         @if ($editmultiple)
             <div class="modal" id="modalelements" style="display: block">
-                <div class="modal-content"
-                    style="display: flex;justify-content: center;flex-direction: column;gap: 0;height: calc(100vh - 60px); overflow-y: auto; padding: 0; background: none;">
+                <div class="modal-content modal--tabel">
                     {{-- Header of the table --}}
                     <div class="panel__header">
                         <h1 class="panel__header--title">
@@ -207,7 +205,8 @@
                             @endforeach
                         </tbody>
                     </table>
-                    <span class="top-up-modal delete" style="position: fixed; right: 15px; top: 15px;"
+                    <span class="top-up-modal delete"
+                        style="position: fixed; right: 0; top: 0; width: 2.5rem; height: 2.5rem;"
                         wire:click="closemodal">
 
                         <svg>

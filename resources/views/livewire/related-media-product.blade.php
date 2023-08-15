@@ -52,8 +52,7 @@
                 @if ($medias)
                     <form wire:submit.prevent="save">
                         <div class="modal" id="modalelements" style="display: block">
-                            <div class="modal-content"
-                                style="margin: 0 auto; width:80%; top: 50%; transform: translateY(-50%); display: flex; height: 98vh; overflow-y: auto; align-items: flex-start">
+                            <div class="modal-content modal--tabel">
                                 <div class="item" style="width: 100%">
 
                                     <input type="submit" id="add_media_related" class="item__form-btn item__form-long"
@@ -134,7 +133,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <span class="top-up-modal delete" style="right: 5%" wire:click="cancel">
+                            <span class="top-up-modal delete" style="" wire:click="cancel">
 
                                 <svg>
                                     <line x1="18" y1="6" x2="6" y2="18">

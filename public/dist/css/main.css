@@ -2226,6 +2226,25 @@ main {
   border-radius: 100%;
 }
 
+.modal--tabel {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  gap: 0;
+  height: auto;
+  max-height: 90%;
+  width: 100%;
+  overflow-y: auto;
+  padding: 0;
+  background: none;
+  position: absolute;
+  padding: 1.3rem;
+  margin: 0 !important;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 input[type=checkbox] {
   position: relative;
   border: 1px solid #20282d;
@@ -4136,6 +4155,22 @@ header,
   width: 3rem;
   height: 3rem;
   box-shadow: none;
+}
+
+.sidebar__subitem {
+  position: relative;
+}
+.sidebar__subitem::after {
+  content: "";
+  width: 10px;
+  height: 150%;
+  top: -100%;
+  position: absolute;
+  left: -10px;
+  border: 2px solid white;
+  border-right: 0;
+  border-top: 0;
+  border-radius: 0 0 0px 10px;
 }
 
 @media (max-height: 375px) {
