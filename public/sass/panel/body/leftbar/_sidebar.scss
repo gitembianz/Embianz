@@ -41,6 +41,7 @@
       opacity: 0;
       transition: $transition;
     }
+
   }
 
   &__icon {
@@ -81,4 +82,18 @@
 
 .sidebar__subitem {
   @extend .sidebar__item;
+  position: relative;
+
+  &::after {
+    content: "";
+    width: 10px;
+    height: 150%;
+    top: -100%;
+    position: absolute;
+    left: -10px;
+    border: 2px solid white;
+    border-right: 0;
+    border-top: 0;
+    border-radius: 0 0 0px 10px;
+  }
 }

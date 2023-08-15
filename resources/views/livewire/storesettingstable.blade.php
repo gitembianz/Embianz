@@ -248,7 +248,8 @@
                                     {{ $store->description }}
                                 </div>
                             @else
-                                <textarea class="table__edit" wire:model.defer="stores.{{ $index }}.description" placeholder="{{ $store->description }}"></textarea>
+                                <textarea class="table__edit" wire:model.defer="stores.{{ $index }}.description"
+                                    placeholder="{{ $store->description }}"></textarea>
                             @endif
                         </td>
                     @endif
