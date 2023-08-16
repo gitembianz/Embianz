@@ -425,9 +425,11 @@
                                         @if ($this->showColumn('Name'))
                                             <td data-title="Name">
                                                 @if ($editedrow !== $index)
+
                                                     <div
                                                         wire:click.prevent="editprod({{ $prod->id }}, {{ $prod->product->id }}, {{ $index }})">
                                                         {{ $prod->product->name }}
+
                                                     </div>
                                                 @else
                                                     @if ($allow)
@@ -465,7 +467,9 @@
                                             <td
                                                 wire:click.prevent="editspec({{ $prod->id }}, {{ $prod->product->id }}, {{ $index }})">
                                                 @if ($editedrow !== $index)
+
                                                     {{ $prod->value }}
+
                                                 @else
                                                     <input type="text" required class="table__edit"
                                                         wire:model="specification.{{ $index }}.value">

@@ -426,10 +426,11 @@
                                         @if ($this->showColumn('Name'))
                                             <td data-title="Name">
                                                 @if ($editedrow !== $index)
+
                                                     <div
                                                         wire:click.prevent="edititem({{ $prices->id }}, {{ $prices->pricelist->id }}, {{ $index }})">
                                                         {{ $prices->pricelist->name }}
-                                                    </div>
+
                                                 @else
                                                     @if ($allow)
                                                         <div class="table__drop">
@@ -466,7 +467,9 @@
                                             <td
                                                 wire:click.prevent="edititem({{ $prices->id }}, {{ $prices->pricelist->id }}, {{ $index }})">
                                                 @if ($editedrow !== $index)
+
                                                     {{ $prices->value }}
+
                                                 @else
                                                     <input type="text" required class="table__edit"
                                                         wire:model="pricelist.{{ $index }}.value">

@@ -52,8 +52,7 @@
             <h1 class="modal-content-title">
                 {{ __('Are you sure to delete this record?') }}
             </h1>
-            <input wire:click.prevent="deleteSingleRecord()" class="modal-content-btn submit" type="button"
-                value="Confirm">
+            <input wire:click.prevent="deleteRecord()" class="modal-content-btn submit" type="button" value="Confirm">
             <input class="modal-content-btn delete" type="button"
                 onclick="document.getElementById('confirmationmodal').style.display='none'" value="Cancel">
 
