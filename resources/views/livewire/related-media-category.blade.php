@@ -52,8 +52,7 @@
                 @if ($medias)
                     <form wire:submit.prevent="save">
                         <div class="modal" id="modalelements" style="display: block">
-                            <div class="modal-content"
-                                style="margin: 0 auto; width:80%; top: 50%; transform: translateY(-50%); display: flex; height: 98vh; overflow-y: auto; align-items: flex-start">
+                            <div class="modal-content modal--tabel">
                                 <div class="item" style="width: 100%">
                                     <input type="submit" id="add_media_related" class="item__form-btn item__form-long"
                                         value="Save Media">
@@ -132,16 +131,17 @@
                                         </table>
                                     </div>
                                 </div>
+                                <span class="top-up-modal delete"
+                                    style="position: fixed; right: 0; top: 0; width: 2.5rem; height: 2.5rem;"
+                                    wire:click="cancel">
+                                    <svg>
+                                        <line x1="18" y1="6" x2="6" y2="18">
+                                        </line>
+                                        <line x1="6" y1="6" x2="18" y2="18">
+                                        </line>
+                                    </svg>
+                                </span>
                             </div>
-                            <span class="top-up-modal delete" style="right: 5%" wire:click="cancel">
-
-                                <svg>
-                                    <line x1="18" y1="6" x2="6" y2="18">
-                                    </line>
-                                    <line x1="6" y1="6" x2="18" y2="18">
-                                    </line>
-                                </svg>
-                            </span>
                             <a href="#cancelbutton" class="top-up-modal" id="topUp">
                                 <svg>
                                     <polyline points="18 15 12 9 6 15"></polyline>
@@ -153,8 +153,7 @@
                 @if ($externalmedia)
                     <form wire:submit.prevent="saveexternal">
                         <div class="modal" id="modalelements" style="display: block">
-                            <div class="modal-content"
-                                style="margin: 0 auto; width:80%; top: 50%; transform: translateY(-50%); display: flex; height: 98vh; overflow-y: auto; align-items: flex-start">
+                            <div class="modal-content modal--tabel">
                                 <div class="item" style="width: 100%">
                                     <p id="top1"></p>
                                     <input type="submit" class="item__form-btn" value="Save Media">

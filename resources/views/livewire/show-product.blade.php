@@ -6,18 +6,45 @@
         </div>
     </div>
     <div class="item__header">
-        <h1 class="item__header-title" id="title">Product- {{ $product->name }}</h1>
+        <h1 class="item__header-title" id="title">Product: {{ $product->name }}</h1>
         <div class="item__header-buttons">
-            <a class="item__header-btn" href="{{ route('products') }}">All Products</a>
-            <a class="item__header-btn" href="{{ route('add_product') }}">New</a>
+            <a class="item__header-btn" href="{{ route('products') }}" data-tooltip-left="Back to all Products">
+                <svg>
+                    <polyline points="11 17 6 12 11 7"></polyline>
+                    <polyline points="18 17 13 12 18 7"></polyline>
+                </svg>
+            </a>
+            <a class="item__header-btn" href="{{ route('add_product') }}" data-tooltip-center="Add a new Product">
+                <svg>
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="12" y1="18" x2="12" y2="12"></line>
+                    <line x1="9" y1="15" x2="15" y2="15"></line>
+                </svg>
+            </a>
             @if ($editproduct === null)
-                <input class="item__header-btn" type="button" value="Edit" wire:click.prevent="editproduct()">
+                <button class="item__header-btn" type="button" value="Edit" wire:click.prevent="editproduct()"
+                    data-tooltip-center="Edit this Product">
+                    <svg>
+                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                    </svg>
+                </button>
             @else
-                <input class="item__header-btn" type="button" wire:click.prevent="saveproduct()" value="Save">
-                <input class="item__header-btn" type="button" wire:click.prevent="cancelproduct()" value="Cancel">
+                <button class="item__header-btn edit" type="button" wire:click.prevent="saveproduct()" value="Save"
+                    data-tooltip-center="Save this changes">Save</button>
+                <button class="item__header-btn edit" type="button" wire:click.prevent="cancelproduct()" value="Cancel"
+                    data-tooltip-center="Cancel this changes">Cancel</button>
             @endif
-            <input wire:click.prevent="confirmProductRemoval({{ $product->id }})" class="item__header-btn delete"
-                type="button" value="Delete" name="delete">
+            {{-- <input wire:click.prevent="confirmProductRemoval({{ $product->id }})" class="item__header-btn delete"
+                type="button" value="Delete" name="delete"> --}}
+            <button wire:click.prevent="confirmProductRemoval({{ $product->id }})" class="item__header-btn delete"
+                type="button" value="Delete" data-tooltip-right="Delete this Product">
+                <svg>
+                    <polyline points="3 6 5 6 21 6"></polyline>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                </svg>
+            </button>
         </div>
     </div>
     <div class="modal" id="confirmationmodal">
@@ -49,148 +76,150 @@
                     @if ($editproduct === null)
                         <div class="item__form-input-close">
                             <div id="category_name">{{ $product->name }}</div>
-                            <span>Product Name</span>
+                            <label>Product Name</label>
                         </div>
                     @else
                         <div class="item__form-input">
                             <input type="text" wire:model.defer="prod.product_name" required>
-                            <span> Product Name</span>
+                            <label> Product Name</label>
                         </div>
                     @endif
-                    @if ($editproduct === null)
+                    {{-- @if ($editproduct === null)
                         <div class="item__form-input-close">
                             <div id="category_parrent">{{ $product->product_status }}</div>
-                            <span>Product Status</span>
+                            <label>Product Status</label>
                         </div>
                     @else
                         <div class="item__form-input">
                             <select id="select-category" wire:model.defer="prod.product_status">
-                                <?php
-                                $status = ['active', 'inactive', 'low stock'];
-                                ?>
+                                <?php $status = ['active', 'inactive', 'low stock']; ?>
                                 @foreach ($status as $status_name)
                                     <option value="{{ $status_name }}">{{ $status_name }}</option>
                                 @endforeach
                             </select>
-                            <span>Product Status</span>
+                            <label>Product Status</label>
                         </div>
-                    @endif
+                    @endif --}}
                     @if ($editproduct === null)
                         <div class="item__form-input-close">
                             <div id="category_start_date">{{ $product->start_date }}</div>
-                            <span for="start_date">Product Start Date</span>
+                            <label for="start_date">Product Start Date</label>
                         </div>
                     @else
                         <div class="item__form-input">
                             <input type="date" id="start_date" wire:model.defer="prod.start_date">
-                            <span>Product Start Date</span>
+                            <label>Product Start Date</label>
                         </div>
                     @endif
                     @if ($editproduct === null)
                         <div class="item__form-input-close">
                             <div id="category_end_date">{{ $product->end_date }}</div>
-                            <span>Product End Date </span>
+                            <label>Product End Date </label>
                         </div>
                     @else
                         <div class="item__form-input">
                             <input type="date" id="end_date" wire:model.defer="prod.end_date">
-                            <span>Product End Date</span>
+                            <label>Product End Date</label>
                         </div>
                     @endif
                     @if ($editproduct === null)
                         <div class="item__form-input-close">
                             <div id="category_sequence">{{ $product->quantity }}</div>
-                            <span>Product Quantity</span>
+                            <label>Product Quantity</label>
                         </div>
                     @else
                         <div class="item__form-input">
                             <input type="number" min="0" wire:model.defer="prod.quantity" required>
-                            <span>Product Quantity</span>
+                            <label>Product Quantity</label>
                         </div>
                     @endif
-                    <div class="display-f align-center jus-s g-2 wid-10">
-                        @if ($editproduct === null)
-                            <div class="item__form-input-close">
-                                <div>
-                                    @if ($product->active)
-                                        {{ _('Active') }}
-                                    @else
-                                        {{ _('Inactive') }}
-                                    @endif
-                                </div>
-                                <span>Is Active</span>
-                            </div>
-                            <div class="item__form-input-close">
-                                <div>{{ $product->popularity }}</div>
-                                <span>Product Popularity</span>
-                            </div>
-                        @else
-                            <div class=" display-f align-center jus-s">
-                                <input type="checkbox" wire:model.defer="prod.active">
-                                <span class="ml-1"> is active</span>
-                            </div>
-                            <div class="item__form-input">
-                                <input type="number" min="0" wire:model.defer="prod.popularity" required>
-                                <span>Product Popularity</span>
-                            </div>
-                        @endif
-                    </div>
+                    @if ($editproduct === null)
+                        <div style="display: flex; align-items: center;justify-content: flex-start;gap: 10px">
+                            @if ($product->active)
+                                <input type="checkbox" checked disabled class="check--disabled">
+                                {{ _('Active') }}
+                            @else
+                                <input type="checkbox" disabled class="check--disabled">
+                                {{ _('Inactive') }}
+                            @endif
+                        </div>
+                    @else
+                        <div style="display: flex; align-items: center;justify-content: flex-start;gap: 10px">
+                            <input type="checkbox" wire:model.defer="prod.active">
+                            <span>Active</span>
+                        </div>
+                    @endif
+
+                    @if ($editproduct === null)
+                        <div class="item__form-input-close">
+                            <div id="category_parrent">{{ $product->popularity }}</div>
+                            <label>Product Popularity</label>
+                        </div>
+                    @else
+                        <div class="item__form-input">
+                            <input type="number" min="0" wire:model.defer="prod.popularity" required>
+                            <label>Product Popularity</label>
+                        </div>
+                    @endif
+
                     @if ($editproduct === null)
                         <div class="item__form-input-close item__form-long">
                             <div id="category_short_description">{{ $product->short_description }}</div>
-                            <span>Product Short Description</span>
+                            <label>Product Short Description</label>
                         </div>
                     @else
                         <div class="item__form-input item__form-long">
                             <input type="text" wire:model.defer="prod.short_description" required>
-                            <span>Product Short Description</span>
+                            <label>Product Short Description</label>
                         </div>
                     @endif
                     @if ($editproduct === null)
-                        <div class="item__form-input-close item__form-long">
+                        <div class="item__form-input-close item__form-textarea">
                             <div id="category_long_description">{{ $product->long_description }}</div>
-                            <span>Product Long Description</span>
+                            <label>Product Long Description</label>
                         </div>
                     @else
-                        <div class="item__form-input item__form-long">
+                        <div class="item__form-input item__form-textarea">
                             <textarea wire:model.defer="prod.long_description" required></textarea>
-                            <span>Product Long Description</span>
+                            <label>Product Long Description</label>
                         </div>
                     @endif
                     @if ($editproduct === null)
                         <div class="item__form-input-close item__form-long">
                             <div id="seo_title">{{ $product->seo_title }}</div>
-                            <span>SEO Title</span>
+                            <label>SEO Title</label>
                         </div>
                     @else
                         <div class="item__form-input item__form-long">
                             <input type="text" wire:model.defer="prod.seo_title" required>
-                            <span>SEO Title</span>
+                            <label>SEO Title</label>
                         </div>
                     @endif
-                    <div class="item__form-close">
+                    <div class="item__form-input-close">
                         <div>{{ $product->created_at }}</div>
-                        <span>Create date / time</span>
+                        <label>Create date / time</label>
                     </div>
-                    <div class="item__form-close">
+                    <div class="item__form-input-close">
                         <div>{{ $product->created_by }}</div>
-                        <span>Create by</span>
+                        <label>Create by</label>
                     </div>
-                    <div class="item__form-close">
+                    <div class="item__form-input-close">
                         <div>{{ $product->updated_at }}</div>
-                        <span>Updated date / time</span>
+                        <label>Updated date / time</label>
                     </div>
-                    <div class="item__form-close">
+                    <div class="item__form-input-close">
                         <div>{{ $product->last_modified_by }}</div>
-                        <span>Last modified by</span>
+                        <label>Last modified by</label>
                     </div>
                     @if ($editproduct != null)
-                        <input class="item__form-btn item__form-long" wire:click.prevent="saveproduct()"
-                            type="button" value="Save">
+                        <button class="item__form-btn item__form-long" wire:click.prevent="saveproduct()"
+                            value="Save">
+                            Save edited details
+                        </button>
                     @endif
                 </div>
             </div>
-            <div class="tabs__content display-f g-1">
+            <div class="tabs__content">
                 <livewire:related-media-product productId="{{ $product->id }}" />
 
                 <livewire:related-category-product productId="{{ $product->id }}" />

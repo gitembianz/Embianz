@@ -162,6 +162,7 @@ button {
   --preferred-font-size: 4vw;
   --maximum-font-size: 20px;
   transition: all 0.2s ease-in-out;
+  cursor: pointer;
 }
 
 input {
@@ -267,7 +268,8 @@ main {
   height: 100%;
   z-index: 50;
   background-color: rgba(23, 15, 13, 0.5);
-  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+          backdrop-filter: blur(3px);
 }
 .sidebar.active {
   visibility: visible;
@@ -619,7 +621,8 @@ header:not(.show) {
   height: 100%;
   background: rgba(0, 0, 0, 0.7);
   z-index: 99;
-  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+          backdrop-filter: blur(2px);
 }
 .search.active {
   visibility: visible;
@@ -813,6 +816,7 @@ header:not(.show) {
 }
 @media (min-width: 992px) {
   .menu__list li {
+    width: -moz-min-content;
     width: min-content;
   }
   .menu__list li .container {
@@ -838,6 +842,7 @@ header:not(.show) {
     font-size: unset;
     border: none;
     display: block;
+    width: -moz-min-content;
     width: min-content;
   }
   .menu__link .container {
@@ -858,6 +863,7 @@ header:not(.show) {
 @media (min-width: 992px) {
   .menu__item {
     border-bottom: none;
+    width: -moz-min-content;
     width: min-content;
   }
   .menu__item .container {
@@ -1094,7 +1100,8 @@ header:not(.show) {
 .cart__list--img {
   width: 30px;
   height: 30px;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 .heart__list--text,
 .cart__list--text {
@@ -1349,6 +1356,7 @@ header:not(.show) {
   border: none;
   background-color: #d8d8d8;
   justify-content: space-between;
+  width: -moz-min-content;
   width: min-content;
 }
 .cart-page--bundle > .product__count #count {
@@ -1380,7 +1388,8 @@ header:not(.show) {
 .cart-page__item img {
   width: 70px;
   height: 100%;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
   background-color: lightgrey;
   border-radius: 5px;
 }
@@ -1437,7 +1446,8 @@ header:not(.show) {
   width: 100%;
   height: 100%;
   background: transparent;
-  object-fit: contain;
+  -o-object-fit: contain;
+     object-fit: contain;
   outline: none;
 }
 .cart-page__sale::after {
@@ -1668,7 +1678,8 @@ footer {
 .home__video video {
   width: 100%;
   height: 500px;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
   filter: brightness(0.3);
 }
 .home__video--text {
@@ -1709,7 +1720,8 @@ footer {
   opacity: 0;
   animation: showContentBlur 0.3s ease-in-out 0.3s 1 forwards;
   background: rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+          backdrop-filter: blur(5px);
   width: 100%;
   min-height: 310px;
 }
@@ -1735,7 +1747,8 @@ footer {
   gap: 15px;
   transform: translateX(-50%);
   background: rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+          backdrop-filter: blur(5px);
   padding: clamp(10px, 0.01vw, 50px);
   border-radius: 150px;
   z-index: 20;
@@ -1880,7 +1893,8 @@ footer {
 .home__discover img {
   width: 80%;
   height: auto;
-  object-fit: contain;
+  -o-object-fit: contain;
+     object-fit: contain;
   background-color: transparent;
 }
 
@@ -2103,7 +2117,8 @@ footer {
   left: 0;
   width: 100%;
   height: auto;
-  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+          backdrop-filter: blur(15px);
   border-radius: 0 0 10px 10px;
   background: rgba(255, 255, 255, 0.4);
 }
@@ -2168,7 +2183,8 @@ footer {
 .product__item img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
   border-radius: 10px;
   padding-bottom: 40%;
   transition: scale 0.5s ease-in-out;
@@ -2216,8 +2232,9 @@ footer {
   border-radius: 50%;
 }
 .product__item--heart svg {
-  stroke: #104010;
-  fill: #104010;
+  stroke: #9a0000;
+  fill: #9a0000;
+  stroke-width: 1px;
 }
 .product__item--header {
   position: absolute;
@@ -2574,8 +2591,10 @@ footer {
 .thumbnail {
   width: 100%;
   height: 100%;
-  object-fit: cover !important;
-  object-position: center;
+  -o-object-fit: cover !important;
+     object-fit: cover !important;
+  -o-object-position: center;
+     object-position: center;
   border-radius: 15px;
   background-color: #f2f2f2;
   cursor: pointer;
@@ -2591,8 +2610,10 @@ footer {
 .thumbnail-active {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center;
+     object-position: center;
   border-radius: 15px;
   background-color: #f2f2f2;
   cursor: zoom-in;
@@ -2622,7 +2643,8 @@ footer {
 .slideshow--slides img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  -o-object-fit: contain;
+     object-fit: contain;
 }
 
 /* Next & previous buttons */
@@ -2776,8 +2798,6 @@ footer {
 }
 .details__steps--line.active {
   background: rgb(0, 0, 0);
-  background: -moz-linear-gradient(90deg, rgb(0, 0, 0) 0%, rgb(130, 130, 130) 51%, rgb(176, 176, 176) 100%);
-  background: -webkit-linear-gradient(90deg, rgb(0, 0, 0) 0%, rgb(130, 130, 130) 51%, rgb(176, 176, 176) 100%);
   background: linear-gradient(90deg, rgb(0, 0, 0) 0%, rgb(130, 130, 130) 51%, rgb(176, 176, 176) 100%);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#000000", endColorstr="#b0b0b0", GradientType=1);
 }
@@ -2799,7 +2819,6 @@ footer {
   cursor: pointer;
   -webkit-user-select: none;
   -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
   /* Hide the browser's default checkbox */
   /* Create a custom checkbox */
@@ -3409,7 +3428,8 @@ footer {
   transform: translateY(-50%);
   transition: all 0.2s ease-in-out;
   background: rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+          backdrop-filter: blur(4px);
   z-index: 1;
 }
 .card-button:active {
@@ -3477,7 +3497,9 @@ footer {
 
 .card-carousel.dragging .card {
   cursor: grab;
-  user-select: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
 }
 
 .card {
@@ -3500,7 +3522,8 @@ footer {
   width: 120px;
   height: 120px;
   border-radius: 50%;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
   outline: 3px solid #202124;
   padding: 5px;
 }
@@ -3520,7 +3543,8 @@ footer {
   width: 100%;
   height: 100%;
   outline: none;
-  object-fit: contain;
+  -o-object-fit: contain;
+     object-fit: contain;
 }
 .card > .price {
   color: #8A0000;
@@ -3707,7 +3731,8 @@ footer {
     padding: clamp(10px, 1.5vw, 50px);
     background: rgba(255, 255, 255, 0.6);
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+            backdrop-filter: blur(15px);
     border: 1px solid rgba(255, 255, 255, 0.18);
   }
 }
@@ -3799,7 +3824,9 @@ footer {
   font-size: 14px;
 }
 .filter__search button {
+  width: -moz-min-content;
   width: min-content;
+  height: -moz-min-content;
   height: min-content;
   display: flex;
   flex-direction: row;
@@ -3832,7 +3859,8 @@ footer {
   z-index: 99;
   background: rgba(255, 255, 255, 0.6);
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+          backdrop-filter: blur(15px);
   border: 1px solid rgba(255, 255, 255, 0.18);
   visibility: hidden;
   opacity: 0;
@@ -3841,6 +3869,7 @@ footer {
 }
 @media (min-width: 576px) {
   .filter__sort--content {
+    width: -moz-min-content;
     width: min-content;
   }
 }
@@ -4030,4 +4059,4 @@ footer {
 
 .support__list-item {
   text-decoration: underline;
-}
+}/*# sourceMappingURL=store.css.map */

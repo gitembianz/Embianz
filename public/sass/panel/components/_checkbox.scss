@@ -25,4 +25,18 @@ input[type=checkbox] {
   &:checked:before {
     opacity: 1;
   }
+
+  &.check--disabled {
+    cursor: not-allowed;
+    border: 0px solid #e8e8e8;
+    background-color: #e8e8e8;
+
+    &:checked {
+
+      &:before {
+        content: "";
+        border-color: $mainBg;
+      }
+    }
+  }
 }

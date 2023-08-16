@@ -84,7 +84,7 @@
                     </button>
                     <span>Specs</span>
                 </a></li>
-            <li class="dropdown"><a class="sidebar__item dropdown-button" href="#">
+            <li class="dropdown"><a class="sidebar__item dropdown-button" href="#" style="z-index: 99999;">
                     <button class="sidebar__icon">
                         <svg>
                             <circle cx="12" cy="12" r="3"></circle>
@@ -96,7 +96,7 @@
                     <span>Settings</span>
                 </a>
                 <div class="dropdown-list"
-                    style="background: none; width: 100%;padding: 0;margin-top: -10px;padding-top: 20px;">
+                    style="width: 100%;margin-top: -10px;border-radius: 10px;padding: 20px 0 10px 20px;border: none;background: #35424b;">
                     <a class="sidebar__subitem" href="{{ route('storesettings') }}">
                         <button class="sidebar__icon">
                             <svg>

@@ -30,6 +30,7 @@
     border: 1.5px solid $mainBg;
     background: white;
     border-radius: 5px;
+    z-index: 9999;
 
     input[type=checkbox] {
       @include size(2rem);
@@ -43,7 +44,12 @@
 
     button {
       @include standart-Btn;
-      width: 100%;
+      width: 6rem;
+      box-shadow: none;
+
+      &.delete {
+        background: #7d0017
+      }
     }
   }
 
