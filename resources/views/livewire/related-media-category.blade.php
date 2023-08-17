@@ -312,22 +312,19 @@
                             </div>
                         </div>
                         @if ($selectPage)
-                            <div class="pt-2 talign-c">
-
-                                @if ($selectAll)
-                                    <div>
-                                        You have selected all <strong>{{ count($checked) }}</strong> items.
-                                    </div>
-                                @else
-                                    <div>
-                                        You have selected <strong>{{ count($checked) }}</strong> items, Do you want
-                                        to
-                                        Select
-                                        All?
-                                        <a href="#" class="ml-2" wire:click="selectAll">Select All</a>
-                                    </div>
-                                @endif
-                            </div>
+                            @if ($selectAll)
+                                <div class="panel__header--checked">
+                                    <p>
+                                        You selected <strong>{{ count($checked) }}</strong> items.
+                                    </p>
+                                </div>
+                            @else
+                                <div class="panel__header--checked" wire:click="selectAll">
+                                    <p>
+                                        You selected {{ count($checked) }} items, select all?
+                                    </p>
+                                </div>
+                            @endif
                         @endif
                         {{-- modals --}}
                         {{-- delete single record --}}
