@@ -1,10 +1,6 @@
 <div>
     <x-alert />
-    <div wire:loading>
-        <div class="modal" style="display:flex;">
-            <div class="loader"></div>
-        </div>
-    </div>
+    <x-loading />
     <form wire:submit.prevent="store">
         <div class="item__header">
             <h1 class="item__header-title" id="title">{{ __('Add Store Settings') }}</h1>

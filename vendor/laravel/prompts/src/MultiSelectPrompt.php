@@ -34,7 +34,7 @@ class MultiSelectPrompt extends Prompt
     protected array $values = [];
 
     /**
-     * Create a new SelectPrompt instance.
+     * Create a new MultiSelectPrompt instance.
      *
      * @param  array<int|string, string>|Collection<int|string, string>  $options
      * @param  array<int|string>|Collection<int, int|string>  $default
@@ -46,14 +46,15 @@ class MultiSelectPrompt extends Prompt
         public int $scroll = 5,
         public bool|string $required = false,
         public ?Closure $validate = null,
+        public string $hint = ''
     ) {
         $this->options = $options instanceof Collection ? $options->all() : $options;
         $this->default = $default instanceof Collection ? $default->all() : $default;
         $this->values = $this->default;
 
         $this->on('key', fn ($key) => match ($key) {
-            Key::UP, Key::LEFT, Key::SHIFT_TAB, 'k', 'h' => $this->highlightPrevious(),
-            Key::DOWN, Key::RIGHT, Key::TAB, 'j', 'l' => $this->highlightNext(),
+            Key::UP, Key::UP_ARROW, Key::LEFT, Key::LEFT_ARROW, Key::SHIFT_TAB, 'k', 'h' => $this->highlightPrevious(),
+            Key::DOWN, Key::DOWN_ARROW, Key::RIGHT, Key::RIGHT_ARROW, Key::TAB, 'j', 'l' => $this->highlightNext(),
             Key::SPACE => $this->toggleHighlighted(),
             Key::ENTER => $this->submit(),
             default => null,

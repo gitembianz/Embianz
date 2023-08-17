@@ -3,10 +3,10 @@
 namespace Laravel\Prompts;
 
 use Closure;
-use InvalidArgumentException;
 
 class SearchPrompt extends Prompt
 {
+    use Concerns\Truncation;
     use Concerns\TypedValue;
 
     /**
@@ -22,7 +22,7 @@ class SearchPrompt extends Prompt
     protected ?array $matches = null;
 
     /**
-     * Create a new SuggestPrompt instance.
+     * Create a new SearchPrompt instance.
      *
      * @param  Closure(string): array<int|string, string>  $options
      */
@@ -32,18 +32,22 @@ class SearchPrompt extends Prompt
         public string $placeholder = '',
         public int $scroll = 5,
         public ?Closure $validate = null,
+        public string $hint = ''
     ) {
         $this->trackTypedValue(submit: false);
 
         $this->on('key', fn ($key) => match ($key) {
-            Key::UP, Key::SHIFT_TAB => $this->highlightPrevious(),
-            Key::DOWN, Key::TAB => $this->highlightNext(),
+            Key::UP, Key::UP_ARROW, Key::SHIFT_TAB => $this->highlightPrevious(),
+            Key::DOWN, Key::DOWN_ARROW, Key::TAB => $this->highlightNext(),
             Key::ENTER => $this->highlighted !== null ? $this->submit() : $this->search(),
-            Key::LEFT, Key::RIGHT => $this->highlighted = null,
+            Key::LEFT, Key::LEFT_ARROW, Key::RIGHT, Key::RIGHT_ARROW => $this->highlighted = null,
             default => $this->search(),
         });
     }
 
+    /**
+     * Perform the search.
+     */
     protected function search(): void
     {
         $this->state = 'searching';
@@ -115,11 +119,17 @@ class SearchPrompt extends Prompt
         }
     }
 
+    /**
+     * Get the current search query.
+     */
     public function searchValue(): string
     {
         return $this->typedValue;
     }
 
+    /**
+     * Get the selected value.
+     */
     public function value(): int|string|null
     {
         if ($this->matches === null || $this->highlighted === null) {
@@ -137,17 +147,5 @@ class SearchPrompt extends Prompt
     public function label(): ?string
     {
         return $this->matches[array_keys($this->matches)[$this->highlighted]] ?? null;
-    }
-
-    /**
-     * Truncate a value with an ellipsis if it exceeds the given length.
-     */
-    protected function truncate(string $value, int $length): string
-    {
-        if ($length <= 0) {
-            throw new InvalidArgumentException("Length [{$length}] must be greater than zero.");
-        }
-
-        return mb_strlen($value) <= $length ? $value : (mb_substr($value, 0, $length - 1).'…');
     }
 }

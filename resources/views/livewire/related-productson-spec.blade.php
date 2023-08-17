@@ -1,10 +1,6 @@
 <div>
     <x-alert />
-    <div wire:loading.delay>
-        <div class="modal" style="display:flex;">
-            <div class="loader"></div>
-        </div>
-    </div>
+    <x-loading />
     <div class="accordion">
         <div class="accordion__btn-flex">
             <button class="accordion__btn"
@@ -276,7 +272,6 @@
                             </div>
                         </div>
 
-
                         {{-- Header of the table --}}
                         <div class="panel__header">
                             <input class="panel__header--input" type="text" wire:model.debounce.200ms="search"
@@ -425,7 +420,6 @@
                                         @if ($this->showColumn('Name'))
                                             <td data-title="Name">
                                                 @if ($editedrow !== $index)
-
                                                     <div
                                                         wire:click.prevent="editprod({{ $prod->id }}, {{ $prod->product->id }}, {{ $index }})">
                                                         {{ $prod->product->name }}
@@ -467,9 +461,7 @@
                                             <td
                                                 wire:click.prevent="editspec({{ $prod->id }}, {{ $prod->product->id }}, {{ $index }})">
                                                 @if ($editedrow !== $index)
-
                                                     {{ $prod->value }}
-
                                                 @else
                                                     <input type="text" required class="table__edit"
                                                         wire:model="specification.{{ $index }}.value">

@@ -2,13 +2,14 @@
 
 namespace Laravel\Prompts\Themes\Default;
 
-use InvalidArgumentException;
 use Laravel\Prompts\Concerns\Colors;
+use Laravel\Prompts\Concerns\Truncation;
 use Laravel\Prompts\Prompt;
 use RuntimeException;
 
 abstract class Renderer
 {
+    use Truncation;
     use Colors;
 
     /**
@@ -61,15 +62,33 @@ abstract class Renderer
     }
 
     /**
-     * Truncate a value with an ellipsis if it exceeds the given length.
+     * Render an hint message.
      */
-    protected function truncate(string $value, int $length): string
+    protected function hint(string $message): self
     {
-        if ($length <= 0) {
-            throw new InvalidArgumentException("Length [{$length}] must be greater than zero.");
+        if ($message === '') {
+            return $this;
         }
 
-        return mb_strlen($value) <= $length ? $value : (mb_substr($value, 0, $length - 1).'…');
+        $message = $this->truncate($message, $this->prompt->terminal()->cols() - 6);
+
+        return $this->line($this->gray("  {$message}"));
+    }
+
+    /**
+     * Apply the callback if the given "value" is truthy.
+     *
+     * @return $this
+     */
+    protected function when(mixed $value, callable $callback, callable $default = null): self
+    {
+        if ($value) {
+            $callback($this);
+        } elseif ($default) {
+            $default($this);
+        }
+
+        return $this;
     }
 
     /**
@@ -77,7 +96,7 @@ abstract class Renderer
      */
     public function __toString()
     {
-        return str_repeat(PHP_EOL, 2 - $this->prompt->newLinesWritten())
+        return str_repeat(PHP_EOL, max(2 - $this->prompt->newLinesWritten(), 0))
             .$this->output
             .(in_array($this->prompt->state, ['submit', 'cancel']) ? PHP_EOL : '');
     }

@@ -1,11 +1,6 @@
 <div>
     <x-alert />
-    <div wire:loading.delay>
-        <div class="modal" style="display:flex;">
-            <div class="loader"></div>
-        </div>
-    </div>
-
+    <x-loading />
 
     {{-- delete single record --}}
     <div class="modal" id="confirmationmodal">
@@ -48,7 +43,6 @@
             </span>
         </div>
     </div>
-
 
     {{-- Header of the table --}}
     <div class="panel__header">
