@@ -1,10 +1,6 @@
 <div>
     <x-alert />
-    <div wire:loading>
-        <div class="modal" style="display:flex;">
-            <div class="loader"></div>
-        </div>
-    </div>
+    <x-loading />
     {{-- modals --}}
     <div class="modal" id="confirmationmodal">
         <div class="modal-content">

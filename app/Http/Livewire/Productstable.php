@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\File;
 class Productstable extends Component
 {
   use WithPagination;
-  public $loadAmount = 13;
+  public $loadAmount = 20;
   public $search = '';
   public $orderBy = 'id';
   public $orderAsc = true;

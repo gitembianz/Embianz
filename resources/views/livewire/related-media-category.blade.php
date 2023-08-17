@@ -1,10 +1,6 @@
 <div>
     <x-alert />
-    <div wire:loading.delay>
-        <div class="modal" style="display:flex;">
-            <div class="loader"></div>
-        </div>
-    </div>
+    <x-loading />
     <div class="accordion">
         <div class="accordion__btn-flex">
             <button class="accordion__btn"

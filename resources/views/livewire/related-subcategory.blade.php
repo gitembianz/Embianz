@@ -1,10 +1,6 @@
 <div>
     <x-alert />
-    <div wire:loading.delay>
-        <div class="modal" style="display:flex; z-index: 9999">
-            <div class="loader"></div>
-        </div>
-    </div>
+    <x-loading />
     <div class="accordion">
         <div class="accordion__btn-flex">
             <button class="accordion__btn"
@@ -349,7 +345,6 @@
                                 </span>
                             </div>
                         </div>
-
 
                         {{-- Header of the table --}}
                         <div class="panel__header">

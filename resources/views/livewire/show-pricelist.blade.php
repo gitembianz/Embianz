@@ -1,10 +1,6 @@
 <div>
     <x-alert />
-    <div wire:loading.delay>
-        <div class="modal" style="display:flex;">
-            <div class="loader"></div>
-        </div>
-    </div>
+    <x-loading />
     <div class="item__header">
         <h1 class="item__header-title" id="title">Pricelist: {{ $pricelist->name }}</h1>
         <div class="item__header-buttons">
