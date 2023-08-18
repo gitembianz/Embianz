@@ -95,7 +95,7 @@ class RelatedProductCategory extends Component
   public function selectAlladd()
   {
     $this->selectAlladd = true;
-    $this->checkedadd = $this->proddsQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+    $this->checkedadd = $this->prodds->pluck('id')->map(fn ($item) => (string) $item)->toArray();
   }
 
   public function getProddsProperty()
@@ -106,7 +106,11 @@ class RelatedProductCategory extends Component
       $unrelated->where('name', 'like', '%' . $this->searchadd . '%');
     }
     $unrelated->orderBy($this->orderByadd, $this->orderAscadd ? 'asc' : 'desc');
-    return $unrelated->limit($this->loadAmount)->get();
+    if ($this->selectAlladd) {
+      return $unrelated->get();
+    } else {
+      return $unrelated->limit($this->loadAmount)->get();
+    }
   }
 
   public function confirmProductlink($productid)
@@ -195,9 +199,13 @@ class RelatedProductCategory extends Component
     $this->selectAll = true;
     $this->checked = $this->relatedproductsQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
   }
+  public function load()
+  {
+    $this->perPage += 10;
+  }
   public function getRelatedproductsProperty()
   {
-    return $this->relatedproductsQuery->paginate($this->perPage);
+    return $this->relatedproductsQuery->limit($this->perPage)->get();
   }
   public function getRelatedproductsQueryProperty()
   {

@@ -88,7 +88,6 @@
                     @else
                         <div class="item__form-input">
                             <select id="select-category" wire:model.defer="prod.product_status">
-                                <?php $status = ['active', 'inactive', 'low stock']; ?>
                                 @foreach ($status as $status_name)
                                     <option value="{{ $status_name }}">{{ $status_name }}</option>
                                 @endforeach

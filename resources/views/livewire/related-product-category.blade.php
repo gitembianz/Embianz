@@ -71,10 +71,10 @@
                                 {{-- Header of the table --}}
                                 <div class="panel__header">
                                     <h1 class="panel__header--title">
-                                        {{ __('Add to Products') }}
+                                        {{ __('Add related products') }}
                                     </h1>
                                     <input class="panel__header--input" type="text"
-                                        wire:model.debounce.200ms="searchadd" placeholder="Search your category...">
+                                        wire:model.debounce.200ms="searchadd" placeholder="Search...">
                                     <div class="panel__header--bundle">
                                         <div class="dropdown">
                                             <button
@@ -348,7 +348,7 @@
                         {{-- Header of the table --}}
                         <div class="panel__header">
                             <input class="panel__header--input" type="text" wire:model.debounce.200ms="search"
-                                placeholder="Search your category..." style="grid-column: 1/4">
+                                placeholder="Search..." style="grid-column: 1/4">
                             <div class="panel__header--bundle">
                                 <div class="dropdown">
                                     <button
@@ -478,8 +478,7 @@
 
                             <tbody>
                                 @foreach ($relatedproducts as $product)
-                                    <tr @if ($loop->last) id="last_record" @endif
-                                        class="@if ($this->isChecked($product->id)) table__row--selected @endif">
+                                    <tr class="@if ($this->isChecked($product->id)) table__row--selected @endif">
                                         <td data-title="Check">
                                             <input type="checkbox" value="{{ $product->id }}" wire:model="checked">
                                         </td>
@@ -527,25 +526,10 @@
                                     </tr>
                                 @endforeach
                             </tbody>
-
-                            <script>
-                                const lastRecord = document.getElementById('last_record');
-                                const options = {
-                                    root: null,
-                                    threshold: 1,
-                                    rootMargin: '0px'
-                                }
-                                const observer = new IntersectionObserver((entries, observer) => {
-                                    entries.forEach(entry => {
-                                        if (entry.isIntersecting) {
-                                            @this.loadMore()
-                                        }
-                                    });
-                                });
-                                observer.observe(lastRecord);
-                            </script>
                         </table>
-                        {{-- <div>{{ $relatedproducts->links('pagination-links') }} </div> --}}
+                        @if (count($relatedproducts) >= 10)
+                            <div class="cursor-p" wire:click="load">Load more</div>
+                        @endif
                     @else
                         <p>No Products Related</p>
                     @endif

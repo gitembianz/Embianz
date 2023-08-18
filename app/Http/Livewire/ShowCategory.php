@@ -53,6 +53,7 @@ class ShowCategory extends Component
   public function savecategory()
   {
     $category_new = $this->cat ?? NULL;
+    dd($category_new);
     if (!is_null($category_new)) {
       $new = Category::find($this->categoryId);
       if (array_key_exists('name', $category_new)) {
