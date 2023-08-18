@@ -71,10 +71,10 @@
                                 {{-- Header of the table --}}
                                 <div class="panel__header">
                                     <h1 class="panel__header--title">
-                                        {{ __('Add to Products') }}
+                                        {{ __('Add related products') }}
                                     </h1>
                                     <input class="panel__header--input" type="text"
-                                        wire:model.debounce.200ms="searchadd" placeholder="Search your category...">
+                                        wire:model.debounce.200ms="searchadd" placeholder="Search...">
                                     <div class="panel__header--bundle">
                                         <div class="dropdown">
                                             <button
@@ -102,23 +102,19 @@
                                         </button>
                                     </div>
                                     @if ($selectPageadd)
-                                        <div class="panel__header--checked">
-                                            @if ($selectAlladd)
+                                        @if ($selectAlladd)
+                                            <div class="panel__header--checked">
                                                 <p>
                                                     You selected <strong>{{ count($checkedadd) }}</strong> items.
                                                 </p>
-                                            @else
-                                                <a href="#" wire:click="selectAlladd">
-                                                    <p>
-                                                        You selected <strong>{{ count($checkedadd) }}</strong> items,
-                                                        Do
-                                                        you
-                                                        want
-                                                        to Select All?
-                                                    </p>
-                                                </a>
-                                            @endif
-                                        </div>
+                                            </div>
+                                        @else
+                                            <div class="panel__header--checked" wire:click="selectAlladd">
+                                                <p>
+                                                    You selected {{ count($checkedadd) }} items, select all?
+                                                </p>
+                                            </div>
+                                        @endif
                                     @endif
                                 </div>
                                 {{-- Table --}}
@@ -352,7 +348,7 @@
                         {{-- Header of the table --}}
                         <div class="panel__header">
                             <input class="panel__header--input" type="text" wire:model.debounce.200ms="search"
-                                placeholder="Search your category..." style="grid-column: 1/4">
+                                placeholder="Search..." style="grid-column: 1/4">
                             <div class="panel__header--bundle">
                                 <div class="dropdown">
                                     <button
@@ -396,21 +392,19 @@
                                 </div>
                             </div>
                             @if ($selectPage)
-                                <div class="panel__header--checked">
-                                    @if ($selectAll)
+                                @if ($selectAll)
+                                    <div class="panel__header--checked">
                                         <p>
                                             You selected <strong>{{ count($checked) }}</strong> items.
                                         </p>
-                                    @else
-                                        <a href="#" class="ml-2" wire:click="selectAll">
-                                            <p>
-                                                You selected <strong>{{ count($checked) }}</strong> items, Do you
-                                                want
-                                                to Select All?
-                                            </p>
-                                        </a>
-                                    @endif
-                                </div>
+                                    </div>
+                                @else
+                                    <div class="panel__header--checked" wire:click="selectAll">
+                                        <p>
+                                            You selected {{ count($checked) }} items, select all?
+                                        </p>
+                                    </div>
+                                @endif
                             @endif
                         </div>
 
@@ -484,8 +478,7 @@
 
                             <tbody>
                                 @foreach ($relatedproducts as $product)
-                                    <tr @if ($loop->last) id="last_record" @endif
-                                        class="@if ($this->isChecked($product->id)) table__row--selected @endif">
+                                    <tr class="@if ($this->isChecked($product->id)) table__row--selected @endif">
                                         <td data-title="Check">
                                             <input type="checkbox" value="{{ $product->id }}" wire:model="checked">
                                         </td>
@@ -533,27 +526,12 @@
                                     </tr>
                                 @endforeach
                             </tbody>
-
-                            <script>
-                                const lastRecord = document.getElementById('last_record');
-                                const options = {
-                                    root: null,
-                                    threshold: 1,
-                                    rootMargin: '0px'
-                                }
-                                const observer = new IntersectionObserver((entries, observer) => {
-                                    entries.forEach(entry => {
-                                        if (entry.isIntersecting) {
-                                            @this.loadMore()
-                                        }
-                                    });
-                                });
-                                observer.observe(lastRecord);
-                            </script>
                         </table>
-                        {{-- <div>{{ $relatedproducts->links('pagination-links') }} </div> --}}
+                        @if (count($relatedproducts) >= 10)
+                            <div class="cursor-p" wire:click="load">Load more</div>
+                        @endif
                     @else
-                        <p>No Products Related</p>
+                        <p class="mt-2">No products related</p>
                     @endif
                 </div>
             </div>

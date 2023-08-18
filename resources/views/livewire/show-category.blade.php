@@ -93,7 +93,7 @@
                         </div>
                     @else
                         <div class="item__form-input">
-                            <input type="date" wire:model.defer="cat.sequence">
+                            <input type="number" wire:model.defer="cat.sequence">
                             <label>Sequence</label>
                         </div>
                     @endif
@@ -101,33 +101,49 @@
                     @if ($editcategory === null)
                         <div style="display: flex; align-items: center;justify-content: flex-start;gap: 10px">
                             @if ($category->active)
-                                <input type="checkbox" checked disabled class="check--disabled">
+                                <div class="simple__checkbox">
+                                    <svg>
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                </div>
                                 {{ _('Active') }}
                             @else
-                                <input type="checkbox" disabled class="check--disabled">
+                                <div class="simple__checkbox--disabled">
+                                    <svg>
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                </div>
                                 {{ _('Inactive') }}
                             @endif
                         </div>
                     @else
                         <div style="display: flex; align-items: center;justify-content: flex-start;gap: 10px">
-                            <input type="checkbox" wire:model.defer="cat.visible">
+                            <input type="checkbox" wire:model.defer="cat.active">
                             <span>Active</span>
                         </div>
                     @endif
 
                     @if ($editcategory === null)
                         <div style="display: flex; align-items: center;justify-content: flex-start;gap: 10px">
-                            @if ($category->active)
-                                <input type="checkbox" checked disabled class="check--disabled">
+                            @if ($category->store_tab)
+                                <div class="simple__checkbox">
+                                    <svg>
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                </div>
                                 {{ _('Show in Store: Visible') }}
                             @else
-                                <input type="checkbox" disabled class="check--disabled">
+                                <div class="simple__checkbox--disabled">
+                                    <svg>
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                </div>
                                 {{ _('Show in Store: Hidden') }}
                             @endif
                         </div>
                     @else
                         <div style="display: flex; align-items: center;justify-content: flex-start;gap: 10px">
-                            <input type="checkbox" wire:model.defer="cat.active">
+                            <input type="checkbox" wire:model.defer="cat.visible">
                             <span>Display on Store?</span>
                         </div>
                     @endif
@@ -173,7 +189,7 @@
                         <label>Create date / time</label>
                     </div>
                     <div class="item__form-input-close">
-                        <div>{{ $category->created_by }}</div>
+                        <div>{{ $category->createdby }}</div>
                         <label>Create by</label>
                     </div>
                     <div class="item__form-input-close">
@@ -181,7 +197,7 @@
                         <label>Updated date / time</label>
                     </div>
                     <div class="item__form-input-close">
-                        <div>{{ $category->last_modified_by }}</div>
+                        <div>{{ $category->lastmodifiedby }}</div>
                         <label>Last modified by</label>
                     </div>
                     @if ($editcategory != null)

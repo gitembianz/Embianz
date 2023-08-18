@@ -349,7 +349,7 @@
                         {{-- Header of the table --}}
                         <div class="panel__header">
                             <input class="panel__header--input" type="text" wire:model.debounce.200ms="search"
-                                placeholder="Search your subcategory..." style="grid-column: 1/4">
+                                placeholder="Search..." style="grid-column: 1/4">
                             <div class="panel__header--bundle">
                                 <div class="dropdown">
                                     <button
@@ -393,21 +393,19 @@
                                 </div>
                             </div>
                             @if ($selectPage)
-                                <div class="panel__header--checked">
-                                    @if ($selectAll)
+                                @if ($selectAll)
+                                    <div class="panel__header--checked">
                                         <p>
                                             You selected <strong>{{ count($checked) }}</strong> items.
                                         </p>
-                                    @else
-                                        <a href="#" class="ml-2" wire:click="selectAll">
-                                            <p>
-                                                You selected <strong>{{ count($checked) }}</strong> items, Do you
-                                                want
-                                                to Select All?
-                                            </p>
-                                        </a>
-                                    @endif
-                                </div>
+                                    </div>
+                                @else
+                                    <div class="panel__header--checked" wire:click="selectAll">
+                                        <p>
+                                            You selected {{ count($checked) }} items, select all?
+                                        </p>
+                                    </div>
+                                @endif
                             @endif
                         </div>
 
@@ -493,7 +491,7 @@
 
                                         @if ($this->showColumn('Name'))
                                             <td data-title="Name"><a
-                                                    href="/show_category/{{ $subcat->parrent->id }}'">{{ $subcat->category }}</a>
+                                                    href="/show_category/{{ $subcat->category_id }}'">{{ $subcat->category }}</a>
                                             </td>
                                         @endif
 
@@ -510,7 +508,7 @@
                                                         </circle>
                                                         <polyline points="12 6 12 12 16 14"></polyline>
                                                     </svg>
-                                                    {{ $subcat->parrent->created_at }}
+                                                    {{ $subcat->created_at }}
                                             </td>
                                         @endif
 
@@ -519,11 +517,9 @@
                                                 <button class="edit"
                                                     wire:click.prevent="confirmItemRemoval({{ $subcat->id }})">
                                                     <svg>
+                                                        <polyline points="3 6 5 6 21 6"></polyline>
                                                         <path
-                                                            d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71">
-                                                        </path>
-                                                        <path
-                                                            d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71">
+                                                            d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
                                                         </path>
                                                     </svg>
                                                 </button>
@@ -552,7 +548,7 @@
                         </table>
                         {{-- <div>{{ $relatedsubcats->links('pagination-links') }} </div> --}}
                     @else
-                        <p>No subcategories</p>
+                        <p class="mt-2">No subcategories related</p>
                     @endif
                 </div>
             </div>

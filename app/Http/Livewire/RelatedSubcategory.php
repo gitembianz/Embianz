@@ -101,7 +101,7 @@ class RelatedSubcategory extends Component
   public function selectAlladd()
   {
     $this->selectAlladd = true;
-    $this->checkedadd = $this->categoriesQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+    $this->checkedadd = $this->categories->pluck('id')->map(fn ($item) => (string) $item)->toArray();
   }
   public function getCategoriesProperty()
   {
@@ -111,7 +111,11 @@ class RelatedSubcategory extends Component
       $unrelatedCatsQuery->where('name', 'like', '%' . $this->searchadd . '%');
     }
     $unrelatedCatsQuery->orderBy($this->orderByadd, $this->orderAscadd ? 'asc' : 'desc');
-    return $unrelatedCatsQuery->limit($this->loadAmount)->get();
+    if ($this->selectAlladd) {
+      return $unrelatedCatsQuery->get();
+    } else {
+      return $unrelatedCatsQuery->limit($this->loadAmount)->get();
+    }
   }
 
   public function confirmitemlink($id)

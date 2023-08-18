@@ -4,7 +4,6 @@ namespace App\Http\Livewire;
 
 use getID3;
 use App\Models\Media;
-use App\Models\Tabels;
 use Livewire\Component;
 use App\Models\Category;
 use Livewire\WithPagination;

@@ -251,13 +251,13 @@
                     </form>
                 @endif
                 <div class="item">
-                    @if (count($files) > 0)
+                    @if ($category->media()->count() > 0)
                         <div class="item__form form-table"
                             @if ($checked) style="grid-template-columns: 40% 1fr 1fr 1fr" @endif>
 
                             <div class="item__form-input">
                                 <input wire:model.debounce.200ms="search" type="text" required>
-                                <span>Search Media...</span>
+                                <span>Search...</span>
                             </div>
                             <div class="item__form-input">
                                 <select id="perPage" wire:model="perPage">
@@ -312,22 +312,19 @@
                             </div>
                         </div>
                         @if ($selectPage)
-                            <div class="pt-2 talign-c">
-
-                                @if ($selectAll)
-                                    <div>
-                                        You have selected all <strong>{{ count($checked) }}</strong> items.
-                                    </div>
-                                @else
-                                    <div>
-                                        You have selected <strong>{{ count($checked) }}</strong> items, Do you want
-                                        to
-                                        Select
-                                        All?
-                                        <a href="#" class="ml-2" wire:click="selectAll">Select All</a>
-                                    </div>
-                                @endif
-                            </div>
+                            @if ($selectAll)
+                                <div class="panel__header--checked">
+                                    <p>
+                                        You selected <strong>{{ count($checked) }}</strong> items.
+                                    </p>
+                                </div>
+                            @else
+                                <div class="panel__header--checked" wire:click="selectAll">
+                                    <p>
+                                        You selected {{ count($checked) }} items, select all?
+                                    </p>
+                                </div>
+                            @endif
                         @endif
                         {{-- modals --}}
                         {{-- delete single record --}}
@@ -545,7 +542,7 @@
                         </table>
                         <div>{{ $files->links('pagination-links') }} </div>
                     @else
-                        <p>No media related</p>
+                        <p class="mt-2">No media related</p>
                     @endif
                 </div>
             </div>
