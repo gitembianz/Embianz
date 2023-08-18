@@ -101,10 +101,18 @@
                     @if ($editcategory === null)
                         <div style="display: flex; align-items: center;justify-content: flex-start;gap: 10px">
                             @if ($category->active)
-                                <input type="checkbox" checked disabled class="check--disabled">
+                                <div class="simple__checkbox">
+                                    <svg>
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                </div>
                                 {{ _('Active') }}
                             @else
-                                <input type="checkbox" disabled class="check--disabled">
+                                <div class="simple__checkbox--disabled">
+                                    <svg>
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                </div>
                                 {{ _('Inactive') }}
                             @endif
                         </div>
@@ -118,10 +126,18 @@
                     @if ($editcategory === null)
                         <div style="display: flex; align-items: center;justify-content: flex-start;gap: 10px">
                             @if ($category->store_tab)
-                                <input type="checkbox" checked disabled class="check--disabled">
+                                <div class="simple__checkbox">
+                                    <svg>
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                </div>
                                 {{ _('Show in Store: Visible') }}
                             @else
-                                <input type="checkbox" disabled class="check--disabled">
+                                <div class="simple__checkbox--disabled">
+                                    <svg>
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                </div>
                                 {{ _('Show in Store: Hidden') }}
                             @endif
                         </div>

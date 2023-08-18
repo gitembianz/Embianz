@@ -531,7 +531,7 @@
                             <div class="cursor-p" wire:click="load">Load more</div>
                         @endif
                     @else
-                        <p>No Products Related</p>
+                        <p class="mt-2">No products related</p>
                     @endif
                 </div>
             </div>

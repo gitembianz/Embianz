@@ -15,6 +15,9 @@
     window.addEventListener('show-add-modal', event => {
         document.getElementById('addmodal').style.display = 'flex';
     });
+    window.addEventListener('media', event => {
+        document.getElementById('uploadmedia').style.display = 'flex';
+    });
 
     // JavaScript code
     document.addEventListener('livewire:load', function() {

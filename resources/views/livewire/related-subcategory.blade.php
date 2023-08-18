@@ -548,7 +548,7 @@
                         </table>
                         {{-- <div>{{ $relatedsubcats->links('pagination-links') }} </div> --}}
                     @else
-                        <p>No subcategories</p>
+                        <p class="mt-2">No subcategories related</p>
                     @endif
                 </div>
             </div>

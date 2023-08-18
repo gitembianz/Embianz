@@ -64,16 +64,24 @@
                     @if ($edititem === null)
                         <div style="display: flex; align-items: center;justify-content: flex-start;gap: 10px">
                             @if ($pricelist->active)
-                                <input type="checkbox" checked disabled class="check--disabled">
+                                <div class="simple__checkbox">
+                                    <svg>
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                </div>
                                 {{ _('Active') }}
                             @else
-                                <input type="checkbox" disabled class="check--disabled">
+                                <div class="simple__checkbox--disabled">
+                                    <svg>
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                </div>
                                 {{ _('Inactive') }}
                             @endif
                         </div>
                     @else
                         <div style="display: flex; align-items: center;justify-content: flex-start;gap: 10px">
-                            <input type="checkbox" wire:model.defer="record.visible">
+                            <input type="checkbox" wire:model.defer="record.active">
                             <span>Active</span>
                         </div>
                     @endif

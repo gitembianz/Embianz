@@ -251,13 +251,13 @@
                     </form>
                 @endif
                 <div class="item">
-                    @if (count($files) > 0)
+                    @if ($category->media()->count() > 0)
                         <div class="item__form form-table"
                             @if ($checked) style="grid-template-columns: 40% 1fr 1fr 1fr" @endif>
 
                             <div class="item__form-input">
                                 <input wire:model.debounce.200ms="search" type="text" required>
-                                <span>Search Media...</span>
+                                <span>Search...</span>
                             </div>
                             <div class="item__form-input">
                                 <select id="perPage" wire:model="perPage">
@@ -542,7 +542,7 @@
                         </table>
                         <div>{{ $files->links('pagination-links') }} </div>
                     @else
-                        <p>No media related</p>
+                        <p class="mt-2">No media related</p>
                     @endif
                 </div>
             </div>

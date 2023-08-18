@@ -40,3 +40,28 @@ input[type=checkbox] {
     }
   }
 }
+
+
+.simple__checkbox {
+  @include flexbox(flex, row, center, center);
+  @include size(2.5rem);
+  border: 1.5px solid #e8e8e8;
+  border-radius: $BtnBorderRadius;
+  cursor: pointer;
+  appearance: none;
+  background-color: #e8e8e8;
+
+  &>svg {
+    @include size(20px);
+    stroke: black;
+  }
+
+
+  &--disabled {
+    @extend .simple__checkbox;
+
+    &>svg {
+      display: none;
+    }
+  }
+}
