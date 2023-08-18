@@ -212,7 +212,7 @@ class RelatedProductCategory extends Component
     return Products_categories::where('category_id', $this->categoryId)
       ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->with('product');
   }
-  public function confirmProductRemoval($productid)
+  public function confirmItemRemoval($productid)
   {
     $this->productidbeingremoved = $productid;
     $this->dispatchBrowserEvent('show-delete-modal');
@@ -247,11 +247,11 @@ class RelatedProductCategory extends Component
       'title' => 'Success'
     ]);
   }
-  public function confirmProductsRemovalmultiple()
+  public function confirmItemsRemoval()
   {
     $this->dispatchBrowserEvent('show-delete-modal-multiple');
   }
-  public function confirmProductsLinkmultiple()
+  public function confirmLinkmultiple()
   {
     $this->dispatchBrowserEvent('show-link-modal-multiple');
   }

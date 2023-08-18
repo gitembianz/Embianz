@@ -258,7 +258,7 @@ class RelatedSubcategory extends Component
       'title' => 'Success'
     ]);
   }
-  public function confirmItemsRemovalmultiple()
+  public function confirmItemsRemoval()
   {
     $this->dispatchBrowserEvent('show-delete-modal-multiple');
   }

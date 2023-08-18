@@ -1,6 +1,7 @@
 <div>
     <x-alert />
     <x-loading />
+    <x-modals />
     <div class="accordion">
         <div class="accordion__btn-flex">
             <button class="accordion__btn"
@@ -298,53 +299,6 @@
 
                 <div>
                     @if ($relatedsubcats && count($relatedsubcats) > 0)
-                        {{-- delete single record --}}
-                        <div class="modal" id="confirmationmodal">
-                            <div class="modal-content">
-                                <h1 class="modal-content-title">
-                                    {{ __('Are you sure to delete this record?') }}
-                                </h1>
-                                <input wire:click.prevent="deleteSingleRecord()" class="modal-content-btn submit"
-                                    type="button" value="Confirm" id="confirmLoad">
-                                <input class="modal-content-btn delete" type="button"
-                                    onclick="document.getElementById('confirmationmodal').style.display='none'"
-                                    value="Cancel">
-
-                                <span class="modal-content-btn delete"
-                                    onclick="document.getElementById('confirmationmodal').style.display='none'">
-                                    <svg>
-                                        <line x1="18" y1="6" x2="6" y2="18">
-                                        </line>
-                                        <line x1="6" y1="6" x2="18" y2="18">
-                                        </line>
-                                    </svg>
-                                </span>
-                            </div>
-                        </div>
-                        {{-- delete myltiple records --}}
-                        <div class="modal" id="confirmationmodalmultiple">
-                            <div class="modal-content">
-                                <h1 class="modal-content-title">
-                                    {{ __('Are you sure to delete those records?') }}
-                                </h1>
-                                <input wire:click.prevent="deleteRecords()" class="modal-content-btn submit"
-                                    type="button" value="Confirm" id="confirmLoad">
-                                <input class="modal-content-btn delete" type="button"
-                                    onclick="document.getElementById('confirmationmodalmultiple').style.display='none'"
-                                    value="Cancel">
-
-                                <span class="modal-content-btn delete"
-                                    onclick="document.getElementById('confirmationmodalmultiple').style.display='none'">
-
-                                    <svg>
-                                        <line x1="18" y1="6" x2="6" y2="18">
-                                        </line>
-                                        <line x1="6" y1="6" x2="18" y2="18">
-                                        </line>
-                                    </svg>
-                                </span>
-                            </div>
-                        </div>
 
                         {{-- Header of the table --}}
                         <div class="panel__header">
@@ -380,7 +334,7 @@
                                         @if ($all)
                                             <div class="dropdown-list" style="display: flex;">
                                                 <button class="dropdown-item delete" type="button"
-                                                    wire:click="confirmProductsRemovalmultiple()">
+                                                    wire:click="confirmItemsRemoval()">
                                                     Delete
                                                 </button>
                                                 <button class="dropdown-item submit" type="button"
@@ -546,7 +500,6 @@
                                 observer.observe(lastRecord);
                             </script>
                         </table>
-                        {{-- <div>{{ $relatedsubcats->links('pagination-links') }} </div> --}}
                     @else
                         <p class="mt-2">No subcategories related</p>
                     @endif

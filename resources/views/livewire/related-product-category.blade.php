@@ -1,6 +1,7 @@
 <div>
     <x-alert />
     <x-loading />
+    <x-modals />
     <div class="accordion">
         <div class="accordion__btn-flex">
             <button class="accordion__btn"
@@ -95,8 +96,7 @@
                                         </div>
                                         <button
                                             @if ($checkedadd) style="display: unset; z-index: 5;" @else style="display: none;" @endif
-                                            class="panel__header--button"
-                                            wire:click.prevent="confirmProductsLinkmultiple()"
+                                            class="panel__header--button" wire:click.prevent="confirmLinkmultiple()"
                                             @if ($checkedadd) style="display: flex" @endif> Add
                                             {{ count($checkedadd) }} records
                                         </button>
@@ -239,23 +239,6 @@
                                             </tr>
                                         @endforeach
                                     </tbody>
-
-                                    <script>
-                                        const lastRecord = document.getElementById('last_record');
-                                        const options = {
-                                            root: null,
-                                            threshold: 1,
-                                            rootMargin: '0px'
-                                        }
-                                        const observer = new IntersectionObserver((entries, observer) => {
-                                            entries.forEach(entry => {
-                                                if (entry.isIntersecting) {
-                                                    @this.loadMore()
-                                                }
-                                            });
-                                        });
-                                        observer.observe(lastRecord);
-                                    </script>
                                 </table>
                                 <span class="top-up-modal delete"
                                     style="position: fixed; right: 0; top: 0; width: 2.5rem; height: 2.5rem;"
@@ -297,54 +280,6 @@
                 </div>
                 <div>
                     @if ($relatedproducts && count($relatedproducts) > 0)
-                        {{-- delete single record --}}
-                        <div class="modal" id="confirmationmodal">
-                            <div class="modal-content">
-                                <h1 class="modal-content-title">
-                                    {{ __('Are you sure to delete this product?') }}
-                                </h1>
-                                <input wire:click.prevent="deleteSingleRecord()" class="modal-content-btn submit"
-                                    type="button" value="Confirm" id="confirmLoad">
-                                <input class="modal-content-btn delete" type="button"
-                                    onclick="document.getElementById('confirmationmodal').style.display='none'"
-                                    value="Cancel">
-
-                                <span class="modal-content-btn delete"
-                                    onclick="document.getElementById('confirmationmodal').style.display='none'">
-                                    <svg>
-                                        <line x1="18" y1="6" x2="6" y2="18">
-                                        </line>
-                                        <line x1="6" y1="6" x2="18" y2="18">
-                                        </line>
-                                    </svg>
-                                </span>
-                            </div>
-                        </div>
-                        {{-- delete myltiple records --}}
-                        <div class="modal" id="confirmationmodalmultiple">
-                            <div class="modal-content">
-                                <h1 class="modal-content-title">
-                                    {{ __('Are you sure to delete those product?') }}
-                                </h1>
-                                <input wire:click.prevent="deleteRecords()" class="modal-content-btn submit"
-                                    type="button" value="Confirm" id="confirmLoad">
-                                <input class="modal-content-btn delete" type="button"
-                                    onclick="document.getElementById('confirmationmodalmultiple').style.display='none'"
-                                    value="Cancel">
-
-                                <span class="modal-content-btn delete"
-                                    onclick="document.getElementById('confirmationmodalmultiple').style.display='none'">
-
-                                    <svg>
-                                        <line x1="18" y1="6" x2="6" y2="18">
-                                        </line>
-                                        <line x1="6" y1="6" x2="18" y2="18">
-                                        </line>
-                                    </svg>
-                                </span>
-                            </div>
-                        </div>
-
                         {{-- Header of the table --}}
                         <div class="panel__header">
                             <input class="panel__header--input" type="text" wire:model.debounce.200ms="search"
@@ -379,7 +314,7 @@
                                         @if ($all)
                                             <div class="dropdown-list" style="display: flex;">
                                                 <button class="dropdown-item delete" type="button"
-                                                    wire:click="confirmProductsRemovalmultiple()">
+                                                    wire:click="confirmItemsRemoval()">
                                                     Delete
                                                 </button>
                                                 <button class="dropdown-item submit" type="button"
@@ -513,7 +448,7 @@
                                         <td data-title="Action">
                                             <div class="table__buttons">
                                                 <button class="delete"
-                                                    wire:click.prevent="confirmCategoryRemoval({{ $product->id }})">
+                                                    wire:click.prevent="confirmItemRemoval({{ $product->id }})">
                                                     <svg>
                                                         <polyline points="3 6 5 6 21 6"></polyline>
                                                         <path
