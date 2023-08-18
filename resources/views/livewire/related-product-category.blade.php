@@ -1,10 +1,7 @@
 <div>
     <x-alert />
-    <div wire:loading.delay>
-        <div class="modal" style="display:flex; z-index: 99999;">
-            <div class="loader"></div>
-        </div>
-    </div>
+    <x-loading />
+    <x-modals />
     <div class="accordion">
         <div class="accordion__btn-flex">
             <button class="accordion__btn"
@@ -72,15 +69,13 @@
                                     </div>
                                 </div>
 
-
-
                                 {{-- Header of the table --}}
                                 <div class="panel__header">
                                     <h1 class="panel__header--title">
-                                        {{ __('Add to Products') }}
+                                        {{ __('Add related products') }}
                                     </h1>
                                     <input class="panel__header--input" type="text"
-                                        wire:model.debounce.200ms="searchadd" placeholder="Search your category...">
+                                        wire:model.debounce.200ms="searchadd" placeholder="Search...">
                                     <div class="panel__header--bundle">
                                         <div class="dropdown">
                                             <button
@@ -101,30 +96,25 @@
                                         </div>
                                         <button
                                             @if ($checkedadd) style="display: unset; z-index: 5;" @else style="display: none;" @endif
-                                            class="panel__header--button"
-                                            wire:click.prevent="confirmProductsLinkmultiple()"
+                                            class="panel__header--button" wire:click.prevent="confirmLinkmultiple()"
                                             @if ($checkedadd) style="display: flex" @endif> Add
                                             {{ count($checkedadd) }} records
                                         </button>
                                     </div>
                                     @if ($selectPageadd)
-                                        <div class="panel__header--checked">
-                                            @if ($selectAlladd)
+                                        @if ($selectAlladd)
+                                            <div class="panel__header--checked">
                                                 <p>
                                                     You selected <strong>{{ count($checkedadd) }}</strong> items.
                                                 </p>
-                                            @else
-                                                <a href="#" wire:click="selectAlladd">
-                                                    <p>
-                                                        You selected <strong>{{ count($checkedadd) }}</strong> items,
-                                                        Do
-                                                        you
-                                                        want
-                                                        to Select All?
-                                                    </p>
-                                                </a>
-                                            @endif
-                                        </div>
+                                            </div>
+                                        @else
+                                            <div class="panel__header--checked" wire:click="selectAlladd">
+                                                <p>
+                                                    You selected {{ count($checkedadd) }} items, select all?
+                                                </p>
+                                            </div>
+                                        @endif
                                     @endif
                                 </div>
                                 {{-- Table --}}
@@ -249,23 +239,6 @@
                                             </tr>
                                         @endforeach
                                     </tbody>
-
-                                    <script>
-                                        const lastRecord = document.getElementById('last_record');
-                                        const options = {
-                                            root: null,
-                                            threshold: 1,
-                                            rootMargin: '0px'
-                                        }
-                                        const observer = new IntersectionObserver((entries, observer) => {
-                                            entries.forEach(entry => {
-                                                if (entry.isIntersecting) {
-                                                    @this.loadMore()
-                                                }
-                                            });
-                                        });
-                                        observer.observe(lastRecord);
-                                    </script>
                                 </table>
                                 <span class="top-up-modal delete"
                                     style="position: fixed; right: 0; top: 0; width: 2.5rem; height: 2.5rem;"
@@ -307,59 +280,10 @@
                 </div>
                 <div>
                     @if ($relatedproducts && count($relatedproducts) > 0)
-                        {{-- delete single record --}}
-                        <div class="modal" id="confirmationmodal">
-                            <div class="modal-content">
-                                <h1 class="modal-content-title">
-                                    {{ __('Are you sure to delete this product?') }}
-                                </h1>
-                                <input wire:click.prevent="deleteSingleRecord()" class="modal-content-btn submit"
-                                    type="button" value="Confirm" id="confirmLoad">
-                                <input class="modal-content-btn delete" type="button"
-                                    onclick="document.getElementById('confirmationmodal').style.display='none'"
-                                    value="Cancel">
-
-                                <span class="modal-content-btn delete"
-                                    onclick="document.getElementById('confirmationmodal').style.display='none'">
-                                    <svg>
-                                        <line x1="18" y1="6" x2="6" y2="18">
-                                        </line>
-                                        <line x1="6" y1="6" x2="18" y2="18">
-                                        </line>
-                                    </svg>
-                                </span>
-                            </div>
-                        </div>
-                        {{-- delete myltiple records --}}
-                        <div class="modal" id="confirmationmodalmultiple">
-                            <div class="modal-content">
-                                <h1 class="modal-content-title">
-                                    {{ __('Are you sure to delete those product?') }}
-                                </h1>
-                                <input wire:click.prevent="deleteRecords()" class="modal-content-btn submit"
-                                    type="button" value="Confirm" id="confirmLoad">
-                                <input class="modal-content-btn delete" type="button"
-                                    onclick="document.getElementById('confirmationmodalmultiple').style.display='none'"
-                                    value="Cancel">
-
-                                <span class="modal-content-btn delete"
-                                    onclick="document.getElementById('confirmationmodalmultiple').style.display='none'">
-
-                                    <svg>
-                                        <line x1="18" y1="6" x2="6" y2="18">
-                                        </line>
-                                        <line x1="6" y1="6" x2="18" y2="18">
-                                        </line>
-                                    </svg>
-                                </span>
-                            </div>
-                        </div>
-
-
                         {{-- Header of the table --}}
                         <div class="panel__header">
                             <input class="panel__header--input" type="text" wire:model.debounce.200ms="search"
-                                placeholder="Search your category..." style="grid-column: 1/4">
+                                placeholder="Search..." style="grid-column: 1/4">
                             <div class="panel__header--bundle">
                                 <div class="dropdown">
                                     <button
@@ -390,7 +314,7 @@
                                         @if ($all)
                                             <div class="dropdown-list" style="display: flex;">
                                                 <button class="dropdown-item delete" type="button"
-                                                    wire:click="confirmProductsRemovalmultiple()">
+                                                    wire:click="confirmItemsRemoval()">
                                                     Delete
                                                 </button>
                                                 <button class="dropdown-item submit" type="button"
@@ -403,21 +327,19 @@
                                 </div>
                             </div>
                             @if ($selectPage)
-                                <div class="panel__header--checked">
-                                    @if ($selectAll)
+                                @if ($selectAll)
+                                    <div class="panel__header--checked">
                                         <p>
                                             You selected <strong>{{ count($checked) }}</strong> items.
                                         </p>
-                                    @else
-                                        <a href="#" class="ml-2" wire:click="selectAll">
-                                            <p>
-                                                You selected <strong>{{ count($checked) }}</strong> items, Do you
-                                                want
-                                                to Select All?
-                                            </p>
-                                        </a>
-                                    @endif
-                                </div>
+                                    </div>
+                                @else
+                                    <div class="panel__header--checked" wire:click="selectAll">
+                                        <p>
+                                            You selected {{ count($checked) }} items, select all?
+                                        </p>
+                                    </div>
+                                @endif
                             @endif
                         </div>
 
@@ -491,8 +413,7 @@
 
                             <tbody>
                                 @foreach ($relatedproducts as $product)
-                                    <tr @if ($loop->last) id="last_record" @endif
-                                        class="@if ($this->isChecked($product->id)) table__row--selected @endif">
+                                    <tr class="@if ($this->isChecked($product->id)) table__row--selected @endif">
                                         <td data-title="Check">
                                             <input type="checkbox" value="{{ $product->id }}" wire:model="checked">
                                         </td>
@@ -527,7 +448,7 @@
                                         <td data-title="Action">
                                             <div class="table__buttons">
                                                 <button class="delete"
-                                                    wire:click.prevent="confirmCategoryRemoval({{ $product->id }})">
+                                                    wire:click.prevent="confirmItemRemoval({{ $product->id }})">
                                                     <svg>
                                                         <polyline points="3 6 5 6 21 6"></polyline>
                                                         <path
@@ -540,27 +461,12 @@
                                     </tr>
                                 @endforeach
                             </tbody>
-
-                            <script>
-                                const lastRecord = document.getElementById('last_record');
-                                const options = {
-                                    root: null,
-                                    threshold: 1,
-                                    rootMargin: '0px'
-                                }
-                                const observer = new IntersectionObserver((entries, observer) => {
-                                    entries.forEach(entry => {
-                                        if (entry.isIntersecting) {
-                                            @this.loadMore()
-                                        }
-                                    });
-                                });
-                                observer.observe(lastRecord);
-                            </script>
                         </table>
-                        {{-- <div>{{ $relatedproducts->links('pagination-links') }} </div> --}}
+                        @if (count($relatedproducts) >= 10)
+                            <div class="cursor-p" wire:click="load">Load more</div>
+                        @endif
                     @else
-                        <p>No Products Related</p>
+                        <p class="mt-2">No products related</p>
                     @endif
                 </div>
             </div>

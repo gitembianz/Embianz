@@ -1,5 +1,6 @@
 <x-dashboardheader />
 <x-dashboardnavbar />
+<x-alert />
 {{-- Display session message --}}
 {{-- @if (session()->has('message') && session()->has('item_name') && session()->has('item_id'))
     <div class="alert__session" id="alertevent">

@@ -1,11 +1,7 @@
 <div>
     {{-- Asta trebuie de facut componenta --}}
     <x-alert />
-    <div wire:loading.delay>
-        <div class="modal" style="display:flex;">
-            <div class="loader"></div>
-        </div>
-    </div>
+    <x-loading />
 
     {{-- delete single record --}}
     <div class="modal" id="confirmationmodal">
@@ -13,8 +9,8 @@
             <h1 class="modal-content-title">
                 {{ __('Are you sure to delete this record?') }}
             </h1>
-            <input wire:click.prevent="deleteSingleRecord()" class="modal-content-btn submit" type="button"
-                value="Confirm" id="confirmLoad">
+            <input wire:click.prevent="deleteSingleRecord()" class="modal-content-btn submit" type="button" value="Confirm"
+                id="confirmLoad">
             <input class="modal-content-btn delete" type="button"
                 onclick="document.getElementById('confirmationmodal').style.display='none'" value="Cancel">
 
@@ -48,8 +44,6 @@
             </span>
         </div>
     </div>
-
-
 
     {{-- Header of the table --}}
     <div class="panel__header">
@@ -110,19 +104,19 @@
             </a>
         </div>
         @if ($selectPage)
-            <div class="panel__header--checked">
-                @if ($selectAll)
+            @if ($selectAll)
+                <div class="panel__header--checked">
                     <p>
                         You selected <strong>{{ count($checked) }}</strong> items.
                     </p>
-                @else
-                    <a href="#" class="ml-2" wire:click="selectAll">
-                        <p>
-                            You selected <strong>{{ count($checked) }}</strong> items, Do you want to Select All?
-                        </p>
-                    </a>
-                @endif
-            </div>
+                </div>
+            @else
+                <div class="panel__header--checked" wire:click="selectAll">
+                    <p>
+                        You selected {{ count($checked) }} items, select all?
+                    </p>
+                </div>
+            @endif
         @endif
     </div>
 

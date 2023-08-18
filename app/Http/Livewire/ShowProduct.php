@@ -108,7 +108,7 @@ class ShowProduct extends Component
     $this->editproduct = null;
     $this->prod = [];
   }
-  public function deleteSingleRecord()
+  public function deleteRecord()
   {
     $id = $this->productId;
     $product = Product::find($id);

@@ -4,7 +4,6 @@ namespace App\Http\Livewire;
 
 use getID3;
 use App\Models\Media;
-use App\Models\Tabels;
 use Livewire\Component;
 use App\Models\Category;
 use Livewire\WithPagination;
@@ -21,6 +20,7 @@ class RelatedMediaCategory extends Component
   use WithFileUploads;
   use WithPagination;
   public $categoryId;
+  public $limit = 10;
   public $category;
   public $showmedia = false;
   public $medias = [];
@@ -202,14 +202,13 @@ class RelatedMediaCategory extends Component
     $this->validate([
       'medias.*' => 'mimetypes:image/jpeg,image/png,image/svg+xml,video/mp4,video/quicktime|max:10240', // Max 10MB for all files
     ]);
-    $data = Category::find($this->categoryId);
-    $productType = class_basename(get_class($data));
+    $productType = class_basename(get_class($this->category));
     $filespath = 'media/' . $productType . '/';
     if (!File::exists($filespath)) {
       File::makeDirectory($filespath, 0755, true);
     }
-    if (!File::exists($filespath . "$data->id")) {
-      File::makeDirectory($filespath . "$data->id", 0755, true);
+    if (!File::exists($filespath . "$this->categoryId")) {
+      File::makeDirectory($filespath . "$this->categoryId", 0755, true);
     }
     $path = $filespath . "$this->categoryId" . "/";
     $this->i = 0;
@@ -337,12 +336,12 @@ class RelatedMediaCategory extends Component
   {
     return in_array($id, $this->checked);
   }
-  public function confirmFileRemoval($id)
+  public function confirmItemRemoval($id)
   {
     $this->mediaidbeingremoved = $id;
     $this->dispatchBrowserEvent('show-delete-modal');
   }
-  public function confirmFilesRemovalmultiple()
+  public function confirmItemsRemoval()
   {
 
     $this->dispatchBrowserEvent('show-delete-modal-multiple');

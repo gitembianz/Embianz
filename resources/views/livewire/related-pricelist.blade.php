@@ -1,10 +1,6 @@
 <div>
     <x-alert />
-    <div wire:loading.delay>
-        <div class="modal" style="display:flex;">
-            <div class="loader"></div>
-        </div>
-    </div>
+    <x-loading />
     <div class="accordion">
         <div class="accordion__btn-flex">
             <button class="accordion__btn"
@@ -277,7 +273,6 @@
                             </div>
                         </div>
 
-
                         {{-- Header of the table --}}
                         <div class="panel__header">
                             <input class="panel__header--input" type="text" wire:model.debounce.200ms="search"
@@ -325,21 +320,19 @@
                                 </div>
                             </div>
                             @if ($selectPage)
-                                <div class="panel__header--checked">
-                                    @if ($selectAll)
+                                @if ($selectAll)
+                                    <div class="panel__header--checked">
                                         <p>
                                             You selected <strong>{{ count($checked) }}</strong> items.
                                         </p>
-                                    @else
-                                        <a href="#" class="ml-2" wire:click="selectAll">
-                                            <p>
-                                                You selected <strong>{{ count($checked) }}</strong> items, Do you
-                                                want
-                                                to Select All?
-                                            </p>
-                                        </a>
-                                    @endif
-                                </div>
+                                    </div>
+                                @else
+                                    <div class="panel__header--checked" wire:click="selectAll">
+                                        <p>
+                                            You selected {{ count($checked) }} items, select all?
+                                        </p>
+                                    </div>
+                                @endif
                             @endif
                         </div>
 
@@ -429,28 +422,28 @@
                                                     <div
                                                         wire:click.prevent="edititem({{ $prices->id }}, {{ $prices->pricelist->id }}, {{ $index }})">
                                                         {{ $prices->pricelist->name }}
-                                                    </div>
-                                                @else
-                                                    @if ($allow)
-                                                        <div class="table__drop">
-                                                            <input class="table__drop--input"
-                                                                wire:model.debounce.200ms="searchadd"
-                                                                placeholder="Search.." type="text">
-                                                            <ul class="table__drop--list">
-                                                                @foreach ($addprices as $pri)
-                                                                    <li class="table__drop--item"
-                                                                        wire:click.prevent="select({{ $pri->id }})">
-                                                                        {{ $pri->name }}
-                                                                    </li>
-                                                                @endforeach
-                                                            </ul>
-                                                            </span>
-                                                        </div>
                                                     @else
-                                                        <button wire:click.prevent="allow" class="table__drop--input">
-                                                            {{ $itemselected->name }}
-                                                        </button>
-                                                    @endif
+                                                        @if ($allow)
+                                                            <div class="table__drop">
+                                                                <input class="table__drop--input"
+                                                                    wire:model.debounce.200ms="searchadd"
+                                                                    placeholder="Search.." type="text">
+                                                                <ul class="table__drop--list">
+                                                                    @foreach ($addprices as $pri)
+                                                                        <li class="table__drop--item"
+                                                                            wire:click.prevent="select({{ $pri->id }})">
+                                                                            {{ $pri->name }}
+                                                                        </li>
+                                                                    @endforeach
+                                                                </ul>
+                                                                </span>
+                                                            </div>
+                                                        @else
+                                                            <button wire:click.prevent="allow"
+                                                                class="table__drop--input">
+                                                                {{ $itemselected->name }}
+                                                            </button>
+                                                        @endif
                                                 @endif
                                                 {{-- <a href="/show_product/{{ $categori->category->id }}'">{{ $categori->category->name }}</a> --}}
                                             </td>

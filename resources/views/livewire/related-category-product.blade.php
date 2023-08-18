@@ -1,10 +1,6 @@
 <div>
     <x-alert />
-    <div wire:loading.delay>
-        <div class="modal" style="display:flex; z-index: 99999;">
-            <div class="loader"></div>
-        </div>
-    </div>
+    <x-loading />
     <div class="accordion">
         <div class="accordion__btn-flex">
             <button class="accordion__btn"
@@ -72,8 +68,6 @@
                                     </div>
                                 </div>
 
-
-
                                 {{-- Header of the table --}}
                                 <div class="panel__header">
                                     <h1 class="panel__header--title">
@@ -107,24 +101,21 @@
                                             {{ count($checkedadd) }} records
                                         </button>
                                     </div>
+
                                     @if ($selectPageadd)
-                                        <div class="panel__header--checked">
-                                            @if ($selectAlladd)
+                                        @if ($selectAlladd)
+                                            <div class="panel__header--checked">
                                                 <p>
                                                     You selected <strong>{{ count($checkedadd) }}</strong> items.
                                                 </p>
-                                            @else
-                                                <a href="#" wire:click="selectAlladd">
-                                                    <p>
-                                                        You selected <strong>{{ count($checkedadd) }}</strong> items,
-                                                        Do
-                                                        you
-                                                        want
-                                                        to Select All?
-                                                    </p>
-                                                </a>
-                                            @endif
-                                        </div>
+                                            </div>
+                                        @else
+                                            <div class="panel__header--checked" wire:click="selectAlladd">
+                                                <p>
+                                                    You selected {{ count($checkedadd) }} items, select all?
+                                                </p>
+                                            </div>
+                                        @endif
                                     @endif
                                 </div>
                                 {{-- Table --}}
@@ -356,11 +347,10 @@
                             </div>
                         </div>
 
-
                         {{-- Header of the table --}}
                         <div class="panel__header">
                             <input class="panel__header--input" type="text" wire:model.debounce.200ms="search"
-                                placeholder="Search your category..." style="grid-column: 1/4">
+                                placeholder="Search..." style="grid-column: 1/4">
                             <div class="panel__header--bundle">
                                 <div class="dropdown">
                                     <button
@@ -404,21 +394,19 @@
                                 </div>
                             </div>
                             @if ($selectPage)
-                                <div class="panel__header--checked">
-                                    @if ($selectAll)
+                                @if ($selectAll)
+                                    <div class="panel__header--checked">
                                         <p>
                                             You selected <strong>{{ count($checked) }}</strong> items.
                                         </p>
-                                    @else
-                                        <a href="#" class="ml-2" wire:click="selectAll">
-                                            <p>
-                                                You selected <strong>{{ count($checked) }}</strong> items, Do you
-                                                want
-                                                to Select All?
-                                            </p>
-                                        </a>
-                                    @endif
-                                </div>
+                                    </div>
+                                @else
+                                    <div class="panel__header--checked" wire:click="selectAll">
+                                        <p>
+                                            You selected {{ count($checked) }} items, select all?
+                                        </p>
+                                    </div>
+                                @endif
                             @endif
                         </div>
 

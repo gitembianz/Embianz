@@ -1,10 +1,6 @@
 <div>
     <x-alert />
-    <div wire:loading.delay>
-        <div class="modal" style="display:flex;">
-            <div class="loader"></div>
-        </div>
-    </div>
+    <x-loading />
     <div class="item__header">
         <h1 class="item__header-title" id="title">Product: {{ $product->name }}</h1>
         <div class="item__header-buttons">
@@ -52,8 +48,7 @@
             <h1 class="modal-content-title">
                 {{ __('Are you sure to delete this record?') }}
             </h1>
-            <input wire:click.prevent="deleteSingleRecord()" class="modal-content-btn submit" type="button"
-                value="Confirm">
+            <input wire:click.prevent="deleteRecord()" class="modal-content-btn submit" type="button" value="Confirm">
             <input class="modal-content-btn delete" type="button"
                 onclick="document.getElementById('confirmationmodal').style.display='none'" value="Cancel">
 
@@ -93,7 +88,6 @@
                     @else
                         <div class="item__form-input">
                             <select id="select-category" wire:model.defer="prod.product_status">
-                                <?php $status = ['active', 'inactive', 'low stock']; ?>
                                 @foreach ($status as $status_name)
                                     <option value="{{ $status_name }}">{{ $status_name }}</option>
                                 @endforeach
@@ -137,10 +131,18 @@
                     @if ($editproduct === null)
                         <div style="display: flex; align-items: center;justify-content: flex-start;gap: 10px">
                             @if ($product->active)
-                                <input type="checkbox" checked disabled class="check--disabled">
+                                <div class="simple__checkbox">
+                                    <svg>
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                </div>
                                 {{ _('Active') }}
                             @else
-                                <input type="checkbox" disabled class="check--disabled">
+                                <div class="simple__checkbox--disabled">
+                                    <svg>
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                </div>
                                 {{ _('Inactive') }}
                             @endif
                         </div>

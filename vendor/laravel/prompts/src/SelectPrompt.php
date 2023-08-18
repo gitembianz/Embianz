@@ -30,6 +30,7 @@ class SelectPrompt extends Prompt
         public int|string|null $default = null,
         public int $scroll = 5,
         public ?Closure $validate = null,
+        public string $hint = ''
     ) {
         $this->options = $options instanceof Collection ? $options->all() : $options;
 
@@ -42,8 +43,8 @@ class SelectPrompt extends Prompt
         }
 
         $this->on('key', fn ($key) => match ($key) {
-            Key::UP, Key::LEFT, Key::SHIFT_TAB, 'k', 'h' => $this->highlightPrevious(),
-            Key::DOWN, Key::RIGHT, Key::TAB, 'j', 'l' => $this->highlightNext(),
+            Key::UP, Key::UP_ARROW, Key::LEFT, Key::LEFT_ARROW, Key::SHIFT_TAB, 'k', 'h' => $this->highlightPrevious(),
+            Key::DOWN, Key::DOWN_ARROW, Key::RIGHT, Key::RIGHT_ARROW, Key::TAB, 'j', 'l' => $this->highlightNext(),
             Key::ENTER => $this->submit(),
             default => null,
         });
