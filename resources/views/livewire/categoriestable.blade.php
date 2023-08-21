@@ -193,57 +193,64 @@
         </thead>
 
         <tbody>
-            @foreach ($categories as $category)
-                <tr @if ($loop->last) id="last_record" @endif
-                    class="@if ($this->isChecked($category->id)) table__row--selected @endif">
-                    <td data-title="Check">
-                        <input type="checkbox" value="{{ $category->id }}" wire:model="checked">
-                    </td>
-
-                    @if ($this->showColumn('Id'))
-                        <td data-title="ID">{{ $category->id }}</td>
-                    @endif
-
-                    @if ($this->showColumn('Name'))
-                        <td data-title="Name"><a
-                                href="/show_category/{{ $category->id }}'">{{ $category->name }}</a>
-                        </td>
-                    @endif
-
-                    @if ($this->showColumn('Short Description'))
-                        <td class="table__description" data-title="Description">
-                            {{ $category->short_description }}</td>
-                    @endif
-
-                    @if ($this->showColumn('Sequence'))
-                        <td data-title="Sequence">{{ $category->sequence }}</td>
-                    @endif
-
-                    @if ($this->showColumn('Created At'))
-                        <td data-title="Created At">
-                            <div class="table__time">
-                                <svg>
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                </svg>
-                                {{ $category->created_at }}
-                        </td>
-                    @endif
-
-                    <td data-title="Action">
-                        <div class="table__buttons">
-                            <button class="delete" wire:click.prevent="confirmCategoryRemoval({{ $category->id }})">
-                                <svg>
-                                    <polyline points="3 6 5 6 21 6"></polyline>
-                                    <path
-                                        d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                    </path>
-                                </svg>
-                            </button>
-                        </div>
-                    </td>
+            @if ($categories->isEmpty())
+                <tr>
+                    <td colspan="{{ count($columns) }}">No record found.</td>
                 </tr>
-            @endforeach
+            @else
+                @foreach ($categories as $category)
+                    <tr @if ($loop->last) id="last_record" @endif
+                        class="@if ($this->isChecked($category->id)) table__row--selected @endif">
+                        <td data-title="Check">
+                            <input type="checkbox" value="{{ $category->id }}" wire:model="checked">
+                        </td>
+
+                        @if ($this->showColumn('Id'))
+                            <td data-title="ID">{{ $category->id }}</td>
+                        @endif
+
+                        @if ($this->showColumn('Name'))
+                            <td data-title="Name"><a
+                                    href="/show_category/{{ $category->id }}'">{{ $category->name }}</a>
+                            </td>
+                        @endif
+
+                        @if ($this->showColumn('Short Description'))
+                            <td class="table__description" data-title="Description">
+                                {{ $category->short_description }}</td>
+                        @endif
+
+                        @if ($this->showColumn('Sequence'))
+                            <td data-title="Sequence">{{ $category->sequence }}</td>
+                        @endif
+
+                        @if ($this->showColumn('Created At'))
+                            <td data-title="Created At">
+                                <div class="table__time">
+                                    <svg>
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <polyline points="12 6 12 12 16 14"></polyline>
+                                    </svg>
+                                    {{ $category->created_at }}
+                            </td>
+                        @endif
+
+                        <td data-title="Action">
+                            <div class="table__buttons">
+                                <button class="delete"
+                                    wire:click.prevent="confirmCategoryRemoval({{ $category->id }})">
+                                    <svg>
+                                        <polyline points="3 6 5 6 21 6"></polyline>
+                                        <path
+                                            d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                        </path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                @endforeach
+            @endif
         </tbody>
 
         <script>
