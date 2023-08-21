@@ -369,8 +369,13 @@ class RelatedMediaCategory extends Component
   }
   public function render()
   {
+    $filteredMedia = $this->category->media()
+      ->where('name', 'LIKE', '%' . $this->search . '%')
+      ->get();
+
     return view('livewire.related-media-category', [
-      'category' => $this->category
+      'category' => $this->category,
+      'filteredMedia' => $filteredMedia,
     ]);
   }
 }
