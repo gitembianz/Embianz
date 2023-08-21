@@ -46,7 +46,7 @@
                                     <td data-title="Specification">
                                         @if ($specAndValue['allow'])
                                             <div class="table__drop">
-                                                <input class="table__drop--input" wire:model.debounce.200ms="searchadd"
+                                                <input class="table__drop--input" wire:model.live="searchadd"
                                                     placeholder="Search..." type="text">
                                                 <ul class="table__drop--list">
                                                     @if (count($addspecs) >= 1)
@@ -163,9 +163,8 @@
                                     <td data-title="Specification">
                                         @if ($specAndValue['allow'])
                                             <div class="table__drop">
-                                                <input class="table__drop--input"
-                                                    wire:model.debounce.200ms="searchadd" placeholder="Search..."
-                                                    type="text">
+                                                <input class="table__drop--input" wire:model.live="searchadd"
+                                                    placeholder="Search..." type="text">
                                                 <ul class="table__drop--list">
                                                     @if (count($addspecs) >= 1)
                                                         @foreach ($addspecs as $spec)
@@ -276,7 +275,7 @@
 
                         {{-- Header of the table --}}
                         <div class="panel__header">
-                            <input class="panel__header--input" type="text" wire:model.debounce.200ms="search"
+                            <input class="panel__header--input" type="text" wire:model.live="search"
                                 placeholder="Search your specifications..." style="grid-column: 1/4">
                             <div class="panel__header--bundle">
                                 <div class="dropdown">
@@ -429,8 +428,8 @@
                                                     @if ($allow)
                                                         <div class="table__drop">
                                                             <input class="table__drop--input"
-                                                                wire:model.debounce.200ms="searchadd"
-                                                                placeholder="Search.." type="text">
+                                                                wire:model.live="searchadd" placeholder="Search.."
+                                                                type="text">
                                                             <ul class="table__drop--list">
                                                                 @foreach ($addspecs as $speci)
                                                                     <li class="table__drop--item"

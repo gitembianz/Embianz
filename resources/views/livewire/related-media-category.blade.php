@@ -1,4 +1,4 @@
-<div>
+<div wire:poll>
     <x-alert />
     <x-loading />
     <x-modals />
@@ -270,7 +270,7 @@
                 <div>
                     @if ($category->media()->count() > 0)
                         <div class="panel__header">
-                            <input class="panel__header--input" type="text" wire:model.debounce.200ms="search"
+                            <input class="panel__header--input" type="text" wire:model.live="search"
                                 placeholder="Search..." style="grid-column: 1/4">
                             <div class="panel__header--bundle">
                                 <div class="dropdown">
@@ -313,6 +313,19 @@
                                         @endif
                                     @endif
                                 </div>
+                                <a class="panel__header--button" wire:click="$refresh">
+                                    <svg>
+                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
+                                        </g>
+                                        <g id="SVGRepo_iconCarrier">
+                                            <path
+                                                d="M3 3V8M3 8H8M3 8L6 5.29168C7.59227 3.86656 9.69494 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.71683 21 4.13247 18.008 3.22302 14"
+                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            </path>
+                                        </g>
+                                    </svg>
+                                </a>
                             </div>
                             @if ($selectPage)
                                 @if ($selectAll)
@@ -361,6 +374,13 @@
                                             <div class="table__header--btn">Sequence</div>
                                         </th>
                                     @endif
+                                    @if ($this->showColumn('Created At'))
+                                        <th>
+                                            <button class="table__header--btn">
+                                                Created at
+                                            </button>
+                                        </th>
+                                    @endif
 
                                     <th></th>
                                 </tr>
@@ -391,17 +411,11 @@
                                         @if ($this->showColumn('Name'))
                                             <td data-title="Name">
                                                 @if ($editedMediaIndex !== $index)
-                                                    <div class="cursor-p"
-                                                        wire:click.prevent="editMedia({{ $index }})">
-                                                        {{ $file->name }}</div>
+                                                    <div>{{ $file->name }}</div>
                                                 @else
-                                                    <input type="text" required class="table-edit wid-6"
+                                                    <input type="text" class="table__edit"
                                                         wire:model.defer="filess.{{ $index }}.name"
                                                         value="{{ $file->name }}">
-                                                    @if ($errors->has('filess.' . $index . '.name'))
-                                                        <p>{{ $errors->first('filess.' . $index . '.name') }}
-                                                        </p>
-                                                    @endif
                                                 @endif
                                             </td>
                                         @endif
@@ -409,11 +423,9 @@
                                         @if ($this->showColumn('Media Location'))
                                             <td data-title="Media Location">
                                                 @if ($editedMediaIndex !== $index)
-                                                    <div class="cursor-p"
-                                                        wire:click.prevent="editMedia({{ $index }})">
-                                                        {{ $file->location->location }}</div>
+                                                    <div>{{ $file->location->location }}</div>
                                                 @else
-                                                    <select required class="table-edit"
+                                                    <select class="table__edit"
                                                         wire:model.defer="filess.{{ $index }}.location_id">
                                                         @foreach ($locations as $location)
                                                             <option value="{{ $location->id }}">
@@ -426,28 +438,31 @@
                                         @if ($this->showColumn('Sequence'))
                                             <td data-title="Sequence">
                                                 @if ($editedMediaIndex !== $index)
-                                                    <div class="cursor-p"
-                                                        wire:click.prevent="editMedia({{ $index }})">
-                                                        {{ $file->sequence }}</div>
+                                                    <div>{{ $file->sequence }}</div>
                                                 @else
-                                                    <input type="number" min="0" required
-                                                        class="table-edit wid-1"
+                                                    <input type="number" min="0" required class="table__edit"
                                                         wire:model.defer="filess.{{ $index }}.sequence"
                                                         value="{{ $file->sequence }}">
-                                                    @if ($errors->has('filess.' . $index . '.sequence'))
-                                                        <p>{{ $errors->first('filess.' . $index . '.sequence') }}
-                                                        </p>
-                                                    @endif
                                                 @endif
+                                            </td>
+                                        @endif
+                                        @if ($this->showColumn('Created At'))
+                                            <td data-title="Created At">
+                                                <div class="table__time">
+                                                    <svg>
+                                                        <circle cx="12" cy="12" r="10">
+                                                        </circle>
+                                                        <polyline points="12 6 12 12 16 14"></polyline>
+                                                    </svg>
+                                                    {{ $file->created_at }}
                                             </td>
                                         @endif
 
                                         <td data-title="Action">
                                             <div class="table__buttons">
-
                                                 @if ($editedMediaIndex !== $index)
                                                     <button class="edit"
-                                                        wire:click.prevent="editMedia({{ $index }})">
+                                                        wire:click.prevent="editMedia({{ $index }}, {{ $file->id }})">
                                                         <svg>
                                                             <path
                                                                 d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
@@ -482,13 +497,11 @@
                                                     </button>
                                                 @endif
                                             </div>
-
                                         </td>
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
-                        {{-- <div>{{ $files->links('pagination-links') }} </div> --}}
                     @else
                         <p class="mt-2">No media related</p>
                     @endif

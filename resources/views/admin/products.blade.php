@@ -34,7 +34,7 @@
 {{-- Page content start --}}
 <section class="content">
     {{-- Tabel by Livewire start --}}
-    @livewire('productstable')
+    <livewire:productstable lazy />
     {{-- Tabel by Livewire end --}}
     <a href="#" class="top-up-btn" id="topUp">
         <svg>

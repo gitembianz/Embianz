@@ -50,7 +50,7 @@
         <h1 class="panel__header--title">
             {{ __('Products') }}
         </h1>
-        <input class="panel__header--input" type="text" wire:model.debounce.200ms="search"
+        <input class="panel__header--input" type="text" wire:model.live="search"
             placeholder="Search your product...">
         <div class="panel__header--bundle">
             <div class="dropdown">

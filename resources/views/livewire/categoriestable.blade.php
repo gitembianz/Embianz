@@ -49,7 +49,7 @@
         <h1 class="panel__header--title">
             {{ __('Categories') }}
         </h1>
-        <input class="panel__header--input" type="text" wire:model.debounce.200ms="search" placeholder="Search...">
+        <input class="panel__header--input" type="text" wire:model.live="search" placeholder="Search...">
         <div class="panel__header--bundle">
             <div class="dropdown">
                 <button class="dropdown-button">Columns
