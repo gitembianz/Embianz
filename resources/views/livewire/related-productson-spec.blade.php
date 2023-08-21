@@ -45,7 +45,7 @@
                                     <td data-title="Product">
                                         @if ($pro['allow'])
                                             <div class="table__drop">
-                                                <input class="table__drop--input" wire:model.debounce.200ms="searchadd"
+                                                <input class="table__drop--input" wire:model.live="searchadd"
                                                     placeholder="Search..." type="text">
                                                 <ul class="table__drop--list">
                                                     @if (count($addprods) >= 1)
@@ -163,9 +163,8 @@
                                     <td data-title="Specification">
                                         @if ($pro['allow'])
                                             <div class="table__drop">
-                                                <input class="table__drop--input"
-                                                    wire:model.debounce.200ms="searchadd" placeholder="Search..."
-                                                    type="text">
+                                                <input class="table__drop--input" wire:model.live="searchadd"
+                                                    placeholder="Search..." type="text">
                                                 <ul class="table__drop--list">
                                                     @if (count($addprods) >= 1)
                                                         @foreach ($addprods as $pr)
@@ -274,7 +273,7 @@
 
                         {{-- Header of the table --}}
                         <div class="panel__header">
-                            <input class="panel__header--input" type="text" wire:model.debounce.200ms="search"
+                            <input class="panel__header--input" type="text" wire:model.live="search"
                                 placeholder="Search your specifications..." style="grid-column: 1/4">
                             <div class="panel__header--bundle">
                                 <div class="dropdown">
@@ -427,8 +426,8 @@
                                                     @if ($allow)
                                                         <div class="table__drop">
                                                             <input class="table__drop--input"
-                                                                wire:model.debounce.200ms="searchadd"
-                                                                placeholder="Search.." type="text">
+                                                                wire:model.live="searchadd" placeholder="Search.."
+                                                                type="text">
                                                             <ul class="table__drop--list">
                                                                 @foreach ($addprods as $pr)
                                                                     <li class="table__drop--item"

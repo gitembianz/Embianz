@@ -33,7 +33,7 @@ class RelatedMediaCategory extends Component
   public $selectPage = false;
   public $selectAll = false;
   public $mediaidbeingremoved = null;
-  public $columns = ['Id', 'Media', 'Media Location', 'Sequence'];
+  public $columns = ['Id', 'Media', 'Media Location', 'Sequence', 'Created At'];
   public $selectedColumns = [];
   public $locations;
   public $file_sequences = ['0'];
@@ -120,10 +120,17 @@ class RelatedMediaCategory extends Component
     $this->file_link = [];
     $this->file_name = [];
   }
-  public function editMedia($mediaIndex)
+  public function editMedia($index, $id)
   {
-    $this->editedMediaIndex = $mediaIndex;
+    $this->editedMediaIndex = $index;
+    $media = Media::find($id);
+    $this->filess = [
+      $index . '.name' => $media->name,
+      $index . '.location_id' => $media->location_id,
+      $index . '.sequence' => $media->sequence,
+    ];
   }
+
   public function cancel()
   {
 
@@ -170,13 +177,15 @@ class RelatedMediaCategory extends Component
       }
       $media_for_cat->save();
       session()->flash('notification', [
-        'message' => 'Record edited successfully!',
+        'message' => 'Please reload for display changes!',
         'type' => 'success',
         'title' => 'Success'
       ]);
     }
+
     $this->filess = [];
     $this->editedMediaIndex = null;
+    $this->render();
   }
   public function showColumn($column)
   {
@@ -188,7 +197,7 @@ class RelatedMediaCategory extends Component
   public function updatedSelectPage($value)
   {
     if ($value) {
-      $this->checked = $this->files->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+      $this->checked = $this->category->media()->pluck('media.id')->map(fn ($item) => (string) $item)->toArray();
     } else {
       $this->checked = [];
     }
@@ -329,7 +338,7 @@ class RelatedMediaCategory extends Component
   public function selectAll()
   {
     $this->selectAll = true;
-    $this->checked = $this->filesQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+    $this->checked = $this->category->media()->pluck('media.id')->map(fn ($item) => (string) $item)->toArray();
   }
 
   public function isChecked($id)
@@ -360,8 +369,13 @@ class RelatedMediaCategory extends Component
   }
   public function render()
   {
+    $filteredMedia = $this->category->media()
+      ->where('name', 'LIKE', '%' . $this->search . '%')
+      ->get();
+
     return view('livewire.related-media-category', [
-      'category' => $this->category
+      'category' => $this->category,
+      'filteredMedia' => $filteredMedia,
     ]);
   }
 }
