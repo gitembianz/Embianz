@@ -27,10 +27,17 @@
                     </svg>
                 </button>
             @else
-                <button class="item__header-btn edit" type="button" wire:click.prevent="savecategory()" value="Save"
-                    data-tooltip-center="Save this changes">Save</button>
-                <button class="item__header-btn edit" type="button" wire:click.prevent="cancelcategory()"
-                    value="Cancel" data-tooltip-center="Cancel this changes">Cancel</button>
+                <button class="item__header-btn" type="button" wire:click.prevent="savecategory()" value="Save"
+                    data-tooltip-center="Save this changes"><svg>
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg></button>
+                <button class="item__header-btn" type="button" wire:click.prevent="cancelcategory()" value="Cancel"
+                    data-tooltip-center="Cancel this changes"><svg>
+                        <line x1="18" y1="6" x2="6" y2="18">
+                        </line>
+                        <line x1="6" y1="6" x2="18" y2="18">
+                        </line>
+                    </svg></button>
             @endif
             <button wire:click.prevent="confirmItemRemoval({{ $category->id }})" class="item__header-btn delete"
                 type="button" value="Delete" data-tooltip-right="Delete this Category">
