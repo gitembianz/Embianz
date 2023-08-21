@@ -330,37 +330,35 @@
                                 @endif
                             @endif
                         </div>
-                        <table class="livewire-table">
+                        <table class="table">
                             <thead>
                                 <tr>
                                     <th><input type="checkbox" wire:model="selectPage"></th>
 
                                     @if ($this->showColumn('Id'))
-                                        <th class="cursor-p"
-                                            @if ($orderBy === 'id' && $orderAsc === '1') data-symbol="up"
-                                                  @else data-symbol="down" @endif
-                                            wire:click="sortBy('id')">ID
+                                        <th>
+                                            <div class="table__header--btn">ID</div>
                                         </th>
                                     @endif
                                     @if ($this->showColumn('Media'))
-                                        <th class="cursor-p">Media
+                                        <th>
+                                            <div class="table__header--btn">Media</div>
                                         </th>
                                     @endif
                                     @if ($this->showColumn('Name'))
-                                        <th class="cursor-p"
-                                            @if ($orderBy === 'name' && $orderAsc === '1') data-symbol="up"
-
-                                                        @else data-symbol="down" @endif
-                                            wire:click="sortBy('name')">Name
+                                        <th>
+                                            <div class="table__header--btn">Name</div>
                                         </th>
                                     @endif
 
                                     @if ($this->showColumn('Media Location'))
-                                        <th class="cursor-p">Media Location
+                                        <th>
+                                            <div class="table__header--btn">Location</div>
                                         </th>
                                     @endif
                                     @if ($this->showColumn('Sequence'))
-                                        <th class="cursor-p">Sequence
+                                        <th>
+                                            <div class="table__header--btn">Sequence</div>
                                         </th>
                                     @endif
 
@@ -445,46 +443,46 @@
                                         @endif
 
                                         <td data-title="Action">
-                                            @if ($editedMediaIndex !== $index)
-                                                <button class="edit"
-                                                    wire:click.prevent="editMedia({{ $index }})">
-                                                    <svg>
-                                                        <path
-                                                            d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
-                                                        </path>
-                                                    </svg>
-                                                </button>
-                                                <button class="delete"
-                                                    wire:click.prevent="confirmItemRemoval({{ $file->id }})">
-                                                    <svg>
-                                                        <circle cx="12" cy="12" r="10">
-                                                        </circle>
-                                                        <line x1="15" y1="9" x2="9"
-                                                            y2="15">
-                                                        </line>
-                                                        <line x1="9" y1="9" x2="15"
-                                                            y2="15">
-                                                        </line>
-                                                    </svg>
-                                                </button>
-                                            @else
-                                                <button class="edit"
-                                                    wire:click.prevent="saveMedia({{ $index }} , {{ $file->id }})">
-                                                    <svg>
-                                                        <polyline points="20 6 9 17 4 12"></polyline>
-                                                    </svg>
-                                                </button>
-                                                <button class="save" wire:click.prevent="cancelMedia()">
-                                                    <svg>
-                                                        <line x1="18" y1="6" x2="6"
-                                                            y2="18">
-                                                        </line>
-                                                        <line x1="6" y1="6" x2="18"
-                                                            y2="18">
-                                                        </line>
-                                                    </svg>
-                                                </button>
-                                            @endif
+                                            <div class="table__buttons">
+
+                                                @if ($editedMediaIndex !== $index)
+                                                    <button class="edit"
+                                                        wire:click.prevent="editMedia({{ $index }})">
+                                                        <svg>
+                                                            <path
+                                                                d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
+                                                            </path>
+                                                        </svg>
+                                                    </button>
+                                                    <button class="delete"
+                                                        wire:click.prevent="confirmItemRemoval({{ $file->id }})">
+                                                        <svg>
+                                                            <polyline points="3 6 5 6 21 6"></polyline>
+                                                            <path
+                                                                d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                                            </path>
+                                                        </svg>
+                                                    </button>
+                                                @else
+                                                    <button class="edit"
+                                                        wire:click.prevent="saveMedia({{ $index }} , {{ $file->id }})">
+                                                        <svg>
+                                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                                        </svg>
+                                                    </button>
+                                                    <button class="save" wire:click.prevent="cancelMedia()">
+                                                        <svg>
+                                                            <line x1="18" y1="6" x2="6"
+                                                                y2="18">
+                                                            </line>
+                                                            <line x1="6" y1="6" x2="18"
+                                                                y2="18">
+                                                            </line>
+                                                        </svg>
+                                                    </button>
+                                                @endif
+                                            </div>
+
                                         </td>
                                     </tr>
                                 @endforeach
