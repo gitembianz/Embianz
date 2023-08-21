@@ -47,7 +47,7 @@
         <h1 class="panel__header--title">
             {{ __('Specifications') }}
         </h1>
-        <input class="panel__header--input" type="text" wire:model.debounce.200ms="search"
+        <input class="panel__header--input" type="text" wire:model.live="search"
             placeholder="Search your price field...">
         <div class="panel__header--bundle">
             <div class="dropdown">

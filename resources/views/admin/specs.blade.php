@@ -5,7 +5,7 @@
 <section class="content">
 
     {{-- Tabel by Livewire start --}}
-    <livewire:specstable />
+    <livewire:specstable lazy />
     {{-- Tabel by Livewire end --}}
 
     <a href="#" class="top-up-btn" id="topUp">

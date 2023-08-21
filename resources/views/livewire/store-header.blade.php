@@ -180,8 +180,8 @@
          </div>
          <div class="search @if ($active) active @endif" id="search">
              <div class="search__content">
-                 <input id="searchInput" wire:model="search" class="search__input" type="text" name="search"
-                     aria-labelledby="searchInput" placeholder="Search...">
+                 <input id="searchInput" wire:model.live="search" class="search__input" type="text"
+                     name="search" aria-labelledby="searchInput" placeholder="Search...">
                  <button type="button" wire:click.prevent="close" id="searchClose"
                      data-tooltip-down="press ESC to close" aria-label="Close Search">
                      <svg aria-hidden="true">

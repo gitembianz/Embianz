@@ -33,7 +33,7 @@
 {{-- Page content start --}}
 <section class="content">
     {{-- livewire tabs --}}
-    <livewire:show-spec itemId="{{ $data->id }}" />
+    <livewire:show-spec itemId="{{ $data->id }}" lazy />
 
     {{-- end livewire tabs --}}
     <a href="#" class="top-up-btn" id="topUp">
