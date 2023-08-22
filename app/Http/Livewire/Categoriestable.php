@@ -23,6 +23,8 @@ class Categoriestable extends Component
   public $catidbeingremoved = null;
   public $columns = ['Id', 'Short Description', 'Sequence', 'Created At'];
   public $selectedColumns = [];
+  public $col = false;
+  public $all = false;
 
   public function render()
   {
@@ -154,7 +156,7 @@ class Categoriestable extends Component
     $this->catidbeingremoved = $id;
     $this->dispatchBrowserEvent('show-delete-modal');
   }
-  public function confirmCategoriesRemovalmultiple()
+  public function confirmItemsRemoval()
   {
     $this->dispatchBrowserEvent('show-delete-modal-multiple');
   }

@@ -207,7 +207,7 @@ class RelatedProductCategory extends Component
   }
   public function getRelatedproductsProperty()
   {
-    return $this->relatedproductsQuery->paginate($this->perPage);
+    return $this->relatedproductsQuery;
   }
   public function getRelatedproductsQueryProperty()
   {
@@ -265,9 +265,7 @@ class RelatedProductCategory extends Component
           $subQuery->where('name', 'LIKE', '%' . $this->search . '%')
             ->orWhere('short_description', 'LIKE', '%' . $this->search . '%');
         });
-      })
-      ->limit($this->perPage)
-      ->get();
+      })->get();
 
     if ($this->showTable === true) {
       return view('livewire.related-product-category', [

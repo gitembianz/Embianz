@@ -70,7 +70,7 @@
 
                                 {{-- Header of the table --}}
                                 <div class="panel__header">
-                                    <h1 class="panel__header--title">
+                                    <h1 class="panel__header--title" id="top">
                                         {{ __('Add related products') }}
                                     </h1>
                                     <input class="panel__header--input" type="text" wire:model.live="searchadd"
@@ -471,66 +471,71 @@
                                             found.</td>
                                     </tr>
                                 @else
-                                    @foreach ($relatedproducts as $product)
-                                        <tr class="@if ($this->isChecked($product->id)) table__row--selected @endif">
-                                            <td data-title="Check">
-                                                <input type="checkbox" value="{{ $product->id }}"
-                                                    wire:model="checked">
-                                            </td>
-
-                                            @if ($this->showColumn('Id'))
-                                                <td data-title="ID">{{ $product->product->id }}</td>
-                                            @endif
-
-                                            @if ($this->showColumn('Name'))
-                                                <td data-title="Name"><a
-                                                        href="/show_product/{{ $product->product->id }}'">{{ $product->product->name }}</a>
+                                    @foreach ($relatedproducts as $index => $product)
+                                        @if ($index < $perPage)
+                                            <tr
+                                                class="@if ($this->isChecked($product->id)) table__row--selected @endif">
+                                                <td data-title="Check">
+                                                    <input type="checkbox" value="{{ $product->id }}"
+                                                        wire:model="checked">
                                                 </td>
-                                            @endif
 
-                                            @if ($this->showColumn('Short Description'))
-                                                <td class="table__description" data-title="Description">
-                                                    {{ $product->product->short_description }}</td>
-                                            @endif
+                                                @if ($this->showColumn('Id'))
+                                                    <td data-title="ID">{{ $product->product->id }}</td>
+                                                @endif
 
-                                            @if ($this->showColumn('Created At'))
-                                                <td data-title="Created At">
-                                                    <div class="table__time">
-                                                        <svg>
-                                                            <circle cx="12" cy="12" r="10">
-                                                            </circle>
-                                                            <polyline points="12 6 12 12 16 14"></polyline>
-                                                        </svg>
-                                                        {{ $product->product->created_at }}
+                                                @if ($this->showColumn('Name'))
+                                                    <td data-title="Name"><a
+                                                            href="/show_product/{{ $product->product->id }}'">{{ $product->product->name }}</a>
+                                                    </td>
+                                                @endif
+
+                                                @if ($this->showColumn('Short Description'))
+                                                    <td class="table__description" data-title="Description">
+                                                        {{ $product->product->short_description }}</td>
+                                                @endif
+
+                                                @if ($this->showColumn('Created At'))
+                                                    <td data-title="Created At">
+                                                        <div class="table__time">
+                                                            <svg>
+                                                                <circle cx="12" cy="12" r="10">
+                                                                </circle>
+                                                                <polyline points="12 6 12 12 16 14"></polyline>
+                                                            </svg>
+                                                            {{ $product->product->created_at }}
+                                                    </td>
+                                                @endif
+
+                                                <td data-title="Action">
+                                                    <div class="table__buttons">
+                                                        <button class="delete"
+                                                            wire:click.prevent="confirmItemRemoval({{ $product->id }})">
+                                                            <svg>
+                                                                <polyline points="3 6 5 6 21 6"></polyline>
+                                                                <path
+                                                                    d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                                                </path>
+                                                            </svg>
+                                                        </button>
+                                                    </div>
                                                 </td>
-                                            @endif
-
-                                            <td data-title="Action">
-                                                <div class="table__buttons">
-                                                    <button class="delete"
-                                                        wire:click.prevent="confirmItemRemoval({{ $product->id }})">
-                                                        <svg>
-                                                            <polyline points="3 6 5 6 21 6"></polyline>
-                                                            <path
-                                                                d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                                            </path>
-                                                        </svg>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @endif
-                            </tbody>
-                        </table>
-                        @if (count($relatedproducts) >= 10)
-                            <div class="table__load-more" wire:click="load">Load more</div>
-                        @endif
-                    @else
-                        <p class="mt-2">No products related</p>
+                                            </tr>
+                                        @else
+                                        @break
+                                    @endif
+                                @endforeach
+                            @endif
+                        </tbody>
+                    </table>
+                    @if (count($relatedproducts) >= 10)
+                        <div class="table__load-more" wire:click="load">Load more</div>
                     @endif
-                </div>
+                @else
+                    <p class="mt-2">No products related</p>
+                @endif
             </div>
-        @endif
-    </div>
+        </div>
+    @endif
+</div>
 </div>

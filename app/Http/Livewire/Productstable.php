@@ -24,6 +24,8 @@ class Productstable extends Component
   public $productidbeingremoved = null;
   public $columns = ['Id', 'Description', 'Created At'];
   public $selectedColumns = [];
+  public $col = false;
+  public $all = false;
 
   public function render()
   {
@@ -163,7 +165,7 @@ class Productstable extends Component
     $this->productidbeingremoved = $productid;
     $this->dispatchBrowserEvent('show-delete-modal');
   }
-  public function confirmProductsRemovalmultiple()
+  public function confirmItemsRemoval()
   {
     $this->dispatchBrowserEvent('show-delete-modal-multiple');
   }

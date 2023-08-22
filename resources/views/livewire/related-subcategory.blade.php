@@ -69,7 +69,7 @@
                             </div>
                             {{-- Header of the table --}}
                             <div class="panel__header">
-                                <h1 class="panel__header--title">
+                                <h1 class="panel__header--title" id="top">
                                     {{ __('Add to Subcategories') }}
                                 </h1>
                                 <input class="panel__header--input" type="text" wire:model.live="searchadd"
@@ -474,64 +474,71 @@
                                             found.</td>
                                     </tr>
                                 @else
-                                    @foreach ($relatedsubcats as $subcat)
-                                        <tr @if ($loop->last) id="last_record" @endif
-                                            class="@if ($this->isChecked($subcat->id)) table__row--selected @endif">
-                                            <td data-title="Check">
-                                                <input type="checkbox" value="{{ $subcat->id }}"
-                                                    wire:model="checked">
-                                            </td>
-
-                                            @if ($this->showColumn('Id'))
-                                                <td data-title="ID">{{ $subcat->id }}</td>
-                                            @endif
-
-                                            @if ($this->showColumn('Name'))
-                                                <td data-title="Name"><a
-                                                        href="/show_category/{{ $subcat->category_id }}'">{{ $subcat->category }}</a>
+                                    @foreach ($relatedsubcats as $index => $subcat)
+                                        @if ($index < $perPage)
+                                            <tr @if ($loop->last) id="last_record" @endif
+                                                class="@if ($this->isChecked($subcat->id)) table__row--selected @endif">
+                                                <td data-title="Check">
+                                                    <input type="checkbox" value="{{ $subcat->id }}"
+                                                        wire:model="checked">
                                                 </td>
-                                            @endif
 
-                                            @if ($this->showColumn('Short Description'))
-                                                <td class="table__description" data-title="Description">
-                                                    {{ $subcat->parrent->short_description }}</td>
-                                            @endif
+                                                @if ($this->showColumn('Id'))
+                                                    <td data-title="ID">{{ $subcat->id }}</td>
+                                                @endif
 
-                                            @if ($this->showColumn('Created At'))
-                                                <td data-title="Created At">
-                                                    <div class="table__time">
-                                                        <svg>
-                                                            <circle cx="12" cy="12" r="10">
-                                                            </circle>
-                                                            <polyline points="12 6 12 12 16 14"></polyline>
-                                                        </svg>
-                                                        {{ $subcat->created_at }}
+                                                @if ($this->showColumn('Name'))
+                                                    <td data-title="Name"><a
+                                                            href="/show_category/{{ $subcat->category_id }}'">{{ $subcat->category }}</a>
+                                                    </td>
+                                                @endif
+
+                                                @if ($this->showColumn('Short Description'))
+                                                    <td class="table__description" data-title="Description">
+                                                        {{ $subcat->parrent->short_description }}</td>
+                                                @endif
+
+                                                @if ($this->showColumn('Created At'))
+                                                    <td data-title="Created At">
+                                                        <div class="table__time">
+                                                            <svg>
+                                                                <circle cx="12" cy="12" r="10">
+                                                                </circle>
+                                                                <polyline points="12 6 12 12 16 14"></polyline>
+                                                            </svg>
+                                                            {{ $subcat->created_at }}
+                                                    </td>
+                                                @endif
+
+                                                <td data-title="Action">
+                                                    <div class="table__buttons">
+                                                        <button class="edit"
+                                                            wire:click.prevent="confirmItemRemoval({{ $subcat->id }})">
+                                                            <svg>
+                                                                <polyline points="3 6 5 6 21 6"></polyline>
+                                                                <path
+                                                                    d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                                                </path>
+                                                            </svg>
+                                                        </button>
+                                                    </div>
                                                 </td>
-                                            @endif
-
-                                            <td data-title="Action">
-                                                <div class="table__buttons">
-                                                    <button class="edit"
-                                                        wire:click.prevent="confirmItemRemoval({{ $subcat->id }})">
-                                                        <svg>
-                                                            <polyline points="3 6 5 6 21 6"></polyline>
-                                                            <path
-                                                                d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                                            </path>
-                                                        </svg>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @endif
-                            </tbody>
-                        </table>
-                    @else
-                        <p class="mt-2">No subcategories related</p>
+                                            </tr>
+                                        @else
+                                        @break
+                                    @endif
+                                @endforeach
+                            @endif
+                        </tbody>
+                    </table>
+                    @if (count($relatedsubcats) >= 10)
+                        <div class="table__load-more" wire:click="load">Load more</div>
                     @endif
-                </div>
+                @else
+                    <p class="mt-2">No subcategories related</p>
+                @endif
             </div>
-        @endif
-    </div>
+        </div>
+    @endif
+</div>
 </div>

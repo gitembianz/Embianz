@@ -480,7 +480,7 @@
                                             @endif
                                             @if ($this->showColumn('Media'))
                                                 <td data-title="Media">
-                                                    @if (in_array($file->type, ['jpg', 'jpeg', 'png', 'gif', 'svg', 'jfif']))
+                                                    @if (in_array($file->type, ['jpg', 'jpeg', 'png', 'gif', 'svg', 'jfif', 'webp']))
                                                         <img src="/{{ $file->path . $file->name }}"
                                                             alt="{{ $file->name }}" width="50">
                                                     @elseif (in_array($file->type, ['mp4', 'mov', 'avi']))
