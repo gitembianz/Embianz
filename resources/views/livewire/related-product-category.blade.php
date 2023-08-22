@@ -542,7 +542,7 @@
                         <div class="table__load-more" wire:click="load">Load more</div>
                     @endif
                 @else
-                    <p class="mt-2">No products related</p>
+                    <p class="mt-2">No records related</p>
                 @endif
             </div>
         </div>
