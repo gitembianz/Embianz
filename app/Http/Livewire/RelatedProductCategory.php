@@ -6,6 +6,7 @@ use App\Models\Product;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Exports\ProductsExport;
+use App\Models\Category;
 use App\Models\Products_categories;
 
 class RelatedProductCategory extends Component
@@ -27,6 +28,7 @@ class RelatedProductCategory extends Component
   public $productidbeingremoved = null;
   public $columns = ['Id', 'Short Description', 'Created At'];
   public $selectedColumns = [];
+  public $category;
 
   //add declaration
   public $searchadd = '';
@@ -205,7 +207,7 @@ class RelatedProductCategory extends Component
   }
   public function getRelatedproductsProperty()
   {
-    return $this->relatedproductsQuery->limit($this->perPage)->get();
+    return $this->relatedproductsQuery->paginate($this->perPage);
   }
   public function getRelatedproductsQueryProperty()
   {
@@ -281,6 +283,7 @@ class RelatedProductCategory extends Component
   public function mount($categoryId)
   {
     $this->categoryId = $categoryId;
+    $this->category = Category::find($categoryId);
     $this->selectedColumns = $this->columns;
     $this->selectedColumnsadd = $this->columnsadd;
   }

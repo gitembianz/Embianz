@@ -26,6 +26,7 @@ class RelatedSubcategory extends Component
   public $subcatidbeingremoved = null;
   public $columns = ['Id', 'Short Description', 'Created At'];
   public $selectedColumns = [];
+  public $category;
 
   //add declaration
   public $searchadd = '';
@@ -287,6 +288,7 @@ class RelatedSubcategory extends Component
   public function mount($categoryId)
   {
     $this->categoryId = $categoryId;
+    $this->category = Category::find($categoryId);
     $this->selectedColumns = $this->columns;
     $this->selectedColumnsadd = $this->columnsadd;
   }
