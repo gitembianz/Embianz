@@ -188,58 +188,67 @@
                                 </thead>
 
                                 <tbody>
-                                    @foreach ($categories as $category)
-                                        <tr @if ($loop->last) id="last_record" @endif
-                                            class="@if ($this->isCheckedadd($category->id)) table__row--selected @endif">
-                                            <td data-title="Check">
-                                                <input type="checkbox" value="{{ $category->id }}"
-                                                    wire:model="checkedadd">
-                                            </td>
 
-                                            @if ($this->showColumnadd('Id'))
-                                                <td data-title="ID">{{ $category->id }}</td>
-                                            @endif
-
-                                            @if ($this->showColumnadd('Name'))
-                                                <td data-title="Name"><a
-                                                        href="/show_product/{{ $category->id }}'">{{ $category->name }}</a>
+                                    @if ($categories->count() > 0)
+                                        @foreach ($categories as $category)
+                                            <tr @if ($loop->last) id="last_record" @endif
+                                                class="@if ($this->isCheckedadd($category->id)) table__row--selected @endif">
+                                                <td data-title="Check">
+                                                    <input type="checkbox" value="{{ $category->id }}"
+                                                        wire:model="checkedadd">
                                                 </td>
-                                            @endif
 
-                                            @if ($this->showColumnadd('Short Description'))
-                                                <td class="table__description" data-title="Description">
-                                                    {{ $category->short_description }}</td>
-                                            @endif
+                                                @if ($this->showColumnadd('Id'))
+                                                    <td data-title="ID">{{ $category->id }}</td>
+                                                @endif
 
-                                            @if ($this->showColumnadd('Created At'))
-                                                <td data-title="Created At">
-                                                    <div class="table__time">
-                                                        <svg>
-                                                            <circle cx="12" cy="12" r="10">
-                                                            </circle>
-                                                            <polyline points="12 6 12 12 16 14"></polyline>
-                                                        </svg>
-                                                        {{ $category->created_at }}
+                                                @if ($this->showColumnadd('Name'))
+                                                    <td data-title="Name"><a
+                                                            href="/show_product/{{ $category->id }}'">{{ $category->name }}</a>
+                                                    </td>
+                                                @endif
+
+                                                @if ($this->showColumnadd('Short Description'))
+                                                    <td class="table__description" data-title="Description">
+                                                        {{ $category->short_description }}</td>
+                                                @endif
+
+                                                @if ($this->showColumnadd('Created At'))
+                                                    <td data-title="Created At">
+                                                        <div class="table__time">
+                                                            <svg>
+                                                                <circle cx="12" cy="12" r="10">
+                                                                </circle>
+                                                                <polyline points="12 6 12 12 16 14"></polyline>
+                                                            </svg>
+                                                            {{ $category->created_at }}
+                                                    </td>
+                                                @endif
+
+                                                <td data-title="Action">
+                                                    <div class="table__buttons">
+                                                        <button class="edit"
+                                                            wire:click.prevent="confirmitemlink({{ $category->id }})">
+                                                            <svg>
+                                                                <path
+                                                                    d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71">
+                                                                </path>
+                                                                <path
+                                                                    d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71">
+                                                                </path>
+                                                            </svg>
+                                                        </button>
+                                                    </div>
                                                 </td>
-                                            @endif
-
-                                            <td data-title="Action">
-                                                <div class="table__buttons">
-                                                    <button class="edit"
-                                                        wire:click.prevent="confirmitemlink({{ $category->id }})">
-                                                        <svg>
-                                                            <path
-                                                                d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71">
-                                                            </path>
-                                                            <path
-                                                                d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71">
-                                                            </path>
-                                                        </svg>
-                                                    </button>
-                                                </div>
-                                            </td>
+                                            </tr>
+                                        @endforeach
+                                    @else
+                                        <tr>
+                                            <td class="table__empty" colspan="{{ count($columns) + 3 }}">No record
+                                                found.</td>
                                         </tr>
-                                    @endforeach
+                                    @endif
+
                                 </tbody>
 
                                 <script>
