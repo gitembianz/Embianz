@@ -29,6 +29,7 @@
       color: white;
       border-radius: 5px;
       font-size: 1rem;
+      cursor: pointer;
 
       &.delete {
         background: $alertColor;
