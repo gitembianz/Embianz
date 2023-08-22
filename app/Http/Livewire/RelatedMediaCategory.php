@@ -213,7 +213,7 @@ class RelatedMediaCategory extends Component
   public function save()
   {
     $this->validate([
-      'medias.*' => 'mimetypes:image/jpeg,image/png,image/svg+xml,video/mp4,video/quicktime|max:10240', // Max 10MB for all files
+      'medias.*' => 'mimetypes:image/jpeg,image/png,image/webp,image/svg+xml,video/mp4,video/quicktime|max:10240', // Max 10MB for all files
     ]);
     $productType = class_basename(get_class($this->category));
     $filespath = 'media/' . $productType . '/';

@@ -53,35 +53,41 @@
         <input class="panel__header--input" type="text" wire:model.live="search" placeholder="Search...">
         <div class="panel__header--bundle">
             <div class="dropdown">
-                <button class="dropdown-button">Columns
+                <button class="dropdown-button"
+                    wire:click.prevent="@if ($col === false) $set('col', true) @else $set('col', false) @endif">Columns
                     <svg>
                         <polyline points="6 9 12 15 18 9"></polyline>
                     </svg>
                 </button>
-                <div class="dropdown-list">
-                    @foreach ($columns as $column)
-                        <div class="dropdown-item">
-                            <input type="checkbox" wire:model="selectedColumns" value="{{ $column }}"
-                                {{ in_array($column, $selectedColumns) ? 'checked' : '' }}>
-                            <label>{{ $column }}</label>
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-            <div class="dropdown none" @if ($checked) style="display: unset" @endif>
-                <button class="dropdown-button none" @if ($checked) style="display: flex" @endif>
-                    Checked {{ count($checked) }}</button>
-                @if ($checked)
-                    <div class="dropdown-list">
-                        <button class="dropdown-item delete" style="width: 150px" type="button"
-                            wire:click="confirmCategoriesRemovalmultiple()">
-                            Delete
-                        </button>
-                        <button class="dropdown-item submit" style="width: 150px" type="button"
-                            wire:click="exportSelected()">
-                            Export
-                        </button>
+                @if ($col)
+
+                    <div class="dropdown-list" style="display: flex;">
+                        @foreach ($columns as $column)
+                            <div class="dropdown-item">
+                                <input type="checkbox" wire:model="selectedColumns" value="{{ $column }}"
+                                    {{ in_array($column, $selectedColumns) ? 'checked' : '' }}>
+                                <label>{{ $column }}</label>
+                            </div>
+                        @endforeach
                     </div>
+                @endif
+            </div>
+            <div class="dropdown none" @if ($checked) style="display: unset; z-index: 5;" @endif>
+                <button
+                    wire:click.prevent="@if ($all === false) $set('all', true); $set('col', false) @else $set('all', false) @endif"
+                    class="dropdown-button none" @if ($checked) style="display: flex" @endif>With
+                    Checked({{ count($checked) }})</button>
+                @if ($checked)
+                    @if ($all)
+                        <div class="dropdown-list" style="display: flex;">
+                            <button class="dropdown-item delete" type="button" wire:click="confirmItemsRemoval()">
+                                Delete
+                            </button>
+                            <button class="dropdown-item submit" type="button" wire:click="exportSelected()">
+                                Export
+                            </button>
+                        </div>
+                    @endif
                 @endif
             </div>
             <a class="panel__header--button" wire:click="$refresh">
