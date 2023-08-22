@@ -35,7 +35,6 @@ class ProductController extends Controller
     //add product details
     $newproduct = new Product;
     $newproduct->name = $request->product_name;
-    $newproduct->product_status = $request->status;
     $newproduct->long_description = $request->long_description;
     $newproduct->short_description = $request->short_description;
     $newproduct->quantity = $request->quantity;
@@ -52,84 +51,86 @@ class ProductController extends Controller
     }
     $newproduct->save();
 
-    //get location/sequences/size/files from image component
-    $locations = $request->input('file_location');
-    $sequences = $request->input('file_sequence');
-    $size = $request->input('file_size');
-    $files = $request->file('media');
-    $productType = class_basename(get_class($newproduct));
-    $filespath = 'media/' . $productType . '/';
-    //Verifi it is a folder name 'Products' in general 'media' folders
-    if (!File::exists($filespath)) {
-      File::makeDirectory($filespath, 0755, true);
-    }
+    // //get location/sequences/size/files from image component
+    // $locations = $request->input('file_location');
+    // $sequences = $request->input('file_sequence');
+    // $size = $request->input('file_size');
+    // $files = $request->file('media');
+    // $productType = class_basename(get_class($newproduct));
+    // $filespath = 'media/' . $productType . '/';
+    // //Verifi it is a folder name 'Products' in general 'media' folders
+    // if (!File::exists($filespath)) {
+    //   File::makeDirectory($filespath, 0755, true);
+    // }
 
-    if ($files) {
-      //verify and create a folder with product id name
-      if (!File::exists($filespath . "$newproduct->id")) {
-        File::makeDirectory($filespath . "$newproduct->id", 0755, true);
-        $path = $filespath . "$newproduct->id" . "/";
-      }
-      $i = 0;
-      foreach ($files as $file) {
-        $media = new Media();
-        //verify the type of media
-        $type = $file->getClientOriginalExtension();
-        if ($type === "svg") {
-          $svg = simplexml_load_file($file);
-          $attributes = $svg->attributes();
-          $width = (float) $attributes->width;
-          $height = (float) $attributes->height;
-        } elseif ($type === "mp4" || $type === " ogg") {
-          $getID3 = new getID3;
-          $fileinfo = $getID3->analyze($file);
-          $width = $fileinfo['video']['resolution_x'];
-          $height = $fileinfo['video']['resolution_y'];
-        } else {
-          $image = Image::make($file);
-          $width = $image->width();
-          $height = $image->height();
-        }
-        //save the path and the name
-        $media->item_id = $newproduct->id;
-        $media->path = $path;
-        $filename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-        $media->name = $filename . '.' . $type;
-        // Verify if media name exist
-        if (file_exists($path . $media->name)) {
-          $i = 1;
-          while (file_exists($path . $filename . '(' . $i . ').' . $type)) {
-            $i++;
-          }
-          $media->name = $filename . '(' . $i . ').' . $type;
-        }
+    // if ($files) {
+    //   //verify and create a folder with product id name
+    //   if (!File::exists($filespath . "$newproduct->id")) {
+    //     File::makeDirectory($filespath . "$newproduct->id", 0755, true);
+    //     $path = $filespath . "$newproduct->id" . "/";
+    //   }
+    //   $i = 0;
+    //   foreach ($files as $file) {
+    //     $media = new Media();
+    //     //verify the type of media
+    //     $type = $file->getClientOriginalExtension();
+    //     if ($type === "svg") {
+    //       $svg = simplexml_load_file($file);
+    //       $attributes = $svg->attributes();
+    //       $width = (float) $attributes->width;
+    //       $height = (float) $attributes->height;
+    //     } elseif ($type === "mp4" || $type === " ogg") {
+    //       $getID3 = new getID3;
+    //       $fileinfo = $getID3->analyze($file);
+    //       $width = $fileinfo['video']['resolution_x'];
+    //       $height = $fileinfo['video']['resolution_y'];
+    //     } else {
+    //       $image = Image::make($file);
+    //       $width = $image->width();
+    //       $height = $image->height();
+    //     }
+    //     //save the path and the name
+    //     $media->item_id = $newproduct->id;
+    //     $media->path = $path;
+    //     $filename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+    //     $media->name = $filename . '.' . $type;
+    //     // Verify if media name exist
+    //     if (file_exists($path . $media->name)) {
+    //       $i = 1;
+    //       while (file_exists($path . $filename . '(' . $i . ').' . $type)) {
+    //         $i++;
+    //       }
+    //       $media->name = $filename . '(' . $i . ').' . $type;
+    //     }
 
-        //store the media
-        $file->move($path, $media->name);
-        $media->sequence =  $sequences[$i];
-        $media->tabel_id = Tabels::where('name', $productType)->first()->id;
-        if ($locations[$i] != NULL) {
-          $media->location_id = MediaLocation::where('location', $locations[$i])->first()->id;
-        } else {
-          $media->location_id = NULL;
-        }
-        $media->type = $type;
-        $media->width = $width;
-        $media->external = false;
-        $media->height =  $height;
-        $media->size = $size[$i];
-        $media->createdby = Auth::user()->name;
-        $media->lastmodifiedby = Auth::user()->name;
-        $media->save();
-        $newproduct->media()->attach($media->id);
-        $i += 1;
-      }
-    }
+    //     //store the media
+    //     $file->move($path, $media->name);
+    //     $media->sequence =  $sequences[$i];
+    //     $media->tabel_id = Tabels::where('name', $productType)->first()->id;
+    //     if ($locations[$i] != NULL) {
+    //       $media->location_id = MediaLocation::where('location', $locations[$i])->first()->id;
+    //     } else {
+    //       $media->location_id = NULL;
+    //     }
+    //     $media->type = $type;
+    //     $media->width = $width;
+    //     $media->external = false;
+    //     $media->height =  $height;
+    //     $media->size = $size[$i];
+    //     $media->createdby = Auth::user()->name;
+    //     $media->lastmodifiedby = Auth::user()->name;
+    //     $media->save();
+    //     $newproduct->media()->attach($media->id);
+    //     $i += 1;
+    //   }
+    // }
 
     return redirect()->back()->with([
-      'message' => 'Product Added Succesfully!',
-      'item_name' => $newproduct->name,
-      'item_id' => $newproduct->id,
+      'notification' => [
+        'message' => 'Reccord add succesfully!',
+        'type' => 'success',
+        'title' => 'Success'
+      ],
     ]);
   }
   public function show($id)

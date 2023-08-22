@@ -87,6 +87,12 @@ class RelatedMediaCategory extends Component
     array_splice($this->file_link, $i, 1);
     array_splice($this->file_name, $i, 1);
     $this->row--;
+    if ($this->row < 1) {
+      $this->externalmedia = false;
+      $this->file_sequences = [];
+      $this->file_link = [];
+      $this->file_name = [];
+    }
   }
   public function saveexternal()
   {
@@ -130,10 +136,8 @@ class RelatedMediaCategory extends Component
       $index . '.sequence' => $media->sequence,
     ];
   }
-
   public function cancel()
   {
-
     $this->medias = [];
     $this->file_sequences = ['0'];
     $this->file_locations = ['1'];
@@ -340,7 +344,6 @@ class RelatedMediaCategory extends Component
     $this->selectAll = true;
     $this->checked = $this->category->media()->pluck('media.id')->map(fn ($item) => (string) $item)->toArray();
   }
-
   public function isChecked($id)
   {
     return in_array($id, $this->checked);
