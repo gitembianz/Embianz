@@ -736,6 +736,7 @@ class ComposerStaticInitdbceb679be78fc0f2f620fcaf24d3e3e
         'App\\View\\Components\\Dashboardsidebar' => __DIR__ . '/../..' . '/app/View/Components/Dashboardsidebar.php',
         'App\\View\\Components\\GuestLayout' => __DIR__ . '/../..' . '/app/View/Components/GuestLayout.php',
         'App\\View\\Components\\Loading' => __DIR__ . '/../..' . '/app/View/Components/Loading.php',
+        'App\\View\\Components\\Modals' => __DIR__ . '/../..' . '/app/View/Components/Modals.php',
         'App\\View\\Components\\Store-footer' => __DIR__ . '/../..' . '/app/View/Components/Store-footer.php',
         'App\\View\\Components\\Store-head' => __DIR__ . '/../..' . '/app/View/Components/Store-head.php',
         'App\\View\\Components\\Store-header' => __DIR__ . '/../..' . '/app/View/Components/Store-header.php',

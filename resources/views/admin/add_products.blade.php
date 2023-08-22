@@ -1,34 +1,6 @@
 <x-dashboardheader />
 <x-dashboardnavbar />
-{{-- Display session message --}}
-{{-- @if (session()->has('message') && session()->has('item_name') && session()->has('item_id'))
-    <div class="alert__session" id="alertevent">
-        <Span class="alert__session-text">{!! session('message') !!} , click for view - <a
-                href="{{ route('show_product', ['id' => session('item_id')]) }}">{{ session('item_name') }}</a></Span>
-        <button class="alert__session-btn" type="button"
-            onclick="document.getElementById('alertevent').style.display='none'" data-bs-dismiss="alert"
-            aria-hidden="true">
-            <svg>
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
-        </button>
-    </div>
-    <script>
-        const alertEvent = document.getElementById("alertevent");
-        header.style.marginBottom = '4rem';
-        alertEvent.style.opacity = '1';
-
-        setTimeout(function() {
-            alertEvent.style.opacity = '0';
-            setTimeout(function() {
-                alertEvent.remove();
-                header.style.marginBottom = '0';
-            }, 500);
-        }, 2000);
-    </script>
-@endif --}}
-{{-- End Section session message --}}
+<x-alert />
 <x-dashboardsidebar />
 
 {{-- Page content start --}}
@@ -96,18 +68,7 @@
                 <input type="number" min="0" name="popularity" required>
                 <label>Popularity</label>
             </div>
-            <div class="item__form-input item__form-long">
-                <select id="select-category" name="status">
-                    <?php
-                    $status = ['active', 'inactive', 'low stock'];
-                    ?>
-                    <option value="" selected="">Select a status</option>
-                    @foreach ($status as $status_name)
-                        <option value="{{ $status_name }}">{{ $status_name }}</option>
-                    @endforeach
-                </select>
-                <label>Product Status</label>
-            </div>
+
             <div class="item__form-input item__form-long">
                 <input type="text" name="short_description" required>
                 <label>Product Short Description</label>
@@ -132,6 +93,6 @@
 </section>
 {{-- page content end --}}
 <x-dashboardright />
-<x-dashboardmediahanddler />
+{{-- <x-dashboardmediahanddler /> --}}
 <x-dashboardscript />
 <x-dashboardfooter />

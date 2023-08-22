@@ -50,8 +50,7 @@
         <h1 class="panel__header--title">
             {{ __('Products') }}
         </h1>
-        <input class="panel__header--input" type="text" wire:model.live="search"
-            placeholder="Search your product...">
+        <input class="panel__header--input" type="text" wire:model.live="search" placeholder="Search...">
         <div class="panel__header--bundle">
             <div class="dropdown">
                 <button class="dropdown-button">Columns
@@ -151,7 +150,7 @@
                         </button>
                     </th>
                 @endif
-                @if ($this->showColumn('Short Description'))
+                @if ($this->showColumn('Description'))
                     <th wire:click="sortBy('short_description')">
                         <button class="table__header--btn"
                             @if ($orderBy === 'short_description' && $orderAsc === '1') data-symbol="up"
@@ -211,7 +210,7 @@
                         </td>
                     @endif
 
-                    @if ($this->showColumn('Short Description'))
+                    @if ($this->showColumn('Description'))
                         <td class="table__description" data-title="Description">
                             {{ $product->short_description }}</td>
                     @endif
