@@ -108,6 +108,7 @@ return array(
     'App\\View\\Components\\Dashboardsidebar' => $baseDir . '/app/View/Components/Dashboardsidebar.php',
     'App\\View\\Components\\GuestLayout' => $baseDir . '/app/View/Components/GuestLayout.php',
     'App\\View\\Components\\Loading' => $baseDir . '/app/View/Components/Loading.php',
+    'App\\View\\Components\\Modals' => $baseDir . '/app/View/Components/Modals.php',
     'App\\View\\Components\\Store-footer' => $baseDir . '/app/View/Components/Store-footer.php',
     'App\\View\\Components\\Store-head' => $baseDir . '/app/View/Components/Store-head.php',
     'App\\View\\Components\\Store-header' => $baseDir . '/app/View/Components/Store-header.php',
