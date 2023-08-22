@@ -210,7 +210,7 @@
                     @if ($editcategory != null)
                         <button class="item__form-btn item__form-long" wire:click.prevent="savecategory()"
                             value="Save">
-                            Save edited details
+                            Save
                         </button>
                     @endif
                 </div>

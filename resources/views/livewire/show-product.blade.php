@@ -27,10 +27,17 @@
                     </svg>
                 </button>
             @else
-                <button class="item__header-btn edit" type="button" wire:click.prevent="saveproduct()" value="Save"
-                    data-tooltip-center="Save this changes">Save</button>
-                <button class="item__header-btn edit" type="button" wire:click.prevent="cancelproduct()" value="Cancel"
-                    data-tooltip-center="Cancel this changes">Cancel</button>
+                <button class="item__header-btn" type="button" wire:click.prevent="saveproduct()" value="Save"
+                    data-tooltip-center="Save this changes"><svg>
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg></button>
+                <button class="item__header-btn" type="button" wire:click.prevent="cancelproduct()" value="Cancel"
+                    data-tooltip-center="Cancel this changes"><svg>
+                        <line x1="18" y1="6" x2="6" y2="18">
+                        </line>
+                        <line x1="6" y1="6" x2="18" y2="18">
+                        </line>
+                    </svg></button>
             @endif
             {{-- <input wire:click.prevent="confirmProductRemoval({{ $product->id }})" class="item__header-btn delete"
                 type="button" value="Delete" name="delete"> --}}
@@ -217,7 +224,7 @@
                     @if ($editproduct != null)
                         <button class="item__form-btn item__form-long" wire:click.prevent="saveproduct()"
                             value="Save">
-                            Save edited details
+                            Save
                         </button>
                     @endif
                 </div>

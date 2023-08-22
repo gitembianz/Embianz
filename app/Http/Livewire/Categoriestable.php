@@ -23,6 +23,8 @@ class Categoriestable extends Component
   public $catidbeingremoved = null;
   public $columns = ['Id', 'Short Description', 'Sequence', 'Created At'];
   public $selectedColumns = [];
+  public $col = false;
+  public $all = false;
 
   public function render()
   {
@@ -92,9 +94,11 @@ class Categoriestable extends Component
     foreach ($categories as $category) {
       $id = $category->id;
       $cattodel = Category::find($id);
-      $productcat = Products_categories::where('category_id', $id)->first();
+      $productcat = Products_categories::where('category_id', $id)->get();
       if ($productcat != NULL) {
-        $productcat->delete();
+        foreach ($productcat as $pro) {
+          $pro->delete();
+        }
       }
       $subcategories = Subcategory::where('parrent_id', $id)->get();
       if ($subcategories != NULL) {
@@ -152,7 +156,7 @@ class Categoriestable extends Component
     $this->catidbeingremoved = $id;
     $this->dispatchBrowserEvent('show-delete-modal');
   }
-  public function confirmCategoriesRemovalmultiple()
+  public function confirmItemsRemoval()
   {
     $this->dispatchBrowserEvent('show-delete-modal-multiple');
   }
