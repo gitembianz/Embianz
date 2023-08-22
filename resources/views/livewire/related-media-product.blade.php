@@ -26,10 +26,10 @@
                 </h1>
                 <input id="imgUpload" accept="image/*,video/*" type="file" multiple wire:model="medias"
                     style="display: none">
-                <label class="item__upload-btn" for="imgUpload">
+                <label class="modal-content-btn edit" style="color: black" for="imgUpload">
                     Local
                 </label>
-                <input class="modal-content-btn save" wire:click="external" type="button" value="External">
+                <input class="modal-content-btn" wire:click="external" type="button" value="External">
 
                 <span class="modal-content-btn delete"
                     onclick="document.getElementById('uploadmedia').style.display='none'">
@@ -49,142 +49,67 @@
                     <form wire:submit.prevent="save">
                         <div class="modal" id="modalelements" style="display: block">
                             <div class="modal-content modal--tabel">
-                                <div class="item" style="width: 100%">
+                                <div class="panel__header">
+                                    <h1 class="panel__header--title">
+                                        {{ __('Add local media') }}
+                                    </h1>
+                                    <input type="submit" class="panel__header--input" value="Save Media">
 
-                                    <input type="submit" id="add_media_related" class="item__form-btn item__form-long"
-                                        value="Save Media">
-                                    <div class="table-scroll wid-10">
-
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-
-                                                    <th>Media</th>
-                                                    <th>Name</th>
-                                                    <th>Size</th>
-                                                    <th>Type</th>
-                                                    <th>Sequence</th>
-                                                    <th>Location</th>
-                                                    <th>Action</th>
-
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($medias as $media)
-                                                    <tr>
-                                                        <td>
-                                                            @if (str_starts_with($media->getMimeType(), 'image'))
-                                                                <img src="{{ $media->temporaryUrl() }}" width="50px">
-                                                            @elseif (str_starts_with($media->getMimeType(), 'video'))
-                                                                <video width="100px" controls>
-                                                                    <source src="{{ $media->temporaryUrl() }}"
-                                                                        type="{{ $media->getMimeType() }}">
-                                                                    <span>{{ __('Your browser not suport video tag') }}</span>
-                                                                </video>
-                                                            @endif
-                                                        </td>
-                                                        <td>{{ $media->getClientOriginalName() }}</td>
-                                                        <td>{{ $media->getSize() }} KB</td>
-                                                        <td>{{ $media->getClientOriginalExtension() }}</td>
-                                                        <td><input type="number" placeholder="Media sequence"
-                                                                min="0" required
-                                                                wire:model="file_sequences.{{ $loop->index }}"></td>
-                                                        <td>
-                                                            <select required
-                                                                wire:model="file_locations.{{ $loop->index }}">
-
-                                                                @php
-                                                                    $firstLocation = $locations->first();
-                                                                @endphp
-                                                                <option value="{{ $firstLocation->id }}" selected>
-                                                                    {{ $firstLocation->location }}</option>
-                                                                @foreach ($locations as $index => $location)
-                                                                    @if ($loop->first)
-                                                                        @continue
-                                                                    @endif
-                                                                    <option value="{{ $location->id }}">
-                                                                        {{ $location->location }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </td>
-                                                        <td><button class="delete"
-                                                                wire:click.prevent="removemedia({{ $loop->index }})">
-                                                                <svg>
-                                                                    <circle cx="12" cy="12"
-                                                                        r="10">
-                                                                    </circle>
-                                                                    <line x1="15" y1="9" x2="9"
-                                                                        y2="15">
-                                                                    </line>
-                                                                    <line x1="9" y1="9" x2="15"
-                                                                        y2="15">
-                                                                    </line>
-                                                                </svg>
-                                                            </button></td>
-                                                    </tr>
-                                                @endforeach
-
-                                            </tbody>
-                                        </table>
-                                    </div>
                                 </div>
-                            </div>
-                            <span class="top-up-modal delete" style="" wire:click="cancel">
+                                <div class="table-scroll wid-10">
 
-                                <svg>
-                                    <line x1="18" y1="6" x2="6" y2="18">
-                                    </line>
-                                    <line x1="6" y1="6" x2="18" y2="18">
-                                    </line>
-                                </svg>
-                            </span>
-                            <a href="#cancelbutton" class="top-up-modal" id="topUp">
-                                <svg>
-                                    <polyline points="18 15 12 9 6 15"></polyline>
-                                </svg>
-                            </a>
-                        </div>
-                    </form>
-                @endif
-                @if ($externalmedia)
-                    <form wire:submit.prevent="saveexternal">
-                        <div class="modal" id="modalelements" style="display: block">
-                            <div class="modal-content"
-                                style="margin: 0 auto; width:80%; top: 50%; transform: translateY(-50%); display: flex; height: 98vh; overflow-y: auto; align-items: flex-start">
-                                <div class="item" style="width: 100%">
-                                    <p id="top1"></p>
-                                    <input type="submit" id="add_media_related" class="item__form-btn"
-                                        value="Save Media">
-                                    <table class="table-external">
+                                    <table class="table">
                                         <thead>
                                             <tr>
-                                                <th>Name</th>
-                                                <th>Link</th>
-                                                <th>Sequence</th>
-                                                <th>Location</th>
-                                                <th>Action</th>
+
+                                                <th>
+                                                    <div class="table__header--btn">Media</div>
+                                                </th>
+                                                <th>
+                                                    <div class="table__header--btn">Name</div>
+                                                </th>
+                                                <th>
+                                                    <div class="table__header--btn">Size</div>
+                                                </th>
+                                                <th>
+                                                    <div class="table__header--btn">Type</div>
+                                                </th>
+                                                <th>
+                                                    <div class="table__header--btn">Sequence</div>
+                                                </th>
+                                                <th>
+                                                    <div class="table__header--btn">Location</div>
+                                                </th>
+                                                <th>
+                                                    <div class="table__header--btn float-r">Action</div>
+                                                </th>
 
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @for ($i = 1; $i <= $row; $i++)
+                                            @foreach ($medias as $media)
                                                 <tr>
                                                     <td>
-                                                        <input required type="text"
-                                                            wire:model="file_name.{{ $i }}">
+                                                        @if (str_starts_with($media->getMimeType(), 'image'))
+                                                            <img src="{{ $media->temporaryUrl() }}" width="50px">
+                                                        @elseif (str_starts_with($media->getMimeType(), 'video'))
+                                                            <video width="100px" controls>
+                                                                <source src="{{ $media->temporaryUrl() }}"
+                                                                    type="{{ $media->getMimeType() }}">
+                                                                <span>{{ __('Your browser not suport video tag') }}</span>
+                                                            </video>
+                                                        @endif
                                                     </td>
+                                                    <td>{{ $media->getClientOriginalName() }}</td>
+                                                    <td>{{ $media->getSize() }} KB</td>
+                                                    <td>{{ $media->getClientOriginalExtension() }}</td>
+                                                    <td><input type="number" class="table__edit"
+                                                            placeholder="Media sequence" min="0" required
+                                                            wire:model="file_sequences.{{ $loop->index }}"></td>
                                                     <td>
-                                                        <input required type="url"
-                                                            wire:model="file_link.{{ $i }}">
-                                                    </td>
-                                                    <td>
-                                                        <input required type="number" min="0"
-                                                            wire:model="file_sequences.{{ $i }}">
+                                                        <select required class="table__edit"
+                                                            wire:model="file_locations.{{ $loop->index }}">
 
-                                                    </td>
-                                                    <td>
-                                                        <select required
-                                                            wire:model="file_locations.{{ $i }}">
                                                             @php
                                                                 $firstLocation = $locations->first();
                                                             @endphp
@@ -200,50 +125,161 @@
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <div class="display-f jus-c">
-                                                            @if ($i == $row)
-                                                                <button type="button" class="edit"
-                                                                    wire:click="plus">
-                                                                    <svg>
-                                                                        <line x1="12" y1="5"
-                                                                            x2="12" y2="19">
-                                                                        </line>
-                                                                        <line x1="5" y1="12"
-                                                                            x2="19" y2="12">
-                                                                        </line>
-                                                                    </svg>
-                                                                </button>
-                                                            @endif
-                                                            @if ($i != $row)
-                                                                <button type="button" class="save"
-                                                                    wire:click="clear({{ $i }})">
-                                                                    <svg>
-                                                                        <line x1="18" y1="6"
-                                                                            x2="6" y2="18">
-                                                                        </line>
-                                                                        <line x1="6" y1="6"
-                                                                            x2="18" y2="18">
-                                                                        </line>
-                                                                    </svg>
-                                                                </button>
-                                                            @endif
+                                                        <div class="table__buttons"><button class="edit"
+                                                                wire:click.prevent="removemedia({{ $loop->index }})">
+                                                                <svg>
+                                                                    <polyline points="3 6 5 6 21 6"></polyline>
+                                                                    <path
+                                                                        d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                                                    </path>
+                                                                </svg>
+                                                            </button>
                                                         </div>
                                                     </td>
                                                 </tr>
-                                            @endfor
+                                            @endforeach
+
                                         </tbody>
                                     </table>
                                 </div>
+                                <span class="top-up-modal delete" id="cancelbutton"
+                                    style="position: fixed; right: 0; top: 0; width: 2.5rem; height: 2.5rem;"
+                                    wire:click="cancel">
+                                    <svg>
+                                        <line x1="18" y1="6" x2="6" y2="18">
+                                        </line>
+                                        <line x1="6" y1="6" x2="18" y2="18">
+                                        </line>
+                                    </svg>
+                                </span>
                             </div>
-                            <span class="top-up-modal delete" style="right: 5%" wire:click="clearall">
-
+                            <a href="#cancelbutton" class="top-up-modal" id="topUp">
                                 <svg>
-                                    <line x1="18" y1="6" x2="6" y2="18">
-                                    </line>
-                                    <line x1="6" y1="6" x2="18" y2="18">
-                                    </line>
+                                    <polyline points="18 15 12 9 6 15"></polyline>
                                 </svg>
-                            </span>
+                            </a>
+                        </div>
+                    </form>
+                @endif
+                @if ($externalmedia)
+                    <form wire:submit.prevent="saveexternal">
+                        <div class="modal" style="display: block">
+                            <div class="modal-content modal--tabel">
+                                <div class="panel__header">
+                                    <h1 class="panel__header--title" id="top1">
+                                        {{ __('Add external media') }}
+                                    </h1>
+                                    <input type="submit" class="panel__header--input" value="Save Media">
+                                </div>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                <div class="table__header--btn">Name</div>
+                                            </th>
+
+                                            <th>
+                                                <div class="table__header--btn">Sequence</div>
+                                            </th>
+                                            <th>
+                                                <div class="table__header--btn">Link</div>
+                                            </th>
+                                            <th>
+                                                <div class="table__header--btn">Location</div>
+                                            </th>
+                                            <th></th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for ($i = 1; $i <= $row; $i++)
+                                            <tr>
+                                                <td>
+                                                    <input required type="text" class="table__edit"
+                                                        wire:model="file_name.{{ $i }}">
+                                                </td>
+
+                                                <td>
+                                                    <input required type="number" min="0" class="table__edit"
+                                                        wire:model="file_sequences.{{ $i }}">
+
+                                                </td>
+                                                <td>
+                                                    <input required type="url" class="table__edit"
+                                                        wire:model="file_link.{{ $i }}">
+                                                </td>
+                                                <td>
+                                                    <select required wire:model="file_locations.{{ $i }}"
+                                                        class="table__edit">
+                                                        @php
+                                                            $firstLocation = $locations->first();
+                                                        @endphp
+                                                        <option value="{{ $firstLocation->id }}" selected>
+                                                            {{ $firstLocation->location }}</option>
+                                                        @foreach ($locations as $index => $location)
+                                                            @if ($loop->first)
+                                                                @continue
+                                                            @endif
+                                                            <option value="{{ $location->id }}">
+                                                                {{ $location->location }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <div class="table__buttons">
+                                                        @if ($i == $row)
+                                                            <button type="button" class="edit" wire:click="plus">
+                                                                <svg>
+                                                                    <line x1="12" y1="5"
+                                                                        x2="12" y2="19">
+                                                                    </line>
+                                                                    <line x1="5" y1="12"
+                                                                        x2="19" y2="12">
+                                                                    </line>
+                                                                </svg>
+                                                            </button>
+                                                            <button type="button" class="save"
+                                                                wire:click="clear({{ $i }})">
+                                                                <svg>
+                                                                    <line x1="18" y1="6"
+                                                                        x2="6" y2="18">
+                                                                    </line>
+                                                                    <line x1="6" y1="6"
+                                                                        x2="18" y2="18">
+                                                                    </line>
+                                                                </svg>
+                                                            </button>
+                                                        @endif
+                                                        @if ($i != $row)
+                                                            <button type="button" class="save"
+                                                                wire:click="clear({{ $i }})">
+                                                                <svg>
+                                                                    <line x1="18" y1="6"
+                                                                        x2="6" y2="18">
+                                                                    </line>
+                                                                    <line x1="6" y1="6"
+                                                                        x2="18" y2="18">
+                                                                    </line>
+                                                                </svg>
+                                                            </button>
+                                                        @endif
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endfor
+                                    </tbody>
+                                </table>
+                                <span class="top-up-modal delete"
+                                    style="position: fixed; right: 0; top: 0; width: 2.5rem; height: 2.5rem;"
+                                    wire:click="clearall">
+                                    <svg>
+                                        <line x1="18" y1="6" x2="6" y2="18">
+                                        </line>
+                                        <line x1="6" y1="6" x2="18" y2="18">
+                                        </line>
+                                    </svg>
+                                </span>
+                            </div>
                             <a href="#top1" class="top-up-modal" id="topUp">
                                 <svg>
                                     <polyline points="18 15 12 9 6 15"></polyline>
@@ -253,7 +289,7 @@
                     </form>
                 @endif
                 <div>
-                    @if (count($files) > 0)
+                    @if ($product->media()->count() > 0)
                         {{-- delete single record --}}
                         <div class="modal" id="confirmationmodal">
                             <div class="modal-content">
@@ -305,7 +341,7 @@
                         {{-- Header of the table --}}
                         <div class="panel__header">
                             <input class="panel__header--input" type="text" wire:model.live="search"
-                                placeholder="Search your category..." style="grid-column: 1/4">
+                                placeholder="Search..." style="grid-column: 1/4">
                             <div class="panel__header--bundle">
                                 <div class="dropdown">
                                     <button
@@ -370,207 +406,173 @@
                             <thead>
                                 <tr>
                                     <th><input type="checkbox" wire:model="selectPage"></th>
+
                                     @if ($this->showColumn('Id'))
-                                        <th wire:click="sortBy('id')">
-                                            <button class="table__header--btn"
-                                                @if ($orderBy === 'id' && $orderAsc === '1') data-symbol="up"
-                                                              @else data-symbol="down" @endif>
-                                                ID
-                                                <svg>
-                                                    <line x1="12" y1="5" x2="12"
-                                                        y2="19">
-                                                    </line>
-                                                    <polyline points="19 12 12 19 5 12"></polyline>
-                                                </svg>
-                                            </button>
+                                        <th>
+                                            <div class="table__header--btn">ID</div>
                                         </th>
                                     @endif
-
                                     @if ($this->showColumn('Media'))
-                                        <th wire:click="sortBy('Media')">
-                                            <button class="table__header--btn"
-                                                @if ($orderBy === 'Media' && $orderAsc === '1') data-symbol="up"
-                                                                  @else data-symbol="down" @endif>
-                                                Media
-                                                <svg>
-                                                    <line x1="12" y1="5" x2="12"
-                                                        y2="19">
-                                                    </line>
-                                                    <polyline points="19 12 12 19 5 12"></polyline>
-                                                </svg>
-                                            </button>
+                                        <th>
+                                            <div class="table__header--btn">Media</div>
                                         </th>
                                     @endif
-
                                     @if ($this->showColumn('Name'))
-                                        <th wire:click="sortBy('Name')">
-                                            <button class="table__header--btn"
-                                                @if ($orderBy === 'name' && $orderAsc === '1') data-symbol="up"
-                                                              @else data-symbol="down" @endif>
-                                                Name
-                                                <svg>
-                                                    <line x1="12" y1="5" x2="12"
-                                                        y2="19">
-                                                    </line>
-                                                    <polyline points="19 12 12 19 5 12"></polyline>
-                                                </svg>
-                                            </button>
+                                        <th>
+                                            <div class="table__header--btn">Name</div>
                                         </th>
                                     @endif
 
                                     @if ($this->showColumn('Media Location'))
                                         <th>
+                                            <div class="table__header--btn">Location</div>
+                                        </th>
+                                    @endif
+                                    @if ($this->showColumn('Sequence'))
+                                        <th>
+                                            <div class="table__header--btn">Sequence</div>
+                                        </th>
+                                    @endif
+                                    @if ($this->showColumn('Created At'))
+                                        <th>
                                             <button class="table__header--btn">
-                                                Name
+                                                Created at
                                             </button>
                                         </th>
                                     @endif
 
-                                    @if ($this->showColumn('Sequence'))
-                                        <th>
-                                            <button class="table__header--btn">
-                                                Sequence
-                                            </button>
-                                        </th>
-                                    @endif
                                     <th></th>
                                 </tr>
                             </thead>
 
                             <tbody>
-                                @foreach ($files as $index => $file)
-                                    <tr class="@if ($this->isChecked($file->id)) table__row--selected @endif">
-                                        <td data-title="Check">
-                                            <input type="checkbox" value="{{ $file->id }}" wire:model="checked">
-                                        </td>
-
-                                        @if ($this->showColumn('Id'))
-                                            <td data-title="ID">{{ $file->id }}</td>
-                                        @endif
-
-                                        @if ($this->showColumn('Media'))
-                                            <td data-title="Media">
-                                                @if (in_array($file->type, ['jpg', 'jpeg', 'png', 'gif', 'svg', 'jfif']))
-                                                    <img src="/{{ $file->path . $file->name }}"
-                                                        alt="{{ $file->name }}" width="100"
-                                                        style="width: 100px; height: 100px; object-fit: cover">
-                                                @elseif (in_array($file->type, ['mp4', 'mov', 'avi']))
-                                                    <video src="/{{ $file->path . $file->name }}" width="150"
-                                                        style="width: 100px; height: 100px; object-fit: cover"
-                                                        controls="true"></video>
-                                                @else
-                                                    <img src="{{ $file->path }}" width="100"
-                                                        alt="{{ $file->path }}"
-                                                        style="width: 100px; height: 100px; object-fit: cover">
-                                                @endif
+                                @if ($filteredMedia->isEmpty())
+                                    <tr>
+                                        <td class="table__empty" colspan="{{ count($columns) + 3 }}">No record
+                                            found.</td>
+                                    </tr>
+                                @else
+                                    @foreach ($filteredMedia as $index => $file)
+                                        <tr>
+                                            <td data-title="Check"><input type="checkbox"
+                                                    value="{{ $file->id }}" wire:model="checked">
                                             </td>
-                                        @endif
 
-                                        @if ($this->showColumn('Name'))
-                                            <td data-title="Name">
-                                                @if ($editedMediaIndex !== $index)
-                                                    <div class="table__drop--input off"
-                                                        wire:click.prevent="editMedia({{ $index }})">
-                                                        {{ $file->name }}</div>
-                                                @else
-                                                    <input type="text" required class="table__drop--input"
-                                                        wire:model.defer="filess.{{ $index }}.name"
-                                                        value="{{ $file->name }}">
-                                                    @if ($errors->has('filess.' . $index . '.name'))
-                                                        <p>{{ $errors->first('filess.' . $index . '.name') }}
-                                                        </p>
+                                            @if ($this->showColumn('Id'))
+                                                <td data-title="ID">{{ $file->id }}</td>
+                                            @endif
+                                            @if ($this->showColumn('Media'))
+                                                <td data-title="Media">
+                                                    @if (in_array($file->type, ['jpg', 'jpeg', 'png', 'gif', 'svg', 'jfif', 'webp']))
+                                                        <img src="/{{ $file->path . $file->name }}"
+                                                            alt="{{ $file->name }}" width="50">
+                                                    @elseif (in_array($file->type, ['mp4', 'mov', 'avi']))
+                                                        <video src="/{{ $file->path . $file->name }}" width="50"
+                                                            controls="true"></video>
+                                                    @else
+                                                        <img src="{{ $file->path }}" width="100"
+                                                            alt="">
                                                     @endif
-                                                @endif
-                                            </td>
-                                        @endif
-
-                                        @if ($this->showColumn('Media Location'))
-                                            <td data-title="Media Location">
-                                                @if ($editedMediaIndex !== $index)
-                                                    <div class="table__drop--input off"
-                                                        wire:click.prevent="editMedia({{ $index }})">
-                                                        {{ $file->location->location }}</div>
-                                                @else
-                                                    <select required class="table__drop--input"
-                                                        wire:model.defer="filess.{{ $index }}.location_id">
-                                                        @foreach ($locations as $location)
-                                                            <option value="{{ $location->id }}">
-                                                                {{ $location->location }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                @endif
-                                            </td>
-                                        @endif
-
-                                        @if ($this->showColumn('Sequence'))
-                                            <td data-title="Sequence">
-                                                @if ($editedMediaIndex !== $index)
-                                                    <div class="table__drop--input off"
-                                                        wire:click.prevent="editMedia({{ $index }})">
-                                                        {{ $file->sequence }}</div>
-                                                @else
-                                                    <input type="number" min="0" required
-                                                        class="table__drop--input"
-                                                        wire:model.defer="filess.{{ $index }}.sequence"
-                                                        value="{{ $file->sequence }}">
-                                                    @if ($errors->has('filess.' . $index . '.sequence'))
-                                                        <p>{{ $errors->first('filess.' . $index . '.sequence') }}
-                                                        </p>
+                                                </td>
+                                            @endif
+                                            @if ($this->showColumn('Name'))
+                                                <td data-title="Name">
+                                                    @if ($editedMediaIndex !== $index)
+                                                        <div>{{ $file->name }}</div>
+                                                    @else
+                                                        <input type="text" class="table__edit"
+                                                            wire:model.defer="filess.{{ $index }}.name"
+                                                            value="{{ $file->name }}">
                                                     @endif
-                                                @endif
-                                            </td>
-                                        @endif
+                                                </td>
+                                            @endif
 
-                                        <td data-title="Action">
-                                            <div class="table__buttons">
-                                                @if ($editedMediaIndex !== $index)
-                                                    <button class="edit"
-                                                        wire:click.prevent="editMedia({{ $index }})">
-                                                        <svg>
-                                                            <path
-                                                                d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
-                                                            </path>
-                                                        </svg>
-                                                    </button>
-                                                    <button class="delete"
-                                                        wire:click.prevent="confirmFileRemoval({{ $file->id }})">
+                                            @if ($this->showColumn('Media Location'))
+                                                <td data-title="Media Location">
+                                                    @if ($editedMediaIndex !== $index)
+                                                        <div>{{ $file->location->location }}</div>
+                                                    @else
+                                                        <select class="table__edit"
+                                                            wire:model.defer="filess.{{ $index }}.location_id">
+                                                            @foreach ($locations as $location)
+                                                                <option value="{{ $location->id }}">
+                                                                    {{ $location->location }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    @endif
+                                                </td>
+                                            @endif
+                                            @if ($this->showColumn('Sequence'))
+                                                <td data-title="Sequence">
+                                                    @if ($editedMediaIndex !== $index)
+                                                        <div>{{ $file->sequence }}</div>
+                                                    @else
+                                                        <input type="number" min="0" required
+                                                            class="table__edit"
+                                                            wire:model.defer="filess.{{ $index }}.sequence"
+                                                            value="{{ $file->sequence }}">
+                                                    @endif
+                                                </td>
+                                            @endif
+                                            @if ($this->showColumn('Created At'))
+                                                <td data-title="Created At">
+                                                    <div class="table__time">
                                                         <svg>
                                                             <circle cx="12" cy="12" r="10">
                                                             </circle>
-                                                            <line x1="15" y1="9" x2="9"
-                                                                y2="15">
-                                                            </line>
-                                                            <line x1="9" y1="9" x2="15"
-                                                                y2="15">
-                                                            </line>
+                                                            <polyline points="12 6 12 12 16 14"></polyline>
                                                         </svg>
-                                                    </button>
-                                                @else
-                                                    <button class="edit"
-                                                        wire:click.prevent="saveMedia({{ $index }} , {{ $file->id }})">
-                                                        <svg>
-                                                            <polyline points="20 6 9 17 4 12"></polyline>
-                                                        </svg>
-                                                    </button>
-                                                    <button class="save" wire:click.prevent="cancelMedia()">
-                                                        <svg>
-                                                            <line x1="18" y1="6" x2="6"
-                                                                y2="18">
-                                                            </line>
-                                                            <line x1="6" y1="6" x2="18"
-                                                                y2="18">
-                                                            </line>
-                                                        </svg>
-                                                    </button>
-                                                @endif
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @endforeach
+                                                        {{ $file->created_at }}
+                                                </td>
+                                            @endif
+
+                                            <td data-title="Action">
+                                                <div class="table__buttons">
+                                                    @if ($editedMediaIndex !== $index)
+                                                        <button class="edit"
+                                                            wire:click.prevent="editMedia({{ $index }}, {{ $file->id }})">
+                                                            <svg>
+                                                                <path
+                                                                    d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
+                                                                </path>
+                                                            </svg>
+                                                        </button>
+                                                        <button class="delete"
+                                                            wire:click.prevent="confirmItemRemoval({{ $file->id }})">
+                                                            <svg>
+                                                                <polyline points="3 6 5 6 21 6"></polyline>
+                                                                <path
+                                                                    d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                                                </path>
+                                                            </svg>
+                                                        </button>
+                                                    @else
+                                                        <button class="edit"
+                                                            wire:click.prevent="saveMedia({{ $index }} , {{ $file->id }})">
+                                                            <svg>
+                                                                <polyline points="20 6 9 17 4 12"></polyline>
+                                                            </svg>
+                                                        </button>
+                                                        <button class="save" wire:click.prevent="cancelMedia()">
+                                                            <svg>
+                                                                <line x1="18" y1="6" x2="6"
+                                                                    y2="18">
+                                                                </line>
+                                                                <line x1="6" y1="6" x2="18"
+                                                                    y2="18">
+                                                                </line>
+                                                            </svg>
+                                                        </button>
+                                                    @endif
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
                             </tbody>
                         </table>
                     @else
-                        <p> No Media related </p>
+                        <p class="mt-2">No media related</p>
                     @endif
                 </div>
             </div>

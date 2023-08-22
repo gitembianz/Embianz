@@ -73,7 +73,7 @@
                                     {{ __('Add to Subcategories') }}
                                 </h1>
                                 <input class="panel__header--input" type="text" wire:model.live="searchadd"
-                                    placeholder="Search your subcategory...">
+                                    placeholder="Searchs...">
                                 <div class="panel__header--bundle">
                                     <div class="dropdown">
                                         <button

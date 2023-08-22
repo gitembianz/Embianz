@@ -181,7 +181,7 @@ class RelatedMediaCategory extends Component
       }
       $media_for_cat->save();
       session()->flash('notification', [
-        'message' => 'Please reload for display changes!',
+        'message' => 'Record edited successfully!',
         'type' => 'success',
         'title' => 'Success'
       ]);

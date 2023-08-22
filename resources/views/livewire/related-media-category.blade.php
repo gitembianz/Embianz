@@ -105,11 +105,11 @@
                                                     <td>{{ $media->getClientOriginalName() }}</td>
                                                     <td>{{ $media->getSize() }} KB</td>
                                                     <td>{{ $media->getClientOriginalExtension() }}</td>
-                                                    <td><input type="number" placeholder="Media sequence"
-                                                            min="0" required
+                                                    <td><input type="number" class="table__edit"
+                                                            placeholder="Media sequence" min="0" required
                                                             wire:model="file_sequences.{{ $loop->index }}"></td>
                                                     <td>
-                                                        <select required
+                                                        <select required class="table__edit"
                                                             wire:model="file_locations.{{ $loop->index }}">
 
                                                             @php
@@ -144,7 +144,7 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <span class="top-up-modal delete"
+                                <span class="top-up-modal delete" id="cancelbutton"
                                     style="position: fixed; right: 0; top: 0; width: 2.5rem; height: 2.5rem;"
                                     wire:click="cancel">
                                     <svg>
@@ -466,7 +466,8 @@
                             <tbody>
                                 @if ($filteredMedia->isEmpty())
                                     <tr>
-                                        <td colspan="{{ count($columns) }}">No record found.</td>
+                                        <td class="table__empty" colspan="{{ count($columns) + 3 }}">No record
+                                            found.</td>
                                     </tr>
                                 @else
                                     @foreach ($filteredMedia as $index => $file)
