@@ -92,9 +92,11 @@ class Categoriestable extends Component
     foreach ($categories as $category) {
       $id = $category->id;
       $cattodel = Category::find($id);
-      $productcat = Products_categories::where('category_id', $id)->first();
+      $productcat = Products_categories::where('category_id', $id)->get();
       if ($productcat != NULL) {
-        $productcat->delete();
+        foreach ($productcat as $pro) {
+          $pro->delete();
+        }
       }
       $subcategories = Subcategory::where('parrent_id', $id)->get();
       if ($subcategories != NULL) {

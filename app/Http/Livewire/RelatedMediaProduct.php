@@ -342,14 +342,7 @@ class RelatedMediaProduct extends Component
     $this->selectAll = true;
     $this->checked = $this->filesQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
   }
-  public function getFilesProperty()
-  {
-    return $this->filesQuery->paginate($this->perPage);
-  }
-  public function getFilesQueryProperty()
-  {
-    return Media::orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->where('item_id', $this->productId)->where('tabel_id', $this->type)->with('location');
-  }
+
   public function isChecked($id)
   {
     return in_array($id, $this->checked);
@@ -375,11 +368,16 @@ class RelatedMediaProduct extends Component
     ]);
     return $export->download('medias.xlsx');
   }
+
   public function render()
   {
-    $this->hasResults = $this->files->isNotEmpty();
+    $filteredMedia = $this->product->media()
+      ->where('name', 'LIKE', '%' . $this->search . '%')
+      ->get();
+
     return view('livewire.related-media-product', [
-      'files' => $this->files
+      'product' => $this->product,
+      'filteredMedia' => $filteredMedia,
     ]);
   }
 }
