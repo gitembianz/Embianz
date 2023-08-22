@@ -33,7 +33,6 @@ class Product extends Model
     'short_description',
     'long_description',
     'quantity',
-    'product_status',
     'start_date',
     'end_date',
     'createdby',

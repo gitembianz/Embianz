@@ -59,9 +59,6 @@ class ShowProduct extends Component
       if (array_key_exists('product_name', $product_new)) {
         $new->name = $product_new['product_name'];
       }
-      if (array_key_exists('product_status', $product_new)) {
-        $new->product_status = $product_new['product_status'];
-      }
       if (array_key_exists('start_date', $product_new)) {
         $new->start_date = $product_new['start_date'];
       }
