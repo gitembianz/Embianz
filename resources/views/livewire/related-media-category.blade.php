@@ -411,7 +411,7 @@
                             <tbody>
                                 @if ($filteredMedia->isEmpty())
                                     <tr>
-                                        <td colspan="{{ count($columns) }}">No media found.</td>
+                                        <td colspan="{{ count($columns) }}">No record found.</td>
                                     </tr>
                                 @else
                                     @foreach ($filteredMedia as $index => $file)

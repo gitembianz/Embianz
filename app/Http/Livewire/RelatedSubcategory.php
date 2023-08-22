@@ -162,7 +162,7 @@ class RelatedSubcategory extends Component
   {
     $this->selectPageadd = false;
   }
-  public function confirmitemsLinkmultiple()
+  public function confirmLinkmultiple()
   {
     $this->dispatchBrowserEvent('show-link-modal-multiple');
   }
@@ -262,16 +262,25 @@ class RelatedSubcategory extends Component
   {
     $this->dispatchBrowserEvent('show-delete-modal-multiple');
   }
+
   public function render()
   {
+    $relatedsubcats = $this->relatedsubcats->filter(function ($subcat) {
+      return strpos(strtolower($subcat->category), strtolower($this->search)) !== false;
+    });
+
+    if ($this->perPage > 0) {
+      $relatedsubcats = $relatedsubcats->take($this->perPage);
+    }
+
     if ($this->showTable === true) {
       return view('livewire.related-subcategory', [
-        'relatedsubcats' => $this->relatedsubcats,
-        'categories' => $this->categories
+        'relatedsubcats' => $relatedsubcats,
+        'categories' => $this->categories,
       ]);
     } else {
       return view('livewire.related-subcategory', [
-        'relatedsubcats' => $this->relatedsubcats
+        'relatedsubcats' => $relatedsubcats,
       ]);
     }
   }

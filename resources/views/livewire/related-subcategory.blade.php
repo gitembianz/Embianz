@@ -95,7 +95,7 @@
                                     </div>
                                     <button
                                         @if ($checkedadd) style="display: unset; z-index: 5;" @else style="display: none;" @endif
-                                        class="panel__header--button" wire:click.prevent="confirmProductsLinkmultiple()"
+                                        class="panel__header--button" wire:click.prevent="confirmLinkmultiple()"
                                         @if ($checkedadd) style="display: flex" @endif> Add
                                         {{ count($checkedadd) }} records
                                     </button>
@@ -298,7 +298,7 @@
                 {{-- end html for adding products --}}
 
                 <div>
-                    @if ($relatedsubcats && count($relatedsubcats) > 0)
+                    @if ($relatedsubcats)
 
                         {{-- Header of the table --}}
                         <div class="panel__header">
@@ -432,55 +432,63 @@
                             </thead>
 
                             <tbody>
-                                @foreach ($relatedsubcats as $subcat)
-                                    <tr @if ($loop->last) id="last_record" @endif
-                                        class="@if ($this->isChecked($subcat->id)) table__row--selected @endif">
-                                        <td data-title="Check">
-                                            <input type="checkbox" value="{{ $subcat->id }}" wire:model="checked">
-                                        </td>
-
-                                        @if ($this->showColumn('Id'))
-                                            <td data-title="ID">{{ $subcat->id }}</td>
-                                        @endif
-
-                                        @if ($this->showColumn('Name'))
-                                            <td data-title="Name"><a
-                                                    href="/show_category/{{ $subcat->category_id }}'">{{ $subcat->category }}</a>
-                                            </td>
-                                        @endif
-
-                                        @if ($this->showColumn('Short Description'))
-                                            <td class="table__description" data-title="Description">
-                                                {{ $subcat->parrent->short_description }}</td>
-                                        @endif
-
-                                        @if ($this->showColumn('Created At'))
-                                            <td data-title="Created At">
-                                                <div class="table__time">
-                                                    <svg>
-                                                        <circle cx="12" cy="12" r="10">
-                                                        </circle>
-                                                        <polyline points="12 6 12 12 16 14"></polyline>
-                                                    </svg>
-                                                    {{ $subcat->created_at }}
-                                            </td>
-                                        @endif
-
-                                        <td data-title="Action">
-                                            <div class="table__buttons">
-                                                <button class="edit"
-                                                    wire:click.prevent="confirmItemRemoval({{ $subcat->id }})">
-                                                    <svg>
-                                                        <polyline points="3 6 5 6 21 6"></polyline>
-                                                        <path
-                                                            d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                                        </path>
-                                                    </svg>
-                                                </button>
-                                            </div>
-                                        </td>
+                                @if ($relatedsubcats->isEmpty())
+                                    <tr>
+                                        <td class="table__empty" colspan="{{ count($columns) + 3 }}">No record
+                                            found.</td>
                                     </tr>
-                                @endforeach
+                                @else
+                                    @foreach ($relatedsubcats as $subcat)
+                                        <tr @if ($loop->last) id="last_record" @endif
+                                            class="@if ($this->isChecked($subcat->id)) table__row--selected @endif">
+                                            <td data-title="Check">
+                                                <input type="checkbox" value="{{ $subcat->id }}"
+                                                    wire:model="checked">
+                                            </td>
+
+                                            @if ($this->showColumn('Id'))
+                                                <td data-title="ID">{{ $subcat->id }}</td>
+                                            @endif
+
+                                            @if ($this->showColumn('Name'))
+                                                <td data-title="Name"><a
+                                                        href="/show_category/{{ $subcat->category_id }}'">{{ $subcat->category }}</a>
+                                                </td>
+                                            @endif
+
+                                            @if ($this->showColumn('Short Description'))
+                                                <td class="table__description" data-title="Description">
+                                                    {{ $subcat->parrent->short_description }}</td>
+                                            @endif
+
+                                            @if ($this->showColumn('Created At'))
+                                                <td data-title="Created At">
+                                                    <div class="table__time">
+                                                        <svg>
+                                                            <circle cx="12" cy="12" r="10">
+                                                            </circle>
+                                                            <polyline points="12 6 12 12 16 14"></polyline>
+                                                        </svg>
+                                                        {{ $subcat->created_at }}
+                                                </td>
+                                            @endif
+
+                                            <td data-title="Action">
+                                                <div class="table__buttons">
+                                                    <button class="edit"
+                                                        wire:click.prevent="confirmItemRemoval({{ $subcat->id }})">
+                                                        <svg>
+                                                            <polyline points="3 6 5 6 21 6"></polyline>
+                                                            <path
+                                                                d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                                            </path>
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
                             </tbody>
 
                             <script>
