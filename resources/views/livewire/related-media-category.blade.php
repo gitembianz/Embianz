@@ -54,7 +54,8 @@
                                     <h1 class="panel__header--title">
                                         {{ __('Add local media') }}
                                     </h1>
-                                    <input type="submit" class="panel__header--input" value="Save">
+                                    <input type="submit" class="panel__header--input panel__header--checked"
+                                        value="Save">
 
                                 </div>
 
@@ -171,7 +172,8 @@
                                     <h1 class="panel__header--title" id="top1">
                                         {{ __('Add external media') }}
                                     </h1>
-                                    <input type="submit" class="panel__header--input" value="Save">
+                                    <input type="submit" class="panel__header--input panel__header--checked"
+                                        value="Save">
                                 </div>
                                 <table class="table">
                                     <thead>
