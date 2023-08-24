@@ -21,6 +21,10 @@
     window.addEventListener('media', event => {
         document.getElementById('uploadmedia').style.display = 'flex';
     });
+    window.addEventListener('delete-modal-category', event => {
+        document.getElementById('confirmationmodalsingle').style.display = 'flex';
+    });
+
 
     // JavaScript code
     document.addEventListener('livewire:load', function() {
