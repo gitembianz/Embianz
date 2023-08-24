@@ -133,6 +133,10 @@ class Categoriestable extends Component
           $sub->delete();
         }
       }
+      $medias = $cattodel->media()->get();
+      foreach ($medias as $media) {
+        $media->delete();
+      }
       $productType = class_basename(get_class($cattodel));
       $filespath = 'media/' . $productType . '/' . $cattodel->id;
       if (File::exists($filespath)) {
@@ -166,9 +170,13 @@ class Categoriestable extends Component
       }
     }
     $productType = class_basename(get_class($category));
-    $filespath = '.media/' . $productType . '/' . $category->id;
+    $filespath = 'media/' . $productType . '/' . $category->id;
     if (File::exists($filespath)) {
       File::deleteDirectory($filespath);
+    }
+    $medias = $category->media()->get();
+    foreach ($medias as $media) {
+      $media->delete();
     }
     $category->delete();
     $this->checked = array_diff($this->checked, [$id]);
@@ -178,7 +186,7 @@ class Categoriestable extends Component
       'title' => 'Success'
     ]);
   }
-  public function confirmCategoryRemoval($id)
+  public function confirmItemRemoval($id)
   {
     $this->catidbeingremoved = $id;
     $this->dispatchBrowserEvent('show-delete-modal');

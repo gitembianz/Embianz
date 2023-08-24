@@ -115,6 +115,10 @@ class ShowCategory extends Component
         $sub->delete();
       }
     }
+    $medias = $category->media()->get();
+    foreach ($medias as $media) {
+      $media->delete();
+    }
     $productType = class_basename(get_class($category));
     $filespath = 'media/' . $productType . '/' . $category->id;
     if (File::exists($filespath)) {

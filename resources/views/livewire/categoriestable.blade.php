@@ -221,8 +221,7 @@
                         @endforeach
                         <td data-title="Action">
                             <div class="table__buttons">
-                                <button class="delete"
-                                    wire:click.prevent="confirmCategoryRemoval({{ $category->id }})">
+                                <button class="delete" wire:click.prevent="confirmItemRemoval({{ $category->id }})">
                                     <svg>
                                         <polyline points="3 6 5 6 21 6"></polyline>
                                         <path
