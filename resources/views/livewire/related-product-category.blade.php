@@ -268,22 +268,7 @@
                             </a>
                         </div>
                         {{-- script for lazy load data --}}
-                        <script>
-                            const lastRecord = document.getElementById('last_record');
-                            const options = {
-                                root: null,
-                                threshold: 1,
-                                rootMargin: '0px'
-                            }
-                            const observer = new IntersectionObserver((entries, observer) => {
-                                entries.forEach(entry => {
-                                    if (entry.isIntersecting) {
-                                        @this.loadMore()
-                                    }
-                                });
-                            });
-                            observer.observe(lastRecord);
-                        </script>
+                        <x-lazy />
                     @endif
                     {{-- end html for adding products --}}
                 </div>
@@ -542,7 +527,7 @@
                         <div class="table__load-more" wire:click="load">Load more</div>
                     @endif
                 @else
-                    <p class="mt-2">No products related</p>
+                    <p class="mt-2">No records related</p>
                 @endif
             </div>
         </div>

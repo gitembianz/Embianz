@@ -251,22 +251,6 @@
 
                                 </tbody>
 
-                                <script>
-                                    const lastRecord = document.getElementById('last_record');
-                                    const options = {
-                                        root: null,
-                                        threshold: 1,
-                                        rootMargin: '0px'
-                                    }
-                                    const observer = new IntersectionObserver((entries, observer) => {
-                                        entries.forEach(entry => {
-                                            if (entry.isIntersecting) {
-                                                @this.loadMore()
-                                            }
-                                        });
-                                    });
-                                    observer.observe(lastRecord);
-                                </script>
                             </table>
                             <span class="top-up-modal delete"
                                 style="position: fixed; right: 0; top: 0; width: 2.5rem; height: 2.5rem;"
@@ -286,6 +270,7 @@
                         </a>
                     </div>
                     {{-- script for lazy load data --}}
+                    <x-lazy />
                 @endif
                 {{-- end html for adding products --}}
 
