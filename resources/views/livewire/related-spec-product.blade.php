@@ -16,14 +16,14 @@
         {{-- add related specs --}}
         @if ($addrelatedspecs)
             <div class="modal" id="modalelements" style="display: block">
-                <div class="modal-content modal--tabel">
+                <div class="modal-content modal--tabel" style="height: 100%">
                     {{-- Header of the table --}}
                     <div class="panel__header">
                         <h1 class="panel__header--title">
-                            {{ __('Add related Specs') }}
+                            {{ __('Add related specifications') }}
                         </h1>
-                        <input class="panel__header--checked" wire:click.prevent="savespecs()" type="button"
-                            value="Save">
+                        <input class="panel__header--input panel__header--checked" wire:click.prevent="savespecs()"
+                            type="button" value="Save">
                     </div>
                     {{-- Table --}}
                     <table class="table">
@@ -93,6 +93,17 @@
                                                         </line>
                                                     </svg>
                                                 </button>
+                                                <button type="button" class="save"
+                                                    wire:click="clear({{ $index }})">
+                                                    <svg>
+                                                        <line x1="18" y1="6" x2="6"
+                                                            y2="18">
+                                                        </line>
+                                                        <line x1="6" y1="6" x2="18"
+                                                            y2="18">
+                                                        </line>
+                                                    </svg>
+                                                </button>
                                             @endif
                                             @if ($index != $row - 1)
                                                 <button type="button" class="save"
@@ -140,8 +151,8 @@
                         <h1 class="panel__header--title">
                             {{ __('Edit multiple related items') }}
                         </h1>
-                        <input class="panel__header--checked" wire:click.prevent="confirmspecsmultiple()" type="button"
-                            value="Save">
+                        <input class="panel__header--checked" wire:click.prevent="confirmspecsmultiple()"
+                            type="button" value="Save">
                     </div>
                     {{-- Table --}}
                     <table class="table">
@@ -229,7 +240,7 @@
                         <div class="modal" id="confirmationmodal">
                             <div class="modal-content">
                                 <h1 class="modal-content-title">
-                                    {{ __('Are you sure to delete this product?') }}
+                                    {{ __('Are you sure to delete this record?') }}
                                 </h1>
                                 <input wire:click.prevent="deleteSingleRecord()" class="modal-content-btn submit"
                                     type="button" value="Confirm" id="confirmLoad">
@@ -252,7 +263,7 @@
                         <div class="modal" id="confirmationmodalmultiple">
                             <div class="modal-content">
                                 <h1 class="modal-content-title">
-                                    {{ __('Are you sure to delete those product?') }}
+                                    {{ __('Are you sure to delete those records?') }}
                                 </h1>
                                 <input wire:click.prevent="deleteRecords()" class="modal-content-btn submit"
                                     type="button" value="Confirm" id="confirmLoad">
@@ -343,62 +354,31 @@
                                     <th><input type="checkbox" wire:model="selectPage"></th>
 
                                     @if ($this->showColumn('Id'))
-                                        <th wire:click="sortBy('id')">
-                                            <button class="table__header--btn"
-                                                @if ($orderBy === 'id' && $orderAsc === '1') data-symbol="up"
-                                                @else data-symbol="down" @endif>
-                                                ID
-                                                <svg>
-                                                    <line x1="12" y1="5" x2="12"
-                                                        y2="19"></line>
-                                                    <polyline points="19 12 12 19 5 12"></polyline>
-                                                </svg>
-                                            </button>
+                                        <th>
+                                            <div class="table__header--btn">ID</div>
                                         </th>
                                     @endif
 
                                     @if ($this->showColumn('Name'))
-                                        <th wire:click="sortBy('name')">
-                                            <button class="table__header--btn"
-                                                @if ($orderBy === 'name' && $orderAsc === '1') data-symbol="up"
-                                                @else data-symbol="down" @endif>
-                                                Name
-                                                <svg>
-                                                    <line x1="12" y1="5" x2="12"
-                                                        y2="19"></line>
-                                                    <polyline points="19 12 12 19 5 12"></polyline>
-                                                </svg>
-                                            </button>
+                                        <th>
+                                            <div class="table__header--btn">Name</div>
                                         </th>
                                     @endif
 
                                     @if ($this->showColumn('Unit'))
                                         <th>
-                                            <button class="table__header--btn">
-                                                Unit
-                                            </button>
+                                            <div class="table__header--btn">Unit</div>
                                         </th>
                                     @endif
                                     @if ($this->showColumn('Value'))
                                         <th>
-                                            <button class="table__header--btn">
-                                                Value
-                                            </button>
+                                            <div class="table__header--btn">Value</div>
                                         </th>
                                     @endif
 
                                     @if ($this->showColumn('Created At'))
-                                        <th wire:click="sortBy('created_at')">
-                                            <button class="table__header--btn"
-                                                @if ($orderBy === 'created_at' && $orderAsc === '1') data-symbol="up"
-                                                @else data-symbol="down" @endif>
-                                                Created at
-                                                <svg>
-                                                    <line x1="12" y1="5" x2="12"
-                                                        y2="19"></line>
-                                                    <polyline points="19 12 12 19 5 12"></polyline>
-                                                </svg>
-                                            </button>
+                                        <th>
+                                            <div class="table__header--btn">Created At</div>
                                         </th>
                                     @endif
                                     <th></th>
@@ -419,10 +399,8 @@
                                         @if ($this->showColumn('Name'))
                                             <td data-title="Name">
                                                 @if ($editedrow !== $index)
-                                                    <div
-                                                        wire:click.prevent="editspec({{ $spec->id }}, {{ $spec->spec->id }}, {{ $index }})">
+                                                    <div>
                                                         {{ $spec->spec->name }}
-
                                                     </div>
                                                 @else
                                                     @if ($allow)
@@ -432,7 +410,7 @@
                                                                 type="text">
                                                             <ul class="table__drop--list">
                                                                 @foreach ($addspecs as $speci)
-                                                                    <li class="table__drop--item"
+                                                                    <li class="table__drop--item cursor-p"
                                                                         wire:click.prevent="select({{ $speci->id }})">
                                                                         {{ $speci->name }}
                                                                     </li>
@@ -524,9 +502,8 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        {{-- <div>{{ $relatedproducts->links('pagination-links') }} </div> --}}
                     @else
-                        <p>No Specs Related</p>
+                        <p class="mt-2">No records related</p>
                     @endif
                 </div>
             </div>
