@@ -111,6 +111,10 @@ class Productstable extends Component
           $productpricelist->delete();
         }
       }
+      $medias = $producttodel->media()->get();
+      foreach ($medias as $media) {
+        $media->delete();
+      }
       $productType = class_basename(get_class($producttodel));
       $filespath = 'media/' . $productType . '/' . $producttodel->id;
       if (File::exists($filespath)) {
@@ -146,6 +150,10 @@ class Productstable extends Component
       foreach ($productpricelists as $productpricelist) {
         $productpricelist->delete();
       }
+    }
+    $medias = $product->media()->get();
+    foreach ($medias as $media) {
+      $media->delete();
     }
     $productType = class_basename(get_class($product));
     $filespath = 'media/' . $productType . '/' . $product->id;

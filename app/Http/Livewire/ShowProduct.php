@@ -31,7 +31,6 @@ class ShowProduct extends Component
     $this->prod = [
       'product_name' => $this->product->name,
       'active' => $this->product->active,
-      'product_status' => $this->product->product_status,
       'start_date' => $this->product->start_date,
       'end_date' => $this->product->end_date,
       'popularity' => $this->product->popularity,
@@ -126,6 +125,10 @@ class ShowProduct extends Component
       foreach ($productpricelists as $productpricelist) {
         $productpricelist->delete();
       }
+    }
+    $medias = $product->media()->get();
+    foreach ($medias as $media) {
+      $media->delete();
     }
     $productType = class_basename(get_class($product));
     $filespath = 'media/' . $productType . '/' . $product->id;

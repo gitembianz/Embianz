@@ -291,19 +291,19 @@
                 <div>
                     @if ($product->media()->count() > 0)
                         {{-- delete single record --}}
-                        <div class="modal" id="confirmationmodal">
+                        <div class="modal" id="confirmationmodalmedia">
                             <div class="modal-content">
                                 <h1 class="modal-content-title">
-                                    {{ __('Are you sure to delete this product?') }}
+                                    {{ __('Are you sure to delete this record?') }}
                                 </h1>
                                 <input wire:click.prevent="deleteSingleRecord()" class="modal-content-btn submit"
                                     type="button" value="Confirm" id="confirmLoad">
                                 <input class="modal-content-btn delete" type="button"
-                                    onclick="document.getElementById('confirmationmodal').style.display='none'"
+                                    onclick="document.getElementById('confirmationmodalmedia').style.display='none'"
                                     value="Cancel">
 
                                 <span class="modal-content-btn delete"
-                                    onclick="document.getElementById('confirmationmodal').style.display='none'">
+                                    onclick="document.getElementById('confirmationmodalmedia').style.display='none'">
                                     <svg>
                                         <line x1="18" y1="6" x2="6" y2="18">
                                         </line>
@@ -317,7 +317,7 @@
                         <div class="modal" id="confirmationmodalmultiple">
                             <div class="modal-content">
                                 <h1 class="modal-content-title">
-                                    {{ __('Are you sure to delete those product?') }}
+                                    {{ __('Are you sure to delete those records?') }}
                                 </h1>
                                 <input wire:click.prevent="deleteRecords()" class="modal-content-btn submit"
                                     type="button" value="Confirm" id="confirmLoad">
@@ -538,7 +538,7 @@
                                                             </svg>
                                                         </button>
                                                         <button class="delete"
-                                                            wire:click.prevent="confirmItemRemoval({{ $file->id }})">
+                                                            wire:click.prevent="confirmRemoval({{ $file->id }})">
                                                             <svg>
                                                                 <polyline points="3 6 5 6 21 6"></polyline>
                                                                 <path

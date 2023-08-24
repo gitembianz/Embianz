@@ -345,10 +345,10 @@ class RelatedMediaProduct extends Component
   {
     return in_array($id, $this->checked);
   }
-  public function confirmFileRemoval($id)
+  public function confirmRemoval($id)
   {
     $this->mediaidbeingremoved = $id;
-    $this->dispatchBrowserEvent('show-delete-modal');
+    $this->dispatchBrowserEvent('delete-media');
   }
   public function confirmFilesRemovalmultiple()
   {
