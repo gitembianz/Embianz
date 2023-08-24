@@ -222,14 +222,13 @@ class RelatedCategoryProduct extends Component
     return Products_categories::where('product_id', $this->productId)
       ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->with('category');
   }
-  public function confirmItemRemoval($id)
+  public function ItemRemoval($id)
   {
     $this->catidbeingremoved = $id;
-    $this->dispatchBrowserEvent('show-delete-modal');
+    $this->dispatchBrowserEvent('delete-modal-category');
   }
   public function deleteSingleRecord()
   {
-    dd('here');
     $item = Products_categories::findOrFail($this->catidbeingremoved);
     $item->delete();
     $this->checked = array_diff($this->checked, [$this->catidbeingremoved]);
