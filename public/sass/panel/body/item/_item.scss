@@ -30,10 +30,36 @@
       border-radius: 5px;
       font-size: 1rem;
       cursor: pointer;
+      transition: background .3s ease-in-out;
 
       &.delete {
         background: $alertColor;
         width: 2.5rem;
+
+        &:active,
+        &:hover {
+          background: darken($alertColor, 20%);
+        }
+      }
+
+      &.confirm {
+        border: 1px solid $mainBg;
+        background-color: $secondColor;
+
+        &:active,
+        &:hover {
+          background-color: darken($secondColor, 30%);
+        }
+
+        svg {
+          stroke: $mainBg;
+        }
+      }
+
+
+      &:active,
+      &:hover {
+        background-color: darken($mainBg, 30%);
       }
 
       &.edit {
@@ -116,6 +142,15 @@
         }
       }
 
+    }
+
+    &-input {
+
+      input,
+      textarea {
+        background: white;
+        border: 1px solid $darkBg;
+      }
     }
 
     &-input-close {

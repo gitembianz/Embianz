@@ -252,17 +252,15 @@
                                 </tbody>
 
                             </table>
-                            <span class="top-up-modal delete"
-                                style="position: fixed; right: 0; top: 0; width: 2.5rem; height: 2.5rem;"
-                                wire:click="cancel">
-                                <svg>
-                                    <line x1="18" y1="6" x2="6" y2="18">
-                                    </line>
-                                    <line x1="6" y1="6" x2="18" y2="18">
-                                    </line>
-                                </svg>
-                            </span>
                         </div>
+                        <span class="top-up-modal delete">
+                            <svg>
+                                <line x1="18" y1="6" x2="6" y2="18">
+                                </line>
+                                <line x1="6" y1="6" x2="18" y2="18">
+                                </line>
+                            </svg>
+                        </span>
                         <a href="#top" class="top-up-modal" id="topUp">
                             <svg>
                                 <polyline points="18 15 12 9 6 15"></polyline>
