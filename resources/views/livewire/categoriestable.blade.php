@@ -164,7 +164,7 @@
                                 <td data-title="Name"><a
                                         href="/show_category/{{ $category->id }}'">{{ $category->name }}</a></td>
                             @elseif($column === 'created_at' || $column === 'updated_at')
-                                <td data-title="{{ $category->$column }}">
+                                <td data-title="{{ $column }}">
                                     <div class="table__time">
                                         <svg>
                                             <circle cx="12" cy="12" r="10"></circle>
@@ -174,7 +174,7 @@
                                     </div>
                                 </td>
                             @elseif($column === 'start_date' || $column === 'end_date')
-                                <td data-title="{{ $category->$column }}">
+                                <td data-title="{{ $column }}">
                                     <div class="table__time">
                                         <svg>
                                             <rect x="3" y="4" width="18" height="18"
@@ -190,7 +190,7 @@
                                     </div>
                                 </td>
                             @elseif($column === 'createdby' || $column === 'lastmodifiedby')
-                                <td data-title="{{ $category->$column }}">
+                                <td data-title="{{ $column }}">
                                     <div class="table__time">
                                         <svg>
                                             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
@@ -200,7 +200,7 @@
                                     </div>
                                 </td>
                             @elseif ($column === 'active')
-                                <td data-title="{{ $category->$column }}">
+                                <td data-title="{{ $column }}">
                                     @if ($category->$column)
                                         active
                                     @else
@@ -208,7 +208,7 @@
                                     @endif
                                 </td>
                             @elseif ($column === 'store_tab')
-                                <td data-title="{{ $category->$column }}">
+                                <td data-title="{{ $column }}">
                                     @if ($category->$column)
                                         visible
                                     @else
@@ -216,7 +216,7 @@
                                     @endif
                                 </td>
                             @else
-                                <td data-title="{{ $category->$column }}">{{ $category->$column }}</td>
+                                <td data-title="{{ $column }}">{{ $category->$column }}</td>
                             @endif
                         @endforeach
                         <td data-title="Action">
