@@ -162,7 +162,7 @@
                         @foreach ($selectedColumns as $column)
                             @if ($column === 'name')
                                 <td data-title="Name"><a
-                                        href="/show_category/{{ $category->id }}'">{{ $category->name }}</a></td>
+                                        href="/show_category/{{ $category->id }}">{{ $category->name }}</a></td>
                             @elseif($column === 'created_at' || $column === 'updated_at')
                                 <td data-title="{{ $column }}">
                                     <div class="table__time">
