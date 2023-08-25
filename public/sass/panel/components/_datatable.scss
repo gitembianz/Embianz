@@ -336,6 +336,11 @@ textarea.table__edit {
         border: none;
         border-radius: 3px;
         color: $mainBg;
+        transition: background .3s ease-in-out;
+
+        &:hover {
+          background-color: darken(#f2f2f2, 20%);
+        }
 
         svg {
           stroke: $mainBg;
@@ -363,8 +368,14 @@ textarea.table__edit {
     border: none;
     background-color: #f2f2f2;
     border-radius: 3px;
+    transition: all .3s ease-in-out;
     color: $mainBg;
     cursor: pointer;
+
+    &:active,
+    &:hover {
+      background-color: darken(#f2f2f2, 20%);
+    }
 
     svg {
       stroke: $mainBg;
