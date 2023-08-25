@@ -1,33 +1,36 @@
 <div class="home__container" id="homeContainer">
     <div id="home__slide" role="list">
-        @foreach ($category->product_categories as $product)
-            <div class="home__item home__this"
-                style="background-image:
-                 @if (count($product->product->media) > 0) @foreach ($product->product->media as $media)
-                                                 @if ($media->location->location == 'main')
-                                                     @if ($media->external)
-                                                         url({{ $media->path }}" alt="{{ $media->path }})
-                                                     @else
-                                                         url(/{{ $media->path }}{{ $media->name }}) @endif
+        @if ($category)
+
+            @foreach ($category->product_categories as $product)
+                <div class="home__item home__this"
+                    style="background-image:
+               @if (count($product->product->media) > 0) @foreach ($product->product->media as $media)
+                                               @if ($media->location->location == 'main')
+                                                   @if ($media->external)
+                                                       url({{ $media->path }}" alt="{{ $media->path }})
+                                                   @else
+                                                       url(/{{ $media->path }}{{ $media->name }}) @endif
 @break
 
 @endif
-                                         @endforeach
+                                       @endforeach
 @else
 url(/images/store/default/default.svg)
-        @endif"
-                role="listitem">
-                <div class="home__content">
-                    <div class="container home__content--flex">
-                        <h2>{{ $product->product->name }}</h2>
-                        <p>
-                            {{ $product->product->short_description }}
-                        </p>
-                        <button aria-label="See more">See more</button>
+      @endif"
+                    role="listitem">
+                    <div class="home__content">
+                        <div class="container home__content--flex">
+                            <h2>{{ $product->product->name }}</h2>
+                            <p>
+                                {{ $product->product->short_description }}
+                            </p>
+                            <button aria-label="See more">See more</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-        @endforeach
+            @endforeach
+        @endif
     </div>
     <div class="home__buttons">
         <button id="home__prev" aria-label="Previous slide">

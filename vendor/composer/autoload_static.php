@@ -439,7 +439,8 @@ class ComposerStaticInitdbceb679be78fc0f2f620fcaf24d3e3e
         ),
         'Maatwebsite\\Excel\\' => 
         array (
-            0 => __DIR__ . '/..' . '/maatwebsite/excel/src',
+            0 => __DIR__ . '/..' . '/maatwebsite/src',
+            1 => __DIR__ . '/..' . '/maatwebsite/excel/src',
         ),
         'Livewire\\' => 
         array (
@@ -735,6 +736,7 @@ class ComposerStaticInitdbceb679be78fc0f2f620fcaf24d3e3e
         'App\\View\\Components\\Dashboardscript' => __DIR__ . '/../..' . '/app/View/Components/Dashboardscript.php',
         'App\\View\\Components\\Dashboardsidebar' => __DIR__ . '/../..' . '/app/View/Components/Dashboardsidebar.php',
         'App\\View\\Components\\GuestLayout' => __DIR__ . '/../..' . '/app/View/Components/GuestLayout.php',
+        'App\\View\\Components\\Lazy' => __DIR__ . '/../..' . '/app/View/Components/Lazy.php',
         'App\\View\\Components\\Loading' => __DIR__ . '/../..' . '/app/View/Components/Loading.php',
         'App\\View\\Components\\Store-footer' => __DIR__ . '/../..' . '/app/View/Components/Store-footer.php',
         'App\\View\\Components\\Store-head' => __DIR__ . '/../..' . '/app/View/Components/Store-head.php',

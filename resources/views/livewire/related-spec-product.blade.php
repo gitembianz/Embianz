@@ -48,7 +48,7 @@
                                             <div class="table__drop">
                                                 <input class="table__drop--input" wire:model.live="searchadd"
                                                     placeholder="Search..." type="text">
-                                                <ul class="table__drop--list">
+                                                <ul class="table__drop--list cursor-p">
                                                     @if (count($addspecs) >= 1)
                                                         @foreach ($addspecs as $spec)
                                                             <li class="table__drop--item"
@@ -74,12 +74,10 @@
                                             </div>
                                         @endif
                                     </td>
-
                                     <td data-title="Value">
                                         <input type="text" required class="table__drop--input"
                                             wire:model.defer="specsAndValues.{{ $index }}.spec.value">
                                     </td>
-
                                     <td data-title="Action">
                                         <div class="table__buttons">
                                             @if ($index == $row - 1)
@@ -287,7 +285,7 @@
                         {{-- Header of the table --}}
                         <div class="panel__header">
                             <input class="panel__header--input" type="text" wire:model.live="search"
-                                placeholder="Search your specifications..." style="grid-column: 1/4">
+                                placeholder="Search..." style="grid-column: 1/4">
                             <div class="panel__header--bundle">
                                 <div class="dropdown">
                                     <button
@@ -424,19 +422,15 @@
                                                         </button>
                                                     @endif
                                                 @endif
-                                                {{-- <a href="/show_product/{{ $categori->category->id }}'">{{ $categori->category->name }}</a> --}}
                                             </td>
                                         @endif
-
                                         @if ($this->showColumn('Unit'))
                                             <td data-title="Unit">
                                                 {{ $spec->spec->um }}
                                             </td>
                                         @endif
-
                                         @if ($this->showColumn('Value'))
-                                            <td
-                                                wire:click.prevent="editspec({{ $spec->id }}, {{ $spec->spec->id }}, {{ $index }})">
+                                            <td>
                                                 @if ($editedrow !== $index)
                                                     {{ $spec->value }}
                                                 @else
@@ -445,7 +439,6 @@
                                                 @endif
                                             </td>
                                         @endif
-
                                         @if ($this->showColumn('Created At'))
                                             <td data-title="Created At">
                                                 <div class="table__time">
@@ -455,9 +448,9 @@
                                                         <polyline points="12 6 12 12 16 14"></polyline>
                                                     </svg>
                                                     {{ $spec->spec->created_at }}
+                                                </div>
                                             </td>
                                         @endif
-
                                         <td data-title="Action">
                                             <div class="table__buttons">
                                                 @if ($editedrow !== $index)

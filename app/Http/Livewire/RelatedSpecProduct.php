@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\PriceList;
 use App\Models\Product;
 use App\Models\Product_Spec;
 use App\Models\Specs;
@@ -11,7 +10,6 @@ use Livewire\WithPagination;
 
 class RelatedSpecProduct extends Component
 {
-
   use WithPagination;
   //related delclaration
   public $perPage = 10;
@@ -44,7 +42,6 @@ class RelatedSpecProduct extends Component
   public $specification;
   public $editmultiple = false;
   public $itemstoedit;
-
 
   public function render()
   {
@@ -232,7 +229,6 @@ class RelatedSpecProduct extends Component
     $this->showrelatedspecs = true;
     $this->addrelatedspecs = true;
   }
-  //select function from list
   public function select($id)
   {
     $this->itemselected = Specs::find($id);
@@ -255,7 +251,6 @@ class RelatedSpecProduct extends Component
       'spec' => ['name' => null, 'value' => null],
     ];
   }
-  //alow function for selecting new items
   public function allowselect($index)
   {
     $this->specsAndValues[$index]['allow'] = true;
@@ -281,7 +276,6 @@ class RelatedSpecProduct extends Component
     $this->editmultiple = false;
     $this->addrelatedspecs = false;
   }
-  //clear one row in modal
   public function clear($index)
   {
     // Remove the row from the array
@@ -292,8 +286,18 @@ class RelatedSpecProduct extends Component
 
     // Decrement the total row count
     $this->row--;
+    if ($this->row < 1) {
+      $this->addrelatedspecs = false;
+      $this->specsAndValues = [
+        [
+          'allow' => false,
+          'itemselected' => null,
+          'spec' => ['name' => null, 'value' => null],
+        ]
+      ];
+      $this->row = 1;
+    }
   }
-  //save the spec form a modal
   public function savespecs()
   {
     foreach ($this->specsAndValues as $index =>  $specAndValue) {
@@ -331,6 +335,4 @@ class RelatedSpecProduct extends Component
     $unrelated->orderBy($this->orderByadd, $this->orderAscadd ? 'asc' : 'desc');
     return $unrelated->get();
   }
-  //gett specs for list with search
-
 }
