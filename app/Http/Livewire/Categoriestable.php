@@ -9,6 +9,7 @@ use Livewire\WithPagination;
 use App\Exports\CategoriesExport;
 use App\Models\Products_categories;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Schema;
 
 class Categoriestable extends Component
 {
@@ -21,24 +22,50 @@ class Categoriestable extends Component
   public $selectPage = false;
   public $selectAll = false;
   public $catidbeingremoved = null;
-  public $columns = ['Id', 'Short Description', 'Sequence', 'Created At'];
+  // public $columns = ['Id', 'Short Description', 'Sequence', 'Created At'];
   public $selectedColumns = [];
   public $col = false;
   public $all = false;
 
+  public $tableName;
+  public $columns;
+
+
+
   public function render()
   {
-    return view('livewire.categoriestable', [
-      'categories' => $this->categories
-    ]);
+    $categories = $this->categories;
+
+    if ($this->all) {
+      $this->selectedColumns = $this->columns;
+    }
+
+    return view('livewire.categoriestable', compact('categories'));
   }
-  public function mount()
+
+
+  public function mount($tableName)
   {
-    $this->selectedColumns = $this->columns;
+    $this->tableName = $tableName;
+    $this->columns = Schema::getColumnListing($this->tableName);
+
+    if (session()->has('selectedColumns')) {
+      $this->selectedColumns = session('selectedColumns');
+    } else {
+      $this->selectedColumns = $this->columns;
+    }
   }
+
+
+  public function updatedSelectedColumns()
+  {
+    session(['selectedColumns' => $this->selectedColumns]);
+  }
+
+
   public function showColumn($column)
   {
-    if ($column === 'Name') {
+    if ($column === 'name') {
       return true;
     }
     return in_array($column, $this->selectedColumns);
@@ -106,6 +133,10 @@ class Categoriestable extends Component
           $sub->delete();
         }
       }
+      $medias = $cattodel->media()->get();
+      foreach ($medias as $media) {
+        $media->delete();
+      }
       $productType = class_basename(get_class($cattodel));
       $filespath = 'media/' . $productType . '/' . $cattodel->id;
       if (File::exists($filespath)) {
@@ -139,9 +170,13 @@ class Categoriestable extends Component
       }
     }
     $productType = class_basename(get_class($category));
-    $filespath = '.media/' . $productType . '/' . $category->id;
+    $filespath = 'media/' . $productType . '/' . $category->id;
     if (File::exists($filespath)) {
       File::deleteDirectory($filespath);
+    }
+    $medias = $category->media()->get();
+    foreach ($medias as $media) {
+      $media->delete();
     }
     $category->delete();
     $this->checked = array_diff($this->checked, [$id]);
@@ -151,7 +186,7 @@ class Categoriestable extends Component
       'title' => 'Success'
     ]);
   }
-  public function confirmCategoryRemoval($id)
+  public function confirmItemRemoval($id)
   {
     $this->catidbeingremoved = $id;
     $this->dispatchBrowserEvent('show-delete-modal');

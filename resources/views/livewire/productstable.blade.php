@@ -200,73 +200,65 @@
         </thead>
 
         <tbody>
-            @foreach ($products as $product)
-                <tr @if ($loop->last) id="last_record" @endif
-                    class="@if ($this->isChecked($product->id)) table__row--selected @endif">
-                    <td data-title="Check">
-                        <input type="checkbox" value="{{ $product->id }}" wire:model="checked">
-                    </td>
-
-                    @if ($this->showColumn('Id'))
-                        <td data-title="ID">{{ $product->id }}</td>
-                    @endif
-
-                    @if ($this->showColumn('Name'))
-                        <td data-title="Name"><a href="/show_product/{{ $product->id }}'">{{ $product->name }}</a>
-                        </td>
-                    @endif
-
-                    @if ($this->showColumn('Description'))
-                        <td class="table__description" data-title="Description">
-                            {{ $product->short_description }}</td>
-                    @endif
-
-                    @if ($this->showColumn('Sequence'))
-                        <td data-title="Sequence">{{ $product->sequence }}</td>
-                    @endif
-
-                    @if ($this->showColumn('Created At'))
-                        <td data-title="Created At">
-                            <div class="table__time">
-                                <svg>
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                </svg>
-                                {{ $product->created_at }}
-                        </td>
-                    @endif
-
-                    <td data-title="Action">
-                        <div class="table__buttons">
-                            <button class="delete" wire:click.prevent="confirmProductRemoval({{ $product->id }})">
-                                <svg>
-                                    <polyline points="3 6 5 6 21 6"></polyline>
-                                    <path
-                                        d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                    </path>
-                                </svg>
-                            </button>
-                        </div>
-                    </td>
+            @if ($products->isEmpty())
+                <tr>
+                    <td class="table__empty" colspan="{{ count($selectedColumns) + 3 }}">No record found.</td>
                 </tr>
-            @endforeach
-        </tbody>
+            @else
+                @foreach ($products as $product)
+                    <tr @if ($loop->last) id="last_record" @endif
+                        class="@if ($this->isChecked($product->id)) table__row--selected @endif">
+                        <td data-title="Check">
+                            <input type="checkbox" value="{{ $product->id }}" wire:model="checked">
+                        </td>
 
-        <script>
-            const lastRecord = document.getElementById('last_record');
-            const options = {
-                root: null,
-                threshold: 1,
-                rootMargin: '0px'
-            }
-            const observer = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        @this.loadMore()
-                    }
-                });
-            });
-            observer.observe(lastRecord);
-        </script>
+                        @if ($this->showColumn('Id'))
+                            <td data-title="ID">{{ $product->id }}</td>
+                        @endif
+
+                        @if ($this->showColumn('Name'))
+                            <td data-title="Name"><a
+                                    href="/show_product/{{ $product->id }}'">{{ $product->name }}</a>
+                            </td>
+                        @endif
+
+                        @if ($this->showColumn('Description'))
+                            <td class="table__description" data-title="Description">
+                                {{ $product->short_description }}</td>
+                        @endif
+
+                        @if ($this->showColumn('Sequence'))
+                            <td data-title="Sequence">{{ $product->sequence }}</td>
+                        @endif
+
+                        @if ($this->showColumn('Created At'))
+                            <td data-title="Created At">
+                                <div class="table__time">
+                                    <svg>
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <polyline points="12 6 12 12 16 14"></polyline>
+                                    </svg>
+                                    {{ $product->created_at }}
+                            </td>
+                        @endif
+
+                        <td data-title="Action">
+                            <div class="table__buttons">
+                                <button class="delete"
+                                    wire:click.prevent="confirmProductRemoval({{ $product->id }})">
+                                    <svg>
+                                        <polyline points="3 6 5 6 21 6"></polyline>
+                                        <path
+                                            d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                        </path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                @endforeach
+            @endif
+        </tbody>
+        <x-lazy />
     </table>
 </div>

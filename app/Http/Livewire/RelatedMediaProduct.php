@@ -4,7 +4,6 @@ namespace App\Http\Livewire;
 
 use getID3;
 use App\Models\Media;
-use App\Models\Tabels;
 use App\Models\Product;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -57,16 +56,21 @@ class RelatedMediaProduct extends Component
     $this->productId = $productId;
     $this->product = Product::find($productId);
     $this->productType = class_basename(get_class($this->product));
-    $this->type = Tabels::where('name', $this->productType)->first()->id;
     $this->selectedColumns = $this->columns;
     $this->locations = MediaLocation::all();
     $this->file_locations[] = '1';
     $this->i = null;
     $this->j = null;
   }
-  public function editMedia($mediaIndex)
+  public function editMedia($index, $id)
   {
-    $this->editedMediaIndex = $mediaIndex;
+    $this->editedMediaIndex = $index;
+    $media = Media::find($id);
+    $this->filess = [
+      $index . '.name' => $media->name,
+      $index . '.location_id' => $media->location_id,
+      $index . '.sequence' => $media->sequence,
+    ];
   }
   public function uploadmedia()
   {
@@ -143,7 +147,7 @@ class RelatedMediaProduct extends Component
   public function updatedSelectPage($value)
   {
     if ($value) {
-      $this->checked = $this->files->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+      $this->checked = $this->product->media()->pluck('media.id')->map(fn ($item) => (string) $item)->toArray();
     } else {
       $this->checked = [];
     }
@@ -165,8 +169,6 @@ class RelatedMediaProduct extends Component
   }
   public function saveexternal()
   {
-    $data = Product::find($this->productId);
-    $productType = class_basename(get_class($data));
 
     for ($i = 1; $i <= $this->row; $i++) {
       $this->resetErrorBag();
@@ -185,8 +187,6 @@ class RelatedMediaProduct extends Component
       $media->external = true;
       $media->createdby = Auth::user()->name;
       $media->lastmodifiedby = Auth::user()->name;
-      $media->item_id = $this->productId;
-      $media->tabel_id = Tabels::where('name', $productType)->first()->id;
 
       $media->save();
       $this->product->media()->attach($media->id);
@@ -239,7 +239,6 @@ class RelatedMediaProduct extends Component
         $width = $image->width();
         $height = $image->height();
       }
-      $media->item_id = $data->id;
       $media->path = $path;
       $media->name = $file->getClientOriginalName();
       $filename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
@@ -252,7 +251,6 @@ class RelatedMediaProduct extends Component
         $media->name = $filename . '(' . $this->j . ').' . $type;
       }
       $file->storeAs($path, $media->name, 'public_upload');
-      $media->tabel_id = Tabels::where('name', $productType)->first()->id;
       $media->sequence = $this->file_sequences[$this->i];
       $media->location_id = MediaLocation::where('id', $this->file_locations[$this->i])->first()->id;
       $media->type = $type;
@@ -340,17 +338,17 @@ class RelatedMediaProduct extends Component
   public function selectAll()
   {
     $this->selectAll = true;
-    $this->checked = $this->filesQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+    $this->checked = $this->product->media()->pluck('media.id')->map(fn ($item) => (string) $item)->toArray();
   }
 
   public function isChecked($id)
   {
     return in_array($id, $this->checked);
   }
-  public function confirmFileRemoval($id)
+  public function confirmRemoval($id)
   {
     $this->mediaidbeingremoved = $id;
-    $this->dispatchBrowserEvent('show-delete-modal');
+    $this->dispatchBrowserEvent('delete-media');
   }
   public function confirmFilesRemovalmultiple()
   {

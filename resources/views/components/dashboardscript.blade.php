@@ -15,9 +15,16 @@
     window.addEventListener('show-add-modal', event => {
         document.getElementById('addmodal').style.display = 'flex';
     });
+    window.addEventListener('delete-media', event => {
+        document.getElementById('confirmationmodalmedia').style.display = 'flex';
+    });
     window.addEventListener('media', event => {
         document.getElementById('uploadmedia').style.display = 'flex';
     });
+    window.addEventListener('delete-modal-category', event => {
+        document.getElementById('confirmationmodalsingle').style.display = 'flex';
+    });
+
 
     // JavaScript code
     document.addEventListener('livewire:load', function() {

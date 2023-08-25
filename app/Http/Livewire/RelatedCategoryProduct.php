@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Exports\CategoriesExport;
 use App\Models\Category;
+use App\Models\Product;
 use App\Models\Products_categories;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -29,6 +30,8 @@ class RelatedCategoryProduct extends Component
   public $catidbeingremoved = null;
   public $columns = ['Id', 'Short Description', 'Created At'];
   public $selectedColumns = [];
+  public $product;
+
 
   //add variables
   public $searchadd = '';
@@ -170,6 +173,10 @@ class RelatedCategoryProduct extends Component
     }
     return in_array($column, $this->selectedColumns);
   }
+  public function load()
+  {
+    $this->perPage += 10;
+  }
   public function updatedSelectPage($value)
   {
     if ($value) {
@@ -208,30 +215,28 @@ class RelatedCategoryProduct extends Component
   }
   public function getRelatedcatsProperty()
   {
-    return $this->relatedcatsQuery->paginate($this->perPage);
+    return $this->relatedcatsQuery->get();
   }
   public function getRelatedcatsQueryProperty()
   {
     return Products_categories::where('product_id', $this->productId)
       ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->with('category');
   }
-  public function confirmItemRemoval($itemid)
+  public function ItemRemoval($id)
   {
-    $this->catidbeingremoved = $itemid;
-    $this->dispatchBrowserEvent('show-delete-modal');
+    $this->catidbeingremoved = $id;
+    $this->dispatchBrowserEvent('delete-modal-category');
   }
   public function deleteSingleRecord()
   {
-    $id = $this->catidbeingremoved;
-    $item = Products_categories::findOrFail($id);
+    $item = Products_categories::findOrFail($this->catidbeingremoved);
     $item->delete();
-    $this->checked = array_diff($this->checked, [$id]);
+    $this->checked = array_diff($this->checked, [$this->catidbeingremoved]);
     session()->flash('notification', [
       'message' => 'Record deleted successfully!',
       'type' => 'success',
       'title' => 'Success'
     ]);
-
   }
   public function confirmItemsRemovalmultiple()
   {
@@ -268,14 +273,22 @@ class RelatedCategoryProduct extends Component
   public function mount($productId)
   {
     $this->productId = $productId;
+    $this->product = Product::find($productId);
     $this->selectedColumns = $this->columns;
     $this->selectedColumnsadd = $this->columnsadd;
   }
   public function render()
   {
+    $relatedcats = $this->relatedcatsQuery
+      ->where(function ($query) {
+        $query->whereHas('category', function ($subQuery) {
+          $subQuery->where('name', 'LIKE', '%' . $this->search . '%')
+            ->orWhere('short_description', 'LIKE', '%' . $this->search . '%');
+        });
+      })->get();
     if ($this->showTable === true) {
       return view('livewire.related-category-product', [
-        'relatedcats' => $this->relatedcats,
+        'relatedcats' => $relatedcats,
         'cats' => $this->cats
       ]);
     } else {

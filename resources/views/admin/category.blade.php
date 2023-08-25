@@ -35,7 +35,8 @@
 <section class="content">
 
     {{-- Tabel by Livewire start --}}
-    <livewire:categoriestable lazy />
+    <livewire:categoriestable tableName="categories" lazy />
+
     {{-- Tabel by Livewire end --}}
 
     <a href="#" class="top-up-btn" id="topUp">

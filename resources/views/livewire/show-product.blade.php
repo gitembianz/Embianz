@@ -87,21 +87,6 @@
                             <label> Product Name</label>
                         </div>
                     @endif
-                    {{-- @if ($editproduct === null)
-                        <div class="item__form-input-close">
-                            <div id="category_parrent">{{ $product->product_status }}</div>
-                            <label>Product Status</label>
-                        </div>
-                    @else
-                        <div class="item__form-input">
-                            <select id="select-category" wire:model.defer="prod.product_status">
-                                @foreach ($status as $status_name)
-                                    <option value="{{ $status_name }}">{{ $status_name }}</option>
-                                @endforeach
-                            </select>
-                            <label>Product Status</label>
-                        </div>
-                    @endif --}}
                     @if ($editproduct === null)
                         <div class="item__form-input-close">
                             <div id="category_start_date">{{ $product->start_date }}</div>
@@ -230,6 +215,7 @@
                 </div>
             </div>
             <div class="tabs__content">
+
                 <livewire:related-media-product productId="{{ $product->id }}" />
 
                 <livewire:related-category-product productId="{{ $product->id }}" />
