@@ -99,26 +99,22 @@ class RelatedCategoryProduct extends Component
   public function selectAlladd()
   {
     $this->selectAlladd = true;
-    $this->checkedadd = $this->catsQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+    $this->checkedadd = $this->cats->pluck('id')->map(fn ($item) => (string) $item)->toArray();
   }
   public function getCatsProperty()
   {
     $relatedcatsIds = $this->relatedcats->pluck('category_id')->toArray();
-
-    // Get the categories that are not related (the difference between all cats and related cats)
     $unrelatedCatsQuery = Category::whereNotIn('id', $relatedcatsIds);
-
-    // Apply search on the unrelated categories if $this->searchadd is not empty
     if (!empty($this->searchadd)) {
       $unrelatedCatsQuery->where('name', 'like', '%' . $this->searchadd . '%');
-      // Replace 'your_search_column' with the actual column name you want to search on in the Category model.
     }
 
-    // Apply ordering on the unrelated categories
     $unrelatedCatsQuery->orderBy($this->orderByadd, $this->orderAscadd ? 'asc' : 'desc');
-
-    // Limit the results and get the collection
-    return $unrelatedCatsQuery->limit($this->loadAmount)->get();
+    if ($this->selectAlladd) {
+      return $unrelatedCatsQuery->get();
+    } else {
+      return $unrelatedCatsQuery->limit($this->loadAmount)->get();
+    }
   }
 
   public function confirmItemlink($itemtid)
