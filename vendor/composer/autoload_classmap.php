@@ -107,6 +107,7 @@ return array(
     'App\\View\\Components\\Dashboardscript' => $baseDir . '/app/View/Components/Dashboardscript.php',
     'App\\View\\Components\\Dashboardsidebar' => $baseDir . '/app/View/Components/Dashboardsidebar.php',
     'App\\View\\Components\\GuestLayout' => $baseDir . '/app/View/Components/GuestLayout.php',
+    'App\\View\\Components\\Lazy' => $baseDir . '/app/View/Components/Lazy.php',
     'App\\View\\Components\\Loading' => $baseDir . '/app/View/Components/Loading.php',
     'App\\View\\Components\\Store-footer' => $baseDir . '/app/View/Components/Store-footer.php',
     'App\\View\\Components\\Store-head' => $baseDir . '/app/View/Components/Store-head.php',
