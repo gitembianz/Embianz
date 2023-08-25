@@ -484,6 +484,7 @@
                                                                 <polyline points="12 6 12 12 16 14"></polyline>
                                                             </svg>
                                                             {{ $categori->category->created_at }}
+                                                        </div>
                                                     </td>
                                                 @endif
 

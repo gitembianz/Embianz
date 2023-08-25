@@ -475,6 +475,7 @@
                                                         <polyline points="12 6 12 12 16 14"></polyline>
                                                     </svg>
                                                     {{ $prices->pricelist->created_at }}
+                                                </div>
                                             </td>
                                         @endif
 
