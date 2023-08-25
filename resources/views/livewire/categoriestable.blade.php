@@ -125,116 +125,120 @@
         @endif
     </div>
     {{-- Table --}}
-    <table class="table">
-        <thead>
-            <tr>
-                <th><input type="checkbox" wire:model="selectPage"></th>
-                @foreach ($selectedColumns as $column)
-                    @if ($this->showColumn($column))
-                        <th wire:click="sortBy('{{ $column }}')">
-                            <button class="table__header--btn"
-                                @if ($orderBy === $column && $orderAsc === '1') data-symbol="up"
-                @else data-symbol="down" @endif>
-                                {{ $column }}
-                                <svg>
-                                    <line x1="12" y1="5" x2="12" y2="19"></line>
-                                    <polyline points="19 12 12 19 5 12"></polyline>
-                                </svg>
-                            </button>
-                        </th>
-                    @endif
-                @endforeach
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @if ($categories->isEmpty())
+    <div style="overflow-x: scroll">
+        <table class="table">
+            <thead>
                 <tr>
-                    <td class="table__empty" colspan="{{ count($selectedColumns) }}">No record found.</td>
-                </tr>
-            @else
-                @foreach ($categories as $category)
-                    <tr @if ($loop->last) id="last_record" @endif
-                        class="@if ($this->isChecked($category->id)) table__row--selected @endif">
-                        <td data-title="Check">
-                            <input type="checkbox" value="{{ $category->id }}" wire:model="checked">
-                        </td>
-                        @foreach ($selectedColumns as $column)
-                            @if ($column === 'name')
-                                <td data-title="Name"><a
-                                        href="/show_category/{{ $category->id }}'">{{ $category->name }}</a></td>
-                            @elseif($column === 'created_at' || $column === 'updated_at')
-                                <td data-title="{{ $category->$column }}">
-                                    <div class="table__time">
-                                        <svg>
-                                            <circle cx="12" cy="12" r="10"></circle>
-                                            <polyline points="12 6 12 12 16 14"></polyline>
-                                        </svg>
-                                        {{ $category->$column }}
-                                    </div>
-                                </td>
-                            @elseif($column === 'start_date' || $column === 'end_date')
-                                <td data-title="{{ $category->$column }}">
-                                    <div class="table__time">
-                                        <svg>
-                                            <rect x="3" y="4" width="18" height="18"
-                                                rx="2" ry="2"></rect>
-                                            <line x1="16" y1="2" x2="16" y2="6">
-                                            </line>
-                                            <line x1="8" y1="2" x2="8" y2="6">
-                                            </line>
-                                            <line x1="3" y1="10" x2="21" y2="10">
-                                            </line>
-                                        </svg>
-                                        {{ $category->$column }}
-                                    </div>
-                                </td>
-                            @elseif($column === 'createdby' || $column === 'lastmodifiedby')
-                                <td data-title="{{ $category->$column }}">
-                                    <div class="table__time">
-                                        <svg>
-                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                                            <circle cx="12" cy="7" r="4"></circle>
-                                        </svg>
-                                        {{ $category->$column }}
-                                    </div>
-                                </td>
-                            @elseif ($column === 'active')
-                                <td data-title="{{ $category->$column }}">
-                                    @if ($category->$column)
-                                        active
-                                    @else
-                                        inactive
-                                    @endif
-                                </td>
-                            @elseif ($column === 'store_tab')
-                                <td data-title="{{ $category->$column }}">
-                                    @if ($category->$column)
-                                        visible
-                                    @else
-                                        hidden
-                                    @endif
-                                </td>
-                            @else
-                                <td data-title="{{ $category->$column }}">{{ $category->$column }}</td>
-                            @endif
-                        @endforeach
-                        <td data-title="Action">
-                            <div class="table__buttons">
-                                <button class="delete" wire:click.prevent="confirmItemRemoval({{ $category->id }})">
+                    <th><input type="checkbox" wire:model="selectPage"></th>
+                    @foreach ($selectedColumns as $column)
+                        @if ($this->showColumn($column))
+                            <th wire:click="sortBy('{{ $column }}')">
+                                <button class="table__header--btn"
+                                    @if ($orderBy === $column && $orderAsc === '1') data-symbol="up"
+                @else data-symbol="down" @endif>
+                                    {{ $column }}
                                     <svg>
-                                        <polyline points="3 6 5 6 21 6"></polyline>
-                                        <path
-                                            d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                        </path>
+                                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                                        <polyline points="19 12 12 19 5 12"></polyline>
                                     </svg>
                                 </button>
-                            </div>
-                        </td>
+                            </th>
+                        @endif
+                    @endforeach
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if ($categories->isEmpty())
+                    <tr>
+                        <td class="table__empty" colspan="{{ count($selectedColumns) }}">No record found.</td>
                     </tr>
-                @endforeach
-            @endif
-        </tbody>
-        <x-lazy />
-    </table>
+                @else
+                    @foreach ($categories as $category)
+                        <tr @if ($loop->last) id="last_record" @endif
+                            class="@if ($this->isChecked($category->id)) table__row--selected @endif">
+                            <td data-title="Check">
+                                <input type="checkbox" value="{{ $category->id }}" wire:model="checked">
+                            </td>
+                            @foreach ($selectedColumns as $column)
+                                @if ($column === 'name')
+                                    <td data-title="Name"><a
+                                            href="/show_category/{{ $category->id }}'">{{ $category->name }}</a></td>
+                                @elseif($column === 'created_at' || $column === 'updated_at')
+                                    <td data-title="{{ $category->$column }}">
+                                        <div class="table__time">
+                                            <svg>
+                                                <circle cx="12" cy="12" r="10"></circle>
+                                                <polyline points="12 6 12 12 16 14"></polyline>
+                                            </svg>
+                                            {{ $category->$column }}
+                                        </div>
+                                    </td>
+                                @elseif($column === 'start_date' || $column === 'end_date')
+                                    <td data-title="{{ $category->$column }}">
+                                        <div class="table__time">
+                                            <svg>
+                                                <rect x="3" y="4" width="18" height="18"
+                                                    rx="2" ry="2"></rect>
+                                                <line x1="16" y1="2" x2="16" y2="6">
+                                                </line>
+                                                <line x1="8" y1="2" x2="8" y2="6">
+                                                </line>
+                                                <line x1="3" y1="10" x2="21" y2="10">
+                                                </line>
+                                            </svg>
+                                            {{ $category->$column }}
+                                        </div>
+                                    </td>
+                                @elseif($column === 'createdby' || $column === 'lastmodifiedby')
+                                    <td data-title="{{ $category->$column }}">
+                                        <div class="table__time">
+                                            <svg>
+                                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                                <circle cx="12" cy="7" r="4"></circle>
+                                            </svg>
+                                            {{ $category->$column }}
+                                        </div>
+                                    </td>
+                                @elseif ($column === 'active')
+                                    <td data-title="{{ $category->$column }}">
+                                        @if ($category->$column)
+                                            active
+                                        @else
+                                            inactive
+                                        @endif
+                                    </td>
+                                @elseif ($column === 'store_tab')
+                                    <td data-title="{{ $category->$column }}">
+                                        @if ($category->$column)
+                                            visible
+                                        @else
+                                            hidden
+                                        @endif
+                                    </td>
+                                @else
+                                    <td data-title="{{ $category->$column }}">{{ $category->$column }}</td>
+                                @endif
+                            @endforeach
+                            <td data-title="Action">
+                                <div class="table__buttons">
+                                    <button class="delete"
+                                        wire:click.prevent="confirmItemRemoval({{ $category->id }})">
+                                        <svg>
+                                            <polyline points="3 6 5 6 21 6"></polyline>
+                                            <path
+                                                d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                            </path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                @endif
+            </tbody>
+            <x-lazy />
+        </table>
+    </div>
+
 </div>
