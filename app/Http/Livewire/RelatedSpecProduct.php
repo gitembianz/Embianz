@@ -316,23 +316,31 @@ class RelatedSpecProduct extends Component
   }
   public function savespecs()
   {
+    $empty = false;
     foreach ($this->specsAndValues as $index =>  $specAndValue) {
       $val = $specAndValue['spec'];
-      if (array_key_exists('value', $val)) {
+      if (array_key_exists('value', $val) && $specAndValue['spec']['value'] == null) {
+        $empty = true;
+      }
+    }
+    if ($empty) {
+      session()->flash('notification', [
+        'message' => 'Please provide a value!',
+        'type' => 'warning',
+        'title' => 'Missing Values'
+      ]);
+      return;
+    } else {
+      foreach ($this->specsAndValues as $index =>  $specAndValue) {
+        $val = $specAndValue['spec'];
         $newspec = new Product_Spec();
         $newspec->product_id = $this->productId;
         $newspec->spec_id = $specAndValue['spec']['idrel'];
         $newspec->value = $specAndValue['spec']['value'];
         $newspec->save();
-      } else {
-        session()->flash('notification', [
-          'message' => 'Please provide a value!',
-          'type' => 'warning',
-          'title' => 'Missing Values'
-        ]);
-        return;
       }
     }
+
 
     $this->specsAndValues = [
       [
