@@ -225,24 +225,39 @@ class RelatedSpecProduct extends Component
   {
     $this->itemstoedit = $this->checked;
     $this->editmultiple = true;
-    foreach ($this->itemstoedit  as $index => $item) {
+
+    foreach ($this->itemstoedit as $index => $item) {
       $test = Product_Spec::find($item);
-      $this->specsAndValues[$index]['itemselected'] = $test->spec->name;
-      $this->specsAndValues[$index]['spec']['id'] = $test->id;
-      $this->specsAndValues[$index]['spec']['idrel'] = $test->spec->id;
-      $this->specsAndValues[$index]['spec']['value'] = $test->value;
-      $this->specsAndValues[$index]['allow'] = false;
+
+      if ($test && $test->spec) {
+        $this->specsAndValues[$index]['itemselected'] = $test->spec->name;
+        $this->specsAndValues[$index]['spec']['id'] = $test->id;
+        $this->specsAndValues[$index]['spec']['idrel'] = $test->spec->id;
+        $this->specsAndValues[$index]['spec']['value'] = $test->value;
+        $this->specsAndValues[$index]['allow'] = false;
+      }
     }
   }
   public function confirmspecsmultiple()
   {
 
-    foreach ($this->specsAndValues as $index =>  $specAndValue) {
-      if (isset($specAndValue['spec']['value'])) {
+    if (empty($this->specsAndValues)) {
+      session()->flash('notification', [
+        'message' => 'No specifications to update.',
+        'type' => 'warning',
+        'title' => 'No Data'
+      ]);
+      return;
+    }
+
+    foreach ($this->specsAndValues as $index => $specAndValue) {
+      if (!empty($specAndValue['spec']['value'])) {
         $spec = Product_Spec::find($specAndValue['spec']['id']);
-        $spec->spec_id = $specAndValue['spec']['idrel'];
-        $spec->value = $specAndValue['spec']['value'];
-        $spec->save();
+        if ($spec) {
+          $spec->spec_id = $specAndValue['spec']['idrel'];
+          $spec->value = $specAndValue['spec']['value'];
+          $spec->save();
+        }
       } else {
         session()->flash('notification', [
           'message' => 'Please provide a value!',
