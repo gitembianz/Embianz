@@ -2945,6 +2945,15 @@ textarea.table__edit {
   padding: 10px;
 }
 
+.table-top {
+  position: fixed;
+  width: calc(100% - 4rem);
+  left: 50%;
+  background-color: white;
+  z-index: 99;
+  transform: translateX(-50%);
+}
+
 .pagination {
   display: flex;
   flex-direction: row;

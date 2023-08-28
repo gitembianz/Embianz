@@ -79,7 +79,8 @@
                                         <div class="dropdown">
                                             <button
                                                 wire:click.prevent="@if ($coladd === false) $set('coladd', true) @else $set('coladd', false) @endif"
-                                                class="dropdown-button">Columns</button>
+                                                class="dropdown-button">Columns
+                                            </button>
                                             @if ($coladd)
                                                 <div class="dropdown-list" style="display: flex;">
                                                     @foreach ($columnsadd as $column)
@@ -117,138 +118,144 @@
                                     @endif
                                 </div>
                                 {{-- Table --}}
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th><input type="checkbox" wire:model="selectPageadd"></th>
-                                            @if ($this->showColumnadd('Id'))
-                                                <th wire:click="sortByadd('id')">
-                                                    <button class="table__header--btn"
-                                                        @if ($orderByadd === 'id' && $orderAscadd === '1') data-symbol="up"
-                                                        @else data-symbol="down" @endif>
-                                                        ID
-                                                        <svg>
-                                                            <line x1="12" y1="5" x2="12"
-                                                                y2="19"></line>
-                                                            <polyline points="19 12 12 19 5 12"></polyline>
-                                                        </svg>
-                                                    </button>
-                                                </th>
-                                            @endif
-
-                                            @if ($this->showColumnadd('Name'))
-                                                <th wire:click="sortByadd('name')">
-                                                    <button class="table__header--btn"
-                                                        @if ($orderByadd === 'name' && $orderAscadd === '1') data-symbol="up"
-                                                        @else data-symbol="down" @endif>
-                                                        Name
-                                                        <svg>
-                                                            <line x1="12" y1="5" x2="12"
-                                                                y2="19"></line>
-                                                            <polyline points="19 12 12 19 5 12"></polyline>
-                                                        </svg>
-                                                    </button>
-                                                </th>
-                                            @endif
-
-                                            @if ($this->showColumnadd('Short Description'))
-                                                <th wire:click="sortByadd('short_description')">
-                                                    <button class="table__header--btn"
-                                                        @if ($orderByadd === 'short_description' && $orderAscadd === '1') data-symbol="up"
-                                                        @else data-symbol="down" @endif>
-                                                        Description
-                                                        <svg>
-                                                            <line x1="12" y1="5" x2="12"
-                                                                y2="19"></line>
-                                                            <polyline points="19 12 12 19 5 12"></polyline>
-                                                        </svg>
-                                                    </button>
-                                                </th>
-                                            @endif
-
-                                            @if ($this->showColumnadd('Created At'))
-                                                <th wire:click="sortByadd('created_at')">
-                                                    <button class="table__header--btn"
-                                                        @if ($orderByadd === 'created_at' && $orderAscadd === '1') data-symbol="up"
-                                                        @else data-symbol="down" @endif>
-                                                        Created at
-                                                        <svg>
-                                                            <line x1="12" y1="5" x2="12"
-                                                                y2="19"></line>
-                                                            <polyline points="19 12 12 19 5 12"></polyline>
-                                                        </svg>
-                                                    </button>
-                                                </th>
-                                            @endif
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-
-                                    <tbody>
-                                        @if ($prodds->count() > 0)
-
-                                            @foreach ($prodds as $product)
-                                                <tr @if ($loop->last) id="last_record" @endif
-                                                    class="@if ($this->isCheckedadd($product->id)) table__row--selected @endif">
-                                                    <td data-title="Check">
-                                                        <input type="checkbox" value="{{ $product->id }}"
-                                                            wire:model="checkedadd">
-                                                    </td>
-
-                                                    @if ($this->showColumnadd('Id'))
-                                                        <td data-title="ID">{{ $product->id }}</td>
-                                                    @endif
-
-                                                    @if ($this->showColumnadd('Name'))
-                                                        <td data-title="Name"><a
-                                                                href="/show_product/{{ $product->id }}'">{{ $product->name }}</a>
-                                                        </td>
-                                                    @endif
-
-                                                    @if ($this->showColumnadd('Short Description'))
-                                                        <td class="table__description" data-title="Description">
-                                                            {{ $product->short_description }}</td>
-                                                    @endif
-
-                                                    @if ($this->showColumnadd('Created At'))
-                                                        <td data-title="Created At">
-                                                            <div class="table__time">
-                                                                <svg>
-                                                                    <circle cx="12" cy="12"
-                                                                        r="10">
-                                                                    </circle>
-                                                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                                                </svg>
-                                                                {{ $product->created_at }}
-                                                        </td>
-                                                    @endif
-
-                                                    <td data-title="Action">
-                                                        <div class="table__buttons">
-                                                            <button class="edit"
-                                                                wire:click.prevent="confirmProductlink({{ $product->id }})">
-                                                                <svg>
-                                                                    <path
-                                                                        d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71">
-                                                                    </path>
-                                                                    <path
-                                                                        d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71">
-                                                                    </path>
-                                                                </svg>
-                                                            </button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        @else
+                                <div style="overflow-y: scroll;position: relative;">
+                                    <table class="table table-top">
+                                        <thead>
                                             <tr>
-                                                <td class="table__empty" colspan="{{ count($columns) + 3 }}">No
-                                                    record
-                                                    found.</td>
+                                                <th><input type="checkbox" wire:model="selectPageadd"></th>
+                                                @if ($this->showColumnadd('Id'))
+                                                    <th wire:click="sortByadd('id')">
+                                                        <button class="table__header--btn"
+                                                            @if ($orderByadd === 'id' && $orderAscadd === '1') data-symbol="up"
+                                                      @else data-symbol="down" @endif>
+                                                            ID
+                                                            <svg>
+                                                                <line x1="12" y1="5" x2="12"
+                                                                    y2="19"></line>
+                                                                <polyline points="19 12 12 19 5 12"></polyline>
+                                                            </svg>
+                                                        </button>
+                                                    </th>
+                                                @endif
+
+                                                @if ($this->showColumnadd('Name'))
+                                                    <th wire:click="sortByadd('name')">
+                                                        <button class="table__header--btn"
+                                                            @if ($orderByadd === 'name' && $orderAscadd === '1') data-symbol="up"
+                                                      @else data-symbol="down" @endif>
+                                                            Name
+                                                            <svg>
+                                                                <line x1="12" y1="5" x2="12"
+                                                                    y2="19"></line>
+                                                                <polyline points="19 12 12 19 5 12"></polyline>
+                                                            </svg>
+                                                        </button>
+                                                    </th>
+                                                @endif
+
+                                                @if ($this->showColumnadd('Short Description'))
+                                                    <th wire:click="sortByadd('short_description')">
+                                                        <button class="table__header--btn"
+                                                            @if ($orderByadd === 'short_description' && $orderAscadd === '1') data-symbol="up"
+                                                      @else data-symbol="down" @endif>
+                                                            Description
+                                                            <svg>
+                                                                <line x1="12" y1="5" x2="12"
+                                                                    y2="19"></line>
+                                                                <polyline points="19 12 12 19 5 12"></polyline>
+                                                            </svg>
+                                                        </button>
+                                                    </th>
+                                                @endif
+
+                                                @if ($this->showColumnadd('Created At'))
+                                                    <th wire:click="sortByadd('created_at')">
+                                                        <button class="table__header--btn"
+                                                            @if ($orderByadd === 'created_at' && $orderAscadd === '1') data-symbol="up"
+                                                      @else data-symbol="down" @endif>
+                                                            Created at
+                                                            <svg>
+                                                                <line x1="12" y1="5" x2="12"
+                                                                    y2="19"></line>
+                                                                <polyline points="19 12 12 19 5 12"></polyline>
+                                                            </svg>
+                                                        </button>
+                                                    </th>
+                                                @endif
+                                                <th></th>
                                             </tr>
-                                        @endif
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                    </table>
+                                    <table class="table" style="margin-top: 2rem">
+                                        <tbody>
+                                            @if ($prodds->count() > 0)
+
+                                                @foreach ($prodds as $product)
+                                                    <tr @if ($loop->last) id="last_record" @endif
+                                                        class="@if ($this->isCheckedadd($product->id)) table__row--selected @endif">
+                                                        <td data-title="Check">
+                                                            <input type="checkbox" value="{{ $product->id }}"
+                                                                wire:model="checkedadd">
+                                                        </td>
+
+                                                        @if ($this->showColumnadd('Id'))
+                                                            <td data-title="ID">{{ $product->id }}</td>
+                                                        @endif
+
+                                                        @if ($this->showColumnadd('Name'))
+                                                            <td data-title="Name"><a
+                                                                    href="/show_product/{{ $product->id }}'">{{ $product->name }}</a>
+                                                            </td>
+                                                        @endif
+
+                                                        @if ($this->showColumnadd('Short Description'))
+                                                            <td class="table__description" data-title="Description">
+                                                                {{ $product->short_description }}</td>
+                                                        @endif
+
+                                                        @if ($this->showColumnadd('Created At'))
+                                                            <td data-title="Created At">
+                                                                <div class="table__time">
+                                                                    <svg>
+                                                                        <circle cx="12" cy="12"
+                                                                            r="10">
+                                                                        </circle>
+                                                                        <polyline points="12 6 12 12 16 14">
+                                                                        </polyline>
+                                                                    </svg>
+                                                                    {{ $product->created_at }}
+                                                            </td>
+                                                        @endif
+
+                                                        <td data-title="Action">
+                                                            <div class="table__buttons">
+                                                                <button class="edit"
+                                                                    wire:click.prevent="confirmProductlink({{ $product->id }})">
+                                                                    <svg>
+                                                                        <path
+                                                                            d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71">
+                                                                        </path>
+                                                                        <path
+                                                                            d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71">
+                                                                        </path>
+                                                                    </svg>
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            @else
+                                                <tr>
+                                                    <td class="table__empty" colspan="{{ count($columns) + 3 }}">
+                                                        No
+                                                        record
+                                                        found.</td>
+                                                </tr>
+                                            @endif
+                                        </tbody>
+                                    </table>
+                                </div>
+
                                 <span class="top-up-modal delete"
                                     style="position: fixed; right: 0; top: 0; width: 2.5rem; height: 2.5rem;"
                                     wire:click="cancel">
