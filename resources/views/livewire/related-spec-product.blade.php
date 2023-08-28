@@ -151,8 +151,8 @@
                         <h1 class="panel__header--title">
                             {{ __('Edit multiple related items') }}
                         </h1>
-                        <input class="panel__header--checked" wire:click.prevent="confirmspecsmultiple()"
-                            type="button" value="Save">
+                        <input class="panel__header--checked panel__header--input"
+                            wire:click.prevent="confirmspecsmultiple()" type="button" value="Save">
                     </div>
                     {{-- Table --}}
                     <div style="overflow-y: auto; position: relative; background: white;">
@@ -165,7 +165,7 @@
                                 </tr>
                             </thead>
                         </table>
-                        <table class="table">
+                        <table class="table mt-2">
                             <tbody>
                                 @foreach ($specsAndValues as $index => $specAndValue)
                                     <tr wire:key="spec-row-{{ $index }}">
