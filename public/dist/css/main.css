@@ -89,7 +89,7 @@ html {
 }
 
 svg {
-  width: 32;
+  width: 32px;
   height: 32px;
   fill: none;
   stroke: #BBFCDE;
@@ -1611,6 +1611,8 @@ main {
   display: grid;
   grid-template-columns: 0fr 1fr 0fr;
   border-radius: 8px;
+  padding: 0 20px;
+  gap: 20px;
   background-color: #f2f2f2;
   align-items: center;
   box-shadow: 0 0 20px 0 black;
@@ -1627,6 +1629,9 @@ main {
   flex-grow: 0;
   width: 100%;
   padding: 10px;
+}
+.toast__text > strong > span > a {
+  text-decoration: underline;
 }
 .toast img {
   width: 40px;
@@ -2905,13 +2910,13 @@ textarea.table__edit {
   top: 110%;
   left: 0;
   width: 100%;
-  height: auto;
+  min-height: 2rem;
   max-height: 150px;
   overflow-y: auto;
   border: 1px solid gray;
   border-radius: 4px;
   background-color: white;
-  z-index: 99;
+  z-index: 999;
 }
 
 .table__drop--item {
