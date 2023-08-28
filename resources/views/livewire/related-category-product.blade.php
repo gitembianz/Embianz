@@ -94,7 +94,8 @@
                                     </div>
                                     <button
                                         @if ($checkedadd) style="display: unset; z-index: 5;" @else style="display: none;" @endif
-                                        class="panel__header--button" wire:click.prevent="confirmItemsLinkmultiple()"
+                                        class="panel__header--button panel__header--checked"
+                                        wire:click.prevent="confirmItemsLinkmultiple()"
                                         @if ($checkedadd) style="display: flex" @endif> Add
                                         {{ count($checkedadd) }} records
                                     </button>
@@ -249,22 +250,20 @@
                                     </tbody>
                                 </table>
                             </div>
+                            <span class="top-up-modal delete" wire:click="cancel">
+                                <svg>
+                                    <line x1="18" y1="6" x2="6" y2="18">
+                                    </line>
+                                    <line x1="6" y1="6" x2="18" y2="18">
+                                    </line>
+                                </svg>
+                            </span>
+                            <a href="#top" class="top-up-modal" id="topUp">
+                                <svg>
+                                    <polyline points="18 15 12 9 6 15"></polyline>
+                                </svg>
+                            </a>
                         </div>
-                        <span class="top-up-modal delete"
-                            style="position: fixed; right: 0; top: 0; width: 2.5rem; height: 2.5rem;"
-                            wire:click="cancel">
-                            <svg>
-                                <line x1="18" y1="6" x2="6" y2="18">
-                                </line>
-                                <line x1="6" y1="6" x2="18" y2="18">
-                                </line>
-                            </svg>
-                        </span>
-                        <a href="#top" class="top-up-modal" id="topUp">
-                            <svg>
-                                <polyline points="18 15 12 9 6 15"></polyline>
-                            </svg>
-                        </a>
                         <x-lazy />
                     </div>
                 @endif

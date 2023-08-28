@@ -212,7 +212,7 @@
 
    &.submit {
      @include BtnHover(darken($secondColor, 30%), darken($secondColor, 50%), $darkBg);
-     background-color: $secondColor;
+     background-color: rgb(180 242 215);
      color: $mainBg;
    }
  }
@@ -273,7 +273,7 @@
      align-items: center;
      transition: $transition;
      background-color: $mainBg;
-     transform: translateY(-100%);
+     transform: translateY(-200%);
      grid-template-columns: repeat(4, 1fr);
 
      & input {
