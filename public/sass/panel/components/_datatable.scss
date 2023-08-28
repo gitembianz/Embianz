@@ -527,3 +527,12 @@ textarea.table__edit {
   text-align: center;
   padding: 10px;
 }
+
+.table-top {
+  position: fixed;
+  width: 100%;
+  left: 50%;
+  background-color: white;
+  z-index: 99;
+  transform: translateX(-50%);
+}
