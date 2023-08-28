@@ -52,7 +52,7 @@
                             <div class="modal-content modal--tabel">
                                 <div class="panel__header">
                                     <h1 class="panel__header--title">
-                                        {{ __("Add local media") }}
+                                        {{ __("Add Local Media") }}
                                     </h1>
                                     <input type="submit" class="panel__header--input panel__header--checked"
                                         value="Save">

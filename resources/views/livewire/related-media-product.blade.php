@@ -54,7 +54,7 @@
                                         {{ __("Add local media") }}
                                     </h1>
                                     <input type="submit" class="panel__header--input panel__header--checked"
-                                        value="Save Media">
+                                        value="Save">
 
                                 </div>
                                 <div style="overflow-y: auto;background-color: white;position: relative">
@@ -170,7 +170,7 @@
                                         {{ __("Add external media") }}
                                     </h1>
                                     <input type="submit" class="panel__header--input panel__header--checked"
-                                        value="Save Media">
+                                        value="Save">
                                 </div>
                                 <div style="overflow-y: auto;background-color: white;position: relative">
                                     <table class="table table-top">

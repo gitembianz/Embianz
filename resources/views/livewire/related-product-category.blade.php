@@ -96,7 +96,8 @@
                                         </div>
                                         <button
                                             @if ($checkedadd) style="display: unset; z-index: 5;" @else style="display: none;" @endif
-                                            class="panel__header--button" wire:click.prevent="confirmLinkmultiple()"
+                                            class="panel__header--button panel__header--checked"
+                                            wire:click.prevent="confirmLinkmultiple()"
                                             @if ($checkedadd) style="display: flex" @endif> Add
                                             {{ count($checkedadd) }} records
                                         </button>

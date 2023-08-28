@@ -1540,7 +1540,7 @@ main {
   stroke: #35424B;
 }
 .dropdown-list button.submit {
-  background-color: #BBFCDE;
+  background-color: rgb(180, 242, 215);
   color: #35424B;
 }
 .dropdown-list button.submit:hover {
@@ -1562,9 +1562,6 @@ main {
 }
 .dropdown-list button.submit.active svg, .dropdown-list button.submit:active svg, .dropdown-list button.submit:focus-visible svg {
   stroke: #20282d;
-}
-.dropdown-list button.delete {
-  background: #7d0017;
 }
 .dropdown-item {
   display: flex;
@@ -1870,7 +1867,7 @@ main {
   stroke: #35424B;
 }
 .accordion__btn.submit {
-  background-color: #BBFCDE;
+  background-color: rgb(180, 242, 215);
   color: #35424B;
 }
 .accordion__btn.submit:hover {
@@ -2011,7 +2008,7 @@ main {
   stroke: #35424B;
 }
 .accordion__upload.submit {
-  background-color: #BBFCDE;
+  background-color: rgb(180, 242, 215);
   color: #35424B;
 }
 .accordion__upload.submit:hover {
@@ -2094,7 +2091,7 @@ main {
   grid-column-end: 3;
   text-align: center;
   color: #35424B;
-  font-size: 1.75rem;
+  font-size: 1.5rem;
 }
 .modal-content-btn {
   display: flex;
@@ -2200,7 +2197,7 @@ main {
   stroke: #35424B;
 }
 .modal-content-btn.submit {
-  background-color: #BBFCDE;
+  background-color: rgb(180, 242, 215);
   color: #35424B;
 }
 .modal-content-btn.submit:hover {
@@ -2443,7 +2440,7 @@ input[type=checkbox].check--disabled:checked:before {
   stroke: #35424B;
 }
 .top-up-btn.submit, .submit.top-up-modal {
-  background-color: #BBFCDE;
+  background-color: rgb(180, 242, 215);
   color: #35424B;
 }
 .top-up-btn.submit:hover, .submit.top-up-modal:hover {
@@ -3070,7 +3067,7 @@ textarea.table__edit {
   stroke: #35424B;
 }
 .pagination__item.submit {
-  background-color: #BBFCDE;
+  background-color: rgb(180, 242, 215);
   color: #35424B;
 }
 .pagination__item.submit:hover {
@@ -3153,7 +3150,7 @@ header,
   align-items: center;
   transition: all 0.2s ease-in-out;
   background-color: #35424B;
-  transform: translateY(-100%);
+  transform: translateY(-200%);
   grid-template-columns: repeat(4, 1fr);
 }
 .search input,
@@ -3395,7 +3392,7 @@ header,
 .search__item.submit, .search__icon.submit,
 .profile__item.submit,
 .profile__icon.submit {
-  background-color: #BBFCDE;
+  background-color: rgb(180, 242, 215);
   color: #35424B;
 }
 .search__item.submit:hover, .search__icon.submit:hover,
@@ -3648,7 +3645,7 @@ header,
   stroke: #35424B;
 }
 .notify__btn.submit, .notify__item.submit {
-  background-color: #BBFCDE;
+  background-color: rgb(180, 242, 215);
   color: #35424B;
 }
 .notify__btn.submit:hover, .notify__item.submit:hover {
@@ -3920,7 +3917,7 @@ header,
   stroke: #35424B;
 }
 .sidebar__btn.submit {
-  background-color: #BBFCDE;
+  background-color: rgb(180, 242, 215);
   color: #35424B;
 }
 .sidebar__btn.submit:hover {
@@ -4049,7 +4046,7 @@ header,
   stroke: #35424B;
 }
 .sidebar__item.submit, .submit.sidebar__subitem {
-  background-color: #BBFCDE;
+  background-color: rgb(180, 242, 215);
   color: #35424B;
 }
 .sidebar__item.submit:hover, .submit.sidebar__subitem:hover {
@@ -4184,7 +4181,7 @@ header,
   stroke: #35424B;
 }
 .sidebar__icon.submit {
-  background-color: #BBFCDE;
+  background-color: rgb(180, 242, 215);
   color: #35424B;
 }
 .sidebar__icon.submit:hover {
@@ -4372,7 +4369,7 @@ header,
     stroke: #35424B;
   }
   .sidebar__open.submit {
-    background-color: #BBFCDE;
+    background-color: rgb(180, 242, 215);
     color: #35424B;
   }
   .sidebar__open.submit:hover {
@@ -4827,7 +4824,7 @@ button[data-tooltip-center]::after {
   stroke: #35424B;
 }
 .right__open.submit {
-  background-color: #BBFCDE;
+  background-color: rgb(180, 242, 215);
   color: #35424B;
 }
 .right__open.submit:hover {
