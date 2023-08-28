@@ -89,7 +89,7 @@ html {
 }
 
 svg {
-  width: 32;
+  width: 32px;
   height: 32px;
   fill: none;
   stroke: #BBFCDE;
@@ -1611,6 +1611,8 @@ main {
   display: grid;
   grid-template-columns: 0fr 1fr 0fr;
   border-radius: 8px;
+  padding: 0 20px;
+  gap: 20px;
   background-color: #f2f2f2;
   align-items: center;
   box-shadow: 0 0 20px 0 black;
