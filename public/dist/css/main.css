@@ -2237,13 +2237,11 @@ main {
   justify-content: flex-start;
   flex-direction: column;
   gap: 0;
-  height: 100%;
-  width: 100%;
-  overflow-y: auto;
+  height: 90%;
+  width: 90%;
   padding: 0;
-  background: none;
+  background: white;
   position: absolute;
-  padding: 2rem;
   margin: 0 !important;
   top: 50%;
   left: 50%;
@@ -2947,7 +2945,7 @@ textarea.table__edit {
 
 .table-top {
   position: fixed;
-  width: calc(100% - 4rem);
+  width: 100%;
   left: 50%;
   background-color: white;
   z-index: 99;
