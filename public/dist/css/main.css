@@ -2910,13 +2910,13 @@ textarea.table__edit {
   top: 110%;
   left: 0;
   width: 100%;
-  height: auto;
+  min-height: 2rem;
   max-height: 150px;
   overflow-y: auto;
   border: 1px solid gray;
   border-radius: 4px;
   background-color: white;
-  z-index: 99;
+  z-index: 999;
 }
 
 .table__drop--item {
