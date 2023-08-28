@@ -26,7 +26,7 @@
                             value="Save">
                     </div>
                     {{-- Table --}}
-                    <div style="overflow-y: auto; position: relative; background: white;">
+                    <div style="overflow-y: auto; position: relative; background: white; height: 100%;">
                         <table class="table table-top">
                             <thead>
                                 <tr>
@@ -145,7 +145,7 @@
                             value="Save">
                     </div>
                     {{-- Table --}}
-                    <div style="overflow-y: auto; position: relative; background: white;">
+                    <div style="overflow-y: auto; position: relative; background: white; height: 100%">
                         <table class="table table-top">
                             <thead>
                                 <tr>

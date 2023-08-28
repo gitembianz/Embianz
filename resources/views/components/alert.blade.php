@@ -1,12 +1,12 @@
-@if (session()->has('notification'))
+@if (session()->has("notification"))
     {{-- aici se afla notificarea noua --}}
     <div class="notifications">
-        <div class="toast {{ session('notification.type', 'info') }}" id="alertevent">
+        <div class="toast {{ session("notification.type", "info") }}" id="alertevent">
             @php
                 // Determine the SVG code based on the type
-                $svg = '';
-                switch (session('notification.type', 'info')) {
-                    case 'success':
+                $svg = "";
+                switch (session("notification.type", "info")) {
+                    case "success":
                         $svg = '<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 50.00 50.00" xml:space="preserve" width="64px"
                     height="64px" fill="#000000">
@@ -21,24 +21,36 @@
                     </g>
                 </svg>';
                         break;
-                    case 'warning':
-                        $svg = '<svg fill="#ffea00" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" stroke="#ffea00"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>warning</title> <path d="M30.555 25.219l-12.519-21.436c-1.044-1.044-2.738-1.044-3.782 0l-12.52 21.436c-1.044 1.043-1.044 2.736 0 3.781h28.82c1.046-1.045 1.046-2.738 0.001-3.781zM14.992 11.478c0-0.829 0.672-1.5 1.5-1.5s1.5 0.671 1.5 1.5v7c0 0.828-0.672 1.5-1.5 1.5s-1.5-0.672-1.5-1.5v-7zM16.501 24.986c-0.828 0-1.5-0.67-1.5-1.5 0-0.828 0.672-1.5 1.5-1.5s1.5 0.672 1.5 1.5c0 0.83-0.672 1.5-1.5 1.5z"></path> </g></svg>';
+                    case "warning":
+                        $svg = '<svg style="fill: yellow;stroke: black;" viewBox="0 0 32 32">
+                                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                  <g id="SVGRepo_iconCarrier">
+                                    <path d="M30.555 25.219l-12.519-21.436c-1.044-1.044-2.738-1.044-3.782 0l-12.52 21.436c-1.044 1.043-1.044 2.736 0 3.781h28.82c1.046-1.045 1.046-2.738 0.001-3.781zM14.992 11.478c0-0.829 0.672-1.5 1.5-1.5s1.5 0.671 1.5 1.5v7c0 0.828-0.672 1.5-1.5 1.5s-1.5-0.672-1.5-1.5v-7zM16.501 24.986c-0.828 0-1.5-0.67-1.5-1.5 0-0.828 0.672-1.5 1.5-1.5s1.5 0.672 1.5 1.5c0 0.83-0.672 1.5-1.5 1.5z"></path>
+                                  </g>
+                                </svg>';
                         break;
-                    case 'error':
-                        $svg =
-                            '<svg version="1.1" id="svg2" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" sodipodi:docname="error-alt.svg" inkscape:version="0.48.4 r9939" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="64px" height="64px" viewBox="0 0 1200 1200" enable-background="new 0 0 1200 1200" xml:space="preserve" fill="#ff0000" stroke="#ff0000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <sodipodi:namedview inkscape:cy="585.53943" inkscape:cx="642.76503" inkscape:zoom="0.52678571" showgrid="false" id="namedview30" guidetolerance="10" gridtolerance="10" objecttolerance="10" borderopacity="1" bordercolor="#666666" pagecolor="#ffffff" inkscape:current-layer="svg2" inkscape:window-maximized="1" inkscape:window-y="24" inkscape:window-height="876" inkscape:window-width="1535" inkscape:pageshadow="2" inkscape:pageopacity="0" inkscape:window-x="65"> </sodipodi:namedview> <path id="path6448" inkscape:connector-curvature="0" d="M600,0C268.629,0,0,268.629,0,600s268.629,600,600,600s600-268.629,600-600 S931.371,0,600,0z M197.314,439.453h805.371v321.094H197.314V439.453z"></path> </g></svg>';
+                    case "error":
+                        $svg = '<svg style="fill: red;stroke: black;" viewBox="0 0 1200 1200">
+                                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                  <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                  <g id="SVGRepo_iconCarrier">
+                                  <sodipodi:namedview inkscape:cy="585.53943" inkscape:cx="642.76503" inkscape:zoom="0.52678571" showgrid="false" id="namedview30" guidetolerance="10" gridtolerance="10" objecttolerance="10" borderopacity="1" bordercolor="#666666" pagecolor="#ffffff" inkscape:current-layer="svg2" inkscape:window-maximized="1" inkscape:window-y="24" inkscape:window-height="876" inkscape:window-width="1535" inkscape:pageshadow="2" inkscape:pageopacity="0" inkscape:window-x="65">
+                                  </sodipodi:namedview>
+                                  <path id="path6448" inkscape:connector-curvature="0" d="M600,0C268.629,0,0,268.629,0,600s268.629,600,600,600s600-268.629,600-600 S931.371,0,600,0z M197.314,439.453h805.371v321.094H197.314V439.453z"></path>
+                                  </g>
+                                </svg>';
                         break;
                     default:
                         // If the type is not recognized, use default success SVG
-                        $svg = '';
+                        $svg = "";
                         break;
                 }
             @endphp
             {!! $svg !!}
 
             <div class="toast__text">
-                <h3><strong>{{ session('notification.title', 'Info') }}</h3>
-                <span>{!! session('notification.message') !!}</span>
+                <h3><strong>{{ session("notification.title", "Info") }}</h3>
+                <span>{!! session("notification.message") !!}</span>
             </div>
             <button type="button" class="close-button cursor-p" data-bs-dismiss="alertevent" aria-hidden="true"
                 style="border: none">

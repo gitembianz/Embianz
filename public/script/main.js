@@ -257,16 +257,20 @@ function initializeMenu(open, close, menuId, content) {
   function openMenu() {
     menu.classList.add("active");
     menuList.classList.add("active");
+    document.body.style.overflow = "hidden";
   }
 
   function closeMenu() {
     menu.classList.remove("active");
     menuList.classList.remove("active");
+    document.body.style.overflow = "unset";
+
   }
 
   function closeMenuOnOutsideClick(event) {
     if (event.target == menu) {
       closeMenu();
+    document.body.style.overflow = "unset";
     }
   }
 
