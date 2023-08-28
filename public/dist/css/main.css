@@ -2358,8 +2358,8 @@ input[type=checkbox].check--disabled:checked:before {
   height: 3rem;
   transition: all 0.2s ease-in-out;
   position: fixed;
-  right: -1.25rem;
-  bottom: -1.25rem;
+  right: 1.25rem;
+  bottom: 1.25rem;
   opacity: 0;
   pointer-events: none;
   border-radius: 100px;
