@@ -39,8 +39,7 @@
                         </line>
                     </svg></button>
             @endif
-            {{-- <input wire:click.prevent="confirmProductRemoval({{ $product->id }})" class="item__header-btn delete"
-                type="button" value="Delete" name="delete"> --}}
+
             <button wire:click.prevent="confirmProductRemoval({{ $product->id }})" class="item__header-btn delete"
                 type="button" value="Delete" data-tooltip-right="Delete this Product">
                 <svg>

@@ -120,10 +120,10 @@ class CategoryController extends Controller
 
     return redirect()->back()->with([
       'notification' => [
-        'message' => 'Reccord add succesfully!',
+        'message' => 'Record added successfully! Click here  <a href="/show_category/' . $data->id . '">' . $data->name . '</a>',
         'type' => 'success',
         'title' => 'Success'
-      ],
+      ]
     ]);
   }
 
