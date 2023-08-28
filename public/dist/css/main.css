@@ -1630,6 +1630,9 @@ main {
   width: 100%;
   padding: 10px;
 }
+.toast__text > strong > span > a {
+  text-decoration: underline;
+}
 .toast img {
   width: 40px;
   height: 40px;

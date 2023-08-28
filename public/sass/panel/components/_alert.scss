@@ -30,6 +30,10 @@
     @include flexbox(flex, column, center, flex-start, 5px);
     width: 100%;
     padding: 10px;
+
+    &>strong>span>a {
+      text-decoration: underline;
+    }
   }
 
   img {
