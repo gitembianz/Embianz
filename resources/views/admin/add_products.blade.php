@@ -26,22 +26,7 @@
                 </button>
             </div>
         </div>
-        {{-- Item Upload --}}
-        {{-- <div class="item__upload">
-            <input type="file" name="media[]" id="imgUpload" multiple
-                accept="image/*,video/*"onchange="filesManager(this.files)">
 
-            <label class="item__upload-btn" for="imgUpload">
-                <svg>
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                    <polyline points="17 8 12 3 7 8"></polyline>
-                    <line x1="12" y1="3" x2="12" y2="15"></line>
-                </svg>
-                Upload Media
-            </label>
-
-            <table id="imageTable" class="table"></table>
-        </div> --}}
         {{-- Item Form --}}
         <div class="item__form">
             <div class="item__form-input">
@@ -70,17 +55,17 @@
             </div>
 
             <div class="item__form-input item__form-long">
-                <input type="text" name="short_description" required>
-                <label>Product Short Description</label>
+                <input type="text" name="short_description">
+                <label>Short Description</label>
             </div>
 
             <div class="item__form-input item__form-textarea">
-                <textarea name="long_description" required></textarea>
-                <label>Product Long Description</label>
+                <textarea name="long_description"></textarea>
+                <label>Long Description</label>
             </div>
             <div class="item__form-input item__form-long">
-                <input type="text" name="seo_title" required>
-                <label>SEO Title</lab>
+                <input type="text" name="seo_title">
+                <label>SEO Title</label>
             </div>
             <input class="item__form-btn item__form-long" type="submit" value="Add new" name="submit">
         </div>
@@ -93,6 +78,5 @@
 </section>
 {{-- page content end --}}
 <x-dashboardright />
-{{-- <x-dashboardmediahanddler /> --}}
 <x-dashboardscript />
 <x-dashboardfooter />
