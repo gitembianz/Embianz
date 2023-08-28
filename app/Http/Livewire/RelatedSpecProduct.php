@@ -112,10 +112,10 @@ class RelatedSpecProduct extends Component
     return Product_Spec::where('product_id', $this->productId)
       ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->with('spec');
   }
-  public function confirmRemoval($specid)
+  public function confirmRemoval($id)
   {
-    $this->specidbeingremoved = $specid;
-    $this->dispatchBrowserEvent('show-delete-modal');
+    $this->specidbeingremoved = $id;
+    $this->dispatchBrowserEvent('show-delete-spec');
   }
   public function deleteSingleRecord()
   {
@@ -123,7 +123,11 @@ class RelatedSpecProduct extends Component
     $item = Product_Spec::findOrFail($id);
     $item->delete();
     $this->checked = array_diff($this->checked, [$id]);
-    session()->flash('message', 'Record deleted Successfully');
+    session()->flash('notification', [
+      'message' => 'Record deleted successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
   }
   public function deleteRecords()
   {
@@ -134,7 +138,11 @@ class RelatedSpecProduct extends Component
       $itemtodel->delete();
     }
     $this->checked = [];
-    session()->flash('message', 'Related records deleted succesfuly');
+    session()->flash('notification', [
+      'message' => 'Records  deleted successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
   }
   public function confirmRemovalmultiple()
   {
@@ -176,7 +184,11 @@ class RelatedSpecProduct extends Component
     $this->itemselected = null;
     $this->editedrow = null;
     $this->search = '';
-    session()->flash('message', 'Records edited succesfuly');
+    session()->flash('notification', [
+      'message' => 'Record edited successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
   }
   public function editSelected()
   {
@@ -221,7 +233,11 @@ class RelatedSpecProduct extends Component
     $this->checked = [];
     $this->all = false;
     $this->editmultiple = false;
-    session()->flash('message', 'Specs related successfully.');
+    session()->flash('notification', [
+      'message' => 'Record edited successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
   }
   // add specs function
   public function addrelated()
@@ -309,7 +325,11 @@ class RelatedSpecProduct extends Component
         $newspec->value = $specAndValue['spec']['value'];
         $newspec->save();
       } else {
-        session()->flash('message', 'Please provide a value!');
+        session()->flash('notification', [
+          'message' => 'Please provide a value!',
+          'type' => 'warning',
+          'title' => 'Missing Values'
+        ]);
         return;
       }
     }
@@ -323,7 +343,11 @@ class RelatedSpecProduct extends Component
     ];
     $this->row = 1;
     $this->addrelatedspecs = false;
-    session()->flash('message', 'Specs related successfully.');
+    session()->flash('notification', [
+      'message' => 'Record related successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
   }
   public function getAddspecsProperty()
   {

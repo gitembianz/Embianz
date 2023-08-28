@@ -452,64 +452,63 @@
                                     </tr>
                                 @else
                                     @foreach ($relatedcats as $index => $categori)
-                                        @if ($index < $perPage)
-                                            <tr @if ($loop->last) id="last_record" @endif
-                                                class="@if ($this->isChecked($categori->id)) table__row--selected @endif">
-                                                <td data-title="Check">
-                                                    <input type="checkbox" value="{{ $categori->id }}"
-                                                        wire:model="checked">
-                                                </td>
-
-                                                @if ($this->showColumn('Id'))
-                                                    <td data-title="ID">{{ $categori->category->id }}</td>
-                                                @endif
-
-                                                @if ($this->showColumn('Name'))
-                                                    <td data-title="Name"><a
-                                                            href="/show_product/{{ $categori->category->id }}'">{{ $categori->category->name }}</a>
-                                                    </td>
-                                                @endif
-
-                                                @if ($this->showColumn('Short Description'))
-                                                    <td class="table__description" data-title="Description">
-                                                        {{ $categori->category->short_description }}</td>
-                                                @endif
-
-                                                @if ($this->showColumn('Created At'))
-                                                    <td data-title="Created At">
-                                                        <div class="table__time">
-                                                            <svg>
-                                                                <circle cx="12" cy="12" r="10">
-                                                                </circle>
-                                                                <polyline points="12 6 12 12 16 14"></polyline>
-                                                            </svg>
-                                                            {{ $categori->category->created_at }}
-                                                        </div>
-                                                    </td>
-                                                @endif
-
-                                                <td data-title="Action">
-                                                    <div class="table__buttons">
-                                                        <button class="delete"
-                                                            wire:click.prevent="ItemRemoval({{ $categori->id }})">
-                                                            <svg>
-                                                                <polyline points="3 6 5 6 21 6"></polyline>
-                                                                <path
-                                                                    d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                                                </path>
-                                                            </svg>
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        @else
+                                        @if ($index >= $perPage)
                                         @break
                                     @endif
+                                    <tr @if ($loop->last) id="last_record" @endif
+                                        class="@if ($this->isChecked($categori->id)) table__row--selected @endif">
+                                        <td data-title="Check">
+                                            <input type="checkbox" value="{{ $categori->id }}"
+                                                wire:model="checked">
+                                        </td>
+
+                                        @if ($this->showColumn('Id'))
+                                            <td data-title="ID">{{ $categori->category->id }}</td>
+                                        @endif
+
+                                        @if ($this->showColumn('Name'))
+                                            <td data-title="Name"><a
+                                                    href="/show_product/{{ $categori->category->id }}'">{{ $categori->category->name }}</a>
+                                            </td>
+                                        @endif
+
+                                        @if ($this->showColumn('Short Description'))
+                                            <td class="table__description" data-title="Description">
+                                                {{ $categori->category->short_description }}</td>
+                                        @endif
+
+                                        @if ($this->showColumn('Created At'))
+                                            <td data-title="Created At">
+                                                <div class="table__time">
+                                                    <svg>
+                                                        <circle cx="12" cy="12" r="10">
+                                                        </circle>
+                                                        <polyline points="12 6 12 12 16 14"></polyline>
+                                                    </svg>
+                                                    {{ $categori->category->created_at }}
+                                                </div>
+                                            </td>
+                                        @endif
+
+                                        <td data-title="Action">
+                                            <div class="table__buttons">
+                                                <button class="delete"
+                                                    wire:click.prevent="ItemRemoval({{ $categori->id }})">
+                                                    <svg>
+                                                        <polyline points="3 6 5 6 21 6"></polyline>
+                                                        <path
+                                                            d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                                        </path>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
                                 @endforeach
                             @endif
                         </tbody>
                     </table>
-                    @if (count($relatedcats) >= 10 && $perPage < $product->product_categories()->count())
+                    @if ($perPage <= count($relatedcats))
                         <div class="table__load-more" wire:click="load">Load more</div>
                     @endif
                 @else

@@ -24,6 +24,10 @@
     window.addEventListener('delete-modal-category', event => {
         document.getElementById('confirmationmodalsingle').style.display = 'flex';
     });
+    window.addEventListener('show-delete-spec', event => {
+        document.getElementById('confirmationmodalspec').style.display = 'flex';
+    });
+
 
 
     // JavaScript code
