@@ -5,7 +5,7 @@
         <div class="accordion__btn-flex">
             <button class="accordion__btn"
                 wire:click.prevent="@if ($showrelatedsub === false) $set('showrelatedsub', true) @else $set('showrelatedsub', false) @endif">
-                {{ __('Subcategories ') }}({{ $category->subcategory()->count() }})
+                {{ __("Subcategories ") }}({{ $category->subcategory()->count() }})
             </button>
             <button class="accordion__upload" wire:click="toggleTable">
                 <svg>
@@ -25,7 +25,7 @@
                             <div class="modal" id="confirmationmodallink">
                                 <div class="modal-content">
                                     <h1 class="modal-content-title">
-                                        {{ __('Are you sure to relate this record?') }}
+                                        {{ __("Are you sure to relate this record?") }}
                                     </h1>
                                     <input wire:click.prevent="linkSingleRecord()" class="modal-content-btn submit"
                                         type="button" value="Confirm" id="confirmLoad">
@@ -47,7 +47,7 @@
                             <div class="modal" id="confirmationmodallinkmultiple">
                                 <div class="modal-content">
                                     <h1 class="modal-content-title">
-                                        {{ __('Are you sure to link those records?') }}
+                                        {{ __("Are you sure to link those records?") }}
                                     </h1>
                                     <input wire:click.prevent="linkRecords()" class="modal-content-btn submit"
                                         type="button" value="Confirm" id="confirmLoad">
@@ -70,7 +70,7 @@
                             {{-- Header of the table --}}
                             <div class="panel__header">
                                 <h1 class="panel__header--title" id="top">
-                                    {{ __('Add to Subcategories') }}
+                                    {{ __("Add to Subcategories") }}
                                 </h1>
                                 <input class="panel__header--input" type="text" wire:model.live="searchadd"
                                     placeholder="Searchs...">
@@ -85,7 +85,7 @@
                                                     <div class="dropdown-item">
                                                         <input type="checkbox" wire:model="selectedColumnsadd"
                                                             value="{{ $column }}"
-                                                            {{ in_array($column, $selectedColumnsadd) ? 'checked' : '' }}>
+                                                            {{ in_array($column, $selectedColumnsadd) ? "checked" : "" }}>
                                                         <label>{{ $column }}</label>
                                                     </div>
                                                 @endforeach
@@ -94,7 +94,8 @@
                                     </div>
                                     <button
                                         @if ($checkedadd) style="display: unset; z-index: 5;" @else style="display: none;" @endif
-                                        class="panel__header--button" wire:click.prevent="confirmLinkmultiple()"
+                                        class="panel__header--button panel__header--checked"
+                                        wire:click.prevent="confirmLinkmultiple()"
                                         @if ($checkedadd) style="display: flex" @endif> Add
                                         {{ count($checkedadd) }} records
                                     </button>
@@ -125,10 +126,10 @@
                                     <thead>
                                         <tr>
                                             <th><input type="checkbox" wire:model="selectPageadd"></th>
-                                            @if ($this->showColumnadd('Id'))
+                                            @if ($this->showColumnadd("Id"))
                                                 <th wire:click="sortByadd('id')">
                                                     <button class="table__header--btn"
-                                                        @if ($orderByadd === 'id' && $orderAscadd === '1') data-symbol="up"
+                                                        @if ($orderByadd === "id" && $orderAscadd === "1") data-symbol="up"
                                                   @else data-symbol="down" @endif>
                                                         ID
                                                         <svg>
@@ -140,10 +141,10 @@
                                                 </th>
                                             @endif
 
-                                            @if ($this->showColumnadd('Name'))
+                                            @if ($this->showColumnadd("Name"))
                                                 <th wire:click="sortByadd('name')">
                                                     <button class="table__header--btn"
-                                                        @if ($orderByadd === 'name' && $orderAscadd === '1') data-symbol="up"
+                                                        @if ($orderByadd === "name" && $orderAscadd === "1") data-symbol="up"
                                                   @else data-symbol="down" @endif>
                                                         Name
                                                         <svg>
@@ -155,10 +156,10 @@
                                                 </th>
                                             @endif
 
-                                            @if ($this->showColumnadd('Short Description'))
+                                            @if ($this->showColumnadd("Short Description"))
                                                 <th wire:click="sortByadd('short_description')">
                                                     <button class="table__header--btn"
-                                                        @if ($orderByadd === 'short_description' && $orderAscadd === '1') data-symbol="up"
+                                                        @if ($orderByadd === "short_description" && $orderAscadd === "1") data-symbol="up"
                                                   @else data-symbol="down" @endif>
                                                         Description
                                                         <svg>
@@ -170,10 +171,10 @@
                                                 </th>
                                             @endif
 
-                                            @if ($this->showColumnadd('Created At'))
+                                            @if ($this->showColumnadd("Created At"))
                                                 <th wire:click="sortByadd('created_at')">
                                                     <button class="table__header--btn"
-                                                        @if ($orderByadd === 'created_at' && $orderAscadd === '1') data-symbol="up"
+                                                        @if ($orderByadd === "created_at" && $orderAscadd === "1") data-symbol="up"
                                                   @else data-symbol="down" @endif>
                                                         Created at
                                                         <svg>
@@ -200,22 +201,22 @@
                                                             wire:model="checkedadd">
                                                     </td>
 
-                                                    @if ($this->showColumnadd('Id'))
+                                                    @if ($this->showColumnadd("Id"))
                                                         <td data-title="ID">{{ $category->id }}</td>
                                                     @endif
 
-                                                    @if ($this->showColumnadd('Name'))
+                                                    @if ($this->showColumnadd("Name"))
                                                         <td data-title="Name"><a
                                                                 href="/show_product/{{ $category->id }}'">{{ $category->name }}</a>
                                                         </td>
                                                     @endif
 
-                                                    @if ($this->showColumnadd('Short Description'))
+                                                    @if ($this->showColumnadd("Short Description"))
                                                         <td class="table__description" data-title="Description">
                                                             {{ $category->short_description }}</td>
                                                     @endif
 
-                                                    @if ($this->showColumnadd('Created At'))
+                                                    @if ($this->showColumnadd("Created At"))
                                                         <td data-title="Created At">
                                                             <div class="table__time">
                                                                 <svg>
@@ -257,20 +258,20 @@
                                 </table>
                             </div>
 
+                            <span wire:click="cancel" class="top-up-modal delete">
+                                <svg>
+                                    <line x1="18" y1="6" x2="6" y2="18">
+                                    </line>
+                                    <line x1="6" y1="6" x2="18" y2="18">
+                                    </line>
+                                </svg>
+                            </span>
+                            <a href="#top" class="top-up-modal" id="topUp">
+                                <svg>
+                                    <polyline points="18 15 12 9 6 15"></polyline>
+                                </svg>
+                            </a>
                         </div>
-                        <span wire:click="cancel" class="top-up-modal delete">
-                            <svg>
-                                <line x1="18" y1="6" x2="6" y2="18">
-                                </line>
-                                <line x1="6" y1="6" x2="18" y2="18">
-                                </line>
-                            </svg>
-                        </span>
-                        <a href="#top" class="top-up-modal" id="topUp">
-                            <svg>
-                                <polyline points="18 15 12 9 6 15"></polyline>
-                            </svg>
-                        </a>
                     </div>
                     {{-- script for lazy load data --}}
                     <x-lazy />
@@ -295,7 +296,7 @@
                                                 <div class="dropdown-item">
                                                     <input type="checkbox" wire:model="selectedColumns"
                                                         value="{{ $column }}"
-                                                        {{ in_array($column, $selectedColumns) ? 'checked' : '' }}>
+                                                        {{ in_array($column, $selectedColumns) ? "checked" : "" }}>
                                                     <label>{{ $column }}</label>
                                                 </div>
                                             @endforeach
@@ -346,7 +347,7 @@
                         <div class="modal" id="confirmationmodal">
                             <div class="modal-content">
                                 <h1 class="modal-content-title">
-                                    {{ __('Are you sure to delete this record?') }}
+                                    {{ __("Are you sure to delete this record?") }}
                                 </h1>
                                 <input wire:click.prevent="deleteSingleRecord()" class="modal-content-btn submit"
                                     type="button" value="Confirm">
@@ -371,7 +372,7 @@
                         <div class="modal" id="confirmationmodalmultiple">
                             <div class="modal-content">
                                 <h1 class="modal-content-title">
-                                    {{ __('Are you sure to delete those records?') }}
+                                    {{ __("Are you sure to delete those records?") }}
                                 </h1>
                                 <input wire:click.prevent="deleteRecords()" class="modal-content-btn submit"
                                     type="button" value="Confirm">
@@ -401,10 +402,10 @@
                             <thead>
                                 <tr>
                                     <th><input type="checkbox" wire:model="selectPage"></th>
-                                    @if ($this->showColumn('Id'))
+                                    @if ($this->showColumn("Id"))
                                         <th wire:click="sortBy('id')">
                                             <button class="table__header--btn"
-                                                @if ($orderBy === 'id' && $orderAsc === '1') data-symbol="up"
+                                                @if ($orderBy === "id" && $orderAsc === "1") data-symbol="up"
                                                 @else data-symbol="down" @endif>
                                                 ID
                                                 <svg>
@@ -416,10 +417,10 @@
                                         </th>
                                     @endif
 
-                                    @if ($this->showColumn('Name'))
+                                    @if ($this->showColumn("Name"))
                                         <th wire:click="sortBy('name')">
                                             <button class="table__header--btn"
-                                                @if ($orderBy === 'name' && $orderAsc === '1') data-symbol="up"
+                                                @if ($orderBy === "name" && $orderAsc === "1") data-symbol="up"
                                                 @else data-symbol="down" @endif>
                                                 Name
                                                 <svg>
@@ -431,10 +432,10 @@
                                         </th>
                                     @endif
 
-                                    @if ($this->showColumn('Short Description'))
+                                    @if ($this->showColumn("Short Description"))
                                         <th wire:click="sortBy('short_description')">
                                             <button class="table__header--btn"
-                                                @if ($orderBy === 'short_description' && $orderAsc === '1') data-symbol="up"
+                                                @if ($orderBy === "short_description" && $orderAsc === "1") data-symbol="up"
                                                 @else data-symbol="down" @endif>
                                                 Description
                                                 <svg>
@@ -446,10 +447,10 @@
                                         </th>
                                     @endif
 
-                                    @if ($this->showColumn('Created At'))
+                                    @if ($this->showColumn("Created At"))
                                         <th wire:click="sortBy('created_at')">
                                             <button class="table__header--btn"
-                                                @if ($orderBy === 'created_at' && $orderAsc === '1') data-symbol="up"
+                                                @if ($orderBy === "created_at" && $orderAsc === "1") data-symbol="up"
                                                 @else data-symbol="down" @endif>
                                                 Created at
                                                 <svg>
@@ -480,22 +481,22 @@
                                                         wire:model="checked">
                                                 </td>
 
-                                                @if ($this->showColumn('Id'))
+                                                @if ($this->showColumn("Id"))
                                                     <td data-title="ID">{{ $subcat->id }}</td>
                                                 @endif
 
-                                                @if ($this->showColumn('Name'))
+                                                @if ($this->showColumn("Name"))
                                                     <td data-title="Name"><a
                                                             href="/show_category/{{ $subcat->category_id }}'">{{ $subcat->category }}</a>
                                                     </td>
                                                 @endif
 
-                                                @if ($this->showColumn('Short Description'))
+                                                @if ($this->showColumn("Short Description"))
                                                     <td class="table__description" data-title="Description">
                                                         {{ $subcat->parrent->short_description }}</td>
                                                 @endif
 
-                                                @if ($this->showColumn('Created At'))
+                                                @if ($this->showColumn("Created At"))
                                                     <td data-title="Created At">
                                                         <div class="table__time">
                                                             <svg>

@@ -5,7 +5,7 @@
         <div class="accordion__btn-flex">
             <button class="accordion__btn"
                 wire:click.prevent="@if ($showrelatedspecs === false) $set('showrelatedspecs', true) @else $set('showrelatedspecs', false) @endif">
-                {{ __('Specs ') }}({{ count($relatedspecs) }})
+                {{ __("Specs ") }}({{ count($relatedspecs) }})
             </button>
             <button wire:click.prevent="addrelated()" class="accordion__upload">
                 <svg>
@@ -16,11 +16,11 @@
         {{-- add related specs --}}
         @if ($addrelatedspecs)
             <div class="modal" id="modalelements" style="display: block">
-                <div class="modal-content modal--tabel" style="height: 100%">
+                <div class="modal-content modal--tabel">
                     {{-- Header of the table --}}
                     <div class="panel__header">
                         <h1 class="panel__header--title">
-                            {{ __('Add related specifications') }}
+                            {{ __("Add related specifications") }}
                         </h1>
                         <input class="panel__header--input panel__header--checked" wire:click.prevent="savespecs()"
                             type="button" value="Save">
@@ -46,7 +46,7 @@
                                         </td>
 
                                         <td data-title="Specification">
-                                            @if ($specAndValue['allow'])
+                                            @if ($specAndValue["allow"])
                                                 <div class="table__drop">
                                                     <input class="table__drop--input" wire:model.live="searchadd"
                                                         placeholder="Search..." type="text">
@@ -59,19 +59,19 @@
                                                                 </li>
                                                             @endforeach
                                                         @else
-                                                            <li>{{ __('No specs found') }}</li>
+                                                            <li>{{ __("No specs found") }}</li>
                                                         @endif
                                                     </ul>
                                                 </div>
                                             @else
                                                 <div wire:click.prevent="allowselect({{ $index }})"
                                                     class="table__drop--input">
-                                                    @if ($specAndValue['itemselected'])
-                                                        {{ $specAndValue['itemselected'] }}
+                                                    @if ($specAndValue["itemselected"])
+                                                        {{ $specAndValue["itemselected"] }}
                                                         <input type="hidden"
                                                             wire:model.defer="specsAndValues.{{ $index }}.spec.name">
                                                     @else
-                                                        {{ __('Select a spec') }}
+                                                        {{ __("Select a spec") }}
                                                     @endif
                                                 </div>
                                             @endif
@@ -125,21 +125,20 @@
                             </tbody>
                         </table>
                     </div>
+                    <span class="top-up-modal delete">
+                        <svg>
+                            <line x1="18" y1="6" x2="6" y2="18">
+                            </line>
+                            <line x1="6" y1="6" x2="18" y2="18">
+                            </line>
+                        </svg>
+                    </span>
+                    <a href="#top1" class="top-up-modal" id="topUp">
+                        <svg>
+                            <polyline points="18 15 12 9 6 15"></polyline>
+                        </svg>
+                    </a>
                 </div>
-                <span class="top-up-modal delete"
-                    style="position: fixed; right: 0; top: 0; width: 2.5rem; height: 2.5rem;" wire:click="closemodal">
-                    <svg>
-                        <line x1="18" y1="6" x2="6" y2="18">
-                        </line>
-                        <line x1="6" y1="6" x2="18" y2="18">
-                        </line>
-                    </svg>
-                </span>
-                <a href="#top1" class="top-up-modal" id="topUp">
-                    <svg>
-                        <polyline points="18 15 12 9 6 15"></polyline>
-                    </svg>
-                </a>
             </div>
         @endif
 
@@ -149,7 +148,7 @@
                     {{-- Header of the table --}}
                     <div class="panel__header">
                         <h1 class="panel__header--title">
-                            {{ __('Edit multiple related items') }}
+                            {{ __("Edit multiple related items") }}
                         </h1>
                         <input class="panel__header--checked" wire:click.prevent="confirmspecsmultiple()"
                             type="button" value="Save">
@@ -174,7 +173,7 @@
                                         </td>
 
                                         <td data-title="Specification">
-                                            @if ($specAndValue['allow'])
+                                            @if ($specAndValue["allow"])
                                                 <div class="table__drop">
                                                     <input class="table__drop--input" wire:model.live="searchadd"
                                                         placeholder="Search..." type="text">
@@ -187,19 +186,19 @@
                                                                 </li>
                                                             @endforeach
                                                         @else
-                                                            <li>{{ __('No specs found') }}</li>
+                                                            <li>{{ __("No specs found") }}</li>
                                                         @endif
                                                     </ul>
                                                 </div>
                                             @else
                                                 <div wire:click.prevent="allowselect({{ $index }})"
                                                     class="table__drop--input">
-                                                    @if ($specAndValue['itemselected'])
-                                                        {{ $specAndValue['itemselected'] }}
+                                                    @if ($specAndValue["itemselected"])
+                                                        {{ $specAndValue["itemselected"] }}
                                                         <input type="hidden"
                                                             wire:model.defer="specsAndValues.{{ $index }}.spec.name">
                                                     @else
-                                                        {{ __('Select a spec') }}
+                                                        {{ __("Select a spec") }}
                                                     @endif
                                                 </div>
                                             @endif
@@ -214,22 +213,20 @@
                             </tbody>
                         </table>
                     </div>
+                    <span class="top-up-modal delete" wire:click="closemodal">
+                        <svg>
+                            <line x1="18" y1="6" x2="6" y2="18">
+                            </line>
+                            <line x1="6" y1="6" x2="18" y2="18">
+                            </line>
+                        </svg>
+                    </span>
+                    <a href="#top1" class="top-up-modal" id="topUp">
+                        <svg>
+                            <polyline points="18 15 12 9 6 15"></polyline>
+                        </svg>
+                    </a>
                 </div>
-                <span class="top-up-modal delete"
-                    style="position: fixed; right: 0; top: 0; width: 2.5rem; height: 2.5rem;" wire:click="closemodal">
-
-                    <svg>
-                        <line x1="18" y1="6" x2="6" y2="18">
-                        </line>
-                        <line x1="6" y1="6" x2="18" y2="18">
-                        </line>
-                    </svg>
-                </span>
-                <a href="#top1" class="top-up-modal" id="topUp">
-                    <svg>
-                        <polyline points="18 15 12 9 6 15"></polyline>
-                    </svg>
-                </a>
             </div>
         @endif
 
@@ -242,7 +239,7 @@
                         <div class="modal" id="confirmationmodalspec">
                             <div class="modal-content">
                                 <h1 class="modal-content-title">
-                                    {{ __('Are you sure to delete this record?') }}
+                                    {{ __("Are you sure to delete this record?") }}
                                 </h1>
                                 <input wire:click.prevent="deleteSingleRecord()" class="modal-content-btn submit"
                                     type="button" value="Confirm">
@@ -265,7 +262,7 @@
                         <div class="modal" id="confirmationmodalmultiple">
                             <div class="modal-content">
                                 <h1 class="modal-content-title">
-                                    {{ __('Are you sure to delete those records?') }}
+                                    {{ __("Are you sure to delete those records?") }}
                                 </h1>
                                 <input wire:click.prevent="deleteRecords()" class="modal-content-btn submit"
                                     type="button" value="Confirm">
@@ -302,7 +299,7 @@
                                                 <div class="dropdown-item">
                                                     <input type="checkbox" wire:model="selectedColumns"
                                                         value="{{ $column }}"
-                                                        {{ in_array($column, $selectedColumns) ? 'checked' : '' }}>
+                                                        {{ in_array($column, $selectedColumns) ? "checked" : "" }}>
                                                     <label>{{ $column }}</label>
                                                 </div>
                                             @endforeach
@@ -355,30 +352,30 @@
                                 <tr>
                                     <th><input type="checkbox" wire:model="selectPage"></th>
 
-                                    @if ($this->showColumn('Id'))
+                                    @if ($this->showColumn("Id"))
                                         <th>
                                             <div class="table__header--btn">ID</div>
                                         </th>
                                     @endif
 
-                                    @if ($this->showColumn('Name'))
+                                    @if ($this->showColumn("Name"))
                                         <th>
                                             <div class="table__header--btn">Name</div>
                                         </th>
                                     @endif
 
-                                    @if ($this->showColumn('Unit'))
+                                    @if ($this->showColumn("Unit"))
                                         <th>
                                             <div class="table__header--btn">Unit</div>
                                         </th>
                                     @endif
-                                    @if ($this->showColumn('Value'))
+                                    @if ($this->showColumn("Value"))
                                         <th>
                                             <div class="table__header--btn">Value</div>
                                         </th>
                                     @endif
 
-                                    @if ($this->showColumn('Created At'))
+                                    @if ($this->showColumn("Created At"))
                                         <th>
                                             <div class="table__header--btn">Created At</div>
                                         </th>
@@ -394,11 +391,11 @@
                                             <input type="checkbox" value="{{ $spec->id }}" wire:model="checked">
                                         </td>
 
-                                        @if ($this->showColumn('Id'))
+                                        @if ($this->showColumn("Id"))
                                             <td data-title="ID">{{ $spec->id }}</td>
                                         @endif
 
-                                        @if ($this->showColumn('Name'))
+                                        @if ($this->showColumn("Name"))
                                             <td data-title="Name">
                                                 @if ($editedrow !== $index)
                                                     <div>
@@ -428,12 +425,12 @@
                                                 @endif
                                             </td>
                                         @endif
-                                        @if ($this->showColumn('Unit'))
+                                        @if ($this->showColumn("Unit"))
                                             <td data-title="Unit">
                                                 {{ $spec->spec->um }}
                                             </td>
                                         @endif
-                                        @if ($this->showColumn('Value'))
+                                        @if ($this->showColumn("Value"))
                                             <td>
                                                 @if ($editedrow !== $index)
                                                     {{ $spec->value }}
@@ -443,7 +440,7 @@
                                                 @endif
                                             </td>
                                         @endif
-                                        @if ($this->showColumn('Created At'))
+                                        @if ($this->showColumn("Created At"))
                                             <td data-title="Created At">
                                                 <div class="table__time">
                                                     <svg>
