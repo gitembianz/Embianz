@@ -258,7 +258,7 @@
                             </div>
 
                         </div>
-                        <span class="top-up-modal delete">
+                        <span wire:click="cancel" class="top-up-modal delete">
                             <svg>
                                 <line x1="18" y1="6" x2="6" y2="18">
                                 </line>
