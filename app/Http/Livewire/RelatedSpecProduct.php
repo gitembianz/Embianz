@@ -28,6 +28,7 @@ class RelatedSpecProduct extends Component
   public $specidbeingremoved = null;
   public $addrelatedspecs = false;
   public $itemselected;
+  public $isselected;
   //Add specs declaration
   public $searchadd = '';
   public $orderByadd = 'updated_at';
@@ -170,25 +171,55 @@ class RelatedSpecProduct extends Component
   public function confirmspecs($index, $id)
   {
     $newspec = Product_Spec::find($id);
-    $newspec->spec_id = $this->specid;
+    if ($this->isselected != null) {
+      if ($this->isselected) {
+        $newspec->spec_id = $this->specid;
+        $newspec->save();
+      } else {
+        session()->flash('notification', [
+          'message' => 'Please provide a value!',
+          'type' => 'warning',
+          'title' => 'Missing Values'
+        ]);
+      }
+    }
     $val = $this->specification;
     if (isset($val["$index"]['value'])) {
+      if ($val["$index"]['value'] != "") {
 
-      $newspec->value = $val["$index"]['value'];
+        $newspec->value = $val["$index"]['value'];
+        $newspec->save();
+        $this->allow = false;
+        $this->specid = null;
+        $this->specification = [];
+        $this->itemselected = null;
+        $this->editedrow = null;
+        $this->search = '';
+        session()->flash('notification', [
+          'message' => 'Record edited successfully!',
+          'type' => 'success',
+          'title' => 'Success'
+        ]);
+      } else {
+        session()->flash('notification', [
+          'message' => 'Please provide a value!',
+          'type' => 'warning',
+          'title' => 'Missing Values'
+        ]);
+      }
+    } else {
+      $this->allow = false;
+      $this->specid = null;
+      $this->specification = [];
+      $this->itemselected = null;
+      $this->editedrow = null;
+      $this->search = '';
+      session()->flash('notification', [
+        'message' => 'Nothing change!',
+        'type' => 'success',
+        'title' => 'Success'
+      ]);
     }
-
-    $newspec->save();
-    $this->allow = false;
-    $this->specid = null;
-    $this->specification = [];
-    $this->itemselected = null;
-    $this->editedrow = null;
-    $this->search = '';
-    session()->flash('notification', [
-      'message' => 'Record edited successfully!',
-      'type' => 'success',
-      'title' => 'Success'
-    ]);
   }
   public function editSelected()
   {
@@ -250,6 +281,7 @@ class RelatedSpecProduct extends Component
     $this->itemselected = Specs::find($id);
     $this->specid = $id;
     $this->allow = false;
+    $this->isselected = true;
   }
   public function selectSpec($index, $id, $name)
   {
@@ -275,6 +307,7 @@ class RelatedSpecProduct extends Component
   public function allow()
   {
     $this->allow = true;
+    $this->isselected = false;
     $this->searchadd = $this->itemselected->name;
   }
   public function closemodal()
