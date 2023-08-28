@@ -5,7 +5,6 @@
 <x-dashboardsidebar />
 {{-- Page content start --}}
 
-
 <section class="content">
     <form action="{{ url('/add_spec') }}" method="POST">
         @csrf
@@ -55,12 +54,6 @@
             <input class="item__form-btn  item__form-long" type="submit" value="Add New" name="submit">
         </div>
     </form>
-
-    <a href="#" class="top-up-btn" id="topUp">
-        <svg>
-            <polyline points="18 15 12 9 6 15"></polyline>
-        </svg>
-    </a>
 </section>
 {{-- page content end --}}
 <x-dashboardright />

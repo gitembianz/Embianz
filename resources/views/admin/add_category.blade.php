@@ -99,16 +99,16 @@
                 <span>Displayed on Store Tab?</span>
             </div>
             <div class="item__form-input item__form-long">
-                <input type="text" name="short_description" required>
+                <input type="text" name="short_description">
                 <label>Short Description</label>
             </div>
             <div class="item__form-input item__form-textarea">
-                <textarea name="long_description" required></textarea>
-                <label>Long Description</l>
+                <textarea name="long_description"></textarea>
+                <label>Long Description</label>
             </div>
             <div class="item__form-input item__form-long">
-                <input type="text" name="seo_title" required>
-                <label>SEO Title</lab>
+                <input type="text" name="seo_title">
+                <label>SEO Title</label>
             </div>
             <input class="item__form-btn item__form-long" type="submit" value="Add New" name="submit">
         </div>
@@ -121,6 +121,5 @@
 </section>
 {{-- page content end --}}
 <x-dashboardright />
-<x-dashboardmediahanddler />
 <x-dashboardscript />
 <x-dashboardfooter />
