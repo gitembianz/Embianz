@@ -120,7 +120,7 @@
                                 @endif
                             </div>
                             {{-- Table --}}
-                            <div style="overflow-y: scroll;position: relative;">
+                            <div style="overflow-y: auto;position: relative;background: white;">
                                 <table class="table table-top">
                                     <thead>
                                         <tr>
