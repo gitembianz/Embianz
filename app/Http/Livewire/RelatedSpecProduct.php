@@ -46,10 +46,23 @@ class RelatedSpecProduct extends Component
 
   public function render()
   {
-    return view('livewire.related-spec-product', [
-      'relatedspecs' => $this->relatedspecs,
-      'addspecs' => $this->addspecs,
-    ]);
+    $relatedspecs = $this->relatedspecsQuery
+      ->where(function ($query) {
+        $query->whereHas('product', function ($subQuery) {
+          $subQuery->where('name', 'LIKE', '%' . $this->search . '%')
+            ->orWhere('short_description', 'LIKE', '%' . $this->search . '%');
+        });
+      })->get();
+    if ($this->addrelatedspecs === true || $this->editmultiple === true || $this->allow === true) {
+      return view('livewire.related-spec-product', [
+        'relatedspecs' => $relatedspecs,
+        'addspecs' => $this->addspecs
+      ]);
+    } else {
+      return view('livewire.related-spec-product', [
+        'relatedspecs' => $relatedspecs
+      ]);
+    }
   }
   public function mount($productId)
   {
@@ -106,7 +119,7 @@ class RelatedSpecProduct extends Component
   }
   public function getRelatedspecsProperty()
   {
-    return $this->relatedspecsQuery->paginate($this->perPage);
+    return $this->relatedspecsQuery;
   }
   public function getRelatedspecsQueryProperty()
   {

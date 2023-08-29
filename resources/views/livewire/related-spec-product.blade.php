@@ -59,7 +59,8 @@
                                                                 </li>
                                                             @endforeach
                                                         @else
-                                                            <li>{{ __('No specs found') }}</li>
+                                                            <li class="table__drop--item">{{ __('No specs found') }}
+                                                            </li>
                                                         @endif
                                                     </ul>
                                                 </div>
@@ -396,9 +397,8 @@
                                         @if ($this->showColumn('Name'))
                                             <td data-title="Name">
                                                 @if ($editedrow !== $index)
-                                                    <div>
-                                                        {{ $spec->spec->name }}
-                                                    </div>
+                                                    <a
+                                                        href="/show_spec/{{ $spec->spec_id }}">{{ $spec->spec->name }}</a>
                                                 @else
                                                     @if ($allow)
                                                         <div class="table__drop">
