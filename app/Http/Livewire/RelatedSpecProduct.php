@@ -48,12 +48,12 @@ class RelatedSpecProduct extends Component
   {
     $relatedspecs = $this->relatedspecsQuery
       ->where(function ($query) {
-        $query->whereHas('product', function ($subQuery) {
+        $query->whereHas('spec', function ($subQuery) {
           $subQuery->where('name', 'LIKE', '%' . $this->search . '%')
-            ->orWhere('short_description', 'LIKE', '%' . $this->search . '%');
+            ->orWhere('um', 'LIKE', '%' . $this->search . '%');
         });
       })->get();
-    if ($this->addrelatedspecs === true || $this->editmultiple === true || $this->allow === true) {
+    if ($this->addrelatedspecs === true || $this->editmultiple  || $this->allow === true) {
       return view('livewire.related-spec-product', [
         'relatedspecs' => $relatedspecs,
         'addspecs' => $this->addspecs

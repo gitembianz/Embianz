@@ -178,15 +178,20 @@
                                         <td data-title="Specification">
                                             @if ($specAndValue['allow'])
                                                 <div class="table__drop">
-                                                    <input class="table__drop--input" wire:model="searchadd"
+                                                    <input class="table__drop--input" wire:model.live="searchadd"
                                                         placeholder="Search..." type="text">
                                                     <ul class="table__drop--list">
-                                                        @foreach ($addspecs as $spec)
-                                                            <li class="table__drop--item"
-                                                                wire:click.prevent="selectSpec({{ $index }}, {{ $spec->id }}, '{{ $spec->name }}')">
-                                                                {{ $spec->name }} ({{ $spec->um }})
+                                                        @if ($addspecs->isEmpty())
+                                                            <li class="table__drop--item">{{ $addspecs->first() }}
                                                             </li>
-                                                        @endforeach
+                                                        @else
+                                                            @foreach ($addspecs as $spec)
+                                                                <li class="table__drop--item"
+                                                                    wire:click.prevent="selectSpec({{ $index }}, {{ $spec->id }}, '{{ $spec->name }}')">
+                                                                    {{ $spec->name }} ({{ $spec->um }})
+                                                                </li>
+                                                            @endforeach
+                                                        @endif
                                                     </ul>
                                                 </div>
                                             @else
@@ -233,7 +238,7 @@
         @if ($showrelatedspecs)
             <div class="accordion__content">
                 <div>
-                    @if ($relatedspecs && count($relatedspecs) > 0)
+                    @if ($item->product_specs()->count() > 0)
                         {{-- delete single record --}}
                         <div class="modal" id="confirmationmodalspec">
                             <div class="modal-content">
@@ -384,114 +389,129 @@
                             </thead>
 
                             <tbody>
-                                @foreach ($relatedspecs as $index => $spec)
-                                    <tr class="@if ($this->isChecked($spec->id)) table__row--selected @endif">
-                                        <td data-title="Check">
-                                            <input type="checkbox" value="{{ $spec->id }}" wire:model="checked">
-                                        </td>
+                                @if ($relatedspecs->isEmpty())
+                                    <tr>
+                                        <td class="table__empty" colspan="{{ count($columns) + 3 }}">No record
+                                            found.</td>
+                                    </tr>
+                                @else
+                                    @foreach ($relatedspecs as $index => $spec)
+                                        <tr class="@if ($this->isChecked($spec->id)) table__row--selected @endif">
+                                            <td data-title="Check">
+                                                <input type="checkbox" value="{{ $spec->id }}"
+                                                    wire:model="checked">
+                                            </td>
 
-                                        @if ($this->showColumn('Id'))
-                                            <td data-title="ID">{{ $spec->id }}</td>
-                                        @endif
+                                            @if ($this->showColumn('Id'))
+                                                <td data-title="ID">{{ $spec->id }}</td>
+                                            @endif
 
-                                        @if ($this->showColumn('Name'))
-                                            <td data-title="Name">
-                                                @if ($editedrow !== $index)
-                                                    <a
-                                                        href="/show_spec/{{ $spec->spec_id }}">{{ $spec->spec->name }}</a>
-                                                @else
-                                                    @if ($allow)
-                                                        <div class="table__drop">
-                                                            <input class="table__drop--input"
-                                                                wire:model.live="searchadd" placeholder="Search.."
-                                                                type="text">
-                                                            <ul class="table__drop--list">
-                                                                @foreach ($addspecs as $speci)
-                                                                    <li class="table__drop--item cursor-p"
-                                                                        wire:click.prevent="select({{ $speci->id }})">
-                                                                        {{ $speci->name }}
-                                                                    </li>
-                                                                @endforeach
-                                                            </ul>
-                                                            </span>
-                                                        </div>
+                                            @if ($this->showColumn('Name'))
+                                                <td data-title="Name">
+                                                    @if ($editedrow !== $index)
+                                                        <a
+                                                            href="/show_spec/{{ $spec->spec_id }}">{{ $spec->spec->name }}</a>
                                                     @else
-                                                        <button wire:click.prevent="allow" class="table__drop--input">
-                                                            {{ $itemselected->name }}
+                                                        @if ($allow)
+                                                            <div class="table__drop">
+                                                                <input class="table__drop--input"
+                                                                    wire:model.live="searchadd" placeholder="Search.."
+                                                                    type="text">
+                                                                <ul class="table__drop--list">
+                                                                    @if ($addspecs->isEmpty())
+                                                                        <li class="table__drop--item">No
+                                                                            record
+                                                                            found.</li>
+                                                                    @else
+                                                                        @foreach ($addspecs as $speci)
+                                                                            <li class="table__drop--item cursor-p"
+                                                                                wire:click.prevent="select({{ $speci->id }})">
+                                                                                {{ $speci->name }}
+                                                                            </li>
+                                                                        @endforeach
+                                                                    @endif
+                                                                </ul>
+                                                                </span>
+                                                            </div>
+                                                        @else
+                                                            <button wire:click.prevent="allow"
+                                                                class="table__drop--input">
+                                                                {{ $itemselected->name }}
+                                                            </button>
+                                                        @endif
+                                                    @endif
+                                                </td>
+                                            @endif
+                                            @if ($this->showColumn('Unit'))
+                                                <td data-title="Unit">
+                                                    {{ $spec->spec->um }}
+                                                </td>
+                                            @endif
+                                            @if ($this->showColumn('Value'))
+                                                <td>
+                                                    @if ($editedrow !== $index)
+                                                        {{ $spec->value }}
+                                                    @else
+                                                        <input type="text" required class="table__edit"
+                                                            wire:model="specification.{{ $index }}.value">
+                                                    @endif
+                                                </td>
+                                            @endif
+                                            @if ($this->showColumn('Created At'))
+                                                <td data-title="Created At">
+                                                    <div class="table__time">
+                                                        <svg>
+                                                            <circle cx="12" cy="12" r="10">
+                                                            </circle>
+                                                            <polyline points="12 6 12 12 16 14"></polyline>
+                                                        </svg>
+                                                        {{ $spec->spec->created_at }}
+                                                    </div>
+                                                </td>
+                                            @endif
+                                            <td data-title="Action">
+                                                <div class="table__buttons">
+                                                    @if ($editedrow !== $index)
+                                                        <button class="edit"
+                                                            wire:click.prevent="editspec({{ $spec->id }}, {{ $spec->spec->id }}, {{ $index }})">
+                                                            <svg>
+                                                                <path
+                                                                    d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
+                                                                </path>
+                                                            </svg>
+                                                        </button>
+                                                        <button class="delete"
+                                                            wire:click.prevent="confirmRemoval({{ $spec->id }})">
+                                                            <svg>
+                                                                <polyline points="3 6 5 6 21 6"></polyline>
+                                                                <path
+                                                                    d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                                                </path>
+                                                            </svg>
+                                                        </button>
+                                                    @else
+                                                        <button class="edit"
+                                                            wire:click.prevent="confirmspecs({{ $index }},{{ $spec->id }})">
+                                                            <svg>
+                                                                <polyline points="20 6 9 17 4 12"></polyline>
+                                                            </svg>
+                                                        </button>
+                                                        <button class="save" wire:click.prevent="canceledit()">
+                                                            <svg>
+                                                                <line x1="18" y1="6" x2="6"
+                                                                    y2="18">
+                                                                </line>
+                                                                <line x1="6" y1="6" x2="18"
+                                                                    y2="18">
+                                                                </line>
+                                                            </svg>
                                                         </button>
                                                     @endif
-                                                @endif
-                                            </td>
-                                        @endif
-                                        @if ($this->showColumn('Unit'))
-                                            <td data-title="Unit">
-                                                {{ $spec->spec->um }}
-                                            </td>
-                                        @endif
-                                        @if ($this->showColumn('Value'))
-                                            <td>
-                                                @if ($editedrow !== $index)
-                                                    {{ $spec->value }}
-                                                @else
-                                                    <input type="text" required class="table__edit"
-                                                        wire:model="specification.{{ $index }}.value">
-                                                @endif
-                                            </td>
-                                        @endif
-                                        @if ($this->showColumn('Created At'))
-                                            <td data-title="Created At">
-                                                <div class="table__time">
-                                                    <svg>
-                                                        <circle cx="12" cy="12" r="10">
-                                                        </circle>
-                                                        <polyline points="12 6 12 12 16 14"></polyline>
-                                                    </svg>
-                                                    {{ $spec->spec->created_at }}
                                                 </div>
                                             </td>
-                                        @endif
-                                        <td data-title="Action">
-                                            <div class="table__buttons">
-                                                @if ($editedrow !== $index)
-                                                    <button class="edit"
-                                                        wire:click.prevent="editspec({{ $spec->id }}, {{ $spec->spec->id }}, {{ $index }})">
-                                                        <svg>
-                                                            <path
-                                                                d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
-                                                            </path>
-                                                        </svg>
-                                                    </button>
-                                                    <button class="delete"
-                                                        wire:click.prevent="confirmRemoval({{ $spec->id }})">
-                                                        <svg>
-                                                            <polyline points="3 6 5 6 21 6"></polyline>
-                                                            <path
-                                                                d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                                            </path>
-                                                        </svg>
-                                                    </button>
-                                                @else
-                                                    <button class="edit"
-                                                        wire:click.prevent="confirmspecs({{ $index }},{{ $spec->id }})">
-                                                        <svg>
-                                                            <polyline points="20 6 9 17 4 12"></polyline>
-                                                        </svg>
-                                                    </button>
-                                                    <button class="save" wire:click.prevent="canceledit()">
-                                                        <svg>
-                                                            <line x1="18" y1="6" x2="6"
-                                                                y2="18">
-                                                            </line>
-                                                            <line x1="6" y1="6" x2="18"
-                                                                y2="18">
-                                                            </line>
-                                                        </svg>
-                                                    </button>
-                                                @endif
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @endforeach
+                                        </tr>
+                                    @endforeach
+                                @endif
                             </tbody>
                         </table>
                     @else
