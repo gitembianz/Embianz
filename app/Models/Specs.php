@@ -7,24 +7,29 @@ use Illuminate\Database\Eloquent\Model;
 
 class Specs extends Model
 {
-    use HasFactory;
+  use HasFactory;
 
-    protected $table = 'specs';
+  protected $table = 'specs';
 
-    protected $fillable = [
-        'name',
-        'um',
-    ];
-    public static function search($search) {
-      return empty($search) ? static::query()
-            : static::query()->where('id', 'like', '%'.$search.'%')
-                ->orWhere('name', 'like', '%'.$search.'%')
-                ->orWhere('um', 'like', '%'.$search.'%')
-                ->orWhere('created_at', 'like', '%'.$search.'%');
-    }
+  protected $fillable = [
+    'name',
+    'um',
+  ];
+  public static function search($search)
+  {
+    return empty($search) ? static::query()
+      : static::query()->where('id', 'like', '%' . $search . '%')
+      ->orWhere('name', 'like', '%' . $search . '%')
+      ->orWhere('um', 'like', '%' . $search . '%')
+      ->orWhere('created_at', 'like', '%' . $search . '%');
+  }
 
-    public function product_spec()
-    {
-        return $this->hasMany(Product_Spec::class, 'spec_id');
-    }
+  public function product_spec()
+  {
+    return $this->hasMany(Product_Spec::class, 'spec_id');
+  }
+  public function group()
+  {
+    return $this->belongsTo(SpecGroup::class, 'group_id');
+  }
 }
