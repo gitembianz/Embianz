@@ -66,12 +66,12 @@
                 </div>
             </div>
             <div class="dropdown none" @if ($checked) style="display: unset" @endif>
-                <button class="dropdown-button none" @if ($checked) style="display: flex" @endif>
-                    Checked {{ count($checked) }}</button>
+                <button class="dropdown-button none" @if ($checked) style="display: flex" @endif>With
+                    Checked({{ count($checked) }})</button>
                 @if ($checked)
                     <div class="dropdown-list">
                         <button class="dropdown-item delete" style="width: 150px" type="button"
-                            wire:click="confirmCategoriesRemovalmultiple()">
+                            wire:click="confirmItemsRemovalmultiple()">
                             Delete
                         </button>
                         <button class="dropdown-item submit" style="width: 150px" type="button"
@@ -216,47 +216,23 @@
 
                         @if ($this->showColumn('Name'))
                             <td data-title="Name">
-                                @if ($indexspec !== $index)
-                                    <a href="/show_spec/{{ $spec->id }}'">{{ $spec->name }}</a>
-                                @else
-                                    <input type="text" class="table__edit"
-                                        wire:model.defer="specss.{{ $index }}.name"
-                                        placeholder="{{ $spec->name }}">
-                                @endif
+                                <a href="/show_spec/{{ $spec->id }}'">{{ $spec->name }}</a>
+
                             </td>
                         @endif
 
                         @if ($this->showColumn('Unit'))
                             <td data-title="Unit">
-                                @if ($indexspec !== $index)
-                                    <div>
-                                        {{ $spec->um }}</div>
-                                @else
-                                    <input type="text" class="table__edit"
-                                        wire:model.defer="specss.{{ $index }}.um"
-                                        placeholder="{{ $spec->um }}">
-                                @endif
+                                <div>
+                                    {{ $spec->um }}</div>
+
                             </td>
                         @endif
 
                         @if ($this->showColumn('Group'))
                             <td data-title="Group">
-                                @if ($indexspec !== $index)
-                                    <div>
-                                        {{ $spec->spec_group }}</div>
-                                @else
-                                    <select name="spec_group" class="table__edit"
-                                        wire:model.defer="specss.{{ $index }}.spec_group">
-                                        <?php
-                                        $groups = ['details', 'feature', 'accessibility'];
-                                        $groups = array_diff($groups, [$spec->spec_group]);
-                                        ?>
-                                        <option>{{ $spec->spec_group }}</option>
-                                        @foreach ($groups as $group)
-                                            <option value="{{ $group }}">{{ $group }}</option>
-                                        @endforeach
-                                    </select>
-                                @endif
+                                <div>
+                                    {{ $spec->spec_group }}</div>
                             </td>
                         @endif
 
@@ -272,35 +248,14 @@
                         @endif
 
                         <td data-title="Action" class="table__buttons">
-                            @if ($indexspec !== $index)
-                                <button class="edit" wire:click.prevent="edititem({{ $index }})">
-                                    <svg>
-                                        <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
-                                        </path>
-                                    </svg>
-                                </button>
-                                <button class="delete" wire:click.prevent="confirmItemRemoval({{ $spec->id }})">
-                                    <svg>
-                                        <polyline points="3 6 5 6 21 6"></polyline>
-                                        <path
-                                            d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                        </path>
-                                    </svg>
-                                </button>
-                            @else
-                                <button class="edit"
-                                    wire:click.prevent="saveitem({{ $index }} , {{ $spec->id }})">
-                                    <svg>
-                                        <polyline points="20 6 9 17 4 12"></polyline>
-                                    </svg>
-                                </button>
-                                <button class="save" wire:click.prevent="cancelitem()">
-                                    <svg>
-                                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                                    </svg>
-                                </button>
-                            @endif
+                            <button class="delete" wire:click.prevent="confirmItemRemoval({{ $spec->id }})">
+                                <svg>
+                                    <polyline points="3 6 5 6 21 6"></polyline>
+                                    <path
+                                        d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                    </path>
+                                </svg>
+                            </button>
                         </td>
                     </tr>
                 @endforeach
