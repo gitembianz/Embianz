@@ -71,7 +71,7 @@
                                                         <input type="hidden"
                                                             wire:model.defer="priceAndValues.{{ $index }}.price.name">
                                                     @else
-                                                        {{ __('Select a pricelist') }}
+                                                        {{ __('N/A') }}
                                                     @endif
                                                 </div>
                                             @endif
@@ -189,7 +189,7 @@
                                                         <input type="hidden"
                                                             wire:model.defer="priceAndValues.{{ $index }}.price.name">
                                                     @else
-                                                        {{ __('Select a pricelist') }}
+                                                        {{ __('N/A') }}
                                                     @endif
                                                 </div>
                                             @endif
@@ -277,7 +277,7 @@
                         {{-- Header of the table --}}
                         <div class="panel__header">
                             <input class="panel__header--input" type="text" wire:model.live="search"
-                                placeholder="Search your specifications..." style="grid-column: 1/4">
+                                placeholder="Search..." style="grid-column: 1/4">
                             <div class="panel__header--bundle">
                                 <div class="dropdown">
                                     <button
