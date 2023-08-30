@@ -178,12 +178,11 @@
                                         <td data-title="Specification">
                                             @if ($specAndValue['allow'])
                                                 <div class="table__drop">
-                                                    <input class="table__drop--input" wire:model.live="searchadd"
+                                                    <input class="table__drop--input" wire:model="searchadd"
                                                         placeholder="Search..." type="text">
                                                     <ul class="table__drop--list">
                                                         @if ($addspecs->isEmpty())
-                                                            <li class="table__drop--item">{{ $addspecs->first() }}
-                                                            </li>
+                                                            <li class="table__drop--item">No record found.</li>
                                                         @else
                                                             @foreach ($addspecs as $spec)
                                                                 <li class="table__drop--item"
@@ -197,10 +196,10 @@
                                             @else
                                                 <div wire:click.prevent="allowselect({{ $index }})"
                                                     class="table__drop--input">
-                                                    @if ($specAndValue['itemselected'])
+                                                    @if (!empty($specAndValue['itemselected']))
                                                         {{ $specAndValue['itemselected'] }}
                                                         <input type="hidden"
-                                                            wire:model.defer="specsAndValues.{{ $index }}.spec.name">
+                                                            wire:model.defer="specsAndValues.{{ $index }}.spec.idrel">
                                                     @else
                                                         {{ __('Select a spec') }}
                                                     @endif
@@ -216,6 +215,7 @@
                                 @endforeach
                             </tbody>
                         </table>
+
                     </div>
                     <span class="top-up-modal delete" wire:click="closemodal">
                         <svg>
@@ -233,7 +233,6 @@
                 </div>
             </div>
         @endif
-
         {{-- end add related specs --}}
         @if ($showrelatedspecs)
             <div class="accordion__content">

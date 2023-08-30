@@ -45,12 +45,25 @@ class RelatedProductsonSpec extends Component
   public $editmultiple = false;
   public $itemstoedit;
 
+
   public function render()
   {
-    return view('livewire.related-productson-spec', [
-      'relatedprods' => $this->relatedprods,
-      'addprods' => $this->addprods
-    ]);
+    $relatedprods = $this->relatedprods
+      ->where(function ($query) {
+        $query->whereHas('product', function ($subQuery) {
+          $subQuery->where('name', 'LIKE', '%' . $this->search . '%');
+        });
+      })->get();
+    if ($this->addrelatedproducts === true || $this->editmultiple  || $this->allow === true) {
+      return view('livewire.related-productson-spec', [
+        'relatedprods' => $relatedprods,
+        'addprods' => $this->addprods
+      ]);
+    } else {
+      return view('livewire.related-productson-spec', [
+        'relatedprods' => $relatedprods
+      ]);
+    }
   }
   public function mount($specId)
   {
@@ -67,7 +80,7 @@ class RelatedProductsonSpec extends Component
   //function for realted
   public function showColumn($column)
   {
-    if ($column === 'Product name') {
+    if ($column === 'Name') {
       return true;
     }
     return in_array($column, $this->selectedColumns);
@@ -108,7 +121,7 @@ class RelatedProductsonSpec extends Component
   }
   public function getRelatedprodsProperty()
   {
-    return $this->relatedprodsQuery->paginate($this->perPage);
+    return $this->relatedprodsQuery;
   }
   public function getRelatedprodsQueryProperty()
   {
@@ -353,6 +366,6 @@ class RelatedProductsonSpec extends Component
       $unrelated->where('name', 'like', '%' . $this->searchadd . '%');
     }
     $unrelated->orderBy($this->orderByadd, $this->orderAscadd ? 'asc' : 'desc');
-    return $unrelated->limit('5')->get();
+    return $unrelated->get();
   }
 }

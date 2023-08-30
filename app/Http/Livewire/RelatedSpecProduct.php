@@ -53,16 +53,11 @@ class RelatedSpecProduct extends Component
             ->orWhere('um', 'LIKE', '%' . $this->search . '%');
         });
       })->get();
-    if ($this->addrelatedspecs === true || $this->editmultiple  || $this->allow === true) {
-      return view('livewire.related-spec-product', [
-        'relatedspecs' => $relatedspecs,
-        'addspecs' => $this->addspecs
-      ]);
-    } else {
-      return view('livewire.related-spec-product', [
-        'relatedspecs' => $relatedspecs
-      ]);
-    }
+
+    return view('livewire.related-spec-product', [
+      'relatedspecs' => $relatedspecs,
+      'addspecs' => $this->addspecs,
+    ]);
   }
   public function mount($productId)
   {
