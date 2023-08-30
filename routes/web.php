@@ -79,24 +79,18 @@ route::get('/dashboard', [HomeController::class, 'redirect'])->middleware('auth'
 Route::get('/cleareverything', function () {
   $clearcache = Artisan::call('cache:clear');
   echo "Cache cleared<br>";
-
   $clearview = Artisan::call('view:clear');
   echo "View cleared<br>";
-
   $cacheconfig = Artisan::call('config:cache');
   echo "Config cache<br>";
-
   $cacheclear = Artisan::call('config:clear');
   echo "Config clear<br>";
   $eventclear = Artisan::call('event:clear');
   echo "event clear<br>";
   $queueclear = Artisan::call('queue:clear');
   echo "queue clear<br>";
-
   $optimize = Artisan::call('optimize:clear');
   echo "Optimize clear<br>";
-  $updatetabels = Artisan::call('migrate');
-  echo "Databese updated<br>";
 });
 Route::get('/seeddatabase', function () {
   $seed = Artisan::call('db:seed --class=CurrencySeeder');
@@ -104,14 +98,7 @@ Route::get('/seeddatabase', function () {
 });
 
 //Update app
-Route::get('/remove', function () {
-  exec('composer remove barryvdh/laravel-debugbar -dev');
-  exec('composer update -W');
-  echo 'composer dump-autoload and update complete';
-});
-
 Route::get('/updateapp', function () {
   exec('composer dump-autoload');
-  exec('composer update -W');
-  echo 'composer dump-autoload and update complete';
+  echo 'composer dump-autoload';
 });

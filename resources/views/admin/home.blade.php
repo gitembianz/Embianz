@@ -2,7 +2,7 @@
 <x-dashboardnavbar />
 <x-dashboardsidebar />
 {{-- Page content start --}}
-<section class="section-container bg-bg">
+<section class="content">
     <div>
 
     </div>

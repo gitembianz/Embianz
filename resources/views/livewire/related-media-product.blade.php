@@ -5,7 +5,7 @@
         <div class="accordion__btn-flex">
             <button class="accordion__btn"
                 wire:click.prevent="@if ($showmedia === false) $set('showmedia', true) @else $set('showmedia', false) @endif">
-                {{ __("Media ") }}({{ $product->media()->count() }})
+                {{ __('Media ') }}({{ $product->media()->count() }})
             </button>
             <button class="accordion__upload" wire:click="uploadmedia">
                 <div class="item__upload-btn">
@@ -22,7 +22,7 @@
         <div class="modal" id="uploadmedia">
             <div class="modal-content">
                 <h1 class="modal-content-title">
-                    {{ __("How you will upload?") }}
+                    {{ __('How you will upload?') }}
                 </h1>
                 <input id="imgUpload" accept="image/*,video/*" type="file" multiple wire:model="medias"
                     style="display: none">
@@ -51,7 +51,7 @@
                             <div class="modal-content modal--tabel">
                                 <div class="panel__header">
                                     <h1 class="panel__header--title">
-                                        {{ __("Add local media") }}
+                                        {{ __('Add local media') }}
                                     </h1>
                                     <input type="submit" class="panel__header--input panel__header--checked"
                                         value="Save">
@@ -92,13 +92,13 @@
                                             @foreach ($medias as $media)
                                                 <tr>
                                                     <td>
-                                                        @if (str_starts_with($media->getMimeType(), "image"))
+                                                        @if (str_starts_with($media->getMimeType(), 'image'))
                                                             <img src="{{ $media->temporaryUrl() }}" width="50px">
-                                                        @elseif (str_starts_with($media->getMimeType(), "video"))
+                                                        @elseif (str_starts_with($media->getMimeType(), 'video'))
                                                             <video width="100px" controls>
                                                                 <source src="{{ $media->temporaryUrl() }}"
                                                                     type="{{ $media->getMimeType() }}">
-                                                                <span>{{ __("Your browser not suport video tag") }}</span>
+                                                                <span>{{ __('Your browser not suport video tag') }}</span>
                                                             </video>
                                                         @endif
                                                     </td>
@@ -167,7 +167,7 @@
                             <div class="modal-content modal--tabel">
                                 <div class="panel__header">
                                     <h1 class="panel__header--title" id="top1">
-                                        {{ __("Add external media") }}
+                                        {{ __('Add external media') }}
                                     </h1>
                                     <input type="submit" class="panel__header--input panel__header--checked"
                                         value="Save">
@@ -300,7 +300,7 @@
                         <div class="modal" id="confirmationmodalmedia">
                             <div class="modal-content">
                                 <h1 class="modal-content-title">
-                                    {{ __("Are you sure to delete this record?") }}
+                                    {{ __('Are you sure to delete this record?') }}
                                 </h1>
                                 <input wire:click.prevent="deleteSingleRecord()" class="modal-content-btn submit"
                                     type="button" value="Confirm" id="confirmLoad">
@@ -323,7 +323,7 @@
                         <div class="modal" id="confirmationmodalmultiple">
                             <div class="modal-content">
                                 <h1 class="modal-content-title">
-                                    {{ __("Are you sure to delete those records?") }}
+                                    {{ __('Are you sure to delete those records?') }}
                                 </h1>
                                 <input wire:click.prevent="deleteRecords()" class="modal-content-btn submit"
                                     type="button" value="Confirm" id="confirmLoad">
@@ -346,7 +346,7 @@
 
                         {{-- Header of the table --}}
                         <div class="panel__header">
-                            <input class="panel__header--input" type="text" wire:model.live="search"
+                            <input class="panel__header--input" type="text" wire:model.debounce.300ms="search"
                                 placeholder="Search..." style="grid-column: 1/4">
                             <div class="panel__header--bundle">
                                 <div class="dropdown">
@@ -360,7 +360,7 @@
                                                 <div class="dropdown-item">
                                                     <input type="checkbox" wire:model="selectedColumns"
                                                         value="{{ $column }}"
-                                                        {{ in_array($column, $selectedColumns) ? "checked" : "" }}>
+                                                        {{ in_array($column, $selectedColumns) ? 'checked' : '' }}>
                                                     <label>{{ $column }}</label>
                                                 </div>
                                             @endforeach
@@ -413,33 +413,33 @@
                                 <tr>
                                     <th><input type="checkbox" wire:model="selectPage"></th>
 
-                                    @if ($this->showColumn("Id"))
+                                    @if ($this->showColumn('Id'))
                                         <th>
                                             <div class="table__header--btn">ID</div>
                                         </th>
                                     @endif
-                                    @if ($this->showColumn("Media"))
+                                    @if ($this->showColumn('Media'))
                                         <th>
                                             <div class="table__header--btn">Media</div>
                                         </th>
                                     @endif
-                                    @if ($this->showColumn("Name"))
+                                    @if ($this->showColumn('Name'))
                                         <th>
                                             <div class="table__header--btn">Name</div>
                                         </th>
                                     @endif
 
-                                    @if ($this->showColumn("Media Location"))
+                                    @if ($this->showColumn('Media Location'))
                                         <th>
                                             <div class="table__header--btn">Location</div>
                                         </th>
                                     @endif
-                                    @if ($this->showColumn("Sequence"))
+                                    @if ($this->showColumn('Sequence'))
                                         <th>
                                             <div class="table__header--btn">Sequence</div>
                                         </th>
                                     @endif
-                                    @if ($this->showColumn("Created At"))
+                                    @if ($this->showColumn('Created At'))
                                         <th>
                                             <button class="table__header--btn">
                                                 Created at
@@ -464,15 +464,15 @@
                                                     value="{{ $file->id }}" wire:model="checked">
                                             </td>
 
-                                            @if ($this->showColumn("Id"))
+                                            @if ($this->showColumn('Id'))
                                                 <td data-title="ID">{{ $file->id }}</td>
                                             @endif
-                                            @if ($this->showColumn("Media"))
+                                            @if ($this->showColumn('Media'))
                                                 <td data-title="Media">
-                                                    @if (in_array($file->type, ["jpg", "jpeg", "png", "gif", "svg", "jfif", "webp"]))
+                                                    @if (in_array($file->type, ['jpg', 'jpeg', 'png', 'gif', 'svg', 'jfif', 'webp']))
                                                         <img src="/{{ $file->path . $file->name }}"
                                                             alt="{{ $file->name }}" width="50">
-                                                    @elseif (in_array($file->type, ["mp4", "mov", "avi"]))
+                                                    @elseif (in_array($file->type, ['mp4', 'mov', 'avi']))
                                                         <video src="/{{ $file->path . $file->name }}" width="50"
                                                             controls="true"></video>
                                                     @else
@@ -481,7 +481,7 @@
                                                     @endif
                                                 </td>
                                             @endif
-                                            @if ($this->showColumn("Name"))
+                                            @if ($this->showColumn('Name'))
                                                 <td data-title="Name">
                                                     @if ($editedMediaIndex !== $index)
                                                         <div>{{ $file->name }}</div>
@@ -493,7 +493,7 @@
                                                 </td>
                                             @endif
 
-                                            @if ($this->showColumn("Media Location"))
+                                            @if ($this->showColumn('Media Location'))
                                                 <td data-title="Media Location">
                                                     @if ($editedMediaIndex !== $index)
                                                         <div>{{ $file->location->location }}</div>
@@ -508,7 +508,7 @@
                                                     @endif
                                                 </td>
                                             @endif
-                                            @if ($this->showColumn("Sequence"))
+                                            @if ($this->showColumn('Sequence'))
                                                 <td data-title="Sequence">
                                                     @if ($editedMediaIndex !== $index)
                                                         <div>{{ $file->sequence }}</div>
@@ -520,7 +520,7 @@
                                                     @endif
                                                 </td>
                                             @endif
-                                            @if ($this->showColumn("Created At"))
+                                            @if ($this->showColumn('Created At'))
                                                 <td data-title="Created At">
                                                     <div class="table__time">
                                                         <svg>

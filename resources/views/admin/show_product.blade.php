@@ -9,7 +9,7 @@
 
     {{-- Livewire component show --}}
 
-    <livewire:show-product productId="{{ $data->id }}" lazy />
+    <livewire:show-product productId="{{ $data->id }}" />
 
     <a href="#" class="top-up-btn" id="topUp">
         <svg>
