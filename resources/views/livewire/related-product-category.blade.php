@@ -73,8 +73,8 @@
                                     <h1 class="panel__header--title" id="top">
                                         {{ __('Add related products') }}
                                     </h1>
-                                    <input class="panel__header--input" type="text" wire:model.live="searchadd"
-                                        placeholder="Search...">
+                                    <input class="panel__header--input" type="text"
+                                        wire:model.debounce.300ms="searchadd" placeholder="Search...">
                                     <div class="panel__header--bundle">
                                         <div class="dropdown">
                                             <button
@@ -281,7 +281,7 @@
                     @if ($category->product_categories()->count() > 0)
                         {{-- Header of the table --}}
                         <div class="panel__header">
-                            <input class="panel__header--input" type="text" wire:model.live="search"
+                            <input class="panel__header--input" type="text" wire:model.debounce.300ms="search"
                                 placeholder="Search..." style="grid-column: 1/4">
                             <div class="panel__header--bundle">
                                 <div class="dropdown">

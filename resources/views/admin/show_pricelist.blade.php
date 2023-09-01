@@ -32,7 +32,7 @@
 
 {{-- Page content start --}}
 <section class="content">
-    <livewire:show-pricelist itemId="{{ $data->id }}" lazy />
+    <livewire:show-pricelist itemId="{{ $data->id }}" />
     <a href="#" class="top-up-btn" id="topUp">
 
         <svg>

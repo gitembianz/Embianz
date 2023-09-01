@@ -7,7 +7,7 @@
     <div class="modal" id="confirmationmodal">
         <div class="modal-content">
             <h1 class="modal-content-title">
-                {{ __("Are you sure to delete this record?") }}
+                {{ __('Are you sure to delete this record?') }}
             </h1>
             <input wire:click.prevent="deleteSingleRecord()" class="modal-content-btn submit" type="button"
                 value="Confirm">
@@ -27,7 +27,7 @@
     <div class="modal" id="confirmationmodalmultiple">
         <div class="modal-content">
             <h1 class="modal-content-title">
-                {{ __("Are you sure to delete those records?") }}
+                {{ __('Are you sure to delete those records?') }}
             </h1>
             <input wire:click.prevent="deleteRecords()" class="modal-content-btn submit" type="button" value="Confirm">
             <input class="modal-content-btn delete" type="button"
@@ -47,9 +47,9 @@
     {{-- Header of the table --}}
     <div class="panel__header">
         <h1 class="panel__header--title">
-            {{ __("Categories") }}
+            {{ __('Categories') }}
         </h1>
-        <input class="panel__header--input" type="text" wire:model.live="search" placeholder="Search...">
+        <input class="panel__header--input" type="text" wire:model.debounce.300ms="search" placeholder="Search...">
         <div class="panel__header--bundle">
             <div class="dropdown">
                 <button class="dropdown-button"
@@ -65,7 +65,7 @@
                             <div class="dropdown-item">
                                 <input type="checkbox" wire:ignore wire:model="selectedColumns"
                                     value="{{ $column }}"
-                                    {{ in_array($column, $selectedColumns) ? "checked" : "" }}>
+                                    {{ in_array($column, $selectedColumns) ? 'checked' : '' }}>
                                 <label>{{ $column }}</label>
                             </div>
                         @endforeach
@@ -101,7 +101,7 @@
                     </g>
                 </svg>
             </a>
-            <a class="panel__header--button" href="{{ route("newcategory") }}">
+            <a class="panel__header--button" href="{{ route('newcategory') }}">
                 <svg>
                     <line x1="12" y1="5" x2="12" y2="19"></line>
                     <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -134,7 +134,7 @@
                         @if ($this->showColumn($column))
                             <th wire:click="sortBy('{{ $column }}')">
                                 <button class="table__header--btn"
-                                    @if ($orderBy === $column && $orderAsc === "1") data-symbol="up"
+                                    @if ($orderBy === $column && $orderAsc === '1') data-symbol="up"
                 @else data-symbol="down" @endif>
                                     {{ $column }}
                                     <svg>
@@ -161,10 +161,10 @@
                                 <input type="checkbox" value="{{ $category->id }}" wire:model="checked">
                             </td>
                             @foreach ($selectedColumns as $column)
-                                @if ($column === "name")
+                                @if ($column === 'name')
                                     <td data-title="Name"><a
                                             href="/show_category/{{ $category->id }}">{{ $category->name }}</a></td>
-                                @elseif($column === "created_at" || $column === "updated_at")
+                                @elseif($column === 'created_at' || $column === 'updated_at')
                                     <td data-title="{{ $column }}">
                                         <div class="table__time">
                                             <svg>
@@ -174,7 +174,7 @@
                                             {{ $category->$column }}
                                         </div>
                                     </td>
-                                @elseif($column === "start_date" || $column === "end_date")
+                                @elseif($column === 'start_date' || $column === 'end_date')
                                     <td data-title="{{ $column }}">
                                         <div class="table__time">
                                             <svg>
@@ -190,7 +190,7 @@
                                             {{ $category->$column }}
                                         </div>
                                     </td>
-                                @elseif($column === "createdby" || $column === "lastmodifiedby")
+                                @elseif($column === 'createdby' || $column === 'lastmodifiedby')
                                     <td data-title="{{ $column }}">
                                         <div class="table__time">
                                             <svg>
@@ -200,7 +200,7 @@
                                             {{ $category->$column }}
                                         </div>
                                     </td>
-                                @elseif ($column === "active")
+                                @elseif ($column === 'active')
                                     <td data-title="{{ $column }}">
                                         @if ($category->$column)
                                             active
@@ -208,7 +208,7 @@
                                             inactive
                                         @endif
                                     </td>
-                                @elseif ($column === "store_tab")
+                                @elseif ($column === 'store_tab')
                                     <td data-title="{{ $column }}">
                                         @if ($category->$column)
                                             visible
