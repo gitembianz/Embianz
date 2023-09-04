@@ -43,7 +43,6 @@
             </span>
         </div>
     </div>
-
     {{-- Header of the table --}}
     <div class="panel__header">
         <h1 class="panel__header--title">

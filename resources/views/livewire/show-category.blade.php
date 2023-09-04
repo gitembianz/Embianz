@@ -28,16 +28,20 @@
                 </button>
             @else
                 <button class="item__header-btn confirm" type="button" wire:click.prevent="savecategory()"
-                    value="Save" data-tooltip-center="Save this changes"><svg>
+                    value="Save" data-tooltip-center="Save this changes">
+                    <svg>
                         <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg></button>
+                    </svg>
+                </button>
                 <button class="item__header-btn" type="button" wire:click.prevent="cancelcategory()" value="Cancel"
-                    data-tooltip-center="Cancel this changes"><svg>
+                    data-tooltip-center="Cancel this changes">
+                    <svg>
                         <line x1="18" y1="6" x2="6" y2="18">
                         </line>
                         <line x1="6" y1="6" x2="18" y2="18">
                         </line>
-                    </svg></button>
+                    </svg>
+                </button>
             @endif
             <button wire:click.prevent="confirmItemRemoval({{ $category->id }})" class="item__header-btn delete"
                 type="button" value="Delete" data-tooltip-right="Delete this Category">
@@ -48,7 +52,6 @@
             </button>
         </div>
     </div>
-
     <div class="tab">
         <div class="tabs">
             <h3 class="tabs__page active">Details</h3>
@@ -68,7 +71,6 @@
                             <label>Category Name</label>
                         </div>
                     @endif
-
                     @if ($editcategory === null)
                         <div class="item__form-input-close">
                             <div>{{ $category->start_date }}</div>
@@ -80,7 +82,6 @@
                             <label>Category Start Date</label>
                         </div>
                     @endif
-
                     @if ($editcategory === null)
                         <div class="item__form-input-close">
                             <div>{{ $category->end_date }}</div>
@@ -92,7 +93,6 @@
                             <label>Category End Date</label>
                         </div>
                     @endif
-
                     @if ($editcategory === null)
                         <div class="item__form-input-close">
                             <div>{{ $category->sequence }}</div>
@@ -104,7 +104,6 @@
                             <label>Sequence</label>
                         </div>
                     @endif
-
                     @if ($editcategory === null)
                         <div style="display: flex; align-items: center;justify-content: flex-start;gap: 10px">
                             @if ($category->active)
@@ -129,7 +128,6 @@
                             <span>Active</span>
                         </div>
                     @endif
-
                     @if ($editcategory === null)
                         <div style="display: flex; align-items: center;justify-content: flex-start;gap: 10px">
                             @if ($category->store_tab)
@@ -154,7 +152,6 @@
                             <span>Display on Store?</span>
                         </div>
                     @endif
-
                     @if ($editcategory === null)
                         <div class="item__form-input-close item__form-long">
                             <div>{{ $category->short_description }}</div>
@@ -166,7 +163,6 @@
                             <label>Product Short Description</label>
                         </div>
                     @endif
-
                     @if ($editcategory === null)
                         <div class="item__form-input-close item__form-textarea">
                             <div>{{ $category->long_description }}</div>
@@ -178,7 +174,6 @@
                             <label>Product Long Description</label>
                         </div>
                     @endif
-
                     @if ($editcategory === null)
                         <div class="item__form-input-close item__form-long">
                             <div id="seo_title">{{ $category->seo_title }}</div>
@@ -190,7 +185,6 @@
                             <label>SEO Title</label>
                         </div>
                     @endif
-
                     <div class="item__form-input-close">
                         <div>{{ $category->created_at }}</div>
                         <label>Create date / time</label>
@@ -222,7 +216,6 @@
 
                 <livewire:related-subcategory categoryId="{{ $category->id }}" />
             </div>
-
         </div>
         <div class="modal" id="confirmationmodal">
             <div class="modal-content">

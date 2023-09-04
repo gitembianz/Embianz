@@ -2,7 +2,6 @@
     {{-- Asta trebuie de facut componenta --}}
     <x-alert />
     <x-loading />
-
     {{-- delete single record --}}
     <div class="modal" id="confirmationmodal">
         <div class="modal-content">
@@ -44,7 +43,6 @@
             </span>
         </div>
     </div>
-
     {{-- Header of the table --}}
     <div class="panel__header">
         <h1 class="panel__header--title">
@@ -60,13 +58,14 @@
                     </svg>
                 </button>
                 @if ($col)
-
                     <div class="dropdown-list" style="display: flex;">
                         @foreach ($columns as $column)
                             <div class="dropdown-item">
                                 <input type="checkbox" wire:model="selectedColumns" value="{{ $column }}"
                                     {{ in_array($column, $selectedColumns) ? 'checked' : '' }}>
-                                <label>{{ $column }}</label>
+                                <label>
+                                    {{ $column }}
+                                </label>
                             </div>
                         @endforeach
                     </div>
@@ -76,18 +75,17 @@
                 <button
                     wire:click.prevent="@if ($all === false) $set('all', true); $set('col', false) @else $set('all', false) @endif"
                     class="dropdown-button none" @if ($checked) style="display: flex" @endif>With
-                    Checked({{ count($checked) }})</button>
-                @if ($checked)
-                    @if ($all)
-                        <div class="dropdown-list" style="display: flex;">
-                            <button class="dropdown-item delete" type="button" wire:click="confirmItemsRemoval()">
-                                Delete
-                            </button>
-                            <button class="dropdown-item submit" type="button" wire:click="exportSelected()">
-                                Export
-                            </button>
-                        </div>
-                    @endif
+                    Checked({{ count($checked) }})
+                </button>
+                @if ($checked && $all)
+                    <div class="dropdown-list" style="display: flex;">
+                        <button class="dropdown-item delete" type="button" wire:click="confirmItemsRemoval()">
+                            Delete
+                        </button>
+                        <button class="dropdown-item submit" type="button" wire:click="exportSelected()">
+                            Export
+                        </button>
+                    </div>
                 @endif
             </div>
             <a class="panel__header--button" wire:click="$refresh">
@@ -124,12 +122,13 @@
             @endif
         @endif
     </div>
-
     {{-- Table --}}
     <table class="table">
         <thead>
             <tr>
-                <th><input type="checkbox" wire:model="selectPage"></th>
+                <th>
+                    <input type="checkbox" wire:model="selectPage">
+                </th>
                 @if ($this->showColumn('Id'))
                     <th wire:click="sortBy('id')">
                         <button class="table__header--btn"
@@ -195,10 +194,10 @@
                         </button>
                     </th>
                 @endif
-                <th></th>
+                <th>
+                </th>
             </tr>
         </thead>
-
         <tbody>
             @if ($products->isEmpty())
                 <tr>
@@ -211,26 +210,26 @@
                         <td data-title="Check">
                             <input type="checkbox" value="{{ $product->id }}" wire:model="checked">
                         </td>
-
                         @if ($this->showColumn('Id'))
-                            <td data-title="ID">{{ $product->id }}</td>
-                        @endif
-
-                        @if ($this->showColumn('Name'))
-                            <td data-title="Name"><a
-                                    href="/show_product/{{ $product->id }}'">{{ $product->name }}</a>
+                            <td data-title="ID">
+                                {{ $product->id }}
                             </td>
                         @endif
-
+                        @if ($this->showColumn('Name'))
+                            <td data-title="Name">
+                                <a href="/show_product/{{ $product->id }}">{{ $product->name }}</a>
+                            </td>
+                        @endif
                         @if ($this->showColumn('Description'))
                             <td class="table__description" data-title="Description">
-                                {{ $product->short_description }}</td>
+                                {{ $product->short_description }}
+                            </td>
                         @endif
-
                         @if ($this->showColumn('Sequence'))
-                            <td data-title="Sequence">{{ $product->sequence }}</td>
+                            <td data-title="Sequence">
+                                {{ $product->sequence }}
+                            </td>
                         @endif
-
                         @if ($this->showColumn('Created At'))
                             <td data-title="Created At">
                                 <div class="table__time">
@@ -239,9 +238,9 @@
                                         <polyline points="12 6 12 12 16 14"></polyline>
                                     </svg>
                                     {{ $product->created_at }}
+                                </div>
                             </td>
                         @endif
-
                         <td data-title="Action">
                             <div class="table__buttons">
                                 <button class="delete"

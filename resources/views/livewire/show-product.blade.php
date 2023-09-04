@@ -39,7 +39,6 @@
                         </line>
                     </svg></button>
             @endif
-
             <button wire:click.prevent="confirmProductRemoval({{ $product->id }})" class="item__header-btn delete"
                 type="button" value="Delete" data-tooltip-right="Delete this Product">
                 <svg>
@@ -57,7 +56,6 @@
             <input wire:click.prevent="deleteRecord()" class="modal-content-btn submit" type="button" value="Confirm">
             <input class="modal-content-btn delete" type="button"
                 onclick="document.getElementById('confirmationmodal').style.display='none'" value="Cancel">
-
             <span class="modal-content-btn delete"
                 onclick="document.getElementById('confirmationmodal').style.display='none'">
                 <svg>
@@ -143,7 +141,6 @@
                             <span>Active</span>
                         </div>
                     @endif
-
                     @if ($editproduct === null)
                         <div class="item__form-input-close">
                             <div id="category_parrent">{{ $product->popularity }}</div>
@@ -155,7 +152,6 @@
                             <label>Product Popularity</label>
                         </div>
                     @endif
-
                     @if ($editproduct === null)
                         <div class="item__form-input-close item__form-long">
                             <div id="category_short_description">{{ $product->short_description }}</div>
@@ -214,7 +210,6 @@
                 </div>
             </div>
             <div class="tabs__content">
-
                 <livewire:related-media-product productId="{{ $product->id }}" />
 
                 <livewire:related-category-product productId="{{ $product->id }}" />
