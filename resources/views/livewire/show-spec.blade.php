@@ -28,16 +28,20 @@
                 </button>
             @else
                 <button class="item__header-btn confirm" type="button" wire:click.prevent="saveitem" value="Save"
-                    data-tooltip-center="Save this changes"><svg>
+                    data-tooltip-center="Save this changes">
+                    <svg>
                         <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg></button>
+                    </svg>
+                </button>
                 <button class="item__header-btn" type="button" wire:click.prevent="cancelitem" value="Cancel"
-                    data-tooltip-center="Cancel this changes"><svg>
+                    data-tooltip-center="Cancel this changes">
+                    <svg>
                         <line x1="18" y1="6" x2="6" y2="18">
                         </line>
                         <line x1="6" y1="6" x2="18" y2="18">
                         </line>
-                    </svg></button>
+                    </svg>
+                </button>
             @endif
             <button wire:click="confirmItemRemoval({{ $spec->id }})" class="item__header-btn delete" type="button"
                 data-tooltip-right="Delete this specification">
@@ -48,7 +52,6 @@
             </button>
         </div>
     </div>
-
     <div class="tab">
         <div class="tabs">
             <h3 class="tabs__page active">Details</h3>
@@ -123,7 +126,6 @@
         <div class="tabs__content">
             <livewire:related-productson-spec specId="{{ $spec->id }}" />
         </div>
-
     </div>
     <div class="modal" id="confirmationmodal">
         <div class="modal-content">
@@ -144,5 +146,4 @@
             </span>
         </div>
     </div>
-</div>
 </div>

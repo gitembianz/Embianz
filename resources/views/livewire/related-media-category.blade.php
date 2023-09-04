@@ -16,7 +16,6 @@
                         <line x1="12" y1="3" x2="12" y2="15"></line>
                     </svg>
                 </div>
-
             </button>
         </div>
         <div class="modal" id="uploadmedia">
@@ -45,7 +44,6 @@
         </div>
         @if ($showmedia)
             <div class="accordion__content" id="contentDiv">
-
                 @if ($medias)
                     <form wire:submit.prevent="save">
                         <div class="modal" id="modalelements" style="display: block">
@@ -56,9 +54,7 @@
                                     </h1>
                                     <input type="submit" class="panel__header--input panel__header--checked"
                                         value="Save">
-
                                 </div>
-
                                 <div style="overflow-y: auto; position: relative; background: white">
                                     <table class="table table-top">
                                         <thead>
@@ -128,7 +124,8 @@
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <div class="table__buttons"><button class="edit"
+                                                        <div class="table__buttons">
+                                                            <button class="edit"
                                                                 wire:click.prevent="removemedia({{ $loop->index }})">
                                                                 <svg>
                                                                     <polyline points="3 6 5 6 21 6"></polyline>
@@ -141,7 +138,6 @@
                                                     </td>
                                                 </tr>
                                             @endforeach
-
                                         </tbody>
                                     </table>
                                 </div>
@@ -173,7 +169,6 @@
                                     <input type="submit" class="panel__header--input panel__header--checked"
                                         value="Save">
                                 </div>
-
                                 <div style="overflow-y: auto; position: relative; background: white">
                                     <table class="table table-top">
                                         <thead>
@@ -192,7 +187,6 @@
                                                     <div class="table__header--btn">Location</div>
                                                 </th>
                                                 <th></th>
-
                                             </tr>
                                         </thead>
                                     </table>
@@ -204,12 +198,10 @@
                                                         <input required type="text" class="table__edit"
                                                             wire:model="file_name.{{ $i }}">
                                                     </td>
-
                                                     <td>
                                                         <input required type="number" min="0"
                                                             class="table__edit"
                                                             wire:model="file_sequences.{{ $i }}">
-
                                                     </td>
                                                     <td>
                                                         <input required type="url" class="table__edit"
@@ -295,310 +287,298 @@
                         </div>
                     </form>
                 @endif
-                <div>
-                    @if ($category->media()->count() > 0)
-                        <div class="panel__header">
-                            <input class="panel__header--input" type="text" wire:model.debounce.300ms="search"
-                                placeholder="Search..." style="grid-column: 1/4">
-                            <div class="panel__header--bundle">
-                                <div class="dropdown">
-                                    <button
-                                        wire:click.prevent="@if ($col === false) $set('col', true) @else $set('col', false) @endif"
-                                        class="dropdown-button">Columns</button>
-                                    @if ($col)
-
-                                        <div class="dropdown-list" style="display: flex;">
-                                            @foreach ($columns as $column)
-                                                <div class="dropdown-item">
-                                                    <input type="checkbox" wire:model="selectedColumns"
-                                                        value="{{ $column }}"
-                                                        {{ in_array($column, $selectedColumns) ? 'checked' : '' }}>
-                                                    <label>{{ $column }}</label>
-                                                </div>
-                                            @endforeach
-                                        </div>
-                                    @endif
-                                </div>
-                                <div class="dropdown none"
-                                    @if ($checked) style="display: unset; z-index: 5;" @endif>
-                                    <button
-                                        wire:click.prevent="@if ($all === false) $set('all', true); $set('col', false) @else $set('all', false) @endif"
-                                        class="dropdown-button none"
-                                        @if ($checked) style="display: flex" @endif>With
-                                        Checked({{ count($checked) }})</button>
-                                    @if ($checked)
-                                        @if ($all)
-                                            <div class="dropdown-list" style="display: flex;">
-                                                <button class="dropdown-item delete" type="button"
-                                                    wire:click="confirmItemsRemoval()">
-                                                    Delete
-                                                </button>
-                                                <button class="dropdown-item submit" type="button"
-                                                    wire:click="exportSelected()">
-                                                    Export
-                                                </button>
+                @if ($category->media()->count() > 0)
+                    <div class="panel__header">
+                        <input class="panel__header--input" type="text" wire:model.debounce.300ms="search"
+                            placeholder="Search..." style="grid-column: 1/4">
+                        <div class="panel__header--bundle">
+                            <div class="dropdown">
+                                <button
+                                    wire:click.prevent="@if ($col === false) $set('col', true) @else $set('col', false) @endif"
+                                    class="dropdown-button">
+                                    Columns
+                                </button>
+                                @if ($col)
+                                    <div class="dropdown-list" style="display: flex;">
+                                        @foreach ($columns as $column)
+                                            <div class="dropdown-item">
+                                                <input type="checkbox" wire:model="selectedColumns"
+                                                    value="{{ $column }}"
+                                                    {{ in_array($column, $selectedColumns) ? 'checked' : '' }}>
+                                                <label>{{ $column }}</label>
                                             </div>
-                                        @endif
-                                    @endif
-                                </div>
-                                <a class="panel__header--button" wire:click="$refresh">
-                                    <svg>
-                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
-                                        </g>
-                                        <g id="SVGRepo_iconCarrier">
-                                            <path
-                                                d="M3 3V8M3 8H8M3 8L6 5.29168C7.59227 3.86656 9.69494 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.71683 21 4.13247 18.008 3.22302 14"
-                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            </path>
-                                        </g>
-                                    </svg>
-                                </a>
-                            </div>
-                            @if ($selectPage)
-                                @if ($selectAll)
-                                    <div class="panel__header--checked">
-                                        <p>
-                                            You selected <strong>{{ count($checked) }}</strong> items.
-                                        </p>
-                                    </div>
-                                @else
-                                    <div class="panel__header--checked" wire:click="selectAll">
-                                        <p>
-                                            You selected {{ count($checked) }} items, select all?
-                                        </p>
+                                        @endforeach
                                     </div>
                                 @endif
-                            @endif
-                        </div>
-                        {{-- modals --}}
-                        {{-- delete single record --}}
-                        <div class="modal" id="confirmationmodal">
-                            <div class="modal-content">
-                                <h1 class="modal-content-title">
-                                    {{ __('Are you sure to delete this record?') }}
-                                </h1>
-                                <input wire:click.prevent="deleteSingleRecord()" class="modal-content-btn submit"
-                                    type="button" value="Confirm">
-                                <input class="modal-content-btn delete" type="button"
-                                    onclick="document.getElementById('confirmationmodal').style.display='none'"
-                                    value="Cancel">
-
-                                <span class="modal-content-btn delete"
-                                    onclick="document.getElementById('confirmationmodal').style.display='none'">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
-                                        viewbox="0 0 24 24" fill="none" stroke="#BBFCDE" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round">
-                                        <line x1="18" y1="6" x2="6" y2="18">
-                                        </line>
-                                        <line x1="6" y1="6" x2="18" y2="18">
-                                        </line>
-                                    </svg>
-                                </span>
                             </div>
-                        </div>
-                        {{-- delete myltiple records --}}
-                        <div class="modal" id="confirmationmodalmultiple">
-                            <div class="modal-content">
-                                <h1 class="modal-content-title">
-                                    {{ __('Are you sure to delete those records?') }}
-                                </h1>
-                                <input wire:click.prevent="deleteRecords()" class="modal-content-btn submit"
-                                    type="button" value="Confirm">
-                                <input class="modal-content-btn delete" type="button"
-                                    onclick="document.getElementById('confirmationmodalmultiple').style.display='none'"
-                                    value="Cancel">
-
-                                <span class="modal-content-btn delete"
-                                    onclick="document.getElementById('confirmationmodalmultiple').style.display='none'">
-
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
-                                        viewbox="0 0 24 24" fill="none" stroke="#BBFCDE" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round">
-
-                                        <line x1="18" y1="6" x2="6" y2="18">
-                                        </line>
-                                        <line x1="6" y1="6" x2="18" y2="18">
-                                        </line>
-                                    </svg>
-                                </span>
+                            <div class="dropdown none"
+                                @if ($checked) style="display: unset; z-index: 5;" @endif>
+                                <button
+                                    wire:click.prevent="@if ($all === false) $set('all', true); $set('col', false) @else $set('all', false) @endif"
+                                    class="dropdown-button none"
+                                    @if ($checked) style="display: flex" @endif>
+                                    With Checked({{ count($checked) }})
+                                </button>
+                                @if ($checked && $all)
+                                    <div class="dropdown-list" style="display: flex;">
+                                        <button class="dropdown-item delete" type="button"
+                                            wire:click="confirmItemsRemoval()">
+                                            Delete
+                                        </button>
+                                        <button class="dropdown-item submit" type="button"
+                                            wire:click="exportSelected()">
+                                            Export
+                                        </button>
+                                    </div>
+                                @endif
                             </div>
+                            <a class="panel__header--button" wire:click="$refresh">
+                                <svg>
+                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
+                                    </g>
+                                    <g id="SVGRepo_iconCarrier">
+                                        <path
+                                            d="M3 3V8M3 8H8M3 8L6 5.29168C7.59227 3.86656 9.69494 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.71683 21 4.13247 18.008 3.22302 14"
+                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        </path>
+                                    </g>
+                                </svg>
+                            </a>
                         </div>
-                        {{-- end modals --}}
+                        @if ($selectPage && $selectAll)
+                            <div class="panel__header--checked">
+                                <p>
+                                    You selected <strong>{{ count($checked) }}</strong> items.
+                                </p>
+                            </div>
+                        @else
+                            <div class="panel__header--checked" wire:click="selectAll">
+                                <p>
+                                    You selected {{ count($checked) }} items, select all?
+                                </p>
+                            </div>
+                        @endif
+                    </div>
+                    {{-- modals --}}
+                    {{-- delete single record --}}
+                    <div class="modal" id="confirmationmodal">
+                        <div class="modal-content">
+                            <h1 class="modal-content-title">
+                                {{ __('Are you sure to delete this record?') }}
+                            </h1>
+                            <input wire:click.prevent="deleteSingleRecord()" class="modal-content-btn submit"
+                                type="button" value="Confirm">
+                            <input class="modal-content-btn delete" type="button"
+                                onclick="document.getElementById('confirmationmodal').style.display='none'"
+                                value="Cancel">
 
-                        <table class="table">
-                            <thead>
+                            <span class="modal-content-btn delete"
+                                onclick="document.getElementById('confirmationmodal').style.display='none'">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+                                    viewbox="0 0 24 24" fill="none" stroke="#BBFCDE" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="18" y1="6" x2="6" y2="18">
+                                    </line>
+                                    <line x1="6" y1="6" x2="18" y2="18">
+                                    </line>
+                                </svg>
+                            </span>
+                        </div>
+                    </div>
+                    {{-- delete myltiple records --}}
+                    <div class="modal" id="confirmationmodalmultiple">
+                        <div class="modal-content">
+                            <h1 class="modal-content-title">
+                                {{ __('Are you sure to delete those records?') }}
+                            </h1>
+                            <input wire:click.prevent="deleteRecords()" class="modal-content-btn submit"
+                                type="button" value="Confirm">
+                            <input class="modal-content-btn delete" type="button"
+                                onclick="document.getElementById('confirmationmodalmultiple').style.display='none'"
+                                value="Cancel">
+
+                            <span class="modal-content-btn delete"
+                                onclick="document.getElementById('confirmationmodalmultiple').style.display='none'">
+
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+                                    viewbox="0 0 24 24" fill="none" stroke="#BBFCDE" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+
+                                    <line x1="18" y1="6" x2="6" y2="18">
+                                    </line>
+                                    <line x1="6" y1="6" x2="18" y2="18">
+                                    </line>
+                                </svg>
+                            </span>
+                        </div>
+                    </div>
+                    {{-- end modals --}}
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" wire:model="selectPage"></th>
+                                @if ($this->showColumn('Id'))
+                                    <th>
+                                        <div class="table__header--btn">ID</div>
+                                    </th>
+                                @endif
+                                @if ($this->showColumn('Media'))
+                                    <th>
+                                        <div class="table__header--btn">Media</div>
+                                    </th>
+                                @endif
+                                @if ($this->showColumn('Name'))
+                                    <th>
+                                        <div class="table__header--btn">Name</div>
+                                    </th>
+                                @endif
+
+                                @if ($this->showColumn('Media Location'))
+                                    <th>
+                                        <div class="table__header--btn">Location</div>
+                                    </th>
+                                @endif
+                                @if ($this->showColumn('Sequence'))
+                                    <th>
+                                        <div class="table__header--btn">Sequence</div>
+                                    </th>
+                                @endif
+                                @if ($this->showColumn('Created At'))
+                                    <th>
+                                        <div class="table__header--btn">
+                                            Created at
+                                        </div>
+                                    </th>
+                                @endif
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if ($filteredMedia->isEmpty())
                                 <tr>
-                                    <th><input type="checkbox" wire:model="selectPage"></th>
-
-                                    @if ($this->showColumn('Id'))
-                                        <th>
-                                            <div class="table__header--btn">ID</div>
-                                        </th>
-                                    @endif
-                                    @if ($this->showColumn('Media'))
-                                        <th>
-                                            <div class="table__header--btn">Media</div>
-                                        </th>
-                                    @endif
-                                    @if ($this->showColumn('Name'))
-                                        <th>
-                                            <div class="table__header--btn">Name</div>
-                                        </th>
-                                    @endif
-
-                                    @if ($this->showColumn('Media Location'))
-                                        <th>
-                                            <div class="table__header--btn">Location</div>
-                                        </th>
-                                    @endif
-                                    @if ($this->showColumn('Sequence'))
-                                        <th>
-                                            <div class="table__header--btn">Sequence</div>
-                                        </th>
-                                    @endif
-                                    @if ($this->showColumn('Created At'))
-                                        <th>
-                                            <button class="table__header--btn">
-                                                Created at
-                                            </button>
-                                        </th>
-                                    @endif
-
-                                    <th></th>
+                                    <td class="table__empty" colspan="{{ count($columns) + 3 }}">
+                                        No record found.
+                                    </td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                @if ($filteredMedia->isEmpty())
-                                    <tr>
-                                        <td class="table__empty" colspan="{{ count($columns) + 3 }}">No record
-                                            found.</td>
-                                    </tr>
-                                @else
-                                    @foreach ($filteredMedia as $index => $file)
-                                        <tr class="@if ($this->isChecked($file->id)) th_checked @endif">
-                                            <td data-title="Check"><input type="checkbox"
-                                                    value="{{ $file->id }}" wire:model="checked">
+                            @else
+                                @foreach ($filteredMedia as $index => $file)
+                                    <tr class="@if ($this->isChecked($file->id)) th_checked @endif">
+                                        <td data-title="Check"><input type="checkbox" value="{{ $file->id }}"
+                                                wire:model="checked">
+                                        </td>
+                                        @if ($this->showColumn('Id'))
+                                            <td data-title="ID">{{ $file->id }}</td>
+                                        @endif
+                                        @if ($this->showColumn('Media'))
+                                            <td data-title="Media">
+                                                @if (in_array($file->type, ['jpg', 'jpeg', 'png', 'gif', 'svg', 'jfif', 'webp']))
+                                                    <img src="/{{ $file->path . $file->name }}"
+                                                        alt="{{ $file->name }}" width="50">
+                                                @elseif (in_array($file->type, ['mp4', 'mov', 'avi']))
+                                                    <video src="/{{ $file->path . $file->name }}" width="50"
+                                                        controls="true"></video>
+                                                @else
+                                                    <img src="{{ $file->path }}" width="100" alt="">
+                                                @endif
                                             </td>
-
-                                            @if ($this->showColumn('Id'))
-                                                <td data-title="ID">{{ $file->id }}</td>
-                                            @endif
-                                            @if ($this->showColumn('Media'))
-                                                <td data-title="Media">
-                                                    @if (in_array($file->type, ['jpg', 'jpeg', 'png', 'gif', 'svg', 'jfif', 'webp']))
-                                                        <img src="/{{ $file->path . $file->name }}"
-                                                            alt="{{ $file->name }}" width="50">
-                                                    @elseif (in_array($file->type, ['mp4', 'mov', 'avi']))
-                                                        <video src="/{{ $file->path . $file->name }}" width="50"
-                                                            controls="true"></video>
-                                                    @else
-                                                        <img src="{{ $file->path }}" width="100"
-                                                            alt="">
-                                                    @endif
-                                                </td>
-                                            @endif
-                                            @if ($this->showColumn('Name'))
-                                                <td data-title="Name">
-                                                    @if ($editedMediaIndex !== $index)
-                                                        <div>{{ $file->name }}</div>
-                                                    @else
-                                                        <input type="text" class="table__edit"
-                                                            wire:model.defer="filess.{{ $index }}.name"
-                                                            value="{{ $file->name }}">
-                                                    @endif
-                                                </td>
-                                            @endif
-
-                                            @if ($this->showColumn('Media Location'))
-                                                <td data-title="Media Location">
-                                                    @if ($editedMediaIndex !== $index)
-                                                        <div>{{ $file->location->location }}</div>
-                                                    @else
-                                                        <select class="table__edit"
-                                                            wire:model.defer="filess.{{ $index }}.location_id">
-                                                            @foreach ($locations as $location)
-                                                                <option value="{{ $location->id }}">
-                                                                    {{ $location->location }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    @endif
-                                                </td>
-                                            @endif
-                                            @if ($this->showColumn('Sequence'))
-                                                <td data-title="Sequence">
-                                                    @if ($editedMediaIndex !== $index)
-                                                        <div>{{ $file->sequence }}</div>
-                                                    @else
-                                                        <input type="number" min="0" required
-                                                            class="table__edit"
-                                                            wire:model.defer="filess.{{ $index }}.sequence"
-                                                            value="{{ $file->sequence }}">
-                                                    @endif
-                                                </td>
-                                            @endif
-                                            @if ($this->showColumn('Created At'))
-                                                <td data-title="Created At">
-                                                    <div class="table__time">
+                                        @endif
+                                        @if ($this->showColumn('Name'))
+                                            <td data-title="Name">
+                                                @if ($editedMediaIndex !== $index)
+                                                    <div>{{ $file->name }}</div>
+                                                @else
+                                                    <input type="text" class="table__edit"
+                                                        wire:model.defer="filess.{{ $index }}.name"
+                                                        value="{{ $file->name }}">
+                                                @endif
+                                            </td>
+                                        @endif
+                                        @if ($this->showColumn('Media Location'))
+                                            <td data-title="Media Location">
+                                                @if ($editedMediaIndex !== $index)
+                                                    <div>{{ $file->location->location }}</div>
+                                                @else
+                                                    <select class="table__edit"
+                                                        wire:model.defer="filess.{{ $index }}.location_id">
+                                                        @foreach ($locations as $location)
+                                                            <option value="{{ $location->id }}">
+                                                                {{ $location->location }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                @endif
+                                            </td>
+                                        @endif
+                                        @if ($this->showColumn('Sequence'))
+                                            <td data-title="Sequence">
+                                                @if ($editedMediaIndex !== $index)
+                                                    <div>{{ $file->sequence }}</div>
+                                                @else
+                                                    <input type="number" min="0" required class="table__edit"
+                                                        wire:model.defer="filess.{{ $index }}.sequence"
+                                                        value="{{ $file->sequence }}">
+                                                @endif
+                                            </td>
+                                        @endif
+                                        @if ($this->showColumn('Created At'))
+                                            <td data-title="Created At">
+                                                <div class="table__time">
+                                                    <svg>
+                                                        <circle cx="12" cy="12" r="10">
+                                                        </circle>
+                                                        <polyline points="12 6 12 12 16 14"></polyline>
+                                                    </svg>
+                                                    {{ $file->created_at }}
+                                            </td>
+                                        @endif
+                                        <td data-title="Action">
+                                            <div class="table__buttons">
+                                                @if ($editedMediaIndex !== $index)
+                                                    <button class="edit"
+                                                        wire:click.prevent="editMedia({{ $index }}, {{ $file->id }})">
                                                         <svg>
-                                                            <circle cx="12" cy="12" r="10">
-                                                            </circle>
-                                                            <polyline points="12 6 12 12 16 14"></polyline>
+                                                            <path
+                                                                d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
+                                                            </path>
                                                         </svg>
-                                                        {{ $file->created_at }}
-                                                </td>
-                                            @endif
-
-                                            <td data-title="Action">
-                                                <div class="table__buttons">
-                                                    @if ($editedMediaIndex !== $index)
-                                                        <button class="edit"
-                                                            wire:click.prevent="editMedia({{ $index }}, {{ $file->id }})">
-                                                            <svg>
-                                                                <path
-                                                                    d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
-                                                                </path>
-                                                            </svg>
-                                                        </button>
-                                                        <button class="delete"
-                                                            wire:click.prevent="confirmItemRemoval({{ $file->id }})">
-                                                            <svg>
-                                                                <polyline points="3 6 5 6 21 6"></polyline>
-                                                                <path
-                                                                    d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                                                </path>
-                                                            </svg>
-                                                        </button>
-                                                    @else
-                                                        <button class="edit"
-                                                            wire:click.prevent="saveMedia({{ $index }} , {{ $file->id }})">
-                                                            <svg>
-                                                                <polyline points="20 6 9 17 4 12"></polyline>
-                                                            </svg>
-                                                        </button>
-                                                        <button class="save" wire:click.prevent="cancelMedia()">
-                                                            <svg>
-                                                                <line x1="18" y1="6" x2="6"
-                                                                    y2="18">
-                                                                </line>
-                                                                <line x1="6" y1="6" x2="18"
-                                                                    y2="18">
-                                                                </line>
-                                                            </svg>
-                                                        </button>
-                                                    @endif
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @endif
-
-                            </tbody>
-                        </table>
-                    @else
-                        <p class="mt-2">No media related</p>
-                    @endif
-                </div>
+                                                    </button>
+                                                    <button class="delete"
+                                                        wire:click.prevent="confirmItemRemoval({{ $file->id }})">
+                                                        <svg>
+                                                            <polyline points="3 6 5 6 21 6"></polyline>
+                                                            <path
+                                                                d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                                            </path>
+                                                        </svg>
+                                                    </button>
+                                                @else
+                                                    <button class="edit"
+                                                        wire:click.prevent="saveMedia({{ $index }} , {{ $file->id }})">
+                                                        <svg>
+                                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                                        </svg>
+                                                    </button>
+                                                    <button class="save" wire:click.prevent="cancelMedia()">
+                                                        <svg>
+                                                            <line x1="18" y1="6" x2="6"
+                                                                y2="18">
+                                                            </line>
+                                                            <line x1="6" y1="6" x2="18"
+                                                                y2="18">
+                                                            </line>
+                                                        </svg>
+                                                    </button>
+                                                @endif
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                        </tbody>
+                    </table>
+                @else
+                    <p class="mt-2">No media related</p>
+                @endif
             </div>
         @endif
     </div>

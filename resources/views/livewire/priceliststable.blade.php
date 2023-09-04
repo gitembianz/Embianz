@@ -70,7 +70,8 @@
             </div>
             <div class="dropdown none" @if ($checked) style="display: unset" @endif>
                 <button class="dropdown-button none" @if ($checked) style="display: flex" @endif>
-                    Checked {{ count($checked) }}</button>
+                    Checked {{ count($checked) }}
+                </button>
                 @if ($checked)
                     <div class="dropdown-list">
                         <button class="dropdown-item delete" style="width: 150px" type="button"
@@ -122,7 +123,9 @@
     <table class="table">
         <thead>
             <tr>
-                <th><input type="checkbox" wire:model="selectPage"></th>
+                <th>
+                    <input type="checkbox" wire:model="selectPage">
+                </th>
 
                 @if ($this->showColumn('Id'))
                     <th wire:click="sortBy('id')">
@@ -196,14 +199,15 @@
                     </td>
 
                     @if ($this->showColumn('Id'))
-                        <td data-title="ID">{{ $price->id }}</td>
+                        <td data-title="ID">
+                            {{ $price->id }}
+                        </td>
                     @endif
 
                     @if ($this->showColumn('Name'))
                         <td data-title="Name">
                             @if ($indexprice !== $index)
-                                <div><a href="/show_pricelist/{{ $price->id }}'">{{ $price->name }}</a>
-                                </div>
+                                <a href="/show_pricelist/{{ $price->id }}'">{{ $price->name }}</a>
                             @else
                                 <input type="text" class="table__edit wid-1"
                                     wire:model.defer="prices.{{ $index }}.name"
@@ -216,11 +220,9 @@
                     @if ($this->showColumn('Currency'))
                         <td data-title="Currency">
                             @if ($indexprice !== $index)
-                                <div class="cursor-p" wire:click.prevent="edititem({{ $index }})">
-                                    {{ $price->currency->name }}</div>
+                                {{ $price->currency->name }}
                             @else
                                 <select class="table__edit" wire:model.defer="prices.{{ $index }}.currency">
-                                    <option>Select currency</option>
                                     @foreach ($currencies as $curency)
                                         <option value="{{ $curency->id }}">
                                             {{ $curency->name }}</option>
@@ -233,15 +235,9 @@
                     @if ($this->showColumn('Active'))
                         <td data-title="Active">
                             @if ($indexprice !== $index)
-                                <div class="cursor-p" wire:click.prevent="edititem({{ $index }})">
-                                    @if ($price->active === 1)
-                                        True
-                                    @else
-                                        False
-                                    @endif
-                                </div>
+                                {{ $price->active }}
                             @else
-                                <input type="checkbox" wire:model.defer="prices.{{ $index }}.active" checked>
+                                <input type="checkbox" wire:model.defer="prices.{{ $index }}.active">
                             @endif
                         </td>
                     @endif
@@ -254,6 +250,7 @@
                                     <polyline points="12 6 12 12 16 14"></polyline>
                                 </svg>
                                 {{ $price->created_at }}
+                            </div>
                         </td>
                     @endif
 

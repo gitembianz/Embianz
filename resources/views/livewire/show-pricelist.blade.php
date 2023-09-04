@@ -41,7 +41,6 @@
             </button>
         </div>
     </div>
-
     <div class="tab">
         <div class="tabs">
             <h3 class="tabs__page active">Details</h3>
@@ -115,7 +114,9 @@
                     </div>
                     @if ($edititem != null)
                         <button class="item__form-btn item__form-long" wire:click.prevent="saveitem()" type="button"
-                            value="Save">Save edited details</button>
+                            value="Save">
+                            Save edited details
+                        </button>
                     @endif
                 </div>
             </div>
@@ -123,7 +124,6 @@
         <div class="tabs__content">
             <livewire:related-productson-pricelist priceId="{{ $pricelist->id }}" />
         </div>
-
     </div>
     <div class="modal" id="confirmationmodal">
         <div class="modal-content">
@@ -134,7 +134,6 @@
                 value="Confirm">
             <input class="modal-content-btn delete" type="button"
                 onclick="document.getElementById('confirmationmodal').style.display='none'" value="Cancel">
-
             <span class="modal-content-btn delete"
                 onclick="document.getElementById('confirmationmodal').style.display='none'">
                 <svg>
@@ -144,5 +143,4 @@
             </span>
         </div>
     </div>
-</div>
 </div>
