@@ -104,7 +104,7 @@
                                             You selected <strong>{{ count($checkedadd) }}</strong> items.
                                         </p>
                                     </div>
-                                @else
+                                @elseif($selectPageadd)
                                     <div class="panel__header--checked" wire:click="selectAlladd">
                                         <p>
                                             You selected {{ count($checkedadd) }} items, select all?
@@ -315,7 +315,7 @@
                                     You selected <strong>{{ count($checked) }}</strong> items.
                                 </p>
                             </div>
-                        @else
+                        @elseif($selectPage)
                             <div class="panel__header--checked" wire:click="selectAll">
                                 <p>
                                     You selected {{ count($checked) }} items, select all?

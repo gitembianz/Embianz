@@ -352,7 +352,7 @@
                                     You selected <strong>{{ count($checked) }}</strong> items.
                                 </p>
                             </div>
-                        @else
+                        @elseif ($selectPage)
                             <div class="panel__header--checked" wire:click="selectAll">
                                 <p>
                                     You selected {{ count($checked) }} items, select all?
@@ -577,7 +577,7 @@
                         </tbody>
                     </table>
                 @else
-                    <p class="mt-2">No media related</p>
+                    <p class="mt-2">No records related</p>
                 @endif
             </div>
         @endif
