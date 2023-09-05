@@ -86,10 +86,6 @@ class RelatedSpecProduct extends Component
       $this->checked = [];
     }
   }
-  public function swapSortDirection()
-  {
-    return $this->orderAsc === '1' ? '0' : '1';
-  }
   public function updatedChecked()
   {
     $this->selectPage = false;
@@ -97,15 +93,6 @@ class RelatedSpecProduct extends Component
   public function isChecked($id)
   {
     return in_array($id, $this->checked);
-  }
-  public function sortBy($columnName)
-  {
-    if ($this->orderBy === $columnName) {
-      $this->orderAsc = $this->swapSortDirection();
-    } else {
-      $this->orderAsc = '1';
-    }
-    $this->orderBy = $columnName;
   }
   public function selectAll()
   {
@@ -373,7 +360,7 @@ class RelatedSpecProduct extends Component
   public function savespecs()
   {
     $empty = false;
-    foreach ($this->specsAndValues as $index =>  $specAndValue) {
+    foreach ($this->specsAndValues as  $specAndValue) {
       $val = $specAndValue['spec'];
       if (array_key_exists('value', $val) && $specAndValue['spec']['value'] == null) {
         $empty = true;
@@ -387,7 +374,7 @@ class RelatedSpecProduct extends Component
       ]);
       return;
     } else {
-      foreach ($this->specsAndValues as $index =>  $specAndValue) {
+      foreach ($this->specsAndValues as  $specAndValue) {
         $val = $specAndValue['spec'];
         $newspec = new Product_Spec();
         $newspec->product_id = $this->productId;
