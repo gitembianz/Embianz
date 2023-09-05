@@ -275,6 +275,7 @@ class RelatedSpecProduct extends Component
     $this->checked = [];
     $this->all = false;
     $this->editmultiple = false;
+    $this->selectPage = false;
     session()->flash('notification', [
       'message' => 'Record edited successfully!',
       'type' => 'success',
@@ -312,8 +313,17 @@ class RelatedSpecProduct extends Component
   }
   public function allowselect($index)
   {
+
+    foreach ($this->specsAndValues as &$item) {
+      $item['allow'] = false;
+    }
     $this->specsAndValues[$index]['allow'] = true;
     $this->searchadd = $this->specsAndValues[$index]['itemselected'];
+  }
+  public function dennyselect($index)
+  {
+    $this->specsAndValues[$index]['allow'] = false;
+    $this->searchadd = '';
   }
   public function allow()
   {

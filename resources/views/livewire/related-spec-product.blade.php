@@ -47,7 +47,7 @@
                                         </td>
                                         <td data-title="Specification">
                                             @if ($specAndValue['allow'])
-                                                <div class="table__drop">
+                                                <div class="table__drop" style="position: relative">
                                                     <input class="table__drop--input"
                                                         wire:model.debounce.300ms="searchadd" placeholder="Search..."
                                                         type="search">
@@ -64,19 +64,37 @@
                                                             </li>
                                                         @endif
                                                     </ul>
+                                                    <svg wire:click.prevent="dennyselect({{ $index }})"
+                                                        style="background: #35424b;position: absolute;top: 50%;transform: translateY(-50%);right: 10px;border-radius: 5px;padding: 5px;opacity: .7;stroke: white;"
+                                                        width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round" class="feather feather-x">
+                                                        <line x1="18" y1="6" x2="6"
+                                                            y2="18"></line>
+                                                        <line x1="6" y1="6" x2="18"
+                                                            y2="18"></line>
+                                                    </svg>
                                                 </div>
                                             @else
-                                                <div wire:click.prevent="allowselect({{ $index }})"
-                                                    class="table__drop--input">
+                                                <div style="position: relative" class="table__drop--input">
                                                     @if ($specAndValue['itemselected'])
                                                         {{ $specAndValue['itemselected'] }}
-                                                        <input type="hidden"
-                                                            wire:model.defer="specsAndValues.{{ $index }}.spec.name">
                                                     @else
                                                         {{ __('Select a spec') }}
                                                     @endif
+                                                    <svg wire:click.prevent="allowselect({{ $index }})"
+                                                        style="background: #35424b;position: absolute;top: 50%;transform: translateY(-50%);right: 10px;border-radius: 5px;padding: 5px;opacity: .7;stroke: white;"
+                                                        width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round" class="feather feather-edit-2">
+                                                        <path
+                                                            d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
+                                                        </path>
+                                                    </svg>
                                                 </div>
                                             @endif
+                                            <input type="hidden"
+                                                wire:model.defer="specsAndValues.{{ $index }}.spec.name">
                                         </td>
                                         <td data-title="Value">
                                             <input type="text" required class="table__drop--input"
@@ -173,7 +191,7 @@
                                         </td>
                                         <td data-title="Specification">
                                             @if ($specAndValue['allow'])
-                                                <div class="table__drop">
+                                                <div class="table__drop" style="position: relative">
                                                     <input class="table__drop--input" wire:model.live="searchadd"
                                                         placeholder="Search..." type="text">
                                                     <ul class="table__drop--list">
@@ -181,22 +199,43 @@
                                                             <li class="table__drop--item">No record found.</li>
                                                         @else
                                                             @foreach ($addspecs as $spec)
-                                                                <li class="table__drop--item"
+                                                                <li class="table__drop--item" style="cursor: pointer"
                                                                     wire:click.prevent="selectSpec({{ $index }}, {{ $spec->id }}, '{{ $spec->name }}')">
                                                                     {{ $spec->name }} ({{ $spec->um }})
                                                                 </li>
                                                             @endforeach
                                                         @endif
                                                     </ul>
+                                                    <svg wire:click.prevent="dennyselect({{ $index }})"
+                                                        style="background: #35424b;position: absolute;top: 50%;transform: translateY(-50%);right: 10px;border-radius: 5px;padding: 5px;opacity: .7;stroke: white;"
+                                                        width="24" height="24" viewBox="0 0 24 24"
+                                                        fill="none" stroke="currentColor" stroke-width="2"
+                                                        stroke-linecap="round" stroke-linejoin="round"
+                                                        class="feather feather-x">
+                                                        <line x1="18" y1="6" x2="6"
+                                                            y2="18"></line>
+                                                        <line x1="6" y1="6" x2="18"
+                                                            y2="18"></line>
+                                                    </svg>
                                                 </div>
                                             @else
-                                                <div wire:click.prevent="allowselect({{ $index }})"
-                                                    class="table__drop--input">
+                                                <div class="table__drop--input" style="position: relative">
                                                     {{ $specAndValue['itemselected'] }}
-                                                    <input type="hidden"
-                                                        wire:model.defer="specsAndValues.{{ $index }}.spec.idrel">
+                                                    <svg wire:click.prevent="allowselect({{ $index }})"
+                                                        style="background: #35424b;position: absolute;top: 50%;transform: translateY(-50%);right: 10px;border-radius: 5px;padding: 5px;opacity: .7;stroke: white;"
+                                                        width="24" height="24" viewBox="0 0 24 24"
+                                                        fill="none" stroke="currentColor" stroke-width="2"
+                                                        stroke-linecap="round" stroke-linejoin="round"
+                                                        class="feather feather-edit-2">
+                                                        <path
+                                                            d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
+                                                        </path>
+                                                    </svg>
+
                                                 </div>
                                             @endif
+                                            <input type="hidden"
+                                                wire:model.defer="specsAndValues.{{ $index }}.spec.idrel">
                                         </td>
                                         <td data-title="Value">
                                             <input type="text" required class="table__drop--input"
