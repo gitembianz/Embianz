@@ -74,7 +74,7 @@
                     @if ($editcategory === null)
                         <div class="item__form-input-close">
                             <div>{{ $category->start_date }}</div>
-                            <label for="start_date">Category Start Date</label>
+                            <label>Category Start Date</label>
                         </div>
                     @else
                         <div class="item__form-input">

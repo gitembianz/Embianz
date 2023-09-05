@@ -41,7 +41,7 @@
                         <table class="table" style="margin-top: 2rem">
                             <tbody>
                                 @foreach ($specsAndValues as $index => $specAndValue)
-                                    <tr wire:key="spec-row-{{ $index }}">
+                                    <tr>
                                         <td data-title="Name">
                                             {{ $item->name }}
                                         </td>
@@ -50,7 +50,7 @@
                                                 <div class="table__drop">
                                                     <input class="table__drop--input"
                                                         wire:model.debounce.300ms="searchadd" placeholder="Search..."
-                                                        type="text">
+                                                        type="search">
                                                     <ul class="table__drop--list cursor-p">
                                                         @if (count($addspecs) >= 1)
                                                             @foreach ($addspecs as $spec)

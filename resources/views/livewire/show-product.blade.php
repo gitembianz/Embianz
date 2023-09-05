@@ -75,7 +75,7 @@
                 <div class="item__form">
                     @if ($editproduct === null)
                         <div class="item__form-input-close">
-                            <div id="category_name">{{ $product->name }}</div>
+                            <div>{{ $product->name }}</div>
                             <label>Product Name</label>
                         </div>
                     @else
@@ -86,8 +86,8 @@
                     @endif
                     @if ($editproduct === null)
                         <div class="item__form-input-close">
-                            <div id="category_start_date">{{ $product->start_date }}</div>
-                            <label for="start_date">Product Start Date</label>
+                            <div>{{ $product->start_date }}</div>
+                            <label>Product Start Date</label>
                         </div>
                     @else
                         <div class="item__form-input">
@@ -97,7 +97,7 @@
                     @endif
                     @if ($editproduct === null)
                         <div class="item__form-input-close">
-                            <div id="category_end_date">{{ $product->end_date }}</div>
+                            <div>{{ $product->end_date }}</div>
                             <label>Product End Date </label>
                         </div>
                     @else
@@ -108,7 +108,7 @@
                     @endif
                     @if ($editproduct === null)
                         <div class="item__form-input-close">
-                            <div id="category_sequence">{{ $product->quantity }}</div>
+                            <div>{{ $product->quantity }}</div>
                             <label>Product Quantity</label>
                         </div>
                     @else
@@ -143,7 +143,7 @@
                     @endif
                     @if ($editproduct === null)
                         <div class="item__form-input-close">
-                            <div id="category_parrent">{{ $product->popularity }}</div>
+                            <div>{{ $product->popularity }}</div>
                             <label>Product Popularity</label>
                         </div>
                     @else
@@ -154,7 +154,7 @@
                     @endif
                     @if ($editproduct === null)
                         <div class="item__form-input-close item__form-long">
-                            <div id="category_short_description">{{ $product->short_description }}</div>
+                            <div>{{ $product->short_description }}</div>
                             <label>Product Short Description</label>
                         </div>
                     @else
@@ -165,7 +165,7 @@
                     @endif
                     @if ($editproduct === null)
                         <div class="item__form-input-close item__form-textarea">
-                            <div id="category_long_description">{{ $product->long_description }}</div>
+                            <div>{{ $product->long_description }}</div>
                             <label>Product Long Description</label>
                         </div>
                     @else
@@ -176,7 +176,7 @@
                     @endif
                     @if ($editproduct === null)
                         <div class="item__form-input-close item__form-long">
-                            <div id="seo_title">{{ $product->seo_title }}</div>
+                            <div>{{ $product->seo_title }}</div>
                             <label>SEO Title</label>
                         </div>
                     @else

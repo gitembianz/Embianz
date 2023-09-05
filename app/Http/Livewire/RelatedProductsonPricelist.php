@@ -143,6 +143,7 @@ class RelatedProductsonPricelist extends Component
       $itemtodel->delete();
     }
     $this->checked = [];
+    $this->selectPage = false;
     session()->flash('notification', [
       'message' => 'Records deleted successfully!',
       'type' => 'success',

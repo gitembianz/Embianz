@@ -257,11 +257,13 @@ class RelatedSubcategory extends Component
     }
 
     $this->checked = [];
+
     session()->flash('notification', [
       'message' => 'Records deleted successfully!',
       'type' => 'success',
       'title' => 'Success'
     ]);
+    $this->selectPage = false;
   }
   public function confirmItemsRemoval()
   {

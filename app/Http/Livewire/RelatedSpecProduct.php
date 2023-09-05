@@ -134,6 +134,7 @@ class RelatedSpecProduct extends Component
       $itemtodel->delete();
     }
     $this->checked = [];
+    $this->selectPage = false;
     session()->flash('notification', [
       'message' => 'Records  deleted successfully!',
       'type' => 'success',
@@ -245,7 +246,7 @@ class RelatedSpecProduct extends Component
       return;
     }
 
-    foreach ($this->specsAndValues as $index => $specAndValue) {
+    foreach ($this->specsAndValues as  $specAndValue) {
       if (!empty($specAndValue['spec']['value'])) {
         $spec = Product_Spec::find($specAndValue['spec']['id']);
         if ($spec) {
