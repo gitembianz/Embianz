@@ -327,7 +327,7 @@
                                     You selected <strong>{{ count($checked) }}</strong> items.
                                 </p>
                             </div>
-                        @else
+                        @elseif($selectPage)
                             <div class="panel__header--checked" wire:click="selectAll">
                                 <p>
                                     You selected {{ count($checked) }} items, select all?

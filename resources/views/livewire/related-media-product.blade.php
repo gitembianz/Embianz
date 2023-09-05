@@ -386,7 +386,7 @@
                                         You selected <strong>{{ count($checked) }}</strong> items.
                                     </p>
                                 </div>
-                            @else
+                            @elseif($selectPage)
                                 <div class="panel__header--checked" wire:click="selectAll">
                                     <p>
                                         You selected {{ count($checked) }} items, select all?
@@ -461,8 +461,8 @@
                                                         <video src="/{{ $file->path . $file->name }}" width="50"
                                                             controls="true"></video>
                                                     @else
-                                                        <img src="{{ $file->path }}" width="100"
-                                                            alt="">
+                                                        <img src="{{ $file->path }}" width="100" height="50"
+                                                            alt="{{ $file->path }}">
                                                     @endif
                                                 </td>
                                             @endif
@@ -562,7 +562,7 @@
                             </tbody>
                         </table>
                     @else
-                        <p class="mt-2">No media related</p>
+                        <p class="mt-2">No records related</p>
                     @endif
                 </div>
             </div>

@@ -100,25 +100,23 @@
                                         {{ count($checkedadd) }} records
                                     </button>
                                 </div>
-                                @if ($selectPageadd)
-                                    <div class="panel__header--checked">
-                                        @if ($selectAlladd)
+                                <div class="panel__header--checked">
+                                    @if ($selectPageadd && $selectAlladd)
+                                        <p>
+                                            You selected <strong>{{ count($checkedadd) }}</strong> items.
+                                        </p>
+                                    @elseif($selectPageadd)
+                                        <a href="#" wire:click="selectAlladd">
                                             <p>
-                                                You selected <strong>{{ count($checkedadd) }}</strong> items.
+                                                You selected <strong>{{ count($checkedadd) }}</strong> items,
+                                                Do
+                                                you
+                                                want
+                                                to Select All?
                                             </p>
-                                        @else
-                                            <a href="#" wire:click="selectAlladd">
-                                                <p>
-                                                    You selected <strong>{{ count($checkedadd) }}</strong> items,
-                                                    Do
-                                                    you
-                                                    want
-                                                    to Select All?
-                                                </p>
-                                            </a>
-                                        @endif
-                                    </div>
-                                @endif
+                                        </a>
+                                    @endif
+                                </div>
                             </div>
                             {{-- Table --}}
                             <div style="overflow-y: auto;position: relative;background: white;">
@@ -324,7 +322,7 @@
                                     You selected <strong>{{ count($checked) }}</strong> items.
                                 </p>
                             </div>
-                        @else
+                        @elseif($selectPage)
                             <div class="panel__header--checked" wire:click="selectAll">
                                 <p>
                                     You selected {{ count($checked) }} items, select all?
@@ -521,7 +519,7 @@
                         </div>
                     @endif
                 @else
-                    <p class="mt-2">No subcategories related</p>
+                    <p class="mt-2">No records related</p>
                 @endif
             </div>
         @endif

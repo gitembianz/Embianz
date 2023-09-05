@@ -106,20 +106,18 @@
                 </svg>
             </a>
         </div>
-        @if ($selectPage)
-            @if ($selectAll)
-                <div class="panel__header--checked">
-                    <p>
-                        You selected <strong>{{ count($checked) }}</strong> items.
-                    </p>
-                </div>
-            @else
-                <div class="panel__header--checked" wire:click="selectAll">
-                    <p>
-                        You selected {{ count($checked) }} items, select all?
-                    </p>
-                </div>
-            @endif
+        @if ($selectPage && $selectAll)
+            <div class="panel__header--checked">
+                <p>
+                    You selected <strong>{{ count($checked) }}</strong> items.
+                </p>
+            </div>
+        @elseif($selectPage)
+            <div class="panel__header--checked" wire:click="selectAll">
+                <p>
+                    You selected {{ count($checked) }} items, select all?
+                </p>
+            </div>
         @endif
     </div>
     {{-- Table --}}
