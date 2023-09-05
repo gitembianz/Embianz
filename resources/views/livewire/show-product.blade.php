@@ -210,13 +210,10 @@
                 </div>
             </div>
             <div class="tabs__content">
-                <livewire:related-media-product productId="{{ $product->id }}" />
-
-                <livewire:related-category-product productId="{{ $product->id }}" />
-
-                <livewire:related-spec-product productId="{{ $product->id }}" />
-
-                <livewire:related-pricelist productId="{{ $product->id }}" />
+                @livewire('related-media-product', ['productId' => $product->id], key($product->id))
+                @livewire('related-category-product', ['productId' => $product->id], key($product->id))
+                @livewire('related-spec-product', ['productId' => $product->id], key($product->id))
+                @livewire('related-pricelist', ['productId' => $product->id], key($product->id))
             </div>
         </div>
     </div>

@@ -5,7 +5,7 @@
         <div class="accordion__btn-flex">
             <button class="accordion__btn"
                 wire:click.prevent="@if ($showrelatedspecs === false) $set('showrelatedspecs', true) @else $set('showrelatedspecs', false) @endif">
-                {{ __('Specs ') }}({{ count($relatedspecs) }})
+                {{ __('Specs ') }}({{ $item->product_specs()->count() }})
             </button>
             <button wire:click.prevent="addrelated()" class="accordion__upload">
                 <svg>
@@ -149,7 +149,7 @@
                     {{-- Header of the table --}}
                     <div class="panel__header">
                         <h1 class="panel__header--title">
-                            {{ __('Edit multiple related items') }}
+                            {{ __('Edit related items') }}
                         </h1>
                         <input class="panel__header--checked panel__header--input"
                             wire:click.prevent="confirmspecsmultiple()" type="button" value="Save">
@@ -167,14 +167,14 @@
                         <table class="table mt-2">
                             <tbody>
                                 @foreach ($specsAndValues as $index => $specAndValue)
-                                    <tr wire:key="spec-row-{{ $index }}">
+                                    <tr>
                                         <td data-title="Name">
                                             {{ $item->name }}
                                         </td>
                                         <td data-title="Specification">
                                             @if ($specAndValue['allow'])
                                                 <div class="table__drop">
-                                                    <input class="table__drop--input" wire:model="searchadd"
+                                                    <input class="table__drop--input" wire:model.live="searchadd"
                                                         placeholder="Search..." type="text">
                                                     <ul class="table__drop--list">
                                                         @if ($addspecs->isEmpty())
@@ -192,13 +192,9 @@
                                             @else
                                                 <div wire:click.prevent="allowselect({{ $index }})"
                                                     class="table__drop--input">
-                                                    @if (!empty($specAndValue['itemselected']))
-                                                        {{ $specAndValue['itemselected'] }}
-                                                        <input type="hidden"
-                                                            wire:model.defer="specsAndValues.{{ $index }}.spec.idrel">
-                                                    @else
-                                                        {{ __('Select a spec') }}
-                                                    @endif
+                                                    {{ $specAndValue['itemselected'] }}
+                                                    <input type="hidden"
+                                                        wire:model.defer="specsAndValues.{{ $index }}.spec.idrel">
                                                 </div>
                                             @endif
                                         </td>
@@ -314,7 +310,7 @@
                                             Delete
                                         </button>
                                         <button class="dropdown-item submit" type="button"
-                                            wire:click="editSelected">
+                                            wire:click.prevent="editSelected()">
                                             Edit
                                         </button>
                                     </div>
