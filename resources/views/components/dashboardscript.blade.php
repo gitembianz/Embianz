@@ -27,8 +27,9 @@
     window.addEventListener('show-delete-spec', event => {
         document.getElementById('confirmationmodalspec').style.display = 'flex';
     });
-
-
+    window.addEventListener('show-delete-modal-price', event => {
+        document.getElementById('confirmationmodalprice').style.display = 'flex';
+    });
 
     // JavaScript code
     document.addEventListener('livewire:load', function() {
