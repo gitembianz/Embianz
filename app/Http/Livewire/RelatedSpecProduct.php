@@ -70,6 +70,10 @@ class RelatedSpecProduct extends Component
       'spec' => ['idrel' => null, 'value' => null],
     ];
   }
+  public function load()
+  {
+    $this->perPage += 10;
+  }
   //function for realted
   public function showColumn($column)
   {
@@ -182,7 +186,6 @@ class RelatedSpecProduct extends Component
     $val = $this->specification;
     if (isset($val["$index"]['value'])) {
       if ($val["$index"]['value'] != "") {
-
         $newspec->value = $val["$index"]['value'];
         $newspec->save();
         $this->allow = false;
@@ -288,6 +291,11 @@ class RelatedSpecProduct extends Component
     $this->showrelatedspecs = true;
     $this->addrelatedspecs = true;
   }
+  public function denny()
+  {
+
+    $this->allow = false;
+  }
   public function select($id)
   {
     $this->itemselected = Specs::find($id);
@@ -348,10 +356,7 @@ class RelatedSpecProduct extends Component
   }
   public function clear($index)
   {
-    // Remove the row from the array
     unset($this->specsAndValues[$index]);
-
-    // Reset the keys of the array
     $this->specsAndValues = array_values($this->specsAndValues);
 
     // Decrement the total row count

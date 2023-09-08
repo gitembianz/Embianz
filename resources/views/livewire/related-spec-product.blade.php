@@ -80,7 +80,7 @@
                                                     @if ($specAndValue['itemselected'])
                                                         {{ $specAndValue['itemselected'] }}
                                                     @else
-                                                        {{ __('Select a spec') }}
+                                                        {{ __('Select a item') }}
                                                     @endif
                                                     <svg wire:click.prevent="allowselect({{ $index }})"
                                                         style="background: #35424b;position: absolute;top: 50%;transform: translateY(-50%);right: 10px;border-radius: 5px;padding: 5px;opacity: .7;stroke: white;"
@@ -413,6 +413,11 @@
                                 </tr>
                             @else
                                 @foreach ($relatedspecs as $index => $spec)
+                                    @if ($index >= $perPage)
+                                        <?php
+                                        break;
+                                        ?>
+                                    @endif
                                     <tr class="@if ($this->isChecked($spec->id)) table__row--selected @endif">
                                         <td data-title="Check">
                                             <input type="checkbox" value="{{ $spec->id }}" wire:model="checked">
@@ -428,7 +433,7 @@
                                                     </a>
                                                 @else
                                                     @if ($allow)
-                                                        <div class="table__drop">
+                                                        <div class="table__drop" style="position: relative">
                                                             <input class="table__drop--input"
                                                                 wire:model.debounce.300ms="searchadd"
                                                                 placeholder="Search.." type="text">
@@ -446,6 +451,17 @@
                                                                     @endforeach
                                                                 @endif
                                                             </ul>
+                                                            <svg wire:click.prevent="denny()"
+                                                                style="background: #35424b;position: absolute;top: 50%;transform: translateY(-50%);right: 10px;border-radius: 5px;padding: 5px;opacity: .7;stroke: white;"
+                                                                width="24" height="24" viewBox="0 0 24 24"
+                                                                fill="none" stroke="currentColor" stroke-width="2"
+                                                                stroke-linecap="round" stroke-linejoin="round"
+                                                                class="feather feather-x">
+                                                                <line x1="18" y1="6" x2="6"
+                                                                    y2="18"></line>
+                                                                <line x1="6" y1="6" x2="18"
+                                                                    y2="18"></line>
+                                                            </svg>
                                                         </div>
                                                     @else
                                                         <button wire:click.prevent="allow" class="table__drop--input">
@@ -527,6 +543,11 @@
                             @endif
                         </tbody>
                     </table>
+                    @if ($perPage <= count($relatedspecs))
+                        <div class="table__load-more" wire:click="load">
+                            Load more
+                        </div>
+                    @endif
                 @else
                     <p class="mt-2">No records related</p>
                 @endif
