@@ -63,7 +63,7 @@
             </div>
             <div class="dropdown none" @if ($checked) style="display: unset" @endif>
                 <button class="dropdown-button none" @if ($checked) style="display: flex" @endif>With
-                    Checked({{ count($checked) }})</button>
+                    With checked({{ count($checked) }})</button>
                 @if ($checked)
                     <div class="dropdown-list">
                         <button class="dropdown-item delete" style="width: 150px" type="button"

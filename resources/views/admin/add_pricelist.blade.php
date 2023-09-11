@@ -11,7 +11,7 @@
         <div class="item__header">
             <h1 class="item__header-title" id="title">{{ __('Add new price list') }}</h1>
             <div class="item__header-buttons">
-                <a class="item__header-btn" href="{{ route('specs') }}" data-tooltip-center="Back to all Price lists">
+                <a class="item__header-btn" href="{{ route('pricelists') }}" data-tooltip-center="Back to all Price lists">
                     <svg>
                         <polyline points="11 17 6 12 11 7"></polyline>
                         <polyline points="18 17 13 12 18 7"></polyline>
@@ -35,7 +35,6 @@
             </div>
             <div class="item__form-input">
                 <select name="currency">
-                    <option>Select a currency</option>
                     @foreach ($currencies as $currency)
                         <option value="{{ $currency->id }}">{{ $currency->name }}</option>
                     @endforeach

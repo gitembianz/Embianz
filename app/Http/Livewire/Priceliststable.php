@@ -2,17 +2,18 @@
 
 namespace App\Http\Livewire;
 
-use App\Exports\PriceListExport;
+use Livewire\Component;
 use App\Models\Currency;
 use App\Models\PriceList;
-use Livewire\Component;
 use Livewire\WithPagination;
+use App\Exports\PriceListExport;
+use App\Models\PricelistEntries;
 
 class Priceliststable extends Component
 {
 
   use WithPagination;
-  public $loadAmount = 13;
+  public $loadAmount = 20;
   public $search = '';
   public $orderBy = 'id';
   public $orderAsc = true;
@@ -22,9 +23,6 @@ class Priceliststable extends Component
   public $itemidbeingremoved = null;
   public $columns = ['Id', 'Currency', 'Active', 'Created At'];
   public $selectedColumns = [];
-  public $indexprice = null;
-  public $prices = [];
-  public $currencies;
 
   public function render()
   {
@@ -35,7 +33,6 @@ class Priceliststable extends Component
   public function mount()
   {
     $this->selectedColumns = $this->columns;
-    $this->currencies = Currency::get();
   }
   public function showColumn($column)
   {
@@ -92,10 +89,17 @@ class Priceliststable extends Component
     $items = PriceList::whereKey($this->checked)->get();
     foreach ($items as $item) {
       $id = $item->id;
+      $productpricelists = PricelistEntries::where('pricelist_id', $id)->get();
+      if ($productpricelists != NULL) {
+        foreach ($productpricelists as $productpricelist) {
+          $productpricelist->delete();
+        }
+      }
       $itemdel = PriceList::find($id);
       $itemdel->delete();
     }
     $this->checked = [];
+    $this->selectPage = false;
     session()->flash('notification', [
       'message' => 'Records deleted successfully!',
       'type' => 'success',
@@ -105,6 +109,12 @@ class Priceliststable extends Component
   public function deleteSingleRecord()
   {
     $id = $this->itemidbeingremoved;
+    $productpricelists = PricelistEntries::where('pricelist_id', $id)->get();
+    if ($productpricelists != NULL) {
+      foreach ($productpricelists as $productpricelist) {
+        $productpricelist->delete();
+      }
+    }
     $item = PriceList::findOrFail($id);
     $item->delete();
     $this->checked = array_diff($this->checked, [$id]);
@@ -126,37 +136,6 @@ class Priceliststable extends Component
   public function isChecked($id)
   {
     return in_array($id, $this->checked);
-  }
-  public function edititem($itemIndex)
-  {
-    $this->indexprice = $itemIndex;
-  }
-  public function saveitem($index, $id)
-  {
-    $new = $this->prices[$index] ?? NULL;
-    if (!is_null($new)) {
-      $price = PriceList::find($id);
-      if (array_key_exists('name', $new)) {
-        $price->name = $new['name'];
-      }
-      if (array_key_exists('active', $new)) {
-        $price->active = $new['active'];
-      }
-      if (array_key_exists('currency', $new)) {
-        $price->currency_id = $new['currency'];
-      }
-      $price->save();
-      session()->flash('message', 'Record edited successfully!');
-      session()->flash('type', 'success');
-      session()->flash('title', 'Succes');
-    }
-    $this->prices = [];
-    $this->indexprice = null;
-  }
-  public function cancelitem()
-  {
-    $this->indexprice = null;
-    $this->prices = [];
   }
   public function exportSelected()
   {
