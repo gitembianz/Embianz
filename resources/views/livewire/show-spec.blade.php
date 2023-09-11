@@ -84,17 +84,14 @@
                     @endif
                     @if ($edititem === null)
                         <div class="item__form-input-close">
-                            <div>{{ $spec->spec_group }}</div>
+                            <div>{{ $spec->group->name }}</div>
                             <label>Group</label>
                         </div>
                     @else
                         <div class="item__form-input">
                             <select wire:model.defer="record.spec_group" class="item__form-input">
-                                <?php
-                                $groups = ['details', 'feature', 'accessibility'];
-                                ?>
-                                @foreach ($groups as $group)
-                                    <option value="{{ $group }}">{{ $group }}</option>
+                                @foreach ($groups as $id => $name)
+                                    <option value="{{ $id }}">{{ $name }}</option>
                                 @endforeach
                             </select>
                             <label>Group</label>

@@ -60,7 +60,8 @@
                                                                 </li>
                                                             @endforeach
                                                         @else
-                                                            <li class="table__drop--item">{{ __('No specs found') }}
+                                                            <li class="table__drop--item">
+                                                                {{ __('No specs found') }}
                                                             </li>
                                                         @endif
                                                     </ul>
@@ -99,46 +100,6 @@
                                         <td data-title="Value">
                                             <input type="text" required class="table__drop--input"
                                                 wire:model.defer="specsAndValues.{{ $index }}.spec.value">
-                                        </td>
-                                        <td data-title="Action">
-                                            <div class="table__buttons">
-                                                @if ($index == $row - 1)
-                                                    <button type="button" class="edit" wire:click="plus">
-                                                        <svg>
-                                                            <line x1="12" y1="5" x2="12"
-                                                                y2="19">
-                                                            </line>
-                                                            <line x1="5" y1="12" x2="19"
-                                                                y2="12">
-                                                            </line>
-                                                        </svg>
-                                                    </button>
-                                                    <button type="button" class="save"
-                                                        wire:click="clear({{ $index }})">
-                                                        <svg>
-                                                            <line x1="18" y1="6" x2="6"
-                                                                y2="18">
-                                                            </line>
-                                                            <line x1="6" y1="6" x2="18"
-                                                                y2="18">
-                                                            </line>
-                                                        </svg>
-                                                    </button>
-                                                @endif
-                                                @if ($index != $row - 1)
-                                                    <button type="button" class="save"
-                                                        wire:click="clear({{ $index }})">
-                                                        <svg>
-                                                            <line x1="18" y1="6" x2="6"
-                                                                y2="18">
-                                                            </line>
-                                                            <line x1="6" y1="6" x2="18"
-                                                                y2="18">
-                                                            </line>
-                                                        </svg>
-                                                    </button>
-                                                @endif
-                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach

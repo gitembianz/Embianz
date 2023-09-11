@@ -158,9 +158,9 @@
                 @if ($this->showColumn('Group'))
                     <th>
                         <button class="table__header--btn"
-                            @if ($orderBy === 'spec_group' && $orderAsc === '1') data-symbol="up" @else
+                            @if ($orderBy === 'group_id' && $orderAsc === '1') data-symbol="up" @else
                             data-symbol="down" @endif
-                            wire:click="sortBy('spec_group')">
+                            wire:click="sortBy('group_id')">
                             Group
                             <svg>
                                 <line x1="12" y1="5" x2="12" y2="19"></line>
@@ -214,7 +214,7 @@
                         @endif
                         @if ($this->showColumn('Group'))
                             <td data-title="Group">
-                                {{ $spec->spec_group }}
+                                {{ $spec->group->name }}
                             </td>
                         @endif
                         @if ($this->showColumn('Created At'))

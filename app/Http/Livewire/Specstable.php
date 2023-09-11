@@ -12,7 +12,7 @@ class Specstable extends Component
 {
 
   use WithPagination;
-  public $loadAmount = 13;
+  public $loadAmount = 20;
   public $search = '';
   public $orderBy = 'id';
   public $orderAsc = true;
@@ -102,6 +102,7 @@ class Specstable extends Component
       $specdel = Specs::find($id);
       $specdel->delete();
     }
+    $this->selectPage = false;
     $this->checked = [];
     session()->flash('notification', [
       'message' => 'Records deleted successfully!',

@@ -41,14 +41,11 @@
             </div>
             <div class="item__form-input">
                 <select name="spec_group">
-                    <?php
-                    $groups = ['details', 'feature', 'accessibility'];
-                    ?>
-                    <option>Select a group</option>
-                    @foreach ($groups as $group)
-                        <option value="{{ $group }}">{{ $group }}</option>
+                    @foreach ($groups as $id => $name)
+                        <option value="{{ $id }}">{{ $name }}</option>
                     @endforeach
                 </select>
+
                 <label>Group</label>
             </div>
             <input class="item__form-btn  item__form-long" type="submit" value="Add New" name="submit">
