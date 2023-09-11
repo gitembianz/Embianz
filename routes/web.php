@@ -91,6 +91,8 @@ Route::get('/cleareverything', function () {
   echo "queue clear<br>";
   $optimize = Artisan::call('optimize:clear');
   echo "Optimize clear<br>";
+  $migrate = Artisan::call('migrate');
+  echo "DB updated<br>";
 });
 Route::get('/seeddatabase', function () {
   $seed = Artisan::call('db:seed --class=CurrencySeeder');
