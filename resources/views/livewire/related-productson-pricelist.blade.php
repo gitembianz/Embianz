@@ -5,7 +5,7 @@
         <div class="accordion__btn-flex">
             <button class="accordion__btn"
                 wire:click.prevent="@if ($showrelatedprods === false) $set('showrelatedprods', true) @else $set('showrelatedprods', false) @endif">
-                {{ __('Products ') }}({{ count($relatedprods) }})
+                {{ __('Products ') }}({{ $item->pricelistentries()->count() }})
             </button>
             <button wire:click.prevent="addrelated()" class="accordion__upload">
                 <svg>
@@ -218,7 +218,7 @@
         @endif
         @if ($showrelatedprods)
             <div class="accordion__content">
-                @if ($relatedprods && count($relatedprods) > 0)
+                @if ($item->pricelistentries()->count() > 0)
                     {{-- delete single record --}}
                     <div class="modal" id="confirmationmodal">
                         <div class="modal-content">
@@ -501,9 +501,8 @@
                             @endforeach
                         </tbody>
                     </table>
-                    {{-- <div>{{ $relatedproducts->links('pagination-links') }} </div> --}}
                 @else
-                    <p>No products Related</p>
+                    <p class="mt-2">No records related</p>
                 @endif
             </div>
         @endif

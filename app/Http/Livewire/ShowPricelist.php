@@ -77,10 +77,28 @@ class ShowPricelist extends Component
     if (!is_null($rec)) {
       $new = PriceList::find($this->itemId);
       if (array_key_exists('name', $rec)) {
-        $new->name = $rec['name'];
+        if (!empty($rec['name'])) {
+          $new->name = $rec['name'];
+        } else {
+          session()->flash('notification', [
+            'message' => 'Please provide a value!',
+            'type' => 'warning',
+            'title' => 'Missing Values'
+          ]);
+          return;
+        }
       }
       if (array_key_exists('currency', $rec)) {
-        $new->currency_id = $rec['currency'];
+        if (!empty($rec['currency'])) {
+          $new->currency_id = $rec['currency'];
+        } else {
+          session()->flash('notification', [
+            'message' => 'Please provide a value!',
+            'type' => 'warning',
+            'title' => 'Missing Values'
+          ]);
+          return;
+        }
       }
       if (array_key_exists('active', $rec)) {
         $new->active = $rec['active'];
