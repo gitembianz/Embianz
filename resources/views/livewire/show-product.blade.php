@@ -125,15 +125,14 @@
                                         <polyline points="20 6 9 17 4 12"></polyline>
                                     </svg>
                                 </div>
-                                {{ _('Active') }}
                             @else
                                 <div class="simple__checkbox--disabled">
                                     <svg>
                                         <polyline points="20 6 9 17 4 12"></polyline>
                                     </svg>
                                 </div>
-                                {{ _('Inactive') }}
                             @endif
+                            {{ _('Active') }}
                         </div>
                     @else
                         <div style="display: flex; align-items: center;justify-content: flex-start;gap: 10px">

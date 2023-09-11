@@ -69,7 +69,7 @@ class RelatedProductsonPricelist extends Component
   //function for realted
   public function showColumn($column)
   {
-    if ($column === 'Product name') {
+    if ($column === 'Name') {
       return true;
     }
     return in_array($column, $this->selectedColumns);
