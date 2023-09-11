@@ -49,8 +49,7 @@
         <h1 class="panel__header--title">
             {{ __('Price List') }}
         </h1>
-        <input class="panel__header--input" type="text" wire:model.debounce.300ms="search"
-            placeholder="Search your price field...">
+        <input class="panel__header--input" type="text" wire:model.debounce.300ms="search" placeholder="Search...">
         <div class="panel__header--bundle">
             <div class="dropdown">
                 <button class="dropdown-button">Columns
@@ -70,7 +69,7 @@
             </div>
             <div class="dropdown none" @if ($checked) style="display: unset" @endif>
                 <button class="dropdown-button none" @if ($checked) style="display: flex" @endif>
-                    Checked {{ count($checked) }}
+                    With checked({{ count($checked) }})
                 </button>
                 @if ($checked)
                     <div class="dropdown-list">
@@ -186,80 +185,57 @@
                 <th></th>
             </tr>
         </thead>
-
         <tbody>
-            @foreach ($pricelists as $index => $price)
-                <tr @if ($loop->last) id="last_record" @endif
-                    class="@if ($this->isChecked($price->id)) table__row--selected @endif">
+            @if ($pricelists->isEmpty())
+                <tr>
+                    <td class="table__empty" colspan="{{ count($selectedColumns) + 3 }}">No record found.</td>
+                </tr>
+            @else
+                @foreach ($pricelists as $index => $price)
+                    <tr @if ($loop->last) id="last_record" @endif
+                        class="@if ($this->isChecked($price->id)) table__row--selected @endif">
 
-                    <td data-title="Check">
-                        <input type="checkbox" value="{{ $price->id }}" wire:model="checked">
-                    </td>
-
-                    @if ($this->showColumn('Id'))
-                        <td data-title="ID">
-                            {{ $price->id }}
+                        <td data-title="Check">
+                            <input type="checkbox" value="{{ $price->id }}" wire:model="checked">
                         </td>
-                    @endif
 
-                    @if ($this->showColumn('Name'))
-                        <td data-title="Name">
-                            @if ($indexprice !== $index)
+                        @if ($this->showColumn('Id'))
+                            <td data-title="ID">
+                                {{ $price->id }}
+                            </td>
+                        @endif
+
+                        @if ($this->showColumn('Name'))
+                            <td data-title="Name">
                                 <a href="/show_pricelist/{{ $price->id }}'">{{ $price->name }}</a>
-                            @else
-                                <input type="text" class="table__edit wid-1"
-                                    wire:model.defer="prices.{{ $index }}.name"
-                                    placeholder="{{ $price->name }}">
-                            @endif
+                            </td>
+                        @endif
 
-                        </td>
-                    @endif
-
-                    @if ($this->showColumn('Currency'))
-                        <td data-title="Currency">
-                            @if ($indexprice !== $index)
+                        @if ($this->showColumn('Currency'))
+                            <td data-title="Currency">
                                 {{ $price->currency->name }}
-                            @else
-                                <select class="table__edit" wire:model.defer="prices.{{ $index }}.currency">
-                                    @foreach ($currencies as $curency)
-                                        <option value="{{ $curency->id }}">
-                                            {{ $curency->name }}</option>
-                                    @endforeach
-                                </select>
-                            @endif
-                        </td>
-                    @endif
+                            </td>
+                        @endif
 
-                    @if ($this->showColumn('Active'))
-                        <td data-title="Active">
-                            @if ($indexprice !== $index)
+                        @if ($this->showColumn('Active'))
+                            <td data-title="Active">
                                 {{ $price->active }}
-                            @else
-                                <input type="checkbox" wire:model.defer="prices.{{ $index }}.active">
-                            @endif
-                        </td>
-                    @endif
+                            </td>
+                        @endif
 
-                    @if ($this->showColumn('Created At'))
-                        <td data-title="Created At">
-                            <div class="table__time">
-                                <svg>
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                </svg>
-                                {{ $price->created_at }}
-                            </div>
-                        </td>
-                    @endif
+                        @if ($this->showColumn('Created At'))
+                            <td data-title="Created At">
+                                <div class="table__time">
+                                    <svg>
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <polyline points="12 6 12 12 16 14"></polyline>
+                                    </svg>
+                                    {{ $price->created_at }}
+                                </div>
+                            </td>
+                        @endif
 
-                    <td data-title="Action" class="table__buttons">
-                        @if ($indexprice !== $index)
-                            <button class="edit" wire:click.prevent="edititem({{ $index }})">
-                                <svg>
-                                    <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
-                                    </path>
-                                </svg>
-                            </button>
+                        <td data-title="Action" class="table__buttons">
                             <button class="delete" wire:click.prevent="confirmItemRemoval({{ $price->id }})">
                                 <svg>
                                     <polyline points="3 6 5 6 21 6"></polyline>
@@ -268,23 +244,10 @@
                                     </path>
                                 </svg>
                             </button>
-                        @else
-                            <button class="edit"
-                                wire:click.prevent="saveitem({{ $index }} , {{ $price->id }})">
-                                <svg>
-                                    <polyline points="20 6 9 17 4 12"></polyline>
-                                </svg>
-                            </button>
-                            <button class="save" wire:click.prevent="cancelitem()">
-                                <svg>
-                                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                                </svg>
-                            </button>
-                        @endif
-                    </td>
-                </tr>
-            @endforeach
+                        </td>
+                    </tr>
+                @endforeach
+            @endif
         </tbody>
         <x-lazy />
     </table>
