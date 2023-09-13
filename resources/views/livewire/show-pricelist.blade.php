@@ -90,7 +90,7 @@
                         </div>
                     @else
                         <div style="display: flex; align-items: center;justify-content: flex-start;gap: 10px">
-                            <input type="checkbox" wire:model.defer="record.active">
+                            <input type="checkbox" wire:model="record.active">
                             <span>Active</span>
                         </div>
                     @endif
