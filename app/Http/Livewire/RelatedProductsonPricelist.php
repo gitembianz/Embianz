@@ -241,6 +241,10 @@ class RelatedProductsonPricelist extends Component
     $this->editmultiple = false;
     $this->addrelatedproducts = false;
   }
+  public function load()
+  {
+    $this->perPage += 10;
+  }
   public function saveitems()
   {
     foreach ($this->prod as  $pro) {
