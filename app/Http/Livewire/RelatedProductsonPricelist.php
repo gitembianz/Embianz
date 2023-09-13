@@ -45,12 +45,16 @@ class RelatedProductsonPricelist extends Component
   public $editmultiple = false;
   public $itemstoedit;
 
-
-
   public function render()
   {
+    $relatedprods = $this->relatedprods
+      ->where(function ($query) {
+        $query->whereHas('product', function ($subQuery) {
+          $subQuery->where('name', 'LIKE', '%' . $this->search . '%');
+        });
+      })->get();
     return view('livewire.related-productson-pricelist', [
-      'relatedprods' => $this->relatedprods,
+      'relatedprods' => $relatedprods,
       'addprods' => $this->addprods
     ]);
   }
@@ -65,7 +69,10 @@ class RelatedProductsonPricelist extends Component
       'product' => ['idrel' => null, 'value' => null],
     ];
   }
-
+  public function denny()
+  {
+    $this->allow = false;
+  }
   //function for realted
   public function showColumn($column)
   {
@@ -110,7 +117,7 @@ class RelatedProductsonPricelist extends Component
   }
   public function getRelatedprodsProperty()
   {
-    return $this->relatedprodsQuery->paginate($this->perPage);
+    return $this->relatedprodsQuery;
   }
   public function getRelatedprodsQueryProperty()
   {
@@ -172,22 +179,28 @@ class RelatedProductsonPricelist extends Component
   }
   public function confirmitem($index, $id)
   {
-
     $new = PricelistEntries::find($id);
     $new->product_id = $this->productid;
     $val = $this->product;
     if (isset($val["$index"]['value'])) {
-
-      $new->value = $val["$index"]['value'];
+      if (!empty($val["$index"]['value'])) {
+        $new->value = $val["$index"]['value'];
+        $new->save();
+        $this->allow = false;
+        $this->productid = null;
+        $this->product = [];
+        $this->itemselected = null;
+        $this->editedrow = null;
+        $this->search = '';
+      } else {
+        session()->flash('notification', [
+          'message' => 'Please provide a value!',
+          'type' => 'warning',
+          'title' => 'Missing Values'
+        ]);
+        return;
+      }
     }
-
-    $new->save();
-    $this->allow = false;
-    $this->productid = null;
-    $this->product = [];
-    $this->itemselected = null;
-    $this->editedrow = null;
-    $this->search = '';
     session()->flash('notification', [
       'message' => 'Record edited successfully!',
       'type' => 'success',
@@ -201,7 +214,6 @@ class RelatedProductsonPricelist extends Component
     $this->itemselected = null;
     $this->product = [];
   }
-
   // add specs function
   public function addrelated()
   {
@@ -214,7 +226,6 @@ class RelatedProductsonPricelist extends Component
     $this->productid = $id;
     $this->allow = false;
   }
-
   public function closemodal()
   {
     $this->prod = [
@@ -233,7 +244,7 @@ class RelatedProductsonPricelist extends Component
   public function saveitems()
   {
     foreach ($this->prod as  $pro) {
-      if (isset($pro['product']['value'])) {
+      if (isset($pro['product']['value']) && isset($pro['product']['idrel'])) {
         $new = new PricelistEntries();
         $new->product_id = $pro['product']['idrel'];
         $new->pricelist_id =  $this->priceId;
@@ -264,6 +275,11 @@ class RelatedProductsonPricelist extends Component
       'title' => 'Success'
     ]);
   }
+  public function dennyselect($index)
+  {
+    $this->prod[$index]['allow'] = false;
+    $this->searchadd = '';
+  }
   public function plus()
   {
     $this->row++;
@@ -273,24 +289,35 @@ class RelatedProductsonPricelist extends Component
       'product' => ['name' => null, 'value' => null],
     ];
   }
-  //clear one row in modal
+
   public function clear($index)
   {
-    // Remove the row from the array
     unset($this->prod[$index]);
-
-    // Reset the keys of the array
     $this->prod = array_values($this->prod);
 
     // Decrement the total row count
     $this->row--;
+    if ($this->row < 1) {
+      $this->addrelatedproducts = false;
+      $this->prod = [
+        [
+          'allow' => false,
+          'itemselected' => null,
+          'product' => ['name' => null, 'value' => null],
+        ]
+      ];
+      $this->row = 1;
+    }
   }
   public function allowselect($index)
   {
+    foreach ($this->prod as &$item) {
+      $item['allow'] = false;
+    }
     $this->prod[$index]['allow'] = true;
     $this->searchadd = $this->prod[$index]['itemselected'];
   }
-  public function selectProduct($index, $id, $name)
+  public function selectitem($index, $id, $name)
   {
     $this->prod[$index]['itemselected'] = $name;
     $this->prod[$index]['product']['idrel'] = $id;
@@ -346,7 +373,6 @@ class RelatedProductsonPricelist extends Component
       'title' => 'Success'
     ]);
   }
-
   public function getAddprodsProperty()
   {
     $ids = $this->relatedprods->pluck('product_id')->toArray();
