@@ -30,7 +30,7 @@
     </script>
 @endif --}}
 {{-- End Section session message --}}
-<x-dashboardsidebar />
+<x-dashboardsidebar :active="__('category')" />
 {{-- Page content start --}}
 
 <section class="content">

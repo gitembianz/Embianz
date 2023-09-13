@@ -1,6 +1,6 @@
 <x-dashboardheader />
 <x-dashboardnavbar />
-<x-dashboardsidebar />
+<x-dashboardsidebar :active="__('price')" />
 {{-- Page content start --}}
 <section class="content">
 

@@ -1,7 +1,7 @@
 <x-dashboardheader />
 <x-dashboardnavbar />
 <x-alert />
-<x-dashboardsidebar />
+<x-dashboardsidebar :active="__('product')" />
 
 {{-- Page content start --}}
 <section class="content">

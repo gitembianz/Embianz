@@ -1,9 +1,7 @@
 <x-dashboardheader />
 <x-dashboardnavbar />
-{{-- Display session message --}}
-
-{{-- End Section session message --}}
-<x-dashboardsidebar />
+<x-alert />
+<x-dashboardsidebar :active="__('product')" />
 {{-- Page content start --}}
 <section class="content">
 

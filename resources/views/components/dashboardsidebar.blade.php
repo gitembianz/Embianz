@@ -8,7 +8,7 @@
                     <polyline points="9 18 15 12 9 6"></polyline>
                 </svg>
             </li>
-            <li><a class="sidebar__item" href="{{ route('dashboard') }}">
+            <li><a class="sidebar__item @if ($active == 'dashboard') active @endif" href="{{ route('dashboard') }}">
                     <button class="sidebar__icon">
                         <svg>
                             <rect x="3" y="3" width="7" height="7"></rect>
@@ -19,7 +19,7 @@
                     </button>
                     <span>{{ __('Dashbord') }}</span>
                 </a></li>
-            <li><a class="sidebar__item" href="{{ url('category') }}">
+            <li><a class="sidebar__item @if ($active == 'category') active @endif" href="{{ url('category') }}">
                     <button class="sidebar__icon">
                         <svg>
                             <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
@@ -29,7 +29,7 @@
                     </button>
                     <span>Categories</span>
                 </a></li>
-            <li><a class="sidebar__item" href="{{ url('products') }}">
+            <li><a class="sidebar__item @if ($active == 'product') active @endif" href="{{ url('products') }}">
                     <button class="sidebar__icon">
                         <svg>
                             <line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line>
@@ -42,7 +42,7 @@
                     </button>
                     <span>Products</span>
                 </a></li>
-            <li><a class="sidebar__item" href="{{ route('home') }}">
+            <li><a class="sidebar__item" href="#">
                     <button class="sidebar__icon">
                         <svg>
                             <circle cx="9" cy="21" r="1"></circle>
@@ -62,7 +62,8 @@
                     </button>
                     <span>Orders</span>
                 </a></li>
-            <li><a class="sidebar__item" href="{{ route('pricelists') }}">
+            <li><a class="sidebar__item @if ($active == 'price') active @endif"
+                    href="{{ route('pricelists') }}">
                     <button class="sidebar__icon">
                         <svg>
                             <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z">
@@ -72,7 +73,7 @@
                     </button>
                     <span>Price List</span>
                 </a></li>
-            <li><a class="sidebar__item" href="{{ url('specs') }}">
+            <li><a class="sidebar__item @if ($active == 'spec') active @endif" href="{{ url('specs') }}">
                     <button class="sidebar__icon">
                         <svg>
                             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
