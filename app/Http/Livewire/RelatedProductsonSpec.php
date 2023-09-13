@@ -314,6 +314,10 @@ class RelatedProductsonSpec extends Component
     $this->prod[$index]['allow'] = false;
     $this->searchadd = '';
   }
+  public function load()
+  {
+    $this->perPage += 10;
+  }
   public function allowselect($index)
   {
     foreach ($this->prod as &$item) {

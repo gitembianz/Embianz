@@ -449,6 +449,11 @@
                                 </tr>
                             @else
                                 @foreach ($relatedprods as $index => $prod)
+                                    @if ($index >= $perPage)
+                                        <?php
+                                        break;
+                                        ?>
+                                    @endif
                                     <tr class="@if ($this->isChecked($prod->id)) table__row--selected @endif">
                                         <td data-title="Check">
                                             <input type="checkbox" value="{{ $prod->id }}" wire:model="checked">
@@ -574,6 +579,11 @@
                             @endif
                         </tbody>
                     </table>
+                    @if ($perPage <= count($relatedprods))
+                        <div class="table__load-more" wire:click="load">
+                            Load more
+                        </div>
+                    @endif
                 @else
                     <p class="mt-2">No records related</p>
                 @endif
