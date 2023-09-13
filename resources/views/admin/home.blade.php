@@ -1,8 +1,8 @@
 <x-dashboardheader />
 <x-dashboardnavbar />
-<x-dashboardsidebar />
+<x-dashboardsidebar :active="__('dashboard')" />
 {{-- Page content start --}}
-<section class="section-container bg-bg">
+<section class="content">
     <div>
 
     </div>

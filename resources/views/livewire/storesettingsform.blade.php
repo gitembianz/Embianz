@@ -21,7 +21,6 @@
                 </button>
             </div>
         </div>
-
         {{-- Item Form --}}
         <div class="item__form">
             <div class="item__form-input">
@@ -33,7 +32,6 @@
                     @enderror
                 </p> --}}
             </div>
-
             <div class="item__form-input">
                 <input type="text" wire:model="value" required>
                 <label>Value</label>

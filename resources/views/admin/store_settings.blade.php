@@ -1,11 +1,11 @@
 <x-dashboardheader />
 <x-dashboardnavbar />
-<x-dashboardsidebar />
+<x-dashboardsidebar :active="__('settings')" />
 {{-- Page content start --}}
 <section class="content">
 
     {{-- Tabel by Livewire start --}}
-    <livewire:storesettingstable lazy />
+    <livewire:storesettingstable />
     {{-- Tabel by Livewire end --}}
 
     <a href="#" class="top-up-btn" id="topUp">

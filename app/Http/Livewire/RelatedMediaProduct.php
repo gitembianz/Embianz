@@ -329,6 +329,7 @@ class RelatedMediaProduct extends Component
       }
     }
     $this->checked = [];
+    $this->selectPage = false;
     session()->flash('notification', [
       'message' => 'Records related successfully!',
       'type' => 'success',

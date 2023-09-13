@@ -7,5 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class SpecGroup extends Model
 {
-    use HasFactory;
+  use HasFactory;
+  public function spec()
+  {
+    return $this->hasMany(Specs::class, 'group_id');
+  }
 }

@@ -77,7 +77,6 @@ body::-webkit-scrollbar {
 body::-webkit-scrollbar-thumb {
   background: #20282d;
   border-radius: 10px;
-  -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
 }
 body::-webkit-scrollbar-thumb:hover {
@@ -528,11 +527,20 @@ main {
   border-top: 5px solid #BBFCDE;
   width: 100px;
   height: 100px;
+  -webkit-animation: spin 2s linear infinite;
   /* Safari */
   animation: spin 2s linear infinite;
 }
 
 /* Safari */
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
 @keyframes spin {
   0% {
     transform: rotate(0deg);
@@ -594,43 +602,43 @@ main {
 }
 
 .wid-1 {
-  width: 10%;
+  width: 10% !important;
 }
 
 .wid-2 {
-  width: 20%;
+  width: 20% !important;
 }
 
 .wid-3 {
-  width: 30%;
+  width: 30% !important;
 }
 
 .wid-4 {
-  width: 40%;
+  width: 40% !important;
 }
 
 .wid-5 {
-  width: 50%;
+  width: 50% !important;
 }
 
 .wid-6 {
-  width: 60%;
+  width: 60% !important;
 }
 
 .wid-7 {
-  width: 70%;
+  width: 70% !important;
 }
 
 .wid-8 {
-  width: 80%;
+  width: 80% !important;
 }
 
 .wid-9 {
-  width: 90%;
+  width: 90% !important;
 }
 
 .wid-10 {
-  width: 100%;
+  width: 100% !important;
 }
 
 .pr-0 {
@@ -1419,7 +1427,6 @@ main {
   position: absolute;
   top: 110%;
   right: 0;
-  width: -moz-max-content;
   width: max-content;
   height: auto;
   padding: 10px;
@@ -2258,9 +2265,7 @@ input[type=checkbox] {
   cursor: pointer;
   width: 2.5rem;
   height: 2.5rem;
-  -webkit-appearance: none;
-     -moz-appearance: none;
-          appearance: none;
+  appearance: none;
 }
 input[type=checkbox]:hover {
   background-color: rgba(146, 220, 254, 0.6588235294);
@@ -2323,9 +2328,7 @@ input[type=checkbox].check--disabled:checked:before {
   border: 1.5px solid #e8e8e8;
   border-radius: 10px;
   cursor: pointer;
-  -webkit-appearance: none;
-     -moz-appearance: none;
-          appearance: none;
+  appearance: none;
   background-color: #e8e8e8;
 }
 .simple__checkbox > svg, .simple__checkbox--disabled > svg {
@@ -3135,8 +3138,7 @@ header,
   display: none;
 }
 .header__logo img {
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
   width: 250px;
   height: auto;
 }
@@ -3711,7 +3713,6 @@ header,
 .notify__list::-webkit-scrollbar-thumb {
   background: #20282d;
   border-radius: 10px;
-  -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
 }
 .notify__list::-webkit-scrollbar-thumb:hover {
@@ -4610,9 +4611,7 @@ header,
   border-color: rgb(169, 169, 169);
   color: rgb(169, 169, 169);
   padding: 10px;
-  -webkit-appearance: none;
-     -moz-appearance: none;
-          appearance: none;
+  appearance: none;
 }
 .item__form-input-close div {
   height: 100%;
@@ -4642,7 +4641,6 @@ a[data-tooltip-left]::after, a[data-tooltip-right]::after, a[data-tooltip-center
 button[data-tooltip-left]::after,
 button[data-tooltip-right]::after,
 button[data-tooltip-center]::after {
-  width: -moz-max-content;
   width: max-content;
   height: auto;
   position: absolute;
@@ -5022,9 +5020,7 @@ button[data-tooltip-center]::after {
   pointer-events: none;
 }
 .container-right .card_calendar .date-time-formate {
-  width: -moz-max-content;
   width: max-content;
-  height: -moz-max-content;
   height: max-content;
   display: flex;
   flex-direction: row;
@@ -5042,9 +5038,7 @@ button[data-tooltip-center]::after {
 }
 .container-right .card_calendar .date-time-value {
   display: block;
-  width: -moz-max-content;
   width: max-content;
-  height: -moz-max-content;
   height: max-content;
   position: relative;
   left: 40%;
@@ -5151,8 +5145,7 @@ button[data-tooltip-center]::after {
   width: 3.5rem;
   height: auto;
   padding: 0.5rem;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
   align-items: center;
   background: #ffffff;
 }
@@ -5165,4 +5158,4 @@ button[data-tooltip-center]::after {
 }
 .container-right .card_todo .count {
   border-top: 1px solid #35424B;
-}/*# sourceMappingURL=main.css.map */
+}

@@ -1,15 +1,13 @@
 <x-dashboardheader />
 <x-dashboardnavbar />
-{{-- Display session message --}}
-
-{{-- End Section session message --}}
-<x-dashboardsidebar />
+<x-alert />
+<x-dashboardsidebar :active="__('product')" />
 {{-- Page content start --}}
 <section class="content">
 
     {{-- Livewire component show --}}
 
-    <livewire:show-product productId="{{ $data->id }}" lazy />
+    @livewire('show-product', ['productId' => $data->id], key($data->id))
 
     <a href="#" class="top-up-btn" id="topUp">
         <svg>

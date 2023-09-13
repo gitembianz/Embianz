@@ -11,7 +11,6 @@
                 value="Confirm">
             <input class="modal-content-btn delete" type="button"
                 onclick="document.getElementById('confirmationmodal').style.display='none'" value="Cancel">
-
             <span class="modal-content-btn delete"
                 onclick="document.getElementById('confirmationmodal').style.display='none'">
                 <svg>
@@ -30,10 +29,8 @@
             <input wire:click.prevent="deleteRecords()" class="modal-content-btn submit" type="button" value="Confirm">
             <input class="modal-content-btn delete" type="button"
                 onclick="document.getElementById('confirmationmodalmultiple').style.display='none'" value="Cancel">
-
             <span class="modal-content-btn delete"
                 onclick="document.getElementById('confirmationmodalmultiple').style.display='none'">
-
                 <svg>
                     <line x1="18" y1="6" x2="6" y2="18"></line>
                     <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -41,13 +38,12 @@
             </span>
         </div>
     </div>
-
     {{-- Header of the table --}}
     <div class="panel__header">
         <h1 class="panel__header--title">
             {{ __('Specifications') }}
         </h1>
-        <input class="panel__header--input" type="text" wire:model.live="search" placeholder="Search...">
+        <input class="panel__header--input" type="text" wire:model.debounce.300ms="search" placeholder="Search...">
         <div class="panel__header--bundle">
             <div class="dropdown">
                 <button class="dropdown-button">Columns
@@ -66,12 +62,12 @@
                 </div>
             </div>
             <div class="dropdown none" @if ($checked) style="display: unset" @endif>
-                <button class="dropdown-button none" @if ($checked) style="display: flex" @endif>
-                    Checked {{ count($checked) }}</button>
+                <button class="dropdown-button none" @if ($checked) style="display: flex" @endif>With
+                    With checked({{ count($checked) }})</button>
                 @if ($checked)
                     <div class="dropdown-list">
                         <button class="dropdown-item delete" style="width: 150px" type="button"
-                            wire:click="confirmCategoriesRemovalmultiple()">
+                            wire:click="confirmItemsRemovalmultiple()">
                             Delete
                         </button>
                         <button class="dropdown-item submit" style="width: 150px" type="button"
@@ -99,28 +95,27 @@
                 </svg>
             </a>
         </div>
-        @if ($selectPage)
-            @if ($selectAll)
-                <div class="panel__header--checked">
-                    <p>
-                        You selected <strong>{{ count($checked) }}</strong> items.
-                    </p>
-                </div>
-            @else
-                <div class="panel__header--checked" wire:click="selectAll">
-                    <p>
-                        You selected {{ count($checked) }} items, select all?
-                    </p>
-                </div>
-            @endif
+        @if ($selectPage && $selectAll)
+            <div class="panel__header--checked">
+                <p>
+                    You selected <strong>{{ count($checked) }}</strong> items.
+                </p>
+            </div>
+        @elseif($selectPage)
+            <div class="panel__header--checked" wire:click="selectAll">
+                <p>
+                    You selected {{ count($checked) }} items, select all?
+                </p>
+            </div>
         @endif
     </div>
     {{-- Table --}}
     <table class="table">
         <thead>
             <tr>
-                <th><input type="checkbox" wire:model="selectPage"></th>
-
+                <th>
+                    <input type="checkbox" wire:model="selectPage">
+                </th>
                 @if ($this->showColumn('Id'))
                     <th wire:click="sortBy('id')">
                         <button class="table__header--btn"
@@ -134,7 +129,6 @@
                         </button>
                     </th>
                 @endif
-
                 @if ($this->showColumn('Name'))
                     <th wire:click="sortBy('name')">
                         <button class="table__header--btn"
@@ -148,7 +142,6 @@
                         </button>
                     </th>
                 @endif
-
                 @if ($this->showColumn('Unit'))
                     <th>
                         <button class="table__header--btn"
@@ -162,13 +155,12 @@
                         </button>
                     </th>
                 @endif
-
                 @if ($this->showColumn('Group'))
                     <th>
                         <button class="table__header--btn"
-                            @if ($orderBy === 'spec_group' && $orderAsc === '1') data-symbol="up" @else
+                            @if ($orderBy === 'group_id' && $orderAsc === '1') data-symbol="up" @else
                             data-symbol="down" @endif
-                            wire:click="sortBy('spec_group')">
+                            wire:click="sortBy('group_id')">
                             Group
                             <svg>
                                 <line x1="12" y1="5" x2="12" y2="19"></line>
@@ -177,7 +169,6 @@
                         </button>
                     </th>
                 @endif
-
                 @if ($this->showColumn('Created At'))
                     <th wire:click="sortBy('created_at')">
                         <button class="table__header--btn"
@@ -191,11 +182,9 @@
                         </button>
                     </th>
                 @endif
-
                 <th></th>
             </tr>
         </thead>
-
         <tbody>
             @if ($specs->isEmpty())
                 <tr>
@@ -205,61 +194,29 @@
                 @foreach ($specs as $index => $spec)
                     <tr @if ($loop->last) id="last_record" @endif
                         class="@if ($this->isChecked($spec->id)) table__row--selected @endif">
-
                         <td data-title="Check">
                             <input type="checkbox" value="{{ $spec->id }}" wire:model="checked">
                         </td>
-
                         @if ($this->showColumn('Id'))
                             <td data-title="ID">{{ $spec->id }}</td>
                         @endif
-
                         @if ($this->showColumn('Name'))
                             <td data-title="Name">
-                                @if ($indexspec !== $index)
-                                    <a href="/show_spec/{{ $spec->id }}'">{{ $spec->name }}</a>
-                                @else
-                                    <input type="text" class="table__edit"
-                                        wire:model.defer="specss.{{ $index }}.name"
-                                        placeholder="{{ $spec->name }}">
-                                @endif
+                                <a href="/show_spec/{{ $spec->id }}">
+                                    {{ $spec->name }}
+                                </a>
                             </td>
                         @endif
-
                         @if ($this->showColumn('Unit'))
                             <td data-title="Unit">
-                                @if ($indexspec !== $index)
-                                    <div>
-                                        {{ $spec->um }}</div>
-                                @else
-                                    <input type="text" class="table__edit"
-                                        wire:model.defer="specss.{{ $index }}.um"
-                                        placeholder="{{ $spec->um }}">
-                                @endif
+                                {{ $spec->um }}
                             </td>
                         @endif
-
                         @if ($this->showColumn('Group'))
                             <td data-title="Group">
-                                @if ($indexspec !== $index)
-                                    <div>
-                                        {{ $spec->spec_group }}</div>
-                                @else
-                                    <select name="spec_group" class="table__edit"
-                                        wire:model.defer="specss.{{ $index }}.spec_group">
-                                        <?php
-                                        $groups = ['details', 'feature', 'accessibility'];
-                                        $groups = array_diff($groups, [$spec->spec_group]);
-                                        ?>
-                                        <option>{{ $spec->spec_group }}</option>
-                                        @foreach ($groups as $group)
-                                            <option value="{{ $group }}">{{ $group }}</option>
-                                        @endforeach
-                                    </select>
-                                @endif
+                                {{ $spec->group->name }}
                             </td>
                         @endif
-
                         @if ($this->showColumn('Created At'))
                             <td data-title="Created At">
                                 <div class="table__time">
@@ -268,39 +225,18 @@
                                         <polyline points="12 6 12 12 16 14"></polyline>
                                     </svg>
                                     {{ $spec->created_at }}
+                                </div>
                             </td>
                         @endif
-
                         <td data-title="Action" class="table__buttons">
-                            @if ($indexspec !== $index)
-                                <button class="edit" wire:click.prevent="edititem({{ $index }})">
-                                    <svg>
-                                        <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
-                                        </path>
-                                    </svg>
-                                </button>
-                                <button class="delete" wire:click.prevent="confirmItemRemoval({{ $spec->id }})">
-                                    <svg>
-                                        <polyline points="3 6 5 6 21 6"></polyline>
-                                        <path
-                                            d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                        </path>
-                                    </svg>
-                                </button>
-                            @else
-                                <button class="edit"
-                                    wire:click.prevent="saveitem({{ $index }} , {{ $spec->id }})">
-                                    <svg>
-                                        <polyline points="20 6 9 17 4 12"></polyline>
-                                    </svg>
-                                </button>
-                                <button class="save" wire:click.prevent="cancelitem()">
-                                    <svg>
-                                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                                    </svg>
-                                </button>
-                            @endif
+                            <button class="delete" wire:click.prevent="confirmItemRemoval({{ $spec->id }})">
+                                <svg>
+                                    <polyline points="3 6 5 6 21 6"></polyline>
+                                    <path
+                                        d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                    </path>
+                                </svg>
+                            </button>
                         </td>
                     </tr>
                 @endforeach

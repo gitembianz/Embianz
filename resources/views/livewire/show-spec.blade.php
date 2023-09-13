@@ -27,13 +27,24 @@
                     </svg>
                 </button>
             @else
-                <button class="item__header-btn edit" type="button" wire:click.prevent="saveitem()" value="Save"
-                    data-tooltip-center="Save this changes">Save</button>
-                <button class="item__header-btn edit" type="button" wire:click.prevent="cancelitem()" value="Cancel"
-                    data-tooltip-center="Cancel this changes">Cancel</button>
+                <button class="item__header-btn confirm" type="button" wire:click.prevent="saveitem" value="Save"
+                    data-tooltip-center="Save this changes">
+                    <svg>
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                </button>
+                <button class="item__header-btn" type="button" wire:click.prevent="cancelitem" value="Cancel"
+                    data-tooltip-center="Cancel this changes">
+                    <svg>
+                        <line x1="18" y1="6" x2="6" y2="18">
+                        </line>
+                        <line x1="6" y1="6" x2="18" y2="18">
+                        </line>
+                    </svg>
+                </button>
             @endif
-            <button wire:click.prevent="confirmItemRemoval({{ $spec->id }})" class="item__header-btn delete"
-                type="button" value="Delete" data-tooltip-right="Delete this specification">
+            <button wire:click="confirmItemRemoval({{ $spec->id }})" class="item__header-btn delete" type="button"
+                data-tooltip-right="Delete this specification">
                 <svg>
                     <polyline points="3 6 5 6 21 6"></polyline>
                     <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
@@ -41,7 +52,6 @@
             </button>
         </div>
     </div>
-
     <div class="tab">
         <div class="tabs">
             <h3 class="tabs__page active">Details</h3>
@@ -53,39 +63,39 @@
                     @if ($edititem === null)
                         <div class="item__form-input-close item__form-long">
                             <div>{{ $spec->name }}</div>
-                            <label>Spec Name</label>
+                            <label>Name</label>
                         </div>
                     @else
                         <div class="item__form-input item__form-long">
                             <input type="text" wire:model.defer="record.name">
-                            <label>Spec Name</label>
+                            <label>Name</label>
                         </div>
                     @endif
                     @if ($edititem === null)
                         <div class="item__form-input-close">
                             <div>{{ $spec->um }}</div>
-                            <label>Spec Unit</label>
+                            <label>Unit</label>
                         </div>
                     @else
                         <div class="item__form-input">
                             <input type="text" wire:model.defer="record.um">
-                            <label>Spec Unit</label>
+                            <label>Unit</label>
                         </div>
                     @endif
                     @if ($edititem === null)
                         <div class="item__form-input-close">
-                            <div>{{ $spec->spec_group }}</div>
-                            <label>Spec Group</label>
+                            <div>{{ $spec->group->name }}</div>
+                            <label>Group</label>
                         </div>
                     @else
-                        <select wire:model.defer="record.spec_group" class="item__form-input">
-                            <?php
-                            $groups = ['details', 'feature', 'accessibility'];
-                            ?>
-                            @foreach ($groups as $group)
-                                <option value="{{ $group }}">{{ $group }}</option>
-                            @endforeach
-                        </select>
+                        <div class="item__form-input">
+                            <select wire:model.defer="record.spec_group" class="item__form-input">
+                                @foreach ($groups as $id => $name)
+                                    <option value="{{ $id }}">{{ $name }}</option>
+                                @endforeach
+                            </select>
+                            <label>Group</label>
+                        </div>
                     @endif
                     <div class="item__form-input-close">
                         <div>{{ $spec->created_at }}</div>
@@ -105,7 +115,7 @@
                     </div>
                     @if ($edititem != null)
                         <button class="item__form-btn item__form-long" wire:click.prevent="saveitem()" type="button"
-                            value="Save">Save edited details</button>
+                            value="Save">Save</button>
                     @endif
                 </div>
             </div>
@@ -113,7 +123,6 @@
         <div class="tabs__content">
             <livewire:related-productson-spec specId="{{ $spec->id }}" />
         </div>
-
     </div>
     <div class="modal" id="confirmationmodal">
         <div class="modal-content">
@@ -134,5 +143,4 @@
             </span>
         </div>
     </div>
-</div>
 </div>

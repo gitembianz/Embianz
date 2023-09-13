@@ -5,13 +5,14 @@
         <div class="accordion__btn-flex">
             <button class="accordion__btn"
                 wire:click.prevent="@if ($showrelatedspecs === false) $set('showrelatedspecs', true) @else $set('showrelatedspecs', false) @endif">
-                {{ __('Specs ') }}({{ count($relatedspecs) }})
+                {{ __('Specs ') }}({{ $item->product_specs()->count() }})
             </button>
             <button wire:click.prevent="addrelated()" class="accordion__upload">
                 <svg>
                     <line x1="12" y1="5" x2="12" y2="19"></line>
                     <line x1="5" y1="12" x2="19" y2="12"></line>
-                </svg> </button>
+                </svg>
+            </button>
         </div>
         {{-- add related specs --}}
         @if ($addrelatedspecs)
@@ -40,16 +41,16 @@
                         <table class="table" style="margin-top: 2rem">
                             <tbody>
                                 @foreach ($specsAndValues as $index => $specAndValue)
-                                    <tr wire:key="spec-row-{{ $index }}">
+                                    <tr>
                                         <td data-title="Name">
                                             {{ $item->name }}
                                         </td>
-
                                         <td data-title="Specification">
                                             @if ($specAndValue['allow'])
-                                                <div class="table__drop">
-                                                    <input class="table__drop--input" wire:model.live="searchadd"
-                                                        placeholder="Search..." type="text">
+                                                <div class="table__drop" style="position: relative">
+                                                    <input class="table__drop--input"
+                                                        wire:model.debounce.300ms="searchadd" placeholder="Search..."
+                                                        type="search">
                                                     <ul class="table__drop--list cursor-p">
                                                         @if (count($addspecs) >= 1)
                                                             @foreach ($addspecs as $spec)
@@ -59,66 +60,46 @@
                                                                 </li>
                                                             @endforeach
                                                         @else
-                                                            <li>{{ __('No specs found') }}</li>
+                                                            <li class="table__drop--item">
+                                                                {{ __('No specs found') }}
+                                                            </li>
                                                         @endif
                                                     </ul>
+                                                    <svg wire:click.prevent="dennyselect({{ $index }})"
+                                                        style="background: #35424b;position: absolute;top: 50%;transform: translateY(-50%);right: 10px;border-radius: 5px;padding: 5px;opacity: .7;stroke: white;"
+                                                        width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round" class="feather feather-x">
+                                                        <line x1="18" y1="6" x2="6"
+                                                            y2="18"></line>
+                                                        <line x1="6" y1="6" x2="18"
+                                                            y2="18"></line>
+                                                    </svg>
                                                 </div>
                                             @else
-                                                <div wire:click.prevent="allowselect({{ $index }})"
-                                                    class="table__drop--input">
+                                                <div style="position: relative" class="table__drop--input">
                                                     @if ($specAndValue['itemselected'])
                                                         {{ $specAndValue['itemselected'] }}
-                                                        <input type="hidden"
-                                                            wire:model.defer="specsAndValues.{{ $index }}.spec.name">
                                                     @else
-                                                        {{ __('Select a spec') }}
+                                                        {{ __('Select a item') }}
                                                     @endif
+                                                    <svg wire:click.prevent="allowselect({{ $index }})"
+                                                        style="background: #35424b;position: absolute;top: 50%;transform: translateY(-50%);right: 10px;border-radius: 5px;padding: 5px;opacity: .7;stroke: white;"
+                                                        width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round" class="feather feather-edit-2">
+                                                        <path
+                                                            d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
+                                                        </path>
+                                                    </svg>
                                                 </div>
                                             @endif
+                                            <input type="hidden"
+                                                wire:model.defer="specsAndValues.{{ $index }}.spec.name">
                                         </td>
                                         <td data-title="Value">
                                             <input type="text" required class="table__drop--input"
                                                 wire:model.defer="specsAndValues.{{ $index }}.spec.value">
-                                        </td>
-                                        <td data-title="Action">
-                                            <div class="table__buttons">
-                                                @if ($index == $row - 1)
-                                                    <button type="button" class="edit" wire:click="plus">
-                                                        <svg>
-                                                            <line x1="12" y1="5" x2="12"
-                                                                y2="19">
-                                                            </line>
-                                                            <line x1="5" y1="12" x2="19"
-                                                                y2="12">
-                                                            </line>
-                                                        </svg>
-                                                    </button>
-                                                    <button type="button" class="save"
-                                                        wire:click="clear({{ $index }})">
-                                                        <svg>
-                                                            <line x1="18" y1="6" x2="6"
-                                                                y2="18">
-                                                            </line>
-                                                            <line x1="6" y1="6" x2="18"
-                                                                y2="18">
-                                                            </line>
-                                                        </svg>
-                                                    </button>
-                                                @endif
-                                                @if ($index != $row - 1)
-                                                    <button type="button" class="save"
-                                                        wire:click="clear({{ $index }})">
-                                                        <svg>
-                                                            <line x1="18" y1="6" x2="6"
-                                                                y2="18">
-                                                            </line>
-                                                            <line x1="6" y1="6" x2="18"
-                                                                y2="18">
-                                                            </line>
-                                                        </svg>
-                                                    </button>
-                                                @endif
-                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -141,22 +122,18 @@
                 </div>
             </div>
         @endif
-
         @if ($editmultiple)
             <div class="modal" id="modalelements" style="display: block">
                 <div class="modal-content modal--tabel">
                     {{-- Header of the table --}}
                     <div class="panel__header">
                         <h1 class="panel__header--title">
-                            {{ __('Edit multiple related items') }}
+                            {{ __('Edit related items') }}
                         </h1>
                         <input class="panel__header--checked panel__header--input"
                             wire:click.prevent="confirmspecsmultiple()" type="button" value="Save">
                     </div>
-                    {{-- Table --}}
-
                     <div style="overflow-y: auto; position: relative; background: white; height: 100%">
-
                         <table class="table table-top">
                             <thead>
                                 <tr>
@@ -169,39 +146,58 @@
                         <table class="table mt-2">
                             <tbody>
                                 @foreach ($specsAndValues as $index => $specAndValue)
-                                    <tr wire:key="spec-row-{{ $index }}">
+                                    <tr>
                                         <td data-title="Name">
                                             {{ $item->name }}
                                         </td>
-
                                         <td data-title="Specification">
                                             @if ($specAndValue['allow'])
-                                                <div class="table__drop">
-                                                    <input class="table__drop--input" wire:model="searchadd"
+                                                <div class="table__drop" style="position: relative">
+                                                    <input class="table__drop--input" wire:model.live="searchadd"
                                                         placeholder="Search..." type="text">
                                                     <ul class="table__drop--list">
-                                                        @foreach ($addspecs as $spec)
-                                                            <li class="table__drop--item"
-                                                                wire:click.prevent="selectSpec({{ $index }}, {{ $spec->id }}, '{{ $spec->name }}')">
-                                                                {{ $spec->name }} ({{ $spec->um }})
-                                                            </li>
-                                                        @endforeach
+                                                        @if ($addspecs->isEmpty())
+                                                            <li class="table__drop--item">No record found.</li>
+                                                        @else
+                                                            @foreach ($addspecs as $spec)
+                                                                <li class="table__drop--item" style="cursor: pointer"
+                                                                    wire:click.prevent="selectSpec({{ $index }}, {{ $spec->id }}, '{{ $spec->name }}')">
+                                                                    {{ $spec->name }} ({{ $spec->um }})
+                                                                </li>
+                                                            @endforeach
+                                                        @endif
                                                     </ul>
+                                                    <svg wire:click.prevent="dennyselect({{ $index }})"
+                                                        style="background: #35424b;position: absolute;top: 50%;transform: translateY(-50%);right: 10px;border-radius: 5px;padding: 5px;opacity: .7;stroke: white;"
+                                                        width="24" height="24" viewBox="0 0 24 24"
+                                                        fill="none" stroke="currentColor" stroke-width="2"
+                                                        stroke-linecap="round" stroke-linejoin="round"
+                                                        class="feather feather-x">
+                                                        <line x1="18" y1="6" x2="6"
+                                                            y2="18"></line>
+                                                        <line x1="6" y1="6" x2="18"
+                                                            y2="18"></line>
+                                                    </svg>
                                                 </div>
                                             @else
-                                                <div wire:click.prevent="allowselect({{ $index }})"
-                                                    class="table__drop--input">
-                                                    @if ($specAndValue['itemselected'])
-                                                        {{ $specAndValue['itemselected'] }}
-                                                        <input type="hidden"
-                                                            wire:model.defer="specsAndValues.{{ $index }}.spec.name">
-                                                    @else
-                                                        {{ __('Select a spec') }}
-                                                    @endif
+                                                <div class="table__drop--input" style="position: relative">
+                                                    {{ $specAndValue['itemselected'] }}
+                                                    <svg wire:click.prevent="allowselect({{ $index }})"
+                                                        style="background: #35424b;position: absolute;top: 50%;transform: translateY(-50%);right: 10px;border-radius: 5px;padding: 5px;opacity: .7;stroke: white;"
+                                                        width="24" height="24" viewBox="0 0 24 24"
+                                                        fill="none" stroke="currentColor" stroke-width="2"
+                                                        stroke-linecap="round" stroke-linejoin="round"
+                                                        class="feather feather-edit-2">
+                                                        <path
+                                                            d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
+                                                        </path>
+                                                    </svg>
+
                                                 </div>
                                             @endif
+                                            <input type="hidden"
+                                                wire:model.defer="specsAndValues.{{ $index }}.spec.idrel">
                                         </td>
-
                                         <td data-title="Value">
                                             <input type="text" required class="table__drop--input"
                                                 wire:model.defer="specsAndValues.{{ $index }}.spec.value">
@@ -227,193 +223,206 @@
                 </div>
             </div>
         @endif
-
         {{-- end add related specs --}}
         @if ($showrelatedspecs)
             <div class="accordion__content">
-                <div>
-                    @if ($relatedspecs && count($relatedspecs) > 0)
-                        {{-- delete single record --}}
-                        <div class="modal" id="confirmationmodalspec">
-                            <div class="modal-content">
-                                <h1 class="modal-content-title">
-                                    {{ __('Are you sure to delete this record?') }}
-                                </h1>
-                                <input wire:click.prevent="deleteSingleRecord()" class="modal-content-btn submit"
-                                    type="button" value="Confirm">
-                                <input class="modal-content-btn delete" type="button"
-                                    onclick="document.getElementById('confirmationmodalspec').style.display='none'"
-                                    value="Cancel">
-
-                                <span class="modal-content-btn delete"
-                                    onclick="document.getElementById('confirmationmodalspec').style.display='none'">
-                                    <svg>
-                                        <line x1="18" y1="6" x2="6" y2="18">
-                                        </line>
-                                        <line x1="6" y1="6" x2="18" y2="18">
-                                        </line>
-                                    </svg>
-                                </span>
-                            </div>
+                @if ($item->product_specs()->count() > 0)
+                    {{-- delete single record --}}
+                    <div class="modal" id="confirmationmodalspec">
+                        <div class="modal-content">
+                            <h1 class="modal-content-title">
+                                {{ __('Are you sure to delete this record?') }}
+                            </h1>
+                            <input wire:click.prevent="deleteSingleRecord()" class="modal-content-btn submit"
+                                type="button" value="Confirm">
+                            <input class="modal-content-btn delete" type="button"
+                                onclick="document.getElementById('confirmationmodalspec').style.display='none'"
+                                value="Cancel">
+                            <span class="modal-content-btn delete"
+                                onclick="document.getElementById('confirmationmodalspec').style.display='none'">
+                                <svg>
+                                    <line x1="18" y1="6" x2="6" y2="18">
+                                    </line>
+                                    <line x1="6" y1="6" x2="18" y2="18">
+                                    </line>
+                                </svg>
+                            </span>
                         </div>
-                        {{-- delete myltiple records --}}
-                        <div class="modal" id="confirmationmodalmultiple">
-                            <div class="modal-content">
-                                <h1 class="modal-content-title">
-                                    {{ __('Are you sure to delete those records?') }}
-                                </h1>
-                                <input wire:click.prevent="deleteRecords()" class="modal-content-btn submit"
-                                    type="button" value="Confirm">
-                                <input class="modal-content-btn delete" type="button"
-                                    onclick="document.getElementById('confirmationmodalmultiple').style.display='none'"
-                                    value="Cancel">
-
-                                <span class="modal-content-btn delete"
-                                    onclick="document.getElementById('confirmationmodalmultiple').style.display='none'">
-
-                                    <svg>
-                                        <line x1="18" y1="6" x2="6" y2="18">
-                                        </line>
-                                        <line x1="6" y1="6" x2="18" y2="18">
-                                        </line>
-                                    </svg>
-                                </span>
-                            </div>
+                    </div>
+                    {{-- delete myltiple records --}}
+                    <div class="modal" id="confirmationmodalmultiple">
+                        <div class="modal-content">
+                            <h1 class="modal-content-title">
+                                {{ __('Are you sure to delete those records?') }}
+                            </h1>
+                            <input wire:click.prevent="deleteRecords()" class="modal-content-btn submit"
+                                type="button" value="Confirm">
+                            <input class="modal-content-btn delete" type="button"
+                                onclick="document.getElementById('confirmationmodalmultiple').style.display='none'"
+                                value="Cancel">
+                            <span class="modal-content-btn delete"
+                                onclick="document.getElementById('confirmationmodalmultiple').style.display='none'">
+                                <svg>
+                                    <line x1="18" y1="6" x2="6" y2="18">
+                                    </line>
+                                    <line x1="6" y1="6" x2="18" y2="18">
+                                    </line>
+                                </svg>
+                            </span>
                         </div>
-
-                        {{-- Header of the table --}}
-                        <div class="panel__header">
-                            <input class="panel__header--input" type="text" wire:model.live="search"
-                                placeholder="Search..." style="grid-column: 1/4">
-                            <div class="panel__header--bundle">
-                                <div class="dropdown">
-                                    <button
-                                        wire:click.prevent="@if ($col === false) $set('col', true) @else $set('col', false) @endif"
-                                        class="dropdown-button">Columns</button>
-                                    @if ($col)
-
-                                        <div class="dropdown-list" style="display: flex;">
-                                            @foreach ($columns as $column)
-                                                <div class="dropdown-item">
-                                                    <input type="checkbox" wire:model="selectedColumns"
-                                                        value="{{ $column }}"
-                                                        {{ in_array($column, $selectedColumns) ? 'checked' : '' }}>
-                                                    <label>{{ $column }}</label>
-                                                </div>
-                                            @endforeach
-                                        </div>
-                                    @endif
-                                </div>
-                                <div class="dropdown none"
-                                    @if ($checked) style="display: unset; z-index: 5;" @endif>
-                                    <button
-                                        wire:click.prevent="@if ($all === false) $set('all', true); $set('col', false) @else $set('all', false) @endif"
-                                        class="dropdown-button none"
-                                        @if ($checked) style="display: flex" @endif>With
-                                        Checked({{ count($checked) }})</button>
-                                    @if ($checked)
-                                        @if ($all)
-                                            <div class="dropdown-list" style="display: flex;">
-                                                <button class="dropdown-item delete" type="button"
-                                                    wire:click="confirmRemovalmultiple()">
-                                                    Delete
-                                                </button>
-                                                <button class="dropdown-item submit" type="button"
-                                                    wire:click="editSelected">
-                                                    Edit
-                                                </button>
+                    </div>
+                    {{-- Header of the table --}}
+                    <div class="panel__header">
+                        <input class="panel__header--input" type="text" wire:model.debounce.300ms="search"
+                            placeholder="Search..." style="grid-column: 1/4">
+                        <div class="panel__header--bundle">
+                            <div class="dropdown">
+                                <button
+                                    wire:click.prevent="@if ($col === false) $set('col', true) @else $set('col', false) @endif"
+                                    class="dropdown-button">
+                                    Columns
+                                </button>
+                                @if ($col)
+                                    <div class="dropdown-list" style="display: flex;">
+                                        @foreach ($columns as $column)
+                                            <div class="dropdown-item">
+                                                <input type="checkbox" wire:model="selectedColumns"
+                                                    value="{{ $column }}"
+                                                    {{ in_array($column, $selectedColumns) ? 'checked' : '' }}>
+                                                <label>{{ $column }}</label>
                                             </div>
-                                        @endif
-                                    @endif
-                                </div>
-                            </div>
-                            @if ($selectPage)
-                                @if ($selectAll)
-                                    <div class="panel__header--checked">
-                                        <p>
-                                            You selected <strong>{{ count($checked) }}</strong> items.
-                                        </p>
-                                    </div>
-                                @else
-                                    <div class="panel__header--checked" wire:click="selectAll">
-                                        <p>
-                                            You selected {{ count($checked) }} items, select all?
-                                        </p>
+                                        @endforeach
                                     </div>
                                 @endif
-                            @endif
+                            </div>
+                            <div class="dropdown none"
+                                @if ($checked) style="display: unset; z-index: 5;" @endif>
+                                <button
+                                    wire:click.prevent="@if ($all === false) $set('all', true); $set('col', false) @else $set('all', false) @endif"
+                                    class="dropdown-button none"
+                                    @if ($checked) style="display: flex" @endif>
+                                    With Checked({{ count($checked) }})
+                                </button>
+                                @if ($checked && $all)
+                                    <div class="dropdown-list" style="display: flex;">
+                                        <button class="dropdown-item delete" type="button"
+                                            wire:click="confirmRemovalmultiple()">
+                                            Delete
+                                        </button>
+                                        <button class="dropdown-item submit" type="button"
+                                            wire:click.prevent="editSelected()">
+                                            Edit
+                                        </button>
+                                    </div>
+                                @endif
+                            </div>
                         </div>
-
-                        {{-- Table --}}
-                        <table class="table">
-                            <thead>
+                        @if ($selectPage && $selectAll)
+                            <div class="panel__header--checked">
+                                <p>
+                                    You selected <strong>{{ count($checked) }}</strong> items.
+                                </p>
+                            </div>
+                        @elseif($selectPage)
+                            <div class="panel__header--checked" wire:click="selectAll">
+                                <p>
+                                    You selected {{ count($checked) }} items, select all?
+                                </p>
+                            </div>
+                        @endif
+                    </div>
+                    {{-- Table --}}
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <input type="checkbox" wire:model="selectPage">
+                                </th>
+                                @if ($this->showColumn('Id'))
+                                    <th>
+                                        <div class="table__header--btn">ID</div>
+                                    </th>
+                                @endif
+                                @if ($this->showColumn('Name'))
+                                    <th>
+                                        <div class="table__header--btn">Name</div>
+                                    </th>
+                                @endif
+                                @if ($this->showColumn('Unit'))
+                                    <th>
+                                        <div class="table__header--btn">Unit</div>
+                                    </th>
+                                @endif
+                                @if ($this->showColumn('Value'))
+                                    <th>
+                                        <div class="table__header--btn">Value</div>
+                                    </th>
+                                @endif
+                                @if ($this->showColumn('Created At'))
+                                    <th>
+                                        <div class="table__header--btn">Created At</div>
+                                    </th>
+                                @endif
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if ($relatedspecs->isEmpty())
                                 <tr>
-                                    <th><input type="checkbox" wire:model="selectPage"></th>
-
-                                    @if ($this->showColumn('Id'))
-                                        <th>
-                                            <div class="table__header--btn">ID</div>
-                                        </th>
-                                    @endif
-
-                                    @if ($this->showColumn('Name'))
-                                        <th>
-                                            <div class="table__header--btn">Name</div>
-                                        </th>
-                                    @endif
-
-                                    @if ($this->showColumn('Unit'))
-                                        <th>
-                                            <div class="table__header--btn">Unit</div>
-                                        </th>
-                                    @endif
-                                    @if ($this->showColumn('Value'))
-                                        <th>
-                                            <div class="table__header--btn">Value</div>
-                                        </th>
-                                    @endif
-
-                                    @if ($this->showColumn('Created At'))
-                                        <th>
-                                            <div class="table__header--btn">Created At</div>
-                                        </th>
-                                    @endif
-                                    <th></th>
+                                    <td class="table__empty" colspan="{{ count($columns) + 3 }}">No record
+                                        found.</td>
                                 </tr>
-                            </thead>
-
-                            <tbody>
+                            @else
                                 @foreach ($relatedspecs as $index => $spec)
+                                    @if ($index >= $perPage)
+                                        <?php
+                                        break;
+                                        ?>
+                                    @endif
                                     <tr class="@if ($this->isChecked($spec->id)) table__row--selected @endif">
                                         <td data-title="Check">
                                             <input type="checkbox" value="{{ $spec->id }}" wire:model="checked">
                                         </td>
-
                                         @if ($this->showColumn('Id'))
                                             <td data-title="ID">{{ $spec->id }}</td>
                                         @endif
-
                                         @if ($this->showColumn('Name'))
                                             <td data-title="Name">
                                                 @if ($editedrow !== $index)
-                                                    <div>
+                                                    <a href="/show_spec/{{ $spec->spec_id }}">
                                                         {{ $spec->spec->name }}
-                                                    </div>
+                                                    </a>
                                                 @else
                                                     @if ($allow)
-                                                        <div class="table__drop">
+                                                        <div class="table__drop" style="position: relative">
                                                             <input class="table__drop--input"
-                                                                wire:model.live="searchadd" placeholder="Search.."
-                                                                type="text">
+                                                                wire:model.debounce.300ms="searchadd"
+                                                                placeholder="Search.." type="text">
                                                             <ul class="table__drop--list">
-                                                                @foreach ($addspecs as $speci)
-                                                                    <li class="table__drop--item cursor-p"
-                                                                        wire:click.prevent="select({{ $speci->id }})">
-                                                                        {{ $speci->name }}
-                                                                    </li>
-                                                                @endforeach
+                                                                @if ($addspecs->isEmpty())
+                                                                    <li class="table__drop--item">No
+                                                                        record
+                                                                        found.</li>
+                                                                @else
+                                                                    @foreach ($addspecs as $speci)
+                                                                        <li class="table__drop--item cursor-p"
+                                                                            wire:click.prevent="select({{ $speci->id }})">
+                                                                            {{ $speci->name }}
+                                                                        </li>
+                                                                    @endforeach
+                                                                @endif
                                                             </ul>
-                                                            </span>
+                                                            <svg wire:click.prevent="denny()"
+                                                                style="background: #35424b;position: absolute;top: 50%;transform: translateY(-50%);right: 10px;border-radius: 5px;padding: 5px;opacity: .7;stroke: white;"
+                                                                width="24" height="24" viewBox="0 0 24 24"
+                                                                fill="none" stroke="currentColor" stroke-width="2"
+                                                                stroke-linecap="round" stroke-linejoin="round"
+                                                                class="feather feather-x">
+                                                                <line x1="18" y1="6" x2="6"
+                                                                    y2="18"></line>
+                                                                <line x1="6" y1="6" x2="18"
+                                                                    y2="18"></line>
+                                                            </svg>
                                                         </div>
                                                     @else
                                                         <button wire:click.prevent="allow" class="table__drop--input">
@@ -492,12 +501,17 @@
                                         </td>
                                     </tr>
                                 @endforeach
-                            </tbody>
-                        </table>
-                    @else
-                        <p class="mt-2">No records related</p>
+                            @endif
+                        </tbody>
+                    </table>
+                    @if ($perPage <= count($relatedspecs))
+                        <div class="table__load-more" wire:click="load">
+                            Load more
+                        </div>
                     @endif
-                </div>
+                @else
+                    <p class="mt-2">No records related</p>
+                @endif
             </div>
         @endif
     </div>

@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Specs;
+use App\Models\Product_Spec;
 use Livewire\Component;
 use App\Exports\SpecsExport;
 use Livewire\WithPagination;
@@ -11,7 +12,7 @@ class Specstable extends Component
 {
 
   use WithPagination;
-  public $loadAmount = 13;
+  public $loadAmount = 20;
   public $search = '';
   public $orderBy = 'id';
   public $orderAsc = true;
@@ -89,11 +90,19 @@ class Specstable extends Component
   public function deleteRecords()
   {
     $items = Specs::whereKey($this->checked)->get();
+
     foreach ($items as $item) {
       $id = $item->id;
+      $relateds = Product_Spec::where('spec_id', $id)->get();
+      if ($relateds != NULL) {
+        foreach ($relateds as $rel) {
+          $rel->delete();
+        }
+      }
       $specdel = Specs::find($id);
       $specdel->delete();
     }
+    $this->selectPage = false;
     $this->checked = [];
     session()->flash('notification', [
       'message' => 'Records deleted successfully!',
@@ -105,6 +114,12 @@ class Specstable extends Component
   {
     $id = $this->specidbeingremoved;
     $item = Specs::findOrFail($id);
+    $relateds = Product_Spec::where('spec_id', $id)->get();
+    if ($relateds != NULL) {
+      foreach ($relateds as $rel) {
+        $rel->delete();
+      }
+    }
     $item->delete();
     $this->checked = array_diff($this->checked, [$id]);
     session()->flash('notification', [
@@ -132,38 +147,5 @@ class Specstable extends Component
     $this->checked = [];
     $this->selectPage = false;
     return $export->download('specs.xlsx');
-  }
-  public function edititem($itemIndex)
-  {
-    $this->indexspec = $itemIndex;
-  }
-  public function saveitem($index, $id)
-  {
-    $spec_new = $this->specss[$index] ?? NULL;
-    if (!is_null($spec_new)) {
-      $spec = Specs::find($id);
-      if (array_key_exists('name', $spec_new)) {
-        $spec->name = $spec_new['name'];
-      }
-      if (array_key_exists('um', $spec_new)) {
-        $spec->um = $spec_new['um'];
-      }
-      if (array_key_exists('spec_group', $spec_new)) {
-        $spec->spec_group = $spec_new['spec_group'];
-      }
-      $spec->save();
-      session()->flash('notification', [
-        'message' => 'Record edited successfully!',
-        'type' => 'success',
-        'title' => 'Success'
-      ]);
-    }
-    $this->specss = [];
-    $this->indexspec = null;
-  }
-  public function cancelitem()
-  {
-    $this->indexspec = null;
-    $this->specss = [];
   }
 }

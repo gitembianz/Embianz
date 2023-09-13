@@ -1,11 +1,11 @@
 <x-dashboardheader />
 <x-dashboardnavbar />
-<x-dashboardsidebar />
+<x-dashboardsidebar :active="__('price')" />
 {{-- Page content start --}}
 <section class="content">
 
     {{-- Tabel by Livewire start --}}
-    <livewire:priceliststable lazy />
+    <livewire:priceliststable />
     {{-- Tabel by Livewire end --}}
 
     <a href="#" class="top-up-btn" id="topUp">

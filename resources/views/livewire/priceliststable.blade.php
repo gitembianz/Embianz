@@ -49,8 +49,7 @@
         <h1 class="panel__header--title">
             {{ __('Price List') }}
         </h1>
-        <input class="panel__header--input" type="text" wire:model.live="search"
-            placeholder="Search your price field...">
+        <input class="panel__header--input" type="text" wire:model.debounce.300ms="search" placeholder="Search...">
         <div class="panel__header--bundle">
             <div class="dropdown">
                 <button class="dropdown-button">Columns
@@ -70,7 +69,8 @@
             </div>
             <div class="dropdown none" @if ($checked) style="display: unset" @endif>
                 <button class="dropdown-button none" @if ($checked) style="display: flex" @endif>
-                    Checked {{ count($checked) }}</button>
+                    With checked({{ count($checked) }})
+                </button>
                 @if ($checked)
                     <div class="dropdown-list">
                         <button class="dropdown-item delete" style="width: 150px" type="button"
@@ -102,27 +102,27 @@
                 </svg>
             </a>
         </div>
-        @if ($selectPage)
-            @if ($selectAll)
-                <div class="panel__header--checked">
-                    <p>
-                        You selected <strong>{{ count($checked) }}</strong> items.
-                    </p>
-                </div>
-            @else
-                <div class="panel__header--checked" wire:click="selectAll">
-                    <p>
-                        You selected {{ count($checked) }} items, select all?
-                    </p>
-                </div>
-            @endif
+        @if ($selectPage && $selectAll)
+            <div class="panel__header--checked">
+                <p>
+                    You selected <strong>{{ count($checked) }}</strong> items.
+                </p>
+            </div>
+        @elseif($selectPage)
+            <div class="panel__header--checked" wire:click="selectAll">
+                <p>
+                    You selected {{ count($checked) }} items, select all?
+                </p>
+            </div>
         @endif
     </div>
     {{-- Table --}}
     <table class="table">
         <thead>
             <tr>
-                <th><input type="checkbox" wire:model="selectPage"></th>
+                <th>
+                    <input type="checkbox" wire:model="selectPage">
+                </th>
 
                 @if ($this->showColumn('Id'))
                     <th wire:click="sortBy('id')">
@@ -185,86 +185,57 @@
                 <th></th>
             </tr>
         </thead>
-
         <tbody>
-            @foreach ($pricelists as $index => $price)
-                <tr @if ($loop->last) id="last_record" @endif
-                    class="@if ($this->isChecked($price->id)) table__row--selected @endif">
+            @if ($pricelists->isEmpty())
+                <tr>
+                    <td class="table__empty" colspan="{{ count($selectedColumns) + 3 }}">No record found.</td>
+                </tr>
+            @else
+                @foreach ($pricelists as $index => $price)
+                    <tr @if ($loop->last) id="last_record" @endif
+                        class="@if ($this->isChecked($price->id)) table__row--selected @endif">
 
-                    <td data-title="Check">
-                        <input type="checkbox" value="{{ $price->id }}" wire:model="checked">
-                    </td>
+                        <td data-title="Check">
+                            <input type="checkbox" value="{{ $price->id }}" wire:model="checked">
+                        </td>
 
-                    @if ($this->showColumn('Id'))
-                        <td data-title="ID">{{ $price->id }}</td>
-                    @endif
+                        @if ($this->showColumn('Id'))
+                            <td data-title="ID">
+                                {{ $price->id }}
+                            </td>
+                        @endif
 
-                    @if ($this->showColumn('Name'))
-                        <td data-title="Name">
-                            @if ($indexprice !== $index)
-                                <div><a href="/show_pricelist/{{ $price->id }}'">{{ $price->name }}</a>
+                        @if ($this->showColumn('Name'))
+                            <td data-title="Name">
+                                <a href="/show_pricelist/{{ $price->id }}'">{{ $price->name }}</a>
+                            </td>
+                        @endif
+
+                        @if ($this->showColumn('Currency'))
+                            <td data-title="Currency">
+                                {{ $price->currency->name }}
+                            </td>
+                        @endif
+
+                        @if ($this->showColumn('Active'))
+                            <td data-title="Active">
+                                {{ $price->active }}
+                            </td>
+                        @endif
+
+                        @if ($this->showColumn('Created At'))
+                            <td data-title="Created At">
+                                <div class="table__time">
+                                    <svg>
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <polyline points="12 6 12 12 16 14"></polyline>
+                                    </svg>
+                                    {{ $price->created_at }}
                                 </div>
-                            @else
-                                <input type="text" class="table__edit wid-1"
-                                    wire:model.defer="prices.{{ $index }}.name"
-                                    placeholder="{{ $price->name }}">
-                            @endif
+                            </td>
+                        @endif
 
-                        </td>
-                    @endif
-
-                    @if ($this->showColumn('Currency'))
-                        <td data-title="Currency">
-                            @if ($indexprice !== $index)
-                                <div class="cursor-p" wire:click.prevent="edititem({{ $index }})">
-                                    {{ $price->currency->name }}</div>
-                            @else
-                                <select class="table__edit" wire:model.defer="prices.{{ $index }}.currency">
-                                    <option>Select currency</option>
-                                    @foreach ($currencies as $curency)
-                                        <option value="{{ $curency->id }}">
-                                            {{ $curency->name }}</option>
-                                    @endforeach
-                                </select>
-                            @endif
-                        </td>
-                    @endif
-
-                    @if ($this->showColumn('Active'))
-                        <td data-title="Active">
-                            @if ($indexprice !== $index)
-                                <div class="cursor-p" wire:click.prevent="edititem({{ $index }})">
-                                    @if ($price->active === 1)
-                                        True
-                                    @else
-                                        False
-                                    @endif
-                                </div>
-                            @else
-                                <input type="checkbox" wire:model.defer="prices.{{ $index }}.active" checked>
-                            @endif
-                        </td>
-                    @endif
-
-                    @if ($this->showColumn('Created At'))
-                        <td data-title="Created At">
-                            <div class="table__time">
-                                <svg>
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                </svg>
-                                {{ $price->created_at }}
-                        </td>
-                    @endif
-
-                    <td data-title="Action" class="table__buttons">
-                        @if ($indexprice !== $index)
-                            <button class="edit" wire:click.prevent="edititem({{ $index }})">
-                                <svg>
-                                    <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
-                                    </path>
-                                </svg>
-                            </button>
+                        <td data-title="Action" class="table__buttons">
                             <button class="delete" wire:click.prevent="confirmItemRemoval({{ $price->id }})">
                                 <svg>
                                     <polyline points="3 6 5 6 21 6"></polyline>
@@ -273,23 +244,10 @@
                                     </path>
                                 </svg>
                             </button>
-                        @else
-                            <button class="edit"
-                                wire:click.prevent="saveitem({{ $index }} , {{ $price->id }})">
-                                <svg>
-                                    <polyline points="20 6 9 17 4 12"></polyline>
-                                </svg>
-                            </button>
-                            <button class="save" wire:click.prevent="cancelitem()">
-                                <svg>
-                                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                                </svg>
-                            </button>
-                        @endif
-                    </td>
-                </tr>
-            @endforeach
+                        </td>
+                    </tr>
+                @endforeach
+            @endif
         </tbody>
         <x-lazy />
     </table>

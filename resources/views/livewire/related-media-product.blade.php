@@ -5,7 +5,7 @@
         <div class="accordion__btn-flex">
             <button class="accordion__btn"
                 wire:click.prevent="@if ($showmedia === false) $set('showmedia', true) @else $set('showmedia', false) @endif">
-                {{ __("Media ") }}({{ $product->media()->count() }})
+                {{ __('Media ') }}({{ $product->media()->count() }})
             </button>
             <button class="accordion__upload" wire:click="uploadmedia">
                 <div class="item__upload-btn">
@@ -22,7 +22,7 @@
         <div class="modal" id="uploadmedia">
             <div class="modal-content">
                 <h1 class="modal-content-title">
-                    {{ __("How you will upload?") }}
+                    {{ __('How you will upload?') }}
                 </h1>
                 <input id="imgUpload" accept="image/*,video/*" type="file" multiple wire:model="medias"
                     style="display: none">
@@ -51,17 +51,15 @@
                             <div class="modal-content modal--tabel">
                                 <div class="panel__header">
                                     <h1 class="panel__header--title">
-                                        {{ __("Add local media") }}
+                                        {{ __('Add local media') }}
                                     </h1>
                                     <input type="submit" class="panel__header--input panel__header--checked"
                                         value="Save">
-
                                 </div>
                                 <div style="overflow-y: auto;background-color: white;position: relative">
                                     <table class="table table-top">
                                         <thead>
                                             <tr>
-
                                                 <th>
                                                     <div class="table__header--btn">Media</div>
                                                 </th>
@@ -83,7 +81,6 @@
                                                 <th>
                                                     <div class="table__header--btn float-r">Action</div>
                                                 </th>
-
                                             </tr>
                                         </thead>
                                     </table>
@@ -92,26 +89,27 @@
                                             @foreach ($medias as $media)
                                                 <tr>
                                                     <td>
-                                                        @if (str_starts_with($media->getMimeType(), "image"))
+                                                        @if (str_starts_with($media->getMimeType(), 'image'))
                                                             <img src="{{ $media->temporaryUrl() }}" width="50px">
-                                                        @elseif (str_starts_with($media->getMimeType(), "video"))
+                                                        @elseif (str_starts_with($media->getMimeType(), 'video'))
                                                             <video width="100px" controls>
                                                                 <source src="{{ $media->temporaryUrl() }}"
                                                                     type="{{ $media->getMimeType() }}">
-                                                                <span>{{ __("Your browser not suport video tag") }}</span>
+                                                                <span>{{ __('Your browser not suport video tag') }}</span>
                                                             </video>
                                                         @endif
                                                     </td>
                                                     <td>{{ $media->getClientOriginalName() }}</td>
                                                     <td>{{ $media->getSize() }} KB</td>
                                                     <td>{{ $media->getClientOriginalExtension() }}</td>
-                                                    <td><input type="number" class="table__edit"
+                                                    <td>
+                                                        <input type="number" class="table__edit"
                                                             placeholder="Media sequence" min="0" required
-                                                            wire:model="file_sequences.{{ $loop->index }}"></td>
+                                                            wire:model="file_sequences.{{ $loop->index }}">
+                                                    </td>
                                                     <td>
                                                         <select required class="table__edit"
                                                             wire:model="file_locations.{{ $loop->index }}">
-
                                                             @php
                                                                 $firstLocation = $locations->first();
                                                             @endphp
@@ -127,7 +125,8 @@
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <div class="table__buttons"><button class="edit"
+                                                        <div class="table__buttons">
+                                                            <button class="edit"
                                                                 wire:click.prevent="removemedia({{ $loop->index }})">
                                                                 <svg>
                                                                     <polyline points="3 6 5 6 21 6"></polyline>
@@ -140,7 +139,6 @@
                                                     </td>
                                                 </tr>
                                             @endforeach
-
                                         </tbody>
                                     </table>
                                 </div>
@@ -167,7 +165,7 @@
                             <div class="modal-content modal--tabel">
                                 <div class="panel__header">
                                     <h1 class="panel__header--title" id="top1">
-                                        {{ __("Add external media") }}
+                                        {{ __('Add external media') }}
                                     </h1>
                                     <input type="submit" class="panel__header--input panel__header--checked"
                                         value="Save">
@@ -179,7 +177,6 @@
                                                 <th>
                                                     <div class="table__header--btn">Name</div>
                                                 </th>
-
                                                 <th>
                                                     <div class="table__header--btn">Sequence</div>
                                                 </th>
@@ -190,7 +187,6 @@
                                                     <div class="table__header--btn">Location</div>
                                                 </th>
                                                 <th></th>
-
                                             </tr>
                                         </thead>
                                     </table>
@@ -202,12 +198,10 @@
                                                         <input required type="text" class="table__edit"
                                                             wire:model="file_name.{{ $i }}">
                                                     </td>
-
                                                     <td>
                                                         <input required type="number" min="0"
                                                             class="table__edit"
                                                             wire:model="file_sequences.{{ $i }}">
-
                                                     </td>
                                                     <td>
                                                         <input required type="url" class="table__edit"
@@ -300,14 +294,13 @@
                         <div class="modal" id="confirmationmodalmedia">
                             <div class="modal-content">
                                 <h1 class="modal-content-title">
-                                    {{ __("Are you sure to delete this record?") }}
+                                    {{ __('Are you sure to delete this record?') }}
                                 </h1>
                                 <input wire:click.prevent="deleteSingleRecord()" class="modal-content-btn submit"
                                     type="button" value="Confirm" id="confirmLoad">
                                 <input class="modal-content-btn delete" type="button"
                                     onclick="document.getElementById('confirmationmodalmedia').style.display='none'"
                                     value="Cancel">
-
                                 <span class="modal-content-btn delete"
                                     onclick="document.getElementById('confirmationmodalmedia').style.display='none'">
                                     <svg>
@@ -323,17 +316,15 @@
                         <div class="modal" id="confirmationmodalmultiple">
                             <div class="modal-content">
                                 <h1 class="modal-content-title">
-                                    {{ __("Are you sure to delete those records?") }}
+                                    {{ __('Are you sure to delete those records?') }}
                                 </h1>
                                 <input wire:click.prevent="deleteRecords()" class="modal-content-btn submit"
                                     type="button" value="Confirm" id="confirmLoad">
                                 <input class="modal-content-btn delete" type="button"
                                     onclick="document.getElementById('confirmationmodalmultiple').style.display='none'"
                                     value="Cancel">
-
                                 <span class="modal-content-btn delete"
                                     onclick="document.getElementById('confirmationmodalmultiple').style.display='none'">
-
                                     <svg>
                                         <line x1="18" y1="6" x2="6" y2="18">
                                         </line>
@@ -343,24 +334,24 @@
                                 </span>
                             </div>
                         </div>
-
                         {{-- Header of the table --}}
                         <div class="panel__header">
-                            <input class="panel__header--input" type="text" wire:model.live="search"
+                            <input class="panel__header--input" type="text" wire:model.debounce.300ms="search"
                                 placeholder="Search..." style="grid-column: 1/4">
                             <div class="panel__header--bundle">
                                 <div class="dropdown">
                                     <button
                                         wire:click.prevent="@if ($col === false) $set('col', true) @else $set('col', false) @endif"
-                                        class="dropdown-button">Columns</button>
+                                        class="dropdown-button">
+                                        Columns
+                                    </button>
                                     @if ($col)
-
                                         <div class="dropdown-list" style="display: flex;">
                                             @foreach ($columns as $column)
                                                 <div class="dropdown-item">
                                                     <input type="checkbox" wire:model="selectedColumns"
                                                         value="{{ $column }}"
-                                                        {{ in_array($column, $selectedColumns) ? "checked" : "" }}>
+                                                        {{ in_array($column, $selectedColumns) ? 'checked' : '' }}>
                                                     <label>{{ $column }}</label>
                                                 </div>
                                             @endforeach
@@ -372,90 +363,85 @@
                                     <button
                                         wire:click.prevent="@if ($all === false) $set('all', true); $set('col', false) @else $set('all', false) @endif"
                                         class="dropdown-button none"
-                                        @if ($checked) style="display: flex" @endif>With
-                                        Checked({{ count($checked) }})</button>
-                                    @if ($checked)
-                                        @if ($all)
-                                            <div class="dropdown-list" style="display: flex;">
-                                                <button class="dropdown-item delete" type="button"
-                                                    wire:click="confirmFilesRemovalmultiple()">
-                                                    Delete
-                                                </button>
-                                                <button class="dropdown-item submit" type="button"
-                                                    wire:click="exportSelected()">
-                                                    Export
-                                                </button>
-                                            </div>
-                                        @endif
+                                        @if ($checked) style="display: flex" @endif>
+                                        With Checked({{ count($checked) }})
+                                    </button>
+                                    @if ($checked && $all)
+                                        <div class="dropdown-list" style="display: flex;">
+                                            <button class="dropdown-item delete" type="button"
+                                                wire:click="confirmFilesRemovalmultiple()">
+                                                Delete
+                                            </button>
+                                            <button class="dropdown-item submit" type="button"
+                                                wire:click="exportSelected()">
+                                                Export
+                                            </button>
+                                        </div>
                                     @endif
                                 </div>
                             </div>
-                            @if ($selectPage)
-                                @if ($selectAll)
-                                    <div class="panel__header--checked">
-                                        <p>
-                                            You selected <strong>{{ count($checked) }}</strong> items.
-                                        </p>
-                                    </div>
-                                @else
-                                    <div class="panel__header--checked" wire:click="selectAll">
-                                        <p>
-                                            You selected {{ count($checked) }} items, select all?
-                                        </p>
-                                    </div>
-                                @endif
+                            @if ($selectPage && $selectAll)
+                                <div class="panel__header--checked">
+                                    <p>
+                                        You selected <strong>{{ count($checked) }}</strong> items.
+                                    </p>
+                                </div>
+                            @elseif($selectPage)
+                                <div class="panel__header--checked" wire:click="selectAll">
+                                    <p>
+                                        You selected {{ count($checked) }} items, select all?
+                                    </p>
+                                </div>
                             @endif
                         </div>
-
                         {{-- Table --}}
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th><input type="checkbox" wire:model="selectPage"></th>
-
-                                    @if ($this->showColumn("Id"))
+                                    <th>
+                                        <input type="checkbox" wire:model="selectPage">
+                                    </th>
+                                    @if ($this->showColumn('Id'))
                                         <th>
                                             <div class="table__header--btn">ID</div>
                                         </th>
                                     @endif
-                                    @if ($this->showColumn("Media"))
+                                    @if ($this->showColumn('Media'))
                                         <th>
                                             <div class="table__header--btn">Media</div>
                                         </th>
                                     @endif
-                                    @if ($this->showColumn("Name"))
+                                    @if ($this->showColumn('Name'))
                                         <th>
                                             <div class="table__header--btn">Name</div>
                                         </th>
                                     @endif
-
-                                    @if ($this->showColumn("Media Location"))
+                                    @if ($this->showColumn('Media Location'))
                                         <th>
                                             <div class="table__header--btn">Location</div>
                                         </th>
                                     @endif
-                                    @if ($this->showColumn("Sequence"))
+                                    @if ($this->showColumn('Sequence'))
                                         <th>
                                             <div class="table__header--btn">Sequence</div>
                                         </th>
                                     @endif
-                                    @if ($this->showColumn("Created At"))
+                                    @if ($this->showColumn('Created At'))
                                         <th>
-                                            <button class="table__header--btn">
+                                            <div class="table__header--btn">
                                                 Created at
-                                            </button>
+                                            </div>
                                         </th>
                                     @endif
-
                                     <th></th>
                                 </tr>
                             </thead>
-
                             <tbody>
                                 @if ($filteredMedia->isEmpty())
                                     <tr>
-                                        <td class="table__empty" colspan="{{ count($columns) + 3 }}">No record
-                                            found.</td>
+                                        <td class="table__empty" colspan="{{ count($columns) + 3 }}">
+                                            No record found.
+                                        </td>
                                     </tr>
                                 @else
                                     @foreach ($filteredMedia as $index => $file)
@@ -463,28 +449,27 @@
                                             <td data-title="Check"><input type="checkbox"
                                                     value="{{ $file->id }}" wire:model="checked">
                                             </td>
-
-                                            @if ($this->showColumn("Id"))
+                                            @if ($this->showColumn('Id'))
                                                 <td data-title="ID">{{ $file->id }}</td>
                                             @endif
-                                            @if ($this->showColumn("Media"))
+                                            @if ($this->showColumn('Media'))
                                                 <td data-title="Media">
-                                                    @if (in_array($file->type, ["jpg", "jpeg", "png", "gif", "svg", "jfif", "webp"]))
+                                                    @if (in_array($file->type, ['jpg', 'jpeg', 'png', 'gif', 'svg', 'jfif', 'webp']))
                                                         <img src="/{{ $file->path . $file->name }}"
                                                             alt="{{ $file->name }}" width="50">
-                                                    @elseif (in_array($file->type, ["mp4", "mov", "avi"]))
+                                                    @elseif (in_array($file->type, ['mp4', 'mov', 'avi']))
                                                         <video src="/{{ $file->path . $file->name }}" width="50"
                                                             controls="true"></video>
                                                     @else
-                                                        <img src="{{ $file->path }}" width="100"
-                                                            alt="">
+                                                        <img src="{{ $file->path }}" width="100" height="50"
+                                                            alt="{{ $file->path }}">
                                                     @endif
                                                 </td>
                                             @endif
-                                            @if ($this->showColumn("Name"))
+                                            @if ($this->showColumn('Name'))
                                                 <td data-title="Name">
                                                     @if ($editedMediaIndex !== $index)
-                                                        <div>{{ $file->name }}</div>
+                                                        {{ $file->name }}
                                                     @else
                                                         <input type="text" class="table__edit"
                                                             wire:model.defer="filess.{{ $index }}.name"
@@ -492,11 +477,10 @@
                                                     @endif
                                                 </td>
                                             @endif
-
-                                            @if ($this->showColumn("Media Location"))
+                                            @if ($this->showColumn('Media Location'))
                                                 <td data-title="Media Location">
                                                     @if ($editedMediaIndex !== $index)
-                                                        <div>{{ $file->location->location }}</div>
+                                                        {{ $file->location->location }}
                                                     @else
                                                         <select class="table__edit"
                                                             wire:model.defer="filess.{{ $index }}.location_id">
@@ -508,10 +492,10 @@
                                                     @endif
                                                 </td>
                                             @endif
-                                            @if ($this->showColumn("Sequence"))
+                                            @if ($this->showColumn('Sequence'))
                                                 <td data-title="Sequence">
                                                     @if ($editedMediaIndex !== $index)
-                                                        <div>{{ $file->sequence }}</div>
+                                                        {{ $file->sequence }}
                                                     @else
                                                         <input type="number" min="0" required
                                                             class="table__edit"
@@ -520,7 +504,7 @@
                                                     @endif
                                                 </td>
                                             @endif
-                                            @if ($this->showColumn("Created At"))
+                                            @if ($this->showColumn('Created At'))
                                                 <td data-title="Created At">
                                                     <div class="table__time">
                                                         <svg>
@@ -529,9 +513,9 @@
                                                             <polyline points="12 6 12 12 16 14"></polyline>
                                                         </svg>
                                                         {{ $file->created_at }}
+                                                    </div>
                                                 </td>
                                             @endif
-
                                             <td data-title="Action">
                                                 <div class="table__buttons">
                                                     @if ($editedMediaIndex !== $index)
@@ -578,7 +562,7 @@
                             </tbody>
                         </table>
                     @else
-                        <p class="mt-2">No media related</p>
+                        <p class="mt-2">No records related</p>
                     @endif
                 </div>
             </div>

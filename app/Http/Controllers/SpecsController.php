@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 // use App\Http\Requests\StoreSpecsRequest;
 use App\Http\Requests\UpdateSpecsRequest;
+use App\Models\SpecGroup;
 
 class SpecsController extends Controller
 {
@@ -23,8 +24,10 @@ class SpecsController extends Controller
    */
   public function create()
   {
-    return view('admin.add_spec');
+    $groups = SpecGroup::pluck('name', 'id');
+    return view('admin.add_spec', compact('groups'));
   }
+
 
   /**
    * Store a newly created resource in storage.
@@ -39,11 +42,17 @@ class SpecsController extends Controller
 
     $spec->name = $request->name;
     $spec->um = $request->um;
-    $spec->spec_group = $request->spec_group;
+    $spec->group_id = $request->spec_group;
     $spec->createdby = Auth::user()->name;
     $spec->lastmodifiedby = Auth::user()->name;
     $spec->save();
-    return redirect()->back()->with('message', 'Spec add succesfully!');
+    return redirect()->back()->with([
+      'notification' => [
+        'message' => 'Record added successfully! Click here  <a href="/show_spec/' . $spec->id . '">' . $spec->name . '</a>',
+        'type' => 'success',
+        'title' => 'Success'
+      ],
+    ]);
   }
 
   /**

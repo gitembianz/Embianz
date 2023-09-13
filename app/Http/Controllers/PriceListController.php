@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Currency;
 use App\Models\PriceList;
 use Illuminate\Support\Facades\Auth;
-// use App\Http\Requests\StorePriceListRequest;
 use Illuminate\Http\Request;
 use App\Http\Requests\UpdatePriceListRequest;
 
@@ -46,7 +45,13 @@ class PriceListController extends Controller
     $item->createdby = Auth::user()->name;
     $item->lastmodifiedby = Auth::user()->name;
     $item->save();
-    return redirect()->back()->with('message', 'PriceList add succesfully!');
+    return redirect()->back()->with([
+      'notification' => [
+        'message' => 'Record added successfully! Click here  <a href="/show_pricelist/' . $item->id . '">' . $item->name . '</a>',
+        'type' => 'success',
+        'title' => 'Success'
+      ],
+    ]);
   }
 
   /**

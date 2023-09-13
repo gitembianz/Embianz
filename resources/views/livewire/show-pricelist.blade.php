@@ -27,10 +27,21 @@
                     </svg>
                 </button>
             @else
-                <button class="item__header-btn edit" type="button" wire:click.prevent="saveitem()" value="Save"
-                    data-tooltip-center="Save this changes">Save</button>
-                <button class="item__header-btn edit" type="button" wire:click.prevent="cancelitem()" value="Cancel"
-                    data-tooltip-center="Cancel this changes">Cancel</button>
+                <button class="item__header-btn confirm" type="button" wire:click.prevent="saveitem" value="Save"
+                    data-tooltip-center="Save this changes">
+                    <svg>
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                </button>
+                <button class="item__header-btn" type="button" wire:click.prevent="cancelitem" value="Cancel"
+                    data-tooltip-center="Cancel this changes">
+                    <svg>
+                        <line x1="18" y1="6" x2="6" y2="18">
+                        </line>
+                        <line x1="6" y1="6" x2="18" y2="18">
+                        </line>
+                    </svg>
+                </button>
             @endif
             <button wire:click.prevent="confirmItemRemoval({{ $pricelist->id }})" class="item__header-btn delete"
                 type="button" value="Delete" data-tooltip-right="Delete this Pricelist">
@@ -41,7 +52,6 @@
             </button>
         </div>
     </div>
-
     <div class="tab">
         <div class="tabs">
             <h3 class="tabs__page active">Details</h3>
@@ -69,19 +79,18 @@
                                         <polyline points="20 6 9 17 4 12"></polyline>
                                     </svg>
                                 </div>
-                                {{ _('Active') }}
                             @else
                                 <div class="simple__checkbox--disabled">
                                     <svg>
                                         <polyline points="20 6 9 17 4 12"></polyline>
                                     </svg>
                                 </div>
-                                {{ _('Inactive') }}
                             @endif
+                            {{ _('Active') }}
                         </div>
                     @else
                         <div style="display: flex; align-items: center;justify-content: flex-start;gap: 10px">
-                            <input type="checkbox" wire:model.defer="record.active">
+                            <input type="checkbox" wire:model="record.active">
                             <span>Active</span>
                         </div>
                     @endif
@@ -115,7 +124,9 @@
                     </div>
                     @if ($edititem != null)
                         <button class="item__form-btn item__form-long" wire:click.prevent="saveitem()" type="button"
-                            value="Save">Save edited details</button>
+                            value="Save">
+                            Save
+                        </button>
                     @endif
                 </div>
             </div>
@@ -123,7 +134,6 @@
         <div class="tabs__content">
             <livewire:related-productson-pricelist priceId="{{ $pricelist->id }}" />
         </div>
-
     </div>
     <div class="modal" id="confirmationmodal">
         <div class="modal-content">
@@ -134,7 +144,6 @@
                 value="Confirm">
             <input class="modal-content-btn delete" type="button"
                 onclick="document.getElementById('confirmationmodal').style.display='none'" value="Cancel">
-
             <span class="modal-content-btn delete"
                 onclick="document.getElementById('confirmationmodal').style.display='none'">
                 <svg>
@@ -144,5 +153,4 @@
             </span>
         </div>
     </div>
-</div>
 </div>

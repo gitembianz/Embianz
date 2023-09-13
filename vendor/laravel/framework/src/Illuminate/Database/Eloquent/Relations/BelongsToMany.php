@@ -136,7 +136,7 @@ class BelongsToMany extends Relation
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @param  \Illuminate\Database\Eloquent\Model  $parent
-     * @param  string  $table
+     * @param  string|class-string<\Illuminate\Database\Eloquent\Model>  $table
      * @param  string  $foreignPivotKey
      * @param  string  $relatedPivotKey
      * @param  string  $parentKey
@@ -622,9 +622,13 @@ class BelongsToMany extends Relation
     {
         if (is_null($instance = (clone $this)->where($attributes)->first())) {
             if (is_null($instance = $this->related->where($attributes)->first())) {
-                $instance = $this->create(array_merge($attributes, $values), $joining, $touch);
+                $instance = $this->createOrFirst($attributes, $values, $joining, $touch);
             } else {
-                $this->attach($instance, $joining, $touch);
+                try {
+                    $this->getQuery()->withSavepointIfNeeded(fn () => $this->attach($instance, $joining, $touch));
+                } catch (UniqueConstraintViolationException) {
+                    // Nothing to do, the model was already attached...
+                }
             }
         }
 
@@ -643,17 +647,17 @@ class BelongsToMany extends Relation
     public function createOrFirst(array $attributes = [], array $values = [], array $joining = [], $touch = true)
     {
         try {
-            return $this->create(array_merge($attributes, $values), $joining, $touch);
-        } catch (UniqueConstraintViolationException $exception) {
+            return $this->getQuery()->withSavePointIfNeeded(fn () => $this->create(array_merge($attributes, $values), $joining, $touch));
+        } catch (UniqueConstraintViolationException $e) {
             // ...
         }
 
         try {
-            return tap($this->related->where($attributes)->first(), function ($instance) use ($joining, $touch) {
-                $this->attach($instance, $joining, $touch);
+            return tap($this->related->where($attributes)->first() ?? throw $e, function ($instance) use ($joining, $touch) {
+                $this->getQuery()->withSavepointIfNeeded(fn () => $this->attach($instance, $joining, $touch));
             });
-        } catch (UniqueConstraintViolationException $exception) {
-            return (clone $this)->where($attributes)->first();
+        } catch (UniqueConstraintViolationException $e) {
+            return (clone $this)->useWritePdo()->where($attributes)->first() ?? throw $e;
         }
     }
 
@@ -668,19 +672,13 @@ class BelongsToMany extends Relation
      */
     public function updateOrCreate(array $attributes, array $values = [], array $joining = [], $touch = true)
     {
-        if (is_null($instance = (clone $this)->where($attributes)->first())) {
-            if (is_null($instance = $this->related->where($attributes)->first())) {
-                return $this->create(array_merge($attributes, $values), $joining, $touch);
-            } else {
-                $this->attach($instance, $joining, $touch);
+        return tap($this->firstOrCreate($attributes, $values, $joining, $touch), function ($instance) use ($values) {
+            if (! $instance->wasRecentlyCreated) {
+                $instance->fill($values);
+
+                $instance->save(['touch' => false]);
             }
-        }
-
-        $instance->fill($values);
-
-        $instance->save(['touch' => false]);
-
-        return $instance;
+        });
     }
 
     /**

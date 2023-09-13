@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Specs;
 use Livewire\Component;
+use App\Models\SpecGroup;
 use App\Models\Product_Spec;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,6 +14,7 @@ class ShowSpec extends Component
   public $itemId;
   public $edititem = null;
   public $record;
+  public $groups;
 
   public function render()
   {
@@ -58,10 +60,11 @@ class ShowSpec extends Component
     $this->record = [
       'name' => $this->spec->name,
       'um' => $this->spec->um,
-      'spec_group' => $this->spec->spec_group,
+      'spec_group' => $this->spec->group->id,
       // Add other properties as needed
     ];
     $this->edititem = true;
+    $this->groups = SpecGroup::pluck('name', 'id');
   }
   public function cancelitem()
   {
@@ -74,13 +77,31 @@ class ShowSpec extends Component
     if (!is_null($rec)) {
       $new = Specs::find($this->itemId);
       if (array_key_exists('name', $rec)) {
-        $new->name = $rec['name'];
+        if (!empty($rec['name'])) {
+          $new->name = $rec['name'];
+        } else {
+          session()->flash('notification', [
+            'message' => 'Please provide a value!',
+            'type' => 'warning',
+            'title' => 'Missing Values'
+          ]);
+          return;
+        }
       }
       if (array_key_exists('um', $rec)) {
-        $new->um = $rec['um'];
+        if (!empty($rec['um'])) {
+          $new->um = $rec['um'];
+        } else {
+          session()->flash('notification', [
+            'message' => 'Please provide a value!',
+            'type' => 'warning',
+            'title' => 'Missing Values'
+          ]);
+          return;
+        }
       }
       if (array_key_exists('spec_group', $rec)) {
-        $new->spec_group = $rec['spec_group'];
+        $new->group_id = $rec['spec_group'];
       }
       $new->lastmodifiedby = Auth::user()->name;
       $new->updated_at = now();

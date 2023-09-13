@@ -45,12 +45,25 @@ class RelatedProductsonSpec extends Component
   public $editmultiple = false;
   public $itemstoedit;
 
+
   public function render()
   {
-    return view('livewire.related-productson-spec', [
-      'relatedprods' => $this->relatedprods,
-      'addprods' => $this->addprods
-    ]);
+    $relatedprods = $this->relatedprods
+      ->where(function ($query) {
+        $query->whereHas('product', function ($subQuery) {
+          $subQuery->where('name', 'LIKE', '%' . $this->search . '%');
+        });
+      })->get();
+    if ($this->addrelatedproducts === true || $this->editmultiple  || $this->allow === true) {
+      return view('livewire.related-productson-spec', [
+        'relatedprods' => $relatedprods,
+        'addprods' => $this->addprods
+      ]);
+    } else {
+      return view('livewire.related-productson-spec', [
+        'relatedprods' => $relatedprods
+      ]);
+    }
   }
   public function mount($specId)
   {
@@ -67,7 +80,7 @@ class RelatedProductsonSpec extends Component
   //function for realted
   public function showColumn($column)
   {
-    if ($column === 'Product name') {
+    if ($column === 'Name') {
       return true;
     }
     return in_array($column, $this->selectedColumns);
@@ -106,9 +119,13 @@ class RelatedProductsonSpec extends Component
     $this->selectAll = true;
     $this->checked = $this->relatedprodsQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
   }
+  public function denny()
+  {
+    $this->allow = false;
+  }
   public function getRelatedprodsProperty()
   {
-    return $this->relatedprodsQuery->paginate($this->perPage);
+    return $this->relatedprodsQuery;
   }
   public function getRelatedprodsQueryProperty()
   {
@@ -141,6 +158,7 @@ class RelatedProductsonSpec extends Component
       $itemtodel->delete();
     }
     $this->checked = [];
+    $this->selectPage = false;
     session()->flash('notification', [
       'message' => 'Records deleted successfully!',
       'type' => 'success',
@@ -157,6 +175,7 @@ class RelatedProductsonSpec extends Component
     $val = Product_Spec::find($id);
     $this->productid = $idprod;
     $this->editedrow = $index;
+    $this->allow = false;
     $this->product = [
       $index . '.name' => $this->itemselected,
       $index . '.value' => $val->value,
@@ -168,17 +187,24 @@ class RelatedProductsonSpec extends Component
     $prod->product_id = $this->productid;
     $val = $this->product;
     if (isset($val["$index"]['value'])) {
-
-      $prod->value = $val["$index"]['value'];
+      if (!empty($val["$index"]['value'])) {
+        $prod->value = $val["$index"]['value'];
+        $prod->save();
+        $this->allow = false;
+        $this->productid = null;
+        $this->product = [];
+        $this->itemselected = null;
+        $this->editedrow = null;
+        $this->search = '';
+      } else {
+        session()->flash('notification', [
+          'message' => 'Please provide a value!',
+          'type' => 'warning',
+          'title' => 'Missing Values'
+        ]);
+        return;
+      }
     }
-
-    $prod->save();
-    $this->allow = false;
-    $this->productid = null;
-    $this->product = [];
-    $this->itemselected = null;
-    $this->editedrow = null;
-    $this->search = '';
     session()->flash('notification', [
       'message' => 'Record edited successfully!',
       'type' => 'success',
@@ -202,13 +228,23 @@ class RelatedProductsonSpec extends Component
 
   public function confirmmultiple()
   {
+    if (empty($this->prod)) {
+      session()->flash('notification', [
+        'message' => 'No specifications to update.',
+        'type' => 'warning',
+        'title' => 'No Data'
+      ]);
+      return;
+    }
 
     foreach ($this->prod as $pro) {
       if (isset($pro['product']['value'])) {
         $prodd = Product_Spec::find($pro['product']['id']);
-        $prodd->product_id = $pro['product']['idrel'];
-        $prodd->value = $pro['product']['value'];
-        $prodd->save();
+        if ($prodd) {
+          $prodd->product_id = $pro['product']['idrel'];
+          $prodd->value = $pro['product']['value'];
+          $prodd->save();
+        }
       } else {
         session()->flash('notification', [
           'message' => 'Please provide a value!',
@@ -230,6 +266,7 @@ class RelatedProductsonSpec extends Component
     $this->checked = [];
     $this->all = false;
     $this->editmultiple = false;
+    $this->selectPage = false;
     session()->flash('notification', [
       'message' => 'Records edited successfully!',
       'type' => 'success',
@@ -270,17 +307,29 @@ class RelatedProductsonSpec extends Component
       'product' => ['name' => null, 'value' => null],
     ];
   }
-  public function selectProduct($index, $id, $name)
+  public function selectitem($index, $id, $name)
   {
     $this->prod[$index]['itemselected'] = $name;
     $this->prod[$index]['product']['idrel'] = $id;
     $this->prod[$index]['allow'] = false;
     $this->searchadd = '';
   }
+  public function load()
+  {
+    $this->perPage += 10;
+  }
   public function allowselect($index)
   {
+    foreach ($this->prod as &$item) {
+      $item['allow'] = false;
+    }
     $this->prod[$index]['allow'] = true;
     $this->searchadd = $this->prod[$index]['itemselected'];
+  }
+  public function dennyselect($index)
+  {
+    $this->prod[$index]['allow'] = false;
+    $this->searchadd = '';
   }
   public function closemodal()
   {
@@ -299,33 +348,46 @@ class RelatedProductsonSpec extends Component
   }
   public function clear($index)
   {
-    // Remove the row from the array
     unset($this->prod[$index]);
-
-    // Reset the keys of the array
     $this->prod = array_values($this->prod);
 
     // Decrement the total row count
     $this->row--;
+    if ($this->row < 1) {
+      $this->addrelatedproducts = false;
+      $this->prod = [
+        [
+          'allow' => false,
+          'itemselected' => null,
+          'product' => ['name' => null, 'value' => null],
+        ]
+      ];
+      $this->row = 1;
+    }
   }
-
   public function saveprod()
   {
-    foreach ($this->prod as $pro) {
-
-      if (isset($pro['product']['value'])) {
+    $empty = false;
+    foreach ($this->prod as  $pro) {
+      $val = $pro['product'];
+      if (array_key_exists('value', $val) && $pro['product']['value'] == null) {
+        $empty = true;
+      }
+    }
+    if ($empty) {
+      session()->flash('notification', [
+        'message' => 'Please provide a value!',
+        'type' => 'warning',
+        'title' => 'Missing Values'
+      ]);
+      return;
+    } else {
+      foreach ($this->prod as $pro) {
         $news = new Product_Spec();
         $news->product_id = $pro['product']['idrel'];
         $news->spec_id = $this->specId;
         $news->value = $pro['product']['value'];
         $news->save();
-      } else {
-        session()->flash('notification', [
-          'message' => 'Please provide a value!',
-          'type' => 'warning',
-          'title' => 'Missing Values'
-        ]);
-        return;
       }
     }
 
@@ -333,7 +395,7 @@ class RelatedProductsonSpec extends Component
       [
         'allow' => false,
         'itemselected' => null,
-        'spec' => ['name' => null, 'value' => null],
+        'product' => ['name' => null, 'value' => null],
       ]
     ];
     $this->row = 1;
@@ -353,6 +415,6 @@ class RelatedProductsonSpec extends Component
       $unrelated->where('name', 'like', '%' . $this->searchadd . '%');
     }
     $unrelated->orderBy($this->orderByadd, $this->orderAscadd ? 'asc' : 'desc');
-    return $unrelated->limit('5')->get();
+    return $unrelated->get();
   }
 }

@@ -46,8 +46,16 @@ class RelatedSpecProduct extends Component
 
   public function render()
   {
+    $relatedspecs = $this->relatedspecsQuery
+      ->where(function ($query) {
+        $query->whereHas('spec', function ($subQuery) {
+          $subQuery->where('name', 'LIKE', '%' . $this->search . '%')
+            ->orWhere('um', 'LIKE', '%' . $this->search . '%');
+        });
+      })->get();
+
     return view('livewire.related-spec-product', [
-      'relatedspecs' => $this->relatedspecs,
+      'relatedspecs' => $relatedspecs,
       'addspecs' => $this->addspecs,
     ]);
   }
@@ -61,6 +69,10 @@ class RelatedSpecProduct extends Component
       'itemselected' => null,
       'spec' => ['idrel' => null, 'value' => null],
     ];
+  }
+  public function load()
+  {
+    $this->perPage += 10;
   }
   //function for realted
   public function showColumn($column)
@@ -78,10 +90,6 @@ class RelatedSpecProduct extends Component
       $this->checked = [];
     }
   }
-  public function swapSortDirection()
-  {
-    return $this->orderAsc === '1' ? '0' : '1';
-  }
   public function updatedChecked()
   {
     $this->selectPage = false;
@@ -90,15 +98,6 @@ class RelatedSpecProduct extends Component
   {
     return in_array($id, $this->checked);
   }
-  public function sortBy($columnName)
-  {
-    if ($this->orderBy === $columnName) {
-      $this->orderAsc = $this->swapSortDirection();
-    } else {
-      $this->orderAsc = '1';
-    }
-    $this->orderBy = $columnName;
-  }
   public function selectAll()
   {
     $this->selectAll = true;
@@ -106,7 +105,7 @@ class RelatedSpecProduct extends Component
   }
   public function getRelatedspecsProperty()
   {
-    return $this->relatedspecsQuery->paginate($this->perPage);
+    return $this->relatedspecsQuery;
   }
   public function getRelatedspecsQueryProperty()
   {
@@ -139,6 +138,7 @@ class RelatedSpecProduct extends Component
       $itemtodel->delete();
     }
     $this->checked = [];
+    $this->selectPage = false;
     session()->flash('notification', [
       'message' => 'Records  deleted successfully!',
       'type' => 'success',
@@ -186,7 +186,6 @@ class RelatedSpecProduct extends Component
     $val = $this->specification;
     if (isset($val["$index"]['value'])) {
       if ($val["$index"]['value'] != "") {
-
         $newspec->value = $val["$index"]['value'];
         $newspec->save();
         $this->allow = false;
@@ -250,7 +249,7 @@ class RelatedSpecProduct extends Component
       return;
     }
 
-    foreach ($this->specsAndValues as $index => $specAndValue) {
+    foreach ($this->specsAndValues as  $specAndValue) {
       if (!empty($specAndValue['spec']['value'])) {
         $spec = Product_Spec::find($specAndValue['spec']['id']);
         if ($spec) {
@@ -279,6 +278,7 @@ class RelatedSpecProduct extends Component
     $this->checked = [];
     $this->all = false;
     $this->editmultiple = false;
+    $this->selectPage = false;
     session()->flash('notification', [
       'message' => 'Record edited successfully!',
       'type' => 'success',
@@ -290,6 +290,11 @@ class RelatedSpecProduct extends Component
   {
     $this->showrelatedspecs = true;
     $this->addrelatedspecs = true;
+  }
+  public function denny()
+  {
+
+    $this->allow = false;
   }
   public function select($id)
   {
@@ -316,8 +321,17 @@ class RelatedSpecProduct extends Component
   }
   public function allowselect($index)
   {
+
+    foreach ($this->specsAndValues as &$item) {
+      $item['allow'] = false;
+    }
     $this->specsAndValues[$index]['allow'] = true;
     $this->searchadd = $this->specsAndValues[$index]['itemselected'];
+  }
+  public function dennyselect($index)
+  {
+    $this->specsAndValues[$index]['allow'] = false;
+    $this->searchadd = '';
   }
   public function allow()
   {
@@ -342,10 +356,7 @@ class RelatedSpecProduct extends Component
   }
   public function clear($index)
   {
-    // Remove the row from the array
     unset($this->specsAndValues[$index]);
-
-    // Reset the keys of the array
     $this->specsAndValues = array_values($this->specsAndValues);
 
     // Decrement the total row count
@@ -365,7 +376,7 @@ class RelatedSpecProduct extends Component
   public function savespecs()
   {
     $empty = false;
-    foreach ($this->specsAndValues as $index =>  $specAndValue) {
+    foreach ($this->specsAndValues as  $specAndValue) {
       $val = $specAndValue['spec'];
       if (array_key_exists('value', $val) && $specAndValue['spec']['value'] == null) {
         $empty = true;
@@ -379,7 +390,7 @@ class RelatedSpecProduct extends Component
       ]);
       return;
     } else {
-      foreach ($this->specsAndValues as $index =>  $specAndValue) {
+      foreach ($this->specsAndValues as  $specAndValue) {
         $val = $specAndValue['spec'];
         $newspec = new Product_Spec();
         $newspec->product_id = $this->productId;

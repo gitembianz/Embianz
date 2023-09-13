@@ -39,7 +39,6 @@
                         </line>
                     </svg></button>
             @endif
-
             <button wire:click.prevent="confirmProductRemoval({{ $product->id }})" class="item__header-btn delete"
                 type="button" value="Delete" data-tooltip-right="Delete this Product">
                 <svg>
@@ -57,7 +56,6 @@
             <input wire:click.prevent="deleteRecord()" class="modal-content-btn submit" type="button" value="Confirm">
             <input class="modal-content-btn delete" type="button"
                 onclick="document.getElementById('confirmationmodal').style.display='none'" value="Cancel">
-
             <span class="modal-content-btn delete"
                 onclick="document.getElementById('confirmationmodal').style.display='none'">
                 <svg>
@@ -77,7 +75,7 @@
                 <div class="item__form">
                     @if ($editproduct === null)
                         <div class="item__form-input-close">
-                            <div id="category_name">{{ $product->name }}</div>
+                            <div>{{ $product->name }}</div>
                             <label>Product Name</label>
                         </div>
                     @else
@@ -88,8 +86,8 @@
                     @endif
                     @if ($editproduct === null)
                         <div class="item__form-input-close">
-                            <div id="category_start_date">{{ $product->start_date }}</div>
-                            <label for="start_date">Product Start Date</label>
+                            <div>{{ $product->start_date }}</div>
+                            <label>Product Start Date</label>
                         </div>
                     @else
                         <div class="item__form-input">
@@ -99,7 +97,7 @@
                     @endif
                     @if ($editproduct === null)
                         <div class="item__form-input-close">
-                            <div id="category_end_date">{{ $product->end_date }}</div>
+                            <div>{{ $product->end_date }}</div>
                             <label>Product End Date </label>
                         </div>
                     @else
@@ -110,7 +108,7 @@
                     @endif
                     @if ($editproduct === null)
                         <div class="item__form-input-close">
-                            <div id="category_sequence">{{ $product->quantity }}</div>
+                            <div>{{ $product->quantity }}</div>
                             <label>Product Quantity</label>
                         </div>
                     @else
@@ -127,15 +125,14 @@
                                         <polyline points="20 6 9 17 4 12"></polyline>
                                     </svg>
                                 </div>
-                                {{ _('Active') }}
                             @else
                                 <div class="simple__checkbox--disabled">
                                     <svg>
                                         <polyline points="20 6 9 17 4 12"></polyline>
                                     </svg>
                                 </div>
-                                {{ _('Inactive') }}
                             @endif
+                            {{ _('Active') }}
                         </div>
                     @else
                         <div style="display: flex; align-items: center;justify-content: flex-start;gap: 10px">
@@ -143,10 +140,9 @@
                             <span>Active</span>
                         </div>
                     @endif
-
                     @if ($editproduct === null)
                         <div class="item__form-input-close">
-                            <div id="category_parrent">{{ $product->popularity }}</div>
+                            <div>{{ $product->popularity }}</div>
                             <label>Product Popularity</label>
                         </div>
                     @else
@@ -155,10 +151,9 @@
                             <label>Product Popularity</label>
                         </div>
                     @endif
-
                     @if ($editproduct === null)
                         <div class="item__form-input-close item__form-long">
-                            <div id="category_short_description">{{ $product->short_description }}</div>
+                            <div>{{ $product->short_description }}</div>
                             <label>Product Short Description</label>
                         </div>
                     @else
@@ -169,7 +164,7 @@
                     @endif
                     @if ($editproduct === null)
                         <div class="item__form-input-close item__form-textarea">
-                            <div id="category_long_description">{{ $product->long_description }}</div>
+                            <div>{{ $product->long_description }}</div>
                             <label>Product Long Description</label>
                         </div>
                     @else
@@ -180,7 +175,7 @@
                     @endif
                     @if ($editproduct === null)
                         <div class="item__form-input-close item__form-long">
-                            <div id="seo_title">{{ $product->seo_title }}</div>
+                            <div>{{ $product->seo_title }}</div>
                             <label>SEO Title</label>
                         </div>
                     @else
@@ -214,14 +209,10 @@
                 </div>
             </div>
             <div class="tabs__content">
-
-                <livewire:related-media-product productId="{{ $product->id }}" />
-
-                <livewire:related-category-product productId="{{ $product->id }}" />
-
-                <livewire:related-spec-product productId="{{ $product->id }}" />
-
-                <livewire:related-pricelist productId="{{ $product->id }}" />
+                @livewire('related-media-product', ['productId' => $product->id], key('first' . $product->id))
+                @livewire('related-category-product', ['productId' => $product->id], key('second' . $product->id))
+                @livewire('related-spec-product', ['productId' => $product->id], key('third' . $product->id))
+                @livewire('related-pricelist', ['productId' => $product->id], key('fourt' . $product->id))
             </div>
         </div>
     </div>

@@ -15,7 +15,8 @@ return new class extends Migration
       $table->id();
       $table->string('name')->nullable();
       $table->string('um')->nullable();
-      $table->string('spec_group')->nullable();
+      $table->unsignedBigInteger('group_id')->index();
+      $table->foreign('group_id')->references('id')->on('spec_groups');
       $table->string('createdby')->nullable();
       $table->string('lastmodifiedby')->nullable();
       $table->timestamps();
