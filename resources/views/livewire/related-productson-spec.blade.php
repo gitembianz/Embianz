@@ -189,7 +189,7 @@
                                         <td data-title="Name">
                                             {{ $item->name }}
                                         </td>
-                                        <td data-title="Specification">
+                                        <td data-title="Product">
                                             @if ($pro['allow'])
                                                 <div class="table__drop" style="position: relative">
                                                     <input class="table__drop--input"

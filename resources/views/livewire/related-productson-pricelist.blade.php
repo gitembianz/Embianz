@@ -20,10 +20,10 @@
                     {{-- Header of the table --}}
                     <div class="panel__header">
                         <h1 class="panel__header--title">
-                            {{ __('Add related Products') }}
+                            {{ __('Add related roducts') }}
                         </h1>
-                        <input class="panel__header--checked" wire:click.prevent="saveitems()" type="button"
-                            value="Save">
+                        <input class="panel__header--input panel__header--checked" wire:click.prevent="saveitems()"
+                            type="button" value="Save">
                     </div>
                     {{-- Table --}}
                     <div style="overflow: auto; position: relative; background: white; height: 100%">
@@ -46,35 +46,53 @@
                                         </td>
                                         <td data-title="Product">
                                             @if ($pro['allow'])
-                                                <div class="table__drop">
+                                                <div class="table__drop" style="position: relative">
                                                     <input class="table__drop--input"
                                                         wire:model.debounce.300ms="searchadd" placeholder="Search..."
                                                         type="text">
                                                     <ul class="table__drop--list">
                                                         @if (count($addprods) >= 1)
-                                                            @foreach ($addprods as $pri)
+                                                            @foreach ($addprods as $pr)
                                                                 <li class="table__drop--item"
-                                                                    wire:click.prevent="selectProduct({{ $index }}, {{ $pri->id }}, '{{ $pri->name }}')">
-                                                                    {{ $pri->name }}
+                                                                    wire:click.prevent="selectitem({{ $index }}, {{ $pr->id }}, '{{ $pr->name }}')">
+                                                                    {{ $pr->name }}
                                                                 </li>
                                                             @endforeach
                                                         @else
                                                             <li>{{ __('No product found') }}</li>
                                                         @endif
                                                     </ul>
+                                                    <svg wire:click.prevent="dennyselect({{ $index }})"
+                                                        style="background: #35424b;position: absolute;top: 50%;transform: translateY(-50%);right: 10px;border-radius: 5px;padding: 5px;opacity: .7;stroke: white;"
+                                                        width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round" class="feather feather-x">
+                                                        <line x1="18" y1="6" x2="6"
+                                                            y2="18"></line>
+                                                        <line x1="6" y1="6" x2="18"
+                                                            y2="18"></line>
+                                                    </svg>
                                                 </div>
                                             @else
-                                                <div wire:click.prevent="allowselect({{ $index }})"
-                                                    class="table__drop--input">
+                                                <div style="position: relative" class="table__drop--input">
                                                     @if ($pro['itemselected'])
                                                         {{ $pro['itemselected'] }}
-                                                        <input type="hidden"
-                                                            wire:model.defer="prod.{{ $index }}.product.name">
                                                     @else
                                                         {{ __('Select a product') }}
                                                     @endif
+                                                    <svg wire:click.prevent="allowselect({{ $index }})"
+                                                        style="background: #35424b;position: absolute;top: 50%;transform: translateY(-50%);right: 10px;border-radius: 5px;padding: 5px;opacity: .7;stroke: white;"
+                                                        width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round" class="feather feather-edit-2">
+                                                        <path
+                                                            d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
+                                                        </path>
+                                                    </svg>
                                                 </div>
                                             @endif
+                                            <input type="hidden"
+                                                wire:model.defer="prod.{{ $index }}.product.name">
                                         </td>
                                         <td data-title="Value">
                                             <input type="text" required class="table__drop--input"
@@ -90,6 +108,17 @@
                                                             </line>
                                                             <line x1="5" y1="12" x2="19"
                                                                 y2="12">
+                                                            </line>
+                                                        </svg>
+                                                    </button>
+                                                    <button type="button" class="save"
+                                                        wire:click="clear({{ $index }})">
+                                                        <svg>
+                                                            <line x1="18" y1="6" x2="6"
+                                                                y2="18">
+                                                            </line>
+                                                            <line x1="6" y1="6" x2="18"
+                                                                y2="18">
                                                             </line>
                                                         </svg>
                                                     </button>
@@ -136,10 +165,10 @@
                     {{-- Header of the table --}}
                     <div class="panel__header">
                         <h1 class="panel__header--title">
-                            {{ __('Edit multiple related items') }}
+                            {{ __('Edit multiple items') }}
                         </h1>
-                        <input class="panel__header--checked" wire:click.prevent="confirmmultiple()" type="button"
-                            value="Save">
+                        <input class="panel__header--input panel__header--checked"
+                            wire:click.prevent="confirmmultiple()" type="button" value="Save">
                     </div>
                     {{-- Table --}}
                     <div style="overflow-y: auto; position: relative; background: white; height: 100%">
@@ -159,37 +188,57 @@
                                         <td data-title="Name">
                                             {{ $item->name }}
                                         </td>
-                                        <td data-title="Specification">
+                                        <td data-title="Product">
                                             @if ($pro['allow'])
-                                                <div class="table__drop">
+                                                <div class="table__drop" style="position: relative">
                                                     <input class="table__drop--input"
                                                         wire:model.debounce.300ms="searchadd" placeholder="Search..."
                                                         type="text">
                                                     <ul class="table__drop--list">
                                                         @if (count($addprods) >= 1)
-                                                            @foreach ($addprods as $pri)
+                                                            @foreach ($addprods as $pr)
                                                                 <li class="table__drop--item"
-                                                                    wire:click.prevent="selectSpec({{ $index }}, {{ $pri->id }}, '{{ $pri->name }}')">
-                                                                    {{ $pri->name }}
+                                                                    wire:click.prevent="selectitem({{ $index }}, {{ $pr->id }}, '{{ $pr->name }}')">
+                                                                    {{ $pr->name }}
                                                                 </li>
                                                             @endforeach
                                                         @else
-                                                            <li>{{ __('No product found') }}</li>
+                                                            <li>{{ __('No record found') }}</li>
                                                         @endif
                                                     </ul>
+                                                    <svg wire:click.prevent="dennyselect({{ $index }})"
+                                                        style="background: #35424b;position: absolute;top: 50%;transform: translateY(-50%);right: 10px;border-radius: 5px;padding: 5px;opacity: .7;stroke: white;"
+                                                        width="24" height="24" viewBox="0 0 24 24"
+                                                        fill="none" stroke="currentColor" stroke-width="2"
+                                                        stroke-linecap="round" stroke-linejoin="round"
+                                                        class="feather feather-x">
+                                                        <line x1="18" y1="6" x2="6"
+                                                            y2="18"></line>
+                                                        <line x1="6" y1="6" x2="18"
+                                                            y2="18"></line>
+                                                    </svg>
                                                 </div>
                                             @else
-                                                <div wire:click.prevent="allowselect({{ $index }})"
-                                                    class="table__drop--input">
+                                                <div style="position: relative" class="table__drop--input">
                                                     @if ($pro['itemselected'])
                                                         {{ $pro['itemselected'] }}
-                                                        <input type="hidden"
-                                                            wire:model.defer="prod.{{ $index }}.product.name">
                                                     @else
                                                         {{ __('Select a product') }}
                                                     @endif
+                                                    <svg wire:click.prevent="allowselect({{ $index }})"
+                                                        style="background: #35424b;position: absolute;top: 50%;transform: translateY(-50%);right: 10px;border-radius: 5px;padding: 5px;opacity: .7;stroke: white;"
+                                                        width="24" height="24" viewBox="0 0 24 24"
+                                                        fill="none" stroke="currentColor" stroke-width="2"
+                                                        stroke-linecap="round" stroke-linejoin="round"
+                                                        class="feather feather-edit-2">
+                                                        <path
+                                                            d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
+                                                        </path>
+                                                    </svg>
                                                 </div>
                                             @endif
+                                            <input type="hidden"
+                                                wire:model.defer="prod.{{ $index }}.product.name">
                                         </td>
                                         <td data-title="Value">
                                             <input type="text" required class="table__drop--input"
@@ -392,113 +441,137 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($relatedprods as $index => $prod)
-                                <tr class="@if ($this->isChecked($prod->id)) table__row--selected @endif">
-                                    <td data-title="Check">
-                                        <input type="checkbox" value="{{ $prod->id }}" wire:model="checked">
-                                    </td>
-                                    @if ($this->showColumn('Id'))
-                                        <td data-title="ID">{{ $prod->id }}</td>
-                                    @endif
-                                    @if ($this->showColumn('Name'))
-                                        <td data-title="Name">
-                                            @if ($editedrow !== $index)
-                                                <div
-                                                    wire:click.prevent="editprod({{ $prod->id }}, {{ $prod->product->id }}, {{ $index }})">
-                                                    {{ $prod->product->name }}
-                                                </div>
-                                            @else
-                                                @if ($allow)
-                                                    <div class="table__drop">
-                                                        <input class="table__drop--input"
-                                                            wire:model.debounce.300ms="searchadd"
-                                                            placeholder="Search.." type="text">
-                                                        <ul class="table__drop--list">
-                                                            @foreach ($addprods as $pri)
-                                                                <li class="table__drop--item"
-                                                                    wire:click.prevent="select({{ $pri->id }})">
-                                                                    {{ $pri->name }}
-                                                                </li>
-                                                            @endforeach
-                                                        </ul>
-                                                    </div>
-                                                @else
-                                                    <button wire:click.prevent="allow" class="table__drop--input">
-                                                        {{ $itemselected }}
-                                                    </button>
-                                                @endif
-                                            @endif
-                                        </td>
-                                    @endif
-                                    @if ($this->showColumn('Currency'))
-                                        <td data-title="Currency">
-                                            {{ $prod->pricelist->currency->name }}
-                                        </td>
-                                    @endif
-                                    @if ($this->showColumn('Value'))
-                                        <td>
-                                            @if ($editedrow !== $index)
-                                                {{ $prod->value }}
-                                            @else
-                                                <input type="text" required class="table__edit"
-                                                    wire:model="product.{{ $index }}.value">
-                                            @endif
-                                        </td>
-                                    @endif
-                                    @if ($this->showColumn('Created At'))
-                                        <td data-title="Created At">
-                                            <div class="table__time">
-                                                <svg>
-                                                    <circle cx="12" cy="12" r="10">
-                                                    </circle>
-                                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                                </svg>
-                                                {{ $prod->created_at }}
-                                            </div>
-                                        </td>
-                                    @endif
-                                    <td data-title="Action">
-                                        <div class="table__buttons">
-                                            @if ($editedrow !== $index)
-                                                <button class="edit"
-                                                    wire:click.prevent="edititem({{ $prod->id }}, {{ $prod->product->id }}, {{ $index }})">
-                                                    <svg>
-                                                        <path
-                                                            d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
-                                                        </path>
-                                                    </svg>
-                                                </button>
-                                                <button class="delete"
-                                                    wire:click.prevent="confirmRemoval({{ $prod->id }})">
-                                                    <svg>
-                                                        <polyline points="3 6 5 6 21 6"></polyline>
-                                                        <path
-                                                            d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                                        </path>
-                                                    </svg>
-                                                </button>
-                                            @else
-                                                <button class="edit"
-                                                    wire:click.prevent="confirmprod({{ $index }},{{ $prod->id }})">
-                                                    <svg>
-                                                        <polyline points="20 6 9 17 4 12"></polyline>
-                                                    </svg>
-                                                </button>
-                                                <button class="save" wire:click.prevent="canceledit()">
-                                                    <svg>
-                                                        <line x1="18" y1="6" x2="6"
-                                                            y2="18">
-                                                        </line>
-                                                        <line x1="6" y1="6" x2="18"
-                                                            y2="18">
-                                                        </line>
-                                                    </svg>
-                                                </button>
-                                            @endif
-                                        </div>
+                            @if ($relatedprods->isEmpty())
+                                <tr>
+                                    <td class="table__empty" colspan="{{ count($columns) + 3 }}">
+                                        No record found.
                                     </td>
                                 </tr>
-                            @endforeach
+                            @else
+                                @foreach ($relatedprods as $index => $prod)
+                                    <tr class="@if ($this->isChecked($prod->id)) table__row--selected @endif">
+                                        <td data-title="Check">
+                                            <input type="checkbox" value="{{ $prod->id }}" wire:model="checked">
+                                        </td>
+                                        @if ($this->showColumn('Id'))
+                                            <td data-title="ID">{{ $prod->id }}</td>
+                                        @endif
+                                        @if ($this->showColumn('Name'))
+                                            <td data-title="Name">
+                                                @if ($editedrow !== $index)
+                                                    <a href="/show_product/{{ $prod->product->id }}'">
+                                                        {{ $prod->product->name }}
+                                                    </a>
+                                                @else
+                                                    @if ($allow)
+                                                        <div class="table__drop" style="position: relative">
+                                                            <input class="table__drop--input"
+                                                                wire:model.debounce.300ms="searchadd"
+                                                                placeholder="Search.." type="text">
+                                                            <ul class="table__drop--list">
+                                                                @if ($addprods->isEmpty())
+                                                                    <li class="table__drop--item">No
+                                                                        record
+                                                                        found.</li>
+                                                                @else
+                                                                    @foreach ($addprods as $pri)
+                                                                        <li class="table__drop--item"
+                                                                            wire:click.prevent="select({{ $pri->id }})">
+                                                                            {{ $pri->name }}
+                                                                        </li>
+                                                                    @endforeach
+                                                                @endif
+                                                            </ul>
+                                                            <svg wire:click.prevent="denny()"
+                                                                style="background: #35424b;position: absolute;top: 50%;transform: translateY(-50%);right: 10px;border-radius: 5px;padding: 5px;opacity: .7;stroke: white;"
+                                                                width="24" height="24" viewBox="0 0 24 24"
+                                                                fill="none" stroke="currentColor" stroke-width="2"
+                                                                stroke-linecap="round" stroke-linejoin="round"
+                                                                class="feather feather-x">
+                                                                <line x1="18" y1="6" x2="6"
+                                                                    y2="18"></line>
+                                                                <line x1="6" y1="6" x2="18"
+                                                                    y2="18"></line>
+                                                            </svg>
+                                                        </div>
+                                                    @else
+                                                        <button wire:click.prevent="allow" class="table__drop--input">
+                                                            {{ $itemselected }}
+                                                        </button>
+                                                    @endif
+                                                @endif
+                                            </td>
+                                        @endif
+                                        @if ($this->showColumn('Currency'))
+                                            <td data-title="Currency">
+                                                {{ $prod->pricelist->currency->name }}
+                                            </td>
+                                        @endif
+                                        @if ($this->showColumn('Value'))
+                                            <td>
+                                                @if ($editedrow !== $index)
+                                                    {{ $prod->value }}
+                                                @else
+                                                    <input type="text" required class="table__edit"
+                                                        wire:model="product.{{ $index }}.value">
+                                                @endif
+                                            </td>
+                                        @endif
+                                        @if ($this->showColumn('Created At'))
+                                            <td data-title="Created At">
+                                                <div class="table__time">
+                                                    <svg>
+                                                        <circle cx="12" cy="12" r="10">
+                                                        </circle>
+                                                        <polyline points="12 6 12 12 16 14"></polyline>
+                                                    </svg>
+                                                    {{ $prod->created_at }}
+                                                </div>
+                                            </td>
+                                        @endif
+                                        <td data-title="Action">
+                                            <div class="table__buttons">
+                                                @if ($editedrow !== $index)
+                                                    <button class="edit"
+                                                        wire:click.prevent="edititem({{ $prod->id }}, {{ $prod->product->id }}, {{ $index }})">
+                                                        <svg>
+                                                            <path
+                                                                d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
+                                                            </path>
+                                                        </svg>
+                                                    </button>
+                                                    <button class="delete"
+                                                        wire:click.prevent="confirmRemoval({{ $prod->id }})">
+                                                        <svg>
+                                                            <polyline points="3 6 5 6 21 6"></polyline>
+                                                            <path
+                                                                d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                                            </path>
+                                                        </svg>
+                                                    </button>
+                                                @else
+                                                    <button class="edit"
+                                                        wire:click.prevent="confirmitem({{ $index }},{{ $prod->id }})">
+                                                        <svg>
+                                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                                        </svg>
+                                                    </button>
+                                                    <button class="save" wire:click.prevent="canceledit()">
+                                                        <svg>
+                                                            <line x1="18" y1="6" x2="6"
+                                                                y2="18">
+                                                            </line>
+                                                            <line x1="6" y1="6" x2="18"
+                                                                y2="18">
+                                                            </line>
+                                                        </svg>
+                                                    </button>
+                                                @endif
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
                         </tbody>
                     </table>
                 @else
