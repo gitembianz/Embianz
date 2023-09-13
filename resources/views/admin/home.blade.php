@@ -1,6 +1,6 @@
 <x-dashboardheader />
 <x-dashboardnavbar />
-<x-dashboardsidebar />
+<x-dashboardsidebar :active="__('dashboard')" />
 {{-- Page content start --}}
 <section class="content">
     <div>

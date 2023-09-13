@@ -2,7 +2,7 @@
 <x-dashboardnavbar />
 <x-alert />
 {{-- End Section session message --}}
-<x-dashboardsidebar />
+<x-dashboardsidebar :active="__('spec')" />
 {{-- Page content start --}}
 
 <section class="content">
