@@ -129,7 +129,6 @@
                          </a></li>
                  </ul>
              </div>
-
              <div class="heart">
                  <button class="heart__btn" id="heartBtn" aria-label="Open heart">
                      <svg aria-hidden="true">
@@ -159,7 +158,8 @@
                                      <line x1="6" y1="6" x2="18" y2="18"></line>
                                  </svg>
                              </button>
-                         </a></li>
+                         </a>
+                     </li>
                      <li><a class="heart__list--item" href="#">
                              <img class="heart__list--img" src="/images/store/bottle2-min.webp"
                                  alt="Sustainable Sips: Reusable Bottles">
@@ -170,13 +170,10 @@
                                      <line x1="6" y1="6" x2="18" y2="18"></line>
                                  </svg>
                              </button>
-                         </a></li>
+                         </a>
+                     </li>
                  </ul>
              </div>
-
-             {{-- <a href="#" class="heart" aria-label="Favorites">
-
-             </a> --}}
          </div>
          <div class="search @if ($active) active @endif" id="search">
              <div class="search__content">
@@ -194,7 +191,6 @@
                  <ul class="search__container">
                      @if (count($objects) > 0 || count($cats) > 0)
                          @if (count($objects) > 0)
-
                              @foreach ($objects as $product)
                                  <li>
                                      <a class="search__container--item" href="/product/{{ $product->id }}">
@@ -207,56 +203,56 @@
                                                          <img src="/{{ $media->path }}{{ $media->name }}"
                                                              alt="{{ $media->path }}">
                                                      @endif
-                                                 @break
-                                             @endif
-                                         @endforeach
-                                     @else
-                                         <img src="/images/store/default/default.svg" alt="something wrong">
-                                     @endif
-                                     <p> {{ $product->name }}</p>
-                                     <span>
-                                         @if ($product->product_prices->first())
-                                             {{ $product->product_prices->first()->value }}
-                                             {{ $product->product_prices->first()->pricelist->currency->name }}
-                                         @else
-                                             {{ __('no price') }}
-                                         @endif
-                                     </span>
-                                 </a>
-                             </li>
-                         @endforeach
-                     @endif
-                     @if (count($cats) > 0)
-                         @foreach ($cats as $category)
-                             <li>
-                                 <a class="search__container--item" href="">
-                                     @if (count($category->media) > 0)
-                                         @foreach ($category->media as $media)
-                                             @if ($media->location->location == 'search')
-                                                 @if ($media->external)
-                                                     <img src="{{ $media->path }}" alt="{{ $media->path }}">
-                                                 @else
-                                                     <img src="/{{ $media->path }}{{ $media->name }}"
-                                                         alt="{{ $media->path }}">
+                                                     <?php break; ?>
                                                  @endif
-                                             @break
+                                             @endforeach
+                                         @else
+                                             <img src="/images/store/default/default.svg" alt="something wrong">
                                          @endif
-                                     @endforeach
-                                 @else
-                                     <img src="/images/store/default/default.svg" alt="something wrong">
-                                 @endif
-                                 <p> {{ $category->name }}</p>
-                             </a>
+                                         <p> {{ $product->name }}</p>
+                                         <span>
+                                             @if ($product->product_prices->first())
+                                                 {{ $product->product_prices->first()->value }}
+                                                 {{ $product->product_prices->first()->pricelist->currency->name }}
+                                             @else
+                                                 {{ __('no price') }}
+                                             @endif
+                                         </span>
+                                     </a>
+                                 </li>
+                             @endforeach
+                         @endif
+                         @if (count($cats) > 0)
+                             @foreach ($cats as $category)
+                                 <li>
+                                     <a class="search__container--item" href="">
+                                         @if (count($category->media) > 0)
+                                             @foreach ($category->media as $media)
+                                                 @if ($media->location->location == 'search')
+                                                     @if ($media->external)
+                                                         <img src="{{ $media->path }}" alt="{{ $media->path }}">
+                                                     @else
+                                                         <img src="/{{ $media->path }}{{ $media->name }}"
+                                                             alt="{{ $media->path }}">
+                                                     @endif
+                                                     <?php break; ?>
+                                                 @endif
+                                             @endforeach
+                                         @else
+                                             <img src="/images/store/default/default.svg" alt="something wrong">
+                                         @endif
+                                         <p> {{ $category->name }}</p>
+                                     </a>
+                                 </li>
+                             @endforeach
+                         @endif
+                     @else
+                         <li>
+                             {{ __('No elements found') }}
                          </li>
-                     @endforeach
-                 @endif
-             @else
-                 <li>
-                     {{ __('No elements found') }}
-                 </li>
+                     @endif
+                 </ul>
              @endif
-         </ul>
-     @endif
+         </div>
+     </div>
  </div>
-</div>
-</div>
