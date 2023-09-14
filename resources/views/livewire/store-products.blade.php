@@ -228,9 +228,14 @@
                             </div>
                         </div>
                         <div class="product__item--header">
-                            <p class="product__item--stock">
-                                Out of the stock!
-                            </p>
+                            @if ($product->quantity < $quantity)
+                                <p class="product__item--stock">
+                                    Low stock!
+                                </p>
+                            @else
+                                <p>
+                                </p>
+                            @endif
                             <button class="product__item--heart" aria-label="add to favorites">
                                 <svg>
                                     <path
