@@ -23,15 +23,17 @@ class StoreFooter extends Component
   public function store()
   {
     $this->resetErrorBag();
-
     $validatedData = $this->validate([
       'email' => 'required|email'
     ]);
-
     Subscribers::create($validatedData);
-
     $this->reset();
-    $this->response = "Thank you for subscription!";
+    // $this->response = "Thank you for subscription!";
+    session()->flash('notification', [
+      'message' => 'Thank you for subscription!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
   }
   public function getCategoriesProperty()
   {
