@@ -484,7 +484,7 @@
                                         @if ($this->showColumn('Name'))
                                             <td data-title="Name">
                                                 <a
-                                                    href="/show_product/{{ $categori->category->id }}'">{{ $categori->category->name }}</a>
+                                                    href="/show_category/{{ $categori->category->id }}'">{{ $categori->category->name }}</a>
                                             </td>
                                         @endif
 
