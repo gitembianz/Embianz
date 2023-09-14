@@ -116,7 +116,6 @@
             </div>
         </div>
     </div>
-
     <div class="tab">
         <div class="tab__header">
             <button class="tab__header--btn @if ($activeTab === 0) active @endif"
