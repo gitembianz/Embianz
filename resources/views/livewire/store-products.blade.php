@@ -58,7 +58,6 @@
                                 <input type="checkbox" name="size">
                                 <label>250 ml</label>
                             </li>
-
                         </ul>
                     </div>
                 </div>
@@ -89,11 +88,13 @@
             </div>
         </div>
         <div class="filter__search">
-            <input type="text" placeholder="Search...">
-            <button aria-label="search button"><svg>
+            <input type="text" wire:model="search" placeholder="Search...">
+            <button aria-label="search button">
+                <svg>
                     <circle cx="11" cy="11" r="8"></circle>
                     <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                </svg></button>
+                </svg>
+            </button>
         </div>
         <div class="filter__sort">
             <button class="filter__sort--btn">Sort
@@ -178,77 +179,70 @@
                 Clear all
             </button>
         </li>
-
     </ul>
     <div class="product__catalog">
-
-        @foreach ($products as $product)
-            <a href="/product/{{ $product->id }}'">
-                <article class="product__item" @if ($loop->last) id="last_record" @endif>
-                    <?php
-                    $foundMedia = false; // Variable to track if matching media is found
-                    $mediaPath = null; // Variable to store the media path
-                    ?>
-
-                    @foreach ($medias as $media)
-                        @if ($media->item_id == $product->id)
-                            <?php
-                            $foundMedia = true;
-                            $mediaPath = $media->extrenal ? $media->path : "/{$media->path}{$media->name}";
-                            ?>
-                        @break
-
-                        // Exit the inner loop once a matching media is found
-                    @endif
-                @endforeach
-
-                @if ($foundMedia)
-                    <img src="{{ $mediaPath }}" alt="something wrong">
-                @else
-                    <img src="/images/store/default/product.png" alt="something wrong">
-                @endif
-                <div class="product__item--bundle">
-                    <h4>{{ $product->name }}</h4>
-                    <span>1000ml</span>
-                    {{-- <p>{{ $product->short_description }}</p> --}}
-                    <div class="product__item--buttons">
-                        <div class="product__item--price">
-                            <span>
-                                @if ($product->product_prices->first() !== null)
-                                    {{ $product->product_prices->first()->value }}
-                                    {{ $product->product_prices->first()->pricelist->currency->first()->name }}
-                                @else
-                                    no price
+        @if ($products->isEmpty())
+            <p>No products found</p>
+        @else
+            @foreach ($products as $product)
+                <a href="/product/{{ $product->id }}'">
+                    <article class="product__item" @if ($loop->last) id="last_record" @endif>
+                        @if (count($product->media) > 0)
+                            @foreach ($product->media as $media)
+                                @if ($media->location->location == 'main')
+                                    @if ($media->external)
+                                        <img src="{{ $media->path }}" draggable="false" alt="{{ $media->path }}">
+                                    @else
+                                        <img src="/{{ $media->path }}{{ $media->name }}" draggable="false"
+                                            alt="{{ $media->path }}">
+                                    @endif
+                                    <?php break; ?>
                                 @endif
-                            </span>
+                            @endforeach
+                        @else
+                            <img src="/images/store/default/default.svg" draggable="false" alt="something wrong">
+                        @endif
+                        <div class="product__item--bundle">
+                            <h4>{{ $product->name }}</h4>
+                            <span>1000ml</span>
+                            {{-- <p>{{ $product->short_description }}</p> --}}
+                            <div class="product__item--buttons">
+                                <div class="product__item--price">
+                                    <span>
+                                        @if ($product->product_prices->first() !== null)
+                                            {{ $product->product_prices->first()->value }}
+                                            {{ $product->product_prices->first()->pricelist->currency->first()->name }}
+                                        @else
+                                            no price
+                                        @endif
+                                    </span>
+                                </div>
+                                <button class="product__item--btn" aria-label="product cart">
+                                    <svg>
+                                        <circle cx="9" cy="21" r="1"></circle>
+                                        <circle cx="20" cy="21" r="1"></circle>
+                                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6">
+                                        </path>
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
-                        <button class="product__item--btn" aria-label="product cart">
-                            <svg>
-                                <circle cx="9" cy="21" r="1"></circle>
-                                <circle cx="20" cy="21" r="1"></circle>
-                                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6">
-                                </path>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-                <div class="product__item--header">
-                    <p class="product__item--stock">
-                        Out of the stock!
-                    </p>
-                    <button class="product__item--heart" aria-label="add to favorites">
-                        <svg>
-                            <path
-                                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
-                            </path>
-                        </svg>
-                    </button>
-                </div>
-            </article>
-        </a>
-    @endforeach
-</div>
-{{-- script for lazy load --}}
-<x-lazy />
-{{-- end script --}}
+                        <div class="product__item--header">
+                            <p class="product__item--stock">
+                                Out of the stock!
+                            </p>
+                            <button class="product__item--heart" aria-label="add to favorites">
+                                <svg>
+                                    <path
+                                        d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                                    </path>
+                                </svg>
+                            </button>
+                        </div>
+                    </article>
+                </a>
+            @endforeach
+        @endif
+    </div>
+    <x-lazy />
 </div>
