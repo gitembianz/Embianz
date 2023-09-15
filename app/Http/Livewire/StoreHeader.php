@@ -2,35 +2,60 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Product;
 use Livewire\Component;
 use App\Models\Category;
-use App\Models\Product;
+use App\Models\Wishlist;
+use Illuminate\Support\Facades\Session;
+
 
 class StoreHeader extends Component
 {
   public $limit = 5;
   public $search = '';
   public $active = false;
+  public $wishlistitems;
 
   public function render()
   {
-    if ($this->search != '') {
-      return view('livewire.store-header', [
-        'categories' => $this->categories,
-        'objects' => $this->objects,
-        'cats' => $this->cats
-      ]);
-    } else {
-      return view('livewire.store-header', [
-        'categories' => $this->categories
-      ]);
-    }
+    $data = [
+      'categories' => $this->categories,
+      'objects' => $this->objects,
+      'cats' => $this->cats,
+      'wishlistitems' => $this->wishlistItems,
+    ];
+
+    return view('livewire.store-header', $data);
   }
   public function close()
   {
     $this->active = false;
     $this->search = '';
   }
+  public function getWishlistItemsProperty()
+  {
+    $session_id = Session::getId();
+    $wishlist = Wishlist::where('session_id', $session_id)->pluck('product_id')->toArray();
+    return Product::whereIn('id', $wishlist)->get();
+  }
+  public function refreshWishlist()
+  {
+    // Update the wishlistitems property here
+    $this->wishlistitems = $this->getWishlistItemsProperty();
+  }
+
+  public function mount()
+  {
+    // Initial load of wishlistitems
+    $this->wishlistitems = $this->getWishlistItemsProperty();
+  }
+
+  public function hydrate()
+  {
+    // Automatically refresh every 5 seconds
+    $this->refresh();
+  }
+
   public function getCategoriesProperty()
   {
     return $this->categoriesQuery->limit($this->limit)->get();

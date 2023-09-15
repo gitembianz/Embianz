@@ -151,7 +151,7 @@
                      <li><a class="heart__list--item" href="#">
                              <img class="heart__list--img" src="/images/store/bottle1-min.webp"
                                  alt="Sustainable Sips: Reusable Bottles">
-                             <span class="heart__list--text">Sustainable Sips: Reusable Bottles</span>
+                             <span class="heart__list--text">{{ $wishlistitems }}</span>
                              <button class="heart__list--delete">
                                  <svg>
                                      <line x1="18" y1="6" x2="6" y2="18"></line>
