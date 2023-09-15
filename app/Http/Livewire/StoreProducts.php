@@ -12,13 +12,12 @@ class StoreProducts extends Component
 
   public $loadAmount = 9;
   public $search = "";
+  public $quantity = 20;
 
   public function loadMore()
   {
     $this->loadAmount += 10;
   }
-  //
-
 
   public function render()
   {
