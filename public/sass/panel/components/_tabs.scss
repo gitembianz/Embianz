@@ -1,0 +1,90 @@
+.tabs {
+  display: flex;
+  gap: 10px;
+  padding: 20px;
+  margin-bottom: 30px;
+  border-bottom: 1px solid $mainBg;
+
+  &__page {
+    width: 5rem;
+    height: 2.5rem;
+    border: 1px solid $mainBg;
+    border-radius: 5px;
+    cursor: pointer;
+    color: $mainBg;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: .2s ease-in-out;
+    padding: 0 20px;
+
+    &:hover {
+      background-color: $mainBg;
+      border: 1px solid $mainBg;
+      color: #fff;
+    }
+
+    &.active {
+      background-color: $mainBg;
+      border: 1px solid $mainBg;
+      color: #fff;
+    }
+  }
+
+  &__content {
+    @include flexbox(none, column, $gap: $gap);
+
+    &.active {
+      display: flex;
+    }
+  }
+}
+
+
+
+.tab__list--form--resize {
+  height: auto;
+  padding: 0 10px;
+}
+
+.tab__list--form {
+  padding: 20px 0;
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+
+  &>div .item__form-input-close div,
+  &>.item__form-input-close div {
+    height: 2.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .tab__list--form {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: 1fr 1fr;
+
+    &>div .item__form-input-close div,
+    &>.item__form-input-close div {
+      height: 2.5rem;
+    }
+  }
+}
+
+.tabs__form-input__bundle {
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+}
+
+@media (min-width: 1024px) {
+  .tabs__form-input__bundle {
+    flex-direction: row;
+  }
+
+  .tabs {
+    padding: 0;
+    padding-bottom: 20px;
+  }
+}

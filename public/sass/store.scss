@@ -1,0 +1,26 @@
+//------------------------------Variables,Functions,Mixins
+@import 'store/variables/variables';
+@import 'store/mixins/mixins';
+//------------------------------General Options and Fonts
+@import 'store/fonts/fonts';
+@import 'store/general/general';
+//------------------------------Header and Footer
+@import 'store/header/header';
+@import 'store/header/cart';
+@import 'store/footer/footer';
+//------------------------------Main Components
+@import "store/home/home";
+@import "store/home/support";
+//------------------------------Products list page
+@import 'store/products/products';
+@import 'store/products/product-landing';
+//------------------------------Product landing page
+@import 'store/payment/details';
+@import 'store/payment/checking';
+//------------------------------Cookies
+@import"store/general/cookies";
+@import 'store/tab/tab';
+@import 'store/carousel/carousel';
+@import 'store/filters/filters';
+@import 'store/support/support';
+//------------------------------

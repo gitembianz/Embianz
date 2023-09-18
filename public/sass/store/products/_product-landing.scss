@@ -1,0 +1,326 @@
+.product {
+  @include flexer(column, center, center, 25px);
+
+  @include breakpoint(medium) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    @include responsive-spacing(margin-bottom, 0.1);
+  }
+
+  @include breakpoint(x-large) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  // Preview is content in the left with images
+  &__preview {
+    @include flexer(column, center, flex-start, 10px);
+    @include box(100%);
+
+    @include breakpoint(x-large) {
+      @include flexer(row-reverse, center, flex-start);
+      height: 650px;
+    }
+  }
+
+  // The image in Preview
+  &__image {
+    position: relative;
+    @include box(100%);
+
+    // The buttons to prev and next for Image Preview
+    &-prev,
+    &-next {
+      // @include box(50px);
+      @include responsive-spacing(width, 0.3);
+      @include responsive-spacing(height, 0.3);
+      @include flexer(row, center, center);
+      background-color: $text;
+      color: $background;
+      font-weight: bold;
+      cursor: pointer;
+      transform: translateY(-50%);
+      border-radius: 100px;
+    }
+
+    &-prev {
+      @include abs-position(absolute, 50%, auto, auto, 10px);
+    }
+
+    &-next {
+      @include abs-position(absolute, 50%, 10px, auto, auto);
+    }
+  }
+
+  // Nails section in the left for Image Preview
+  &__nails {
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    @include flexer(row, flex-start, center, 10px);
+    height: 120px;
+    width: 100%;
+    overflow-x: auto;
+
+    @include breakpoint(x-large) {
+      gap: 10px;
+      width: 120px;
+      height: 100%;
+      // display: grid;
+      // grid-template-columns: 1fr;
+      @include flexer(column);
+      gap: 10px;
+      margin-bottom: 0;
+      padding-bottom: 0;
+      overflow-y: auto;
+      padding-right: 10px;
+      margin-right: 10px;
+    }
+  }
+
+  // The Modal for Image Preview
+  &__modal {
+    @include abs-position (fixed, 0, 0, null, null);
+    @include flexer(row, center, center);
+    @include fade(hide);
+    @include box(100%);
+    background-color: $modal;
+    transition: $transition;
+    z-index: 99;
+
+    &.active {
+      @include fade(show);
+    }
+
+    #closeModal {
+      @include responsive-spacing(width, 0.3);
+      @include responsive-spacing(height, 0.3);
+      @include abs-position (absolute, 15px, 15px, null, null);
+      @include flexer(row, center, center);
+      background-color: $text;
+      color: $background;
+      border-radius: 100%;
+    }
+  }
+
+  // The information about the product
+  &__info {
+    @include flexer(column, space-between, center, 25px);
+    @include responsive-spacing(padding, 0.02);
+    @include responsive-spacing(margin-bottom, 0.1);
+    background-color: #f2f2f2;
+    text-align: center;
+    border-radius: 10px;
+    height: 100%;
+
+    @include breakpoint(medium) {
+      margin-bottom: 0;
+    }
+
+    @include breakpoint(x-large) {
+      height: 100%;
+      gap: 0;
+      justify-content: space-between;
+    }
+
+    span {
+      @include font(700, $text, center);
+    }
+  }
+
+  // Price and buttons from the product information
+  &__price {
+    @include flexer(row, space-between, center, 15px);
+    width: 100%;
+
+    &>.product__count {
+      width: 100%;
+      max-width: 250px;
+    }
+
+    h3 {
+      width: 100%;
+    }
+  }
+
+  &__buttons {
+    @include flexer(row, space-between, center, 15px);
+    width: 100%;
+  }
+
+  &__btn {
+    @include flexer(row, center, center);
+    @include responsive-spacing(padding-top, .01);
+    @include responsive-spacing(padding-bottom, .01);
+    @include responsive-spacing(height, .3);
+    background-color: $text;
+    color: $background;
+    border-radius: 10px;
+
+    &:first-child {
+      width: 100%;
+      flex: 1;
+    }
+
+    &:last-child {
+      @include responsive-spacing(width, .3);
+    }
+  }
+
+  // Count for Product
+  &__count {
+    @include flexer(row, space-between, center, 10px);
+    border-radius: 10px;
+    border: 1.5px solid $text;
+    @include responsive-spacing(padding, .0001);
+
+    #count {
+      width: 100%;
+      flex: 1;
+      min-width: 20px;
+      border: none;
+      background-color: transparent;
+      border-radius: 0;
+      text-align: center;
+      outline: none;
+
+      &::-webkit-outer-spin-button,
+      &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+
+      &[type=number] {
+        --moz-appearance: textfield;
+      }
+
+      &Decrease,
+      &Increase {
+        @include flexer(row, center, center);
+        background-color: $text;
+        border-radius: 100%;
+        @include responsive-spacing(width, .1);
+        @include responsive-spacing(height, .1);
+        border: none;
+        outline: none;
+        cursor: pointer;
+
+        svg {
+          scale: .9;
+          stroke: $background;
+        }
+      }
+    }
+  }
+}
+
+// Thumbnails of Image Preview
+.thumbnail {
+  @include box(100%);
+  object-fit: cover !important;
+  object-position: center;
+  border-radius: 15px;
+  background-color: #f2f2f2;
+  cursor: pointer;
+
+  @include breakpoint(x-large) {
+    height: 90px !important;
+  }
+
+  &-active {
+    @include box(100%, 100%);
+    object-fit: cover;
+    object-position: center;
+    border-radius: 15px;
+    background-color: #f2f2f2;
+    cursor: zoom-in;
+  }
+}
+
+
+.slideshow {
+  @include box(90%);
+  @include flexer(row, center, center);
+  // @include responsive-spacing(padding, 0.1);
+  background-color: #f2f2f2;
+  border-radius: 10px;
+  position: relative;
+}
+
+
+/* Hide the images by default */
+.slideshow--slides {
+  display: none;
+  @include box(100%);
+
+  img {
+    @include box(100%);
+    object-fit: contain;
+  }
+}
+
+/* Next & previous buttons */
+.prev,
+.next {
+  @include btn;
+  @include responsive-spacing(width, .1);
+  @include responsive-spacing(height, .1);
+  z-index: 99;
+  position: absolute;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+}
+
+.prev {
+  left: 10%;
+}
+
+/* Position the "next button" to the right */
+.next {
+  right: 10%;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+
+/* Caption text */
+.text {
+  color: #f2f2f2;
+  font-size: 15px;
+  padding: 8px 12px;
+  position: absolute;
+  bottom: 8px;
+  width: 100%;
+  text-align: center;
+}
+
+
+.dots {
+  @include flexer(row, center, center, 15px);
+  @include responsive-spacing(padding-top, 0.001);
+  @include responsive-spacing(padding-bottom, 0.001);
+  @include responsive-spacing(padding-left, 0.03);
+  @include responsive-spacing(padding-right, 0.03);
+  @include abs-position (absolute, unset, unset, 0, unset);
+  background-color: #f2f2f2;
+  opacity: 0.7;
+  border-radius: 10px 10px 0 0;
+}
+
+/* The dots/bullets/indicators */
+.dot {
+  @include responsive-spacing(width, 0.02);
+  @include responsive-spacing(height, 0.02);
+  background-color: transparent;
+  outline: 2px solid $text;
+  border-radius: 100%;
+  outline-offset: 2px;
+  cursor: pointer;
+  transition: $transition;
+
+
+  &.active,
+  &:hover {
+    background-color: $text;
+  }
+}

@@ -7,30 +7,50 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    use HasFactory;
-    public function product_categories()
-    {
-        return $this->hasMany(Products_categories::class, 'product_id');
-    }
+  use HasFactory;
+  public function product_categories()
+  {
+    return $this->hasMany(Products_categories::class, 'product_id');
+  }
 
+  public function product_specs()
+  {
+    return $this->hasMany(Product_Spec::class, 'product_id');
+  }
 
-    protected $fillable = [
-        'name',
-        'short_description',
-        'long_description',
-        'quantity',
-        'product_status',
-        'start_date',
-        'end_date',
-        'createdby',
-        'lastmodifiedby',
-        'seo_title'
-    ];
+  public function product_prices()
+  {
+    return $this->hasMany(PricelistEntries::class, 'product_id');
+  }
 
-    public static function search($search) {
-      return empty($search) ? static::query()
-            : static::query()->where('id', 'like', '%'.$search.'%')
-                ->orWhere('name', 'like', '%'.$search.'%')
-                ->orWhere('short_description', 'like', '%'.$search.'%');
-    }
+  public function media()
+  {
+    return $this->morphToMany(Media::class, 'mediable', 'item_media');
+  }
+
+  protected $fillable = [
+    'name',
+    'short_description',
+    'long_description',
+    'quantity',
+    'start_date',
+    'end_date',
+    'createdby',
+    'lastmodifiedby',
+    'seo_title',
+    'popularity'
+  ];
+
+  public static function search($search)
+  {
+    return empty($search) ? static::query()
+      : static::query()->where('id', 'like', '%' . $search . '%')
+      ->orWhere('name', 'like', '%' . $search . '%')
+      ->orWhere('short_description', 'like', '%' . $search . '%');
+  }
+  public static function name($search)
+  {
+    return empty($search) ? static::query()
+      : static::query()->where('name', 'like', '%' . $search . '%');
+  }
 }

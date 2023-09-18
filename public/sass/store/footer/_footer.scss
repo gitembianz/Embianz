@@ -1,0 +1,140 @@
+footer {
+  background-color: darken(#1a691a, 20%);
+}
+
+.footer {
+  @include flexer(column, flex-start, center);
+  color: $background;
+  padding: 0;
+
+  @include breakpoint(mobile) {
+    padding: 0 !important;
+  }
+
+  &__header {
+    @include flexer(row, space-between, center);
+    @include responsive-spacing(padding, .01);
+    width: 100%;
+
+    &>.logo {
+      color: $background;
+    }
+
+    ul {
+      flex-direction: row;
+    }
+
+  }
+
+  span {
+    @include responsive-spacing(padding, .01);
+    color: $background;
+    text-align: center;
+  }
+
+  &__list {
+    @include responsive-spacing(padding-top, .01);
+    @include responsive-spacing(padding-bottom, .01);
+    justify-content: space-between;
+  }
+
+  &__middle {
+    @include flexer(column, space-between, flex-start);
+
+    width: 100%;
+    @include responsive-spacing(padding, .01);
+    border-top: 1.5px solid $background;
+    border-bottom: 1.5px solid $background;
+    @include responsive-spacing(gap, .1);
+
+    @include breakpoint(medium) {
+      @include flexer(row, space-between, flex-start, 10px);
+      padding: 0;
+      @include responsive-spacing(padding-top, .01);
+      @include responsive-spacing(padding-bottom, .01);
+    }
+  }
+}
+
+.footer__list {
+  @include flexer(column, space-between, flex-start, 10px);
+  padding: 0;
+
+  &--social {
+    @include box(40px);
+    @include flexer(row, center, center);
+    border-radius: 100%;
+    border: 1px solid $background;
+    background-color: $background;
+
+    svg {
+      scale: .9;
+      stroke: $text;
+    }
+  }
+
+  li {
+    color: $background;
+  }
+
+  &--item {
+    color: $background;
+  }
+}
+
+
+
+.footer__subscribe {
+  @include flexer(column, center, center, 15px);
+  @include responsive-spacing(padding, .01);
+  @include responsive-spacing(padding-bottom, .02);
+  width: 100%;
+
+  h2 {
+    font-weight: 400;
+  }
+
+  @include breakpoint(medium) {
+    padding: 0;
+    @include responsive-spacing(padding-top, .01);
+    @include responsive-spacing(padding-bottom, .04);
+  }
+
+
+  h2 {
+    color: $background;
+  }
+
+  p {
+    color: $background;
+  }
+}
+
+.footer__subscribe--form {
+  @include flexer(row, space-between, center);
+  width: 100%;
+  transition: $transition;
+
+  @include breakpoint(medium) {
+    max-width: 500px;
+  }
+
+  input {
+    background-color: transparent;
+    border: 1.5px solid $background;
+    @include responsive-spacing(padding, .0005);
+    outline: none;
+    @include box(100%, 40px);
+    border-radius: 10px 0 0 10px;
+    color: $background;
+    border-right: 0;
+    flex: 1;
+  }
+
+  button {
+    background-color: $background;
+    @include box(115px, 40px);
+    border: none;
+    border-radius: 0 10px 10px 0;
+  }
+}

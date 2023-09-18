@@ -1,0 +1,351 @@
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Montserrat", sans-serif;
+  scroll-behavior: smooth;
+}
+
+ul {
+  list-style: none;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #f2f2f2 transparent;
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 12px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: darken(#f2f2f2, 10%);
+  border-radius: 15px;
+  border: 2px solid transparent;
+}
+
+
+h1,
+h2,
+p,
+a,
+span,
+button,
+li,
+input {
+  color: $text;
+  font-size: clamp(var(--minimum-font-size), var(--preferred-font-size), var(--maximum-font-size));
+}
+
+h1 {
+  --minimum-font-size: 24px;
+  --preferred-font-size: 5vw;
+  --maximum-font-size: 40px;
+}
+
+h2 {
+  --minimum-font-size: 20px;
+  --preferred-font-size: 4vw;
+  --maximum-font-size: 30px;
+}
+
+h3 {
+  --minimum-font-size: 18px;
+  --preferred-font-size: 4vw;
+  --maximum-font-size: 24px;
+}
+
+h4 {
+  --minimum-font-size: 16px;
+  --preferred-font-size: 4vw;
+  --maximum-font-size: 22px;
+}
+
+h5 {
+  --minimum-font-size: 14px;
+  --preferred-font-size: 4vw;
+  --maximum-font-size: 18px;
+}
+
+p,
+li {
+  --minimum-font-size: 14px;
+  --preferred-font-size: 4vw;
+  --maximum-font-size: 18px;
+}
+
+a {
+  text-decoration: none;
+  --minimum-font-size: 14px;
+  --preferred-font-size: 4vw;
+  --maximum-font-size: 16px;
+}
+
+span {
+  --minimum-font-size: 12px;
+  --preferred-font-size: 4vw;
+  --maximum-font-size: 16px;
+}
+
+button {
+  --minimum-font-size: 16px;
+  --preferred-font-size: 4vw;
+  --maximum-font-size: 20px;
+  transition: $transition;
+  cursor: pointer;
+}
+
+input {
+  --minimum-font-size: 14px;
+  --preferred-font-size: 4vw;
+  --maximum-font-size: 16px;
+}
+
+
+svg {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: $background;
+  stroke-width: 2px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+button {
+  border: none;
+}
+
+body {
+  background-color: $background;
+}
+
+main {
+  margin-top: 130px;
+}
+
+.container {
+  max-width: 100%;
+  @include responsive-spacing(padding, .03); // Adjust ratio as needed
+
+  margin: 0 auto;
+  transition: $transition;
+
+  @include breakpoint(small) {
+    max-width: 540px;
+    padding: 0;
+    @include responsive-spacing(padding-top, .02); // Adjust ratio as needed
+    @include responsive-spacing(padding-bottom, .02); // Adjust ratio as needed
+
+  }
+
+  @include breakpoint(medium) {
+    max-width: 720px;
+  }
+
+  @include breakpoint(large) {
+    max-width: 960px !important;
+  }
+
+  @include breakpoint(x-large) {
+    max-width: 1140px !important;
+  }
+
+  @include breakpoint(xx-large) {
+    max-width: 1320px !important;
+  }
+}
+
+.none {
+  @include fade(hide);
+  display: none !important;
+  scale: 0;
+  width: 0;
+
+  @include breakpoint(medium) {
+    @include fade(show);
+    scale: 1;
+    width: initial;
+  }
+}
+
+// sidebar
+.sidebar {
+  @include abs-position(fixed, 0, 0, auto, auto);
+  @include fade(hide);
+  @include box(100%);
+  z-index: 50;
+  background-color: $modal;
+  backdrop-filter: blur(3px);
+
+  &.active {
+    @include fade(show);
+  }
+
+  &__close,
+  &__open {
+    @include btn;
+    background-color: transparent;
+    border: none;
+    @include box(auto);
+    padding: 0;
+    border-radius: 0;
+
+    svg {
+      stroke: $text;
+    }
+
+    &:hover {
+      border-bottom: 1.5px solid $text;
+      padding-bottom: 5px;
+    }
+  }
+
+  &__close {
+    @include abs-position(absolute, 20px, 20px, unset, unset);
+
+    @include breakpoint(large) {
+      display: none
+    }
+  }
+
+  &__content {
+    @include box(100%);
+    @include fade(hide);
+    transform: translateX(-350%);
+    background-color: $background;
+    overflow-y: auto;
+    margin: unset;
+
+    @include breakpoint(medium) {
+      @include box(60%, 100%);
+      margin: unset;
+    }
+
+    @include breakpoint(large) {
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    &.active {
+      @include fade(show);
+      transform: translateX(0%);
+    }
+  }
+}
+
+.section__title {
+  @include font(600, $text, center);
+  width: 100%;
+}
+
+a[data-tooltip]:hover,
+button[data-tooltip]:hover,
+div[data-tooltip]:hover {
+  position: relative;
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+
+  &::after {
+    content: attr(data-tooltip);
+    @include abs-position (absolute, unset, unset, 120%, 50%);
+    @include font(200, $background, center);
+    @include responsive-spacing(padding, .00001);
+    transform: translateX(-50%);
+    @include box(auto, auto);
+    background-color: $text;
+    border-radius: 5px;
+    font-size: 13px;
+    min-width: 80px;
+    animation: fadeIn 0.5s ease 5s;
+  }
+
+  &::before {
+    content: "";
+    @include abs-position (absolute, unset, unset, 100%, 50%);
+    @include box(0);
+    transform: translateX(-50%);
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid $text;
+  }
+}
+
+a[data-tooltip-down]:hover,
+button[data-tooltip-down]:hover,
+div[data-tooltip-down]:hover {
+  position: relative;
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+
+  &::after {
+    content: attr(data-tooltip-down);
+    @include abs-position (absolute, 120%, unset, unset, 50%);
+    @include font(200, $background, center);
+    @include responsive-spacing(padding, .00001);
+    transform: translateX(-50%);
+    @include box(auto, auto);
+    background-color: $text;
+    border-radius: 5px;
+    font-size: 13px;
+    min-width: 80px;
+    animation: fadeIn 0.5s ease 5s;
+  }
+
+  &::before {
+    content: "";
+    @include abs-position (absolute, 100%, unset, unset, 50%);
+    @include box(0);
+    transform: translateX(-50%);
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid $text;
+  }
+}
+
+
+.terms {
+
+  h1 {
+    text-align: center;
+    margin-bottom: 50px;
+  }
+
+  h4 {
+    color: rgb(57, 57, 57);
+  }
+
+  p {
+    margin-bottom: 50px;
+    color: rgb(102, 102, 102);
+
+    a {
+      color: rgb(57, 57, 57);
+      font-weight: 600;
+    }
+  }
+}

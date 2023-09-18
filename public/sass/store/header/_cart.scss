@@ -1,0 +1,383 @@
+.heart,
+.cart {
+
+  /* Cart List */
+  &__list {
+    @include abs-position(absolute, 13%, 50%, auto, auto);
+    @include flexer(column, center, flex-start, 10px);
+    @include box(94%, auto);
+    @include fade(hide);
+    @include responsive-spacing(padding, .01);
+    border-radius: 10px;
+    background-color: $background;
+    box-shadow: $shadow;
+    transform: translateY(-100%) translateX(50%);
+    transition: $transition;
+    z-index: 69;
+    border-collapse: collapse;
+
+    @include breakpoint(small) {
+      @include box(400px, auto);
+    }
+
+    li {
+      width: 100%;
+      background-color: #f2f2f2;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: $transition;
+
+      &:hover {
+        background-color: darken(#f2f2f2, 10%);
+      }
+
+      &:first-child {
+        background-color: $text;
+
+        svg {
+          transition: $transition;
+          stroke: $background !important;
+        }
+
+        &:hover {
+          svg {
+            transform: translateX(-20px);
+          }
+        }
+      }
+    }
+
+    &--item {
+      @include flexer(row, space-between, center, 10px);
+      @include responsive-spacing(padding, .01);
+      width: 100%;
+      height: 100%
+    }
+
+    &--img {
+      @include box(30px);
+      object-fit: cover;
+    }
+
+    &--text {
+      flex: 1;
+    }
+
+    &--delete {
+      @include box(30px);
+      @include flexer(row, center, center);
+      background-color: $text;
+      border: 2px solid $text;
+      border-radius: 100%;
+      transition: $transition;
+
+      svg {
+        stroke: $background !important;
+      }
+
+      &:hover {
+        background-color: transparent;
+
+        svg {
+          stroke: $text !important;
+        }
+      }
+
+      svg {
+        scale: .7;
+      }
+    }
+
+    /* Cart List Name */
+    &--name {
+      color: #f2f2f2;
+    }
+  }
+
+  /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+  .show {
+    @include fade(show);
+    transform: translateX(50%);
+  }
+
+  @include breakpoint(medium) {
+
+    .heart__list,
+    .cart__list {
+      @include abs-position(absolute, 120%, 0, auto, auto);
+      transform: translateY(-100%) translateX(0);
+    }
+
+    .show {
+      transform: translateX(0);
+    }
+  }
+}
+
+
+
+.cart {
+  &__btn {
+    @include btn;
+    background-color: transparent;
+    border: none;
+    @include box(auto);
+    padding: 0;
+    border-radius: 0;
+
+    svg {
+      stroke: $text;
+    }
+
+    &:hover {
+      border-bottom: 1.5px solid $text;
+      padding-bottom: 5px;
+    }
+  }
+
+
+
+
+  &__page {
+    @include flexer(column, flex-start, flex-start, 15px);
+
+    @include breakpoint(large) {
+      display: grid;
+      grid-template-columns: 3fr 1fr;
+    }
+
+    h2 {
+      @include breakpoint(large) {
+        grid-column: 1/3;
+      }
+    }
+  }
+
+  &__buy {
+    @include flexer(column, flex-start, flex-start, 15px);
+    @include responsive-spacing(padding, .01);
+    background-color: #f2f2f2;
+    border-radius: 10px;
+    width: 100%;
+
+    p {
+      &:first-child {
+        text-align: center;
+      }
+    }
+
+    a {
+      @include responsive-spacing(padding, .01);
+      background-color: $text;
+      border-radius: 10px;
+      text-align: center;
+      color: $background;
+      width: 100%;
+      color: #f2f2f2;
+    }
+  }
+
+  &__column {
+    @include flexer(column, center, center, 15px);
+    width: 100%;
+
+    @include breakpoint(medium) {
+      @include flexer(row, flex-start, flex-start, 15px);
+    }
+
+    @include breakpoint(large) {
+      @include flexer(column, flex-start, center, 15px);
+    }
+  }
+
+  &__voucher {
+    @extend .cart__buy;
+
+    form {
+      @include flexer(row, center, center, 15px);
+      width: 100%;
+
+      input {
+        @include box(100%, 2.5rem);
+        background-color: #f2f2f2;
+        border-radius: 10px;
+        border: 2px solid $text;
+        padding: 0 10px;
+        flex: 1;
+      }
+
+      button {
+        @include flexer(row, center, center);
+        @include box(2.5rem);
+        padding: 0;
+        background-color: $text;
+        border-radius: 10px;
+        margin: 0
+      }
+    }
+  }
+}
+
+.cart-page {
+
+  &__list {
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 100%;
+    gap: 15px;
+
+    max-height: 405px;
+    overflow-y: auto;
+
+    @include breakpoint(medium) {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  &--bundle {
+    @include flexer(row, flex-start, center, 10px);
+    width: 100%;
+
+    &>.product__count {
+      padding: 5px;
+      gap: 0;
+      border: none;
+      background-color: #d8d8d8;
+      justify-content: space-between;
+      width: min-content;
+
+      #count {
+        min-width: 50px;
+      }
+
+      #countIncrease,
+      #countDecrease {
+        @include box(2rem);
+
+        svg {
+          scale: .7 !important;
+        }
+      }
+    }
+  }
+
+  &__item {
+    background-color: #f2f2f2;
+    @include responsive-spacing(padding, .01);
+    position: relative;
+    border-radius: 10px;
+    width: 100%;
+    @include flexer(row, space-between, center, 10px);
+
+    img {
+      @include box(70px, 100%);
+      object-fit: cover;
+      background-color: lightgrey;
+      border-radius: 5px;
+    }
+  }
+
+  &--text {
+    width: 100%;
+    @include flexer(column, flex-start, flex-start, 10px);
+
+    span {
+
+      span {
+        color: red;
+        text-decoration: line-through;
+      }
+    }
+
+
+
+
+  }
+
+  &__delete {
+    @include box(2.5rem);
+    @include flexer(row, center, center);
+    background-color: #d8d8d8;
+    border-radius: 100%;
+    justify-self: end;
+
+    svg {
+      scale: .8;
+      stroke: $text;
+    }
+  }
+
+  &__heart {
+    @extend .cart-page__delete;
+
+    svg {
+      stroke: $text;
+      stroke-width: 3px;
+    }
+  }
+
+  &__sale {
+    @include abs-position (absolute, 10px, unset, unset, 10px);
+    @include box(2.5rem);
+    padding: 7px;
+    border-radius: 100%;
+    background-color: pink;
+    z-index: 9;
+
+    img {
+      @include box(100%);
+      background: transparent;
+      object-fit: contain;
+      outline: none;
+    }
+
+    &::after {
+      content: attr(data-sale);
+      @include flexer(row, center, center);
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 0;
+      height: 100%;
+      border-radius: 0 50px 50px 0;
+      background-color: pink;
+      color: #fb0101;
+      z-index: -1;
+      @include fade(hide);
+    }
+
+    &:hover::after {
+      @include fade(show);
+      width: 100px;
+    }
+  }
+}
+
+
+
+
+.heart__btn {
+  @extend .cart__btn;
+  border: none !important;
+}
+
+//   &--item {
+//     @extend .cart__list--item;
+//   }
+
+//   &--name {
+//     @extend .cart__list--name;
+//   }
+
+//   &--img {
+//     @extend .cart__list--img;
+//   }
+
+//   &--text {
+//     @extend .cart__list--text;
+//   }
+
+//   &--delete {
+//     @extend .cart__list--delete;
+//   }
+// }

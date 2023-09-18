@@ -1,0 +1,67 @@
+input[type=checkbox] {
+  @include BtnHover($hoverEffect: lighten($checkColor, 30%), $activeEffect: $checkColor, $textColor: $mainBg);
+  position: relative;
+  border: 1px solid $darkBg;
+  border-radius: $BtnBorderRadius;
+  background: none;
+  cursor: pointer;
+  @include size(2.5rem);
+  appearance: none;
+
+  &:before {
+    content: "";
+    @include position(absolute, 45%, 45%);
+    @include size(8px, 16px);
+    border: solid #FFF;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg) translate(-50%, -50%);
+    opacity: 0;
+  }
+
+  &:checked {
+    background-color: rgba(3, 169, 244, 1);
+  }
+
+  &:checked:before {
+    opacity: 1;
+  }
+
+  &.check--disabled {
+    cursor: not-allowed;
+    border: 0px solid #e8e8e8;
+    background-color: #e8e8e8;
+
+    &:checked {
+
+      &:before {
+        content: "";
+        border-color: $mainBg;
+      }
+    }
+  }
+}
+
+
+.simple__checkbox {
+  @include flexbox(flex, row, center, center);
+  @include size(2.5rem);
+  border: 1.5px solid #e8e8e8;
+  border-radius: $BtnBorderRadius;
+  cursor: pointer;
+  appearance: none;
+  background-color: #e8e8e8;
+
+  &>svg {
+    @include size(20px);
+    stroke: black;
+  }
+
+
+  &--disabled {
+    @extend .simple__checkbox;
+
+    &>svg {
+      display: none;
+    }
+  }
+}

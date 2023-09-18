@@ -1,7 +1,7 @@
 <script type="text/javascript">
     //Script fot Table with media
     allFiles = new DataTransfer();
-
+//function for simple add
     function previewFile(file) {
         let imageType = /^image\/.*|^video\/.*/;
         if (file.type.match(imageType)) {
@@ -63,7 +63,6 @@
                 fileSize.value = file.size;
 
                 let fileLocation = document.createElement('select');
-                fileLocation.setAttribute("class", "p-1");
                 fileLocation.setAttribute("required", "required");
                 fileLocation.setAttribute("name", "file_location[]");
                 const medialocations = {!! json_encode($medialocations) !!};
@@ -83,15 +82,10 @@
 
                 let removeBtn = document.createElement('button');
                 removeBtn.innerHTML =
-                    '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24" fill="none" stroke="#BBFCDE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>';
-                removeBtn.setAttribute("class", "buttonremove" + " font-xl");
+                    '<svg><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>';
                 removeBtn.onclick = function() {
                     tr.remove();
                     if (imageTable.rows.length === 1) {
-                        var addMediaCat = document.getElementById('addmediacat');
-                        if (addMediaCat) {
-                            addMediaCat.style.display = 'none';
-                        }
                         tableHeader.remove();
                     }
                     let name = file.name;
@@ -104,7 +98,6 @@
                     document.getElementById('imgUpload').files = allFiles.files;
                 };
 
-                tdImage.setAttribute("class", "font-md");
                 tdImage.appendChild(fileInfo);
                 tdImage.appendChild(fileSize);
                 tdFileLocation.appendChild(fileLocation);
@@ -133,18 +126,5 @@
                 contentDiv.style.height = '100%';
             });
         }
-    }
-
-    //Remove a media from table
-    function removeFile(fileId) {
-        $.ajax({
-            url: '/filesd/' + fileId,
-            success: function(data) {
-                location.reload();
-            },
-            error: function(xhr, status, error) {
-                console.error(error);
-            }
-        });
     }
 </script>

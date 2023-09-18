@@ -1,11 +1,15 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\PriceListController;
+use App\Http\Controllers\SpecsController;
+use App\Http\Controllers\StoreController;
 use App\Http\Controllers\TodolistController;
-use App\Http\Controllers\UploadController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,44 +23,84 @@ use App\Http\Controllers\UploadController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+  return view('store.home');
 });
 
-Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'])->group(function () {
-    Route::get('/dashboard', function () {return view('dashboard');})->name('dashboard');
+Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
 
-    //Strore Image
+  //Category routes
+  route::get('/category', [CategoryController::class, 'category'])->name('category');
+  route::post('/add_category', [CategoryController::class, 'add_category']);
+  route::get('/show_category/{id}/', [CategoryController::class, 'show'])->name('show_category');
+  route::get('/new_categories', [CategoryController::class, 'new'])->name('newcategory');
 
+  //Products routes
+  route::get('/products', [ProductController::class, 'products'])->name('products');
+  route::get('/add_product', [ProductController::class, 'add'])->name('add_product');
+  route::post('/new_products', [ProductController::class, 'new'])->name('new_products');
+  route::get('/show_product/{id}/', [ProductController::class, 'show'])->name('show_product');
 
-    //Category routes
-    route::get('/category', [CategoryController::class, 'category'])->name('category');
-    route::post('/add_category', [CategoryController::class, 'add_category']);
-    route::get('/edit_category/{id}/', [CategoryController::class, 'edit']);
-    route::get('/show_category/{id}/', [CategoryController::class, 'show'])->name('show_category');
-    route::post('/delete_category', [CategoryController::class, 'delete']);
-    route::post('/category_update/{id}', [CategoryController::class, 'update_category'])->name('category_update');
-    route::post('/add_media/{id}', [CategoryController::class, 'add_media'])->name('add_media');
-    route::get('/new_categories', [CategoryController::class, 'new'])->name('newcategory');
-    route::get('/media/{id}/', [CategoryController::class, 'media'])->name('media');
-    route::get('/filesd/{id}/', [CategoryController::class, 'deleteMedia']);
-    route::get('/prodd/{id}/', [CategoryController::class, 'deleteProduct']);
-    Route::get('/get_all_products', [CategoryController::class, 'getAllProducts']);
-    route::post('/delete_selected_products', [CategoryController::class, 'deleteSelectedProducts'])->name('deleteSelectedProducts');
-    route::post('/add_selected_products/{id}/', [CategoryController::class, 'addSelectedProducts'])->name('addSelectedProducts');
-    route::post('/delete_selected_media', [CategoryController::class, 'deleteSelectedMedia'])->name('deleteSelectedMedia');
+  //todolist routes
+  route::post('/new', [TodolistController::class, 'store'])->name('store');
+  route::delete('/{todolist:id}', [TodolistController::class, 'destroy'])->name('destroy');
 
-
-    //Products routes
-    route::get('/products', [ProductController::class, 'products'])->name('products');
-    route::get('/add_products', [ProductController::class, 'add'])->name('add_products');
-    route::post('/new_products', [ProductController::class, 'new'])->name('new_products');
-    route::get('/show_product/{id}/', [ProductController::class, 'show'])->name('show_product');
-
-    //todolist routes
-    route::post('/new', [TodolistController::class, 'store'])->name('store');
-    route::delete('/{todolist:id}', [TodolistController::class, 'destroy'])->name('destroy');
-
+  //general routes
+  route::get('/storesettings', [AdminController::class, 'storesettings'])->name('storesettings');
+  route::get('/addstoresettings', [AdminController::class, 'addstoresetting'])->name('addstoresetting');
 });
-route::get('/redirect', [HomeController::class, 'redirect'])->middleware('auth','verified')->name('redirect');
+
+//store routes
+route::get('/home', [StoreController::class, 'index'])->name('home');
+route::get('/cart', [StoreController::class, 'cart'])->name('cart');
+route::get('/complete', [StoreController::class, 'complete'])->name('complete');
+route::get('/checking', [StoreController::class, 'checking'])->name('checking');
+route::get('/order', [StoreController::class, 'order'])->name('order');
+route::get('/product/{id}/', [StoreController::class, 'show'])->name('product');
+route::get('/storeproducts', [StoreController::class, 'products']);
+route::get('/terms', [StoreController::class, 'terms'])->name('terms');
+
+//specs route
+route::get('/specs', [SpecsController::class, 'index'])->name('specs');
+route::get('/newspec', [SpecsController::class, 'create'])->name('newspec');
+route::post('/add_spec', [SpecsController::class, 'store']);
+route::get('/show_spec/{id}/', [SpecsController::class, 'show'])->name('show_spec');
+
+//pricelist route
+route::get('/pricelists', [PriceListController::class, 'index'])->name('pricelists');
+route::get('/newpricelist', [PriceListController::class, 'create'])->name('newpricelist');
+route::post('/add_pricelist', [PriceListController::class, 'store']);
+route::get('/show_pricelist/{id}/', [PriceListController::class, 'show'])->name('show_pricelis');
+
+route::get('/dashboard', [HomeController::class, 'redirect'])->middleware('auth', 'verified')->name('dashboard');
 
 
+//Clear Cache
+
+Route::get('/cleareverything', function () {
+  $clearcache = Artisan::call('cache:clear');
+  echo "Cache cleared<br>";
+  $clearview = Artisan::call('view:clear');
+  echo "View cleared<br>";
+  $cacheconfig = Artisan::call('config:cache');
+  echo "Config cache<br>";
+  $cacheclear = Artisan::call('config:clear');
+  echo "Config clear<br>";
+  $eventclear = Artisan::call('event:clear');
+  echo "event clear<br>";
+  $queueclear = Artisan::call('queue:clear');
+  echo "queue clear<br>";
+  $optimize = Artisan::call('optimize:clear');
+  echo "Optimize clear<br>";
+  $migrate = Artisan::call('migrate');
+  echo "DB updated<br>";
+});
+Route::get('/seeddatabase', function () {
+  $seed = Artisan::call('db:seed --class=CurrencySeeder');
+  echo "Databese seeded<br>";
+});
+
+//Update app
+Route::get('/updateapp', function () {
+  exec('composer dump-autoload');
+  echo 'composer dump-autoload';
+});

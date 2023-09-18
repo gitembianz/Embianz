@@ -1,65 +1,58 @@
-
 <div class="right">
-    <button class="right__open">
-      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24" fill="none" stroke="#BBFCDE"
-        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-        <line x1="16" y1="2" x2="16" y2="6"></line>
-        <line x1="8" y1="2" x2="8" y2="6"></line>
-        <line x1="3" y1="10" x2="21" y2="10"></line>
-      </svg>
-    </button>
+
     <div class="right__content">
 
         <div class="container-right">
             <div class="card_calendar bg-white br-xs">
                 <div class="calendar">
                     <div class="calendar-header">
-                      <span class="month-picker" id="month-picker"> May </span>
-                      <div class="year-picker" id="year-picker">
-                        <span class="year-change" id="pre-year">
-                          <pre><</pre>
-                        </span>
-                        <span id="year">2020 </span>
-                        <span class="year-change" id="next-year">
-                          <pre>></pre>
-                        </span>
-                      </div>
+                        <span class="month-picker" id="month-picker"> May </span>
+                        <div class="year-picker" id="year-picker">
+                            <span class="year-change" id="pre-year">
+                                <pre><</pre>
+                            </span>
+                            <span id="year">2020 </span>
+                            <span class="year-change" id="next-year">
+                                <pre>></pre>
+                            </span>
+                        </div>
                     </div>
 
                     <div class="calendar-body">
-                      <div class="calendar-week-days">
-                        <div>Sun</div>
-                        <div>Mon</div>
-                        <div>Tue</div>
-                        <div>Wed</div>
-                        <div>Thu</div>
-                        <div>Fri</div>
-                        <div>Sat</div>
-                      </div>
-                      <div class="calendar-days">
-                      </div>
+                        <div class="calendar-week-days">
+                            <div>Sun</div>
+                            <div>Mon</div>
+                            <div>Tue</div>
+                            <div>Wed</div>
+                            <div>Thu</div>
+                            <div>Fri</div>
+                            <div>Sat</div>
+                        </div>
+                        <div class="calendar-days">
+                        </div>
                     </div>
                     <div class="calendar-footer">
                     </div>
                     <div class="date-time-formate ml-2">
-                      <div class="day-text-formate pr-2">TODAY</div>
-                      <div class="date-time-value">
-                        <div class="time-formate"></div>
-                        <div class="date-formate"></div>
-                      </div>
+                        <div class="day-text-formate pr-2">TODAY</div>
+                        <div class="date-time-value">
+                            <div class="time-formate"></div>
+                            <div class="date-formate"></div>
+                        </div>
                     </div>
                     <div class="month-list mt-1"></div>
-                  </div>
+                </div>
             </div>
             <div class="card_todo bg-white br-xs">
                 <div class="card_todo_body p-1">
                     <form action="{{ route('store') }}" method="post" autocomplete="off">
                         @csrf
                         <div class="input-grups">
-                            <input type="text" name="content" class="input_style p-1 br-xs" placeholder="Add a new task">
-                            <button type="submit"><span class="bg-white"><svg class="bg-white" width="35px" height="35px" viewBox="0 0 24 24"
-                                        xmlns="http://www.w3.org/2000/svg" fill="#35424b">
+                            <input type="text" name="content" class="input_style p-1 br-xs"
+                                placeholder="Add a new task">
+                            <button type="submit"><span class="bg-white"><svg class="bg-white" width="35px"
+                                        height="35px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                                        fill="#35424b">
                                         <g id="SVGRepo_bgCarrier" stroke-width="1"></g>
                                         <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"
                                             stroke="#CCCCCC" stroke-width="0.288"></g>
@@ -71,7 +64,8 @@
                         </div>
                     </form>
                     {{-- if tasks exist --}}
-                    {{-- <span style="z-index: 9999">ttt= {{ $content }}</span> --}}
+
+
                                 @if (count($todolists))
                     <div class="list-group-div mb-1">
                         <ul class="list-group">
@@ -97,6 +91,7 @@
                             @endforeach
                         </ul>
                     </div>
+
                         <p class="count talign-c text-bg pt-1">You have {{ count($todolists) }} tasks active!</p>
                     @else
                         <p class="talign-c text-bg mt-1">You have no tasks!</p>
@@ -107,7 +102,4 @@
         </div>
 
     </div>
-  </div>
-
-
-
+</div>

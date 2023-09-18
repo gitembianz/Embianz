@@ -1,15 +1,18 @@
 <x-dashboardheader />
-<x-dashboardnavbar :user="$user" />
-<x-dashboardsidebar />
-<x-dashboardmodals />
+<x-dashboardnavbar />
+<x-dashboardsidebar :active="__('dashboard')" />
 {{-- Page content start --}}
-<section class="section-container bg-bg">
-<div>
-  <h2 class="text-white talign-c mt-2">Home Dashboard</h2>
+<section class="content">
+    <div>
 
-</div>
+    </div>
+    <a href="#" class="top-up-btn" id="topUp">
+        <svg>
+            <polyline points="18 15 12 9 6 15"></polyline>
+        </svg>
+    </a>
 </section>
 {{-- page content end --}}
-<x-dashboardright :todolists="$todolists">
+<x-dashboardright />
 <x-dashboardscript />
 <x-dashboardfooter />

@@ -1,0 +1,49 @@
+header,
+.header {
+  @include size(100%, $headerHeight);
+}
+
+.header {
+  @include flexbox(flex, row, center, center);
+  @include position(fixed, 0);
+  padding: 0 $padding;
+  background: $mainBg;
+  transition: $transition;
+  z-index: 301;
+
+  &__buttons {
+    @include flexbox(flex, row, center, center, calc($gap * 2));
+  }
+
+  &__logo {
+    display: none;
+
+    img {
+      object-fit: cover;
+      @include size(250px, auto);
+    }
+  }
+
+  // &.moved {
+  //   height: calc($headerHeight + ($gap * 3));
+
+  //   &.content {
+  //     height: calc(100vh - ($headerHeight + ($gap * 3)));
+  //   }
+  // }
+}
+
+.search,
+.profile {
+  @include headBtn;
+}
+
+.search {
+  grid-template-columns: $BtnSize 1fr $BtnSize;
+
+  &__item,
+  &__item:last-child,
+  &__item:nth-child(2) {
+    grid-column: unset;
+  }
+}

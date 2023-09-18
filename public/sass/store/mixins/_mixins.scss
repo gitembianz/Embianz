@@ -1,0 +1,137 @@
+@mixin box($width, $height: $width) {
+  width: $width;
+  height: $height;
+}
+
+@mixin flexer($direction: row, $justify: flex-start, $align-items: stretch, $gap: 0, $flex: 0 1 auto, $wrap: nowrap) {
+  display: flex;
+  flex-direction: $direction;
+  flex-wrap: $wrap;
+  justify-content: $justify;
+  align-items: $align-items;
+  flex: $flex;
+  gap: $gap;
+}
+
+@mixin font-face($font-family, $ttf-font-path, $font-weight: normal, $font-style: normal, $fontDisplay: swap) {
+  @font-face {
+    font-family: #{$font-family};
+    src: url('#{$ttf-font-path}') format('truetype');
+    font-weight: $font-weight;
+    font-style: $font-style;
+    font-display: $fontDisplay;
+  }
+}
+
+@mixin fade($type) {
+  @if $type=="hide" {
+    visibility: hidden;
+    opacity: 0;
+    transition: all .2s ease-in-out;
+  }
+
+  @else if $type=="show" {
+    visibility: visible;
+    opacity: 1;
+    transition: all .2s ease-in-out;
+  }
+}
+
+@mixin abs-position ($position: absolute, $top, $right, $bottom, $left) {
+  position: $position;
+  top: $top;
+  right: $right;
+  bottom: $bottom;
+  left: $left;
+}
+
+
+@mixin breakpoint($point) {
+  @if $point =="xx-large" {
+    @media (min-width: 1400px) {
+      .container {
+        max-width: 1320px;
+      }
+
+      @content;
+    }
+  }
+
+  @if $point =="x-large" {
+    @media (min-width: 1200px) {
+      .container {
+        max-width: 1140px;
+      }
+
+      @content;
+    }
+  }
+
+  @else if $point =="large" {
+    @media (min-width: 992px) {
+      .container {
+        max-width: 960px;
+      }
+
+      @content;
+    }
+  }
+
+  @else if $point =="medium" {
+    @media (min-width: 768px) {
+      @content;
+    }
+  }
+
+  @else if $point =="small" {
+    @media (min-width: 576px) {
+      @content;
+    }
+  }
+
+  @else if $point =="extra-small" {
+    @media (min-width: 425px) {
+      @content;
+    }
+  }
+}
+
+
+
+
+@mixin font($weight: 500, $color: $text, $position: center) {
+  font-weight: $weight;
+  text-align: $position;
+  color: $color;
+}
+
+
+@mixin btn {
+  background-color: darken(#1a691a, 10%);
+  border-radius: 10px;
+  @include responsive-spacing(width, 0.15);
+  @include responsive-spacing(height, 0.15);
+  @include flexer(row, center, center);
+  transition: $transition;
+  border: 2.5px solid darken(#1a691a, 10%);
+  outline: none;
+
+  svg {
+    pointer-events: none;
+  }
+
+  &:hover,
+  &:focus {
+    background-color: transparent;
+
+    svg {
+      stroke: darken(#1a691a, 10%);
+    }
+  }
+}
+
+@mixin darken-background($background-color, $percentage) {
+  &:hover {
+    background-color: darken($background-color, $percentage);
+  }
+}

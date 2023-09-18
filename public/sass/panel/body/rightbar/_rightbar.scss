@@ -1,0 +1,36 @@
+.right {
+  @include position(absolute, auto, 0, 0, auto);
+  @include size(0, 100%);
+  background-color: $mainBg;
+  transition: $transition;
+  transform: translateX(90%);
+
+  &__open {
+    @include standart-Btn;
+    display: block;
+    cursor: pointer;
+  }
+
+  &__content {
+    border-radius: $BtnBorderRadius;
+    color: white;
+    display: none;
+  }
+
+  &.open {
+    width: 100%;
+    transform: translateX(0%);
+    z-index: $z-index-active;
+
+    &>.right {
+      &__open {
+        right: unset;
+        left: $margin;
+      }
+
+      &__content {
+        display: block;
+      }
+    }
+  }
+}

@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Database\RecordsNotFoundException;
+use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
@@ -96,9 +97,11 @@ class Builder implements BuilderContract
         'avg',
         'count',
         'dd',
+        'ddRawSql',
         'doesntExist',
         'doesntExistOr',
         'dump',
+        'dumpRawSql',
         'exists',
         'existsOr',
         'explain',
@@ -116,6 +119,7 @@ class Builder implements BuilderContract
         'rawValue',
         'sum',
         'toSql',
+        'toRawSql',
     ];
 
     /**
@@ -551,7 +555,7 @@ class Builder implements BuilderContract
     }
 
     /**
-     * Get the first record matching the attributes or create it.
+     * Get the first record matching the attributes. If the record is not found, create it.
      *
      * @param  array  $attributes
      * @param  array  $values
@@ -563,9 +567,23 @@ class Builder implements BuilderContract
             return $instance;
         }
 
-        return tap($this->newModelInstance(array_merge($attributes, $values)), function ($instance) {
-            $instance->save();
-        });
+        return $this->createOrFirst($attributes, $values);
+    }
+
+    /**
+     * Attempt to create the record. If a unique constraint violation occurs, attempt to find the matching record.
+     *
+     * @param  array  $attributes
+     * @param  array  $values
+     * @return \Illuminate\Database\Eloquent\Model|static
+     */
+    public function createOrFirst(array $attributes = [], array $values = [])
+    {
+        try {
+            return $this->withSavepointIfNeeded(fn () => $this->create(array_merge($attributes, $values)));
+        } catch (UniqueConstraintViolationException $e) {
+            return $this->useWritePdo()->where($attributes)->first() ?? throw $e;
+        }
     }
 
     /**
@@ -577,8 +595,10 @@ class Builder implements BuilderContract
      */
     public function updateOrCreate(array $attributes, array $values = [])
     {
-        return tap($this->firstOrNew($attributes), function ($instance) use ($values) {
-            $instance->fill($values)->save();
+        return tap($this->firstOrCreate($attributes, $values), function ($instance) use ($values) {
+            if (! $instance->wasRecentlyCreated) {
+                $instance->fill($values)->save();
+            }
         });
     }
 
@@ -1136,10 +1156,21 @@ class Builder implements BuilderContract
 
         $column = $this->model->getUpdatedAtColumn();
 
-        $values = array_merge(
-            [$column => $this->model->freshTimestampString()],
-            $values
-        );
+        if (! array_key_exists($column, $values)) {
+            $timestamp = $this->model->freshTimestampString();
+
+            if (
+                $this->model->hasSetMutator($column)
+                || $this->model->hasAttributeSetMutator($column)
+                || $this->model->hasCast($column)
+            ) {
+                $timestamp = $this->model->newInstance()
+                    ->forceFill([$column => $timestamp])
+                    ->getAttributes()[$column] ?? $timestamp;
+            }
+
+            $values = array_merge([$column => $timestamp], $values);
+        }
 
         $segments = preg_split('/\s+as\s+/i', $this->query->from);
 
@@ -1681,6 +1712,21 @@ class Builder implements BuilderContract
     }
 
     /**
+     * Execute the given Closure within a transaction savepoint if needed.
+     *
+     * @template TModelValue
+     *
+     * @param  \Closure(): TModelValue  $scope
+     * @return TModelValue
+     */
+    public function withSavepointIfNeeded(Closure $scope): mixed
+    {
+        return $this->getQuery()->getConnection()->transactionLevel() > 0
+            ? $this->getQuery()->getConnection()->transaction($scope)
+            : $scope();
+    }
+
+    /**
      * Get the underlying query builder instance.
      *
      * @return \Illuminate\Database\Query\Builder
@@ -1976,8 +2022,6 @@ class Builder implements BuilderContract
 
         foreach ($methods as $method) {
             if ($replace || ! static::hasGlobalMacro($method->name)) {
-                $method->setAccessible(true);
-
                 static::macro($method->name, $method->invoke($mixin));
             }
         }
