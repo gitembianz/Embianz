@@ -48,6 +48,7 @@ class StoreProducts extends Component
       Wishlist::updateOrCreate(
         ['session_id' => $session_id, 'product_id' => $productId]
       );
+      $this->emit('wishlistUpdated');
     }
   }
 
@@ -60,6 +61,7 @@ class StoreProducts extends Component
     Wishlist::where('session_id', $session_id)
       ->where('product_id', $productId)
       ->delete();
+    $this->emit('wishlistUpdated');
   }
 
   private function saveToSession()
