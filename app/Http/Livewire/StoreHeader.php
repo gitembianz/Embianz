@@ -15,6 +15,7 @@ class StoreHeader extends Component
   public $search = '';
   public $active = false;
   public $wishlistitems;
+  public $showwis = false;
 
   public function render()
   {
@@ -44,16 +45,24 @@ class StoreHeader extends Component
     $this->wishlistitems = $this->getWishlistItemsProperty();
   }
 
+  public function wishlistshow()
+  {
+    if ($this->showwis === false) {
+      $this->showwis = true;
+    } else {
+      $this->showwis = false;
+    }
+  }
+  public function reload()
+  {
+    // No need to add any code here, just an empty method
+  }
+
+
   public function mount()
   {
     // Initial load of wishlistitems
     $this->wishlistitems = $this->getWishlistItemsProperty();
-  }
-
-  public function hydrate()
-  {
-    // Automatically refresh every 5 seconds
-    $this->refresh();
   }
 
   public function getCategoriesProperty()

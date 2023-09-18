@@ -1,3 +1,3 @@
 <header class="show">
-    <livewire:store-header />
+    @livewire('store-header')
 </header>
