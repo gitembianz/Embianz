@@ -27,8 +27,8 @@
                     </svg>
                 </button>
             @else
-                <button class="item__header-btn" type="button" wire:click.prevent="saveproduct()" value="Save"
-                    data-tooltip-center="Save this changes"><svg>
+                <button class="item__header-btn confirm" type="button" wire:click.prevent="saveproduct()"
+                    value="Save" data-tooltip-center="Save this changes"><svg>
                         <polyline points="20 6 9 17 4 12"></polyline>
                     </svg></button>
                 <button class="item__header-btn" type="button" wire:click.prevent="cancelproduct()" value="Cancel"
