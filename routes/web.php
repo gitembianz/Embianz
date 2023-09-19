@@ -52,6 +52,7 @@
   //store routes
   route::get('/home', [StoreController::class, 'index'])->name('home');
   route::get('/cart', [StoreController::class, 'cart'])->name('cart');
+  route::get('/wislist', [StoreController::class, 'wislist'])->name('wislist');
   route::get('/complete', [StoreController::class, 'complete'])->name('complete');
   route::get('/checking', [StoreController::class, 'checking'])->name('checking');
   route::get('/order', [StoreController::class, 'order'])->name('order');

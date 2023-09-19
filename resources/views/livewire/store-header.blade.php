@@ -151,12 +151,13 @@
                          </li>
                      @else
                          <li>
-                             <a href="/cart.html" class="heart__list--item">
+                             <a href="/wislist" class="heart__list--item">
                                  <h4 class="heart__list--name">Favorites</h4>
                              </a>
                          </li>
                          @foreach ($wishlistitems as $product)
-                             <li><a class="heart__list--item" href="#">
+                             <li>
+                                 <div class="heart__list--item">
                                      @if (count($product->media) > 0)
                                          @foreach ($product->media as $media)
                                              @if ($media->location->location == 'main')
@@ -175,8 +176,10 @@
                                          <img class="heart__list--img" src="/images/store/default/default.svg"
                                              alt="something wrong">
                                      @endif
-                                     <span class="heart__list--text">{{ $product->name }}</span>
-                                     <button class="heart__list--delete">
+                                     <a class="heart__list--text"
+                                         href="/product/{{ $product->id }}"><span>{{ $product->name }}</span></a>
+                                     <button class="heart__list--delete"
+                                         wire:click="removeFromWishlist({{ $product->id }})">
                                          <svg>
                                              <line x1="18" y1="6" x2="6" y2="18">
                                              </line>
@@ -184,7 +187,7 @@
                                              </line>
                                          </svg>
                                      </button>
-                                 </a>
+                                 </div>
                              </li>
                          @endforeach
                      @endif
