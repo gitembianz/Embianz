@@ -2,38 +2,35 @@
     <div class="products__control">
         <div class="filter">
             {{-- Filter Button --}}
-            <button class="filter__open" id="filterOpen">
+            <button class="filter__open" id="filterOpen" wire:click="$toggle('property')">
                 Filters
                 <svg>
                     <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
                 </svg>
             </button>
             {{-- Filter Content --}}
-            <div class="filter__content">
-                <button class="filter__close" id="filterClose" onclick="closeDrop()">
-                    Filters
-                    <svg>
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                </button>
-                <div class="filter__dropdown">
-                    <button class="filter__dropdown--btn">
-                        Quantity
-                        <svg>
-                            <polyline points="6 9 12 15 18 9"></polyline>
-                        </svg>
-                    </button>
-                    <div class="filter__dropdown--content">
-                        <ul class="filter__list">
-                            <li class="filter__item">
-                                <input type="checkbox" name="size" id="filter1">
-                                <label for="filter1">1200</label>
-                            </li>
-                        </ul>
+            <div class="filter__content @if ($property) show @endif">
+                @foreach ($specification as $spec)
+                    <div class="filter__dropdown">
+                        <button class="filter__dropdown--btn">
+                            {{ $spec->name }}
+                            <svg>
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </button>
+                        <div class="filter__dropdown--content">
+                            <ul class="filter__list">
+                                @foreach ($spec->product_spec as $index => $value)
+                                    <li class="filter__item">
+                                        <input type="checkbox" name="size" id="filter {{ $index }}">
+                                        <label for="filter {{ $index }}">{{ $value->value }}</label>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
                     </div>
-                </div>
-                <div class="filter__dropdown">
+                @endforeach
+                {{-- <div class="filter__dropdown">
                     <button class="filter__dropdown--btn">
                         size
                         <svg>
@@ -80,7 +77,7 @@
                             </li>
                         </ul>
                     </div>
-                </div>
+                </div> --}}
                 <div class="filter__buttons">
                     <button>Apply</button>
                     <button>Reset</button>
@@ -119,13 +116,11 @@
                         <label for="sort4">Alphabetically, Z-A</label>
                     </li>
                     <li class="filter__sort--item">
-                        <input wire:model="orderBy" type="radio" name="sort" value="date_old_new"
-                            id="sort7">
+                        <input wire:model="orderBy" type="radio" name="sort" value="date_old_new" id="sort7">
                         <label for="sort7">Date, old to new</label>
                     </li>
                     <li class="filter__sort--item">
-                        <input wire:model="orderBy" type="radio" name="sort" value="date_new_old"
-                            id="sort8">
+                        <input wire:model="orderBy" type="radio" name="sort" value="date_new_old" id="sort8">
                         <label for="sort8">Date, new to old</label>
                     </li>
                 </ul>

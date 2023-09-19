@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Product;
+use App\Models\Specs;
 use App\Models\Wishlist;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -17,6 +18,8 @@ class StoreProducts extends Component
   public $quantity = 20;
   public $wishlist = [];
   public $session_id;
+  public $specification;
+  public $property = false;
   public $orderBy = 'best_selling'; // Default sorting order
   public $orderAsc = true;
   protected $listeners = ['wishlistUpdated' => 'mount'];
@@ -28,6 +31,7 @@ class StoreProducts extends Component
   public function mount()
   {
     $this->session_id = Session::getId();
+    $this->specification = Specs::all();
   }
   public function render()
   {
