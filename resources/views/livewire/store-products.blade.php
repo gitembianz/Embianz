@@ -2,38 +2,35 @@
     <div class="products__control">
         <div class="filter">
             {{-- Filter Button --}}
-            <button class="filter__open" id="filterOpen">
+            <button class="filter__open" id="filterOpen" wire:click="$toggle('property')">
                 Filters
                 <svg>
                     <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
                 </svg>
             </button>
             {{-- Filter Content --}}
-            <div class="filter__content">
-                <button class="filter__close" id="filterClose" onclick="closeDrop()">
-                    Filters
-                    <svg>
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                </button>
-                <div class="filter__dropdown">
-                    <button class="filter__dropdown--btn">
-                        Quantity
-                        <svg>
-                            <polyline points="6 9 12 15 18 9"></polyline>
-                        </svg>
-                    </button>
-                    <div class="filter__dropdown--content">
-                        <ul class="filter__list">
-                            <li class="filter__item">
-                                <input type="checkbox" name="size" id="filter1">
-                                <label for="filter1">1200</label>
-                            </li>
-                        </ul>
+            <div class="filter__content @if ($property) show @endif">
+                @foreach ($specification as $spec)
+                    <div class="filter__dropdown">
+                        <button class="filter__dropdown--btn">
+                            {{ $spec->name }}
+                            <svg>
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </button>
+                        <div class="filter__dropdown--content">
+                            <ul class="filter__list">
+                                @foreach ($spec->product_spec as $index => $value)
+                                    <li class="filter__item">
+                                        <input type="checkbox" name="size" id="filter {{ $index }}">
+                                        <label for="filter {{ $index }}">{{ $value->value }}</label>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
                     </div>
-                </div>
-                <div class="filter__dropdown">
+                @endforeach
+                {{-- <div class="filter__dropdown">
                     <button class="filter__dropdown--btn">
                         size
                         <svg>
@@ -80,7 +77,7 @@
                             </li>
                         </ul>
                     </div>
-                </div>
+                </div> --}}
                 <div class="filter__buttons">
                     <button>Apply</button>
                     <button>Reset</button>
@@ -107,40 +104,40 @@
             <div class="filter__sort--content">
                 <ul class="filter__sort--list">
                     <li class="filter__sort--item">
-                        <input type="checkbox" name="size" id="sort1">
-                        <label for="sort1">Featured</label>
-                    </li>
-                    <li class="filter__sort--item">
-                        <input type="checkbox" name="size" id="sort2">
+                        <input wire:model="orderBy" type="radio" name="sort" value="best_selling" id="sort2">
                         <label for="sort2">Best selling</label>
                     </li>
                     <li class="filter__sort--item">
-                        <input type="checkbox" name="size" id="sort3">
+                        <input wire:model="orderBy" type="radio" name="sort" value="name_az" id="sort3">
                         <label for="sort3">Alphabetically, A-Z</label>
                     </li>
                     <li class="filter__sort--item">
-                        <input type="checkbox" name="size" id="sort4">
+                        <input wire:model="orderBy" type="radio" name="sort" value="name_za" id="sort4">
                         <label for="sort4">Alphabetically, Z-A</label>
                     </li>
                     <li class="filter__sort--item">
-                        <input type="checkbox" name="size" id="sort5">
-                        <label for="sort5">Price, low to high</label>
-                    </li>
-                    <li class="filter__sort--item">
-                        <input type="checkbox" name="size" id="sort6">
-                        <label for="sort6">Price, high to low</label>
-                    </li>
-                    <li class="filter__sort--item">
-                        <input type="checkbox" name="size" id="sort7">
+                        <input wire:model="orderBy" type="radio" name="sort" value="date_old_new" id="sort7">
                         <label for="sort7">Date, old to new</label>
                     </li>
                     <li class="filter__sort--item">
-                        <input type="checkbox" name="size" id="sort8">
+                        <input wire:model="orderBy" type="radio" name="sort" value="date_new_old" id="sort8">
                         <label for="sort8">Date, new to old</label>
                     </li>
                 </ul>
             </div>
         </div>
+
+        {{-- <li class="filter__sort--item">
+                        <input wire:model="orderBy.price_low_high" type="checkbox" name="sort[]"
+                            value="price_low_high" id="sort5">
+                        <label for="sort5">Price, low to high</label>
+                    </li>
+                    <li class="filter__sort--item">
+                        <input wire:model="orderBy.price_high_low" type="checkbox" name="sort[]"
+                            value="price_high_low" id="sort6">
+                        <label for="sort6">Price, high to low</label>
+                    </li> --}}
+
     </div>
     <ul class="filter__applied">
         <li>
@@ -204,7 +201,7 @@
                     @endif
                     <div class="product__item--bundle">
                         <h4>{{ $product->name }}</h4>
-                        <span>1000ml</span>
+                        {{-- <span>1000ml</span> --}}
                         {{-- <p>{{ $product->short_description }}</p> --}}
                         <div class="product__item--buttons">
                             <div class="product__item--price">
@@ -213,7 +210,7 @@
                                         {{ $product->product_prices->first()->value }}
                                         {{ $product->product_prices->first()->pricelist->currency->first()->name }}
                                     @else
-                                        no price
+                                        unavailable
                                     @endif
                                 </span>
                             </div>
@@ -228,15 +225,18 @@
                         </div>
                     </div>
                     <div class="product__item--header">
-                        @if ($product->quantity < $quantity)
+                        @if ($product->quantity < $quantity && $product->quantity > 0)
                             <p class="product__item--stock">
                                 Low stock!
                             </p>
-                        @else
-                            <p>
+                        @elseif($product->quantity == 0)
+                            <p class="product__item--stock">
+                                Out of stock!
                             </p>
+                        @else
+                            <p></p>
                         @endif
-                        <button class="product__item--heart @if ($product->wishlists->count() > 0) active @endif"
+                        <button class="product__item--heart @if ($product->wishlists->where('session_id', $session_id)->isNotEmpty()) active @endif"
                             aria-label="add to favorites" wire:click="toggleWishlist({{ $product->id }})">
                             <svg>
                                 <path
@@ -244,7 +244,6 @@
                                 </path>
                             </svg>
                         </button>
-
                     </div>
                 </article>
                 {{-- </a> --}}

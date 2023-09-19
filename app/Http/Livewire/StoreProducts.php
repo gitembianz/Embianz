@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Product;
+use App\Models\Specs;
 use App\Models\Wishlist;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -16,25 +17,51 @@ class StoreProducts extends Component
   public $search = "";
   public $quantity = 20;
   public $wishlist = [];
+  public $session_id;
+  public $specification;
+  public $property = false;
+  public $orderBy = 'best_selling'; // Default sorting order
+  public $orderAsc = true;
+  protected $listeners = ['wishlistUpdated' => 'mount'];
 
   public function loadMore()
   {
     $this->loadAmount += 10;
   }
-
+  public function mount()
+  {
+    $this->session_id = Session::getId();
+    $this->specification = Specs::all();
+  }
   public function render()
   {
-    return view('livewire.store-products', [
-      'products' => $this->products
-    ]);
+    $products = $this->getProducts();
+
+    return view('livewire.store-products', compact('products'));
   }
-  public function getProductsProperty()
+  public function getProducts()
   {
-    return $this->productsQuery->limit($this->loadAmount)->get();
-  }
-  public function getProductsQueryProperty()
-  {
-    return Product::name($this->search)->orderBy('created_at', 'desc');
+    $query = Product::name($this->search);
+
+    switch ($this->orderBy) {
+      case 'best_selling':
+        $query->orderBy('popularity', $this->orderAsc ? 'asc' : 'desc');
+        break;
+      case 'name_az':
+        $query->orderBy('name', $this->orderAsc ? 'asc' : 'desc');
+        break;
+      case 'name_za':
+        $query->orderBy('name', $this->orderAsc ? 'desc' : 'asc');
+        break;
+      case 'date_old_new':
+        $query->orderBy('created_at', $this->orderAsc ? 'asc' : 'desc');
+        break;
+      case 'date_new_old':
+        $query->orderBy('created_at', $this->orderAsc ? 'desc' : 'asc');
+        break;
+    }
+
+    return $query->limit($this->loadAmount)->get();
   }
 
 
@@ -43,11 +70,11 @@ class StoreProducts extends Component
     if (!in_array($productId, $this->wishlist)) {
       $this->wishlist[] = $productId;
       $this->saveToSession();
-      $session_id = Session::getId();
 
       Wishlist::updateOrCreate(
-        ['session_id' => $session_id, 'product_id' => $productId]
+        ['session_id' => $this->session_id, 'product_id' => $productId]
       );
+      $this->emit('wishlistUpdated');
     }
   }
 
@@ -55,11 +82,11 @@ class StoreProducts extends Component
   {
     $this->wishlist = array_diff($this->wishlist, [$productId]);
     $this->saveToSession();
-    $session_id = Session::getId();
 
-    Wishlist::where('session_id', $session_id)
+    Wishlist::where('session_id', $this->session_id)
       ->where('product_id', $productId)
       ->delete();
+    $this->emit('wishlistUpdated');
   }
 
   private function saveToSession()

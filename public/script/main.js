@@ -18,7 +18,6 @@
 //     cookieConsentButton.addEventListener('click', hideCookieConsent);
 //   }
 // });
-
 function handleScroll() {
   let prevScrollPos = window.pageYOffset;
   const header = document.querySelector('header');
@@ -305,7 +304,7 @@ function toggleDropdown(buttonId, dropdownId) {
 }
 
 toggleDropdown(".cart__btn", ".cart__list");
-toggleDropdown(".heart__btn", ".heart__list");
+// toggleDropdown(".heart__btn", ".heart__list");
 
 
 
@@ -323,14 +322,11 @@ function dropdown(dropdown) {
   });
 }
 
-function closeDrop() {
-  var dropContent = document.querySelector(".filter__content");
-  dropContent.classList.remove("show");
-}
+
 
 
 dropdown(".filter__dropdown--btn");
-dropdown(".filter__open");
+// dropdown(".filter__open");
 // dropdown(".filter__close");
 dropdown(".filter__sort--btn");
 

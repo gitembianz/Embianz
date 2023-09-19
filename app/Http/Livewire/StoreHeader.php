@@ -15,6 +15,8 @@ class StoreHeader extends Component
   public $search = '';
   public $active = false;
   public $wishlistitems;
+  public $showwis = false;
+  protected $listeners = ['wishlistUpdated' => 'mount'];
 
   public function render()
   {
@@ -44,16 +46,31 @@ class StoreHeader extends Component
     $this->wishlistitems = $this->getWishlistItemsProperty();
   }
 
+  public function wishlistshow()
+  {
+    if ($this->showwis === false) {
+      $this->showwis = true;
+    } else {
+      $this->showwis = false;
+    }
+  }
+  public function reload()
+  {
+    // No need to add any code here, just an empty method
+  }
+
+  public function removeFromWishlist($productId)
+  {
+    $session_id = Session::getId();
+    Wishlist::where('session_id', $session_id)
+      ->where('product_id', $productId)
+      ->delete();
+    $this->emit('wishlistUpdated');
+  }
   public function mount()
   {
     // Initial load of wishlistitems
     $this->wishlistitems = $this->getWishlistItemsProperty();
-  }
-
-  public function hydrate()
-  {
-    // Automatically refresh every 5 seconds
-    $this->refresh();
   }
 
   public function getCategoriesProperty()
