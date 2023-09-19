@@ -16,6 +16,7 @@ class StoreHeader extends Component
   public $active = false;
   public $wishlistitems;
   public $showwis = false;
+  protected $listeners = ['wishlistUpdated' => 'mount'];
 
   public function render()
   {
@@ -65,7 +66,6 @@ class StoreHeader extends Component
       ->where('product_id', $productId)
       ->delete();
     $this->emit('wishlistUpdated');
-    $this->reload();
   }
   public function mount()
   {

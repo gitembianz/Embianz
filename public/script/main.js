@@ -18,13 +18,19 @@
 //     cookieConsentButton.addEventListener('click', hideCookieConsent);
 //   }
 // });
-document.addEventListener("livewire:load", function () {
-  Livewire.on('wishlistUpdated', () => {
-    // Trigger the hidden button click to reload the StoreHeader component
-    document.getElementById('reloadStoreHeader').click();
-    document.getElementById('reloadStoreProducts').click();
-  });
-});
+// document.addEventListener("livewire:load", function () {
+//   const reloadStoreHeader = document.getElementById('reloadStoreHeader');
+//   const reloadStoreProducts = document.getElementById('reloadStoreProducts');
+//   const reloadStoreWishlist = document.getElementById('reloadStoreWishlist');
+
+//   Livewire.on('wishlistUpdated', () => {
+//     // Trigger the hidden button clicks to reload the respective components
+//     reloadStoreHeader.click();
+//     reloadStoreProducts.click();
+//     reloadStoreWishlist.click();
+//   });
+// });
+
 function handleScroll() {
   let prevScrollPos = window.pageYOffset;
   const header = document.querySelector('header');

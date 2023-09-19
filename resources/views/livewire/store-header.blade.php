@@ -130,8 +130,6 @@
                  </ul>
              </div>
              <div class="heart">
-                 <button class="hidden" wire:click="refreshWishlist" id="reloadStoreHeader"></button>
-
                  <button class="heart__btn" wire:click="wishlistshow" id="heartBtn" aria-label="Open heart"
                      style="position: relative">
                      <svg aria-hidden="true">
@@ -276,3 +274,4 @@
          </div>
      </div>
  </div>
+ 
