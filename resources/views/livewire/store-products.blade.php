@@ -180,6 +180,7 @@
             </button>
         </li>
     </ul>
+    <button class="hidden" wire:click="$refresh" id="reloadStoreProducts"></button>
     <div class="product__catalog">
         @if ($products->isEmpty())
             <p>No products found</p>
