@@ -18,13 +18,6 @@
 //     cookieConsentButton.addEventListener('click', hideCookieConsent);
 //   }
 // });
-document.addEventListener("livewire:load", function () {
-  Livewire.on('wishlistUpdated', () => {
-    // Trigger the hidden button click to reload the StoreHeader component
-    document.getElementById('reloadStoreHeader').click();
-    document.getElementById('reloadStoreProducts').click();
-  });
-});
 function handleScroll() {
   let prevScrollPos = window.pageYOffset;
   const header = document.querySelector('header');

@@ -17,6 +17,7 @@ class StoreProducts extends Component
   public $quantity = 20;
   public $wishlist = [];
   public $session_id;
+  protected $listeners = ['wishlistUpdated' => 'mount'];
 
   public function loadMore()
   {
