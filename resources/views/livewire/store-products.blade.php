@@ -180,6 +180,7 @@
             </button>
         </li>
     </ul>
+    <button class="hidden" wire:click="$refresh" id="reloadStoreProducts"></button>
     <div class="product__catalog">
         @if ($products->isEmpty())
             <p>No products found</p>
@@ -204,7 +205,7 @@
                     @endif
                     <div class="product__item--bundle">
                         <h4>{{ $product->name }}</h4>
-                        <span>1000ml</span>
+                        {{-- <span>1000ml</span> --}}
                         {{-- <p>{{ $product->short_description }}</p> --}}
                         <div class="product__item--buttons">
                             <div class="product__item--price">
@@ -213,7 +214,7 @@
                                         {{ $product->product_prices->first()->value }}
                                         {{ $product->product_prices->first()->pricelist->currency->first()->name }}
                                     @else
-                                        no price
+                                        unavailable
                                     @endif
                                 </span>
                             </div>
@@ -228,15 +229,18 @@
                         </div>
                     </div>
                     <div class="product__item--header">
-                        @if ($product->quantity < $quantity)
+                        @if ($product->quantity < $quantity && $product->quantity > 0)
                             <p class="product__item--stock">
                                 Low stock!
                             </p>
-                        @else
-                            <p>
+                        @elseif($product->quantity == 0)
+                            <p class="product__item--stock">
+                                Out of stock!
                             </p>
+                        @else
+                            <p></p>
                         @endif
-                        <button class="product__item--heart @if ($product->wishlists->count() > 0) active @endif"
+                        <button class="product__item--heart @if ($product->wishlists->where('session_id', $session_id)->isNotEmpty()) active @endif"
                             aria-label="add to favorites" wire:click="toggleWishlist({{ $product->id }})">
                             <svg>
                                 <path
@@ -244,7 +248,6 @@
                                 </path>
                             </svg>
                         </button>
-
                     </div>
                 </article>
                 {{-- </a> --}}
@@ -253,3 +256,4 @@
     </div>
     <x-lazy />
 </div>
+       

@@ -41,6 +41,10 @@ class StoreController extends Controller
   {
     return view('store.terms');
   }
+  public function wislist()
+  {
+    return view('store.wislist');
+  }
 
   /**
    * Show the form for creating a new resource.

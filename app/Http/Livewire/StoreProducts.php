@@ -16,10 +16,15 @@ class StoreProducts extends Component
   public $search = "";
   public $quantity = 20;
   public $wishlist = [];
+  public $session_id;
 
   public function loadMore()
   {
     $this->loadAmount += 10;
+  }
+  public function mount()
+  {
+    $this->session_id = Session::getId();
   }
 
   public function render()
@@ -43,11 +48,11 @@ class StoreProducts extends Component
     if (!in_array($productId, $this->wishlist)) {
       $this->wishlist[] = $productId;
       $this->saveToSession();
-      $session_id = Session::getId();
 
       Wishlist::updateOrCreate(
-        ['session_id' => $session_id, 'product_id' => $productId]
+        ['session_id' => $this->session_id, 'product_id' => $productId]
       );
+      $this->emit('wishlistUpdated');
     }
   }
 
@@ -55,11 +60,11 @@ class StoreProducts extends Component
   {
     $this->wishlist = array_diff($this->wishlist, [$productId]);
     $this->saveToSession();
-    $session_id = Session::getId();
 
-    Wishlist::where('session_id', $session_id)
+    Wishlist::where('session_id', $this->session_id)
       ->where('product_id', $productId)
       ->delete();
+    $this->emit('wishlistUpdated');
   }
 
   private function saveToSession()

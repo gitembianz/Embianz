@@ -18,7 +18,13 @@
 //     cookieConsentButton.addEventListener('click', hideCookieConsent);
 //   }
 // });
-
+document.addEventListener("livewire:load", function () {
+  Livewire.on('wishlistUpdated', () => {
+    // Trigger the hidden button click to reload the StoreHeader component
+    document.getElementById('reloadStoreHeader').click();
+    document.getElementById('reloadStoreProducts').click();
+  });
+});
 function handleScroll() {
   let prevScrollPos = window.pageYOffset;
   const header = document.querySelector('header');
@@ -305,7 +311,7 @@ function toggleDropdown(buttonId, dropdownId) {
 }
 
 toggleDropdown(".cart__btn", ".cart__list");
-toggleDropdown(".heart__btn", ".heart__list");
+// toggleDropdown(".heart__btn", ".heart__list");
 
 
 
