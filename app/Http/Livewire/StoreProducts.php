@@ -17,6 +17,8 @@ class StoreProducts extends Component
   public $quantity = 20;
   public $wishlist = [];
   public $session_id;
+  public $orderBy = 'best_selling'; // Default sorting order
+  public $orderAsc = true;
   protected $listeners = ['wishlistUpdated' => 'mount'];
 
   public function loadMore()
@@ -27,20 +29,35 @@ class StoreProducts extends Component
   {
     $this->session_id = Session::getId();
   }
-
   public function render()
   {
-    return view('livewire.store-products', [
-      'products' => $this->products
-    ]);
+    $products = $this->getProducts();
+
+    return view('livewire.store-products', compact('products'));
   }
-  public function getProductsProperty()
+  public function getProducts()
   {
-    return $this->productsQuery->limit($this->loadAmount)->get();
-  }
-  public function getProductsQueryProperty()
-  {
-    return Product::name($this->search)->orderBy('created_at', 'desc');
+    $query = Product::name($this->search);
+
+    switch ($this->orderBy) {
+      case 'best_selling':
+        $query->orderBy('popularity', $this->orderAsc ? 'asc' : 'desc');
+        break;
+      case 'name_az':
+        $query->orderBy('name', $this->orderAsc ? 'asc' : 'desc');
+        break;
+      case 'name_za':
+        $query->orderBy('name', $this->orderAsc ? 'desc' : 'asc');
+        break;
+      case 'date_old_new':
+        $query->orderBy('created_at', $this->orderAsc ? 'asc' : 'desc');
+        break;
+      case 'date_new_old':
+        $query->orderBy('created_at', $this->orderAsc ? 'desc' : 'asc');
+        break;
+    }
+
+    return $query->limit($this->loadAmount)->get();
   }
 
 

@@ -107,40 +107,42 @@
             <div class="filter__sort--content">
                 <ul class="filter__sort--list">
                     <li class="filter__sort--item">
-                        <input type="checkbox" name="size" id="sort1">
-                        <label for="sort1">Featured</label>
-                    </li>
-                    <li class="filter__sort--item">
-                        <input type="checkbox" name="size" id="sort2">
+                        <input wire:model="orderBy" type="radio" name="sort" value="best_selling" id="sort2">
                         <label for="sort2">Best selling</label>
                     </li>
                     <li class="filter__sort--item">
-                        <input type="checkbox" name="size" id="sort3">
+                        <input wire:model="orderBy" type="radio" name="sort" value="name_az" id="sort3">
                         <label for="sort3">Alphabetically, A-Z</label>
                     </li>
                     <li class="filter__sort--item">
-                        <input type="checkbox" name="size" id="sort4">
+                        <input wire:model="orderBy" type="radio" name="sort" value="name_za" id="sort4">
                         <label for="sort4">Alphabetically, Z-A</label>
                     </li>
                     <li class="filter__sort--item">
-                        <input type="checkbox" name="size" id="sort5">
-                        <label for="sort5">Price, low to high</label>
-                    </li>
-                    <li class="filter__sort--item">
-                        <input type="checkbox" name="size" id="sort6">
-                        <label for="sort6">Price, high to low</label>
-                    </li>
-                    <li class="filter__sort--item">
-                        <input type="checkbox" name="size" id="sort7">
+                        <input wire:model="orderBy" type="radio" name="sort" value="date_old_new"
+                            id="sort7">
                         <label for="sort7">Date, old to new</label>
                     </li>
                     <li class="filter__sort--item">
-                        <input type="checkbox" name="size" id="sort8">
+                        <input wire:model="orderBy" type="radio" name="sort" value="date_new_old"
+                            id="sort8">
                         <label for="sort8">Date, new to old</label>
                     </li>
                 </ul>
             </div>
         </div>
+
+        {{-- <li class="filter__sort--item">
+                        <input wire:model="orderBy.price_low_high" type="checkbox" name="sort[]"
+                            value="price_low_high" id="sort5">
+                        <label for="sort5">Price, low to high</label>
+                    </li>
+                    <li class="filter__sort--item">
+                        <input wire:model="orderBy.price_high_low" type="checkbox" name="sort[]"
+                            value="price_high_low" id="sort6">
+                        <label for="sort6">Price, high to low</label>
+                    </li> --}}
+
     </div>
     <ul class="filter__applied">
         <li>
