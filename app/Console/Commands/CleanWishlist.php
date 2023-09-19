@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Wishlist;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 class CleanWishlist extends Command
@@ -22,7 +22,7 @@ class CleanWishlist extends Command
     $oneDayAgo = Carbon::now()->subDay();
 
     // Delete rows older than a day
-    DB::table('wishlist')->where('created_at', '<', $oneDayAgo)->delete();
+    Wishlist::where('created_at', '<', $oneDayAgo)->delete();
 
     $this->info('Old wishlist items have been deleted.');
   }
