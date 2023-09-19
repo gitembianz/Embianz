@@ -37,7 +37,7 @@
                             89,99 lei
                         </span> --}}
                         <div class="cart-page--bundle">
-                            <button class="cart-page__delete">
+                            <button class="cart-page__delete" wire:click="removeFromWishlist({{ $product->id }})">
                                 <svg>
                                     <polyline points="3 6 5 6 21 6"></polyline>
                                     <path

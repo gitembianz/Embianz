@@ -19,6 +19,14 @@ class StoreWishlist extends Component
     ];
     return view('livewire.store-wishlist', $data);
   }
+  public function removeFromWishlist($productId)
+  {
+    $session_id = Session::getId();
+    Wishlist::where('session_id', $session_id)
+      ->where('product_id', $productId)
+      ->delete();
+    $this->emit('wishlistUpdated');
+  }
   public function reload()
   {
   }
