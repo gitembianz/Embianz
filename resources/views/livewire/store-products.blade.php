@@ -239,7 +239,7 @@
                         @else
                             <p></p>
                         @endif
-                        <button class="product__item--heart @if ($product->wishlists->count() > 0) active @endif"
+                        <button class="product__item--heart @if ($product->wishlists->where('session_id', $session_id)->isNotEmpty()) active @endif"
                             aria-label="add to favorites" wire:click="toggleWishlist({{ $product->id }})">
                             <svg>
                                 <path
@@ -247,7 +247,6 @@
                                 </path>
                             </svg>
                         </button>
-
                     </div>
                 </article>
                 {{-- </a> --}}
@@ -256,3 +255,4 @@
     </div>
     <x-lazy />
 </div>
+       
