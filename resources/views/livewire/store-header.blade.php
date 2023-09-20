@@ -43,25 +43,28 @@
                  </button>
                  @foreach ($categories as $category)
                      <li>
-                         <div class="menu__item">
-                             <a role="sticle">{{ $category->name }}</a>
-                             @if ($category->subcategory->count() != 0)
+                         @if ($category->subcategory->count() != 0)
+                             <div class="menu__item">
+                                 <a role="sticle" href="/storeproducts/{{ $category->id }}">{{ $category->name }}</a>
                                  <button aria-label="Expand Sticle Submenu">
                                      <svg aria-hidden="true">
                                          <polyline points="6 9 12 15 18 9"></polyline>
                                      </svg>
                                  </button>
-                             @endif
-                         </div>
-                         <ul class="menu__sub" role="menu" aria-hidden="true" aria-expanded="false">
-                             <div class="menu__sub--wrapper">
-                                 <div class="menu__sub--list">
-                                     @foreach ($category->subcategory as $subcategory)
-                                         <a class="menu__sub--item" role="menuitem">{{ $subcategory->category }}</a>
-                                     @endforeach
-                                 </div>
                              </div>
-                         </ul>
+                             <ul class="menu__sub" role="menu" aria-hidden="true" aria-expanded="false">
+                                 <div class="menu__sub--wrapper">
+                                     <div class="menu__sub--list">
+                                         @foreach ($category->subcategory as $subcategory)
+                                             <a class="menu__sub--item" href="/storeproducts/{{ $subcategory->id }}"
+                                                 role="menuitem">{{ $subcategory->category }}</a>
+                                         @endforeach
+                                     </div>
+                                 </div>
+                             </ul>
+                         @else
+                         @endif
+
                      </li>
                  @endforeach
              </ul>
@@ -274,4 +277,4 @@
          </div>
      </div>
  </div>
- 
+  
