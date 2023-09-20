@@ -56,13 +56,17 @@
                                  <div class="menu__sub--wrapper">
                                      <div class="menu__sub--list">
                                          @foreach ($category->subcategory as $subcategory)
-                                             <a class="menu__sub--item" href="/storeproducts/{{ $subcategory->id }}"
+                                             <a class="menu__sub--item"
+                                                 href="/storeproducts/{{ $subcategory->category_id }}"
                                                  role="menuitem">{{ $subcategory->category }}</a>
                                          @endforeach
                                      </div>
                                  </div>
                              </ul>
                          @else
+                             <div class="menu__item">
+                                 <a role="sticle" href="/storeproducts/{{ $category->id }}">{{ $category->name }}</a>
+                             </div>
                          @endif
 
                      </li>
