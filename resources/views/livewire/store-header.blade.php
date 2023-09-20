@@ -45,8 +45,8 @@
                      <li>
                          @if ($category->subcategory->count() != 0)
                              <div class="menu__item">
-                                 <a role="sticle" href="/storeproducts/{{ $category->id }}">{{ $category->name }}</a>
-                                 <button aria-label="Expand Sticle Submenu">
+                                 <a href="/storeproducts/{{ $category->id }}">{{ $category->name }}</a>
+                                 <button>
                                      <svg aria-hidden="true">
                                          <polyline points="6 9 12 15 18 9"></polyline>
                                      </svg>
@@ -64,9 +64,7 @@
                                  </div>
                              </ul>
                          @else
-                             <div class="menu__item">
-                                 <a role="sticle" href="/storeproducts/{{ $category->id }}">{{ $category->name }}</a>
-                             </div>
+                             <a href="/storeproducts/{{ $category->id }}">{{ $category->name }}</a>
                          @endif
 
                      </li>

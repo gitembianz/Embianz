@@ -2,14 +2,14 @@
     <div class="products__control">
         <div class="filter">
             {{-- Filter Button --}}
-            <button class="filter__open" id="filterOpen" wire:click="$toggle('property')">
+            {{-- <button class="filter__open" id="filterOpen" wire:click="$toggle('property')">
                 Filters
                 <svg>
                     <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
                 </svg>
-            </button>
+            </button> --}}
             {{-- Filter Content --}}
-            <div class="filter__content @if ($property) show @endif">
+            {{-- <div class="filter__content @if ($property) show @endif">
                 @foreach ($specification as $index => $spec)
                     <div class="filter__dropdown">
                         <button class="filter__dropdown--btn">
@@ -37,7 +37,7 @@
                     <button wire:click="applyFilter">Apply</button>
                     <button>Reset</button>
                 </div> --}}
-            </div>
+            {{-- </div> --}}
         </div>
         <div class="filter__search">
             <input type="text" wire:model="search" placeholder="Search...">
