@@ -20,8 +20,12 @@ class StoreProducts extends Component
   public $session_id;
   public $specification;
   public $property = false;
+  public $selectedSpecValues = [];
   public $orderBy = 'best_selling'; // Default sorting order
   public $orderAsc = true;
+  public $specfilter = false;
+  public $products;
+
   protected $listeners = ['wishlistUpdated' => 'mount'];
 
   public function loadMore()
@@ -35,13 +39,34 @@ class StoreProducts extends Component
   }
   public function render()
   {
-    $products = $this->getProducts();
+    // Use $this->getProducts() to fetch products
+    $this->products = $this->getProducts();
 
-    return view('livewire.store-products', compact('products'));
+    return view('livewire.store-products');
   }
+
   public function getProducts()
   {
+
     $query = Product::name($this->search);
+    // if ($this->specfilter) {
+
+    //   if (!empty($this->selectedSpecValues)) {
+    //     // Loop through each selected spec value and add a whereHas clause for each
+    //     foreach ($this->selectedSpecValues as $outerKey => $outerValue) {
+    //       foreach ($outerValue as $innerKey => $innerValue) {
+    //         foreach ($innerValue as $valueKey => $value) {
+    //           dd($value);
+    //           if ($valueKey === 'value') {
+    //             $query->orWhereHas('product_specs', function ($q) use ($value) {
+    //               $q->where('value', $value);
+    //             });
+    //           }
+    //         }
+    //       }
+    //     }
+    //   }
+    // }
 
     switch ($this->orderBy) {
       case 'best_selling':
@@ -63,7 +88,10 @@ class StoreProducts extends Component
 
     return $query->limit($this->loadAmount)->get();
   }
-
+  // public function applyFilter()
+  // {
+  //   $this->specfilter = true;
+  // }
 
   public function addToWishlist($productId)
   {

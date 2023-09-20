@@ -10,7 +10,7 @@
             </button>
             {{-- Filter Content --}}
             <div class="filter__content @if ($property) show @endif">
-                @foreach ($specification as $spec)
+                @foreach ($specification as $index => $spec)
                     <div class="filter__dropdown">
                         <button class="filter__dropdown--btn">
                             {{ $spec->name }}
@@ -20,68 +20,23 @@
                         </button>
                         <div class="filter__dropdown--content">
                             <ul class="filter__list">
-                                @foreach ($spec->product_spec as $index => $value)
+                                @foreach ($spec->product_spec as $innerIndex => $value)
                                     <li class="filter__item">
-                                        <input type="checkbox" name="size" id="filter {{ $index }}">
-                                        <label for="filter {{ $index }}">{{ $value->value }}</label>
+                                        <input type="checkbox"
+                                            wire:model="selectedSpecValues.{{ $index }}.{{ $innerIndex }}.{{ $value }}"
+                                            id="filter{{ $index }}_{{ $innerIndex }}">
+                                        <label
+                                            for="filter{{ $index }}_{{ $innerIndex }}">{{ $value->value }}</label>
                                     </li>
                                 @endforeach
                             </ul>
                         </div>
                     </div>
                 @endforeach
-                {{-- <div class="filter__dropdown">
-                    <button class="filter__dropdown--btn">
-                        size
-                        <svg>
-                            <polyline points="6 9 12 15 18 9"></polyline>
-                        </svg>
-                    </button>
-                    <div class="filter__dropdown--content">
-                        <ul class="filter__list">
-                            <li class="filter__item">
-                                <input type="checkbox" name="size" id="filter2">
-                                <label for="filter2">250 ml</label>
-                            </li>
-                            <li class="filter__item">
-                                <input type="checkbox" name="size" id="filter3">
-                                <label for="filter3">500 ml</label>
-                            </li>
-                            <li class="filter__item">
-                                <input type="checkbox" name="size" id="filter4">
-                                <label for="filter4">1000 ml</label>
-                            </li>
-                            <li class="filter__item">
-                                <input type="checkbox" name="size">
-                                <label>250 ml</label>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="filter__dropdown">
-                    <button class="filter__dropdown--btn">
-                        Color
-                        <svg>
-                            <polyline points="6 9 12 15 18 9"></polyline>
-                        </svg>
-                    </button>
-                    <div class="filter__dropdown--content">
-                        <ul class="filter__list">
-                            <li class="filter__item">
-                                <input type="checkbox" name="size" id="filter5">
-                                <label for="filter5">blue</label>
-                            </li>
-                            <li class="filter__item">
-                                <input type="checkbox" name="size" id="filter">
-                                <label for="filter">red</label>
-                            </li>
-                        </ul>
-                    </div>
-                </div> --}}
-                <div class="filter__buttons">
-                    <button>Apply</button>
+                {{-- <div class="filter__buttons">
+                    <button wire:click="applyFilter">Apply</button>
                     <button>Reset</button>
-                </div>
+                </div> --}}
             </div>
         </div>
         <div class="filter__search">
@@ -126,41 +81,11 @@
                 </ul>
             </div>
         </div>
-
-        {{-- <li class="filter__sort--item">
-                        <input wire:model="orderBy.price_low_high" type="checkbox" name="sort[]"
-                            value="price_low_high" id="sort5">
-                        <label for="sort5">Price, low to high</label>
-                    </li>
-                    <li class="filter__sort--item">
-                        <input wire:model="orderBy.price_high_low" type="checkbox" name="sort[]"
-                            value="price_high_low" id="sort6">
-                        <label for="sort6">Price, high to low</label>
-                    </li> --}}
-
     </div>
-    <ul class="filter__applied">
+    {{-- <ul class="filter__applied">
         <li>
             <button class="filter__applied--item">
                 Color: Red
-                <svg>
-                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-            </button>
-        </li>
-        <li>
-            <button class="filter__applied--item">
-                Color: Blue
-                <svg>
-                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-            </button>
-        </li>
-        <li>
-            <button class="filter__applied--item">
-                Color: Green
                 <svg>
                     <line x1="18" y1="6" x2="6" y2="18"></line>
                     <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -176,7 +101,7 @@
                 Clear all
             </button>
         </li>
-    </ul>
+    </ul> --}}
     <div class="product__catalog">
         @if ($products->isEmpty())
             <p>No products found</p>
