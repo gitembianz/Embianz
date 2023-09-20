@@ -56,13 +56,17 @@
                                  <div class="menu__sub--wrapper">
                                      <div class="menu__sub--list">
                                          @foreach ($category->subcategory as $subcategory)
-                                             <a class="menu__sub--item" href="/storeproducts/{{ $subcategory->id }}"
+                                             <a class="menu__sub--item"
+                                                 href="/storeproducts/{{ $subcategory->category_id }}"
                                                  role="menuitem">{{ $subcategory->category }}</a>
                                          @endforeach
                                      </div>
                                  </div>
                              </ul>
                          @else
+                             <div class="menu__item">
+                                 <a role="sticle" href="/storeproducts/{{ $category->id }}">{{ $category->name }}</a>
+                             </div>
                          @endif
 
                      </li>
@@ -246,7 +250,7 @@
                          @if (count($cats) > 0)
                              @foreach ($cats as $category)
                                  <li>
-                                     <a class="search__container--item" href="">
+                                     <a class="search__container--item" href="/storeproducts/{{ $category->id }}">
                                          @if (count($category->media) > 0)
                                              @foreach ($category->media as $media)
                                                  @if ($media->location->location == 'search')
