@@ -250,7 +250,7 @@
                          @if (count($cats) > 0)
                              @foreach ($cats as $category)
                                  <li>
-                                     <a class="search__container--item" href="">
+                                     <a class="search__container--item" href="/storeproducts/{{ $category->id }}">
                                          @if (count($category->media) > 0)
                                              @foreach ($category->media as $media)
                                                  @if ($media->location->location == 'search')
