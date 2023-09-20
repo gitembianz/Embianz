@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\Specs;
 use App\Models\Wishlist;
@@ -25,6 +26,8 @@ class StoreProducts extends Component
   public $orderAsc = true;
   public $specfilter = false;
   public $products;
+  public $category;
+  public $categoryname;
 
   protected $listeners = ['wishlistUpdated' => 'mount'];
 
@@ -39,35 +42,25 @@ class StoreProducts extends Component
   }
   public function render()
   {
-    // Use $this->getProducts() to fetch products
     $this->products = $this->getProducts();
-
     return view('livewire.store-products');
   }
 
+  public function clearcategory()
+  {
+    $this->category = null;
+    return redirect('/storeproducts');
+  }
   public function getProducts()
   {
 
     $query = Product::name($this->search);
-    // if ($this->specfilter) {
-
-    //   if (!empty($this->selectedSpecValues)) {
-    //     // Loop through each selected spec value and add a whereHas clause for each
-    //     foreach ($this->selectedSpecValues as $outerKey => $outerValue) {
-    //       foreach ($outerValue as $innerKey => $innerValue) {
-    //         foreach ($innerValue as $valueKey => $value) {
-    //           dd($value);
-    //           if ($valueKey === 'value') {
-    //             $query->orWhereHas('product_specs', function ($q) use ($value) {
-    //               $q->where('value', $value);
-    //             });
-    //           }
-    //         }
-    //       }
-    //     }
-    //   }
-    // }
-
+    if ($this->category) {
+      $this->categoryname = Category::find($this->category)->name;
+      $query->whereHas('product_categories.category', function ($query) {
+        $query->where('id', $this->category);
+      });
+    }
     switch ($this->orderBy) {
       case 'best_selling':
         $query->orderBy('popularity', $this->orderAsc ? 'asc' : 'desc');

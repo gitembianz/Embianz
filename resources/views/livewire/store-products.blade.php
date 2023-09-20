@@ -82,17 +82,18 @@
             </div>
         </div>
     </div>
-    {{-- <ul class="filter__applied">
-        <li>
-            <button class="filter__applied--item">
-                Color: Red
-                <svg>
-                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-            </button>
-        </li>
-        <li>
+    @if ($category)
+        <ul class="filter__applied">
+            <li>
+                <button class="filter__applied--item">
+                    Category: {{ $categoryname }}
+                    <svg wire:click="clearcategory()">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </li>
+            {{-- <li>
             <button class="filter__applied--clear">
                 Load more...
         </li>
@@ -100,8 +101,9 @@
             <button class="filter__applied--clear">
                 Clear all
             </button>
-        </li>
-    </ul> --}}
+        </li> --}}
+        </ul>
+    @endif
     <div class="product__catalog">
         @if ($products->isEmpty())
             <p>No products found</p>
