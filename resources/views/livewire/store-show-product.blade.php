@@ -2,7 +2,7 @@
     <div class="product">
         <div class="product__preview">
             <div class="product__image">
-                @if (count($medias) > 1)
+                @if ($product->media->count() > 0)
                     <button class="product__image-prev">
                         <svg>
                             <polyline points="15 18 9 12 15 6"></polyline>
@@ -16,7 +16,7 @@
                     <img class="thumbnail-active" src="/images/store/default/product.png" alt="Product Image"
                         id="openModal">
                 @endif
-                @if (count($medias) > 1)
+                @if ($product->media->count() > 0)
                     <button class="product__image-next">
                         <svg>
                             <polyline points="9 18 15 12 9 6"></polyline>
@@ -24,7 +24,7 @@
                     </button>
                 @endif
             </div>
-            @if (count($medias) >= 1)
+            @if ($product->media->count() > 0)
                 <div class="product__nails">
                     @foreach ($relatedphotos as $index => $path)
                         <img class="thumbnail" wire:click="selectpath('{{ $path }}')" src="{{ $path }}"
@@ -37,7 +37,7 @@
                     <div class="slideshow">
                         <!-- Full-width images with number and caption text -->
 
-                        @foreach ($medias as $media)
+                        @foreach ($product->media as $media)
                             <?php
                             $mediaPath = $media->extrenal ? $media->path : "/{$media->path}{$media->name}";
                             ?>
@@ -46,7 +46,7 @@
                             </div>
                         @endforeach
                         <!-- Next and previous buttons -->
-                        @if (count($medias) > 1)
+                        @if ($product->media->count() > 0)
                             <a class="prev" onclick="plusSlides(-1)">
                                 <svg>
                                     <polyline points="15 18 9 12 15 6"></polyline>
