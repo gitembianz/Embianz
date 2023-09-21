@@ -24,7 +24,9 @@ url(/images/store/default/default.svg)
                                 <p>
                                     {{ $product->product->short_description }}
                                 </p>
-                                <button aria-label="See more">See more</button>
+                                <a href="{{ route('product', ['id' => $product->product->id]) }}" aria-label="See more">
+                                    <button>See more</button>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -55,36 +57,38 @@ url(/images/store/default/default.svg)
             <ul class="card-carousel" role="list">
                 @foreach ($popproducts as $product)
                     <li class="card" role="listitem">
-                        @if (count($product->media) > 0)
-                            @foreach ($product->media as $media)
-                                @if ($media->location->location == 'main')
-                                    @if ($media->external)
-                                        <img src="{{ $media->path }}" draggable="false" alt="{{ $media->path }}">
-                                    @else
-                                        <img src="/{{ $media->path }}{{ $media->name }}" draggable="false"
-                                            alt="{{ $media->path }}">
+                        <a href="/product/{{ $product->id }}">
+                            @if (count($product->media) > 0)
+                                @foreach ($product->media as $media)
+                                    @if ($media->location->location == 'main')
+                                        @if ($media->external)
+                                            <img src="{{ $media->path }}" draggable="false" alt="{{ $media->path }}">
+                                        @else
+                                            <img src="/{{ $media->path }}{{ $media->name }}" draggable="false"
+                                                alt="{{ $media->path }}">
+                                        @endif
+                                        <?php break; ?>
                                     @endif
-                                    <?php break; ?>
-                                @endif
-                            @endforeach
-                        @else
-                            <img src="/images/store/default/default.svg" draggable="false" alt="something wrong">
-                        @endif
-                        <h2>{{ $product->name }}</h2>
-                        <p>{{ $product->short_description }}</p>
-                        <span>Eco-friendly, BPA-free, Reusable</span>
-                        <p>
-                            @if ($product->product_prices->first())
-                                {{ $product->product_prices->first()->pricelist->currency->name }}
-                                {{ $product->product_prices->first()->value }}
+                                @endforeach
                             @else
-                                {{ __('no price') }}
+                                <img src="/images/store/default/default.svg" draggable="false" alt="something wrong">
                             @endif
-                        </p>
-                        {{-- <p class="price"><span>$24.99</span>$19.99</p> --}}
-                        <div class="card__fire">
-                            <img src="/images/store/fire.svg" alt="fire">
-                        </div>
+                            <h2>{{ $product->name }}</h2>
+                            <p>{{ $product->short_description }}</p>
+                            <span>Eco-friendly, BPA-free, Reusable</span>
+                            <p>
+                                @if ($product->product_prices->first())
+                                    {{ $product->product_prices->first()->pricelist->currency->name }}
+                                    {{ $product->product_prices->first()->value }}
+                                @else
+                                    {{ __('no price') }}
+                                @endif
+                            </p>
+                            {{-- <p class="price"><span>$24.99</span>$19.99</p> --}}
+                            <div class="card__fire">
+                                <img src="/images/store/fire.svg" alt="fire">
+                            </div>
+                        </a>
                     </li>
                 @endforeach
             </ul>
@@ -99,7 +103,7 @@ url(/images/store/default/default.svg)
         <div class="container home__discover--flex">
             <div class="home__discover--text">
                 <h1>Explore our products and find the perfect one for you.</h1>
-                <a href="#">Discover our products</a>
+                <a href="/storeproducts">Discover our products</a>
             </div>
             <img src="images/store/discover-items.webp" alt="discover items">
         </div>

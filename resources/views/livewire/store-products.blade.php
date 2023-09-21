@@ -1,7 +1,7 @@
 <div class="products">
     <div class="products__control">
         <div class="filter">
-            {{-- Filter Button --}}
+            {{-- Filter Button Left overs --}}
             {{-- <button class="filter__open" id="filterOpen" wire:click="$toggle('property')">
                 Filters
                 <svg>
@@ -34,7 +34,7 @@
                     </div>
                 @endforeach
                 {{-- <div class="filter__buttons">
-                    <button wire:click="applyFilter">Apply</button>
+                    <button wire:click="applyFilter">Apply</button>r
                     <button>Reset</button>
                 </div> --}}
             {{-- </div> --}}
@@ -96,12 +96,12 @@
             {{-- <li>
             <button class="filter__applied--clear">
                 Load more...
-        </li>
-        <li>
-            <button class="filter__applied--clear">
-                Clear all
-            </button>
         </li> --}}
+            <li>
+                <button wire:click="clearcategory()" class="filter__applied--clear">
+                    Clear all
+                </button>
+            </li>
         </ul>
     @endif
     <div class="product__catalog">
