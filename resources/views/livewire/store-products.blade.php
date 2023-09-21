@@ -111,21 +111,24 @@
             @foreach ($products as $product)
                 {{-- <a href="/product/{{ $product->id }}'"> --}}
                 <article class="product__item" @if ($loop->last) id="last_record" @endif>
-                    @if (count($product->media) > 0)
-                        @foreach ($product->media as $media)
-                            @if ($media->location->location == 'main')
-                                @if ($media->external)
-                                    <img src="{{ $media->path }}" draggable="false" alt="{{ $media->path }}">
-                                @else
-                                    <img src="/{{ $media->path }}{{ $media->name }}" draggable="false"
-                                        alt="{{ $media->path }}">
+
+                    <a href="/product/{{ $product->id }}">
+                        @if (count($product->media) > 0)
+                            @foreach ($product->media as $media)
+                                @if ($media->location->location == 'main')
+                                    @if ($media->external)
+                                        <img src="{{ $media->path }}" draggable="false" alt="{{ $media->path }}">
+                                    @else
+                                        <img src="/{{ $media->path }}{{ $media->name }}" draggable="false"
+                                            alt="{{ $media->path }}">
+                                    @endif
+                                    <?php break; ?>
                                 @endif
-                                <?php break; ?>
-                            @endif
-                        @endforeach
-                    @else
-                        <img src="/images/store/default/default.svg" draggable="false" alt="something wrong">
-                    @endif
+                            @endforeach
+                        @else
+                            <img src="/images/store/default/default.svg" draggable="false" alt="something wrong">
+                        @endif
+                    </a>
                     <div class="product__item--bundle">
                         <h4>{{ $product->name }}</h4>
                         {{-- <span>1000ml</span> --}}

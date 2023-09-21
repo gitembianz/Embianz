@@ -2,14 +2,11 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Media;
-use App\Models\Tabels;
 use App\Models\Product;
 use Livewire\Component;
 
 class StoreShowProduct extends Component
 {
-  public  $medias = [];
   public $record;
   public $productId;
   public $activeTab = 0;
@@ -25,8 +22,8 @@ class StoreShowProduct extends Component
   public function render()
   {
     return view('livewire.store-show-product', [
-      'product' => $this->record,
-      'medias' => $this->medias
+      'product' => $this->record
+
     ]);
   }
 
@@ -75,36 +72,27 @@ class StoreShowProduct extends Component
     $this->limit = $this->record->quantity;
     $this->quantity = 1;
 
-    $productType = class_basename(get_class($this->record));
-    $tabel = Tabels::where('name', $productType)->first();
-
-    if ($tabel) {
-      $tabelId = $tabel->id;
-      $this->medias = Media::where('tabel_id', $tabelId)
-        ->where('item_id', $this->productId)
-        ->get();
-
-      $this->mainMedia = $this->medias->firstWhere('location.location', 'main');
-      if ($this->mainMedia) {
-        if (!$this->path) {
-          $this->mainpath = $this->mainMedia->external
-            ? $this->mainMedia->path
-            : "/{$this->mainMedia->path}{$this->mainMedia->name}";
-        }
+    $this->mainMedia = $this->record->media->firstWhere('location.location', 'main');
+    if ($this->mainMedia) {
+      if (!$this->path) {
+        $this->mainpath = $this->mainMedia->external
+          ? $this->mainMedia->path
+          : "/{$this->mainMedia->path}{$this->mainMedia->name}";
       }
-
-      $this->mainimages = $this->medias
-        ->where('location.location', '!=', 'search')
-        ->sortBy('location_id')
-        ->values();
-
-      $this->relatedphotos = $this->mainimages->map(function ($image) {
-        return $image->external
-          ? $image->path
-          : "/{$image->path}{$image->name}";
-      });
     }
+
+    $this->mainimages = $this->record->media
+      ->where('location.location', '!=', 'search')
+      ->sortBy('location_id')
+      ->values();
+
+    $this->relatedphotos = $this->mainimages->map(function ($image) {
+      return $image->external
+        ? $image->path
+        : "/{$image->path}{$image->name}";
+    });
   }
+
 
 
 
