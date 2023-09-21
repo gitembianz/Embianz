@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Store_Settings;
 use Livewire\Component;
 
 class StoreMain extends Component
@@ -12,9 +13,16 @@ class StoreMain extends Component
   public $slider;
   public $category;
 
-  public function mount($slider_category)
+  public function mount()
   {
-    $this->category = Category::find($slider_category);
+    $sliderCategory = Store_Settings::where('parameter', 'slider_category')->first();
+
+    if ($sliderCategory) {
+      $categoryId = $sliderCategory->value;
+      $this->category = Category::find($categoryId);
+    } else {
+      $this->category = null;
+    }
   }
 
   public function render()

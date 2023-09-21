@@ -2,6 +2,6 @@
 <x-store-header />
 <main>
     {{-- filter part --}}
-    <livewire:store-main slider_category="103" />
+    <livewire:store-main />
 </main>
 <x-store-footer />
