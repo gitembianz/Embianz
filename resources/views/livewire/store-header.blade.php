@@ -111,40 +111,49 @@
                              </svg>
                          </a>
                      </li>
-                     @foreach ($cartitems as $product)
-                         <li>
-                             <div class="cart__list--item">
-                                 @if (count($product->media) > 0)
-                                     @foreach ($product->media as $media)
-                                         @if ($media->location->location == 'main')
-                                             @if ($media->external)
-                                                 <img class="cart__list--img" src="{{ $media->path }}"
-                                                     alt="{{ $media->path }}">
-                                             @else
-                                                 <img class="cart__list--img"
-                                                     src="/{{ $media->path }}{{ $media->name }}"
-                                                     alt="{{ $media->path }}">
-                                             @endif
-                                             <?php break; ?>
-                                         @endif
-                                     @endforeach
-                                 @else
-                                     <img class="cart__list--img" src="/images/store/default/default.svg"
-                                         alt="something wrong">
-                                 @endif
-                                 <a class="cart__list--text"
-                                     href="/product/{{ $product->id }}"><span>{{ $product->name }}</span></a>
-                                 <span class="cart__list--much">quantity</span>
-                                 <span class="cart__list--much">price</span>
-                                 <button class="cart__list--delete" wire:click="removeFromCart({{ $product->id }})">
-                                     <svg>
-                                         <line x1="18" y1="6" x2="6" y2="18"></line>
-                                         <line x1="6" y1="6" x2="18" y2="18"></line>
-                                     </svg>
-                                 </button>
-                             </div>
+                     @if ($cartitems->isEmpty())
+                         <li class="heart__list--item">
+                             <span style="color: black">Shopping Basket empty</span>
                          </li>
-                     @endforeach
+                     @else
+                         @foreach ($cartitems as $product)
+                             <li>
+                                 <div class="cart__list--item">
+                                     @if (count($product->media) > 0)
+                                         @foreach ($product->media as $media)
+                                             @if ($media->location->location == 'main')
+                                                 @if ($media->external)
+                                                     <img class="cart__list--img" src="{{ $media->path }}"
+                                                         alt="{{ $media->path }}">
+                                                 @else
+                                                     <img class="cart__list--img"
+                                                         src="/{{ $media->path }}{{ $media->name }}"
+                                                         alt="{{ $media->path }}">
+                                                 @endif
+                                                 <?php break; ?>
+                                             @endif
+                                         @endforeach
+                                     @else
+                                         <img class="cart__list--img" src="/images/store/default/default.svg"
+                                             alt="something wrong">
+                                     @endif
+                                     <a class="cart__list--text"
+                                         href="/product/{{ $product->id }}"><span>{{ $product->name }}</span></a>
+                                     <span class="cart__list--much">quantity</span>
+                                     <span class="cart__list--much">price</span>
+                                     <button class="cart__list--delete"
+                                         wire:click="removeFromCart({{ $product->id }})">
+                                         <svg>
+                                             <line x1="18" y1="6" x2="6" y2="18">
+                                             </line>
+                                             <line x1="6" y1="6" x2="18" y2="18">
+                                             </line>
+                                         </svg>
+                                     </button>
+                                 </div>
+                             </li>
+                         @endforeach
+                     @endif
                  </ul>
              </div>
              <div class="heart">
