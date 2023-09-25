@@ -114,6 +114,7 @@ class StoreProducts extends Component
         [
           'session_id' => $this->session_id,
           'product_id' => $productId,
+          'quantity' => $quantity
         ],
       );
       $this->emit('cartUpdated');
