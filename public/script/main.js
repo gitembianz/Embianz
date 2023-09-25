@@ -303,7 +303,7 @@ function toggleDropdown(buttonId, dropdownId) {
   });
 }
 
-toggleDropdown(".cart__btn", ".cart__list");
+// toggleDropdown(".cart__btn", ".cart__list");
 // toggleDropdown(".heart__btn", ".heart__list");
 
 

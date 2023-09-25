@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Cart;
 use App\Models\Product;
 use Livewire\Component;
 use App\Models\Category;
@@ -16,7 +17,11 @@ class StoreHeader extends Component
   public $active = false;
   public $wishlistitems;
   public $showwis = false;
-  protected $listeners = ['wishlistUpdated' => 'mount'];
+  public $showcart = false;
+  protected $listeners = [
+    'wishlistUpdated' => 'mount',
+    'cartUpdated' => 'mount'
+  ];
 
   public function render()
   {
@@ -25,6 +30,7 @@ class StoreHeader extends Component
       'objects' => $this->objects,
       'cats' => $this->cats,
       'wishlistitems' => $this->wishlistItems,
+      'cartitems' => $this->cartItems,
     ];
 
     return view('livewire.store-header', $data);
@@ -46,12 +52,27 @@ class StoreHeader extends Component
     $this->wishlistitems = $this->getWishlistItemsProperty();
   }
 
+  public function getCartItemsProperty()
+  {
+    $session_id = Session::getId();
+    $cart = Cart::where('session_id', $session_id)->pluck('product_id')->toArray();
+    return Product::whereIn('id', $cart)->get();
+  }
+
   public function wishlistshow()
   {
     if ($this->showwis === false) {
       $this->showwis = true;
     } else {
       $this->showwis = false;
+    }
+  }
+  public function cartshow()
+  {
+    if ($this->showcart === false) {
+      $this->showcart = true;
+    } else {
+      $this->showcart = false;
     }
   }
   public function reload()
@@ -66,6 +87,14 @@ class StoreHeader extends Component
       ->where('product_id', $productId)
       ->delete();
     $this->emit('wishlistUpdated');
+  }
+  public function removeFromCart($productId)
+  {
+    $session_id = Session::getId();
+    Cart::where('session_id', $session_id)
+      ->where('product_id', $productId)
+      ->delete();
+    $this->emit('cartUpdated');
   }
   public function mount()
   {

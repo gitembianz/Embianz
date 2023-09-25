@@ -88,16 +88,21 @@
                  </svg>
              </button>
              <div class="cart">
-                 <button class="cart__btn" id="cartBtn" aria-label="Open Cart">
+                 <button class="cart__btn" style="position: relative" wire:click="cartshow" id="cartBtn"
+                     aria-label="Open Cart">
                      <svg aria-hidden="true">
                          <circle cx="9" cy="21" r="1"></circle>
                          <circle cx="20" cy="21" r="1"></circle>
                          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
                      </svg>
+                     @if ($cartitems->count() > 0)
+                         <span class="alert-count" id="cartCount">{{ $cartitems->count() }}</span>
+                     @endif
                  </button>
-                 <ul class="cart__list" id="cartContent" aria-label="Cart Items">
+                 <ul class="cart__list @if ($showcart) show @endif" id="cartContent"
+                     aria-label="Cart Items">
                      <li>
-                         <a href="/cart.html" class="cart__list--item">
+                         <a href="/cart" class="cart__list--item">
                              <h4 class="cart__list--name">Shopping Basket</h4>
                              <svg>
                                  <circle cx="9" cy="21" r="1"></circle>
@@ -106,32 +111,40 @@
                              </svg>
                          </a>
                      </li>
-                     <li><a class="cart__list--item" href="#">
-                             <img class="cart__list--img" src="/images/store/bottle1-min.webp"
-                                 alt="Sustainable Sips: Reusable Bottles">
-                             <span class="cart__list--text">Sustainable Sips: Reusable Bottles</span>
-                             <span class="cart__list--much">x2</span>
-                             <span class="cart__list--much">20$</span>
-                             <button class="cart__list--delete">
-                                 <svg>
-                                     <line x1="18" y1="6" x2="6" y2="18"></line>
-                                     <line x1="6" y1="6" x2="18" y2="18"></line>
-                                 </svg>
-                             </button>
-                         </a></li>
-                     <li><a class="cart__list--item" href="#">
-                             <img class="cart__list--img" src="/images/store/bottle2-min.webp"
-                                 alt="Sustainable Sips: Reusable Bottles">
-                             <span class="cart__list--text">Sustainable Sips: Reusable Bottles</span>
-                             <span class="cart__list--much">x5</span>
-                             <span class="cart__list--much">40$</span>
-                             <button class="cart__list--delete">
-                                 <svg>
-                                     <line x1="18" y1="6" x2="6" y2="18"></line>
-                                     <line x1="6" y1="6" x2="18" y2="18"></line>
-                                 </svg>
-                             </button>
-                         </a></li>
+                     @foreach ($cartitems as $product)
+                         <li>
+                             <div class="cart__list--item">
+                                 @if (count($product->media) > 0)
+                                     @foreach ($product->media as $media)
+                                         @if ($media->location->location == 'main')
+                                             @if ($media->external)
+                                                 <img class="cart__list--img" src="{{ $media->path }}"
+                                                     alt="{{ $media->path }}">
+                                             @else
+                                                 <img class="cart__list--img"
+                                                     src="/{{ $media->path }}{{ $media->name }}"
+                                                     alt="{{ $media->path }}">
+                                             @endif
+                                             <?php break; ?>
+                                         @endif
+                                     @endforeach
+                                 @else
+                                     <img class="cart__list--img" src="/images/store/default/default.svg"
+                                         alt="something wrong">
+                                 @endif
+                                 <a class="cart__list--text"
+                                     href="/product/{{ $product->id }}"><span>{{ $product->name }}</span></a>
+                                 <span class="cart__list--much">quantity</span>
+                                 <span class="cart__list--much">price</span>
+                                 <button class="cart__list--delete" wire:click="removeFromCart({{ $product->id }})">
+                                     <svg>
+                                         <line x1="18" y1="6" x2="6" y2="18"></line>
+                                         <line x1="6" y1="6" x2="18" y2="18"></line>
+                                     </svg>
+                                 </button>
+                             </div>
+                         </li>
+                     @endforeach
                  </ul>
              </div>
              <div class="heart">
