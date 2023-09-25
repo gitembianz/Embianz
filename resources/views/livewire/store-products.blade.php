@@ -144,7 +144,7 @@
                                     @endif
                                 </span>
                             </div>
-                            <button wire:click="toggleCart({{ $product->id }})" class="product__item--btn"
+                            <button wire:click="addToCart({{ $product->id }})" class="product__item--btn"
                                 aria-label="product cart">
                                 <svg>
                                     <circle cx="9" cy="21" r="1"></circle>

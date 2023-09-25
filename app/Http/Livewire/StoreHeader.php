@@ -9,7 +9,6 @@ use App\Models\Category;
 use App\Models\Wishlist;
 use Illuminate\Support\Facades\Session;
 
-
 class StoreHeader extends Component
 {
   public $limit = 5;
@@ -18,6 +17,7 @@ class StoreHeader extends Component
   public $wishlistitems;
   public $showwis = false;
   public $showcart = false;
+  public $total;
   protected $listeners = [
     'wishlistUpdated' => 'mount',
     'cartUpdated' => 'mount'
@@ -98,7 +98,10 @@ class StoreHeader extends Component
   }
   public function mount()
   {
-    // Initial load of wishlistitems
+    $session_id = Session::getId();
+
+    // Use sum() method to calculate the total quantity
+    $this->total = Cart::where('session_id', $session_id)->sum('quantity');
     $this->wishlistitems = $this->getWishlistItemsProperty();
   }
 
