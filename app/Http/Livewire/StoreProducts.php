@@ -118,6 +118,14 @@ class StoreProducts extends Component
         ],
       );
       $this->emit('cartUpdated');
+    } else {
+      // If the product already exists in the cart, increment the quantity by one
+      Cart::where([
+        'session_id' => $this->session_id,
+        'product_id' => $productId,
+      ])->increment('quantity', 1);
+
+      $this->emit('cartUpdated');
     }
   }
   public function removeFromWishlist($productId)
@@ -129,17 +137,6 @@ class StoreProducts extends Component
       ->where('product_id', $productId)
       ->delete();
     $this->emit('wishlistUpdated');
-  }
-
-  public function removeFromCart($productId)
-  {
-    $this->cart = array_diff($this->cart, [$productId]);
-    $this->saveToSession();
-
-    Cart::where('session_id', $this->session_id)
-      ->where('product_id', $productId)
-      ->delete();
-    $this->emit('cartUpdated');
   }
 
   private function saveToSession()
@@ -155,14 +152,6 @@ class StoreProducts extends Component
       $this->removeFromWishlist($productId);
     } else {
       $this->addToWishlist($productId);
-    }
-  }
-  public function toggleCart($productId)
-  {
-    if (in_array($productId, $this->cart)) {
-      $this->removeFromCart($productId);
-    } else {
-      $this->addToCart($productId);
     }
   }
 }
