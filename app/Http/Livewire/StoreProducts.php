@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Cart;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Specs;
@@ -18,6 +19,7 @@ class StoreProducts extends Component
   public $search = "";
   public $quantity = 20;
   public $wishlist = [];
+  public $cart = [];
   public $session_id;
   public $specification;
   public $property = false;
@@ -29,7 +31,10 @@ class StoreProducts extends Component
   public $category;
   public $categoryname;
 
-  protected $listeners = ['wishlistUpdated' => 'mount'];
+  protected $listeners = [
+    'wishlistUpdated' => 'mount',
+    'cartUpdated' => 'mount'
+  ];
 
   public function loadMore()
   {
@@ -98,7 +103,21 @@ class StoreProducts extends Component
       $this->emit('wishlistUpdated');
     }
   }
+  public function addToCart($productId)
+  {
+    if (!in_array($productId, $this->cart)) {
+      $this->cart[] = $productId;
+      $this->saveToSession();
 
+      Cart::updateOrCreate(
+        [
+          'session_id' => $this->session_id,
+          'product_id' => $productId,
+        ]
+      );
+      $this->emit('cartUpdated');
+    }
+  }
   public function removeFromWishlist($productId)
   {
     $this->wishlist = array_diff($this->wishlist, [$productId]);
@@ -110,9 +129,23 @@ class StoreProducts extends Component
     $this->emit('wishlistUpdated');
   }
 
+  public function removeFromCart($productId)
+  {
+    $this->cart = array_diff($this->cart, [$productId]);
+    $this->saveToSession();
+
+    Cart::where('session_id', $this->session_id)
+      ->where('product_id', $productId)
+      ->delete();
+    $this->emit('cartUpdated');
+  }
+
   private function saveToSession()
   {
-    session(['wishlist' => $this->wishlist]);
+    session([
+      'wishlist' => $this->wishlist,
+      'cart' => $this->cart
+    ]);
   }
   public function toggleWishlist($productId)
   {
@@ -120,6 +153,14 @@ class StoreProducts extends Component
       $this->removeFromWishlist($productId);
     } else {
       $this->addToWishlist($productId);
+    }
+  }
+  public function toggleCart($productId)
+  {
+    if (in_array($productId, $this->cart)) {
+      $this->removeFromCart($productId);
+    } else {
+      $this->addToCart($productId);
     }
   }
 }
