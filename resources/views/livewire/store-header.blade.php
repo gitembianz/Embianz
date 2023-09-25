@@ -139,8 +139,17 @@
                                      @endif
                                      <a class="cart__list--text"
                                          href="/product/{{ $product->id }}"><span>{{ $product->name }}</span></a>
+                                     <span class="cart__list--much">
+                                         @php
+                                             $price = $product->product_prices->first();
+                                         @endphp
+                                         @if ($price)
+                                             {{ $price->value }} {{ $price->pricelist->currency->first()->name }}
+                                         @else
+                                             unavailable
+                                         @endif
+                                     </span>
                                      <span class="cart__list--much">x {{ $product->carts->first()->quantity }}</span>
-                                     <span class="cart__list--much">price</span>
                                      <button class="cart__list--delete"
                                          wire:click="removeFromCart({{ $product->id }})">
                                          <svg>
