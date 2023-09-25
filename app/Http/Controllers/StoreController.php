@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Store;
+use App\Models\Product;
+use App\Models\Category;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreStoreRequest;
 use App\Http\Requests\UpdateStoreRequest;
-use App\Models\Product;
 
 class StoreController extends Controller
 {
@@ -33,9 +34,15 @@ class StoreController extends Controller
   {
     return view('store.complete');
   }
-  public function products()
+  public function products($categoryId = null)
   {
-    return view('store.products');
+    $category = Category::find($categoryId);
+    if ($category) {
+      $data = $category->id;
+    } else {
+      $data = "";
+    }
+    return view('store.products', compact('data'));
   }
   public function terms()
   {

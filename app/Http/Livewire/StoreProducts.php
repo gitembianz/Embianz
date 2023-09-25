@@ -2,7 +2,10 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Cart;
+use App\Models\Category;
 use App\Models\Product;
+use App\Models\Specs;
 use App\Models\Wishlist;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -16,7 +19,22 @@ class StoreProducts extends Component
   public $search = "";
   public $quantity = 20;
   public $wishlist = [];
+  public $cart = [];
   public $session_id;
+  public $specification;
+  public $property = false;
+  public $selectedSpecValues = [];
+  public $orderBy = 'best_selling'; // Default sorting order
+  public $orderAsc = true;
+  public $specfilter = false;
+  public $products;
+  public $category;
+  public $categoryname;
+
+  protected $listeners = [
+    'wishlistUpdated' => 'mount',
+    'cartUpdated' => 'mount'
+  ];
 
   public function loadMore()
   {
@@ -25,23 +43,53 @@ class StoreProducts extends Component
   public function mount()
   {
     $this->session_id = Session::getId();
+    $this->specification = Specs::all();
   }
-
   public function render()
   {
-    return view('livewire.store-products', [
-      'products' => $this->products
-    ]);
-  }
-  public function getProductsProperty()
-  {
-    return $this->productsQuery->limit($this->loadAmount)->get();
-  }
-  public function getProductsQueryProperty()
-  {
-    return Product::name($this->search)->orderBy('created_at', 'desc');
+    $this->products = $this->getProducts();
+    return view('livewire.store-products');
   }
 
+  public function clearcategory()
+  {
+    $this->category = null;
+    return redirect('/storeproducts');
+  }
+  public function getProducts()
+  {
+
+    $query = Product::name($this->search);
+    if ($this->category) {
+      $this->categoryname = Category::find($this->category)->name;
+      $query->whereHas('product_categories.category', function ($query) {
+        $query->where('id', $this->category);
+      });
+    }
+    switch ($this->orderBy) {
+      case 'best_selling':
+        $query->orderBy('popularity', $this->orderAsc ? 'asc' : 'desc');
+        break;
+      case 'name_az':
+        $query->orderBy('name', $this->orderAsc ? 'asc' : 'desc');
+        break;
+      case 'name_za':
+        $query->orderBy('name', $this->orderAsc ? 'desc' : 'asc');
+        break;
+      case 'date_old_new':
+        $query->orderBy('created_at', $this->orderAsc ? 'asc' : 'desc');
+        break;
+      case 'date_new_old':
+        $query->orderBy('created_at', $this->orderAsc ? 'desc' : 'asc');
+        break;
+    }
+
+    return $query->limit($this->loadAmount)->get();
+  }
+  // public function applyFilter()
+  // {
+  //   $this->specfilter = true;
+  // }
 
   public function addToWishlist($productId)
   {
@@ -55,7 +103,23 @@ class StoreProducts extends Component
       $this->emit('wishlistUpdated');
     }
   }
+  public function addToCart($productId)
+  {
+    if (!in_array($productId, $this->cart)) {
+      $this->cart[] = $productId;
+      $this->saveToSession();
+      $quantity = 1;
 
+      Cart::updateOrCreate(
+        [
+          'session_id' => $this->session_id,
+          'product_id' => $productId,
+          'quantity' => $quantity
+        ],
+      );
+      $this->emit('cartUpdated');
+    }
+  }
   public function removeFromWishlist($productId)
   {
     $this->wishlist = array_diff($this->wishlist, [$productId]);
@@ -67,9 +131,23 @@ class StoreProducts extends Component
     $this->emit('wishlistUpdated');
   }
 
+  public function removeFromCart($productId)
+  {
+    $this->cart = array_diff($this->cart, [$productId]);
+    $this->saveToSession();
+
+    Cart::where('session_id', $this->session_id)
+      ->where('product_id', $productId)
+      ->delete();
+    $this->emit('cartUpdated');
+  }
+
   private function saveToSession()
   {
-    session(['wishlist' => $this->wishlist]);
+    session([
+      'wishlist' => $this->wishlist,
+      'cart' => $this->cart
+    ]);
   }
   public function toggleWishlist($productId)
   {
@@ -77,6 +155,14 @@ class StoreProducts extends Component
       $this->removeFromWishlist($productId);
     } else {
       $this->addToWishlist($productId);
+    }
+  }
+  public function toggleCart($productId)
+  {
+    if (in_array($productId, $this->cart)) {
+      $this->removeFromCart($productId);
+    } else {
+      $this->addToCart($productId);
     }
   }
 }
