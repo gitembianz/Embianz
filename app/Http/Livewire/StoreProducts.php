@@ -108,12 +108,13 @@ class StoreProducts extends Component
     if (!in_array($productId, $this->cart)) {
       $this->cart[] = $productId;
       $this->saveToSession();
+      $quantity = 1;
 
       Cart::updateOrCreate(
         [
           'session_id' => $this->session_id,
           'product_id' => $productId,
-        ]
+        ],
       );
       $this->emit('cartUpdated');
     }
