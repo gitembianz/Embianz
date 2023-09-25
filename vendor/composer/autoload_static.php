@@ -703,6 +703,7 @@ class ComposerStaticInitdbceb679be78fc0f2f620fcaf24d3e3e
         'App\\Http\\Requests\\UpdatePriceListRequest' => __DIR__ . '/../..' . '/app/Http/Requests/UpdatePriceListRequest.php',
         'App\\Http\\Requests\\UpdateSpecsRequest' => __DIR__ . '/../..' . '/app/Http/Requests/UpdateSpecsRequest.php',
         'App\\Http\\Requests\\UpdateStoreRequest' => __DIR__ . '/../..' . '/app/Http/Requests/UpdateStoreRequest.php',
+        'App\\Models\\Cart' => __DIR__ . '/../..' . '/app/Models/Cart.php',
         'App\\Models\\Category' => __DIR__ . '/../..' . '/app/Models/Category.php',
         'App\\Models\\Currency' => __DIR__ . '/../..' . '/app/Models/Currency.php',
         'App\\Models\\ItemMedia' => __DIR__ . '/../..' . '/app/Models/ItemMedia.php',
