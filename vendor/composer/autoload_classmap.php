@@ -74,6 +74,7 @@ return array(
     'App\\Http\\Requests\\UpdatePriceListRequest' => $baseDir . '/app/Http/Requests/UpdatePriceListRequest.php',
     'App\\Http\\Requests\\UpdateSpecsRequest' => $baseDir . '/app/Http/Requests/UpdateSpecsRequest.php',
     'App\\Http\\Requests\\UpdateStoreRequest' => $baseDir . '/app/Http/Requests/UpdateStoreRequest.php',
+    'App\\Models\\Cart' => $baseDir . '/app/Models/Cart.php',
     'App\\Models\\Category' => $baseDir . '/app/Models/Category.php',
     'App\\Models\\Currency' => $baseDir . '/app/Models/Currency.php',
     'App\\Models\\ItemMedia' => $baseDir . '/app/Models/ItemMedia.php',
