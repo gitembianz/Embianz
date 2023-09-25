@@ -27,9 +27,6 @@ class StoreWishlist extends Component
       ->delete();
     $this->emit('wishlistUpdated');
   }
-  public function reload()
-  {
-  }
   public function getWishlistItemsProperty()
   {
     $session_id = Session::getId();

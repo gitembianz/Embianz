@@ -136,9 +136,12 @@
                         <div class="product__item--buttons">
                             <div class="product__item--price">
                                 <span>
-                                    @if ($product->product_prices->first() !== null)
-                                        {{ $product->product_prices->first()->value }}
-                                        {{ $product->product_prices->first()->pricelist->currency->first()->name }}
+                                    @php
+                                        $price = $product->product_prices->first();
+                                    @endphp
+
+                                    @if ($price)
+                                        {{ $price->value }} {{ $price->pricelist->currency->first()->name }}
                                     @else
                                         unavailable
                                     @endif
