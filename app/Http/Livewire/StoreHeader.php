@@ -62,6 +62,7 @@ class StoreHeader extends Component
   public function wishlistshow()
   {
     if ($this->showwis === false) {
+      $this->showcart = false;
       $this->showwis = true;
     } else {
       $this->showwis = false;
@@ -70,6 +71,7 @@ class StoreHeader extends Component
   public function cartshow()
   {
     if ($this->showcart === false) {
+      $this->showwis = false;
       $this->showcart = true;
     } else {
       $this->showcart = false;
