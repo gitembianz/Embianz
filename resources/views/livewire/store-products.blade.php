@@ -147,28 +147,36 @@
                                     @endif
                                 </span>
                             </div>
-                            <button wire:click="addToCart({{ $product->id }})" class="product__item--btn"
-                                aria-label="product cart">
-                                <svg>
-                                    <circle cx="9" cy="21" r="1"></circle>
-                                    <circle cx="20" cy="21" r="1"></circle>
-                                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6">
-                                    </path>
-                                </svg>
-                            </button>
+                            @if ($price && $product->quantity != 0)
+                                <button wire:click="addToCart({{ $product->id }})" class="product__item--btn"
+                                    aria-label="product cart">
+                                    <svg>
+                                        <circle cx="9" cy="21" r="1"></circle>
+                                        <circle cx="20" cy="21" r="1"></circle>
+                                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6">
+                                        </path>
+                                    </svg>
+                                </button>
+                            @endif
                         </div>
                     </div>
                     <div class="product__item--header">
-                        @if ($product->quantity < $quantity && $product->quantity > 0)
-                            <p class="product__item--stock">
-                                Low stock!
-                            </p>
-                        @elseif($product->quantity == 0)
-                            <p class="product__item--stock">
-                                Out of stock!
-                            </p>
+                        @if ($price)
+                            @if ($product->quantity < $quantity && $product->quantity > 0)
+                                <p class="product__item--stock">
+                                    Low stock!
+                                </p>
+                            @elseif($product->quantity == 0)
+                                <p class="product__item--stock">
+                                    Out of stock!
+                                </p>
+                            @else
+                                <p></p>
+                            @endif
                         @else
-                            <p></p>
+                            <p class="product__item--stock">
+                                Comming soon!
+                            </p>
                         @endif
                         <button class="product__item--heart @if ($product->wishlists->where('session_id', $session_id)->isNotEmpty()) active @endif"
                             aria-label="add to favorites" wire:click="toggleWishlist({{ $product->id }})">
