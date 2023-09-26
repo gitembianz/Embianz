@@ -28,9 +28,9 @@ class Product extends Model
     return $this->hasMany(Wishlist::class, 'product_id');
   }
 
-  public function carts()
+  public function carts_item()
   {
-    return $this->hasMany(Cart::class, 'product_id');
+    return $this->hasMany(Cart_Item::class, 'product_id');
   }
 
   public function media()

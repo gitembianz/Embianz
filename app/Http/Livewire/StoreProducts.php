@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Cart;
+use App\Models\Cart_Item;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Specs;
@@ -108,22 +109,44 @@ class StoreProducts extends Component
     if (!in_array($productId, $this->cart)) {
       $this->cart[] = $productId;
       $this->saveToSession();
-      $quantity = 1;
+      $existingCart = Cart::where('session_id', $this->session_id)->first();
 
-      Cart::updateOrCreate(
-        [
+      if (!$existingCart) {
+        // If no cart exists, create a new one
+        Cart::create([
           'session_id' => $this->session_id,
+          'quantity_amount' => 1,
+          'sum_amount' => 0,
+        ]);
+
+        // Retrieve the newly created cart's ID
+        $cart_id = Cart::where('session_id', $this->session_id)->first()->id;
+      } else {
+        // If a cart already exists, use its ID
+        $cart_id = $existingCart->id;
+        Cart::where([
+          'session_id' => $this->session_id,
+        ])->increment('quantity_amount', 1);
+      }
+      Cart_Item::updateOrCreate(
+        [
+          'cart_id' => $cart_id,
           'product_id' => $productId,
-          'quantity' => $quantity
+          'price' => 0,
+          'quantity' => 1
         ],
       );
       $this->emit('cartUpdated');
     } else {
+      $cart_id = Cart::where('session_id', $this->session_id)->first()->id;
       // If the product already exists in the cart, increment the quantity by one
-      Cart::where([
-        'session_id' => $this->session_id,
+      Cart_Item::where([
+        'cart_id' => $cart_id,
         'product_id' => $productId,
       ])->increment('quantity', 1);
+      Cart::where([
+        'session_id' => $this->session_id,
+      ])->increment('quantity_amount', 1);
 
       $this->emit('cartUpdated');
     }

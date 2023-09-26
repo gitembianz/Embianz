@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Cart;
+use App\Models\Cart_Item;
 use App\Models\Product;
 use Livewire\Component;
 use App\Models\Category;
@@ -55,8 +56,17 @@ class StoreHeader extends Component
   public function getCartItemsProperty()
   {
     $session_id = Session::getId();
-    $cart = Cart::where('session_id', $session_id)->pluck('product_id')->toArray();
-    return Product::whereIn('id', $cart)->get();
+    $cart = Cart::where('session_id', $session_id)->first(); // Use first() instead of get()
+
+    if ($cart !== null) {
+      $cartItems = Cart_Item::where('cart_id', $cart->id)->pluck('product_id')->toArray();
+
+      if (!empty($cartItems)) {
+        return Product::whereIn('id', $cartItems)->get();
+      }
+    }
+
+    return collect(); // Return an empty collection if no cart items are found
   }
 
   public function wishlistshow()
@@ -93,17 +103,33 @@ class StoreHeader extends Component
   public function removeFromCart($productId)
   {
     $session_id = Session::getId();
-    Cart::where('session_id', $session_id)
-      ->where('product_id', $productId)
-      ->delete();
-    $this->emit('cartUpdated');
+    $cart = Cart::where('session_id', $session_id)->first();
+
+    if ($cart !== null) {
+      $cart_item = Cart_Item::firstOrNew([
+        'cart_id' => $cart->id,
+        'product_id' => $productId,
+      ]);
+
+      if ($cart_item->exists) {
+        $cart->quantity_amount -= $cart_item->quantity;
+        $cart->save();
+        $cart_item->delete();
+
+        if ($cart->quantity_amount <= 0) {
+          $cart->delete();
+        }
+
+        $this->emit('cartUpdated');
+      }
+    }
   }
   public function mount()
   {
     $session_id = Session::getId();
 
     // Use sum() method to calculate the total quantity
-    $this->total = Cart::where('session_id', $session_id)->sum('quantity');
+    $this->total = Cart::where('session_id', $session_id)->sum('quantity_amount');
     $this->wishlistitems = $this->getWishlistItemsProperty();
   }
 

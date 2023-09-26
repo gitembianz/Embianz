@@ -149,7 +149,8 @@
                                              unavailable
                                          @endif
                                      </span>
-                                     <span class="cart__list--much">x {{ $product->carts->first()->quantity }}</span>
+                                     <span class="cart__list--much">x
+                                         {{ $product->carts_item->first()->quantity }}</span>
                                      <button class="cart__list--delete"
                                          wire:click="removeFromCart({{ $product->id }})">
                                          <svg>
