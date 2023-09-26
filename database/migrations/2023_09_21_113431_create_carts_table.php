@@ -14,10 +14,9 @@ return new class extends Migration
     Schema::create('carts', function (Blueprint $table) {
       $table->id();
       $table->string('session_id');
-      $table->unsignedBigInteger('product_id');
-      $table->unique(['session_id', 'product_id']);
-      $table->foreign('product_id')->references('id')->on('products');
-      $table->integer('quantity')->default(0);
+      $table->unique(['session_id']);
+      $table->integer('quantity_amount')->default(0);
+      $table->integer('sum_amount')->default(0);
       $table->timestamps();
     });
   }
