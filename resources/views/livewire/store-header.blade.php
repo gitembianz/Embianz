@@ -95,8 +95,8 @@
                          <circle cx="20" cy="21" r="1"></circle>
                          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
                      </svg>
-                     @if ($cartitems->count() > 0)
-                         <span class="alert-count" id="cartCount">{{ $cartitems->count() }}</span>
+                     @if ($total > 0)
+                         <span class="alert-count" id="cartCount">{{ $total }}</span>
                      @endif
                  </button>
                  <ul class="cart__list @if ($showcart) show @endif" id="cartContent"
@@ -139,8 +139,17 @@
                                      @endif
                                      <a class="cart__list--text"
                                          href="/product/{{ $product->id }}"><span>{{ $product->name }}</span></a>
-                                     <span class="cart__list--much">quantity</span>
-                                     <span class="cart__list--much">price</span>
+                                     <span class="cart__list--much">
+                                         @php
+                                             $price = $product->product_prices->first();
+                                         @endphp
+                                         @if ($price)
+                                             {{ $price->value }} {{ $price->pricelist->currency->first()->name }}
+                                         @else
+                                             unavailable
+                                         @endif
+                                     </span>
+                                     <span class="cart__list--much">x {{ $product->carts->first()->quantity }}</span>
                                      <button class="cart__list--delete"
                                          wire:click="removeFromCart({{ $product->id }})">
                                          <svg>

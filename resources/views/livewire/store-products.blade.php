@@ -136,15 +136,18 @@
                         <div class="product__item--buttons">
                             <div class="product__item--price">
                                 <span>
-                                    @if ($product->product_prices->first() !== null)
-                                        {{ $product->product_prices->first()->value }}
-                                        {{ $product->product_prices->first()->pricelist->currency->first()->name }}
+                                    @php
+                                        $price = $product->product_prices->first();
+                                    @endphp
+
+                                    @if ($price)
+                                        {{ $price->value }} {{ $price->pricelist->currency->first()->name }}
                                     @else
                                         unavailable
                                     @endif
                                 </span>
                             </div>
-                            <button wire:click="toggleCart({{ $product->id }})" class="product__item--btn"
+                            <button wire:click="addToCart({{ $product->id }})" class="product__item--btn"
                                 aria-label="product cart">
                                 <svg>
                                     <circle cx="9" cy="21" r="1"></circle>
