@@ -87,10 +87,6 @@ class StoreProducts extends Component
 
     return $query->limit($this->loadAmount)->get();
   }
-  // public function applyFilter()
-  // {
-  //   $this->specfilter = true;
-  // }
 
   public function addToWishlist($productId)
   {
@@ -106,47 +102,48 @@ class StoreProducts extends Component
   }
   public function addToCart($productId)
   {
+    $product = Product::find($productId);
+
     if (!in_array($productId, $this->cart)) {
       $this->cart[] = $productId;
       $this->saveToSession();
       $existingCart = Cart::where('session_id', $this->session_id)->first();
 
       if (!$existingCart) {
-        // If no cart exists, create a new one
         Cart::create([
           'session_id' => $this->session_id,
           'quantity_amount' => 1,
-          'sum_amount' => 0,
+          'sum_amount' => $product->product_prices->first()->value,
         ]);
-
-        // Retrieve the newly created cart's ID
         $cart_id = Cart::where('session_id', $this->session_id)->first()->id;
       } else {
-        // If a cart already exists, use its ID
         $cart_id = $existingCart->id;
-        Cart::where([
-          'session_id' => $this->session_id,
-        ])->increment('quantity_amount', 1);
+        $cart = Cart::where('session_id', $this->session_id)->first();
+        $cart->increment('quantity_amount', 1);
+        $cart->sum_amount += $product->product_prices->first()->value;
+        $cart->save();
       }
       Cart_Item::updateOrCreate(
         [
           'cart_id' => $cart_id,
           'product_id' => $productId,
-          'price' => 0,
+          'price' => $product->product_prices->first()->value,
           'quantity' => 1
         ],
       );
       $this->emit('cartUpdated');
     } else {
       $cart_id = Cart::where('session_id', $this->session_id)->first()->id;
-      // If the product already exists in the cart, increment the quantity by one
-      Cart_Item::where([
-        'cart_id' => $cart_id,
-        'product_id' => $productId,
-      ])->increment('quantity', 1);
-      Cart::where([
-        'session_id' => $this->session_id,
-      ])->increment('quantity_amount', 1);
+
+      $cartitem = Cart_Item::where('cart_id', $cart_id)->where('product_id', $productId)->first();
+      $cartitem->increment('quantity', 1);
+      $cartitem->price += $product->product_prices->first()->value;
+      $cartitem->save();
+
+      $cart = Cart::where('session_id', $this->session_id)->first();
+      $cart->increment('quantity_amount', 1);
+      $cart->sum_amount += $product->product_prices->first()->value;
+      $cart->save();
 
       $this->emit('cartUpdated');
     }

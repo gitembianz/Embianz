@@ -102,6 +102,7 @@ class StoreHeader extends Component
   {
     $session_id = Session::getId();
     $cart = Cart::where('session_id', $session_id)->first();
+    $product = Product::find($productId);
 
     if ($cart !== null) {
       $cart_item = Cart_Item::firstOrNew([
@@ -111,13 +112,9 @@ class StoreHeader extends Component
 
       if ($cart_item->exists) {
         $cart->quantity_amount -= $cart_item->quantity;
+        $cart->sum_amount -= ($product->product_prices->first()->value * $cart_item->quantity);
         $cart->save();
         $cart_item->delete();
-
-        if ($cart->quantity_amount <= 0) {
-          $cart->delete();
-        }
-
         $this->emit('cartUpdated');
       }
     }
