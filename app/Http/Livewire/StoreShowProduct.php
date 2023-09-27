@@ -2,14 +2,13 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Media;
-use App\Models\Tabels;
 use App\Models\Product;
 use Livewire\Component;
+use App\Models\Wishlist;
+use Illuminate\Support\Facades\Session;
 
 class StoreShowProduct extends Component
 {
-  public  $medias = [];
   public $record;
   public $productId;
   public $activeTab = 0;
@@ -21,12 +20,16 @@ class StoreShowProduct extends Component
   public $relatedphotos = [];
   public $mainimages;
   public $mainMedia;
+  public $session_id;
+  public $wishlist = [];
+
+  protected $listeners = ['wishlistUpdated' => 'mount'];
 
   public function render()
   {
     return view('livewire.store-show-product', [
-      'product' => $this->record,
-      'medias' => $this->medias
+      'product' => $this->record
+
     ]);
   }
 
@@ -43,6 +46,43 @@ class StoreShowProduct extends Component
   {
     $this->path = '1';
     $this->mainpath = $id;
+  }
+
+  public function addToWishlist($productId)
+  {
+    if (!in_array($productId, $this->wishlist)) {
+      $this->wishlist[] = $productId;
+      $this->saveToSession();
+
+      Wishlist::updateOrCreate(
+        ['session_id' => $this->session_id, 'product_id' => $productId]
+      );
+      $this->emit('wishlistUpdated');
+    }
+  }
+
+  public function removeFromWishlist($productId)
+  {
+    $this->wishlist = array_diff($this->wishlist, [$productId]);
+    $this->saveToSession();
+
+    Wishlist::where('session_id', $this->session_id)
+      ->where('product_id', $productId)
+      ->delete();
+    $this->emit('wishlistUpdated');
+  }
+
+  private function saveToSession()
+  {
+    session(['wishlist' => $this->wishlist]);
+  }
+  public function toggleWishlist($productId)
+  {
+    if (in_array($productId, $this->wishlist)) {
+      $this->removeFromWishlist($productId);
+    } else {
+      $this->addToWishlist($productId);
+    }
   }
 
 
@@ -73,38 +113,30 @@ class StoreShowProduct extends Component
   {
     $this->record = Product::findOrFail($this->productId);
     $this->limit = $this->record->quantity;
+    $this->session_id = Session::getId();
     $this->quantity = 1;
 
-    $productType = class_basename(get_class($this->record));
-    $tabel = Tabels::where('name', $productType)->first();
-
-    if ($tabel) {
-      $tabelId = $tabel->id;
-      $this->medias = Media::where('tabel_id', $tabelId)
-        ->where('item_id', $this->productId)
-        ->get();
-
-      $this->mainMedia = $this->medias->firstWhere('location.location', 'main');
-      if ($this->mainMedia) {
-        if (!$this->path) {
-          $this->mainpath = $this->mainMedia->external
-            ? $this->mainMedia->path
-            : "/{$this->mainMedia->path}{$this->mainMedia->name}";
-        }
+    $this->mainMedia = $this->record->media->firstWhere('location.location', 'main');
+    if ($this->mainMedia) {
+      if (!$this->path) {
+        $this->mainpath = $this->mainMedia->external
+          ? $this->mainMedia->path
+          : "/{$this->mainMedia->path}{$this->mainMedia->name}";
       }
-
-      $this->mainimages = $this->medias
-        ->where('location.location', '!=', 'search')
-        ->sortBy('location_id')
-        ->values();
-
-      $this->relatedphotos = $this->mainimages->map(function ($image) {
-        return $image->external
-          ? $image->path
-          : "/{$image->path}{$image->name}";
-      });
     }
+
+    $this->mainimages = $this->record->media
+      ->where('location.location', '!=', 'search')
+      ->sortBy('location_id')
+      ->values();
+
+    $this->relatedphotos = $this->mainimages->map(function ($image) {
+      return $image->external
+        ? $image->path
+        : "/{$image->path}{$image->name}";
+    });
   }
+
 
 
 

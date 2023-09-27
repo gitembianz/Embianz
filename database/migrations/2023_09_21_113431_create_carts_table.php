@@ -11,8 +11,13 @@ return new class extends Migration
    */
   public function up(): void
   {
-    Schema::table('products', function (Blueprint $table) {
-      //
+    Schema::create('carts', function (Blueprint $table) {
+      $table->id();
+      $table->string('session_id');
+      $table->unique(['session_id']);
+      $table->integer('quantity_amount')->default(0);
+      $table->integer('sum_amount')->default(0);
+      $table->timestamps();
     });
   }
 
@@ -21,9 +26,6 @@ return new class extends Migration
    */
   public function down(): void
   {
-    Schema::table('products', function (Blueprint $table) {
-      $table->enum('product_status', ['active', 'inactive', 'low stock'])->nullable(); // using an enum to restrict the value to a specific set of options
-
-    });
+    Schema::dropIfExists('carts');
   }
 };

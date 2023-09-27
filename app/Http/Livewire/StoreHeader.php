@@ -2,12 +2,13 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Cart;
+use App\Models\Cart_Item;
 use App\Models\Product;
 use Livewire\Component;
 use App\Models\Category;
 use App\Models\Wishlist;
 use Illuminate\Support\Facades\Session;
-
 
 class StoreHeader extends Component
 {
@@ -16,7 +17,12 @@ class StoreHeader extends Component
   public $active = false;
   public $wishlistitems;
   public $showwis = false;
-  protected $listeners = ['wishlistUpdated' => 'mount'];
+  public $showcart = false;
+  public $total;
+  protected $listeners = [
+    'wishlistUpdated' => 'mount',
+    'cartUpdated' => 'mount'
+  ];
 
   public function render()
   {
@@ -25,6 +31,7 @@ class StoreHeader extends Component
       'objects' => $this->objects,
       'cats' => $this->cats,
       'wishlistitems' => $this->wishlistItems,
+      'cartitems' => $this->cartItems,
     ];
 
     return view('livewire.store-header', $data);
@@ -46,12 +53,38 @@ class StoreHeader extends Component
     $this->wishlistitems = $this->getWishlistItemsProperty();
   }
 
+  public function getCartItemsProperty()
+  {
+    $session_id = Session::getId();
+    $cart = Cart::where('session_id', $session_id)->first(); // Use first() instead of get()
+
+    if ($cart !== null) {
+      $cartItems = Cart_Item::where('cart_id', $cart->id)->pluck('product_id')->toArray();
+
+      if (!empty($cartItems)) {
+        return Product::whereIn('id', $cartItems)->get();
+      }
+    }
+
+    return collect(); // Return an empty collection if no cart items are found
+  }
+
   public function wishlistshow()
   {
     if ($this->showwis === false) {
+      $this->showcart = false;
       $this->showwis = true;
     } else {
       $this->showwis = false;
+    }
+  }
+  public function cartshow()
+  {
+    if ($this->showcart === false) {
+      $this->showwis = false;
+      $this->showcart = true;
+    } else {
+      $this->showcart = false;
     }
   }
   public function reload()
@@ -67,9 +100,36 @@ class StoreHeader extends Component
       ->delete();
     $this->emit('wishlistUpdated');
   }
+  public function removeFromCart($productId)
+  {
+    $session_id = Session::getId();
+    $cart = Cart::where('session_id', $session_id)->first();
+
+    if ($cart !== null) {
+      $cart_item = Cart_Item::firstOrNew([
+        'cart_id' => $cart->id,
+        'product_id' => $productId,
+      ]);
+
+      if ($cart_item->exists) {
+        $cart->quantity_amount -= $cart_item->quantity;
+        $cart->save();
+        $cart_item->delete();
+
+        if ($cart->quantity_amount <= 0) {
+          $cart->delete();
+        }
+
+        $this->emit('cartUpdated');
+      }
+    }
+  }
   public function mount()
   {
-    // Initial load of wishlistitems
+    $session_id = Session::getId();
+
+    // Use sum() method to calculate the total quantity
+    $this->total = Cart::where('session_id', $session_id)->sum('quantity_amount');
     $this->wishlistitems = $this->getWishlistItemsProperty();
   }
 
@@ -79,7 +139,7 @@ class StoreHeader extends Component
   }
   public function getCategoriesQueryProperty()
   {
-    return Category::orderBy('store_tab', 'desc')->with('subcategory');
+    return Category::orderBy('sequence', 'asc')->orderBy('store_tab', 'desc')->with('subcategory');
   }
   public function getObjectsProperty()
   {

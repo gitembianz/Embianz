@@ -2,6 +2,9 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Cart;
+use App\Models\Cart_Item;
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\Specs;
 use App\Models\Wishlist;
@@ -17,6 +20,7 @@ class StoreProducts extends Component
   public $search = "";
   public $quantity = 20;
   public $wishlist = [];
+  public $cart = [];
   public $session_id;
   public $specification;
   public $property = false;
@@ -25,8 +29,13 @@ class StoreProducts extends Component
   public $orderAsc = true;
   public $specfilter = false;
   public $products;
+  public $category;
+  public $categoryname;
 
-  protected $listeners = ['wishlistUpdated' => 'mount'];
+  protected $listeners = [
+    'wishlistUpdated' => 'mount',
+    'cartUpdated' => 'mount'
+  ];
 
   public function loadMore()
   {
@@ -39,35 +48,25 @@ class StoreProducts extends Component
   }
   public function render()
   {
-    // Use $this->getProducts() to fetch products
     $this->products = $this->getProducts();
-
     return view('livewire.store-products');
   }
 
+  public function clearcategory()
+  {
+    $this->category = null;
+    return redirect('/storeproducts');
+  }
   public function getProducts()
   {
 
     $query = Product::name($this->search);
-    // if ($this->specfilter) {
-
-    //   if (!empty($this->selectedSpecValues)) {
-    //     // Loop through each selected spec value and add a whereHas clause for each
-    //     foreach ($this->selectedSpecValues as $outerKey => $outerValue) {
-    //       foreach ($outerValue as $innerKey => $innerValue) {
-    //         foreach ($innerValue as $valueKey => $value) {
-    //           dd($value);
-    //           if ($valueKey === 'value') {
-    //             $query->orWhereHas('product_specs', function ($q) use ($value) {
-    //               $q->where('value', $value);
-    //             });
-    //           }
-    //         }
-    //       }
-    //     }
-    //   }
-    // }
-
+    if ($this->category) {
+      $this->categoryname = Category::find($this->category)->name;
+      $query->whereHas('product_categories.category', function ($query) {
+        $query->where('id', $this->category);
+      });
+    }
     switch ($this->orderBy) {
       case 'best_selling':
         $query->orderBy('popularity', $this->orderAsc ? 'asc' : 'desc');
@@ -105,7 +104,53 @@ class StoreProducts extends Component
       $this->emit('wishlistUpdated');
     }
   }
+  public function addToCart($productId)
+  {
+    if (!in_array($productId, $this->cart)) {
+      $this->cart[] = $productId;
+      $this->saveToSession();
+      $existingCart = Cart::where('session_id', $this->session_id)->first();
 
+      if (!$existingCart) {
+        // If no cart exists, create a new one
+        Cart::create([
+          'session_id' => $this->session_id,
+          'quantity_amount' => 1,
+          'sum_amount' => 0,
+        ]);
+
+        // Retrieve the newly created cart's ID
+        $cart_id = Cart::where('session_id', $this->session_id)->first()->id;
+      } else {
+        // If a cart already exists, use its ID
+        $cart_id = $existingCart->id;
+        Cart::where([
+          'session_id' => $this->session_id,
+        ])->increment('quantity_amount', 1);
+      }
+      Cart_Item::updateOrCreate(
+        [
+          'cart_id' => $cart_id,
+          'product_id' => $productId,
+          'price' => 0,
+          'quantity' => 1
+        ],
+      );
+      $this->emit('cartUpdated');
+    } else {
+      $cart_id = Cart::where('session_id', $this->session_id)->first()->id;
+      // If the product already exists in the cart, increment the quantity by one
+      Cart_Item::where([
+        'cart_id' => $cart_id,
+        'product_id' => $productId,
+      ])->increment('quantity', 1);
+      Cart::where([
+        'session_id' => $this->session_id,
+      ])->increment('quantity_amount', 1);
+
+      $this->emit('cartUpdated');
+    }
+  }
   public function removeFromWishlist($productId)
   {
     $this->wishlist = array_diff($this->wishlist, [$productId]);
@@ -119,7 +164,10 @@ class StoreProducts extends Component
 
   private function saveToSession()
   {
-    session(['wishlist' => $this->wishlist]);
+    session([
+      'wishlist' => $this->wishlist,
+      'cart' => $this->cart
+    ]);
   }
   public function toggleWishlist($productId)
   {

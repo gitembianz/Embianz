@@ -2,7 +2,7 @@
 <x-store-header />
 <main>
     <section class="products container">
-        <livewire:store-products />
+        <livewire:store-products category="{{ $data }}" />
         {{-- filter part --}}
 
     </section>

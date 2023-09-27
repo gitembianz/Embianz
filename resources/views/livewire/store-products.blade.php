@@ -1,15 +1,15 @@
 <div class="products">
     <div class="products__control">
-        <div class="filter">
-            {{-- Filter Button --}}
-            <button class="filter__open" id="filterOpen" wire:click="$toggle('property')">
+        {{-- <div class="filter"> --}}
+        {{-- Filter Button Left overs --}}
+        {{-- <button class="filter__open" id="filterOpen" wire:click="$toggle('property')">
                 Filters
                 <svg>
                     <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
                 </svg>
-            </button>
-            {{-- Filter Content --}}
-            <div class="filter__content @if ($property) show @endif">
+            </button> --}}
+        {{-- Filter Content --}}
+        {{-- <div class="filter__content @if ($property) show @endif">
                 @foreach ($specification as $index => $spec)
                     <div class="filter__dropdown">
                         <button class="filter__dropdown--btn">
@@ -34,11 +34,11 @@
                     </div>
                 @endforeach
                 {{-- <div class="filter__buttons">
-                    <button wire:click="applyFilter">Apply</button>
+                    <button wire:click="applyFilter">Apply</button>r
                     <button>Reset</button>
                 </div> --}}
-            </div>
-        </div>
+        {{-- </div> --}}
+        {{-- </div> --}}
         <div class="filter__search">
             <input type="text" wire:model="search" placeholder="Search...">
             <button aria-label="search button">
@@ -82,26 +82,28 @@
             </div>
         </div>
     </div>
-    {{-- <ul class="filter__applied">
-        <li>
-            <button class="filter__applied--item">
-                Color: Red
-                <svg>
-                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-            </button>
-        </li>
-        <li>
+    @if ($category)
+        <ul class="filter__applied">
+            <li>
+                <button class="filter__applied--item">
+                    Category: {{ $categoryname }}
+                    <svg wire:click="clearcategory()">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </li>
+            {{-- <li>
             <button class="filter__applied--clear">
                 Load more...
-        </li>
-        <li>
-            <button class="filter__applied--clear">
-                Clear all
-            </button>
-        </li>
-    </ul> --}}
+        </li> --}}
+            <li>
+                <button wire:click="clearcategory()" class="filter__applied--clear">
+                    Clear all
+                </button>
+            </li>
+        </ul>
+    @endif
     <div class="product__catalog">
         @if ($products->isEmpty())
             <p>No products found</p>
@@ -109,21 +111,24 @@
             @foreach ($products as $product)
                 {{-- <a href="/product/{{ $product->id }}'"> --}}
                 <article class="product__item" @if ($loop->last) id="last_record" @endif>
-                    @if (count($product->media) > 0)
-                        @foreach ($product->media as $media)
-                            @if ($media->location->location == 'main')
-                                @if ($media->external)
-                                    <img src="{{ $media->path }}" draggable="false" alt="{{ $media->path }}">
-                                @else
-                                    <img src="/{{ $media->path }}{{ $media->name }}" draggable="false"
-                                        alt="{{ $media->path }}">
+
+                    <a href="/product/{{ $product->id }}">
+                        @if (count($product->media) > 0)
+                            @foreach ($product->media as $media)
+                                @if ($media->location->location == 'main')
+                                    @if ($media->external)
+                                        <img src="{{ $media->path }}" draggable="false" alt="{{ $media->path }}">
+                                    @else
+                                        <img src="/{{ $media->path }}{{ $media->name }}" draggable="false"
+                                            alt="{{ $media->path }}">
+                                    @endif
+                                    <?php break; ?>
                                 @endif
-                                <?php break; ?>
-                            @endif
-                        @endforeach
-                    @else
-                        <img src="/images/store/default/default.svg" draggable="false" alt="something wrong">
-                    @endif
+                            @endforeach
+                        @else
+                            <img src="/images/store/default/default.svg" draggable="false" alt="something wrong">
+                        @endif
+                    </a>
                     <div class="product__item--bundle">
                         <h4>{{ $product->name }}</h4>
                         {{-- <span>1000ml</span> --}}
@@ -131,35 +136,47 @@
                         <div class="product__item--buttons">
                             <div class="product__item--price">
                                 <span>
-                                    @if ($product->product_prices->first() !== null)
-                                        {{ $product->product_prices->first()->value }}
-                                        {{ $product->product_prices->first()->pricelist->currency->first()->name }}
+                                    @php
+                                        $price = $product->product_prices->first();
+                                    @endphp
+
+                                    @if ($price)
+                                        {{ $price->value }} {{ $price->pricelist->currency->first()->name }}
                                     @else
                                         unavailable
                                     @endif
                                 </span>
                             </div>
-                            <button class="product__item--btn" aria-label="product cart">
-                                <svg>
-                                    <circle cx="9" cy="21" r="1"></circle>
-                                    <circle cx="20" cy="21" r="1"></circle>
-                                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6">
-                                    </path>
-                                </svg>
-                            </button>
+                            @if ($price && $product->quantity != 0)
+                                <button wire:click="addToCart({{ $product->id }})" class="product__item--btn"
+                                    aria-label="product cart">
+                                    <svg>
+                                        <circle cx="9" cy="21" r="1"></circle>
+                                        <circle cx="20" cy="21" r="1"></circle>
+                                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6">
+                                        </path>
+                                    </svg>
+                                </button>
+                            @endif
                         </div>
                     </div>
                     <div class="product__item--header">
-                        @if ($product->quantity < $quantity && $product->quantity > 0)
-                            <p class="product__item--stock">
-                                Low stock!
-                            </p>
-                        @elseif($product->quantity == 0)
-                            <p class="product__item--stock">
-                                Out of stock!
-                            </p>
+                        @if ($price)
+                            @if ($product->quantity < $quantity && $product->quantity > 0)
+                                <p class="product__item--stock">
+                                    Low stock!
+                                </p>
+                            @elseif($product->quantity == 0)
+                                <p class="product__item--stock">
+                                    Out of stock!
+                                </p>
+                            @else
+                                <p></p>
+                            @endif
                         @else
-                            <p></p>
+                            <p class="product__item--stock">
+                                Comming soon!
+                            </p>
                         @endif
                         <button class="product__item--heart @if ($product->wishlists->where('session_id', $session_id)->isNotEmpty()) active @endif"
                             aria-label="add to favorites" wire:click="toggleWishlist({{ $product->id }})">
