@@ -149,8 +149,12 @@
                                              unavailable
                                          @endif
                                      </span>
-                                     <span class="cart__list--much">x
-                                         {{ $product->carts_item->first()->quantity }}</span>
+                                     @if ($product->carts_item)
+                                         @foreach ($product->carts_item as $cartItem)
+                                             <span class="cart__list--much">x {{ $cartItem->quantity }}</span>
+                                         @endforeach
+                                     @endif
+
                                      <button class="cart__list--delete"
                                          wire:click="removeFromCart({{ $product->id }})">
                                          <svg>
