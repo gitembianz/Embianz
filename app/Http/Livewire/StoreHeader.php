@@ -31,7 +31,7 @@ class StoreHeader extends Component
       'objects' => $this->objects,
       'cats' => $this->cats,
       'wishlistitems' => $this->wishlistItems,
-      'cartitems' => $this->cartItems,
+      'cartItems' => $this->cartItems,
     ];
 
     return view('livewire.store-header', $data);
@@ -56,14 +56,12 @@ class StoreHeader extends Component
   public function getCartItemsProperty()
   {
     $session_id = Session::getId();
-    $cart = Cart::where('session_id', $session_id)->first(); // Use first() instead of get()
+    $cart = Cart::where('session_id', $session_id)->first();
 
     if ($cart !== null) {
-      $cartItems = Cart_Item::where('cart_id', $cart->id)->pluck('product_id')->toArray();
+      $cartItems = Cart_Item::where('cart_id', $cart->id)->with('product')->get();
 
-      if (!empty($cartItems)) {
-        return Product::whereIn('id', $cartItems)->get();
-      }
+      return $cartItems;
     }
 
     return collect(); // Return an empty collection if no cart items are found
