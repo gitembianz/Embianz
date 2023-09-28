@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Cart;
+use App\Models\Cart_Item;
 use App\Models\Product;
 use Livewire\Component;
 use App\Models\Wishlist;
@@ -22,23 +23,42 @@ class StoreCart extends Component
   public function render()
   {
     $data = [
-      'cartitems' => $this->cartItems
+      'cartItems' => $this->cartItems
     ];
     return view('livewire.store-cart', $data);
   }
   public function getCartItemsProperty()
   {
-    $session_id = Session::getId();
-    $cart = Cart::where('session_id', $session_id)->pluck('product_id')->toArray();
-    return Product::whereIn('id', $cart)->get();
+    $cart = Cart::where('session_id', $this->session_id)->first();
+
+    if ($cart !== null) {
+      $cartItems = Cart_Item::where('cart_id', $cart->id)->with('product')->get();
+
+      return $cartItems;
+    }
+
+    return collect(); // Return an empty collection if no cart items are found
   }
   public function removeFromCart($productId)
   {
     $session_id = Session::getId();
-    Cart::where('session_id', $session_id)
-      ->where('product_id', $productId)
-      ->delete();
-    $this->emit('cartUpdated');
+    $cart = Cart::where('session_id', $session_id)->first();
+    $product = Product::find($productId);
+
+    if ($cart !== null) {
+      $cart_item = Cart_Item::firstOrNew([
+        'cart_id' => $cart->id,
+        'product_id' => $productId,
+      ]);
+
+      if ($cart_item->exists) {
+        $cart->quantity_amount -= $cart_item->quantity;
+        $cart->sum_amount -= ($product->product_prices->first()->value * $cart_item->quantity);
+        $cart->save();
+        $cart_item->delete();
+        $this->emit('cartUpdated');
+      }
+    }
   }
   public function mount()
   {
@@ -48,25 +68,43 @@ class StoreCart extends Component
   }
   public function increment($productId)
   {
-    $cartItem = Cart::where([
-      'session_id' => Session::getId(),
+    $cart = Cart::where('session_id', $this->session_id)->first();
+    $product = Product::find($productId);
+    $cartItem = Cart_Item::where([
+      'cart_id' => $cart->id,
       'product_id' => $productId,
     ])->first();
 
     if ($cartItem) {
       $cartItem->increment('quantity');
-      $this->emit('cartUpdated');
+      if ($cartItem->exists) {
+        $cart->quantity_amount += 1;
+        $cart->sum_amount += $product->product_prices->first()->value;
+        $cart->save();
+        $this->emit('cartUpdated');
+      }
     }
   }
   public function decrement($productId)
   {
-    $cartItem = Cart::where([
-      'session_id' => Session::getId(),
+    $cart = Cart::where('session_id', $this->session_id)->first();
+    $product = Product::find($productId);
+    $cartItem = Cart_Item::where([
+      'cart_id' => $cart->id,
       'product_id' => $productId,
     ])->first();
 
     if ($cartItem && $cartItem->quantity > 1) {
       $cartItem->decrement('quantity');
+      $cart->quantity_amount -= 1;
+      $cart->sum_amount -= $product->product_prices->first()->value;
+      $cart->save();
+      $this->emit('cartUpdated');
+    } elseif ($cartItem->quantity == 1) {
+      $cartItem->delete();
+      $cart->quantity_amount -= 1;
+      $cart->sum_amount -= $product->product_prices->first()->value;
+      $cart->save();
       $this->emit('cartUpdated');
     }
   }

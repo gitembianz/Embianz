@@ -111,16 +111,16 @@
                              </svg>
                          </a>
                      </li>
-                     @if ($cartitems->isEmpty())
+                     @if ($cartItems->isEmpty())
                          <li class="heart__list--item">
                              <span style="color: black">Shopping Basket empty</span>
                          </li>
                      @else
-                         @foreach ($cartitems as $product)
+                         @foreach ($cartItems as $cartItem)
                              <li>
                                  <div class="cart__list--item">
-                                     @if (count($product->media) > 0)
-                                         @foreach ($product->media as $media)
+                                     @if (count($cartItem->product->media) > 0)
+                                         @foreach ($cartItem->product->media as $media)
                                              @if ($media->location->location == 'main')
                                                  @if ($media->external)
                                                      <img class="cart__list--img" src="{{ $media->path }}"
@@ -138,10 +138,10 @@
                                              alt="something wrong">
                                      @endif
                                      <a class="cart__list--text"
-                                         href="/product/{{ $product->id }}"><span>{{ $product->name }}</span></a>
+                                         href="/product/{{ $cartItem->product->id }}"><span>{{ $cartItem->product->name }}</span></a>
                                      <span class="cart__list--much">
                                          @php
-                                             $price = $product->product_prices->first();
+                                             $price = $cartItem->product->product_prices->first();
                                          @endphp
                                          @if ($price)
                                              {{ $price->value }} {{ $price->pricelist->currency->first()->name }}
@@ -149,9 +149,9 @@
                                              unavailable
                                          @endif
                                      </span>
-                                     <span class="cart__list--much">x {{ $product->carts->first()->quantity }}</span>
+                                     <span class="cart__list--much">x {{ $cartItem->quantity }}</span>
                                      <button class="cart__list--delete"
-                                         wire:click="removeFromCart({{ $product->id }})">
+                                         wire:click="removeFromCart({{ $cartItem->product->id }})">
                                          <svg>
                                              <line x1="18" y1="6" x2="6" y2="18">
                                              </line>
@@ -163,6 +163,7 @@
                              </li>
                          @endforeach
                      @endif
+
                  </ul>
              </div>
              <div class="heart">
