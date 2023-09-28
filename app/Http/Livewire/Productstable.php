@@ -6,6 +6,7 @@ use App\Models\Product;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Exports\ProductsExport;
+use App\Models\Cart_Item;
 use App\Models\PricelistEntries;
 use App\Models\Products_categories;
 use App\Models\Product_Spec;
@@ -105,6 +106,12 @@ class Productstable extends Component
           $productspec->delete();
         }
       }
+      $productcarts = Cart_Item::where('product_id', $id)->get();
+      if ($productcarts != NULL) {
+        foreach ($productcarts as $productcart) {
+          $productcart->delete();
+        }
+      }
       $productpricelists = PricelistEntries::where('product_id', $id)->get();
       if ($productpricelists != NULL) {
         foreach ($productpricelists as $productpricelist) {
@@ -137,6 +144,12 @@ class Productstable extends Component
     if ($productcats != NULL) {
       foreach ($productcats as $productcat) {
         $productcat->delete();
+      }
+    }
+    $productcarts = Cart_Item::where('product_id', $id)->get();
+    if ($productcarts != NULL) {
+      foreach ($productcarts as $productcart) {
+        $productcart->delete();
       }
     }
     $productspecs = Product_Spec::where('product_id', $id)->get();

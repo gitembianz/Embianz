@@ -120,6 +120,12 @@ class ShowProduct extends Component
         $productspec->delete();
       }
     }
+    $productcarts = Cart_Item::where('product_id', $id)->get();
+    if ($productcarts != NULL) {
+      foreach ($productcarts as $productcart) {
+        $productcart->delete();
+      }
+    }
     $productpricelists = PricelistEntries::where('product_id', $id)->get();
     if ($productpricelists != NULL) {
       foreach ($productpricelists as $productpricelist) {
