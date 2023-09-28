@@ -2,10 +2,12 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\PricelistEntries;
 use App\Models\Product;
-use App\Models\Product_Spec;
 use Livewire\Component;
+use App\Models\Wishlist;
+use App\Models\Cart_Item;
+use App\Models\Product_Spec;
+use App\Models\PricelistEntries;
 use App\Models\Products_categories;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -118,6 +120,24 @@ class ShowProduct extends Component
     if ($productspecs != NULL) {
       foreach ($productspecs as $productspec) {
         $productspec->delete();
+      }
+    }
+    $productcarts = Cart_Item::where('product_id', $id)->get();
+    if ($productcarts != NULL) {
+      foreach ($productcarts as $cartitem) {
+        $cart = $cartitem->cart;
+        $cart->sum_amount -= $cartitem->price;
+        $cart->quantity_amount -= $cartitem->quantity;
+        $cart->save();
+        $cartitem->delete();
+        $this->emit('cartUpdated');
+      }
+    }
+    $productswishlist = Wishlist::where('product_id', $id)->get();
+    if ($productswishlist != NULL) {
+      foreach ($productswishlist as $productwis) {
+        $productwis->delete();
+        $this->emit('wishlistUpdated');
       }
     }
     $productpricelists = PricelistEntries::where('product_id', $id)->get();
