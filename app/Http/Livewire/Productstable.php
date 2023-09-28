@@ -144,6 +144,7 @@ class Productstable extends Component
       $producttodel->delete();
     }
     $this->checked = [];
+    $this->selectPage = false;
     session()->flash('notification', [
       'message' => 'Records deleted successfully!',
       'type' => 'success',
