@@ -1,6 +1,7 @@
  <?php
 
   use App\Http\Controllers\AdminController;
+  use App\Http\Controllers\CartController;
   use Illuminate\Support\Facades\Route;
   use Illuminate\Support\Facades\Artisan;
   use App\Http\Controllers\HomeController;
@@ -59,6 +60,9 @@
   route::get('/product/{id}/', [StoreController::class, 'show'])->name('product');
   Route::get('/storeproducts/{category?}', [StoreController::class, 'products']);
   route::get('/terms', [StoreController::class, 'terms'])->name('terms');
+
+  //carts route
+  route::get('/carts', [CartController::class, 'index'])->name('carts');
 
   //specs route
   route::get('/specs', [SpecsController::class, 'index'])->name('specs');

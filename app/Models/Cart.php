@@ -15,4 +15,12 @@ class Cart extends Model
   {
     return $this->hasMany(Cart_Item::class, 'cart_id');
   }
+  public static function search($search)
+  {
+    return empty($search) ? static::query()
+      : static::query()->where('id', 'like', '%' . $search . '%')
+      ->orWhere('session_id', 'like', '%' . $search . '%')
+      ->orWhere('quantity_amount', 'like', '%' . $search . '%')
+      ->orWhere('sum_amount', 'like', '%' . $search . '%');
+  }
 }

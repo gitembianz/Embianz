@@ -6,9 +6,11 @@ use App\Models\Product;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Exports\ProductsExport;
+use App\Models\Cart_Item;
 use App\Models\PricelistEntries;
 use App\Models\Products_categories;
 use App\Models\Product_Spec;
+use App\Models\Wishlist;
 use Illuminate\Support\Facades\File;
 
 class Productstable extends Component
@@ -105,6 +107,24 @@ class Productstable extends Component
           $productspec->delete();
         }
       }
+      $productcarts = Cart_Item::where('product_id', $id)->get();
+      if ($productcarts != NULL) {
+        foreach ($productcarts as $cartitem) {
+          $cart = $cartitem->cart;
+          $cart->sum_amount -= $cartitem->price;
+          $cart->quantity_amount -= $cartitem->quantity;
+          $cart->save();
+          $cartitem->delete();
+          $this->emit('cartUpdated');
+        }
+      }
+      $productswishlist = Wishlist::where('product_id', $id)->get();
+      if ($productswishlist != NULL) {
+        foreach ($productswishlist as $productwis) {
+          $productwis->delete();
+          $this->emit('wishlistUpdated');
+        }
+      }
       $productpricelists = PricelistEntries::where('product_id', $id)->get();
       if ($productpricelists != NULL) {
         foreach ($productpricelists as $productpricelist) {
@@ -123,6 +143,7 @@ class Productstable extends Component
       $producttodel->delete();
     }
     $this->checked = [];
+    $this->selectPage = false;
     session()->flash('notification', [
       'message' => 'Records deleted successfully!',
       'type' => 'success',
@@ -137,6 +158,24 @@ class Productstable extends Component
     if ($productcats != NULL) {
       foreach ($productcats as $productcat) {
         $productcat->delete();
+      }
+    }
+    $productcarts = Cart_Item::where('product_id', $id)->get();
+    if ($productcarts != NULL) {
+      foreach ($productcarts as $cartitem) {
+        $cart = $cartitem->cart;
+        $cart->sum_amount -= $cartitem->price;
+        $cart->quantity_amount -= $cartitem->quantity;
+        $cart->save();
+        $cartitem->delete();
+        $this->emit('cartUpdated');
+      }
+    }
+    $productswishlist = Wishlist::where('product_id', $id)->get();
+    if ($productswishlist != NULL) {
+      foreach ($productswishlist as $productwis) {
+        $productwis->delete();
+        $this->emit('wishlistUpdated');
       }
     }
     $productspecs = Product_Spec::where('product_id', $id)->get();

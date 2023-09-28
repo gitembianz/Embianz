@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Auth;
 
 class ShowPricelist extends Component
 {
-
   public $itemId;
   public $edititem = null;
   public $record;
@@ -22,7 +21,6 @@ class ShowPricelist extends Component
       'pricelist' => $this->pricelist
     ]);
   }
-
   public function mount($itemId)
   {
     $this->itemId = $itemId;

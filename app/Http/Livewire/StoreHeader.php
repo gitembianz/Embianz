@@ -52,7 +52,6 @@ class StoreHeader extends Component
     // Update the wishlistitems property here
     $this->wishlistitems = $this->getWishlistItemsProperty();
   }
-
   public function getCartItemsProperty()
   {
     $session_id = Session::getId();
@@ -66,7 +65,6 @@ class StoreHeader extends Component
 
     return collect(); // Return an empty collection if no cart items are found
   }
-
   public function wishlistshow()
   {
     if ($this->showwis === false) {
@@ -85,11 +83,6 @@ class StoreHeader extends Component
       $this->showcart = false;
     }
   }
-  public function reload()
-  {
-    // No need to add any code here, just an empty method
-  }
-
   public function removeFromWishlist($productId)
   {
     $session_id = Session::getId();
@@ -127,7 +120,6 @@ class StoreHeader extends Component
     $this->total = Cart::where('session_id', $session_id)->sum('quantity_amount');
     $this->wishlistitems = $this->getWishlistItemsProperty();
   }
-
   public function getCategoriesProperty()
   {
     return $this->categoriesQuery->limit($this->limit)->get();

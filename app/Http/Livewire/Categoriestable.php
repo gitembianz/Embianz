@@ -22,15 +22,11 @@ class Categoriestable extends Component
   public $selectPage = false;
   public $selectAll = false;
   public $catidbeingremoved = null;
-  // public $columns = ['Id', 'Short Description', 'Sequence', 'Created At'];
   public $selectedColumns = [];
   public $col = false;
   public $all = false;
-
   public $tableName;
   public $columns;
-
-
 
   public function render()
   {
@@ -42,8 +38,6 @@ class Categoriestable extends Component
 
     return view('livewire.categoriestable', compact('categories'));
   }
-
-
   public function mount($tableName)
   {
     $this->tableName = $tableName;
@@ -55,14 +49,10 @@ class Categoriestable extends Component
       $this->selectedColumns = $this->columns;
     }
   }
-
-
   public function updatedSelectedColumns()
   {
     session(['selectedColumns' => $this->selectedColumns]);
   }
-
-
   public function showColumn($column)
   {
     if ($column === 'name') {
@@ -145,6 +135,7 @@ class Categoriestable extends Component
       $cattodel->delete();
     }
     $this->checked = [];
+    $this->selectPage = false;
     session()->flash('notification', [
       'message' => 'Records deleted successfully!',
       'type' => 'success',

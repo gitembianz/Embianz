@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Auth;
 
 class ShowSpec extends Component
 {
-
   public $itemId;
   public $edititem = null;
   public $record;

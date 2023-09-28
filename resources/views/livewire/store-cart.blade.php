@@ -75,43 +75,66 @@
          @endif
 
      </div>
-     <div class="cart__column">
-         <div class="cart__buy">
-             <h3>
-                 Sumar comandă
-             </h3>
-             <h5>
-                 Cost produse:
-             </h5>
-             <span>
-                 629,93 Lei
-             </span>
-             <h5>
-                 Cost livrare:
-             </h5>
-             <span>
-                 GRATUIT
-             </span>
-             <h5>
-                 Total:
-             </h5>
-             <span>
-                 629,93 Lei
-             </span>
-             <a href="{{ route('order') }}">Continue</a>
+     @if (!$cartItems->isEmpty())
+         <div class="cart__column">
+             <div class="cart__buy">
+                 <h3>
+                     Order summary
+                 </h3>
+                 <h5>
+                     Products:
+                 </h5>
+                 <span>
+                     {{ $cart->sum_amount }}
+                     @foreach ($cartItems as $cartItem)
+                         @if ($cartItem->product->product_prices->first() !== null)
+                             {{ $cartItem->product->product_prices->first()->pricelist->currency->first()->name }}
+                             <?php
+                             $currency = $cartItem->product->product_prices->first()->pricelist->currency->first()->name;
+                             break; ?>
+                         @else
+                             price unavailable
+                             <?php
+                             $currency = '';
+                             break; ?>
+                         @endif
+                     @endforeach
+                 </span>
+                 <h5>
+                     Deliverry:
+                 </h5>
+                 <span>
+                     @if ($deliverry == 0)
+                         Free
+                     @else
+                         {{ $deliverry }} {{ $currency }}
+                     @endif
+
+                 </span>
+                 <h5>
+                     Total:
+                 </h5>
+                 <span>
+                     <?php
+                     $total = $cart->sum_amount + $deliverry;
+                     ?>
+                     {{ $total }} {{ $currency }}
+                 </span>
+                 <a href="{{ route('order') }}">Continue</a>
+             </div>
+             <div class="cart__voucher">
+                 <h4>
+                     Ai un voucher sau card cadou?
+                 </h4>
+                 <form action="#">
+                     <input type="text" name="voucher">
+                     <button>
+                         <svg>
+                             <polyline points="9 18 15 12 9 6"></polyline>
+                         </svg>
+                     </button>
+                 </form>
+             </div>
          </div>
-         <div class="cart__voucher">
-             <h4>
-                 Ai un voucher sau card cadou?
-             </h4>
-             <form action="#">
-                 <input type="text" name="voucher">
-                 <button>
-                     <svg>
-                         <polyline points="9 18 15 12 9 6"></polyline>
-                     </svg>
-                 </button>
-             </form>
-         </div>
-     </div>
+     @endif
  </div>

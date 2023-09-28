@@ -24,7 +24,6 @@ class StoreMain extends Component
       $this->category = null;
     }
   }
-
   public function render()
   {
     return view('livewire.store-main', [

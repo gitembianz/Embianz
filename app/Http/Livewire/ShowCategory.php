@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\File;
 
 class ShowCategory extends Component
 {
-
   public $categoryId;
   public $editcategory = null;
   public $cat;

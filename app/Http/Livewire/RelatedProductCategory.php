@@ -99,7 +99,6 @@ class RelatedProductCategory extends Component
     $this->selectAlladd = true;
     $this->checkedadd = $this->prodds->pluck('id')->map(fn ($item) => (string) $item)->toArray();
   }
-
   public function getProddsProperty()
   {
     $ids = $this->relatedproducts->pluck('product_id')->toArray();
@@ -114,7 +113,6 @@ class RelatedProductCategory extends Component
       return $unrelated->limit($this->loadAmount)->get();
     }
   }
-
   public function confirmProductlink($productid)
   {
     $this->productidbeinglink = $productid;
@@ -136,16 +134,14 @@ class RelatedProductCategory extends Component
   }
   public function linkRecords()
   {
-
     $products = Product::whereKey($this->checkedadd)->get();
-
     foreach ($products as $product) {
       $prodadd = new Products_categories();
       $prodadd->product_id = $product->id;
       $prodadd->category_id = $this->categoryId;
       $prodadd->save();
     }
-
+    $this->selectPageadd = false;
     $this->checkedadd = [];
     session()->flash('notification', [
       'message' => 'Records related successfully!',
@@ -233,9 +229,7 @@ class RelatedProductCategory extends Component
   }
   public function deleteRecords()
   {
-
     $products = Products_categories::whereKey($this->checked)->get();
-
     foreach ($products as $product) {
       $id = $product->id;
       $producttodel = Products_categories::find($id);
