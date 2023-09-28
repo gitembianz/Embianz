@@ -3,9 +3,8 @@
 namespace Laravel\Prompts;
 
 use Closure;
-use InvalidArgumentException;
 
-class SearchPrompt extends Prompt
+class MultiSearchPrompt extends Prompt
 {
     use Concerns\ReducesScrollingToFitTerminal;
     use Concerns\Truncation;
@@ -29,7 +28,14 @@ class SearchPrompt extends Prompt
     protected ?array $matches = null;
 
     /**
-     * Create a new SearchPrompt instance.
+     * The selected values.
+     *
+     * @var array<int|string, string>
+     */
+    public array $values = [];
+
+    /**
+     * Create a new MultiSearchPrompt instance.
      *
      * @param  Closure(string): array<int|string, string>  $options
      */
@@ -38,23 +44,20 @@ class SearchPrompt extends Prompt
         public Closure $options,
         public string $placeholder = '',
         public int $scroll = 5,
+        public bool|string $required = false,
         public ?Closure $validate = null,
         public string $hint = '',
-        public bool|string $required = true,
     ) {
-        if ($this->required === false) {
-            throw new InvalidArgumentException('Argument [required] must be true or a string.');
-        }
-
-        $this->trackTypedValue(submit: false);
+        $this->trackTypedValue(submit: false, ignore: fn ($key) => $key === Key::SPACE && $this->highlighted !== null);
 
         $this->reduceScrollingToFitTerminal();
 
         $this->on('key', fn ($key) => match ($key) {
-            Key::UP, Key::UP_ARROW, Key::SHIFT_TAB, Key::CTRL_P => $this->highlightPrevious(),
-            Key::DOWN, Key::DOWN_ARROW, Key::TAB, Key::CTRL_N => $this->highlightNext(),
-            Key::ENTER => $this->highlighted !== null ? $this->submit() : $this->search(),
-            Key::LEFT, Key::LEFT_ARROW, Key::RIGHT, Key::RIGHT_ARROW, Key::CTRL_B, Key::CTRL_F, Key::HOME, Key::END, Key::CTRL_A, Key::CTRL_E => $this->highlighted = null,
+            Key::UP, Key::UP_ARROW, Key::SHIFT_TAB => $this->highlightPrevious(),
+            Key::DOWN, Key::DOWN_ARROW, Key::TAB => $this->highlightNext(),
+            Key::SPACE => $this->highlighted !== null ? $this->toggleHighlighted() : null,
+            Key::ENTER => $this->submit(),
+            Key::LEFT, Key::LEFT_ARROW, Key::RIGHT, Key::RIGHT_ARROW => $this->highlighted = null,
             default => $this->search(),
         });
     }
@@ -101,11 +104,20 @@ class SearchPrompt extends Prompt
             return $this->matches;
         }
 
+        if (strlen($this->typedValue) === 0) {
+            $matches = ($this->options)($this->typedValue);
+
+            return $this->matches = [
+                ...array_diff($this->values, $matches),
+                ...$matches,
+            ];
+        }
+
         return $this->matches = ($this->options)($this->typedValue);
     }
 
     /**
-     * The currently visible matches.
+     * The currently visible matches
      *
      * @return array<string>
      */
@@ -157,6 +169,26 @@ class SearchPrompt extends Prompt
     }
 
     /**
+     * Toggle the highlighted entry.
+     */
+    protected function toggleHighlighted(): void
+    {
+        if (array_is_list($this->matches)) {
+            $label = $this->matches[$this->highlighted];
+            $key = $label;
+        } else {
+            $key = array_keys($this->matches)[$this->highlighted];
+            $label = $this->matches[$key];
+        }
+
+        if (array_key_exists($key, $this->values)) {
+            unset($this->values[$key]);
+        } else {
+            $this->values[$key] = $label;
+        }
+    }
+
+    /**
      * Get the current search query.
      */
     public function searchValue(): string
@@ -166,23 +198,21 @@ class SearchPrompt extends Prompt
 
     /**
      * Get the selected value.
+     *
+     * @return array<int|string>
      */
-    public function value(): int|string|null
+    public function value(): array
     {
-        if ($this->matches === null || $this->highlighted === null) {
-            return null;
-        }
-
-        return array_is_list($this->matches)
-            ? $this->matches[$this->highlighted]
-            : array_keys($this->matches)[$this->highlighted];
+        return array_keys($this->values);
     }
 
     /**
-     * Get the selected label.
+     * Get the selected labels.
+     *
+     * @return array<string>
      */
-    public function label(): ?string
+    public function labels(): array
     {
-        return $this->matches[array_keys($this->matches)[$this->highlighted]] ?? null;
+        return array_values($this->values);
     }
 }
