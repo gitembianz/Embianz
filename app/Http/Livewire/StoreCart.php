@@ -15,6 +15,7 @@ class StoreCart extends Component
   public $cartitems;
   public $wishlist = [];
   public $session_id;
+  public $deliverry;
   protected $listeners = [
     'cartUpdated' => 'mount',
     'wishlistUpdated' => 'mount'
@@ -23,7 +24,8 @@ class StoreCart extends Component
   public function render()
   {
     $data = [
-      'cartItems' => $this->cartItems
+      'cartItems' => $this->cartItems,
+      'cart' => Cart::where('session_id', $this->session_id)->first()
     ];
     return view('livewire.store-cart', $data);
   }
@@ -65,22 +67,23 @@ class StoreCart extends Component
     // Initial load of cartitems
     $this->session_id = Session::getId();
     $this->cartitems = $this->getCartItemsProperty();
+    $this->deliverry = 10;
   }
   public function increment($productId)
   {
-    $cart = Cart::where('session_id', $this->session_id)->first();
+
     $product = Product::find($productId);
     $cartItem = Cart_Item::where([
-      'cart_id' => $cart->id,
+      'cart_id' => $this->cart->id,
       'product_id' => $productId,
     ])->first();
 
     if ($cartItem) {
       $cartItem->increment('quantity');
       if ($cartItem->exists) {
-        $cart->quantity_amount += 1;
-        $cart->sum_amount += $product->product_prices->first()->value;
-        $cart->save();
+        $this->cart->quantity_amount += 1;
+        $this->cart->sum_amount += $product->product_prices->first()->value;
+        $this->cart->save();
         $this->emit('cartUpdated');
       }
     }
