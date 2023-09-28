@@ -118,7 +118,6 @@ class RelatedSubcategory extends Component
       return $unrelatedCatsQuery->limit($this->loadAmount)->get();
     }
   }
-
   public function confirmitemlink($id)
   {
     $this->catidbeinglink = $id;
@@ -167,7 +166,6 @@ class RelatedSubcategory extends Component
   {
     $this->dispatchBrowserEvent('show-link-modal-multiple');
   }
-
   //related subcatecory functions
   public function showColumn($column)
   {
@@ -247,9 +245,7 @@ class RelatedSubcategory extends Component
   }
   public function deleteRecords()
   {
-
     $records = Subcategory::whereKey($this->checked)->get();
-
     foreach ($records as $record) {
       $id = $record->id;
       $recordtodel = Subcategory::find($id);
@@ -269,7 +265,6 @@ class RelatedSubcategory extends Component
   {
     $this->dispatchBrowserEvent('show-delete-modal-multiple');
   }
-
   public function render()
   {
     $relatedsubcats = $this->relatedsubcats->filter(function ($subcat) {

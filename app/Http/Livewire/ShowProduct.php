@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\File;
 
 class ShowProduct extends Component
 {
-
   public $productId;
   public $editproduct = null;
   public $prod;

@@ -341,7 +341,6 @@ class RelatedMediaProduct extends Component
     $this->selectAll = true;
     $this->checked = $this->product->media()->pluck('media.id')->map(fn ($item) => (string) $item)->toArray();
   }
-
   public function isChecked($id)
   {
     return in_array($id, $this->checked);
@@ -367,7 +366,6 @@ class RelatedMediaProduct extends Component
     ]);
     return $export->download('medias.xlsx');
   }
-
   public function render()
   {
     $filteredMedia = $this->product->media()

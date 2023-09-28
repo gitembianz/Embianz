@@ -19,7 +19,6 @@ class StoreFooter extends Component
       'categories' => $this->categories
     ]);
   }
-
   public function store()
   {
     $this->resetErrorBag();

@@ -32,7 +32,6 @@ class StoreShowProduct extends Component
 
     ]);
   }
-
   public function switchTab($index)
   {
     $this->activeTab = $index;
@@ -41,13 +40,11 @@ class StoreShowProduct extends Component
   {
     $this->quantity = $this->quantity;
   }
-
   public function selectpath($id)
   {
     $this->path = '1';
     $this->mainpath = $id;
   }
-
   public function addToWishlist($productId)
   {
     if (!in_array($productId, $this->wishlist)) {
@@ -60,7 +57,6 @@ class StoreShowProduct extends Component
       $this->emit('wishlistUpdated');
     }
   }
-
   public function removeFromWishlist($productId)
   {
     $this->wishlist = array_diff($this->wishlist, [$productId]);
@@ -71,7 +67,6 @@ class StoreShowProduct extends Component
       ->delete();
     $this->emit('wishlistUpdated');
   }
-
   private function saveToSession()
   {
     session(['wishlist' => $this->wishlist]);
@@ -84,8 +79,6 @@ class StoreShowProduct extends Component
       $this->addToWishlist($productId);
     }
   }
-
-
   public function incrementCounter()
   {
     if ($this->quantity >= $this->limit) {
@@ -104,10 +97,6 @@ class StoreShowProduct extends Component
       }
       $this->quantity--;
     }
-  }
-  public function modal($id)
-  {
-    dd($id);
   }
   public function mount()
   {
@@ -136,10 +125,6 @@ class StoreShowProduct extends Component
         : "/{$image->path}{$image->name}";
     });
   }
-
-
-
-
   public function getProductProperty()
   {
     return $this->productQuery;

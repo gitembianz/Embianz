@@ -76,7 +76,6 @@ class RelatedProductsonSpec extends Component
       'product' => ['idrel' => null, 'value' => null],
     ];
   }
-
   //function for realted
   public function showColumn($column)
   {
@@ -211,7 +210,6 @@ class RelatedProductsonSpec extends Component
       'title' => 'Success'
     ]);
   }
-
   public function editSelected()
   {
     $this->itemstoedit = $this->checked;
@@ -225,7 +223,6 @@ class RelatedProductsonSpec extends Component
       $this->prod[$index]['allow'] = false;
     }
   }
-
   public function confirmmultiple()
   {
     if (empty($this->prod)) {
@@ -273,7 +270,6 @@ class RelatedProductsonSpec extends Component
       'title' => 'Success'
     ]);
   }
-
   // add specs function
   public function addrelated()
   {
@@ -406,7 +402,6 @@ class RelatedProductsonSpec extends Component
       'title' => 'Success'
     ]);
   }
-
   public function getAddprodsProperty()
   {
     $ids = $this->relatedprods->pluck('product_id')->toArray();
