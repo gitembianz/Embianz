@@ -71,19 +71,19 @@ class StoreCart extends Component
   }
   public function increment($productId)
   {
-
+    $cart = Cart::where('session_id', $this->session_id)->first();
     $product = Product::find($productId);
     $cartItem = Cart_Item::where([
-      'cart_id' => $this->cart->id,
+      'cart_id' => $cart->id,
       'product_id' => $productId,
     ])->first();
 
     if ($cartItem) {
       $cartItem->increment('quantity');
       if ($cartItem->exists) {
-        $this->cart->quantity_amount += 1;
-        $this->cart->sum_amount += $product->product_prices->first()->value;
-        $this->cart->save();
+        $cart->quantity_amount += 1;
+        $cart->sum_amount += $product->product_prices->first()->value;
+        $cart->save();
         $this->emit('cartUpdated');
       }
     }
