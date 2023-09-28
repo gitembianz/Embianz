@@ -86,7 +86,7 @@
                     <span>Specs</span>
                 </a></li>
             <li class="dropdown"><a
-                    class="sidebar__item @if ($active == 'settings') active @endif dropdown-button" href="#"
+                    class="sidebar__item @if ($active == 'store_settings' || $active == 'voucher') active @endif dropdown-button" href="#"
                     style="z-index: 99999;">
                     <button class="sidebar__icon">
                         <svg>
@@ -100,7 +100,7 @@
                 </a>
                 <div class="dropdown-list"
                     style="width: 100%;margin-top: -10px;border-radius: 10px;padding: 20px 0 10px 20px;border: none;background: #35424b;">
-                    <a class="sidebar__subitem @if ($active == 'settings') active @endif"
+                    <a class="sidebar__subitem @if ($active == 'store_settings') active @endif"
                         href="{{ route('storesettings') }}">
                         <button class="sidebar__icon">
                             <svg>
@@ -109,7 +109,18 @@
                                 </path>
                             </svg>
                         </button>
-                        <span>Store Settings</span>
+                        <span> Store Settings</span>
+                    </a>
+                    <a class="sidebar__subitem @if ($active == 'voucher') active @endif"
+                        href="{{ route('vouchers') }}">
+                        <button class="sidebar__icon">
+                            <svg>
+                                <line x1="19" y1="5" x2="5" y2="19"></line>
+                                <circle cx="6.5" cy="6.5" r="2.5"></circle>
+                                <circle cx="17.5" cy="17.5" r="2.5"></circle>
+                            </svg>
+                        </button>
+                        <span>Vouchers</span>
                     </a>
                 </div>
             </li>

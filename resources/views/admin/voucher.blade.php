@@ -1,11 +1,12 @@
 <x-dashboardheader />
 <x-dashboardnavbar />
-<x-dashboardsidebar :active="__('store_settings')" />
+<x-dashboardsidebar :active="__('voucher')" />
+
 {{-- Page content start --}}
 <section class="content">
 
     {{-- Tabel by Livewire start --}}
-    <livewire:storesettingstable />
+    <livewire:vouchertable tableName="vouchers" />
     {{-- Tabel by Livewire end --}}
 
     <a href="#" class="top-up-btn" id="topUp">
@@ -14,6 +15,7 @@
         </svg>
     </a>
 </section>
+
 {{-- page content end --}}
 <x-dashboardright />
 <x-dashboardscript />
