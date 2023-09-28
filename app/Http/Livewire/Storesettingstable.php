@@ -30,7 +30,6 @@ class Storesettingstable extends Component
       'storesettings' => $this->storesettings
     ]);
   }
-
   public function mount()
   {
     $this->selectedColumns = $this->columns;

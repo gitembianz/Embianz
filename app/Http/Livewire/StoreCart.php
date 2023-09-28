@@ -133,7 +133,6 @@ class StoreCart extends Component
       ->delete();
     $this->emit('wishlistUpdated');
   }
-
   private function saveToSession()
   {
     session([

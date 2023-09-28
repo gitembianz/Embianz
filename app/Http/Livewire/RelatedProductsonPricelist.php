@@ -293,7 +293,6 @@ class RelatedProductsonPricelist extends Component
       'product' => ['name' => null, 'value' => null],
     ];
   }
-
   public function clear($index)
   {
     unset($this->prod[$index]);

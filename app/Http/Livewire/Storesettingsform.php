@@ -12,12 +12,10 @@ class Storesettingsform extends Component
   public $value;
   public $description;
 
-
   public function render()
   {
     return view('livewire.storesettingsform');
   }
-
   public function store()
   {
     $this->resetErrorBag();

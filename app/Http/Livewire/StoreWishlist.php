@@ -12,6 +12,7 @@ class StoreWishlist extends Component
   public $wishlistitems;
   protected $listeners = ['wishlistUpdated' => 'mount'];
 
+
   public function render()
   {
     $data = [

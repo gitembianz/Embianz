@@ -51,7 +51,6 @@ class StoreProducts extends Component
     $this->products = $this->getProducts();
     return view('livewire.store-products');
   }
-
   public function clearcategory()
   {
     $this->category = null;
@@ -59,7 +58,6 @@ class StoreProducts extends Component
   }
   public function getProducts()
   {
-
     $query = Product::name($this->search);
     if ($this->category) {
       $this->categoryname = Category::find($this->category)->name;
@@ -87,7 +85,6 @@ class StoreProducts extends Component
 
     return $query->limit($this->loadAmount)->get();
   }
-
   public function addToWishlist($productId)
   {
     if (!in_array($productId, $this->wishlist)) {
@@ -158,7 +155,6 @@ class StoreProducts extends Component
       ->delete();
     $this->emit('wishlistUpdated');
   }
-
   private function saveToSession()
   {
     session([

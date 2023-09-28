@@ -32,7 +32,6 @@ class RelatedCategoryProduct extends Component
   public $selectedColumns = [];
   public $product;
 
-
   //add variables
   public $searchadd = '';
   public $orderByadd = 'id';
@@ -48,7 +47,6 @@ class RelatedCategoryProduct extends Component
   public $totalRecords;
   public $loadAmount = 10;
 
-  //add new functionss
   public function toggleTable()
   {
     $this->showrelatedcat = true;
@@ -116,7 +114,6 @@ class RelatedCategoryProduct extends Component
       return $unrelatedCatsQuery->limit($this->loadAmount)->get();
     }
   }
-
   public function confirmItemlink($itemtid)
   {
     $this->catidbeinglink = $itemtid;
@@ -266,7 +263,6 @@ class RelatedCategoryProduct extends Component
     ]);
     return $export->download('categories.xlsx');
   }
-  //render function
   public function mount($productId)
   {
     $this->productId = $productId;

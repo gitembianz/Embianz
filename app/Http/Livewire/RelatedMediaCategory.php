@@ -48,7 +48,6 @@ class RelatedMediaCategory extends Component
   public $row = 1;
   public $externalmedia = false;
 
-
   public function mount($categoryId)
   {
     $this->categoryId = $categoryId;

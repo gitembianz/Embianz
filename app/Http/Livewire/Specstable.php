@@ -10,7 +10,6 @@ use Livewire\WithPagination;
 
 class Specstable extends Component
 {
-
   use WithPagination;
   public $loadAmount = 20;
   public $search = '';

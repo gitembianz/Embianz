@@ -6,7 +6,6 @@ use App\Models\Product;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Exports\ProductsExport;
-use App\Models\Cart;
 use App\Models\Cart_Item;
 use App\Models\PricelistEntries;
 use App\Models\Products_categories;

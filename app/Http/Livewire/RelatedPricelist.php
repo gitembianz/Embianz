@@ -307,7 +307,6 @@ class RelatedPricelist extends Component
     $this->isselected = false;
     $this->searchadd = $this->itemselected->name;
   }
-
   public function select($id)
   {
     $this->itemselected = PriceList::find($id);
@@ -364,7 +363,6 @@ class RelatedPricelist extends Component
       'price' => ['name' => null, 'value' => null],
     ];
   }
-  //clear one row in modal
   public function clear($index)
   {
     unset($this->priceAndValues[$index]);
@@ -385,8 +383,6 @@ class RelatedPricelist extends Component
       $this->row = 1;
     }
   }
-
-
   public function saveitems()
   {
     foreach ($this->priceAndValues as  $priceAndValue) {
@@ -421,7 +417,6 @@ class RelatedPricelist extends Component
       'title' => 'Success'
     ]);
   }
-
   public function getAddpricesProperty()
   {
     $ids = $this->relatedprices->pluck('pricelist_id')->toArray();
