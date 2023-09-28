@@ -45,7 +45,10 @@
     route::post('/new', [TodolistController::class, 'store'])->name('store');
     route::delete('/{todolist:id}', [TodolistController::class, 'destroy'])->name('destroy');
 
+
     //general routes
+    route::get('/vouchers', [AdminController::class, 'vouchers'])->name('vouchers');
+
     route::get('/storesettings', [AdminController::class, 'storesettings'])->name('storesettings');
     route::get('/addstoresettings', [AdminController::class, 'addstoresetting'])->name('addstoresetting');
   });
