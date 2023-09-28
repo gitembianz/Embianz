@@ -147,6 +147,7 @@ class RelatedCategoryProduct extends Component
       $itemadd->save();
     }
     $this->checkedadd = [];
+    $this->selectPageadd = false;
     session()->flash('notification', [
       'message' => 'Records related successfully!',
       'type' => 'success',
