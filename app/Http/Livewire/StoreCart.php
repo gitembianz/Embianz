@@ -3,10 +3,11 @@
 namespace App\Http\Livewire;
 
 use App\Models\Cart;
-use App\Models\Cart_Item;
 use App\Models\Product;
+use App\Models\Voucher;
 use Livewire\Component;
 use App\Models\Wishlist;
+use App\Models\Cart_Item;
 use Illuminate\Support\Facades\Session;
 
 class StoreCart extends Component
@@ -16,6 +17,9 @@ class StoreCart extends Component
   public $wishlist = [];
   public $session_id;
   public $deliverry;
+  public $voucher;
+  public $new_price;
+  public $message;
   protected $listeners = [
     'cartUpdated' => 'mount',
     'wishlistUpdated' => 'mount'
@@ -145,6 +149,26 @@ class StoreCart extends Component
       $this->removeFromWishlist($productId);
     } else {
       $this->addToWishlist($productId);
+    }
+  }
+  public function checkvoucher()
+  {
+    // Retrieve the cart
+    $cart = Cart::where('session_id', $this->session_id)->first();
+
+    if ($cart) {
+      // Search for a voucher with the provided code in the database
+      $voucher = Voucher::where('code', $this->voucher)->first();
+
+      if ($voucher) {
+        // Voucher found, calculate discount based on percentage
+        $discountAmount = $voucher->percent / 100 * $cart->sum_amount;
+
+        // Apply the discount to the total amount
+        $this->new_price = $cart->sum_amount - $discountAmount;
+      } else {
+        $this->message = "Voucher not found!";
+      }
     }
   }
 }

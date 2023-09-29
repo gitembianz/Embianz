@@ -118,21 +118,37 @@
                      <?php
                      $total = $cart->sum_amount + $deliverry;
                      ?>
-                     {{ $total }} {{ $currency }}
+                     @if ($new_price)
+                         {{-- <span>
+                    <span>107.98 lei</span>
+                    89,99 lei
+                </span> --}}
+                         <span
+                             style="text-decoration: line-through; color:red; margin-right:1rem">{{ $total }}{{ $currency }}</span>{{ $new_price }}{{ $currency }}
+                     @else
+                         {{ $total }} {{ $currency }}
+                     @endif
                  </span>
-                 <a href="{{ route('order') }}">Continue</a>
+                 @if ($voucher)
+                     <a href="{{ route('order'), $new_price }}">Continue</a>
+                 @else
+                     <a href="{{ route('order'), $total }}">Continue</a>
+                 @endif
              </div>
              <div class="cart__voucher">
                  <h4>
                      Ai un voucher sau card cadou?
                  </h4>
-                 <form action="#">
-                     <input type="text" name="voucher">
-                     <button>
+                 <form wire:submit.prevent="checkvoucher" style="position: relative">
+                     <input type="text" wire:model="voucher" name="voucher">
+                     <button type="submit">
                          <svg>
                              <polyline points="9 18 15 12 9 6"></polyline>
                          </svg>
                      </button>
+                     @if ($message)
+                         <p style="color: red; position :absolute; top:40px">{{ $message }}</p>
+                     @endif
                  </form>
              </div>
          </div>
