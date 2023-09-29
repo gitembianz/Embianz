@@ -97,7 +97,7 @@
                     </g>
                 </svg>
             </a>
-            <a class="panel__header--button" href="#">
+            <a class="panel__header--button" href="{{ route('newvoucher') }}">
                 <svg>
                     <line x1="12" y1="5" x2="12" y2="19"></line>
                     <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -172,7 +172,7 @@
                             <td data-title="Action">
                                 <div class="table__buttons">
                                     <button class="delete"
-                                        wire:click.prevent="confirmItemRemoval({{ $cart->id }})">
+                                        wire:click.prevent="confirmItemRemoval({{ $voucher->id }})">
                                         <svg>
                                             <polyline points="3 6 5 6 21 6"></polyline>
                                             <path

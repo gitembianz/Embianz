@@ -48,7 +48,8 @@
 
     //general routes
     route::get('/vouchers', [AdminController::class, 'vouchers'])->name('vouchers');
-
+    route::get('/newvoucher', [AdminController::class, 'create_voucher'])->name('newvoucher');
+    route::post('/add_voucher', [AdminController::class, 'store_voucher']);
     route::get('/storesettings', [AdminController::class, 'storesettings'])->name('storesettings');
     route::get('/addstoresettings', [AdminController::class, 'addstoresetting'])->name('addstoresetting');
   });

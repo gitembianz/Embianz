@@ -111,6 +111,7 @@ class StoreProducts extends Component
           'session_id' => $this->session_id,
           'quantity_amount' => 1,
           'sum_amount' => $product->product_prices->first()->value,
+          'status' => 'in progress',
         ]);
         $cart_id = Cart::where('session_id', $this->session_id)->first()->id;
       } else {
