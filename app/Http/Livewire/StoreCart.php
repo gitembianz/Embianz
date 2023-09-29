@@ -163,7 +163,7 @@ class StoreCart extends Component
       if ($voucher) {
         // Voucher found, calculate discount based on percentage
         $discountAmount = $voucher->percent / 100 * $cart->sum_amount;
-
+        $this->message = null;
         // Apply the discount to the total amount
         $this->new_price = $cart->sum_amount - $discountAmount;
       } else {
