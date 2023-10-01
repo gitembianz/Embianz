@@ -119,21 +119,13 @@
                      $total = $cart->sum_amount + $deliverry;
                      ?>
                      @if ($new_price)
-                         {{-- <span>
-                    <span>107.98 lei</span>
-                    89,99 lei
-                </span> --}}
                          <span
-                             style="text-decoration: line-through; color:red; margin-right:1rem">{{ $total }}{{ $currency }}</span>{{ $new_price }}{{ $currency }}
+                             style="text-decoration: line-through; color:red; margin-right:1rem">{{ $total }}{{ $currency }}</span>{{ $price }}{{ $currency }}
                      @else
                          {{ $total }} {{ $currency }}
                      @endif
                  </span>
-                 @if ($voucher)
-                     <a href="{{ route('order'), $new_price }}">Continue</a>
-                 @else
-                     <a href="{{ route('order'), $total }}">Continue</a>
-                 @endif
+                 <a wire:click="continue()">Continue</a>
              </div>
              <div class="cart__voucher">
                  @if ($new_price)

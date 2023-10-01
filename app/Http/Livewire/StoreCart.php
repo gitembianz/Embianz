@@ -18,7 +18,8 @@ class StoreCart extends Component
   public $session_id;
   public $deliverry;
   public $voucher;
-  public $new_price;
+  public $new_price = false;
+  public $price;
   public $message;
   protected $listeners = [
     'cartUpdated' => 'mount',
@@ -71,7 +72,7 @@ class StoreCart extends Component
     // Initial load of cartitems
     $this->session_id = Session::getId();
     $this->cartitems = $this->getCartItemsProperty();
-    $this->deliverry = 10;
+    $this->deliverry = 20;
   }
   public function increment($productId)
   {
@@ -163,12 +164,28 @@ class StoreCart extends Component
       if ($voucher) {
         // Voucher found, calculate discount based on percentage
         $discountAmount = $voucher->percent / 100 * $cart->sum_amount;
-
-        // Apply the discount to the total amount
-        $this->new_price = $cart->sum_amount - $discountAmount;
+        $this->message = null;
+        $this->price = $cart->sum_amount;
+        $cart->sum_amount -= $discountAmount;
+        $cart->save();
+        $this->new_price = true;
       } else {
         $this->message = "Voucher not found!";
       }
+    }
+  }
+
+  public function continue()
+  {
+    $cart = Cart::where('session_id', $this->session_id)->first();
+    if ($this->new_price) {
+      $cart->final_amount = $this->price;
+      $cart->save();
+      dd($cart->final_amount);
+    } else {
+      $cart->final_amount = $cart->sum_amount + $this->deliverry;
+      $cart->save();
+      dd($cart->final_amount);
     }
   }
 }
