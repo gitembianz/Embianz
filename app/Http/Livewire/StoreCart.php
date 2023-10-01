@@ -8,6 +8,8 @@ use App\Models\Voucher;
 use Livewire\Component;
 use App\Models\Wishlist;
 use App\Models\Cart_Item;
+use App\Models\Order;
+use App\Models\Order_Item;
 use Illuminate\Support\Facades\Session;
 
 class StoreCart extends Component
@@ -181,11 +183,31 @@ class StoreCart extends Component
     if ($this->new_price) {
       $cart->final_amount = $this->price;
       $cart->save();
-      dd($cart->final_amount);
     } else {
       $cart->final_amount = $cart->sum_amount + $this->deliverry;
       $cart->save();
-      dd($cart->final_amount);
     }
+    $order = Order::where('session_id', $this->session_id)->first();
+    if (!$order) {
+      Order::create([
+        'session_id' => $this->session_id,
+        'quantity_amount' => $cart->quantity_amount,
+        'sum_amount' => $cart->final_amount,
+        'status' => 'in progress',
+      ]);
+      $cartitems = Cart_Item::where('cart_id', $cart->id)->get();
+      if ($cartitems) {
+        $order = Order::where('session_id', $this->session_id)->first();
+        foreach ($cartitems as $item) {
+          Order_Item::create([
+            'order_id' => $order->id,
+            'product_id' => $item->product_id,
+            'price' => $item->price,
+            'quantity' => $item->quantity,
+          ]);
+        }
+      }
+    }
+    return redirect()->route('order');
   }
 }
