@@ -33,6 +33,11 @@ class Product extends Model
     return $this->hasMany(Cart_Item::class, 'product_id');
   }
 
+  public function orders_item()
+  {
+    return $this->hasMany(Order_Item::class, 'product_id');
+  }
+
   public function media()
   {
     return $this->morphToMany(Media::class, 'mediable', 'item_media');
