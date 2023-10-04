@@ -11,13 +11,45 @@
         <h1 class="section__title">Delivery details</h1>
 
         <div class="details__tab">
-            <div class="details__tab--header">
-                <button wire:click="showindividual()" class="details__tab--btn"
-                    data-tooltip="Get this product for your personal enjoyment">Individual</button>
-                <button wire:click="showjuridic()" class="details__tab--btn"
-                    data-tooltip="Purchase this item from company">Legal
-                    Person</button>
+            <div class="details__tab--header" style="justify-content: space-between">
+                <div>
+                    <button wire:click="showindividual()"
+                        class="details__tab--btn @if ($individual) active @endif"
+                        data-tooltip="Get this product for your personal enjoyment">Individual</button>
+                    <button wire:click="showjuridic()"
+                        class="details__tab--btn @if ($juridic) active @endif"
+                        data-tooltip="Purchase this item from company">Legal
+                        Person
+                    </button>
+                </div>
+                <div class="details__btns">
+                    @if ($step == 2)
+                        <a wire:click.prevent="previous()" data-tooltip="Go to previous step">
+                            <svg>
+                                <line x1="19" y1="12" x2="5" y2="12"></line>
+                                <polyline points="12 19 5 12 12 5"></polyline>
+                            </svg>
+                        </a>
+                        <a wire:click.prevent="confirm()" data-tooltip="Confirm order">
+                            <svg>
+                                <polyline points="9 11 12 14 22 4"></polyline>
+                                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                            </svg>
+                        </a>
+                    @elseif ($step == 1)
+                        <a wire:click.prevent="next()" data-tooltip="Go to next step">
+                            <svg>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </a>
+                    @elseif ($step == 3)
+                        <a wire:click.prevent="finish()" data-tooltip="Go back to store">
+                            Thank you for your order, Shopping again
+                        </a>
+                    @endif
 
+                </div>
             </div>
             <div class="details__tab--content">
                 <div class="details__tab--pane @if ($individual) active @endif">
@@ -26,14 +58,42 @@
                         <span class="details__content-add--number">1</span>
                         <div class="details__content-add--column">
                             <span class="details__content-add--text">Billing Contact &#9998;</span>
-                            <input class="details__content-add--input" type="text"
-                                wire.model="individual_billing_first" placeholder="First Name">
-                            <input class="details__content-add--input" type="text"
-                                wire.model="individual_billing_last" placeholder="Last Name">
-                            <input class="details__content-add--input" type="text"
-                                wire.model="individual_billing_phone" placeholder="Phone">
-                            <input class="details__content-add--input" type="text"
-                                wire.model="individual_billing_email" placeholder="Email">
+                            <div>
+                                <input class="details__content-add--input" type="text"
+                                    wire:model="individual_billing_first" placeholder="First Name">
+                                <p class="real-time-validation">
+                                    @error('individual_billing_first')
+                                        {{ $message }}
+                                    @enderror
+                                </p>
+                            </div>
+                            <div>
+                                <input class="details__content-add--input" type="text"
+                                    wire:model="individual_billing_last" placeholder="Last Name">
+                                <p class="real-time-validation">
+                                    @error('individual_billing_last')
+                                        {{ $message }}
+                                    @enderror
+                                </p>
+                            </div>
+                            <div>
+                                <input class="details__content-add--input" type="text"
+                                    wire:model="individual_billing_phone" placeholder="Phone">
+                                <p class="real-time-validation">
+                                    @error('individual_billing_phone')
+                                        {{ $message }}
+                                    @enderror
+                                </p>
+                            </div>
+                            <div>
+                                <input class="details__content-add--input" type="text"
+                                    wire:model="individual_billing_email" placeholder="Email">
+                                <p class="real-time-validation">
+                                    @error('individual_billing_phone')
+                                        {{ $message }}
+                                    @enderror
+                                </p>
+                            </div>
                         </div>
 
                     </div>
@@ -42,56 +102,157 @@
                         <span class="details__content-add--number">2</span>
                         <div class="details__content-add--column">
                             <span class="details__content-add--text">Billing Address &#9998;</span>
-                            <input class="details__content-add--input" wire.model="individual_billing_address1"
-                                type="text" placeholder="Address 1*">
-                            <input class="details__content-add--input" wire.model="individual_billing_address2"
+                            <div>
+                                <input class="details__content-add--input" wire:model="individual_billing_address1"
+                                    type="text" placeholder="Address 1*">
+                                <p class="real-time-validation">
+                                    @error('individual_billing_address1')
+                                        {{ $message }}
+                                    @enderror
+                                </p>
+                            </div>
+                            <input class="details__content-add--input" wire:model="individual_billing_address2"
                                 type="text" placeholder="Address 2">
-                            <input class="details__content-add--input" wire.model="individual_billing_country"
-                                type="text" placeholder="Country">
-                            <input class="details__content-add--input" wire.model="individual_billing_county"
+
+                            <div>
+                                <input class="details__content-add--input" wire:model="individual_billing_country"
+                                    type="text" placeholder="Country">
+                                <p class="real-time-validation">
+                                    @error('individual_billing_country')
+                                        {{ $message }}
+                                    @enderror
+                                </p>
+                            </div>
+                            <input class="details__content-add--input" wire:model="individual_billing_county"
                                 type="text" placeholder="County">
-                            <input class="details__content-add--input" wire.model="individual_billing_city"
-                                type="text" placeholder="City">
-                            <input class="details__content-add--input" wire.model="individual_billing_zipcode"
-                                type="text" placeholder="Post Code">
+
+                            <div>
+                                <input class="details__content-add--input" wire:model="individual_billing_city"
+                                    type="text" placeholder="City">
+                                <p class="real-time-validation">
+                                    @error('individual_billing_city')
+                                        {{ $message }}
+                                    @enderror
+                                </p>
+                            </div>
+                            <div>
+                                <input class="details__content-add--input" wire:model="individual_billing_zipcode"
+                                    type="text" placeholder="Post Code">
+                                <p class="real-time-validation">
+                                    @error('individual_billing_zipcode')
+                                        {{ $message }}
+                                    @enderror
+                                </p>
+                            </div>
                         </div>
                     </div>
-                    <div class="details__content--checkbox">Shipping
-                        address is identic cu Billing Address
+                    <div class="details__content--checkbox @if ($individual_identic) active @endif">
+                        Shipping address is identical to Billing Address
                         <label class="checkbox">
-                            <input wire.model="individual_identic" type="checkbox">
+                            <input wire:model="individual_identic" type="checkbox">
                             <span></span>
                         </label>
                     </div>
-                    <!-- here is delivery contact -->
-                    <div class="details__content-add">
-                        <span class="details__content-add--number">3</span>
-                        <div class="details__content-add--column">
-                            <span class="details__content-add--text">Shipping Contact &#9998;</span>
-                            <input class="details__content-add--input" type="text" placeholder="First Name">
-                            <input class="details__content-add--input" type="text" placeholder="Last Name">
-                            <input class="details__content-add--input" type="text" placeholder="Phone">
-                            <input class="details__content-add--input" type="text" placeholder="Email">
-                        </div>
-                    </div>
-                    <!-- Here is shipping address -->
-                    <div class="details__content-add">
-                        <span class="details__content-add--number">4</span>
-                        <div class="details__content-add--column">
-                            <span class="details__content-add--text">Shipping Address &#9998;</span>
-                            <input class="details__content-add--input" type="text" placeholder="First Name">
-                            <input class="details__content-add--input" type="text" placeholder="Last Name">
-                            <input class="details__content-add--input" type="text" placeholder="Phone">
-                            <input class="details__content-add--input" type="text" placeholder="Email">
-                            <input class="details__content-add--input" type="text" placeholder="Address 1*">
-                            <input class="details__content-add--input" type="text" placeholder="Address 2">
-                            <input class="details__content-add--input" type="text" placeholder="Country">
-                            <input class="details__content-add--input" type="text" placeholder="County">
-                            <input class="details__content-add--input" type="text" placeholder="City">
-                            <input class="details__content-add--input" type="text" placeholder="Post Code">
 
+                    @if (!$individual_identic)
+                        <!-- here is delivery contact -->
+                        <div class="details__content-add">
+                            <span class="details__content-add--number">3</span>
+                            <div class="details__content-add--column">
+                                <span class="details__content-add--text">Shipping Contact &#9998;</span>
+                                <div>
+                                    <input class="details__content-add--input" wire:model="individual_shipping_first"
+                                        type="text" placeholder="First Name">
+                                    <p class="real-time-validation">
+                                        @error('individual_shipping_first')
+                                            {{ $message }}
+                                        @enderror
+                                    </p>
+                                </div>
+                                <div>
+                                    <input class="details__content-add--input" wire:model="individual_shipping_last"
+                                        type="text" placeholder="Last Name">
+                                    <p class="real-time-validation">
+                                        @error('individual_shipping_last')
+                                            {{ $message }}
+                                        @enderror
+                                    </p>
+                                </div>
+                                <div>
+                                    <input class="details__content-add--input" wire:model="individual_shipping_phone"
+                                        type="text" placeholder="Phone">
+                                    <p class="real-time-validation">
+                                        @error('individual_shipping_phone')
+                                            {{ $message }}
+                                        @enderror
+                                    </p>
+                                </div>
+                                <div>
+                                    <input class="details__content-add--input" wire:model="individual_shipping_email"
+                                        type="text" placeholder="Email">
+                                    <p class="real-time-validation">
+                                        @error('individual_shipping_email')
+                                            {{ $message }}
+                                        @enderror
+                                    </p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                        <!-- Here is shipping address -->
+                        <div class="details__content-add">
+                            <span class="details__content-add--number">4</span>
+                            <div class="details__content-add--column">
+                                <span class="details__content-add--text">Shipping Address &#9998;</span>
+                                {{-- <input class="details__content-add--input" type="text" placeholder="First Name">
+                                <input class="details__content-add--input" type="text" placeholder="Last Name">
+                                <input class="details__content-add--input" type="text" placeholder="Phone">
+                                <input class="details__content-add--input" type="text" placeholder="Email"> --}}
+                                <div>
+                                    <input class="details__content-add--input"
+                                        wire:model="individual_shipping_address1" type="text"
+                                        placeholder="Address 1*">
+                                    <p class="real-time-validation">
+                                        @error('individual_shipping_address1')
+                                            {{ $message }}
+                                        @enderror
+                                    </p>
+                                </div>
+                                <input class="details__content-add--input" wire:model="individual_shipping_address2"
+                                    type="text" placeholder="Address 2">
+                                <div>
+                                    <input class="details__content-add--input"
+                                        wire:model="individual_shipping_country" type="text"
+                                        placeholder="Country">
+                                    <p class="real-time-validation">
+                                        @error('individual_shipping_country')
+                                            {{ $message }}
+                                        @enderror
+                                    </p>
+                                </div>
+                                <input class="details__content-add--input" wire:model="individual_shipping_county"
+                                    type="text" placeholder="County">
+                                <div>
+                                    <input class="details__content-add--input" wire:model="individual_shipping_city"
+                                        type="text" placeholder="City">
+                                    <p class="real-time-validation">
+                                        @error('individual_shipping_city')
+                                            {{ $message }}
+                                        @enderror
+                                    </p>
+                                </div>
+                                <div>
+                                    <input class="details__content-add--input"
+                                        wire:model="individual_shipping_zipcode" type="text"
+                                        placeholder="Post Code">
+                                    <p class="real-time-validation">
+                                        @error('individual_shipping_zipcode')
+                                            {{ $message }}
+                                        @enderror
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
                 </div>
                 <div class="details__tab--pane @if ($juridic) active @endif">
                     <!-- here is billing contact -->
@@ -99,17 +260,89 @@
                         <span class="details__content-add--number">1</span>
                         <div class="details__content-add--column">
                             <span class="details__content-add--text">Juridical information &#9998;</span>
-                            <input class="details__content-add--input" type="text" placeholder="First Name">
-                            <input class="details__content-add--input" type="text" placeholder="Last Name">
-                            <input class="details__content-add--input" type="text" placeholder="Phone">
-                            <input class="details__content-add--input" type="text" placeholder="Email">
-                            <input class="details__content-add--input" type="text" placeholder="Company Name">
-                            <input class="details__content-add--input" type="text"
-                                placeholder="Registration code">
-                            <input class="details__content-add--input" type="text"
-                                placeholder="Registration number">
-                            <input class="details__content-add--input" type="text" placeholder="Bank">
-                            <input class="details__content-add--input" type="text" placeholder="Account">
+                            <div>
+                                <input class="details__content-add--input" wire:model="juridic_billing_first"
+                                    type="text" placeholder="First Name">
+                                <p class="real-time-validation">
+                                    @error('juridic_billing_first')
+                                        {{ $message }}
+                                    @enderror
+                                </p>
+                            </div>
+                            <div>
+                                <input class="details__content-add--input" wire:model="juridic_billing_last"
+                                    type="text" placeholder="Last Name">
+                                <p class="real-time-validation">
+                                    @error('juridic_billing_last')
+                                        {{ $message }}
+                                    @enderror
+                                </p>
+                            </div>
+                            <div>
+                                <input class="details__content-add--input" wire:model="juridic_billing_phone"
+                                    type="text" placeholder="Phone">
+                                <p class="real-time-validation">
+                                    @error('juridic_billing_phone')
+                                        {{ $message }}
+                                    @enderror
+                                </p>
+                            </div>
+                            <div>
+                                <input class="details__content-add--input" wire:model="juridic_billing_email"
+                                    type="text" placeholder="Email">
+                                <p class="real-time-validation">
+                                    @error('juridic_billing_email')
+                                        {{ $message }}
+                                    @enderror
+                                </p>
+                            </div>
+                            <div>
+                                <input class="details__content-add--input" wire:model="juridic_billing_company_name"
+                                    type="text" placeholder="Company Name">
+                                <p class="real-time-validation">
+                                    @error('juridic_billing_company_name')
+                                        {{ $message }}
+                                    @enderror
+                                </p>
+                            </div>
+                            <div>
+                                <input class="details__content-add--input"
+                                    wire:model="juridic_billing_registration_code" type="text"
+                                    placeholder="Registration code">
+                                <p class="real-time-validation">
+                                    @error('juridic_billing_registration_code')
+                                        {{ $message }}
+                                    @enderror
+                                </p>
+                            </div>
+                            <div>
+                                <input class="details__content-add--input"
+                                    wire:model="juridic_billing_registration_number" type="text"
+                                    placeholder="Registration number">
+                                <p class="real-time-validation">
+                                    @error('juridic_billing_registration_number')
+                                        {{ $message }}
+                                    @enderror
+                                </p>
+                            </div>
+                            <div>
+                                <input class="details__content-add--input" wire:model="juridic_billing_bank"
+                                    type="text" placeholder="Bank">
+                                <p class="real-time-validation">
+                                    @error('juridic_billing_bank')
+                                        {{ $message }}
+                                    @enderror
+                                </p>
+                            </div>
+                            <div>
+                                <input class="details__content-add--input" wire:model="juridic_billing_account"
+                                    type="text" placeholder="Account">
+                                <p class="real-time-validation">
+                                    @error('juridic_billing_account')
+                                        {{ $message }}
+                                    @enderror
+                                </p>
+                            </div>
                         </div>
                     </div>
                     <!-- here is billing address -->
@@ -117,51 +350,116 @@
                         <span class="details__content-add--number">2</span>
                         <div class="details__content-add--column">
                             <span class="details__content-add--text">Billing Address &#9998;</span>
-                            <input class="details__content-add--input" type="text" placeholder="Address 1*">
+                            <div>
+                                <input class="details__content-add--input" wire:model="juridic_billing_address1"
+                                    type="text" placeholder="Address 1*">
+                                <p class="real-time-validation">
+                                    @error('juridic_billing_address1')
+                                        {{ $message }}
+                                    @enderror
+                                </p>
+                            </div>
                             <input class="details__content-add--input" type="text" placeholder="Address 2">
-                            <input class="details__content-add--input" type="text" placeholder="Country">
+                            <div>
+                                <input class="details__content-add--input" wire:model="juridic_billing_country"
+                                    type="text" placeholder="Country">
+                                <p class="real-time-validation">
+                                    @error('juridic_billing_country')
+                                        {{ $message }}
+                                    @enderror
+                                </p>
+                            </div>
                             <input class="details__content-add--input" type="text" placeholder="County">
-                            <input class="details__content-add--input" type="text" placeholder="City">
-                            <input class="details__content-add--input" type="text" placeholder="Post Code">
+                            <div>
+                                <input class="details__content-add--input" wire:model="juridic_billing_city"
+                                    type="text" placeholder="City">
+                                <p class="real-time-validation">
+                                    @error('juridic_billing_city')
+                                        {{ $message }}
+                                    @enderror
+                                </p>
+                            </div>
+                            <div>
+                                <input class="details__content-add--input" wire:model="juridic_billing_zipcode"
+                                    type="text" placeholder="Post Code">
+                                <p class="real-time-validation">
+                                    @error('juridic_billing_zipcode')
+                                        {{ $message }}
+                                    @enderror
+                                </p>
+                            </div>
                         </div>
                     </div>
-                    <div class="details__content--checkbox"
-                        data-tooltip="Click if you want to purchase this item as a gift for someone special.">
+                    <div class="details__content--checkbox @if ($juridic_identic) active @endif">
+                        Shipping address is identical to Billing Address
                         <label class="checkbox">
-                            <input type="checkbox">
+                            <input wire:model="juridic_identic" type="checkbox">
                             <span></span>
                         </label>
-                        Shipping address
                     </div>
-                    <!-- here is delivery contact -->
-                    <div class="details__content-add">
-                        <span class="details__content-add--number">3</span>
-                        <div class="details__content-add--column">
-                            <span class="details__content-add--text">Delivery Contact &#9998;</span>
-                            <input class="details__content-add--input" type="text" placeholder="First Name">
-                            <input class="details__content-add--input" type="text" placeholder="Last Name">
-                            <input class="details__content-add--input" type="text" placeholder="Phone">
-                            <input class="details__content-add--input" type="text" placeholder="Email">
+                    @if (!$juridic_identic)
+                        <!-- here is delivery contact -->
+                        <div class="details__content-add">
+                            <span class="details__content-add--number">3</span>
+                            <div class="details__content-add--column">
+                                <span class="details__content-add--text">Delivery Contact &#9998;</span>
+                                <div>
+                                    <input class="details__content-add--input" wire:model="juridic_shipping_first"
+                                        type="text" placeholder="First Name">
+                                    <p class="real-time-validation">
+                                        @error('juridic_shipping_first')
+                                            {{ $message }}
+                                        @enderror
+                                    </p>
+                                </div>
+                                <div>
+                                    <input class="details__content-add--input" wire:model="juridic_shipping_last"
+                                        type="text" placeholder="Last Name">
+                                    <p class="real-time-validation">
+                                        @error('juridic_shipping_last')
+                                            {{ $message }}
+                                        @enderror
+                                    </p>
+                                </div>
+                                <div>
+                                    <input class="details__content-add--input" wire:model="juridic_shipping_phone"
+                                        type="text" placeholder="Phone">
+                                    <p class="real-time-validation">
+                                        @error('juridic_shipping_phone')
+                                            {{ $message }}
+                                        @enderror
+                                    </p>
+                                </div>
+                                <div>
+                                    <input class="details__content-add--input" wire:model="juridic_shipping_email"
+                                        type="text" placeholder="Email">
+                                    <p class="real-time-validation">
+                                        @error('juridic_shipping_email')
+                                            {{ $message }}
+                                        @enderror
+                                    </p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <!-- Here is shipping address -->
-                    <div class="details__content-add">
-                        <span class="details__content-add--number">4</span>
-                        <div class="details__content-add--column">
-                            <span class="details__content-add--text">Shipping Address &#9998;</span>
-                            <input class="details__content-add--input" type="text" placeholder="First Name">
+                        <!-- Here is shipping address -->
+                        <div class="details__content-add">
+                            <span class="details__content-add--number">4</span>
+                            <div class="details__content-add--column">
+                                <span class="details__content-add--text">Shipping Address &#9998;</span>
+                                {{-- <input class="details__content-add--input" type="text" placeholder="First Name">
                             <input class="details__content-add--input" type="text" placeholder="Last Name">
                             <input class="details__content-add--input" type="text" placeholder="Phone">
-                            <input class="details__content-add--input" type="text" placeholder="Email">
-                            <input class="details__content-add--input" type="text" placeholder="Address 1*">
-                            <input class="details__content-add--input" type="text" placeholder="Address 2">
-                            <input class="details__content-add--input" type="text" placeholder="Country">
-                            <input class="details__content-add--input" type="text" placeholder="County">
-                            <input class="details__content-add--input" type="text" placeholder="City">
-                            <input class="details__content-add--input" type="text" placeholder="Post Code">
+                            <input class="details__content-add--input" type="text" placeholder="Email"> --}}
+                                <input class="details__content-add--input" type="text" placeholder="Address 1*">
+                                <input class="details__content-add--input" type="text" placeholder="Address 2">
+                                <input class="details__content-add--input" type="text" placeholder="Country">
+                                <input class="details__content-add--input" type="text" placeholder="County">
+                                <input class="details__content-add--input" type="text" placeholder="City">
+                                <input class="details__content-add--input" type="text" placeholder="Post Code">
 
+                            </div>
                         </div>
-                    </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -299,6 +597,92 @@
             </div>
         </div>
     @endif
+    @if ($step == 2)
+        <h1 class="section__title">Check your details</h1>
+        <div class="checking__wrapper">
+            <div class="checking__cart">
+                <div class="checking__cart--items">
+                    <div class="checking__content-item" href="#">
+                        <img class="cart__list--img" src="img/bottle1.png" alt="Sustainable Sips: Reusable Bottles">
+                        <span class="cart__list--text">Sustainable Sips: Reusable Bottles</span>
+                        <span class="cart__list--much">x2</span>
+                        <span class="cart__list--much">20$</span>
+                    </div>
+                    <div class="checking__content-item" href="#">
+                        <img class="cart__list--img" src="img/bottle2.png" alt="Sustainable Sips: Reusable Bottles">
+                        <span class="cart__list--text">Sustainable Sips: Reusable Bottles</span>
+                        <span class="cart__list--much">x7</span>
+                        <span class="cart__list--much">20$</span>
+                    </div>
+                    <div class="checking__content-item" href="#">
+                        <img class="cart__list--img" src="img/bottle2.png" alt="Sustainable Sips: Reusable Bottles">
+                        <span class="cart__list--text">Sustainable Sips: Reusable Bottles</span>
+                        <span class="cart__list--much">x7</span>
+                        <span class="cart__list--much">20$</span>
+                    </div>
+                    <div class="checking__content-item" href="#">
+                        <img class="cart__list--img" src="img/bottle2.png" alt="Sustainable Sips: Reusable Bottles">
+                        <span class="cart__list--text">Sustainable Sips: Reusable Bottles</span>
+                        <span class="cart__list--much">x7</span>
+                        <span class="cart__list--much">20$</span>
+                    </div>
+                    <div class="checking__content-item" href="#">
+                        <img class="cart__list--img" src="img/bottle2.png" alt="Sustainable Sips: Reusable Bottles">
+                        <span class="cart__list--text">Sustainable Sips: Reusable Bottles</span>
+                        <span class="cart__list--much">x7</span>
+                        <span class="cart__list--much">20$</span>
+                    </div>
+                </div>
+                <!-- Here is Card Information -->
+                <div class="checking__content-complete">
+                    <span class="checking__content-create--text">Refound to the courier &check;</span>
+                </div>
+                <div class="checking__content-price">
+                    <span class="checking__content-complete--text">Total Price:</span>
+                    <span class="checking__content-create--text">1700$</span>
+                </div>
+            </div>
+            <div class="checking">
+                <!-- here is billing contact -->
+                <div class="checking__content-complete">
+                    <span class="checking__content-create--text">Bill contact information &check;</span>
+                    <span class="checking__content-complete--text">John Doe</span>
+                    <span class="checking__content-complete--text">+123 456 789</span>
+                    <span class="checking__content-complete--text">john.doe@example.com</span>
+                </div>
+                <!-- here is billing address -->
+                <div class="checking__content-complete">
+                    <span class="checking__content-create--text">Billing Address &check;</span>
+                    <span class="checking__content-complete--text">Address 1*</span>
+                    <span class="checking__content-complete--text">Address 2</span>
+                    <span class="checking__content-complete--text">Country</span>
+                    <span class="checking__content-complete--text">County</span>
+                    <span class="checking__content-complete--text">City</span>
+                    <span class="checking__content-complete--text">Post Code</span>
+                </div>
+                <!-- here is delivery contact -->
+                <div class="checking__content-complete">
+                    <span class="checking__content-create--text">Delivery contact information
+                        &check;</span>
+                    <span class="checking__content-complete--text">John Doe</span>
+                    <span class="checking__content-complete--text">+123 456 789</span>
+                    <span class="checking__content-complete--text">john.doe@example.com</span>
+                </div>
+                <!-- Here is shipping address -->
+
+                <div class="checking__content-complete">
+                    <span class="checking__content-create--text">Shipping Address &check;</span>
+                    <span class="checking__content-complete--text">Address 1*</span>
+                    <span class="checking__content-complete--text">Address 2</span>
+                    <span class="checking__content-complete--text">Country</span>
+                    <span class="checking__content-complete--text">County</span>
+                    <span class="checking__content-complete--text">City</span>
+                    <span class="checking__content-complete--text">Post Code</span>
+                </div>
+
+            </div>
+        </div>
+    @endif
     <div class="details__btns">
         @if ($step == 2)
             <a wire:click.prevent="previous()" data-tooltip="Go to previous step">
@@ -307,10 +691,10 @@
                     <polyline points="12 19 5 12 12 5"></polyline>
                 </svg>
             </a>
-            <a wire:click.prevent="next()" data-tooltip="Go to next step">
+            <a wire:click.prevent="confirm()" data-tooltip="Confirm order">
                 <svg>
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
+                    <polyline points="9 11 12 14 22 4"></polyline>
+                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
                 </svg>
             </a>
         @elseif ($step == 1)
@@ -321,11 +705,17 @@
                 </svg>
             </a>
         @elseif ($step == 3)
-            <a wire:click.prevent="finish()">
+            <a wire:click.prevent="finish()" data-tooltip="Go back to store">
                 Thank you for your order, Shopping again
             </a>
         @endif
 
     </div>
-
+    <script>
+        document.addEventListener('livewire:load', function() {
+            Livewire.on('redirectToHome', () => {
+                window.location.href = '{{ route('home') }}';
+            });
+        });
+    </script>
 </div>

@@ -21,6 +21,7 @@ class Cart extends Model
       : static::query()->where('id', 'like', '%' . $search . '%')
       ->orWhere('session_id', 'like', '%' . $search . '%')
       ->orWhere('quantity_amount', 'like', '%' . $search . '%')
+      ->orWhere('status', 'like', '%' . $search . '%')
       ->orWhere('sum_amount', 'like', '%' . $search . '%');
   }
 }

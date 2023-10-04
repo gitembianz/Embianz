@@ -506,6 +506,11 @@ div[data-tooltip-down]:hover::before {
   scale: 0.7;
 }
 
+.real-time-validation {
+  font-size: 15px;
+  color: red;
+}
+
 header {
   border-bottom: 1px solid #202124;
   position: fixed;
