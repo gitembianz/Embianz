@@ -87,7 +87,7 @@ class StoreOrder extends Component
   }
   public function mount()
   {
-    $this->cart = Cart::where('session_id', session()->getId())->first();
+    $this->cart = Cart::where('session_id', session()->getId())->where('status', '!=', 'closed')->first();
     if ($this->cart === null) {
       $this->back = true;
     }
@@ -254,7 +254,7 @@ class StoreOrder extends Component
         }
       }
     }
-    $this->cart->status = "close with order";
+    $this->cart->status = "closed";
     $this->cart->save();
     $this->step++;
   }
