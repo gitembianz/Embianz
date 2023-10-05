@@ -20,6 +20,7 @@ return new class extends Migration
       $table->unsignedBigInteger('currency_id')->index()->nullable();
       $table->foreign('currency_id')->references('id')->on('currencies');
       $table->text('status');
+      $table->integer('final_amount')->default(0);
       $table->timestamps();
     });
   }
