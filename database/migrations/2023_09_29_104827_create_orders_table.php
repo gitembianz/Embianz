@@ -14,7 +14,6 @@ return new class extends Migration
     Schema::create('orders', function (Blueprint $table) {
       $table->id();
       $table->string('session_id');
-      $table->unique(['session_id']);
       $table->integer('quantity_amount')->default(0);
       $table->integer('sum_amount')->default(0);
       $table->unsignedBigInteger('currency_id')->index()->nullable();

@@ -69,6 +69,9 @@ class StoreOrder extends Component
   public $juridic_shipping_county;
   public $juridic_shipping_city;
   public $juridic_shipping_zipcode;
+  protected $listeners = [
+    'nocard' => 'mount',
+  ];
 
   //declaration juridic person
   public function render()
@@ -229,10 +232,10 @@ class StoreOrder extends Component
         ]);
       }
     }
-    $order = Order::where('session_id', $this->session_id)->first();
+    $order = Order::where('session_id', session()->getId())->first();
     if (!$order) {
       Order::create([
-        'session_id' => $this->session_id,
+        'session_id' => session()->getId(),
         'quantity_amount' => $this->cart->quantity_amount,
         'sum_amount' => $this->cart->final_amount,
         'currency_id' => $this->cart->currency_id,
@@ -240,7 +243,7 @@ class StoreOrder extends Component
       ]);
       $cartitems = Cart_Item::where('cart_id', $this->cart->id)->get();
       if ($cartitems) {
-        $order = Order::where('session_id', $this->session_id)->first();
+        $order = Order::where('session_id', session()->getId())->first();
         foreach ($cartitems as $item) {
           Order_Item::create([
             'order_id' => $order->id,
@@ -251,10 +254,14 @@ class StoreOrder extends Component
         }
       }
     }
+    $this->cart->status = "close with order";
+    $this->cart->save();
+    $this->step++;
   }
   public function next()
   {
-    if ($this->back == false) {
+    $cartt = Cart::where('session_id', session()->getId())->first();
+    if ($cartt != null) {
       $this->resetErrorBag();
       $this->validateData();
       $this->step++;
@@ -282,6 +289,8 @@ class StoreOrder extends Component
         $this->juridic_shipping_city = $this->juridic_billing_city;
         $this->juridic_shipping_zipcode = $this->juridic_billing_zipcode;
       }
+    } else {
+      $this->emit('nocard');
     }
   }
   public function previous()

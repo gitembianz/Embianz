@@ -749,9 +749,9 @@
                             <span class="checking__content-complete--text">Registration number:
                                 {{ $juridic_billing_registration_number }}</span>
                             <span class="checking__content-complete--text">Bank:
-                                {{ $juridic_billing_company_bank }}</span>
+                                {{ $juridic_billing_bank }}</span>
                             <span class="checking__content-complete--text">Account:
-                                {{ $juridic_billing_company_account }}</span>
+                                {{ $juridic_billing_account }}</span>
                             <span class="checking__content-complete--text">Address: {{ $juridic_billing_address1 }}
                                 {{ $juridic_billing_address2 }}</span>
                             <span class="checking__content-complete--text">Country:

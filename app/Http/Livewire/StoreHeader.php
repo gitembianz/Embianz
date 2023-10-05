@@ -55,8 +55,7 @@ class StoreHeader extends Component
   public function getCartItemsProperty()
   {
     $session_id = Session::getId();
-    $cart = Cart::where('session_id', $session_id)->first();
-
+    $cart = Cart::where('session_id', $session_id)->whereNull('status')->first();
     if ($cart !== null) {
       $cartItems = Cart_Item::where('cart_id', $cart->id)->with('product')->get();
 
@@ -117,7 +116,7 @@ class StoreHeader extends Component
     $session_id = Session::getId();
 
     // Use sum() method to calculate the total quantity
-    $this->total = Cart::where('session_id', $session_id)->sum('quantity_amount');
+    $this->total = Cart::where('session_id', $session_id)->whereNull('status')->sum('quantity_amount');
     $this->wishlistitems = $this->getWishlistItemsProperty();
   }
   public function getCategoriesProperty()
