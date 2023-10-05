@@ -59,7 +59,6 @@
   route::get('/cart', [StoreController::class, 'cart'])->name('cart');
   route::get('/wislist', [StoreController::class, 'wislist'])->name('wislist');
   route::get('/complete', [StoreController::class, 'complete'])->name('complete');
-  route::get('/checking', [StoreController::class, 'checking'])->name('checking');
   route::get('/order', [StoreController::class, 'order'])->name('order');
   route::get('/product/{id}/', [StoreController::class, 'show'])->name('product');
   Route::get('/storeproducts/{category?}', [StoreController::class, 'products']);

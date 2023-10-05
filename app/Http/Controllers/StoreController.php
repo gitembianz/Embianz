@@ -26,10 +26,6 @@ class StoreController extends Controller
   {
     return view('store.order');
   }
-  public function checking()
-  {
-    return view('store.checking');
-  }
   public function complete()
   {
     return view('store.complete');
