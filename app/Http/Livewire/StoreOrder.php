@@ -6,9 +6,7 @@ use App\Models\Cart;
 use App\Models\Juridic;
 use Livewire\Component;
 use App\Models\Individual;
-use Illuminate\Support\Facades\Validator;
 
-use Illuminate\Support\Facades\Session;
 
 class StoreOrder extends Component
 {
@@ -17,6 +15,7 @@ class StoreOrder extends Component
   public $juridic = false;
   public $individual_identic = false;
   public $juridic_identic = false;
+  public $back = false;
 
   public $individual_billing_first;
   public $individual_billing_last;
