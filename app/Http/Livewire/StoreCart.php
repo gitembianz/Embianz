@@ -35,7 +35,7 @@ class StoreCart extends Component
   }
   public function getCartItemsProperty()
   {
-    $cart = Cart::where('session_id', $this->session_id)->first();
+    $cart = Cart::where('session_id', $this->session_id)->where('status', '!=', 'closed')->first();
 
     if ($cart !== null) {
       $cartItems = Cart_Item::where('cart_id', $cart->id)->with('product')->get();
@@ -75,7 +75,7 @@ class StoreCart extends Component
   }
   public function increment($productId)
   {
-    $cart = Cart::where('session_id', $this->session_id)->first();
+    $cart = Cart::where('session_id', $this->session_id)->where('status', '!=', 'closed')->first();
     $product = Product::find($productId);
     $cartItem = Cart_Item::where([
       'cart_id' => $cart->id,
@@ -94,7 +94,7 @@ class StoreCart extends Component
   }
   public function decrement($productId)
   {
-    $cart = Cart::where('session_id', $this->session_id)->first();
+    $cart = Cart::where('session_id', $this->session_id)->where('status', '!=', 'closed')->first();
     $product = Product::find($productId);
     $cartItem = Cart_Item::where([
       'cart_id' => $cart->id,
@@ -175,7 +175,7 @@ class StoreCart extends Component
   }
   public function continue()
   {
-    $cart = Cart::where('session_id', $this->session_id)->first();
+    $cart = Cart::where('session_id', $this->session_id)->where('status', '!=', 'closed')->first();
     if ($this->new_price) {
       $cart->final_amount = $this->price;
       $cart->status = "order";
