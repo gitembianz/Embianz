@@ -1,6 +1,6 @@
 <x-dashboardheader />
 <x-dashboardnavbar />
-<x-dashboardsidebar :active="__('settings')" />
+<x-dashboardsidebar :active="__('store_settings')" />
 {{-- Page content start --}}
 <section class="content">
 

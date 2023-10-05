@@ -3,10 +3,11 @@
 namespace App\Http\Livewire;
 
 use App\Models\Cart;
-use App\Models\Cart_Item;
 use App\Models\Product;
+use App\Models\Voucher;
 use Livewire\Component;
 use App\Models\Wishlist;
+use App\Models\Cart_Item;
 use Illuminate\Support\Facades\Session;
 
 class StoreCart extends Component
@@ -16,11 +17,14 @@ class StoreCart extends Component
   public $wishlist = [];
   public $session_id;
   public $deliverry;
+  public $voucher;
+  public $new_price = false;
+  public $price;
+  public $message;
   protected $listeners = [
     'cartUpdated' => 'mount',
     'wishlistUpdated' => 'mount'
   ];
-
   public function render()
   {
     $data = [
@@ -67,7 +71,7 @@ class StoreCart extends Component
     // Initial load of cartitems
     $this->session_id = Session::getId();
     $this->cartitems = $this->getCartItemsProperty();
-    $this->deliverry = 10;
+    $this->deliverry = 20;
   }
   public function increment($productId)
   {
@@ -146,5 +150,41 @@ class StoreCart extends Component
     } else {
       $this->addToWishlist($productId);
     }
+  }
+  public function checkvoucher()
+  {
+    // Retrieve the cart
+    $cart = Cart::where('session_id', $this->session_id)->first();
+
+    if ($cart) {
+      // Search for a voucher with the provided code in the database
+      $voucher = Voucher::where('code', $this->voucher)->first();
+
+      if ($voucher) {
+        // Voucher found, calculate discount based on percentage
+        $discountAmount = $voucher->percent / 100 * $cart->sum_amount;
+        $this->message = null;
+        $this->price = $cart->sum_amount;
+        $cart->sum_amount -= $discountAmount;
+        $cart->save();
+        $this->new_price = true;
+      } else {
+        $this->message = "Voucher not found!";
+      }
+    }
+  }
+  public function continue()
+  {
+    $cart = Cart::where('session_id', $this->session_id)->first();
+    if ($this->new_price) {
+      $cart->final_amount = $this->price;
+      $cart->status = "order";
+      $cart->save();
+    } else {
+      $cart->final_amount = $cart->sum_amount + $this->deliverry;
+      $cart->status = "order";
+      $cart->save();
+    }
+    return redirect()->route('order');
   }
 }

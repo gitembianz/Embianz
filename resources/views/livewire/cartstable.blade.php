@@ -145,7 +145,7 @@
             <tbody>
                 @if ($carts->isEmpty())
                     <tr>
-                        <td class="table__empty" colspan="{{ count($selectedColumns) }}">No record found.</td>
+                        <td class="table__empty" colspan="{{ count($selectedColumns) + 1 }}">No record found.</td>
                     </tr>
                 @else
                     @foreach ($carts as $cart)

@@ -118,22 +118,42 @@
                      <?php
                      $total = $cart->sum_amount + $deliverry;
                      ?>
-                     {{ $total }} {{ $currency }}
+                     @if ($new_price)
+                         <span
+                             style="text-decoration: line-through; color:red; margin-right:1rem">{{ $total }}{{ $currency }}</span>{{ $price }}{{ $currency }}
+                     @else
+                         {{ $total }} {{ $currency }}
+                     @endif
                  </span>
-                 <a href="{{ route('order') }}">Continue</a>
+                 <a wire:click="continue()">Continue</a>
              </div>
              <div class="cart__voucher">
-                 <h4>
-                     Ai un voucher sau card cadou?
-                 </h4>
-                 <form action="#">
-                     <input type="text" name="voucher">
-                     <button>
-                         <svg>
-                             <polyline points="9 18 15 12 9 6"></polyline>
-                         </svg>
-                     </button>
-                 </form>
+                 @if ($new_price)
+                     <h4>
+                         Voucher {{ $voucher }} aplicat!
+                     </h4>
+                     <form wire:submit.prevent="checkvoucher" style="position: relative">
+                         <input type="text" value="{{ $voucher }}" readonly>
+                         @if ($message)
+                             <p style="color: red; position :absolute; top:40px">{{ $message }}</p>
+                         @endif
+                     </form>
+                 @else
+                     <h4>
+                         Ai un voucher sau card cadou?
+                     </h4>
+                     <form wire:submit.prevent="checkvoucher" style="position: relative">
+                         <input type="text" wire:model="voucher" name="voucher">
+                         <button type="submit">
+                             <svg>
+                                 <polyline points="9 18 15 12 9 6"></polyline>
+                             </svg>
+                         </button>
+                         @if ($message)
+                             <p style="color: red; position :absolute; top:40px">{{ $message }}</p>
+                         @endif
+                     </form>
+                 @endif
              </div>
          </div>
      @endif

@@ -45,7 +45,11 @@
     route::post('/new', [TodolistController::class, 'store'])->name('store');
     route::delete('/{todolist:id}', [TodolistController::class, 'destroy'])->name('destroy');
 
+
     //general routes
+    route::get('/vouchers', [AdminController::class, 'vouchers'])->name('vouchers');
+    route::get('/newvoucher', [AdminController::class, 'create_voucher'])->name('newvoucher');
+    route::post('/add_voucher', [AdminController::class, 'store_voucher']);
     route::get('/storesettings', [AdminController::class, 'storesettings'])->name('storesettings');
     route::get('/addstoresettings', [AdminController::class, 'addstoresetting'])->name('addstoresetting');
   });
@@ -55,7 +59,6 @@
   route::get('/cart', [StoreController::class, 'cart'])->name('cart');
   route::get('/wislist', [StoreController::class, 'wislist'])->name('wislist');
   route::get('/complete', [StoreController::class, 'complete'])->name('complete');
-  route::get('/checking', [StoreController::class, 'checking'])->name('checking');
   route::get('/order', [StoreController::class, 'order'])->name('order');
   route::get('/product/{id}/', [StoreController::class, 'show'])->name('product');
   Route::get('/storeproducts/{category?}', [StoreController::class, 'products']);
