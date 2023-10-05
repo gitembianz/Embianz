@@ -3,8 +3,11 @@
 namespace App\Http\Livewire;
 
 use App\Models\Cart;
+use App\Models\Order;
+use App\Models\Order_Item;
 use App\Models\Juridic;
 use Livewire\Component;
+use App\Models\Cart_Item;
 use App\Models\Individual;
 
 
@@ -16,6 +19,7 @@ class StoreOrder extends Component
   public $individual_identic = false;
   public $juridic_identic = false;
   public $back = false;
+  public $cart;
 
   public $individual_billing_first;
   public $individual_billing_last;
@@ -69,18 +73,21 @@ class StoreOrder extends Component
   //declaration juridic person
   public function render()
   {
-    return view('livewire.store-order');
+    if ($this->step == 2) {
+      $data = [
+        'cartItems' => $this->cartItems,
+      ];
+      return view('livewire.store-order', $data);
+    } else {
+      return view('livewire.store-order');
+    }
   }
   public function mount()
   {
-    // Check if a cart exists with the current session ID
-    $cart = Cart::where('session_id', session()->getId())->first();
-    // If no cart is found, emit an event for redirection
-    if ($cart === null) {
-      return view('store.home');
+    $this->cart = Cart::where('session_id', session()->getId())->first();
+    if ($this->cart === null) {
+      $this->back = true;
     }
-
-    // Reset form and other properties if needed
     $this->resetForm();
     $this->step = 1;
     $this->individual_identic = false;
@@ -91,26 +98,28 @@ class StoreOrder extends Component
     $this->resetForm();
     $this->individual = true;
     $this->juridic = false;
+    $this->juridic_identic = false;
     $this->step = 1;
+  }
+  public function getCartItemsProperty()
+  {
+    if ($this->cart !== null) {
+      $cartItems = Cart_Item::where('cart_id', $this->cart->id)->with('product')->get();
+      return $cartItems;
+    }
+    return collect(); // Return an empty collection if no cart items are found
   }
   public function showjuridic()
   {
     $this->resetForm();
     $this->individual = false;
     $this->juridic = true;
+    $this->individual_identic = false;
     $this->step = 1;
   }
-  public function next()
+  public function confirm()
   {
-    $this->resetErrorBag();
-    $this->validateData();
     if ($this->individual) {
-      if ($this->individual_identic) {
-        $type = "billing and shipping";
-      } else {
-        $type = "billing";
-      }
-      // Save individual data to the database
       Individual::create([
         'session_id' => session()->getId(),
         'first_name' => $this->individual_billing_first,
@@ -123,7 +132,7 @@ class StoreOrder extends Component
         'county' => $this->individual_billing_county,
         'city' => $this->individual_billing_city,
         'zipcode' => $this->individual_billing_zipcode,
-        'type' => $type,
+        'type' => 'billing',
       ]);
       if ($this->individual_identic == false) {
         Individual::create([
@@ -140,30 +149,145 @@ class StoreOrder extends Component
           'zipcode' => $this->individual_shipping_zipcode,
           'type' => "shipping",
         ]);
+      } else {
+        Individual::create([
+          'session_id' => session()->getId(),
+          'first_name' => $this->individual_billing_first,
+          'last_name' => $this->individual_billing_last,
+          'phone' => $this->individual_billing_phone,
+          'email' => $this->individual_billing_email,
+          'address1' => $this->individual_billing_address1,
+          'address2' => $this->individual_billing_address2,
+          'country' => $this->individual_billing_country,
+          'county' => $this->individual_billing_county,
+          'city' => $this->individual_billing_city,
+          'zipcode' => $this->individual_billing_zipcode,
+          'type' => 'shipping',
+        ]);
       }
-    } elseif ($this->juridic) {
-      // Save juridic data to the database
+    }
+    if ($this->juridic) {
       Juridic::create([
         'session_id' => session()->getId(),
+        'first_name' => $this->juridic_billing_first,
+        'last_name' => $this->juridic_billing_last,
+        'phone' => $this->juridic_billing_phone,
+        'email' => $this->juridic_billing_email,
         'company_name' => $this->juridic_billing_company_name,
         'registration_code' => $this->juridic_billing_registration_code,
         'registration_number' => $this->juridic_billing_registration_number,
-        'phone' => $this->juridic_billing_phone,
-        'email' => $this->juridic_billing_email,
+        'bank' => $this->juridic_billing_bank,
+        'account' => $this->juridic_billing_account,
         'address1' => $this->juridic_billing_address1,
         'address2' => $this->juridic_billing_address2,
         'country' => $this->juridic_billing_country,
         'county' => $this->juridic_billing_county,
         'city' => $this->juridic_billing_city,
         'zipcode' => $this->juridic_billing_zipcode,
-        // Add other juridic fields here
+        'type' => 'billing',
       ]);
+      if ($this->juridic_identic == false) {
+        Juridic::create([
+          'session_id' => session()->getId(),
+          'first_name' => $this->juridic_billing_first,
+          'last_name' => $this->juridic_billing_last,
+          'phone' => $this->juridic_billing_phone,
+          'email' => $this->juridic_billing_email,
+          'company_name' => $this->juridic_billing_company_name,
+          'registration_code' => $this->juridic_billing_registration_code,
+          'registration_number' => $this->juridic_billing_registration_number,
+          'bank' => $this->juridic_billing_bank,
+          'account' => $this->juridic_billing_account,
+          'address1' => $this->juridic_billing_address1,
+          'address2' => $this->juridic_billing_address2,
+          'country' => $this->juridic_billing_country,
+          'county' => $this->juridic_billing_county,
+          'city' => $this->juridic_billing_city,
+          'zipcode' => $this->juridic_billing_zipcode,
+          'type' => 'shipping',
+        ]);
+      } else {
+        Juridic::create([
+          'session_id' => session()->getId(),
+          'first_name' => $this->juridic_shipping_first,
+          'last_name' => $this->juridic_shipping_last,
+          'phone' => $this->juridic_shipping_phone,
+          'email' => $this->juridic_shipping_email,
+          'phone' => $this->juridic_shipping_phone,
+          'company_name' => $this->juridic_billing_company_name,
+          'registration_code' => $this->juridic_billing_registration_code,
+          'registration_number' => $this->juridic_billing_registration_number,
+          'bank' => $this->juridic_billing_bank,
+          'account' => $this->juridic_billing_account,
+          'address1' => $this->juridic_shipping_address1,
+          'address2' => $this->juridic_shipping_address2,
+          'country' => $this->juridic_shipping_country,
+          'county' => $this->juridic_shipping_county,
+          'city' => $this->juridic_shipping_city,
+          'zipcode' => $this->juridic_shipping_zipcode,
+          'type' => 'shipping',
+        ]);
+      }
     }
-    $this->step++;
+    $order = Order::where('session_id', $this->session_id)->first();
+    if (!$order) {
+      Order::create([
+        'session_id' => $this->session_id,
+        'quantity_amount' => $this->cart->quantity_amount,
+        'sum_amount' => $this->cart->final_amount,
+        'currency_id' => $this->cart->currency_id,
+        'status' => 'in progress',
+      ]);
+      $cartitems = Cart_Item::where('cart_id', $this->cart->id)->get();
+      if ($cartitems) {
+        $order = Order::where('session_id', $this->session_id)->first();
+        foreach ($cartitems as $item) {
+          Order_Item::create([
+            'order_id' => $order->id,
+            'product_id' => $item->product_id,
+            'price' => $item->price,
+            'quantity' => $item->quantity,
+          ]);
+        }
+      }
+    }
+  }
+  public function next()
+  {
+    if ($this->back == false) {
+      $this->resetErrorBag();
+      $this->validateData();
+      $this->step++;
+      if ($this->individual_identic == true) {
+        $this->individual_shipping_first = $this->individual_billing_first;
+        $this->individual_shipping_last = $this->individual_billing_last;
+        $this->individual_shipping_phone = $this->individual_billing_phone;
+        $this->individual_shipping_email = $this->individual_billing_email;
+        $this->individual_shipping_address1 = $this->individual_billing_address1;
+        $this->individual_shipping_address2 = $this->individual_billing_address2;
+        $this->individual_shipping_country = $this->individual_billing_country;
+        $this->individual_shipping_county = $this->individual_billing_county;
+        $this->individual_shipping_city = $this->individual_billing_city;
+        $this->individual_shipping_zipcode = $this->individual_billing_zipcode;
+      }
+      if ($this->juridic_identic == true) {
+        $this->juridic_shipping_first = $this->juridic_billing_first;
+        $this->juridic_shipping_last = $this->juridic_billing_last;
+        $this->juridic_shipping_phone = $this->juridic_billing_phone;
+        $this->juridic_shipping_email = $this->juridic_billing_email;
+        $this->juridic_shipping_address1 = $this->juridic_billing_address1;
+        $this->juridic_shipping_address2 = $this->juridic_billing_address2;
+        $this->juridic_shipping_country = $this->juridic_billing_country;
+        $this->juridic_shipping_county = $this->juridic_billing_county;
+        $this->juridic_shipping_city = $this->juridic_billing_city;
+        $this->juridic_shipping_zipcode = $this->juridic_billing_zipcode;
+      }
+    }
   }
   public function previous()
   {
     $this->step--;
+    $this->resetErrorBag();
   }
   public function resetForm()
   {
@@ -184,14 +308,13 @@ class StoreOrder extends Component
       'juridic_shipping_city', 'juridic_shipping_zipcode'
     ]);
   }
-
   public function validateData()
   {
 
     if ($this->step == 1) {
       if ($this->individual) {
         $rules = [
-          'individual_billing_first' => 'required',
+          'individual_billing_first' => 'required|string',
           'individual_billing_last' => 'required|string',
           'individual_billing_phone' => 'required|numeric',
           'individual_billing_email' => 'required|email',
@@ -200,7 +323,6 @@ class StoreOrder extends Component
           'individual_billing_city' => 'required|string',
           'individual_billing_zipcode' => 'required|string',
         ];
-
         // Address line 2 and county are optional, so we don't need to include them in the validation unless they are provided.
         if (!empty($this->individual_billing_address2)) {
           $rules['individual_billing_address2'] = 'string';
@@ -290,29 +412,4 @@ class StoreOrder extends Component
       }
     }
   }
-
-
-
-
-  // $order = Order::where('session_id', $this->session_id)->first();
-  //   if (!$order) {
-  //     Order::create([
-  //       'session_id' => $this->session_id,
-  //       'quantity_amount' => $cart->quantity_amount,
-  //       'sum_amount' => $cart->final_amount,
-  //       'status' => 'in progress',
-  //     ]);
-  //     $cartitems = Cart_Item::where('cart_id', $cart->id)->get();
-  //     if ($cartitems) {
-  //       $order = Order::where('session_id', $this->session_id)->first();
-  //       foreach ($cartitems as $item) {
-  //         Order_Item::create([
-  //           'order_id' => $order->id,
-  //           'product_id' => $item->product_id,
-  //           'price' => $item->price,
-  //           'quantity' => $item->quantity,
-  //         ]);
-  //       }
-  //     }
-  //   }
 }

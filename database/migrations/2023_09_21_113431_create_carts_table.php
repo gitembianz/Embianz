@@ -17,6 +17,8 @@ return new class extends Migration
       $table->unique(['session_id']);
       $table->integer('quantity_amount')->default(0);
       $table->integer('sum_amount')->default(0);
+      $table->unsignedBigInteger('currency_id')->index()->nullable();
+      $table->foreign('currency_id')->references('id')->on('currencies');
       $table->text('status');
       $table->timestamps();
     });
