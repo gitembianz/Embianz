@@ -104,6 +104,11 @@ class StoreOrder extends Component
     $this->juridic_identic = false;
     $this->step = 1;
   }
+  public function finish()
+  {
+    //Finish order code
+    return redirect('/home');
+  }
   public function getCartItemsProperty()
   {
     if ($this->cart !== null) {

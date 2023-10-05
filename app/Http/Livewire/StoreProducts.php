@@ -117,7 +117,7 @@ class StoreProducts extends Component
         $cart_id = Cart::where('session_id', $this->session_id)->first()->id;
       } else {
         $cart_id = $existingCart->id;
-        $cart = Cart::where('session_id', $this->session_id)->first();
+        $cart = Cart::where('session_id', $this->session_id)->where('status', '!=', 'closed')->first();
         $cart->increment('quantity_amount', 1);
         $cart->sum_amount += $product->product_prices->first()->value;
         $cart->save();
