@@ -75,7 +75,7 @@ class StoreCart extends Component
   }
   public function increment($productId)
   {
-    $cart = Cart::where('session_id', $this->session_id)->where('status', '!=', 'closed')->first();
+    $cart = Cart::where('session_id', $this->session_id)->where('status', 'in progress')->first();
     $product = Product::find($productId);
     $cartItem = Cart_Item::where([
       'cart_id' => $cart->id,
@@ -94,7 +94,7 @@ class StoreCart extends Component
   }
   public function decrement($productId)
   {
-    $cart = Cart::where('session_id', $this->session_id)->where('status', '!=', 'closed')->first();
+    $cart = Cart::where('session_id', $this->session_id)->where('status', 'in progress')->first();
     $product = Product::find($productId);
     $cartItem = Cart_Item::where([
       'cart_id' => $cart->id,
@@ -154,7 +154,7 @@ class StoreCart extends Component
   public function checkvoucher()
   {
     // Retrieve the cart
-    $cart = Cart::where('session_id', $this->session_id)->first();
+    $cart = Cart::where('session_id', $this->session_id)->where('status', 'in progress')->first();
 
     if ($cart) {
       // Search for a voucher with the provided code in the database
@@ -175,7 +175,7 @@ class StoreCart extends Component
   }
   public function continue()
   {
-    $cart = Cart::where('session_id', $this->session_id)->where('status', '!=', 'closed')->first();
+    $cart = Cart::where('session_id', $this->session_id)->where('status', 'in progress')->first();
     if ($this->new_price) {
       $cart->final_amount = $this->price;
       $cart->status = "order";
