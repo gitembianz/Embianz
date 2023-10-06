@@ -16,7 +16,6 @@ return new class extends Migration
       $table->unsignedBigInteger('cart_id');
       $table->foreign('cart_id')->references('id')->on('carts');
       $table->unsignedBigInteger('product_id');
-      $table->unique(['cart_id', 'product_id']);
       $table->foreign('product_id')->references('id')->on('products');
       $table->integer('price')->default(0);
       $table->integer('quantity')->default(0);
