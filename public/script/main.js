@@ -1,23 +1,3 @@
-// document.addEventListener('DOMContentLoaded', function () {
-//   var cookieConsentElement = document.getElementById('cookieConsent');
-//   var cookieConsentButton = document.getElementById('cookieConsentButton');
-
-//   // Check if the consent is already given
-//   if (!localStorage.getItem('cookieConsent')) {
-//     cookieConsentElement.style.display = 'flex';
-//   }
-
-//   // Function to hide the cookie consent message and store the consent in localStorage
-//   function hideCookieConsent() {
-//     localStorage.setItem('cookieConsent', 'true');
-//     cookieConsentElement.style.display = 'none';
-//   }
-
-//   // Add an event listener to the consent button
-//   if (cookieConsentButton) {
-//     cookieConsentButton.addEventListener('click', hideCookieConsent);
-//   }
-// });
 function handleScroll() {
   let prevScrollPos = window.pageYOffset;
   const header = document.querySelector('header');
@@ -52,11 +32,6 @@ function setMarginTop() {
 }
 window.addEventListener("resize", setMarginTop);
 setMarginTop();
-
-
-
-
-
 
 const homeprev = document.getElementById('home__prev');
 if (homeprev) {
@@ -174,20 +149,6 @@ const search = document.getElementById("search");
 const searchOpen = document.getElementById("searchOpen");
 const searchClose = document.getElementById("searchClose");
 
-// searchOpen.addEventListener("click", () => {
-//   search.classList.add("active");
-// });
-
-// searchClose.addEventListener("click", () => {
-//   search.classList.remove("active");
-// });
-
-// window.onclick = (event) => {
-//   if (event.target === search) {
-//     search.classList.remove("active");
-//   }
-// };
-
 window.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {
     search.classList.remove("active");
@@ -240,18 +201,8 @@ menuItems.forEach(item => {
   });
 });
 
-
-// const logo = document.querySelector(".logo");
 const menu = document.querySelector("#menuOpen");
 const cartBtn = document.querySelector(".cart");
-// const heart = document.querySelector(".heart");
-// const headerRight = document.querySelector(".header__right");
-
-
-
-
-
-
 
 
 function initializeMenu(open, close, menuId, content) {
@@ -303,13 +254,6 @@ function toggleDropdown(buttonId, dropdownId) {
   });
 }
 
-// toggleDropdown(".cart__btn", ".cart__list");
-// toggleDropdown(".heart__btn", ".heart__list");
-
-
-
-
-
 
 function dropdown(dropdown) {
   var buttons = document.querySelectorAll(dropdown);
@@ -323,60 +267,8 @@ function dropdown(dropdown) {
 }
 
 
-
-
 dropdown(".filter__dropdown--btn");
-// dropdown(".filter__open");
-// dropdown(".filter__close");
 dropdown(".filter__sort--btn");
-
-
-
-
-
-// toggleDropdown("","");
-
-
-// Get references to DOM elements
-// const thumbnails = document.querySelectorAll(".thumbnail");
-// const prevButton = document.querySelector(".product__image-prev");
-// const nextButton = document.querySelector(".product__image-next");
-
-// // Attach click event listener to each thumbnail
-// thumbnails.forEach((thumbnail, index) => {
-//   thumbnail.addEventListener("click", function () {
-//     // Update main image source with clicked thumbnail's source
-//     const thumbnailSrc = this.getAttribute("src");
-//     mainImage.setAttribute("src", thumbnailSrc);
-
-//     // Remove 'thumbnail-active' class from all thumbnails
-//     thumbnails.forEach((t) => t.classList.remove("thumbnail-active"));
-
-//     // Add 'thumbnail-active' class to the clicked thumbnail
-//     this.classList.add("thumbnail-active");
-//   });
-// });
-// if (prevButton) {
-//   prevButton.addEventListener("click", function () {
-//     const activeIndex = Array.from(thumbnails).findIndex((t) =>
-//       t.classList.contains("thumbnail-active")
-//     );
-//     const previousIndex =
-//       activeIndex === 0 ? thumbnails.length - 1 : activeIndex - 1;
-//     thumbnails[previousIndex].click();
-//   });
-// }
-// if (nextButton) {
-//   nextButton.addEventListener("click", function () {
-//     const activeIndex = Array.from(thumbnails).findIndex((t) =>
-//       t.classList.contains("thumbnail-active")
-//     );
-//     const nextIndex = activeIndex === thumbnails.length - 1 ? 0 : activeIndex + 1;
-//     thumbnails[nextIndex].click();
-//   });
-// }
-
-
 
 const imgModal = document.getElementById("modal");
 const btnModal = document.getElementById("openModal");

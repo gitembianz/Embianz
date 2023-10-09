@@ -14,10 +14,12 @@ return new class extends Migration
     Schema::create('carts', function (Blueprint $table) {
       $table->id();
       $table->string('session_id');
-      $table->unique(['session_id']);
       $table->integer('quantity_amount')->default(0);
       $table->integer('sum_amount')->default(0);
+      $table->unsignedBigInteger('currency_id')->index()->nullable();
+      $table->foreign('currency_id')->references('id')->on('currencies');
       $table->text('status');
+      $table->integer('final_amount')->default(0);
       $table->timestamps();
     });
   }

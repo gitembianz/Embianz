@@ -104,7 +104,7 @@ class StoreProducts extends Component
     if (!in_array($productId, $this->cart)) {
       $this->cart[] = $productId;
       $this->saveToSession();
-      $existingCart = Cart::where('session_id', $this->session_id)->first();
+      $existingCart = Cart::where('session_id', session()->getId())->where('status', '!=', 'closed')->first();
 
       if (!$existingCart) {
         Cart::create([
@@ -112,11 +112,12 @@ class StoreProducts extends Component
           'quantity_amount' => 1,
           'sum_amount' => $product->product_prices->first()->value,
           'status' => 'in progress',
+          'currency_id' => $product->product_prices->first()->pricelist->currency_id,
         ]);
         $cart_id = Cart::where('session_id', $this->session_id)->first()->id;
       } else {
         $cart_id = $existingCart->id;
-        $cart = Cart::where('session_id', $this->session_id)->first();
+        $cart = Cart::where('session_id', $this->session_id)->where('status', 'in progress')->first();
         $cart->increment('quantity_amount', 1);
         $cart->sum_amount += $product->product_prices->first()->value;
         $cart->save();
@@ -131,9 +132,8 @@ class StoreProducts extends Component
       );
       $this->emit('cartUpdated');
     } else {
-      $cart_id = Cart::where('session_id', $this->session_id)->first()->id;
-
-      $cartitem = Cart_Item::where('cart_id', $cart_id)->where('product_id', $productId)->first();
+      $cart_id = Cart::where('session_id', $this->session_id)->where('status', 'in progress')->get('id');
+      $cartitem = Cart_Item::where('cart_id', $cart_id)->where('product_id', $productId)->get();
       $cartitem->increment('quantity', 1);
       $cartitem->price += $product->product_prices->first()->value;
       $cartitem->save();
