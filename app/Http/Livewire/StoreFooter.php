@@ -14,13 +14,21 @@ class StoreFooter extends Component
   public $limit = 5;
 
   public $cookieConsent;
+  public $cookieId;
 
   public function mount()
   {
     // Check if the cookie has been accepted
     $this->cookieConsent = $this->checkCookieConsent();
-  }
+    $this->cookieId = $this->getCookieId();
 
+    if (!$this->cookieId) {
+      $this->saveSessionId();
+    }
+    // if (!$this->cookieConsent) {
+    //   $this->acceptCookie();
+    // }
+  }
 
   public function render()
   {
@@ -28,28 +36,38 @@ class StoreFooter extends Component
       'categories' => $this->categories
     ]);
   }
+
   public function acceptCookie()
   {
-    $sessionId = session()->getId();
     $this->cookieConsent = true;
-    $data = [
-      'sessionId' => $sessionId,
-      'cookieConsent' => 'accepted',
-    ];
-    setcookie('cookieConsentData', json_encode($data), time() + (7 * 24 * 60 * 60), '/');
-    $this->emit('updateCookieConsent', $sessionId);
+    setcookie('cookieConsent', 'accepted', time() + (30 * 24 * 60 * 60), '/');
+    $this->emit('updateCookieConsent');
   }
 
   private function checkCookieConsent()
   {
-    if (isset($_COOKIE['cookieConsentData'])) {
-      $cookieData = json_decode($_COOKIE['cookieConsentData'], true);
-      if (isset($cookieData['cookieConsent']) && $cookieData['cookieConsent'] === 'accepted') {
-        return true; // Cookie consent is accepted
-      }
+    if (isset($_COOKIE['cookieConsent']) && $_COOKIE['cookieConsent'] === 'accepted') {
+      return true;
     }
-    return false; // Cookie consent is not accepted
+    return false;
   }
+
+  private function getCookieId()
+  {
+    if (isset($_COOKIE['sessionId'])) {
+      return $_COOKIE['sessionId'];
+    }
+    return null;
+  }
+
+  private function saveSessionId()
+  {
+    $sessionId = session()->getId();
+    setcookie('sessionId', $sessionId, time() + (30 * 24 * 60 * 60), '/');
+    $this->emit('updateCookieConsent', $sessionId);
+    $this->cookieId = true;
+  }
+
   public function store()
   {
     $this->resetErrorBag();
