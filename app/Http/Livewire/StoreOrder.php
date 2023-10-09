@@ -19,6 +19,7 @@ class StoreOrder extends Component
   public $individual_identic = false;
   public $juridic_identic = false;
   public $back = false;
+  public $session_id;
   public $cart;
 
   public $individual_billing_first;
@@ -87,7 +88,8 @@ class StoreOrder extends Component
   }
   public function mount()
   {
-    $this->cart = Cart::where('session_id', session()->getId())->where('status', '!=', 'closed')->first();
+    $this->session_id = $_COOKIE['sessionId'];
+    $this->cart = Cart::where('session_id', $this->session_id)->where('status', 'in progress')->orwhere('status', 'order')->first();
     if ($this->cart === null) {
       $this->back = true;
     }
@@ -237,31 +239,29 @@ class StoreOrder extends Component
         ]);
       }
     }
-    $order = Order::where('session_id', session()->getId())->first();
-    if (!$order) {
-      Order::create([
-        'session_id' => session()->getId(),
-        'quantity_amount' => $this->cart->quantity_amount,
-        'sum_amount' => $this->cart->final_amount,
-        'currency_id' => $this->cart->currency_id,
-        'status' => 'in progress',
-      ]);
-      $cartitems = Cart_Item::where('cart_id', $this->cart->id)->get();
-      if ($cartitems) {
-        $order = Order::where('session_id', session()->getId())->first();
-        foreach ($cartitems as $item) {
-          Order_Item::create([
-            'order_id' => $order->id,
-            'product_id' => $item->product_id,
-            'price' => $item->price,
-            'quantity' => $item->quantity,
-          ]);
-        }
+    Order::create([
+      'session_id' => $this->session_id,
+      'quantity_amount' => $this->cart->quantity_amount,
+      'sum_amount' => $this->cart->final_amount,
+      'currency_id' => $this->cart->currency_id,
+      'status' => 'in progress',
+    ]);
+    $cartitems = Cart_Item::where('cart_id', $this->cart->id)->get();
+    if ($cartitems) {
+      $order = Order::where('session_id', $this->session_id)->first();
+      foreach ($cartitems as $item) {
+        Order_Item::create([
+          'order_id' => $order->id,
+          'product_id' => $item->product_id,
+          'price' => $item->price,
+          'quantity' => $item->quantity,
+        ]);
       }
     }
     $this->cart->status = "closed";
     $this->cart->save();
     $this->step++;
+    $this->emit('cartUpdated');
   }
   public function next()
   {

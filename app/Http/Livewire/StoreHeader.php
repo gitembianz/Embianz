@@ -19,6 +19,9 @@ class StoreHeader extends Component
   public $showwis = false;
   public $showcart = false;
   public $total;
+  public $cookieConsent;
+  public $cookieId;
+  public $session_id;
   protected $listeners = [
     'wishlistUpdated' => 'mount',
     'cartUpdated' => 'mount'
@@ -35,6 +38,33 @@ class StoreHeader extends Component
     ];
 
     return view('livewire.store-header', $data);
+  }
+  public function acceptCookie()
+  {
+    $this->cookieConsent = true;
+    setcookie('cookieConsent', 'accepted', time() + (30 * 24 * 60 * 60), '/');
+    $this->emit('updateCookieConsent');
+  }
+  private function checkCookieConsent()
+  {
+    if (isset($_COOKIE['cookieConsent']) && $_COOKIE['cookieConsent'] === 'accepted') {
+      return true;
+    }
+    return false;
+  }
+  private function getCookieId()
+  {
+    if (isset($_COOKIE['sessionId'])) {
+      return $_COOKIE['sessionId'];
+    }
+    return null;
+  }
+  private function saveSessionId()
+  {
+    $sessionId = session()->getId();
+    setcookie('sessionId', $sessionId, time() + (30 * 24 * 60 * 60), '/');
+    $this->emit('updateCookieConsent', $sessionId);
+    $this->cookieId = true;
   }
   public function close()
   {
@@ -54,8 +84,7 @@ class StoreHeader extends Component
   }
   public function getCartItemsProperty()
   {
-    $session_id = Session::getId();
-    $cart = Cart::where('session_id', $session_id)->where('status', '!=', 'closed')->first();
+    $cart = Cart::where('session_id', $this->session_id)->where('status', '!=', 'closed')->first();
     if ($cart !== null) {
       $cartItems = Cart_Item::where('cart_id', $cart->id)->with('product')->get();
 
@@ -84,16 +113,14 @@ class StoreHeader extends Component
   }
   public function removeFromWishlist($productId)
   {
-    $session_id = Session::getId();
-    Wishlist::where('session_id', $session_id)
+    Wishlist::where('session_id', $this->session_id)
       ->where('product_id', $productId)
       ->delete();
     $this->emit('wishlistUpdated');
   }
   public function removeFromCart($productId)
   {
-    $session_id = Session::getId();
-    $cart = Cart::where('session_id', $session_id)->first();
+    $cart = Cart::where('session_id', $this->session_id)->where('status', 'in progress')->orwhere('status', 'order')->first();
     $product = Product::find($productId);
 
     if ($cart !== null) {
@@ -113,10 +140,14 @@ class StoreHeader extends Component
   }
   public function mount()
   {
-    $session_id = Session::getId();
+    $this->cookieConsent = $this->checkCookieConsent();
+    $this->cookieId = $this->getCookieId();
 
-    // Use sum() method to calculate the total quantity
-    $this->total = Cart::where('session_id', $session_id)->where('status', 'in progress')->sum('quantity_amount');
+    if (!$this->cookieId) {
+      $this->saveSessionId();
+    }
+    $this->session_id = $_COOKIE['sessionId'];
+    $this->total = Cart::where('session_id', $this->session_id)->where('status', 'in progress')->orwhere('status', 'order')->sum('quantity_amount');
     $this->wishlistitems = $this->getWishlistItemsProperty();
   }
   public function getCategoriesProperty()

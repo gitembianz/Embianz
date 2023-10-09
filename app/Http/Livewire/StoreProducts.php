@@ -20,7 +20,6 @@ class StoreProducts extends Component
   public $search = "";
   public $quantity = 20;
   public $wishlist = [];
-  public $cart = [];
   public $session_id;
   public $specification;
   public $property = false;
@@ -43,7 +42,7 @@ class StoreProducts extends Component
   }
   public function mount()
   {
-    $this->session_id = Session::getId();
+    $this->session_id = $_COOKIE['sessionId'];
     $this->specification = Specs::all();
   }
   public function render()
@@ -99,52 +98,38 @@ class StoreProducts extends Component
   }
   public function addToCart($productId)
   {
-    $product = Product::find($productId);
+    $product = Product::with('product_prices.pricelist')->find($productId);
 
-    if (!in_array($productId, $this->cart)) {
-      $this->cart[] = $productId;
-      $this->saveToSession();
-      $existingCart = Cart::where('session_id', session()->getId())->where('status', '!=', 'closed')->first();
+    $cart = Cart::where('session_id', $this->session_id)->where('status', 'in progress')->first();
 
-      if (!$existingCart) {
-        Cart::create([
-          'session_id' => $this->session_id,
-          'quantity_amount' => 1,
-          'sum_amount' => $product->product_prices->first()->value,
-          'status' => 'in progress',
-          'currency_id' => $product->product_prices->first()->pricelist->currency_id,
-        ]);
-        $cart_id = Cart::where('session_id', $this->session_id)->first()->id;
-      } else {
-        $cart_id = $existingCart->id;
-        $cart = Cart::where('session_id', $this->session_id)->where('status', 'in progress')->first();
-        $cart->increment('quantity_amount', 1);
-        $cart->sum_amount += $product->product_prices->first()->value;
-        $cart->save();
-      }
-      Cart_Item::updateOrCreate(
-        [
-          'cart_id' => $cart_id,
-          'product_id' => $productId,
-          'price' => $product->product_prices->first()->value,
-          'quantity' => 1
-        ],
-      );
-      $this->emit('cartUpdated');
-    } else {
-      $cart_id = Cart::where('session_id', $this->session_id)->where('status', 'in progress')->get('id');
-      $cartitem = Cart_Item::where('cart_id', $cart_id)->where('product_id', $productId)->get();
-      $cartitem->increment('quantity', 1);
-      $cartitem->price += $product->product_prices->first()->value;
-      $cartitem->save();
-
-      $cart = Cart::where('session_id', $this->session_id)->first();
-      $cart->increment('quantity_amount', 1);
-      $cart->sum_amount += $product->product_prices->first()->value;
-      $cart->save();
-
-      $this->emit('cartUpdated');
+    if (!$cart) {
+      $cart = Cart::create([
+        'session_id' => $this->session_id,
+        'quantity_amount' => 0,
+        'sum_amount' => 0,
+        'status' => 'in progress',
+        'currency_id' => $product->product_prices->first()->pricelist->currency_id,
+      ]);
     }
+
+    $cartItem = Cart_Item::where('cart_id', $cart->id)->where('product_id', $productId)->first();
+
+    if (!$cartItem) {
+      $cartItem = Cart_Item::create([
+        'cart_id' => $cart->id,
+        'product_id' => $productId,
+        'price' => $product->product_prices->first()->value,
+        'quantity' => 1
+      ]);
+    } else {
+      $cartItem->increment('quantity');
+    }
+
+    $cart->increment('quantity_amount');
+    $cart->sum_amount += $product->product_prices->first()->value;
+    $cart->save();
+
+    $this->emit('cartUpdated');
   }
   public function removeFromWishlist($productId)
   {
@@ -160,7 +145,6 @@ class StoreProducts extends Component
   {
     session([
       'wishlist' => $this->wishlist,
-      'cart' => $this->cart
     ]);
   }
   public function toggleWishlist($productId)
