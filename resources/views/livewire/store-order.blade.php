@@ -99,7 +99,7 @@
                                     <input class="details__content-add--input" type="text"
                                         wire:model="individual_billing_email" placeholder="Email">
                                     <p class="real-time-validation">
-                                        @error('individual_billing_phone')
+                                        @error('individual_billing_email')
                                             {{ $message }}
                                         @enderror
                                     </p>
