@@ -1,14 +1,14 @@
 <div>
-    <div class="cookie" id="cookie-banner" wire:loading.remove>
-        @if (!$cookieConsent)
+    @if (!$cookieConsent)
+        <div class="cookie" id="cookie-banner" wire:loading.remove>
             <img class="cookie--img" src="/images/store/cookie.svg" alt="cookie">
             <p class="cookie--text" id="cookieConsentText">
                 We use cookies to improve your experience. By continuing to visit this site, you agree to our use of
                 cookies.
             </p>
             <button class="cookie--btn" wire:click="acceptCookie">Got it!</button>
-        @endif
-    </div>
+        </div>
+    @endif
     <x-alert />
     <footer class="footer container">
         <div class="footer__header">
