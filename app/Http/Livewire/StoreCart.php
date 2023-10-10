@@ -8,7 +8,6 @@ use App\Models\Voucher;
 use Livewire\Component;
 use App\Models\Wishlist;
 use App\Models\Cart_Item;
-use Illuminate\Support\Facades\Session;
 
 class StoreCart extends Component
 
@@ -16,6 +15,7 @@ class StoreCart extends Component
   public $cartitems;
   public $wishlist = [];
   public $session_id;
+  public $cart;
   public $deliverry;
   public $voucher;
   public $new_price = false;
@@ -25,93 +25,86 @@ class StoreCart extends Component
     'cartUpdated' => 'mount',
     'wishlistUpdated' => 'mount'
   ];
-  public function render()
-  {
-    $data = [
-      'cartItems' => $this->cartItems,
-      'cart' => Cart::where('session_id', $this->session_id)->first()
-    ];
-    return view('livewire.store-cart', $data);
-  }
-  public function getCartItemsProperty()
-  {
-    $cart = Cart::where('session_id', $this->session_id)->where('status', 'in progress')->first();
-
-
-    if ($cart !== null) {
-      $cartItems = Cart_Item::where('cart_id', $cart->id)->with('product')->get();
-
-      return $cartItems;
-    }
-
-    return collect(); // Return an empty collection if no cart items are found
-  }
-  public function removeFromCart($productId)
-  {
-    $cart = Cart::where('session_id', $this->session_id)->where('status', 'in progress')->orwhere('status', 'order')->first();
-    $product = Product::find($productId);
-
-    if ($cart !== null) {
-      $cart_item = Cart_Item::firstOrNew([
-        'cart_id' => $cart->id,
-        'product_id' => $productId,
-      ]);
-
-      if ($cart_item->exists) {
-        $cart->quantity_amount -= $cart_item->quantity;
-        $cart->sum_amount -= ($product->product_prices->first()->value * $cart_item->quantity);
-        $cart->save();
-        $cart_item->delete();
-        $this->emit('cartUpdated');
-      }
-    }
-  }
   public function mount()
   {
     // Initial load of cartitems
     $this->session_id = $_COOKIE['sessionId'];
     $this->cartitems = $this->getCartItemsProperty();
-    $this->deliverry = 20;
+    $this->deliverry = 0;
+    $this->cart = Cart::where('session_id', $this->session_id)->where('status', 'in progress')->orwhere('status', 'order')->first();
   }
+  public function render()
+  {
+    $data = [
+      'cartItems' => $this->cartItems,
+      'cart' => $this->cart
+    ];
+    return view('livewire.store-cart', $data);
+  }
+  public function getCartItemsProperty()
+  {
+    if ($this->cart) {
+      $cartItems = Cart_Item::where('cart_id', $this->cart->id)->with('product')->get();
+      return $cartItems;
+    }
+    return collect(); // Return an empty collection if no cart items are found
+  }
+  public function removeFromCart($productId)
+  {
+    $product = Product::find($productId);
+    if ($this->cart->exists) {
+      $cart_item = Cart_Item::firstOrNew([
+        'cart_id' => $this->cart->id,
+        'product_id' => $productId,
+      ]);
+
+      if ($cart_item->exists) {
+        $this->cart->quantity_amount -= $cart_item->quantity;
+        $this->cart->sum_amount -= ($product->product_prices->first()->value * $cart_item->quantity);
+        $this->cart->save();
+        $cart_item->delete();
+        $this->emit('cartUpdated');
+      }
+    }
+  }
+
   public function increment($productId)
   {
-    $cart = Cart::where('session_id', $this->session_id)->where('status', 'in progress')->orwhere('status', 'order')->first();
     $product = Product::find($productId);
     $cartItem = Cart_Item::where([
-      'cart_id' => $cart->id,
+      'cart_id' => $this->cart->id,
       'product_id' => $productId,
     ])->first();
 
     if ($cartItem) {
       $cartItem->increment('quantity');
       if ($cartItem->exists) {
-        $cart->quantity_amount += 1;
-        $cart->sum_amount += $product->product_prices->first()->value;
-        $cart->save();
+        $this->cart->quantity_amount += 1;
+        $this->cart->sum_amount += $product->product_prices->first()->value;
+        $this->cart->save();
         $this->emit('cartUpdated');
       }
     }
   }
   public function decrement($productId)
   {
-    $cart = Cart::where('session_id', $this->session_id)->where('status', 'in progress')->first();
     $product = Product::find($productId);
     $cartItem = Cart_Item::where([
-      'cart_id' => $cart->id,
+      'cart_id' => $this->cart->id,
       'product_id' => $productId,
     ])->first();
 
     if ($cartItem && $cartItem->quantity > 1) {
       $cartItem->decrement('quantity');
-      $cart->quantity_amount -= 1;
-      $cart->sum_amount -= $product->product_prices->first()->value;
-      $cart->save();
+      $this->cart->quantity_amount -= 1;
+      $this->cart->sum_amount -= $product->product_prices->first()->value;
+      $this->cart->save();
       $this->emit('cartUpdated');
     } elseif ($cartItem->quantity == 1) {
       $cartItem->delete();
-      $cart->quantity_amount -= 1;
-      $cart->sum_amount -= $product->product_prices->first()->value;
-      $cart->save();
+      $this->cart->quantity_amount -= 1;
+      $this->cart->sum_amount -= $product->product_prices->first()->value;
+      $this->cart->save();
       $this->emit('cartUpdated');
     }
   }
@@ -153,20 +146,17 @@ class StoreCart extends Component
   }
   public function checkvoucher()
   {
-    // Retrieve the cart
-    $cart = Cart::where('session_id', $this->session_id)->where('status', 'in progress')->first();
-
-    if ($cart) {
+    if ($this->cart->exists) {
       // Search for a voucher with the provided code in the database
       $voucher = Voucher::where('code', $this->voucher)->first();
 
       if ($voucher) {
         // Voucher found, calculate discount based on percentage
-        $discountAmount = $voucher->percent / 100 * $cart->sum_amount;
+        $discountAmount = $voucher->percent / 100 * $this->cart->sum_amount;
         $this->message = null;
-        $this->price = $cart->sum_amount;
-        $cart->sum_amount -= $discountAmount;
-        $cart->save();
+        $this->price = $this->cart->sum_amount;
+        $this->cart->sum_amount -= $discountAmount;
+        $this->cart->save();
         $this->new_price = true;
       } else {
         $this->message = "Voucher not found!";
@@ -175,15 +165,14 @@ class StoreCart extends Component
   }
   public function continue()
   {
-    $cart = Cart::where('session_id', $this->session_id)->where('status', 'in progress')->first();
     if ($this->new_price) {
-      $cart->final_amount = $this->price;
-      $cart->status = "order";
-      $cart->save();
+      $this->cart->final_amount = $this->price;
+      $this->cart->status = "order";
+      $this->cart->save();
     } else {
-      $cart->final_amount = $cart->sum_amount + $this->deliverry;
-      $cart->status = "order";
-      $cart->save();
+      $this->cart->final_amount = $this->cart->sum_amount + $this->deliverry;
+      $this->cart->status = "order";
+      $this->cart->save();
     }
     return redirect()->route('order');
   }

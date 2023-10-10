@@ -48,4 +48,9 @@ class AdminController extends Controller
   {
     return view('admin.add_storesetting');
   }
+
+  public function orders()
+  {
+    return view('admin.order');
+  }
 }

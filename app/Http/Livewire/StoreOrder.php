@@ -10,7 +10,6 @@ use Livewire\Component;
 use App\Models\Cart_Item;
 use App\Models\Individual;
 
-
 class StoreOrder extends Component
 {
   public $step = 1;
@@ -90,7 +89,7 @@ class StoreOrder extends Component
   {
     $this->session_id = $_COOKIE['sessionId'];
     $this->cart = Cart::where('session_id', $this->session_id)->where('status', 'in progress')->orwhere('status', 'order')->first();
-    if ($this->cart === null) {
+    if (!$this->cart) {
       $this->back = true;
     }
     $this->resetForm();
@@ -113,7 +112,7 @@ class StoreOrder extends Component
   }
   public function getCartItemsProperty()
   {
-    if ($this->cart !== null) {
+    if ($this->cart) {
       $cartItems = Cart_Item::where('cart_id', $this->cart->id)->with('product')->get();
       return $cartItems;
     }
@@ -248,7 +247,7 @@ class StoreOrder extends Component
     ]);
     $cartitems = Cart_Item::where('cart_id', $this->cart->id)->get();
     if ($cartitems) {
-      $order = Order::where('session_id', $this->session_id)->first();
+      $order = Order::where('session_id', $this->session_id)->where('status', 'in progress')->first();
       foreach ($cartitems as $item) {
         Order_Item::create([
           'order_id' => $order->id,
@@ -265,8 +264,7 @@ class StoreOrder extends Component
   }
   public function next()
   {
-    $cartt = Cart::where('session_id', session()->getId())->first();
-    if ($cartt != null) {
+    if ($this->cart) {
       $this->resetErrorBag();
       $this->validateData();
       $this->step++;

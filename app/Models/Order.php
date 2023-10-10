@@ -8,14 +8,27 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
   use HasFactory;
-  protected $fillable = ['session_id', 'quantity_amount', 'sum_amount', 'status'];
+  protected $fillable = ['session_id', 'quantity_amount', 'sum_amount', 'currency_id', 'status'];
 
   public function orders()
   {
     return $this->hasMany(Order_Item::class, 'order_id');
   }
+  public function invoices()
+  {
+    return $this->hasMany(Invoice::class, 'order_id');
+  }
   public function currency()
   {
     return $this->belongsTo(Currency::class, 'currency_id');
+  }
+  public static function search($search)
+  {
+    return empty($search) ? static::query()
+      : static::query()->where('id', 'like', '%' . $search . '%')
+      ->orWhere('session_id', 'like', '%' . $search . '%')
+      ->orWhere('quantity_amount', 'like', '%' . $search . '%')
+      ->orWhere('status', 'like', '%' . $search . '%')
+      ->orWhere('sum_amount', 'like', '%' . $search . '%');
   }
 }

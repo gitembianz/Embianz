@@ -10,7 +10,6 @@ use App\Models\Specs;
 use App\Models\Wishlist;
 use Livewire\Component;
 use Livewire\WithPagination;
-use Illuminate\Support\Facades\Session;
 
 class StoreProducts extends Component
 {
@@ -100,11 +99,21 @@ class StoreProducts extends Component
   {
     $product = Product::with('product_prices.pricelist')->find($productId);
 
-    $cart = Cart::where('session_id', $this->session_id)->where('status', 'in progress')->first();
+    $cart = Cart::where('session_id', $this->session_id)->where('status', 'in progress')->orwhere('status', 'order')->first();
 
     if (!$cart) {
+      $baseName = class_basename(Cart::class); // Gets the base name of the Cart model class (e.g., "Cart")
+      $cartNumber = 1;
+      $uniqueName = $baseName . '_' . str_pad($cartNumber, 2, '0', STR_PAD_LEFT);
+
+      // Check for uniqueness, generate a new name if it's not unique
+      while (Cart::where('name', $uniqueName)->exists()) {
+        $cartNumber++;
+        $uniqueName = $baseName . '_' . str_pad($cartNumber, 2, '0', STR_PAD_LEFT);
+      }
       $cart = Cart::create([
         'session_id' => $this->session_id,
+        'name' => $uniqueName,
         'quantity_amount' => 0,
         'sum_amount' => 0,
         'status' => 'in progress',
