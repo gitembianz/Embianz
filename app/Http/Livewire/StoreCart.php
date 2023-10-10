@@ -35,7 +35,8 @@ class StoreCart extends Component
   }
   public function getCartItemsProperty()
   {
-    $cart = Cart::where('session_id', $this->session_id)->where('status', '!=', 'closed')->first();
+    $cart = Cart::where('session_id', $this->session_id)->where('status', 'in progress')->first();
+
 
     if ($cart !== null) {
       $cartItems = Cart_Item::where('cart_id', $cart->id)->with('product')->get();
@@ -47,8 +48,7 @@ class StoreCart extends Component
   }
   public function removeFromCart($productId)
   {
-    $session_id = Session::getId();
-    $cart = Cart::where('session_id', $session_id)->first();
+    $cart = Cart::where('session_id', $this->session_id)->where('status', 'in progress')->orwhere('status', 'order')->first();
     $product = Product::find($productId);
 
     if ($cart !== null) {
@@ -69,13 +69,13 @@ class StoreCart extends Component
   public function mount()
   {
     // Initial load of cartitems
-    $this->session_id = Session::getId();
+    $this->session_id = $_COOKIE['sessionId'];
     $this->cartitems = $this->getCartItemsProperty();
     $this->deliverry = 20;
   }
   public function increment($productId)
   {
-    $cart = Cart::where('session_id', $this->session_id)->where('status', 'in progress')->first();
+    $cart = Cart::where('session_id', $this->session_id)->where('status', 'in progress')->orwhere('status', 'order')->first();
     $product = Product::find($productId);
     $cartItem = Cart_Item::where([
       'cart_id' => $cart->id,
