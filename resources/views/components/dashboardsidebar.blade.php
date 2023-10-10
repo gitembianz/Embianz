@@ -52,7 +52,7 @@
                     </button>
                     <span>Carts</span>
                 </a></li>
-            <li><a class="sidebar__item" href="#">
+            <li><a class="sidebar__item @if ($active == 'order') active @endif" href="{{ url('/orders') }}">
                     <button class="sidebar__icon">
                         <svg>
                             <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>

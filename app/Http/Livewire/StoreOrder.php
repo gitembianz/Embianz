@@ -10,7 +10,6 @@ use Livewire\Component;
 use App\Models\Cart_Item;
 use App\Models\Individual;
 
-
 class StoreOrder extends Component
 {
   public $step = 1;
