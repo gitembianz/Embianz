@@ -18,6 +18,14 @@ class Order extends Model
   {
     return $this->hasMany(Invoice::class, 'order_id');
   }
+  public function carts()
+  {
+    return $this->hasMany(Cart::class, 'cart_id');
+  }
+  public function accounts()
+  {
+    return $this->hasMany(Account::class, 'account_id');
+  }
   public function currency()
   {
     return $this->belongsTo(Currency::class, 'currency_id');

@@ -4,11 +4,12 @@ namespace App\Http\Livewire;
 
 use App\Models\Cart;
 use App\Models\Order;
-use App\Models\Order_Item;
+use App\Models\Account;
 use App\Models\Juridic;
 use Livewire\Component;
 use App\Models\Cart_Item;
 use App\Models\Individual;
+use App\Models\Order_Item;
 
 class StoreOrder extends Component
 {
@@ -128,7 +129,13 @@ class StoreOrder extends Component
   }
   public function confirm()
   {
+    $account = new Account();
     if ($this->individual) {
+      $account->type = 'individual';
+      $account->first_name = $this->individual_billing_first;
+      $account->last_name = $this->individual_billing_last;
+      $account->phone = $this->individual_billing_phone;
+      $account->email = $this->individual_billing_email;
       Individual::create([
         'session_id' => session()->getId(),
         'first_name' => $this->individual_billing_first,
@@ -159,6 +166,7 @@ class StoreOrder extends Component
           'type' => "shipping",
         ]);
       } else {
+
         Individual::create([
           'session_id' => session()->getId(),
           'first_name' => $this->individual_billing_first,
@@ -176,6 +184,12 @@ class StoreOrder extends Component
       }
     }
     if ($this->juridic) {
+      $account->type = 'juridic';
+      $account->company_name = $this->juridic_billing_company_name;
+      $account->registration_code = $this->juridic_billing_registration_code;
+      $account->registration_number = $this->juridic_billing_registration_number;
+      $account->bank_name = $this->juridic_billing_bank;
+      $account->account = $this->juridic_billing_account;
       Juridic::create([
         'session_id' => session()->getId(),
         'first_name' => $this->juridic_billing_first,
@@ -238,25 +252,26 @@ class StoreOrder extends Component
         ]);
       }
     }
-    Order::create([
-      'session_id' => $this->session_id,
-      'quantity_amount' => $this->cart->quantity_amount,
-      'sum_amount' => $this->cart->final_amount,
-      'currency_id' => $this->cart->currency_id,
-      'status' => 'in progress',
-    ]);
-    $cartitems = Cart_Item::where('cart_id', $this->cart->id)->get();
-    if ($cartitems) {
-      $order = Order::where('session_id', $this->session_id)->where('status', 'in progress')->first();
-      foreach ($cartitems as $item) {
-        Order_Item::create([
-          'order_id' => $order->id,
-          'product_id' => $item->product_id,
-          'price' => $item->price,
-          'quantity' => $item->quantity,
-        ]);
-      }
-    }
+    $account->save();
+    // Order::create([
+    //   'session_id' => $this->session_id,
+    //   'quantity_amount' => $this->cart->quantity_amount,
+    //   'sum_amount' => $this->cart->final_amount,
+    //   'currency_id' => $this->cart->currency_id,
+    //   'status' => 'in progress',
+    // ]);
+    // $cartitems = Cart_Item::where('cart_id', $this->cart->id)->get();
+    // if ($cartitems) {
+    //   $order = Order::where('session_id', $this->session_id)->where('status', 'in progress')->first();
+    //   foreach ($cartitems as $item) {
+    //     Order_Item::create([
+    //       'order_id' => $order->id,
+    //       'product_id' => $item->product_id,
+    //       'price' => $item->price,
+    //       'quantity' => $item->quantity,
+    //     ]);
+    //   }
+    // }
     $this->cart->status = "closed";
     $this->cart->save();
     $this->step++;
