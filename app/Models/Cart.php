@@ -19,6 +19,10 @@ class Cart extends Model
   {
     return $this->belongsTo(Currency::class, 'currency_id');
   }
+  public function order()
+  {
+    return $this->belongsTo(Order::class, 'cart_id');
+  }
   public static function search($search)
   {
     return empty($search) ? static::query()
