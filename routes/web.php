@@ -47,6 +47,7 @@
 
     //carts route
     route::get('/carts', [CartController::class, 'index'])->name('carts');
+    route::get('/show_cart/{id}/', [CartController::class, 'show'])->name('show_cart');
 
     //specs route
     route::get('/specs', [SpecsController::class, 'index'])->name('specs');

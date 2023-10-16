@@ -165,6 +165,9 @@
                                             {{ $cart->$column }}
                                         </div>
                                     </td>
+                                @elseif ($column === 'name')
+                                    <td data-title="Name"><a
+                                            href="/show_cart/{{ $cart->id }}">{{ $cart->name }}</a></td>
                                 @else
                                     <td data-title="{{ $column }}">{{ $cart->$column }}</td>
                                 @endif
