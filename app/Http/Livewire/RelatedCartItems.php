@@ -24,7 +24,7 @@ class RelatedCartItems extends Component
     public $col = false;
     public $all = false;
     public $itemidbeingremoved = null;
-    public $columns = ['Id', 'Cart', 'Product Name', 'Price', 'Quantity'];
+    public $columns = ['Id', 'Cart', 'Price', 'Quantity'];
     public $selectedColumns = [];
     public $cart;
 

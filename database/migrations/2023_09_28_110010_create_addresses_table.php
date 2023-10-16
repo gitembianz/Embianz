@@ -11,19 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('accounts', function (Blueprint $table) {
+        Schema::create('addresses', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable();
-            $table->string('type'); // 'individual' or 'juridic'
+            $table->unsignedBigInteger('account_id')->index()->nullable();
+            $table->foreign('account_id')->references('id')->on('accounts');
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
-            $table->string('company_name')->nullable();
-            $table->string('registration_code')->nullable();
-            $table->string('registration_number')->nullable();
-            $table->string('bank_name')->nullable();
-            $table->string('account')->nullable();
+            $table->string('address1')->nullable();
+            $table->string('address2')->nullable();
+            $table->string('country')->nullable();
+            $table->string('county')->nullable();
+            $table->string('city')->nullable();
+            $table->string('zipcode')->nullable();
+            $table->string('type')->nullable();
             $table->timestamps();
         });
     }
@@ -33,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('accounts');
+        Schema::dropIfExists('addresses');
     }
 };

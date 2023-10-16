@@ -41,7 +41,20 @@
                         </svg>
                     </button>
                     <span>Products</span>
-                </a></li>
+                </a>
+            </li>
+            <li><a class="sidebar__item @if ($active == 'accounts') active @endif" href="#">
+                    <button class="sidebar__icon">
+                        <svg>
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                    </button>
+                    <span>Accounts</span>
+                </a>
+            </li>
             <li><a class="sidebar__item @if ($active == 'cart') active @endif" href="{{ route('carts') }}">
                     <button class="sidebar__icon">
                         <svg>
