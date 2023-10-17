@@ -136,6 +136,7 @@
                 </div>
             </div>
             <div class="tabs__content">
+                <livewire:related-addresses accountId="{{ $account->id }}" />
             </div>
         </div>
     </div>

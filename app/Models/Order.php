@@ -22,9 +22,9 @@ class Order extends Model
   {
     return $this->hasMany(Cart::class, 'cart_id');
   }
-  public function accounts()
+  public function account()
   {
-    return $this->hasMany(Account::class, 'account_id');
+    return $this->belongsTo(Account::class, 'account_id');
   }
   public function currency()
   {
