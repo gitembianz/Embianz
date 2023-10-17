@@ -12,4 +12,20 @@ class Account extends Model
     {
         return $this->belongsTo(Order::class, 'account_id');
     }
+    public static function search($search)
+    {
+        return empty($search) ? static::query()
+            : static::query()->where('id', 'like', '%' . $search . '%')
+            ->orWhere('name', 'like', '%' . $search . '%')
+            ->orWhere('type', 'like', '%' . $search . '%')
+            ->orWhere('first_name', 'like', '%' . $search . '%')
+            ->orWhere('last_name', 'like', '%' . $search . '%')
+            ->orWhere('phone', 'like', '%' . $search . '%')
+            ->orWhere('email', 'like', '%' . $search . '%')
+            ->orWhere('company_name', 'like', '%' . $search . '%')
+            ->orWhere('registration_code', 'like', '%' . $search . '%')
+            ->orWhere('registration_number', 'like', '%' . $search . '%')
+            ->orWhere('bank_name', 'like', '%' . $search . '%')
+            ->orWhere('account', 'like', '%' . $search . '%');
+    }
 }
