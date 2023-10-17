@@ -41,6 +41,8 @@
     route::post('/new_products', [ProductController::class, 'new'])->name('new_products');
     route::get('/show_product/{id}/', [ProductController::class, 'show'])->name('show_product');
 
+    //accounts routes
+    route::get('/accounts', [AdminController::class, 'accounts'])->name('accounts');
     //todolist routes
     route::post('/new', [TodolistController::class, 'store'])->name('store');
     route::delete('/{todolist:id}', [TodolistController::class, 'destroy'])->name('destroy');

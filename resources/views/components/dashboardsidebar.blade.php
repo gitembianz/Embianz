@@ -43,7 +43,7 @@
                     <span>Products</span>
                 </a>
             </li>
-            <li><a class="sidebar__item @if ($active == 'accounts') active @endif" href="#">
+            <li><a class="sidebar__item @if ($active == 'account') active @endif" href="{{ route('accounts') }}">
                     <button class="sidebar__icon">
                         <svg>
                             <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>

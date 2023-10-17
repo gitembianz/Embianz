@@ -93,6 +93,12 @@
                     @else
                         <input type="text" wire:model.defer="record.status" class="item__form-input">
                     @endif
+                    @if ($cart->order_id != null)
+                        <div class="item__form-input-close">
+                            <div>{{ $cart->order_id }}</div>
+                            <label>Related Order </label>
+                        </div>
+                    @endif
                     <div class="item__form-input-close">
                         <div>{{ $cart->created_at }}</div>
                         <label>Create date / time</label>

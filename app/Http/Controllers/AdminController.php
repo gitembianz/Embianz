@@ -16,7 +16,10 @@ class AdminController extends Controller
   {
     return view('admin.store_settings');
   }
-
+  public function accounts()
+  {
+    return view('admin.accounts');
+  }
   public function vouchers()
   {
     return view('admin.voucher');
