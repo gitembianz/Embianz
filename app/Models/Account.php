@@ -8,9 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Account extends Model
 {
     use HasFactory;
-    public function order()
+    public function orders()
     {
-        return $this->belongsTo(Order::class, 'account_id');
+        return $this->hasMany(Order::class, 'account_id');
+    }
+    public function addresses()
+    {
+        return $this->hasMany(Address::class, 'account_id');
     }
     public static function search($search)
     {

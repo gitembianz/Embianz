@@ -10,7 +10,6 @@ class ShowCart extends Component
 {
     public $cartId;
     public $record = [];
-    public $statuscolect;
     public $edititem = null;
     public function render()
     {

@@ -43,6 +43,7 @@
 
     //accounts routes
     route::get('/accounts', [AdminController::class, 'accounts'])->name('accounts');
+    route::get('/show_account/{id}/', [AdminController::class, 'show_account'])->name('show_account');
     //todolist routes
     route::post('/new', [TodolistController::class, 'store'])->name('store');
     route::delete('/{todolist:id}', [TodolistController::class, 'destroy'])->name('destroy');

@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Address extends Model
 {
     use HasFactory;
+    public function account()
+    {
+        return $this->belongsTo(Account::class, 'account_id');
+    }
 }
