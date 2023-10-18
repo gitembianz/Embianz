@@ -5,7 +5,7 @@
         <div class="accordion__btn-flex">
             <button class="accordion__btn"
                 wire:click.prevent="@if ($showrelatedprod === false) $set('showrelatedprod', true) @else $set('showrelatedprod', false) @endif">
-                {{ __('Products ') }}({{ $cart->carts()->count() }})
+                {{ __('Cart Items ') }}({{ $cart->carts()->count() }})
             </button>
             <button class="accordion__upload">
                 <svg>
@@ -145,12 +145,7 @@
                                         </button>
                                     </th>
                                 @endif
-                                @if ($this->showColumn('Cart'))
-                                    <th>
-                                        <span class="table__header--btn">Cart</span>
-                                    </th>
-                                @endif
-                                @if ($this->showColumn('Product Name'))
+                                @if ($this->showColumn('Product'))
                                     <th>
                                         <span class="table__header--btn">Product Name</span>
                                     </th>
@@ -218,11 +213,8 @@
                                             @if ($this->showColumn('Id'))
                                                 <td data-title="ID">{{ $product->id }}</td>
                                             @endif
-                                            @if ($this->showColumn('Cart'))
-                                                <td data-title="Cart">{{ $product->cart->first()->name }}</td>
-                                            @endif
-                                            @if ($this->showColumn('Product Name'))
-                                                <td data-title="Product Name">
+                                            @if ($this->showColumn('Product'))
+                                                <td data-title="Product">
                                                     <a
                                                         href="/show_product/{{ $product->product->id }}'">{{ $product->product->name }}</a>
                                                 </td>
