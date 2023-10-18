@@ -65,59 +65,128 @@
         <div class="tab__list">
             <div class="tabs__content active" id="Details">
                 <div class="item__form">
-                    <div class="item__form-input-close">
-                        <div>{{ $account->name }}</div>
-                        <label>Name</label>
-                    </div>
-                    <div class="item__form-input-close">
-                        <div>{{ $account->type }}</div>
-                        <label>Type</label>
-                    </div>
-                    <div class="item__form-input-close">
-                        <div>{{ $account->first_name }}</div>
-                        <label>First Name </label>
-                    </div>
-                    <div class="item__form-input-close">
-                        <div>{{ $account->last_name }}</div>
-                        <label>Last Name</label>
-                    </div>
-                    <div class="item__form-input-close">
-                        <div>{{ $account->phone }}</div>
-                        <label>Phone</label>
-                    </div>
-                    <div class="item__form-input-close">
-                        <div>{{ $account->email }}</div>
-                        <label>Email</label>
-                    </div>
-                    {{-- @if ($edititem === null)
+                    @if ($edititem === null)
                         <div class="item__form-input-close">
-                            <div>{{ $account->status }}</div>
-                            <label>account Status</label>
+                            <div>{{ $account->name }}</div>
+                            <label>Name</label>
                         </div>
                     @else
-                        <input type="text" wire:model.defer="record.status" class="item__form-input">
-                    @endif --}}
+                        <div class="item__form-input">
+                            <input type="text" wire:model.defer="record.name" required>
+                            <label>Name</label>
+                        </div>
+                    @endif
+                    @if ($edititem === null)
+                        <div class="item__form-input-close">
+                            <div>{{ $account->type }}</div>
+                            <label>Type</label>
+                        </div>
+                    @else
+                        <div class="item__form-input">
+                            <input type="text" wire:model.defer="record.type" required>
+                            <label>Type: individual / juridic</label>
+                        </div>
+                    @endif
+                    @if ($edititem === null)
+                        <div class="item__form-input-close">
+                            <div>{{ $account->first_name }}</div>
+                            <label>First Name </label>
+                        </div>
+                    @else
+                        <div class="item__form-input">
+                            <input type="text" wire:model.defer="record.first_name" required>
+                            <label>First Name</label>
+                        </div>
+                    @endif
+                    @if ($edititem === null)
+                        <div class="item__form-input-close">
+                            <div>{{ $account->last_name }}</div>
+                            <label>Last Name</label>
+                        </div>
+                    @else
+                        <div class="item__form-input">
+                            <input type="text" wire:model.defer="record.last_name" required>
+                            <label>Last Name</label>
+                        </div>
+                    @endif
+                    @if ($edititem === null)
+                        <div class="item__form-input-close">
+                            <div>{{ $account->phone }}</div>
+                            <label>Phone</label>
+                        </div>
+                    @else
+                        <div class="item__form-input">
+                            <input type="tel" wire:model.defer="record.phone" required>
+                            <label>Phone</label>
+                        </div>
+                    @endif
+                    @if ($edititem === null)
+                        <div class="item__form-input-close">
+                            <div>{{ $account->email }}</div>
+                            <label>Email</label>
+                        </div>
+                    @else
+                        <div class="item__form-input">
+                            <input type="email" wire:model.defer="record.email" required>
+                            <label>Email</label>
+                        </div>
+                    @endif
                     @if ($account->type == 'juridic')
-                        <div class="item__form-input-close">
-                            <div>{{ $account->company_name }}</div>
-                            <label>Company Name</label>
-                        </div>
-                        <div class="item__form-input-close">
-                            <div>{{ $account->registration_code }}</div>
-                            <label>Registration Code</label>
-                        </div>
-                        <div class="item__form-input-close">
-                            <div>{{ $account->registration_number }}</div>
-                            <label>Registration Number</label>
-                        </div>
-                        <div class="item__form-input-close">
-                            <div>{{ $account->bank_name }}</div>
-                            <label>Bank Name</label>
-                        </div>
-                        <div class="item__form-input-close">
-                            <div>{{ $account->account }}</div>
-                            <label>Bank Account</label>
-                        </div>
+                        @if ($edititem === null)
+                            <div class="item__form-input-close">
+                                <div>{{ $account->company_name }}</div>
+                                <label>Company Name</label>
+                            </div>
+                        @else
+                            <div class="item__form-input">
+                                <input type="text" wire:model.defer="record.company_name" required>
+                                <label>Company Name</label>
+                            </div>
+                        @endif
+                        @if ($edititem === null)
+                            <div class="item__form-input-close">
+                                <div>{{ $account->registration_code }}</div>
+                                <label>Registration Code</label>
+                            </div>
+                        @else
+                            <div class="item__form-input">
+                                <input type="text" wire:model.defer="record.registration_code" required>
+                                <label>Registration Code</label>
+                            </div>
+                        @endif
+                        @if ($edititem === null)
+                            <div class="item__form-input-close">
+                                <div>{{ $account->registration_number }}</div>
+                                <label>Registration Number</label>
+                            </div>
+                        @else
+                            <div class="item__form-input">
+                                <input type="text" wire:model.defer="record.registration_number" required>
+                                <label>Registration Number</label>
+                            </div>
+                        @endif
+                        @if ($edititem === null)
+                            <div class="item__form-input-close">
+                                <div>{{ $account->bank_name }}</div>
+                                <label>Bank Name</label>
+                            </div>
+                        @else
+                            <div class="item__form-input">
+                                <input type="text" wire:model.defer="record.bank_name" required>
+                                <label>Bank Name</label>
+                            </div>
+                        @endif
+                        @if ($edititem === null)
+                            <div class="item__form-input-close">
+                                <div>{{ $account->account }}</div>
+                                <label>Bank Account</label>
+                            </div>
+                        @else
+                            <div class="item__form-input">
+                                <input type="text" wire:model.defer="record.account" required>
+                                <label>Bank Account</label>
+                            </div>
+                        @endif
                     @endif
                     <div class="item__form-input-close">
                         <div>{{ $account->created_at }}</div>
@@ -136,7 +205,8 @@
                 </div>
             </div>
             <div class="tabs__content">
-                <livewire:related-addresses accountId="{{ $account->id }}" />
+                {{-- @livewire('related-account-orders', ['accountId' => $account->id], key('second' . $account->id)) --}}
+                @livewire('related-addresses', ['accountId' => $account->id], key('first' . $account->id))
             </div>
         </div>
     </div>
