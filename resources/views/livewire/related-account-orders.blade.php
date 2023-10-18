@@ -4,19 +4,19 @@
     <div class="accordion">
         <div class="accordion__btn-flex">
             <button class="accordion__btn"
-                wire:click.prevent="@if ($showrelatedadd === false) $set('showrelatedadd', true) @else $set('showrelatedadd', false) @endif">
-                {{ __('Addresses ') }}({{ $account->addresses()->count() }})
+                wire:click.prevent="@if ($showrelatedords === false) $set('showrelatedords', true) @else $set('showrelatedords', false) @endif">
+                {{ __('Orders ') }}({{ $account->orders()->count() }})
             </button>
-            <button class="accordion__upload">
+            <button class="accordion__upload" wire:click="toggleTable">
                 <svg>
                     <line x1="12" y1="5" x2="12" y2="19"></line>
                     <line x1="5" y1="12" x2="19" y2="12"></line>
                 </svg>
             </button>
         </div>
-        @if ($showrelatedadd)
+        @if ($showrelatedords)
             <div class="accordion__content">
-                @if ($account->addresses()->count() > 0)
+                @if ($account->orders()->count() > 0)
                     <div class="panel__header">
                         <input class="panel__header--input" type="text" wire:model.debounce.300ms="search"
                             placeholder="Search..." style="grid-column: 1/4">
@@ -143,12 +143,12 @@
                                         </button>
                                     </th>
                                 @endif
-                                @if ($this->showColumn('Type'))
-                                    <th wire:click="sortBy('type')">
+                                @if ($this->showColumn('Name'))
+                                    <th wire:click="sortBy('name')">
                                         <button class="table__header--btn"
-                                            @if ($orderBy === 'type' && $orderAsc === '1') data-symbol="up"
+                                            @if ($orderBy === 'name' && $orderAsc === '1') data-symbol="up"
                                                 @else data-symbol="down" @endif>
-                                            Type
+                                            Name
                                             <svg>
                                                 <line x1="12" y1="5" x2="12" y2="19">
                                                 </line>
@@ -157,12 +157,12 @@
                                         </button>
                                     </th>
                                 @endif
-                                @if ($this->showColumn('First Name'))
-                                    <th wire:click="sortBy('first_name')">
+                                @if ($this->showColumn('Session Id'))
+                                    <th wire:click="sortBy('session_id')">
                                         <button class="table__header--btn"
-                                            @if ($orderBy === 'first_name' && $orderAsc === '1') data-symbol="up"
+                                            @if ($orderBy === 'session_id' && $orderAsc === '1') data-symbol="up"
                                                 @else data-symbol="down" @endif>
-                                            First Name
+                                            Session ID
                                             <svg>
                                                 <line x1="12" y1="5" x2="12" y2="19">
                                                 </line>
@@ -171,12 +171,12 @@
                                         </button>
                                     </th>
                                 @endif
-                                @if ($this->showColumn('Last Name'))
-                                    <th wire:click="sortBy('last_name')">
+                                @if ($this->showColumn('Cart'))
+                                    <th wire:click="sortBy('cart_id')">
                                         <button class="table__header--btn"
-                                            @if ($orderBy === 'last_name' && $orderAsc === '1') data-symbol="up"
+                                            @if ($orderBy === 'cart_id' && $orderAsc === '1') data-symbol="up"
                                                 @else data-symbol="down" @endif>
-                                            Last Name
+                                            Cart
                                             <svg>
                                                 <line x1="12" y1="5" x2="12" y2="19">
                                                 </line>
@@ -185,12 +185,12 @@
                                         </button>
                                     </th>
                                 @endif
-                                @if ($this->showColumn('Phone'))
-                                    <th wire:click="sortBy('phone')">
+                                @if ($this->showColumn('Quantity Amount'))
+                                    <th wire:click="sortBy('quantity_amount')">
                                         <button class="table__header--btn"
-                                            @if ($orderBy === 'phone' && $orderAsc === '1') data-symbol="up"
+                                            @if ($orderBy === 'quantity_amount' && $orderAsc === '1') data-symbol="up"
                                                 @else data-symbol="down" @endif>
-                                            Phone
+                                            Quantity Amount
                                             <svg>
                                                 <line x1="12" y1="5" x2="12" y2="19">
                                                 </line>
@@ -199,12 +199,12 @@
                                         </button>
                                     </th>
                                 @endif
-                                @if ($this->showColumn('Email'))
-                                    <th wire:click="sortBy('email')">
+                                @if ($this->showColumn('Sum Amount'))
+                                    <th wire:click="sortBy('sum_amount')">
                                         <button class="table__header--btn"
-                                            @if ($orderBy === 'email' && $orderAsc === '1') data-symbol="up"
+                                            @if ($orderBy === 'sum_amount' && $orderAsc === '1') data-symbol="up"
                                                 @else data-symbol="down" @endif>
-                                            Email
+                                            Sum Amount
                                             <svg>
                                                 <line x1="12" y1="5" x2="12" y2="19">
                                                 </line>
@@ -213,12 +213,12 @@
                                         </button>
                                     </th>
                                 @endif
-                                @if ($this->showColumn('Address'))
-                                    <th wire:click="sortBy('address1')">
+                                @if ($this->showColumn('Currency'))
+                                    <th wire:click="sortBy('currency_id')">
                                         <button class="table__header--btn"
-                                            @if ($orderBy === 'address1' && $orderAsc === '1') data-symbol="up"
+                                            @if ($orderBy === 'currency_id' && $orderAsc === '1') data-symbol="up"
                                                 @else data-symbol="down" @endif>
-                                            Address
+                                            Currency
                                             <svg>
                                                 <line x1="12" y1="5" x2="12" y2="19">
                                                 </line>
@@ -227,12 +227,12 @@
                                         </button>
                                     </th>
                                 @endif
-                                @if ($this->showColumn('Optional Address'))
-                                    <th wire:click="sortBy('address2')">
+                                @if ($this->showColumn('Status'))
+                                    <th wire:click="sortBy('status')">
                                         <button class="table__header--btn"
-                                            @if ($orderBy === 'address2' && $orderAsc === '1') data-symbol="up"
+                                            @if ($orderBy === 'status' && $orderAsc === '1') data-symbol="up"
                                                 @else data-symbol="down" @endif>
-                                            Optional Address
+                                            Status
                                             <svg>
                                                 <line x1="12" y1="5" x2="12" y2="19">
                                                 </line>
@@ -241,54 +241,12 @@
                                         </button>
                                     </th>
                                 @endif
-                                @if ($this->showColumn('Country'))
-                                    <th wire:click="sortBy('country')">
+                                @if ($this->showColumn('Delivery Method'))
+                                    <th wire:click="sortBy('delivery_method')">
                                         <button class="table__header--btn"
-                                            @if ($orderBy === 'country' && $orderAsc === '1') data-symbol="up"
+                                            @if ($orderBy === 'delivery_method' && $orderAsc === '1') data-symbol="up"
                                                 @else data-symbol="down" @endif>
-                                            Country
-                                            <svg>
-                                                <line x1="12" y1="5" x2="12" y2="19">
-                                                </line>
-                                                <polyline points="19 12 12 19 5 12"></polyline>
-                                            </svg>
-                                        </button>
-                                    </th>
-                                @endif
-                                @if ($this->showColumn('County'))
-                                    <th wire:click="sortBy('county')">
-                                        <button class="table__header--btn"
-                                            @if ($orderBy === 'county' && $orderAsc === '1') data-symbol="up"
-                                                @else data-symbol="down" @endif>
-                                            County
-                                            <svg>
-                                                <line x1="12" y1="5" x2="12" y2="19">
-                                                </line>
-                                                <polyline points="19 12 12 19 5 12"></polyline>
-                                            </svg>
-                                        </button>
-                                    </th>
-                                @endif
-                                @if ($this->showColumn('City'))
-                                    <th wire:click="sortBy('city')">
-                                        <button class="table__header--btn"
-                                            @if ($orderBy === 'city' && $orderAsc === '1') data-symbol="up"
-                                                @else data-symbol="down" @endif>
-                                            City
-                                            <svg>
-                                                <line x1="12" y1="5" x2="12" y2="19">
-                                                </line>
-                                                <polyline points="19 12 12 19 5 12"></polyline>
-                                            </svg>
-                                        </button>
-                                    </th>
-                                @endif
-                                @if ($this->showColumn('Post Code'))
-                                    <th wire:click="sortBy('zipcode')">
-                                        <button class="table__header--btn"
-                                            @if ($orderBy === 'zipcode' && $orderAsc === '1') data-symbol="up"
-                                                @else data-symbol="down" @endif>
-                                            Post Code
+                                            Delivery Method
                                             <svg>
                                                 <line x1="12" y1="5" x2="12" y2="19">
                                                 </line>
@@ -315,78 +273,67 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @if ($addresses->isEmpty())
+                            @if ($orders->isEmpty())
                                 <tr>
                                     <td class="table__empty" colspan="{{ count($columns) + 3 }}">No record
                                         found.</td>
                                 </tr>
                             @else
-                                @foreach ($addresses as $index => $address)
+                                @foreach ($orders as $index => $order)
                                     @if ($index < $perPage)
                                         <tr @if ($loop->last) id="last_record" @endif
-                                            class="@if ($this->isChecked($address->id)) table__row--selected @endif">
+                                            class="@if ($this->isChecked($order->id)) table__row--selected @endif">
                                             <td data-title="Check">
-                                                <input type="checkbox" value="{{ $address->id }}"
+                                                <input type="checkbox" value="{{ $order->id }}"
                                                     wire:model="checked">
                                             </td>
                                             @if ($this->showColumn('Id'))
                                                 <td data-title="ID">
-                                                    {{ $address->id }}
+                                                    {{ $order->id }}
                                                 </td>
                                             @endif
-                                            @if ($this->showColumn('Type'))
-                                                <td data-title="Type">
-                                                    {{ $address->type }}
+                                            @if ($this->showColumn('Name'))
+                                                <td data-title="Name">
+                                                    <a href="/show_order/{{ $order->id }}">
+                                                        {{ $order->name }}
+                                                    </a>
                                                 </td>
                                             @endif
-                                            @if ($this->showColumn('First Name'))
-                                                <td data-title="First Name">
-                                                    {{ $address->first_name }}
+                                            @if ($this->showColumn('Session Id'))
+                                                <td data-title="Session Id">
+                                                    {{ $order->session_id }}
                                                 </td>
                                             @endif
-                                            @if ($this->showColumn('Last Name'))
-                                                <td data-title="Last Name">
-                                                    {{ $address->last_name }}
+                                            @if ($this->showColumn('Cart'))
+                                                <td data-title="Cart">
+                                                    <a href="/show_cart/{{ $order->cart_id }}">
+                                                        {{ $order->carts->first()->name }}
+                                                    </a>
                                                 </td>
                                             @endif
-                                            @if ($this->showColumn('Phone'))
-                                                <td data-title="Phone">
-                                                    {{ $address->phone }}
+                                            @if ($this->showColumn('Quantity Amount'))
+                                                <td data-title="Quantity Amount">
+                                                    {{ $order->quantity_amount }}
                                                 </td>
                                             @endif
-                                            @if ($this->showColumn('Email'))
-                                                <td data-title="Email">
-                                                    {{ $address->email }}
+                                            @if ($this->showColumn('Sum Amount'))
+                                                <td data-title="Sum Amount">
+                                                    {{ $order->sum_amount }}
                                                 </td>
                                             @endif
-                                            @if ($this->showColumn('Address'))
-                                                <td data-title="Address">
-                                                    {{ $address->address1 }}
+                                            @if ($this->showColumn('Currency'))
+                                                <td data-title="Currency">
+                                                    {{ $order->currency->first()->name }}
                                                 </td>
                                             @endif
-                                            @if ($this->showColumn('Optional Address'))
-                                                <td data-title="Optional Address">
-                                                    {{ $address->address2 }}
+                                            @if ($this->showColumn('Status'))
+                                                <td data-title="Status">
+                                                    {{ $order->status }}
                                                 </td>
                                             @endif
-                                            @if ($this->showColumn('Country'))
-                                                <td data-title="Country">
-                                                    {{ $address->country }}
-                                                </td>
-                                            @endif
-                                            @if ($this->showColumn('County'))
-                                                <td data-title="County">
-                                                    {{ $address->county }}
-                                                </td>
-                                            @endif
-                                            @if ($this->showColumn('City'))
-                                                <td data-title="City">
-                                                    {{ $address->city }}
-                                                </td>
-                                            @endif
-                                            @if ($this->showColumn('Post Code'))
-                                                <td data-title="Post Code">
-                                                    {{ $address->zipcode }}
+                                            @if ($this->showColumn('Delivery Method'))
+                                                <td data-title="Delivery Method">
+                                                    {{ $order->delivery_method }}
                                                 </td>
                                             @endif
                                             @if ($this->showColumn('Created At'))
@@ -397,14 +344,14 @@
                                                             </circle>
                                                             <polyline points="12 6 12 12 16 14"></polyline>
                                                         </svg>
-                                                        {{ $address->created_at }}
+                                                        {{ $order->created_at }}
                                                     </div>
                                                 </td>
                                             @endif
                                             <td data-title="Action">
                                                 <div class="table__buttons">
                                                     <button class="edit"
-                                                        wire:click.prevent="confirmItemRemoval({{ $address->id }})">
+                                                        wire:click.prevent="confirmItemRemoval({{ $order->id }})">
                                                         <svg>
                                                             <polyline points="3 6 5 6 21 6"></polyline>
                                                             <path
@@ -424,7 +371,7 @@
                             @endif
                         </tbody>
                     </table>
-                    @if (count($addresses) >= 10)
+                    @if (count($orders) >= 10)
                         <div class="table__load-more" wire:click="load">
                             Load more
                         </div>
