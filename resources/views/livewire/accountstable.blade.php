@@ -46,7 +46,7 @@
     {{-- Header of the table --}}
     <div class="panel__header">
         <h1 class="panel__header--title">
-            {{ __('Carts') }}
+            {{ __('Accounts') }}
         </h1>
         <input class="panel__header--input" type="text" wire:model.debounce.300ms="search" placeholder="Search...">
         <div class="panel__header--bundle">
@@ -97,7 +97,7 @@
                     </g>
                 </svg>
             </a>
-            <a class="panel__header--button" href="#">
+            <a class="panel__header--button" href="">
                 <svg>
                     <line x1="12" y1="5" x2="12" y2="19"></line>
                     <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -143,39 +143,63 @@
                 </tr>
             </thead>
             <tbody>
-                @if ($carts->isEmpty())
+                @if ($accounts->isEmpty())
                     <tr>
-                        <td class="table__empty" colspan="{{ count($selectedColumns) + 1 }}">No record found.</td>
+                        <td class="table__empty" colspan="{{ count($selectedColumns) }}">No record found.</td>
                     </tr>
                 @else
-                    @foreach ($carts as $cart)
+                    @foreach ($accounts as $account)
                         <tr @if ($loop->last) id="last_record" @endif
-                            class="@if ($this->isChecked($cart->id)) table__row--selected @endif">
+                            class="@if ($this->isChecked($account->id)) table__row--selected @endif">
                             <td data-title="Check">
-                                <input type="checkbox" value="{{ $cart->id }}" wire:model="checked">
+                                <input type="checkbox" value="{{ $account->id }}" wire:model="checked">
                             </td>
                             @foreach ($selectedColumns as $column)
-                                @if ($column === 'created_at' || $column === 'updated_at')
+                                @if ($column === 'name')
+                                    <td data-title="Name"><a
+                                            href="/show_account/{{ $account->id }}">{{ $account->name }}</a></td>
+                                @elseif($column === 'created_at' || $column === 'updated_at')
                                     <td data-title="{{ $column }}">
                                         <div class="table__time">
                                             <svg>
                                                 <circle cx="12" cy="12" r="10"></circle>
                                                 <polyline points="12 6 12 12 16 14"></polyline>
                                             </svg>
-                                            {{ $cart->$column }}
+                                            {{ $account->$column }}
                                         </div>
                                     </td>
-                                @elseif ($column === 'name')
-                                    <td data-title="Name"><a
-                                            href="/show_cart/{{ $cart->id }}">{{ $cart->name }}</a></td>
+                                @elseif($column === 'phone')
+                                    <td data-title="{{ $column }}">
+                                        <div class="table__time">
+                                            <svg>
+                                                <rect x="5" y="2" width="14" height="20" rx="2"
+                                                    ry="2"></rect>
+                                                <line x1="12" y1="18" x2="12.01" y2="18">
+                                                </line>
+                                            </svg>
+                                            {{ $account->$column }}
+                                        </div>
+                                    </td>
+                                @elseif($column === 'email')
+                                    <td data-title="{{ $column }}">
+                                        <div class="table__time">
+                                            <svg>
+                                                <path
+                                                    d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
+                                                </path>
+                                                <polyline points="22,6 12,13 2,6"></polyline>
+                                            </svg>
+                                            {{ $account->$column }}
+                                        </div>
+                                    </td>
                                 @else
-                                    <td data-title="{{ $column }}">{{ $cart->$column }}</td>
+                                    <td data-title="{{ $column }}">{{ $account->$column }}</td>
                                 @endif
                             @endforeach
                             <td data-title="Action">
                                 <div class="table__buttons">
                                     <button class="delete"
-                                        wire:click.prevent="confirmItemRemoval({{ $cart->id }})">
+                                        wire:click.prevent="confirmItemRemoval({{ $account->id }})">
                                         <svg>
                                             <polyline points="3 6 5 6 21 6"></polyline>
                                             <path

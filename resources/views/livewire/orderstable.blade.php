@@ -46,7 +46,7 @@
     {{-- Header of the table --}}
     <div class="panel__header">
         <h1 class="panel__header--title">
-            {{ __('Carts') }}
+            {{ __('Orders') }}
         </h1>
         <input class="panel__header--input" type="text" wire:model.debounce.300ms="search" placeholder="Search...">
         <div class="panel__header--bundle">
@@ -143,16 +143,16 @@
                 </tr>
             </thead>
             <tbody>
-                @if ($carts->isEmpty())
+                @if ($orders->isEmpty())
                     <tr>
                         <td class="table__empty" colspan="{{ count($selectedColumns) + 1 }}">No record found.</td>
                     </tr>
                 @else
-                    @foreach ($carts as $cart)
+                    @foreach ($orders as $order)
                         <tr @if ($loop->last) id="last_record" @endif
-                            class="@if ($this->isChecked($cart->id)) table__row--selected @endif">
+                            class="@if ($this->isChecked($order->id)) table__row--selected @endif">
                             <td data-title="Check">
-                                <input type="checkbox" value="{{ $cart->id }}" wire:model="checked">
+                                <input type="checkbox" value="{{ $order->id }}" wire:model="checked">
                             </td>
                             @foreach ($selectedColumns as $column)
                                 @if ($column === 'created_at' || $column === 'updated_at')
@@ -162,20 +162,17 @@
                                                 <circle cx="12" cy="12" r="10"></circle>
                                                 <polyline points="12 6 12 12 16 14"></polyline>
                                             </svg>
-                                            {{ $cart->$column }}
+                                            {{ $order->$column }}
                                         </div>
                                     </td>
-                                @elseif ($column === 'name')
-                                    <td data-title="Name"><a
-                                            href="/show_cart/{{ $cart->id }}">{{ $cart->name }}</a></td>
                                 @else
-                                    <td data-title="{{ $column }}">{{ $cart->$column }}</td>
+                                    <td data-title="{{ $column }}">{{ $order->$column }}</td>
                                 @endif
                             @endforeach
                             <td data-title="Action">
                                 <div class="table__buttons">
                                     <button class="delete"
-                                        wire:click.prevent="confirmItemRemoval({{ $cart->id }})">
+                                        wire:click.prevent="confirmItemRemoval({{ $order->id }})">
                                         <svg>
                                             <polyline points="3 6 5 6 21 6"></polyline>
                                             <path

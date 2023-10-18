@@ -41,12 +41,39 @@
     route::post('/new_products', [ProductController::class, 'new'])->name('new_products');
     route::get('/show_product/{id}/', [ProductController::class, 'show'])->name('show_product');
 
+    //accounts routes
+    route::get('/accounts', [AdminController::class, 'accounts'])->name('accounts');
+    route::get('/show_account/{id}/', [AdminController::class, 'show_account'])->name('show_account');
     //todolist routes
     route::post('/new', [TodolistController::class, 'store'])->name('store');
     route::delete('/{todolist:id}', [TodolistController::class, 'destroy'])->name('destroy');
 
+    //carts route
+    route::get('/carts', [CartController::class, 'index'])->name('carts');
+    route::get('/show_cart/{id}/', [CartController::class, 'show'])->name('show_cart');
+
+    //specs route
+    route::get('/specs', [SpecsController::class, 'index'])->name('specs');
+    route::get('/newspec', [SpecsController::class, 'create'])->name('newspec');
+    route::post('/add_spec', [SpecsController::class, 'store']);
+    route::get('/show_spec/{id}/', [SpecsController::class, 'show'])->name('show_spec');
+
+    //pricelist route
+    route::get(
+      '/pricelists',
+      [PriceListController::class, 'index']
+    )->name('pricelists');
+    route::get('/newpricelist', [PriceListController::class, 'create'])->name('newpricelist');
+    route::post('/add_pricelist', [PriceListController::class, 'store']);
+    route::get('/show_pricelist/{id}/', [PriceListController::class, 'show'])->name('show_pricelis');
+
+    route::get(
+      '/dashboard',
+      [HomeController::class, 'redirect']
+    )->middleware('auth', 'verified')->name('dashboard');
 
     //general routes
+    route::get('/orders', [AdminController::class, 'orders']);
     route::get('/vouchers', [AdminController::class, 'vouchers'])->name('vouchers');
     route::get('/newvoucher', [AdminController::class, 'create_voucher'])->name('newvoucher');
     route::post('/add_voucher', [AdminController::class, 'store_voucher']);
@@ -64,22 +91,7 @@
   Route::get('/storeproducts/{category?}', [StoreController::class, 'products']);
   route::get('/terms', [StoreController::class, 'terms'])->name('terms');
 
-  //carts route
-  route::get('/carts', [CartController::class, 'index'])->name('carts');
 
-  //specs route
-  route::get('/specs', [SpecsController::class, 'index'])->name('specs');
-  route::get('/newspec', [SpecsController::class, 'create'])->name('newspec');
-  route::post('/add_spec', [SpecsController::class, 'store']);
-  route::get('/show_spec/{id}/', [SpecsController::class, 'show'])->name('show_spec');
-
-  //pricelist route
-  route::get('/pricelists', [PriceListController::class, 'index'])->name('pricelists');
-  route::get('/newpricelist', [PriceListController::class, 'create'])->name('newpricelist');
-  route::post('/add_pricelist', [PriceListController::class, 'store']);
-  route::get('/show_pricelist/{id}/', [PriceListController::class, 'show'])->name('show_pricelis');
-
-  route::get('/dashboard', [HomeController::class, 'redirect'])->middleware('auth', 'verified')->name('dashboard');
 
 
   //Clear Cache

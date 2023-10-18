@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Account;
 use App\Models\Voucher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,7 +17,15 @@ class AdminController extends Controller
   {
     return view('admin.store_settings');
   }
-
+  public function accounts()
+  {
+    return view('admin.accounts');
+  }
+  public function show_account($id)
+  {
+    $data = Account::find($id);
+    return view('admin.show_account', compact('data'));
+  }
   public function vouchers()
   {
     return view('admin.voucher');
@@ -47,5 +56,10 @@ class AdminController extends Controller
   public function addstoresetting()
   {
     return view('admin.add_storesetting');
+  }
+
+  public function orders()
+  {
+    return view('admin.order');
   }
 }

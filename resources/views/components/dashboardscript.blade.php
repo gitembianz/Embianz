@@ -30,6 +30,10 @@
     window.addEventListener('show-delete-modal-price', event => {
         document.getElementById('confirmationmodalprice').style.display = 'flex';
     });
+    window.addEventListener('show-delete-item', event => {
+        document.getElementById('confirmationmodalcart').style.display = 'flex';
+    });
+
 
     // JavaScript code
     document.addEventListener('livewire:load', function() {
