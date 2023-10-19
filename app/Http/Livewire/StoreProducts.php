@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Cart;
+use App\Models\Status;
 use App\Models\Cart_Item;
 use App\Models\Category;
 use App\Models\Product;
@@ -98,7 +99,7 @@ class StoreProducts extends Component
   public function addToCart($productId)
   {
     $product = Product::with('product_prices.pricelist')->find($productId);
-
+    $newStatusId = Status::where('name', 'new')->where('type', 'cart')->first()->id;
     $cart = Cart::where('session_id', $this->session_id)->where('status', 'in progress')->orwhere('status', 'order')->first();
 
     if (!$cart) {
