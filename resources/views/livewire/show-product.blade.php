@@ -76,45 +76,45 @@
                     @if ($editproduct === null)
                         <div class="item__form-input-close">
                             <div>{{ $product->name }}</div>
-                            <label>Product Name</label>
+                            <label>Name</label>
                         </div>
                     @else
                         <div class="item__form-input">
                             <input type="text" wire:model.defer="prod.product_name" required>
-                            <label> Product Name</label>
+                            <label> Name</label>
                         </div>
                     @endif
                     @if ($editproduct === null)
                         <div class="item__form-input-close">
                             <div>{{ $product->start_date }}</div>
-                            <label>Product Start Date</label>
+                            <label>Start Date</label>
                         </div>
                     @else
                         <div class="item__form-input">
                             <input type="date" id="start_date" wire:model.defer="prod.start_date">
-                            <label>Product Start Date</label>
+                            <label>Start Date</label>
                         </div>
                     @endif
                     @if ($editproduct === null)
                         <div class="item__form-input-close">
                             <div>{{ $product->end_date }}</div>
-                            <label>Product End Date </label>
+                            <label>End Date </label>
                         </div>
                     @else
                         <div class="item__form-input">
                             <input type="date" id="end_date" wire:model.defer="prod.end_date">
-                            <label>Product End Date</label>
+                            <label>End Date</label>
                         </div>
                     @endif
                     @if ($editproduct === null)
                         <div class="item__form-input-close">
                             <div>{{ $product->quantity }}</div>
-                            <label>Product Quantity</label>
+                            <label>Quantity</label>
                         </div>
                     @else
                         <div class="item__form-input">
                             <input type="number" min="0" wire:model.defer="prod.quantity" required>
-                            <label>Product Quantity</label>
+                            <label>Quantity</label>
                         </div>
                     @endif
                     @if ($editproduct === null)
@@ -143,34 +143,34 @@
                     @if ($editproduct === null)
                         <div class="item__form-input-close">
                             <div>{{ $product->popularity }}</div>
-                            <label>Product Popularity</label>
+                            <label>Popularity</label>
                         </div>
                     @else
                         <div class="item__form-input">
                             <input type="number" min="0" wire:model.defer="prod.popularity" required>
-                            <label>Product Popularity</label>
+                            <label>Popularity</label>
                         </div>
                     @endif
                     @if ($editproduct === null)
                         <div class="item__form-input-close item__form-long">
                             <div>{{ $product->short_description }}</div>
-                            <label>Product Short Description</label>
+                            <label>Short Description</label>
                         </div>
                     @else
                         <div class="item__form-input item__form-long">
                             <input type="text" wire:model.defer="prod.short_description" required>
-                            <label>Product Short Description</label>
+                            <label>Short Description</label>
                         </div>
                     @endif
                     @if ($editproduct === null)
                         <div class="item__form-input-close item__form-textarea">
                             <div>{{ $product->long_description }}</div>
-                            <label>Product Long Description</label>
+                            <label>Long Description</label>
                         </div>
                     @else
                         <div class="item__form-input item__form-textarea">
                             <textarea wire:model.defer="prod.long_description" required></textarea>
-                            <label>Product Long Description</label>
+                            <label>Long Description</label>
                         </div>
                     @endif
                     @if ($editproduct === null)

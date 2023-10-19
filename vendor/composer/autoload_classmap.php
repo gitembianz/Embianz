@@ -58,6 +58,7 @@ return array(
     'App\\Http\\Livewire\\ShowAccount' => $baseDir . '/app/Http/Livewire/ShowAccount.php',
     'App\\Http\\Livewire\\ShowCart' => $baseDir . '/app/Http/Livewire/ShowCart.php',
     'App\\Http\\Livewire\\ShowCategory' => $baseDir . '/app/Http/Livewire/ShowCategory.php',
+    'App\\Http\\Livewire\\ShowOrder' => $baseDir . '/app/Http/Livewire/ShowOrder.php',
     'App\\Http\\Livewire\\ShowPricelist' => $baseDir . '/app/Http/Livewire/ShowPricelist.php',
     'App\\Http\\Livewire\\ShowProduct' => $baseDir . '/app/Http/Livewire/ShowProduct.php',
     'App\\Http\\Livewire\\ShowSpec' => $baseDir . '/app/Http/Livewire/ShowSpec.php',

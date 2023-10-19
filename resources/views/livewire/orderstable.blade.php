@@ -165,6 +165,9 @@
                                             {{ $order->$column }}
                                         </div>
                                     </td>
+                                @elseif($column === 'name')
+                                    <td data-title="Name"><a
+                                            href="/show_order/{{ $order->id }}">{{ $order->name }}</a></td>
                                 @else
                                     <td data-title="{{ $column }}">{{ $order->$column }}</td>
                                 @endif

@@ -7,7 +7,7 @@
 
     {{-- Livewire component show --}}
 
-    {{-- @livewire('show-account', ['accountId' => $data->id], key($data->id)) --}}
+    @livewire('show-order', ['orderId' => $data->id], key($data->id))
 
     <a href="#" class="top-up-btn" id="topUp">
         <svg>

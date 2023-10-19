@@ -687,6 +687,7 @@ class ComposerStaticInitdbceb679be78fc0f2f620fcaf24d3e3e
         'App\\Http\\Livewire\\ShowAccount' => __DIR__ . '/../..' . '/app/Http/Livewire/ShowAccount.php',
         'App\\Http\\Livewire\\ShowCart' => __DIR__ . '/../..' . '/app/Http/Livewire/ShowCart.php',
         'App\\Http\\Livewire\\ShowCategory' => __DIR__ . '/../..' . '/app/Http/Livewire/ShowCategory.php',
+        'App\\Http\\Livewire\\ShowOrder' => __DIR__ . '/../..' . '/app/Http/Livewire/ShowOrder.php',
         'App\\Http\\Livewire\\ShowPricelist' => __DIR__ . '/../..' . '/app/Http/Livewire/ShowPricelist.php',
         'App\\Http\\Livewire\\ShowProduct' => __DIR__ . '/../..' . '/app/Http/Livewire/ShowProduct.php',
         'App\\Http\\Livewire\\ShowSpec' => __DIR__ . '/../..' . '/app/Http/Livewire/ShowSpec.php',
