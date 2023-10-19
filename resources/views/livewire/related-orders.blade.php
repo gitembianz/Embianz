@@ -4,17 +4,17 @@
     <div class="accordion">
         <div class="accordion__btn-flex">
             <button class="accordion__btn"
-                wire:click.prevent="@if ($showrelatedords === false) $set('showrelatedords', true) @else $set('showrelatedords', false) @endif">
+                wire:click.prevent="@if ($showrelated === false) $set('showrelated', true) @else $set('showrelated', false) @endif">
                 {{ __('Orders ') }}({{ $account->orders()->count() }})
             </button>
-            <button class="accordion__upload" wire:click="toggleTable">
+            <button class="accordion__upload">
                 <svg>
                     <line x1="12" y1="5" x2="12" y2="19"></line>
                     <line x1="5" y1="12" x2="19" y2="12"></line>
                 </svg>
             </button>
         </div>
-        @if ($showrelatedords)
+        @if ($showrelated)
             <div class="accordion__content">
                 @if ($account->orders()->count() > 0)
                     <div class="panel__header">
@@ -307,7 +307,7 @@
                                             @if ($this->showColumn('Cart'))
                                                 <td data-title="Cart">
                                                     <a href="/show_cart/{{ $order->cart_id }}">
-                                                        {{ $order->carts->first()->name }}
+                                                        {{ $order->cart->name }}
                                                     </a>
                                                 </td>
                                             @endif

@@ -18,9 +18,9 @@ class Order extends Model
   {
     return $this->hasMany(Invoice::class, 'order_id');
   }
-  public function carts()
+  public function cart()
   {
-    return $this->hasMany(Cart::class, 'cart_id');
+    return $this->belongsTo(Cart::class, 'cart_id');
   }
   public function account()
   {

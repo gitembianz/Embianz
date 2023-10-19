@@ -21,7 +21,7 @@ class Cart extends Model
   }
   public function order()
   {
-    return $this->belongsTo(Order::class, 'cart_id');
+    return $this->hasOne(Order::class, 'cart_id');
   }
   public static function search($search)
   {

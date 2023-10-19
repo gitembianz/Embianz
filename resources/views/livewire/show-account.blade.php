@@ -207,6 +207,7 @@
             <div class="tabs__content">
                 {{-- @livewire('related-account-orders', ['accountId' => $account->id], key('second' . $account->id)) --}}
                 @livewire('related-addresses', ['accountId' => $account->id], key('first' . $account->id))
+                @livewire('related-orders', ['accountId' => $account->id], key($account->id))
             </div>
         </div>
     </div>
