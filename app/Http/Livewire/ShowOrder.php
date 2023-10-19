@@ -4,8 +4,9 @@ namespace App\Http\Livewire;
 
 use App\Models\Cart;
 use App\Models\Order;
-use App\Models\Order_Item;
+use App\Models\Status;
 use Livewire\Component;
+use App\Models\Order_Item;
 
 class ShowOrder extends Component
 {
@@ -13,6 +14,7 @@ class ShowOrder extends Component
     public $record = [];
     public $edititem = null;
     public $cart;
+    public $statuses;
     public function render()
     {
         return view('livewire.show-order', [
@@ -39,8 +41,9 @@ class ShowOrder extends Component
     }
     public function edititem()
     {
+        $this->statuses = Status::where('type', 'order')->get();
         $this->record = [
-            // 'status' => $this->cart->status,
+            'status_id' => $this->order->status_id,
         ];
         $this->edititem = true;
     }

@@ -252,6 +252,7 @@ class StoreOrder extends Component
       $cartNumber++;
       $uniqueName = $baseName . '_' . str_pad($cartNumber, 2, '0', STR_PAD_LEFT);
     }
+    $statusId = Status::where('name', 'new')->where('type', 'order')->first()->id;
 
     Order::create([
       'name' => $uniqueName,
@@ -261,7 +262,7 @@ class StoreOrder extends Component
       'quantity_amount' => $this->cart->quantity_amount,
       'sum_amount' => $this->cart->final_amount,
       'currency_id' => $this->cart->currency_id,
-      'status' => 'in progress',
+      'status_id' =>  $statusId,
       'delivery_method' => 'cash on delivery',
     ]);
     $cartitems = Cart_Item::where('cart_id', $this->cart->id)->get();
