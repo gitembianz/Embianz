@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Cart;
+use App\Models\Status;
 use App\Models\Product;
 use App\Models\Voucher;
 use Livewire\Component;
@@ -21,6 +22,7 @@ class StoreCart extends Component
   public $new_price = false;
   public $price;
   public $message;
+  public $closedStatusId;
   protected $listeners = [
     'cartUpdated' => 'mount',
     'wishlistUpdated' => 'mount'
@@ -31,7 +33,8 @@ class StoreCart extends Component
     $this->session_id = $_COOKIE['sessionId'];
     $this->cartitems = $this->getCartItemsProperty();
     $this->deliverry = 0;
-    $this->cart = Cart::where('session_id', $this->session_id)->where('status', 'in progress')->orwhere('status', 'order')->first();
+    $this->closedStatusId = Status::where('name', 'closed')->where('type', 'cart')->first()->id;
+    $this->cart = Cart::where('session_id', $this->session_id)->where('status_id', '!=', $this->closedStatusId)->first();
   }
   public function render()
   {
@@ -165,15 +168,14 @@ class StoreCart extends Component
   }
   public function continue()
   {
+    $newStatusId = Status::where('name', 'checkout')->where('type', 'cart')->first()->id;
     if ($this->new_price) {
       $this->cart->final_amount = $this->price;
-      $this->cart->status = "order";
-      $this->cart->save();
     } else {
       $this->cart->final_amount = $this->cart->sum_amount + $this->deliverry;
-      $this->cart->status = "order";
-      $this->cart->save();
     }
+    $this->cart->status_id = $newStatusId;
+    $this->cart->save();
     return redirect()->route('order');
   }
 }

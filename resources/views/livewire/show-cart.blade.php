@@ -87,11 +87,15 @@
                     </div>
                     @if ($edititem === null)
                         <div class="item__form-input-close">
-                            <div>{{ $cart->status }}</div>
+                            <div>{{ $cart->status->name }}</div>
                             <label>Cart Status</label>
                         </div>
                     @else
-                        <input type="text" wire:model.defer="record.status" class="item__form-input">
+                        <select wire:model.defer="record.status_id" class="item__form-input">
+                            @foreach ($statuses as $status)
+                                <option value="{{ $status->id }}">{{ $status->name }}</option>
+                            @endforeach
+                        </select>
                     @endif
                     @if ($cart->order_id != null)
                         <div class="item__form-input-close">

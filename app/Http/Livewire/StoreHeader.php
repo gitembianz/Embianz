@@ -3,11 +3,12 @@
 namespace App\Http\Livewire;
 
 use App\Models\Cart;
-use App\Models\Cart_Item;
+use App\Models\Status;
 use App\Models\Product;
 use Livewire\Component;
 use App\Models\Category;
 use App\Models\Wishlist;
+use App\Models\Cart_Item;
 use Illuminate\Support\Facades\Session;
 
 class StoreHeader extends Component
@@ -22,6 +23,7 @@ class StoreHeader extends Component
   public $cookieConsent;
   public $cookieId;
   public $session_id;
+  public $closedStatusId;
   protected $listeners = [
     'wishlistUpdated' => 'mount',
     'cartUpdated' => 'mount'
@@ -84,7 +86,13 @@ class StoreHeader extends Component
   }
   public function getCartItemsProperty()
   {
-    $cart = Cart::where('session_id', $this->session_id)->where('status', '!=', 'closed')->first();
+    // Fetch the 'closed' status_id for carts
+
+    // Retrieve cart where status_id is different from the 'closed' status_id for carts
+    $cart = Cart::where('session_id', $this->session_id)
+      ->where('status_id', '!=', $this->closedStatusId)
+      ->first();
+
     if ($cart !== null) {
       $cartItems = Cart_Item::where('cart_id', $cart->id)->with('product')->get();
 
@@ -120,7 +128,11 @@ class StoreHeader extends Component
   }
   public function removeFromCart($productId)
   {
-    $cart = Cart::where('session_id', $this->session_id)->where('status', 'in progress')->orwhere('status', 'order')->first();
+
+    // Retrieve cart where status_id is different from the 'closed' status_id for carts
+    $cart = Cart::where('session_id', $this->session_id)
+      ->where('status_id', '!=', $this->closedStatusId)
+      ->first();
     $product = Product::find($productId);
 
     if ($cart !== null) {
@@ -140,6 +152,7 @@ class StoreHeader extends Component
   }
   public function mount()
   {
+    $this->closedStatusId = Status::where('name', 'closed')->where('type', 'cart')->first()->id;
     $this->cookieConsent = $this->checkCookieConsent();
     $this->cookieId = $this->getCookieId();
 
@@ -147,7 +160,7 @@ class StoreHeader extends Component
       $this->saveSessionId();
     }
     $this->session_id = $_COOKIE['sessionId'];
-    $this->total = Cart::where('session_id', $this->session_id)->where('status', 'in progress')->orwhere('status', 'order')->sum('quantity_amount');
+    $this->total = Cart::where('session_id', $this->session_id)->where('status_id', '!=', $this->closedStatusId)->sum('quantity_amount');
     $this->wishlistitems = $this->getWishlistItemsProperty();
   }
   public function getCategoriesProperty()
