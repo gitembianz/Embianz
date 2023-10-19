@@ -117,7 +117,7 @@
     echo "DB updated<br>";
   });
   Route::get('/seeddatabase', function () {
-    $seed = Artisan::call('db:seed --class=CurrencySeeder');
+    $seed = Artisan::call('db:seed --class=StatusSeeder');
     echo "Databese seeded<br>";
   });
 
