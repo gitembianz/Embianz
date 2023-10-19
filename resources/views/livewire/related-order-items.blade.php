@@ -5,7 +5,7 @@
         <div class="accordion__btn-flex">
             <button class="accordion__btn"
                 wire:click.prevent="@if ($showrelatedprod === false) $set('showrelatedprod', true) @else $set('showrelatedprod', false) @endif">
-                {{ __('Cart Items ') }}({{ $cart->carts()->count() }})
+                {{ __('Order Items ') }}({{ $order->orders()->count() }})
             </button>
             <button class="accordion__upload">
                 <svg>
@@ -16,7 +16,7 @@
         </div>
         @if ($showrelatedprod)
             <div class="accordion__content">
-                @if ($cart->carts()->count() > 0)
+                @if ($order->orders()->count() > 0)
                     {{-- Header of the table --}}
                     <div class="panel__header">
                         <input class="panel__header--input" type="text" wire:model.debounce.300ms="search"
@@ -75,7 +75,7 @@
                     </div>
                     {{-- modals --}}
                     {{-- delete single record --}}
-                    <div class="modal" id="confirmationmodalcart">
+                    <div class="modal" id="confirmationmodalorder">
                         <div class="modal-content">
                             <h1 class="modal-content-title">
                                 {{ __('Are you sure to delete this record?') }}
@@ -83,10 +83,10 @@
                             <input wire:click.prevent="deleteSingleRecord()" class="modal-content-btn submit"
                                 type="button" value="Confirm">
                             <input class="modal-content-btn delete" type="button"
-                                onclick="document.getElementById('confirmationmodalcart').style.display='none'"
+                                onclick="document.getElementById('confirmationmodalorder').style.display='none'"
                                 value="Cancel">
                             <span class="modal-content-btn delete"
-                                onclick="document.getElementById('confirmationmodalcart').style.display='none'">
+                                onclick="document.getElementById('confirmationmodalorder').style.display='none'">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
                                     viewbox="0 0 24 24" fill="none" stroke="#BBFCDE" stroke-width="2"
                                     stroke-linecap="round" stroke-linejoin="round">
@@ -196,14 +196,14 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @if ($cartproducts->isEmpty())
+                            @if ($orderproducts->isEmpty())
                                 <tr>
                                     <td class="table__empty" colspan="{{ count($columns) + 3 }}">
                                         No record found.
                                     </td>
                                 </tr>
                             @else
-                                @foreach ($cartproducts as $index => $product)
+                                @foreach ($orderproducts as $index => $product)
                                     @if ($index < $perPage)
                                         <tr class="@if ($this->isChecked($product->id)) table__row--selected @endif">
                                             <td data-title="Check">
@@ -264,7 +264,7 @@
                             @endif
                         </tbody>
                     </table>
-                    @if (count($cartproducts) >= 10)
+                    @if (count($orderproducts) >= 10)
                         <div class="table__load-more" wire:click="load">
                             Load more
                         </div>

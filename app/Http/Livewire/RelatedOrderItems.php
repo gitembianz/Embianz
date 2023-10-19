@@ -2,14 +2,13 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Cart;
-use App\Models\Cart_Item;
+use App\Models\Order;
+use App\Models\Order_Item;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class RelatedCartItems extends Component
+class RelatedOrderItems extends Component
 {
-
     use WithPagination;
     //related delclaration/
     public $perPage = 10;
@@ -20,17 +19,17 @@ class RelatedCartItems extends Component
     public $selectPage = false;
     public $selectAll = false;
     public $showrelatedprod = false;
-    public $cartId;
+    public $orderId;
     public $col = false;
     public $all = false;
     public $itemidbeingremoved = null;
     public $columns = ['Id', 'Price', 'Quantity'];
     public $selectedColumns = [];
-    public $cart;
+    public $order;
 
     public function render()
     {
-        $cartproducts = $this->cartproducts
+        $orderproducts = $this->orderproducts
             ->where(function ($query) {
                 $query->whereHas('product', function ($subQuery) {
                     $subQuery->where('name', 'LIKE', '%' . $this->search . '%');
@@ -38,14 +37,14 @@ class RelatedCartItems extends Component
             })->get();
 
 
-        return view('livewire.related-cart-items', [
-            'cartproducts' => $cartproducts,
+        return view('livewire.related-order-items', [
+            'orderproducts' => $orderproducts,
         ]);
     }
-    public function mount($cartId)
+    public function mount($orderId)
     {
-        $this->cartId = $cartId;
-        $this->cart = Cart::find($cartId);
+        $this->orderId = $orderId;
+        $this->order = Order::find($orderId);
         $this->selectedColumns = $this->columns;
     }
     //function for related products
@@ -59,7 +58,7 @@ class RelatedCartItems extends Component
     public function updatedSelectPage($value)
     {
         if ($value) {
-            $this->checked = $this->cartproducts->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+            $this->checked = $this->orderproducts->pluck('id')->map(fn ($item) => (string) $item)->toArray();
         } else {
             $this->checked = [];
         }
@@ -90,19 +89,19 @@ class RelatedCartItems extends Component
     public function selectAll()
     {
         $this->selectAll = true;
-        $this->checked = $this->cartproductsQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+        $this->checked = $this->orderproductsQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
     }
     public function load()
     {
         $this->perPage += 10;
     }
-    public function getCartproductsProperty()
+    public function getOrderproductsProperty()
     {
-        return $this->cartproductsQuery;
+        return $this->orderproductsQuery;
     }
-    public function getCartproductsQueryProperty()
+    public function getOrderproductsQueryProperty()
     {
-        return Cart_Item::where('cart_id', $this->cartId)
+        return Order_Item::where('order_id', $this->orderId)
             ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->with('product');
     }
     public function confirmItemRemoval($id)
@@ -113,9 +112,9 @@ class RelatedCartItems extends Component
     public function deleteSingleRecord()
     {
         $id = $this->itemidbeingremoved;
-        $item = Cart_Item::findOrFail($id);
-        $this->cart->quantity_amount -= $item->quantity;
-        $this->cart->save();
+        $item = Order_Item::findOrFail($id);
+        $this->order->quantity_amount -= $item->quantity;
+        $this->order->save();
         $item->delete();
         $this->checked = array_diff($this->checked, [$id]);
         session()->flash('notification', [
@@ -123,16 +122,16 @@ class RelatedCartItems extends Component
             'type' => 'success',
             'title' => 'Success'
         ]);
-        $this->emit('cartUpdated');
+        $this->emit('orderUpdated');
     }
     public function deleteRecords()
     {
-        $items = Cart_Item::whereKey($this->checked)->get();
+        $items = Order_Item::whereKey($this->checked)->get();
         foreach ($items as $item) {
             $id = $item->id;
-            $del = Cart_Item::find($id);
-            $this->cart->quantity_amount -= $del->quantity;
-            $this->cart->save();
+            $del = Order_Item::find($id);
+            $this->order->quantity_amount -= $del->quantity;
+            $this->order->save();
             $del->delete();
         }
 
@@ -143,7 +142,7 @@ class RelatedCartItems extends Component
             'type' => 'success',
             'title' => 'Success'
         ]);
-        $this->emit('cartUpdated');
+        $this->emit('orderUpdated');
     }
     public function confirmItemsRemoval()
     {

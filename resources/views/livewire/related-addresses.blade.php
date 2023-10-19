@@ -7,7 +7,7 @@
                 wire:click.prevent="@if ($showrelatedadd === false) $set('showrelatedadd', true) @else $set('showrelatedadd', false) @endif">
                 {{ __('Addresses ') }}({{ $account->addresses()->count() }})
             </button>
-            <button class="accordion__upload" wire:click="toggleTable">
+            <button class="accordion__upload">
                 <svg>
                     <line x1="12" y1="5" x2="12" y2="19"></line>
                     <line x1="5" y1="12" x2="19" y2="12"></line>

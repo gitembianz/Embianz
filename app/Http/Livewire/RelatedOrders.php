@@ -2,16 +2,12 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Order;
 use App\Models\Account;
-use App\Models\Address;
 use Livewire\Component;
-use Livewire\WithPagination;
 
-class RelatedAddresses extends Component
+class RelatedOrders extends Component
 {
-    use WithPagination;
-
-    //related delclaration
     public $perPage = 10;
     public $search = '';
     public $orderBy = 'id';
@@ -19,20 +15,32 @@ class RelatedAddresses extends Component
     public $checked = [];
     public $selectPage = false;
     public $selectAll = false;
-    public $showrelatedadd = false;
+    public $showrelated = false;
     public $accountId;
     public $col = false;
     public $all = false;
     public $removedid = null;
-    public $columns = ['Id', 'First Name', 'Last Name', 'Phone', 'Email', 'Address', 'Optional Address', 'Country', 'County', 'City', 'Post Code', 'Type', 'Created At', 'Updated At'];
+    public $columns =
+    ['Id', 'Session Id', 'Cart', 'Quantity Amount', 'Sum Amount', 'Currency', 'Status', 'Delivery Method', 'Created At', 'Updated At'];
     public $selectedColumns = [];
     public $account;
 
+    public function render()
+    {
+        return view('livewire.related-orders', [
+            'orders' => $this->orders
+        ]);
+    }
 
-    //related subcatecory functions
+    public function mount($accountId)
+    {
+        $this->accountId = $accountId;
+        $this->account = Account::find($accountId);
+        $this->selectedColumns = $this->columns;
+    }
     public function showColumn($column)
     {
-        if ($column === 'Id') {
+        if ($column === 'Name') {
             return true;
         }
         return in_array($column, $this->selectedColumns);
@@ -44,7 +52,7 @@ class RelatedAddresses extends Component
     public function updatedSelectPage($value)
     {
         if ($value) {
-            $this->checked = $this->addresses->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+            $this->checked = $this->orders->pluck('id')->map(fn ($item) => (string) $item)->toArray();
         } else {
             $this->checked = [];
         }
@@ -78,16 +86,16 @@ class RelatedAddresses extends Component
     public function selectAll()
     {
         $this->selectAll = true;
-        $this->checked = $this->addressesQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+        $this->checked = $this->ordersQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
     }
-    public function getAddressesProperty()
+    public function getOrdersProperty()
     {
-        return $this->addressesQuery->get();
+        return $this->ordersQuery->get();
     }
-    public function getAddressesQueryProperty()
+    public function getOrdersQueryProperty()
     {
-        return Address::search($this->search)->where('account_id', $this->accountId)
-            ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc');
+        return Order::search($this->search)->where('account_id', $this->accountId)
+            ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->with('cart');
     }
     public function confirmItemRemoval($id)
     {
@@ -96,7 +104,7 @@ class RelatedAddresses extends Component
     }
     public function deleteSingleRecord()
     {
-        $record = Address::findOrFail($this->removedid);
+        $record = Order::findOrFail($this->removedid);
         $record->delete();
         $this->checked = array_diff($this->checked, [$this->removedid]);
         session()->flash('notification', [
@@ -107,10 +115,10 @@ class RelatedAddresses extends Component
     }
     public function deleteRecords()
     {
-        $records = Address::whereKey($this->checked)->get();
+        $records = Order::whereKey($this->checked)->get();
         foreach ($records as $record) {
             $id = $record->id;
-            $recordtodel = Address::find($id);
+            $recordtodel = Order::find($id);
             $recordtodel->delete();
         }
 
@@ -125,17 +133,5 @@ class RelatedAddresses extends Component
     public function confirmItemsRemoval()
     {
         $this->dispatchBrowserEvent('show-delete-modal-multiple');
-    }
-    public function render()
-    {
-        return view('livewire.related-addresses', [
-            'addresses' => $this->addresses,
-        ]);
-    }
-    public function mount($accountId)
-    {
-        $this->accountId = $accountId;
-        $this->account = Account::find($accountId);
-        $this->selectedColumns = $this->columns;
     }
 }

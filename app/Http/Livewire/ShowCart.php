@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Cart;
 use App\Models\Cart_Item;
+use App\Models\Order;
 use Livewire\Component;
 
 class ShowCart extends Component
@@ -11,6 +12,7 @@ class ShowCart extends Component
     public $cartId;
     public $record = [];
     public $edititem = null;
+    public $order;
     public function render()
     {
         return view('livewire.show-cart', [
@@ -28,6 +30,7 @@ class ShowCart extends Component
     public function mount($cartId)
     {
         $this->cartId = $cartId;
+        $this->order = Order::where('cart_id', $this->cartId)->get('name');
     }
     public function cancelcart()
     {

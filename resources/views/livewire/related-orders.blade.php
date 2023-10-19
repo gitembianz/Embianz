@@ -4,8 +4,8 @@
     <div class="accordion">
         <div class="accordion__btn-flex">
             <button class="accordion__btn"
-                wire:click.prevent="@if ($showrelatedprod === false) $set('showrelatedprod', true) @else $set('showrelatedprod', false) @endif">
-                {{ __('Cart Items ') }}({{ $cart->carts()->count() }})
+                wire:click.prevent="@if ($showrelated === false) $set('showrelated', true) @else $set('showrelated', false) @endif">
+                {{ __('Orders ') }}({{ $account->orders()->count() }})
             </button>
             <button class="accordion__upload">
                 <svg>
@@ -14,10 +14,9 @@
                 </svg>
             </button>
         </div>
-        @if ($showrelatedprod)
+        @if ($showrelated)
             <div class="accordion__content">
-                @if ($cart->carts()->count() > 0)
-                    {{-- Header of the table --}}
+                @if ($account->orders()->count() > 0)
                     <div class="panel__header">
                         <input class="panel__header--input" type="text" wire:model.debounce.300ms="search"
                             placeholder="Search..." style="grid-column: 1/4">
@@ -75,7 +74,7 @@
                     </div>
                     {{-- modals --}}
                     {{-- delete single record --}}
-                    <div class="modal" id="confirmationmodalcart">
+                    <div class="modal" id="confirmationmodal">
                         <div class="modal-content">
                             <h1 class="modal-content-title">
                                 {{ __('Are you sure to delete this record?') }}
@@ -83,10 +82,10 @@
                             <input wire:click.prevent="deleteSingleRecord()" class="modal-content-btn submit"
                                 type="button" value="Confirm">
                             <input class="modal-content-btn delete" type="button"
-                                onclick="document.getElementById('confirmationmodalcart').style.display='none'"
+                                onclick="document.getElementById('confirmationmodal').style.display='none'"
                                 value="Cancel">
                             <span class="modal-content-btn delete"
-                                onclick="document.getElementById('confirmationmodalcart').style.display='none'">
+                                onclick="document.getElementById('confirmationmodal').style.display='none'">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
                                     viewbox="0 0 24 24" fill="none" stroke="#BBFCDE" stroke-width="2"
                                     stroke-linecap="round" stroke-linejoin="round">
@@ -124,7 +123,6 @@
                         </div>
                     </div>
                     {{-- end modals --}}
-                    {{-- Table --}}
                     <table class="table">
                         <thead>
                             <tr>
@@ -145,17 +143,12 @@
                                         </button>
                                     </th>
                                 @endif
-                                @if ($this->showColumn('Product'))
-                                    <th>
-                                        <span class="table__header--btn">Product Name</span>
-                                    </th>
-                                @endif
-                                @if ($this->showColumn('Price'))
-                                    <th wire:click="sortBy('price')">
+                                @if ($this->showColumn('Name'))
+                                    <th wire:click="sortBy('name')">
                                         <button class="table__header--btn"
-                                            @if ($orderBy === 'price' && $orderAsc === '1') data-symbol="up"
+                                            @if ($orderBy === 'name' && $orderAsc === '1') data-symbol="up"
                                                 @else data-symbol="down" @endif>
-                                            Price
+                                            Name
                                             <svg>
                                                 <line x1="12" y1="5" x2="12" y2="19">
                                                 </line>
@@ -164,12 +157,96 @@
                                         </button>
                                     </th>
                                 @endif
-                                @if ($this->showColumn('Quantity'))
-                                    <th wire:click="sortBy('quantity')">
+                                @if ($this->showColumn('Session Id'))
+                                    <th wire:click="sortBy('session_id')">
                                         <button class="table__header--btn"
-                                            @if ($orderBy === 'quantity' && $orderAsc === '1') data-symbol="up"
+                                            @if ($orderBy === 'session_id' && $orderAsc === '1') data-symbol="up"
                                                 @else data-symbol="down" @endif>
-                                            Quantity
+                                            Session ID
+                                            <svg>
+                                                <line x1="12" y1="5" x2="12" y2="19">
+                                                </line>
+                                                <polyline points="19 12 12 19 5 12"></polyline>
+                                            </svg>
+                                        </button>
+                                    </th>
+                                @endif
+                                @if ($this->showColumn('Cart'))
+                                    <th wire:click="sortBy('cart_id')">
+                                        <button class="table__header--btn"
+                                            @if ($orderBy === 'cart_id' && $orderAsc === '1') data-symbol="up"
+                                                @else data-symbol="down" @endif>
+                                            Cart
+                                            <svg>
+                                                <line x1="12" y1="5" x2="12" y2="19">
+                                                </line>
+                                                <polyline points="19 12 12 19 5 12"></polyline>
+                                            </svg>
+                                        </button>
+                                    </th>
+                                @endif
+                                @if ($this->showColumn('Quantity Amount'))
+                                    <th wire:click="sortBy('quantity_amount')">
+                                        <button class="table__header--btn"
+                                            @if ($orderBy === 'quantity_amount' && $orderAsc === '1') data-symbol="up"
+                                                @else data-symbol="down" @endif>
+                                            Quantity Amount
+                                            <svg>
+                                                <line x1="12" y1="5" x2="12" y2="19">
+                                                </line>
+                                                <polyline points="19 12 12 19 5 12"></polyline>
+                                            </svg>
+                                        </button>
+                                    </th>
+                                @endif
+                                @if ($this->showColumn('Sum Amount'))
+                                    <th wire:click="sortBy('sum_amount')">
+                                        <button class="table__header--btn"
+                                            @if ($orderBy === 'sum_amount' && $orderAsc === '1') data-symbol="up"
+                                                @else data-symbol="down" @endif>
+                                            Sum Amount
+                                            <svg>
+                                                <line x1="12" y1="5" x2="12" y2="19">
+                                                </line>
+                                                <polyline points="19 12 12 19 5 12"></polyline>
+                                            </svg>
+                                        </button>
+                                    </th>
+                                @endif
+                                @if ($this->showColumn('Currency'))
+                                    <th wire:click="sortBy('currency_id')">
+                                        <button class="table__header--btn"
+                                            @if ($orderBy === 'currency_id' && $orderAsc === '1') data-symbol="up"
+                                                @else data-symbol="down" @endif>
+                                            Currency
+                                            <svg>
+                                                <line x1="12" y1="5" x2="12" y2="19">
+                                                </line>
+                                                <polyline points="19 12 12 19 5 12"></polyline>
+                                            </svg>
+                                        </button>
+                                    </th>
+                                @endif
+                                @if ($this->showColumn('Status'))
+                                    <th wire:click="sortBy('status')">
+                                        <button class="table__header--btn"
+                                            @if ($orderBy === 'status' && $orderAsc === '1') data-symbol="up"
+                                                @else data-symbol="down" @endif>
+                                            Status
+                                            <svg>
+                                                <line x1="12" y1="5" x2="12" y2="19">
+                                                </line>
+                                                <polyline points="19 12 12 19 5 12"></polyline>
+                                            </svg>
+                                        </button>
+                                    </th>
+                                @endif
+                                @if ($this->showColumn('Delivery Method'))
+                                    <th wire:click="sortBy('delivery_method')">
+                                        <button class="table__header--btn"
+                                            @if ($orderBy === 'delivery_method' && $orderAsc === '1') data-symbol="up"
+                                                @else data-symbol="down" @endif>
+                                            Delivery Method
                                             <svg>
                                                 <line x1="12" y1="5" x2="12" y2="19">
                                                 </line>
@@ -196,37 +273,67 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @if ($cartproducts->isEmpty())
+                            @if ($orders->isEmpty())
                                 <tr>
-                                    <td class="table__empty" colspan="{{ count($columns) + 3 }}">
-                                        No record found.
-                                    </td>
+                                    <td class="table__empty" colspan="{{ count($columns) + 3 }}">No record
+                                        found.</td>
                                 </tr>
                             @else
-                                @foreach ($cartproducts as $index => $product)
+                                @foreach ($orders as $index => $order)
                                     @if ($index < $perPage)
-                                        <tr class="@if ($this->isChecked($product->id)) table__row--selected @endif">
+                                        <tr @if ($loop->last) id="last_record" @endif
+                                            class="@if ($this->isChecked($order->id)) table__row--selected @endif">
                                             <td data-title="Check">
-                                                <input type="checkbox" value="{{ $product->id }}"
+                                                <input type="checkbox" value="{{ $order->id }}"
                                                     wire:model="checked">
                                             </td>
                                             @if ($this->showColumn('Id'))
-                                                <td data-title="ID">{{ $product->id }}</td>
-                                            @endif
-                                            @if ($this->showColumn('Product'))
-                                                <td data-title="Product">
-                                                    <a
-                                                        href="/show_product/{{ $product->product->id }}'">{{ $product->product->name }}</a>
+                                                <td data-title="ID">
+                                                    {{ $order->id }}
                                                 </td>
                                             @endif
-                                            @if ($this->showColumn('Price'))
-                                                <td class="table__description" data-title="Price">
-                                                    {{ $product->price }}
+                                            @if ($this->showColumn('Name'))
+                                                <td data-title="Name">
+                                                    <a href="/show_order/{{ $order->id }}">
+                                                        {{ $order->name }}
+                                                    </a>
                                                 </td>
                                             @endif
-                                            @if ($this->showColumn('Quantity'))
-                                                <td class="table__description" data-title="Quantity">
-                                                    {{ $product->quantity }}
+                                            @if ($this->showColumn('Session Id'))
+                                                <td data-title="Session Id">
+                                                    {{ $order->session_id }}
+                                                </td>
+                                            @endif
+                                            @if ($this->showColumn('Cart'))
+                                                <td data-title="Cart">
+                                                    <a href="/show_cart/{{ $order->cart_id }}">
+                                                        {{ $order->cart->name }}
+                                                    </a>
+                                                </td>
+                                            @endif
+                                            @if ($this->showColumn('Quantity Amount'))
+                                                <td data-title="Quantity Amount">
+                                                    {{ $order->quantity_amount }}
+                                                </td>
+                                            @endif
+                                            @if ($this->showColumn('Sum Amount'))
+                                                <td data-title="Sum Amount">
+                                                    {{ $order->sum_amount }}
+                                                </td>
+                                            @endif
+                                            @if ($this->showColumn('Currency'))
+                                                <td data-title="Currency">
+                                                    {{ $order->currency->first()->name }}
+                                                </td>
+                                            @endif
+                                            @if ($this->showColumn('Status'))
+                                                <td data-title="Status">
+                                                    {{ $order->status }}
+                                                </td>
+                                            @endif
+                                            @if ($this->showColumn('Delivery Method'))
+                                                <td data-title="Delivery Method">
+                                                    {{ $order->delivery_method }}
                                                 </td>
                                             @endif
                                             @if ($this->showColumn('Created At'))
@@ -237,14 +344,14 @@
                                                             </circle>
                                                             <polyline points="12 6 12 12 16 14"></polyline>
                                                         </svg>
-                                                        {{ $product->created_at }}
+                                                        {{ $order->created_at }}
                                                     </div>
                                                 </td>
                                             @endif
                                             <td data-title="Action">
                                                 <div class="table__buttons">
-                                                    <button class="delete"
-                                                        wire:click.prevent="confirmItemRemoval({{ $product->id }})">
+                                                    <button class="edit"
+                                                        wire:click.prevent="confirmItemRemoval({{ $order->id }})">
                                                         <svg>
                                                             <polyline points="3 6 5 6 21 6"></polyline>
                                                             <path
@@ -264,7 +371,7 @@
                             @endif
                         </tbody>
                     </table>
-                    @if (count($cartproducts) >= 10)
+                    @if (count($orders) >= 10)
                         <div class="table__load-more" wire:click="load">
                             Load more
                         </div>
