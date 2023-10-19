@@ -30,6 +30,10 @@ class Order extends Model
   {
     return $this->belongsTo(Currency::class, 'currency_id');
   }
+  public function status()
+  {
+    return $this->belongsTo(Status::class);
+  }
   public static function search($search)
   {
     return empty($search) ? static::query()

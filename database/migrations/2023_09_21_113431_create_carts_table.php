@@ -19,7 +19,8 @@ return new class extends Migration
       $table->integer('sum_amount')->default(0);
       $table->unsignedBigInteger('currency_id')->index()->nullable();
       $table->foreign('currency_id')->references('id')->on('currencies');
-      $table->text('status');
+      $table->unsignedBigInteger('status_id')->index()->nullable();
+      $table->foreign('status_id')->references('id')->on('statuses');
       $table->integer('final_amount')->default(0);
       $table->string('order_id')->nullable();
       $table->timestamps();

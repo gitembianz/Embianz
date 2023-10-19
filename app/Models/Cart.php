@@ -9,7 +9,7 @@ class Cart extends Model
 {
   use HasFactory;
   protected $table = 'carts';
-  protected $fillable = ['session_id', 'name', 'quantity_amount', 'sum_amount', 'status', 'currency_id'];
+  protected $fillable = ['session_id', 'name', 'quantity_amount', 'sum_amount', 'status_id', 'currency_id'];
 
   public function carts()
   {
@@ -23,13 +23,17 @@ class Cart extends Model
   {
     return $this->hasOne(Order::class, 'cart_id');
   }
+  public function status()
+  {
+    return $this->belongsTo(Status::class, 'status_id');
+  }
   public static function search($search)
   {
     return empty($search) ? static::query()
       : static::query()->where('id', 'like', '%' . $search . '%')
       ->orWhere('session_id', 'like', '%' . $search . '%')
       ->orWhere('quantity_amount', 'like', '%' . $search . '%')
-      ->orWhere('status', 'like', '%' . $search . '%')
+      ->orWhere('status_id', 'like', '%' . $search . '%')
       ->orWhere('sum_amount', 'like', '%' . $search . '%');
   }
 }

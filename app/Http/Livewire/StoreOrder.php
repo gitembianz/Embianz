@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Cart;
 use App\Models\Order;
+use App\Models\Status;
 use App\Models\Account;
 use App\Models\Address;
 use Livewire\Component;
@@ -88,7 +89,8 @@ class StoreOrder extends Component
   public function mount()
   {
     $this->session_id = $_COOKIE['sessionId'];
-    $this->cart = Cart::where('session_id', $this->session_id)->where('status', 'in progress')->orwhere('status', 'order')->first();
+    $closedStatusId = Status::where('name', 'closed')->where('type', 'cart')->first()->id;
+    $this->cart = Cart::where('session_id', $this->session_id)->where('status_id', '!=', $closedStatusId)->first();
     if (!$this->cart) {
       $this->back = true;
     }
@@ -275,7 +277,8 @@ class StoreOrder extends Component
       }
       $this->cart->order_id = $order->id;
     }
-    $this->cart->status = "closed";
+    $newStatusId = Status::where('name', 'closed')->where('type', 'cart')->first()->id;
+    $this->cart->status_id = $newStatusId;
     $this->cart->save();
     $this->step++;
     $this->emit('cartUpdated');

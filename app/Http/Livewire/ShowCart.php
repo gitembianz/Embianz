@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Models\Cart;
 use App\Models\Cart_Item;
 use App\Models\Order;
+use App\Models\Status;
 use Livewire\Component;
 
 class ShowCart extends Component
@@ -13,6 +14,7 @@ class ShowCart extends Component
     public $record = [];
     public $edititem = null;
     public $order;
+    public $statuses;
     public function render()
     {
         return view('livewire.show-cart', [
@@ -39,8 +41,9 @@ class ShowCart extends Component
     }
     public function edititem()
     {
+        $this->statuses = Status::where('type', 'cart')->get();
         $this->record = [
-            'status' => $this->cart->status,
+            'status_id' => $this->cart->status_id,
         ];
         $this->edititem = true;
     }
@@ -49,11 +52,16 @@ class ShowCart extends Component
         $new_status = $this->record ?? NULL;
         if (!is_null($new_status)) {
             $cart = Cart::find($this->cartId);
-            if (array_key_exists('status', $new_status)) {
-                $cart->status = $new_status['status'];
+            if (array_key_exists('status_id', $new_status)) {
+                $cart->status_id = $new_status['status_id'];
                 $cart->updated_at = now();
                 $cart->save();
                 $this->emit('itemSaved');
+                session()->flash('notification', [
+                    'message' => 'Record edited successfully!',
+                    'type' => 'success',
+                    'title' => 'Success'
+                ]);
             }
         }
         $this->record = [];
