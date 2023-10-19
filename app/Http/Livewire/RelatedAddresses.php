@@ -86,7 +86,7 @@ class RelatedAddresses extends Component
     }
     public function getAddressesQueryProperty()
     {
-        return Address::where('account_id', $this->accountId)
+        return Address::search($this->search)->where('account_id', $this->accountId)
             ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc');
     }
     public function confirmItemRemoval($id)

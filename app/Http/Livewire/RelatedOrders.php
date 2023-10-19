@@ -5,13 +5,9 @@ namespace App\Http\Livewire;
 use App\Models\Order;
 use App\Models\Account;
 use Livewire\Component;
-use Livewire\WithPagination;
 
-class RelatedAccountOrders extends Component
+class RelatedOrders extends Component
 {
-    use WithPagination;
-
-    //related delclaration
     public $perPage = 10;
     public $search = '';
     public $orderBy = 'id';
@@ -19,17 +15,29 @@ class RelatedAccountOrders extends Component
     public $checked = [];
     public $selectPage = false;
     public $selectAll = false;
-    public $showrelatedords = false;
+    public $showrelated = false;
     public $accountId;
     public $col = false;
     public $all = false;
     public $removedid = null;
-    public $columns = ['Id', 'Session Id', 'Cart', 'Quantity Amount', 'Sum Amount', 'Currency', 'Status', 'Delivery Method', 'Created At', 'Updated At'];
+    public $columns =
+    ['Id', 'Session Id', 'Cart', 'Quantity Amount', 'Sum Amount', 'Currency', 'Status', 'Delivery Method', 'Created At', 'Updated At'];
     public $selectedColumns = [];
     public $account;
 
+    public function render()
+    {
+        return view('livewire.related-orders', [
+            'orders' => $this->orders
+        ]);
+    }
 
-    //related subcatecory functions
+    public function mount($accountId)
+    {
+        $this->accountId = $accountId;
+        $this->account = Account::find($accountId);
+        $this->selectedColumns = $this->columns;
+    }
     public function showColumn($column)
     {
         if ($column === 'Name') {
@@ -86,8 +94,8 @@ class RelatedAccountOrders extends Component
     }
     public function getOrdersQueryProperty()
     {
-        return Order::where('account_id', $this->accountId)
-            ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc');
+        return Order::search($this->search)->where('account_id', $this->accountId)
+            ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->with('cart');
     }
     public function confirmItemRemoval($id)
     {
@@ -125,17 +133,5 @@ class RelatedAccountOrders extends Component
     public function confirmItemsRemoval()
     {
         $this->dispatchBrowserEvent('show-delete-modal-multiple');
-    }
-    public function render()
-    {
-        return view('livewire.related-addresses', [
-            'orders' => $this->orders,
-        ]);
-    }
-    public function mount($accountId)
-    {
-        $this->accountId = $accountId;
-        $this->account = Account::find($accountId);
-        $this->selectedColumns = $this->columns;
     }
 }
