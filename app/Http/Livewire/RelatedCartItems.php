@@ -24,7 +24,7 @@ class RelatedCartItems extends Component
     public $col = false;
     public $all = false;
     public $itemidbeingremoved = null;
-    public $columns = ['Id', 'Cart', 'Price', 'Quantity'];
+    public $columns = ['Id', 'Price', 'Quantity'];
     public $selectedColumns = [];
     public $cart;
 
@@ -51,7 +51,7 @@ class RelatedCartItems extends Component
     //function for related products
     public function showColumn($column)
     {
-        if ($column === 'Product Name') {
+        if ($column === 'Product') {
             return true;
         }
         return in_array($column, $this->selectedColumns);

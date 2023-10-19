@@ -63,34 +63,34 @@
                     @if ($editcategory === null)
                         <div class="item__form-input-close">
                             <div>{{ $category->name }}</div>
-                            <label>Category Name</label>
+                            <label>Name</label>
                         </div>
                     @else
                         <div class="item__form-input">
                             <input type="text" wire:model.defer="cat.name" required>
-                            <label>Category Name</label>
+                            <label>Name</label>
                         </div>
                     @endif
                     @if ($editcategory === null)
                         <div class="item__form-input-close">
                             <div>{{ $category->start_date }}</div>
-                            <label>Category Start Date</label>
+                            <label>Start Date</label>
                         </div>
                     @else
                         <div class="item__form-input">
                             <input type="date" wire:model.defer="cat.start_date">
-                            <label>Category Start Date</label>
+                            <label>Start Date</label>
                         </div>
                     @endif
                     @if ($editcategory === null)
                         <div class="item__form-input-close">
                             <div>{{ $category->end_date }}</div>
-                            <label>Category End Date </label>
+                            <label>End Date </label>
                         </div>
                     @else
                         <div class="item__form-input">
                             <input type="date" wire:model.defer="cat.end_date">
-                            <label>Category End Date</label>
+                            <label>End Date</label>
                         </div>
                     @endif
                     @if ($editcategory === null)
@@ -155,23 +155,23 @@
                     @if ($editcategory === null)
                         <div class="item__form-input-close item__form-long">
                             <div>{{ $category->short_description }}</div>
-                            <label>Product Short Description</label>
+                            <label>Short Description</label>
                         </div>
                     @else
                         <div class="item__form-input item__form-long">
                             <input type="text" wire:model.defer="cat.short_description" required>
-                            <label>Product Short Description</label>
+                            <label>Short Description</label>
                         </div>
                     @endif
                     @if ($editcategory === null)
                         <div class="item__form-input-close item__form-textarea">
                             <div>{{ $category->long_description }}</div>
-                            <label>Product Long Description</label>
+                            <label>Long Description</label>
                         </div>
                     @else
                         <div class="item__form-input item__form-textarea">
                             <textarea wire:model.defer="cat.long_description" required></textarea>
-                            <label>Product Long Description</label>
+                            <label>Long Description</label>
                         </div>
                     @endif
                     @if ($editcategory === null)

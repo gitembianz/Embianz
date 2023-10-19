@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Account;
+use App\Models\Order;
 use App\Models\Voucher;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 
 class AdminController extends Controller
@@ -61,5 +61,10 @@ class AdminController extends Controller
   public function orders()
   {
     return view('admin.order');
+  }
+  public function show_order($id)
+  {
+    $data = Order::find($id);
+    return view('admin.show_order', compact('data'));
   }
 }

@@ -5,13 +5,15 @@ namespace App\Http\Livewire;
 use App\Models\Account;
 use App\Models\Address;
 use Livewire\Component;
-use Illuminate\Support\Facades\Auth;
 
 class ShowAccount extends Component
 {
     public $accountId;
     public $record = [];
     public $edititem = null;
+    protected $listeners = [
+        'itemSaved' => 'mount'
+    ];
 
     public function render()
     {

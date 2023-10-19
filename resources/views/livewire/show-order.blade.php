@@ -2,9 +2,9 @@
     <x-alert />
     <x-loading />
     <div class="item__header">
-        <h1 class="item__header-title" id="title">Cart: {{ $cart->name }}</h1>
+        <h1 class="item__header-title" id="title">Order: {{ $order->name }}</h1>
         <div class="item__header-buttons">
-            <a class="item__header-btn" href="{{ route('carts') }}" data-tooltip-left="Back to all carts">
+            <a class="item__header-btn" href="{{ url('orders') }}" data-tooltip-left="Back to all orders">
                 <svg>
                     <polyline points="11 17 6 12 11 7"></polyline>
                     <polyline points="18 17 13 12 18 7"></polyline>
@@ -12,18 +12,18 @@
             </a>
             @if ($edititem === null)
                 <button class="item__header-btn" type="button" value="Edit" wire:click.prevent="edititem()"
-                    data-tooltip-center="Edit this cart">
+                    data-tooltip-center="Edit this order">
                     <svg>
                         <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
                         <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
                     </svg>
                 </button>
             @else
-                <button class="item__header-btn confirm" type="button" wire:click.prevent="savecart()" value="Save"
+                <button class="item__header-btn confirm" type="button" wire:click.prevent="saveitem()" value="Save"
                     data-tooltip-center="Save this changes"><svg>
                         <polyline points="20 6 9 17 4 12"></polyline>
                     </svg></button>
-                <button class="item__header-btn" type="button" wire:click.prevent="cancelcart()" value="Cancel"
+                <button class="item__header-btn" type="button" wire:click.prevent="canceledit()" value="Cancel"
                     data-tooltip-center="Cancel this changes"><svg>
                         <line x1="18" y1="6" x2="6" y2="18">
                         </line>
@@ -32,7 +32,7 @@
                     </svg></button>
             @endif
             <button wire:click.prevent="confirmItemRemoval" class="item__header-btn delete" type="button"
-                value="Delete" data-tooltip-right="Delete this cart">
+                value="Delete" data-tooltip-right="Delete this order">
                 <svg>
                     <polyline points="3 6 5 6 21 6"></polyline>
                     <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
@@ -66,56 +66,64 @@
             <div class="tabs__content active" id="Details">
                 <div class="item__form">
                     <div class="item__form-input-close">
-                        <div>{{ $cart->name }}</div>
-                        <label>Cart Name</label>
+                        <div>{{ $order->name }}</div>
+                        <label>Name</label>
                     </div>
                     <div class="item__form-input-close">
-                        <div>{{ $cart->session_id }}</div>
-                        <label>Cart Session ID </label>
+                        <div>{{ $order->session_id }}</div>
+                        <label>Session ID </label>
                     </div>
                     <div class="item__form-input-close">
-                        <div>{{ $cart->quantity_amount }}</div>
-                        <label>Cart Quantity amount </label>
+                        <div>
+                            <a href="/show_account/{{ $order->account_id }}">{{ $order->account->first()->name }}</a>
+                        </div>
+                        <label>Account </label>
                     </div>
                     <div class="item__form-input-close">
-                        <div>{{ $cart->sum_amount }}</div>
-                        <label>Cart Sum amount </label>
+                        <div><a href="/show_cart/{{ $order->cart_id }}">{{ $cart->first()->name }}</a></div>
+                        <label>Cart </label>
                     </div>
                     <div class="item__form-input-close">
-                        <div>{{ $cart->currency->first()->name }}</div>
-                        <label>Cart Currency </label>
+                        <div>{{ $order->quantity_amount }}</div>
+                        <label>Quantity amount </label>
+                    </div>
+                    <div class="item__form-input-close">
+                        <div>{{ $order->sum_amount }}</div>
+                        <label>Sum amount </label>
+                    </div>
+                    <div class="item__form-input-close">
+                        <div>{{ $order->currency->first()->name }}</div>
+                        <label>Currency </label>
                     </div>
                     @if ($edititem === null)
                         <div class="item__form-input-close">
-                            <div>{{ $cart->status }}</div>
-                            <label>Cart Status</label>
+                            <div>{{ $order->status }}</div>
+                            <label>Status</label>
                         </div>
                     @else
                         <input type="text" wire:model.defer="record.status" class="item__form-input">
                     @endif
-                    @if ($cart->order_id != null)
-                        <div class="item__form-input-close">
-                            <div><a href="/show_order/{{ $cart->order_id }}">{{ $order->first()->name }}</a></div>
-                            <label>Related Order </label>
-                        </div>
-                    @endif
                     <div class="item__form-input-close">
-                        <div>{{ $cart->created_at }}</div>
+                        <div>{{ $order->delivery_method }}</div>
+                        <label>Delivery Method </label>
+                    </div>
+                    <div class="item__form-input-close">
+                        <div>{{ $order->created_at }}</div>
                         <label>Create date / time</label>
                     </div>
                     <div class="item__form-input-close">
-                        <div>{{ $cart->updated_at }}</div>
+                        <div>{{ $order->updated_at }}</div>
                         <label>Updated date / time</label>
                     </div>
                     @if ($edititem != null)
-                        <button class="item__form-btn item__form-long" wire:click.prevent="savecart()" value="Save">
+                        <button class="item__form-btn item__form-long" wire:click.prevent="saveitem()" value="Save">
                             Save
                         </button>
                     @endif
                 </div>
             </div>
             <div class="tabs__content">
-                <livewire:related-cart-items cartId="{{ $cart->id }}" />
+                {{-- <livewire:related-order-items orderId="{{ $order->id }}" /> --}}
             </div>
         </div>
     </div>
