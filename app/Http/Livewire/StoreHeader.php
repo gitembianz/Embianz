@@ -86,19 +86,15 @@ class StoreHeader extends Component
   }
   public function getCartItemsProperty()
   {
-    // Fetch the 'closed' status_id for carts
-
-    // Retrieve cart where status_id is different from the 'closed' status_id for carts
     $cart = Cart::where('session_id', $this->session_id)
       ->where('status_id', '!=', $this->closedStatusId)
-      ->first();
+      ->latest()->first();
 
     if ($cart !== null) {
       $cartItems = Cart_Item::where('cart_id', $cart->id)->with('product')->get();
 
       return $cartItems;
     }
-
     return collect(); // Return an empty collection if no cart items are found
   }
   public function wishlistshow()
@@ -128,11 +124,9 @@ class StoreHeader extends Component
   }
   public function removeFromCart($productId)
   {
-
-    // Retrieve cart where status_id is different from the 'closed' status_id for carts
     $cart = Cart::where('session_id', $this->session_id)
       ->where('status_id', '!=', $this->closedStatusId)
-      ->first();
+      ->latest()->first();
     $product = Product::find($productId);
 
     if ($cart !== null) {
@@ -160,7 +154,10 @@ class StoreHeader extends Component
       $this->saveSessionId();
     }
     $this->session_id = $_COOKIE['sessionId'];
-    $this->total = Cart::where('session_id', $this->session_id)->where('status_id', '!=', $this->closedStatusId)->sum('quantity_amount');
+    $this->total = Cart::where('session_id', $this->session_id)
+      ->where('status_id', '!=', $this->closedStatusId)
+      ->latest()
+      ->value('quantity_amount');
     $this->wishlistitems = $this->getWishlistItemsProperty();
   }
   public function getCategoriesProperty()

@@ -36,14 +36,20 @@
                 </span> --}}
                          <div class="cart-page--bundle">
                              <div class="product__count">
-                                 <button wire:click="decrement({{ $cartItem->product->id }})" id="countDecrease">
+                                 <button
+                                     @if ($cartItem->quantity > 1) wire:click="decrement({{ $cartItem->product->id }})"
+                                    @else
+                                    style="background:#9b9a9a; cursor:default" @endif
+                                     id="countDecrease">
                                      <svg>
                                          <line x1="5" y1="12" x2="19" y2="12"></line>
                                      </svg>
                                  </button>
                                  <input type="number" name="count" id="count" min="1" readonly
                                      value="{{ $cartItem->quantity }}">
-                                 <button wire:click="increment({{ $cartItem->product->id }})" id="countIncrease">
+                                 <button
+                                     @if ($cartItem->quantity == $cartItem->product->quantity) style="background:#9b9a9a; cursor:default" data-tooltip="Quantity reached maximum limit" @else wire:click="increment({{ $cartItem->product->id }})" @endif
+                                     id="countIncrease">
                                      <svg>
                                          <line x1="12" y1="5" x2="12" y2="19"></line>
                                          <line x1="5" y1="12" x2="19" y2="12"></line>

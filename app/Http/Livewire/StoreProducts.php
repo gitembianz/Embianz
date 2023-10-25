@@ -101,7 +101,7 @@ class StoreProducts extends Component
     $closedStatusId = Status::where('name', 'closed')->where('type', 'cart')->first()->id;
     $product = Product::with('product_prices.pricelist')->find($productId);
     $newStatusId = Status::where('name', 'new')->where('type', 'cart')->first()->id;
-    $cart = Cart::where('session_id', $this->session_id)->where('status_id', '!=', $closedStatusId)->first();
+    $cart = Cart::where('session_id', $this->session_id)->where('status_id', '!=', $closedStatusId)->latest()->first();
 
     if (!$cart) {
       $baseName = class_basename(Cart::class); // Gets the base name of the Cart model class (e.g., "Cart")

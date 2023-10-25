@@ -347,38 +347,38 @@ function showSlides(n) {
 
 
 //order
-var accordions = document.getElementsByClassName('details__accordion');
+// var accordions = document.getElementsByClassName('details__accordion');
 
-for (var i = 0; i < accordions.length; i++) {
-  var accordion = accordions[i];
-  var headers = accordion.getElementsByClassName('details__accordion-header');
+// for (var i = 0; i < accordions.length; i++) {
+//   var accordion = accordions[i];
+//   var headers = accordion.getElementsByClassName('details__accordion-header');
 
-  for (var j = 0; j < headers.length; j++) {
-    var header = headers[j];
-    header.addEventListener('click', toggleAccordion);
-  }
-}
+//   for (var j = 0; j < headers.length; j++) {
+//     var header = headers[j];
+//     header.addEventListener('click', toggleAccordion);
+//   }
+// }
 
-function toggleAccordion() {
-  var content = this.nextElementSibling;
-  var accordionItem = this.parentNode;
-  var accordion = accordionItem.parentNode;
+// function toggleAccordion() {
+//   var content = this.nextElementSibling;
+//   var accordionItem = this.parentNode;
+//   var accordion = accordionItem.parentNode;
 
-  // Close all other accordion items
-  var items = accordion.getElementsByClassName('details__accordion--item');
-  for (var i = 0; i < items.length; i++) {
-    var item = items[i];
-    if (item !== accordionItem) {
-      var itemContent = item.querySelector('.details__accordion-wrap');
-      var itemHeader = item.querySelector('.details__accordion-header');
-      itemHeader.classList.remove('active');
-      itemContent.style.maxHeight = null;
-    }
-  }
+//   // Close all other accordion items
+//   var items = accordion.getElementsByClassName('details__accordion--item');
+//   for (var i = 0; i < items.length; i++) {
+//     var item = items[i];
+//     if (item !== accordionItem) {
+//       var itemContent = item.querySelector('.details__accordion-wrap');
+//       var itemHeader = item.querySelector('.details__accordion-header');
+//       itemHeader.classList.remove('active');
+//       itemContent.style.maxHeight = null;
+//     }
+//   }
 
-  this.classList.toggle('active');
-  content.style.maxHeight = content.style.maxHeight ? null : content.scrollHeight + 'px';
-}
+//   this.classList.toggle('active');
+//   content.style.maxHeight = content.style.maxHeight ? null : content.scrollHeight + 'px';
+// }
 
 
 

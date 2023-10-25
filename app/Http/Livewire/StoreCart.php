@@ -71,6 +71,8 @@ class StoreCart extends Component
     }
   }
 
+
+
   public function increment($productId)
   {
     $product = Product::find($productId);
@@ -88,6 +90,7 @@ class StoreCart extends Component
         $this->emit('cartUpdated');
       }
     }
+    $this->emit('cartUpdated');
   }
   public function decrement($productId)
   {
@@ -104,11 +107,7 @@ class StoreCart extends Component
       $this->cart->save();
       $this->emit('cartUpdated');
     } elseif ($cartItem->quantity == 1) {
-      $cartItem->delete();
-      $this->cart->quantity_amount -= 1;
-      $this->cart->sum_amount -= $product->product_prices->first()->value;
-      $this->cart->save();
-      $this->emit('cartUpdated');
+      return;
     }
   }
   public function addToWishlist($productId)

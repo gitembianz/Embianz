@@ -1,4 +1,6 @@
 <div class="details container">
+    <x-loading />
+    <x-alert />
     @if ($back)
         <h1 class="section__title">Something went wrong!</h1>
         <div class="details__btns">
@@ -484,8 +486,9 @@
             </div>
             <h1 class="section__title">Payment method</h1>
             <div class="details__accordion">
-                <div class="details__accordion--item">
-                    <div class="details__accordion-header">
+                <label class="details__accordion--item" for="cardonline" wire:click="togglepayment('card')">
+                    <div class="details__accordion-header @if ($card) active @endif">
+                        <input type="checkbox" wire:model.defer="card" id="cardonline">
                         <div class="details__accordion-header--img">
                             <svg>
                                 <rect x="1" y="4" width="22" height="16" rx="2" ry="2">
@@ -557,18 +560,22 @@
                             </svg>
                         </div>
                     </div>
-                    <div class="details__accordion-wrap">
+                    <div class="details__accordion-wrap"
+                        @if ($card) style="max-height: 200px" @endif>
                         <div class="details__accordion-content">
-                            {{-- <input class="details__accordion-content--input" type="text" placeholder="Card Number">
-                    <input class="details__accordion-content--input" type="text" placeholder="Expiry Date">
-                    <input class="details__accordion-content--input" type="text" placeholder="CVV">
-                    <input class="details__accordion-content--input" type="text" placeholder="Name on Card"> --}}
-                            <p>Comming soon...</p>
+                            <input class="details__accordion-content--input" type="text"
+                                placeholder="Card Number">
+                            <input class="details__accordion-content--input" type="text"
+                                placeholder="Expiry Date">
+                            <input class="details__accordion-content--input" type="text" placeholder="CVV">
+                            <input class="details__accordion-content--input" type="text"
+                                placeholder="Name on Card">
                         </div>
                     </div>
-                </div>
-                <div class="details__accordion--item">
-                    <div class="details__accordion-header">
+                </label>
+                <label class="details__accordion--item" for="rtc" wire:click="togglepayment('rtc')">
+                    <div class="details__accordion-header @if ($rtc) active @endif">
+                        <input type="checkbox" wire:model.defer="rtc" id="rtc">
                         <span class="details__accordion-header--img">
                             <svg>
                                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
@@ -579,7 +586,8 @@
                             Refund to the courier
                         </h4>
                     </div>
-                    <div class="details__accordion-wrap">
+                    <div class="details__accordion-wrap"
+                        @if ($rtc) style="max-height: 200px" @endif>
                         <div class="details__accordion-content">
                             <p class="details__accordion-content--text">You will pay when the order is delivered.<br>
                                 <span class="details__accordion-content--span">
@@ -591,9 +599,10 @@
                             </p>
                         </div>
                     </div>
-                </div>
-                <div class="details__accordion--item">
-                    <div class="details__accordion-header">
+                </label>
+                <label class="details__accordion--item" for="invoice" wire:click="togglepayment('invoice')">
+                    <div class="details__accordion-header @if ($invoice) active @endif">
+                        <input type="checkbox" wire:model.defer="invoice" id="invoice">
                         <span class="details__accordion-header--img">
                             <svg>
                                 <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
@@ -605,7 +614,8 @@
                             Payment Order
                         </h4>
                     </div>
-                    <div class="details__accordion-wrap">
+                    <div class="details__accordion-wrap"
+                        @if ($invoice) style="max-height: 200px" @endif>
                         <div class="details__accordion-content">
                             <p class="details__accordion-content--text">
                                 Payment method used by legal entities. After placing the order, you will receive by
@@ -614,7 +624,7 @@
                             </p>
                         </div>
                     </div>
-                </div>
+                </label>
             </div>
         @endif
         @if ($step == 2)
