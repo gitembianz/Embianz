@@ -16,8 +16,8 @@ class StoreOrder extends Component
   public $step = 1;
   public $individual = true;
   public $juridic = false;
-  public $individual_identic = false;
-  public $juridic_identic = false;
+  public $individual_identic;
+  public $juridic_identic;
   public $back = false;
   public $session_id;
   public $cart;
@@ -70,6 +70,9 @@ class StoreOrder extends Component
   public $juridic_shipping_county;
   public $juridic_shipping_city;
   public $juridic_shipping_zipcode;
+  public $card = true;
+  public $rtc = false;
+  public $invoice = false;
   protected $listeners = [
     'nocard' => 'mount',
   ];
@@ -90,14 +93,14 @@ class StoreOrder extends Component
   {
     $this->session_id = $_COOKIE['sessionId'];
     $closedStatusId = Status::where('name', 'closed')->where('type', 'cart')->first()->id;
-    $this->cart = Cart::where('session_id', $this->session_id)->where('status_id', '!=', $closedStatusId)->first();
+    $this->cart = Cart::where('session_id', $this->session_id)->where('status_id', '!=', $closedStatusId)->latest()->first();
     if (!$this->cart) {
       $this->back = true;
     }
     $this->resetForm();
     $this->step = 1;
-    $this->individual_identic = false;
-    $this->juridic_identic = false;
+    $this->individual_identic = true;
+    $this->juridic_identic = true;
   }
   public function showindividual()
   {
@@ -317,6 +320,11 @@ class StoreOrder extends Component
     } else {
       $this->emit('nocard');
     }
+    session()->flash('notification', [
+      'message' => 'All data ok!',
+      'type' => 'warning',
+      'title' => 'Blea e pizdet'
+    ]);
   }
   public function previous()
   {
@@ -444,6 +452,25 @@ class StoreOrder extends Component
         }
         $this->validate($rules);
       }
+    }
+  }
+  public function togglepayment($item)
+  {
+    if ($item == 'card') {
+
+      $this->card = true;
+      $this->rtc = false;
+      $this->invoice = false;
+    }
+    if ($item == 'rtc') {
+      $this->card = false;
+      $this->rtc = true;
+      $this->invoice = false;
+    }
+    if ($item == 'invoice') {
+      $this->card = false;
+      $this->rtc = false;
+      $this->invoice = true;
     }
   }
 }
