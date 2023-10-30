@@ -11,11 +11,6 @@
   font-weight: normal;
 }
 
-a,
-button,
-input[type="submit"] {
-  cursor: pointer;
-}
 
 body {
   background: $mainBg;
@@ -66,4 +61,11 @@ main {
     padding: 0;
     border-radius: 0;
   }
+}
+
+button,
+a,
+input[type="button"],
+input[type="submit"] {
+  cursor: pointer;
 }

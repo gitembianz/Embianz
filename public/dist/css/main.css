@@ -59,12 +59,6 @@
   font-weight: normal;
 }
 
-a,
-button,
-input[type=submit] {
-  cursor: pointer;
-}
-
 body {
   background: #35424B;
 }
@@ -125,6 +119,13 @@ main {
     border-radius: 0;
   }
 }
+button,
+a,
+input[type=button],
+input[type=submit] {
+  cursor: pointer;
+}
+
 .row {
   display: flex;
   flex-flow: row wrap;

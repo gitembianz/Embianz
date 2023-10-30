@@ -75,7 +75,7 @@
     //general routes
     route::get('/orders', [AdminController::class, 'orders']);
     route::get('/show_order/{id}/', [AdminController::class, 'show_order'])->name('show_order');
-
+    route::get('/payments', [AdminController::class, 'payments'])->name('payments');
     route::get('/vouchers', [AdminController::class, 'vouchers'])->name('vouchers');
     route::get('/newvoucher', [AdminController::class, 'create_voucher'])->name('newvoucher');
     route::post('/add_voucher', [AdminController::class, 'store_voucher']);
@@ -117,7 +117,7 @@
     echo "DB updated<br>";
   });
   Route::get('/seeddatabase', function () {
-    $seed = Artisan::call('db:seed --class=StatusSeeder');
+    $seed = Artisan::call('db:seed --class=PaymentSeeder');
     echo "Databese seeded<br>";
   });
 

@@ -185,6 +185,13 @@ button {
   border: none;
 }
 
+button,
+a,
+input[type=button],
+input[type=submit] {
+  cursor: pointer;
+}
+
 body {
   background-color: #ffffff;
 }
@@ -3223,7 +3230,7 @@ footer {
   position: absolute;
   left: 0;
   top: 0;
-  opacity: 1;
+  opacity: 0;
 }
 .details__accordion-header--img {
   position: static;

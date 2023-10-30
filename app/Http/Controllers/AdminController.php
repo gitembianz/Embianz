@@ -30,6 +30,10 @@ class AdminController extends Controller
   {
     return view('admin.voucher');
   }
+  public function payments()
+  {
+    return view('admin.payment');
+  }
 
   public function create_voucher()
   {
