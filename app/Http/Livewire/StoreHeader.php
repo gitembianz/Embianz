@@ -75,8 +75,7 @@ class StoreHeader extends Component
   }
   public function getWishlistItemsProperty()
   {
-    $session_id = Session::getId();
-    $wishlist = Wishlist::where('session_id', $session_id)->pluck('product_id')->toArray();
+    $wishlist = Wishlist::where('session_id', $this->session_id)->pluck('product_id')->toArray();
     return Product::whereIn('id', $wishlist)->get();
   }
   public function refreshWishlist()
