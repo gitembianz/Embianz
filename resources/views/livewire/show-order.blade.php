@@ -75,7 +75,7 @@
                     </div>
                     <div class="item__form-input-close">
                         <div>
-                            <a href="/show_account/{{ $order->account_id }}">{{ $order->account->first()->name }}</a>
+                            <a href="/show_account/{{ $order->account_id }}">{{ $order->account->name }}</a>
                         </div>
                         <label>Account </label>
                     </div>
