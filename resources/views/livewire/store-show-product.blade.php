@@ -36,15 +36,20 @@
                 <div class="product__modal" id="modal">
                     <div class="slideshow">
                         <!-- Full-width images with number and caption text -->
-
                         @foreach ($product->media as $media)
-                            <?php
-                            $mediaPath = $media->extrenal ? $media->path : "/{$media->path}{$media->name}";
-                            ?>
                             <div class="slideshow--slides">
-                                <img src="{{ $mediaPath }}" alt="Thumbnail 1">
+
+                                @if ($media->location->location == 'main' || $media->location->location == 'details')
+                                    @if ($media->external)
+                                        <img src="{{ $media->path }}" draggable="false" alt="{{ $media->path }}">
+                                    @else
+                                        <img src="/{{ $media->path }}{{ $media->name }}" draggable="false"
+                                            alt="{{ $media->path }}">
+                                    @endif
+                                @endif
                             </div>
                         @endforeach
+
                         <!-- Next and previous buttons -->
                         @if ($product->media->count() > 0)
                             <a class="prev" onclick="plusSlides(-1)">
