@@ -188,11 +188,10 @@
                         @if ($this->showColumn('Active'))
                             <td data-title="Active">
                                 @if ($editeindex !== $index)
-                                    {{ $payment->active }}
+                                    {{ $payment->active ? 'Active' : 'Inactive' }}
                                 @else
                                     <input type="checkbox" class="table__edit"
-                                        wire:model.defer="isactive.{{ $index }}.active"
-                                        value="{{ $payment->active }}">
+                                        wire:model.defer="isactive.{{ $index }}.active">
                                 @endif
                             </td>
                         @endif
