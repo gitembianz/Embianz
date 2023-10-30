@@ -328,7 +328,7 @@
                                             @endif
                                             @if ($this->showColumn('Status'))
                                                 <td data-title="Status">
-                                                    {{ $order->status }}
+                                                    {{ $order->status->name }}
                                                 </td>
                                             @endif
                                             @if ($this->showColumn('Delivery Method'))

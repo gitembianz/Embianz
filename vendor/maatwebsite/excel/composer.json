@@ -33,7 +33,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Maatwebsite\\Excel\\": "vendor/maatwebsite/excel/src/Maatwebsite/Excel"
+      "Maatwebsite\\Excel\\": "src/"
     }
   },
   "autoload-dev": {

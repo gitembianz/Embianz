@@ -75,7 +75,7 @@
                     </div>
                     <div class="item__form-input-close">
                         <div>
-                            <a href="/show_account/{{ $order->account_id }}">{{ $order->account->first()->name }}</a>
+                            <a href="/show_account/{{ $order->account_id }}">{{ $order->account->name }}</a>
                         </div>
                         <label>Account </label>
                     </div>
@@ -97,11 +97,15 @@
                     </div>
                     @if ($edititem === null)
                         <div class="item__form-input-close">
-                            <div>{{ $order->status }}</div>
+                            <div>{{ $order->status->name }}</div>
                             <label>Status</label>
                         </div>
                     @else
-                        <input type="text" wire:model.defer="record.status" class="item__form-input">
+                        <select wire:model.defer="record.status_id" class="item__form-input">
+                            @foreach ($statuses as $status)
+                                <option value="{{ $status->id }}">{{ $status->name }}</option>
+                            @endforeach
+                        </select>
                     @endif
                     <div class="item__form-input-close">
                         <div>{{ $order->delivery_method }}</div>

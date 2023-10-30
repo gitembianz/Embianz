@@ -21,8 +21,6 @@ class Specstable extends Component
   public $specidbeingremoved = null;
   public $columns = ['Id', 'Unit', 'Group', 'Created At'];
   public $selectedColumns = [];
-  public $indexspec = null;
-  public $specss = [];
 
   public function render()
   {
