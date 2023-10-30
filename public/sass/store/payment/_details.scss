@@ -173,6 +173,7 @@
 
     &--header {
       @include flexer(row, unset, center, 20px);
+      flex-wrap: wrap;
     }
 
     &--btn {

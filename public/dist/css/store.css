@@ -679,6 +679,7 @@ header:not(.show) {
   padding-left: clamp(10px, 1vw, 50px);
   padding-right: clamp(10px, 1vw, 50px);
   height: 70px;
+  padding: 0 20px;
 }
 @media (min-width: 992px) {
   .header {
@@ -1179,7 +1180,7 @@ header:not(.show) {
 .heart__list,
 .cart__list {
   position: absolute;
-  top: 13%;
+  top: 100%;
   right: 50%;
   bottom: auto;
   left: auto;
@@ -1502,6 +1503,7 @@ header:not(.show) {
   flex: 0 1 auto;
   gap: 10px;
   width: 100%;
+  flex-wrap: wrap;
 }
 .cart-page--bundle > .product__count {
   padding: 5px;
@@ -3138,6 +3140,7 @@ footer {
   align-items: center;
   flex: 0 1 auto;
   gap: 20px;
+  flex-wrap: wrap;
 }
 .details__tab--btn, .details__tab--activate, .details__content--checkbox {
   font-weight: 400;
