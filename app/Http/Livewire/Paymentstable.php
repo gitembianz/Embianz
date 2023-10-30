@@ -140,18 +140,19 @@ class Paymentstable extends Component
     public function save($index, $id)
     {
         $new = $this->isactive[$index] ?? NULL;
-        if (!is_null($new)) {
+
+        if (!is_null($new) && array_key_exists('active', $new)) {
             $item = Payment::find($id);
-            if (array_key_exists('active', $new)) {
-                $item->active = $new['active'];
-            }
+            $item->active = $new['active'] ? 1 : 0; // Convert true to 1 and false to 0
             $item->save();
+
             session()->flash('notification', [
                 'message' => 'Record edited successfully!',
                 'type' => 'success',
                 'title' => 'Success'
             ]);
         }
+
         $this->isactive = [];
         $this->editeindex = null;
     }

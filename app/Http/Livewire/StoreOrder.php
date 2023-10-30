@@ -10,6 +10,7 @@ use App\Models\Address;
 use Livewire\Component;
 use App\Models\Cart_Item;
 use App\Models\Order_Item;
+use App\Models\Payment;
 
 class StoreOrder extends Component
 {
@@ -73,6 +74,7 @@ class StoreOrder extends Component
   public $card = true;
   public $rtc = false;
   public $invoice = false;
+  public $payments;
   protected $listeners = [
     'nocard' => 'mount',
   ];
@@ -91,6 +93,7 @@ class StoreOrder extends Component
   }
   public function mount()
   {
+    $this->payments = Payment::get();
     $this->session_id = $_COOKIE['sessionId'];
     $closedStatusId = Status::where('name', 'closed')->where('type', 'cart')->first()->id;
     $this->cart = Cart::where('session_id', $this->session_id)->where('status_id', '!=', $closedStatusId)->latest()->first();
