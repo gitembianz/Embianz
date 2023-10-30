@@ -713,7 +713,7 @@
                     </div>
                     <!-- Here is Card Information -->
                     <div class="checking__content-complete">
-                        <span class="checking__content-create--text">Cash to the courier &check;</span>
+                        <span class="checking__content-create--text">{{ $delivery }} &check;</span>
                     </div>
                     <div class="checking__content-price">
                         @if (!$cartItems->isEmpty())

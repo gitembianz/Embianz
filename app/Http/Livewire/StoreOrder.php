@@ -71,10 +71,11 @@ class StoreOrder extends Component
   public $juridic_shipping_county;
   public $juridic_shipping_city;
   public $juridic_shipping_zipcode;
-  public $card = true;
+  public $card = false;
   public $rtc = false;
   public $invoice = false;
   public $payments;
+  public $delivery = NULL;
   protected $listeners = [
     'nocard' => 'mount',
   ];
@@ -295,39 +296,47 @@ class StoreOrder extends Component
     if ($this->cart) {
       $this->resetErrorBag();
       $this->validateData();
-      $this->step++;
-      if ($this->individual_identic == true) {
-        $this->individual_shipping_first = $this->individual_billing_first;
-        $this->individual_shipping_last = $this->individual_billing_last;
-        $this->individual_shipping_phone = $this->individual_billing_phone;
-        $this->individual_shipping_email = $this->individual_billing_email;
-        $this->individual_shipping_address1 = $this->individual_billing_address1;
-        $this->individual_shipping_address2 = $this->individual_billing_address2;
-        $this->individual_shipping_country = $this->individual_billing_country;
-        $this->individual_shipping_county = $this->individual_billing_county;
-        $this->individual_shipping_city = $this->individual_billing_city;
-        $this->individual_shipping_zipcode = $this->individual_billing_zipcode;
-      }
-      if ($this->juridic_identic == true) {
-        $this->juridic_shipping_first = $this->juridic_billing_first;
-        $this->juridic_shipping_last = $this->juridic_billing_last;
-        $this->juridic_shipping_phone = $this->juridic_billing_phone;
-        $this->juridic_shipping_email = $this->juridic_billing_email;
-        $this->juridic_shipping_address1 = $this->juridic_billing_address1;
-        $this->juridic_shipping_address2 = $this->juridic_billing_address2;
-        $this->juridic_shipping_country = $this->juridic_billing_country;
-        $this->juridic_shipping_county = $this->juridic_billing_county;
-        $this->juridic_shipping_city = $this->juridic_billing_city;
-        $this->juridic_shipping_zipcode = $this->juridic_billing_zipcode;
+      if ($this->delivery == NULL) {
+        session()->flash('notification', [
+          'message' => 'Please select a payment method',
+          'type' => 'warning',
+          'title' => 'Payment method'
+        ]);
+      } else {
+        $this->step++;
+        if ($this->individual_identic == true) {
+          $this->individual_shipping_first = $this->individual_billing_first;
+          $this->individual_shipping_last = $this->individual_billing_last;
+          $this->individual_shipping_phone = $this->individual_billing_phone;
+          $this->individual_shipping_email = $this->individual_billing_email;
+          $this->individual_shipping_address1 = $this->individual_billing_address1;
+          $this->individual_shipping_address2 = $this->individual_billing_address2;
+          $this->individual_shipping_country = $this->individual_billing_country;
+          $this->individual_shipping_county = $this->individual_billing_county;
+          $this->individual_shipping_city = $this->individual_billing_city;
+          $this->individual_shipping_zipcode = $this->individual_billing_zipcode;
+        }
+        if ($this->juridic_identic == true) {
+          $this->juridic_shipping_first = $this->juridic_billing_first;
+          $this->juridic_shipping_last = $this->juridic_billing_last;
+          $this->juridic_shipping_phone = $this->juridic_billing_phone;
+          $this->juridic_shipping_email = $this->juridic_billing_email;
+          $this->juridic_shipping_address1 = $this->juridic_billing_address1;
+          $this->juridic_shipping_address2 = $this->juridic_billing_address2;
+          $this->juridic_shipping_country = $this->juridic_billing_country;
+          $this->juridic_shipping_county = $this->juridic_billing_county;
+          $this->juridic_shipping_city = $this->juridic_billing_city;
+          $this->juridic_shipping_zipcode = $this->juridic_billing_zipcode;
+        }
       }
     } else {
       $this->emit('nocard');
     }
-    session()->flash('notification', [
-      'message' => 'All data ok!',
-      'type' => 'warning',
-      'title' => 'Blea e pizdet'
-    ]);
+    // session()->flash('notification', [
+    //   'message' => 'All data ok!',
+    //   'type' => 'warning',
+    //   'title' => 'Blea e pizdet'
+    // ]);
   }
   public function previous()
   {
@@ -460,17 +469,19 @@ class StoreOrder extends Component
   public function togglepayment($item)
   {
     if ($item == 'card') {
-
+      $this->delivery = 'card';
       $this->card = true;
       $this->rtc = false;
       $this->invoice = false;
     }
     if ($item == 'rtc') {
+      $this->delivery = 'cash on delivery';
       $this->card = false;
       $this->rtc = true;
       $this->invoice = false;
     }
     if ($item == 'invoice') {
+      $this->delivery = 'proforma invoice';
       $this->card = false;
       $this->rtc = false;
       $this->invoice = true;
