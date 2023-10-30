@@ -121,7 +121,7 @@ class StoreShowProduct extends Component
       $cart = Cart::create([
         'session_id' => $this->session_id,
         'name' => $uniqueName,
-        'quantity_amount' => $this->quantity,
+        'quantity_amount' => 0,
         'sum_amount' => 0,
         'status_id' => $newStatusId,
         'currency_id' => $product->product_prices->first()->pricelist->currency_id,
