@@ -145,6 +145,8 @@ class StoreOrder extends Component
           $this->validatequantity = false;
           $difference = $item->quantity - $item->product->quantity;
           $this->cart->quantity_amount -= $difference;
+          $this->cart->sum_amount -= $difference * $item->price;
+          $this->cart->final_amount = $this->cart->sum_amount;
           $this->cart->save();
           $this->emit('cartUpdated');
           $item->quantity = $item->product->quantity;
@@ -154,6 +156,9 @@ class StoreOrder extends Component
             'type' => 'warning',
             'title' => 'Product quantity'
           ]);
+          return;
+        } else {
+          $this->validatequantity = true;
         }
       }
     }
