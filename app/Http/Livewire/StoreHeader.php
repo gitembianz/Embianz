@@ -107,11 +107,13 @@ class StoreHeader extends Component
   }
   public function cartshow()
   {
-    if ($this->showcart === false) {
+    if ($this->showwis === true) {
       $this->showwis = false;
-      $this->showcart = true;
-    } else {
+    }
+    if ($this->showcart == true) {
       $this->showcart = false;
+    } else {
+      $this->showcart = true;
     }
   }
   public function removeFromWishlist($productId)

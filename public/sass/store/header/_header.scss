@@ -23,7 +23,7 @@ header:not(.show) {
   @include responsive-spacing(padding-left, 0.01);
   @include responsive-spacing(padding-right, 0.01);
   height: 70px;
-
+  padding: 0 20px;
 
   @include breakpoint(large) {
     gap: 50px;
