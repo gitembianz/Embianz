@@ -19,6 +19,8 @@ class Paymentstable extends Component
     public $removedid = null;
     public $columns = ['Id', 'Active', 'Created At'];
     public $selectedColumns = [];
+    public $editeindex = null;
+    public $isactive = [];
 
     public function render()
     {
@@ -121,5 +123,36 @@ class Paymentstable extends Component
     public function isChecked($id)
     {
         return in_array($id, $this->checked);
+    }
+    public function edit($index, $id)
+    {
+        $this->editeindex = $index;
+        $item = Payment::find($id);
+        $this->isactive = [
+            $index . '.active' => $item->active,
+        ];
+    }
+    public function cancel()
+    {
+        $this->editeindex = null;
+        $this->isactive = [];
+    }
+    public function save($index, $id)
+    {
+        $new = $this->isactive[$index] ?? NULL;
+        if (!is_null($new)) {
+            $item = Payment::find($id);
+            if (array_key_exists('active', $new)) {
+                $item->active = $new['active'];
+            }
+            $item->save();
+            session()->flash('notification', [
+                'message' => 'Record edited successfully!',
+                'type' => 'success',
+                'title' => 'Success'
+            ]);
+        }
+        $this->isactive = [];
+        $this->editeindex = null;
     }
 }
