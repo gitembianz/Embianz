@@ -2,7 +2,7 @@
     <div class="product">
         <div class="product__preview">
             <div class="product__image">
-                @if ($product->media->count() > 0)
+                @if ($product->media->count() > 1)
                     <button class="product__image-prev">
                         <svg>
                             <polyline points="15 18 9 12 15 6"></polyline>
@@ -16,7 +16,7 @@
                     <img class="thumbnail-active" src="/images/store/default/product.png" alt="Product Image"
                         id="openModal">
                 @endif
-                @if ($product->media->count() > 0)
+                @if ($product->media->count() > 1)
                     <button class="product__image-next">
                         <svg>
                             <polyline points="9 18 15 12 9 6"></polyline>
@@ -36,15 +36,20 @@
                 <div class="product__modal" id="modal">
                     <div class="slideshow">
                         <!-- Full-width images with number and caption text -->
-
                         @foreach ($product->media as $media)
-                            <?php
-                            $mediaPath = $media->extrenal ? $media->path : "/{$media->path}{$media->name}";
-                            ?>
                             <div class="slideshow--slides">
-                                <img src="{{ $mediaPath }}" alt="Thumbnail 1">
+
+                                @if ($media->location->location == 'main' || $media->location->location == 'details')
+                                    @if ($media->external)
+                                        <img src="{{ $media->path }}" draggable="false" alt="{{ $media->path }}">
+                                    @else
+                                        <img src="/{{ $media->path }}{{ $media->name }}" draggable="false"
+                                            alt="{{ $media->path }}">
+                                    @endif
+                                @endif
                             </div>
                         @endforeach
+
                         <!-- Next and previous buttons -->
                         @if ($product->media->count() > 0)
                             <a class="prev" onclick="plusSlides(-1)">
@@ -105,7 +110,7 @@
                 </h3>
             </div>
             <div class="product__buttons">
-                <button class="product__btn">Add to cart</button>
+                <button wire:click="addToCart({{ $product->id }})" class="product__btn">Add to cart</button>
                 <button class="product__item--heart @if ($product->wishlists->where('session_id', $session_id)->isNotEmpty()) active @endif"
                     aria-label="add to favorites" wire:click="toggleWishlist({{ $product->id }})">
                     <svg>
@@ -114,13 +119,6 @@
                         </path>
                     </svg>
                 </button>
-                {{-- <button class="product__btn">
-                    <svg>
-                        <path
-                            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
-                        </path>
-                    </svg>
-                </button> --}}
             </div>
         </div>
     </div>
