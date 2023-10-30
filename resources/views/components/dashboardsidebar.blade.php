@@ -113,7 +113,7 @@
                 </a>
             </li>
             <li class="dropdown">
-                <a class="sidebar__item @if ($active == 'store_settings' || $active == 'voucher') active @endif dropdown-button" href="#"
+                <a class="sidebar__item @if ($active == 'store_settings' || $active == 'voucher' || $active == 'payment') active @endif dropdown-button" href="#"
                     style="z-index: 99999;">
                     <button class="sidebar__icon">
                         <svg>
