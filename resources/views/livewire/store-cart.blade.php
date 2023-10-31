@@ -126,7 +126,7 @@
                      ?>
                      @if ($new_price)
                          <span
-                             style="text-decoration: line-through; color:red; margin-right:1rem">{{ $total }}{{ $currency }}</span>{{ $price }}{{ $currency }}
+                             style="text-decoration: line-through; color:red; margin-right:1rem">{{ $price }}{{ $currency }}</span>{{ $total }}{{ $currency }}
                      @else
                          {{ $total }} {{ $currency }}
                      @endif

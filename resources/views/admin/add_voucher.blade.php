@@ -12,8 +12,7 @@
         <div class="item__header">
             <h1 class="item__header-title" id="title">{{ __('Add new voucher') }}</h1>
             <div class="item__header-buttons">
-                <a class="item__header-btn" href="{{ route('vouchers') }}"
-                    data-tooltip-center="Back to all specifications">
+                <a class="item__header-btn" href="{{ route('vouchers') }}" data-tooltip-center="Back to all vouchers">
                     <svg>
                         <polyline points="11 17 6 12 11 7"></polyline>
                         <polyline points="18 17 13 12 18 7"></polyline>
@@ -42,7 +41,7 @@
             </div>
             <div class="item__form-input">
                 <input type="number" name="percent" required>
-                <label>Percent</label>
+                <label>Percent %</label>
             </div>
             <input class="item__form-btn  item__form-long" type="submit" value="Add New" name="submit">
         </div>
