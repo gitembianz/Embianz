@@ -108,8 +108,8 @@
                         </select>
                     @endif
                     <div class="item__form-input-close">
-                        <div>{{ $order->delivery_method }}</div>
-                        <label>Delivery Method </label>
+                        <div>{{ $order->payment->name }}</div>
+                        <label>Payment Method </label>
                     </div>
                     <div class="item__form-input-close">
                         <div>{{ $order->created_at }}</div>

@@ -752,7 +752,7 @@
                     <div class="checking__content-price">
                         @if (!$cartItems->isEmpty())
                             <span class="checking__content-complete--text">Total Price:</span>
-                            <span class="checking__content-create--text">{{ $cart->sum_amount }}
+                            <span class="checking__content-create--text">{{ $cart->final_amount }}
                                 {{ $cart->currency->first()->name }}</span>
                         @endif
                     </div>

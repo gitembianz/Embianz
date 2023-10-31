@@ -70,9 +70,6 @@ class StoreCart extends Component
       }
     }
   }
-
-
-
   public function increment($productId)
   {
     $product = Product::find($productId);
@@ -157,7 +154,7 @@ class StoreCart extends Component
         $discountAmount = $voucher->percent / 100 * $this->cart->sum_amount;
         $this->message = null;
         $this->price = $this->cart->sum_amount;
-        $this->cart->sum_amount -= $discountAmount;
+        $this->cart->final_amount = $this->cart->sum_amount - $discountAmount;
         $this->cart->save();
         $this->new_price = true;
       } else {
@@ -169,7 +166,7 @@ class StoreCart extends Component
   {
     $newStatusId = Status::where('name', 'checkout')->where('type', 'cart')->first()->id;
     if ($this->new_price) {
-      $this->cart->final_amount = $this->price;
+      $this->cart->final_amount += $this->deliverry;
     } else {
       $this->cart->final_amount = $this->cart->sum_amount + $this->deliverry;
     }
