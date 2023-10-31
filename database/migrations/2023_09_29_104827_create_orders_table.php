@@ -20,11 +20,13 @@ return new class extends Migration
       $table->unsignedBigInteger('cart_id')->index()->nullable();
       $table->foreign('cart_id')->references('id')->on('carts');
       $table->integer('quantity_amount')->default(0);
-      $table->integer('sum_amount')->default(0);
+      $table->double('sum_amount')->default(0);
       $table->unsignedBigInteger('currency_id')->index()->nullable();
       $table->foreign('currency_id')->references('id')->on('currencies');
-      $table->text('status');
-      $table->text('delivery_method');
+      $table->unsignedBigInteger('status_id')->index()->nullable();
+      $table->foreign('status_id')->references('id')->on('statuses');
+      $table->unsignedBigInteger('payment_id')->index()->nullable();
+      $table->foreign('payment_id')->references('id')->on('payments');
       $table->timestamps();
     });
   }
