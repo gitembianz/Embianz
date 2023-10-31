@@ -2,13 +2,13 @@
     <div class="product">
         <div class="product__preview">
             <div class="product__image">
-                @if ($product->media->count() > 1)
+                {{-- @if ($product->media->count() > 1)
                     <button class="product__image-prev">
                         <svg>
                             <polyline points="15 18 9 12 15 6"></polyline>
                         </svg>
                     </button>
-                @endif
+                @endif --}}
 
                 @if ($mainpath)
                     <img class="thumbnail-active" src="{{ $mainpath }}" alt="Product Image" id="openModal">
@@ -16,13 +16,13 @@
                     <img class="thumbnail-active" src="/images/store/default/product.png" alt="Product Image"
                         id="openModal">
                 @endif
-                @if ($product->media->count() > 1)
+                {{-- @if ($product->media->count() > 1)
                     <button class="product__image-next">
                         <svg>
                             <polyline points="9 18 15 12 9 6"></polyline>
                         </svg>
                     </button>
-                @endif
+                @endif --}}
             </div>
             @if ($product->media->count() > 0)
                 <div class="product__nails">
@@ -110,7 +110,12 @@
                 </h3>
             </div>
             <div class="product__buttons">
-                <button wire:click="addToCart({{ $product->id }})" class="product__btn">Add to cart</button>
+                @php
+                    $price = $product->product_prices->first();
+                @endphp
+                @if ($price && $product->quantity != 0)
+                    <button wire:click="addToCart({{ $product->id }})" class="product__btn">Add to cart</button>
+                @endif
                 <button class="product__item--heart @if ($product->wishlists->where('session_id', $session_id)->isNotEmpty()) active @endif"
                     aria-label="add to favorites" wire:click="toggleWishlist({{ $product->id }})">
                     <svg>
