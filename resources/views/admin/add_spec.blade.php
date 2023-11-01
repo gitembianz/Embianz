@@ -12,7 +12,14 @@
         <div class="item__header">
             <h1 class="item__header-title" id="title">{{ __('Add new spec') }}</h1>
             <div class="item__header-buttons">
-                <a class="item__header-btn" href="{{ route('specs') }}" data-tooltip-center="Back to all specifications">
+                <button class="item__header-btn" type="submit" data-tooltip-right="Add Specification">
+                    <svg>
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                </button>
+                <a class="item__header-btn" href="{{ route('specs') }}"
+                    data-tooltip-center="Back to all specifications">
                     <svg>
                         <polyline points="11 17 6 12 11 7"></polyline>
                         <polyline points="18 17 13 12 18 7"></polyline>
