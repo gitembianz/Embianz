@@ -167,7 +167,7 @@ class StoreHeader extends Component
   }
   public function getCategoriesQueryProperty()
   {
-    return Category::orderBy('sequence', 'asc')->orderBy('store_tab', 'desc')->with('subcategory');
+    return Category::where('active', '1')->where('store_tab', '1')->with('subcategory');
   }
   public function getObjectsProperty()
   {
