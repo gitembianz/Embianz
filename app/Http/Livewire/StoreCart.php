@@ -167,6 +167,7 @@ class StoreCart extends Component
       $this->cart->final_amount = $this->cart->sum_amount + $this->delivery;
     }
     $this->cart->status_id = $newStatusId;
+    $this->cart->delivery_price = $this->delivery;
     $this->cart->save();
     return redirect()->route('order');
   }

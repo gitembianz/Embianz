@@ -14,7 +14,7 @@ use App\Models\Payment;
 
 class StoreOrder extends Component
 {
-  public $step = 1;
+  public $step;
   public $individual = true;
   public $juridic = false;
   public $individual_identic;
@@ -76,7 +76,7 @@ class StoreOrder extends Component
   public $invoice = false;
   public $payments;
   public $validatequantity = true;
-  public $delivery = NULL;
+  public $delivery = 'card';
   protected $listeners = [
     'nocard' => 'mount',
   ];
@@ -103,7 +103,7 @@ class StoreOrder extends Component
       $this->back = true;
     }
     $this->resetForm();
-    $this->step = 1;
+    $this->step = 2;
     $this->individual_identic = true;
     $this->juridic_identic = true;
   }
