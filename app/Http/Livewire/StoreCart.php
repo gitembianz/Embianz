@@ -9,6 +9,7 @@ use App\Models\Voucher;
 use Livewire\Component;
 use App\Models\Wishlist;
 use App\Models\Cart_Item;
+use App\Models\Store_Settings;
 
 class StoreCart extends Component
 
@@ -31,7 +32,7 @@ class StoreCart extends Component
   {
     // Initial load of cartitems
     $this->session_id = $_COOKIE['sessionId'];
-    $this->delivery = 0;
+    $this->delivery = Store_Settings::where('parameter', 'delivery_price')->first()->value;
     $this->closedStatusId = Status::where('name', 'closed')->where('type', 'cart')->first()->id;
     $this->cart = Cart::where('session_id', $this->session_id)->where('status_id', '!=', $this->closedStatusId)->first();
   }
