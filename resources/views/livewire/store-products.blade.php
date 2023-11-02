@@ -10,6 +10,7 @@
             </button>
             {{-- Filter Content --}}
             <div class="filter__content @if ($property) show @endif">
+                {{-- {{ $this->getUniqueSpecValues() }} --}}
                 @foreach ($specification as $index => $spec)
                     <div class="filter__dropdown">
                         <button class="filter__dropdown--btn">
@@ -20,18 +21,15 @@
                         </button>
                         <div class="filter__dropdown--content">
                             <ul class="filter__list">
-                                @foreach ($spec->product_spec as $innerIndex => $value)
-                                    @if (in_array($value->value, $this->getUniqueSpecValues()))
-                                        <li class="filter__item">
-                                            <input type="checkbox"
-                                                wire:model="selectedSpecValues.{{ $index }}.{{ $innerIndex }}.{{ $value }}"
-                                                id="filter{{ $index }}_{{ $innerIndex }}">
-                                            <label
-                                                for="filter{{ $index }}_{{ $innerIndex }}">{{ $value->value }}</label>
-                                        </li>
-                                    @endif
+                                @foreach ($this->getUniqueSpecValues($spec->id) as $innerIndex => $uniqueValue)
+                                    <li class="filter__item">
+                                        <input type="checkbox"
+                                            wire:model="selectedSpecValues.{{ $index }}.{{ $innerIndex }}.{{ $uniqueValue }}"
+                                            id="filter{{ $index }}_{{ $innerIndex }}_{{ $uniqueValue }}">
+                                        <label
+                                            for="filter{{ $index }}_{{ $innerIndex }}_{{ $uniqueValue }}">{{ $uniqueValue }}</label>
+                                    </li>
                                 @endforeach
-
                             </ul>
                         </div>
                     </div>
