@@ -236,7 +236,7 @@
 
   &--bundle {
     @include flexer(row, flex-start, center, 10px);
-    width: 100%;
+    // width: 100%;
     flex-wrap: wrap;
 
     &>.product__count {
