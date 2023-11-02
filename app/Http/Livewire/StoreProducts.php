@@ -43,7 +43,23 @@ class StoreProducts extends Component
   public function mount()
   {
     $this->session_id = $_COOKIE['sessionId'];
+
     $this->specification = Specs::all();
+  }
+  public function getUniqueSpecValues($specId)
+  {
+    $uniqueValues = [];
+
+    foreach ($this->specification as $spec) {
+      if ($spec->id === $specId) {
+        foreach ($spec->product_spec as $value) {
+          $uniqueValues[] = $value->value;
+        }
+        break; // Exit the loop once the specific spec is found and processed
+      }
+    }
+
+    return array_unique($uniqueValues);
   }
   public function render()
   {
