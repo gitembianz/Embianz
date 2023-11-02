@@ -1,44 +1,44 @@
 <div class="products">
     <div class="products__control">
-        {{-- <div class="filter"> --}}
-        {{-- Filter Button Left overs --}}
-        {{-- <button class="filter__open" id="filterOpen" wire:click="$toggle('property')">
+        <div class="filter">
+            {{-- Filter Button Left overs --}}
+            <button class="filter__open" id="filterOpen" wire:click="$toggle('property')">
                 Filters
                 <svg>
                     <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
                 </svg>
-            </button> --}}
-        {{-- Filter Content --}}
-        {{-- <div class="filter__content @if ($property) show @endif">
-                @foreach ($specification as $index => $spec)
-                    <div class="filter__dropdown">
-                        <button class="filter__dropdown--btn">
-                            {{ $spec->name }}
-                            <svg>
-                                <polyline points="6 9 12 15 18 9"></polyline>
-                            </svg>
-                        </button>
-                        <div class="filter__dropdown--content">
-                            <ul class="filter__list">
-                                @foreach ($spec->product_spec as $innerIndex => $value)
-                                    <li class="filter__item">
-                                        <input type="checkbox"
-                                            wire:model="selectedSpecValues.{{ $index }}.{{ $innerIndex }}.{{ $value }}"
-                                            id="filter{{ $index }}_{{ $innerIndex }}">
-                                        <label
-                                            for="filter{{ $index }}_{{ $innerIndex }}">{{ $value->value }}</label>
-                                    </li>
-                                @endforeach
-                            </ul>
-                        </div>
+            </button>
+            {{-- Filter Content --}}
+            {{-- {{-- <div class="filter__content @if ($property) show @endif"> --}}
+            @foreach ($specification as $index => $spec)
+                <div class="filter__dropdown">
+                    <button class="filter__dropdown--btn">
+                        {{ $spec->name }}
+                        <svg>
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="filter__dropdown--content">
+                        <ul class="filter__list">
+                            @foreach ($spec->product_spec as $innerIndex => $value)
+                                <li class="filter__item">
+                                    <input type="checkbox"
+                                        wire:model="selectedSpecValues.{{ $index }}.{{ $innerIndex }}.{{ $value }}"
+                                        id="filter{{ $index }}_{{ $innerIndex }}">
+                                    <label
+                                        for="filter{{ $index }}_{{ $innerIndex }}">{{ $value->value }}</label>
+                                </li>
+                            @endforeach
+                        </ul>
                     </div>
-                @endforeach
-                {{-- <div class="filter__buttons">
+                </div>
+            @endforeach
+            {{-- <div class="filter__buttons">
                     <button wire:click="applyFilter">Apply</button>r
                     <button>Reset</button>
                 </div> --}}
-        {{-- </div> --}}
-        {{-- </div> --}}
+            {{-- </div> --}}
+        </div>
         <div class="filter__search">
             <input type="text" wire:model="search" placeholder="Search...">
             <button aria-label="search button">
@@ -93,10 +93,10 @@
                     </svg>
                 </button>
             </li>
-            {{-- <li>
-            <button class="filter__applied--clear">
-                Load more...
-        </li> --}}
+            <li>
+                <button class="filter__applied--clear">
+                    Load more...
+            </li>
             <li>
                 <button wire:click="clearcategory()" class="filter__applied--clear">
                     Clear all
@@ -109,9 +109,7 @@
             <p>No products found</p>
         @else
             @foreach ($products as $product)
-                {{-- <a href="/product/{{ $product->id }}'"> --}}
                 <article class="product__item" @if ($loop->last) id="last_record" @endif>
-
                     <a href="/product/{{ $product->id }}">
                         @if (count($product->media) > 0)
                             @foreach ($product->media as $media)
@@ -131,8 +129,6 @@
                     </a>
                     <div class="product__item--bundle">
                         <h4>{{ $product->name }}</h4>
-                        {{-- <span>1000ml</span> --}}
-                        {{-- <p>{{ $product->short_description }}</p> --}}
                         <div class="product__item--buttons">
                             <div class="product__item--price">
                                 <span>
