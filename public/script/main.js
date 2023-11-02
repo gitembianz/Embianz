@@ -345,6 +345,24 @@ function showSlides(n) {
   });
 }
 
+document.body.addEventListener('click', function (event) {
+  var cartList = document.getElementById('cartContent');
+  var cartBtn = document.getElementById('cartBtn');
+
+  var wishList = document.getElementById('heartContent');
+  var wishBtn = document.getElementById('heartBtn');
+
+  // Check if the clicked element is not inside the cart and the cart button
+  if (!cartList.contains(event.target) && !cartBtn.contains(event.target)) {
+    // If clicked outside, remove the 'show' class from cart__list
+    cartList.classList.remove('show');
+  }
+  if (!wishList.contains(event.target) && !wishBtn.contains(event.target)) {
+    // If clicked outside, remove the 'show' class from cart__list
+    wishList.classList.remove('show');
+  }
+});
+
 
 //order
 // var accordions = document.getElementsByClassName('details__accordion');

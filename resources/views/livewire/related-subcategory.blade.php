@@ -68,7 +68,7 @@
                             {{-- Header of the table --}}
                             <div class="panel__header">
                                 <h1 class="panel__header--title" id="top">
-                                    {{ __('Add to Subcategories') }}
+                                    {{ __('Add related Subcategories') }}
                                 </h1>
                                 <input class="panel__header--input" type="text" wire:model.debounce.300ms="searchadd"
                                     placeholder="Searchs...">
@@ -100,12 +100,14 @@
                                         {{ count($checkedadd) }} records
                                     </button>
                                 </div>
-                                <div class="panel__header--checked">
-                                    @if ($selectPageadd && $selectAlladd)
+                                @if ($selectPageadd && $selectAlladd)
+                                    <div class="panel__header--checked">
                                         <p>
                                             You selected <strong>{{ count($checkedadd) }}</strong> items.
                                         </p>
-                                    @elseif($selectPageadd)
+                                    </div>
+                                @elseif($selectPageadd)
+                                    <div class="panel__header--checked">
                                         <a href="#" wire:click="selectAlladd">
                                             <p>
                                                 You selected <strong>{{ count($checkedadd) }}</strong> items,
@@ -115,8 +117,8 @@
                                                 to Select All?
                                             </p>
                                         </a>
-                                    @endif
-                                </div>
+                                    </div>
+                                @endif
                             </div>
                             {{-- Table --}}
                             <div style="overflow-y: auto;position: relative;background: white;">
@@ -217,8 +219,7 @@
                                                         <td data-title="Created At">
                                                             <div class="table__time">
                                                                 <svg>
-                                                                    <circle cx="12" cy="12"
-                                                                        r="10">
+                                                                    <circle cx="12" cy="12" r="10">
                                                                     </circle>
                                                                     <polyline points="12 6 12 12 16 14"></polyline>
                                                                 </svg>

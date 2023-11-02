@@ -123,8 +123,11 @@
                                         @enderror
                                     </p>
                                 </div>
-                                <input class="details__content-add--input" wire:model="individual_billing_address2"
-                                    type="text" placeholder="Address 2">
+                                <div>
+
+                                    <input class="details__content-add--input" wire:model="individual_billing_address2"
+                                        type="text" placeholder="Address 2">
+                                </div>
 
                                 <div>
                                     <input class="details__content-add--input" wire:model="individual_billing_country"
@@ -135,8 +138,11 @@
                                         @enderror
                                     </p>
                                 </div>
-                                <input class="details__content-add--input" wire:model="individual_billing_county"
-                                    type="text" placeholder="County">
+                                <div>
+
+                                    <input class="details__content-add--input" wire:model="individual_billing_county"
+                                        type="text" placeholder="County">
+                                </div>
 
                                 <div>
                                     <input class="details__content-add--input" wire:model="individual_billing_city"
@@ -229,9 +235,12 @@
                                             @enderror
                                         </p>
                                     </div>
-                                    <input class="details__content-add--input"
-                                        wire:model="individual_shipping_address2" type="text"
-                                        placeholder="Address 2">
+                                    <div>
+
+                                        <input class="details__content-add--input"
+                                            wire:model="individual_shipping_address2" type="text"
+                                            placeholder="Address 2">
+                                    </div>
                                     <div>
                                         <input class="details__content-add--input"
                                             wire:model="individual_shipping_country" type="text"
@@ -242,8 +251,12 @@
                                             @enderror
                                         </p>
                                     </div>
-                                    <input class="details__content-add--input" wire:model="individual_shipping_county"
-                                        type="text" placeholder="County">
+                                    <div>
+
+                                        <input class="details__content-add--input"
+                                            wire:model="individual_shipping_county" type="text"
+                                            placeholder="County">
+                                    </div>
                                     <div>
                                         <input class="details__content-add--input"
                                             wire:model="individual_shipping_city" type="text" placeholder="City">
@@ -373,7 +386,11 @@
                                         @enderror
                                     </p>
                                 </div>
-                                <input class="details__content-add--input" type="text" placeholder="Address 2">
+                                <div>
+
+                                    <input class="details__content-add--input" type="text"
+                                        placeholder="Address 2">
+                                </div>
                                 <div>
                                     <input class="details__content-add--input" wire:model="juridic_billing_country"
                                         type="text" placeholder="Country">
@@ -383,7 +400,10 @@
                                         @enderror
                                     </p>
                                 </div>
-                                <input class="details__content-add--input" type="text" placeholder="County">
+                                <div>
+
+                                    <input class="details__content-add--input" type="text" placeholder="County">
+                                </div>
                                 <div>
                                     <input class="details__content-add--input" wire:model="juridic_billing_city"
                                         type="text" placeholder="City">
@@ -464,15 +484,30 @@
                             <input class="details__content-add--input" type="text" placeholder="Last Name">
                             <input class="details__content-add--input" type="text" placeholder="Phone">
                             <input class="details__content-add--input" type="text" placeholder="Email"> --}}
-                                    <input class="details__content-add--input" type="text"
-                                        placeholder="Address 1*">
-                                    <input class="details__content-add--input" type="text"
-                                        placeholder="Address 2">
-                                    <input class="details__content-add--input" type="text" placeholder="Country">
-                                    <input class="details__content-add--input" type="text" placeholder="County">
-                                    <input class="details__content-add--input" type="text" placeholder="City">
-                                    <input class="details__content-add--input" type="text"
-                                        placeholder="Post Code">
+                                    <div>
+                                        <input class="details__content-add--input" type="text"
+                                            placeholder="Address 1*">
+                                    </div>
+                                    <div>
+                                        <input class="details__content-add--input" type="text"
+                                            placeholder="Address 2">
+                                    </div>
+                                    <div>
+                                        <input class="details__content-add--input" type="text"
+                                            placeholder="Country">
+                                    </div>
+                                    <div>
+                                        <input class="details__content-add--input" type="text"
+                                            placeholder="County">
+                                    </div>
+                                    <div>
+                                        <input class="details__content-add--input" type="text" placeholder="City">
+                                    </div>
+                                    <div>
+
+                                        <input class="details__content-add--input" type="text"
+                                            placeholder="Post Code">
+                                    </div>
 
                                 </div>
                             </div>
@@ -660,9 +695,6 @@
                             <polyline points="12 19 5 12 12 5"></polyline>
                         </svg>
                     </a>
-                </div>
-                <h1 class="section__title">Check your details</h1>
-                <div class="details__btns">
                     <a wire:click.prevent="confirm()" data-tooltip="Confirm order">
                         <svg>
                             <polyline points="9 11 12 14 22 4"></polyline>
@@ -670,6 +702,8 @@
                         </svg>
                     </a>
                 </div>
+                <h1 class="section__title">Check your details</h1>
+
             </div>
             <div class="checking__wrapper">
                 <div class="checking__cart">
@@ -718,7 +752,7 @@
                     <div class="checking__content-price">
                         @if (!$cartItems->isEmpty())
                             <span class="checking__content-complete--text">Total Price:</span>
-                            <span class="checking__content-create--text">{{ $cart->sum_amount }}
+                            <span class="checking__content-create--text">{{ $cart->final_amount }}
                                 {{ $cart->currency->first()->name }}</span>
                         @endif
                     </div>

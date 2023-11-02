@@ -75,8 +75,7 @@ class StoreHeader extends Component
   }
   public function getWishlistItemsProperty()
   {
-    $session_id = Session::getId();
-    $wishlist = Wishlist::where('session_id', $session_id)->pluck('product_id')->toArray();
+    $wishlist = Wishlist::where('session_id', $this->session_id)->pluck('product_id')->toArray();
     return Product::whereIn('id', $wishlist)->get();
   }
   public function refreshWishlist()
@@ -108,11 +107,13 @@ class StoreHeader extends Component
   }
   public function cartshow()
   {
-    if ($this->showcart === false) {
+    if ($this->showwis === true) {
       $this->showwis = false;
-      $this->showcart = true;
-    } else {
+    }
+    if ($this->showcart == true) {
       $this->showcart = false;
+    } else {
+      $this->showcart = true;
     }
   }
   public function removeFromWishlist($productId)
@@ -166,7 +167,7 @@ class StoreHeader extends Component
   }
   public function getCategoriesQueryProperty()
   {
-    return Category::orderBy('sequence', 'asc')->orderBy('store_tab', 'desc')->with('subcategory');
+    return Category::where('active', '1')->where('store_tab', '1')->with('subcategory');
   }
   public function getObjectsProperty()
   {

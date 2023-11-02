@@ -145,6 +145,8 @@ class StoreOrder extends Component
           $this->validatequantity = false;
           $difference = $item->quantity - $item->product->quantity;
           $this->cart->quantity_amount -= $difference;
+          $this->cart->sum_amount -= $difference * $item->price;
+          $this->cart->final_amount = $this->cart->sum_amount;
           $this->cart->save();
           $this->emit('cartUpdated');
           $item->quantity = $item->product->quantity;
@@ -154,6 +156,9 @@ class StoreOrder extends Component
             'type' => 'warning',
             'title' => 'Product quantity'
           ]);
+          return;
+        } else {
+          $this->validatequantity = true;
         }
       }
     }
@@ -280,7 +285,7 @@ class StoreOrder extends Component
         $uniqueName = $baseName . '_' . str_pad($cartNumber, 2, '0', STR_PAD_LEFT);
       }
       $statusId = Status::where('name', 'new')->where('type', 'order')->first()->id;
-
+      $paymentId = Payment::where('name', $this->delivery)->first()->id;
       Order::create([
         'name' => $uniqueName,
         'session_id' => $this->session_id,
@@ -290,7 +295,7 @@ class StoreOrder extends Component
         'sum_amount' => $this->cart->final_amount,
         'currency_id' => $this->cart->currency_id,
         'status_id' =>  $statusId,
-        'delivery_method' => 'cash on delivery',
+        'payment_id' => $paymentId,
       ]);
       if ($cartitems) {
         $order = Order::where('cart_id', $this->cart->id)->first();
@@ -498,7 +503,7 @@ class StoreOrder extends Component
       $this->invoice = false;
     }
     if ($item == 'invoice') {
-      $this->delivery = 'proforma invoice';
+      $this->delivery = 'invoice';
       $this->card = false;
       $this->rtc = false;
       $this->invoice = true;
