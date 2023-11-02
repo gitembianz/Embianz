@@ -17,7 +17,7 @@ class StoreCart extends Component
   public $wishlist = [];
   public $session_id;
   public $cart;
-  public $deliverry;
+  public $delivery;
   public $voucher;
   public $new_price = false;
   public $price;
@@ -31,8 +31,7 @@ class StoreCart extends Component
   {
     // Initial load of cartitems
     $this->session_id = $_COOKIE['sessionId'];
-    $this->cartitems = $this->getCartItemsProperty();
-    $this->deliverry = 0;
+    $this->delivery = 0;
     $this->closedStatusId = Status::where('name', 'closed')->where('type', 'cart')->first()->id;
     $this->cart = Cart::where('session_id', $this->session_id)->where('status_id', '!=', $this->closedStatusId)->first();
   }
@@ -47,7 +46,7 @@ class StoreCart extends Component
   public function getCartItemsProperty()
   {
     if ($this->cart) {
-      $cartItems = Cart_Item::where('cart_id', $this->cart->id)->with('product')->get();
+      $cartItems = Cart_Item::where('cart_id', $this->cart->id)->with('product.product_prices.pricelist.currency')->with('product.product_prices')->get();
       return $cartItems;
     }
     return collect(); // Return an empty collection if no cart items are found
@@ -78,16 +77,13 @@ class StoreCart extends Component
       'product_id' => $productId,
     ])->first();
 
-    if ($cartItem) {
+    if ($cartItem->quantity < $product->quantity) {
       $cartItem->increment('quantity');
-      if ($cartItem->exists) {
-        $this->cart->quantity_amount += 1;
-        $this->cart->sum_amount += $product->product_prices->first()->value;
-        $this->cart->save();
-        $this->emit('cartUpdated');
-      }
+      $this->cart->quantity_amount += 1;
+      $this->cart->sum_amount += $product->product_prices->first()->value;
+      $this->cart->save();
+      $this->emit('cartUpdated');
     }
-    $this->emit('cartUpdated');
   }
   public function decrement($productId)
   {
@@ -166,9 +162,9 @@ class StoreCart extends Component
   {
     $newStatusId = Status::where('name', 'checkout')->where('type', 'cart')->first()->id;
     if ($this->new_price) {
-      $this->cart->final_amount += $this->deliverry;
+      $this->cart->final_amount += $this->delivery;
     } else {
-      $this->cart->final_amount = $this->cart->sum_amount + $this->deliverry;
+      $this->cart->final_amount = $this->cart->sum_amount + $this->delivery;
     }
     $this->cart->status_id = $newStatusId;
     $this->cart->save();

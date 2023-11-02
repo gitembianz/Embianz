@@ -1502,7 +1502,6 @@ header:not(.show) {
   align-items: center;
   flex: 0 1 auto;
   gap: 10px;
-  width: 100%;
   flex-wrap: wrap;
 }
 .cart-page--bundle > .product__count {
