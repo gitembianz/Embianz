@@ -45,6 +45,18 @@ class StoreProducts extends Component
     $this->session_id = $_COOKIE['sessionId'];
     $this->specification = Specs::all();
   }
+  public function getUniqueSpecValues()
+  {
+    $uniqueValues = [];
+
+    foreach ($this->specification as $spec) {
+      foreach ($spec->product_spec as $value) {
+        $uniqueValues[] = $value->value;
+      }
+    }
+
+    return array_unique($uniqueValues);
+  }
   public function render()
   {
     $this->products = $this->getProducts();
