@@ -102,10 +102,11 @@ class StoreProducts extends Component
   }
 
 
-  public function clearcategory()
+  public function clearall()
   {
-    $this->category = null;
-    return redirect('/storeproducts');
+    $this->selectedSpecValues = [];
+    $this->selectedSpecNames = [];
+    $this->selectedKeys = [];
   }
   public function getProducts()
   {
