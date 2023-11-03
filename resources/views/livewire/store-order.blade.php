@@ -614,7 +614,7 @@
                             </label>
                         @endif
                     @endif
-                    @if ($payment->name == 'cash on delivery')
+                    @if ($payment->name == 'cash on delivery' && $cart->final_amount <= '1000')
                         @if ($payment->active)
                             <label class="details__accordion--item" for="rtc" wire:click="togglepayment('rtc')">
                                 <div
@@ -636,11 +636,7 @@
                                         <p class="details__accordion-content--text">You will pay when the order is
                                             delivered.<br>
                                             <span class="details__accordion-content--span">
-                                                7.00 Lei represents the cost for processing the payment upon delivery.
-                                                Online card
-                                                payment
-                                                is
-                                                free.
+                                                Limita maxima este de 1000 RON
                                             </span>
                                         </p>
                                     </div>
@@ -711,6 +707,8 @@
                         @if (!$cartItems->isEmpty())
                             @foreach ($cartItems as $cartItem)
                                 <div class="checking__content-item">
+                                    <span class="cart__list--much">{{ $cartItem->quantity }} x</span>
+
                                     @if (count($cartItem->product->media) > 0)
                                         @foreach ($cartItem->product->media as $media)
                                             @if ($media->location->location == 'main')
@@ -730,30 +728,30 @@
                                             alt="something wrong">
                                     @endif
                                     <span class="cart__list--text">{{ $cartItem->product->name }}</span>
-                                    <span class="cart__list--much">x {{ $cartItem->quantity }}</span>
                                     <span class="cart__list--much">
-                                        @php
-                                            $price = $cartItem->product->product_prices->first();
-                                        @endphp
-                                        @if ($price)
-                                            {{ $price->value }} {{ $price->pricelist->currency->first()->name }}
-                                        @else
-                                            unavailable
-                                        @endif
+                                        {{ $cartItem->quantity * $cartItem->price }} {{ $cart->currency->name }}
                                     </span>
                                 </div>
                             @endforeach
                         @endif
                     </div>
                     <!-- Here is Card Information -->
-                    <div class="checking__content-complete">
-                        <span class="checking__content-create--text">{{ $delivery }} &check;</span>
+                    <div style="display: flex;flex-direction: row;justify-content: space-between"
+                        class="checking__content-complete">
+                        <span class="checking__content-create--text">Payment Method: {{ $delivery }}
+                            &check;</span>
+                        <span class="checking__content-create--text">Delivery Price: @if ($cart->delivery_price == 0)
+                                Free
+                            @else
+                                {{ $cart->delivery_price }} {{ $cart->currency->name }}
+                            @endif
+                        </span>
                     </div>
                     <div class="checking__content-price">
                         @if (!$cartItems->isEmpty())
-                            <span class="checking__content-complete--text">Total Price:</span>
+                            <span class="checking__content-complete--text">Total:</span>
                             <span class="checking__content-create--text">{{ $cart->final_amount }}
-                                {{ $cart->currency->first()->name }}</span>
+                                {{ $cart->currency->name }}</span>
                         @endif
                     </div>
                 </div>
@@ -761,7 +759,8 @@
                     <!-- here is billing information -->
                     @if ($individual)
                         <div class="checking__content-complete">
-                            <span class="checking__content-create--text">Billing information &check;</span>
+                            <span style="font-weight: bold" class="checking__content-create--text">Billing information
+                                &check;</span>
                             <span class="checking__content-complete--text">Full Name: {{ $individual_billing_first }}
                                 {{ $individual_billing_last }}</span>
                             <span class="checking__content-complete--text">Phone:
@@ -780,7 +779,8 @@
                         </div>
                         <!-- here is shipping information -->
                         <div class="checking__content-complete">
-                            <span class="checking__content-create--text">Shipping information
+                            <span style="font-weight: bold" class="checking__content-create--text">Shipping
+                                information
                                 &check;</span>
                             <span class="checking__content-complete--text">Full Name: {{ $individual_shipping_first }}
                                 {{ $individual_shipping_last }}</span>

@@ -30,6 +30,8 @@ class StoreProducts extends Component
   public $products;
   public $category;
   public $categoryname;
+  public $selectedKeys = [];
+  public $selectedSpecNames = [];
 
   protected $listeners = [
     'wishlistUpdated' => 'mount',
@@ -40,16 +42,66 @@ class StoreProducts extends Component
   {
     $this->loadAmount += 10;
   }
-  public function mount()
-  {
-    $this->session_id = $_COOKIE['sessionId'];
-    $this->specification = Specs::all();
-  }
   public function render()
   {
     $this->products = $this->getProducts();
     return view('livewire.store-products');
   }
+  public function mount()
+  {
+    $this->session_id = $_COOKIE['sessionId'];
+
+    $this->specification = Specs::all();
+  }
+  public function getUniqueSpecValues($specId)
+  {
+    $uniqueValues = [];
+
+    foreach ($this->specification as $spec) {
+      if ($spec->id === $specId) {
+        foreach ($spec->product_spec as $value) {
+          $uniqueValues[] = $value->value;
+        }
+        break; // Exit the loop once the specific spec is found and processed
+      }
+    }
+
+    return array_unique($uniqueValues);
+  }
+  public function resetFilter()
+  {
+    $this->selectedSpecValues = [];
+  }
+  public function applyFilter()
+  {
+    $this->selectedKeys = array_keys($this->selectedSpecValues[0]);
+
+
+    foreach ($this->specification as $spec) {
+      foreach ($this->selectedKeys as $key) {
+        foreach ($spec->product_spec as $value) {
+          if ($value->value == $key) {
+            $this->selectedSpecNames[$key] = $spec->name;
+          }
+        }
+      }
+    }
+
+    if (isset($this->selectedKeys)) {
+      $this->specfilter = true;
+      $this->property = false;
+    }
+  }
+  public function removeSpec($key)
+  {
+
+    unset($this->selectedSpecValues[0][$key]);
+    unset($this->selectedSpecNames[$key]);
+    $this->render();
+    $this->selectedKeys = array_keys($this->selectedSpecValues[0]); // Update selectedKeys
+  }
+
+
   public function clearcategory()
   {
     $this->category = null;
@@ -64,6 +116,15 @@ class StoreProducts extends Component
         $query->where('id', $this->category);
       });
     }
+
+    if ($this->specfilter) {
+      foreach ($this->selectedKeys as $value) {
+        $query->whereHas('product_specs', function ($query) use ($value) {
+          $query->where('value', $value);
+        });
+      }
+    }
+
     switch ($this->orderBy) {
       case 'best_selling':
         $query->orderBy('popularity', $this->orderAsc ? 'asc' : 'desc');

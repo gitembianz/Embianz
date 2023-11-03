@@ -267,7 +267,7 @@ function dropdown(dropdown) {
 }
 
 
-dropdown(".filter__dropdown--btn");
+// dropdown(".filter__dropdown--btn");
 dropdown(".filter__sort--btn");
 
 const imgModal = document.getElementById("modal");
