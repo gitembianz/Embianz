@@ -24,10 +24,9 @@
                                 @foreach ($this->getUniqueSpecValues($spec->id) as $innerIndex => $uniqueValue)
                                     <li class="filter__item">
                                         <input type="checkbox"
-                                            wire:model="selectedSpecValues.{{ $index }}.{{ $innerIndex }}.{{ $uniqueValue }}"
-                                            id="filter{{ $index }}_{{ $innerIndex }}_{{ $uniqueValue }}">
-                                        <label
-                                            for="filter{{ $index }}_{{ $innerIndex }}_{{ $uniqueValue }}">{{ $uniqueValue }}</label>
+                                            wire:model="selectedSpecValues.{{ $innerIndex }}.{{ $uniqueValue }}"
+                                            id="{{ $innerIndex }}_{{ $uniqueValue }}">
+                                        <label for="{{ $innerIndex }}_{{ $uniqueValue }}">{{ $uniqueValue }}</label>
                                     </li>
                                 @endforeach
                             </ul>
