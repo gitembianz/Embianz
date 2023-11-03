@@ -23,6 +23,8 @@ return new class extends Migration
       $table->foreign('status_id')->references('id')->on('statuses');
       $table->double('final_amount')->default(0);
       $table->string('order_id')->nullable();
+      $table->string('delivery_price')->nullable();
+
       $table->timestamps();
     });
   }

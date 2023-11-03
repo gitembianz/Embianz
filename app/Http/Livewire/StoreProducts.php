@@ -61,6 +61,11 @@ class StoreProducts extends Component
 
     return array_unique($uniqueValues);
   }
+  public function applyFilter()
+  {
+    $selectedKeys = array_keys($this->selectedSpecValues[0]);
+    dd($selectedKeys);
+  }
   public function render()
   {
     $this->products = $this->getProducts();
