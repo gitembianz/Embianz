@@ -1,4 +1,5 @@
 <div class="products">
+    {{-- <x-loading /> --}}
     <div class="products__control">
         <div class="filter">
             {{-- Filter Button Left overs --}}
@@ -12,30 +13,30 @@
             <div class="filter__content @if ($property) show @endif">
                 {{-- {{ $this->getUniqueSpecValues() }} --}}
                 @foreach ($specification as $index => $spec)
-                    <div class="filter__dropdown">
-                        <button class="filter__dropdown--btn">
-                            {{ $spec->name }}
-                            <svg>
-                                <polyline points="6 9 12 15 18 9"></polyline>
-                            </svg>
-                        </button>
-                        <div class="filter__dropdown--content">
-                            <ul class="filter__list">
-                                @foreach ($this->getUniqueSpecValues($spec->id) as $innerIndex => $uniqueValue)
-                                    <li class="filter__item">
-                                        <input type="checkbox"
-                                            wire:model="selectedSpecValues.{{ $innerIndex }}.{{ $uniqueValue }}"
-                                            id="{{ $innerIndex }}_{{ $uniqueValue }}">
-                                        <label for="{{ $innerIndex }}_{{ $uniqueValue }}">{{ $uniqueValue }}</label>
-                                    </li>
-                                @endforeach
-                            </ul>
+                    @if ($spec->product_spec->count() > 0)
+                        <div class="filter__dropdown">
+                            <button class="filter__dropdown--btn">
+                                {{ $spec->name }}
+                            </button>
+                            <div class="filter__dropdown--content show">
+                                <ul class="filter__list">
+                                    @foreach ($this->getUniqueSpecValues($spec->id) as $innerIndex => $uniqueValue)
+                                        <li class="filter__item">
+                                            <input type="checkbox"
+                                                wire:model="selectedSpecValues.{{ $innerIndex }}.{{ $uniqueValue }}"
+                                                id="{{ $innerIndex }}_{{ $uniqueValue }}">
+                                            <label
+                                                for="{{ $innerIndex }}_{{ $uniqueValue }}">{{ $uniqueValue }}</label>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
                         </div>
-                    </div>
+                    @endif
                 @endforeach
                 <div class="filter__buttons">
                     <button wire:click="applyFilter">Apply</button>
-                    <button>Reset</button>
+                    <button wire:click="resetFilter">Reset</button>
                 </div>
             </div>
         </div>
@@ -82,21 +83,39 @@
             </div>
         </div>
     </div>
-    @if ($category)
+    @if ($category || !empty($selectedSpecNames))
         <ul class="filter__applied">
-            <li>
-                <button class="filter__applied--item">
-                    Category: {{ $categoryname }}
-                    <svg wire:click="clearcategory()">
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                </button>
-            </li>
-            <li>
+            @if ($category)
+                <li>
+                    <button class="filter__applied--item">
+                        Category: {{ $categoryname }}
+                        <svg wire:click="clearcategory()">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </li>
+            @endif
+            @if (!empty($selectedSpecNames))
+                {{-- {{ $selectedSpecNames }} --}}
+                @foreach ($selectedSpecNames as $key => $name)
+                    {{-- {{ $name }} --}}
+                    <li>
+                        <button class="filter__applied--item">
+                            {{ $name }}: {{ $key }}
+                            <svg wire:click="removeSpec('{{ $key }}')">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </button>
+                    </li>
+                @endforeach
+
+            @endif
+            {{-- <li>
                 <button class="filter__applied--clear">
                     Load more...
-            </li>
+            </li> --}}
             <li>
                 <button wire:click="clearcategory()" class="filter__applied--clear">
                     Clear all
