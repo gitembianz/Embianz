@@ -195,7 +195,6 @@
                         </button>
                     </div>
                 </article>
-                {{-- </a> --}}
             @endforeach
         @endif
     </div>

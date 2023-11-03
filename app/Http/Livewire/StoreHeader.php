@@ -9,7 +9,6 @@ use Livewire\Component;
 use App\Models\Category;
 use App\Models\Wishlist;
 use App\Models\Cart_Item;
-use Illuminate\Support\Facades\Session;
 
 class StoreHeader extends Component
 {
@@ -76,7 +75,7 @@ class StoreHeader extends Component
   public function getWishlistItemsProperty()
   {
     $wishlist = Wishlist::where('session_id', $this->session_id)->pluck('product_id')->toArray();
-    return Product::whereIn('id', $wishlist)->get();
+    return Product::whereIn('id', $wishlist)->with('media')->get();
   }
   public function refreshWishlist()
   {
@@ -90,7 +89,7 @@ class StoreHeader extends Component
       ->latest()->first();
 
     if ($cart !== null) {
-      $cartItems = Cart_Item::where('cart_id', $cart->id)->with('product')->get();
+      $cartItems = Cart_Item::where('cart_id', $cart->id)->with('product.media.location')->with('product.product_prices.pricelist.currency')->get();
 
       return $cartItems;
     }
