@@ -51,7 +51,7 @@ class StoreProducts extends Component
   {
     $this->session_id = $_COOKIE['sessionId'];
 
-    $this->specification = Specs::all();
+    $this->specification = Specs::with('product_spec')->get();
   }
   public function getUniqueSpecValues($specId)
   {
@@ -102,14 +102,15 @@ class StoreProducts extends Component
   }
 
 
-  public function clearcategory()
+  public function clearall()
   {
-    $this->category = null;
-    return redirect('/storeproducts');
+    $this->selectedSpecValues = [];
+    $this->selectedSpecNames = [];
+    $this->selectedKeys = [];
   }
   public function getProducts()
   {
-    $query = Product::name($this->search);
+    $query = Product::name($this->search)->with('media.location')->with('product_prices.pricelist.currency')->with('wishlists');
     if ($this->category) {
       $this->categoryname = Category::find($this->category)->name;
       $query->whereHas('product_categories.category', function ($query) {

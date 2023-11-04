@@ -1,5 +1,10 @@
 <div class="products">
     {{-- <x-loading /> --}}
+    @if ($category)
+        <div>
+            <p>Category: {{ $categoryname }}</p>
+        </div>
+    @endif
     <div class="products__control">
         <div class="filter">
             {{-- Filter Button Left overs --}}
@@ -83,41 +88,28 @@
             </div>
         </div>
     </div>
-    @if ($category || !empty($selectedSpecNames))
+    @if (!empty($selectedSpecNames))
         <ul class="filter__applied">
-            @if ($category)
+            {{-- {{ $selectedSpecNames }} --}}
+            @foreach ($selectedSpecNames as $key => $name)
+                {{-- {{ $name }} --}}
                 <li>
                     <button class="filter__applied--item">
-                        Category: {{ $categoryname }}
-                        <svg wire:click="clearcategory()">
+                        {{ $name }}: {{ $key }}
+                        <svg wire:click="removeSpec('{{ $key }}')">
                             <line x1="18" y1="6" x2="6" y2="18"></line>
                             <line x1="6" y1="6" x2="18" y2="18"></line>
                         </svg>
                     </button>
                 </li>
-            @endif
-            @if (!empty($selectedSpecNames))
-                {{-- {{ $selectedSpecNames }} --}}
-                @foreach ($selectedSpecNames as $key => $name)
-                    {{-- {{ $name }} --}}
-                    <li>
-                        <button class="filter__applied--item">
-                            {{ $name }}: {{ $key }}
-                            <svg wire:click="removeSpec('{{ $key }}')">
-                                <line x1="18" y1="6" x2="6" y2="18"></line>
-                                <line x1="6" y1="6" x2="18" y2="18"></line>
-                            </svg>
-                        </button>
-                    </li>
-                @endforeach
+            @endforeach
 
-            @endif
             {{-- <li>
                 <button class="filter__applied--clear">
                     Load more...
             </li> --}}
             <li>
-                <button wire:click="clearcategory()" class="filter__applied--clear">
+                <button wire:click="clearall()" class="filter__applied--clear">
                     Clear all
                 </button>
             </li>
@@ -203,7 +195,6 @@
                         </button>
                     </div>
                 </article>
-                {{-- </a> --}}
             @endforeach
         @endif
     </div>
