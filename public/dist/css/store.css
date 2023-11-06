@@ -719,7 +719,7 @@ header:not(.show) {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   flex: 0 1 auto;
   gap: 20px;
@@ -3571,7 +3571,7 @@ footer {
   position: relative;
 }
 
-.card-button {
+.card-nav {
   width: 40px;
   height: 40px;
   position: absolute;
@@ -3587,22 +3587,22 @@ footer {
   backdrop-filter: blur(4px);
   z-index: 1;
 }
-.card-button:active {
+.card-nav:active {
   transform: translateY(-50%) scale(0.8);
 }
-.card-button:first-child {
+.card-nav:first-child {
   left: 10px;
 }
 @media (min-width: 768px) {
-  .card-button:first-child {
+  .card-nav:first-child {
     left: -20px;
   }
 }
-.card-button:last-child {
+.card-nav:last-child {
   right: 10px;
 }
 @media (min-width: 768px) {
-  .card-button:last-child {
+  .card-nav:last-child {
     right: -20px;
   }
 }
@@ -3656,54 +3656,129 @@ footer {
 }
 
 .card {
-  padding: clamp(10px, 1vw, 50px);
-  padding-top: clamp(10px, 10vw, 50px);
-  padding-bottom: clamp(10px, 10vw, 50px);
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  scroll-snap-align: start;
+  justify-content: space-between;
+  position: relative;
+  gap: 15px;
+  padding: 15px;
+  width: 100%;
+  height: 100%;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 8px;
+}
+
+.card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  background: #fafafa;
+  transition: all 0.5s ease-in-out;
+}
+.card-image:hover {
+  scale: 1.05;
+}
+
+.card-info {
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: center;
-  scroll-snap-align: start;
-  height: 100%;
-  background: #f2f2f2;
-  cursor: pointer;
-  border-radius: 15px;
-  text-align: center;
-  position: relative;
+  align-items: flex-start;
+  gap: 15px;
 }
-.card img {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  object-fit: cover;
-  outline: 3px solid #202124;
-  padding: 5px;
-}
-.card__fire {
-  width: 40px;
-  height: 40px;
+
+.card-text {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  top: 15px;
-  left: 15px;
-  border-radius: 50%;
-  background: pink;
-}
-.card__fire img {
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
   width: 100%;
-  height: 100%;
-  outline: none;
-  object-fit: contain;
+  text-transform: uppercase;
+  text-wrap: no-wrap;
+  letter-spacing: 0.7px;
 }
-.card > .price {
-  color: #8A0000;
+.card-text > h3,
+.card-text p {
+  font-size: 15px;
+  color: #333;
+  font-weight: 600;
 }
-.card > .price span {
-  margin-right: 15px;
-  color: #202124;
+.card-text > h3.sale,
+.card-text p.sale {
+  color: #d2042d;
+}
+.card-text > span {
+  color: #666666;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.card-info > .card-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 50px;
+  background: transparent;
+  border: 2px solid black;
+  text-transform: uppercase;
+  font-size: 14px;
+  letter-spacing: 0.7px;
+  font-weight: 500;
+  color: black;
+  transition: all 0.3s ease-in-out;
+}
+.card-info > .card-button:hover {
+  background: black;
+  color: #fff;
+}
+
+.card-favorites {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 33px;
+  height: 33px;
+  background: #d3d3d3;
+  border: none;
+  border-radius: 50px;
+}
+.card-favorites > svg {
+  fill: #a9a9a9;
+}
+.card-favorites:hover > svg {
+  fill: #d2042d;
+}
+
+.card-sale {
+  color: #666666;
+  font-size: 14px;
+  font-weight: 600;
   text-decoration: line-through;
+}
+
+.card-status {
+  position: absolute;
+  top: 20px;
+  left: 0;
+  color: #fff;
+  padding: 5px 20px;
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 500;
+}
+.card-status.save {
+  background: #d2042d;
+}
+.card-status.out {
+  background: #000;
 }
 
 .filter, .filter__sort {
@@ -4205,4 +4280,4 @@ footer {
 
 .support__list-item {
   text-decoration: underline;
-}
+}/*# sourceMappingURL=store.css.map */

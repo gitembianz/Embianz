@@ -44,7 +44,7 @@ header:not(.show) {
     color: $background;
 
     &--flex {
-      @include flexer(row, space-between, center, 20px);
+      @include flexer(row, center, center, 20px);
       width: 100%;
       @include responsive-spacing(padding, 0.01);
 
