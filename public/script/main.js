@@ -1,19 +1,19 @@
 function handleScroll() {
   let prevScrollPos = window.pageYOffset;
-  const header = document.querySelector('header');
+  const header = document.querySelector("header");
   const scrollThreshold = 300;
   let isHeaderVisible = true;
 
-  window.addEventListener('scroll', function () {
+  window.addEventListener("scroll", function () {
     const currentScrollPos = window.pageYOffset;
     const scrollDown = currentScrollPos > prevScrollPos;
 
     if (scrollDown && currentScrollPos > scrollThreshold) {
-      header.classList.remove('show');
+      header.classList.remove("show");
       isHeaderVisible = false;
     } else {
       if (!isHeaderVisible) {
-        header.classList.add('show');
+        header.classList.add("show");
         isHeaderVisible = true;
       }
     }
@@ -24,7 +24,6 @@ function handleScroll() {
 
 handleScroll();
 
-
 function setMarginTop() {
   const headerHeight = document.querySelector("header").offsetHeight;
   const mainElement = document.querySelector("main");
@@ -33,45 +32,49 @@ function setMarginTop() {
 window.addEventListener("resize", setMarginTop);
 setMarginTop();
 
-const homeprev = document.getElementById('home__prev');
+const homeprev = document.getElementById("home__prev");
 if (homeprev) {
   homeprev.onclick = function () {
-    let lists = document.querySelectorAll('.home__item');
-    document.getElementById('home__slide').prepend(lists[lists.length - 1]);
-  }
+    let lists = document.querySelectorAll(".home__item");
+    document.getElementById("home__slide").prepend(lists[lists.length - 1]);
+  };
 }
 
-const homenext = document.getElementById('home__next');
+const homenext = document.getElementById("home__next");
 if (homenext) {
   homenext.onclick = function () {
-    let lists = document.querySelectorAll('.home__item');
-    document.getElementById('home__slide').prepend(lists[lists.length - 1]);
-  }
+    let lists = document.querySelectorAll(".home__item");
+    document.getElementById("home__slide").prepend(lists[lists.length - 1]);
+  };
 }
-
 
 // ______________________________________________________________________
 const wrapper = document.querySelector(".card-wrapper");
 const carousel = document.querySelector(".card-carousel");
 if (carousel) {
   const firstCardWidth = carousel.querySelector(".card").offsetWidth;
-  const arrowBtns = document.querySelectorAll(".card-button");
+  const arrowBtns = document.querySelectorAll(".card-nav");
   const carouselChildrens = [...carousel.children];
   let isDragging = false,
     isAutoPlay = true,
-    startX, startScrollLeft, timeoutId;
+    startX,
+    startScrollLeft,
+    timeoutId;
 
   // Get the number of cards that can fit in the carousel at once
 
   let cardPerView = Math.round(carousel.offsetWidth / firstCardWidth);
 
   // Insert copies of the last few cards to beginning of carousel for infinite scrolling
-  carouselChildrens.slice(-cardPerView).reverse().forEach(card => {
-    carousel.insertAdjacentHTML("afterbegin", card.outerHTML);
-  });
+  carouselChildrens
+    .slice(-cardPerView)
+    .reverse()
+    .forEach((card) => {
+      carousel.insertAdjacentHTML("afterbegin", card.outerHTML);
+    });
 
   // Insert copies of the first few cards to end of carousel for infinite scrolling
-  carouselChildrens.slice(0, cardPerView).forEach(card => {
+  carouselChildrens.slice(0, cardPerView).forEach((card) => {
     carousel.insertAdjacentHTML("beforeend", card.outerHTML);
   });
 
@@ -81,9 +84,10 @@ if (carousel) {
   carousel.classList.remove("no-transition");
 
   // Add event listeners for the arrow buttons to scroll the carousel left and right
-  arrowBtns.forEach(btn => {
+  arrowBtns.forEach((btn) => {
     btn.addEventListener("click", () => {
-      carousel.scrollLeft += btn.id == "cardLeft" ? -firstCardWidth : firstCardWidth;
+      carousel.scrollLeft +=
+        btn.id == "cardLeft" ? -firstCardWidth : firstCardWidth;
     });
   });
 
@@ -93,28 +97,31 @@ if (carousel) {
     // Records the initial cursor and scroll position of the carousel
     startX = e.pageX;
     startScrollLeft = carousel.scrollLeft;
-  }
+  };
 
   const dragging = (e) => {
     if (!isDragging) return; // if isDragging is false return from here
     // Updates the scroll position of the carousel based on the cursor movement
     carousel.scrollLeft = startScrollLeft - (e.pageX - startX);
-  }
+  };
 
   const dragStop = () => {
     isDragging = false;
     carousel.classList.remove("dragging");
-  }
+  };
 
   const infiniteScroll = () => {
     // If the carousel is at the beginning, scroll to the end
     if (carousel.scrollLeft === 0) {
       carousel.classList.add("no-transition");
-      carousel.scrollLeft = carousel.scrollWidth - (2 * carousel.offsetWidth);
+      carousel.scrollLeft = carousel.scrollWidth - 2 * carousel.offsetWidth;
       carousel.classList.remove("no-transition");
     }
     // If the carousel is at the end, scroll to the beginning
-    else if (Math.ceil(carousel.scrollLeft) === carousel.scrollWidth - carousel.offsetWidth) {
+    else if (
+      Math.ceil(carousel.scrollLeft) ===
+      carousel.scrollWidth - carousel.offsetWidth
+    ) {
       carousel.classList.add("no-transition");
       carousel.scrollLeft = carousel.offsetWidth;
       carousel.classList.remove("no-transition");
@@ -123,14 +130,13 @@ if (carousel) {
     // Clear existing timeout & start autoplay if mouse is not hovering over carousel
     clearTimeout(timeoutId);
     if (!wrapper.matches(":hover")) autoPlay();
-  }
+  };
 
   const autoPlay = () => {
-    if (window.innerWidth < 800 || !isAutoPlay)
-      return; // Return if window is smaller than 800 or isAutoPlay is false
+    if (window.innerWidth < 800 || !isAutoPlay) return; // Return if window is smaller than 800 or isAutoPlay is false
     // Autoplay the carousel after every 2500 ms
-    timeoutId = setTimeout(() => carousel.scrollLeft += firstCardWidth, 2500);
-  }
+    timeoutId = setTimeout(() => (carousel.scrollLeft += firstCardWidth), 2500);
+  };
   autoPlay();
 
   carousel.addEventListener("mousedown", dragStart);
@@ -142,8 +148,6 @@ if (carousel) {
 }
 
 // ______________________________________________________________________
-
-
 
 const search = document.getElementById("search");
 const searchOpen = document.getElementById("searchOpen");
@@ -158,20 +162,16 @@ window.addEventListener("keydown", (event) => {
   }
 });
 
-
-
-
 // Function on Header Items
 const menuItems = document.querySelectorAll(".menu__item");
 
-menuItems.forEach(item => {
+menuItems.forEach((item) => {
   item.addEventListener("click", function () {
     const nextElementSibling = item.nextElementSibling;
     const isActive = nextElementSibling.classList.contains("active");
     const isActiveBTN = item.classList.contains("active");
 
-
-    menuItems.forEach(otherItem => {
+    menuItems.forEach((otherItem) => {
       otherItem.classList.remove("active");
     });
 
@@ -181,7 +181,7 @@ menuItems.forEach(item => {
     }
 
     // Remove "active" class from all items
-    menuItems.forEach(otherItem => {
+    menuItems.forEach((otherItem) => {
       otherItem.nextElementSibling.classList.remove("active");
     });
 
@@ -193,7 +193,7 @@ menuItems.forEach(item => {
 
   window.addEventListener("resize", function () {
     if (window.innerWidth <= 768) {
-      menuItems.forEach(item => {
+      menuItems.forEach((item) => {
         item.classList.remove("active");
         item.nextElementSibling.classList.remove("active");
       });
@@ -203,7 +203,6 @@ menuItems.forEach(item => {
 
 const menu = document.querySelector("#menuOpen");
 const cartBtn = document.querySelector(".cart");
-
 
 function initializeMenu(open, close, menuId, content) {
   const menuOpen = document.getElementById(open);
@@ -221,7 +220,6 @@ function initializeMenu(open, close, menuId, content) {
     menu.classList.remove("active");
     menuList.classList.remove("active");
     document.body.style.overflow = "unset";
-
   }
 
   function closeMenuOnOutsideClick(event) {
@@ -248,12 +246,14 @@ function toggleDropdown(buttonId, dropdownId) {
   button.addEventListener("click", toggleDropdown);
 
   document.addEventListener("click", (event) => {
-    if (!event.target.matches(buttonId) && dropdown.classList.contains("show")) {
+    if (
+      !event.target.matches(buttonId) &&
+      dropdown.classList.contains("show")
+    ) {
       toggleDropdown();
     }
   });
 }
-
 
 function dropdown(dropdown) {
   var buttons = document.querySelectorAll(dropdown);
@@ -265,7 +265,6 @@ function dropdown(dropdown) {
     });
   });
 }
-
 
 // dropdown(".filter__dropdown--btn");
 dropdown(".filter__sort--btn");
@@ -294,7 +293,6 @@ if (btnModal) {
   }
 }
 
-
 let slideIndex = 1;
 showSlides(slideIndex);
 
@@ -313,9 +311,8 @@ function plusSlides(n) {
   showSlides(slideIndex);
 }
 
-
 function currentSlide(n) {
-  showSlides(slideIndex = n);
+  showSlides((slideIndex = n));
 }
 
 function showSlides(n) {
@@ -345,24 +342,23 @@ function showSlides(n) {
   });
 }
 
-document.body.addEventListener('click', function (event) {
-  var cartList = document.getElementById('cartContent');
-  var cartBtn = document.getElementById('cartBtn');
+document.body.addEventListener("click", function (event) {
+  var cartList = document.getElementById("cartContent");
+  var cartBtn = document.getElementById("cartBtn");
 
-  var wishList = document.getElementById('heartContent');
-  var wishBtn = document.getElementById('heartBtn');
+  var wishList = document.getElementById("heartContent");
+  var wishBtn = document.getElementById("heartBtn");
 
   // Check if the clicked element is not inside the cart and the cart button
   if (!cartList.contains(event.target) && !cartBtn.contains(event.target)) {
     // If clicked outside, remove the 'show' class from cart__list
-    cartList.classList.remove('show');
+    cartList.classList.remove("show");
   }
   if (!wishList.contains(event.target) && !wishBtn.contains(event.target)) {
     // If clicked outside, remove the 'show' class from cart__list
-    wishList.classList.remove('show');
+    wishList.classList.remove("show");
   }
 });
-
 
 //order
 // var accordions = document.getElementsByClassName('details__accordion');
@@ -397,12 +393,3 @@ document.body.addEventListener('click', function (event) {
 //   this.classList.toggle('active');
 //   content.style.maxHeight = content.style.maxHeight ? null : content.scrollHeight + 'px';
 // }
-
-
-
-
-
-
-
-
-
