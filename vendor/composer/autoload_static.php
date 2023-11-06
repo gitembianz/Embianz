@@ -1022,6 +1022,7 @@ class ComposerStaticInitdbceb679be78fc0f2f620fcaf24d3e3e
         'Database\\Seeders\\PaymentSeeder' => __DIR__ . '/../..' . '/database/seeders/PaymentSeeder.php',
         'Database\\Seeders\\ProductSeeder' => __DIR__ . '/../..' . '/database/seeders/ProductSeeder.php',
         'Database\\Seeders\\StatusSeeder' => __DIR__ . '/../..' . '/database/seeders/StatusSeeder.php',
+        'Database\\Seeders\\StoreSeeder' => __DIR__ . '/../..' . '/database/seeders/StoreSeeder.php',
         'Database\\Seeders\\UsersSeeder' => __DIR__ . '/../..' . '/database/seeders/UsersSeeder.php',
         'DateError' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateError.php',
         'DateException' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateException.php',

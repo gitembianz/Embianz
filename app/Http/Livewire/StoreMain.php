@@ -37,6 +37,6 @@ class StoreMain extends Component
   }
   public function getPopProductsQueryProperty()
   {
-    return Product::orderBy('popularity', 'desc')->with('media')->with('product_prices');
+    return Product::orderBy('popularity', 'desc')->with('media.location')->with('product_prices.pricelist.currency');
   }
 }
