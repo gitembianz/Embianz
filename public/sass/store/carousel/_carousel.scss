@@ -9,7 +9,7 @@
   position: relative;
 }
 
-.card-button {
+.card-nav {
   @include box(40px);
   position: absolute;
   top: 50%;
@@ -91,57 +91,201 @@
 
 
 
-.card {
-  @include responsive-spacing(padding, .01);
-  @include responsive-spacing(padding-top, .1);
-  @include responsive-spacing(padding-bottom, .1);
+// .card {
+//   @include responsive-spacing(padding, .01);
+//   @include responsive-spacing(padding-top, .1);
+//   @include responsive-spacing(padding-bottom, .1);
 
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: space-between;
+//   align-items: center;
+
+//   scroll-snap-align: start;
+//   height: 100%;
+//   background: #f2f2f2;
+//   cursor: pointer;
+//   border-radius: 15px;
+//   text-align: center;
+//   position: relative;
+
+//   img {
+//     @include box(120px);
+//     border-radius: 50%;
+//     object-fit: cover;
+//     outline: 3px solid $text;
+//     padding: 5px;
+//   }
+
+//   &__fire {
+//     @include box(40px);
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     position: absolute;
+//     top: 15px;
+//     left: 15px;
+//     border-radius: 50%;
+//     background: pink;
+
+//     img {
+//       @include box(100%);
+//       outline: none;
+//       object-fit: contain;
+//     }
+//   }
+
+//   &>.price {
+//     color: #8A0000;
+
+//     span {
+//       margin-right: 15px;
+//       color: $text;
+//       text-decoration: line-through;
+//     }
+//   }
+// }
+
+
+
+//<---------------- Card Section ---------------->
+
+
+.card {
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  scroll-snap-align: start;
+
+  justify-content: space-between;
+  position: relative;
+  gap: 15px;
+  padding: 15px;
+  width: 100%;
+  height: 100%;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 8px;
+}
+
+.card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  background: #fafafa;
+  transition: all 0.5s ease-in-out;
+
+  &:hover {
+    scale: 1.05;
+  }
+}
+
+.card-info {
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
+  gap: 15px;
+}
 
-  scroll-snap-align: start;
-  height: 100%;
-  background: #f2f2f2;
-  cursor: pointer;
-  border-radius: 15px;
-  text-align: center;
-  position: relative;
+.card-text {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  width: 100%;
+  text-transform: uppercase;
+  text-wrap: no-wrap;
+  letter-spacing: 0.7px;
 
-  img {
-    @include box(120px);
-    border-radius: 50%;
-    object-fit: cover;
-    outline: 3px solid $text;
-    padding: 5px;
-  }
+  &>h3,
+  p {
+    font-size: 15px;
+    color: #333;
+    font-weight: 600;
 
-  &__fire {
-    @include box(40px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    top: 15px;
-    left: 15px;
-    border-radius: 50%;
-    background: pink;
-
-    img {
-      @include box(100%);
-      outline: none;
-      object-fit: contain;
+    &.sale {
+      color: #d2042d;
     }
   }
 
-  &>.price {
-    color: #8A0000;
+  &>span {
+    color: #666666;
+    font-size: 12px;
+    font-weight: 500;
+  }
+}
 
-    span {
-      margin-right: 15px;
-      color: $text;
-      text-decoration: line-through;
+.card-info>.card-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 50px;
+  background: transparent;
+  border: 2px solid black;
+  text-transform: uppercase;
+  font-size: 14px;
+  letter-spacing: 0.7px;
+  font-weight: 500;
+  color: black;
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    background: black;
+    color: #fff;
+  }
+}
+
+.card-favorites {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 33px;
+  height: 33px;
+  background: #d3d3d3;
+  border: none;
+  border-radius: 50px;
+
+  &>svg {
+    fill: #a9a9a9;
+  }
+
+  &:hover {
+    &>svg {
+      fill: #d2042d;
     }
   }
 }
+
+.card-sale {
+  color: #666666;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: line-through;
+}
+
+.card-status {
+  position: absolute;
+  top: 20px;
+  left: 0;
+  color: #fff;
+  padding: 5px 20px;
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 500;
+
+  &.save {
+    background: #d2042d;
+  }
+
+  &.out {
+    background: #000;
+  }
+}
+
+//<-------------- End Card Section -------------->
