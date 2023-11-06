@@ -393,6 +393,7 @@ return array(
     'Database\\Seeders\\PaymentSeeder' => $baseDir . '/database/seeders/PaymentSeeder.php',
     'Database\\Seeders\\ProductSeeder' => $baseDir . '/database/seeders/ProductSeeder.php',
     'Database\\Seeders\\StatusSeeder' => $baseDir . '/database/seeders/StatusSeeder.php',
+    'Database\\Seeders\\StoreSeeder' => $baseDir . '/database/seeders/StoreSeeder.php',
     'Database\\Seeders\\UsersSeeder' => $baseDir . '/database/seeders/UsersSeeder.php',
     'DateError' => $vendorDir . '/symfony/polyfill-php83/Resources/stubs/DateError.php',
     'DateException' => $vendorDir . '/symfony/polyfill-php83/Resources/stubs/DateException.php',

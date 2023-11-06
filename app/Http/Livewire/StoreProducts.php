@@ -100,8 +100,6 @@ class StoreProducts extends Component
     $this->render();
     $this->selectedKeys = array_keys($this->selectedSpecValues[0]); // Update selectedKeys
   }
-
-
   public function clearall()
   {
     $this->selectedSpecValues = [];
@@ -195,7 +193,10 @@ class StoreProducts extends Component
         'quantity' => 1
       ]);
     } else {
-      $cartItem->increment('quantity');
+      if ($cartItem->quantity < $product->quantity) {
+
+        $cartItem->increment('quantity');
+      }
     }
 
     $cart->increment('quantity_amount');
