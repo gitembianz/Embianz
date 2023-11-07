@@ -14,12 +14,12 @@
              <h4>
                  Dublu confort, jumătate de preț! Ofertă limitată: 2 sticle la prețul uneia singure. Profită acum!
              </h4>
-             <a href="{{ url("/storeproducts") }}">
+             <a href="{{ url('/storeproducts') }}">
                  {{-- <button aria-label="Go to Store">Store</button> --}}
              </a>
          </div>
      </div>
-     <div class="container header"><a href="{{ url("/") }}"><svg class="logo" xmlns="http://www.w3.org/2000/svg"
+     <div class="container header"><a href="{{ url('/') }}"><svg class="logo" xmlns="http://www.w3.org/2000/svg"
                  xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="1280" height="1024"
                  viewBox="0 0 1280 1024" xml:space="preserve" alt="ecosticle.ro">
                  <defs>
@@ -132,7 +132,7 @@
                                  <div class="cart__list--item">
                                      @if (count($cartItem->product->media) > 0)
                                          @foreach ($cartItem->product->media as $media)
-                                             @if ($media->location->location == "main")
+                                             @if ($media->location->location == 'main')
                                                  @if ($media->external)
                                                      <img class="cart__list--img" src="{{ $media->path }}"
                                                          alt="{{ $media->path }}">
@@ -155,7 +155,7 @@
                                              $price = $cartItem->product->product_prices->first();
                                          @endphp
                                          @if ($price)
-                                             {{ $price->value }} {{ $price->pricelist->currency->first()->name }}
+                                             {{ $price->value }} {{ $price->pricelist->currency->name }}
                                          @else
                                              unavailable
                                          @endif
@@ -208,7 +208,7 @@
                                  <div class="heart__list--item">
                                      @if (count($product->media) > 0)
                                          @foreach ($product->media as $media)
-                                             @if ($media->location->location == "main")
+                                             @if ($media->location->location == 'main')
                                                  @if ($media->external)
                                                      <img class="heart__list--img" src="{{ $media->path }}"
                                                          alt="{{ $media->path }}">
@@ -264,7 +264,7 @@
                                      <a class="search__container--item" href="/product/{{ $product->id }}">
                                          @if (count($product->media) > 0)
                                              @foreach ($product->media as $media)
-                                                 @if ($media->location->location == "search")
+                                                 @if ($media->location->location == 'search')
                                                      @if ($media->external)
                                                          <img src="{{ $media->path }}" alt="{{ $media->path }}">
                                                      @else
@@ -283,7 +283,7 @@
                                                  {{ $product->product_prices->first()->value }}
                                                  {{ $product->product_prices->first()->pricelist->currency->name }}
                                              @else
-                                                 {{ __("no price") }}
+                                                 {{ __('no price') }}
                                              @endif
                                          </span>
                                      </a>
@@ -296,7 +296,7 @@
                                      <a class="search__container--item" href="/storeproducts/{{ $category->id }}">
                                          @if (count($category->media) > 0)
                                              @foreach ($category->media as $media)
-                                                 @if ($media->location->location == "search")
+                                                 @if ($media->location->location == 'search')
                                                      @if ($media->external)
                                                          <img src="{{ $media->path }}" alt="{{ $media->path }}">
                                                      @else
@@ -316,7 +316,7 @@
                          @endif
                      @else
                          <li>
-                             {{ __("No elements found") }}
+                             {{ __('No elements found') }}
                          </li>
                      @endif
                  </ul>

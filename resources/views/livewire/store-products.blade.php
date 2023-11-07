@@ -142,18 +142,16 @@
                         <h4>{{ $product->name }}</h4>
                         <div class="product__item--buttons">
                             <div class="product__item--price">
-                                <span>
-                                    @php
-                                        $price = $product->product_prices->first();
-                                    @endphp
-
-                                    @if ($price)
-                                        {{ $price->value }} {{ $price->pricelist->currency->first()->name }}
+                                <p>
+                                    @if ($product->product_prices->first())
+                                        {{ $product->product_prices->first()->pricelist->currency->name }}
+                                        {{ $product->product_prices->first()->value }}
                                     @else
-                                        unavailable
+                                        {{ __('no price') }}
                                     @endif
-                                </span>
+                                </p>
                             </div>
+                            <?php $price = $product->product_prices->first()->value; ?>
                             @if ($price && $product->quantity != 0)
                                 <button wire:click="addToCart({{ $product->id }})" class="product__item--btn"
                                     aria-label="product cart">
