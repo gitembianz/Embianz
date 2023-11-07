@@ -177,13 +177,10 @@ class StoreProducts extends Component
     $product = Product::with('product_prices.pricelist')->find($productId);
     $newStatusId = Status::where('name', 'new')->where('type', 'cart')->first()->id;
     $cart = Cart::where('session_id', $this->session_id)->where('status_id', '!=', $closedStatusId)->latest()->first();
-
     if (!$cart) {
-      $baseName = class_basename(Cart::class); // Gets the base name of the Cart model class (e.g., "Cart")
+      $baseName = class_basename(Cart::class);
       $cartNumber = 1;
       $uniqueName = $baseName . '_' . str_pad($cartNumber, 2, '0', STR_PAD_LEFT);
-
-      // Check for uniqueness, generate a new name if it's not unique
       while (Cart::where('name', $uniqueName)->exists()) {
         $cartNumber++;
         $uniqueName = $baseName . '_' . str_pad($cartNumber, 2, '0', STR_PAD_LEFT);
@@ -197,9 +194,7 @@ class StoreProducts extends Component
         'currency_id' => $product->product_prices->first()->pricelist->currency_id,
       ]);
     }
-
     $cartItem = Cart_Item::where('cart_id', $cart->id)->where('product_id', $productId)->first();
-
     if (!$cartItem) {
       $cartItem = Cart_Item::create([
         'cart_id' => $cart->id,
@@ -207,17 +202,17 @@ class StoreProducts extends Component
         'price' => $product->product_prices->first()->value,
         'quantity' => 1
       ]);
+      $cart->increment('quantity_amount');
+      $cart->sum_amount += $product->product_prices->first()->value;
     } else {
       if ($cartItem->quantity < $product->quantity) {
 
         $cartItem->increment('quantity');
+        $cart->increment('quantity_amount');
+        $cart->sum_amount += $product->product_prices->first()->value;
       }
     }
-
-    $cart->increment('quantity_amount');
-    $cart->sum_amount += $product->product_prices->first()->value;
     $cart->save();
-
     $this->emit('cartUpdated');
   }
   public function removeFromWishlist($productId)
