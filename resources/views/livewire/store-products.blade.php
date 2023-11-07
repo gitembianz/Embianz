@@ -28,7 +28,8 @@
                                     @foreach ($this->getUniqueSpecValues($spec->id) as $innerIndex => $uniqueValue)
                                         <li class="filter__item">
                                             <input type="checkbox"
-                                                wire:model="selectedSpecValues.{{ $innerIndex }}.{{ $uniqueValue }}"
+                                                wire:model.defer="selectedSpecValues.{{ $innerIndex }}.{{ $uniqueValue }}"
+                                                wire:key="checkbox-{{ $innerIndex }}-{{ $uniqueValue }}"
                                                 id="{{ $innerIndex }}_{{ $uniqueValue }}">
                                             <label
                                                 for="{{ $innerIndex }}_{{ $uniqueValue }}">{{ $uniqueValue }}</label>
@@ -39,8 +40,9 @@
                         </div>
                     @endif
                 @endforeach
+
                 <div class="filter__buttons">
-                    <button wire:click="applyFilter">Apply</button>
+                    <button wire:click.prevent="applyFilter">Apply</button>
                     <button wire:click="resetFilter">Reset</button>
                 </div>
             </div>
@@ -194,7 +196,7 @@
                     </div>
                 </article>
             @endforeach
+            <x-lazy />
         @endif
     </div>
-    <x-lazy />
 </div>

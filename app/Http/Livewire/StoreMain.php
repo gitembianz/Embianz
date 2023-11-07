@@ -15,6 +15,9 @@ class StoreMain extends Component
   public $category;
   public $session_id;
   public $wishlist = [];
+  protected $listeners = [
+    'wishlistUpdated' => 'mount'
+  ];
 
   public function mount()
   {

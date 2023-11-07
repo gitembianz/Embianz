@@ -22,14 +22,14 @@ class StoreProducts extends Component
   public $wishlist = [];
   public $session_id;
   public $specification;
-  public $property = false;
-  public $selectedSpecValues = [];
   public $orderBy = 'best_selling'; // Default sorting order
   public $orderAsc = true;
-  public $specfilter = false;
   public $products;
   public $category;
   public $categoryname;
+  public $property = false;
+  public $specfilter = false;
+  public $selectedSpecValues = [];
   public $selectedKeys = [];
   public $selectedSpecNames = [];
 
@@ -71,12 +71,19 @@ class StoreProducts extends Component
   public function resetFilter()
   {
     $this->selectedSpecValues = [];
+    $this->selectedSpecNames = [];
+    $this->selectedKeys = [];
+    $this->property = false;
   }
   public function applyFilter()
   {
-    $this->selectedKeys = array_keys($this->selectedSpecValues[0]);
-
-
+    $this->selectedSpecNames = [];
+    $filteredValues = array_filter($this->selectedSpecValues, function ($values) {
+      return in_array(true, $values);
+    });
+    // Extract keys where the value is true
+    $allKeys = array_keys(array_merge(...$filteredValues));
+    $this->selectedKeys = $allKeys;
     foreach ($this->specification as $spec) {
       foreach ($this->selectedKeys as $key) {
         foreach ($spec->product_spec as $value) {
@@ -95,10 +102,18 @@ class StoreProducts extends Component
   public function removeSpec($key)
   {
 
-    unset($this->selectedSpecValues[0][$key]);
+    foreach ($this->selectedSpecValues as &$subarray) {
+      if (isset($subarray[$key])) {
+        unset($subarray[$key]);
+        if (empty($subarray)) {
+          unset($subarray);
+        }
+        break;
+      }
+    }
     unset($this->selectedSpecNames[$key]);
-    $this->render();
-    $this->selectedKeys = array_keys($this->selectedSpecValues[0]); // Update selectedKeys
+    $allKeys = array_keys(array_merge(...$this->selectedSpecValues));
+    $this->selectedKeys = $allKeys; // Update selectedKeys
   }
   public function clearall()
   {
