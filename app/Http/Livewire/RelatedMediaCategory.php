@@ -48,10 +48,10 @@ class RelatedMediaCategory extends Component
   public $row = 1;
   public $externalmedia = false;
 
-  public function mount($categoryId)
+  public function mount($category)
   {
-    $this->categoryId = $categoryId;
-    $this->category = Category::find($categoryId);
+    $this->categoryId = $category->id;
+    $this->category = $category;
     $this->selectedColumns = $this->columns;
     $this->locations = MediaLocation::all();
     $this->file_locations[] = '1';

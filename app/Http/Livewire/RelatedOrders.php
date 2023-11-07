@@ -32,10 +32,10 @@ class RelatedOrders extends Component
         ]);
     }
 
-    public function mount($accountId)
+    public function mount($account)
     {
-        $this->accountId = $accountId;
-        $this->account = Account::find($accountId);
+        $this->accountId = $account->id;
+        $this->account = $account;
         $this->selectedColumns = $this->columns;
     }
     public function showColumn($column)
@@ -95,7 +95,7 @@ class RelatedOrders extends Component
     public function getOrdersQueryProperty()
     {
         return Order::search($this->search)->where('account_id', $this->accountId)
-            ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->with('cart');
+            ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->with('cart')->with('payment');
     }
     public function confirmItemRemoval($id)
     {

@@ -132,10 +132,10 @@ class RelatedAddresses extends Component
             'addresses' => $this->addresses,
         ]);
     }
-    public function mount($accountId)
+    public function mount($account)
     {
-        $this->accountId = $accountId;
-        $this->account = Account::find($accountId);
+        $this->accountId = $account->id;
+        $this->account = $account;
         $this->selectedColumns = $this->columns;
     }
 }

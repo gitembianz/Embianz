@@ -42,10 +42,10 @@ class RelatedCartItems extends Component
             'cartproducts' => $cartproducts,
         ]);
     }
-    public function mount($cartId)
+    public function mount($cart)
     {
-        $this->cartId = $cartId;
-        $this->cart = Cart::find($cartId);
+        $this->cartId = $cart->id;
+        $this->cart = $cart;
         $this->selectedColumns = $this->columns;
     }
     //function for related products

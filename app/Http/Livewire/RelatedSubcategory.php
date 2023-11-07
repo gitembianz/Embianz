@@ -283,10 +283,10 @@ class RelatedSubcategory extends Component
       ]);
     }
   }
-  public function mount($categoryId)
+  public function mount($category)
   {
-    $this->categoryId = $categoryId;
-    $this->category = Category::find($categoryId);
+    $this->categoryId = $category->id;
+    $this->category = $category;
     $this->selectedColumns = $this->columns;
     $this->selectedColumnsadd = $this->columnsadd;
   }
