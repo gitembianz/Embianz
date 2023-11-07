@@ -22,14 +22,14 @@ class StoreProducts extends Component
   public $wishlist = [];
   public $session_id;
   public $specification;
-  public $property = false;
-  public $selectedSpecValues = [];
   public $orderBy = 'best_selling'; // Default sorting order
   public $orderAsc = true;
-  public $specfilter = false;
   public $products;
   public $category;
   public $categoryname;
+  public $property = false;
+  public $specfilter = false;
+  public $selectedSpecValues = [];
   public $selectedKeys = [];
   public $selectedSpecNames = [];
 
@@ -71,17 +71,19 @@ class StoreProducts extends Component
   public function resetFilter()
   {
     $this->selectedSpecValues = [];
+    $this->selectedSpecNames = [];
+    $this->selectedKeys = [];
+    $this->property = false;
   }
   public function applyFilter()
   {
-    // Flatten the multidimensional array and get all keys
-    $allKeys = array_keys(array_merge(...$this->selectedSpecValues));
-
-    // Assign all keys to $this->selectedKeys
+    $this->selectedSpecNames = [];
+    $filteredValues = array_filter($this->selectedSpecValues, function ($values) {
+      return in_array(true, $values);
+    });
+    // Extract keys where the value is true
+    $allKeys = array_keys(array_merge(...$filteredValues));
     $this->selectedKeys = $allKeys;
-    // dd($this->selectedKeys);
-
-
     foreach ($this->specification as $spec) {
       foreach ($this->selectedKeys as $key) {
         foreach ($spec->product_spec as $value) {
