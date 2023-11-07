@@ -57,22 +57,24 @@ url(/images/store/default/default.svg)
             <ul class="card-carousel" role="list">
                 @foreach ($popproducts as $product)
                     <div class="card" role="listitem">
-                        @if (count($product->media) > 0)
-                            @foreach ($product->media as $media)
-                                @if ($media->location->location == 'main')
-                                    @if ($media->external)
-                                        <img class="card-image" src="{{ $media->path }}" draggable="false"
-                                            alt="{{ $media->path }}">
-                                    @else
-                                        <img class="card-image" src="/{{ $media->path }}{{ $media->name }}"
-                                            draggable="false" alt="{{ $media->path }}">
+                        <a href="/product/{{ $product->id }}">
+                            @if (count($product->media) > 0)
+                                @foreach ($product->media as $media)
+                                    @if ($media->location->location == 'main')
+                                        @if ($media->external)
+                                            <img class="card-image" src="{{ $media->path }}" draggable="false"
+                                                alt="{{ $media->path }}">
+                                        @else
+                                            <img class="card-image" src="/{{ $media->path }}{{ $media->name }}"
+                                                draggable="false" alt="{{ $media->path }}">
+                                        @endif
+                                        <?php break; ?>
                                     @endif
-                                    <?php break; ?>
-                                @endif
-                            @endforeach
-                        @else
-                            <img src="/images/store/default/default.svg" draggable="false" alt="something wrong">
-                        @endif
+                                @endforeach
+                            @else
+                                <img src="/images/store/default/default.svg" draggable="false" alt="something wrong">
+                            @endif
+                        </a>
                         {{-- <img class="card-image" src="https://24bottles.com/cdn/shop/products/1496_01_590x.png?v=1644250387" --}}
                         {{-- alt="Card-Image"> --}}
                         <button class="card-favorites @if ($product->wishlists->where('session_id', $session_id)->isNotEmpty()) active @endif"
@@ -99,7 +101,7 @@ url(/images/store/default/default.svg)
                                 </p>
                             </div>
                             {{-- <button class="card-button">View Product</button> --}}
-                            <a class="card-button" href="/product/{{ $product->id }}">View Product</a>
+                            <a class="card-button" wire:click="addToCart({{ $product->id }})">Add to cart</a>
                         </div>
                     </div>
                 @endforeach
