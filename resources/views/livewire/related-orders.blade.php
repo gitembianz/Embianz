@@ -244,9 +244,9 @@
                                 @if ($this->showColumn('Delivery Method'))
                                     <th wire:click="sortBy('delivery_method')">
                                         <button class="table__header--btn"
-                                            @if ($orderBy === 'delivery_method' && $orderAsc === '1') data-symbol="up"
+                                            @if ($orderBy === 'payment_method' && $orderAsc === '1') data-symbol="up"
                                                 @else data-symbol="down" @endif>
-                                            Delivery Method
+                                            Payment Method
                                             <svg>
                                                 <line x1="12" y1="5" x2="12" y2="19">
                                                 </line>
@@ -333,7 +333,7 @@
                                             @endif
                                             @if ($this->showColumn('Delivery Method'))
                                                 <td data-title="Delivery Method">
-                                                    {{ $order->delivery_method }}
+                                                    {{ $order->payment->name }}
                                                 </td>
                                             @endif
                                             @if ($this->showColumn('Created At'))
