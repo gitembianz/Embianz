@@ -2,6 +2,9 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Cart;
+use App\Models\Cart_Item;
+use App\Models\Status;
 use App\Models\Product;
 use Livewire\Component;
 use App\Models\Category;
@@ -81,5 +84,54 @@ class StoreMain extends Component
     } else {
       $this->addToWishlist($productId);
     }
+  }
+  public function addToCart($productId)
+  {
+    $closedStatusId = Status::where('name', 'closed')->where('type', 'cart')->first()->id;
+    $product = Product::with('product_prices.pricelist')->find($productId);
+    $newStatusId = Status::where('name', 'new')->where('type', 'cart')->first()->id;
+    $cart = Cart::where('session_id', $this->session_id)->where('status_id', '!=', $closedStatusId)->latest()->first();
+
+    if (!$cart) {
+      $baseName = class_basename(Cart::class); // Gets the base name of the Cart model class (e.g., "Cart")
+      $cartNumber = 1;
+      $uniqueName = $baseName . '_' . str_pad($cartNumber, 2, '0', STR_PAD_LEFT);
+
+      // Check for uniqueness, generate a new name if it's not unique
+      while (Cart::where('name', $uniqueName)->exists()) {
+        $cartNumber++;
+        $uniqueName = $baseName . '_' . str_pad($cartNumber, 2, '0', STR_PAD_LEFT);
+      }
+      $cart = Cart::create([
+        'session_id' => $this->session_id,
+        'name' => $uniqueName,
+        'quantity_amount' => 0,
+        'sum_amount' => 0,
+        'status_id' => $newStatusId,
+        'currency_id' => $product->product_prices->first()->pricelist->currency_id,
+      ]);
+    }
+
+    $cartItem = Cart_Item::where('cart_id', $cart->id)->where('product_id', $productId)->first();
+
+    if (!$cartItem) {
+      $cartItem = Cart_Item::create([
+        'cart_id' => $cart->id,
+        'product_id' => $productId,
+        'price' => $product->product_prices->first()->value,
+        'quantity' => 1
+      ]);
+    } else {
+      if ($cartItem->quantity < $product->quantity) {
+
+        $cartItem->increment('quantity');
+      }
+    }
+
+    $cart->increment('quantity_amount');
+    $cart->sum_amount += $product->product_prices->first()->value;
+    $cart->save();
+
+    $this->emit('cartUpdated');
   }
 }
