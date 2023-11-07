@@ -3666,7 +3666,6 @@ footer {
   padding: 15px;
   width: 100%;
   height: 100%;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 8px;
 }
 
 .card-image {
@@ -3742,11 +3741,11 @@ footer {
   align-items: center;
   justify-content: center;
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 20px;
+  right: 20px;
   width: 33px;
   height: 33px;
-  background: #d3d3d3;
+  background: transparent;
   border: none;
   border-radius: 50px;
 }
@@ -3754,6 +3753,9 @@ footer {
   fill: #a9a9a9;
 }
 .card-favorites:hover > svg {
+  fill: #d2042d;
+}
+.card-favorites.active > svg {
   fill: #d2042d;
 }
 
@@ -4280,4 +4282,4 @@ footer {
 
 .support__list-item {
   text-decoration: underline;
-}/*# sourceMappingURL=store.css.map */
+}
