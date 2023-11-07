@@ -4,7 +4,6 @@
          @if ($cartItems->isEmpty())
              <p>No products</p>
          @else
-             <?php $currency = $cart->currency->name; ?>
              @foreach ($cartItems as $cartItem)
                  <article class="cart-page__item">
                      @if (count($cartItem->product->media) > 0)
@@ -25,6 +24,7 @@
                          <h3>{{ $cartItem->product->name }}</h3>
                          <div style="display: flex; width:100%; justify-content:space-between; align-items:center">
                              <span>
+                                 <?php $currency = $cartItem->product->product_prices->first()->pricelist->currency->name; ?>
                                  @if ($currency !== null)
                                      {{ $cartItem->price }}
                                      {{ $currency }}

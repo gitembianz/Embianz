@@ -729,7 +729,8 @@
                                     @endif
                                     <span class="cart__list--text">{{ $cartItem->product->name }}</span>
                                     <span class="cart__list--much">
-                                        {{ $cartItem->quantity * $cartItem->price }} {{ $cart->currency->name }}
+                                        <?php $currency = $cartItem->product->product_prices->first()->pricelist->currency->name; ?>
+                                        {{ $cartItem->quantity * $cartItem->price }} {{ $currency }}
                                     </span>
                                 </div>
                             @endforeach
@@ -743,7 +744,7 @@
                         <span class="checking__content-create--text">Delivery Price: @if ($cart->delivery_price == 0)
                                 Free
                             @else
-                                {{ $cart->delivery_price }} {{ $cart->currency->name }}
+                                {{ $cart->delivery_price }} {{ $currency }}
                             @endif
                         </span>
                     </div>
@@ -751,7 +752,7 @@
                         @if (!$cartItems->isEmpty())
                             <span class="checking__content-complete--text">Total:</span>
                             <span class="checking__content-create--text">{{ $cart->final_amount }}
-                                {{ $cart->currency->name }}</span>
+                                {{ $currency }}</span>
                         @endif
                     </div>
                 </div>
