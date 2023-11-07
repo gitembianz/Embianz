@@ -74,7 +74,12 @@ class StoreProducts extends Component
   }
   public function applyFilter()
   {
-    $this->selectedKeys = array_keys($this->selectedSpecValues[0]);
+    // Flatten the multidimensional array and get all keys
+    $allKeys = array_keys(array_merge(...$this->selectedSpecValues));
+
+    // Assign all keys to $this->selectedKeys
+    $this->selectedKeys = $allKeys;
+    // dd($this->selectedKeys);
 
 
     foreach ($this->specification as $spec) {
@@ -95,10 +100,18 @@ class StoreProducts extends Component
   public function removeSpec($key)
   {
 
-    unset($this->selectedSpecValues[0][$key]);
+    foreach ($this->selectedSpecValues as &$subarray) {
+      if (isset($subarray[$key])) {
+        unset($subarray[$key]);
+        if (empty($subarray)) {
+          unset($subarray);
+        }
+        break;
+      }
+    }
     unset($this->selectedSpecNames[$key]);
-    $this->render();
-    $this->selectedKeys = array_keys($this->selectedSpecValues[0]); // Update selectedKeys
+    $allKeys = array_keys(array_merge(...$this->selectedSpecValues));
+    $this->selectedKeys = $allKeys; // Update selectedKeys
   }
   public function clearall()
   {

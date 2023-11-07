@@ -194,7 +194,7 @@
                     </div>
                 </article>
             @endforeach
+            <x-lazy />
         @endif
     </div>
-    <x-lazy />
 </div>
