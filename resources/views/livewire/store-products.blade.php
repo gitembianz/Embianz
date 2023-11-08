@@ -122,16 +122,17 @@
             <p>No products found</p>
         @else
             @foreach ($products as $product)
-                <article class="product__item" @if ($loop->last) id="last_record" @endif>
+                <div class="card" role="listitem">
                     <a href="/product/{{ $product->id }}">
                         @if (count($product->media) > 0)
                             @foreach ($product->media as $media)
                                 @if ($media->location->location == 'main')
                                     @if ($media->external)
-                                        <img src="{{ $media->path }}" draggable="false" alt="{{ $media->path }}">
-                                    @else
-                                        <img src="/{{ $media->path }}{{ $media->name }}" draggable="false"
+                                        <img class="card-image" src="{{ $media->path }}" draggable="false"
                                             alt="{{ $media->path }}">
+                                    @else
+                                        <img class="card-image" src="/{{ $media->path }}{{ $media->name }}"
+                                            draggable="false" alt="{{ $media->path }}">
                                     @endif
                                     <?php break; ?>
                                 @endif
@@ -140,62 +141,59 @@
                             <img src="/images/store/default/default.svg" draggable="false" alt="something wrong">
                         @endif
                     </a>
-                    <div class="product__item--bundle">
-                        <h4>{{ $product->name }}</h4>
-                        <div class="product__item--buttons">
-                            <div class="product__item--price">
-                                <p>
-                                    @if ($product->product_prices->first())
-                                        {{ $product->product_prices->first()->pricelist->currency->name }}
-                                        {{ $product->product_prices->first()->value }}
-                                    @else
-                                        {{ __('no price') }}
-                                    @endif
-                                </p>
-                            </div>
-                            <?php $price = $product->product_prices->first()->value; ?>
-                            @if ($price && $product->quantity != 0)
-                                <button wire:click="addToCart({{ $product->id }})" class="product__item--btn"
-                                    aria-label="product cart">
-                                    <svg>
-                                        <circle cx="9" cy="21" r="1"></circle>
-                                        <circle cx="20" cy="21" r="1"></circle>
-                                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6">
-                                        </path>
-                                    </svg>
-                                </button>
-                            @endif
-                        </div>
-                    </div>
-                    <div class="product__item--header">
-                        @if ($price)
-                            @if ($product->quantity < $quantity && $product->quantity > 0)
-                                <p class="product__item--stock">
-                                    Low stock!
-                                </p>
-                            @elseif($product->quantity == 0)
-                                <p class="product__item--stock">
-                                    Out of stock!
-                                </p>
-                            @else
-                                <p></p>
-                            @endif
-                        @else
-                            <p class="product__item--stock">
-                                Comming soon!
+                    <?php $price = $product->product_prices->first()->value; ?>
+                    @if ($price)
+                        {{-- Out- negru // save - rosu --}}
+                        @if ($product->quantity < $quantity && $product->quantity > 0)
+                            <p class="card-status out">
+                                Ultimele produse!
                             </p>
+                        @elseif($product->quantity == 0)
+                            <p class="card-status save">
+                                Produs indisponibil!
+                            </p>
+                        @else
+                            <p></p>
                         @endif
-                        <button class="product__item--heart @if ($product->wishlists->where('session_id', $session_id)->isNotEmpty()) active @endif"
-                            aria-label="add to favorites" wire:click="toggleWishlist({{ $product->id }})">
-                            <svg>
-                                <path
-                                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
-                                </path>
-                            </svg>
-                        </button>
+                    @else
+                        <p class="card-status save">
+                            În curând!
+                        </p>
+                    @endif
+                    {{-- <img class="card-image" src="https://24bottles.com/cdn/shop/products/1496_01_590x.png?v=1644250387" --}}
+                    {{-- alt="Card-Image"> --}}
+                    <button class="card-favorites @if ($product->wishlists->where('session_id', $session_id)->isNotEmpty()) active @endif"
+                        wire:click="toggleWishlist({{ $product->id }})">
+                        <svg viewBox="0 0 512 512" width="20" title="heart">
+                            <path
+                                d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z" />
+                        </svg>
+                    </button>
+                    <div class="card-info">
+                        <div class="card-text">
+                            <span>{{ $product->product_categories->first()->category->name }}</span>
+                            {{-- <span>600ml</span> --}}
+                        </div>
+                        <div class="card-text">
+                            <h3>{{ $product->name }}</h3>
+                            <p>
+                                @if ($product->product_prices->first())
+                                    {{ $product->product_prices->first()->pricelist->currency->name }}
+                                    {{ $price }}
+                                @else
+                                    {{ __('no price') }}
+                                @endif
+                            </p>
+                        </div>
+
+                        @if ($price && $product->quantity != 0)
+                            <a class="card-button" wire:click="addToCart({{ $product->id }})">Adauga in coș</a>
+                        @endif
+
                     </div>
-                </article>
+                </div>
             @endforeach
+
             <x-lazy />
         @endif
     </div>
