@@ -1,8 +1,8 @@
  <div class="cart__page container">
-     <h2 class="section__title">Shopping Basket</h2>
+     <h2 class="section__title">Cos de cumparaturi</h2>
      <div class="cart-page__list">
          @if ($cartItems->isEmpty())
-             <p>No products</p>
+             <p>Cosul este gol</p>
          @else
              @foreach ($cartItems as $cartItem)
                  <article class="cart-page__item">
@@ -29,7 +29,7 @@
                                      {{ $cartItem->price }}
                                      {{ $currency }}
                                  @else
-                                     price unavailable
+                                     pret indisponibil
                                  @endif
                              </span>
                              <div class="cart-page--bundle">
@@ -86,21 +86,21 @@
          <div class="cart__column">
              <div class="cart__buy">
                  <h3>
-                     Order summary
+                     Detalii comanda
                  </h3>
                  <h5>
-                     Products:
+                     Produse:
                  </h5>
                  <span>
                      {{ $cart->sum_amount }}
                      {{ $currency }}
                  </span>
                  <h5>
-                     Delivery:
+                     Livrare:
                  </h5>
                  <span>
                      @if ($delivery == 0)
-                         Free
+                         Gratuit
                      @else
                          {{ $delivery }} {{ $currency }}
                      @endif

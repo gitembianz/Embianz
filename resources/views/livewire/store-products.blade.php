@@ -2,7 +2,7 @@
     {{-- <x-loading /> --}}
     @if ($category)
         <div>
-            <p>Category: {{ $categoryname }}</p>
+            <p>Categorie: {{ $categoryname }}</p>
         </div>
     @endif
     <div class="products__control">
@@ -68,23 +68,23 @@
                 <ul class="filter__sort--list">
                     <li class="filter__sort--item">
                         <input wire:model="orderBy" type="radio" name="sort" value="best_selling" id="sort2">
-                        <label for="sort2">Best selling</label>
+                        <label for="sort2">Cel mai bine vândut</label>
                     </li>
                     <li class="filter__sort--item">
                         <input wire:model="orderBy" type="radio" name="sort" value="name_az" id="sort3">
-                        <label for="sort3">Alphabetically, A-Z</label>
+                        <label for="sort3">Alfabetic, A-Z</label>
                     </li>
                     <li class="filter__sort--item">
                         <input wire:model="orderBy" type="radio" name="sort" value="name_za" id="sort4">
-                        <label for="sort4">Alphabetically, Z-A</label>
+                        <label for="sort4">Alfabetic, Z-A</label>
                     </li>
                     <li class="filter__sort--item">
                         <input wire:model="orderBy" type="radio" name="sort" value="date_old_new" id="sort7">
-                        <label for="sort7">Date, old to new</label>
+                        <label for="sort7">Data, de la vechi la nou</label>
                     </li>
                     <li class="filter__sort--item">
                         <input wire:model="orderBy" type="radio" name="sort" value="date_new_old" id="sort8">
-                        <label for="sort8">Date, new to old</label>
+                        <label for="sort8">Data, de la nou la vechi</label>
                     </li>
                 </ul>
             </div>
