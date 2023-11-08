@@ -1594,6 +1594,10 @@ input[type=submit] {
   display: flex;
 }
 
+.sidebar .dropdown.open .dropdown-list {
+  display: none;
+}
+
 .none {
   display: none;
 }
@@ -3817,6 +3821,7 @@ header,
   gap: 10px;
   padding: 0 20px;
   padding-bottom: 10px;
+  overflow-y: auto;
 }
 .sidebar__list li {
   padding: 0;
