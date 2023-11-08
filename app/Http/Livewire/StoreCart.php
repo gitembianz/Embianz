@@ -36,7 +36,9 @@ class StoreCart extends Component
     $this->delivery = Store_Settings::where('parameter', 'delivery_price')->first()->value;
     $this->closedStatusId = Status::where('name', 'closed')->where('type', 'cart')->first()->id;
     $this->cart = Cart::where('session_id', $this->session_id)->where('status_id', '!=', $this->closedStatusId)->first();
-    $this->currency = $this->cart->currency->name;
+    if ($this->cart) {
+      $this->currency = $this->cart->currency->name;
+    }
   }
   public function render()
   {

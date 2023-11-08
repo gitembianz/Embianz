@@ -6,31 +6,38 @@
   padding: 0;
   font-family: "Montserrat", sans-serif;
   scroll-behavior: smooth;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
+
+*::-webkit-scrollbar {
+  display: none;
+}
+
 
 ul {
   list-style: none;
 }
 
-* {
-  scrollbar-width: thin;
-  scrollbar-color: #f2f2f2 transparent;
-}
+// * {
+//   scrollbar-width: thin;
+//   scrollbar-color: #f2f2f2 transparent;
+// }
 
-/* Chrome, Edge, and Safari */
-*::-webkit-scrollbar {
-  width: 12px;
-}
+// /* Chrome, Edge, and Safari */
+// *::-webkit-scrollbar {
+//   width: 12px;
+// }
 
-*::-webkit-scrollbar-track {
-  background: transparent;
-}
+// *::-webkit-scrollbar-track {
+//   background: transparent;
+// }
 
-*::-webkit-scrollbar-thumb {
-  background-color: darken(#f2f2f2, 10%);
-  border-radius: 15px;
-  border: 2px solid transparent;
-}
+// *::-webkit-scrollbar-thumb {
+//   background-color: darken(#f2f2f2, 10%);
+//   border-radius: 15px;
+//   border: 2px solid transparent;
+// }
 
 
 h1,

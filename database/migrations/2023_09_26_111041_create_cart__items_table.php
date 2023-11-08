@@ -19,7 +19,7 @@ return new class extends Migration
       $table->foreign('product_id')->references('id')->on('products');
       $table->double('price')->default(0);
       $table->integer('quantity')->default(0);
-      $table->string('delivery_price')->nullable();
+      $table->double('delivery_price')->nullable();
       $table->timestamps();
     });
   }

@@ -79,11 +79,11 @@
             </nav>
         </div>
         <div class="footer__subscribe">
-            <h2>Connect to our Newsletter</h2>
+            <h2>Aboneaza-te la newsletter-ul nostru</h2>
             <form wire:submit.prevent="store" class="footer__subscribe--form">
-                <input type="email" wire:model="email" name="email" id="email" placeholder="Enter your email"
-                    aria-describedby="email-error" autocomplete="email">
-                <button type="submit">Subscribe</button>
+                <input type="email" wire:model="email" name="email" id="email"
+                    placeholder="Introduceți adresa dvs. de email" aria-describedby="email-error" autocomplete="email">
+                <button type="submit">Trimite</button>
             </form>
             @if ($response)
                 <p>{{ $response }}</p>

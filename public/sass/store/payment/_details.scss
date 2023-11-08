@@ -341,3 +341,19 @@
     }
   }
 }
+
+.confirmOrder {
+  font-size: 16px;
+
+  &>svg {
+    display: none;
+  }
+
+  @include breakpoint(md) {
+    font-size: 0;
+
+    &>svg {
+      display: block;
+    }
+  }
+}

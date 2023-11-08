@@ -97,7 +97,7 @@
 
                 </div>
                 @if ($maxlimit)
-                    <label for="count">Quantity limit products reach / {{ $limit }}</label>
+                    <label for="count">Cantitatea maxima a produsului este {{ $limit }}</label>
                 @endif
 
                 <h3>

@@ -11,7 +11,7 @@ use App\Models\Wishlist;
 
 class StoreShowProduct extends Component
 {
-  public $record;
+  public $product;
   public $productId;
   public $activeTab = 0;
   public $quantity;
@@ -29,10 +29,7 @@ class StoreShowProduct extends Component
 
   public function render()
   {
-    return view('livewire.store-show-product', [
-      'product' => $this->record
-
-    ]);
+    return view('livewire.store-show-product');
   }
   public function switchTab($index)
   {
@@ -106,13 +103,10 @@ class StoreShowProduct extends Component
     $product = Product::with('product_prices.pricelist')->find($productId);
     $newStatusId = Status::where('name', 'new')->where('type', 'cart')->first()->id;
     $cart = Cart::where('session_id', $this->session_id)->where('status_id', '!=', $closedStatusId)->latest()->first();
-
     if (!$cart) {
-      $baseName = class_basename(Cart::class); // Gets the base name of the Cart model class (e.g., "Cart")
+      $baseName = class_basename(Cart::class);
       $cartNumber = 1;
       $uniqueName = $baseName . '_' . str_pad($cartNumber, 2, '0', STR_PAD_LEFT);
-
-      // Check for uniqueness, generate a new name if it's not unique
       while (Cart::where('name', $uniqueName)->exists()) {
         $cartNumber++;
         $uniqueName = $baseName . '_' . str_pad($cartNumber, 2, '0', STR_PAD_LEFT);
@@ -126,35 +120,38 @@ class StoreShowProduct extends Component
         'currency_id' => $product->product_prices->first()->pricelist->currency_id,
       ]);
     }
-
     $cartItem = Cart_Item::where('cart_id', $cart->id)->where('product_id', $productId)->first();
-
     if (!$cartItem) {
       $cartItem = Cart_Item::create([
         'cart_id' => $cart->id,
         'product_id' => $productId,
         'price' => $product->product_prices->first()->value,
-        'quantity' => $this->quantity
+        'quantity' => 1
       ]);
+      $cart->increment('quantity_amount');
+      $cart->sum_amount += $product->product_prices->first()->value;
     } else {
-      $cartItem->quantity += $this->quantity;
-      $cartItem->save();
+      if ($cartItem->quantity < $product->quantity) {
+
+        $cartItem->increment('quantity');
+        $cart->increment('quantity_amount');
+        $cart->sum_amount += $product->product_prices->first()->value;
+      } else {
+        $this->quantity = $product->quantity;
+        $this->maxlimit = true;
+      }
     }
-
-    $cart->quantity_amount += $this->quantity;
-    $cart->sum_amount += $product->product_prices->first()->value * $this->quantity;
     $cart->save();
-
     $this->emit('cartUpdated');
   }
-  public function mount()
+  public function mount($product)
   {
-    $this->record = Product::findOrFail($this->productId);
-    $this->limit = $this->record->quantity;
+    $this->product = $product;
+    $this->limit = $this->product->quantity;
     $this->session_id = $_COOKIE['sessionId'];
     $this->quantity = 1;
 
-    $this->mainMedia = $this->record->media->firstWhere('location.location', 'main');
+    $this->mainMedia = $this->product->media->firstWhere('location.location', 'main');
     if ($this->mainMedia) {
       if (!$this->path) {
         $this->mainpath = $this->mainMedia->external
@@ -163,7 +160,7 @@ class StoreShowProduct extends Component
       }
     }
 
-    $this->mainimages = $this->record->media
+    $this->mainimages = $this->product->media
       ->where('location.location', '!=', 'search')
       ->sortBy('location_id')
       ->values();
@@ -173,13 +170,5 @@ class StoreShowProduct extends Component
         ? $image->path
         : "/{$image->path}{$image->name}";
     });
-  }
-  public function getProductProperty()
-  {
-    return $this->productQuery;
-  }
-  public function getProductQueryProperty()
-  {
-    return Product::find($this->productId);
   }
 }

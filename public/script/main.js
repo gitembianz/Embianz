@@ -137,7 +137,7 @@ if (carousel) {
   const autoPlay = () => {
     if (window.innerWidth < 800 || !isAutoPlay) return; // Return if window is smaller than 800 or isAutoPlay is false
     // Autoplay the carousel after every 2500 ms
-    timeoutId = setTimeout(() => (carousel.scrollLeft += firstCardWidth), 2500);
+    timeoutId = setTimeout(() => (carousel.scrollLeft += firstCardWidth), 90000);
   };
   autoPlay();
 
@@ -414,3 +414,145 @@ document.body.addEventListener("click", function (event) {
 //   this.classList.toggle('active');
 //   content.style.maxHeight = content.style.maxHeight ? null : content.scrollHeight + 'px';
 // }
+function initializeSlider() {
+  const sliderElement = document.querySelector(".slider");
+
+  // Verificați dacă sliderElement există înainte de a inițializa sliderul
+  if (sliderElement) {
+    const slides = sliderElement.querySelectorAll(".slide");
+    const prevButton = sliderElement.querySelector("#prev");
+    const nextButton = sliderElement.querySelector("#next");
+    const paginationContainer = sliderElement.querySelector(".slider__pagination");
+    let currentSlideIndex = 0;
+    let isDragging = false;
+    let touchStartX = 0;
+    let startX = 0;
+
+    function showSlide(index) {
+      slides.forEach((slide, i) => {
+        slide.style.transform = `translateX(${100 * (i - index)}%)`;
+      });
+    }
+
+    function createPaginationDots() {
+      slides.forEach((_, i) => {
+        const dot = document.createElement("span");
+        dot.classList.add("pagination-dot");
+        dot.addEventListener("click", () => {
+          currentSlideIndex = i;
+          showSlide(currentSlideIndex);
+          updatePaginationDots();
+        });
+        paginationContainer.appendChild(dot);
+      });
+    }
+
+    function updatePaginationDots() {
+      const dots = paginationContainer.querySelectorAll(".pagination-dot");
+      dots.forEach((dot, i) => {
+        dot.classList.toggle("active", i === currentSlideIndex);
+      });
+    }
+
+    function goToPreviousSlide() {
+      currentSlideIndex--;
+      if (currentSlideIndex < 0) {
+        currentSlideIndex = slides.length - 1;
+      }
+      showSlide(currentSlideIndex);
+      updatePaginationDots();
+    }
+
+    function goToNextSlide() {
+      currentSlideIndex++;
+      if (currentSlideIndex >= slides.length) {
+        currentSlideIndex = 0;
+      }
+      showSlide(currentSlideIndex);
+      updatePaginationDots();
+    }
+
+    function goToSlide(index) {
+      if (index < 0) {
+        index = slides.length - 1;
+      } else if (index >= slides.length) {
+        index = 0;
+      }
+      currentSlideIndex = index;
+      showSlide(currentSlideIndex);
+      updatePaginationDots();
+    }
+
+    prevButton.addEventListener("click", () => goToSlide(currentSlideIndex - 1));
+    nextButton.addEventListener("click", () => goToSlide(currentSlideIndex + 1));
+
+    showSlide(currentSlideIndex);
+    createPaginationDots();
+    updatePaginationDots();
+
+    sliderElement.addEventListener("touchstart", (e) => {
+      touchStartX = e.touches[0].clientX;
+      isDragging = true;
+      e.preventDefault();
+    }, { passive: false });
+
+    sliderElement.addEventListener("touchmove", (e) => {
+      if (!isDragging) return;
+
+      const touchEndX = e.touches[0].clientX;
+      const deltaX = touchStartX - touchEndX;
+
+      if (deltaX > 50) {
+        goToNextSlide();
+        isDragging = false;
+      } else if (deltaX < -50) {
+        goToPreviousSlide();
+        isDragging = false;
+      }
+
+      e.preventDefault();
+    });
+
+    sliderElement.addEventListener("touchend", () => {
+      isDragging = false;
+    });
+
+    sliderElement.addEventListener("mousedown", (e) => {
+      startX = e.clientX;
+      isDragging = true;
+      sliderElement.classList.add("grabbing");
+    });
+
+    sliderElement.addEventListener("mousemove", (e) => {
+      if (!isDragging) return;
+
+      const endX = e.clientX;
+      const deltaX = startX - endX;
+
+      if (deltaX > 50) {
+        goToNextSlide();
+        isDragging = false;
+      } else if (deltaX < -50) {
+        goToPreviousSlide();
+        isDragging = false;
+      }
+    });
+
+    sliderElement.addEventListener("mouseup", () => {
+      isDragging = false;
+      sliderElement.classList.remove("grabbing");
+    });
+
+    let autoplayInterval;
+
+    function startAutoplay() {
+      autoplayInterval = setInterval(() => {
+        goToNextSlide();
+      }, 5000);
+    }
+
+    startAutoplay();
+  }
+}
+
+document.addEventListener("DOMContentLoaded", initializeSlider);
