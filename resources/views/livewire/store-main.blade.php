@@ -1,5 +1,5 @@
 <div>
-    <div class="home__container" id="homeContainer">
+    {{-- <div class="home__container" id="homeContainer">
         <div id="home__slide" role="list">
             @if ($category)
                 @foreach ($category->product_categories as $product)
@@ -45,7 +45,52 @@ url(/images/store/default/default.svg)
                 </svg>
             </button>
         </div>
-    </div>
+    </div> --}}
+    @if ($category)
+        <div class="slider">
+            <div class="slider__wrapper">
+                @foreach ($category->product_categories as $product)
+                    <div class="slide">
+                        @if (count($product->product->media) > 0)
+                            @foreach ($product->product->media as $media)
+                                @if ($media->location->location == 'details')
+                                    @if ($media->external)
+                                        <img src="{{ $media->path }}" draggable="false" alt="{{ $media->path }}">
+                                    @else
+                                        <img src="/{{ $media->path }}{{ $media->name }}" draggable="false"
+                                            alt="{{ $media->path }}">
+                                    @endif
+                                    <?php break; ?>
+                                @endif
+                            @endforeach
+                        @else
+                            <img src="/images/store/default/default.svg" draggable="false" alt="something wrong">
+                        @endif
+                    </div>
+                @endforeach
+            </div>
+            {{-- <div class="progress__container">
+                <div class="progress">
+                    <div class="progress-loader"></div>
+                </div>
+            </div> --}}
+            <div class="slider__pagination"></div>
+            <div class="slider__buttons">
+                <div class="slider__btn" id="prev">
+                    <svg>
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                </div>
+                <div class="slider__btn" id="next">
+                    <svg>
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </div>
+            </div>
+            <div class="slider__touch-area" id="touch-prev"></div>
+            <div class="slider__touch-area" id="touch-next"></div>
+        </div>
+    @endif
     <div class="container cards">
         <h2 class="section__title">Top products this month</h2>
         <div class="card-wrapper">
@@ -123,16 +168,3 @@ url(/images/store/default/default.svg)
         </div>
     </div>
 </div>
-{{--
-<div class="home__video">
-  <video autoplay loop muted playsinline defaultmuted preload="auto">
-      <source src="images/store/myVideo.mp4" type="video/mp4"> Your browser does not support HTML5 video.
-  </video>
-  <div class="home__video--text container">
-      <h1>Verdele este pasiunea noastră - Descoperă colecția noastră de sticle eco-friendly și fă o
-          alegere sustenabilă!</h1>
-      <span><q><i>20% din profitul nostru susține protecția mediului!</i></q></span>
-      <img src="images/store/white-logo.svg" alt="logo">
-  </div>
-</div>
---}}
