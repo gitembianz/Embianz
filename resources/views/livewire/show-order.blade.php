@@ -92,7 +92,7 @@
                         <label>Sum amount </label>
                     </div>
                     <div class="item__form-input-close">
-                        <div>{{ $order->currency->first()->name }}</div>
+                        <div>{{ $order->currency->name }}</div>
                         <label>Currency </label>
                     </div>
                     @if ($edititem === null)

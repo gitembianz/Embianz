@@ -27,7 +27,7 @@ class ShowOrder extends Component
     }
     public function getOrderQueryProperty()
     {
-        return Order::find($this->orderId);
+        return Order::with('account')->with('currency')->with('status')->find($this->orderId);
     }
     public function mount($orderId)
     {
