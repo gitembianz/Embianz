@@ -9,7 +9,7 @@
         <div class="filter">
             {{-- Filter Button Left overs --}}
             <button class="filter__open" id="filterOpen" wire:click="$toggle('property')">
-                Filters
+                Filtre
                 <svg>
                     <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
                 </svg>
@@ -42,13 +42,13 @@
                 @endforeach
 
                 <div class="filter__buttons">
-                    <button wire:click.prevent="applyFilter">Apply</button>
-                    <button wire:click="resetFilter">Reset</button>
+                    <button wire:click.prevent="applyFilter">Aplica</button>
+                    <button wire:click="resetFilter">Reseteaza</button>
                 </div>
             </div>
         </div>
         <div class="filter__search">
-            <input type="text" wire:model="search" placeholder="Search...">
+            <input type="text" wire:model="search" placeholder="Cauta...">
             <button aria-label="search button">
                 <svg>
                     <circle cx="11" cy="11" r="8"></circle>
@@ -57,7 +57,7 @@
             </button>
         </div>
         <div class="filter__sort">
-            <button class="filter__sort--btn">Sort
+            <button class="filter__sort--btn">Sortare
                 <svg>
                     <line x1="12" y1="20" x2="12" y2="10"></line>
                     <line x1="18" y1="20" x2="18" y2="4"></line>
@@ -112,14 +112,14 @@
             </li> --}}
             <li>
                 <button wire:click="clearall()" class="filter__applied--clear">
-                    Clear all
+                    Elimina toate filtrele
                 </button>
             </li>
         </ul>
     @endif
     <div class="product__catalog">
         @if ($products->isEmpty())
-            <p>No products found</p>
+            <p>Nu au fost produse gasite</p>
         @else
             @foreach ($products as $product)
                 <div class="card" role="listitem">
