@@ -5,8 +5,6 @@ namespace App\Http\Livewire;
 use App\Models\Product;
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Exports\ProductsExport;
-use App\Models\Category;
 use App\Models\Products_categories;
 
 class RelatedProductCategory extends Component
@@ -279,12 +277,5 @@ class RelatedProductCategory extends Component
     $this->category = $category;
     $this->selectedColumns = $this->columns;
     $this->selectedColumnsadd = $this->columnsadd;
-  }
-  public function exportSelected()
-  {
-    $export = new ProductsExport($this->checked);
-    $this->checked = [];
-    $this->selectPage = false;
-    return $export->download('products.xlsx');
   }
 }

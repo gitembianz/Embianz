@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire;
 
-use App\Exports\StoreSettingsExport;
 use App\Models\Store_Settings;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -120,13 +119,6 @@ class Storesettingstable extends Component
   public function isChecked($id)
   {
     return in_array($id, $this->checked);
-  }
-  public function exportSelected()
-  {
-    $export = new StoreSettingsExport($this->checked);
-    $this->checked = [];
-    $this->selectPage = false;
-    return $export->download('storesettings.xlsx');
   }
   public function edititem($itemIndex)
   {

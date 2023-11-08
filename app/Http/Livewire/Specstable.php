@@ -5,7 +5,6 @@ namespace App\Http\Livewire;
 use App\Models\Specs;
 use App\Models\Product_Spec;
 use Livewire\Component;
-use App\Exports\SpecsExport;
 use Livewire\WithPagination;
 
 class Specstable extends Component
@@ -137,12 +136,5 @@ class Specstable extends Component
   public function isChecked($id)
   {
     return in_array($id, $this->checked);
-  }
-  public function exportSelected()
-  {
-    $export = new SpecsExport($this->checked);
-    $this->checked = [];
-    $this->selectPage = false;
-    return $export->download('specs.xlsx');
   }
 }

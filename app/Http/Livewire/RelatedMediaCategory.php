@@ -5,9 +5,7 @@ namespace App\Http\Livewire;
 use getID3;
 use App\Models\Media;
 use Livewire\Component;
-use App\Models\Category;
 use Livewire\WithPagination;
-use App\Exports\MediasExport;
 use App\Models\MediaLocation;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Auth;
@@ -357,18 +355,6 @@ class RelatedMediaCategory extends Component
   {
 
     $this->dispatchBrowserEvent('show-delete-modal-multiple');
-  }
-  public function exportSelected()
-  {
-    $export = new MediasExport($this->checked);
-    $this->checked = [];
-    $this->selectPage = false;
-    session()->flash('notification', [
-      'message' => 'Report download successfully!',
-      'type' => 'success',
-      'title' => 'Success'
-    ]);
-    return $export->download('medias.xlsx');
   }
   public function render()
   {

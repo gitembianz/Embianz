@@ -9,6 +9,7 @@ use Livewire\Component;
 use App\Models\Category;
 use App\Models\Wishlist;
 use App\Models\Cart_Item;
+use Illuminate\Support\Facades\Session;
 
 class StoreHeader extends Component
 {
@@ -40,25 +41,13 @@ class StoreHeader extends Component
 
     return view('livewire.store-header', $data);
   }
-  public function acceptCookie()
-  {
-    $this->cookieConsent = true;
-    setcookie('cookieConsent', 'accepted', time() + (30 * 24 * 60 * 60), '/');
-    $this->emit('updateCookieConsent');
-  }
-  private function checkCookieConsent()
-  {
-    if (isset($_COOKIE['cookieConsent']) && $_COOKIE['cookieConsent'] === 'accepted') {
-      return true;
-    }
-    return false;
-  }
+
   private function getCookieId()
   {
     if (isset($_COOKIE['sessionId'])) {
       return $_COOKIE['sessionId'];
     }
-    return null;
+    return Session::getId();
   }
   private function saveSessionId()
   {
@@ -147,13 +136,12 @@ class StoreHeader extends Component
   public function mount()
   {
     $this->closedStatusId = Status::where('name', 'closed')->where('type', 'cart')->first()->id;
-    $this->cookieConsent = $this->checkCookieConsent();
     $this->cookieId = $this->getCookieId();
 
     if (!$this->cookieId) {
       $this->saveSessionId();
     }
-    $this->session_id = $_COOKIE['sessionId'];
+    $this->session_id = $this->getCookieId();
     $this->total = Cart::where('session_id', $this->session_id)
       ->where('status_id', '!=', $this->closedStatusId)
       ->latest()

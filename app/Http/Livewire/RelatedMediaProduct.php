@@ -7,7 +7,6 @@ use App\Models\Media;
 use App\Models\Product;
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Exports\MediasExport;
 use App\Models\MediaLocation;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Auth;
@@ -353,18 +352,6 @@ class RelatedMediaProduct extends Component
   public function confirmFilesRemovalmultiple()
   {
     $this->dispatchBrowserEvent('show-delete-modal-multiple');
-  }
-  public function exportSelected()
-  {
-    $export = new MediasExport($this->checked);
-    $this->checked = [];
-    $this->selectPage = false;
-    session()->flash('notification', [
-      'message' => 'Report dowland successfully!',
-      'type' => 'success',
-      'title' => 'Success'
-    ]);
-    return $export->download('medias.xlsx');
   }
   public function render()
   {
