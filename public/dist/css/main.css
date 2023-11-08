@@ -1594,10 +1594,6 @@ input[type=submit] {
   display: flex;
 }
 
-.sidebar .dropdown.open .dropdown-list {
-  display: none;
-}
-
 .none {
   display: none;
 }
@@ -4270,6 +4266,7 @@ header,
   .sidebar__list {
     justify-items: center;
     grid-template-columns: repeat(1, 1fr);
+    height: 100%;
   }
   .sidebar__btn {
     display: none;
@@ -5164,4 +5161,4 @@ button[data-tooltip-center]::after {
 }
 .container-right .card_todo .count {
   border-top: 1px solid #35424B;
-}/*# sourceMappingURL=main.css.map */
+}
