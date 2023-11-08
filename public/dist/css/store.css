@@ -946,7 +946,8 @@ header:not(.show) {
   align-items: center;
   flex: 0 1 auto;
   gap: 0;
-  padding-top: 120px;
+  padding: 70px 0;
+  gap: 15px;
 }
 @media (min-width: 992px) {
   .menu__list {
@@ -974,9 +975,41 @@ header:not(.show) {
 }
 @media (min-width: 992px) {
   .menu__list li {
-    width: min-content;
+    width: auto;
   }
   .menu__list li .container {
+    max-width: 960px;
+  }
+}
+.menu__list li > a {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  font-size: 25px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.menu__list li > a > img {
+  width: 35px;
+  height: 35px;
+  object-fit: contain;
+  aspect-ratio: 1/1;
+  background: white;
+}
+@media (min-width: 992px) {
+  .menu__list li > a > img {
+    display: none;
+  }
+  .menu__list li > a > img .container {
+    max-width: 960px;
+  }
+}
+@media (min-width: 992px) {
+  .menu__list li > a {
+    font-size: unset;
+  }
+  .menu__list li > a .container {
     max-width: 960px;
   }
 }
@@ -1028,16 +1061,36 @@ header:not(.show) {
 .menu__item.active button {
   transform: rotateX(180deg);
 }
-.menu__item a {
+.menu__item > a {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
   font-size: 25px;
   font-weight: 500;
+  text-wrap: nowrap;
   cursor: pointer;
 }
+.menu__item > a > img {
+  width: 35px;
+  height: 35px;
+  object-fit: contain;
+  aspect-ratio: 1/1;
+  background: white;
+}
 @media (min-width: 992px) {
-  .menu__item a {
+  .menu__item > a > img {
+    display: none;
+  }
+  .menu__item > a > img .container {
+    max-width: 960px;
+  }
+}
+@media (min-width: 992px) {
+  .menu__item > a {
     font-size: unset;
   }
-  .menu__item a .container {
+  .menu__item > a .container {
     max-width: 960px;
   }
 }
@@ -1091,6 +1144,26 @@ header:not(.show) {
   padding: 10px;
   color: #104010;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  cursor: pointer;
+}
+.menu__sub--item > img {
+  width: 35px;
+  height: 35px;
+  object-fit: contain;
+  aspect-ratio: 1/1;
+  background: white;
+}
+@media (min-width: 992px) {
+  .menu__sub--item > img {
+    display: none;
+  }
+  .menu__sub--item > img .container {
+    max-width: 960px;
+  }
 }
 .menu__sub--item::after {
   content: "";
@@ -4282,4 +4355,4 @@ footer {
 
 .support__list-item {
   text-decoration: underline;
-}
+}/*# sourceMappingURL=store.css.map */
