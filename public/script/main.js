@@ -1,28 +1,30 @@
-function handleScroll() {
-  let prevScrollPos = window.pageYOffset;
-  const header = document.querySelector("header");
-  const scrollThreshold = 300;
-  let isHeaderVisible = true;
+// header Fixed
+function calculateBannerHeight() {
+  var headerBanner = document.querySelector("#header-banner");
+  var header = document.querySelector("header");
+  var bannerHeight = headerBanner.clientHeight;
 
-  window.addEventListener("scroll", function () {
-    const currentScrollPos = window.pageYOffset;
-    const scrollDown = currentScrollPos > prevScrollPos;
-
-    if (scrollDown && currentScrollPos > scrollThreshold) {
-      header.classList.remove("show");
-      isHeaderVisible = false;
-    } else {
-      if (!isHeaderVisible) {
-        header.classList.add("show");
-        isHeaderVisible = true;
-      }
-    }
-
-    prevScrollPos = currentScrollPos;
-  });
+  if (window.scrollY > bannerHeight) {
+    header.classList.add("fixed");
+    header.style.top = "0";
+  } else {
+    header.classList.remove("fixed");
+    header.style.top = bannerHeight + "px";
+  }
 }
 
-handleScroll();
+// Calculează înălțimea banner-ului la începutul încărcării și la evenimentul resize
+window.onload = function () {
+  calculateBannerHeight();
+};
+
+window.addEventListener("resize", function () {
+  calculateBannerHeight();
+});
+
+window.addEventListener("scroll", function () {
+  calculateBannerHeight();
+});
 
 function setMarginTop() {
   const headerHeight = document.querySelector("header").offsetHeight;

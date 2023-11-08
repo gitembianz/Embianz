@@ -656,9 +656,6 @@ header {
   width: 100%;
   z-index: 1000;
   background: white;
-}
-
-header {
   transition: transform 0.3s ease-out;
 }
 
@@ -714,6 +711,7 @@ header:not(.show) {
 .header__top {
   background-image: linear-gradient(120deg, #a6c0fe 0%, #f68084 100%);
   color: #ffffff;
+  transition: transform 0.3s ease-out;
 }
 .header__top--flex {
   display: flex;
@@ -4355,4 +4353,4 @@ footer {
 
 .support__list-item {
   text-decoration: underline;
-}
+}/*# sourceMappingURL=store.css.map */
