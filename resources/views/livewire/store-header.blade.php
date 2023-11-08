@@ -14,13 +14,13 @@
              <h4>
                  Dublu confort, jumătate de preț! Ofertă limitată: 2 sticle la prețul uneia singure. Profită acum!
              </h4>
-             <a href="{{ url("/storeproducts") }}">
+             <a href="{{ url('/storeproducts') }}">
                  {{-- <button aria-label="Go to Store">Store</button> --}}
              </a>
          </div>
      </div>
      <div class="container header">
-         <a href="{{ url("/") }}"><svg class="logo" xmlns="http://www.w3.org/2000/svg"
+         <a href="{{ url('/') }}"><svg class="logo" xmlns="http://www.w3.org/2000/svg"
                  xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="1280" height="1024"
                  viewBox="0 0 1280 1024" xml:space="preserve" alt="ecosticle.ro">
                  <defs>
@@ -58,8 +58,23 @@
                          @if ($category->subcategory->count() != 0)
                              <div class="menu__item">
                                  <a href="/storeproducts/{{ $category->id }}">
-                                     <img src="/images/store/background-bottle-min1.webp" alt="category image">
-                                     {{ $category->name }}</a>
+                                     @if (count($category->media) > 0)
+                                         @foreach ($category->media as $media)
+                                             @if ($media->location->location == 'main')
+                                                 @if ($media->external)
+                                                     <img src="{{ $media->path }}" alt="{{ $media->path }}">
+                                                 @else
+                                                     <img src="/{{ $media->path }}{{ $media->name }}"
+                                                         alt="{{ $media->path }}">
+                                                 @endif
+                                                 <?php break; ?>
+                                             @endif
+                                         @endforeach
+                                     @else
+                                         <img src="/images/store/default/default.svg" alt="something wrong">
+                                     @endif
+                                     {{ $category->name }}
+                                 </a>
                                  <button>
                                      <svg aria-hidden="true">
                                          <polyline points="6 9 12 15 18 9"></polyline>
@@ -72,8 +87,23 @@
                                          @foreach ($category->subcategory as $subcategory)
                                              <a class="menu__sub--item"
                                                  href="/storeproducts/{{ $subcategory->category_id }}" role="menuitem">
-                                                 <img src="/images/store/background-bottle-min1.webp"
-                                                     alt="category image">{{ $subcategory->category }}</a>
+                                                 @if (count($subcategory->parrent->media) > 0)
+                                                     @foreach ($subcategory->parrent->media as $media)
+                                                         @if ($media->location->location == 'main')
+                                                             @if ($media->external)
+                                                                 <img src="{{ $media->path }}"
+                                                                     alt="{{ $media->path }}">
+                                                             @else
+                                                                 <img src="/{{ $media->path }}{{ $media->name }}"
+                                                                     alt="{{ $media->path }}">
+                                                             @endif
+                                                             <?php break; ?>
+                                                         @endif
+                                                     @endforeach
+                                                 @else
+                                                     <img src="/images/store/default/default.svg" alt="something wrong">
+                                                 @endif{{ $subcategory->category }}
+                                             </a>
                                          @endforeach
                                      </div>
                                  </div>
@@ -81,8 +111,23 @@
                          @else
                              {{-- <div class="menu__item"> --}}
                              <a href="/storeproducts/{{ $category->id }}">
-                                 <img src="/images/store/background-bottle-min1.webp" alt="category image">
-                                 {{ $category->name }}</a>
+                                 @if (count($category->media) > 0)
+                                     @foreach ($category->media as $media)
+                                         @if ($media->location->location == 'main')
+                                             @if ($media->external)
+                                                 <img src="{{ $media->path }}" alt="{{ $media->path }}">
+                                             @else
+                                                 <img src="/{{ $media->path }}{{ $media->name }}"
+                                                     alt="{{ $media->path }}">
+                                             @endif
+                                             <?php break; ?>
+                                         @endif
+                                     @endforeach
+                                 @else
+                                     <img src="/images/store/default/default.svg" alt="something wrong">
+                                 @endif
+                                 {{ $category->name }}
+                             </a>
                              {{-- </div> --}}
                          @endif
 
@@ -140,7 +185,7 @@
                                  <div class="cart__list--item">
                                      @if (count($cartItem->product->media) > 0)
                                          @foreach ($cartItem->product->media as $media)
-                                             @if ($media->location->location == "main")
+                                             @if ($media->location->location == 'main')
                                                  @if ($media->external)
                                                      <img class="cart__list--img" src="{{ $media->path }}"
                                                          alt="{{ $media->path }}">
@@ -216,7 +261,7 @@
                                  <div class="heart__list--item">
                                      @if (count($product->media) > 0)
                                          @foreach ($product->media as $media)
-                                             @if ($media->location->location == "main")
+                                             @if ($media->location->location == 'main')
                                                  @if ($media->external)
                                                      <img class="heart__list--img" src="{{ $media->path }}"
                                                          alt="{{ $media->path }}">
@@ -272,7 +317,7 @@
                                      <a class="search__container--item" href="/product/{{ $product->id }}">
                                          @if (count($product->media) > 0)
                                              @foreach ($product->media as $media)
-                                                 @if ($media->location->location == "search")
+                                                 @if ($media->location->location == 'search')
                                                      @if ($media->external)
                                                          <img src="{{ $media->path }}" alt="{{ $media->path }}">
                                                      @else
@@ -286,14 +331,6 @@
                                              <img src="/images/store/default/default.svg" alt="something wrong">
                                          @endif
                                          <p> {{ $product->name }}</p>
-                                         <span>
-                                             @if ($product->product_prices->first())
-                                                 {{ $product->product_prices->first()->value }}
-                                                 {{ $product->product_prices->first()->pricelist->currency->name }}
-                                             @else
-                                                 {{ __("no price") }}
-                                             @endif
-                                         </span>
                                      </a>
                                  </li>
                              @endforeach
@@ -304,7 +341,7 @@
                                      <a class="search__container--item" href="/storeproducts/{{ $category->id }}">
                                          @if (count($category->media) > 0)
                                              @foreach ($category->media as $media)
-                                                 @if ($media->location->location == "search")
+                                                 @if ($media->location->location == 'search')
                                                      @if ($media->external)
                                                          <img src="{{ $media->path }}" alt="{{ $media->path }}">
                                                      @else
@@ -324,7 +361,7 @@
                          @endif
                      @else
                          <li>
-                             {{ __("No elements found") }}
+                             {{ __('No elements found') }}
                          </li>
                      @endif
                  </ul>
@@ -332,4 +369,3 @@
          </div>
      </div>
  </div>
-  
