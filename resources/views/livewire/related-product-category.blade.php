@@ -206,8 +206,7 @@
                                                         <td data-title="Created At">
                                                             <div class="table__time">
                                                                 <svg>
-                                                                    <circle cx="12" cy="12"
-                                                                        r="10">
+                                                                    <circle cx="12" cy="12" r="10">
                                                                     </circle>
                                                                     <polyline points="12 6 12 12 16 14">
                                                                     </polyline>
@@ -300,10 +299,6 @@
                                         <button class="dropdown-item delete" type="button"
                                             wire:click="confirmItemsRemoval()">
                                             Delete
-                                        </button>
-                                        <button class="dropdown-item submit" type="button"
-                                            wire:click="exportSelected()">
-                                            Export
                                         </button>
                                     </div>
                                 @endif

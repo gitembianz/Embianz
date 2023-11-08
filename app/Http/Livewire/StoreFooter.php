@@ -12,6 +12,11 @@ class StoreFooter extends Component
   public $email;
   public $response = null;
   public $limit = 5;
+  public $cookieConsent;
+  public function mount()
+  {
+    $this->cookieConsent = $this->checkCookieConsent();
+  }
 
   public function render()
   {
@@ -32,6 +37,19 @@ class StoreFooter extends Component
       'type' => 'success',
       'title' => 'Success'
     ]);
+  }
+  private function checkCookieConsent()
+  {
+    if (isset($_COOKIE['cookieConsent']) && $_COOKIE['cookieConsent'] === 'accepted') {
+      return true;
+    }
+    return false;
+  }
+  public function acceptCookie()
+  {
+    $this->cookieConsent = true;
+    setcookie('cookieConsent', 'accepted', time() + (30 * 24 * 60 * 60), '/');
+    $this->emit('updateCookieConsent');
   }
   public function getCategoriesProperty()
   {

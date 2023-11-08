@@ -1,9 +1,20 @@
 <div>
+    @if (!$cookieConsent)
+        <div class="cookie" id="cookie-banner" wire:loading.remove>
+            <img class="cookie--img" src="/images/store/cookie.svg" alt="cookie">
+            <p class="cookie--text" id="cookieConsentText">
+                We use cookies to improve your experience. By continuing to visit this site, you agree to our use of
+                cookies.
+            </p>
+            <button class="cookie--btn" wire:click="acceptCookie">Got it!</button>
+        </div>
+    @endif
     <x-alert />
     <footer class="footer container">
         <div class="footer__header">
-            <svg class="logo" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
-                width="1280" height="1024" viewBox="0 0 1280 1024" xml:space="preserve" alt="ecosticle.ro">
+            <svg class="logo" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                version="1.1" width="1280" height="1024" viewBox="0 0 1280 1024" xml:space="preserve"
+                alt="ecosticle.ro">
                 <defs>
                 </defs>
                 <g transform="matrix(1 0 0 1 640 512)" id="background-logo">
@@ -30,8 +41,7 @@
                     <li>
                         <a href="#" class="footer__list--social" aria-label="Facebook">
                             <svg>
-                                <rect x="2" y="2" width="20" height="20" rx="5"
-                                    ry="5">
+                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5">
                                 </rect>
                                 <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
                                 <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>

@@ -3,7 +3,6 @@
 namespace App\Http\Livewire;
 
 use App\Models\Order;
-use App\Models\Account;
 use Livewire\Component;
 
 class RelatedOrders extends Component

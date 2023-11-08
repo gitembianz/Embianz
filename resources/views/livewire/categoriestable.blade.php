@@ -82,9 +82,6 @@
                             <button class="dropdown-item delete" type="button" wire:click="confirmItemsRemoval()">
                                 Delete
                             </button>
-                            <button class="dropdown-item submit" type="button" wire:click="exportSelected()">
-                                Export
-                            </button>
                         </div>
                     @endif
                 @endif
@@ -175,8 +172,8 @@
                                     <td data-title="{{ $column }}">
                                         <div class="table__time">
                                             <svg>
-                                                <rect x="3" y="4" width="18" height="18"
-                                                    rx="2" ry="2"></rect>
+                                                <rect x="3" y="4" width="18" height="18" rx="2"
+                                                    ry="2"></rect>
                                                 <line x1="16" y1="2" x2="16" y2="6">
                                                 </line>
                                                 <line x1="8" y1="2" x2="8" y2="6">

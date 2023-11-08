@@ -8,7 +8,6 @@ use App\Models\Status;
 use App\Models\Product;
 use Livewire\Component;
 use App\Models\Wishlist;
-use Illuminate\Support\Facades\Session;
 
 class StoreShowProduct extends Component
 {
