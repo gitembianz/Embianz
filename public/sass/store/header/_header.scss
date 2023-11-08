@@ -220,7 +220,8 @@ header:not(.show) {
   &__list {
 
     @include flexer(column, flex-start, center);
-    padding-top: 120px;
+    padding: 70px 0;
+    gap: 15px;
 
     @include breakpoint(large) {
       @include fade(show);
@@ -235,7 +236,33 @@ header:not(.show) {
       width: 90%;
 
       @include breakpoint(large) {
-        width: min-content;
+        width: auto;
+      }
+
+      &>a {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 10px;
+        font-size: 25px;
+        font-weight: 500;
+        cursor: pointer;
+
+        &>img {
+          width: 35px;
+          height: 35px;
+          object-fit: contain;
+          aspect-ratio: 1/1;
+          background: white;
+
+          @include breakpoint(large) {
+            display: none;
+          }
+        }
+
+        @include breakpoint(large) {
+          font-size: unset;
+        }
       }
     }
   }
@@ -272,13 +299,31 @@ header:not(.show) {
       }
     }
 
-    a {
+    &>a {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 10px;
       font-size: 25px;
       font-weight: 500;
+      text-wrap: nowrap;
       cursor: pointer;
+
+      &>img {
+        width: 35px;
+        height: 35px;
+        object-fit: contain;
+        aspect-ratio: 1/1;
+        background: white;
+
+        @include breakpoint(large) {
+          display: none;
+        }
+      }
 
       @include breakpoint(large) {
         font-size: unset;
+
       }
     }
 
@@ -323,6 +368,29 @@ header:not(.show) {
       padding: 10px;
       color: darken(#1a691a, 10%);
       position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 10px;
+      // font-size: 25px;
+      // font-weight: 500;
+      cursor: pointer;
+
+      &>img {
+        width: 35px;
+        height: 35px;
+        object-fit: contain;
+        aspect-ratio: 1/1;
+        background: white;
+
+        @include breakpoint(large) {
+          display: none;
+        }
+      }
+
+      // @include breakpoint(large) {
+      //   font-size: unset;
+      // }
 
       &::after {
         content: "";

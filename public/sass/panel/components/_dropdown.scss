@@ -67,8 +67,14 @@
   }
 }
 
+
+
 .dropdown.open .dropdown-list {
   display: flex;
+}
+
+.sidebar .dropdown.open .dropdown-list {
+  display: none;
 }
 
 .none {
