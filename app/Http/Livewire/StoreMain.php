@@ -3,13 +3,14 @@
 namespace App\Http\Livewire;
 
 use App\Models\Cart;
-use App\Models\Cart_Item;
 use App\Models\Status;
 use App\Models\Product;
 use Livewire\Component;
 use App\Models\Category;
 use App\Models\Wishlist;
+use App\Models\Cart_Item;
 use App\Models\Store_Settings;
+use Illuminate\Support\Facades\Session;
 
 class StoreMain extends Component
 {
@@ -21,10 +22,16 @@ class StoreMain extends Component
   protected $listeners = [
     'wishlistUpdated' => 'mount'
   ];
-
+  private function getCookieId()
+  {
+    if (isset($_COOKIE['sessionId'])) {
+      return $_COOKIE['sessionId'];
+    }
+    return Session::getId();;
+  }
   public function mount()
   {
-    $this->session_id = $_COOKIE['sessionId'];
+    $this->session_id = $this->getCookieId();
     $sliderCategory = Store_Settings::where('parameter', 'slider_category')->first();
 
     if ($sliderCategory) {

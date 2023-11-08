@@ -6,7 +6,6 @@ use Livewire\Component;
 use App\Models\Category;
 use App\Models\Subcategory;
 use Livewire\WithPagination;
-use App\Exports\CategoriesExport;
 use App\Models\Products_categories;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Schema;
@@ -189,17 +188,5 @@ class Categoriestable extends Component
   public function isChecked($id)
   {
     return in_array($id, $this->checked);
-  }
-  public function exportSelected()
-  {
-    $export = new CategoriesExport($this->checked);
-    $this->checked = [];
-    $this->selectPage = false;
-    session()->flash('notification', [
-      'message' => 'Report downloaded successfully!',
-      'type' => 'success',
-      'title' => 'Success'
-    ]);
-    return $export->download('categories.xlsx');
   }
 }

@@ -5,7 +5,6 @@ namespace App\Http\Livewire;
 use App\Models\Product;
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Exports\ProductsExport;
 use App\Models\Cart_Item;
 use App\Models\PricelistEntries;
 use App\Models\Products_categories;
@@ -219,17 +218,5 @@ class Productstable extends Component
   public function isChecked($id)
   {
     return in_array($id, $this->checked);
-  }
-  public function exportSelected()
-  {
-    $export = new ProductsExport($this->checked);
-    $this->checked = [];
-    $this->selectPage = false;
-    session()->flash('notification', [
-      'message' => 'Report download successfully!',
-      'type' => 'success',
-      'title' => 'Success'
-    ]);
-    return $export->download('products.xlsx');
   }
 }

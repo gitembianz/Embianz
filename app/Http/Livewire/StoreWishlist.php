@@ -5,11 +5,11 @@ namespace App\Http\Livewire;
 use App\Models\Product;
 use Livewire\Component;
 use App\Models\Wishlist;
-use Illuminate\Support\Facades\Session;
 
 class StoreWishlist extends Component
 {
   public $wishlistitems;
+  public $session_id;
   protected $listeners = ['wishlistUpdated' => 'mount'];
 
 
@@ -22,21 +22,19 @@ class StoreWishlist extends Component
   }
   public function removeFromWishlist($productId)
   {
-    $session_id = Session::getId();
-    Wishlist::where('session_id', $session_id)
+    Wishlist::where('session_id', $this->session_id)
       ->where('product_id', $productId)
       ->delete();
     $this->emit('wishlistUpdated');
   }
   public function getWishlistItemsProperty()
   {
-    $session_id = Session::getId();
-    $wishlist = Wishlist::where('session_id', $session_id)->pluck('product_id')->toArray();
+    $wishlist = Wishlist::where('session_id', $this->session_id)->pluck('product_id')->toArray();
     return Product::whereIn('id', $wishlist)->get();
   }
   public function mount()
   {
-    // Initial load of wishlistitems
+    $this->session_id = $_COOKIE['sessionId'];
     $this->wishlistitems = $this->getWishlistItemsProperty();
   }
 }

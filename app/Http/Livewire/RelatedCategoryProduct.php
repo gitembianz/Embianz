@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire;
 
-use App\Exports\CategoriesExport;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Products_categories;
@@ -251,18 +250,6 @@ class RelatedCategoryProduct extends Component
       'type' => 'success',
       'title' => 'Success'
     ]);
-  }
-  public function exportSelected()
-  {
-    $export = new CategoriesExport($this->checked);
-    $this->checked = [];
-    $this->selectPage = false;
-    session()->flash('notification', [
-      'message' => 'Report download successfully!',
-      'type' => 'success',
-      'title' => 'Success'
-    ]);
-    return $export->download('categories.xlsx');
   }
   public function mount($productId)
   {

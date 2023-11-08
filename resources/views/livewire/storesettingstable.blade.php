@@ -71,10 +71,6 @@
                             wire:click="confirmItemsRemovalmultiple()">
                             Delete
                         </button>
-                        <button class="dropdown-item submit" style="width: 150px" type="button"
-                            wire:click="exportSelected()">
-                            Export
-                        </button>
                     </div>
                 @endif
             </div>
