@@ -158,10 +158,20 @@ const searchClose = document.getElementById("searchClose");
 window.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {
     search.classList.remove("active");
+    document.querySelector("body").style.overflow = "unset";
   }
   if (event.key === "/") {
     search.classList.add("active");
+    document.querySelector("body").style.overflow = "hidden";
   }
+});
+searchOpen.addEventListener("click", () => {
+  search.classList.add("active");
+  document.querySelector("body").style.overflow = "hidden";
+});
+searchClose.addEventListener("click", () => {
+  search.classList.remove("active");
+  document.querySelector("body").style.overflow = "unset";
 });
 
 // Function on Header Items
