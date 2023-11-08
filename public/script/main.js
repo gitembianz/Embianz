@@ -154,21 +154,30 @@ if (carousel) {
 const search = document.getElementById("search");
 const searchOpen = document.getElementById("searchOpen");
 const searchClose = document.getElementById("searchClose");
+const searchInput = document.getElementById("searchInput");
 
-window.addEventListener("keydown", (event) => {
-  if (event.key === "Escape") {
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && !searchInput.matches(":focus")) {
     search.classList.remove("active");
     document.querySelector("body").style.overflow = "unset";
   }
   if (event.key === "/") {
     search.classList.add("active");
+    setTimeout(() => {
+      searchInput.focus();
+    }, 100);
     document.querySelector("body").style.overflow = "hidden";
   }
 });
+
 searchOpen.addEventListener("click", () => {
   search.classList.add("active");
+  setTimeout(() => {
+    searchInput.focus();
+  }, 100);
   document.querySelector("body").style.overflow = "hidden";
 });
+
 searchClose.addEventListener("click", () => {
   search.classList.remove("active");
   document.querySelector("body").style.overflow = "unset";
