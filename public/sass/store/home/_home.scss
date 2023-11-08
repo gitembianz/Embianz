@@ -199,72 +199,73 @@
 
 
 
-// .home__discover {
-//   background-repeat: no-repeat;
-//   background-size: cover;
-//   background-position: center top;
-//   width: 100%;
+.home__discover {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center top;
+  width: 100%;
 
-//   &--flex {
-//     width: 100%;
-//     @include flexer(column, space-between, center, 30px);
-//   }
+  &--flex {
+    width: 100%;
+    @include flexer(column, space-between, center, 30px);
+  }
 
-//   img {
-//     width: 80%;
-//     height: auto;
-//     object-fit: contain;
-//     background-color: transparent;
+  img {
+    width: 80%;
+    height: auto;
+    object-fit: contain;
+    background-color: transparent;
 
-//     @include breakpoint(any) {
-//       width: 70%;
-//     }
-//   }
-// }
+    @include breakpoint(any) {
+      width: 70%;
+    }
+  }
+}
 
-// .home__discover--text {
-//   @include flexer(column, center, center, 50px);
-//   width: 100%;
-//   text-align: center;
+.home__discover--text {
+  @include flexer(column, center, center, 50px);
+  width: 100%;
+  text-align: center;
 
-//   h1 {
-//     color: $background;
-//     text-align: center;
-//     text-shadow: 0 0 20px black;
-//   }
+  h1 {
+    color: $background;
+    text-align: center;
+    text-shadow: 0 0 20px black;
+  }
 
-//   a {
-//     text-align: center;
-//     background-color: $background;
-//     color: $text;
-//     font-size: 20px;
-//     padding: 10px 20px;
-//     border-radius: 100px;
-//     font-weight: 600;
-//     box-shadow: 0 0 20px black;
-//     animation: pulse 1.5s infinite;
-//     outline: 3px solid white;
-//   }
+  a {
+    text-align: center;
+    background-color: $background;
+    color: $text;
+    font-size: 20px;
+    padding: 10px 20px;
+    border-radius: 100px;
+    font-weight: 600;
+    box-shadow: 0 0 20px black;
+    animation: pulse 1.5s infinite;
+    outline: 3px solid white;
+  }
 
-//   @keyframes pulse {
-//     0% {
-//       outline-color: transparent;
-//       outline-offset: -1px;
-//       outline-width: 0px;
-//     }
+  @keyframes pulse {
+    0% {
+      outline-color: transparent;
+      outline-offset: -1px;
+      outline-width: 0px;
+    }
 
-//     50% {
-//       outline-width: 3px;
-//       outline-color: $background;
-//     }
+    50% {
+      outline-width: 3px;
+      outline-color: $background;
+    }
 
-//     100% {
-//       outline-color: transparent;
-//       outline-offset: 10px;
-//       outline-width: 0px;
-//     }
-//   }
-// }
+    100% {
+      outline-color: transparent;
+      outline-offset: 10px;
+      outline-width: 0px;
+    }
+  }
+}
+
 .slider {
   margin: 0 auto;
   width: 100%;
