@@ -20,8 +20,6 @@ class StoreHeader extends Component
   public $showwis = false;
   public $showcart = false;
   public $total;
-  public $cookieConsent;
-  public $cookieId;
   public $session_id;
   public $closedStatusId;
   protected $listeners = [
@@ -49,13 +47,7 @@ class StoreHeader extends Component
     }
     return Session::getId();
   }
-  private function saveSessionId()
-  {
-    $sessionId = session()->getId();
-    setcookie('sessionId', $sessionId, time() + (30 * 24 * 60 * 60), '/');
-    $this->emit('updateCookieConsent', $sessionId);
-    $this->cookieId = true;
-  }
+
   public function close()
   {
     $this->active = false;
@@ -136,11 +128,7 @@ class StoreHeader extends Component
   public function mount()
   {
     $this->closedStatusId = Status::where('name', 'closed')->where('type', 'cart')->first()->id;
-    $this->cookieId = $this->getCookieId();
 
-    if (!$this->cookieId) {
-      $this->saveSessionId();
-    }
     $this->session_id = $this->getCookieId();
     $this->total = Cart::where('session_id', $this->session_id)
       ->where('status_id', '!=', $this->closedStatusId)
