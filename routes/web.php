@@ -27,7 +27,7 @@
     return view('store.home');
   });
 
-  Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
+  Route::middleware(['auth', 'usertype'])->group(function () {
 
     //Category routes
     route::get('/category', [CategoryController::class, 'category'])->name('category');
