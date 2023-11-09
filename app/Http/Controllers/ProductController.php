@@ -2,16 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use getID3;
-use App\Models\Media;
-use App\Models\Tabels;
 use App\Models\Product;
 use Illuminate\Http\Request;
-use App\Models\MediaLocation;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\File;
-use Intervention\Image\Facades\Image;
 
 
 class ProductController extends Controller

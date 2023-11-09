@@ -114,8 +114,8 @@ class StoreShowProduct extends Component
       $cart = Cart::create([
         'session_id' => $this->session_id,
         'name' => $uniqueName,
-        'quantity_amount' => 0,
-        'sum_amount' => 0,
+        'quantity_amount' => $this->quantity,
+        'sum_amount' => ($product->product_prices->first()->value * $this->quantity),
         'status_id' => $newStatusId,
         'currency_id' => $product->product_prices->first()->pricelist->currency_id,
       ]);
@@ -126,22 +126,22 @@ class StoreShowProduct extends Component
         'cart_id' => $cart->id,
         'product_id' => $productId,
         'price' => $product->product_prices->first()->value,
-        'quantity' => 1
+        'quantity' => $this->quantity
       ]);
-      $cart->increment('quantity_amount');
-      $cart->sum_amount += $product->product_prices->first()->value;
     } else {
       if ($cartItem->quantity < $product->quantity) {
 
-        $cartItem->increment('quantity');
-        $cart->increment('quantity_amount');
-        $cart->sum_amount += $product->product_prices->first()->value;
+        $cartItem->quantity += $this->quantity;
+        $cartItem->save();
+        $cart->quantity_amount += $this->quantity;
+        $cart->sum_amount += ($product->product_prices->first()->value * $this->quantity);
       } else {
         $this->quantity = $product->quantity;
         $this->maxlimit = true;
       }
     }
     $cart->save();
+    $this->quantity = 1;
     $this->emit('cartUpdated');
   }
   public function mount($product)
