@@ -1,4 +1,6 @@
  <div class="cart__page container">
+     <x-loading />
+     <x-alert />
      <h2 class="section__title">Cos de cumparaturi</h2>
      <div class="cart-page__list">
          @if ($cartItems->isEmpty())
