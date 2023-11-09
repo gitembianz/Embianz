@@ -1,6 +1,6 @@
  <div>
      <div class="container header">
-         <a href="{{ url('/') }}"><svg class="logo" xmlns="http://www.w3.org/2000/svg"
+         <a href="{{ url("/") }}"><svg class="logo" xmlns="http://www.w3.org/2000/svg"
                  xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="1280" height="1024"
                  viewBox="0 0 1280 1024" xml:space="preserve" alt="ecosticle.ro">
                  <defs>
@@ -40,7 +40,7 @@
                                  <a href="/storeproducts/{{ $category->id }}">
                                      @if (count($category->media) > 0)
                                          @foreach ($category->media as $media)
-                                             @if ($media->location->location == 'main')
+                                             @if ($media->location->location == "main")
                                                  @if ($media->external)
                                                      <img src="{{ $media->path }}" alt="{{ $media->path }}">
                                                  @else
@@ -69,7 +69,7 @@
                                                  href="/storeproducts/{{ $subcategory->category_id }}" role="menuitem">
                                                  @if (count($subcategory->parrent->media) > 0)
                                                      @foreach ($subcategory->parrent->media as $media)
-                                                         @if ($media->location->location == 'main')
+                                                         @if ($media->location->location == "main")
                                                              @if ($media->external)
                                                                  <img src="{{ $media->path }}"
                                                                      alt="{{ $media->path }}">
@@ -93,7 +93,7 @@
                              <a href="/storeproducts/{{ $category->id }}">
                                  @if (count($category->media) > 0)
                                      @foreach ($category->media as $media)
-                                         @if ($media->location->location == 'main')
+                                         @if ($media->location->location == "main")
                                              @if ($media->external)
                                                  <img src="{{ $media->path }}" alt="{{ $media->path }}">
                                              @else
@@ -132,7 +132,7 @@
                  </svg>
              </button>
              <div class="cart">
-                 <button class="cart__btn" style="position: relative" wire:click="cartshow" id="cartBtn"
+                 <button class="cart__btn" wire:click="cartshow" id="cartBtn" style="position: relative"
                      aria-label="Open Cart">
                      <svg aria-hidden="true">
                          <circle cx="9" cy="21" r="1"></circle>
@@ -143,72 +143,74 @@
                          <span class="alert-count" id="cartCount">{{ $total }}</span>
                      @endif
                  </button>
-                 <ul class="cart__list @if ($showcart) show @endif" id="cartContent"
-                     aria-label="Cart Items">
-                     <li>
-                         <a href="/cart" class="cart__list--item">
-                             <h4 class="cart__list--name">Cos de cumparaturi</h4>
-                             <svg>
-                                 <circle cx="9" cy="21" r="1"></circle>
-                                 <circle cx="20" cy="21" r="1"></circle>
-                                 <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                             </svg>
-                         </a>
-                     </li>
-                     @if ($cartItems->isEmpty())
-                         <li class="heart__list--item">
-                             <span style="color: black">Cos de cumparaturi gol</span>
-                         </li>
-                     @else
-                         @foreach ($cartItems as $cartItem)
-                             <li>
-                                 <div class="cart__list--item">
-                                     @if (count($cartItem->product->media) > 0)
-                                         @foreach ($cartItem->product->media as $media)
-                                             @if ($media->location->location == 'main')
-                                                 @if ($media->external)
-                                                     <img class="cart__list--img" src="{{ $media->path }}"
-                                                         alt="{{ $media->path }}">
-                                                 @else
-                                                     <img class="cart__list--img"
-                                                         src="/{{ $media->path }}{{ $media->name }}"
-                                                         alt="{{ $media->path }}">
-                                                 @endif
-                                                 <?php break; ?>
-                                             @endif
-                                         @endforeach
-                                     @else
-                                         <img class="cart__list--img" src="/images/store/default/default.svg"
-                                             alt="something wrong">
-                                     @endif
-                                     <a class="cart__list--text"
-                                         href="/product/{{ $cartItem->product->id }}"><span>{{ $cartItem->product->name }}</span></a>
-                                     <span class="cart__list--much">
-                                         @php
-                                             $price = $cartItem->product->product_prices->first();
-                                         @endphp
-                                         @if ($price)
-                                             {{ $price->value }} {{ $price->pricelist->currency->name }}
-                                         @else
-                                             indisponibil
-                                         @endif
-                                     </span>
-                                     <span class="cart__list--much">x {{ $cartItem->quantity }}</span>
-                                     <button class="cart__list--delete"
-                                         wire:click="removeFromCart({{ $cartItem->product->id }})">
-                                         <svg>
-                                             <line x1="18" y1="6" x2="6" y2="18">
-                                             </line>
-                                             <line x1="6" y1="6" x2="18" y2="18">
-                                             </line>
-                                         </svg>
-                                     </button>
-                                 </div>
-                             </li>
-                         @endforeach
-                     @endif
+                 <div class="cart__list @if ($showcart) show @endif" aria-label="Cart Items">
 
-                 </ul>
+                     <ul id="cartContent">
+                         <li>
+                             <a href="/cart" class="cart__list--item">
+                                 <h4 class="cart__list--name">Cos de cumparaturi</h4>
+                                 <svg>
+                                     <circle cx="9" cy="21" r="1"></circle>
+                                     <circle cx="20" cy="21" r="1"></circle>
+                                     <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                                 </svg>
+                             </a>
+                         </li>
+                         @if ($cartItems->isEmpty())
+                             <li class="heart__list--item">
+                                 <span style="color: black">Cos de cumparaturi gol</span>
+                             </li>
+                         @else
+                             @foreach ($cartItems as $cartItem)
+                                 <li>
+                                     <div class="cart__list--item">
+                                         @if (count($cartItem->product->media) > 0)
+                                             @foreach ($cartItem->product->media as $media)
+                                                 @if ($media->location->location == "main")
+                                                     @if ($media->external)
+                                                         <img class="cart__list--img" src="{{ $media->path }}"
+                                                             alt="{{ $media->path }}">
+                                                     @else
+                                                         <img class="cart__list--img"
+                                                             src="/{{ $media->path }}{{ $media->name }}"
+                                                             alt="{{ $media->path }}">
+                                                     @endif
+                                                     <?php break; ?>
+                                                 @endif
+                                             @endforeach
+                                         @else
+                                             <img class="cart__list--img" src="/images/store/default/default.svg"
+                                                 alt="something wrong">
+                                         @endif
+                                         <a class="cart__list--text"
+                                             href="/product/{{ $cartItem->product->id }}"><span>{{ $cartItem->product->name }}</span></a>
+                                         <span class="cart__list--much">
+                                             @php
+                                                 $price = $cartItem->product->product_prices->first();
+                                             @endphp
+                                             @if ($price)
+                                                 {{ $price->value }} {{ $price->pricelist->currency->name }}
+                                             @else
+                                                 indisponibil
+                                             @endif
+                                         </span>
+                                         <span class="cart__list--much">x {{ $cartItem->quantity }}</span>
+                                         <button class="cart__list--delete"
+                                             wire:click="removeFromCart({{ $cartItem->product->id }})">
+                                             <svg>
+                                                 <line x1="18" y1="6" x2="6" y2="18">
+                                                 </line>
+                                                 <line x1="6" y1="6" x2="18" y2="18">
+                                                 </line>
+                                             </svg>
+                                         </button>
+                                     </div>
+                                 </li>
+                             @endforeach
+                         @endif
+                     </ul>
+                 </div>
+
              </div>
              <div class="heart">
                  <button class="heart__btn" wire:click="wishlistshow" id="heartBtn" aria-label="Open heart"
@@ -223,57 +225,60 @@
                      @endif
 
                  </button>
-                 <ul class="heart__list @if ($showwis) show @endif" id="heartContent"
-                     aria-label="heart Items">
+                 <div class="heart__list @if ($showwis) show @endif" aria-label="heart Items">
 
-                     @if ($wishlistitems->isEmpty())
-                         <li class="heart__list--item">
-                             <span style="color: white">Fără produse favorite</span>
-                         </li>
-                     @else
-                         <li>
-                             <a href="/wislist" class="heart__list--item">
-                                 <h4 class="heart__list--name">Favorite</h4>
-                             </a>
-                         </li>
-                         @foreach ($wishlistitems as $product)
-                             <li>
-                                 <div class="heart__list--item">
-                                     @if (count($product->media) > 0)
-                                         @foreach ($product->media as $media)
-                                             @if ($media->location->location == 'main')
-                                                 @if ($media->external)
-                                                     <img class="heart__list--img" src="{{ $media->path }}"
-                                                         alt="{{ $media->path }}">
-                                                 @else
-                                                     <img class="heart__list--img"
-                                                         src="/{{ $media->path }}{{ $media->name }}"
-                                                         alt="{{ $media->path }}">
-                                                 @endif
-                                                 <?php break; ?>
-                                             @endif
-                                         @endforeach
-                                     @else
-                                         <img class="heart__list--img" src="/images/store/default/default.svg"
-                                             alt="something wrong">
-                                     @endif
-                                     <a class="heart__list--text"
-                                         href="/product/{{ $product->id }}"><span>{{ $product->name }}</span></a>
-                                     <button class="heart__list--delete"
-                                         wire:click="removeFromWishlist({{ $product->id }})">
-                                         <svg>
-                                             <line x1="18" y1="6" x2="6" y2="18">
-                                             </line>
-                                             <line x1="6" y1="6" x2="18" y2="18">
-                                             </line>
-                                         </svg>
-                                     </button>
-                                 </div>
+                     <ul id="heartContent">
+
+                         @if ($wishlistitems->isEmpty())
+                             <li class="heart__list--item">
+                                 <span style="color: white">Fără produse favorite</span>
                              </li>
-                         @endforeach
-                     @endif
+                         @else
+                             <li>
+                                 <a href="/wislist" class="heart__list--item">
+                                     <h4 class="heart__list--name">Favorite</h4>
+                                 </a>
+                             </li>
+                             @foreach ($wishlistitems as $product)
+                                 <li>
+                                     <div class="heart__list--item">
+                                         @if (count($product->media) > 0)
+                                             @foreach ($product->media as $media)
+                                                 @if ($media->location->location == "main")
+                                                     @if ($media->external)
+                                                         <img class="heart__list--img" src="{{ $media->path }}"
+                                                             alt="{{ $media->path }}">
+                                                     @else
+                                                         <img class="heart__list--img"
+                                                             src="/{{ $media->path }}{{ $media->name }}"
+                                                             alt="{{ $media->path }}">
+                                                     @endif
+                                                     <?php break; ?>
+                                                 @endif
+                                             @endforeach
+                                         @else
+                                             <img class="heart__list--img" src="/images/store/default/default.svg"
+                                                 alt="something wrong">
+                                         @endif
+                                         <a class="heart__list--text"
+                                             href="/product/{{ $product->id }}"><span>{{ $product->name }}</span></a>
+                                         <button class="heart__list--delete"
+                                             wire:click="removeFromWishlist({{ $product->id }})">
+                                             <svg>
+                                                 <line x1="18" y1="6" x2="6" y2="18">
+                                                 </line>
+                                                 <line x1="6" y1="6" x2="18" y2="18">
+                                                 </line>
+                                             </svg>
+                                         </button>
+                                     </div>
+                                 </li>
+                             @endforeach
+                         @endif
 
-                 </ul>
+                     </ul>
+                 </div>
+
              </div>
          </div>
          <div class="search @if ($active) active @endif" id="search">
@@ -297,7 +302,7 @@
                                      <a class="search__container--item" href="/product/{{ $product->id }}">
                                          @if (count($product->media) > 0)
                                              @foreach ($product->media as $media)
-                                                 @if ($media->location->location == 'search')
+                                                 @if ($media->location->location == "search")
                                                      @if ($media->external)
                                                          <img src="{{ $media->path }}" alt="{{ $media->path }}">
                                                      @else
@@ -321,7 +326,7 @@
                                      <a class="search__container--item" href="/storeproducts/{{ $category->id }}">
                                          @if (count($category->media) > 0)
                                              @foreach ($category->media as $media)
-                                                 @if ($media->location->location == 'search')
+                                                 @if ($media->location->location == "search")
                                                      @if ($media->external)
                                                          <img src="{{ $media->path }}" alt="{{ $media->path }}">
                                                      @else
@@ -341,7 +346,7 @@
                          @endif
                      @else
                          <li>
-                             {{ __('Niciun element gasit') }}
+                             {{ __("Niciun element gasit") }}
                          </li>
                      @endif
                  </ul>
