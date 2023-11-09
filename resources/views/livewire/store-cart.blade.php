@@ -120,7 +120,7 @@
                          {{ $total }} {{ $currency }}
                      @endif
                  </span>
-                 <a wire:click="continue()">Continue</a>
+                 <a wire:click="continue()">Continua</a>
              </div>
              <div class="cart__voucher">
                  @if ($new_price)
