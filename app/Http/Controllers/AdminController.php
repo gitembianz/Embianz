@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Models\Account;
 use App\Models\Order;
+use App\Models\Status;
+use App\Models\Account;
 use App\Models\Voucher;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 
 class AdminController extends Controller
@@ -42,11 +43,14 @@ class AdminController extends Controller
 
   public function store_voucher(Request $request)
   {
+    $StatusId = Status::where('name', 'New')->where('type', 'voucher')->first()->id;
+
     $item = new Voucher();
 
     $item->name = $request->name;
     $item->code = $request->code;
     $item->percent = $request->percent;
+    $item->status_id = $StatusId;
     $item->save();
     return redirect()->back()->with([
       'notification' => [

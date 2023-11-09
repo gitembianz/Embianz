@@ -25,7 +25,10 @@
 
             <div class="product__text" style="position: relative">
                 <h1 class="product__title">{{ $product->name }}</h1>
-                <span class="product__subtitle">{{ $product->product_categories->first()->category->name }}</span>
+                @if ($product->product_categories->first())
+                    <span class="product__subtitle">{{ $product->product_categories->first()->category->name }}</span>
+                @endif
+
                 <button class="card-favorites @if ($product->wishlists->where('session_id', $session_id)->isNotEmpty()) active @endif"
                     wire:click="toggleWishlist({{ $product->id }})">
                     <svg viewBox="0 0 512 512" width="20" title="heart">
@@ -42,21 +45,23 @@
                     @endif
                 </div>
             </div>
-            <div class="product__count">
-                <button id="countDecrease" wire:click="decrementCounter">
-                    <svg>
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                    </svg>
-                </button>
-                <input type="number" name="count" id="count" wire:model="quantity">
-                <button id="countIncrease" wire:click="incrementCounter">
-                    <svg>
-                        <line x1="12" y1="5" x2="12" y2="19"></line>
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                    </svg>
-                </button>
+            @if ($product->product_prices->first() !== null)
+                <div class="product__count">
+                    <button id="countDecrease" wire:click="decrementCounter">
+                        <svg>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                    </button>
+                    <input type="number" name="count" id="count" wire:model="quantity">
+                    <button id="countIncrease" wire:click="incrementCounter">
+                        <svg>
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                    </button>
 
-            </div>
+                </div>
+            @endif
             @if ($maxlimit)
                 <label for="count">Cantitatea maxima a produsului este {{ $limit }}</label>
             @endif

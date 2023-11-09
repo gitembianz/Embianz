@@ -71,12 +71,12 @@ class StoreOrder extends Component
   public $juridic_shipping_county;
   public $juridic_shipping_city;
   public $juridic_shipping_zipcode;
-  public $card = false;
-  public $rtc = false;
+  // public $card = false;
+  public $rtc = true;
   public $invoice = false;
   public $payments;
   public $validatequantity = true;
-  public $delivery = 'card';
+  public $delivery = 'Plata cash la livrare';
   protected $listeners = [
     'nocard' => 'mount',
   ];
@@ -490,21 +490,21 @@ class StoreOrder extends Component
   }
   public function togglepayment($item)
   {
-    if ($item == 'card') {
-      $this->delivery = 'card';
-      $this->card = true;
-      $this->rtc = false;
-      $this->invoice = false;
-    }
+    // if ($item == 'card') {
+    //   $this->delivery = 'card';
+    //   $this->card = true;
+    //   $this->rtc = false;
+    //   $this->invoice = false;
+    // }
     if ($item == 'rtc') {
-      $this->delivery = 'cash on delivery';
-      $this->card = false;
+      $this->delivery = 'Plata cash la livrare';
+      // $this->card = false;
       $this->rtc = true;
       $this->invoice = false;
     }
     if ($item == 'invoice') {
-      $this->delivery = 'invoice';
-      $this->card = false;
+      $this->delivery = 'Ordin de plata';
+      // $this->card = false;
       $this->rtc = false;
       $this->invoice = true;
     }

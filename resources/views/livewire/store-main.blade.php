@@ -141,12 +141,13 @@ url(/images/store/default/default.svg)
                                         {{ $product->product_prices->first()->pricelist->currency->name }}
                                         {{ $product->product_prices->first()->value }}
                                     @else
-                                        {{ __('no price') }}
+                                        {{ __('') }}
                                     @endif
                                 </p>
                             </div>
-                            {{-- <button class="card-button">View Product</button> --}}
-                            <a class="card-button" wire:click="addToCart({{ $product->id }})">Adauga in coș</a>
+                            @if ($product->product_prices->first())
+                                <a class="card-button" wire:click="addToCart({{ $product->id }})">Adauga in coș</a>
+                            @endif
                         </div>
                     </div>
                 @endforeach
