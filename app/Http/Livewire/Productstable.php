@@ -4,13 +4,14 @@ namespace App\Http\Livewire;
 
 use App\Models\Product;
 use Livewire\Component;
-use Livewire\WithPagination;
+use App\Models\Wishlist;
 use App\Models\Cart_Item;
+use App\Models\Product_Spec;
+use Livewire\WithPagination;
 use App\Models\PricelistEntries;
 use App\Models\Products_categories;
-use App\Models\Product_Spec;
-use App\Models\Wishlist;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Schema;
 
 class Productstable extends Component
 {
@@ -23,10 +24,11 @@ class Productstable extends Component
   public $selectPage = false;
   public $selectAll = false;
   public $productidbeingremoved = null;
-  public $columns = ['Id', 'Description', 'Created At'];
+  public $columns;
   public $selectedColumns = [];
   public $col = false;
   public $all = false;
+  public $tableName;
 
   public function render()
   {
@@ -34,8 +36,10 @@ class Productstable extends Component
       'products' => $this->products
     ]);
   }
-  public function mount()
+  public function mount($tableName)
   {
+    $this->tableName = $tableName;
+    $this->columns = Schema::getColumnListing($this->tableName);
     $this->selectedColumns = $this->columns;
   }
   public function showColumn($column)
