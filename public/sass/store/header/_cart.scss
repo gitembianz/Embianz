@@ -3,55 +3,83 @@
 
   /* Cart List */
   &__list {
-    @include abs-position(absolute, 100%, 50%, auto, auto);
-    @include flexer(column, center, flex-start, 10px);
-    @include box(94%, auto);
-    @include fade(hide);
-    @include responsive-spacing(padding, .01);
-    border-radius: 10px;
-    background-color: $background;
-    box-shadow: $shadow;
-    transform: translateY(-100%) translateX(50%);
+    @include abs-position(fixed, 0%, 0%, auto, auto);
+    @include box(100%, 100%);
+    // @include fade(hide);
+    border-radius: 0;
+    background-color: rgba($color: #000000, $alpha: .5);
     transition: $transition;
     z-index: 69;
-    border-collapse: collapse;
+    opacity: 0;
+    visibility: hidden;
 
-    @include breakpoint(small) {
-      @include box(400px, auto);
+    &.show {
+      @include fade(show);
+      opacity: 1;
+      visibility: visible;
+
+      &>ul {
+        transform: translateX(0%);
+      }
     }
 
-    li {
+    &>ul {
+      @include abs-position(absolute, 0%, 0%, auto, auto);
+      @include flexer(column, flex-start, flex-start, 10px);
       width: 100%;
-      background-color: #f2f2f2;
-      border-radius: 10px;
-      cursor: pointer;
+      height: 100%;
+      background: #fff;
+      padding: 10px;
       transition: $transition;
+      transform: translateX(100%);
 
-      &:hover {
-        background-color: darken(#f2f2f2, 10%);
+      @include breakpoint(small) {
+        @include abs-position(absolute, 0%, 0%, auto, auto);
+        width: 50%;
+        height: 100%;
       }
 
-      &:first-child {
-        background-color: $text;
+      @include breakpoint(large) {
+        @include abs-position(absolute, 0%, 0%, auto, auto);
+        width: 30%;
+        height: 100%;
+      }
 
-        svg {
-          transition: $transition;
-          stroke: $background !important;
-        }
+      &>li {
+        width: 100%;
+        height: auto;
+        background-color: #f2f2f2;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: $transition;
 
         &:hover {
+          background-color: darken(#f2f2f2, 10%);
+        }
+
+        &:first-child {
+          background-color: $text;
+
           svg {
-            transform: translateX(-20px);
+            transition: $transition;
+            stroke: $background !important;
+          }
+
+          &:hover {
+            svg {
+              transform: translateX(-20px);
+            }
           }
         }
       }
+
     }
 
     &--item {
       @include flexer(row, space-between, center, 10px);
       @include responsive-spacing(padding, .01);
       width: 100%;
-      height: 100%
+      height: auto;
     }
 
     &--img {
@@ -88,28 +116,8 @@
       }
     }
 
-    /* Cart List Name */
     &--name {
       color: #f2f2f2;
-    }
-  }
-
-  /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
-  .show {
-    @include fade(show);
-    transform: translateX(50%);
-  }
-
-  @include breakpoint(medium) {
-
-    .heart__list,
-    .cart__list {
-      @include abs-position(absolute, 120%, 0, auto, auto);
-      transform: translateY(-100%) translateX(0);
-    }
-
-    .show {
-      transform: translateX(0);
     }
   }
 }
@@ -361,24 +369,3 @@
   @extend .cart__btn;
   border: none !important;
 }
-
-//   &--item {
-//     @extend .cart__list--item;
-//   }
-
-//   &--name {
-//     @extend .cart__list--name;
-//   }
-
-//   &--img {
-//     @extend .cart__list--img;
-//   }
-
-//   &--text {
-//     @extend .cart__list--text;
-//   }
-
-//   &--delete {
-//     @extend .cart__list--delete;
-//   }
-// }
