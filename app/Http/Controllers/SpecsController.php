@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Specs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-// use App\Http\Requests\StoreSpecsRequest;
 use App\Http\Requests\UpdateSpecsRequest;
 use App\Models\SpecGroup;
 
