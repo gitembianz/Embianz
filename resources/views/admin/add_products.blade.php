@@ -41,6 +41,14 @@
                 <label>Product Name</label>
             </div>
             <div class="item__form-input">
+                <input type="text" name="sku" required>
+                <label>Product Sku</label>
+            </div>
+            <div class="item__form-input">
+                <input type="text" name="ean" required>
+                <label>Product Ean</label>
+            </div>
+            <div class="item__form-input">
                 <input type="date" id="start_date" min="0" name="start_date">
                 <label>Product Start Date</label>
             </div>

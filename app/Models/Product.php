@@ -45,13 +45,16 @@ class Product extends Model
 
   protected $fillable = [
     'name',
+    'sku',
+    'ean',
+    'active',
     'short_description',
     'long_description',
     'quantity',
     'start_date',
     'end_date',
-    'createdby',
-    'lastmodifiedby',
+    'created_by',
+    'last_modified_by',
     'seo_title',
     'popularity'
   ];
