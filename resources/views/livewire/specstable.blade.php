@@ -151,20 +151,6 @@
                         </button>
                     </th>
                 @endif
-                @if ($this->showColumn('Group'))
-                    <th>
-                        <button class="table__header--btn"
-                            @if ($orderBy === 'group_id' && $orderAsc === '1') data-symbol="up" @else
-                            data-symbol="down" @endif
-                            wire:click="sortBy('group_id')">
-                            Group
-                            <svg>
-                                <line x1="12" y1="5" x2="12" y2="19"></line>
-                                <polyline points="19 12 12 19 5 12"></polyline>
-                            </svg>
-                        </button>
-                    </th>
-                @endif
                 @if ($this->showColumn('Created At'))
                     <th wire:click="sortBy('created_at')">
                         <button class="table__header--btn"
@@ -206,11 +192,6 @@
                         @if ($this->showColumn('Unit'))
                             <td data-title="Unit">
                                 {{ $spec->um }}
-                            </td>
-                        @endif
-                        @if ($this->showColumn('Group'))
-                            <td data-title="Group">
-                                {{ $spec->group->name }}
                             </td>
                         @endif
                         @if ($this->showColumn('Created At'))

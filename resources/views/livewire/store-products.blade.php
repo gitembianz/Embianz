@@ -118,7 +118,7 @@
         </ul>
     @endif
     <div class="product__catalog">
-        @if ($products->isEmpty())
+        @if ($products && $products->isEmpty())
             <p>Nu au fost produse gasite</p>
         @else
             @foreach ($products as $product)
@@ -141,7 +141,13 @@
                             <img src="/images/store/default/default.svg" draggable="false" alt="something wrong">
                         @endif
                     </a>
-                    <?php $price = $product->product_prices->first()->value; ?>
+                    <?php if ($product->product_prices()->count() > 0) {
+                        $price = $product->product_prices->first()->value;
+                    } else {
+                        $price = null;
+                    }
+                    ?>
+
                     @if ($price)
                         {{-- Out- negru // save - rosu --}}
                         @if ($product->quantity < $quantity && $product->quantity > 0)
@@ -160,7 +166,6 @@
                             În curând!
                         </p>
                     @endif
-                    {{-- <img class="card-image" src="https://24bottles.com/cdn/shop/products/1496_01_590x.png?v=1644250387" --}}
                     {{-- alt="Card-Image"> --}}
                     <button class="card-favorites @if ($product->wishlists->where('session_id', $session_id)->isNotEmpty()) active @endif"
                         wire:click="toggleWishlist({{ $product->id }})">
@@ -170,10 +175,11 @@
                         </svg>
                     </button>
                     <div class="card-info">
-                        <div class="card-text">
-                            <span>{{ $product->product_categories->first()->category->name }}</span>
-                            {{-- <span>600ml</span> --}}
-                        </div>
+                        @if ($product->product_categories->first())
+                            <div class="card-text">
+                                <span>{{ $product->product_categories->first()->category->name }}</span>
+                            </div>
+                        @endif
                         <div class="card-text">
                             <h3>{{ $product->name }}</h3>
                             <p>
@@ -181,7 +187,7 @@
                                     {{ $product->product_prices->first()->pricelist->currency->name }}
                                     {{ $price }}
                                 @else
-                                    {{ __('no price') }}
+                                    {{ __('') }}
                                 @endif
                             </p>
                         </div>

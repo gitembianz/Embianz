@@ -14,8 +14,10 @@ return new class extends Migration
     Schema::create('vouchers', function (Blueprint $table) {
       $table->id();
       $table->string('name');
-      $table->string('code'); // Add a 'name' column as a string
-      $table->decimal('percent', 5, 2); // Add a 'percent' column as a decimal with 5 total digits and 2 decimal places
+      $table->string('code')->unique();
+      $table->decimal('percent', 5, 2);
+      $table->unsignedBigInteger('status_id')->index()->nullable();
+      $table->foreign('status_id')->references('id')->on('statuses');
       $table->timestamps();
     });
   }

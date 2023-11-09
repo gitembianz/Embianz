@@ -149,7 +149,8 @@ class StoreCart extends Component
   {
     if ($this->cart->exists) {
       // Search for a voucher with the provided code in the database
-      $voucher = Voucher::where('code', $this->voucher)->first();
+      $StatusId = Status::where('name', 'New')->where('type', 'voucher')->first()->id;
+      $voucher = Voucher::where('code', $this->voucher)->where('status_id', $StatusId)->first();
 
       if ($voucher) {
         // Voucher found, calculate discount based on percentage
@@ -159,6 +160,9 @@ class StoreCart extends Component
         $this->cart->final_amount = $this->cart->sum_amount - $discountAmount;
         $this->cart->save();
         $this->new_price = true;
+        $newStatusId = Status::where('name', 'used')->where('type', 'voucher')->first()->id;
+        $voucher->status_id = $newStatusId;
+        $voucher->save();
       } else {
         $this->message = "Voucher not found!";
       }
