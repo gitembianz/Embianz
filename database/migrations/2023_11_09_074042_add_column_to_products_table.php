@@ -11,11 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tabels', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->enum('type', ['standard', 'custom']);
-            $table->timestamps();
+        Schema::table('products', function (Blueprint $table) {
+            $table->string('sku')->nullable()->unique(); // Make 'sku' column unique and nullable
+            $table->string('ean')->nullable()->unique();
         });
     }
 
@@ -24,6 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tabels');
+        Schema::table('products', function (Blueprint $table) {
+            //
+        });
     }
 };
