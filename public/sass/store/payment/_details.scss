@@ -343,13 +343,14 @@
 }
 
 .confirmOrder {
+
   font-size: 16px;
 
   &>svg {
     display: none;
   }
 
-  @include breakpoint(md) {
+  @include breakpoint(medium) {
     font-size: 0;
 
     &>svg {

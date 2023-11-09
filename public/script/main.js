@@ -321,78 +321,78 @@ function dropdown(dropdown) {
 // dropdown(".filter__dropdown--btn");
 dropdown(".filter__sort--btn");
 
-const imgModal = document.getElementById("modal");
-const btnModal = document.getElementById("openModal");
-const prevModal = document.querySelector(".product__modal-prev");
-const nextModal = document.querySelector(".product__modal-next");
+// const imgModal = document.getElementById("modal");
+// const btnModal = document.getElementById("openModal");
+// const prevModal = document.querySelector(".product__modal-prev");
+// const nextModal = document.querySelector(".product__modal-next");
 
-if (btnModal) {
-  btnModal.onclick = function () {
-    imgModal.classList.toggle("active");
-  };
+// if (btnModal) {
+//   btnModal.onclick = function () {
+//     imgModal.classList.toggle("active");
+//   };
 
-  window.onclick = function (event) {
-    if (event.target == imgModal) {
-      imgModal.classList.toggle("active");
-    }
-  };
+//   window.onclick = function (event) {
+//     if (event.target == imgModal) {
+//       imgModal.classList.toggle("active");
+//     }
+//   };
 
-  const closeModal = document.getElementById("closeModal");
-  if (closeModal) {
-    closeModal.onclick = function () {
-      imgModal.classList.toggle("active");
-    };
-  }
-}
+//   const closeModal = document.getElementById("closeModal");
+//   if (closeModal) {
+//     closeModal.onclick = function () {
+//       imgModal.classList.toggle("active");
+//     };
+//   }
+// }
 
-let slideIndex = 1;
-showSlides(slideIndex);
+// let slideIndex = 1;
+// showSlides(slideIndex);
 
-function plusSlides(n) {
-  const numSlides = document.getElementsByClassName("slideshow--slides").length;
+// function plusSlides(n) {
+//   const numSlides = document.getElementsByClassName("slideshow--slides").length;
 
-  slideIndex += n;
+//   slideIndex += n;
 
-  // Handle looping back to the first slide
-  if (slideIndex > numSlides) {
-    slideIndex = 1;
-  } else if (slideIndex < 1) {
-    slideIndex = numSlides;
-  }
+//   // Handle looping back to the first slide
+//   if (slideIndex > numSlides) {
+//     slideIndex = 1;
+//   } else if (slideIndex < 1) {
+//     slideIndex = numSlides;
+//   }
 
-  showSlides(slideIndex);
-}
+//   showSlides(slideIndex);
+// }
 
-function currentSlide(n) {
-  showSlides((slideIndex = n));
-}
+// function currentSlide(n) {
+//   showSlides((slideIndex = n));
+// }
 
-function showSlides(n) {
-  const slides = document.getElementsByClassName("slideshow--slides");
-  const dotsContainer = document.getElementById("dots");
-  const numSlides = slides.length;
+// function showSlides(n) {
+//   const slides = document.getElementsByClassName("slideshow--slides");
+//   const dotsContainer = document.getElementById("dots");
+//   const numSlides = slides.length;
 
-  slideIndex = Math.max(1, Math.min(n, numSlides));
+//   slideIndex = Math.max(1, Math.min(n, numSlides));
 
-  Array.from(slides).forEach((slide, index) => {
-    slide.style.display = index === slideIndex - 1 ? "block" : "none";
-  });
-  if (dotsContainer) {
-    dotsContainer.innerHTML = "";
-  }
+//   Array.from(slides).forEach((slide, index) => {
+//     slide.style.display = index === slideIndex - 1 ? "block" : "none";
+//   });
+//   if (dotsContainer) {
+//     dotsContainer.innerHTML = "";
+//   }
 
-  for (let i = 0; i < numSlides; i++) {
-    const dot = document.createElement("span");
-    dot.className = "dot";
-    dot.addEventListener("click", () => currentSlide(i + 1));
-    dotsContainer.appendChild(dot);
-  }
+//   for (let i = 0; i < numSlides; i++) {
+//     const dot = document.createElement("span");
+//     dot.className = "dot";
+//     dot.addEventListener("click", () => currentSlide(i + 1));
+//     dotsContainer.appendChild(dot);
+//   }
 
-  const dots = document.getElementsByClassName("dot");
-  Array.from(dots).forEach((dot, index) => {
-    dot.classList.toggle("active", index === slideIndex - 1);
-  });
-}
+//   const dots = document.getElementsByClassName("dot");
+//   Array.from(dots).forEach((dot, index) => {
+//     dot.classList.toggle("active", index === slideIndex - 1);
+//   });
+// }
 
 function initializeSlider() {
   const sliderElement = document.querySelector(".slider");
@@ -545,4 +545,78 @@ function initializeSlider() {
   }
 }
 
-document.addEventListener("DOMContentLoaded", initializeSlider);
+// document.addEventListener("DOMContentLoaded", initializeSlider);
+function initializeSlider2() {
+  const slider = document.querySelector('.slider2');
+  const wrapper = slider.querySelector('.slider-wrapper2');
+  const slides = slider.querySelectorAll('.slide2');
+  const pagination = slider.querySelector('.pagination2');
+
+  // Verify the existence of required variables
+  if (!slider || !wrapper || !slides || !pagination) {
+    console.error('One or more required elements are missing.');
+    return;
+  }
+
+  // Variables
+  let slideIndex = 0;
+  let startX = null;
+  let endX = null;
+
+  // Function to update pagination
+  function updatePagination() {
+    pagination.innerHTML = '';
+    slides.forEach((_, index) => {
+      const button = document.createElement('div');
+      button.classList.add('pagination-button');
+      if (index === slideIndex) {
+        button.classList.add('active');
+      }
+      button.addEventListener('click', () => {
+        goToSlide(index);
+      });
+      pagination.appendChild(button);
+    });
+  }
+
+  // Function to navigate to a specific slide
+  function goToSlide(index) {
+    slideIndex = index;
+    const translateX = -index * 100;
+    wrapper.style.transform = `translateX(${translateX}%)`;
+    updatePagination();
+  }
+
+  // Add touch event listeners to each slide
+  slides.forEach((slide, index) => {
+    slide.addEventListener('touchstart', (e) => {
+      startX = e.touches[0].clientX;
+    });
+
+    slide.addEventListener('touchmove', (e) => {
+      endX = e.touches[0].clientX;
+    });
+
+    slide.addEventListener('touchend', () => {
+      if (startX !== null && endX !== null) {
+        const deltaX = endX - startX;
+        const threshold = 50; // You can adjust this threshold as needed
+        if (deltaX > threshold && index > 0) {
+          goToSlide(index - 1); // Swipe right
+        } else if (deltaX < -threshold && index < slides.length - 1) {
+          goToSlide(index + 1); // Swipe left
+        } else {
+          goToSlide(index); // Return to the current slide
+        }
+      }
+      startX = null;
+      endX = null;
+    });
+  });
+
+  // Initial setup
+  updatePagination();
+}
+
+// Call the function when the DOM is ready
+document.addEventListener('DOMContentLoaded', initializeSlider2);
