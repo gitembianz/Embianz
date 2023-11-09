@@ -25,6 +25,7 @@ class StoreCart extends Component
   public $message;
   public $closedStatusId;
   public $currency;
+  public $validatequantity;
   protected $listeners = [
     'cartUpdated' => 'mount',
     'wishlistUpdated' => 'mount'
@@ -165,15 +166,42 @@ class StoreCart extends Component
   }
   public function continue()
   {
-    $newStatusId = Status::where('name', 'checkout')->where('type', 'cart')->first()->id;
-    if ($this->new_price) {
-      $this->cart->final_amount += $this->delivery;
-    } else {
-      $this->cart->final_amount = $this->cart->sum_amount + $this->delivery;
+    $cartitems = Cart_Item::where('cart_id', $this->cart->id)->get();
+    if ($cartitems) {
+      foreach ($cartitems as $item) {
+        if ($item->quantity > $item->product->quantity) {
+          $this->validatequantity = false;
+          // $difference = $item->quantity - $item->product->quantity;
+          // $this->cart->quantity_amount -= $difference;
+          // $this->cart->sum_amount -= $difference * $item->price;
+          // $this->cart->final_amount = $this->cart->sum_amount;
+          // $this->cart->save();
+          // $this->emit('cartUpdated');
+          // $item->quantity = $item->product->quantity;
+          // $item->save();
+          session()->flash('notification', [
+            'message' => 'Product quantity is not availabble',
+            'type' => 'warning',
+            'title' => 'Product quantity'
+          ]);
+          return;
+        } else {
+          $this->validatequantity = true;
+        }
+      }
     }
-    $this->cart->status_id = $newStatusId;
-    $this->cart->delivery_price = $this->delivery;
-    $this->cart->save();
-    return redirect()->route('order');
+    if ($this->validatequantity) {
+
+      $newStatusId = Status::where('name', 'checkout')->where('type', 'cart')->first()->id;
+      if ($this->new_price) {
+        $this->cart->final_amount += $this->delivery;
+      } else {
+        $this->cart->final_amount = $this->cart->sum_amount + $this->delivery;
+      }
+      $this->cart->status_id = $newStatusId;
+      $this->cart->delivery_price = $this->delivery;
+      $this->cart->save();
+      return redirect()->route('order');
+    }
   }
 }

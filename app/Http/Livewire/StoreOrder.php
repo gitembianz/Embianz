@@ -143,14 +143,14 @@ class StoreOrder extends Component
       foreach ($cartitems as $item) {
         if ($item->quantity > $item->product->quantity) {
           $this->validatequantity = false;
-          $difference = $item->quantity - $item->product->quantity;
-          $this->cart->quantity_amount -= $difference;
-          $this->cart->sum_amount -= $difference * $item->price;
-          $this->cart->final_amount = $this->cart->sum_amount;
-          $this->cart->save();
-          $this->emit('cartUpdated');
-          $item->quantity = $item->product->quantity;
-          $item->save();
+          // $difference = $item->quantity - $item->product->quantity;
+          // $this->cart->quantity_amount -= $difference;
+          // $this->cart->sum_amount -= $difference * $item->price;
+          // $this->cart->final_amount = $this->cart->sum_amount;
+          // $this->cart->save();
+          // $this->emit('cartUpdated');
+          // $item->quantity = $item->product->quantity;
+          // $item->save();
           session()->flash('notification', [
             'message' => 'Product quantity is not availabble',
             'type' => 'warning',
