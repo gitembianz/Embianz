@@ -118,141 +118,114 @@
         @endif
     </div>
     {{-- Table --}}
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    <input type="checkbox" wire:model="selectPage">
-                </th>
-                @if ($this->showColumn('Id'))
-                    <th wire:click="sortBy('id')">
-                        <button class="table__header--btn"
-                            @if ($orderBy === 'id' && $orderAsc === '1') data-symbol="up"
-                              @else data-symbol="down" @endif>
-                            ID
-                            <svg>
-                                <line x1="12" y1="5" x2="12" y2="19"></line>
-                                <polyline points="19 12 12 19 5 12"></polyline>
-                            </svg>
-                        </button>
-                    </th>
-                @endif
-                @if ($this->showColumn('Name'))
-                    <th wire:click="sortBy('name')">
-                        <button class="table__header--btn"
-                            @if ($orderBy === 'name' && $orderAsc === '1') data-symbol="up"
-                          @else data-symbol="down" @endif>
-                            Name
-                            <svg>
-                                <line x1="12" y1="5" x2="12" y2="19"></line>
-                                <polyline points="19 12 12 19 5 12"></polyline>
-                            </svg>
-                        </button>
-                    </th>
-                @endif
-                @if ($this->showColumn('Description'))
-                    <th wire:click="sortBy('short_description')">
-                        <button class="table__header--btn"
-                            @if ($orderBy === 'short_description' && $orderAsc === '1') data-symbol="up"
-                              @else data-symbol="down" @endif>
-                            Description
-                            <svg>
-                                <line x1="12" y1="5" x2="12" y2="19"></line>
-                                <polyline points="19 12 12 19 5 12"></polyline>
-                            </svg>
-                        </button>
-                    </th>
-                @endif
-                @if ($this->showColumn('Sequence'))
-                    <th wire:click="sortBy('sequence')">
-                        <button class="table__header--btn"
-                            @if ($orderBy === 'sequence' && $orderAsc === '1') data-symbol="up"
-                              @else data-symbol="down" @endif>
-                            Sequence
-                            <svg>
-                                <line x1="12" y1="5" x2="12" y2="19"></line>
-                                <polyline points="19 12 12 19 5 12"></polyline>
-                            </svg>
-                        </button>
-                    </th>
-                @endif
-                @if ($this->showColumn('Created At'))
-                    <th wire:click="sortBy('created_at')">
-                        <button class="table__header--btn"
-                            @if ($orderBy === 'created_at' && $orderAsc === '1') data-symbol="up"
-                              @else data-symbol="down" @endif>
-                            Created at
-                            <svg>
-                                <line x1="12" y1="5" x2="12" y2="19"></line>
-                                <polyline points="19 12 12 19 5 12"></polyline>
-                            </svg>
-                        </button>
-                    </th>
-                @endif
-                <th>
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @if ($products->isEmpty())
+    <div style="overflow-x: auto">
+        <table class="table">
+            <thead>
                 <tr>
-                    <td class="table__empty" colspan="{{ count($selectedColumns) + 3 }}">No record found.</td>
-                </tr>
-            @else
-                @foreach ($products as $product)
-                    <tr @if ($loop->last) id="last_record" @endif
-                        class="@if ($this->isChecked($product->id)) table__row--selected @endif">
-                        <td data-title="Check">
-                            <input type="checkbox" value="{{ $product->id }}" wire:model="checked">
-                        </td>
-                        @if ($this->showColumn('Id'))
-                            <td data-title="ID">
-                                {{ $product->id }}
-                            </td>
-                        @endif
-                        @if ($this->showColumn('Name'))
-                            <td data-title="Name">
-                                <a href="/show_product/{{ $product->id }}">{{ $product->name }}</a>
-                            </td>
-                        @endif
-                        @if ($this->showColumn('Description'))
-                            <td class="table__description" data-title="Description">
-                                {{ $product->short_description }}
-                            </td>
-                        @endif
-                        @if ($this->showColumn('Sequence'))
-                            <td data-title="Sequence">
-                                {{ $product->sequence }}
-                            </td>
-                        @endif
-                        @if ($this->showColumn('Created At'))
-                            <td data-title="Created At">
-                                <div class="table__time">
+                    <th>
+                        <input type="checkbox" wire:model="selectPage">
+                    </th>
+                    @foreach ($selectedColumns as $column)
+                        @if ($this->showColumn($column))
+                            <th wire:click="sortBy('{{ $column }}')">
+                                <button class="table__header--btn"
+                                    @if ($orderBy === $column && $orderAsc === '1') data-symbol="up"
+                @else data-symbol="down" @endif>
+                                    {{ $column }}
                                     <svg>
-                                        <circle cx="12" cy="12" r="10"></circle>
-                                        <polyline points="12 6 12 12 16 14"></polyline>
-                                    </svg>
-                                    {{ $product->created_at }}
-                                </div>
-                            </td>
-                        @endif
-                        <td data-title="Action">
-                            <div class="table__buttons">
-                                <button class="delete"
-                                    wire:click.prevent="confirmProductRemoval({{ $product->id }})">
-                                    <svg>
-                                        <polyline points="3 6 5 6 21 6"></polyline>
-                                        <path
-                                            d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                        </path>
+                                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                                        <polyline points="19 12 12 19 5 12"></polyline>
                                     </svg>
                                 </button>
-                            </div>
-                        </td>
+                            </th>
+                        @endif
+                    @endforeach
+                    <th>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @if ($products->isEmpty())
+                    <tr>
+                        <td class="table__empty" colspan="{{ count($selectedColumns) + 3 }}">No record found.</td>
                     </tr>
-                @endforeach
-            @endif
-        </tbody>
-        <x-lazy />
-    </table>
+                @else
+                    @foreach ($products as $product)
+                        <tr @if ($loop->last) id="last_record" @endif
+                            class="@if ($this->isChecked($product->id)) table__row--selected @endif">
+                            <td data-title="Check">
+                                <input type="checkbox" value="{{ $product->id }}" wire:model="checked">
+                            </td>
+                            @foreach ($selectedColumns as $column)
+                                @if ($column === 'name')
+                                    <td data-title="Name"><a
+                                            href="/show_product/{{ $product->id }}">{{ $product->name }}</a></td>
+                                @elseif($column === 'created_at' || $column === 'updated_at')
+                                    <td data-title="{{ $column }}">
+                                        <div class="table__time">
+                                            <svg>
+                                                <circle cx="12" cy="12" r="10"></circle>
+                                                <polyline points="12 6 12 12 16 14"></polyline>
+                                            </svg>
+                                            {{ $product->$column }}
+                                        </div>
+                                    </td>
+                                @elseif($column === 'start_date' || $column === 'end_date')
+                                    <td data-title="{{ $column }}">
+                                        <div class="table__time">
+                                            <svg>
+                                                <rect x="3" y="4" width="18" height="18" rx="2"
+                                                    ry="2"></rect>
+                                                <line x1="16" y1="2" x2="16" y2="6">
+                                                </line>
+                                                <line x1="8" y1="2" x2="8" y2="6">
+                                                </line>
+                                                <line x1="3" y1="10" x2="21" y2="10">
+                                                </line>
+                                            </svg>
+                                            {{ $product->$column }}
+                                        </div>
+                                    </td>
+                                @elseif($column === 'createdby' || $column === 'lastmodifiedby')
+                                    <td data-title="{{ $column }}">
+                                        <div class="table__time">
+                                            <svg>
+                                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                                <circle cx="12" cy="7" r="4"></circle>
+                                            </svg>
+                                            {{ $product->$column }}
+                                        </div>
+                                    </td>
+                                @elseif ($column === 'active')
+                                    <td data-title="{{ $column }}">
+                                        @if ($product->$column)
+                                            active
+                                        @else
+                                            inactive
+                                        @endif
+                                    </td>
+                                @else
+                                    <td data-title="{{ $column }}">{{ $product->$column }}</td>
+                                @endif
+                            @endforeach
+                            <td data-title="Action">
+                                <div class="table__buttons">
+                                    <button class="delete"
+                                        wire:click.prevent="confirmProductRemoval({{ $product->id }})">
+                                        <svg>
+                                            <polyline points="3 6 5 6 21 6"></polyline>
+                                            <path
+                                                d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                            </path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                @endif
+            </tbody>
+            <x-lazy />
+        </table>
+    </div>
 </div>
