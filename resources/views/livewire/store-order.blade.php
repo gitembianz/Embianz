@@ -42,26 +42,6 @@
                                 <polyline points="12 5 19 12 12 19"></polyline>
                             </svg>
                         </a>
-                        @if ($step == 2)
-                            <a wire:click.prevent="previous()" data-tooltip="Go to previous step">
-                                <svg>
-                                    <line x1="19" y1="12" x2="5" y2="12"></line>
-                                    <polyline points="12 19 5 12 12 5"></polyline>
-                                </svg>
-                            </a>
-                            <a class="confirmOrder" wire:click.prevent="confirm()" data-tooltip="Confirm order">
-                                Confirm Order
-                                <svg>
-                                    <polyline points="9 11 12 14 22 4"></polyline>
-                                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
-                                </svg>
-                            </a>
-                        @elseif ($step == 3)
-                            <a wire:click.prevent="finish()" data-tooltip="Go back to store">
-                                Thank you for your order, Shopping again
-                            </a>
-                        @endif
-
                     </div>
                 </div>
                 <div class="details__tab--content">
@@ -692,7 +672,8 @@
                             <polyline points="12 19 5 12 12 5"></polyline>
                         </svg>
                     </a>
-                    <a wire:click.prevent="confirm()" data-tooltip="Confirm order">
+                    <a class="confirmOrder" wire:click.prevent="confirm()" data-tooltip="Confirm order">
+                        Confirma Comanda
                         <svg>
                             <polyline points="9 11 12 14 22 4"></polyline>
                             <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
