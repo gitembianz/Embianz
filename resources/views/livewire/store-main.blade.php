@@ -6,7 +6,7 @@
                     <div class="home__item home__this"
                         style="background-image:
                   @if (count($product->product->media) > 0) @foreach ($product->product->media as $media)
-                  @if ($media->location->location == "main")
+                  @if ($media->location->location == 'main')
                     @if ($media->external)
                       url({{ $media->path }}" alt="{{ $media->path }})
                     @else
@@ -53,7 +53,7 @@ url(/images/store/default/default.svg)
                     <div class="slide">
                         @if (count($product->product->media) > 0)
                             @foreach ($product->product->media as $media)
-                                @if ($media->location->location == "details")
+                                @if ($media->location->location == 'details')
                                     @if ($media->external)
                                         <img src="{{ $media->path }}" draggable="false" alt="{{ $media->path }}">
                                     @else
@@ -105,7 +105,7 @@ url(/images/store/default/default.svg)
                         <a href="/product/{{ $product->id }}">
                             @if (count($product->media) > 0)
                                 @foreach ($product->media as $media)
-                                    @if ($media->location->location == "main")
+                                    @if ($media->location->location == 'main')
                                         @if ($media->external)
                                             <img class="card-image" src="{{ $media->path }}" draggable="false"
                                                 alt="{{ $media->path }}">
@@ -122,7 +122,7 @@ url(/images/store/default/default.svg)
                         </a>
                         {{-- <img class="card-image" src="https://24bottles.com/cdn/shop/products/1496_01_590x.png?v=1644250387" --}}
                         {{-- alt="Card-Image"> --}}
-                        <button class="card-favorites @if ($product->wishlists->where("session_id", $session_id)->isNotEmpty()) active @endif"
+                        <button class="card-favorites @if ($product->wishlists->where('session_id', $session_id)->isNotEmpty()) active @endif"
                             wire:click="toggleWishlist({{ $product->id }})">
                             <svg viewBox="0 0 512 512" width="20" title="heart">
                                 <path
@@ -141,7 +141,7 @@ url(/images/store/default/default.svg)
                                         {{ $product->product_prices->first()->pricelist->currency->name }}
                                         {{ $product->product_prices->first()->value }}
                                     @else
-                                        {{ __("no price") }}
+                                        {{ __('no price') }}
                                     @endif
                                 </p>
                             </div>
