@@ -15,7 +15,7 @@ return new class extends Migration
       $table->id();
       $table->string('parameter');
       $table->string('value');
-      $table->string('description')->nullable();
+      $table->longText('description')->nullable();
       $table->string('createdby')->nullable();
       $table->string('lastmodifiedby')->nullable();
       $table->timestamps();

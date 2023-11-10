@@ -38,6 +38,10 @@ class Order extends Model
   {
     return $this->belongsTo(Payment::class);
   }
+  public function voucher()
+  {
+    return $this->belongsTo(Voucher::class);
+  }
   public static function search($search)
   {
     return empty($search) ? static::query()
