@@ -18,7 +18,7 @@ class StoreProducts extends Component
 
   public $loadAmount = 9;
   public $search = "";
-  public $quantity = 20;
+  public $quantity = 10;
   public $wishlist = [];
   public $session_id;
   public $specification;

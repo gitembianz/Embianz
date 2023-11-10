@@ -134,18 +134,43 @@ url(/images/store/default/default.svg)
                                 <span>{{ $product->short_description }}</span>
                                 {{-- <span>600ml</span> --}}
                             </div>
+                            <?php if ($product->product_prices()->count() > 0) {
+                                $price = $product->product_prices->first()->value;
+                            } else {
+                                $price = null;
+                            }
+                            ?>
+                            @if ($price)
+                                {{-- Out- negru // save - rosu --}}
+                                @if ($product->quantity < $quantity && $product->quantity > 0)
+                                    <p class="card-status out">
+                                        Ultimele produse!
+                                    </p>
+                                @elseif($product->quantity == 0)
+                                    <p class="card-status save">
+                                        Produs indisponibil!
+                                    </p>
+                                @else
+                                    <p></p>
+                                @endif
+                            @else
+                                <p class="card-status save">
+                                    În curând!
+                                </p>
+                            @endif
                             <div class="card-text">
                                 <h3>{{ $product->name }}</h3>
+
                                 <p>
-                                    @if ($product->product_prices->first())
+                                    @if ($price)
                                         {{ $product->product_prices->first()->pricelist->currency->name }}
-                                        {{ $product->product_prices->first()->value }}
+                                        {{ $price }}
                                     @else
                                         {{ __('') }}
                                     @endif
                                 </p>
                             </div>
-                            @if ($product->product_prices->first())
+                            @if ($price && $product->quantity != 0)
                                 <a class="card-button" wire:click="addToCart({{ $product->id }})">Adauga in coș</a>
                             @endif
                         </div>

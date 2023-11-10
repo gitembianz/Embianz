@@ -157,7 +157,7 @@ class StoreCart extends Component
         $discountAmount = $voucher->percent / 100 * $this->cart->sum_amount;
         $this->message = null;
         $this->price = $this->cart->sum_amount;
-        $this->cart->final_amount = $this->cart->sum_amount - $discountAmount;
+        $this->cart->final_amount = $this->cart->sum_amount - $discountAmount + $this->delivery;
         $this->cart->save();
         $this->new_price = true;
         $newStatusId = Status::where('name', 'used')->where('type', 'voucher')->first()->id;
@@ -198,7 +198,7 @@ class StoreCart extends Component
 
       $newStatusId = Status::where('name', 'checkout')->where('type', 'cart')->first()->id;
       if ($this->new_price) {
-        $this->cart->final_amount += $this->delivery;
+        $this->cart->final_amount;
       } else {
         $this->cart->final_amount = $this->cart->sum_amount + $this->delivery;
       }
