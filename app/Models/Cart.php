@@ -27,6 +27,10 @@ class Cart extends Model
   {
     return $this->belongsTo(Status::class, 'status_id');
   }
+  public function voucher()
+  {
+    return $this->belongsTo(Voucher::class);
+  }
   public static function search($search)
   {
     return empty($search) ? static::query()

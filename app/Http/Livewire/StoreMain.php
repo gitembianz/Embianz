@@ -17,6 +17,7 @@ class StoreMain extends Component
   public $limit = 10;
   public $slider;
   public $category;
+  public $quantity = 10;
   public $session_id;
   public $wishlist = [];
   protected $listeners = [
