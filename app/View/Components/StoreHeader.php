@@ -3,10 +3,10 @@
 namespace App\View\Components;
 
 use Closure;
-use Illuminate\View\Component;
 use Illuminate\Contracts\View\View;
+use Illuminate\View\Component;
 
-class Store-head extends Component
+class StoreHeader extends Component
 {
     /**
      * Create a new component instance.
@@ -21,6 +21,6 @@ class Store-head extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.store-head');
+        return view('components.store-header');
     }
 }

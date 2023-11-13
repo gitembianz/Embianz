@@ -1,4 +1,5 @@
-<x-store-head />
+<x-store-head :title='" - " . ($data->seo_title ?? "")' />
+
 <x-store-header />
 <main>
     <section class="container">

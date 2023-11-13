@@ -36,9 +36,13 @@ class StoreCart extends Component
     $this->session_id = $_COOKIE['sessionId'];
     $this->delivery = Store_Settings::where('parameter', 'delivery_price')->first()->value;
     $this->closedStatusId = Status::where('name', 'closed')->where('type', 'cart')->first()->id;
-    $this->cart = Cart::where('session_id', $this->session_id)->where('status_id', '!=', $this->closedStatusId)->first();
+    $this->cart = Cart::where('session_id', $this->session_id)->where('status_id', '!=', $this->closedStatusId)->with('voucher')->first();
     if ($this->cart) {
       $this->currency = $this->cart->currency->name;
+      if ($this->cart->voucher_id) {
+        $this->new_price = true;
+        $this->voucher = $this->cart->voucher->code;
+      }
     }
   }
   public function render()
@@ -149,7 +153,7 @@ class StoreCart extends Component
   {
     if ($this->cart->exists) {
       // Search for a voucher with the provided code in the database
-      $StatusId = Status::where('name', 'New')->where('type', 'voucher')->first()->id;
+      $StatusId = Status::where('name', 'Active')->where('type', 'voucher')->first()->id;
       $voucher = Voucher::where('code', $this->voucher)->where('status_id', $StatusId)->first();
 
       if ($voucher) {
@@ -157,12 +161,13 @@ class StoreCart extends Component
         $discountAmount = $voucher->percent / 100 * $this->cart->sum_amount;
         $this->message = null;
         $this->price = $this->cart->sum_amount;
+        $this->cart->voucher_id = $voucher->id;
         $this->cart->final_amount = $this->cart->sum_amount - $discountAmount + $this->delivery;
         $this->cart->save();
         $this->new_price = true;
-        $newStatusId = Status::where('name', 'used')->where('type', 'voucher')->first()->id;
-        $voucher->status_id = $newStatusId;
-        $voucher->save();
+        // $newStatusId = Status::where('name', 'used')->where('type', 'voucher')->first()->id;
+        // $voucher->status_id = $newStatusId;
+        // $voucher->save();
       } else {
         $this->message = "Voucher not found!";
       }

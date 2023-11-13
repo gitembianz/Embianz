@@ -198,12 +198,7 @@
                                     </td>
                                 @elseif ($column === 'active')
                                     <td data-title="{{ $column }}">
-                                        @if ($product->$column)
-                                            active
-                                        @else
-                                            inactive
-                                        @endif
-                                    </td>
+                                        {{ $product->$column ? 'active' : 'inactive' }}</td>
                                 @else
                                     <td data-title="{{ $column }}">{{ $product->$column }}</td>
                                 @endif

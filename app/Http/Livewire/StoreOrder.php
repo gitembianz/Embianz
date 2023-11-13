@@ -11,6 +11,7 @@ use Livewire\Component;
 use App\Models\Cart_Item;
 use App\Models\Order_Item;
 use App\Models\Payment;
+use App\Models\Voucher;
 
 class StoreOrder extends Component
 {
@@ -296,6 +297,7 @@ class StoreOrder extends Component
         'currency_id' => $this->cart->currency_id,
         'status_id' =>  $statusId,
         'payment_id' => $paymentId,
+        'voucher_id' =>  $this->cart->voucher_id,
       ]);
       if ($cartitems) {
         $order = Order::where('cart_id', $this->cart->id)->first();
@@ -310,8 +312,16 @@ class StoreOrder extends Component
           ]);
         }
         $this->cart->order_id = $order->id;
+        if ($this->cart->voucher) {
+          if ($this->cart->voucher->single_use) {
+            $vouch = Voucher::find($this->cart->voucher_id);
+            $newStatusvouch = Status::where('name', 'Closed')->where('type', 'voucher')->first()->id;
+            $vouch->status_id = $newStatusvouch;
+            $vouch->save();
+          }
+        }
       }
-      $newStatusId = Status::where('name', 'closed')->where('type', 'cart')->first()->id;
+      $newStatusId = Status::where('name', 'Closed')->where('type', 'cart')->first()->id;
       $this->cart->status_id = $newStatusId;
       $this->cart->save();
       $this->step++;

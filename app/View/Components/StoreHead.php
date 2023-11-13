@@ -2,19 +2,20 @@
 
 namespace App\View\Components;
 
-use App\Models\MediaLocation;
+use App\Models\Store_Settings;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class Dashboardmediahanddler extends Component
+class StoreHead extends Component
 {
+    public $title;
     /**
      * Create a new component instance.
      */
-    public function __construct()
+    public function __construct($title = "")
     {
-        //
+        $this->title = Store_Settings::where('parameter', 'site_name')->first()->value . $title;
     }
 
     /**
@@ -22,7 +23,6 @@ class Dashboardmediahanddler extends Component
      */
     public function render(): View|Closure|string
     {
-        $medialocations = MediaLocation::all();
-        return view('components.dashboardmediahanddler', compact('medialocations'));
+        return view('components.store-head', ['title' => $this->title]);
     }
 }
