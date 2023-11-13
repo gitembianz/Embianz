@@ -10,7 +10,7 @@ class Storesettingstable extends Component
 {
 
   use WithPagination;
-  public $perPage = 10;
+  public $perPage = 20;
   public $search = '';
   public $orderBy = 'id';
   public $orderAsc = true;
@@ -18,10 +18,10 @@ class Storesettingstable extends Component
   public $selectPage = false;
   public $selectAll = false;
   public $itemidbeingremoved = null;
-  public $columns = ['Id', 'Value', 'Description', 'Created At'];
+  public $columns = ['Id', 'Value', 'Description', 'Created At', 'Updated At'];
   public $selectedColumns = [];
   public $indexstoresettings = null;
-  public $stores = [];
+  public $settings = [];
 
   public function render()
   {
@@ -120,18 +120,20 @@ class Storesettingstable extends Component
   {
     return in_array($id, $this->checked);
   }
-  public function edititem($itemIndex)
+  public function edititem($index, $id)
   {
-    $this->indexstoresettings = $itemIndex;
+    $record = Store_Settings::find($id);
+    $this->indexstoresettings = $index;
+    $this->settings = [
+      $index . '.value' => $record->value,
+      $index . '.description' => $record->description,
+    ];
   }
   public function saveitem($index, $id)
   {
-    $update = $this->stores[$index] ?? NULL;
+    $update = $this->settings[$index] ?? NULL;
     if (!is_null($update)) {
       $item = Store_Settings::find($id);
-      if (array_key_exists('parameter', $update)) {
-        $item->parameter = $update['parameter'];
-      }
       if (array_key_exists('value', $update)) {
         $item->value = $update['value'];
       }
@@ -144,13 +146,19 @@ class Storesettingstable extends Component
         'type' => 'success',
         'title' => 'Success'
       ]);
+    } else {
+      session()->flash('notification', [
+        'message' => 'Nothing chnaged!',
+        'type' => 'success',
+        'title' => 'Success'
+      ]);
     }
-    $this->stores = [];
+    $this->settings = [];
     $this->indexstoresettings = null;
   }
   public function cancelitem()
   {
     $this->indexstoresettings = null;
-    $this->stores = [];
+    $this->settings = [];
   }
 }
