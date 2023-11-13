@@ -3,10 +3,10 @@
 namespace App\View\Components;
 
 use Closure;
-use Illuminate\View\Component;
 use Illuminate\Contracts\View\View;
+use Illuminate\View\Component;
 
-class Store-footer extends Component
+class StoreFooter extends Component
 {
     /**
      * Create a new component instance.

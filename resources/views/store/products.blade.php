@@ -1,4 +1,4 @@
-<x-store-head />
+<x-store-head :title='" - Produse"' />
 <x-store-header />
 <main>
     <section class="products container">

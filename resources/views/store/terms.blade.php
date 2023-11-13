@@ -1,4 +1,4 @@
-<x-store-head />
+<x-store-head :title='" - Termeni si condifii"' />
 <x-store-header />
 <main>
     <div class="terms container">
