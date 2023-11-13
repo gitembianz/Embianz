@@ -12,7 +12,6 @@ class ShowSpec extends Component
   public $itemId;
   public $edititem = null;
   public $record;
-  public $groups;
 
   public function render()
   {

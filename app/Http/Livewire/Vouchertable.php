@@ -27,6 +27,8 @@ class Vouchertable extends Component
   public $voucher = [];
   public $statuses;
 
+  protected $listeners = ['loadMore' => 'loadMore'];
+
   public $itemidbeingremoved = null;
 
   public function render()
