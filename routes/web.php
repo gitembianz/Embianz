@@ -65,7 +65,7 @@
     route::get('/show_pricelist/{id}/', [PriceListController::class, 'show'])->name('show_pricelis');
 
     route::get(
-      '/emb_admin',
+      '/embadmin',
       [HomeController::class, 'redirect']
     )->middleware('auth', 'verified')->name('dashboard');
 
