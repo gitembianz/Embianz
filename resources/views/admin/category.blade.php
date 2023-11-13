@@ -6,7 +6,7 @@
 <section class="content">
 
     {{-- Tabel by Livewire start --}}
-    <livewire:categoriestable tableName="categories" />
+    @livewire('categoriestable', ['tableName' => "categories"])
 
     {{-- Tabel by Livewire end --}}
 

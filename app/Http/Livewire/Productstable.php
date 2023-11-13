@@ -44,9 +44,6 @@ class Productstable extends Component
   }
   public function showColumn($column)
   {
-    if ($column === 'Name') {
-      return true;
-    }
     return in_array($column, $this->selectedColumns);
   }
   public function updatedSelectPage($value)

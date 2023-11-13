@@ -17,5 +17,4 @@
 {{-- page content end --}}
 <x-dashboardright />
 <x-dashboardscript />
-<x-dashboardmediahanddler />
 <x-dashboardfooter />

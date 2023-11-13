@@ -217,8 +217,8 @@
                         </td>
                     </tr>
                 @endforeach
+                {{-- <x-lazy /> --}}
             @endif
         </tbody>
-        <x-lazy />
     </table>
 </div>
