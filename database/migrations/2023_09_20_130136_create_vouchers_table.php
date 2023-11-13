@@ -18,6 +18,9 @@ return new class extends Migration
       $table->decimal('percent', 5, 2);
       $table->unsignedBigInteger('status_id')->index()->nullable();
       $table->foreign('status_id')->references('id')->on('statuses');
+      $table->boolean('single_use')->default(true);
+      $table->string('start_date')->nullable();
+      $table->string('end_date')->nullable();
       $table->timestamps();
     });
   }

@@ -511,8 +511,7 @@
                                                     <div>{{ $file->sequence }}</div>
                                                 @else
                                                     <input type="number" min="0" required class="table__edit"
-                                                        wire:model.defer="filess.{{ $index }}.sequence"
-                                                        value="{{ $file->sequence }}">
+                                                        wire:model.defer="filess.{{ $index }}.sequence">
                                                 @endif
                                             </td>
                                         @endif

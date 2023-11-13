@@ -37,49 +37,55 @@
         {{-- Item Form --}}
         <div class="item__form">
             <div class="item__form-input">
-                <input type="text" name="product_name" required>
+                <input type="text" name="product_name" required value="{{ old('product_name') }}">
                 <label>Product Name</label>
             </div>
             <div class="item__form-input">
-                <input type="text" name="sku" required>
+                <input type="text" name="sku" required value="{{ old('sku') }}">
                 <label>Product Sku</label>
             </div>
             <div class="item__form-input">
-                <input type="text" name="ean" required>
+                <input type="text" name="ean" required value="{{ old('ean') }}">
                 <label>Product Ean</label>
             </div>
             <div class="item__form-input">
                 <input type="date" id="start_date" min="0" name="start_date">
                 <label>Product Start Date</label>
+                @error('start_date')
+                    <span style="position: absolute; top: 2.5rem; color: red;">{{ $message }}</span>
+                @enderror
             </div>
             <div class="item__form-input">
                 <input type="date" id="end_date" name="end_date">
                 <label>Product End Date</label>
+                @error('end_date')
+                    <span style="position: absolute; top: 2.5rem; color: red;">{{ $message }}</span>
+                @enderror
             </div>
             <div class="item__form-input">
-                <input type="number" min="0" name="quantity" required>
+                <input type="number" min="0" name="quantity" required value="{{ old('quantity') }}">
                 <label>Product Quantity</label>
             </div>
             <div style="display: flex; align-items: center;justify-content: flex-start;gap: 10px">
-                <input type="checkbox" name="active">
+                <input type="checkbox" name="active" value="{{ old('active') }}">
                 <span>Active</span>
             </div>
             <div class="item__form-input">
-                <input type="number" min="0" name="popularity" required>
+                <input type="number" min="0" name="popularity" required value="{{ old('popularity') }}">
                 <label>Popularity</label>
             </div>
 
             <div class="item__form-input item__form-long">
-                <input type="text" name="short_description">
+                <input type="text" name="short_description" value="{{ old('short_description') }}">
                 <label>Short Description</label>
             </div>
 
             <div class="item__form-input item__form-textarea">
-                <textarea name="long_description"></textarea>
+                <textarea name="long_description">ue="{{ old('long_description') }}"</textarea>
                 <label>Long Description</label>
             </div>
             <div class="item__form-input item__form-long">
-                <input type="text" name="seo_title">
+                <input type="text" name="seo_title" ue="{{ old('seo_title') }}">
                 <label>SEO Title</label>
             </div>
             <input class="item__form-btn item__form-long" type="submit" value="Add new" name="submit">

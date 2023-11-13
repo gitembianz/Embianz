@@ -148,7 +148,7 @@
                         <td class="table__empty" colspan="{{ count($selectedColumns) + 1 }}">No record found.</td>
                     </tr>
                 @else
-                    @foreach ($vouchers as $voucher)
+                    @foreach ($vouchers as $index => $voucher)
                         <tr @if ($loop->last) id="last_record" @endif
                             class="@if ($this->isChecked($voucher->id)) table__row--selected @endif">
                             <td data-title="Check">
@@ -165,21 +165,95 @@
                                             {{ $voucher->$column }}
                                         </div>
                                     </td>
+                                @elseif ($column === 'percent')
+                                    <td data-title="{{ $column }}">
+                                        @if ($editindex !== $index)
+                                            {{ $voucher->$column }} %
+                                        @else
+                                            <input type="number" min="0" required class="table__edit"
+                                                wire:model.defer="voucher.{{ $index }}.{{ $column }}">
+                                        @endif
+                                    </td>
+                                @elseif ($column === 'status_id')
+                                    <td data-title="{{ $column }}">
+                                        @if ($editindex !== $index)
+                                            {{ $voucher->status->name }}
+                                        @else
+                                            <select class="table__edit"
+                                                wire:model.defer="voucher.{{ $index }}.status_id">
+                                                @foreach ($statuses as $status)
+                                                    <option value="{{ $status->id }}">
+                                                        {{ $status->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        @endif
+                                    </td>
+                                @elseif ($column === 'single_use')
+                                    <td data-title="{{ $column }}">
+                                        @if ($editindex !== $index)
+                                            {{ $voucher->$column ? 'true' : 'false' }}
+                                        @else
+                                            <input type="checkbox"
+                                                wire:model.defer="voucher.{{ $index }}.single_use">
+                                        @endif
+                                    </td>
+                                @elseif ($column === 'name' || $column === 'code')
+                                    <td data-title="{{ $column }}">
+                                        @if ($editindex !== $index)
+                                            {{ $voucher->$column }}
+                                        @else
+                                            <input type="text" required class="table__edit"
+                                                wire:model.defer="voucher.{{ $index }}.{{ $column }}">
+                                        @endif
+                                    </td>
+                                @elseif ($column === 'start_date' || $column === 'end_date')
+                                    <td data-title="{{ $column }}">
+                                        @if ($editindex !== $index)
+                                            {{ $voucher->$column }}
+                                        @else
+                                            <input type="date" required class="table__edit"
+                                                wire:model.defer="voucher.{{ $index }}.{{ $column }}">
+                                        @endif
+                                    </td>
                                 @else
                                     <td data-title="{{ $column }}">{{ $voucher->$column }}</td>
                                 @endif
                             @endforeach
                             <td data-title="Action">
                                 <div class="table__buttons">
-                                    <button class="delete"
-                                        wire:click.prevent="confirmItemRemoval({{ $voucher->id }})">
-                                        <svg>
-                                            <polyline points="3 6 5 6 21 6"></polyline>
-                                            <path
-                                                d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                            </path>
-                                        </svg>
-                                    </button>
+                                    @if ($editindex !== $index)
+                                        <button class="edit"
+                                            wire:click.prevent="edititem({{ $index }}, {{ $voucher->id }})">
+                                            <svg>
+                                                <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
+                                                </path>
+                                            </svg>
+                                        </button>
+                                        <button class="delete"
+                                            wire:click.prevent="confirmItemRemoval({{ $voucher->id }})">
+                                            <svg>
+                                                <polyline points="3 6 5 6 21 6"></polyline>
+                                                <path
+                                                    d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                                </path>
+                                            </svg>
+                                        </button>
+                                    @else
+                                        <button class="edit"
+                                            wire:click.prevent="saveitem({{ $index }} , {{ $voucher->id }})">
+                                            <svg>
+                                                <polyline points="20 6 9 17 4 12"></polyline>
+                                            </svg>
+                                        </button>
+                                        <button class="save" wire:click.prevent="canceledit()">
+                                            <svg>
+                                                <line x1="18" y1="6" x2="6" y2="18">
+                                                </line>
+                                                <line x1="6" y1="6" x2="18" y2="18">
+                                                </line>
+                                            </svg>
+                                        </button>
+                                    @endif
                                 </div>
                             </td>
                         </tr>

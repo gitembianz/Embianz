@@ -49,6 +49,18 @@
                 </a>
             </li>
             <li>
+                <a class="sidebar__item @if ($active == 'voucher') active @endif" href="{{ route('vouchers') }}">
+                    <button class="sidebar__icon">
+                        <svg>
+                            <line x1="19" y1="5" x2="5" y2="19"></line>
+                            <circle cx="6.5" cy="6.5" r="2.5"></circle>
+                            <circle cx="17.5" cy="17.5" r="2.5"></circle>
+                        </svg>
+                    </button>
+                    <span>Vouchers</span>
+                </a>
+            </li>
+            <li>
                 <a class="sidebar__item @if ($active == 'account') active @endif" href="{{ route('accounts') }}">
                     <button class="sidebar__icon">
                         <svg>
@@ -113,7 +125,7 @@
                 </a>
             </li>
             <li class="dropdown">
-                <a class="sidebar__item @if ($active == 'store_settings' || $active == 'voucher' || $active == 'payment') active @endif dropdown-button" href="#"
+                <a class="sidebar__item @if ($active == 'store_settings' || $active == 'payment') active @endif dropdown-button" href="#"
                     style="z-index: 99999;">
                     <button class="sidebar__icon">
                         <svg>
@@ -137,17 +149,6 @@
                             </svg>
                         </button>
                         <span> Store Settings</span>
-                    </a>
-                    <a class="sidebar__subitem @if ($active == 'voucher') active @endif"
-                        href="{{ route('vouchers') }}">
-                        <button class="sidebar__icon">
-                            <svg>
-                                <line x1="19" y1="5" x2="5" y2="19"></line>
-                                <circle cx="6.5" cy="6.5" r="2.5"></circle>
-                                <circle cx="17.5" cy="17.5" r="2.5"></circle>
-                            </svg>
-                        </button>
-                        <span>Vouchers</span>
                     </a>
                     <a class="sidebar__subitem @if ($active == 'payment') active @endif"
                         href="{{ route('payments') }}">

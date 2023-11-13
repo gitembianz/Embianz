@@ -32,8 +32,8 @@ class StatusSeeder extends Seeder
         ]);
 
         DB::table('statuses')->insert([
-            ['name' => 'New', 'type' => 'voucher', 'created_at' => $currentTime, 'updated_at' => $currentTime],
-            ['name' => 'used', 'type' => 'voucher', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['name' => 'Active', 'type' => 'voucher', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['name' => 'Closed', 'type' => 'voucher', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             // Add more status values for vouchers with timestamps
         ]);
     }

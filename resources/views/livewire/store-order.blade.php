@@ -633,12 +633,22 @@
                                 {{ $cart->delivery_price }} {{ $currency }}
                             @endif
                         </span>
+                        @if ($cart->voucher)
+                            <span class="checking__content-create--text">Voucher: {{ $cart->voucher->code }}
+                                {{ intval($cart->voucher->percent) }}% </span>
+                        @endif
                     </div>
                     <div class="checking__content-price">
                         @if (!$cartItems->isEmpty())
                             <span class="checking__content-complete--text">Total:</span>
-                            <span class="checking__content-create--text">{{ $cart->final_amount }}
-                                {{ $currency }}</span>
+                            @if ($cart->voucher)
+                                <?php $total = $cart->sum_amount + $cart->delivery_price; ?>
+                                <span><span
+                                        style="text-decoration: line-through; color:red; margin-right:1rem">{{ $total }}{{ $currency }}</span>{{ $cart->final_amount }}{{ $currency }}</span>
+                            @else
+                                <span class="checking__content-create--text">{{ $cart->final_amount }}
+                                    {{ $currency }}</span>
+                            @endif
                         @endif
                     </div>
                 </div>
