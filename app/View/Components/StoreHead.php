@@ -15,7 +15,7 @@ class StoreHead extends Component
      */
     public function __construct($title = "")
     {
-        $this->title = Store_Settings::where('parameter', 'site_name')->first()->value . $title;
+        $this->title = $title . Store_Settings::where('parameter', 'site_name')->first()->value;
     }
 
     /**

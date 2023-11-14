@@ -1,4 +1,4 @@
-<x-store-head :title='" - Lista produse favorite"' />
+<x-store-head :title='"Lista produse favorite | "' />
 <x-store-header />
 <main>
     @livewire('store-wishlist')

@@ -106,7 +106,7 @@
             </div>
         </div>
         <div class="tabs__content">
-            <livewire:related-productson-spec specId="{{ $spec->id }}" />
+                @livewire('related-productson-spec', ['specId' => $spec->id])
         </div>
     </div>
     <div class="modal" id="confirmationmodal">

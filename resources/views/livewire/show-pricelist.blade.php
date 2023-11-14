@@ -132,7 +132,7 @@
             </div>
         </div>
         <div class="tabs__content">
-            <livewire:related-productson-pricelist priceId="{{ $pricelist->id }}" />
+                @livewire('related-productson-pricelist', ['priceId' => $pricelist->id])
         </div>
     </div>
     <div class="modal" id="confirmationmodal">

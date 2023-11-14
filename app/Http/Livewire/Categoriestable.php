@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Schema;
 class Categoriestable extends Component
 {
   use WithPagination;
-  public $loadAmount = 20;
+  public $loadAmount = 10;
   public $search = '';
   public $orderBy = 'id';
   public $orderAsc = true;
