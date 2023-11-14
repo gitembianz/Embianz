@@ -214,7 +214,7 @@
 
                         @if ($this->showColumn('Active'))
                             <td data-title="Active">
-                                {{ $price->active }}
+                                {{ $price->active ? 'Active' : 'Inactive' }}
                             </td>
                         @endif
 

@@ -619,4 +619,4 @@ function initializeSlider2() {
 }
 
 // Call the function when the DOM is ready
-document.addEventListener('DOMContentLoaded', initializeSlider2);
+document.addEventListener('DOMContentLoaded', initializeSlider);

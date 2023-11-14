@@ -10,6 +10,7 @@ use App\Models\Category;
 use App\Models\Wishlist;
 use App\Models\Cart_Item;
 use App\Models\Store_Settings;
+use App\Models\Subcategory;
 use Illuminate\Support\Facades\Session;
 
 class StoreMain extends Component
@@ -46,7 +47,7 @@ class StoreMain extends Component
   {
     return view('livewire.store-main', [
       'popproducts' => $this->popproducts,
-      'category' => $this->category
+      'subcategories' => $this->subcategories
     ]);
   }
   public function getPopProductsProperty()
@@ -56,6 +57,25 @@ class StoreMain extends Component
   public function getPopProductsQueryProperty()
   {
     return Product::where('active', true)->orderBy('popularity', 'desc')->with('media.location')->with('product_prices.pricelist.currency');
+  }
+  public function getSubcategoriesProperty()
+  {
+    if ($this->category) {
+      return $this->subcategoriesQuery->get();
+    }
+  }
+  public function getSubcategoriesQueryProperty()
+  {
+    if ($this->category) {
+
+      $subcategories = Subcategory::where('parrent_id', $this->category->id)->get();
+
+      // Assuming you want to get an array of subcategory IDs
+      $subIds = $subcategories->pluck('id')->toArray();
+
+      // Use 'whereIn' to filter by an array of IDs
+      return Category::whereIn('id', $subIds)->with('media.location');
+    }
   }
   public function addToWishlist($productId)
   {
