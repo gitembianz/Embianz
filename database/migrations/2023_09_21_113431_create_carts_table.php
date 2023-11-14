@@ -22,7 +22,7 @@ return new class extends Migration
       $table->unsignedBigInteger('status_id')->index()->nullable();
       $table->foreign('status_id')->references('id')->on('statuses');
       $table->double('final_amount')->default(0);
-      $table->string('order_id')->nullable();
+      $table->unsignedBigInteger('order_id')->index()->nullable();
       $table->string('delivery_price')->nullable();
       $table->unsignedBigInteger('voucher_id')->index()->nullable();
       $table->foreign('voucher_id')->references('id')->on('vouchers');

@@ -130,7 +130,7 @@
                                 <button class="table__header--btn"
                                     @if ($orderBy === $column && $orderAsc === '1') data-symbol="up"
                 @else data-symbol="down" @endif>
-                                    {{ $column }}
+                                    {{ str_replace('_id', '', $column) }} {{-- Remove '_id' from column name --}}
                                     <svg>
                                         <line x1="12" y1="5" x2="12" y2="19"></line>
                                         <polyline points="19 12 12 19 5 12"></polyline>
@@ -167,6 +167,25 @@
                                 @elseif($column === 'name')
                                     <td data-title="Name"><a
                                             href="/show_order/{{ $order->id }}">{{ $order->name }}</a></td>
+                                @elseif ($column === 'account_id')
+                                    <td data-title="{{ $column }}"><a
+                                            href="/show_account/{{ $order->account_id }}">{{ $order->account->name }}</a>
+                                    </td>
+                                @elseif ($column === 'cart_id')
+                                    <td data-title="{{ $column }}"><a
+                                            href="/show_cart/{{ $order->cart_id }}">{{ $order->cart->name }}</a></td>
+                                @elseif ($column === 'currency_id')
+                                    <td data-title="{{ $column }}">{{ $order->currency->name }}</td>
+                                @elseif ($column === 'status_id')
+                                    <td data-title="{{ $column }}">{{ $order->status->name }}</td>
+                                @elseif ($column === 'payment_id')
+                                    <td data-title="{{ $column }}">{{ $order->payment->name }}</td>
+                                @elseif ($column === 'voucher_id')
+                                    <td data-title="{{ $column }}">
+                                        @if ($order->voucher_id)
+                                            {{ $order->voucher->code }}
+                                        @endif
+                                    </td>
                                 @else
                                     <td data-title="{{ $column }}">{{ $order->$column }}</td>
                                 @endif
@@ -191,8 +210,8 @@
         </table>
     </div>
     @if ($loadAmount <= count($orders))
-                  <div class="table__load-more" wire:click="loadMore">
-                      Load more
-                  </div>
+        <div class="table__load-more" wire:click="loadMore">
+            Load more
+        </div>
     @endif
 </div>

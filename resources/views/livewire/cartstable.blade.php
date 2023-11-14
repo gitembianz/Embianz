@@ -124,21 +124,21 @@
             <thead>
                 <tr>
                     <th><input type="checkbox" wire:model="selectPage"></th>
-                    @foreach ($selectedColumns as $column)
-                        @if ($this->showColumn($column))
-                            <th wire:click="sortBy('{{ $column }}')">
-                                <button class="table__header--btn"
-                                    @if ($orderBy === $column && $orderAsc === '1') data-symbol="up"
+                  @foreach ($selectedColumns as $column)
+    @if ($this->showColumn($column))
+        <th wire:click="sortBy('{{ $column }}')">
+            <button class="table__header--btn"
+                @if ($orderBy === $column && $orderAsc === '1') data-symbol="up"
                 @else data-symbol="down" @endif>
-                                    {{ $column }}
-                                    <svg>
-                                        <line x1="12" y1="5" x2="12" y2="19"></line>
-                                        <polyline points="19 12 12 19 5 12"></polyline>
-                                    </svg>
-                                </button>
-                            </th>
-                        @endif
-                    @endforeach
+                {{ str_replace('_id', '', $column) }} {{-- Remove '_id' from column name --}}
+                <svg>
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <polyline points="19 12 12 19 5 12"></polyline>
+                </svg>
+            </button>
+        </th>
+    @endif
+@endforeach
                     <th></th>
                 </tr>
             </thead>
@@ -165,8 +165,18 @@
                                         </div>
                                     </td>
                                 @elseif ($column === 'name')
-                                    <td data-title="Name"><a
+                                    <td data-title="{{ $column }}"><a
                                             href="/show_cart/{{ $cart->id }}">{{ $cart->name }}</a></td>
+                                
+                                @elseif ($column === 'currency_id')
+                                <td data-title="{{ $column }}">{{ $cart->currency->name }}</td>
+                                @elseif ($column === 'status_id')
+                                <td data-title="{{ $column }}">{{ $cart->status->name }}</td>
+                                @elseif ($column === 'voucher_id')
+                                <td data-title="{{ $column }}">@if($cart->voucher_id){{ $cart->voucher->code }}@endif</td>
+                                @elseif ($column === 'order_id')
+                                <td data-title="{{ $column }}">@if($cart->order_id)<a
+                                            href="/show_order/{{ $cart->order_id }}">{{ $cart->order->name }}</a>@endif</td>
                                 @else
                                     <td data-title="{{ $column }}">{{ $cart->$column }}</td>
                                 @endif

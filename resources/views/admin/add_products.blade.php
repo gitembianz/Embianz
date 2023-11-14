@@ -81,7 +81,7 @@
             </div>
 
             <div class="item__form-input item__form-textarea">
-                <textarea name="long_description">ue="{{ old('long_description') }}"</textarea>
+                <textarea name="long_description">{{ old('long_description') }}</textarea>
                 <label>Long Description</label>
             </div>
             <div class="item__form-input item__form-long">
