@@ -106,7 +106,7 @@ class RelatedSubcategory extends Component
   }
   public function getCategoriesProperty()
   {
-    $relatedcatsIds = $this->relatedsubcats->pluck('category_id')->toArray();
+    $relatedcatsIds = $this->relatedsubcats->pluck('category_id')->merge([$this->categoryId])->toArray();
     $unrelatedCatsQuery = Category::whereNotIn('id', $relatedcatsIds);
     if (!empty($this->searchadd)) {
       $unrelatedCatsQuery->where('name', 'like', '%' . $this->searchadd . '%');

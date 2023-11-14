@@ -41,16 +41,9 @@ class CategoryController extends Controller
     $data->createdby = Auth::user()->name;
     $data->lastmodifiedby = Auth::user()->name;
     $data->seo_title = $request->seo_title;
-    if ($request->active) {
-      $data->active = true;
-    } else {
-      $data->active = false;
-    }
-    if ($request->visible) {
-      $data->store_tab = true;
-    } else {
-      $data->store_tab = false;
-    }
+    $data->active = $request->has('active');
+    $data->store_tab = $request->has('visible');
+
     $data->save();
     return redirect()->back()->with([
       'notification' => [
