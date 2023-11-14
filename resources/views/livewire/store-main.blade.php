@@ -2,10 +2,10 @@
     @if ($category)
         <div class="slider">
             <div class="slider__wrapper">
-                @foreach ($category->product_categories as $product)
-                    <div class="slide">
-                        @if (count($product->product->media) > 0)
-                            @foreach ($product->product->media as $media)
+                @foreach ($subcategories as $item)
+                @if (count($item->media) > 0)
+                <div class="slide">
+                            @foreach ($item->media as $media)
                                 @if ($media->location->location == 'details')
                                     @if ($media->external)
                                         <img src="{{ $media->path }}" draggable="false" alt="{{ $media->path }}">
@@ -16,10 +16,8 @@
                                     <?php break; ?>
                                 @endif
                             @endforeach
-                        @else
-                            <img src="/images/store/default/default.svg" draggable="false" alt="something wrong">
+                        </div>
                         @endif
-                    </div>
                 @endforeach
             </div>
             <div class="slider__pagination"></div>
