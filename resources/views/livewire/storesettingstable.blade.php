@@ -196,8 +196,7 @@
         </thead>
         <tbody>
             @foreach ($storesettings as $index => $store)
-                <tr
-                    class="@if ($this->isChecked($store->id)) table__row--selected @endif">
+                <tr class="@if ($this->isChecked($store->id)) table__row--selected @endif">
 
                     <td data-title="Check">
                         <input type="checkbox" value="{{ $store->id }}" wire:model="checked">
@@ -286,4 +285,9 @@
             @endforeach
         </tbody>
     </table>
+    @if ($loadAmount <= count($storesettings))
+                  <div class="table__load-more" wire:click="loadMore">
+                      Load more
+                  </div>
+    @endif
 </div>

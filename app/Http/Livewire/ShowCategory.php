@@ -13,13 +13,11 @@ class ShowCategory extends Component
 {
   public $categoryId;
   public $editcategory = null;
-  public $category;
   public $cat;
 
-  public function mount($category)
+  public function mount($categoryId)
   {
-    $this->categoryId = $category->id;
-    $this->category = $category;
+    $this->categoryId = $categoryId;
   }
   public function confirmItemRemoval($id)
   {
@@ -29,6 +27,10 @@ class ShowCategory extends Component
   public function getCategoryProperty()
   {
     return $this->categoryQuery;
+  }
+  public function getCategoryQueryProperty()
+  {
+    return Category::find($this->categoryId);
   }
   public function editcategory()
   {
@@ -130,6 +132,8 @@ class ShowCategory extends Component
   }
   public function render()
   {
-    return view('livewire.show-category');
+    return view('livewire.show-category', [
+      'category' => $this->category
+    ]);
   }
 }

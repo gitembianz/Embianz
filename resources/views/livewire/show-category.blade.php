@@ -210,9 +210,9 @@
                 </div>
             </div>
             <div class="tabs__content">
-                @livewire('related-media-category', ['category' => $category], key('1' . $category->id))
-                @livewire('related-product-category', ['category' => $category], key('2' . $category->id))
-                @livewire('related-subcategory', ['category' => $category], key('3' . $category->id))
+                @livewire('related-media-category', ['category' => $category])
+                @livewire('related-product-category', ['category' => $category])
+                @livewire('related-subcategory', ['category' => $category])
             </div>
         </div>
         <div class="modal" id="confirmationmodal">

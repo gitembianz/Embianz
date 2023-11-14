@@ -1,4 +1,4 @@
-<x-store-head :title='" - " . ($data->seo_title ?? "")' />
+<x-store-head :title='($data->seo_title ?? "") . " | "' />
 
 <x-store-header />
 <main>

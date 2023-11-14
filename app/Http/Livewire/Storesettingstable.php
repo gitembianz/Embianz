@@ -10,7 +10,7 @@ class Storesettingstable extends Component
 {
 
   use WithPagination;
-  public $perPage = 20;
+  public $loadAmount = 10;
   public $search = '';
   public $orderBy = 'id';
   public $orderAsc = true;
@@ -48,6 +48,10 @@ class Storesettingstable extends Component
       $this->checked = [];
     }
   }
+  public function loadMore()
+  {
+    $this->loadAmount += 10;
+  }
   public function updatedChecked()
   {
     $this->selectPage = false;
@@ -72,7 +76,7 @@ class Storesettingstable extends Component
   }
   public function getStoresettingsProperty()
   {
-    return $this->storesettingsQuery->paginate($this->perPage);
+    return $this->storesettingsQuery->limit($this->loadAmount)->get();
   }
   public function getStoresettingsQueryProperty()
   {
