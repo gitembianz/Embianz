@@ -341,52 +341,103 @@
                                             @endif
                                             @if ($this->showColumn('First Name'))
                                                 <td data-title="First Name">
-                                                    {{ $address->first_name }}
+                                                    @if ($editindex !== $index)
+                                                        {{ $address->first_name }}
+                                                    @else
+                                                        <input type="text" required class="table__edit"
+                                                            wire:model.defer="adress.{{ $index }}.first_name">
+                                                    @endif
                                                 </td>
                                             @endif
                                             @if ($this->showColumn('Last Name'))
                                                 <td data-title="Last Name">
-                                                    {{ $address->last_name }}
+                                                    @if ($editindex !== $index)
+                                                        {{ $address->last_name }}
+                                                    @else
+                                                        <input type="text" required class="table__edit"
+                                                            wire:model.defer="adress.{{ $index }}.last_name">
+                                                    @endif
                                                 </td>
                                             @endif
                                             @if ($this->showColumn('Phone'))
                                                 <td data-title="Phone">
-                                                    {{ $address->phone }}
+                                                    @if ($editindex !== $index)
+                                                        {{ $address->phone }}
+                                                    @else
+                                                        <input type="phone" required class="table__edit"
+                                                            wire:model.defer="adress.{{ $index }}.phone">
+                                                    @endif
                                                 </td>
                                             @endif
                                             @if ($this->showColumn('Email'))
                                                 <td data-title="Email">
-                                                    {{ $address->email }}
+                                                    @if ($editindex !== $index)
+                                                        {{ $address->email }}
+                                                    @else
+                                                        <input type="email" required class="table__edit"
+                                                            wire:model.defer="adress.{{ $index }}.email">
+                                                    @endif
                                                 </td>
                                             @endif
                                             @if ($this->showColumn('Address'))
                                                 <td data-title="Address">
-                                                    {{ $address->address1 }}
+                                                    @if ($editindex !== $index)
+                                                        {{ $address->address1 }}
+                                                    @else
+                                                        <input type="text" required class="table__edit"
+                                                            wire:model.defer="adress.{{ $index }}.address1">
+                                                    @endif
+
                                                 </td>
                                             @endif
                                             @if ($this->showColumn('Optional Address'))
                                                 <td data-title="Optional Address">
-                                                    {{ $address->address2 }}
+                                                    @if ($editindex !== $index)
+                                                        {{ $address->address2 }}
+                                                    @else
+                                                        <input type="text" required class="table__edit"
+                                                            wire:model.defer="adress.{{ $index }}.address2">
+                                                    @endif
                                                 </td>
                                             @endif
                                             @if ($this->showColumn('Country'))
                                                 <td data-title="Country">
-                                                    {{ $address->country }}
+                                                    @if ($editindex !== $index)
+                                                        {{ $address->country }}
+                                                    @else
+                                                        <input type="text" required class="table__edit"
+                                                            wire:model.defer="adress.{{ $index }}.country">
+                                                    @endif
                                                 </td>
                                             @endif
                                             @if ($this->showColumn('County'))
                                                 <td data-title="County">
-                                                    {{ $address->county }}
+                                                    @if ($editindex !== $index)
+                                                        {{ $address->county }}
+                                                    @else
+                                                        <input type="text" required class="table__edit"
+                                                            wire:model.defer="adress.{{ $index }}.county">
+                                                    @endif
                                                 </td>
                                             @endif
                                             @if ($this->showColumn('City'))
                                                 <td data-title="City">
-                                                    {{ $address->city }}
+                                                    @if ($editindex !== $index)
+                                                        {{ $address->city }}
+                                                    @else
+                                                        <input type="text" required class="table__edit"
+                                                            wire:model.defer="adress.{{ $index }}.city">
+                                                    @endif
                                                 </td>
                                             @endif
                                             @if ($this->showColumn('Post Code'))
                                                 <td data-title="Post Code">
-                                                    {{ $address->zipcode }}
+                                                    @if ($editindex !== $index)
+                                                        {{ $address->zipcode }}
+                                                    @else
+                                                        <input type="text" required class="table__edit"
+                                                            wire:model.defer="adress.{{ $index }}.zipcode">
+                                                    @endif
                                                 </td>
                                             @endif
                                             @if ($this->showColumn('Created At'))
@@ -403,15 +454,42 @@
                                             @endif
                                             <td data-title="Action">
                                                 <div class="table__buttons">
-                                                    <button class="edit"
-                                                        wire:click.prevent="confirmItemRemoval({{ $address->id }})">
-                                                        <svg>
-                                                            <polyline points="3 6 5 6 21 6"></polyline>
-                                                            <path
-                                                                d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                                            </path>
-                                                        </svg>
-                                                    </button>
+                                                    @if ($editindex !== $index)
+                                                        <button class="edit"
+                                                            wire:click.prevent="edititem({{ $index }}, {{ $address->id }})">
+                                                            <svg>
+                                                                <path
+                                                                    d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
+                                                                </path>
+                                                            </svg>
+                                                        </button>
+                                                        <button class="delete"
+                                                            wire:click.prevent="confirmItemRemoval({{ $address->id }})">
+                                                            <svg>
+                                                                <polyline points="3 6 5 6 21 6"></polyline>
+                                                                <path
+                                                                    d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                                                </path>
+                                                            </svg>
+                                                        </button>
+                                                    @else
+                                                        <button class="edit"
+                                                            wire:click.prevent="saveitem({{ $index }} , {{ $address->id }})">
+                                                            <svg>
+                                                                <polyline points="20 6 9 17 4 12"></polyline>
+                                                            </svg>
+                                                        </button>
+                                                        <button class="save" wire:click.prevent="canceledit()">
+                                                            <svg>
+                                                                <line x1="18" y1="6" x2="6"
+                                                                    y2="18">
+                                                                </line>
+                                                                <line x1="6" y1="6" x2="18"
+                                                                    y2="18">
+                                                                </line>
+                                                            </svg>
+                                                        </button>
+                                                    @endif
                                                 </div>
                                             </td>
                                         </tr>
