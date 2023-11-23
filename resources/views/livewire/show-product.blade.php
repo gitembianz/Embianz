@@ -86,6 +86,28 @@
                     @endif
                     @if ($editproduct === null)
                         <div class="item__form-input-close">
+                            <div>{{ $product->sku }}</div>
+                            <label>Sku</label>
+                        </div>
+                    @else
+                        <div class="item__form-input">
+                            <input type="text" wire:model.defer="prod.sku" required>
+                            <label> Sku</label>
+                        </div>
+                    @endif
+                    @if ($editproduct === null)
+                        <div class="item__form-input-close">
+                            <div>{{ $product->ean }}</div>
+                            <label>Ean</label>
+                        </div>
+                    @else
+                        <div class="item__form-input">
+                            <input type="text" wire:model.defer="prod.ean" required>
+                            <label> Ean</label>
+                        </div>
+                    @endif
+                    @if ($editproduct === null)
+                        <div class="item__form-input-close">
                             <div>{{ $product->start_date }}</div>
                             <label>Start Date</label>
                         </div>
@@ -209,10 +231,10 @@
                 </div>
             </div>
             <div class="tabs__content">
-                @livewire('related-media-product', ['productId' => $product->id], key('first' . $product->id))
-                @livewire('related-category-product', ['productId' => $product->id], key('second' . $product->id))
-                @livewire('related-spec-product', ['productId' => $product->id], key('third' . $product->id))
-                @livewire('related-pricelist', ['productId' => $product->id], key('fourt' . $product->id))
+                @livewire('related-media-product', ['productId' => $product->id])
+                @livewire('related-category-product', ['productId' => $product->id])
+                @livewire('related-spec-product', ['productId' => $product->id])
+                @livewire('related-pricelist', ['productId' => $product->id])
             </div>
         </div>
     </div>

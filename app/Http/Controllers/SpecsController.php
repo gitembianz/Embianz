@@ -5,9 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Specs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-// use App\Http\Requests\StoreSpecsRequest;
 use App\Http\Requests\UpdateSpecsRequest;
-use App\Models\SpecGroup;
 
 class SpecsController extends Controller
 {
@@ -24,8 +22,7 @@ class SpecsController extends Controller
    */
   public function create()
   {
-    $groups = SpecGroup::pluck('name', 'id');
-    return view('admin.add_spec', compact('groups'));
+    return view('admin.add_spec');
   }
 
 
@@ -42,7 +39,6 @@ class SpecsController extends Controller
 
     $spec->name = $request->name;
     $spec->um = $request->um;
-    $spec->group_id = $request->spec_group;
     $spec->createdby = Auth::user()->name;
     $spec->lastmodifiedby = Auth::user()->name;
     $spec->save();

@@ -152,6 +152,7 @@
                     {{-- <a class="details__button" wire:click="continue()">Continua</a> --}}
                     <a class="details__button" wire:click="test()">Continua</a>
 
+
                 </div>
             @endif
             <!----------------- End Basket Continue ---------------->

@@ -607,6 +607,7 @@
                                                 will receive by email the proforma invoice with all the payment details.
                                             </h4>
                                         </div>
+
                                     </div>
                                 @endif
                             @endif
@@ -838,6 +839,7 @@
                                             <?php $currency = $cartItem->product->product_prices->first()->pricelist->currency->name; ?>
                                             {{ $cartItem->quantity * $cartItem->price }} {{ $currency }}
                                         </span>
+
                                     </div>
                                 @endforeach
                             @endif
@@ -912,6 +914,7 @@
                         <a href="#" class="logo">
                             <img src="/images/store/logo.svg" alt="logo">
                         </a>
+
                     </div>
                 @endif
                 <!------------------- End Step Final ------------------->

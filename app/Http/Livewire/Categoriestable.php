@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Schema;
 class Categoriestable extends Component
 {
   use WithPagination;
-  public $loadAmount = 20;
+  public $loadAmount = 10;
   public $search = '';
   public $orderBy = 'id';
   public $orderAsc = true;
@@ -35,18 +35,13 @@ class Categoriestable extends Component
       $this->selectedColumns = $this->columns;
     }
 
-    return view('livewire.categoriestable', compact('categories'));
+    return view('livewire.categoriestable', ['categories' => $this->categories]);
   }
   public function mount($tableName)
   {
     $this->tableName = $tableName;
     $this->columns = Schema::getColumnListing($this->tableName);
-
-    if (session()->has('selectedColumns')) {
-      $this->selectedColumns = session('selectedColumns');
-    } else {
-      $this->selectedColumns = $this->columns;
-    }
+    $this->selectedColumns = $this->columns;
   }
   public function updatedSelectedColumns()
   {
@@ -54,9 +49,6 @@ class Categoriestable extends Component
   }
   public function showColumn($column)
   {
-    if ($column === 'name') {
-      return true;
-    }
     return in_array($column, $this->selectedColumns);
   }
   public function updatedSelectPage($value)

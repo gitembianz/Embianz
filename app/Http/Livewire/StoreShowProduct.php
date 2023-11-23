@@ -11,25 +11,26 @@ use App\Models\Wishlist;
 
 class StoreShowProduct extends Component
 {
-  public $product;
   public $productId;
   public $activeTab = 0;
   public $quantity;
   public $limit = null;
   public $maxlimit = null;
-  public $mainpath = null;
-  public $path = null;
-  public $relatedphotos = [];
-  public $mainimages;
-  public $mainMedia;
   public $session_id;
   public $wishlist = [];
 
-  protected $listeners = ['wishlistUpdated' => 'mount'];
 
+  public function mount($productId)
+  {
+    $this->productId = $productId;
+    $this->session_id = $_COOKIE['sessionId'];
+    $this->quantity = 1;
+  }
   public function render()
   {
-    return view('livewire.store-show-product');
+    return view('livewire.store-show-product', [
+      'product' => $this->product
+    ]);
   }
   public function switchTab($index)
   {
@@ -39,47 +40,45 @@ class StoreShowProduct extends Component
   {
     $this->quantity = $this->quantity;
   }
-  public function selectpath($id)
+  public function addToWishlist()
   {
-    $this->path = '1';
-    $this->mainpath = $id;
-  }
-  public function addToWishlist($productId)
-  {
-    if (!in_array($productId, $this->wishlist)) {
-      $this->wishlist[] = $productId;
+    if (!in_array($this->productId, $this->wishlist)) {
+      $this->wishlist[] = $this->productId;
       $this->saveToSession();
 
       Wishlist::updateOrCreate(
-        ['session_id' => $this->session_id, 'product_id' => $productId]
+        ['session_id' => $this->session_id, 'product_id' => $this->productId]
       );
       $this->emit('wishlistUpdated');
     }
   }
-  public function removeFromWishlist($productId)
+  public function removeFromWishlist()
   {
-    $this->wishlist = array_diff($this->wishlist, [$productId]);
+    $this->wishlist = array_diff($this->wishlist, [$this->productId]);
     $this->saveToSession();
 
     Wishlist::where('session_id', $this->session_id)
-      ->where('product_id', $productId)
+      ->where('product_id', $this->productId)
       ->delete();
     $this->emit('wishlistUpdated');
   }
   private function saveToSession()
   {
-    session(['wishlist' => $this->wishlist]);
+    session([
+      'wishlist' => $this->wishlist,
+    ]);
   }
-  public function toggleWishlist($productId)
+  public function toggleWishlist()
   {
-    if (in_array($productId, $this->wishlist)) {
-      $this->removeFromWishlist($productId);
+    if (in_array($this->productId, $this->wishlist)) {
+      $this->removeFromWishlist();
     } else {
-      $this->addToWishlist($productId);
+      $this->addToWishlist();
     }
   }
   public function incrementCounter()
   {
+    $this->limit = $this->product->quantity;
     if ($this->quantity >= $this->limit) {
       $this->maxlimit = true;
       $this->quantity = $this->limit;
@@ -114,8 +113,8 @@ class StoreShowProduct extends Component
       $cart = Cart::create([
         'session_id' => $this->session_id,
         'name' => $uniqueName,
-        'quantity_amount' => 0,
-        'sum_amount' => 0,
+        'quantity_amount' => $this->quantity,
+        'sum_amount' => ($product->product_prices->first()->value * $this->quantity),
         'status_id' => $newStatusId,
         'currency_id' => $product->product_prices->first()->pricelist->currency_id,
       ]);
@@ -126,49 +125,30 @@ class StoreShowProduct extends Component
         'cart_id' => $cart->id,
         'product_id' => $productId,
         'price' => $product->product_prices->first()->value,
-        'quantity' => 1
+        'quantity' => $this->quantity
       ]);
-      $cart->increment('quantity_amount');
-      $cart->sum_amount += $product->product_prices->first()->value;
     } else {
       if ($cartItem->quantity < $product->quantity) {
 
-        $cartItem->increment('quantity');
-        $cart->increment('quantity_amount');
-        $cart->sum_amount += $product->product_prices->first()->value;
+        $cartItem->quantity += $this->quantity;
+        $cartItem->save();
+        $cart->quantity_amount += $this->quantity;
+        $cart->sum_amount += ($product->product_prices->first()->value * $this->quantity);
       } else {
         $this->quantity = $product->quantity;
         $this->maxlimit = true;
       }
     }
     $cart->save();
+    $this->quantity = 1;
     $this->emit('cartUpdated');
   }
-  public function mount($product)
+  public function getProductProperty()
   {
-    $this->product = $product;
-    $this->limit = $this->product->quantity;
-    $this->session_id = $_COOKIE['sessionId'];
-    $this->quantity = 1;
-
-    $this->mainMedia = $this->product->media->firstWhere('location.location', 'main');
-    if ($this->mainMedia) {
-      if (!$this->path) {
-        $this->mainpath = $this->mainMedia->external
-          ? $this->mainMedia->path
-          : "/{$this->mainMedia->path}{$this->mainMedia->name}";
-      }
-    }
-
-    $this->mainimages = $this->product->media
-      ->where('location.location', '!=', 'search')
-      ->sortBy('location_id')
-      ->values();
-
-    $this->relatedphotos = $this->mainimages->map(function ($image) {
-      return $image->external
-        ? $image->path
-        : "/{$image->path}{$image->name}";
-    });
+    return $this->productQuery;
+  }
+  public function getProductQueryProperty()
+  {
+    return Product::find($this->productId);
   }
 }

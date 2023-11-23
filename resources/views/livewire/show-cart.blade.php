@@ -119,7 +119,7 @@
                 </div>
             </div>
             <div class="tabs__content">
-                @livewire('related-cart-items', ['cart' => $cart], key($cart->id))
+                @livewire('related-cart-items', ['cart' => $cart])
             </div>
         </div>
     </div>

@@ -25,6 +25,7 @@ class StoreCart extends Component
   public $message;
   public $closedStatusId;
   public $currency;
+  public $validatequantity;
   protected $listeners = [
     'cartUpdated' => 'mount',
     'wishlistUpdated' => 'mount'
@@ -35,9 +36,13 @@ class StoreCart extends Component
     $this->session_id = $_COOKIE['sessionId'];
     $this->delivery = Store_Settings::where('parameter', 'delivery_price')->first()->value;
     $this->closedStatusId = Status::where('name', 'closed')->where('type', 'cart')->first()->id;
-    $this->cart = Cart::where('session_id', $this->session_id)->where('status_id', '!=', $this->closedStatusId)->first();
+    $this->cart = Cart::where('session_id', $this->session_id)->where('status_id', '!=', $this->closedStatusId)->with('voucher')->first();
     if ($this->cart) {
       $this->currency = $this->cart->currency->name;
+      if ($this->cart->voucher_id) {
+        $this->new_price = true;
+        $this->voucher = $this->cart->voucher->code;
+      }
     }
   }
   public function render()
@@ -152,16 +157,21 @@ class StoreCart extends Component
   {
     if ($this->cart->exists) {
       // Search for a voucher with the provided code in the database
-      $voucher = Voucher::where('code', $this->voucher)->first();
+      $StatusId = Status::where('name', 'Active')->where('type', 'voucher')->first()->id;
+      $voucher = Voucher::where('code', $this->voucher)->where('status_id', $StatusId)->first();
 
       if ($voucher) {
         // Voucher found, calculate discount based on percentage
         $discountAmount = $voucher->percent / 100 * $this->cart->sum_amount;
         $this->message = null;
         $this->price = $this->cart->sum_amount;
-        $this->cart->final_amount = $this->cart->sum_amount - $discountAmount;
+        $this->cart->voucher_id = $voucher->id;
+        $this->cart->final_amount = $this->cart->sum_amount - $discountAmount + $this->delivery;
         $this->cart->save();
         $this->new_price = true;
+        // $newStatusId = Status::where('name', 'used')->where('type', 'voucher')->first()->id;
+        // $voucher->status_id = $newStatusId;
+        // $voucher->save();
       } else {
         $this->message = "Voucher not found!";
       }
@@ -169,15 +179,42 @@ class StoreCart extends Component
   }
   public function continue()
   {
-    $newStatusId = Status::where('name', 'checkout')->where('type', 'cart')->first()->id;
-    if ($this->new_price) {
-      $this->cart->final_amount += $this->delivery;
-    } else {
-      $this->cart->final_amount = $this->cart->sum_amount + $this->delivery;
+    $cartitems = Cart_Item::where('cart_id', $this->cart->id)->get();
+    if ($cartitems) {
+      foreach ($cartitems as $item) {
+        if ($item->quantity > $item->product->quantity) {
+          $this->validatequantity = false;
+          // $difference = $item->quantity - $item->product->quantity;
+          // $this->cart->quantity_amount -= $difference;
+          // $this->cart->sum_amount -= $difference * $item->price;
+          // $this->cart->final_amount = $this->cart->sum_amount;
+          // $this->cart->save();
+          // $this->emit('cartUpdated');
+          // $item->quantity = $item->product->quantity;
+          // $item->save();
+          session()->flash('notification', [
+            'message' => 'Product quantity is not availabble',
+            'type' => 'warning',
+            'title' => 'Product quantity'
+          ]);
+          return;
+        } else {
+          $this->validatequantity = true;
+        }
+      }
     }
-    $this->cart->status_id = $newStatusId;
-    $this->cart->delivery_price = $this->delivery;
-    $this->cart->save();
-    return redirect()->route('order');
+    if ($this->validatequantity) {
+
+      $newStatusId = Status::where('name', 'checkout')->where('type', 'cart')->first()->id;
+      if ($this->new_price) {
+        $this->cart->final_amount;
+      } else {
+        $this->cart->final_amount = $this->cart->sum_amount + $this->delivery;
+      }
+      $this->cart->status_id = $newStatusId;
+      $this->cart->delivery_price = $this->delivery;
+      $this->cart->save();
+      return redirect()->route('order');
+    }
   }
 }

@@ -41,6 +41,7 @@
                     @endforeach
                 </div>
                 <div class="main-slider__button prev">
+
                     <svg>
                         <polyline points="15 18 9 12 15 6"></polyline>
                     </svg>
@@ -169,16 +170,5 @@
         <!-------------------- End Loading Logo -------------------->
         <!---------------------------------------------------------->
 
-
-        {{-- <div class="home__discover" style="background-image: url(images/store/discover-background.webp)">
-        <div class="container home__discover--flex">
-            <div class="home__discover--text">
-                <h1>
-                    Explorează produsele noastre și găsește-l pe cel perfect pentru tine.</h1>
-                <a href="/storeproducts">Descoperiți produsele noastre</a>
-            </div>
-            <img src="images/store/discover-items.webp" alt="discover items">
-        </div>
-    </div> --}}
     </main>
 </div>

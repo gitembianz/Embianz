@@ -39,6 +39,8 @@ class ShowProduct extends Component
       'long_description' => $this->product->long_description,
       'seo_title' => $this->product->seo_title,
       'quantity' => $this->product->quantity,
+      'sku' => $this->product->sku,
+      'ean' => $this->product->ean,
       // Add other properties as needed
     ];
     $this->editproduct = true;
@@ -82,6 +84,12 @@ class ShowProduct extends Component
       }
       if (array_key_exists('seo_title', $product_new)) {
         $new->seo_title = $product_new['seo_title'];
+      }
+      if (array_key_exists('sku', $product_new)) {
+        $new->sku = $product_new['sku'];
+      }
+      if (array_key_exists('ean', $product_new)) {
+        $new->ean = $product_new['ean'];
       }
       $new->last_modified_by = Auth::user()->name;
       $new->updated_at = now();

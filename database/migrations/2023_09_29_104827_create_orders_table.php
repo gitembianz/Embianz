@@ -27,6 +27,8 @@ return new class extends Migration
       $table->foreign('status_id')->references('id')->on('statuses');
       $table->unsignedBigInteger('payment_id')->index()->nullable();
       $table->foreign('payment_id')->references('id')->on('payments');
+      $table->unsignedBigInteger('voucher_id')->index()->nullable();
+      $table->foreign('voucher_id')->references('id')->on('vouchers');
       $table->timestamps();
     });
   }

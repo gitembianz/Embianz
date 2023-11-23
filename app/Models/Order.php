@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
   use HasFactory;
-  protected $fillable = ['name', 'session_id', 'account_id', 'cart_id', 'quantity_amount', 'sum_amount', 'currency_id', 'status_id', 'payment_id'];
+  protected $fillable = ['name', 'session_id', 'account_id', 'cart_id', 'voucher_id', 'quantity_amount', 'sum_amount', 'currency_id', 'status_id', 'payment_id'];
 
   public function orders()
   {
@@ -37,6 +37,10 @@ class Order extends Model
   public function payment()
   {
     return $this->belongsTo(Payment::class);
+  }
+  public function voucher()
+  {
+    return $this->belongsTo(Voucher::class);
   }
   public static function search($search)
   {

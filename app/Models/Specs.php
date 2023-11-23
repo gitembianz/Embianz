@@ -28,8 +28,4 @@ class Specs extends Model
   {
     return $this->hasMany(Product_Spec::class, 'spec_id');
   }
-  public function group()
-  {
-    return $this->belongsTo(SpecGroup::class, 'group_id');
-  }
 }

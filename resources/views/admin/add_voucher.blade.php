@@ -37,18 +37,47 @@
         {{-- Item Form --}}
         <div class="item__form">
             <div class="item__form-input">
-                <input type="text" name="name" required>
+                <input type="text" name="name" value="{{ old('name') }}" required>
                 <label>Name</label>
             </div>
 
             <div class="item__form-input">
-                <input type="text" name="code" required>
+                <input type="text" name="code" value="{{ old('code') }}" required>
                 <label>Code</label>
             </div>
+
             <div class="item__form-input">
-                <input type="number" name="percent" required>
+                <input type="number" name="percent" value="{{ old('percent') }}" required>
                 <label>Percent %</label>
             </div>
+
+            <div style="display: flex; align-items: center;justify-content: flex-start;gap: 10px">
+                <input type="checkbox" name="single_use" {{ old('single_use') ? 'checked' : '' }}>
+                <span>Single Use</span>
+            </div>
+
+            <div class="item__form-input">
+                <input type="date" id="start_date" name="start_date" value="{{ old('start_date') }}">
+                <label>Start Date</label>
+
+                @error('start_date')
+                    <span style="position: absolute;
+    top: 2.5rem;
+    color: red;">{{ $message }}</span>
+                @enderror
+            </div>
+
+            <div class="item__form-input">
+                <input type="date" id="end_date" name="end_date" value="{{ old('end_date') }}">
+                <label>End Date</label>
+
+                @error('end_date')
+                    <span style="position: absolute;
+    top: 2.5rem;
+    color: red;">{{ $message }}</span>
+                @enderror
+            </div>
+
             <input class="item__form-btn  item__form-long" type="submit" value="Add New" name="submit">
         </div>
     </form>

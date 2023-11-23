@@ -178,13 +178,25 @@
                         </button>
                     </th>
                 @endif
+                @if ($this->showColumn('Updated At'))
+                    <th wire:click="sortBy('updated_at')">
+                        <button class="table__header--btn"
+                            @if ($orderBy === 'updated_at' && $orderAsc === '1') data-symbol="up"
+                          @else data-symbol="down" @endif>
+                            Updated at
+                            <svg>
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <polyline points="19 12 12 19 5 12"></polyline>
+                            </svg>
+                        </button>
+                    </th>
+                @endif
                 <th></th>
             </tr>
         </thead>
         <tbody>
             @foreach ($storesettings as $index => $store)
-                <tr @if ($loop->last) id="last_record" @endif
-                    class="@if ($this->isChecked($store->id)) table__row--selected @endif">
+                <tr class="@if ($this->isChecked($store->id)) table__row--selected @endif">
 
                     <td data-title="Check">
                         <input type="checkbox" value="{{ $store->id }}" wire:model="checked">
@@ -194,45 +206,43 @@
                     @endif
                     @if ($this->showColumn('Parameter'))
                         <td data-title="Parameter">
-                            @if ($indexstoresettings !== $index)
-                                <div class="cursor-p" wire:click.prevent="edititem({{ $index }})">
                                     {{ $store->parameter }}
-                                </div>
-                            @else
-                                <input type="text" class="table__edit"
-                                    wire:model.defer="stores.{{ $index }}.parameter"
-                                    placeholder="{{ $store->parameter }}">
-                            @endif
                         </td>
                     @endif
                     @if ($this->showColumn('Value'))
                         <td data-title="Value">
                             @if ($indexstoresettings !== $index)
-                                <div class="cursor-p" wire:click.prevent="edititem({{ $index }})">
                                     {{ $store->value }}
-                                </div>
                             @else
                                 <input type="text" class="table__edit"
-                                    wire:model.defer="stores.{{ $index }}.value"
-                                    placeholder="{{ $store->value }}">
+                                    wire:model.defer="settings.{{ $index }}.value">
                             @endif
                         </td>
                     @endif
                     @if ($this->showColumn('Description'))
                         <td data-title="Description">
                             @if ($indexstoresettings !== $index)
-                                <div class="cursor-p" wire:click.prevent="edititem({{ $index }})">
                                     {{ $store->description }}
-                                </div>
                             @else
-                                <textarea class="table__edit" wire:model.defer="stores.{{ $index }}.description"
-                                    placeholder="{{ $store->description }}"></textarea>
+                                <textarea class="table__edit" wire:model.defer="settings.{{ $index }}.description"></textarea>
                             @endif
                         </td>
                     @endif
                     @if ($this->showColumn('Created At'))
                         <td data-title="Created At">
                             <div class="table__time">
+                                 {{ $store->created_at }}
+                                <svg>
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                            </div>
+                        </td>
+                    @endif
+                    @if ($this->showColumn('Updated At'))
+                        <td data-title="Updated At">
+                            <div class="table__time">
+                                 {{ $store->updated_at }}
                                 <svg>
                                     <circle cx="12" cy="12" r="10"></circle>
                                     <polyline points="12 6 12 12 16 14"></polyline>
@@ -242,7 +252,7 @@
                     @endif
                     <td data-title="Action" class="table__buttons">
                         @if ($indexstoresettings !== $index)
-                            <button class="edit" wire:click.prevent="edititem({{ $index }})">
+                            <button class="edit" wire:click.prevent="edititem({{ $index }}, {{ $store->id }})">
                                 <svg>
                                     <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
                                     </path>
@@ -274,6 +284,10 @@
                 </tr>
             @endforeach
         </tbody>
-        <x-lazy />
     </table>
+    @if ($loadAmount <= count($storesettings))
+                  <div class="table__load-more" wire:click="loadMore">
+                      Load more
+                  </div>
+    @endif
 </div>

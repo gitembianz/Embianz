@@ -142,7 +142,7 @@ class StoreHeader extends Component
   }
   public function getCategoriesQueryProperty()
   {
-    return Category::where('active', '1')->where('store_tab', '1')->with('subcategory');
+    return Category::where('active', true)->where('store_tab', '1')->with('subcategory');
   }
   public function getObjectsProperty()
   {
@@ -150,7 +150,7 @@ class StoreHeader extends Component
   }
   public function getObjectsQueryProperty()
   {
-    return Product::name($this->search)->with('product_prices')->with('media');
+    return Product::name($this->search)->where('active', true)->with('product_prices')->with('media');
   }
   public function getCatsProperty()
   {
@@ -158,6 +158,6 @@ class StoreHeader extends Component
   }
   public function getCatsQueryProperty()
   {
-    return Category::name($this->search)->with('media');
+    return Category::name($this->search)->where('active', true)->with('media');
   }
 }

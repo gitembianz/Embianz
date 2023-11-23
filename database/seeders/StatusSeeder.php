@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class StatusSeeder extends Seeder
 {
@@ -13,24 +12,29 @@ class StatusSeeder extends Seeder
      */
     public function run()
     {
+        $currentTime = now();
+
         DB::table('statuses')->insert([
-            ['name' => 'New', 'type' => 'cart'],
-            ['name' => 'Checkout', 'type' => 'cart'],
-            ['name' => 'Closed', 'type' => 'cart'],
-            // Add more status values for carts
+            ['name' => 'New', 'type' => 'cart', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['name' => 'Checkout', 'type' => 'cart', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['name' => 'Closed', 'type' => 'cart', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            // Add more status values for carts with timestamps
         ]);
 
         DB::table('statuses')->insert([
-            ['name' => 'New', 'type' => 'order'],
-            ['name' => 'Processing', 'type' => 'order'],
-            ['name' => 'Pending Fulfillment', 'type' => 'order'],
-            ['name' => 'Shipped', 'type' => 'order'],
-            ['name' => 'Delivered', 'type' => 'order'],
-            ['name' => 'Cancelled', 'type' => 'order'],
-            ['name' => 'Refunded', 'type' => 'order'],
-            ['name' => 'On Hold', 'type' => 'order'],
-            ['name' => 'Closed', 'type' => 'order'],
-            // Add more status values for orders
+            ['name' => 'New', 'type' => 'order', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['name' => 'Processing', 'type' => 'order', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['name' => 'Delivered', 'type' => 'order', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['name' => 'Cancelled', 'type' => 'order', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['name' => 'On Hold', 'type' => 'order', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['name' => 'Closed', 'type' => 'order', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            // Add more status values for orders with timestamps
+        ]);
+
+        DB::table('statuses')->insert([
+            ['name' => 'Active', 'type' => 'voucher', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['name' => 'Closed', 'type' => 'voucher', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            // Add more status values for vouchers with timestamps
         ]);
     }
 }

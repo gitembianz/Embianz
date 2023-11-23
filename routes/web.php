@@ -59,16 +59,13 @@
     route::get('/show_spec/{id}/', [SpecsController::class, 'show'])->name('show_spec');
 
     //pricelist route
-    route::get(
-      '/pricelists',
-      [PriceListController::class, 'index']
-    )->name('pricelists');
+    route::get('/pricelists', [PriceListController::class, 'index'])->name('pricelists');
     route::get('/newpricelist', [PriceListController::class, 'create'])->name('newpricelist');
     route::post('/add_pricelist', [PriceListController::class, 'store']);
     route::get('/show_pricelist/{id}/', [PriceListController::class, 'show'])->name('show_pricelis');
 
     route::get(
-      '/dashboard',
+      '/embadmin',
       [HomeController::class, 'redirect']
     )->middleware('auth', 'verified')->name('dashboard');
 
@@ -116,10 +113,9 @@
     $migrate = Artisan::call('migrate');
     echo "DB updated<br>";
   });
-  Route::get('/seeddatabase', function () {
-    $seed1 = Artisan::call('db:seed --class=PaymentSeeder');
-    $seed2 = Artisan::call('db:seed --class=StatusSeeder');
-    $seed3 = Artisan::call('db:seed --class=CurrencySeeder');
+
+  Route::get('/update', function () {
+    $drop_and_seed = Artisan::call('migrate:fresh --seed');
     echo "Databese seeded<br>";
   });
 

@@ -188,8 +188,7 @@
                 </tr>
             @else
                 @foreach ($pricelists as $index => $price)
-                    <tr @if ($loop->last) id="last_record" @endif
-                        class="@if ($this->isChecked($price->id)) table__row--selected @endif">
+                    <tr class="@if ($this->isChecked($price->id)) table__row--selected @endif">
 
                         <td data-title="Check">
                             <input type="checkbox" value="{{ $price->id }}" wire:model="checked">
@@ -215,7 +214,7 @@
 
                         @if ($this->showColumn('Active'))
                             <td data-title="Active">
-                                {{ $price->active }}
+                                {{ $price->active ? 'Active' : 'Inactive' }}
                             </td>
                         @endif
 
@@ -245,6 +244,10 @@
                 @endforeach
             @endif
         </tbody>
-        <x-lazy />
     </table>
+    @if ($loadAmount <= count($pricelists))
+                  <div class="table__load-more" wire:click="loadMore">
+                      Load more
+                  </div>
+    @endif
 </div>

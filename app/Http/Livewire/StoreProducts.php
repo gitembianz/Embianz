@@ -18,7 +18,7 @@ class StoreProducts extends Component
 
   public $loadAmount = 9;
   public $search = "";
-  public $quantity = 20;
+  public $quantity = 10;
   public $wishlist = [];
   public $session_id;
   public $specification;
@@ -123,7 +123,7 @@ class StoreProducts extends Component
   }
   public function getProducts()
   {
-    $query = Product::name($this->search)->with('media.location')->with('product_prices.pricelist.currency')->with('wishlists');
+    $query = Product::name($this->search)->where('active', true)->with('media.location')->with('product_prices.pricelist.currency')->with('wishlists');
     if ($this->category) {
       $this->categoryname = Category::find($this->category)->name;
       $query->whereHas('product_categories.category', function ($query) {

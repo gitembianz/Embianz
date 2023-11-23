@@ -46,15 +46,6 @@
                 <input type="text" name="um" required>
                 <label>Spec Unit</label>
             </div>
-            <div class="item__form-input">
-                <select name="spec_group">
-                    @foreach ($groups as $id => $name)
-                        <option value="{{ $id }}">{{ $name }}</option>
-                    @endforeach
-                </select>
-
-                <label>Group</label>
-            </div>
             <input class="item__form-btn  item__form-long" type="submit" value="Add New" name="submit">
         </div>
     </form>

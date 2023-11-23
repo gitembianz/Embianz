@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Status;
 use App\Models\Voucher;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -10,7 +11,7 @@ use Illuminate\Support\Facades\Schema;
 class Vouchertable extends Component
 {
   use WithPagination;
-  public $loadAmount = 20;
+  public $loadAmount = 10;
   public $search = '';
   public $orderBy = 'id';
   public $orderAsc = true;
@@ -22,6 +23,12 @@ class Vouchertable extends Component
   public $selectedColumns = [];
   public $col = false;
   public $all = false;
+  public $editindex;
+  public $voucher = [];
+  public $statuses;
+
+  protected $listeners = ['loadMore' => 'loadMore'];
+
   public $itemidbeingremoved = null;
 
   public function render()
@@ -46,7 +53,7 @@ class Vouchertable extends Component
   }
   public function getVouchersQueryProperty()
   {
-    return Voucher::search($this->search)->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc');
+    return Voucher::search($this->search)->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->with('status');
   }
   public function showColumn($column)
   {
@@ -66,6 +73,70 @@ class Vouchertable extends Component
   public function updatedChecked()
   {
     $this->selectPage = false;
+  }
+  public function edititem($index, $id)
+  {
+    $this->statuses = Status::where('type', 'voucher')->get();
+    $this->editindex = $index;
+    $record = Voucher::find($id);
+    $this->voucher = [
+      $index . '.name' => $record->name,
+      $index . '.code' => $record->code,
+      $index . '.percent' => $record->percent,
+      $index . '.status_id' => $record->status->name,
+      $index . '.single_use' => $record->single_use,
+      $index . '.start_date' => $record->start_date,
+      $index . '.end_date' => $record->end_date,
+    ];
+  }
+
+  public function saveitem($index, $id)
+  {
+    $record = $this->voucher[$index] ?? NULL;
+    if (!is_null($record)) {
+      $new = Voucher::find($id);
+      if (array_key_exists('name', $record)) {
+        $new->name = $record['name'];
+      }
+      if (array_key_exists('code', $record)) {
+        $new->code = $record['code'];
+      }
+      if (array_key_exists('percent', $record)) {
+        $new->percent = $record['percent'];
+      }
+      if (array_key_exists('status_id', $record)) {
+        $new->status_id = $record['status_id'];
+      }
+      if (array_key_exists('single_use', $record)) {
+        $new->single_use = $record['single_use'];
+      }
+      if (array_key_exists('start_date', $record)) {
+        $new->start_date = $record['start_date'];
+      }
+      if (array_key_exists('end_date', $record)) {
+        $new->end_date = $record['end_date'];
+      }
+      $new->save();
+      session()->flash('notification', [
+        'message' => 'Record edited successfully!',
+        'type' => 'success',
+        'title' => 'Success'
+      ]);
+    } else {
+      session()->flash('notification', [
+        'message' => 'Nothing was edited!',
+        'type' => 'success',
+        'title' => 'Success'
+      ]);
+    }
+    $this->editindex = null;
+    $this->voucher = [];
+  }
+
+  public function canceledit()
+  {
+    $this->editindex = null;
+    $this->voucher = [];
   }
   public function sortBy($columnName)
   {

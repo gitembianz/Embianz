@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Schema;
 class Productstable extends Component
 {
   use WithPagination;
-  public $loadAmount = 20;
+  public $loadAmount = 10;
   public $search = '';
   public $orderBy = 'id';
   public $orderAsc = true;
@@ -44,9 +44,6 @@ class Productstable extends Component
   }
   public function showColumn($column)
   {
-    if ($column === 'Name') {
-      return true;
-    }
     return in_array($column, $this->selectedColumns);
   }
   public function updatedSelectPage($value)

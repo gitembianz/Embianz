@@ -127,7 +127,7 @@
                 </div>
             </div>
             <div class="tabs__content">
-                <livewire:related-order-items orderId="{{ $order->id }}" />
+                @livewire('related-order-items', ['orderId' => $order->id])
             </div>
         </div>
     </div>

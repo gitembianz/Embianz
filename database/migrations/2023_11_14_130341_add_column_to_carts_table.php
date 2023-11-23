@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('products', function (Blueprint $table) {
-            $table->string('sku')->nullable()->unique(); // Make 'sku' column unique and nullable
-            $table->string('ean')->nullable()->unique();
+        Schema::table('carts', function (Blueprint $table) {
+            $table->foreign('order_id')->references('id')->on('orders');
         });
     }
 
@@ -22,7 +21,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('products', function (Blueprint $table) {
+        Schema::table('carts', function (Blueprint $table) {
             //
         });
     }

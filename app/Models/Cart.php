@@ -21,11 +21,15 @@ class Cart extends Model
   }
   public function order()
   {
-    return $this->hasOne(Order::class, 'cart_id');
+    return $this->belongsTo(Order::class, 'order_id');
   }
   public function status()
   {
     return $this->belongsTo(Status::class, 'status_id');
+  }
+  public function voucher()
+  {
+    return $this->belongsTo(Voucher::class);
   }
   public static function search($search)
   {

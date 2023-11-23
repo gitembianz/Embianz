@@ -82,21 +82,6 @@
                             <label>Unit</label>
                         </div>
                     @endif
-                    @if ($edititem === null)
-                        <div class="item__form-input-close">
-                            <div>{{ $spec->group->name }}</div>
-                            <label>Group</label>
-                        </div>
-                    @else
-                        <div class="item__form-input">
-                            <select wire:model.defer="record.spec_group" class="item__form-input">
-                                @foreach ($groups as $id => $name)
-                                    <option value="{{ $id }}">{{ $name }}</option>
-                                @endforeach
-                            </select>
-                            <label>Group</label>
-                        </div>
-                    @endif
                     <div class="item__form-input-close">
                         <div>{{ $spec->created_at }}</div>
                         <label>Create date / time</label>
@@ -121,7 +106,7 @@
             </div>
         </div>
         <div class="tabs__content">
-            <livewire:related-productson-spec specId="{{ $spec->id }}" />
+                @livewire('related-productson-spec', ['specId' => $spec->id])
         </div>
     </div>
     <div class="modal" id="confirmationmodal">

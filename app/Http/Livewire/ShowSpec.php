@@ -4,7 +4,6 @@ namespace App\Http\Livewire;
 
 use App\Models\Specs;
 use Livewire\Component;
-use App\Models\SpecGroup;
 use App\Models\Product_Spec;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,7 +12,6 @@ class ShowSpec extends Component
   public $itemId;
   public $edititem = null;
   public $record;
-  public $groups;
 
   public function render()
   {
@@ -59,11 +57,9 @@ class ShowSpec extends Component
     $this->record = [
       'name' => $this->spec->name,
       'um' => $this->spec->um,
-      'spec_group' => $this->spec->group->id,
       // Add other properties as needed
     ];
     $this->edititem = true;
-    $this->groups = SpecGroup::pluck('name', 'id');
   }
   public function cancelitem()
   {
@@ -98,9 +94,6 @@ class ShowSpec extends Component
           ]);
           return;
         }
-      }
-      if (array_key_exists('spec_group', $rec)) {
-        $new->group_id = $rec['spec_group'];
       }
       $new->lastmodifiedby = Auth::user()->name;
       $new->updated_at = now();

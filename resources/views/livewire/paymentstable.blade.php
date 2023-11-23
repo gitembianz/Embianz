@@ -172,8 +172,7 @@
                 </tr>
             @else
                 @foreach ($payments as $index => $payment)
-                    <tr @if ($loop->last) id="last_record" @endif
-                        class="@if ($this->isChecked($payment->id)) table__row--selected @endif">
+                    <tr class="@if ($this->isChecked($payment->id)) table__row--selected @endif">
                         <td data-title="Check">
                             <input type="checkbox" value="{{ $payment->id }}" wire:model="checked">
                         </td>
@@ -247,6 +246,10 @@
                 @endforeach
             @endif
         </tbody>
-        <x-lazy />
     </table>
+     @if ($loadAmount <= count($payments))
+                  <div class="table__load-more" wire:click="loadMore">
+                      Load more
+                  </div>
+    @endif
 </div>
