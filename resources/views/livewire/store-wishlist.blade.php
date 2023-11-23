@@ -1,43 +1,52 @@
-<div class="cart__page container">
-    <h2 class="section__title">Favorite Products</h2>
-
-    <div class="cart-page__list">
-
-        @if ($wishlistitems->isEmpty())
-            <p>No products</p>
-        @else
-            @foreach ($wishlistitems as $product)
-                <article class="cart-page__item">
-                    @if (count($product->media) > 0)
-                        @foreach ($product->media as $media)
-                            @if ($media->location->location == 'main')
-                                @if ($media->external)
-                                    <img src="{{ $media->path }}" alt="{{ $media->path }}">
-                                @else
-                                    <img src="/{{ $media->path }}{{ $media->name }}" alt="{{ $media->path }}">
-                                @endif
-                                <?php break; ?>
-                            @endif
-                        @endforeach
-                    @else
-                        <img src="/images/store/default/default.svg"alt="something wrong">
-                    @endif
-                    <div class="cart-page--text">
-                        <h3>{{ $product->name }}</h3>
-                        <span>
-                            @if ($product->product_prices->first() !== null)
-                                {{ $product->product_prices->first()->value }}
-                                {{ $product->product_prices->first()->pricelist->currency->first()->name }}
+<div>
+    <section>
+        <!------------------------------------------------------>
+        <!------------------- Basket Section ------------------->
+        <div class="section__header container">
+            <h2 class="section__title">Favoritele alese!</h2>
+            <p class="section__text">
+                Vezi produsele alese mai jos
+            </p>
+        </div>
+        <!----------------- End Basket Section ----------------->
+        <!------------------------------------------------------>
+    </section>
+    <section>
+        <div class="favorite container">
+            <!------------------------------------------------------>
+            <!------------------- Basket Products ------------------>
+            @if ($wishlistitems->isEmpty())
+                <span class="basket__empty">No products</span>
+            @else
+                @foreach ($wishlistitems as $product)
+                    <div class="basket__product">
+                        <div class="basket__top">
+                            @if (count($product->media) > 0)
+                                @foreach ($product->media as $media)
+                                    @if ($media->location->location == "main")
+                                        @if ($media->external)
+                                            <img src="{{ $media->path }}" alt="{{ $media->path }}">
+                                        @else
+                                            <img src="/{{ $media->path }}{{ $media->name }}" alt="{{ $media->path }}">
+                                        @endif
+                                        <?php break; ?>
+                                    @endif
+                                @endforeach
                             @else
-                                price unavailable
+                                <img src="/images/store/default/default.svg"alt="something wrong">
                             @endif
-                        </span>
-                        {{-- <span>
-                            <span>107.98 lei</span>
-                            89,99 lei
-                        </span> --}}
-                        <div class="cart-page--bundle">
-                            <button class="cart-page__delete" wire:click="removeFromWishlist({{ $product->id }})">
+                            <div>
+                                <span class="basket__price">
+                                    @if ($product->product_prices->first() !== null)
+                                        {{ $product->product_prices->first()->value }}
+                                        {{ $product->product_prices->first()->pricelist->currency->first()->name }}
+                                    @else
+                                        price unavailable
+                                    @endif
+                                </span>
+                                <h2 class="basket__title">{{ $product->name }}</h2>
+                            </div>
+                            <button class="basket__delete" wire:click="removeFromWishlist({{ $product->id }})">
                                 <svg>
                                     <polyline points="3 6 5 6 21 6"></polyline>
                                     <path
@@ -45,18 +54,24 @@
                                     </path>
                                 </svg>
                             </button>
-                            <button class="cart-page__heart">
+                            <button class="basket__delete">
                                 <svg>
-                                    <circle cx="9" cy="21" r="1"></circle>
-                                    <circle cx="20" cy="21" r="1"></circle>
-                                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6">
-                                    </path>
+                                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
                                 </svg>
                             </button>
                         </div>
+                        <button class="basket__delete--hidden" wire:click="removeFromWishlist({{ $product->id }})">
+                            Remove from Wishlist
+                        </button>
+                        <button class="basket__delete--hidden">
+                            Add to Cart
+                        </button>
                     </div>
-                </article>
-            @endforeach
-        @endif
-    </div>
+                @endforeach
+            @endif
+            <!----------------- End Basket Products ---------------->
+            <!------------------------------------------------------>
+        </div>
+    </section>
 </div>

@@ -1,0 +1,22 @@
+//<--------------------Breakpoints------------------->
+@mixin container($breakpoint) {
+  @media (min-width: map-get($grid-breakpoints, $breakpoint)) {
+    .container {
+      max-width: map-get($container-max-widths, $breakpoint);
+    }
+  }
+}
+
+//<-----------------End-Breakpoints----------------->
+//<--------------------Fonts Adding------------------->
+@mixin font-face($font-family, $ttf-font-path, $font-weight: normal, $font-style: normal, $fontDisplay: swap) {
+  @font-face {
+    font-family: #{$font-family};
+    src: url('#{$ttf-font-path}') format('truetype');
+    font-weight: $font-weight;
+    font-style: $font-style;
+    font-display: $fontDisplay;
+  }
+}
+
+//<-----------------End-Fonts Adding----------------->

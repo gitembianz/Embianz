@@ -1,445 +1,105 @@
+//<---------------------------- Header Styles ---------------------------->
 header {
-  border-bottom: 1px solid $text;
-  position: fixed;
-  top: 0;
-  left: 0;
   width: 100%;
-  z-index: 1000;
-  background: white;
-  transition: all 0.2s ease-in-out;
+  height: 60px;
+  z-index: 300;
+  background: $backgroundColor;
+  transition: all .3s ease-in-out;
+
+  &.fixed {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    // Glassmorphism Effect
+    background: rgba($backgroundColor, .5);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+  }
 }
 
+.header__container {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
 
-header:not(.show) {
-  transform: translateY(-100%);
-}
-
-.header {
-  position: relative;
-  width: 100%;
-  @include flexer(row, space-between, center, 10px);
-  @include responsive-spacing(padding-left, 0.01);
-  @include responsive-spacing(padding-right, 0.01);
-  height: 70px;
-  padding: 0 20px;
-
-  @include breakpoint(large) {
-    gap: 50px;
-    padding: 0;
-  }
-
-  &__buttons {
-    @include flexer(row, space-between, center, 25px);
-
-    @include breakpoint(small) {
-      @include flexer(row, center, center, 25px);
-      width: auto;
-    }
-  }
-
-  &__top {
-    background-image: linear-gradient(120deg, #a6c0fe 0%, #f68084 100%);
-    color: $background;
-    transition: all 0.2s ease-in-out;
-
-
-    &--flex {
-      @include flexer(row, center, center, 20px);
-      width: 100%;
-      @include responsive-spacing(padding, 0.01);
-
-      @include breakpoint(medium) {
-        padding: 0;
-        @include responsive-spacing(padding-top, 0.001);
-        @include responsive-spacing(padding-bottom, 0.001);
-      }
-    }
-
-    button {
-      @include responsive-spacing(padding, 0.0001);
-      border-radius: 10px;
-      color: $text;
-      cursor: pointer;
-    }
+  @media (max-width: map-get($grid-breakpoints, sm)) {
+    gap: 0;
   }
 }
 
 .logo {
-  @include box(63px, 50px);
+  height: 100%;
+
+  &>img {
+    width: auto;
+    height: 100%;
+    object-fit: contain;
+    aspect-ratio: 1/1;
+  }
 }
 
-.search__open {
-  cursor: pointer;
-  background-color: transparent;
+.header__buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  height: 100%;
+  padding: 0 15px;
+
+  @media (max-width: map-get($grid-breakpoints, sm)) {
+    padding: 0;
+  }
+}
+
+.header__btn {
+  background: transparent;
   border: none;
-  border-radius: 0;
-  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  position: relative;
 
-  svg {
-    stroke: $text;
-  }
-
-  &:hover {
-    border-bottom: 1.5px solid $text;
-    padding-bottom: 5px;
+  &>svg {
+    stroke: $svgColor;
   }
 }
 
-.search {
-  @include abs-position (fixed, 0, unset, unset, 0);
-  @include flexer(row, center, flex-start);
-  @include fade(hide);
-  @include box(100%);
-  background: rgba(0, 0, 0, 0.7);
-  z-index: 99;
-  backdrop-filter: blur(2px);
+.header__count {
+  position: absolute;
+  background: $countBackgroundColor;
+  color: $countTextColor;
+  font-size: 10px;
+  width: 20px;
+  height: 20px;
+  right: 0px;
+  top: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
 
   &.active {
-    @include fade(show);
+    animation: rotating 2s ease-in-out;
   }
 
-  &__content {
-    @include flexer(row, space-between, flex-start, 20px);
-    @include responsive-spacing(padding, 0.01);
-    @include responsive-spacing(padding-left, 0.03);
-    @include responsive-spacing(padding-right, 0.03);
-    @include box(100%, auto);
-    transition: $transition;
-    background-color: $background;
-
-    button {
-      cursor: pointer;
-      background-color: transparent;
-      border: none;
-      border-radius: 0;
-      padding: 0;
-
-      svg {
-        stroke: $text;
-      }
+  @keyframes rotating {
+    0% {
+      transform: rotateY(360deg * 0)
     }
 
-    @include breakpoint(small) {
-      @include box(90%, auto);
-      border-radius: 0 0 15px 15px;
+    50% {
+      transform: rotateY(360deg * 3);
     }
 
-    @include breakpoint(medium) {
-      @include box(80%, auto);
-      border-radius: 0 0 15px 15px;
-    }
-  }
-
-  &__input {
-    @include box(100%, 25px);
-    flex: 1;
-    border: none;
-    border-radius: 0;
-    border-bottom: 1px solid $text;
-    outline: none;
-  }
-
-  &__container {
-    @include flexer(column, flex-start, flex-start, 10px);
-    width: 100%;
-    position: absolute;
-    padding: 10px;
-    top: 45px;
-    left: 50%;
-    transform: translateX(-50%);
-    transition: $transition;
-    background: white;
-    max-height: 300px;
-    overflow-y: auto;
-
-    li {
-      width: 100%;
-    }
-
-    @include breakpoint(small) {
-      width: 90%;
-      border-radius: 10px;
-      top: 80px;
-    }
-
-    @include breakpoint(medium) {
-      width: 80%;
-    }
-
-    &--item {
-      width: 100%;
-      @include flexer(row, space-between, center, 15px, 1);
-      padding: 10px;
-      background-color: #dfdfdf;
-      border-radius: 10px;
-      transition: $transition;
-
-      &:hover {
-        background-color: #cacaca;
-      }
-
-      img {
-        @include box(40px);
-      }
-
-      p {
-        width: 100%;
-        flex: 1;
-      }
-
-      button {
-        @include box(2rem);
-        @include flexer(row, center, center);
-        border-radius: 50%;
-        border: 1.5px solid $text;
-        background-color: $text;
-
-        &:hover {
-          background-color: transparent;
-
-          svg {
-            stroke: $text;
-          }
-        }
-
-      }
+    100% {
+      transform: rotateY(360deg * 0)
     }
   }
 }
 
-.menu {
-  @include flexer($align-items: flex-start);
-
-  @include breakpoint(large) {
-    @include fade(show);
-    position: relative;
-    width: 100%;
-    background-color: $background;
-  }
-
-  &__list {
-
-    @include flexer(column, flex-start, center);
-    padding: 70px 0;
-    gap: 15px;
-
-    @include breakpoint(large) {
-      @include fade(show);
-      @include flexer(row, center, center, 50px);
-      transform: unset;
-      position: relative;
-      background-color: transparent;
-      padding: 0;
-    }
-
-    li {
-      width: 90%;
-
-      @include breakpoint(large) {
-        width: auto;
-      }
-
-      &>a {
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        gap: 10px;
-        font-size: 25px;
-        font-weight: 500;
-        cursor: pointer;
-
-        &>img {
-          width: 35px;
-          height: 35px;
-          object-fit: contain;
-          aspect-ratio: 1/1;
-          background: white;
-
-          @include breakpoint(large) {
-            display: none;
-          }
-        }
-
-        @include breakpoint(large) {
-          font-size: unset;
-        }
-      }
-    }
-  }
-
-  &__link {
-    font-size: 25px;
-    font-weight: 500;
-    cursor: pointer;
-    width: 100%;
-    border-bottom: 1.5px solid $text ;
-    @include flexer(row, space-between, center);
-
-    @include breakpoint(large) {
-      font-size: unset;
-      border: none;
-      display: block;
-      width: min-content;
-    }
-  }
-
-  &__item {
-    @include flexer(row, space-between, center);
-    width: 100%;
-    border-bottom: 1.5px solid $text;
-
-    @include breakpoint(large) {
-      border-bottom: none;
-      width: min-content;
-    }
-
-    &.active {
-      button {
-        transform: rotateX(180deg);
-      }
-    }
-
-    &>a {
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      gap: 10px;
-      font-size: 25px;
-      font-weight: 500;
-      text-wrap: nowrap;
-      cursor: pointer;
-
-      &>img {
-        width: 35px;
-        height: 35px;
-        object-fit: contain;
-        aspect-ratio: 1/1;
-        background: white;
-
-        @include breakpoint(large) {
-          display: none;
-        }
-      }
-
-      @include breakpoint(large) {
-        font-size: unset;
-
-      }
-    }
-
-    button {
-      @include flexer(row, center, center, 15px);
-      border: none;
-      transition: $transition;
-      background-color: transparent;
-
-      svg {
-        stroke: $text;
-      }
-    }
-
-    @include breakpoint(large) {
-      font-size: unset;
-      transform: unset;
-      padding: 0;
-    }
-  }
-
-
-
-  &__sub {
-    display: grid;
-    grid-template-rows: 0;
-
-    &--wrapper {
-      overflow: hidden;
-      height: 0;
-    }
-
-    &--list {
-      transition: $transition;
-      @include flexer(column, space-between, flex-start);
-      padding-left: 15px;
-    }
-
-    &--item {
-      cursor: pointer;
-      border-left: 1px solid darken(#1a691a, 10%);
-      padding: 10px;
-      color: darken(#1a691a, 10%);
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      gap: 10px;
-      // font-size: 25px;
-      // font-weight: 500;
-      cursor: pointer;
-
-      &>img {
-        width: 35px;
-        height: 35px;
-        object-fit: contain;
-        aspect-ratio: 1/1;
-        background: white;
-
-        @include breakpoint(large) {
-          display: none;
-        }
-      }
-
-      // @include breakpoint(large) {
-      //   font-size: unset;
-      // }
-
-      &::after {
-        content: "";
-        @include box(10px, 1px);
-        background-color: darken(#1a691a, 10%);
-        @include abs-position (absolute, 50%, unset, unset, 0);
-        transform: translateY(-50%);
-      }
-    }
-
-    &.active {
-      display: grid;
-      grid-template-rows: 1fr;
-
-      @include breakpoint(large) {
-        position: fixed;
-        top: 100%;
-        background-color: $background;
-        border-radius: 0 0 10px 10px;
-        box-shadow: 0px 20px 40px -10px black;
-      }
-
-      &>.menu__sub--wrapper {
-        height: 100%;
-      }
-    }
-  }
-}
-
-#menuOpen {
-  @include breakpoint(large) {
-    display: none;
-  }
-}
-
-.heart {
-  @include btn;
-  background-color: transparent;
-  border: none;
-  @include box(auto);
-  padding: 0;
-  border-radius: 0;
-
-  svg {
-    stroke: $text;
-  }
-
-  &:hover {
-    border-bottom: 1.5px solid $text;
-    padding-bottom: 5px;
-  }
-}
+//<-------------------------- End Header Styles -------------------------->

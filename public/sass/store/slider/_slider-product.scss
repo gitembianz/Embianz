@@ -1,0 +1,125 @@
+.product-slider {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  flex: 1;
+}
+
+// wrapper options
+.product-slider__wrapper {
+  width: 100%;
+  height: 100%;
+  min-height: 400px;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  transition: all .3s ease-in-out;
+  border-radius: 5px;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &.no-transition {
+    scroll-behavior: auto;
+  }
+
+  &.dragging {
+    scroll-snap-type: none;
+    scroll-behavior: auto;
+
+    &>.card {
+      cursor: grab;
+      user-select: none;
+    }
+  }
+}
+
+.product-slider__slide {
+  scroll-snap-align: start;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 400px;
+  background: #333;
+
+  &:first-child {
+    z-index: 5;
+  }
+
+  &>img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    pointer-events: none;
+    user-select: none;
+    object-position: center;
+    aspect-ratio: 1 / 1;
+  }
+}
+
+.product-slider__button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50px;
+  height: 50px;
+  color: white;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  transition: all .3s ease-in-out;
+  z-index: 99;
+
+  &>svg {
+    stroke: #fff;
+    transform: scale(1.1);
+  }
+
+  &.prev {
+    left: 20px;
+    animation: LeftToRight 1s ease-in-out infinite;
+  }
+
+  &.next {
+    right: 20px;
+    animation: RightToLeft 1s ease-in-out infinite;
+  }
+
+  @keyframes LeftToRight {
+    0% {
+      transform: translateX(0) scale(1.1);
+    }
+
+    50% {
+      transform: translateX(-5px) scale(1.1);
+    }
+
+    100% {
+      transform: translateX(0) scale(1.1);
+    }
+  }
+
+  @keyframes RightToLeft {
+    0% {
+      transform: translateX(0) scale(1.1);
+    }
+
+    50% {
+      transform: translateX(5px) scale(1.1);
+    }
+
+    100% {
+      transform: translateX(0) scale(1.1);
+    }
+  }
+}
