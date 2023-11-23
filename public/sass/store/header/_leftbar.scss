@@ -1,0 +1,301 @@
+//<---------------------------- Leftbar Styles ---------------------------->
+.leftbar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: $modalColor;
+  opacity: 0;
+  visibility: hidden;
+  transition: all .3s ease-in-out;
+  z-index: 500;
+
+  &.active {
+    opacity: 1;
+    visibility: visible;
+
+    &>.leftbar__content {
+      transform: translateX(0%);
+    }
+  }
+}
+
+.leftbar__hidden--close {
+  width: 50%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  border: none;
+  opacity: 0;
+
+  @media (max-width: map-get($grid-breakpoints, sm)) {
+    width: 0;
+  }
+
+  @media (min-width: map-get($grid-breakpoints, lg)) {
+    width: 70%;
+  }
+}
+
+.leftbar__content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 15px;
+  width: 50%;
+  height: 100%;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transform: translateX(100%);
+  transition: all .3s ease-in-out;
+  padding: 15px;
+  background-color: $backgroundColor;
+
+  @media (max-width: map-get($grid-breakpoints, sm)) {
+    width: 100%;
+  }
+
+  @media (min-width: map-get($grid-breakpoints, lg)) {
+    width: 30%;
+  }
+}
+
+.leftbar__close {
+  width: 40px;
+  height: 40px;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .3s ease-in-out;
+  background-color: $buttonBackgroundColor;
+
+  &:hover {
+    background: $buttonHoverColor;
+  }
+
+  &>svg {
+    stroke: $buttonSvgColor;
+  }
+}
+
+.leftbar__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 15px;
+}
+
+.leftbar__button {
+  width: 100%;
+  height: 40px;
+  border: none;
+  text-decoration: none;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .3s ease-in-out;
+  font-weight: 500;
+  flex: 1;
+  background-color: $buttonBackgroundColor;
+  color: $buttonTextColor;
+
+  &:hover {
+    background: $buttonHoverColor;
+  }
+}
+
+.leftbar__list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 20px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: 100%;
+  height: 100%;
+  flex: 1;
+
+  // Scrollbar Settings if its appear
+  scrollbar-color: $buttonBackgroundColor transparent;
+  scrollbar-width: thin;
+
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+  }
+
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $buttonBackgroundColor;
+    border-radius: 10px;
+    border-left: 2px solid $backgroundColor;
+  }
+}
+
+.leftbar__empty {
+  font-size: 14px;
+  font-weight: 400;
+  color: $textColor;
+}
+
+.leftbar__item {
+  width: 100%;
+  min-height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  padding: 7px;
+  border-radius: 5px;
+  transition: all .3s ease-in-out;
+
+  background: $itemBackgroundColor;
+
+  &:hover {
+    background: $itemHoverColor;
+  }
+
+  &:not(:last-child) {
+    &::after {
+      content: '';
+      width: 100%;
+      height: 1px;
+      display: block;
+      position: absolute;
+      top: calc(100% + 10px);
+      background: $itemBackgroundColor;
+    }
+  }
+}
+
+.leftbar__link {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  text-decoration: none;
+  gap: 10px;
+  flex: 1;
+
+  &>img {
+    width: 65px;
+    height: 65px;
+    object-fit: contain;
+    aspect-ratio: 1/1;
+    border-radius: 3px;
+    background-color: #fff;
+
+    @media (max-width: map-get($grid-breakpoints, sm)) {
+      width: 55px;
+      height: 55px;
+    }
+  }
+}
+
+// Special Styles for .leftbar__link in WishList
+.wishlist__link {
+  width: calc(100% - 50px);
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+
+.leftbar__link--text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 5px;
+  height: 100%;
+  width: 100%;
+
+  &>p {
+    font-size: 11px;
+    font-weight: 400;
+    color: $textColor;
+  }
+
+  &>span {
+    color: $textColor;
+    font-weight: 400;
+    font-size: 11px;
+  }
+
+  &>h4 {
+    font-size: 14px;
+    color: $textColor;
+    font-weight: 500;
+
+    @media (max-width: map-get($grid-breakpoints, sm)) {
+      font-size: 12px;
+    }
+  }
+}
+
+.leftbar__delete {
+  width: 30px;
+  height: 30px;
+  border: none;
+  outline: none;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .3s ease-in-out;
+  background: $buttonBackgroundColor;
+
+  &>svg {
+    stroke: $buttonSvgColor;
+  }
+
+  &:hover {
+    background: $buttonHoverColor;
+  }
+}
+
+.leftbar__total {
+  width: 100%;
+  height: 90px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding-top: 15px;
+  gap: 10px;
+  border-top: 1px solid $textColor;
+}
+
+.leftbar__total--text {
+  font-size: 20px;
+  font-weight: 500;
+  color: $textColor;
+
+  &>span {
+    font-size: 20px;
+    font-weight: 400;
+    margin-left: 10px;
+    color: $textColor;
+  }
+}
+
+//<-------------------------- End Leftbar Styles -------------------------->

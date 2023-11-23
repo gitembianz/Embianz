@@ -1,7 +1,4 @@
 <x-store-head />
 <x-store-header />
-<main>
-    {{-- filter part --}}
-    <livewire:store-main />
-</main>
+<livewire:store-main />
 <x-store-footer />

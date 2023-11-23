@@ -1,0 +1,211 @@
+//<---------------------------- Searchbar Styles ---------------------------->
+.search {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: $modalColor;
+  opacity: 0;
+  visibility: hidden;
+  transition: all .3s ease-in-out;
+  z-index: 500;
+
+  &.active {
+    opacity: 1;
+    visibility: visible;
+
+    &>.search__container {
+      transform: translateY(0);
+    }
+  }
+}
+
+.search__container {
+  gap: 15px;
+  width: 100%;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  transform: translateY(-150%);
+  transition: all .5s ease-in-out;
+}
+
+.search__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  width: 100%;
+}
+
+.search__input {
+  width: 100%;
+  height: 40px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex: 1;
+  justify-content: center;
+
+  &>svg {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%) scale(.8);
+    stroke: $svgColor;
+  }
+
+  &>input {
+    width: 100%;
+    height: 40px;
+    font-size: 12px;
+    border: none;
+    border-radius: 5px;
+    flex: 1;
+    padding: 0 40px 0 10px;
+    outline: none;
+    background: $backgroundColor;
+    color: $textColor;
+  }
+}
+
+.search__close {
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .3s ease-in-out;
+  background: $backgroundColor;
+
+  &>svg {
+    stroke: $svgColor;
+  }
+}
+
+.search__list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  scrollbar-width: thin;
+  scrollbar-color: $buttonBackgroundColor transparent;
+
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $buttonBackgroundColor;
+    border-radius: 10px;
+    border-left: 2px solid transparent;
+  }
+
+  &>span {
+    color: $buttonTextColor;
+  }
+}
+
+.search__item {
+  width: 100%;
+  min-height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  padding: 7px;
+  border-radius: 5px;
+  transition: all .3s ease-in-out;
+  background: $backgroundColor;
+
+  &:hover {
+    background: $itemHoverColor;
+  }
+}
+
+.search__link {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  text-decoration: none;
+  gap: 10px;
+  height: 100%;
+
+  &>img {
+    width: 65px;
+    height: 65px;
+    object-fit: contain;
+    aspect-ratio: 1/1;
+    border-radius: 2.5px;
+    background-color: #fff;
+
+    @media (max-width: map-get($grid-breakpoints, sm)) {
+      width: 55px;
+      height: 55px;
+    }
+  }
+}
+
+.search__link--text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 5px;
+  height: 55px;
+  width: 100%;
+  padding: 0 5px;
+}
+
+.search__link--top {
+
+  &>p,
+  span {
+    font-size: 11px;
+    font-weight: 400;
+    color: $textColor;
+
+  }
+}
+
+.search__link--bottom {
+
+  &>h4,
+  span {
+    font-size: 14px;
+    font-weight: 500;
+    color: $textColor;
+
+  }
+}
+
+.search__link--top,
+.search__link--bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  width: 100%;
+  height: 100%;
+}
+
+//<-------------------------- End Searchbar Styles -------------------------->

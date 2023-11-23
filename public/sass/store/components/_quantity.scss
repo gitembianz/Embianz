@@ -1,0 +1,59 @@
+// Quantity
+.quantity {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #333;
+
+  &>span {
+    color: #333;
+    font-size: 15px;
+    font-weight: 500;
+    width: 100%;
+    flex: 1;
+  }
+}
+
+.quantity__input {
+  height: 40px;
+  width: 100px;
+  padding: 20px;
+  font-size: 14px;
+  font-weight: 400;
+  color: #333;
+  background: transparent;
+  margin: 0;
+  border: none;
+  outline: none;
+  text-align: center;
+  -moz-appearance: textfield;
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+
+.quantity__buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.quantity__arrow {
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// End Quantity
