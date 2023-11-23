@@ -1,124 +1,63 @@
-<div class="products">
-    {{-- <x-loading /> --}}
+<div>
+    <!-- Acesta este Store Products (Catalogol Magazinului), acesta
+    are sistemul de filtre, card-uri, si stilul Catalogului -->
+    <!---------------------------------------------------------->
+    <!-------------------If Category is appear------------------>
     @if ($category)
-        <div>
-            <p>Categorie: {{ $categoryname }}</p>
-        </div>
+        <section>
+            <div class="section__header container">
+                <h2 class="section__title">Categorie: {{ $categoryname }}</h2>
+            </div>
+        </section>
     @endif
-    <div class="products__control">
-        <div class="filter">
-            {{-- Filter Button Left overs --}}
-            <button class="filter__open" id="filterOpen" wire:click="$toggle('property')">
-                Filtre
-                <svg>
-                    <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
-                </svg>
-            </button>
-            {{-- Filter Content --}}
-            <div class="filter__content @if ($property) show @endif">
-                {{-- {{ $this->getUniqueSpecValues() }} --}}
-                @foreach ($specification as $index => $spec)
-                    @if ($spec->product_spec->count() > 0)
-                        <div class="filter__dropdown">
-                            <button class="filter__dropdown--btn">
-                                {{ $spec->name }}
-                            </button>
-                            <div class="filter__dropdown--content show">
-                                <ul class="filter__list">
-                                    @foreach ($this->getUniqueSpecValues($spec->id) as $innerIndex => $uniqueValue)
-                                        <li class="filter__item">
-                                            <input type="checkbox"
-                                                wire:model.defer="selectedSpecValues.{{ $innerIndex }}.{{ $uniqueValue }}"
-                                                wire:key="checkbox-{{ $innerIndex }}-{{ $uniqueValue }}"
-                                                id="{{ $innerIndex }}_{{ $uniqueValue }}">
-                                            <label
-                                                for="{{ $innerIndex }}_{{ $uniqueValue }}">{{ $uniqueValue }}</label>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        </div>
-                    @endif
-                @endforeach
-
-                <div class="filter__buttons">
-                    <button wire:click.prevent="applyFilter">Aplica</button>
-                    <button wire:click="resetFilter">Reseteaza</button>
-                </div>
-            </div>
-        </div>
-        <div class="filter__search">
-            <input type="text" wire:model="search" placeholder="Cauta...">
-            <button aria-label="search button">
-                <svg>
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                </svg>
-            </button>
-        </div>
-        <div class="filter__sort">
-            <button class="filter__sort--btn">Sortare
-                <svg>
-                    <line x1="12" y1="20" x2="12" y2="10"></line>
-                    <line x1="18" y1="20" x2="18" y2="4"></line>
-                    <line x1="6" y1="20" x2="6" y2="16"></line>
-                </svg>
-            </button>
-            <div class="filter__sort--content">
-                <ul class="filter__sort--list">
-                    <li class="filter__sort--item">
-                        <input wire:model="orderBy" type="radio" name="sort" value="best_selling" id="sort2">
-                        <label for="sort2">Cel mai bine vândut</label>
-                    </li>
-                    <li class="filter__sort--item">
-                        <input wire:model="orderBy" type="radio" name="sort" value="name_az" id="sort3">
-                        <label for="sort3">Alfabetic, A-Z</label>
-                    </li>
-                    <li class="filter__sort--item">
-                        <input wire:model="orderBy" type="radio" name="sort" value="name_za" id="sort4">
-                        <label for="sort4">Alfabetic, Z-A</label>
-                    </li>
-                    <li class="filter__sort--item">
-                        <input wire:model="orderBy" type="radio" name="sort" value="date_old_new" id="sort7">
-                        <label for="sort7">Data, de la vechi la nou</label>
-                    </li>
-                    <li class="filter__sort--item">
-                        <input wire:model="orderBy" type="radio" name="sort" value="date_new_old" id="sort8">
-                        <label for="sort8">Data, de la nou la vechi</label>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
+    <!-----------------End If Category is appear---------------->
+    <!---------------------------------------------------------->
+    <!---------------------------Filter------------------------->
+    <section class="controls container">
+        <button class="controls__button" id="filterOpen">
+            <svg>
+                <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+            </svg>
+        </button>
+        <input class="controls__search" type="text" wire:model="search" placeholder="Cauta produsul...">
+        <button class="controls__button" id="sortOpen">
+            <svg>
+                <line x1="21" y1="10" x2="7" y2="10"></line>
+                <line x1="21" y1="6" x2="3" y2="6"></line>
+                <line x1="21" y1="14" x2="3" y2="14"></line>
+                <line x1="21" y1="18" x2="7" y2="18"></line>
+            </svg>
+        </button>
+    </section>
+    <!-------------------------End Filter----------------------->
+    <!---------------------------------------------------------->
+    <!----------------------------Tags-------------------------->
     @if (!empty($selectedSpecNames))
-        <ul class="filter__applied">
-            {{-- {{ $selectedSpecNames }} --}}
+        <section class="tag container">
             @foreach ($selectedSpecNames as $key => $name)
-                {{-- {{ $name }} --}}
-                <li>
-                    <button class="filter__applied--item">
-                        {{ $name }}: {{ $key }}
-                        <svg wire:click="removeSpec('{{ $key }}')">
-                            <line x1="18" y1="6" x2="6" y2="18"></line>
-                            <line x1="6" y1="6" x2="18" y2="18"></line>
-                        </svg>
-                    </button>
-                </li>
-            @endforeach
-
-            {{-- <li>
-                <button class="filter__applied--clear">
-                    Load more...
-            </li> --}}
-            <li>
-                <button wire:click="clearall()" class="filter__applied--clear">
-                    Elimina toate filtrele
+                <button class="tag__button" wire:click="removeSpec('{{ $key }}')">
+                    {{ $name }}: {{ $key }}
+                    <svg>
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
                 </button>
-            </li>
-        </ul>
+            @endforeach
+            <button class="tag__button" wire:click="clearall()" class="filter__applied--clear">
+                Elimina toate filtrele-ul
+                <svg>
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </section>
     @endif
-    <div class="product__catalog">
-        @if ($products && $products->isEmpty())
+    <!--------------------------End Tags------------------------>
+    <!---------------------------------------------------------->
+    <!-------------------------Catalogue------------------------>
+    <section class="catalogue container">
+        @if ($products->isEmpty())
+
             <p>Nu au fost produse gasite</p>
         @else
             @foreach ($products as $product)
@@ -126,7 +65,7 @@
                     <a href="/product/{{ $product->id }}">
                         @if (count($product->media) > 0)
                             @foreach ($product->media as $media)
-                                @if ($media->location->location == 'main')
+                                @if ($media->location->location == "main")
                                     @if ($media->external)
                                         <img class="card-image" src="{{ $media->path }}" draggable="false"
                                             alt="{{ $media->path }}">
@@ -167,7 +106,7 @@
                         </p>
                     @endif
                     {{-- alt="Card-Image"> --}}
-                    <button class="card-favorites @if ($product->wishlists->where('session_id', $session_id)->isNotEmpty()) active @endif"
+                    <button class="card-favorites @if ($product->wishlists->where("session_id", $session_id)->isNotEmpty()) active @endif"
                         wire:click="toggleWishlist({{ $product->id }})">
                         <svg viewBox="0 0 512 512" width="20" title="heart">
                             <path
@@ -187,6 +126,7 @@
                                     {{ $product->product_prices->first()->pricelist->currency->name }}
                                     {{ $price }}
                                 @else
+
                                     {{ __('') }}
                                 @endif
                             </p>
@@ -199,8 +139,111 @@
                     </div>
                 </div>
             @endforeach
-
-            <x-lazy />
         @endif
+    </section>
+    <!-----------------------End Catalogue---------------------->
+    <!---------------------------------------------------------->
+    <!---------------------------Filter------------------------->
+    <div class="filter" id="filterList">
+        <div class="filter__content" id="filterContent">
+            <div class="filter__top">
+                <button class="filter__close" id="filterClose" href="#">
+                    Inchideti Filtrele
+                    <svg>
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="filter__list">
+                <!------------------ End Dropdown (filter) ------------------>
+                @foreach ($specification as $index => $spec)
+                    @if ($spec->product_spec->count() > 0)
+                        <div class="dropfilter">
+                            <div class="dropfilter__button">
+                                <div class="dropfilter__button--link">
+                                    <h4>{{ $spec->name }}</h4>
+                                </div>
+                                <button class="dropfilter__open" href="#">
+                                    <svg>
+                                        <polyline points="6 9 12 15 18 9"></polyline>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="dropfilter__list">
+                                @foreach ($this->getUniqueSpecValues($spec->id) as $innerIndex => $uniqueValue)
+                                    <label class="dropfilter__link" for="{{ $innerIndex }}_{{ $uniqueValue }}">
+                                        <input type="checkbox"
+                                            wire:model.defer="selectedSpecValues.{{ $innerIndex }}.{{ $uniqueValue }}"
+                                            wire:key="checkbox-{{ $innerIndex }}-{{ $uniqueValue }}"
+                                            id="{{ $innerIndex }}_{{ $uniqueValue }}">
+
+                                        <h4>{{ $uniqueValue }}</h4>
+                                    </label>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+                @endforeach
+                <!-------------------- Dropdown (filter) -------------------->
+            </div>
+            <div class="filter__bottom">
+                <button class="filter__apply" id="closeFilter" wire:click.prevent="applyFilter">
+                    Aplica Asortamentul
+                </button>
+                <button class="filter__reset" id="resetFilter" wire:click="resetFilter">
+                    <svg>
+                        <polyline points="23 4 23 10 17 10"></polyline>
+                        <polyline points="1 20 1 14 7 14"></polyline>
+                        <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
     </div>
+    <!-------------------------End Filter----------------------->
+    <!---------------------------------------------------------->
+    <!-------------------------Asortiment----------------------->
+    <div class="filter" id="sortList">
+        <div class="filter__content" id="sortContent">
+            <div class="filter__top">
+                <button class="filter__close" id="sortClose" href="#">
+                    Inchideti Asortamentul
+                    <svg>
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="filter__list">
+                <input class="filter__input" wire:model="orderBy" type="radio" name="sort"
+                    value="best_selling" id="sort2">
+                <label class="filter__link sort__item" for="sort2">
+                    <h4>Cel mai bine vândut</h4>
+                </label>
+                <input class="filter__input" wire:model="orderBy" type="radio" name="sort" value="name_az"
+                    id="sort3">
+                <label class="filter__link sort__item" for="sort3">
+                    <h4>Alfabetic, A-Z</h4>
+                </label>
+                <input class="filter__input" wire:model="orderBy" type="radio" name="sort" value="name_za"
+                    id="sort4">
+                <label class="filter__link sort__item" for="sort4">
+                    <h4>Alfabetic, Z-A</h4>
+                </label>
+                <input class="filter__input" wire:model="orderBy" type="radio" name="sort"
+                    value="date_old_new" id="sort7">
+                <label class="filter__link sort__item" for="sort7">
+                    <h4>Data, de la vechi la nou</h4>
+                </label>
+                <input class="filter__input" wire:model="orderBy" type="radio" name="sort"
+                    value="date_new_old" id="sort8">
+                <label class="filter__link sort__item" for="sort8">
+                    <h4>Data, de la nou la vechi</h4>
+                </label>
+            </div>
+        </div>
+    </div>
+    <!-----------------------End Asortiment--------------------->
+    <!---------------------------------------------------------->
 </div>

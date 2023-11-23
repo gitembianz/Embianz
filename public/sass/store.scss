@@ -1,27 +1,57 @@
-//------------------------------Variables,Functions,Mixins
-@import 'store/variables/variables';
-@import 'store/mixins/mixins';
-//------------------------------General Options and Fonts
-@import 'store/fonts/fonts';
-@import 'store/general/general';
-@import"store/general/alert";
-//------------------------------Header and Footer
-@import 'store/header/header';
-@import 'store/header/cart';
-@import 'store/footer/footer';
-//------------------------------Main Components
-@import "store/home/home";
-@import "store/home/support";
-//------------------------------Products list page
-@import 'store/products/products';
-@import 'store/products/product-landing';
-//------------------------------Product landing page
-@import 'store/payment/details';
-@import 'store/payment/checking';
-//------------------------------Cookies
-@import"store/general/cookies";
-@import 'store/tab/tab';
-@import 'store/carousel/carousel';
-@import 'store/filters/filters';
-@import 'store/support/support';
-//------------------------------
+//<-------------------------- General -------------------------->
+@import "store/general/normalize";
+@import "store/general/variable";
+@import "store/general/mixin";
+@import "store/general/fonts";
+@import "store/general/general";
+//<------------------------ End General ------------------------>
+//<------------------------------------------------------------->
+//<------------------------ Components ------------------------->
+@import "store/components/loading-screen";
+@import "store/components/cookie";
+@import "store/components/section";
+@import "store/components/alert";
+@import "store/components/quantity";
+@import "store/components/support";
+//<---------------------- End Components ----------------------->
+//<------------------------------------------------------------->
+//<-------------------------- Header --------------------------->
+@import "store/header/banner";
+@import "store/header/header";
+@import "store/header/leftbar";
+@import "store/header/navbar";
+@import "store/header/menu";
+@import "store/header/searchbar";
+//<------------------------ End Header ------------------------->
+//<------------------------------------------------------------->
+//<------------------------- Catalogue ------------------------->
+@import "store/catalogue/card-style";
+@import "store/catalogue/catalogue";
+@import "store/catalogue/control";
+@import "store/catalogue/filter";
+@import "store/catalogue/tag";
+//<----------------------- End Catalogue ----------------------->
+//<------------------------------------------------------------->
+//<------------------------- Product --------------------------->
+@import "store/product/product";
+@import "store/product/tab";
+//<----------------------- End Product ------------------------->
+//<-------------- Cart, wish and checkout page ----------------->
+@import "store/checkout/basket";
+@import "store/checkout/detail";
+@import "store/checkout/form";
+@import "store/checkout/step";
+@import "store/checkout/payment";
+@import "store/checkout/total";
+//<------------ End Cart, wish and checkout page --------------->
+//<------------------------------------------------------------->
+//<-------------------------- Sliders -------------------------->
+@import "store/slider/slider-main";
+@import "store/slider/slider-card";
+@import "store/slider/slider-product";
+//<------------------------ End Sliders ------------------------>
+//<------------------------------------------------------------->
+// <-------------------------- Footer -------------------------->
+@import "store/footer/footer";
+// <------------------------ End Footer ------------------------>
+//<------------------------------------------------------------->

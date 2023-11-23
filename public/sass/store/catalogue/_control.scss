@@ -1,0 +1,39 @@
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.controls__button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 7px;
+  background-color: #f2f2f2;
+  border: none;
+
+  &>svg {
+    stroke: #333;
+  }
+}
+
+.controls__search {
+  width: 100%;
+  height: 40px;
+  border-radius: 7px;
+  padding: 0 10px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #333;
+  border: none;
+  flex: 1;
+  background-color: #f2f2f2;
+  outline: none;
+
+  &::placeholder {
+    color: lighten($color: #333, $amount: 30%);
+  }
+}

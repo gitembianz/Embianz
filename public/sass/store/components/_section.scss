@@ -1,0 +1,51 @@
+//<---------------------------- Section ---------------------------->
+section {
+  padding-top: 30px !important;
+}
+
+.section__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  &>.logo {
+    height: 100%;
+
+    &>img {
+      width: 100px;
+      height: 100%;
+      object-fit: contain;
+      aspect-ratio: 1/1;
+    }
+  }
+}
+
+.section__title {
+  width: 100%;
+  font-size: 25px;
+  font-weight: 500;
+  color: #333;
+  text-align: center;
+  line-height: 150%;
+
+  @media (max-width: map-get($grid-breakpoints, md)) {
+    font-size: 18px;
+  }
+}
+
+.section__text {
+  width: 80%;
+  font-size: 14px;
+  font-weight: 400;
+  color: lighten($color: #333, $amount: 25%);
+  text-align: center;
+  line-height: 150%;
+
+  @media (max-width: map-get($grid-breakpoints, md)) {
+    font-size: 12px;
+    width: 90%;
+  }
+}
+
+//<-------------------------- End Section -------------------------->
