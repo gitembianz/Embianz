@@ -149,10 +149,7 @@
                             @endif
                         </form>
                     @endif
-                    {{-- <a class="details__button" wire:click="continue()">Continua</a> --}}
-                    <a class="details__button" wire:click="test()">Continua</a>
-
-
+                    <a class="details__button" wire:click="continue()">Continua</a>
                 </div>
             @endif
             <!----------------- End Basket Continue ---------------->

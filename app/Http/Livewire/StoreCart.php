@@ -95,10 +95,6 @@ class StoreCart extends Component
       $this->emit('cartUpdated');
     }
   }
-  public function test()
-  {
-    $this->dispatchBrowserEvent('alert__modal');
-  }
   public function decrement($productId)
   {
     $product = Product::find($productId);
@@ -169,9 +165,6 @@ class StoreCart extends Component
         $this->cart->final_amount = $this->cart->sum_amount - $discountAmount + $this->delivery;
         $this->cart->save();
         $this->new_price = true;
-        // $newStatusId = Status::where('name', 'used')->where('type', 'voucher')->first()->id;
-        // $voucher->status_id = $newStatusId;
-        // $voucher->save();
       } else {
         $this->message = "Voucher not found!";
       }
@@ -184,19 +177,7 @@ class StoreCart extends Component
       foreach ($cartitems as $item) {
         if ($item->quantity > $item->product->quantity) {
           $this->validatequantity = false;
-          // $difference = $item->quantity - $item->product->quantity;
-          // $this->cart->quantity_amount -= $difference;
-          // $this->cart->sum_amount -= $difference * $item->price;
-          // $this->cart->final_amount = $this->cart->sum_amount;
-          // $this->cart->save();
-          // $this->emit('cartUpdated');
-          // $item->quantity = $item->product->quantity;
-          // $item->save();
-          session()->flash('notification', [
-            'message' => 'Product quantity is not availabble',
-            'type' => 'warning',
-            'title' => 'Product quantity'
-          ]);
+          $this->dispatchBrowserEvent('alert__modal');
           return;
         } else {
           $this->validatequantity = true;
