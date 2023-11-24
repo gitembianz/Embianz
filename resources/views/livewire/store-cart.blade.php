@@ -86,7 +86,6 @@
                             <div class="basket__subtotal">
                                 <span>Subtotal:</span>
                                 <span>
-                                    {{ $cartItem->quantity }} * {{ $cartItem->price }} =
                                     {{ $cartItem->quantity * $cartItem->price }}
                                     {{ $currency }}
                                 </span>
@@ -149,9 +148,7 @@
                             @endif
                         </form>
                     @endif
-                    {{-- <a class="details__button" wire:click="continue()">Continua</a> --}}
-                    <a class="details__button" wire:click="test()">Continua</a>
-
+                    <a class="details__button" wire:click="continue()">Continua</a>
 
                 </div>
             @endif

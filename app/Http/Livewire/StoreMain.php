@@ -67,16 +67,16 @@ class StoreMain extends Component
   public function getSubcategoriesQueryProperty()
   {
     if ($this->category) {
-
       $subcategories = Subcategory::where('parrent_id', $this->category->id)->get();
 
-      // Assuming you want to get an array of subcategory IDs
-      $subIds = $subcategories->pluck('id')->toArray();
+      // Assuming you want to get an array of subcategory category_ids
+      $subCategoryIds = $subcategories->pluck('category_id')->toArray();
 
-      // Use 'whereIn' to filter by an array of IDs
-      return Category::whereIn('id', $subIds)->with('media.location');
+      // Use 'whereIn' to filter by an array of category_ids
+      return Category::whereIn('id', $subCategoryIds)->with('media.location');
     }
   }
+
   public function addToWishlist($productId)
   {
     if (!in_array($productId, $this->wishlist)) {

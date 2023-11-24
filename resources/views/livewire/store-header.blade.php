@@ -212,6 +212,7 @@
                 @if ($cartItems->isEmpty())
                     <span class="leftbar__empty">Shopping Basket empty</span>
                 @else
+                <?php $total = 0; ?>
                     @foreach ($cartItems as $cartItem)
                         <li class="leftbar__item">
                             <a class="leftbar__link" href="/product/{{ $cartItem->product->id }}">
@@ -235,14 +236,14 @@
                                 @endif
 
                                 <div class="leftbar__link--text">
-                                    <p>Product Category</p>
                                     <h4>{{ $cartItem->product->name }}</h4>
                                     <span>
                                         @php
                                             $price = $cartItem->product->product_prices->first();
+                                            $currency = $price->pricelist->currency->name;
                                         @endphp
                                         @if ($price)
-                                            {{ $price->value }} {{ $price->pricelist->currency->name }}
+                                            {{ $price->value }} {{ $currency }}
                                         @else
                                             indisponibil
                                         @endif
@@ -259,15 +260,17 @@
                                 </svg>
                             </button>
                         </li>
+                        <?php $total  += ($cartItem->price * $cartItem->quantity) ?>
                     @endforeach
                 @endif
             </ul>
 
-
+            @if (!$cartItems->isEmpty())
             <div class="leftbar__total">
-                <h5 class="leftbar__total--text">Total: <span>$99</span></h5>
+                <h5 class="leftbar__total--text">Total: <span>{{ $total }} {{ $currency }}</span></h5>
                 <a class="leftbar__button" href="#">Continue Shopping</a>
             </div>
+            @endif
         </div>
     </div>
     <!-------------------END-Basket (Leftbar)------------------->

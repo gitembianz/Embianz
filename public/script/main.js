@@ -256,13 +256,14 @@ function modal(modalID) {
     console.warn("Nu exista nici un modal pe aceasta pagina");
     return;
   } else {
+    close.addEventListener("click", () => {
+      modal.classList.remove("active");
+    });
+
     window.addEventListener("alert__modal", (event) => {
       modal.classList.add("active");
     });
 
-    close.addEventListener("click", () => {
-      modal.classList.remove = "active";
-    });
     window.addEventListener("click", (event) => {
       if (event.target === modal) {
         modal.classList.remove("active");
@@ -293,6 +294,7 @@ document.addEventListener("DOMContentLoaded", function () {
   slider(".card-slider");
   slider(".product-slider");
   // Modal
+
   modal(".modal");
 });
 //<------------------------ End Start Functions ------------------------>

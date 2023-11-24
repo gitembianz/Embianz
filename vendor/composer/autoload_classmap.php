@@ -130,6 +130,7 @@ return array(
     'App\\View\\Components\\GuestLayout' => $baseDir . '/app/View/Components/GuestLayout.php',
     'App\\View\\Components\\Lazy' => $baseDir . '/app/View/Components/Lazy.php',
     'App\\View\\Components\\Loading' => $baseDir . '/app/View/Components/Loading.php',
+    'App\\View\\Components\\StoreAlert' => $baseDir . '/app/View/Components/StoreAlert.php',
     'App\\View\\Components\\StoreFooter' => $baseDir . '/app/View/Components/StoreFooter.php',
     'App\\View\\Components\\StoreHead' => $baseDir . '/app/View/Components/StoreHead.php',
     'App\\View\\Components\\StoreHeader' => $baseDir . '/app/View/Components/StoreHeader.php',

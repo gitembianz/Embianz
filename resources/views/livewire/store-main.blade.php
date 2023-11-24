@@ -13,12 +13,13 @@
         <!---------------------------------------------------------->
         <!---------------------- Slider Images --------------------->
         @if ($category)
+        @if (!$subcategories->isEmpty())
             <div class="main-slider">
                 <div class="main-slider__wrapper">
-                    @foreach ($category->product_categories as $product)
+                    @foreach ($subcategories as $item)
                         <div class="main-slider__slide">
-                            @if (count($product->product->media) > 0)
-                                @foreach ($product->product->media as $media)
+                            @if (count($item->media) > 0)
+                                @foreach ($item->media as $media)
                                     @if ($media->location->location == "details")
                                         @if ($media->external)
                                             <img src="{{ $media->path }}" draggable="false" alt="{{ $media->path }}">
@@ -29,13 +30,11 @@
                                         <?php break; ?>
                                     @endif
                                 @endforeach
-                            @else
-                                <img src="/images/store/default/default.svg" draggable="false" alt="something wrong">
                             @endif
                             <div class="main-slider__text container">
-                                <h3>{{ $product->product->name }}</h3>
-                                <p>{{ $product->product->short_description }}</p>
-                                <a class="main-slider__link" href="#">Show Category</a>
+                                <h3>{{ $item->name }}</h3>
+                                <p>{{ $item->short_description }}</p>
+                                <a class="main-slider__link" href="/storeproducts/{{ $item->id }}">Acceseaza!</a>
                             </div>
                         </div>
                     @endforeach
@@ -53,6 +52,7 @@
                 </div>
             </div>
         @endif
+        @endif
         <!-------------------- End Slider Images ------------------->
         <!---------------------------------------------------------->
         <!---------------------------------------------------------->
@@ -62,12 +62,13 @@
                 <h2 class="section__title">Descoperă produsele noastre populare!</h2>
                 <p class="section__text">Explorează colecția noastră de produse apreciate de clienți și găsește
                     accesoriile
-                    perfecte pentru a-ți completa stilul.<br> Vezi produsele de mai jos</p>
+                    perfecte pentru a-ți completa stilul.<br> Vezi <a href="{{ url("/storeproducts") }}">produsele</a>!</p>
             </div>
         </section>
         <!----------------- End Section Description ---------------->
         <!---------------------------------------------------------->
         <!---------------------- Slider Cards ---------------------->
+        @if (!$popproducts->isEmpty())
         <section>
             <div class="card-slider container">
                 <div class="card-slider__wrapper">
@@ -135,6 +136,7 @@
                 </div>
             </div>
         </section>
+        @endif
         <!-------------------- End Slider Cards -------------------->
         <!---------------------------------------------------------->
         <!---------------------- Support Center -------------------->
