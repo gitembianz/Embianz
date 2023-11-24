@@ -1,7 +1,7 @@
 //<--------------------------------------------------------------------->
 //<---------------------------- ScrollEvent ---------------------------->
 function scrollEvent() {
-  var header = document.querySelector("header");
+  let header = document.querySelector("header");
 
   if (header) {
     document.addEventListener("scroll", function () {
@@ -14,25 +14,26 @@ function scrollEvent() {
       }
     });
   } else {
-    console.error("Variabila 'header' nu există.");
+    return;
+    // console.error("letiabila 'header' nu există.");
   }
 }
 //<-------------------------- End ScrollEvent -------------------------->
 //<--------------------------------------------------------------------->
 //<------------------------ DropMenu on leftbar ------------------------>
 function dropmenus(iddropmenus) {
-  var dropmenus = document.querySelectorAll(iddropmenus);
+  let dropmenus = document.querySelectorAll(iddropmenus);
 
   // Verifică dacă există cel puțin un element .dropmenu
   if (dropmenus.length === 0) {
-    console.warn("Nu există elemente .dropmenu.");
+    // console.warn("Nu există elemente .dropmenu.");
     return;
   }
 
   dropmenus.forEach(function (dropmenu) {
     // Găsește elementele relevante în cadrul fiecărui dropmenu
-    var button = dropmenu.querySelector(`.${dropmenu.className}__open`);
-    var list = dropmenu.querySelector(`.${dropmenu.className}__list`);
+    let button = dropmenu.querySelector(`.${dropmenu.className}__open`);
+    let list = dropmenu.querySelector(`.${dropmenu.className}__list`);
 
     // Adaugă evenimentul de click la buton
     button.addEventListener("click", function () {
@@ -52,7 +53,7 @@ function leftbar(idOpen, idClose, idList, idContent) {
   const body = document.querySelector("body");
 
   if (!buttonOpen || !buttonClose || !list || !content) {
-    console.log("leftbar error");
+    // console.log("leftbar error");
     return;
   } else {
     buttonOpen.addEventListener("click", () => {
@@ -83,7 +84,7 @@ function applyFilter(Close, Reset) {
   const body = document.querySelector("body");
 
   if (!buttonClose || !buttonReset) {
-    console.log("leftbar error");
+    // console.log("leftbar error");
     return;
   } else {
     buttonClose.addEventListener("click", () => {
@@ -102,7 +103,7 @@ function applySort(selector) {
   const body = document.querySelector("body");
 
   if (!items) {
-    console.log("leftbar error");
+    // console.log("leftbar error");
     return;
   } else {
     items.forEach(function (item) {
@@ -274,29 +275,27 @@ function modal(modalID) {
 //<----------------------------- End Modal ----------------------------->
 //<--------------------------------------------------------------------->
 //<-------------------------- Start Functions -------------------------->
-document.addEventListener("DOMContentLoaded", function () {
-  scrollEvent();
-  searchBar();
-  // leftbar functions for basket, wish, menu, filter and sort
-  leftbar("basketOpen", "basketClose", "basketList", "basketContent");
-  leftbar("wishOpen", "wishClose", "wishList", "wishContent");
-  leftbar("menuOpen", "menuClose", "menuList", "menuContent");
-  leftbar("filterOpen", "filterClose", "filterList", "filterContent");
-  leftbar("sortOpen", "sortClose", "sortList", "sortContent");
-  // dropdown functions for menu and filter
-  dropmenus(".dropmenu");
-  dropmenus(".dropfilter");
-  // filter functions for closing and resetting
-  applyFilter("closeFilter", "resetFilter");
-  applySort(".sort__item");
-  // Sliders
-  slider(".main-slider");
-  slider(".card-slider");
-  slider(".product-slider");
-  // Modal
-
-  modal(".modal");
-});
+// document.addEventListener("DOMContentLoaded", function () {
+scrollEvent();
+searchBar();
+// leftbar functions for basket, wish, menu, filter and sort
+leftbar("basketOpen", "basketClose", "basketList", "basketContent");
+leftbar("wishOpen", "wishClose", "wishList", "wishContent");
+leftbar("menuOpen", "menuClose", "menuList", "menuContent");
+leftbar("filterOpen", "filterClose", "filterList", "filterContent");
+leftbar("sortOpen", "sortClose", "sortList", "sortContent");
+// dropdown functions for menu and filter
+dropmenus(".dropmenu");
+dropmenus(".dropfilter");
+// filter functions for closing and resetting
+applyFilter("closeFilter", "resetFilter");
+applySort(".sort__item");
+// Sliders
+slider(".main-slider");
+slider(".card-slider");
+slider(".product-slider");
+// Modal
+modal(".modal");
+// });
 //<------------------------ End Start Functions ------------------------>
 //<--------------------------------------------------------------------->
-
