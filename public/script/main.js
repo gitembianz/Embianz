@@ -285,6 +285,7 @@ function slider(sliderID) {
 //<------------------------------- Modal ------------------------------->
 function modal(modalID) {
   const modal = document.querySelector(modalID);
+  const body = document.querySelector("body");
 
   if (!modal) {
     // console.warn("Nu exista nici un modal pe aceasta pagina");
@@ -295,15 +296,18 @@ function modal(modalID) {
 
     close.addEventListener("click", () => {
       modal.classList.remove("active");
+      body.style.overflow = "auto";
     });
 
     window.addEventListener("alert__modal", (event) => {
       modal.classList.add("active");
+      body.style.overflow = "hidden";
     });
 
     window.addEventListener("click", (event) => {
       if (event.target === modal) {
         modal.classList.remove("active");
+        body.style.overflow = "auto";
       }
     });
   }

@@ -15,8 +15,8 @@
   background-color: $backgroundColor;
   // Animation
   animation-name: bg-anim;
-  animation-duration: 3s;
-  animation-delay: 1.5s;
+  animation-duration: 2s;
+  animation-delay: 1s;
   animation-timing-function: ease-in;
   animation-fill-mode: forwards;
   z-index: 1000;
@@ -26,7 +26,7 @@
     height: 250px;
     // Animation
     animation-name: svg-anim;
-    animation-duration: 3s;
+    animation-duration: 2s;
     animation-timing-function: ease-in;
     animation-fill-mode: forwards;
   }

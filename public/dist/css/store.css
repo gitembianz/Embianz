@@ -367,8 +367,8 @@ input[type=checkbox]:checked:after {
   z-index: 99;
   background-color: #f2f2f2;
   animation-name: bg-anim;
-  animation-duration: 3s;
-  animation-delay: 1.5s;
+  animation-duration: 2s;
+  animation-delay: 1s;
   animation-timing-function: ease-in;
   animation-fill-mode: forwards;
   z-index: 1000;
@@ -377,7 +377,7 @@ input[type=checkbox]:checked:after {
   width: 250px;
   height: 250px;
   animation-name: svg-anim;
-  animation-duration: 3s;
+  animation-duration: 2s;
   animation-timing-function: ease-in;
   animation-fill-mode: forwards;
 }
