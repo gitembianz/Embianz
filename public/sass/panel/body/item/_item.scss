@@ -196,7 +196,12 @@
         min-height: 300px;
         align-items: flex-start;
         resize: vertical;
+
+        &>svg {
+          stroke: #333 !important;
+        }
       }
+
     }
   }
 }
@@ -253,4 +258,8 @@ button {
       transform: translateX(-50%);
     }
   }
+}
+
+#editor>svg {
+  stroke: #333;
 }

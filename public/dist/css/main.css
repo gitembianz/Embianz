@@ -4633,6 +4633,10 @@ header,
   align-items: flex-start;
   resize: vertical;
 }
+.item__form-textarea > div > svg,
+.item__form-textarea textarea > svg {
+  stroke: #333 !important;
+}
 
 a[data-tooltip-left], a[data-tooltip-right], a[data-tooltip-center],
 button[data-tooltip-left],
@@ -4681,6 +4685,10 @@ button[data-tooltip-center]::after {
   content: attr(data-tooltip-center);
   left: 50%;
   transform: translateX(-50%);
+}
+
+#editor > svg {
+  stroke: #333;
 }
 
 @media (min-width: 1024px) {
@@ -5161,4 +5169,4 @@ button[data-tooltip-center]::after {
 }
 .container-right .card_todo .count {
   border-top: 1px solid #35424B;
-}/*# sourceMappingURL=main.css.map */
+}
