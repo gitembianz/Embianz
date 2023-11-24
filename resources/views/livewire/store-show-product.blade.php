@@ -1,4 +1,15 @@
 <div>
+     <section>
+        <div class="breadcrumbs container">
+            <a class="breadcrumbs__link" href="{{ url("/") }}">
+                Acasa
+            </a>
+            <a class="breadcrumbs__link" href="{{ url("/storeproducts") }}">
+                Produse
+            </a>
+                <a class="breadcrumbs__link">{{ $product->name }}</a>
+        </div>
+    </section>
     <section class="product container">
         <!-------------------- Slider Product ------------------>
         <div class="product-slider">
