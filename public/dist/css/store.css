@@ -2784,6 +2784,26 @@ header.fixed {
   stroke: #f2f2f2;
 }
 
+.basket__wish {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 33px;
+  height: 33px;
+  background: transparent;
+  border: none;
+  border-radius: 50px;
+}
+.basket__wish > svg {
+  fill: #a9a9a9;
+}
+.basket__wish:hover > svg {
+  fill: #d2042d;
+}
+.basket__wish.active > svg {
+  fill: #d2042d;
+}
+
 .basket__delete--hidden {
   grid-column: 1/3;
   width: 100%;
@@ -3106,7 +3126,7 @@ header.fixed {
   background: transparent;
   border-bottom: 1.5px solid #333;
   color: #333;
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 400;
   outline: none;
   padding: 0 10px;
