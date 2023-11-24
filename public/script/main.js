@@ -5,23 +5,31 @@ function scrollEvent() {
   let banner = document.querySelector(".banner");
   let main = document.querySelector("main");
 
-  if (header && banner && main) {
+  function updateStyles() {
     main.style.paddingTop = header.clientHeight + "px";
     header.style.top = banner.clientHeight + "px";
+  }
+
+  if (header && banner && main) {
+    // Apel initial pentru a seta valorile la început
+    updateStyles();
 
     document.addEventListener("scroll", function () {
-      if (typeof header !== "undefined" && header !== null) {
-        if (window.scrollY > banner.clientHeight) {
-          header.style.top = "0";
-        } else {
-          header.style.top = banner.clientHeight + "px";
-        }
+      if (window.scrollY > banner.clientHeight) {
+        header.style.top = "0";
+      } else {
+        header.style.top = banner.clientHeight + "px";
       }
     });
+
+    window.addEventListener("resize", function () {
+      // Actualizează stilurile atunci când se schimbă dimensiunea ecranului
+      updateStyles();
+    });
   } else {
+    return;
   }
 }
-
 //<-------------------------- End ScrollEvent -------------------------->
 //<--------------------------------------------------------------------->
 //<------------------------ DropMenu on leftbar ------------------------>
