@@ -80,8 +80,8 @@
                 <label>Short Description</label>
             </div>
 
-            <div class="item__form-input item__form-textarea">
-                <textarea name="long_description">{{ old('long_description') }}</textarea>
+            <div>
+                <textarea name="long_description" id="editor">{{ old('long_description') }}</textarea>
                 <label>Long Description</label>
             </div>
             <div class="item__form-input item__form-long">
@@ -97,6 +97,15 @@
         </svg>
     </a>
 </section>
+@section('scripts')
+<script>
+    ClassicEditor
+        .create( document.querySelector( '#editor' ) )
+        .catch( error => {
+            console.error( error );
+        } );
+</script>
+@endsection
 {{-- page content end --}}
 <x-dashboardright />
 <x-dashboardscript />

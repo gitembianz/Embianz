@@ -759,6 +759,7 @@ class ComposerStaticInitdbceb679be78fc0f2f620fcaf24d3e3e
         'App\\View\\Components\\GuestLayout' => __DIR__ . '/../..' . '/app/View/Components/GuestLayout.php',
         'App\\View\\Components\\Lazy' => __DIR__ . '/../..' . '/app/View/Components/Lazy.php',
         'App\\View\\Components\\Loading' => __DIR__ . '/../..' . '/app/View/Components/Loading.php',
+        'App\\View\\Components\\StoreAlert' => __DIR__ . '/../..' . '/app/View/Components/StoreAlert.php',
         'App\\View\\Components\\StoreFooter' => __DIR__ . '/../..' . '/app/View/Components/StoreFooter.php',
         'App\\View\\Components\\StoreHead' => __DIR__ . '/../..' . '/app/View/Components/StoreHead.php',
         'App\\View\\Components\\StoreHeader' => __DIR__ . '/../..' . '/app/View/Components/StoreHeader.php',
