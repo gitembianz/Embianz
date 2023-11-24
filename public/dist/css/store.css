@@ -2893,6 +2893,27 @@ header {
     max-height: unset;
     min-height: unset;
   }
+  .details.sticky {
+    position: sticky;
+    bottom: 20px;
+  }
+}
+@media (max-width: 768px) and (max-width: 576px) {
+  .details.sticky {
+    width: calc(100% + 40px);
+    margin-left: -20px;
+    padding: 10px 20px 30px;
+    bottom: 0;
+    border-radius: 0;
+  }
+}
+@media (max-width: 768px) {
+  .details.sticky > .details__content:first-child {
+    display: none;
+  }
+  .details.sticky > .details__content > .voucher {
+    display: none;
+  }
 }
 
 .details__hidden {
