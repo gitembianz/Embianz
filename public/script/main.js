@@ -2,22 +2,26 @@
 //<---------------------------- ScrollEvent ---------------------------->
 function scrollEvent() {
   let header = document.querySelector("header");
+  let banner = document.querySelector(".banner");
+  let main = document.querySelector("main");
 
-  if (header) {
+  if (header && banner && main) {
+    main.style.paddingTop = header.clientHeight + "px";
+    header.style.top = banner.clientHeight + "px";
+
     document.addEventListener("scroll", function () {
       if (typeof header !== "undefined" && header !== null) {
-        if (window.scrollY > header.clientHeight) {
-          header.classList.add("fixed");
+        if (window.scrollY > banner.clientHeight) {
+          header.style.top = "0";
         } else {
-          header.classList.remove("fixed");
+          header.style.top = banner.clientHeight + "px";
         }
       }
     });
   } else {
-    return;
-    // console.error("letiabila 'header' nu există.");
   }
 }
+
 //<-------------------------- End ScrollEvent -------------------------->
 //<--------------------------------------------------------------------->
 //<------------------------ DropMenu on leftbar ------------------------>
@@ -286,9 +290,9 @@ function modal(modalID) {
 }
 //<----------------------------- End Modal ----------------------------->
 //<--------------------------------------------------------------------->
-//<-------------------------- Start Functions -------------------------->
-scrollEvent();
+//<------------------------ Start Functions IOS ------------------------>
 searchBar();
+scrollEvent();
 // leftbar functions for basket, wish, menu, filter and sort
 leftbar("basketOpen", "basketClose", "basketList", "basketContent");
 leftbar("wishOpen", "wishClose", "wishList", "wishContent");
@@ -307,6 +311,31 @@ slider(".card-slider");
 slider(".product-slider");
 // Modal
 modal(".modal");
+//<---------------------- End Start Functions IOS ---------------------->
+//<--------------------------------------------------------------------->
+//<------------------------- Start Functions PC ------------------------>
 
-//<------------------------ End Start Functions ------------------------>
+document.addEventListener("DOMContentLoaded", function () {
+  searchBar();
+  scrollEvent();
+  // leftbar functions for basket, wish, menu, filter and sort
+  leftbar("basketOpen", "basketClose", "basketList", "basketContent");
+  leftbar("wishOpen", "wishClose", "wishList", "wishContent");
+  leftbar("menuOpen", "menuClose", "menuList", "menuContent");
+  leftbar("filterOpen", "filterClose", "filterList", "filterContent");
+  leftbar("sortOpen", "sortClose", "sortList", "sortContent");
+  // dropdown functions for menu and filter
+  dropmenus(".dropmenu", false);
+  dropmenus(".dropfilter", true);
+  // filter functions for closing and resetting
+  applyFilter("closeFilter", "resetFilter");
+  applySort(".sort__item");
+  // Sliders
+  slider(".main-slider");
+  slider(".card-slider");
+  slider(".product-slider");
+  // Modal
+  modal(".modal");
+});
+//<----------------------- End Start Functions PC ---------------------->
 //<--------------------------------------------------------------------->

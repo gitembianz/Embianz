@@ -769,6 +769,7 @@ section {
   width: 100%;
   padding: 5px 0;
   background: #333;
+  transition: all 0.1s ease-in-out;
 }
 
 .banner__container {
@@ -783,12 +784,9 @@ header {
   height: 60px;
   z-index: 300;
   background: #f2f2f2;
-  transition: all 0.3s ease-in-out;
-}
-header.fixed {
+  transition: all 0.1s ease-in-out;
   position: fixed;
   top: 0;
-  width: 100%;
 }
 
 .header__container {
