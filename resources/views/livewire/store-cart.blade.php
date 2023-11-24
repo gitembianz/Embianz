@@ -75,7 +75,7 @@
                                             pret indisponibil
                                         @endif
                                     </span>
-                                    <h2 class="basket__title">{{ $cartItem->product->name }}</h2>
+                                    <a href="/product/{{ $cartItem->product->id }}" class="basket__title">{{ $cartItem->product->name }}</a>
                                 </div>
                                 <button class="basket__delete"
                                     wire:click="removeFromCart({{ $cartItem->product->id }})">

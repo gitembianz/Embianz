@@ -18,6 +18,9 @@ class StoreShowProduct extends Component
   public $maxlimit = null;
   public $session_id;
   public $wishlist = [];
+  protected $listeners = [
+    'wishlistUpdated' => 'refreshComponent'
+  ];
 
 
   public function mount($productId)
@@ -31,6 +34,11 @@ class StoreShowProduct extends Component
     return view('livewire.store-show-product', [
       'product' => $this->product
     ]);
+  }
+  public function refreshComponent()
+  {
+    $this->mount($this->productId);
+    $this->render(); // This triggers Livewire to re-render the component
   }
   public function switchTab($index)
   {

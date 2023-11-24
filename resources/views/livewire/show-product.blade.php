@@ -190,7 +190,7 @@
                             <label>Long Description</label>
                         </div>
                     @else
-                        <div>
+                        <div class="item__form-input-close item__form-textarea">
                             <textarea id="editor" wire:model="prod.long_description" required></textarea>
                             <label>Long Description</label>
                         </div>
@@ -238,13 +238,4 @@
             </div>
         </div>
     </div>
-    @section('scripts')
-<script>
-    ClassicEditor
-        .create( document.querySelector( '#editor' ) )
-        .catch( error => {
-            console.error( error );
-        } );
-</script>
-@endsection
 </div>
