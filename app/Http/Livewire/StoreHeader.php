@@ -9,6 +9,7 @@ use Livewire\Component;
 use App\Models\Category;
 use App\Models\Wishlist;
 use App\Models\Cart_Item;
+use App\Models\Store_Settings;
 use Illuminate\Support\Facades\Session;
 
 class StoreHeader extends Component
@@ -159,5 +160,33 @@ class StoreHeader extends Component
   public function getCatsQueryProperty()
   {
     return Category::name($this->search)->where('active', true)->where('store_tab', true)->with('media');
+  }
+
+  public function continue()
+  {
+    $delivery = Store_Settings::where('parameter', 'delivery_price')->first()->value;
+    $cart = Cart::where('session_id', $this->session_id)
+      ->where('status_id', '!=', $this->closedStatusId)
+      ->latest()->first();
+    $validatequantity = true;
+    $cartitems = Cart_Item::where('cart_id', $cart->id)->get();
+    if ($cartitems) {
+      foreach ($cartitems as $item) {
+        if ($item->quantity > $item->product->quantity) {
+          $validatequantity = false;
+          $this->dispatchBrowserEvent('alert__modal');
+          return;
+        }
+      }
+    }
+    if ($validatequantity) {
+
+      $newStatusId = Status::where('name', 'checkout')->where('type', 'cart')->first()->id;
+      $cart->final_amount = $cart->sum_amount + $delivery;
+      $cart->status_id = $newStatusId;
+      $cart->delivery_price = $delivery;
+      $cart->save();
+      return redirect()->route('order');
+    }
   }
 }
