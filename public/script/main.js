@@ -21,27 +21,38 @@ function scrollEvent() {
 //<-------------------------- End ScrollEvent -------------------------->
 //<--------------------------------------------------------------------->
 //<------------------------ DropMenu on leftbar ------------------------>
-function dropmenus(iddropmenus) {
+function dropmenus(iddropmenus, initiallyActive) {
   let dropmenus = document.querySelectorAll(iddropmenus);
 
-  // Verifică dacă există cel puțin un element .dropmenu
   if (dropmenus.length === 0) {
-    // console.warn("Nu există elemente .dropmenu.");
     return;
   }
 
   dropmenus.forEach(function (dropmenu) {
-    // Găsește elementele relevante în cadrul fiecărui dropmenu
     let button = dropmenu.querySelector(`.${dropmenu.className}__open`);
     let list = dropmenu.querySelector(`.${dropmenu.className}__list`);
 
+    // Adaugă clasa "active" sau "non-active" în funcție de parametrul initiallyActive
+    if (initiallyActive) {
+      list.classList.add("active");
+      dropmenu.classList.add("active");
+    } else {
+      list.classList.remove("active");
+      dropmenu.classList.remove("active");
+    }
+
+    // Adaugă variabila isButtonActive și inițializeaz-o cu initiallyActive
+    let isButtonActive = initiallyActive;
+
     // Adaugă evenimentul de click la buton
     button.addEventListener("click", function () {
-      list.classList.toggle("active");
-      dropmenu.classList.toggle("active");
+      list.classList.toggle("active", isButtonActive);
+      dropmenu.classList.toggle("active", isButtonActive);
+      isButtonActive = !isButtonActive; // Inversează valoarea variabilei la fiecare click
     });
   });
 }
+
 //<---------------------- End DropMenu on leftbar ---------------------->
 //<--------------------------------------------------------------------->
 //<------------------------------ LeftBar ------------------------------>
@@ -250,13 +261,14 @@ function slider(sliderID) {
 //<------------------------------- Modal ------------------------------->
 function modal(modalID) {
   const modal = document.querySelector(modalID);
-  const content = modal.querySelector(modalID + "__content");
-  const close = modal.querySelector(modalID + "__close");
 
-  if (!modal && !content && !close) {
-    console.warn("Nu exista nici un modal pe aceasta pagina");
+  if (!modal) {
+    // console.warn("Nu exista nici un modal pe aceasta pagina");
     return;
   } else {
+    const content = modal.querySelector(modalID + "__content");
+    const close = modal.querySelector(modalID + "__close");
+
     close.addEventListener("click", () => {
       modal.classList.remove("active");
     });
@@ -275,7 +287,6 @@ function modal(modalID) {
 //<----------------------------- End Modal ----------------------------->
 //<--------------------------------------------------------------------->
 //<-------------------------- Start Functions -------------------------->
-// document.addEventListener("DOMContentLoaded", function () {
 scrollEvent();
 searchBar();
 // leftbar functions for basket, wish, menu, filter and sort
@@ -285,8 +296,8 @@ leftbar("menuOpen", "menuClose", "menuList", "menuContent");
 leftbar("filterOpen", "filterClose", "filterList", "filterContent");
 leftbar("sortOpen", "sortClose", "sortList", "sortContent");
 // dropdown functions for menu and filter
-dropmenus(".dropmenu");
-dropmenus(".dropfilter");
+dropmenus(".dropmenu", false);
+dropmenus(".dropfilter", true);
 // filter functions for closing and resetting
 applyFilter("closeFilter", "resetFilter");
 applySort(".sort__item");
@@ -296,6 +307,6 @@ slider(".card-slider");
 slider(".product-slider");
 // Modal
 modal(".modal");
-// });
+
 //<------------------------ End Start Functions ------------------------>
 //<--------------------------------------------------------------------->
