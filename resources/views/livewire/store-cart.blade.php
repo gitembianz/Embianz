@@ -12,6 +12,33 @@
         <!----------------- End Basket Section ----------------->
         <!------------------------------------------------------>
     </section>
+    <!------------------------------------------------------>
+    <!--------------------- Hidden total ------------------->
+    @if (!$cartItems->isEmpty())
+        <section class="container">
+            <div class="details__hidden">
+                <div class="details__content">
+                    <div class="details__text">
+                        <h4>Total:</h4>
+                        <span>
+                            <?php
+                            $total = $cart->sum_amount + $delivery;
+                            ?>
+                            @if ($new_price)
+                                <span
+                                    style="text-decoration: line-through; color:red; margin-right:1rem">{{ $total }}{{ $currency }}</span>{{ $cart->final_amount }}{{ $currency }}
+                            @else
+                                {{ $total }} {{ $currency }}
+                            @endif
+                        </span>
+                    </div>
+                    <a class="details__button" wire:click="continue()">Continua</a>
+                </div>
+            </div>
+        </section>
+    @endif
+    <!------------------- End Hidden total ----------------->
+    <!------------------------------------------------------>
     <section>
         <div class="basket__container container">
             <!------------------------------------------------------>

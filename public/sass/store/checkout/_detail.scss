@@ -18,6 +18,22 @@
   }
 }
 
+.details__hidden {
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px;
+  background: #333;
+  border-radius: 7px;
+  display: none;
+
+  @media (max-width: map-get($grid-breakpoints, md)) {
+    display: flex;
+  }
+}
+
 .details__content {
   width: 100%;
   display: flex;
