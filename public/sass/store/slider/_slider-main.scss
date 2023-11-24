@@ -11,6 +11,13 @@
   text-align: left;
   gap: 15px;
 
+  @media (max-width: map-get($grid-breakpoints, md)) {
+    text-align: center;
+    align-items: center;
+    padding-left: 70px;
+    padding-right: 70px;
+  }
+
   &>h3 {
     font-size: 30px;
     font-weight: 600;

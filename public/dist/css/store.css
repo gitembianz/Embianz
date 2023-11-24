@@ -789,9 +789,6 @@ header.fixed {
   position: fixed;
   top: 0;
   width: 100%;
-  background: rgba(242, 242, 242, 0.5);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
 }
 
 .header__container {
@@ -3385,6 +3382,14 @@ header.fixed {
   justify-content: center;
   text-align: left;
   gap: 15px;
+}
+@media (max-width: 768px) {
+  .main-slider__text {
+    text-align: center;
+    align-items: center;
+    padding-left: 70px;
+    padding-right: 70px;
+  }
 }
 .main-slider__text > h3 {
   font-size: 30px;
