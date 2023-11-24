@@ -2,6 +2,22 @@
     <!-- Acesta este Store Products (Catalogol Magazinului), acesta
     are sistemul de filtre, card-uri, si stilul Catalogului -->
     <!---------------------------------------------------------->
+    <!------------------------Breadcrumbs----------------------->
+    <section>
+        <div class="breadcrumbs container">
+            <a class="breadcrumbs__link" href="#">
+                Acasa
+            </a>
+            <a class="breadcrumbs__link" href="#">
+                Magazin
+            </a>
+            <a class="breadcrumbs__link" href="#">
+                Categorii
+            </a>
+        </div>
+    </section>
+    <!----------------------End Breadcrumbs--------------------->
+    <!---------------------------------------------------------->
     <!-------------------If Category is appear------------------>
     @if ($category)
         <section>
@@ -126,8 +142,7 @@
                                     {{ $product->product_prices->first()->pricelist->currency->name }}
                                     {{ $price }}
                                 @else
-
-                                    {{ __('') }}
+                                    {{ __("") }}
                                 @endif
                             </p>
                         </div>

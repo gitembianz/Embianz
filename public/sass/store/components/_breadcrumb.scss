@@ -1,0 +1,33 @@
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.breadcrumbs__link {
+  font-size: 12px;
+  font-weight: 500;
+  color: #333;
+  text-decoration: underline;
+  text-decoration-color: #333;
+  text-underline-offset: 3px;
+  text-wrap: nowrap;
+  text-transform: capitalize;
+  position: relative;
+  padding-right: 10px;
+
+  &:hover {
+    color: darken($color: #333, $amount: 10%);
+  }
+
+
+  &:not(:last-child)::after {
+    content: "/";
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}

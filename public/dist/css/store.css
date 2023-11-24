@@ -526,6 +526,37 @@ section {
   }
 }
 
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.breadcrumbs__link {
+  font-size: 12px;
+  font-weight: 500;
+  color: #333;
+  text-decoration: underline;
+  text-decoration-color: #333;
+  text-underline-offset: 3px;
+  text-wrap: nowrap;
+  text-transform: capitalize;
+  position: relative;
+  padding-right: 10px;
+}
+.breadcrumbs__link:hover {
+  color: #1a1a1a;
+}
+.breadcrumbs__link:not(:last-child)::after {
+  content: "/";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
 .modal {
   position: fixed;
   display: flex;
@@ -3866,4 +3897,4 @@ header.fixed {
   color: #cccccc;
   font-size: 14px;
   text-align: center;
-}
+}/*# sourceMappingURL=store.css.map */
