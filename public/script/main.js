@@ -5,33 +5,30 @@ function scrollEvent() {
   let banner = document.querySelector(".banner");
   let main = document.querySelector("main");
 
-  function updateStyles() {
+  if (header && banner && main) {
     main.style.paddingTop = header.clientHeight + "px";
     header.style.top = banner.clientHeight + "px";
-  }
-
-  if (header && banner && main) {
-    // Apel initial pentru a seta valorile la început
-    updateStyles();
+    main.style.paddingTop = header.clientHeight + banner.clientHeight + "px";
 
     document.addEventListener("scroll", function () {
       if (window.scrollY > banner.clientHeight) {
         header.style.top = "0";
-        banner.style.top = "-100%";
+        banner.style.visibility = "hidden";
       } else {
         header.style.top = banner.clientHeight + "px";
-        banner.style.top = "0";
+        banner.style.visibility = "visible";
       }
     });
 
     window.addEventListener("resize", function () {
-      // Actualizează stilurile atunci când se schimbă dimensiunea ecranului
-      updateStyles();
+      main.style.paddingTop = header.clientHeight + banner.clientHeight + "px";
     });
   } else {
     return;
   }
 }
+
+scrollEvent();
 
 //<-------------------------- End ScrollEvent -------------------------->
 //<--------------------------------------------------------------------->
