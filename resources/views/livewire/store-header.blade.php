@@ -139,12 +139,21 @@
                                         {{-- <img src="/images/store/background-bottle-min2.webp" alt="imaginea produsului"> --}}
                                         <div class="search__link--text">
                                             <div class="search__link--top">
-                                                <p>Product Category</p>
-                                                <span>300ml</span>
+                                                <p>{{ $product->short_description }}</p>
                                             </div>
                                             <div class="search__link--bottom">
                                                 <h4>{{ $product->name }}</h4>
-                                                <span>$99</span>
+                                                <span>
+                                                     @php
+                                            $price = $product->product_prices->first();
+                                            $currency = $price->pricelist->currency->name;
+                                        @endphp
+                                        @if ($price)
+                                            {{ $price->value }} {{ $currency }}
+                                        @else
+                                            indisponibil
+                                        @endif
+                                                </span>
                                             </div>
                                         </div>
                                     </a>
@@ -172,12 +181,10 @@
                                         @endif
                                         <div class="search__link--text">
                                             <div class="search__link--top">
-                                                <p>Product Category</p>
-                                                <span>300ml</span>
+                                                <p>{{ $category->short_description }}</p>
                                             </div>
                                             <div class="search__link--bottom">
                                                 <h4>{{ $category->name }}</h4>
-                                                <span>$99</span>
                                             </div>
                                         </div>
                                     </a>
