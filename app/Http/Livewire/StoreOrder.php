@@ -289,6 +289,11 @@ class StoreOrder extends Component
       ]);
       if ($cartitems) {
         $order = Order::where('cart_id', $this->cart->id)->first();
+        $orderNumber = 'NRN' . now()->format('Ymd') . str_pad($order->id, 3, '0', STR_PAD_LEFT);
+
+        // Update the order with the generated order number
+        $order->order_number = $orderNumber;
+        $order->save();
         foreach ($cartitems as $item) {
           $item->product->quantity -= $item->quantity;
           $item->product->save();

@@ -1,4 +1,15 @@
 <div>
+     <section>
+        <div class="breadcrumbs container">
+            <a class="breadcrumbs__link" href="{{ url("/") }}">
+                Acasa
+            </a>
+            <a class="breadcrumbs__link" href="{{ url("/storeproducts") }}">
+                Produse
+            </a>
+                <a class="breadcrumbs__link">{{ $product->name }}</a>
+        </div>
+    </section>
     <section class="product container">
         <!-------------------- Slider Product ------------------>
         <div class="product-slider">
@@ -64,7 +75,7 @@
             @if ($product->product_prices->first() !== null)
                 <div class="quantity">
                     <span>Quantity</span>
-                    <input class="quantity__input" type="number" name="count" id="count" wire:model="quantity">
+                    <input class="quantity__input" type="number" name="count" id="count" wire:model="quantity" readonly>
                     <div class="quantity__buttons">
                         <button class="quantity__arrow" wire:click="incrementCounter">
                             <svg>

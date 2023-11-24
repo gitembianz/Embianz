@@ -1,4 +1,5 @@
 <div>
+    <x-store-alert />
     <!-- This is the Header;
     the <header> tag encompasses the Logo and component-calling buttons located below,
     such as the Searchbar, Shopping Basket, WishList, and Burger Menu. The styles for
@@ -139,12 +140,21 @@
                                         {{-- <img src="/images/store/background-bottle-min2.webp" alt="imaginea produsului"> --}}
                                         <div class="search__link--text">
                                             <div class="search__link--top">
-                                                <p>Product Category</p>
-                                                <span>300ml</span>
+                                                <p>{{ $product->short_description }}</p>
                                             </div>
                                             <div class="search__link--bottom">
                                                 <h4>{{ $product->name }}</h4>
-                                                <span>$99</span>
+                                                <span>
+                                                     @php
+                                            $price = $product->product_prices->first();
+                                            $currency = $price->pricelist->currency->name;
+                                        @endphp
+                                        @if ($price)
+                                            {{ $price->value }} {{ $currency }}
+                                        @else
+                                            indisponibil
+                                        @endif
+                                                </span>
                                             </div>
                                         </div>
                                     </a>
@@ -172,12 +182,10 @@
                                         @endif
                                         <div class="search__link--text">
                                             <div class="search__link--top">
-                                                <p>Product Category</p>
-                                                <span>300ml</span>
+                                                <p>{{ $category->short_description }}</p>
                                             </div>
                                             <div class="search__link--bottom">
                                                 <h4>{{ $category->name }}</h4>
-                                                <span>$99</span>
                                             </div>
                                         </div>
                                     </a>
@@ -210,7 +218,7 @@
 
             <ul class="leftbar__list">
                 @if ($cartItems->isEmpty())
-                    <span class="leftbar__empty">Cusol de cumparaturi este gol</span>
+                    <span class="leftbar__empty">Cosul de cumparaturi este gol</span>
                 @else
                     <?php $total = 0; ?>
                     @foreach ($cartItems as $cartItem)
@@ -268,7 +276,7 @@
             @if (!$cartItems->isEmpty())
                 <div class="leftbar__total">
                     <h5 class="leftbar__total--text">Total: <span>{{ $total }} {{ $currency }}</span></h5>
-                    <a class="leftbar__button" href="#">Finalizare Comanda</a>
+                    <a class="leftbar__button" wire:click.prevent="continue">Finalizare Comanda</a>
                 </div>
             @endif
         </div>
