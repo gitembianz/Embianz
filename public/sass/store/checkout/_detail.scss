@@ -15,6 +15,27 @@
   @media (max-width: map-get($grid-breakpoints, md)) {
     max-height: unset;
     min-height: unset;
+
+    &.sticky {
+      position: sticky;
+      bottom: 20px;
+
+      @media (max-width: map-get($grid-breakpoints, sm)) {
+        width: calc(100% + 40px);
+        margin-left: -20px;
+        padding: 10px 20px 30px;
+        bottom: 0;
+        border-radius: 0;
+      }
+
+      &>.details__content:first-child {
+        display: none;
+      }
+
+      &>.details__content>.voucher {
+        display: none;
+      }
+    }
   }
 }
 

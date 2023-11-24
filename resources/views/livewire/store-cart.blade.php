@@ -14,7 +14,7 @@
     </section>
     <!------------------------------------------------------>
     <!--------------------- Hidden total ------------------->
-    @if (!$cartItems->isEmpty())
+    {{-- @if (!$cartItems->isEmpty())
         <section class="container">
             <div class="details__hidden">
                 <div class="details__content">
@@ -36,7 +36,7 @@
                 </div>
             </div>
         </section>
-    @endif
+    @endif --}}
     <!------------------- End Hidden total ----------------->
     <!------------------------------------------------------>
     <section>
@@ -75,7 +75,8 @@
                                             pret indisponibil
                                         @endif
                                     </span>
-                                    <a href="/product/{{ $cartItem->product->id }}" class="basket__title">{{ $cartItem->product->name }}</a>
+                                    <a href="/product/{{ $cartItem->product->id }}"
+                                        class="basket__title">{{ $cartItem->product->name }}</a>
                                 </div>
                                 <button class="basket__delete"
                                     wire:click="removeFromCart({{ $cartItem->product->id }})">
