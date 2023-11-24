@@ -198,7 +198,7 @@
         <button class="leftbar__hidden--close" wire:click="$set('showcart', false)"></button>
         <div class="leftbar__content" id="basketContent">
             <div class="leftbar__top">
-                <a class="leftbar__button" href="/cart">Shopping Basket</a>
+                <a class="leftbar__button" href="/cart">Vizualizare cos</a>
                 <button class="leftbar__close" id="basketClose" wire:click="$set('showcart', false)">
                     <svg>
                         <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -210,9 +210,9 @@
 
             <ul class="leftbar__list">
                 @if ($cartItems->isEmpty())
-                    <span class="leftbar__empty">Shopping Basket empty</span>
+                    <span class="leftbar__empty">Cusol de cumparaturi este gol</span>
                 @else
-                <?php $total = 0; ?>
+                    <?php $total = 0; ?>
                     @foreach ($cartItems as $cartItem)
                         <li class="leftbar__item">
                             <a class="leftbar__link" href="/product/{{ $cartItem->product->id }}">
@@ -260,16 +260,16 @@
                                 </svg>
                             </button>
                         </li>
-                        <?php $total  += ($cartItem->price * $cartItem->quantity) ?>
+                        <?php $total += $cartItem->price * $cartItem->quantity; ?>
                     @endforeach
                 @endif
             </ul>
 
             @if (!$cartItems->isEmpty())
-            <div class="leftbar__total">
-                <h5 class="leftbar__total--text">Total: <span>{{ $total }} {{ $currency }}</span></h5>
-                <a class="leftbar__button" href="#">Continue Shopping</a>
-            </div>
+                <div class="leftbar__total">
+                    <h5 class="leftbar__total--text">Total: <span>{{ $total }} {{ $currency }}</span></h5>
+                    <a class="leftbar__button" href="#">Finalizare Comanda</a>
+                </div>
             @endif
         </div>
     </div>
@@ -280,7 +280,7 @@
         <button class="leftbar__hidden--close" wire:click="$set('showwis', false)"></button>
         <div class="leftbar__content" id="wishContent">
             <div class="leftbar__top">
-                <a class="leftbar__button" href="/wislist">WishList Open</a>
+                <a class="leftbar__button" href="/wislist">Vizualizare favorite</a>
                 <button class="leftbar__close" wire:click="$set('showwis', false)" id="wishClose" href="#">
                     <svg>
                         <line x1="18" y1="6" x2="6" y2="18"></line>
