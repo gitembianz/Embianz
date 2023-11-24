@@ -4,17 +4,9 @@ header {
   height: 60px;
   z-index: 300;
   background: $backgroundColor;
-  transition: all .3s ease-in-out;
-
-  &.fixed {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    // Glassmorphism Effect
-    background: rgba($backgroundColor, .5);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(10px);
-  }
+  transition: all .1s ease-in-out;
+  position: fixed;
+  top: 0;
 }
 
 .header__container {

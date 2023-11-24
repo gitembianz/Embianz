@@ -3,6 +3,9 @@
   width: 100%;
   padding: 5px 0;
   background: $bannerBackgroundColor;
+  transition: all .1s ease-in-out;
+  position: fixed;
+  top: 0;
 }
 
 .banner__container {

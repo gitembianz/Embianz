@@ -1,46 +1,82 @@
 //<--------------------------------------------------------------------->
 //<---------------------------- ScrollEvent ---------------------------->
 function scrollEvent() {
-  var header = document.querySelector("header");
+  let header = document.querySelector("header");
+  let banner = document.querySelector(".banner");
+  let main = document.querySelector("main");
+  let body = document.body;
 
-  if (header) {
+  function updateStyles() {
+    main.style.paddingTop = header.clientHeight + banner.clientHeight + "px";
+    header.style.top = banner.clientHeight + "px";
+  }
+
+  function handleOverflowChange() {
+    if (body.style.overflow === "hidden") {
+      main.style.paddingTop = header.clientHeight + "px";
+    }
+  }
+
+  if (header && banner && main) {
+    updateStyles();
+
     document.addEventListener("scroll", function () {
-      if (typeof header !== "undefined" && header !== null) {
-        if (window.scrollY > header.clientHeight) {
-          header.classList.add("fixed");
-        } else {
-          header.classList.remove("fixed");
-        }
+      if (window.scrollY > banner.clientHeight) {
+        header.style.top = "0";
+        banner.style.visibility = "hidden";
+      } else {
+        header.style.top = banner.clientHeight + "px";
+        banner.style.visibility = "visible";
       }
     });
+
+    window.addEventListener("resize", function () {
+      // Actualizează stilurile atunci când se schimbă dimensiunea ecranului
+      updateStyles();
+    });
+
+    // Monitorizează schimbările la proprietatea overflow
+    const observer = new MutationObserver(handleOverflowChange);
+    observer.observe(body, { attributes: true, attributeFilter: ["style"] });
   } else {
-    console.error("Variabila 'header' nu există.");
+    return;
   }
 }
 //<-------------------------- End ScrollEvent -------------------------->
 //<--------------------------------------------------------------------->
 //<------------------------ DropMenu on leftbar ------------------------>
-function dropmenus(iddropmenus) {
-  var dropmenus = document.querySelectorAll(iddropmenus);
+function dropmenus(iddropmenus, initiallyActive) {
+  let dropmenus = document.querySelectorAll(iddropmenus);
 
-  // Verifică dacă există cel puțin un element .dropmenu
   if (dropmenus.length === 0) {
-    console.warn("Nu există elemente .dropmenu.");
     return;
   }
 
   dropmenus.forEach(function (dropmenu) {
-    // Găsește elementele relevante în cadrul fiecărui dropmenu
-    var button = dropmenu.querySelector(`.${dropmenu.className}__open`);
-    var list = dropmenu.querySelector(`.${dropmenu.className}__list`);
+    let button = dropmenu.querySelector(`.${dropmenu.className}__open`);
+    let list = dropmenu.querySelector(`.${dropmenu.className}__list`);
+
+    // Adaugă clasa "active" sau "non-active" în funcție de parametrul initiallyActive
+    if (initiallyActive) {
+      list.classList.add("active");
+      dropmenu.classList.add("active");
+    } else {
+      list.classList.remove("active");
+      dropmenu.classList.remove("active");
+    }
+
+    // Adaugă variabila isButtonActive și inițializeaz-o cu initiallyActive
+    let isButtonActive = initiallyActive;
 
     // Adaugă evenimentul de click la buton
     button.addEventListener("click", function () {
-      list.classList.toggle("active");
-      dropmenu.classList.toggle("active");
+      list.classList.toggle("active", isButtonActive);
+      dropmenu.classList.toggle("active", isButtonActive);
+      isButtonActive = !isButtonActive; // Inversează valoarea variabilei la fiecare click
     });
   });
 }
+
 //<---------------------- End DropMenu on leftbar ---------------------->
 //<--------------------------------------------------------------------->
 //<------------------------------ LeftBar ------------------------------>
@@ -52,7 +88,7 @@ function leftbar(idOpen, idClose, idList, idContent) {
   const body = document.querySelector("body");
 
   if (!buttonOpen || !buttonClose || !list || !content) {
-    console.log("leftbar error");
+    // console.log("leftbar error");
     return;
   } else {
     buttonOpen.addEventListener("click", () => {
@@ -83,7 +119,7 @@ function applyFilter(Close, Reset) {
   const body = document.querySelector("body");
 
   if (!buttonClose || !buttonReset) {
-    console.log("leftbar error");
+    // console.log("leftbar error");
     return;
   } else {
     buttonClose.addEventListener("click", () => {
@@ -102,7 +138,7 @@ function applySort(selector) {
   const body = document.querySelector("body");
 
   if (!items) {
-    console.log("leftbar error");
+    // console.log("leftbar error");
     return;
   } else {
     items.forEach(function (item) {
@@ -249,34 +285,63 @@ function slider(sliderID) {
 //<------------------------------- Modal ------------------------------->
 function modal(modalID) {
   const modal = document.querySelector(modalID);
-  const content = modal.querySelector(modalID + "__content");
-  const close = modal.querySelector(modalID + "__close");
+  const body = document.querySelector("body");
 
-  if (!modal && !content && !close) {
-    console.warn("Nu exista nici un modal pe aceasta pagina");
+  if (!modal) {
+    // console.warn("Nu exista nici un modal pe aceasta pagina");
     return;
   } else {
+    const content = modal.querySelector(modalID + "__content");
+    const close = modal.querySelector(modalID + "__close");
+
     close.addEventListener("click", () => {
       modal.classList.remove("active");
+      body.style.overflow = "auto";
     });
 
     window.addEventListener("alert__modal", (event) => {
       modal.classList.add("active");
+      body.style.overflow = "hidden";
     });
 
     window.addEventListener("click", (event) => {
       if (event.target === modal) {
         modal.classList.remove("active");
+        body.style.overflow = "auto";
       }
     });
   }
 }
 //<----------------------------- End Modal ----------------------------->
 //<--------------------------------------------------------------------->
-//<-------------------------- Start Functions -------------------------->
+//<------------------------ Start Functions IOS ------------------------>
+searchBar();
+scrollEvent();
+// leftbar functions for basket, wish, menu, filter and sort
+leftbar("basketOpen", "basketClose", "basketList", "basketContent");
+leftbar("wishOpen", "wishClose", "wishList", "wishContent");
+leftbar("menuOpen", "menuClose", "menuList", "menuContent");
+leftbar("filterOpen", "filterClose", "filterList", "filterContent");
+leftbar("sortOpen", "sortClose", "sortList", "sortContent");
+// dropdown functions for menu and filter
+dropmenus(".dropmenu", false);
+dropmenus(".dropfilter", true);
+// filter functions for closing and resetting
+applyFilter("closeFilter", "resetFilter");
+applySort(".sort__item");
+// Sliders
+slider(".main-slider");
+slider(".card-slider");
+slider(".product-slider");
+// Modal
+modal(".modal");
+//<---------------------- End Start Functions IOS ---------------------->
+//<--------------------------------------------------------------------->
+//<------------------------- Start Functions PC ------------------------>
+
 document.addEventListener("DOMContentLoaded", function () {
-  scrollEvent();
   searchBar();
+  scrollEvent();
   // leftbar functions for basket, wish, menu, filter and sort
   leftbar("basketOpen", "basketClose", "basketList", "basketContent");
   leftbar("wishOpen", "wishClose", "wishList", "wishContent");
@@ -284,8 +349,8 @@ document.addEventListener("DOMContentLoaded", function () {
   leftbar("filterOpen", "filterClose", "filterList", "filterContent");
   leftbar("sortOpen", "sortClose", "sortList", "sortContent");
   // dropdown functions for menu and filter
-  dropmenus(".dropmenu");
-  dropmenus(".dropfilter");
+  dropmenus(".dropmenu", false);
+  dropmenus(".dropfilter", true);
   // filter functions for closing and resetting
   applyFilter("closeFilter", "resetFilter");
   applySort(".sort__item");
@@ -294,9 +359,7 @@ document.addEventListener("DOMContentLoaded", function () {
   slider(".card-slider");
   slider(".product-slider");
   // Modal
-
   modal(".modal");
 });
-//<------------------------ End Start Functions ------------------------>
+//<----------------------- End Start Functions PC ---------------------->
 //<--------------------------------------------------------------------->
-
