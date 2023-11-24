@@ -770,6 +770,8 @@ section {
   padding: 5px 0;
   background: #333;
   transition: all 0.1s ease-in-out;
+  position: fixed;
+  top: 0;
 }
 
 .banner__container {

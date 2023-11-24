@@ -17,8 +17,10 @@ function scrollEvent() {
     document.addEventListener("scroll", function () {
       if (window.scrollY > banner.clientHeight) {
         header.style.top = "0";
+        banner.style.top = "-100%";
       } else {
         header.style.top = banner.clientHeight + "px";
+        banner.style.top = "0";
       }
     });
 
@@ -30,6 +32,7 @@ function scrollEvent() {
     return;
   }
 }
+
 //<-------------------------- End ScrollEvent -------------------------->
 //<--------------------------------------------------------------------->
 //<------------------------ DropMenu on leftbar ------------------------>
