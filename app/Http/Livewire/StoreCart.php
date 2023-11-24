@@ -95,6 +95,10 @@ class StoreCart extends Component
       $this->emit('cartUpdated');
     }
   }
+  public function test()
+  {
+    $this->dispatchBrowserEvent('alert__modal');
+  }
   public function decrement($productId)
   {
     $product = Product::find($productId);

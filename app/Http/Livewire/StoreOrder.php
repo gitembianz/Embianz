@@ -144,7 +144,7 @@ class StoreOrder extends Component
       foreach ($cartitems as $item) {
         if ($item->quantity > $item->product->quantity) {
           $this->validatequantity = false;
-          $this->dispatchBrowserEvent('alert-modal');
+          $this->dispatchBrowserEvent('alert__modal');
           return;
         } else {
           $this->validatequantity = true;

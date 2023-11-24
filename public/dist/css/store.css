@@ -268,6 +268,7 @@ svg {
   stroke-width: 2px;
   stroke-linecap: round;
   stroke-linejoin: round;
+  pointer-events: none;
 }
 
 button,
@@ -3865,4 +3866,4 @@ header.fixed {
   color: #cccccc;
   font-size: 14px;
   text-align: center;
-}/*# sourceMappingURL=store.css.map */
+}

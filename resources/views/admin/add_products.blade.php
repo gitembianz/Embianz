@@ -80,9 +80,9 @@
                 <label>Short Description</label>
             </div>
 
-            <div>
-                <textarea name="long_description" id="editor">{{ old('long_description') }}</textarea>
+            <div class="item__form-textarea">
                 <label>Long Description</label>
+                <textarea name="long_description" id="editor">{{ old('long_description') }}</textarea>
             </div>
             <div class="item__form-input item__form-long">
                 <input type="text" name="seo_title" ue="{{ old('seo_title') }}">
