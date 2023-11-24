@@ -61,8 +61,8 @@
             <div class="section__header container">
                 <h2 class="section__title">Descoperă produsele noastre populare!</h2>
                 <p class="section__text">Explorează colecția noastră de produse apreciate de clienți și găsește
-                    accesoriile
-                    perfecte pentru a-ți completa stilul.<br> Vezi <a href="{{ url("/storeproducts") }}">produsele</a>!</p>
+                    accesoriile perfecte pentru a-ți completa stilul.
+                    <br><a href="{{ url("/storeproducts") }}">Vezi produsele!</a></p>
             </div>
         </section>
         <!----------------- End Section Description ---------------->
