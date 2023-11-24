@@ -158,6 +158,6 @@ class StoreHeader extends Component
   }
   public function getCatsQueryProperty()
   {
-    return Category::name($this->search)->where('active', true)->with('media');
+    return Category::name($this->search)->where('active', true)->where('store_tab', true)->with('media');
   }
 }
