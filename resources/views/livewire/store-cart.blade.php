@@ -106,56 +106,60 @@
             <!------------------- Basket Continue ------------------>
             @if (!$cartItems->isEmpty())
                 <div class="details">
-                    <h2 class="details__title">Detalii comanda</h2>
-                    <div class="details__text">
-                        <h4>Produse:</h4>
-                        <span> {{ $cart->sum_amount }}
-                            {{ $currency }}</span>
+                    <div class="details__content">
+                        <h2 class="details__title">Detalii comanda</h2>
+                        <div class="details__text">
+                            <h4>Produse:</h4>
+                            <span> {{ $cart->sum_amount }}
+                                {{ $currency }}</span>
+                        </div>
+                        <div class="details__text">
+                            <h4>Livrare:</h4>
+                            <span>
+                                @if ($delivery == 0)
+                                    Gratuit
+                                @else
+                                    {{ $delivery }} {{ $currency }}
+                                @endif
+                            </span>
+                        </div>
                     </div>
-                    <div class="details__text">
-                        <h4>Livrare:</h4>
-                        <span>
-                            @if ($delivery == 0)
-                                Gratuit
-                            @else
-                                {{ $delivery }} {{ $currency }}
-                            @endif
-                        </span>
-                    </div>
-                    <div class="details__text">
-                        <h4>Total:</h4>
-                        <span>
-                            <?php
-                            $total = $cart->sum_amount + $delivery;
-                            ?>
-                            @if ($new_price)
-                                <span
-                                    style="text-decoration: line-through; color:red; margin-right:1rem">{{ $total }}{{ $currency }}</span>{{ $cart->final_amount }}{{ $currency }}
-                            @else
-                                {{ $total }} {{ $currency }}
-                            @endif
-                        </span>
-                    </div>
-                    @if ($new_price)
-                        <form wire:submit.prevent="checkvoucher" class="voucher">
-                            <input type="text" value="{{ $voucher }}" readonly>
-                        </form>
-                        @if ($message)
-                            <p class="voucher__error">{{ $message }}</p>
-                        @endif
-                    @else
-                        <form class="voucher" wire:submit.prevent="checkvoucher">
-                            <input type="text" wire:model="voucher" name="voucher"
-                                placeholder="Ai un voucher sau card cadou?">
-                            <button type="submit">
-                                Aplica
-                            </button>
+                    <div class="details__content">
+                        <div class="details__text">
+                            <h4>Total:</h4>
+                            <span>
+                                <?php
+                                $total = $cart->sum_amount + $delivery;
+                                ?>
+                                @if ($new_price)
+                                    <span
+                                        style="text-decoration: line-through; color:red; margin-right:1rem">{{ $total }}{{ $currency }}</span>{{ $cart->final_amount }}{{ $currency }}
+                                @else
+                                    {{ $total }} {{ $currency }}
+                                @endif
+                            </span>
+                        </div>
+                        @if ($new_price)
+                            <form wire:submit.prevent="checkvoucher" class="voucher">
+                                <input type="text" value="{{ $voucher }}" readonly>
+                            </form>
                             @if ($message)
-                                <p style="color: red; position :absolute; top:40px">{{ $message }}</p>
+                                <p class="voucher__error">{{ $message }}</p>
                             @endif
-                        </form>
-                    @endif
-                    <a class="details__button" wire:click="continue()">Continua</a>
+                        @else
+                            <form class="voucher" wire:submit.prevent="checkvoucher">
+                                <input type="text" wire:model="voucher" name="voucher"
+                                    placeholder="Ai un voucher sau card cadou?">
+                                <button type="submit">
+                                    Aplica
+                                </button>
+                                @if ($message)
+                                    <p style="color: red; position :absolute; top:40px">{{ $message }}</p>
+                                @endif
+                            </form>
+                        @endif
+                        <a class="details__button" wire:click="continue()">Continua</a>
+                    </div>
 
                 </div>
             @endif

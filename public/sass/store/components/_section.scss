@@ -46,6 +46,15 @@ section {
     font-size: 12px;
     width: 90%;
   }
+
+  &>a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    font-weight: 500;
+    font-size: 15px;
+    color: #333;
+    line-height: 150%;
+  }
 }
 
 //<-------------------------- End Section -------------------------->
