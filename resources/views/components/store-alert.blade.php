@@ -1,7 +1,7 @@
 <div class="modal">
     <div class="modal__content">
         <h3>
-            Ceva nu a mers bine, va rog verificati produsele si reincercati!
+            Ceva nu a mers bine, va rog verificati cantitatea produselor si reincercati!
         </h3>
         <button class="modal__close">
             <svg>

@@ -44,7 +44,7 @@
                                         price unavailable
                                     @endif
                                 </span>
-                                <h2 class="basket__title">{{ $product->name }}</h2>
+                                    <a href="/product/{{ $product->id }}" class="basket__title">{{ $product->name }}</a>
                             </div>
                             <button class="basket__delete" wire:click="removeFromWishlist({{ $product->id }})">
                                 <svg>
@@ -54,19 +54,19 @@
                                     </path>
                                 </svg>
                             </button>
-                            <button class="basket__delete">
+                            {{-- <button class="basket__delete">
                                 <svg>
                                     <line x1="12" y1="5" x2="12" y2="19"></line>
                                     <line x1="5" y1="12" x2="19" y2="12"></line>
                                 </svg>
-                            </button>
+                            </button> --}}
                         </div>
                         <button class="basket__delete--hidden" wire:click="removeFromWishlist({{ $product->id }})">
                             Remove from Wishlist
                         </button>
-                        <button class="basket__delete--hidden">
+                        {{-- <button class="basket__delete--hidden">
                             Add to Cart
-                        </button>
+                        </button> --}}
                     </div>
                 @endforeach
             @endif
