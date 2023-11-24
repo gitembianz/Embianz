@@ -186,12 +186,12 @@
                     @endif
                     @if ($editproduct === null)
                         <div class="item__form-input-close item__form-textarea">
-                            <div>{{ $product->long_description }}</div>
+                            <div>{!! $product->long_description !!}</div>
                             <label>Long Description</label>
                         </div>
                     @else
-                        <div class="item__form-input item__form-textarea">
-                            <textarea wire:model.defer="prod.long_description" required></textarea>
+                        <div>
+                            <textarea id="editor" wire:model="prod.long_description" required></textarea>
                             <label>Long Description</label>
                         </div>
                     @endif
@@ -238,4 +238,13 @@
             </div>
         </div>
     </div>
+    @section('scripts')
+<script>
+    ClassicEditor
+        .create( document.querySelector( '#editor' ) )
+        .catch( error => {
+            console.error( error );
+        } );
+</script>
+@endsection
 </div>

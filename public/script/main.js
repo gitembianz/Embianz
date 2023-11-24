@@ -293,6 +293,7 @@ document.addEventListener("DOMContentLoaded", function () {
   slider(".card-slider");
   slider(".product-slider");
   // Modal
+
   modal(".modal");
 });
 //<------------------------ End Start Functions ------------------------>
