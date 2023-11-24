@@ -83,7 +83,7 @@
   //store routes
   route::get('/home', [StoreController::class, 'index'])->name('home');
   route::get('/cart', [StoreController::class, 'cart'])->name('cart');
-  route::get('/wislist', [StoreController::class, 'wislist'])->name('wislist');
+  route::get('/wishlist', [StoreController::class, 'wislist'])->name('wislist');
   route::get('/complete', [StoreController::class, 'complete'])->name('complete');
   route::get('/order', [StoreController::class, 'order'])->name('order');
   route::get('/product/{id}/', [StoreController::class, 'show'])->name('product');

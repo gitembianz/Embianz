@@ -833,9 +833,9 @@
                                             <img class="cart__list--img" src="/images/store/default/default.svg"
                                                 alt="something wrong">
                                         @endif
-                                        <h2 class="total__name">{{ $cartItem->product->name }}</h2>
+                                        <a href="/product/{{ $cartItem->product->id }}" target="_blank" class="total__name">{{ $cartItem->product->name }}</a>
                                         <span class="total__price">
-                                            {{ $cartItem->quantity }} x {{ $cartItem->product->price }} =
+                                            {{ $cartItem->quantity }} x {{ $cartItem->product->price }} 
                                             <?php $currency = $cartItem->product->product_prices->first()->pricelist->currency->name; ?>
                                             {{ $cartItem->quantity * $cartItem->price }} {{ $currency }}
                                         </span>
@@ -875,10 +875,10 @@
                                         <span style="text-decoration: line-through; color:red;">
                                             {{ $total }}{{ $currency }}
                                         </span>
-                                        {{ $cart->final_amount }}{{ $currency }}
+                                        {{ $cart->final_amount }} {{ $currency }}
                                         </span>
                                     @else
-                                        <span>{{ $cart->final_amount }}{{ $currency }}</span>
+                                        <span>{{ $cart->final_amount }} {{ $currency }}</span>
                                     @endif
                                 </div>
                             @endif
