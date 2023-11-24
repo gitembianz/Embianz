@@ -35,7 +35,10 @@
             <!------------------ Product (Details) ----------------->
             <div class="product__text">
                 <div>
+                    @if ($product->product_categories->first())
+                        
                     <span class="product__subtitle">{{ $product->product_categories->first()->category->name }}</span>
+                    @endif
                     <h1 class="product__title">{{ $product->name }}</h1>
                 </div>
                 <button class="product__wishlist @if ($product->wishlists->where("session_id", $session_id)->isNotEmpty()) active @endif"
@@ -97,7 +100,7 @@
                         wire:click="switchTab(1)">Details</button>
                 </div>
                 <div class="tab__content @if ($activeTab === 0) active @endif">
-                    <p class="tab__info">{{ $product->long_description }}</p>
+                    <p class="tab__info">{!! $product->long_description !!}</p>
                 </div>
                 <div class="tab__content @if ($activeTab === 1) active @endif">
                     <table class="tab__table">
