@@ -5,28 +5,24 @@
     <!------------------------Breadcrumbs----------------------->
     <section>
         <div class="breadcrumbs container">
-            <a class="breadcrumbs__link" href="#">
+            <a class="breadcrumbs__link" href="{{ url("/") }}">
                 Acasa
             </a>
-            <a class="breadcrumbs__link" href="#">
-                Magazin
+            <a class="breadcrumbs__link" href="{{ url("/storeproducts") }}">
+                Produse
             </a>
-            <a class="breadcrumbs__link" href="#">
-                Categorii
-            </a>
+             <!-------------------If Category is appear------------------>
+    @if ($category)
+                <a class="breadcrumbs__link">{{ $categoryname }}</a>
+  
+    @endif
+    <!-----------------End If Category is appear---------------->
+            
         </div>
     </section>
     <!----------------------End Breadcrumbs--------------------->
     <!---------------------------------------------------------->
-    <!-------------------If Category is appear------------------>
-    @if ($category)
-        <section>
-            <div class="section__header container">
-                <h2 class="section__title">Categorie: {{ $categoryname }}</h2>
-            </div>
-        </section>
-    @endif
-    <!-----------------End If Category is appear---------------->
+   
     <!---------------------------------------------------------->
     <!---------------------------Filter------------------------->
     <section class="controls container">
