@@ -4,11 +4,21 @@ function scrollEvent() {
   let header = document.querySelector("header");
   let banner = document.querySelector(".banner");
   let main = document.querySelector("main");
+  let body = document.body;
+
+  function updateStyles() {
+    main.style.paddingTop = header.clientHeight + banner.clientHeight + "px";
+    header.style.top = banner.clientHeight + "px";
+  }
+
+  function handleOverflowChange() {
+    if (body.style.overflow === "hidden") {
+      main.style.paddingTop = header.clientHeight + "px";
+    }
+  }
 
   if (header && banner && main) {
-    main.style.paddingTop = header.clientHeight + "px";
-    header.style.top = banner.clientHeight + "px";
-    main.style.paddingTop = header.clientHeight + banner.clientHeight + "px";
+    updateStyles();
 
     document.addEventListener("scroll", function () {
       if (window.scrollY > banner.clientHeight) {
@@ -21,15 +31,17 @@ function scrollEvent() {
     });
 
     window.addEventListener("resize", function () {
-      main.style.paddingTop = header.clientHeight + banner.clientHeight + "px";
+      // Actualizează stilurile atunci când se schimbă dimensiunea ecranului
+      updateStyles();
     });
+
+    // Monitorizează schimbările la proprietatea overflow
+    const observer = new MutationObserver(handleOverflowChange);
+    observer.observe(body, { attributes: true, attributeFilter: ["style"] });
   } else {
     return;
   }
 }
-
-scrollEvent();
-
 //<-------------------------- End ScrollEvent -------------------------->
 //<--------------------------------------------------------------------->
 //<------------------------ DropMenu on leftbar ------------------------>
