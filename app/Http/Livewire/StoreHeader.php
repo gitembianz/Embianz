@@ -139,8 +139,16 @@ class StoreHeader extends Component
   }
   public function getCategoriesProperty()
   {
-    return $this->categoriesQuery->limit($this->limit)->get();
+    // Retrieve the limit from the settings table
+    $limitSetting = Store_Settings::where('parameter', 'limit_category')->first();
+
+    // Check if the setting exists and has a valid numeric value
+    $limit = $limitSetting && is_numeric($limitSetting->value) ? $limitSetting->value : 5;
+
+    // Use the retrieved limit in the query
+    return $this->categoriesQuery->limit($limit)->get();
   }
+
   public function getCategoriesQueryProperty()
   {
     return Category::where('active', true)->where('store_tab', '1')->with('subcategory');
