@@ -119,7 +119,7 @@
                                                 @endif
                                             </p>
                                         </div>
-                                        @if ($price && $product->quantity != 0)
+                                        @if ($product->product_prices->first() && $product->quantity != 0)
                            <a class="card-button" wire:click="addToCart({{ $product->id }})">Adauga in
                                             coș</a>
                         @endif
