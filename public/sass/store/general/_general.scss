@@ -34,8 +34,14 @@ svg {
 button,
 a,
 label,
-input {
+input[type="submit"] {
   cursor: pointer;
+}
+
+label {
+  -webkit-appearance: button;
+  -moz-appearance: button;
+  appearance: button;
 }
 
 main {
