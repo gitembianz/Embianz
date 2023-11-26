@@ -144,6 +144,7 @@
                                             </div>
                                             <div class="search__link--bottom">
                                                 <h4>{{ $product->name }}</h4>
+                                                @if ($product->product_prices->first())
                                                 <span>
                                                     @php
                                                         $price = $product->product_prices->first();
@@ -151,10 +152,9 @@
                                                     @endphp
                                                     @if ($price)
                                                         {{ $price->value }} {{ $currency }}
-                                                    @else
-                                                        indisponibil
                                                     @endif
                                                 </span>
+                                                @endif
                                             </div>
                                         </div>
                                     </a>
