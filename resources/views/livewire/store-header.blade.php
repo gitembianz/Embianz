@@ -323,7 +323,6 @@
                                         alt="something wrong">
                                 @endif
                                 <div class="leftbar__link--text">
-                                    <p>{{ $product->product_categories->first()->category->name }}</p>
                                     <h4>{{ $product->name }}</h4>
                                 </div>
                             </a>
