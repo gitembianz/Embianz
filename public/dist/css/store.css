@@ -1640,7 +1640,7 @@ header {
   height: 100%;
   background: rgba(0, 0, 0, 0.8);
   opacity: 0;
-  transition: all 0.3s ease-in-out;
+  transition: opacity 0.3s ease-in-out;
   transform: translateY(-100%);
   z-index: 500;
 }
