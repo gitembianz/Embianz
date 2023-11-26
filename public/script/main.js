@@ -154,15 +154,11 @@ function applySort(selector) {
 function searchBar() {
   const searchBtn = document.getElementById("searchOpen");
   const closeBtn = document.getElementById("searchClose");
-  const search = document.getElementById("searchList");
   const input = document.getElementById("searchInput");
-  const content = document.getElementById("searchContent");
 
   searchBtn.addEventListener("click", function () {
     document.body.style.overflow = "hidden";
-    setTimeout(() => {
-      input.focus();
-    }, 200);
+    input.focus();
   });
 
   closeBtn.addEventListener("click", function () {
@@ -350,8 +346,8 @@ function stickyElement(elementSelector) {
 //<------------------------- End Sticky Element ------------------------>
 //<--------------------------------------------------------------------->
 //<------------------------ Start Functions IOS ------------------------>
-searchBar();
 scrollEvent();
+searchBar();
 // leftbar functions for basket, wish, menu, filter and sort
 leftbar("basketOpen", "basketClose", "basketList", "basketContent");
 leftbar("wishOpen", "wishClose", "wishList", "wishContent");
