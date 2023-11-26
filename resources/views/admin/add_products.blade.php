@@ -49,11 +49,8 @@
                 <label>Product Ean</label>
             </div>
             <div class="item__form-input">
-                <input type="date" id="start_date" min="0" name="start_date">
+                <input type="date" id="start_date"  name="start_date">
                 <label>Product Start Date</label>
-                @error('start_date')
-                    <span style="position: absolute; top: 2.5rem; color: red;">{{ $message }}</span>
-                @enderror
             </div>
             <div class="item__form-input">
                 <input type="date" id="end_date" name="end_date">
