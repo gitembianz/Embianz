@@ -251,6 +251,7 @@ class RelatedPricelist extends Component
       $this->priceAndValues[$index]['price']['id'] = $test->id;
       $this->priceAndValues[$index]['price']['idrel'] = $test->pricelist->id;
       $this->priceAndValues[$index]['price']['value'] = $test->value;
+      $this->priceAndValues[$index]['price']['tva'] = $test->tva_percent;
       $this->priceAndValues[$index]['allow'] = false;
     }
   }
