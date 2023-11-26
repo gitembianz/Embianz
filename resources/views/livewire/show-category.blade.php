@@ -124,7 +124,7 @@
                         </div>
                     @else
                         <div style="display: flex; align-items: center;justify-content: flex-start;gap: 10px">
-    <input type="checkbox" value="1" wire:model.defer="cat.active" {{ $cat['active'] == 1 ? 'checked' : '' }}>
+    <input type="checkbox" wire:model.defer="cat.active" {{ $cat['active'] == 1 ? 'checked' : '' }}>
     <span>Active</span>
 </div>
 
