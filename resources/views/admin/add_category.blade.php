@@ -46,11 +46,6 @@
             <div class="item__form-input">
                 <input type="date" id="start_date" name="start_date" value="{{ old('start_date') }}">
                 <label>Start Date</label>
-                @error('start_date')
-                    <span style="position: absolute;
-    top: 2.5rem;
-    color: red;">{{ $message }}</span>
-                @enderror
             </div>
             <div class="item__form-input">
                 <input type="date" id="end_date" name="end_date" value="{{ old('end_date') }}">
