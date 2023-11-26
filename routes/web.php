@@ -29,6 +29,11 @@
 
   Route::middleware(['auth', 'usertype'])->group(function () {
 
+    Route::get('/update', function () {
+      $drop_and_seed = Artisan::call('migrate:fresh --seed');
+      echo "Databese seeded<br>";
+    });
+
     //Category routes
     route::get('/category', [CategoryController::class, 'category'])->name('category');
     route::post('/add_category', [CategoryController::class, 'add_category']);
@@ -114,10 +119,7 @@
     echo "DB updated<br>";
   });
 
-  Route::get('/update', function () {
-    $drop_and_seed = Artisan::call('migrate:fresh --seed');
-    echo "Databese seeded<br>";
-  });
+
 
   //Update app
   Route::get('/updateapp', function () {

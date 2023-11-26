@@ -173,20 +173,20 @@
                                     <table class="table table-top">
                                         <thead>
                                             <tr>
-                                                <th>
+                                                <th class="wid-2">
                                                     <div class="table__header--btn">Name</div>
                                                 </th>
 
-                                                <th>
+                                                <th class="wid-1">
                                                     <div class="table__header--btn">Sequence</div>
                                                 </th>
-                                                <th>
+                                                <th class="wid-3">
                                                     <div class="table__header--btn">Link</div>
                                                 </th>
-                                                <th>
+                                                <th class="wid-2">
                                                     <div class="table__header--btn">Location</div>
                                                 </th>
-                                                <th></th>
+                                                <th class="wid-1"></th>
                                             </tr>
                                         </thead>
                                     </table>
@@ -194,20 +194,20 @@
                                         <tbody>
                                             @for ($i = 1; $i <= $row; $i++)
                                                 <tr>
-                                                    <td>
+                                                    <td class="wid-2">
                                                         <input required type="text" class="table__edit"
                                                             wire:model="file_name.{{ $i }}">
                                                     </td>
-                                                    <td>
+                                                    <td class="wid-1">
                                                         <input required type="number" min="0"
                                                             class="table__edit"
                                                             wire:model="file_sequences.{{ $i }}">
                                                     </td>
-                                                    <td>
+                                                    <td class="wid-3">
                                                         <input required type="url" class="table__edit"
                                                             wire:model="file_link.{{ $i }}">
                                                     </td>
-                                                    <td>
+                                                    <td class="wid-2">
                                                         <select class="table__edit" required
                                                             wire:model="file_locations.{{ $i }}">
                                                             @php
@@ -224,7 +224,7 @@
                                                             @endforeach
                                                         </select>
                                                     </td>
-                                                    <td>
+                                                    <td class="wid-1">
                                                         <div class="table__buttons">
                                                             @if ($i == $row)
                                                                 <button type="button" class="edit"

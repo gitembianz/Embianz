@@ -13,7 +13,7 @@ return new class extends Migration
   {
     Schema::create('media', function (Blueprint $table) {
       $table->id();
-      $table->string('path')->nullable();
+      $table->longText('path')->nullable();
       $table->string('sequence')->nullable();
       $table->string('type')->nullable();
       $table->string('name')->nullable();

@@ -13,6 +13,7 @@ return new class extends Migration
   {
     Schema::create('orders', function (Blueprint $table) {
       $table->id();
+      $table->string('order_number')->nullable();
       $table->string('name');
       $table->string('session_id');
       $table->unsignedBigInteger('account_id')->index()->nullable();
