@@ -361,7 +361,7 @@ class RelatedPricelist extends Component
     $this->priceAndValues[] = [
       'allow' => false,
       'itemselected' => null,
-      'price' => ['name' => null, 'value' => null],
+      'price' => ['name' => null, 'value' => null, 'tva' => 19],
     ];
   }
   public function clear($index)
