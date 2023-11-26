@@ -13,45 +13,46 @@
         <!---------------------------------------------------------->
         <!---------------------- Slider Images --------------------->
         @if ($category)
-        @if (!$subcategories->isEmpty())
-            <div class="main-slider">
-                <div class="main-slider__wrapper">
-                    @foreach ($subcategories as $item)
-                        <div class="main-slider__slide">
-                            @if (count($item->media) > 0)
-                                @foreach ($item->media as $media)
-                                    @if ($media->location->location == "details")
-                                        @if ($media->external)
-                                            <img src="{{ $media->path }}" draggable="false" alt="{{ $media->path }}">
-                                        @else
-                                            <img src="/{{ $media->path }}{{ $media->name }}" draggable="false"
-                                                alt="{{ $media->path }}">
+            @if (!$subcategories->isEmpty())
+                <div class="main-slider">
+                    <div class="main-slider__wrapper">
+                        @foreach ($subcategories as $item)
+                            <div class="main-slider__slide">
+                                @if (count($item->media) > 0)
+                                    @foreach ($item->media as $media)
+                                        @if ($media->location->location == "details")
+                                            @if ($media->external)
+                                                <img src="{{ $media->path }}" draggable="false" alt="{{ $media->path }}">
+                                            @else
+                                                <img src="/{{ $media->path }}{{ $media->name }}" draggable="false"
+                                                    alt="{{ $media->path }}">
+                                            @endif
+                                            <?php break; ?>
                                         @endif
-                                        <?php break; ?>
-                                    @endif
-                                @endforeach
-                            @endif
-                            <div class="main-slider__text container">
-                                <h3>{{ $item->name }}</h3>
-                                <p>{{ $item->short_description }}</p>
-                                <a class="main-slider__link" href="/storeproducts/{{ $item->id }}">Acceseaza!</a>
+                                    @endforeach
+                                @endif
+                                <div class="main-slider__text container">
+                                    <h3>{{ $item->name }}</h3>
+                                    <p>{{ $item->short_description }}</p>
+                                    <a class="main-slider__link"
+                                        href="/storeproducts/{{ $item->id }}">Acceseaza!</a>
+                                </div>
                             </div>
-                        </div>
-                    @endforeach
-                </div>
-                <div class="main-slider__button prev">
+                        @endforeach
+                    </div>
+                    <div class="main-slider__button prev">
 
-                    <svg>
-                        <polyline points="15 18 9 12 15 6"></polyline>
-                    </svg>
+                        <svg>
+                            <polyline points="15 18 9 12 15 6"></polyline>
+                        </svg>
+                    </div>
+                    <div class="main-slider__button next">
+                        <svg>
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </div>
                 </div>
-                <div class="main-slider__button next">
-                    <svg>
-                        <polyline points="9 18 15 12 9 6"></polyline>
-                    </svg>
-                </div>
-            </div>
-        @endif
+            @endif
         @endif
         <!-------------------- End Slider Images ------------------->
         <!---------------------------------------------------------->
@@ -62,80 +63,81 @@
                 <h2 class="section__title">Descoperă produsele noastre populare!</h2>
                 <p class="section__text">Explorează colecția noastră de produse apreciate de clienți și găsește
                     accesoriile perfecte pentru a-ți completa stilul.
-                    <br><a href="{{ url("/storeproducts") }}">Vezi produsele!</a></p>
+                    <br><a href="{{ url("/storeproducts") }}">Vezi produsele!</a>
+                </p>
             </div>
         </section>
         <!----------------- End Section Description ---------------->
         <!---------------------------------------------------------->
         <!---------------------- Slider Cards ---------------------->
         @if (!$popproducts->isEmpty())
-        <section>
-            <div class="card-slider container">
-                <div class="card-slider__wrapper">
-                    @foreach ($popproducts as $product)
-                        <div class="card-slider__slide">
-                            <div class="card" role="listitem">
-                                <a href="/product/{{ $product->id }}">
-                                    @if (count($product->media) > 0)
-                                        @foreach ($product->media as $media)
-                                            @if ($media->location->location == "main")
-                                                @if ($media->external)
-                                                    <img class="card-image" src="{{ $media->path }}" draggable="false"
-                                                        alt="{{ $media->path }}">
-                                                @else
-                                                    <img class="card-image"
-                                                        src="/{{ $media->path }}{{ $media->name }}"
-                                                        draggable="false" alt="{{ $media->path }}">
+            <section>
+                <div class="card-slider container">
+                    <div class="card-slider__wrapper">
+                        @foreach ($popproducts as $product)
+                            <div class="card-slider__slide">
+                                <div class="card" role="listitem">
+                                    <a href="/product/{{ $product->id }}">
+                                        @if (count($product->media) > 0)
+                                            @foreach ($product->media as $media)
+                                                @if ($media->location->location == "main")
+                                                    @if ($media->external)
+                                                        <img class="card-image" src="{{ $media->path }}"
+                                                            draggable="false" alt="{{ $media->path }}">
+                                                    @else
+                                                        <img class="card-image"
+                                                            src="/{{ $media->path }}{{ $media->name }}"
+                                                            draggable="false" alt="{{ $media->path }}">
+                                                    @endif
+                                                    <?php break; ?>
                                                 @endif
-                                                <?php break; ?>
-                                            @endif
-                                        @endforeach
-                                    @else
-                                        <img src="/images/store/default/default.svg" draggable="false"
-                                            alt="something wrong">
-                                    @endif
-                                </a>
-                                <button class="card-favorites @if ($product->wishlists->where("session_id", $session_id)->isNotEmpty()) active @endif"
-                                    wire:click="toggleWishlist({{ $product->id }})">
-                                    <svg viewBox="0 0 512 512" width="20" title="heart">
-                                        <path
-                                            d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z" />
-                                    </svg>
-                                </button>
-                                <div class="card-info">
-                                    <div class="card-text">
-                                        <span>{{ $product->short_description }}</span>
+                                            @endforeach
+                                        @else
+                                            <img class="card-image" src="/images/store/default/default.svg"
+                                                draggable="false" alt="something wrong">
+                                        @endif
+                                    </a>
+                                    <button class="card-favorites @if ($product->wishlists->where("session_id", $session_id)->isNotEmpty()) active @endif"
+                                        wire:click="toggleWishlist({{ $product->id }})">
+                                        <svg viewBox="0 0 512 512" width="20" title="heart">
+                                            <path
+                                                d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z" />
+                                        </svg>
+                                    </button>
+                                    <div class="card-info">
+                                        <div class="card-text">
+                                            <span>{{ $product->short_description }}</span>
+                                        </div>
+                                        <div class="card-text">
+                                            <h3>{{ $product->name }}</h3>
+                                            <p>
+                                                @if ($product->product_prices->first())
+                                                    {{ $product->product_prices->first()->pricelist->currency->name }}
+                                                    {{ $product->product_prices->first()->value }}
+                                                @else
+                                                    {{ __("no price") }}
+                                                @endif
+                                            </p>
+                                        </div>
+                                        <a class="card-button" wire:click="addToCart({{ $product->id }})">Adauga in
+                                            coș</a>
                                     </div>
-                                    <div class="card-text">
-                                        <h3>{{ $product->name }}</h3>
-                                        <p>
-                                            @if ($product->product_prices->first())
-                                                {{ $product->product_prices->first()->pricelist->currency->name }}
-                                                {{ $product->product_prices->first()->value }}
-                                            @else
-                                                {{ __("no price") }}
-                                            @endif
-                                        </p>
-                                    </div>
-                                    <a class="card-button" wire:click="addToCart({{ $product->id }})">Adauga in
-                                        coș</a>
                                 </div>
                             </div>
-                        </div>
-                    @endforeach
+                        @endforeach
+                    </div>
+                    <div class="card-slider__button prev">
+                        <svg>
+                            <polyline points="15 18 9 12 15 6"></polyline>
+                        </svg>
+                    </div>
+                    <div class="card-slider__button next">
+                        <svg>
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </div>
                 </div>
-                <div class="card-slider__button prev">
-                    <svg>
-                        <polyline points="15 18 9 12 15 6"></polyline>
-                    </svg>
-                </div>
-                <div class="card-slider__button next">
-                    <svg>
-                        <polyline points="9 18 15 12 9 6"></polyline>
-                    </svg>
-                </div>
-            </div>
-        </section>
+            </section>
         @endif
         <!-------------------- End Slider Cards -------------------->
         <!---------------------------------------------------------->
