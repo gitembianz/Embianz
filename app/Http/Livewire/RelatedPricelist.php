@@ -24,7 +24,7 @@ class RelatedPricelist extends Component
   public $productId;
   public $col = false;
   public $all = false;
-  public $columns = ['Id', 'Currency', 'Value', 'Created At'];
+  public $columns = ['Id', 'Currency', 'Value', 'TVA', 'Created At'];
   public $selectedColumns = [];
   public $priceidbeingremoved = null;
   public $addrelatedprice = false;
@@ -67,7 +67,7 @@ class RelatedPricelist extends Component
     $this->priceAndValues[] = [
       'allow' => false,
       'itemselected' => null,
-      'price' => ['idrel' => null, 'value' => null],
+      'price' => ['idrel' => null, 'value' => null, 'tva' => 19],
     ];
   }
   public function load()
@@ -251,6 +251,7 @@ class RelatedPricelist extends Component
       $this->priceAndValues[$index]['price']['id'] = $test->id;
       $this->priceAndValues[$index]['price']['idrel'] = $test->pricelist->id;
       $this->priceAndValues[$index]['price']['value'] = $test->value;
+      $this->priceAndValues[$index]['price']['tva'] = $test->tva_percent;
       $this->priceAndValues[$index]['allow'] = false;
     }
   }
@@ -268,7 +269,7 @@ class RelatedPricelist extends Component
       if (!empty($priceAndValue['price']['value'])) {
         $item = PricelistEntries::find($priceAndValue['price']['id']);
         if ($item) {
-
+          $item->tva_percent = $priceAndValue['price']['tva'];
           $item->pricelist_id = $priceAndValue['price']['idrel'];
           $item->value = $priceAndValue['price']['value'];
           $item->save();
@@ -360,7 +361,7 @@ class RelatedPricelist extends Component
     $this->priceAndValues[] = [
       'allow' => false,
       'itemselected' => null,
-      'price' => ['name' => null, 'value' => null],
+      'price' => ['name' => null, 'value' => null, 'tva' => 19],
     ];
   }
   public function clear($index)
@@ -377,7 +378,7 @@ class RelatedPricelist extends Component
           [
             'allow' => false,
             'itemselected' => null,
-            'price' => ['name' => null, 'value' => null],
+            'price' => ['name' => null, 'value' => null, 'tva' => 19],
           ]
         ];
       $this->row = 1;
@@ -391,6 +392,7 @@ class RelatedPricelist extends Component
         $new->product_id = $this->productId;
         $new->pricelist_id = $priceAndValue['price']['idrel'];
         $new->value = $priceAndValue['price']['value'];
+        $new->tva_percent = $priceAndValue['price']['tva'];
         $new->save();
       } else {
         session()->flash('notification', [
