@@ -115,12 +115,15 @@
                                                     {{ $product->product_prices->first()->value }}
                                                     {{ $product->product_prices->first()->pricelist->currency->name }}
                                                 @else
-                                                    {{ __("no price") }}
+                                                    {{ __("Indisponibil") }}
                                                 @endif
                                             </p>
                                         </div>
-                                        <a class="card-button" wire:click="addToCart({{ $product->id }})">Adauga in
+                                        @if ($price && $product->quantity != 0)
+                           <a class="card-button" wire:click="addToCart({{ $product->id }})">Adauga in
                                             coș</a>
+                        @endif
+                                        
                                     </div>
                                 </div>
                             </div>
