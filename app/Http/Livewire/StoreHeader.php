@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\Session;
 
 class StoreHeader extends Component
 {
-  public $limit = 5;
   public $search = '';
   public $active = false;
   public $wishlistitems;
