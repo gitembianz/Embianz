@@ -11,18 +11,17 @@
             <a class="breadcrumbs__link" href="{{ url("/storeproducts") }}">
                 Produse
             </a>
-             <!-------------------If Category is appear------------------>
-    @if ($category)
+            <!-------------------If Category is appear------------------>
+            @if ($category)
                 <a class="breadcrumbs__link">{{ $categoryname }}</a>
-  
-    @endif
-    <!-----------------End If Category is appear---------------->
-            
+            @endif
+            <!-----------------End If Category is appear---------------->
+
         </div>
     </section>
     <!----------------------End Breadcrumbs--------------------->
     <!---------------------------------------------------------->
-   
+
     <!---------------------------------------------------------->
     <!---------------------------Filter------------------------->
     <section class="controls container">
@@ -69,7 +68,6 @@
     <!-------------------------Catalogue------------------------>
     <section class="catalogue container">
         @if ($products->isEmpty())
-
             <p>Nu au fost produse gasite</p>
         @else
             @foreach ($products as $product)
@@ -89,7 +87,8 @@
                                 @endif
                             @endforeach
                         @else
-                            <img src="/images/store/default/default.svg" draggable="false" alt="something wrong">
+                            <img class="card-image" src="/images/store/default/default.svg" draggable="false"
+                                alt="something wrong">
                         @endif
                     </a>
                     <?php if ($product->product_prices()->count() > 0) {
