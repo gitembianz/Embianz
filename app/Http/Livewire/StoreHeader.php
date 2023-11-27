@@ -56,12 +56,7 @@ class StoreHeader extends Component
   public function getWishlistItemsProperty()
   {
     $wishlist = Wishlist::where('session_id', $this->session_id)->pluck('product_id')->toArray();
-    return Product::whereIn('id', $wishlist)->with('media')->get();
-  }
-  public function refreshWishlist()
-  {
-    // Update the wishlistitems property here
-    $this->wishlistitems = $this->getWishlistItemsProperty();
+    return Product::whereIn('id', $wishlist)->with('media.location')->get();
   }
   public function getCartItemsProperty()
   {
@@ -134,7 +129,6 @@ class StoreHeader extends Component
       ->where('status_id', '!=', $this->closedStatusId)
       ->latest()
       ->value('quantity_amount');
-    $this->wishlistitems = $this->getWishlistItemsProperty();
   }
   public function getCategoriesProperty()
   {
@@ -150,7 +144,7 @@ class StoreHeader extends Component
 
   public function getCategoriesQueryProperty()
   {
-    return Category::where('active', true)->where('store_tab', '1')->with('subcategory');
+    return Category::where('active', true)->where('store_tab', '1')->with('subcategory')->with('media.location');
   }
   public function getObjectsProperty()
   {
@@ -158,7 +152,7 @@ class StoreHeader extends Component
   }
   public function getObjectsQueryProperty()
   {
-    return Product::name($this->search)->where('active', true)->with('product_prices')->with('media');
+    return Product::name($this->search)->where('active', true)->with('product_prices.pricelist.currency')->with('media.location');
   }
   public function getCatsProperty()
   {
@@ -166,7 +160,7 @@ class StoreHeader extends Component
   }
   public function getCatsQueryProperty()
   {
-    return Category::name($this->search)->where('active', true)->where('store_tab', true)->with('media');
+    return Category::name($this->search)->where('active', true)->where('store_tab', true)->with('media.location');
   }
 
   public function continue()
