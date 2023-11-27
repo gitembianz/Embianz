@@ -10,7 +10,7 @@
     <div class="banner">
         <div class="banner__container container">
             <p>
-                Dublu confort, jumătate de preț! Ofertă limitată: 2 sticle la prețul uneia singure. Profită acum!
+                Încălzește-ți iarna cu stil! Descoperă confortul termic al produselor noastre la jumătate de preț. Alege să fii fresh în fiecare sezon!
             </p>
         </div>
     </div>
@@ -45,7 +45,7 @@
                             </div>
                         </div>
                     @else
-                        <a class="navbar__link" href="/storeproducts/{{ $category->id }}"">
+                        <a class="navbar__link" href="/storeproducts/{{ $category->id }}">
                             {{ $category->name }}
                         </a>
                     @endif
@@ -106,7 +106,7 @@
                         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                     </svg>
                     <input id="searchInput" wire:model.debounce.300ms="search" type="text"
-                        placeholder="Cauta produsul perfect...">
+                        placeholder="Cauta...">
                 </div>
                 <button class="search__close" type="button" id="searchClose" wire:click.prevent="close">
                     <svg>
@@ -121,7 +121,7 @@
                         @if (count($objects) > 0)
                             @foreach ($objects as $product)
                                 <li class="search__item">
-                                    <a class="search__link" href="#">
+                                    <a class="search__link" href="/product/{{ $product->id }}">
                                         @if (count($product->media) > 0)
                                             @foreach ($product->media as $media)
                                                 @if ($media->location->location == "search")
@@ -134,10 +134,7 @@
                                                     <?php break; ?>
                                                 @endif
                                             @endforeach
-                                        @else
-                                            <img src="/images/store/default/default.svg" alt="something wrong">
                                         @endif
-                                        {{-- <img src="/images/store/background-bottle-min2.webp" alt="imaginea produsului"> --}}
                                         <div class="search__link--text">
                                             <div class="search__link--top">
                                                 <p>{{ $product->short_description }}</p>
@@ -181,9 +178,6 @@
                                             <img src="/images/store/default/default.svg" alt="something wrong">
                                         @endif
                                         <div class="search__link--text">
-                                            <div class="search__link--top">
-                                                <p>{{ $category->short_description }}</p>
-                                            </div>
                                             <div class="search__link--bottom">
                                                 <h4>{{ $category->name }}</h4>
                                             </div>
@@ -206,7 +200,7 @@
         <button class="leftbar__hidden--close" wire:click="$set('showcart', false)"></button>
         <div class="leftbar__content" id="basketContent">
             <div class="leftbar__top">
-                <a class="leftbar__button" href="/cart">Vizualizare cos</a>
+                <a class="leftbar__button" href="{{ url('/cart') }}">Vizualizare cos de cumparaturi </a>
                 <button class="leftbar__close" id="basketClose" wire:click="$set('showcart', false)">
                     <svg>
                         <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -288,7 +282,7 @@
         <button class="leftbar__hidden--close" wire:click="$set('showwis', false)"></button>
         <div class="leftbar__content" id="wishContent">
             <div class="leftbar__top">
-                <a class="leftbar__button" href="/wishlist">Vizualizare favorite</a>
+                <a class="leftbar__button" href="/wishlist">Vizualizare produse favorite</a>
                 <button class="leftbar__close" wire:click="$set('showwis', false)" id="wishClose" href="#">
                     <svg>
                         <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -299,7 +293,7 @@
 
             <ul class="leftbar__list">
                 @if (!$wishlistitems)
-                    <span class="leftbar__empty">No favorites products </span>
+                    <span class="leftbar__empty">Niciun produs în lista de favorite </span>
                 @else
                     @foreach ($wishlistitems as $product)
                         <li class="leftbar__item">
@@ -371,8 +365,6 @@
                                                 <?php break; ?>
                                             @endif
                                         @endforeach
-                                    @else
-                                        <img src="/images/store/default/default.svg" alt="something wrong">
                                     @endif
                                     <h4> {{ $category->name }}</h4>
                                 </a>
@@ -384,7 +376,7 @@
                             </div>
                             <div class="dropmenu__list">
                                 @foreach ($category->subcategory as $subcategory)
-                                    <a class="dropmenu__link" href="#">
+                                    <a class="dropmenu__link" href="/storeproducts/{{ $subcategory->category_id }}">
                                         @if (count($subcategory->parrent->media) > 0)
                                             @foreach ($subcategory->parrent->media as $media)
                                                 @if ($media->location->location == "main")
