@@ -45,38 +45,28 @@ function scrollEvent() {
 //<-------------------------- End ScrollEvent -------------------------->
 //<--------------------------------------------------------------------->
 //<------------------------ DropMenu on leftbar ------------------------>
-function dropmenus(iddropmenus, initiallyActive) {
-  let dropmenus = document.querySelectorAll(iddropmenus);
+function dropmenus(menuID, setActive = false) {
+  let dropmenus = document.querySelectorAll(menuID);
 
-  if (dropmenus.length === 0) {
-    return;
-  }
+  dropmenus.forEach(function (menu) {
+    let button = menu.querySelector(`.${menu.className}__open`);
+    let list = menu.querySelector(`.${menu.className}__list`);
 
-  dropmenus.forEach(function (dropmenu) {
-    let button = dropmenu.querySelector(`.${dropmenu.className}__open`);
-    let list = dropmenu.querySelector(`.${dropmenu.className}__list`);
+    if (button && list) {
+      if (setActive) {
+        menu.classList.add("active");
+        list.classList.add("active");
+      }
 
-    // Adaugă clasa "active" sau "non-active" în funcție de parametrul initiallyActive
-    if (initiallyActive) {
-      list.classList.add("active");
-      dropmenu.classList.add("active");
+      button.addEventListener("click", function () {
+        menu.classList.toggle("active");
+        list.classList.toggle("active");
+      });
     } else {
-      list.classList.remove("active");
-      dropmenu.classList.remove("active");
+      return;
     }
-
-    // Adaugă variabila isButtonActive și inițializeaz-o cu initiallyActive
-    let isButtonActive = initiallyActive;
-
-    // Adaugă evenimentul de click la buton
-    button.addEventListener("click", function () {
-      list.classList.toggle("active", isButtonActive);
-      dropmenu.classList.toggle("active", isButtonActive);
-      isButtonActive = !isButtonActive; // Inversează valoarea variabilei la fiecare click
-    });
   });
 }
-
 //<---------------------- End DropMenu on leftbar ---------------------->
 //<--------------------------------------------------------------------->
 //<------------------------------ LeftBar ------------------------------>
@@ -355,8 +345,8 @@ leftbar("menuOpen", "menuClose", "menuList", "menuContent");
 leftbar("filterOpen", "filterClose", "filterList", "filterContent");
 leftbar("sortOpen", "sortClose", "sortList", "sortContent");
 // dropdown functions for menu and filter
-dropmenus(".dropmenu", false);
 dropmenus(".dropfilter", true);
+dropmenus(".dropmenu");
 // filter functions for closing and resetting
 applyFilter("closeFilter", "resetFilter");
 applySort(".sort__item");
@@ -381,8 +371,8 @@ document.addEventListener("DOMContentLoaded", function () {
   leftbar("filterOpen", "filterClose", "filterList", "filterContent");
   leftbar("sortOpen", "sortClose", "sortList", "sortContent");
   // dropdown functions for menu and filter
-  dropmenus(".dropmenu", false);
   dropmenus(".dropfilter", true);
+  dropmenus(".dropmenu");
   // filter functions for closing and resetting
   applyFilter("closeFilter", "resetFilter");
   applySort(".sort__item");
