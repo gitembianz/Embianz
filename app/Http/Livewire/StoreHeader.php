@@ -23,7 +23,7 @@ class StoreHeader extends Component
   public $session_id;
   public $closedStatusId;
   protected $listeners = [
-    'wishlistUpdated' => 'getWishlistItemsProperty',
+    'wishlistUpdated' => 'mount',
     'cartUpdated' => 'mount'
   ];
 
@@ -129,6 +129,7 @@ class StoreHeader extends Component
       ->where('status_id', '!=', $this->closedStatusId)
       ->latest()
       ->value('quantity_amount');
+    $this->wishlistitems = $this->getWishlistItemsProperty();
   }
   public function getCategoriesProperty()
   {
