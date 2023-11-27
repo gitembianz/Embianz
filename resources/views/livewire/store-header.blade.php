@@ -192,7 +192,7 @@
                 </ul>
             @endif
         </div>
-        <button class="search__hidden-close"
+        {{-- <button class="search__hidden-close"
             style="
         background: transparent;
         width: 100%;
@@ -200,7 +200,7 @@
         border: none;
     }">
 
-        </button>
+        </button> --}}
     </div>
     <!-----------------------END-Searchbar---------------------->
     <!---------------------------------------------------------->
