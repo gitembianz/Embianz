@@ -16,7 +16,7 @@ class StoreProducts extends Component
 {
   use WithPagination;
 
-  public $loadAmount = 9;
+  public $loadAmount = 10;
   public $search = "";
   public $quantity = 10;
   public $wishlist = [];

@@ -6,38 +6,13 @@
         <div class="section__header container">
             <h2 class="section__title">Cosul de cumparaturi!</h2>
             <p class="section__text">
-                Vezi produsele alese mai jos
+                Vezi produsele mai jos
             </p>
         </div>
         <!----------------- End Basket Section ----------------->
         <!------------------------------------------------------>
     </section>
     <!------------------------------------------------------>
-    <!--------------------- Hidden total ------------------->
-    {{-- @if (!$cartItems->isEmpty())
-        <section class="container">
-            <div class="details__hidden">
-                <div class="details__content">
-                    <div class="details__text">
-                        <h4>Total:</h4>
-                        <span>
-                            <?php
-                            $total = $cart->sum_amount + $delivery;
-                            ?>
-                            @if ($new_price)
-                                <span
-                                    style="text-decoration: line-through; color:red; margin-right:1rem">{{ $total }}{{ $currency }}</span>{{ $cart->final_amount }}{{ $currency }}
-                            @else
-                                {{ $total }} {{ $currency }}
-                            @endif
-                        </span>
-                    </div>
-                    <a class="details__button" wire:click="continue()">Continua</a>
-                </div>
-            </div>
-        </section>
-    @endif --}}
-    <!------------------- End Hidden total ----------------->
     <!------------------------------------------------------>
     <section>
         <div class="basket__container container">
@@ -52,7 +27,7 @@
                             <div class="basket__top">
                                 @if (count($cartItem->product->media) > 0)
                                     @foreach ($cartItem->product->media as $media)
-                                        @if ($media->location->location == "main")
+                                        @if ($media->location->location == 'main')
                                             @if ($media->external)
                                                 <img src="{{ $media->path }}" alt="{{ $media->path }}">
                                             @else
@@ -87,7 +62,7 @@
                                         </path>
                                     </svg>
                                 </button>
-                                <button class="basket__wish @if ($cartItem->product->wishlists->where("session_id", $session_id)->isNotEmpty()) active @endif"
+                                <button class="basket__wish @if ($cartItem->product->wishlists->where('session_id', $session_id)->isNotEmpty()) active @endif"
                                     wire:click="toggleWishlist({{ $cartItem->product->id }})">
                                     <svg viewBox="0 0 512 512" width="20" title="heart">
                                         <path
@@ -100,7 +75,7 @@
                                 Delete from Cart
                             </button>
                             <div class="quantity">
-                                <span>Quantity</span>
+                                <span>Cantitatea</span>
                                 <input class="quantity__input" type="number" name="count" readonly
                                     value="{{ $cartItem->quantity }}">
                                 <div class="quantity__buttons">
