@@ -70,13 +70,6 @@
             <!-----------------------Quick Links----------------------->
             <div class="footer__bottom">
                 <div class="footer__list">
-                    <h3 class="footer__title">Categorii Populare</h3>
-                    <a class="footer__link" href="#"></a>
-                    @foreach ($categories as $category)
-                        <a class="footer__link" href="#">{{ $category }}</a>
-                    @endforeach
-                </div>
-                <div class="footer__list">
                     <h3 class="footer__title">Serviciu clienți</h3>
                     <a class="footer__link" href="#">Termeni și Condiții</a>
                     <a class="footer__link" href="#">Întrebări Frecvente</a>

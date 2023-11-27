@@ -11,7 +11,6 @@ class StoreFooter extends Component
 
   public $email;
   public $response = null;
-  public $limit = 5;
   public $cookieConsent;
   public $cookieId;
   public function mount()
@@ -33,9 +32,7 @@ class StoreFooter extends Component
 
   public function render()
   {
-    return view('livewire.store-footer', [
-      'categories' => $this->categories
-    ]);
+    return view('livewire.store-footer');
   }
   public function store()
   {
@@ -71,13 +68,5 @@ class StoreFooter extends Component
     $this->cookieConsent = true;
     setcookie('cookieConsent', 'accepted', time() + (30 * 24 * 60 * 60), '/');
     $this->emit('updateCookieConsent');
-  }
-  public function getCategoriesProperty()
-  {
-    return $this->categoriesQuery->limit($this->limit)->get()->pluck('name', 'id');
-  }
-  public function getCategoriesQueryProperty()
-  {
-    return Category::orderBy('sequence', 'asc');
   }
 }
