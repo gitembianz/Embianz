@@ -23,7 +23,7 @@ class StoreHeader extends Component
   public $session_id;
   public $closedStatusId;
   protected $listeners = [
-    'wishlistUpdated' => 'getWishlistItemsProperty',
+    'wishlistUpdated' => 'mount',
     'cartUpdated' => 'mount'
   ];
 
@@ -53,7 +53,7 @@ class StoreHeader extends Component
     $this->active = false;
     $this->search = '';
   }
-  public function getWishlistItemsProperty()
+  public function getWishlistItemsQueryProperty()
   {
     $wishlist = Wishlist::where('session_id', $this->session_id)->pluck('product_id')->toArray();
     return Product::whereIn('id', $wishlist)->with('media.location')->get();
