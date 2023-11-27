@@ -170,7 +170,7 @@
                             </div>
                             <!---------------------------------------------------->
                             <div class="checkout__item">
-                                <input type="email" placeholder="Email" wire:model="individual_billing_zipcode"
+                                <input type="text" placeholder="Post Code" wire:model="individual_billing_zipcode"
                                     placeholder="Post Code">
                                 <span>
                                     @error("individual_billing_zipcode")

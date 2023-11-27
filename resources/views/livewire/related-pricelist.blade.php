@@ -34,6 +34,7 @@
                                     <th class="wid-1"><button class="table__header--btn">Product</button></th>
                                     <th class="wid-5"><button class="table__header--btn">Pricelist</button></th>
                                     <th class="wid-3"><button class="table__header--btn">Value</button></th>
+                                    <th class="wid-1"><button class="table__header--btn">TVA</button></th>
                                     <th class="wid-1"></th>
                                 </tr>
                             </thead>
@@ -56,7 +57,7 @@
                                                             @foreach ($addprices as $pri)
                                                                 <li class="table__drop--item"
                                                                     wire:click.prevent="selectitem({{ $index }}, {{ $pri->id }}, '{{ $pri->name }}')">
-                                                                    {{ $pri->name }} ({{ $pri->currency->um }})
+                                                                    {{ $pri->name }} ({{ $pri->currency->name }})
                                                                 </li>
                                                             @endforeach
                                                         @else
@@ -99,6 +100,12 @@
                                             <input type="text" required class="table__drop--input"
                                                 wire:model.defer="priceAndValues.{{ $index }}.price.value">
                                         </td>
+                                        <td class="wid-1" data-title="TVA">
+    <input type="text" required class="table__drop--input"
+        wire:model.defer="priceAndValues.{{ $index }}.price.tva"
+        value="{{ old('priceAndValues.' . $index . '.price.tva', 19) }}">
+</td>
+
                                         <td class="wid-1" data-title="Action">
                                             <div class="table__buttons">
                                                 @if ($index == $row - 1)
@@ -408,6 +415,13 @@
                                             </button>
                                         </th>
                                     @endif
+                                     @if ($this->showColumn('TVA'))
+                                        <th>
+                                            <button class="table__header--btn">
+                                                TVA
+                                            </button>
+                                        </th>
+                                    @endif
                                     @if ($this->showColumn('Created At'))
                                         <th wire:click="sortBy('created_at')">
                                             <button class="table__header--btn">
@@ -500,6 +514,16 @@
                                                     @else
                                                         <input type="text" required class="table__edit"
                                                             wire:model="pricelist.{{ $index }}.value">
+                                                    @endif
+                                                </td>
+                                            @endif
+                                            @if ($this->showColumn('TVA'))
+                                                <td>
+                                                    @if ($editedrow !== $index)
+                                                        {{ $prices->tva_percent }}
+                                                    @else
+                                                        <input type="text" required class="table__edit"
+                                                            wire:model="pricelist.{{ $index }}.tva">
                                                     @endif
                                                 </td>
                                             @endif
