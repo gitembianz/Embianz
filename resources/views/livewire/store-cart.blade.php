@@ -101,19 +101,24 @@
                             </button>
                             <div class="quantity">
                                 <span>Quantity</span>
-                                <input class="quantity__input" type="number" name="count" readonly
-                                    value="{{ $cartItem->quantity }}">
+
                                 <div class="quantity__buttons">
                                     <button class="quantity__arrow"
                                         wire:click="increment({{ $cartItem->product->id }})">
                                         <svg>
-                                            <polyline points="18 15 12 9 6 15"></polyline>
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <line x1="12" y1="8" x2="12" y2="16"></line>
+                                            <line x1="8" y1="12" x2="16" y2="12"></line>
                                         </svg>
                                     </button>
+                                    <span class="quantity__input">
+                                        {{ $cartItem->quantity }}
+                                    </span>
                                     <button class="quantity__arrow"
                                         wire:click="decrement({{ $cartItem->product->id }})">
                                         <svg>
-                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <line x1="8" y1="12" x2="16" y2="12"></line>
                                         </svg>
                                     </button>
                                 </div>

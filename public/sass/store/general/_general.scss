@@ -10,7 +10,7 @@
 
 body {
   font-family: "Montserrat", sans-serif;
-  background-color: white;
+  background-color: $background;
   margin: 0;
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -24,7 +24,7 @@ svg {
   width: 24px;
   height: 24px;
   fill: none;
-  stroke: #333;
+  stroke: $text;
   stroke-width: 2px;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -74,7 +74,7 @@ input[type='checkbox'] {
   position: relative;
   margin: 0;
   cursor: pointer;
-  border: 1px solid #333;
+  border: 1px solid $text;
   border-radius: 7px;
   background: transparent;
   transition: all .2s ease-in-out;
@@ -97,8 +97,8 @@ input[type='checkbox'] {
   }
 
   &:checked {
-    background-color: #333;
-    border-color: #333;
+    background-color: $text;
+    border-color: $text;
     transition: all .2s ease-in-out;
 
     &:after {

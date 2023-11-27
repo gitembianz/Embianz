@@ -9,9 +9,9 @@
 .breadcrumbs__link {
   font-size: 12px;
   font-weight: 500;
-  color: #333;
+  color: $text;
   text-decoration: underline;
-  text-decoration-color: #333;
+  text-decoration-color: $text;
   text-underline-offset: 3px;
   text-wrap: nowrap;
   text-transform: capitalize;
@@ -19,7 +19,7 @@
   padding-right: 10px;
 
   &:hover {
-    color: darken($color: #333, $amount: 10%);
+    color: darken($color: $text, $amount: 10%);
   }
 
 
