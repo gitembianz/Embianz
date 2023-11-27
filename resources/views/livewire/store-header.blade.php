@@ -10,7 +10,8 @@
     <div class="banner">
         <div class="banner__container container">
             <p>
-                Încălzește-ți iarna cu stil! Descoperă confortul termic al produselor noastre la jumătate de preț. Alege să fii fresh în fiecare sezon!
+                Încălzește-ți iarna cu stil! Descoperă confortul termic al produselor noastre la jumătate de preț. Alege
+                să fii fresh în fiecare sezon!
             </p>
         </div>
     </div>
@@ -105,8 +106,7 @@
                         <circle cx="11" cy="11" r="8"></circle>
                         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                     </svg>
-                    <input id="searchInput" wire:model.debounce.300ms="search" type="text"
-                        placeholder="Cauta...">
+                    <input id="searchInput" wire:model.debounce.300ms="search" type="text" placeholder="Cauta...">
                 </div>
                 <button class="search__close" type="button" id="searchClose" wire:click.prevent="close">
                     <svg>
@@ -142,15 +142,15 @@
                                             <div class="search__link--bottom">
                                                 <h4>{{ $product->name }}</h4>
                                                 @if ($product->product_prices->first())
-                                                <span>
-                                                    @php
-                                                        $price = $product->product_prices->first();
-                                                        $currency = $price->pricelist->currency->name;
-                                                    @endphp
-                                                    @if ($price)
-                                                        {{ $price->value }} {{ $currency }}
-                                                    @endif
-                                                </span>
+                                                    <span>
+                                                        @php
+                                                            $price = $product->product_prices->first();
+                                                            $currency = $price->pricelist->currency->name;
+                                                        @endphp
+                                                        @if ($price)
+                                                            {{ $price->value }} {{ $currency }}
+                                                        @endif
+                                                    </span>
                                                 @endif
                                             </div>
                                         </div>
@@ -192,6 +192,15 @@
                 </ul>
             @endif
         </div>
+        <button class="search__hidden-close"
+            style="
+        background: transparent;
+        width: 100%;
+        height: 100%;
+        border: none;
+    }">
+
+        </button>
     </div>
     <!-----------------------END-Searchbar---------------------->
     <!---------------------------------------------------------->
@@ -200,7 +209,7 @@
         <button class="leftbar__hidden--close" wire:click="$set('showcart', false)"></button>
         <div class="leftbar__content" id="basketContent">
             <div class="leftbar__top">
-                <a class="leftbar__button" href="{{ url('/cart') }}">Vizualizare cos de cumparaturi </a>
+                <a class="leftbar__button" href="{{ url("/cart") }}">Vizualizare cos de cumparaturi </a>
                 <button class="leftbar__close" id="basketClose" wire:click="$set('showcart', false)">
                     <svg>
                         <line x1="18" y1="6" x2="6" y2="18"></line>
