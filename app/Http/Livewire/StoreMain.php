@@ -51,9 +51,7 @@ class StoreMain extends Component
   }
   private function lastUpdated()
   {
-    // Retrieve the last updated timestamp from your data source (e.g., database)
-    // Replace this with your actual logic to get the last update time
-    return now(); // For demonstration purposes, returning the current time
+    return now();
   }
   public function render()
   {
