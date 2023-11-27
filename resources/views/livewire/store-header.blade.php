@@ -81,7 +81,7 @@
                     </svg>
                 </button>
                 <button class="header__btn" wire:click="$set('showwis', true)" id="wishOpen">
-                    @if ($wishlistitems->count() > 0)
+                    @if ($wishlistitems)
                         <span class="header__count" id="wishlistCount">{{ $wishlistitems->count() }}</span>
                     @endif
                     <svg>
@@ -298,7 +298,7 @@
             </div>
 
             <ul class="leftbar__list">
-                @if ($wishlistitems->isEmpty())
+                @if (!$wishlistitems)
                     <span class="leftbar__empty">No favorites products </span>
                 @else
                     @foreach ($wishlistitems as $product)
