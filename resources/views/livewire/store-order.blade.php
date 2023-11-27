@@ -145,7 +145,7 @@
                             <!---------------------------------------------------->
                             <div class="checkout__item">
                                 <input type="text" wire:model="individual_billing_address2"
-                                    placeholder="Address 2 9optional)">
+                                    placeholder="Address 2 (optional)">
                             </div>
                             <!---------------------------------------------------->
                             <div class="checkout__item">
