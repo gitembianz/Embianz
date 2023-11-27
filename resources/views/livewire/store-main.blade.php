@@ -175,6 +175,20 @@
                 </svg>
             </div>
         @endif
+        @push('scripts')
+            <script>
+                document.addEventListener('livewire:load', function() {
+                    // Livewire has finished loading
+                    Livewire.hook('element.updated', () => {
+                        // Introduce a delay of 5 seconds
+                        setTimeout(() => {
+                            // Livewire component has updated, set isLoading to false
+                            @this.set('isLoading', false);
+                        }, 5000); // 5000 milliseconds = 5 seconds
+                    });
+                });
+            </script>
+        @endpush
         <!-------------------- End Loading Logo -------------------->
         <!---------------------------------------------------------->
 

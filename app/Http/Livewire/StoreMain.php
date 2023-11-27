@@ -34,12 +34,12 @@ class StoreMain extends Component
   }
   public function mount()
   {
-    if (now()->diffInHours($this->lastUpdated()) >= 24) {
+    $this->session_id = $this->getCookieId();
+    if (now()->diffInHours($this->lastUpdated($this->session_id)) >= 24) {
       $this->isLoading = true;
     } else {
       $this->isLoading = false;
     }
-    $this->session_id = $this->getCookieId();
     $sliderCategory = Store_Settings::where('parameter', 'slider_category')->first();
 
     if ($sliderCategory) {
@@ -51,9 +51,7 @@ class StoreMain extends Component
   }
   private function lastUpdated()
   {
-    // Retrieve the last updated timestamp from your data source (e.g., database)
-    // Replace this with your actual logic to get the last update time
-    return now(); // For demonstration purposes, returning the current time
+    return now();
   }
   public function render()
   {
