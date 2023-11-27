@@ -23,7 +23,7 @@ class StoreHeader extends Component
   public $session_id;
   public $closedStatusId;
   protected $listeners = [
-    'wishlistUpdated' => 'mount',
+    'wishlistUpdated' => 'getWishlistItemsProperty',
     'cartUpdated' => 'mount'
   ];
 
