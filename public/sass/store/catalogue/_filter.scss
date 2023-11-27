@@ -5,7 +5,7 @@
   top: 0;
   width: 100%;
   height: 100%;
-  background: $modalColor;
+  background: $modal;
   opacity: 0;
   visibility: hidden;
   transition: all .3s ease-in-out;
@@ -35,7 +35,7 @@
   transform: translateX(100%);
   transition: all .3s ease-in-out;
   padding: 15px;
-  background-color: $backgroundColor;
+  background-color: $background;
 
   @media (max-width: map-get($grid-breakpoints, sm)) {
     width: 100%;
@@ -59,15 +59,15 @@
   font-weight: 500;
   flex: 1;
   gap: 15px;
-  background: $buttonBackgroundColor;
-  color: $buttonTextColor;
+  background: $text;
+  color: $background;
 
   &:hover {
-    background: $buttonHoverColor;
+    background: darken($text, 10%);
   }
 
   &>svg {
-    stroke: $buttonSvgColor;
+    stroke: $background;
   }
 }
 
@@ -91,7 +91,7 @@
   width: 100%;
   height: 100%;
   flex: 1;
-  scrollbar-color: $buttonBackgroundColor transparent;
+  scrollbar-color: $text transparent;
   scrollbar-width: thin;
 
   &::-webkit-scrollbar {
@@ -103,9 +103,9 @@
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: $buttonBackgroundColor;
+    background-color: $text;
     border-radius: 10px;
-    border-left: $backgroundColor;
+    border-left: $background;
   }
 }
 
@@ -122,7 +122,7 @@
   gap: 10px;
   border-radius: 7px;
   transition: all .3s ease-in-out;
-  background: $itemBackgroundColor;
+  background: $secondary;
   border-radius: 7px;
   padding: 0 7px;
 
@@ -132,12 +132,12 @@
     object-fit: contain;
     aspect-ratio: 1/1;
     border-radius: 7px;
-    background: #fff;
+    background: $background;
   }
 
   &>h4 {
     font-size: 18px;
-    color: $itemTextColor;
+    color: $text;
     width: 100%;
     height: 100%;
     display: flex;
@@ -159,10 +159,10 @@
 }
 
 .filter__input:checked+.filter__link.sort__item {
-  background: #333;
+  background: $text;
 
   &>h4 {
-    color: #f2f2f2;
+    color: $secondary;
   }
 }
 
@@ -187,15 +187,15 @@
   font-weight: 500;
   flex: 1;
   gap: 15px;
-  background: $buttonBackgroundColor;
-  color: $buttonTextColor;
+  background: $text;
+  color: $background;
 
   &:hover {
-    background: $buttonHoverColor;
+    background: darken($text, 10%);
   }
 
   &>svg {
-    stroke: $buttonSvgColor;
+    stroke: $background;
   }
 }
 
@@ -211,15 +211,15 @@
   transition: all .3s ease-in-out;
   font-weight: 500;
   gap: 15px;
-  background: $buttonBackgroundColor;
-  color: $buttonTextColor;
+  background: $text;
+  color: $text;
 
   &:hover {
-    background: $buttonHoverColor;
+    background: darken($text, 10%);
   }
 
   &>svg {
-    stroke: $buttonSvgColor;
+    stroke: $background;
   }
 }
 
@@ -255,8 +255,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: $itemBackgroundColor;
-  color: $itemTextColor;
+  background: $secondary;
+  color: $text;
   text-decoration: none;
   border-radius: 7px;
   padding: 0 7px;
@@ -271,7 +271,7 @@
   display: flex;
   align-items: center;
   border-radius: 7px;
-  background-color: $itemBackgroundColor;
+  background-color: $secondary;
   transition: all .3s ease-in-out;
 
   &>img {
@@ -280,12 +280,12 @@
     object-fit: contain;
     aspect-ratio: 1/1;
     border-radius: 7px;
-    background: #fff;
+    background: $background;
   }
 
   &>h4 {
     font-size: 18px;
-    color: $itemTextColor;
+    color: $text;
 
     @media (max-width: map-get($grid-breakpoints, sm)) {
       font-size: 14px;
@@ -301,15 +301,15 @@
   justify-content: center;
   border-radius: 7px;
   border: none;
-  background: $itemHoverColor;
+  background: $secondary;
 
   &>svg {
-    stroke: $itemSvgColor;
+    stroke: $text;
   }
 }
 
 .dropfilter__list {
-  background: $itemDropdownColor;
+  background: darken($secondary, 20%);
   z-index: 500;
   transform: scaleY(0);
   transform-origin: top;
@@ -339,7 +339,7 @@
   align-items: center;
   position: relative;
   border-radius: 7px;
-  background-color: $itemBackgroundColor;
+  background-color: $secondary;
   transform: scaleY(0);
   transform-origin: top;
   padding: 0 7px;
@@ -355,7 +355,7 @@
 
   &>h4 {
     font-size: 18px;
-    color: $itemTextColor;
+    color: $text;
 
     @media (max-width: map-get($grid-breakpoints, sm)) {
       font-size: 14px;

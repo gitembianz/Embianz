@@ -44,7 +44,7 @@
   gap: 15px;
 
   // Scrollbar Settings if its appear
-  scrollbar-color: $buttonBackgroundColor transparent;
+  scrollbar-color: $text transparent;
   scrollbar-width: thin;
 
   &::-webkit-scrollbar {
@@ -61,9 +61,9 @@
 
 
   &::-webkit-scrollbar-thumb {
-    background-color: $buttonBackgroundColor;
+    background-color: $text;
     border-radius: 10px;
-    border-left: 2px solid $backgroundColor;
+    border-left: 2px solid $background;
   }
 
   @media (max-width: map-get($grid-breakpoints, lg)) {
@@ -75,7 +75,7 @@
 .basket__product {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  background: #ccc;
+  background: $secondary;
   column-gap: 25px;
   padding: 10px;
   border-radius: 7px;
@@ -103,7 +103,7 @@
   align-items: center;
   justify-content: space-between;
   padding-bottom: 10px;
-  border-bottom: 1px solid #333;
+  border-bottom: 1px solid $text;
   gap: 10px;
 
   &>div {
@@ -118,7 +118,7 @@
   &>img {
     width: 50px;
     height: 50px;
-    background: #f2f2f2;
+    background: $secondary;
     aspect-ratio: 1/1;
     object-fit: contain;
     object-position: center;
@@ -129,7 +129,7 @@
 .basket__price {
   font-size: 15px;
   font-weight: 400;
-  color: lighten($color: #333, $amount: 20%);
+  color: lighten($color: $text, $amount: 20%);
 
   @media (max-width: map-get($grid-breakpoints, sm)) {
     font-size: 12px;
@@ -139,7 +139,7 @@
 .basket__title {
   font-size: 22px;
   font-weight: 600;
-  color: #333;
+  color: $text;
   margin: 0;
   text-decoration: none;
 
@@ -154,7 +154,7 @@
   justify-content: center;
   width: 40px;
   height: 40px;
-  background: #f2f2f2;
+  background: darken($secondary, 10%);
   border: none;
   border-radius: 50px;
   transition: all .3s ease-in-out;
@@ -164,15 +164,15 @@
   }
 
   &>svg {
-    stroke: #333;
+    stroke: $text;
     transition: all .3s ease-in-out;
   }
 
   &:hover {
-    background: #333;
+    background: $text;
 
     &>svg {
-      stroke: #f2f2f2;
+      stroke: $secondary;
     }
   }
 }
@@ -212,11 +212,11 @@
   align-items: center;
   justify-content: center;
   height: 40px;
-  background: #f2f2f2;
+  background: darken($secondary, 10%);
   font-size: 16px;
   border: none;
   transition: all 0.3s ease-in-out;
-  color: #333;
+  color: $text;
   font-weight: 500;
 
   @media (min-width: map-get($grid-breakpoints, lg)) {
@@ -225,7 +225,7 @@
 
   &:hover {
     background: #d2042d;
-    color: #f2f2f2;
+    color: $secondary;
   }
 }
 
@@ -236,7 +236,7 @@
   gap: 10px;
   font-size: 15px;
   font-weight: 400;
-  color: #333;
+  color: $text;
   width: 100%;
 
   @media (max-width: map-get($grid-breakpoints, lg)) {
@@ -254,5 +254,5 @@
   height: 100%;
   font-size: 16px;
   font-weight: 500;
-  color: #333;
+  color: $text;
 }

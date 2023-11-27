@@ -16,7 +16,7 @@
 .total__message {
   width: 100%;
   text-align: left;
-  color: #333;
+  color: $text;
   font-size: 16px;
   font-weight: 400;
 }
@@ -30,7 +30,7 @@
   gap: 15px;
   padding: 10px;
   border-radius: 7px;
-  background: #333;
+  background: $text;
   align-items: center;
   justify-content: flex-start;
   grid-area: 1;
@@ -49,7 +49,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #ccc;
+  background: $secondary;
   padding: 10px;
   gap: 15px;
   border-radius: 7px;
@@ -57,7 +57,7 @@
   &>span {
     font-size: 15px;
     font-weight: 400;
-    color: #333;
+    color: $text;
 
     @media (max-width: map-get($grid-breakpoints, sm)) {
       font-size: 12px;
@@ -71,7 +71,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #ccc;
+  background: $secondary;
   padding: 10px;
   gap: 15px;
   border-radius: 7px;
@@ -80,7 +80,7 @@
   &>img {
     width: 50px;
     height: 50px;
-    background: #f2f2f2;
+    background: $secondary;
     aspect-ratio: 1/1;
     object-fit: contain;
     object-position: center;
@@ -94,7 +94,7 @@
   text-align: left;
   font-size: 22px;
   font-weight: 600;
-  color: #333;
+  color: $text;
   margin: 0;
 
   @media (max-width: map-get($grid-breakpoints, sm)) {
@@ -105,7 +105,7 @@
 .total__price {
   font-size: 15px;
   font-weight: 400;
-  color: lighten($color: #333, $amount: 20%);
+  color: lighten($color: $text, $amount: 20%);
 
   @media (max-width: map-get($grid-breakpoints, sm)) {
     font-size: 12px;

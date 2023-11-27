@@ -10,19 +10,19 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  border: 2px solid #ccc;
+  border: 2px solid darken($secondary, 10%);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #ccc;
+  color: darken($secondary, 10%);
   font-size: 18px;
   font-weight: 500;
   transition: all .3s ease-in-out;
 
   &.active {
-    background: #333;
-    color: #f2f2f2;
-    border: 3px solid #333;
+    background: $text;
+    color: $secondary;
+    border: 3px solid $text;
   }
 }
 
@@ -30,11 +30,11 @@
   width: 100%;
   flex: 1;
   height: 2px;
-  background: #ccc;
+  background: darken($secondary, 10%);
   transition: all .3s ease-in-out;
 
   &.full {
-    background: #333;
+    background: $text;
   }
 
   &.half {

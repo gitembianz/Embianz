@@ -5,7 +5,7 @@
   top: 0;
   width: 100%;
   height: 100%;
-  background: $modalColor;
+  background: $modal;
   opacity: 0;
   visibility: hidden;
   transition: all .3s ease-in-out;
@@ -53,7 +53,7 @@
   transform: translateX(100%);
   transition: all .3s ease-in-out;
   padding: 15px;
-  background-color: $backgroundColor;
+  background-color: $background;
 
   @media (max-width: map-get($grid-breakpoints, sm)) {
     width: 100%;
@@ -74,14 +74,14 @@
   align-items: center;
   justify-content: center;
   transition: all .3s ease-in-out;
-  background-color: $buttonBackgroundColor;
+  background-color: $text;
 
   &:hover {
-    background: $buttonHoverColor;
+    background: darken($text, 15%);
   }
 
   &>svg {
-    stroke: $buttonSvgColor;
+    stroke: $background;
   }
 }
 
@@ -105,11 +105,11 @@
   transition: all .3s ease-in-out;
   font-weight: 500;
   flex: 1;
-  background-color: $buttonBackgroundColor;
-  color: $buttonTextColor;
+  background-color: $text;
+  color: $background;
 
   &:hover {
-    background: $buttonHoverColor;
+    background: darken($text, 15%);
   }
 }
 
@@ -127,7 +127,7 @@
   flex: 1;
 
   // Scrollbar Settings if its appear
-  scrollbar-color: $buttonBackgroundColor transparent;
+  scrollbar-color: $text transparent;
   scrollbar-width: thin;
 
   &::-webkit-scrollbar {
@@ -144,16 +144,16 @@
 
 
   &::-webkit-scrollbar-thumb {
-    background-color: $buttonBackgroundColor;
+    background-color: $text;
     border-radius: 10px;
-    border-left: 2px solid $backgroundColor;
+    border-left: 2px solid $background;
   }
 }
 
 .leftbar__empty {
   font-size: 14px;
   font-weight: 400;
-  color: $textColor;
+  color: $text;
 }
 
 .leftbar__item {
@@ -166,11 +166,10 @@
   padding: 7px;
   border-radius: 5px;
   transition: all .3s ease-in-out;
-
-  background: $itemBackgroundColor;
+  background: $secondary;
 
   &:hover {
-    background: $itemHoverColor;
+    background: darken($secondary, 10%);
   }
 
   &:not(:last-child) {
@@ -181,7 +180,7 @@
       display: block;
       position: absolute;
       top: calc(100% + 10px);
-      background: $itemBackgroundColor;
+      background: $secondary;
     }
   }
 }
@@ -202,7 +201,7 @@
     object-fit: contain;
     aspect-ratio: 1/1;
     border-radius: 3px;
-    background-color: #fff;
+    background-color: $background;
 
     @media (max-width: map-get($grid-breakpoints, sm)) {
       width: 55px;
@@ -219,7 +218,6 @@
   gap: 10px;
 }
 
-
 .leftbar__link--text {
   display: flex;
   flex-direction: column;
@@ -232,18 +230,18 @@
   &>p {
     font-size: 11px;
     font-weight: 400;
-    color: $textColor;
+    color: $text;
   }
 
   &>span {
-    color: $textColor;
+    color: $text;
     font-weight: 400;
     font-size: 11px;
   }
 
   &>h4 {
     font-size: 14px;
-    color: $textColor;
+    color: $text;
     font-weight: 500;
 
     @media (max-width: map-get($grid-breakpoints, sm)) {
@@ -262,14 +260,14 @@
   align-items: center;
   justify-content: center;
   transition: all .3s ease-in-out;
-  background: $buttonBackgroundColor;
+  background: $text;
 
   &>svg {
-    stroke: $buttonSvgColor;
+    stroke: $background;
   }
 
   &:hover {
-    background: $buttonHoverColor;
+    background: darken($text, 10%);
   }
 }
 
@@ -282,19 +280,19 @@
   justify-content: space-between;
   padding-top: 15px;
   gap: 10px;
-  border-top: 1px solid $textColor;
+  border-top: 1px solid $text;
 }
 
 .leftbar__total--text {
   font-size: 20px;
   font-weight: 500;
-  color: $textColor;
+  color: $text;
 
   &>span {
     font-size: 20px;
     font-weight: 400;
     margin-left: 10px;
-    color: $textColor;
+    color: $text;
   }
 }
 

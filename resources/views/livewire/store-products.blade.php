@@ -134,7 +134,7 @@
                             <h3>{{ $product->name }}</h3>
                             <p>
                                 @if ($product->product_prices->first())
-                                {{ $price }}
+                                    {{ $price }}
                                     {{ $product->product_prices->first()->pricelist->currency->name }}
                                 @else
                                     {{ __("") }}

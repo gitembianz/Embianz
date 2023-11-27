@@ -1,7 +1,7 @@
 //<---------------------------------------------------------------------->
 //<------------------------------- Footer ------------------------------->
 .footer {
-  background: #333;
+  background: $text;
 }
 
 .footer__container {
@@ -35,13 +35,13 @@
   width: 35px;
   height: 35px;
   border-radius: 6px;
-  background: #f2f2f2;
+  background: $background;
   display: flex;
   align-items: center;
   justify-content: center;
 
   &>svg {
-    stroke: #333;
+    stroke: $text;
     transform: scale(1.05);
   }
 }
@@ -58,7 +58,7 @@
   gap: 8px;
 
   &>h3 {
-    color: #f2f2f2;
+    color: $background;
     font-size: 18px;
     font-weight: 400;
     line-height: 150%;
@@ -74,13 +74,13 @@
     height: 40px;
     border: none;
     border-radius: 7px;
-    background: #f2f2f2;
-    color: #333;
+    background: $background;
+    color: $text;
     padding: 5px 90px 5px 10px;
     outline: none;
 
     &::placeholder {
-      color: lighten($color: #333, $amount: 50%);
+      color: lighten($color: $text, $amount: 50%);
     }
   }
 
@@ -91,8 +91,8 @@
     right: 5px;
     z-index: 2;
     height: 35px;
-    background-color: #333;
-    color: #f2f2f2;
+    background-color: $text;
+    color: $background;
     font-size: 15px;
     font-weight: 400;
     padding: 0 10px;
@@ -100,7 +100,7 @@
     border-radius: 5px;
 
     &:hover {
-      background-color: darken($color: #333, $amount: 10%);
+      background-color: darken($color: $text, $amount: 10%);
     }
   }
 
@@ -131,7 +131,7 @@
 }
 
 .footer__title {
-  color: #fff;
+  color: $background;
   line-height: 150%;
   font-weight: 500;
   font-size: 18px;
@@ -139,7 +139,7 @@
 }
 
 .footer__link {
-  color: darken($color: #fff, $amount: 20%);
+  color: lighten($color: $text, $amount: 50%);
   line-height: 150%;
   font-weight: 400;
   font-size: 14px;
@@ -153,7 +153,7 @@
   width: 100%;
   font-weight: 400;
   line-height: 150%;
-  color: darken($color: #fff, $amount: 20%);
+  color: lighten($color: $text, $amount: 50%);
   font-size: 14px;
   text-align: center;
 }

@@ -29,8 +29,8 @@
   width: min-content;
   height: 40px;
   padding: 0 10px;
-  background: #ccc;
-  color: #333;
+  background: darken($secondary, 10%);
+  color: $text;
   font-size: 16px;
   font-weight: 500;
   text-decoration: none;
@@ -39,12 +39,12 @@
   border: none;
 
   &:hover {
-    background: darken(#f2f2f2, 20%);
+    background: darken($secondary, 20%);
   }
 
   &.active {
-    background: #333;
-    color: #f2f2f2;
+    background: $text;
+    color: $secondary;
   }
 }
 
@@ -76,7 +76,7 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  background: #ccc;
+  background: darken($secondary, 10%);
   padding: 15px;
   gap: 15px;
   border-radius: 5px;
@@ -116,14 +116,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1.5px solid #333;
-    color: #333;
+    border: 1.5px solid $text;
+    color: $text;
     font-size: 18px;
     font-weight: 500;
   }
 
   &>h3 {
-    color: #333;
+    color: $text;
     font-size: 18px;
     font-weight: 500;
   }
@@ -142,8 +142,8 @@
     height: 40px;
     border: none;
     background: transparent;
-    border-bottom: 1.5px solid #333;
-    color: #333;
+    border-bottom: 1.5px solid $text;
+    color: $text;
     font-size: 14px;
     font-weight: 400;
     outline: none;
@@ -162,14 +162,14 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  background: #f2f2f2;
+  background: $secondary;
   padding: 5px 10px;
   gap: 15px;
   border-radius: 5px;
   grid-column: 1/3;
 
   &>span {
-    color: #333;
+    color: $text;
     font-size: 16px;
     font-weight: 500;
     flex: 1;

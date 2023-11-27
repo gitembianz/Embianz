@@ -7,7 +7,7 @@
   justify-content: space-between;
   gap: 10px;
   padding: 10px;
-  background: #333;
+  background: $text;
   border-radius: 7px;
   max-height: 50vh;
   min-height: 400px;
@@ -46,7 +46,7 @@
   justify-content: space-between;
   gap: 10px;
   padding: 10px;
-  background: #333;
+  background: $text;
   border-radius: 7px;
   display: none;
 
@@ -68,7 +68,7 @@
   width: 100%;
   font-size: 25px;
   font-weight: 500;
-  color: #f2f2f2;
+  color: $secondary;
   text-align: center;
   line-height: 150%;
 
@@ -84,12 +84,12 @@
   justify-content: space-between;
   gap: 10px;
   padding-bottom: 10px;
-  border-bottom: 1px solid #f2f2f2;
+  border-bottom: 1px solid $secondary;
 
   &>h4 {
     font-size: 16px;
     font-weight: 500;
-    color: #f2f2f2;
+    color: $secondary;
     margin: 0;
 
     @media (max-width: map-get($grid-breakpoints, sm)) {
@@ -100,7 +100,7 @@
   &>span {
     font-size: 16px;
     font-weight: 400;
-    color: #f2f2f2;
+    color: $secondary;
     margin: 0;
 
     @media (max-width: map-get($grid-breakpoints, sm)) {
@@ -121,9 +121,9 @@
     border: none;
     padding: 0 10px;
     font-size: 14px;
-    color: #333;
+    color: $text;
     font-weight: 500;
-    background: #f2f2f2;
+    background: $secondary;
     outline: none;
   }
 
@@ -137,8 +137,8 @@
     align-items: center;
     justify-content: center;
     font-size: 14px;
-    color: #f2f2f2;
-    background: #333;
+    color: $secondary;
+    background: $text;
     border: none;
     border-radius: 5px;
     transform: translateY(-50%);
@@ -164,10 +164,10 @@
   align-items: center;
   justify-content: center;
   height: 40px;
-  background: #f2f2f2;
+  background: $secondary;
   font-size: 14px;
   border: none;
   transition: all 0.3s ease-in-out;
-  color: #333;
+  color: $text;
   font-weight: 500;
 }
