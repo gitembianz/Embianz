@@ -30,7 +30,7 @@
                 <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
             </svg>
         </button>
-        <input class="controls__search" type="text" wire:model="search" placeholder="Cauta produsul...">
+        <input class="controls__search" type="text" wire:model="search" placeholder="Cauta produsul aici...">
         <button class="controls__button" id="sortOpen">
             <svg>
                 <line x1="21" y1="10" x2="7" y2="10"></line>
@@ -199,7 +199,7 @@
             </div>
             <div class="filter__bottom">
                 <button class="filter__apply" id="closeFilter" wire:click.prevent="applyFilter">
-                    Aplica Asortamentul
+                    Aplica
                 </button>
                 <button class="filter__reset" id="resetFilter" wire:click="resetFilter">
                     <svg>
@@ -218,7 +218,7 @@
         <div class="filter__content" id="sortContent">
             <div class="filter__top">
                 <button class="filter__close" id="sortClose" href="#">
-                    Inchideti Asortamentul
+                    Inchideti
                     <svg>
                         <line x1="18" y1="6" x2="6" y2="18"></line>
                         <line x1="6" y1="6" x2="18" y2="18"></line>
