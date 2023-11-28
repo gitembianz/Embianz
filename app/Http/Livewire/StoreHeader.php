@@ -78,7 +78,7 @@ class StoreHeader extends Component
       ->latest()->first();
 
     if ($cart !== null) {
-      $cartItems = Cart_Item::where('cart_id', $cart->id)->with('product.media.location')->with('product.product_prices.pricelist.currency')->get();
+      $cartItems = Cart_Item::where('cart_id', $cart->id)->with('product.media.location', 'product.product_prices.pricelist.currency')->get();
 
       return $cartItems;
     }
@@ -156,13 +156,13 @@ class StoreHeader extends Component
     // Check if the setting exists and has a valid numeric value
     $limit = $limitSetting && is_numeric($limitSetting->value) ? $limitSetting->value : 5;
 
-    // Use the retrieved limit in the query
-    return $this->categoriesQuery->limit($limit)->get();
+    // Use eager loading to load relationships with the main query
+    return $this->categoriesQuery->limit($limit)->with('media.location', 'subcategory')->get();
   }
 
   public function getCategoriesQueryProperty()
   {
-    return Category::where('active', true)->where('store_tab', '1')->with('subcategory')->with('media.location');
+    return Category::where('active', true)->where('store_tab', '1');
   }
   public function getObjectsProperty()
   {
@@ -170,7 +170,7 @@ class StoreHeader extends Component
   }
   public function getObjectsQueryProperty()
   {
-    return Product::name($this->search)->where('active', true)->with('product_prices.pricelist.currency')->with('media.location');
+    return Product::name($this->search)->where('active', true)->with('product_prices.pricelist.currency', 'media.location');
   }
   public function getCatsProperty()
   {

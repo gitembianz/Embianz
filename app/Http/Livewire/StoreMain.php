@@ -53,13 +53,6 @@ class StoreMain extends Component
   {
     return now();
   }
-  public function render()
-  {
-    return view('livewire.store-main', [
-      'popproducts' => $this->popproducts,
-      'subcategories' => $this->subcategories
-    ]);
-  }
   public function getPopProductsProperty()
   {
     return $this->popproductsQuery->limit($this->limit)->get();
@@ -68,24 +61,30 @@ class StoreMain extends Component
   {
     return Product::where('active', true)->orderBy('popularity', 'desc')->with('media.location')->with('product_prices.pricelist.currency');
   }
+  public function render()
+  {
+    return view('livewire.store-main', [
+      'popproducts' => $this->popproducts,
+      'subcategories' => $this->subcategories
+    ]);
+  }
   public function getSubcategoriesProperty()
   {
     if ($this->category) {
-      return $this->subcategoriesQuery->get();
+      return $this->category->subcategory;
     }
   }
+
   public function getSubcategoriesQueryProperty()
   {
     if ($this->category) {
-      $subcategories = Subcategory::where('parrent_id', $this->category->id)->get();
-
-      // Assuming you want to get an array of subcategory category_ids
-      $subCategoryIds = $subcategories->pluck('category_id')->toArray();
-
-      // Use 'whereIn' to filter by an array of category_ids
-      return Category::whereIn('id', $subCategoryIds)->with('media.location');
+      return Subcategory::where('parrent_id', $this->category->id)
+        ->with('category.media.location', 'category')
+        ->get();
     }
   }
+
+
 
   public function addToWishlist($productId)
   {
