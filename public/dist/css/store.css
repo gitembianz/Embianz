@@ -546,6 +546,7 @@ section {
   justify-content: flex-start;
   flex-wrap: wrap;
   gap: 5px;
+  padding-top: 20px;
 }
 
 .breadcrumbs__link {
