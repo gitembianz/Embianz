@@ -349,7 +349,7 @@ leftbar("filterOpen", "filterClose", "filterList", "filterContent");
 leftbar("sortOpen", "sortClose", "sortList", "sortContent");
 // dropdown functions for menu and filter
 dropmenus(".dropfilter", true);
-dropmenus(".dropmenu");
+dropmenus(".dropmenu", true);
 // filter functions for closing and resetting
 applyFilter("closeFilter", "resetFilter");
 applySort(".sort__item");
@@ -375,7 +375,7 @@ document.addEventListener("DOMContentLoaded", function () {
   leftbar("sortOpen", "sortClose", "sortList", "sortContent");
   // dropdown functions for menu and filter
   dropmenus(".dropfilter", true);
-  dropmenus(".dropmenu");
+  dropmenus(".dropmenu", true);
   // filter functions for closing and resetting
   applyFilter("closeFilter", "resetFilter");
   applySort(".sort__item");

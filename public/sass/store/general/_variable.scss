@@ -1,27 +1,33 @@
 //<---------------------------- Color Palethe ---------------------------->
-// General Colors
-$backgroundColor: #f2f2f2;
-$textColor: #333;
-$svgColor: #333;
-$modalColor: rgba($color: #000000, $alpha: .8);
-// Button Colors
-$buttonBackgroundColor: #333;
-$buttonTextColor: #f2f2f2;
-$buttonSvgColor: #f2f2f2;
-$buttonHoverColor: darken($buttonBackgroundColor, 10%);
-// Items Colors
-$itemBackgroundColor: #ccc;
-$itemTextColor: #333;
-$itemSvgColor: #333;
-$itemHoverColor: darken($itemBackgroundColor, 10%);
-$itemDropdownColor: darken($itemBackgroundColor, 30%);
-// Banner Color
-$bannerBackgroundColor: #333;
-$bannerTextColor: #f2f2f2;
-// Count on Header
-$countBackgroundColor: #333;
-$countTextColor: #fff;
+// // General Colors
+// $backgroundColor: #f2f2f2;
+// $textColor: #333;
+// $svgColor: #333;
+// $modalColor: rgba($color: #000000, $alpha: .8);
+// // Button Colors
+// $buttonBackgroundColor: #333;
+// $buttonTextColor: #f2f2f2;
+// $buttonSvgColor: #f2f2f2;
+// $buttonHoverColor: darken($buttonBackgroundColor, 10%);
+// // Items Colors
+// $itemBackgroundColor: #ccc;
+// $itemTextColor: #333;
+// $itemSvgColor: #333;
+// $itemHoverColor: darken($itemBackgroundColor, 10%);
+// $itemDropdownColor: darken($itemBackgroundColor, 30%);
+// // Banner Color
+// $bannerBackgroundColor: #333;
+// $bannerTextColor: #f2f2f2;
+// // Count on Header
+// $countBackgroundColor: #333;
+// $countTextColor: #fff;
 //<-------------------------- End Color Palethe -------------------------->
+$text: #333333;
+$background: #f2f2f2;
+$primary: #4f4f4f;
+$secondary: #e0e0e0;
+$accent: #1a691a;
+$modal: rgba($color: #000000, $alpha: .8);
 //<---------------------------------Sizes--------------------------------->
 // Breakpoints widths
 $grid-breakpoints: (

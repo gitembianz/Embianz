@@ -815,6 +815,9 @@
                             @if (!$cartItems->isEmpty())
                                 @foreach ($cartItems as $cartItem)
                                     <div class="total__product">
+                                        <span class="total__price">
+                                            {{ $cartItem->quantity }} x
+                                        </span>
                                         @if (count($cartItem->product->media) > 0)
                                             @foreach ($cartItem->product->media as $media)
                                                 @if ($media->location->location == 'main')
@@ -836,7 +839,8 @@
                                         <a href="/product/{{ $cartItem->product->id }}" target="_blank"
                                             class="total__name">{{ $cartItem->product->name }}</a>
                                         <span class="total__price">
-                                            {{ $cartItem->quantity }} x {{ $cartItem->product->price }}
+
+                                            {{ $cartItem->product->price }}
                                             <?php $currency = $cartItem->product->product_prices->first()->pricelist->currency->name; ?>
                                             {{ $cartItem->quantity * $cartItem->price }} {{ $currency }}
                                         </span>

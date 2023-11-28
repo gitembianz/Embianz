@@ -12,11 +12,11 @@
   width: 40px;
   height: 40px;
   border-radius: 7px;
-  background-color: #f2f2f2;
+  background-color: $secondary;
   border: none;
 
   &>svg {
-    stroke: #333;
+    stroke: $text;
   }
 }
 
@@ -27,13 +27,13 @@
   padding: 0 10px;
   font-size: 12px;
   font-weight: 500;
-  color: #333;
+  color: $text;
   border: none;
   flex: 1;
-  background-color: #f2f2f2;
+  background-color: $secondary;
   outline: none;
 
   &::placeholder {
-    color: lighten($color: #333, $amount: 30%);
+    color: lighten($color: $text, $amount: 30%);
   }
 }

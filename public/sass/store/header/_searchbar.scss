@@ -5,21 +5,15 @@
   top: 0;
   width: 100%;
   height: 100%;
-  background: $modalColor;
+  background: $modal;
   opacity: 0;
-  // visibility: hidden;
   transition: opacity 0.3s ease-in-out;
   transform: translateY(-100%);
   z-index: 500;
 
   &.active {
     opacity: 1;
-    // visibility: visible;
     transform: translateY(0);
-
-    &>.search__container {
-      // transform: translateY(0);
-    }
   }
 }
 
@@ -72,7 +66,7 @@
     top: 50%;
     right: 10px;
     transform: translateY(-50%) scale(.8);
-    stroke: $svgColor;
+    stroke: $text;
   }
 
   &>input {
@@ -84,8 +78,8 @@
     flex: 1;
     padding: 0 40px 0 10px;
     outline: none;
-    background: $backgroundColor;
-    color: $textColor;
+    background: $background;
+    color: $text;
   }
 }
 
@@ -98,10 +92,10 @@
   align-items: center;
   justify-content: center;
   transition: all .3s ease-in-out;
-  background: $backgroundColor;
+  background: $background;
 
   &>svg {
-    stroke: $svgColor;
+    stroke: $text;
   }
 }
 
@@ -118,7 +112,7 @@
   height: 100%;
   flex: 1;
   scrollbar-width: thin;
-  scrollbar-color: $buttonBackgroundColor transparent;
+  scrollbar-color: $background transparent;
 
   &::-webkit-scrollbar {
     width: 10px;
@@ -129,13 +123,13 @@
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: $buttonBackgroundColor;
+    background-color: $background;
     border-radius: 10px;
     border-left: 2px solid transparent;
   }
 
   &>span {
-    color: $buttonTextColor;
+    color: $background;
   }
 }
 
@@ -149,10 +143,10 @@
   padding: 7px;
   border-radius: 5px;
   transition: all .3s ease-in-out;
-  background: $backgroundColor;
+  background: $background;
 
   &:hover {
-    background: $itemHoverColor;
+    background: darken($color: $background, $amount: 10%);
   }
 }
 
@@ -171,7 +165,7 @@
     object-fit: contain;
     aspect-ratio: 1/1;
     border-radius: 2.5px;
-    background-color: #fff;
+    background-color: $background;
 
     @media (max-width: map-get($grid-breakpoints, sm)) {
       width: 55px;
@@ -197,7 +191,7 @@
   span {
     font-size: 11px;
     font-weight: 400;
-    color: $textColor;
+    color: $text;
 
   }
 }
@@ -208,7 +202,7 @@
   span {
     font-size: 14px;
     font-weight: 500;
-    color: $textColor;
+    color: $text;
 
   }
 }

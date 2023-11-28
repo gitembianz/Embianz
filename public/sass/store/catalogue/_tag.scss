@@ -14,11 +14,11 @@
   font-size: 12px;
   font-weight: 400;
   border: none;
-  background: #f2f2f2;
+  background: $text;
   padding: 0 10px;
 
   &:hover {
-    background: darken($color: #f2f2f2, $amount: 15%);
+    background: darken($color: $accent, $amount: 15%);
   }
 
   &>svg {

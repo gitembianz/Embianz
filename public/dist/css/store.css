@@ -251,7 +251,7 @@ template {
 
 body {
   font-family: "Montserrat", sans-serif;
-  background-color: white;
+  background-color: #f2f2f2;
   margin: 0;
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -264,7 +264,7 @@ svg {
   width: 24px;
   height: 24px;
   fill: none;
-  stroke: #333;
+  stroke: #333333;
   stroke-width: 2px;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -329,7 +329,7 @@ input[type=checkbox] {
   position: relative;
   margin: 0;
   cursor: pointer;
-  border: 1px solid #333;
+  border: 1px solid #333333;
   border-radius: 7px;
   background: transparent;
   transition: all 0.2s ease-in-out;
@@ -351,8 +351,8 @@ input[type=checkbox]:after {
   opacity: 0;
 }
 input[type=checkbox]:checked {
-  background-color: #333;
-  border-color: #333;
+  background-color: #333333;
+  border-color: #333333;
   transition: all 0.2s ease-in-out;
 }
 input[type=checkbox]:checked:after {
@@ -426,7 +426,7 @@ input[type=checkbox]:checked:after {
   width: 100%;
   min-height: 70px;
   transition: all 0.3s ease-in;
-  background-color: #333;
+  background-color: #333333;
   z-index: 100;
 }
 
@@ -448,7 +448,7 @@ input[type=checkbox]:checked:after {
   width: 100%;
   cursor: pointer;
   background-color: #f2f2f2;
-  color: #333;
+  color: #333333;
   transition: all 0.3s ease-in;
   border-radius: 10px;
 }
@@ -475,7 +475,7 @@ input[type=checkbox]:checked:after {
   align-items: center;
   justify-content: center;
   font-size: 16px;
-  color: #333;
+  color: #333333;
   background-color: #f2f2f2;
   border: none;
   font-weight: 500;
@@ -507,7 +507,7 @@ section {
   width: 100%;
   font-size: 25px;
   font-weight: 500;
-  color: #333;
+  color: #333333;
   text-align: center;
   line-height: 150%;
 }
@@ -536,7 +536,7 @@ section {
   text-underline-offset: 3px;
   font-weight: 500;
   font-size: 15px;
-  color: #333;
+  color: #333333;
   line-height: 150%;
 }
 
@@ -551,9 +551,9 @@ section {
 .breadcrumbs__link {
   font-size: 12px;
   font-weight: 500;
-  color: #333;
+  color: #333333;
   text-decoration: underline;
-  text-decoration-color: #333;
+  text-decoration-color: #333333;
   text-underline-offset: 3px;
   text-wrap: nowrap;
   text-transform: capitalize;
@@ -600,7 +600,7 @@ section {
 .modal__content > h3 {
   font-size: 18px;
   font-weight: 500;
-  color: #333;
+  color: #333333;
 }
 .modal__content > span {
   font-size: 14px;
@@ -632,10 +632,10 @@ section {
   align-items: center;
   width: 100%;
   padding-bottom: 10px;
-  border-bottom: 1px solid #333;
+  border-bottom: 1px solid #333333;
 }
 .quantity > span {
-  color: #333;
+  color: #333333;
   font-size: 15px;
   font-weight: 500;
   width: 100%;
@@ -643,34 +643,32 @@ section {
 }
 
 .quantity__input {
-  height: 40px;
-  width: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 24px;
+  width: 50px;
   padding: 20px;
   font-size: 14px;
   font-weight: 400;
-  color: #333;
+  color: #333333;
   background: transparent;
   margin: 0;
   border: none;
   outline: none;
   text-align: center;
-  -moz-appearance: textfield;
-}
-.quantity__input::-webkit-outer-spin-button, .quantity__input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
 }
 
 .quantity__buttons {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  gap: 5px;
+  justify-content: center;
 }
 
 .quantity__arrow {
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   padding: 0;
   border: none;
   background: transparent;
@@ -680,7 +678,7 @@ section {
 }
 
 .support {
-  background: #eee;
+  background: #e0e0e0;
   width: 100%;
   padding: 30px 0;
 }
@@ -699,7 +697,7 @@ section {
   text-align: center;
   font-size: 20px;
   font-weight: 500;
-  color: #333;
+  color: #333333;
 }
 
 .support__categories {
@@ -719,7 +717,7 @@ section {
 }
 
 .suport__item {
-  background: #d5d5d5;
+  background: #c7c7c7;
   border-radius: 5px;
   padding: 10px;
   width: 100%;
@@ -753,7 +751,7 @@ section {
 .support__title {
   font-size: 16px;
   font-weight: 500;
-  color: #333;
+  color: #333333;
   height: 100%;
 }
 
@@ -775,14 +773,14 @@ section {
 .support__link {
   font-size: 14px;
   font-weight: 400;
-  color: #333;
+  color: #333333;
   text-decoration: underline;
 }
 
 .banner {
   width: 100%;
   padding: 5px 0;
-  background: #333;
+  background: #333333;
   transition: all 0.1s ease-in-out;
   position: fixed;
   top: 0;
@@ -799,7 +797,7 @@ header {
   width: 100%;
   height: 60px;
   z-index: 300;
-  background: #f2f2f2;
+  background: #e0e0e0;
   transition: all 0.1s ease-in-out;
   position: fixed;
   top: 0;
@@ -854,13 +852,13 @@ header {
   position: relative;
 }
 .header__btn > svg {
-  stroke: #333;
+  stroke: #333333;
 }
 
 .header__count {
   position: absolute;
-  background: #333;
-  color: #fff;
+  background: #333333;
+  color: #f2f2f2;
   font-size: 10px;
   width: 20px;
   height: 20px;
@@ -963,10 +961,10 @@ header {
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease-in-out;
-  background-color: #333;
+  background-color: #333333;
 }
 .leftbar__close:hover {
-  background: #1a1a1a;
+  background: #0d0d0d;
 }
 .leftbar__close > svg {
   stroke: #f2f2f2;
@@ -992,11 +990,11 @@ header {
   transition: all 0.3s ease-in-out;
   font-weight: 500;
   flex: 1;
-  background-color: #333;
+  background-color: #333333;
   color: #f2f2f2;
 }
 .leftbar__button:hover {
-  background: #1a1a1a;
+  background: #0d0d0d;
 }
 
 .leftbar__list {
@@ -1011,7 +1009,7 @@ header {
   width: 100%;
   height: 100%;
   flex: 1;
-  scrollbar-color: #333 transparent;
+  scrollbar-color: #333333 transparent;
   scrollbar-width: thin;
 }
 .leftbar__list::-webkit-scrollbar {
@@ -1024,7 +1022,7 @@ header {
   border-radius: 10px;
 }
 .leftbar__list::-webkit-scrollbar-thumb {
-  background-color: #333;
+  background-color: #333333;
   border-radius: 10px;
   border-left: 2px solid #f2f2f2;
 }
@@ -1032,7 +1030,7 @@ header {
 .leftbar__empty {
   font-size: 14px;
   font-weight: 400;
-  color: #333;
+  color: #333333;
 }
 
 .leftbar__item {
@@ -1045,10 +1043,10 @@ header {
   padding: 7px;
   border-radius: 5px;
   transition: all 0.3s ease-in-out;
-  background: #ccc;
+  background: #e0e0e0;
 }
 .leftbar__item:hover {
-  background: #b3b3b3;
+  background: #c7c7c7;
 }
 .leftbar__item:not(:last-child)::after {
   content: "";
@@ -1057,7 +1055,7 @@ header {
   display: block;
   position: absolute;
   top: calc(100% + 10px);
-  background: #ccc;
+  background: #e0e0e0;
 }
 
 .leftbar__link {
@@ -1076,7 +1074,7 @@ header {
   object-fit: contain;
   aspect-ratio: 1/1;
   border-radius: 3px;
-  background-color: #fff;
+  background-color: #f2f2f2;
 }
 @media (max-width: 576px) {
   .leftbar__link > img {
@@ -1104,16 +1102,16 @@ header {
 .leftbar__link--text > p {
   font-size: 11px;
   font-weight: 400;
-  color: #333;
+  color: #333333;
 }
 .leftbar__link--text > span {
-  color: #333;
+  color: #333333;
   font-weight: 400;
   font-size: 11px;
 }
 .leftbar__link--text > h4 {
   font-size: 14px;
-  color: #333;
+  color: #333333;
   font-weight: 500;
 }
 @media (max-width: 576px) {
@@ -1132,7 +1130,7 @@ header {
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease-in-out;
-  background: #333;
+  background: #333333;
 }
 .leftbar__delete > svg {
   stroke: #f2f2f2;
@@ -1150,19 +1148,19 @@ header {
   justify-content: space-between;
   padding-top: 15px;
   gap: 10px;
-  border-top: 1px solid #333;
+  border-top: 1px solid #333333;
 }
 
 .leftbar__total--text {
   font-size: 20px;
   font-weight: 500;
-  color: #333;
+  color: #333333;
 }
 .leftbar__total--text > span {
   font-size: 20px;
   font-weight: 400;
   margin-left: 10px;
-  color: #333;
+  color: #333333;
 }
 
 .navbar__list {
@@ -1183,7 +1181,7 @@ header {
 
 .dropdown__button,
 .navbar__link {
-  color: #333;
+  color: #333333;
   position: relative;
   text-decoration: none;
   font-size: 12px;
@@ -1198,7 +1196,7 @@ header {
 .dropdown__button > svg,
 .navbar__link > svg {
   width: 35px;
-  stroke: #333;
+  stroke: #333333;
 }
 @media (min-width: 992px) {
   .dropdown__button,
@@ -1269,7 +1267,7 @@ header {
   text-decoration: none;
   line-height: 150%;
   font-weight: 500;
-  color: #333;
+  color: #333333;
   position: relative;
   font-size: 0;
 }
@@ -1310,7 +1308,7 @@ header {
   left: 0;
   width: 0%;
   height: 2px;
-  background: #333;
+  background: #333333;
   transition: all 0.3s ease-in-out;
 }
 .dropdown__item:hover::after {
@@ -1388,11 +1386,11 @@ header {
   font-weight: 500;
   flex: 1;
   gap: 15px;
-  background: #333;
+  background: #333333;
   color: #f2f2f2;
 }
 .menu__close:hover {
-  background: #1a1a1a;
+  background: #333333, 10%;
 }
 .menu__close > svg {
   stroke: #f2f2f2;
@@ -1418,7 +1416,7 @@ header {
   width: 100%;
   height: 100%;
   flex: 1;
-  scrollbar-color: #333 transparent;
+  scrollbar-color: #333333 transparent;
   scrollbar-width: thin;
 }
 .menu__list::-webkit-scrollbar {
@@ -1428,7 +1426,7 @@ header {
   background: transparent;
 }
 .menu__list::-webkit-scrollbar-thumb {
-  background-color: #333;
+  background-color: #333333;
   border-radius: 10px;
   border-left: #f2f2f2;
 }
@@ -1443,7 +1441,7 @@ header {
   gap: 10px;
   border-radius: 7px;
   transition: all 0.3s ease-in-out;
-  background: #ccc;
+  background: #e0e0e0;
   border-radius: 7px;
   padding: 0 7px;
 }
@@ -1453,11 +1451,11 @@ header {
   object-fit: contain;
   aspect-ratio: 1/1;
   border-radius: 7px;
-  background: #fff;
+  background: #e0e0e0;
 }
 .menu__link > h4 {
   font-size: 18px;
-  color: #333;
+  color: #333333;
   width: 100%;
   height: 100%;
   display: flex;
@@ -1497,23 +1495,23 @@ header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #ccc;
-  color: #333;
+  background: #e0e0e0;
+  color: #f2f2f2;
   text-decoration: none;
   border-radius: 7px;
-  padding: 0 7px;
   z-index: 5;
 }
 
 .dropmenu__button--link {
   width: 100%;
+  height: 100%;
   flex: 1;
   text-decoration: none;
   gap: 10px;
   display: flex;
   align-items: center;
-  border-radius: 7px;
-  background-color: #ccc;
+  border-radius: 7px 0 0 7px;
+  background-color: #e0e0e0;
   transition: all 0.3s ease-in-out;
 }
 .dropmenu__button--link > img {
@@ -1521,12 +1519,12 @@ header {
   height: 40px;
   object-fit: contain;
   aspect-ratio: 1/1;
-  border-radius: 7px;
-  background: #fff;
+  background: #e0e0e0;
+  border-radius: 7px 0 0 7px;
 }
 .dropmenu__button--link > h4 {
   font-size: 18px;
-  color: #333;
+  color: #333333;
 }
 @media (max-width: 576px) {
   .dropmenu__button--link > h4 {
@@ -1535,21 +1533,21 @@ header {
 }
 
 .dropmenu__open {
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 7px;
+  border-radius: 0 7px 7px 0;
   border: none;
-  background: #b3b3b3;
+  background: #e0e0e0;
 }
 .dropmenu__open > svg {
-  stroke: #333;
+  stroke: #333333;
 }
 
 .dropmenu__list {
-  background: gray;
+  background: #bababa;
   z-index: 500;
   transform: scaleY(0);
   transform-origin: top;
@@ -1579,7 +1577,7 @@ header {
   align-items: center;
   position: relative;
   border-radius: 7px;
-  background-color: #ccc;
+  background-color: #e0e0e0;
   transform: scaleY(0);
   transform-origin: top;
   padding: 0 7px;
@@ -1594,7 +1592,7 @@ header {
 }
 .dropmenu__link > h4 {
   font-size: 18px;
-  color: #333;
+  color: #333333;
 }
 @media (max-width: 576px) {
   .dropmenu__link > h4 {
@@ -1648,6 +1646,7 @@ header {
   opacity: 1;
   transform: translateY(0);
 }
+
 .search__close--hidden {
   width: 100%;
   height: 100%;
@@ -1696,7 +1695,7 @@ header {
   top: 50%;
   right: 10px;
   transform: translateY(-50%) scale(0.8);
-  stroke: #333;
+  stroke: #333333;
 }
 .search__input > input {
   width: 100%;
@@ -1708,7 +1707,7 @@ header {
   padding: 0 40px 0 10px;
   outline: none;
   background: #f2f2f2;
-  color: #333;
+  color: #333333;
 }
 
 .search__close {
@@ -1723,7 +1722,7 @@ header {
   background: #f2f2f2;
 }
 .search__close > svg {
-  stroke: #333;
+  stroke: #333333;
 }
 
 .search__list {
@@ -1739,7 +1738,7 @@ header {
   height: 100%;
   flex: 1;
   scrollbar-width: thin;
-  scrollbar-color: #333 transparent;
+  scrollbar-color: #f2f2f2 transparent;
 }
 .search__list::-webkit-scrollbar {
   width: 10px;
@@ -1748,7 +1747,7 @@ header {
   background: transparent;
 }
 .search__list::-webkit-scrollbar-thumb {
-  background-color: #333;
+  background-color: #f2f2f2;
   border-radius: 10px;
   border-left: 2px solid transparent;
 }
@@ -1769,7 +1768,7 @@ header {
   background: #f2f2f2;
 }
 .search__item:hover {
-  background: #b3b3b3;
+  background: #d9d9d9;
 }
 
 .search__link {
@@ -1787,7 +1786,7 @@ header {
   object-fit: contain;
   aspect-ratio: 1/1;
   border-radius: 2.5px;
-  background-color: #fff;
+  background-color: #f2f2f2;
 }
 @media (max-width: 576px) {
   .search__link > img {
@@ -1811,14 +1810,14 @@ header {
 .search__link--top span {
   font-size: 11px;
   font-weight: 400;
-  color: #333;
+  color: #333333;
 }
 
 .search__link--bottom > h4,
 .search__link--bottom span {
   font-size: 14px;
   font-weight: 500;
-  color: #333;
+  color: #333333;
 }
 
 .search__link--top,
@@ -1832,7 +1831,7 @@ header {
 }
 
 .card {
-  background: #fff;
+  background: #f2f2f2;
   display: flex;
   flex-direction: column;
   scroll-snap-align: start;
@@ -1876,7 +1875,7 @@ header {
 }
 .card-text p {
   font-size: 14px;
-  color: #333;
+  color: #333333;
   font-weight: 500;
   text-wrap: nowrap;
 }
@@ -1885,7 +1884,7 @@ header {
 }
 .card-text > h3 {
   font-size: 14px;
-  color: #333;
+  color: #333333;
   font-weight: 500;
   width: 100%;
   flex: 1;
@@ -1903,7 +1902,7 @@ header {
   width: 100%;
   height: 40px;
   background: transparent;
-  border: 2px solid #333;
+  border: 2px solid #333333;
   text-transform: uppercase;
   font-size: 14px;
   letter-spacing: 0.7px;
@@ -1912,8 +1911,8 @@ header {
   transition: all 0.3s ease-in-out;
 }
 .card-info > .card-button:hover {
-  background: #333;
-  color: #f2f2f2;
+  background: #333333;
+  color: #e0e0e0;
 }
 
 .card-favorites {
@@ -1950,7 +1949,7 @@ header {
   position: absolute;
   top: 25px;
   left: 0;
-  color: #fff;
+  color: #f2f2f2;
   padding: 5px 10px;
   text-transform: uppercase;
   font-size: 12px;
@@ -1960,7 +1959,7 @@ header {
   background: #d2042d;
 }
 .card-status.out {
-  background: #000;
+  background: #333333;
 }
 
 .catalogue {
@@ -2007,11 +2006,11 @@ header {
   width: 40px;
   height: 40px;
   border-radius: 7px;
-  background-color: #f2f2f2;
+  background-color: #e0e0e0;
   border: none;
 }
 .controls__button > svg {
-  stroke: #333;
+  stroke: #333333;
 }
 
 .controls__search {
@@ -2021,10 +2020,10 @@ header {
   padding: 0 10px;
   font-size: 12px;
   font-weight: 500;
-  color: #333;
+  color: #333333;
   border: none;
   flex: 1;
-  background-color: #f2f2f2;
+  background-color: #e0e0e0;
   outline: none;
 }
 .controls__search::placeholder {
@@ -2091,7 +2090,7 @@ header {
   font-weight: 500;
   flex: 1;
   gap: 15px;
-  background: #333;
+  background: #333333;
   color: #f2f2f2;
 }
 .filter__close:hover {
@@ -2121,7 +2120,7 @@ header {
   width: 100%;
   height: 100%;
   flex: 1;
-  scrollbar-color: #333 transparent;
+  scrollbar-color: #333333 transparent;
   scrollbar-width: thin;
 }
 .filter__list::-webkit-scrollbar {
@@ -2131,7 +2130,7 @@ header {
   background: transparent;
 }
 .filter__list::-webkit-scrollbar-thumb {
-  background-color: #333;
+  background-color: #333333;
   border-radius: 10px;
   border-left: #f2f2f2;
 }
@@ -2146,7 +2145,7 @@ header {
   gap: 10px;
   border-radius: 7px;
   transition: all 0.3s ease-in-out;
-  background: #ccc;
+  background: #e0e0e0;
   border-radius: 7px;
   padding: 0 7px;
 }
@@ -2156,11 +2155,11 @@ header {
   object-fit: contain;
   aspect-ratio: 1/1;
   border-radius: 7px;
-  background: #fff;
+  background: #f2f2f2;
 }
 .filter__link > h4 {
   font-size: 18px;
-  color: #333;
+  color: #333333;
   width: 100%;
   height: 100%;
   display: flex;
@@ -2182,10 +2181,10 @@ header {
 }
 
 .filter__input:checked + .filter__link.sort__item {
-  background: #333;
+  background: #333333;
 }
 .filter__input:checked + .filter__link.sort__item > h4 {
-  color: #f2f2f2;
+  color: #e0e0e0;
 }
 
 .filter__bottom {
@@ -2209,7 +2208,7 @@ header {
   font-weight: 500;
   flex: 1;
   gap: 15px;
-  background: #333;
+  background: #333333;
   color: #f2f2f2;
 }
 .filter__apply:hover {
@@ -2231,8 +2230,8 @@ header {
   transition: all 0.3s ease-in-out;
   font-weight: 500;
   gap: 15px;
-  background: #333;
-  color: #f2f2f2;
+  background: #333333;
+  color: #333333;
 }
 .filter__reset:hover {
   background: #1a1a1a;
@@ -2268,8 +2267,8 @@ header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #ccc;
-  color: #333;
+  background: #e0e0e0;
+  color: #333333;
   text-decoration: none;
   border-radius: 7px;
   padding: 0 7px;
@@ -2284,7 +2283,7 @@ header {
   display: flex;
   align-items: center;
   border-radius: 7px;
-  background-color: #ccc;
+  background-color: #e0e0e0;
   transition: all 0.3s ease-in-out;
 }
 .dropfilter__button--link > img {
@@ -2293,11 +2292,11 @@ header {
   object-fit: contain;
   aspect-ratio: 1/1;
   border-radius: 7px;
-  background: #fff;
+  background: #f2f2f2;
 }
 .dropfilter__button--link > h4 {
   font-size: 18px;
-  color: #333;
+  color: #333333;
 }
 @media (max-width: 576px) {
   .dropfilter__button--link > h4 {
@@ -2313,14 +2312,14 @@ header {
   justify-content: center;
   border-radius: 7px;
   border: none;
-  background: #b3b3b3;
+  background: #e0e0e0;
 }
 .dropfilter__open > svg {
-  stroke: #333;
+  stroke: #333333;
 }
 
 .dropfilter__list {
-  background: gray;
+  background: #adadad;
   z-index: 500;
   transform: scaleY(0);
   transform-origin: top;
@@ -2350,7 +2349,7 @@ header {
   align-items: center;
   position: relative;
   border-radius: 7px;
-  background-color: #ccc;
+  background-color: #e0e0e0;
   transform: scaleY(0);
   transform-origin: top;
   padding: 0 7px;
@@ -2365,7 +2364,7 @@ header {
 }
 .dropfilter__link > h4 {
   font-size: 18px;
-  color: #333;
+  color: #333333;
 }
 @media (max-width: 576px) {
   .dropfilter__link > h4 {
@@ -2419,11 +2418,11 @@ header {
   font-size: 12px;
   font-weight: 400;
   border: none;
-  background: #f2f2f2;
+  background: #333333;
   padding: 0 10px;
 }
 .tag__button:hover {
-  background: #cccccc;
+  background: #0b2c0b;
 }
 .tag__button > svg {
   transform: scale(0.7);
@@ -2481,7 +2480,7 @@ header {
 .product__title {
   font-size: 30px;
   font-weight: 600;
-  color: #333;
+  color: #333333;
   margin: 0;
 }
 
@@ -2513,12 +2512,12 @@ header {
   justify-content: space-between;
   gap: 10px;
   padding-bottom: 10px;
-  border-bottom: 1px solid #333;
+  border-bottom: 1px solid #333333;
 }
 .product__price > span {
   font-size: 15px;
   font-weight: 500;
-  color: #333;
+  color: #333333;
 }
 
 .product__button {
@@ -2528,16 +2527,16 @@ header {
   width: 100%;
   height: 40px;
   background: transparent;
-  border: 2px solid #333;
+  border: 2px solid #333333;
   text-transform: uppercase;
   font-size: 14px;
   letter-spacing: 0.7px;
   font-weight: 500;
-  color: black;
+  color: #333333;
   transition: all 0.3s ease-in-out;
 }
 .product__button:hover {
-  background: #333;
+  background: #333333;
   color: #f2f2f2;
 }
 
@@ -2564,7 +2563,7 @@ header {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #8c8c8c;
+  background: gray;
   color: #f2f2f2;
   font-size: 14px;
   font-weight: 400;
@@ -2574,12 +2573,12 @@ header {
   transition: all 0.3s ease-in-out;
 }
 .tab__button.active {
-  background-color: #333;
+  background-color: #333333;
 }
 
 .tab__content {
   display: none;
-  background-color: #f2f2f2;
+  background-color: #e0e0e0;
   border-radius: 5px;
   padding: 10px;
   width: 100%;
@@ -2591,7 +2590,7 @@ header {
 .tab__info {
   font-size: 14px;
   font-weight: 400;
-  color: #333;
+  color: #333333;
   line-height: 150%;
 }
 
@@ -2600,7 +2599,7 @@ header {
   width: 100%;
 }
 .tab__table thead tr {
-  background-color: #333;
+  background-color: #333333;
   text-align: left;
   color: #f2f2f2;
   font-size: 14px;
@@ -2608,33 +2607,33 @@ header {
 }
 .tab__table thead tr th:first-child {
   border-radius: 5px 0 0 0;
-  outline: 1px solid #333;
+  outline: 1px solid #333333;
   outline-offset: -0.5px;
 }
 .tab__table thead tr th:last-child {
   border-radius: 0 5px 0 0;
-  outline: 1px solid #333;
+  outline: 1px solid #333333;
   outline-offset: -0.5px;
 }
 .tab__table tbody {
-  color: #333;
+  color: #333333;
   font-size: 14px;
   font-weight: 400;
 }
 .tab__table tbody tr:not(:last-child) th,
 .tab__table tbody tr:not(:last-child) td {
-  border-left: 1px solid #333;
-  border-right: 1px solid #333;
+  border-left: 1px solid #333333;
+  border-right: 1px solid #333333;
 }
 .tab__table tbody tr:last-child th,
 .tab__table tbody tr:last-child td {
-  outline: 1px solid #333;
+  outline: 1px solid #333333;
   border-radius: 0 0 5px 5px;
   outline-offset: -0.5px;
 }
 .tab__table tbody tr:nth-of-type(even) {
-  background-color: lightgray;
-  border-top: 1px solid #333;
+  background-color: #f2f2f2;
+  border-top: 1px solid #333333;
 }
 .tab__table th,
 .tab__table td {
@@ -2686,7 +2685,7 @@ header {
   justify-content: space-between;
   flex-direction: column;
   gap: 15px;
-  scrollbar-color: #333 transparent;
+  scrollbar-color: #333333 transparent;
   scrollbar-width: thin;
 }
 .basket::-webkit-scrollbar {
@@ -2699,7 +2698,7 @@ header {
   border-radius: 10px;
 }
 .basket::-webkit-scrollbar-thumb {
-  background-color: #333;
+  background-color: #333333;
   border-radius: 10px;
   border-left: 2px solid #f2f2f2;
 }
@@ -2713,7 +2712,7 @@ header {
 .basket__product {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  background: #ccc;
+  background: #e0e0e0;
   column-gap: 25px;
   padding: 10px;
   border-radius: 7px;
@@ -2742,7 +2741,7 @@ header {
   align-items: center;
   justify-content: space-between;
   padding-bottom: 10px;
-  border-bottom: 1px solid #333;
+  border-bottom: 1px solid #333333;
   gap: 10px;
 }
 .basket__top > div {
@@ -2756,7 +2755,7 @@ header {
 .basket__top > img {
   width: 50px;
   height: 50px;
-  background: #f2f2f2;
+  background: #e0e0e0;
   aspect-ratio: 1/1;
   object-fit: contain;
   object-position: center;
@@ -2777,7 +2776,7 @@ header {
 .basket__title {
   font-size: 22px;
   font-weight: 600;
-  color: #333;
+  color: #333333;
   margin: 0;
   text-decoration: none;
 }
@@ -2793,7 +2792,7 @@ header {
   justify-content: center;
   width: 40px;
   height: 40px;
-  background: #f2f2f2;
+  background: #c7c7c7;
   border: none;
   border-radius: 50px;
   transition: all 0.3s ease-in-out;
@@ -2804,14 +2803,14 @@ header {
   }
 }
 .basket__delete > svg {
-  stroke: #333;
+  stroke: #333333;
   transition: all 0.3s ease-in-out;
 }
 .basket__delete:hover {
-  background: #333;
+  background: #333333;
 }
 .basket__delete:hover > svg {
-  stroke: #f2f2f2;
+  stroke: #e0e0e0;
 }
 
 .basket__wish {
@@ -2842,11 +2841,11 @@ header {
   align-items: center;
   justify-content: center;
   height: 40px;
-  background: #f2f2f2;
+  background: #c7c7c7;
   font-size: 16px;
   border: none;
   transition: all 0.3s ease-in-out;
-  color: #333;
+  color: #333333;
   font-weight: 500;
 }
 @media (min-width: 992px) {
@@ -2856,7 +2855,7 @@ header {
 }
 .basket__delete--hidden:hover {
   background: #d2042d;
-  color: #f2f2f2;
+  color: #e0e0e0;
 }
 
 .basket__subtotal {
@@ -2866,7 +2865,7 @@ header {
   gap: 10px;
   font-size: 15px;
   font-weight: 400;
-  color: #333;
+  color: #333333;
   width: 100%;
 }
 @media (max-width: 992px) {
@@ -2885,7 +2884,7 @@ header {
   height: 100%;
   font-size: 16px;
   font-weight: 500;
-  color: #333;
+  color: #333333;
 }
 
 .details {
@@ -2897,7 +2896,7 @@ header {
   justify-content: space-between;
   gap: 10px;
   padding: 10px;
-  background: #333;
+  background: #333333;
   border-radius: 7px;
   max-height: 50vh;
   min-height: 400px;
@@ -2937,7 +2936,7 @@ header {
   justify-content: space-between;
   gap: 10px;
   padding: 10px;
-  background: #333;
+  background: #333333;
   border-radius: 7px;
   display: none;
 }
@@ -2960,7 +2959,7 @@ header {
   width: 100%;
   font-size: 25px;
   font-weight: 500;
-  color: #f2f2f2;
+  color: #e0e0e0;
   text-align: center;
   line-height: 150%;
 }
@@ -2977,12 +2976,12 @@ header {
   justify-content: space-between;
   gap: 10px;
   padding-bottom: 10px;
-  border-bottom: 1px solid #f2f2f2;
+  border-bottom: 1px solid #e0e0e0;
 }
 .details__text > h4 {
   font-size: 16px;
   font-weight: 500;
-  color: #f2f2f2;
+  color: #e0e0e0;
   margin: 0;
 }
 @media (max-width: 576px) {
@@ -2993,7 +2992,7 @@ header {
 .details__text > span {
   font-size: 16px;
   font-weight: 400;
-  color: #f2f2f2;
+  color: #e0e0e0;
   margin: 0;
 }
 @media (max-width: 576px) {
@@ -3014,9 +3013,9 @@ header {
   border: none;
   padding: 0 10px;
   font-size: 14px;
-  color: #333;
+  color: #333333;
   font-weight: 500;
-  background: #f2f2f2;
+  background: #e0e0e0;
   outline: none;
 }
 .voucher > button {
@@ -3029,8 +3028,8 @@ header {
   align-items: center;
   justify-content: center;
   font-size: 14px;
-  color: #f2f2f2;
-  background: #333;
+  color: #e0e0e0;
+  background: #333333;
   border: none;
   border-radius: 5px;
   transform: translateY(-50%);
@@ -3056,11 +3055,11 @@ header {
   align-items: center;
   justify-content: center;
   height: 40px;
-  background: #f2f2f2;
+  background: #e0e0e0;
   font-size: 14px;
   border: none;
   transition: all 0.3s ease-in-out;
-  color: #333;
+  color: #333333;
   font-weight: 500;
 }
 
@@ -3095,8 +3094,8 @@ header {
   width: min-content;
   height: 40px;
   padding: 0 10px;
-  background: #ccc;
-  color: #333;
+  background: #c7c7c7;
+  color: #333333;
   font-size: 16px;
   font-weight: 500;
   text-decoration: none;
@@ -3106,12 +3105,12 @@ header {
 }
 .checkout__link:hover,
 .checkout__button:hover {
-  background: #bfbfbf;
+  background: #adadad;
 }
 .checkout__link.active,
 .checkout__button.active {
-  background: #333;
-  color: #f2f2f2;
+  background: #333333;
+  color: #e0e0e0;
 }
 
 .checkout__container {
@@ -3143,7 +3142,7 @@ header {
   height: 100%;
   display: flex;
   flex-direction: column;
-  background: #ccc;
+  background: #c7c7c7;
   padding: 15px;
   gap: 15px;
   border-radius: 5px;
@@ -3185,13 +3184,13 @@ header {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1.5px solid #333;
-  color: #333;
+  border: 1.5px solid #333333;
+  color: #333333;
   font-size: 18px;
   font-weight: 500;
 }
 .checkout__top > h3 {
-  color: #333;
+  color: #333333;
   font-size: 18px;
   font-weight: 500;
 }
@@ -3209,8 +3208,8 @@ header {
   height: 40px;
   border: none;
   background: transparent;
-  border-bottom: 1.5px solid #333;
-  color: #333;
+  border-bottom: 1.5px solid #333333;
+  color: #333333;
   font-size: 14px;
   font-weight: 400;
   outline: none;
@@ -3227,14 +3226,14 @@ header {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  background: #f2f2f2;
+  background: #e0e0e0;
   padding: 5px 10px;
   gap: 15px;
   border-radius: 5px;
   grid-column: 1/3;
 }
 .checkout__checkbox > span {
-  color: #333;
+  color: #333333;
   font-size: 16px;
   font-weight: 500;
   flex: 1;
@@ -3252,30 +3251,30 @@ header {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  border: 2px solid #ccc;
+  border: 2px solid #c7c7c7;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #ccc;
+  color: #c7c7c7;
   font-size: 18px;
   font-weight: 500;
   transition: all 0.3s ease-in-out;
 }
 .step.active {
-  background: #333;
-  color: #f2f2f2;
-  border: 3px solid #333;
+  background: #333333;
+  color: #e0e0e0;
+  border: 3px solid #333333;
 }
 
 .step__line {
   width: 100%;
   flex: 1;
   height: 2px;
-  background: #ccc;
+  background: #c7c7c7;
   transition: all 0.3s ease-in-out;
 }
 .step__line.full {
-  background: #333;
+  background: #333333;
 }
 .step__line.half {
   background: rgb(51, 51, 51);
@@ -3294,7 +3293,7 @@ header {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  background: #ccc;
+  background: #e0e0e0;
   padding: 10px;
   border-radius: 5px;
   gap: 10px;
@@ -3302,7 +3301,7 @@ header {
 .payment__wrapper > span {
   font-size: 18px;
   font-weight: 500;
-  color: #333;
+  color: #333333;
 }
 
 .payment__text {
@@ -3319,7 +3318,7 @@ header {
   opacity: 0;
   visibility: hidden;
   height: 0;
-  background: #ccc;
+  background: #e0e0e0;
   padding: 10px;
   border-radius: 5px;
   margin-top: -7px;
@@ -3334,7 +3333,7 @@ header {
 .payment__text > h4 {
   width: 100%;
   text-align: left;
-  color: #333;
+  color: #333333;
   font-size: 18px;
   font-weight: 500;
 }
@@ -3365,7 +3364,7 @@ header {
 .total__message {
   width: 100%;
   text-align: left;
-  color: #333;
+  color: #333333;
   font-size: 16px;
   font-weight: 400;
 }
@@ -3377,7 +3376,7 @@ header {
   gap: 15px;
   padding: 10px;
   border-radius: 7px;
-  background: #333;
+  background: #333333;
   align-items: center;
   justify-content: flex-start;
   grid-area: 1;
@@ -3396,7 +3395,7 @@ header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #ccc;
+  background: #e0e0e0;
   padding: 10px;
   gap: 15px;
   border-radius: 7px;
@@ -3404,7 +3403,7 @@ header {
 .total__item > span {
   font-size: 15px;
   font-weight: 400;
-  color: #333;
+  color: #333333;
 }
 @media (max-width: 576px) {
   .total__item > span {
@@ -3416,7 +3415,7 @@ header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #ccc;
+  background: #e0e0e0;
   padding: 10px;
   gap: 15px;
   border-radius: 7px;
@@ -3425,7 +3424,7 @@ header {
 .total__product > img {
   width: 50px;
   height: 50px;
-  background: #f2f2f2;
+  background: #e0e0e0;
   aspect-ratio: 1/1;
   object-fit: contain;
   object-position: center;
@@ -3438,7 +3437,7 @@ header {
   text-align: left;
   font-size: 22px;
   font-weight: 600;
-  color: #333;
+  color: #333333;
   margin: 0;
 }
 @media (max-width: 576px) {
@@ -3482,7 +3481,7 @@ header {
 .main-slider__text > h3 {
   font-size: 30px;
   font-weight: 600;
-  color: #fff;
+  color: #f2f2f2;
 }
 @media (max-width: 768px) {
   .main-slider__text > h3 {
@@ -3492,7 +3491,7 @@ header {
 .main-slider__text > p {
   font-size: 20px;
   font-weight: 400;
-  color: #ccc;
+  color: lighen(#333333, 10%);
 }
 @media (max-width: 768px) {
   .main-slider__text > p {
@@ -3504,8 +3503,8 @@ header {
   padding: 10px 20px;
   font-size: 20px;
   font-weight: 500;
-  background: #fff;
-  color: #333;
+  background: #f2f2f2;
+  color: #333333;
   text-decoration: none;
   border: none;
   border-radius: 3px;
@@ -3555,7 +3554,7 @@ header {
   position: relative;
   width: 100%;
   height: 80vh;
-  background: #333;
+  background: #333333;
 }
 .main-slider__slide:first-child {
   z-index: 5;
@@ -3588,7 +3587,7 @@ header {
   z-index: 99;
 }
 .main-slider__button > svg {
-  stroke: #fff;
+  stroke: #f2f2f2;
   transform: scale(1.1);
 }
 .main-slider__button.prev {
@@ -3872,7 +3871,7 @@ header {
 }
 
 .footer {
-  background: #333;
+  background: #333333;
 }
 
 .footer__container {
@@ -3909,7 +3908,7 @@ header {
   justify-content: center;
 }
 .social__item > svg {
-  stroke: #333;
+  stroke: #333333;
   transform: scale(1.05);
 }
 
@@ -3938,7 +3937,7 @@ header {
   border: none;
   border-radius: 7px;
   background: #f2f2f2;
-  color: #333;
+  color: #333333;
   padding: 5px 90px 5px 10px;
   outline: none;
 }
@@ -3952,7 +3951,7 @@ header {
   right: 5px;
   z-index: 2;
   height: 35px;
-  background-color: #333;
+  background-color: #333333;
   color: #f2f2f2;
   font-size: 15px;
   font-weight: 400;
@@ -3988,7 +3987,7 @@ header {
 }
 
 .footer__title {
-  color: #fff;
+  color: #f2f2f2;
   line-height: 150%;
   font-weight: 500;
   font-size: 18px;
@@ -3996,7 +3995,7 @@ header {
 }
 
 .footer__link {
-  color: #cccccc;
+  color: #b3b3b3;
   line-height: 150%;
   font-weight: 400;
   font-size: 14px;
@@ -4007,7 +4006,7 @@ header {
   width: 100%;
   font-weight: 400;
   line-height: 150%;
-  color: #cccccc;
+  color: #b3b3b3;
   font-size: 14px;
   text-align: center;
 }

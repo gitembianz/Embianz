@@ -25,7 +25,7 @@ section {
   width: 100%;
   font-size: 25px;
   font-weight: 500;
-  color: #333;
+  color: $text;
   text-align: center;
   line-height: 150%;
 
@@ -38,7 +38,7 @@ section {
   width: 80%;
   font-size: 14px;
   font-weight: 400;
-  color: lighten($color: #333, $amount: 25%);
+  color: lighten($color: $text, $amount: 25%);
   text-align: center;
   line-height: 150%;
 
@@ -52,7 +52,7 @@ section {
     text-underline-offset: 3px;
     font-weight: 500;
     font-size: 15px;
-    color: #333;
+    color: $text;
     line-height: 150%;
   }
 }
