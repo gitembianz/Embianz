@@ -22,7 +22,7 @@
         <div class="header__container container">
             <!-------------------------Logo------------------------->
             <a class="logo" href="{{ url('/') }}">
-                <img src="/images/store/logo.svg" alt="Embianz Logo">
+                <img src="/images/store/logo-black.svg" alt="Embianz Logo">
             </a>
             <!-----------------------END-Logo----------------------->
             <!------------------------------------------------------>
@@ -192,15 +192,8 @@
                 </ul>
             @endif
         </div>
-        {{-- <button class="search__hidden-close"
-            style="
-        background: transparent;
-        width: 100%;
-        height: 100%;
-        border: none;
-    }">
-
-        </button> --}}
+        <button class="search__close--hidden" id="modalClose" type="button" wire:click.prevent="close">
+        </button>
     </div>
     <!-----------------------END-Searchbar---------------------->
     <!---------------------------------------------------------->
@@ -209,7 +202,7 @@
         <button class="leftbar__hidden--close" wire:click="$set('showcart', false)"></button>
         <div class="leftbar__content" id="basketContent">
             <div class="leftbar__top">
-                <a class="leftbar__button" href="{{ url("/cart") }}">Vizualizare cos de cumparaturi </a>
+                <a class="leftbar__button" href="{{ url('/cart') }}">Vizualizare cos de cumparaturi </a>
                 <button class="leftbar__close" id="basketClose" wire:click="$set('showcart', false)">
                     <svg>
                         <line x1="18" y1="6" x2="6" y2="18"></line>
