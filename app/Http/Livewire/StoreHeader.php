@@ -23,7 +23,7 @@ class StoreHeader extends Component
   public $session_id;
   public $closedStatusId;
   protected $listeners = [
-    'wishlistUpdated' => 'mount',
+    'wishlistUpdated' => 'refreshWishlist',
     'cartUpdated' => 'mount'
   ];
 
@@ -34,13 +34,13 @@ class StoreHeader extends Component
         'categories' => $this->categories,
         'objects' => $this->objects,
         'cats' => $this->cats,
-        'wishlistitems' => $this->wishlistItems,
+        'wishlistitems' => $this->wishlistitems,
         'cartItems' => $this->cartItems,
       ];
     } else {
       $data = [
         'categories' => $this->categories,
-        'wishlistitems' => $this->wishlistItems,
+        'wishlistitems' => $this->wishlistitems,
         'cartItems' => $this->cartItems,
       ];
     }
@@ -61,10 +61,15 @@ class StoreHeader extends Component
     $this->active = false;
     $this->search = '';
   }
-  public function getWishlistItemsProperty()
+  public function getWishlistitemsProperty()
   {
     $wishlist = Wishlist::where('session_id', $this->session_id)->pluck('product_id')->toArray();
-    return Product::whereIn('id', $wishlist)->with('media.location')->get();
+
+    if (!empty($wishlist)) {
+      return Product::whereIn('id', $wishlist)->with('media.location')->get();
+    }
+
+    return collect(); // Return an empty collection if $wishlist is empty
   }
   public function getCartItemsProperty()
   {
@@ -137,6 +142,10 @@ class StoreHeader extends Component
       ->where('status_id', '!=', $this->closedStatusId)
       ->latest()
       ->value('quantity_amount');
+  }
+  public function refreshWishlist()
+  {
+    // Refresh or update the wishlist data here
     $this->wishlistitems = $this->getWishlistItemsProperty();
   }
   public function getCategoriesProperty()
