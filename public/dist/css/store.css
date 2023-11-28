@@ -546,6 +546,7 @@ section {
   justify-content: flex-start;
   flex-wrap: wrap;
   gap: 5px;
+  padding-top: 20px;
 }
 
 .breadcrumbs__link {
@@ -3478,7 +3479,7 @@ header {
 .main-slider__text > p {
   font-size: 20px;
   font-weight: 400;
-  color: lighen(#333333, 10%);
+  color: #b3b3b3;
 }
 @media (max-width: 768px) {
   .main-slider__text > p {

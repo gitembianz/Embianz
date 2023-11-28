@@ -161,10 +161,10 @@
                                 <button type="submit">
                                     Aplica
                                 </button>
-                                @if ($message)
-                                    <p style="color: red; position :absolute; top:40px">{{ $message }}</p>
-                                @endif
                             </form>
+                            @if ($message)
+                                <p style="color: red; text-align: center; line-height: 150%">{{ $message }}</p>
+                            @endif
                         @endif
                         <a class="details__button" wire:click="continue()">Continua</a>
                     </div>
