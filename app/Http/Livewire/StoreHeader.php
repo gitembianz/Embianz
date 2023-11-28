@@ -157,7 +157,7 @@ class StoreHeader extends Component
     $limit = $limitSetting && is_numeric($limitSetting->value) ? $limitSetting->value : 5;
 
     // Use eager loading to load relationships with the main query
-    return $this->categoriesQuery->limit($limit)->with('media.location', 'subcategory')->get();
+    return $this->categoriesQuery->limit($limit)->with('subcategory.category.media.location')->get();
   }
 
   public function getCategoriesQueryProperty()
