@@ -22,7 +22,7 @@
         <div class="header__container container">
             <!-------------------------Logo------------------------->
             <a class="logo" href="{{ url('/') }}">
-                <img src="/images/store/logo.svg" alt="Embianz Logo">
+                <img src="/images/store/logo-black.svg" alt="Embianz Logo">
             </a>
             <!-----------------------END-Logo----------------------->
             <!------------------------------------------------------>
@@ -192,6 +192,8 @@
                 </ul>
             @endif
         </div>
+        <button class="search__close--hidden" id="modalClose" type="button" wire:click.prevent="close">
+        </button>
     </div>
     <!-----------------------END-Searchbar---------------------->
     <!---------------------------------------------------------->
