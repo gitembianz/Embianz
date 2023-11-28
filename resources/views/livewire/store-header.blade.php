@@ -378,8 +378,8 @@
                             <div class="dropmenu__list">
                                 @foreach ($category->subcategory as $subcategory)
                                     <a class="dropmenu__link" href="/storeproducts/{{ $subcategory->category_id }}">
-                                        @if ($subcategory->parrent->media_count != 0)
-                                            @foreach ($subcategory->parrent->media as $media)
+                                        @if ($subcategory->category->media_count != 0)
+                                            @foreach ($subcategory->category->media as $media)
                                                 @if ($media->location->location == 'main')
                                                     @if ($media->external)
                                                         <img src="{{ $media->path }}" alt="{{ $media->path }}">

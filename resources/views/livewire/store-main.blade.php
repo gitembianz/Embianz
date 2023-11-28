@@ -78,7 +78,7 @@
                             <div class="card-slider__slide">
                                 <div class="card" role="listitem">
                                     <a href="/product/{{ $product->id }}">
-                                        @if ($product->media_count != 0)
+                                        @if ($product->media->count() != 0)
                                             @foreach ($product->media as $media)
                                                 @if ($media->location->location == 'main')
                                                     @if ($media->external)

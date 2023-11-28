@@ -472,7 +472,7 @@
                                             @endif
                                             @if ($this->showColumn('Short Description'))
                                                 <td class="table__description" data-title="Description">
-                                                    {{ $subcat->parrent->short_description }}
+                                                    {{ $subcat->category->short_description }}
                                                 </td>
                                             @endif
                                             @if ($this->showColumn('Created At'))

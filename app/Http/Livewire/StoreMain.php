@@ -68,18 +68,13 @@ class StoreMain extends Component
       'subcategories' => $this->subcategories
     ]);
   }
+
+
   public function getSubcategoriesProperty()
   {
     if ($this->category) {
-      return $this->category->subcategory;
-    }
-  }
-
-  public function getSubcategoriesQueryProperty()
-  {
-    if ($this->category) {
       return Subcategory::where('parrent_id', $this->category->id)
-        ->with('category.media.location', 'category')
+        ->with('category.media.location')
         ->get();
     }
   }
