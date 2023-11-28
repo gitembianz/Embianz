@@ -71,9 +71,9 @@
             <div class="footer__bottom">
                 <div class="footer__list">
                     <h3 class="footer__title">Serviciu clienți</h3>
-                    <a class="footer__link" href="#">Termeni și Condiții</a>
-                    <a class="footer__link" href="#">Întrebări Frecvente</a>
-                    <a class="footer__link" href="#">Politica de confidențialitate</a>
+                    <a class="footer__link" href="{{ url('/cookie') }}">Politica de Cookies</a>
+                    <a class="footer__link" href="{{ url('/faq') }}">Întrebări Frecvente</a>
+                    <a class="footer__link" href="{{ url('privacy') }}">Politica de confidențialitate</a>
                 </div>
                 <div class="footer__list">
                     <h3 class="footer__title">Informații</h3>

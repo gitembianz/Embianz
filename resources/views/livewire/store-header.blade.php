@@ -21,7 +21,7 @@
     <header>
         <div class="header__container container">
             <!-------------------------Logo------------------------->
-            <a class="logo" href="{{ url("/") }}">
+            <a class="logo" href="{{ url('/') }}">
                 <img src="/images/store/logo.svg" alt="Embianz Logo">
             </a>
             <!-----------------------END-Logo----------------------->
@@ -82,7 +82,7 @@
                     </svg>
                 </button>
                 <button class="header__btn" wire:click="$set('showwis', true)" id="wishOpen">
-                    @if ($wishlistitems)
+                    @if ($wishlistitems->count() > 0)
                         <span class="header__count" id="wishlistCount">{{ $wishlistitems->count() }}</span>
                     @endif
                     <svg>
@@ -124,7 +124,7 @@
                                     <a class="search__link" href="/product/{{ $product->id }}">
                                         @if (count($product->media) > 0)
                                             @foreach ($product->media as $media)
-                                                @if ($media->location->location == "search")
+                                                @if ($media->location->location == 'search')
                                                     @if ($media->external)
                                                         <img src="{{ $media->path }}" alt="{{ $media->path }}">
                                                     @else
@@ -164,7 +164,7 @@
                                     <a class="search__link" href="/storeproducts/{{ $category->id }}">
                                         @if (count($category->media) > 0)
                                             @foreach ($category->media as $media)
-                                                @if ($media->location->location == "search")
+                                                @if ($media->location->location == 'search')
                                                     @if ($media->external)
                                                         <img src="{{ $media->path }}" alt="{{ $media->path }}">
                                                     @else
@@ -187,7 +187,7 @@
                             @endforeach
                         @endif
                     @else
-                        <span>{{ __("Niciun element gasit") }}</span>
+                        <span>{{ __('Niciun element gasit') }}</span>
                     @endif
                 </ul>
             @endif
@@ -218,7 +218,6 @@
                 </button>
             </div>
 
-
             <ul class="leftbar__list">
                 @if ($cartItems->isEmpty())
                     <span class="leftbar__empty">Cosul de cumparaturi este gol</span>
@@ -229,7 +228,7 @@
                             <a class="leftbar__link" href="/product/{{ $cartItem->product->id }}">
                                 @if (count($cartItem->product->media) > 0)
                                     @foreach ($cartItem->product->media as $media)
-                                        @if ($media->location->location == "main")
+                                        @if ($media->location->location == 'main')
                                             @if ($media->external)
                                                 <img class="cart__list--img" src="{{ $media->path }}"
                                                     alt="{{ $media->path }}">
@@ -301,7 +300,7 @@
             </div>
 
             <ul class="leftbar__list">
-                @if (!$wishlistitems)
+                @if ($wishlistitems->isEmpty())
                     <span class="leftbar__empty">Niciun produs în lista de favorite </span>
                 @else
                     @foreach ($wishlistitems as $product)
@@ -309,7 +308,7 @@
                             <a class="leftbar__link wishlist__link" href="/product/{{ $product->id }}">
                                 @if (count($product->media) > 0)
                                     @foreach ($product->media as $media)
-                                        @if ($media->location->location == "main")
+                                        @if ($media->location->location == 'main')
                                             @if ($media->external)
                                                 <img class="heart__list--img" src="{{ $media->path }}"
                                                     alt="{{ $media->path }}">
@@ -364,7 +363,7 @@
                                 <a class="dropmenu__button--link" href="/storeproducts/{{ $category->id }}">
                                     @if (count($category->media) > 0)
                                         @foreach ($category->media as $media)
-                                            @if ($media->location->location == "main")
+                                            @if ($media->location->location == 'main')
                                                 @if ($media->external)
                                                     <img src="{{ $media->path }}" alt="{{ $media->path }}">
                                                 @else
@@ -388,7 +387,7 @@
                                     <a class="dropmenu__link" href="/storeproducts/{{ $subcategory->category_id }}">
                                         @if (count($subcategory->parrent->media) > 0)
                                             @foreach ($subcategory->parrent->media as $media)
-                                                @if ($media->location->location == "main")
+                                                @if ($media->location->location == 'main')
                                                     @if ($media->external)
                                                         <img src="{{ $media->path }}" alt="{{ $media->path }}">
                                                     @else
@@ -411,7 +410,7 @@
                         <a class="menu__link" href="/storeproducts/{{ $category->id }}">
                             @if (count($category->media) > 0)
                                 @foreach ($category->media as $media)
-                                    @if ($media->location->location == "main")
+                                    @if ($media->location->location == 'main')
                                         @if ($media->external)
                                             <img src="{{ $media->path }}" alt="{{ $media->path }}">
                                         @else

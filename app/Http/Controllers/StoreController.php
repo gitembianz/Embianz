@@ -30,6 +30,18 @@ class StoreController extends Controller
   {
     return view('store.complete');
   }
+  public function faq()
+  {
+    return view('store.faq');
+  }
+  public function cookie()
+  {
+    return view('store.cookie');
+  }
+  public function privacy()
+  {
+    return view('store.privacy');
+  }
   public function products($categoryId = null)
   {
     $category = Category::find($categoryId);
