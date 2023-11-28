@@ -18,8 +18,8 @@
                     <div class="main-slider__wrapper">
                         @foreach ($subcategories as $item)
                             <div class="main-slider__slide">
-                                @if (count($item->media) > 0)
-                                    @foreach ($item->media as $media)
+                                @if ($item->category->media)
+                                    @foreach ($item->category->media as $media)
                                         @if ($media->location->location == 'details')
                                             @if ($media->external)
                                                 <img src="{{ $media->path }}" draggable="false" alt="{{ $media->path }}">
@@ -33,7 +33,7 @@
                                 @endif
                                 <div class="main-slider__text container">
                                     <h3>{{ $item->name }}</h3>
-                                    <p>{{ $item->short_description }}</p>
+                                    <p>{{ $item->category->short_description }}</p>
                                     <a class="main-slider__link"
                                         href="/storeproducts/{{ $item->id }}">Acceseaza!</a>
                                 </div>
@@ -41,7 +41,6 @@
                         @endforeach
                     </div>
                     <div class="main-slider__button prev">
-
                         <svg>
                             <polyline points="15 18 9 12 15 6"></polyline>
                         </svg>
@@ -54,6 +53,7 @@
                 </div>
             @endif
         @endif
+
         <!-------------------- End Slider Images ------------------->
         <!---------------------------------------------------------->
         <!---------------------------------------------------------->
@@ -78,7 +78,7 @@
                             <div class="card-slider__slide">
                                 <div class="card" role="listitem">
                                     <a href="/product/{{ $product->id }}">
-                                        @if (count($product->media) > 0)
+                                        @if ($product->media_count != 0)
                                             @foreach ($product->media as $media)
                                                 @if ($media->location->location == 'main')
                                                     @if ($media->external)
