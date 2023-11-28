@@ -1,5 +1,5 @@
 .support {
-  background: #eee;
+  background: $secondary;
   width: 100%;
   padding: 30px 0;
 }
@@ -18,7 +18,7 @@
   text-align: center;
   font-size: 20px;
   font-weight: 500;
-  color: #333;
+  color: $text;
 }
 
 
@@ -39,7 +39,7 @@
 }
 
 .suport__item {
-  background: darken(#eee, 10%);
+  background: darken($secondary, 10%);
   border-radius: 5px;
   padding: 10px;
   width: 100%;
@@ -75,14 +75,14 @@
 .support__title {
   font-size: 16px;
   font-weight: 500;
-  color: #333;
+  color: $text;
   height: 100%;
 }
 
 .support__subtitle {
   font-size: 14px;
   font-weight: 400;
-  color: lighten($color: #333, $amount: 20%);
+  color: lighten($color: $text, $amount: 20%);
 }
 
 // ----------------------------------------------
@@ -99,6 +99,6 @@
 .support__link {
   font-size: 14px;
   font-weight: 400;
-  color: #333;
+  color: $text;
   text-decoration: underline;
 }

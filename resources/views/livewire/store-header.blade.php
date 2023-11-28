@@ -192,6 +192,15 @@
                 </ul>
             @endif
         </div>
+        {{-- <button class="search__hidden-close"
+            style="
+        background: transparent;
+        width: 100%;
+        height: 100%;
+        border: none;
+    }">
+
+        </button> --}}
     </div>
     <!-----------------------END-Searchbar---------------------->
     <!---------------------------------------------------------->
@@ -200,7 +209,7 @@
         <button class="leftbar__hidden--close" wire:click="$set('showcart', false)"></button>
         <div class="leftbar__content" id="basketContent">
             <div class="leftbar__top">
-                <a class="leftbar__button" href="{{ url('/cart') }}">Vizualizare cos de cumparaturi </a>
+                <a class="leftbar__button" href="{{ url("/cart") }}">Vizualizare cos de cumparaturi </a>
                 <button class="leftbar__close" id="basketClose" wire:click="$set('showcart', false)">
                     <svg>
                         <line x1="18" y1="6" x2="6" y2="18"></line>

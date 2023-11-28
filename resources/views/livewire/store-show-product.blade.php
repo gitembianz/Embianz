@@ -1,5 +1,5 @@
 <div>
-     <section>
+    <section>
         <div class="breadcrumbs container">
             <a class="breadcrumbs__link" href="{{ url("/") }}">
                 Acasa
@@ -7,7 +7,7 @@
             <a class="breadcrumbs__link" href="{{ url("/storeproducts") }}">
                 Produse
             </a>
-                <a class="breadcrumbs__link">{{ $product->name }}</a>
+            <a class="breadcrumbs__link">{{ $product->name }}</a>
         </div>
     </section>
     <section class="product container">
@@ -47,8 +47,8 @@
             <div class="product__text">
                 <div>
                     @if ($product->product_categories->first())
-                        
-                    <span class="product__subtitle">{{ $product->product_categories->first()->category->name }}</span>
+                        <span
+                            class="product__subtitle">{{ $product->product_categories->first()->category->name }}</span>
                     @endif
                     <h1 class="product__title">{{ $product->name }}</h1>
                 </div>
@@ -75,16 +75,21 @@
             @if ($product->product_prices->first() !== null)
                 <div class="quantity">
                     <span>Quantity</span>
-                    <input class="quantity__input" type="number" name="count" id="count" wire:model="quantity" readonly>
+                    <span class="quantity__input" name="count" id="count">
+                        {{ $quantity }}
+                    </span>
                     <div class="quantity__buttons">
-                        <button class="quantity__arrow" wire:click="incrementCounter">
-                            <svg>
-                                <polyline points="18 15 12 9 6 15"></polyline>
-                            </svg>
-                        </button>
                         <button class="quantity__arrow" wire:click="decrementCounter">
                             <svg>
-                                <polyline points="6 9 12 15 18 9"></polyline>
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="8" y1="12" x2="16" y2="12"></line>
+                            </svg>
+                        </button>
+                        <button class="quantity__arrow" wire:click="incrementCounter">
+                            <svg>
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="8" x2="12" y2="16"></line>
+                                <line x1="8" y1="12" x2="16" y2="12"></line>
                             </svg>
                         </button>
                     </div>
