@@ -94,6 +94,9 @@
   route::get('/product/{id}/', [StoreController::class, 'show'])->name('product');
   Route::get('/storeproducts/{category?}', [StoreController::class, 'products']);
   route::get('/terms', [StoreController::class, 'terms'])->name('terms');
+  route::get('/faq', [StoreController::class, 'faq'])->name('faq');
+  route::get('/cookie', [StoreController::class, 'cookie'])->name('cookie');
+  route::get('/privacy', [StoreController::class, 'privacy'])->name('privacy');
 
 
 

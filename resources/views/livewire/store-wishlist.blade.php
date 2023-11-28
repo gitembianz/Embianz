@@ -3,7 +3,7 @@
         <!------------------------------------------------------>
         <!------------------- Basket Section ------------------->
         <div class="section__header container">
-            <h2 class="section__title">Favoritele alese!</h2>
+            <h2 class="section__title">Produse favorite</h2>
             <p class="section__text">
                 Vezi produsele alese mai jos
             </p>
@@ -16,14 +16,14 @@
             <!------------------------------------------------------>
             <!------------------- Basket Products ------------------>
             @if ($wishlistitems->isEmpty())
-                <span class="basket__empty">No products</span>
+                <span class="basket__empty">Lista este goala</span>
             @else
                 @foreach ($wishlistitems as $product)
                     <div class="basket__product">
                         <div class="basket__top">
                             @if (count($product->media) > 0)
                                 @foreach ($product->media as $media)
-                                    @if ($media->location->location == "main")
+                                    @if ($media->location->location == 'main')
                                         @if ($media->external)
                                             <img src="{{ $media->path }}" alt="{{ $media->path }}">
                                         @else
@@ -44,7 +44,7 @@
                                         price unavailable
                                     @endif
                                 </span>
-                                    <a href="/product/{{ $product->id }}" class="basket__title">{{ $product->name }}</a>
+                                <a href="/product/{{ $product->id }}" class="basket__title">{{ $product->name }}</a>
                             </div>
                             <button class="basket__delete" wire:click="removeFromWishlist({{ $product->id }})">
                                 <svg>

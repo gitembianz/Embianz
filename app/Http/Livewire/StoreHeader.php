@@ -29,13 +29,21 @@ class StoreHeader extends Component
 
   public function render()
   {
-    $data = [
-      'categories' => $this->categories,
-      'objects' => $this->objects,
-      'cats' => $this->cats,
-      'wishlistitems' => $this->wishlistItems,
-      'cartItems' => $this->cartItems,
-    ];
+    if ($this->active) {
+      $data = [
+        'categories' => $this->categories,
+        'objects' => $this->objects,
+        'cats' => $this->cats,
+        'wishlistitems' => $this->wishlistItems,
+        'cartItems' => $this->cartItems,
+      ];
+    } else {
+      $data = [
+        'categories' => $this->categories,
+        'wishlistitems' => $this->wishlistItems,
+        'cartItems' => $this->cartItems,
+      ];
+    }
 
     return view('livewire.store-header', $data);
   }

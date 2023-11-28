@@ -6,9 +6,9 @@
         <section>
             <div class="checkout container">
                 <div class="section__header container">
-                    <h2 class="section__title">Something went wrong!</h2>
+                    <h2 class="section__title">Ups, ceva nu a mers bine!</h2>
                     <a class="section__text" href="/home">
-                        Please go back
+                        Va rugam sa va intoarceti la pagina initiala
                     </a>
                 </div>
             </div>
@@ -20,7 +20,7 @@
         <!----------------------- Checkout --------------------->
         <section>
             <div class="section__header container">
-                <h2 class="section__title">Pagina Checkout</h2>
+                <h2 class="section__title">Plasare comanda</h2>
                 <p class="section__text">
                     Controleaza datele
                 </p>
@@ -33,7 +33,7 @@
                 <!-------------------- Step Numbers -------------------->
                 <div class="step__container">
                     <div class="step active">1</div>
-                    <span class="step__line full"></span>
+                    <span class="step__line @if ($step == 1) half @else full @endif"></span>
                     <div class="step @if ($step > 1 || $step == 3) active @endif">2</div>
                     <span class="step__line @if ($step == 3) full @endif"></span>
                     <div class="step @if ($step == 3) active @endif">3</div>
@@ -44,14 +44,14 @@
                 <!-------------------- Step First ---------------------->
                 @if ($step == 1)
                     <div class="section__header">
-                        <h2 class="section__title">Delivery details</h2>
+                        <h2 class="section__title">Detalii de livrare</h2>
                     </div>
                     <div class="checkout__header">
                         <div class="checkout__navigation">
                             <button class="checkout__button @if ($individual) active @endif"
-                                wire:click="showindividual()">Legal</button>
+                                wire:click="showindividual()">Persoana fizica</button>
                             <button class="checkout__button @if ($juridic) active @endif"
-                                wire:click="showjuridic()">Juridic</button>
+                                wire:click="showjuridic()"> Persoana Juridica</button>
                         </div>
                         <div class="checkout__navigation">
                             <button class="checkout__button" wire:click="resetForm">
@@ -77,34 +77,34 @@
                             <div class="checkout__top">
                                 <span>1</span>
                                 <h3>
-                                    Billing Contact &#9998;
+                                    Contact de facturare &#9998;
                                 </h3>
                             </div>
                             <!----------- End Checkout Header Name ------------->
                             <!---------------------------------------------------->
                             <!------------- Checkout List of Items --------------->
                             <div class="checkout__item">
-                                <input type="text" wire:model="individual_billing_first" placeholder="First Name">
+                                <input type="text" wire:model="individual_billing_first" placeholder="Nume">
                                 <span>
-                                    @error("individual_billing_first")
+                                    @error('individual_billing_first')
                                         {{ $message }}
                                     @enderror
                                 </span>
                             </div>
                             <!---------------------------------------------------->
                             <div class="checkout__item">
-                                <input type="text" wire:model="individual_billing_last" placeholder="Last Name">
+                                <input type="text" wire:model="individual_billing_last" placeholder="Prenume">
                                 <span>
-                                    @error("individual_billing_last")
+                                    @error('individual_billing_last')
                                         {{ $message }}
                                     @enderror
                                 </span>
                             </div>
                             <!---------------------------------------------------->
                             <div class="checkout__item">
-                                <input type="tel" wire:model="individual_billing_phone" placeholder="Phone">
+                                <input type="tel" wire:model="individual_billing_phone" placeholder="Telefon">
                                 <span>
-                                    @error("individual_billing_phone")
+                                    @error('individual_billing_phone')
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -113,7 +113,7 @@
                             <div class="checkout__item">
                                 <input type="email" wire:model="individual_billing_email" placeholder="Email">
                                 <span>
-                                    @error("individual_billing_email")
+                                    @error('individual_billing_email')
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -128,7 +128,7 @@
                             <div class="checkout__top">
                                 <span>2</span>
                                 <h3>
-                                    Billing Address &#9998;
+                                    Adresa de facturare &#9998;
                                 </h3>
                             </div>
                             <!----------- End Checkout Header Name ------------->
@@ -137,33 +137,34 @@
                             <div class="checkout__item">
                                 <input type="text" wire:model="individual_billing_address1" placeholder="Address 1*">
                                 <span>
-                                    @error("individual_billing_address1")
+                                    @error('individual_billing_address1')
                                         {{ $message }}
                                     @enderror
                                 </span>
                             </div>
                             <!---------------------------------------------------->
                             <div class="checkout__item">
-                                <input type="text" wire:model="individual_billing_address2" placeholder="Address 2">
+                                <input type="text" wire:model="individual_billing_address2"
+                                    placeholder="Address 2 (optional)">
                             </div>
                             <!---------------------------------------------------->
                             <div class="checkout__item">
-                                <input type="text" wire:model="individual_billing_country" placeholder="Country">
+                                <input type="text" wire:model="individual_billing_country" placeholder="Tara">
                                 <span>
-                                    @error("individual_billing_country")
+                                    @error('individual_billing_country')
                                         {{ $message }}
                                     @enderror
                                 </span>
                             </div>
                             <!---------------------------------------------------->
                             <div class="checkout__item">
-                                <input type="text" wire:model="individual_billing_county" placeholder="County">
+                                <input type="text" wire:model="individual_billing_county" placeholder="Judet">
                             </div>
                             <!---------------------------------------------------->
                             <div class="checkout__item">
-                                <input type="text" wire:model="individual_billing_city" placeholder="City">
+                                <input type="text" wire:model="individual_billing_city" placeholder="Oras">
                                 <span>
-                                    @error("individual_billing_city")
+                                    @error('individual_billing_city')
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -171,9 +172,9 @@
                             <!---------------------------------------------------->
                             <div class="checkout__item">
                                 <input type="text" placeholder="Post Code" wire:model="individual_billing_zipcode"
-                                    placeholder="Post Code">
+                                    placeholder="Cod Postal">
                                 <span>
-                                    @error("individual_billing_zipcode")
+                                    @error('individual_billing_zipcode')
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -185,7 +186,7 @@
                         <!---------------- Checkout Checkbox ----------------->
                         <label class="checkout__checkbox">
                             <input type="checkbox" wire:model="individual_identic">
-                            <span>Shipping address is identical to Billing Address</span>
+                            <span>Adresa de livrare este identică cu adresa de facturare</span>
                         </label>
                         <!-------------- End Checkout Checkbox --------------->
                         <!---------------------------------------------------->
@@ -196,35 +197,34 @@
                                 <div class="checkout__top">
                                     <span>3</span>
                                     <h3>
-                                        Shipping Contact &#9998;
+                                        Contact de livrare &#9998;
                                     </h3>
                                 </div>
                                 <!----------- End Checkout Header Name ------------->
                                 <!---------------------------------------------------->
                                 <!------------- Checkout List of Items --------------->
                                 <div class="checkout__item">
-                                    <input type="text" wire:model="individual_shipping_first"
-                                        placeholder="First Name">
+                                    <input type="text" wire:model="individual_shipping_first" placeholder="Nume">
                                     <span>
-                                        @error("individual_shipping_first")
+                                        @error('individual_shipping_first')
                                             {{ $message }}
                                         @enderror
                                     </span>
                                 </div>
                                 <!---------------------------------------------------->
                                 <div class="checkout__item">
-                                    <input type="text" wire:model="individual_shipping_last" placeholder="Last Name">
+                                    <input type="text" wire:model="individual_shipping_last" placeholder="Prenume">
                                     <span>
-                                        @error("individual_shipping_last")
+                                        @error('individual_shipping_last')
                                             {{ $message }}
                                         @enderror
                                     </span>
                                 </div>
                                 <!---------------------------------------------------->
                                 <div class="checkout__item">
-                                    <input type="tel" wire:model="individual_shipping_phone" placeholder="Phone">
+                                    <input type="tel" wire:model="individual_shipping_phone" placeholder="Telefon">
                                     <span>
-                                        @error("individual_shipping_phone")
+                                        @error('individual_shipping_phone')
                                             {{ $message }}
                                         @enderror
                                     </span>
@@ -233,7 +233,7 @@
                                 <div class="checkout__item">
                                     <input type="email" wire:model="individual_shipping_email" placeholder="Email">
                                     <span>
-                                        @error("individual_shipping_email")
+                                        @error('individual_shipping_email')
                                             {{ $message }}
                                         @enderror
                                     </span>
@@ -248,7 +248,7 @@
                                 <div class="checkout__top">
                                     <span>4</span>
                                     <h3>
-                                        Shipping Address &#9998;
+                                        Adresa de livrare &#9998;
                                     </h3>
                                 </div>
                                 <!----------- End Checkout Header Name ------------->
@@ -257,21 +257,21 @@
                                 <div class="checkout__item">
                                     <input type="text" wire:model="individual_shipping_address1"
                                         placeholder="Address 1*">
-                                    @error("individual_shipping_address1")
+                                    @error('individual_shipping_address1')
                                         {{ $message }}
                                     @enderror
                                 </div>
                                 <!---------------------------------------------------->
                                 <div class="checkout__item">
                                     <input type="text" wire:model="individual_shipping_address2"
-                                        placeholder="Address 2">
+                                        placeholder="Address 2 (optional)">
                                 </div>
                                 <!---------------------------------------------------->
                                 <div class="checkout__item">
                                     <input type="text" wire:model="individual_shipping_country"
-                                        placeholder="Country">
+                                        placeholder="Tara">
                                     <span>
-                                        @error("individual_shipping_country")
+                                        @error('individual_shipping_country')
                                             {{ $message }}
                                         @enderror
                                     </span>
@@ -279,13 +279,13 @@
                                 <!---------------------------------------------------->
                                 <div class="checkout__item">
                                     <input type="text" wire:model="individual_shipping_county"
-                                        placeholder="County"">
+                                        placeholder="Judet">
                                 </div>
                                 <!---------------------------------------------------->
                                 <div class="checkout__item">
-                                    <input type="text" wire:model="individual_shipping_city" placeholder="City">
+                                    <input type="text" wire:model="individual_shipping_city" placeholder="Oras">
                                     <span>
-                                        @error("individual_shipping_city")
+                                        @error('individual_shipping_city')
                                             {{ $message }}
                                         @enderror
                                     </span>
@@ -293,9 +293,9 @@
                                 <!---------------------------------------------------->
                                 <div class="checkout__item">
                                     <input type="text" wire:model="individual_shipping_zipcode"
-                                        placeholder="Post Code">
+                                        placeholder="Cod Postal">
                                     <span>
-                                        @error("individual_shipping_zipcode")
+                                        @error('individual_shipping_zipcode')
                                             {{ $message }}
                                         @enderror
                                     </span>
@@ -316,34 +316,34 @@
                             <div class="checkout__top">
                                 <span>1</span>
                                 <h3>
-                                    Juridical information &#9998;
+                                    Informații Persoana Juridica &#9998;
                                 </h3>
                             </div>
                             <!----------- End Checkout Header Name ------------->
                             <!---------------------------------------------------->
                             <!------------- Checkout List of Items --------------->
                             <div class="checkout__item">
-                                <input type="text" wire:model="juridic_billing_first" placeholder="First Name">
+                                <input type="text" wire:model="juridic_billing_first" placeholder="Nume">
                                 <span>
-                                    @error("juridic_billing_first")
+                                    @error('juridic_billing_first')
                                         {{ $message }}
                                     @enderror
                                 </span>
                             </div>
                             <!---------------------------------------------------->
                             <div class="checkout__item">
-                                <input type="text" wire:model="juridic_billing_last" placeholder="Last Name">
+                                <input type="text" wire:model="juridic_billing_last" placeholder="Prenume">
                                 <span>
-                                    @error("juridic_billing_last")
+                                    @error('juridic_billing_last')
                                         {{ $message }}
                                     @enderror
                                 </span>
                             </div>
                             <!---------------------------------------------------->
                             <div class="checkout__item">
-                                <input type="tel" wire:model="juridic_billing_phone" placeholder="Phone">
+                                <input type="tel" wire:model="juridic_billing_phone" placeholder="Telefon">
                                 <span>
-                                    @error("juridic_billing_phone")
+                                    @error('juridic_billing_phone')
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -352,7 +352,7 @@
                             <div class="checkout__item">
                                 <input type="email" wire:model="juridic_billing_email" placeholder="Email">
                                 <span>
-                                    @error("juridic_billing_email")
+                                    @error('juridic_billing_email')
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -360,9 +360,9 @@
                             <!---------------------------------------------------->
                             <div class="checkout__item">
                                 <input type="text" wire:model="juridic_billing_company_name"
-                                    placeholder="Company Name">
+                                    placeholder="Denumirea Companiei">
                                 <span>
-                                    @error("juridic_billing_company_name")
+                                    @error('juridic_billing_company_name')
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -370,9 +370,9 @@
                             <!---------------------------------------------------->
                             <div class="checkout__item">
                                 <input type="text" wire:model="juridic_billing_registration_code"
-                                    placeholder="Registration code">
+                                    placeholder="Cod de înregistrare">
                                 <span>
-                                    @error("juridic_billing_registration_code")
+                                    @error('juridic_billing_registration_code')
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -380,27 +380,28 @@
                             <!---------------------------------------------------->
                             <div class="checkout__item">
                                 <input type="text" wire:model="juridic_billing_registration_number"
-                                    placeholder="Registration number">
+                                    placeholder="Număr de înregistrare.">
                                 <span>
-                                    @error("juridic_billing_registration_number")
+                                    @error('juridic_billing_registration_number')
                                         {{ $message }}
                                     @enderror
                                 </span>
                             </div>
                             <!---------------------------------------------------->
                             <div class="checkout__item">
-                                <input type="text" wire:model="juridic_billing_bank" placeholder="Bank">
+                                <input type="text" wire:model="juridic_billing_bank"
+                                    placeholder="Denumirea Bancii">
                                 <span>
-                                    @error("juridic_billing_bank")
+                                    @error('juridic_billing_bank')
                                         {{ $message }}
                                     @enderror
                                 </span>
                             </div>
                             <!---------------------------------------------------->
                             <div class="checkout__item">
-                                <input type="text" wire:model="juridic_billing_account" placeholder="Account">
+                                <input type="text" wire:model="juridic_billing_account" placeholder="Cont IBAN">
                                 <span>
-                                    @error("juridic_billing_account")
+                                    @error('juridic_billing_account')
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -415,7 +416,7 @@
                             <div class="checkout__top">
                                 <span>2</span>
                                 <h3>
-                                    Billing Address &#9998;
+                                    Adresa de facturare &#9998;
                                 </h3>
                             </div>
                             <!----------- End Checkout Header Name ------------->
@@ -424,42 +425,43 @@
                             <div class="checkout__item">
                                 <input type="text" wire:model="juridic_billing_address1" placeholder="Address 1*">
                                 <span>
-                                    @error("juridic_billing_address1")
+                                    @error('juridic_billing_address1')
                                         {{ $message }}
                                     @enderror
                                 </span>
                             </div>
                             <!---------------------------------------------------->
                             <div class="checkout__item">
-                                <input type="text" wire:model="juridic_billing_address2" placeholder="Address 2">
+                                <input type="text" wire:model="juridic_billing_address2"
+                                    placeholder="Address 2 (optional)">
                             </div>
                             <!---------------------------------------------------->
                             <div class="checkout__item">
-                                <input type="text" wire:model="juridic_billing_country" placeholder="Country">
+                                <input type="text" wire:model="juridic_billing_country" placeholder="Tara">
                                 <span>
-                                    @error("juridic_billing_country")
+                                    @error('juridic_billing_country')
                                         {{ $message }}
                                     @enderror
                                 </span>
                             </div>
                             <!---------------------------------------------------->
                             <div class="checkout__item">
-                                <input type="text" wire:model="juridic_billing_county" placeholder="County">
+                                <input type="text" wire:model="juridic_billing_county" placeholder="Judet">
                             </div>
                             <!---------------------------------------------------->
                             <div class="checkout__item">
-                                <input type="text" wire:model="juridic_billing_city" placeholder="City">
+                                <input type="text" wire:model="juridic_billing_city" placeholder="Oras">
                                 <span>
-                                    @error("juridic_billing_city")
+                                    @error('juridic_billing_city')
                                         {{ $message }}
                                     @enderror
                                 </span>
                             </div>
                             <!---------------------------------------------------->
                             <div class="checkout__item">
-                                <input type="text" wire:model="juridic_billing_zipcode" placeholder="Post Code">
+                                <input type="text" wire:model="juridic_billing_zipcode" placeholder="Cod Postal">
                                 <span>
-                                    @error("juridic_billing_zipcode")
+                                    @error('juridic_billing_zipcode')
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -471,7 +473,7 @@
                         <!---------------- Checkout Checkbox ----------------->
                         <label class="checkout__checkbox">
                             <input type="checkbox" wire:model="juridic_identic">
-                            <span>Shipping address is identical to Billing Address</span>
+                            <span>Adresa de livrare este identică cu adresa de facturare</span>
                         </label>
                         <!-------------- End Checkout Checkbox --------------->
                         <!---------------------------------------------------->
@@ -482,35 +484,34 @@
                                 <div class="checkout__top">
                                     <span>3</span>
                                     <h3>
-                                        Delivery Contact &#9998;
+                                        Contact de livrare &#9998;
                                     </h3>
                                 </div>
                                 <!----------- End Checkout Header Name ------------->
                                 <!---------------------------------------------------->
                                 <!------------- Checkout List of Items --------------->
                                 <div class="checkout__item">
-                                    <input type="text" wire:model="juridic_shipping_first"
-                                        placeholder="First Name">
+                                    <input type="text" wire:model="juridic_shipping_first" placeholder="Nume">
                                     <span>
-                                        @error("juridic_shipping_first")
+                                        @error('juridic_shipping_first')
                                             {{ $message }}
                                         @enderror
                                     </span>
                                 </div>
                                 <!---------------------------------------------------->
                                 <div class="checkout__item">
-                                    <input type="text" wire:model="juridic_shipping_last" placeholder="Last Name">
+                                    <input type="text" wire:model="juridic_shipping_last" placeholder="Prenume">
                                     <span>
-                                        @error("juridic_shipping_last")
+                                        @error('juridic_shipping_last')
                                             {{ $message }}
                                         @enderror
                                     </span>
                                 </div>
                                 <!---------------------------------------------------->
                                 <div class="checkout__item">
-                                    <input type="tel" wire:model="juridic_shipping_phone" placeholder="Phone">
+                                    <input type="tel" wire:model="juridic_shipping_phone" placeholder="Telefon">
                                     <span>
-                                        @error("juridic_shipping_phone")
+                                        @error('juridic_shipping_phone')
                                             {{ $message }}
                                         @enderror
                                     </span>
@@ -519,7 +520,7 @@
                                 <div class="checkout__item">
                                     <input type="email" wire:model="juridic_shipping_email" placeholder="Email">
                                     <span>
-                                        @error("juridic_shipping_email")
+                                        @error('juridic_shipping_email')
                                             {{ $message }}
                                         @enderror
                                     </span>
@@ -535,7 +536,7 @@
                                 <div class="checkout__top">
                                     <span>4</span>
                                     <h3>
-                                        Shipping Address &#9998;
+                                        Adresa de livrare &#9998;
                                     </h3>
                                 </div>
                                 <!----------- End Checkout Header Name ------------->
@@ -546,23 +547,23 @@
                                 </div>
                                 <!---------------------------------------------------->
                                 <div class="checkout__item">
-                                    <input type="text" placeholder="Address 2">
+                                    <input type="text" placeholder="Address 2 (optional)">
                                 </div>
                                 <!---------------------------------------------------->
                                 <div class="checkout__item">
-                                    <input type="text" placeholder="Country">
+                                    <input type="text" placeholder="Tara">
                                 </div>
                                 <!---------------------------------------------------->
                                 <div class="checkout__item">
-                                    <input type="text" placeholder="County">
+                                    <input type="text" placeholder="Judet">
                                 </div>
                                 <!---------------------------------------------------->
                                 <div class="checkout__item">
-                                    <input type="text" placeholder="City">
+                                    <input type="text" placeholder="Oras">
                                 </div>
                                 <!---------------------------------------------------->
                                 <div class="checkout__item">
-                                    <input type="text" placeholder="Post Code">
+                                    <input type="text" placeholder="Cod Postal">
                                 </div>
                                 <!----------- End Checkout List of Items ------------->
                                 <!---------------------------------------------------->
@@ -572,10 +573,10 @@
                         <!---------------------------------------------------->
                     </div>
                     <div class="section__header">
-                        <h2 class="section__title">Payment method</h2>
+                        <h2 class="section__title">Metoda de plata</h2>
                     </div>
                     @foreach ($payments as $payment)
-                        @if ($payment->name == "Plata cash la livrare" && $cart->final_amount <= "1000")
+                        @if ($payment->name == 'Plata cash la livrare' && $cart->final_amount <= '1000')
                             @if ($payment->active)
                                 <div class="payment">
                                     <label class="payment__wrapper" for="rtc" wire:click="togglepayment('rtc')">
@@ -584,14 +585,13 @@
                                         <span>Plata cash la livrare</span>
                                     </label>
                                     <div class="payment__text @if ($rtc) active @endif">
-                                        <h4>You will pay when the order is
-                                            delivered.</h4>
+                                        <h4>Veți plăti când comanda va fi livrată.</h4>
                                         <span>Limita maxima este de 1000 RON</span>
                                     </div>
                                 </div>
                             @endif
                         @endif
-                        @if ($payment->name == "Ordin de plata")
+                        @if ($payment->name == 'Ordin de plata')
                             @if ($payment->active)
                                 @if ($juridic)
                                     <div class="payment">
@@ -603,8 +603,8 @@
                                         </label>
                                         <div class="payment__text @if ($invoice) active @endif"">
                                             <h4>
-                                                Payment method used by legal entities. After placing the order, you
-                                                will receive by email the proforma invoice with all the payment details.
+                                                Metoda de plată utilizată de entitățile legale. După plasarea comenzii,
+                                                veți primi prin e-mail factura proformă cu toate detaliile de plată.
                                             </h4>
                                         </div>
 
@@ -620,14 +620,14 @@
                 @if ($step == 2)
                     <div class="checkout__header">
                         <button class="checkout__button" wire:click.prevent="previous()">
-                            Previous Step
+                            Pasul anterior
                         </button>
                         <button class="checkout__button" wire:click.prevent="confirm()">
                             Confirma Comanda
                         </button>
                     </div>
                     <div class="section__header">
-                        <h2 class="section__title">Check your details</h2>
+                        <h2 class="section__title">Verificați detaliile dumneavoastră.</h2>
                     </div>
                     <div class="total__container">
                         <!---------------------------------------------------->
@@ -638,36 +638,36 @@
                                 <!------------- Checkout Header Name --------------->
                                 <div class="checkout__top">
                                     <h3>
-                                        Billing information&check;
+                                        Informatii de facturare &check;
                                     </h3>
                                 </div>
                                 <!----------- End Checkout Header Name ------------->
                                 <!---------------------------------------------------->
                                 <!------------- Checkout List of Items --------------->
-                                <span class="total__message">Full Name:
+                                <span class="total__message">Nume si Prenume:
                                     {{ $individual_billing_first }}
                                     {{ $individual_billing_last }}</span>
                                 <!---------------------------------------------------->
-                                <span class="total__message">Phone:
+                                <span class="total__message">Telefon:
                                     {{ $individual_billing_phone }}</span>
                                 <!---------------------------------------------------->
                                 <span class="total__message">Email:
                                     {{ $individual_billing_email }}</span>
                                 <!---------------------------------------------------->
-                                <span class="total__message">Address:
+                                <span class="total__message">Adresa:
                                     {{ $individual_billing_address1 }}
                                     {{ $individual_billing_address2 }}</span>
                                 <!---------------------------------------------------->
-                                <span class="total__message">Country:
+                                <span class="total__message">Tara:
                                     {{ $individual_billing_country }}</span>
                                 <!---------------------------------------------------->
-                                <span class="total__message">County:
+                                <span class="total__message">Judet:
                                     {{ $individual_billing_county }}</span>
                                 <!---------------------------------------------------->
-                                <span class="total__message">City:
+                                <span class="total__message">Oras:
                                     {{ $individual_billing_city }}</span>
                                 <!---------------------------------------------------->
-                                <span class="total__message">Post Code:
+                                <span class="total__message">Cod Postal:
                                     {{ $individual_billing_zipcode }}</span>
                                 <!----------- End Checkout List of Items ------------->
                                 <!---------------------------------------------------->
@@ -678,36 +678,36 @@
                                 <!------------- Checkout Header Name --------------->
                                 <div class="checkout__top">
                                     <h3>
-                                        Shipping information &check;
+                                        Informatii de livrare &check;
                                     </h3>
                                 </div>
                                 <!----------- End Checkout Header Name ------------->
                                 <!---------------------------------------------------->
                                 <!------------- Checkout List of Items --------------->
-                                <span class="total__message">Full Name:
+                                <span class="total__message">Nume si Prenume:
                                     {{ $individual_shipping_first }}
                                     {{ $individual_shipping_last }}</span>
                                 <!---------------------------------------------------->
-                                <span class="total__message">Phone:
+                                <span class="total__message">Telefon:
                                     {{ $individual_shipping_phone }}</span>
                                 <!---------------------------------------------------->
                                 <span class="total__message">Email:
                                     {{ $individual_shipping_email }}</span>
                                 <!---------------------------------------------------->
-                                <span class="total__message">Address:
+                                <span class="total__message">Adresa:
                                     {{ $individual_shipping_address1 }}
                                     {{ $individual_shipping_address2 }}</span>
                                 <!---------------------------------------------------->
-                                <span class="total__message">Country:
+                                <span class="total__message">Tara:
                                     {{ $individual_shipping_country }}</span>
                                 <!---------------------------------------------------->
-                                <span class="total__message">County:
+                                <span class="total__message">Judet:
                                     {{ $individual_shipping_county }}</span>
                                 <!---------------------------------------------------->
-                                <span class="total__message">City:
+                                <span class="total__message">Oras:
                                     {{ $individual_shipping_city }}</span>
                                 <!---------------------------------------------------->
-                                <span class="total__message">Post Code:
+                                <span class="total__message">Cod Postal:
                                     {{ $individual_shipping_zipcode }}</span>
                                 <!----------- End Checkout List of Items ------------->
                                 <!---------------------------------------------------->
@@ -720,51 +720,51 @@
                                 <!------------- Checkout Header Name --------------->
                                 <div class="checkout__top">
                                     <h3>
-                                        Billing information &check;
+                                        Informatii de facturare &check;
                                     </h3>
                                 </div>
                                 <!----------- End Checkout Header Name ------------->
                                 <!---------------------------------------------------->
                                 <!------------- Checkout List of Items --------------->
-                                <span class="total__message">Full Name:
+                                <span class="total__message">Nume si Prenume:
                                     {{ $juridic_billing_first }}
                                     {{ $juridic_billing_last }}</span>
                                 <!---------------------------------------------------->
-                                <span class="total__message">Phone:
+                                <span class="total__message">Telefon:
                                     {{ $juridic_billing_phone }}</span>
                                 <!---------------------------------------------------->
                                 <span class="total__message">Email:
                                     {{ $juridic_billing_email }}</span>
                                 <!---------------------------------------------------->
-                                <span class="total__message">Company:
+                                <span class="total__message">Companie:
                                     {{ $juridic_billing_company_name }}</span>
                                 <!---------------------------------------------------->
-                                <span class="total__message">Registration code:
+                                <span class="total__message">Cod de înregistrare:
                                     {{ $juridic_billing_registration_code }}</span>
                                 <!---------------------------------------------------->
-                                <span class="total__message">Registration number:
+                                <span class="total__message">Număr de înregistrare:
                                     {{ $juridic_billing_registration_number }}</span>
                                 <!---------------------------------------------------->
-                                <span class="total__message">Bank:
+                                <span class="total__message">Denumirea Bancii:
                                     {{ $juridic_billing_bank }}</span>
                                 <!---------------------------------------------------->
-                                <span class="total__message">Account:
+                                <span class="total__message">COnt IBAN:
                                     {{ $juridic_billing_account }}</span>
                                 <!---------------------------------------------------->
-                                <span class="total__message">Address:
+                                <span class="total__message">Adresa:
                                     {{ $juridic_billing_address1 }}
                                     {{ $juridic_billing_address2 }}</span>
                                 <!---------------------------------------------------->
-                                <span class="total__message">Country:
+                                <span class="total__message">Tara:
                                     {{ $juridic_billing_country }}</span>
                                 <!---------------------------------------------------->
-                                <span class="total__message">County:
+                                <span class="total__message">Judet:
                                     {{ $juridic_billing_county }}</span>
                                 <!---------------------------------------------------->
-                                <span class="total__message">City:
+                                <span class="total__message">Oras:
                                     {{ $juridic_billing_city }}</span>
                                 <!---------------------------------------------------->
-                                <span class="total__message">Post Code:
+                                <span class="total__message">Cod Postal:
                                     {{ $juridic_billing_zipcode }}</span>
                                 <!----------- End Checkout List of Items ------------->
                                 <!---------------------------------------------------->
@@ -775,36 +775,36 @@
                                 <!------------- Checkout Header Name --------------->
                                 <div class="checkout__top">
                                     <h3>
-                                        Shipping information &check;
+                                        Informatii de livrare &check;
                                     </h3>
                                 </div>
                                 <!----------- End Checkout Header Name ------------->
                                 <!---------------------------------------------------->
                                 <!------------- Checkout List of Items --------------->
-                                <span class="total__message">Full Name:
+                                <span class="total__message">Nume si Prenume:
                                     {{ $juridic_shipping_first }}
                                     {{ $juridic_shipping_last }}</span>
                                 <!---------------------------------------------------->
-                                <span class="total__message">Phone:
+                                <span class="total__message">telefon:
                                     {{ $juridic_shipping_phone }}</span>
                                 <!---------------------------------------------------->
                                 <span class="total__message">Email:
                                     {{ $juridic_shipping_email }}</span>
                                 <!---------------------------------------------------->
-                                <span class="total__message">Address:
+                                <span class="total__message">Adresa:
                                     {{ $juridic_shipping_address1 }}
                                     {{ $juridic_shipping_address2 }}</span>
                                 <!---------------------------------------------------->
-                                <span class="total__message">Country:
+                                <span class="total__message">Tara:
                                     {{ $juridic_shipping_country }}</span>
                                 <!---------------------------------------------------->
-                                <span class="total__message">County:
+                                <span class="total__message">Judet:
                                     {{ $juridic_shipping_county }}</span>
                                 <!---------------------------------------------------->
-                                <span class="total__message">City:
+                                <span class="total__message">Oras:
                                     {{ $juridic_shipping_city }}</span>
                                 <!---------------------------------------------------->
-                                <span class="total__message">Post Code:
+                                <span class="total__message">Cod Postal:
                                     {{ $juridic_shipping_zipcode }}</span>
                                 <!----------- End Checkout List of Items ------------->
                                 <!---------------------------------------------------->
@@ -820,7 +820,7 @@
                                         </span>
                                         @if (count($cartItem->product->media) > 0)
                                             @foreach ($cartItem->product->media as $media)
-                                                @if ($media->location->location == "main")
+                                                @if ($media->location->location == 'main')
                                                     @if ($media->external)
                                                         <img class="cart__list--img" src="{{ $media->path }}"
                                                             alt="{{ $media->path }}">
@@ -839,6 +839,7 @@
                                         <a href="/product/{{ $cartItem->product->id }}" target="_blank"
                                             class="total__name">{{ $cartItem->product->name }}</a>
                                         <span class="total__price">
+
                                             {{ $cartItem->product->price }}
                                             <?php $currency = $cartItem->product->product_prices->first()->pricelist->currency->name; ?>
                                             {{ $cartItem->quantity * $cartItem->price }} {{ $currency }}
@@ -849,14 +850,14 @@
                             @endif
 
                             <div class="total__item">
-                                <span>payment Method</span>
+                                <span>Modalitate de plata</span>
                                 <span>{{ $delivery }}</span>
                             </div>
                             <div class="total__item">
                                 <span>Delivery Price:</span>
                                 <span>
                                     @if ($cart->delivery_price == 0)
-                                        Free
+                                        Gratuit
                                     @else
                                         {{ $cart->delivery_price }} {{ $currency }}
                                     @endif
@@ -896,29 +897,22 @@
                 <!--------------------- Step Final --------------------->
                 @if ($step == 3)
                     <div class="section__header">
-                        <h2 class="section__title">Thank you!</h2>
-                        <p class="section__text">Thank you for your payment! 🎉 We have received it and are currently
-                            processing your order. Our team is working hard to prepare your product for shipment. 📦🔧
-                        </p>
-                        <p class="section__text">Once your order is on its way, we will send you a confirmation email
-                            with
-                            tracking information. This will allow you to keep track of your package and know when to
-                            expect
-                            its
-                            arrival. 📩🚚</p>
-                        <p class="section__text">Should you have any questions or require assistance, please don't
-                            hesitate
-                            to
-                            contact our customer support team. We're here to help and ensure your satisfaction. 💁‍♀️💬
-                        </p>
-                        <p class="section__text">We appreciate your business and hope that your purchase brings you
-                            happiness.
-                            Thank you for choosing our products, and we look forward to serving you again in the future.
-                            🙏😊<br>Best regards,</p>
-                        <a href="#" class="logo">
+                        <h2 class="section__title">Mulțumim!</h2>
+                        <p class="section__text">Vă mulțumim pentru plata efectuată! 🎉 Am primit-o și în prezent
+                            procesăm comanda dumneavoastră. Echipa noastră lucrează cu dedicație pentru a pregăti
+                            produsul dumneavoastră pentru expediere. 📦🔧</p>
+                        <p class="section__text">Odată ce comanda dumneavoastră este în drum spre dumneavoastră, vă vom
+                            trimite un e-mail de confirmare cu informații despre urmărire. Acest lucru vă va permite să
+                            urmăriți coletul și să știți când să vă așteptați la sosirea sa. 📩🚚</p>
+                        <p class="section__text">Dacă aveți întrebări sau aveți nevoie de asistență, vă rugăm să nu
+                            ezitați să contactați echipa noastră de suport pentru clienți. Suntem aici pentru a vă ajuta
+                            și pentru a vă asigura satisfacția. 💁‍♀️💬</p>
+                        <p class="section__text">Apreciem afacerea dumneavoastră și sperăm că achiziția dumneavoastră
+                            vă aduce fericire. Vă mulțumim că ați ales produsele noastre și așteptăm cu nerăbdare să vă
+                            mai servim în viitor. 🙏😊<br>Cu cele mai bune urări,</p>
+                        <a href="{{ url('/') }}" class="logo">
                             <img src="/images/store/logo.svg" alt="logo">
                         </a>
-
                     </div>
                 @endif
                 <!------------------- End Step Final ------------------->
@@ -947,7 +941,7 @@
                         </a>
                     @elseif ($step == 3)
                         <a class="checkout__link" wire:click.prevent="finish()">
-                            Thank you for your order, Shopping again
+                            Mulțumim pentru comanda dumneavoastră
                         </a>
                     @endif
 
