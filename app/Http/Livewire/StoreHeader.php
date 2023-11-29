@@ -16,14 +16,13 @@ class StoreHeader extends Component
 {
   public $search = '';
   public $active = false;
-  public $wishlistitems;
   public $showwis = false;
   public $showcart = false;
   public $total;
   public $session_id;
   public $closedStatusId;
   protected $listeners = [
-    'wishlistUpdated' => 'refreshWishlist',
+    'wishlistUpdated' => 'mount',
     'cartUpdated' => 'mount'
   ];
 
@@ -50,7 +49,10 @@ class StoreHeader extends Component
 
   private function getCookieId()
   {
-    return request()->cookie('sessionId');
+    if (isset($_COOKIE['sessionId'])) {
+      return $_COOKIE['sessionId'];
+    }
+    return Session::getId();
   }
 
   public function close()
@@ -63,7 +65,7 @@ class StoreHeader extends Component
     $wishlist = Wishlist::where('session_id', $this->session_id)->pluck('product_id')->toArray();
 
     if (!empty($wishlist)) {
-      return Product::whereIn('id', $wishlist)->with('media.location')->get();
+      return Product::whereIn('id', $wishlist)->with('media', 'media.location')->get();
     }
 
     return collect(); // Return an empty collection if $wishlist is empty
@@ -140,26 +142,18 @@ class StoreHeader extends Component
       ->latest()
       ->value('quantity_amount');
   }
-  public function refreshWishlist()
-  {
-    // Refresh or update the wishlist data here
-    $this->wishlistitems = $this->getWishlistItemsProperty();
-  }
+
   public function getCategoriesProperty()
   {
     // Retrieve the limit from the settings table
-    $limit = Store_Settings::where('parameter', 'limit_category')
-      ->value('value');
+    $limitSetting = Store_Settings::where('parameter', 'limit_category')->first();
+
+    // Check if the setting exists and has a valid numeric value
+    $limit = $limitSetting && is_numeric($limitSetting->value) ? $limitSetting->value : 5;
 
     // Use eager loading to load relationships with the main query
-    return $this->categoriesQuery
-      ->when(is_numeric($limit), function ($query) use ($limit) {
-        return $query->limit($limit);
-      })
-      ->with('subcategory.category.media.location')
-      ->get();
+    return $this->categoriesQuery->limit($limit)->with('subcategory.category.media.location')->get();
   }
-
 
   public function getCategoriesQueryProperty()
   {
