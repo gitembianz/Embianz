@@ -56,7 +56,7 @@ class StoreCart extends Component
   public function getCartItemsProperty()
   {
     if ($this->cart) {
-      $cartItems = Cart_Item::where('cart_id', $this->cart->id)->with('product.product_prices.pricelist.currency')->with('product.product_prices')->get();
+      $cartItems = Cart_Item::where('cart_id', $this->cart->id)->with('product.product_prices.pricelist.currency', 'product.product_prices', 'product.wishlists')->get();
       return $cartItems;
     }
     return collect(); // Return an empty collection if no cart items are found

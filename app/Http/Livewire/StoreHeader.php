@@ -50,10 +50,7 @@ class StoreHeader extends Component
 
   private function getCookieId()
   {
-    if (isset($_COOKIE['sessionId'])) {
-      return $_COOKIE['sessionId'];
-    }
-    return Session::getId();
+    return request()->cookie('sessionId');
   }
 
   public function close()
@@ -151,14 +148,18 @@ class StoreHeader extends Component
   public function getCategoriesProperty()
   {
     // Retrieve the limit from the settings table
-    $limitSetting = Store_Settings::where('parameter', 'limit_category')->first();
-
-    // Check if the setting exists and has a valid numeric value
-    $limit = $limitSetting && is_numeric($limitSetting->value) ? $limitSetting->value : 5;
+    $limit = Store_Settings::where('parameter', 'limit_category')
+      ->value('value');
 
     // Use eager loading to load relationships with the main query
-    return $this->categoriesQuery->limit($limit)->with('subcategory.category.media.location')->get();
+    return $this->categoriesQuery
+      ->when(is_numeric($limit), function ($query) use ($limit) {
+        return $query->limit($limit);
+      })
+      ->with('subcategory.category.media.location')
+      ->get();
   }
+
 
   public function getCategoriesQueryProperty()
   {

@@ -27,10 +27,7 @@ class StoreMain extends Component
   ];
   private function getCookieId()
   {
-    if (isset($_COOKIE['sessionId'])) {
-      return $_COOKIE['sessionId'];
-    }
-    return Session::getId();;
+    return request()->cookie('sessionId');
   }
   public function mount()
   {
@@ -59,7 +56,7 @@ class StoreMain extends Component
   }
   public function getPopProductsQueryProperty()
   {
-    return Product::where('active', true)->orderBy('popularity', 'desc')->with('media.location')->with('product_prices.pricelist.currency');
+    return Product::where('active', true)->orderBy('popularity', 'desc')->with('media.location', 'product_prices.pricelist.currency', 'wishlists');
   }
   public function render()
   {
