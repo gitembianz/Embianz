@@ -27,7 +27,10 @@ class StoreMain extends Component
   ];
   private function getCookieId()
   {
-    return request()->cookie('sessionId');
+    if (isset($_COOKIE['sessionId'])) {
+      return $_COOKIE['sessionId'];
+    }
+    return Session::getId();
   }
   public function mount()
   {
@@ -71,7 +74,7 @@ class StoreMain extends Component
   {
     if ($this->category) {
       return Subcategory::where('parrent_id', $this->category->id)
-        ->with('category.media.location')
+        ->with('category.media.location', 'category')
         ->get();
     }
   }
@@ -116,9 +119,9 @@ class StoreMain extends Component
   }
   public function addToCart($productId)
   {
-    $closedStatusId = Status::where('name', 'closed')->where('type', 'cart')->first()->id;
+    $closedStatusId = Status::where('name', 'closed')->where('type', 'cart')->value('id');
     $product = Product::with('product_prices.pricelist')->find($productId);
-    $newStatusId = Status::where('name', 'new')->where('type', 'cart')->first()->id;
+    $newStatusId = Status::where('name', 'new')->where('type', 'cart')->value('id');
     $cart = Cart::where('session_id', $this->session_id)->where('status_id', '!=', $closedStatusId)->latest()->first();
     if (!$cart) {
       $baseName = class_basename(Cart::class);

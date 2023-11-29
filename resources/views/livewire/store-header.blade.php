@@ -299,7 +299,7 @@
                     @foreach ($wishlistitems as $product)
                         <li class="leftbar__item">
                             <a class="leftbar__link wishlist__link" href="/product/{{ $product->id }}">
-                                @if ($product->media_count != 0)
+                                @if ($product->media->count() != 0)
                                     @foreach ($product->media as $media)
                                         @if ($media->location->location == 'main')
                                             @if ($media->external)
