@@ -148,7 +148,7 @@
         <!-------------------- End Support Center ------------------>
         <!---------------------------------------------------------->
         <!---------------------- Loading Logo ---------------------->
-        <div class="loading-logo">
+        <div class="loading-logo" id="loadingLogo">
             <img src="/images/store/logo-black.svg" alt="logo-black">
         </div>
         <!-------------------- End Loading Logo -------------------->
