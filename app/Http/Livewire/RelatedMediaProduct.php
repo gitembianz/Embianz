@@ -65,11 +65,20 @@ class RelatedMediaProduct extends Component
   {
     $this->editedMediaIndex = $index;
     $media = Media::find($id);
-    $this->filess = [
-      $index . '.name' => $media->name,
-      $index . '.location_id' => $media->location_id,
-      $index . '.sequence' => $media->sequence,
-    ];
+    if ($media->external == 1) {
+      $this->filess = [
+        $index . '.path' => $media->path,
+        $index . '.name' => $media->name,
+        $index . '.location_id' => $media->location_id,
+        $index . '.sequence' => $media->sequence,
+      ];
+    } else {
+      $this->filess = [
+        $index . '.name' => $media->name,
+        $index . '.location_id' => $media->location_id,
+        $index . '.sequence' => $media->sequence,
+      ];
+    }
   }
   public function uploadmedia()
   {
@@ -95,6 +104,11 @@ class RelatedMediaProduct extends Component
     $media_new = $this->filess[$mediaIndex] ?? NULL;
     if (!is_null($media_new)) {
       $media_for_prod = Media::find($id);
+      if ($media_for_prod->external == 1) {
+        if (array_key_exists('path', $media_new)) {
+          $media_for_prod->path = $media_new['path'];
+        }
+      }
       if (array_key_exists('sequence', $media_new)) {
         $media_for_prod->sequence = $media_new['sequence'];
       }

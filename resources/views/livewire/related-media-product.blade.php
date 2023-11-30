@@ -457,8 +457,16 @@
                                                         <video src="/{{ $file->path . $file->name }}" width="50"
                                                             controls="true"></video>
                                                     @else
-                                                        <img src="{{ $file->path }}" width="100" height="50"
-                                                            alt="{{ $file->path }}">
+                                                      @if ($editedMediaIndex !== $index)
+                                                      <img src="{{ $file->path }}" width="100" height="50"
+                                                      alt="{{ $file->path }}">
+                                                      @else
+                                                      <input type="url" class="table__edit"
+                                                          wire:model.defer="filess.{{ $index }}.path"
+                                                         >
+                                                    @endif
+
+                                                        
                                                     @endif
                                                 </td>
                                             @endif
