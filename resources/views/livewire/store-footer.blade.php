@@ -80,8 +80,8 @@
                 </div>
                 <div class="footer__list">
                     <h3 class="footer__title">Informații</h3>
-                    <a class="footer__link" href="#">Contacte</a>
-                    <a class="footer__link" href="#">Despre Noi</a>
+                    <a class="footer__link" href="{{ url('/contact') }}">Contactează-ne</a>
+                    <a class="footer__link" href="{{ url('/about') }}">Despre Noi</a>
                 </div>
             </div>
             <!---------------------END-Quick Links--------------------->
