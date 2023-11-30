@@ -6,7 +6,7 @@
   top: 0;
   width: 100%;
   height: 100%;
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
   flex-direction: column;
@@ -21,9 +21,9 @@
   animation-fill-mode: forwards;
   z-index: 1000;
 
-  &>svg {
-    width: 250px;
-    height: 250px;
+  &>img {
+    width: 90%;
+    height: 90%;
     // Animation
     animation-name: svg-anim;
     animation-duration: 2s;

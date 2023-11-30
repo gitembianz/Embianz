@@ -365,7 +365,7 @@ input[type=checkbox]:checked:after {
   top: 0;
   width: 100%;
   height: 100%;
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
   flex-direction: column;
@@ -379,9 +379,9 @@ input[type=checkbox]:checked:after {
   animation-fill-mode: forwards;
   z-index: 1000;
 }
-.loading-logo > svg {
-  width: 250px;
-  height: 250px;
+.loading-logo > img {
+  width: 90%;
+  height: 90%;
   animation-name: svg-anim;
   animation-duration: 2s;
   animation-timing-function: ease-in;
@@ -3578,8 +3578,8 @@ header {
   width: 100%;
   position: absolute;
   left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  bottom: 40px;
+  transform: translateX(-50%);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -3679,7 +3679,6 @@ header {
 .main-slider__slide > img {
   width: 100%;
   height: 100%;
-  filter: brightness(0.4);
   object-fit: cover;
   pointer-events: none;
   user-select: none;
