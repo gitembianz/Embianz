@@ -540,8 +540,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Sliders
   slider(".main-slider");
   slider(".card-slider");
-  sliderProduct(".product-slider");
-  modalProduct(".product-modal", ".product-slider");
+
   // Modal
   modal(".modal");
   // sticky element
