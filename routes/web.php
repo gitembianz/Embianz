@@ -31,7 +31,7 @@
 
     Route::get('/update', function () {
       $drop_and_seed = Artisan::call('migrate:fresh --seed');
-      echo "Databese seeded<br>";
+      echo "New fresh app";
     });
 
     //Category routes
@@ -46,9 +46,6 @@
     route::post('/new_products', [ProductController::class, 'new'])->name('new_products');
     route::get('/show_product/{id}/', [ProductController::class, 'show'])->name('show_product');
 
-    //accounts routes
-    route::get('/accounts', [AdminController::class, 'accounts'])->name('accounts');
-    route::get('/show_account/{id}/', [AdminController::class, 'show_account'])->name('show_account');
     //todolist routes
     route::post('/new', [TodolistController::class, 'store'])->name('store');
     route::delete('/{todolist:id}', [TodolistController::class, 'destroy'])->name('destroy');
@@ -75,6 +72,8 @@
     )->middleware('auth', 'verified')->name('dashboard');
 
     //general routes
+    route::get('/show_account/{id}/', [AdminController::class, 'show_account'])->name('show_account');
+    route::get('/accounts', [AdminController::class, 'accounts'])->name('accounts');
     route::get('/orders', [AdminController::class, 'orders']);
     route::get('/show_order/{id}/', [AdminController::class, 'show_order'])->name('show_order');
     route::get('/payments', [AdminController::class, 'payments'])->name('payments');
@@ -97,6 +96,10 @@
   route::get('/faq', [StoreController::class, 'faq'])->name('faq');
   route::get('/cookie', [StoreController::class, 'cookie'])->name('cookie');
   route::get('/privacy', [StoreController::class, 'privacy'])->name('privacy');
+  route::get('/contact', [StoreController::class, 'contact'])->name('contact');
+  route::get('/about', [StoreController::class, 'about'])->name('about');
+
+
 
 
 
@@ -105,21 +108,14 @@
 
   Route::get('/cleareverything', function () {
     $clearcache = Artisan::call('cache:clear');
-    echo "Cache cleared<br>";
     $clearview = Artisan::call('view:clear');
-    echo "View cleared<br>";
     $cacheconfig = Artisan::call('config:cache');
-    echo "Config cache<br>";
     $cacheclear = Artisan::call('config:clear');
-    echo "Config clear<br>";
     $eventclear = Artisan::call('event:clear');
-    echo "event clear<br>";
     $queueclear = Artisan::call('queue:clear');
-    echo "queue clear<br>";
     $optimize = Artisan::call('optimize:clear');
-    echo "Optimize clear<br>";
     $migrate = Artisan::call('migrate');
-    echo "DB updated<br>";
+    echo "App is optimized and updated";
   });
 
 
