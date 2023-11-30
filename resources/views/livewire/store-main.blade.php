@@ -20,7 +20,7 @@
                             <div class="main-slider__slide">
                                 @if ($item->category->media)
                                     @foreach ($item->category->media as $media)
-                                        @if ($media->location->location == 'details')
+                                        @if ($media->location->location == "details")
                                             @if ($media->external)
                                                 <img src="{{ $media->path }}" draggable="false" alt="{{ $media->path }}">
                                             @else
@@ -63,7 +63,7 @@
                 <h2 class="section__title">Descoperă produsele noastre populare!</h2>
                 <p class="section__text">Explorează colecția noastră de produse și găsește
                     accesoriile perfecte pentru a-ți completa stilul.
-                    <br><a href="{{ url('/storeproducts') }}">Vezi produsele!</a>
+                    <br><a href="{{ url("/storeproducts") }}">Vezi produsele!</a>
                 </p>
             </div>
         </section>
@@ -80,7 +80,7 @@
                                     <a href="/product/{{ $product->id }}">
                                         @if ($product->media->count() != 0)
                                             @foreach ($product->media as $media)
-                                                @if ($media->location->location == 'main')
+                                                @if ($media->location->location == "main")
                                                     @if ($media->external)
                                                         <img class="card-image" src="{{ $media->path }}"
                                                             draggable="false" alt="{{ $media->path }}">
@@ -97,7 +97,7 @@
                                                 draggable="false" alt="something wrong">
                                         @endif
                                     </a>
-                                    <button class="card-favorites @if ($product->wishlists->where('session_id', $session_id)->isNotEmpty()) active @endif"
+                                    <button class="card-favorites @if ($product->wishlists->where("session_id", $session_id)->isNotEmpty()) active @endif"
                                         wire:click="toggleWishlist({{ $product->id }})">
                                         <svg viewBox="0 0 512 512" width="20" title="heart">
                                             <path
@@ -115,7 +115,7 @@
                                                     {{ $product->product_prices->first()->value }}
                                                     {{ $product->product_prices->first()->pricelist->currency->name }}
                                                 @else
-                                                    {{ __('Indisponibil') }}
+                                                    {{ __("Indisponibil") }}
                                                 @endif
                                             </p>
                                         </div>
@@ -175,7 +175,7 @@
                 </svg>
             </div>
         @endif
-        @push('scripts')
+        @push("scripts")
             <script>
                 document.addEventListener('livewire:load', function() {
                     // Livewire has finished loading
@@ -191,6 +191,9 @@
         @endpush
         <!-------------------- End Loading Logo -------------------->
         <!---------------------------------------------------------->
-
+        <!--------------------- support button --------------------->
+        <x-help-button />
+        <!------------------- End support button ------------------->
+        <!---------------------------------------------------------->
     </main>
 </div>

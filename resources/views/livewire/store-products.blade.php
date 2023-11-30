@@ -5,10 +5,10 @@
     <!------------------------Breadcrumbs----------------------->
     <section>
         <div class="breadcrumbs container">
-            <a class="breadcrumbs__link" href="{{ url('/') }}">
+            <a class="breadcrumbs__link" href="{{ url("/") }}">
                 Acasa
             </a>
-            <a class="breadcrumbs__link" href="{{ url('/storeproducts') }}">
+            <a class="breadcrumbs__link" href="{{ url("/storeproducts") }}">
                 Produse
             </a>
             <!-------------------If Category is appear------------------>
@@ -75,7 +75,7 @@
                     <a href="/product/{{ $product->id }}">
                         @if (count($product->media) > 0)
                             @foreach ($product->media as $media)
-                                @if ($media->location->location == 'main')
+                                @if ($media->location->location == "main")
                                     @if ($media->external)
                                         <img class="card-image" src="{{ $media->path }}" draggable="false"
                                             alt="{{ $media->path }}">
@@ -117,7 +117,7 @@
                         </p>
                     @endif
                     {{-- alt="Card-Image"> --}}
-                    <button class="card-favorites @if ($product->wishlists->where('session_id', $session_id)->isNotEmpty()) active @endif"
+                    <button class="card-favorites @if ($product->wishlists->where("session_id", $session_id)->isNotEmpty()) active @endif"
                         wire:click="toggleWishlist({{ $product->id }})">
                         <svg viewBox="0 0 512 512" width="20" title="heart">
                             <path
@@ -137,7 +137,7 @@
                                     {{ $price }}
                                     {{ $product->product_prices->first()->pricelist->currency->name }}
                                 @else
-                                    {{ __('') }}
+                                    {{ __("") }}
                                 @endif
                             </p>
                         </div>
@@ -255,5 +255,10 @@
         </div>
     </div>
     <!-----------------------End Asortiment--------------------->
+    <!---------------------------------------------------------->
+    <!---------------------------------------------------------->
+    <!--------------------- support button --------------------->
+    <x-help-button />
+    <!------------------- End support button ------------------->
     <!---------------------------------------------------------->
 </div>

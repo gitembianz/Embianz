@@ -23,7 +23,7 @@
                         <div class="basket__top">
                             @if (count($product->media) > 0)
                                 @foreach ($product->media as $media)
-                                    @if ($media->location->location == 'main')
+                                    @if ($media->location->location == "main")
                                         @if ($media->external)
                                             <img src="{{ $media->path }}" alt="{{ $media->path }}">
                                         @else
@@ -74,4 +74,9 @@
             <!------------------------------------------------------>
         </div>
     </section>
+    <!---------------------------------------------------------->
+    <!--------------------- support button --------------------->
+    <x-help-button />
+    <!------------------- End support button ------------------->
+    <!---------------------------------------------------------->
 </div>
