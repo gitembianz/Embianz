@@ -127,7 +127,7 @@ class RelatedSubcategory extends Component
   {
     $category = Category::find($this->catidbeinglink);
     $rec = new  Subcategory();
-    $rec->category = $category->name;
+    $rec->name = $category->name;
     $rec->category_id = $category->id;
     $rec->parrent_id = $this->categoryId;
     $rec->save();
@@ -145,7 +145,7 @@ class RelatedSubcategory extends Component
 
     foreach ($categories as $category) {
       $add = new Subcategory();
-      $add->category = $category->name;
+      $add->name = $category->name;
       $add->category_id = $category->id;
       $add->parrent_id = $this->categoryId;
       $add->save();
@@ -267,9 +267,10 @@ class RelatedSubcategory extends Component
   }
   public function render()
   {
-    $relatedsubcats = $this->relatedsubcats->filter(function ($subcat) {
-      return strpos(strtolower($subcat->category), strtolower($this->search)) !== false;
-    });
+    $relatedsubcats = $this->relatedsubcats
+      ->filter(function ($subcat) {
+        return strpos(strtolower($subcat->category->name), strtolower($this->search)) !== false;
+      });
 
 
     if ($this->showTable === true) {

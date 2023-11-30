@@ -1,10 +1,10 @@
 <div>
     <section>
         <div class="breadcrumbs container">
-            <a class="breadcrumbs__link" href="{{ url("/") }}">
+            <a class="breadcrumbs__link" href="{{ url('/') }}">
                 Acasa
             </a>
-            <a class="breadcrumbs__link" href="{{ url("/storeproducts") }}">
+            <a class="breadcrumbs__link" href="{{ url('/storeproducts') }}">
                 Produse
             </a>
             <a class="breadcrumbs__link">{{ $product->name }}</a>
@@ -16,7 +16,7 @@
             <div class="product-slider__wrapper">
 
                 @foreach ($product->media as $media)
-                    @if ($media->location->location == "main" || $media->location->location == "details")
+                    @if ($media->location->location == 'main' || $media->location->location == 'details')
                         <div class="product-slider__slide">
                             @if ($media->external)
                                 <img src="{{ $media->path }}" alt="{{ $media->path }}">
@@ -52,7 +52,7 @@
                     @endif
                     <h1 class="product__title">{{ $product->name }}</h1>
                 </div>
-                <button class="product__wishlist @if ($product->wishlists->where("session_id", $session_id)->isNotEmpty()) active @endif"
+                <button class="product__wishlist @if ($product->wishlists->where('session_id', $session_id)->isNotEmpty()) active @endif"
                     wire:click="toggleWishlist({{ $product->id }})">
 
                     <svg viewBox="0 0 512 512" width="20" title="heart">
@@ -103,7 +103,7 @@
                 $price = $product->product_prices->first();
             @endphp
             @if ($price && $product->quantity != 0)
-                <button wire:click="addToCart({{ $product->id }})" class="product__button">Add to cart</button>
+                <button wire:click="addToCart({{ $product }})" class="product__button">Add to cart</button>
             @endif
             <!---------------- End Product (Details) --------------->
             <!------------------------------------------------------>

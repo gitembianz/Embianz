@@ -82,7 +82,7 @@
                     </svg>
                 </button>
                 <button class="header__btn" wire:click="$set('showwis', true)" id="wishOpen">
-                    @if ($wishlistitems->count() > 0)
+                    @if (!empty($wishlistitems) && $wishlistitems->count() > 0)
                         <span class="header__count" id="wishlistCount">{{ $wishlistitems->count() }}</span>
                     @endif
                     <svg>
@@ -293,13 +293,13 @@
             </div>
 
             <ul class="leftbar__list">
-                @if ($wishlistitems->isEmpty())
+                @if (empty($wishlistitems))
                     <span class="leftbar__empty">Niciun produs în lista de favorite </span>
                 @else
                     @foreach ($wishlistitems as $product)
                         <li class="leftbar__item">
                             <a class="leftbar__link wishlist__link" href="/product/{{ $product->id }}">
-                                @if (count($product->media) > 0)
+                                @if ($product->media->count() != 0)
                                     @foreach ($product->media as $media)
                                         @if ($media->location->location == 'main')
                                             @if ($media->external)
@@ -349,12 +349,12 @@
             </div>
             <div class="menu__list">
                 @foreach ($categories as $category)
-                    @if ($category->subcategory->count() != 0)
+                    @if ($category->subcategory_count != 0)
                         <!------------------ End Dropdown (Menu) ------------------>
                         <div class="dropmenu">
                             <div class="dropmenu__button">
                                 <a class="dropmenu__button--link" href="/storeproducts/{{ $category->id }}">
-                                    @if (count($category->media) > 0)
+                                    @if ($category->media_count != 0)
                                         @foreach ($category->media as $media)
                                             @if ($media->location->location == 'main')
                                                 @if ($media->external)
@@ -378,8 +378,8 @@
                             <div class="dropmenu__list">
                                 @foreach ($category->subcategory as $subcategory)
                                     <a class="dropmenu__link" href="/storeproducts/{{ $subcategory->category_id }}">
-                                        @if (count($subcategory->parrent->media) > 0)
-                                            @foreach ($subcategory->parrent->media as $media)
+                                        @if ($subcategory->category->media_count != 0)
+                                            @foreach ($subcategory->category->media as $media)
                                                 @if ($media->location->location == 'main')
                                                     @if ($media->external)
                                                         <img src="{{ $media->path }}" alt="{{ $media->path }}">
@@ -401,7 +401,7 @@
                     @else
                         <!-------------------- Dropdown (Menu) -------------------->
                         <a class="menu__link" href="/storeproducts/{{ $category->id }}">
-                            @if (count($category->media) > 0)
+                            @if ($category->media_count != 0)
                                 @foreach ($category->media as $media)
                                     @if ($media->location->location == 'main')
                                         @if ($media->external)

@@ -30,7 +30,7 @@ class StoreMain extends Component
     if (isset($_COOKIE['sessionId'])) {
       return $_COOKIE['sessionId'];
     }
-    return Session::getId();;
+    return Session::getId();
   }
   public function mount()
   {
@@ -53,6 +53,14 @@ class StoreMain extends Component
   {
     return now();
   }
+  public function getPopProductsProperty()
+  {
+    return $this->popproductsQuery->limit($this->limit)->get();
+  }
+  public function getPopProductsQueryProperty()
+  {
+    return Product::where('active', true)->orderBy('popularity', 'desc')->with('media.location', 'product_prices.pricelist.currency', 'wishlists');
+  }
   public function render()
   {
     return view('livewire.store-main', [
@@ -60,32 +68,18 @@ class StoreMain extends Component
       'subcategories' => $this->subcategories
     ]);
   }
-  public function getPopProductsProperty()
-  {
-    return $this->popproductsQuery->limit($this->limit)->get();
-  }
-  public function getPopProductsQueryProperty()
-  {
-    return Product::where('active', true)->orderBy('popularity', 'desc')->with('media.location')->with('product_prices.pricelist.currency');
-  }
+
+
   public function getSubcategoriesProperty()
   {
     if ($this->category) {
-      return $this->subcategoriesQuery->get();
+      return Subcategory::where('parrent_id', $this->category->id)
+        ->with('category.media.location', 'category')
+        ->get();
     }
   }
-  public function getSubcategoriesQueryProperty()
-  {
-    if ($this->category) {
-      $subcategories = Subcategory::where('parrent_id', $this->category->id)->get();
 
-      // Assuming you want to get an array of subcategory category_ids
-      $subCategoryIds = $subcategories->pluck('category_id')->toArray();
 
-      // Use 'whereIn' to filter by an array of category_ids
-      return Category::whereIn('id', $subCategoryIds)->with('media.location');
-    }
-  }
 
   public function addToWishlist($productId)
   {
@@ -125,9 +119,9 @@ class StoreMain extends Component
   }
   public function addToCart($productId)
   {
-    $closedStatusId = Status::where('name', 'closed')->where('type', 'cart')->first()->id;
+    $closedStatusId = Status::where('name', 'closed')->where('type', 'cart')->value('id');
     $product = Product::with('product_prices.pricelist')->find($productId);
-    $newStatusId = Status::where('name', 'new')->where('type', 'cart')->first()->id;
+    $newStatusId = Status::where('name', 'new')->where('type', 'cart')->value('id');
     $cart = Cart::where('session_id', $this->session_id)->where('status_id', '!=', $closedStatusId)->latest()->first();
     if (!$cart) {
       $baseName = class_basename(Cart::class);

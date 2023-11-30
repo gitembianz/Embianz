@@ -104,10 +104,9 @@ class StoreShowProduct extends Component
       $this->quantity--;
     }
   }
-  public function addToCart($productId)
+  public function addToCart(Product $product)
   {
     $closedStatusId = Status::where('name', 'closed')->where('type', 'cart')->first()->id;
-    $product = Product::with('product_prices.pricelist')->find($productId);
     $newStatusId = Status::where('name', 'new')->where('type', 'cart')->first()->id;
     $cart = Cart::where('session_id', $this->session_id)->where('status_id', '!=', $closedStatusId)->latest()->first();
     if (!$cart) {
@@ -121,23 +120,24 @@ class StoreShowProduct extends Component
       $cart = Cart::create([
         'session_id' => $this->session_id,
         'name' => $uniqueName,
-        'quantity_amount' => $this->quantity,
-        'sum_amount' => ($product->product_prices->first()->value * $this->quantity),
+        'quantity_amount' =>  0,
+        'sum_amount' => 0,
         'status_id' => $newStatusId,
         'currency_id' => $product->product_prices->first()->pricelist->currency_id,
       ]);
     }
-    $cartItem = Cart_Item::where('cart_id', $cart->id)->where('product_id', $productId)->first();
+    $cartItem = Cart_Item::where('cart_id', $cart->id)->where('product_id', $product->id)->first();
     if (!$cartItem) {
       $cartItem = Cart_Item::create([
         'cart_id' => $cart->id,
-        'product_id' => $productId,
+        'product_id' => $product->id,
         'price' => $product->product_prices->first()->value,
         'quantity' => $this->quantity
       ]);
+      $cart->quantity_amount += $this->quantity;
+      $cart->sum_amount += ($product->product_prices->first()->value * $this->quantity);
     } else {
-      if ($cartItem->quantity < $product->quantity) {
-
+      if (($cartItem->quantity + $this->quantity) <= $product->quantity) {
         $cartItem->quantity += $this->quantity;
         $cartItem->save();
         $cart->quantity_amount += $this->quantity;

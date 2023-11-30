@@ -20,7 +20,7 @@
             <!------------------- Basket Products ------------------>
             <div class="basket">
                 @if ($cartItems->isEmpty())
-                    <span class="basket__empty">No products</span>
+                    <span class="basket__empty">Cosul de cumparaturi este gol</span>
                 @else
                     @foreach ($cartItems as $cartItem)
                         <div class="basket__product">
@@ -41,6 +41,8 @@
                                     <img src="/images/store/default/default.svg" alt="something wrong">
                                 @endif
                                 <div>
+                                    <a href="/product/{{ $cartItem->product->id }}"
+                                        class="basket__title">{{ $cartItem->product->name }}</a>
                                     <span class="basket__price">
                                         <?php $currency = $cartItem->product->product_prices->first()->pricelist->currency->name; ?>
                                         @if ($currency !== null)
@@ -50,8 +52,6 @@
                                             pret indisponibil
                                         @endif
                                     </span>
-                                    <a href="/product/{{ $cartItem->product->id }}"
-                                        class="basket__title">{{ $cartItem->product->name }}</a>
                                 </div>
                                 <button class="basket__delete"
                                     wire:click="removeFromCart({{ $cartItem->product->id }})">

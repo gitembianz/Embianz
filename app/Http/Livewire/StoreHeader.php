@@ -16,7 +16,6 @@ class StoreHeader extends Component
 {
   public $search = '';
   public $active = false;
-  public $wishlistitems;
   public $showwis = false;
   public $showcart = false;
   public $total;
@@ -34,13 +33,13 @@ class StoreHeader extends Component
         'categories' => $this->categories,
         'objects' => $this->objects,
         'cats' => $this->cats,
-        'wishlistitems' => $this->wishlistItems,
+        'wishlistitems' => $this->wishlistitems,
         'cartItems' => $this->cartItems,
       ];
     } else {
       $data = [
         'categories' => $this->categories,
-        'wishlistitems' => $this->wishlistItems,
+        'wishlistitems' => $this->wishlistitems,
         'cartItems' => $this->cartItems,
       ];
     }
@@ -61,10 +60,15 @@ class StoreHeader extends Component
     $this->active = false;
     $this->search = '';
   }
-  public function getWishlistItemsProperty()
+  public function getWishlistitemsProperty()
   {
     $wishlist = Wishlist::where('session_id', $this->session_id)->pluck('product_id')->toArray();
-    return Product::whereIn('id', $wishlist)->with('media.location')->get();
+
+    if (!empty($wishlist)) {
+      return Product::whereIn('id', $wishlist)->with('media', 'media.location')->get();
+    }
+
+    return collect(); // Return an empty collection if $wishlist is empty
   }
   public function getCartItemsProperty()
   {
@@ -73,7 +77,7 @@ class StoreHeader extends Component
       ->latest()->first();
 
     if ($cart !== null) {
-      $cartItems = Cart_Item::where('cart_id', $cart->id)->with('product.media.location')->with('product.product_prices.pricelist.currency')->get();
+      $cartItems = Cart_Item::where('cart_id', $cart->id)->with('product.media.location', 'product.product_prices.pricelist.currency')->get();
 
       return $cartItems;
     }
@@ -137,8 +141,8 @@ class StoreHeader extends Component
       ->where('status_id', '!=', $this->closedStatusId)
       ->latest()
       ->value('quantity_amount');
-    $this->wishlistitems = $this->getWishlistItemsProperty();
   }
+
   public function getCategoriesProperty()
   {
     // Retrieve the limit from the settings table
@@ -147,13 +151,13 @@ class StoreHeader extends Component
     // Check if the setting exists and has a valid numeric value
     $limit = $limitSetting && is_numeric($limitSetting->value) ? $limitSetting->value : 5;
 
-    // Use the retrieved limit in the query
-    return $this->categoriesQuery->limit($limit)->get();
+    // Use eager loading to load relationships with the main query
+    return $this->categoriesQuery->limit($limit)->with('subcategory.category.media.location')->get();
   }
 
   public function getCategoriesQueryProperty()
   {
-    return Category::where('active', true)->where('store_tab', '1')->with('subcategory')->with('media.location');
+    return Category::where('active', true)->where('store_tab', '1');
   }
   public function getObjectsProperty()
   {
@@ -161,7 +165,7 @@ class StoreHeader extends Component
   }
   public function getObjectsQueryProperty()
   {
-    return Product::name($this->search)->where('active', true)->with('product_prices.pricelist.currency')->with('media.location');
+    return Product::name($this->search)->where('active', true)->with('product_prices.pricelist.currency', 'media.location');
   }
   public function getCatsProperty()
   {

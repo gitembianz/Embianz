@@ -22,6 +22,7 @@ class Category extends Model
     return $this->hasMany(Subcategory::class, 'parrent_id');
   }
 
+
   public function media()
   {
     return $this->morphToMany(Media::class, 'mediable', 'item_media');
