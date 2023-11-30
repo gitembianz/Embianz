@@ -495,6 +495,33 @@ function modalProduct(modalId, sliderId) {
 }
 //<----------------------- End Modal Product --------------------------->
 //<--------------------------------------------------------------------->
+//<------------------------ Display Loading ---------------------------->
+function displayLoadingOncePerDay() {
+  var currentDate = new Date();
+  var currentDay = currentDate.toISOString().split("T")[0];
+
+  if (document.cookie.indexOf("visited_loading_" + currentDay) === -1) {
+    document.cookie =
+      "visited_loading_" +
+      currentDay +
+      "=true; expires=" +
+      new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth(),
+        currentDate.getDate() + 1
+      ).toUTCString() +
+      "; path=/";
+
+    const loading = document.querySelector(".loading-logo");
+    loading.style.display = "flex";
+  } else {
+    const loading = document.querySelector(".loading-logo");
+    loading.style.display = "none";
+  }
+}
+
+//<---------------------- End Display Loading -------------------------->
+//<--------------------------------------------------------------------->
 //<------------------------ Start Functions IOS ------------------------>
 scrollEvent();
 searchBar();
@@ -519,6 +546,9 @@ modalProduct(".product-modal", ".product-slider");
 modal(".modal");
 // sticky element
 stickyElement(".details");
+// loading logo
+window.onload = displayLoadingOncePerDay;
+
 //<---------------------- End Start Functions IOS ---------------------->
 //<--------------------------------------------------------------------->
 //<------------------------- Start Functions PC ------------------------>
