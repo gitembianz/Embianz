@@ -38,12 +38,11 @@ class RelatedMediaProduct extends Component
   public $selectedColumns = [];
   public $locations;
   public $file_sequences = ['0'];
-  public $file_locations = ['1'];
+  public $file_locations = ['0'];
   public $file_link = [];
   public $file_name = [];
   public $col = false;
   public $all = false;
-  public $hasResults;
   public $editedMediaIndex = null;
   public $i;
   public $j;
@@ -54,36 +53,31 @@ class RelatedMediaProduct extends Component
   {
     $this->productId = $productId;
     $this->product = Product::find($productId);
+    $this->locations = MediaLocation::all();
     $this->productType = class_basename(get_class($this->product));
     $this->selectedColumns = $this->columns;
-    $this->locations = MediaLocation::all();
-    $this->file_locations[] = '1';
     $this->i = null;
     $this->j = null;
   }
   public function editMedia($index, $id)
   {
+    $this->locations = MediaLocation::all();
     $this->editedMediaIndex = $index;
     $media = Media::find($id);
-    $this->filess = [
-      $index . '.name' => $media->name,
-      $index . '.location_id' => $media->location_id,
-      $index . '.sequence' => $media->sequence,
-    ];
-  }
-  public function uploadmedia()
-  {
-    $this->showmedia = true;
-    $this->dispatchBrowserEvent('media');
-  }
-  public function external()
-  {
-    $this->row = 1;
-    $this->externalmedia = true;
-  }
-  public function plus()
-  {
-    $this->row++;
+    if ($media->external == 1) {
+      $this->filess = [
+        $index . '.path' => $media->path,
+        $index . '.name' => $media->name,
+        $index . '.location_id' => $media->location_id,
+        $index . '.sequence' => $media->sequence,
+      ];
+    } else {
+      $this->filess = [
+        $index . '.name' => $media->name,
+        $index . '.location_id' => $media->location_id,
+        $index . '.sequence' => $media->sequence,
+      ];
+    }
   }
   public function cancelMedia()
   {
@@ -95,6 +89,11 @@ class RelatedMediaProduct extends Component
     $media_new = $this->filess[$mediaIndex] ?? NULL;
     if (!is_null($media_new)) {
       $media_for_prod = Media::find($id);
+      if ($media_for_prod->external == 1) {
+        if (array_key_exists('path', $media_new)) {
+          $media_for_prod->path = $media_new['path'];
+        }
+      }
       if (array_key_exists('sequence', $media_new)) {
         $media_for_prod->sequence = $media_new['sequence'];
       }
@@ -132,6 +131,28 @@ class RelatedMediaProduct extends Component
     $this->filess = [];
     $this->editedMediaIndex = null;
   }
+  public function uploadmedia()
+  {
+    $this->showmedia = true;
+    $this->dispatchBrowserEvent('media');
+  }
+  public function external()
+  {
+    $this->row = 1;
+    $this->externalmedia = true;
+    for ($i = 1; $i <= $this->row; $i++) {
+      $this->file_locations[$i] = $this->locations->first()->id;
+    }
+  }
+  public function plus()
+  {
+    $this->row++;
+    for ($i = 1; $i <= $this->row; $i++) {
+      $this->file_locations[$i] = $this->locations->first()->id;
+    }
+  }
+
+
   public function updatedChecked()
   {
     $this->selectPage = false;
@@ -164,8 +185,22 @@ class RelatedMediaProduct extends Component
     array_splice($this->file_sequences, $i, 1);
     array_splice($this->file_link, $i, 1);
     array_splice($this->file_name, $i, 1);
+    array_splice($this->file_locations, $i, 1);
     $this->row--;
+
+    // Reindex the arrays
+    $this->file_sequences = array_values($this->file_sequences);
+    $this->file_link = array_values($this->file_link);
+    $this->file_name = array_values($this->file_name);
+    $this->file_locations = array_values($this->file_locations);
   }
+  public function initializeLocation()
+  {
+    // This method will be called during Livewire initialization
+    // Set default value for the first location in the first row
+    $this->file_locations[1] = $this->locations->first()->id;
+  }
+
   public function saveexternal()
   {
 
@@ -200,6 +235,7 @@ class RelatedMediaProduct extends Component
     $this->file_sequences = [];
     $this->file_link = [];
     $this->file_name = [];
+    $this->file_locations = [];
   }
   public function save()
   {
