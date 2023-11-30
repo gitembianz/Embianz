@@ -21,7 +21,7 @@ class StoreMain extends Component
   public $quantity = 10;
   public $session_id;
   public $wishlist = [];
-  public $isLoading = true;
+  // public $isLoading = true;
   protected $listeners = [
     'wishlistUpdated' => 'mount'
   ];
@@ -35,11 +35,11 @@ class StoreMain extends Component
   public function mount()
   {
     $this->session_id = $this->getCookieId();
-    if (now()->diffInHours($this->lastUpdated($this->session_id)) >= 24) {
-      $this->isLoading = true;
-    } else {
-      $this->isLoading = false;
-    }
+    // if (now()->diffInHours($this->lastUpdated($this->session_id)) >= 24) {
+    //   $this->isLoading = true;
+    // } else {
+    //   $this->isLoading = false;
+    // }
     $sliderCategory = Store_Settings::where('parameter', 'slider_category')->first();
 
     if ($sliderCategory) {

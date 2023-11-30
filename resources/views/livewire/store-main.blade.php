@@ -148,7 +148,7 @@
         <!-------------------- End Support Center ------------------>
         <!---------------------------------------------------------->
         <!---------------------- Loading Logo ---------------------->
-        @if ($isLoading)
+        {{-- @if ($isLoading) --}}
             <div class="loading-logo">
                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
                     width="1280" height="100%" viewBox="0 0 1280 1024" xml:space="preserve">
@@ -174,8 +174,8 @@
                     </g>
                 </svg>
             </div>
-        @endif
-        @push("scripts")
+        {{-- @endif --}}
+        {{-- @push("scripts")
             <script>
                 document.addEventListener('livewire:load', function() {
                     // Livewire has finished loading
@@ -188,7 +188,7 @@
                     });
                 });
             </script>
-        @endpush
+        @endpush --}}
         <!-------------------- End Loading Logo -------------------->
         <!---------------------------------------------------------->
         <!--------------------- support button --------------------->
