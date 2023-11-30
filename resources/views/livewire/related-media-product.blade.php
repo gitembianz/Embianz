@@ -5,7 +5,7 @@
         <div class="accordion__btn-flex">
             <button class="accordion__btn"
                 wire:click.prevent="@if ($showmedia === false) $set('showmedia', true) @else $set('showmedia', false) @endif">
-                {{ __('Media ') }}({{ $product->media()->count() }})
+                {{ __('Media ') }}({{ $product->media->count() }})
             </button>
             <button class="accordion__upload" wire:click="uploadmedia">
                 <div class="item__upload-btn">
@@ -174,58 +174,49 @@
                                     <table class="table table-top">
                                         <thead>
                                             <tr>
-                                                <th>
+                                                <th class="wid-3">
                                                     <div class="table__header--btn">Name</div>
                                                 </th>
-                                                <th>
+                                                <th class="wid-1">
                                                     <div class="table__header--btn">Sequence</div>
                                                 </th>
-                                                <th>
+                                                <th class="wid-4">
                                                     <div class="table__header--btn">Link</div>
                                                 </th>
-                                                <th>
+                                                <th class="wid-1">
                                                     <div class="table__header--btn">Location</div>
                                                 </th>
-                                                <th></th>
+                                                <th class="wid-1"></th>
                                             </tr>
                                         </thead>
                                     </table>
                                     <table class="table" style="margin-top: 2rem">
                                         <tbody>
                                             @for ($i = 1; $i <= $row; $i++)
-                                                <tr>
-                                                    <td>
+                                                <tr wire:key="{{ $i }}">
+                                                    <td class="wid-3">
                                                         <input required type="text" class="table__edit"
                                                             wire:model="file_name.{{ $i }}">
                                                     </td>
-                                                    <td>
+                                                    <td class="wid-1">
                                                         <input required type="number" min="0"
                                                             class="table__edit"
                                                             wire:model="file_sequences.{{ $i }}">
                                                     </td>
-                                                    <td>
+                                                    <td class="wid-4">
                                                         <input required type="url" class="table__edit"
                                                             wire:model="file_link.{{ $i }}">
                                                     </td>
-                                                    <td>
-                                                        <select required
-                                                            wire:model="file_locations.{{ $i }}"
-                                                            class="table__edit">
-                                                            @php
-                                                                $firstLocation = $locations->first();
-                                                            @endphp
-                                                            <option value="{{ $firstLocation->id }}" selected>
-                                                                {{ $firstLocation->location }}</option>
-                                                            @foreach ($locations as $index => $location)
-                                                                @if ($loop->first)
-                                                                    @continue
-                                                                @endif
-                                                                <option value="{{ $location->id }}">
-                                                                    {{ $location->location }}</option>
-                                                            @endforeach
-                                                        </select>
+                                                    <td class="wid-1">
+                                                         <select required wire:model="file_locations.{{ $i }}" class="table__edit">
+        @foreach ($locations as $location)
+            <option value="{{ $location->id }}" @if ($file_locations[$i] == $location->id) selected @endif>
+                {{ $location->location }}
+            </option>
+        @endforeach
+    </select>
                                                     </td>
-                                                    <td>
+                                                    <td class="wid-1">
                                                         <div class="table__buttons">
                                                             @if ($i == $row)
                                                                 <button type="button" class="edit"
@@ -289,7 +280,7 @@
                     </form>
                 @endif
                 <div>
-                    @if ($product->media()->count() > 0)
+                    @if ($product->media->count() > 0)
                         {{-- delete single record --}}
                         <div class="modal" id="confirmationmodalmedia">
                             <div class="modal-content">

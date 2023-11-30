@@ -18,7 +18,6 @@ class RelatedMediaCategory extends Component
   use WithFileUploads;
   use WithPagination;
   public $categoryId;
-  public $limit = 10;
   public $category;
   public $showmedia = false;
   public $medias = [];
@@ -35,7 +34,7 @@ class RelatedMediaCategory extends Component
   public $selectedColumns = [];
   public $locations;
   public $file_sequences = ['0'];
-  public $file_locations = ['1'];
+  public $file_locations = [];
   public $file_link = [];
   public $file_name = [];
   public $col = false;
@@ -52,7 +51,6 @@ class RelatedMediaCategory extends Component
     $this->category = $category;
     $this->selectedColumns = $this->columns;
     $this->locations = MediaLocation::all();
-    $this->file_locations[] = '1';
     $this->i = null;
     $this->j = null;
   }
@@ -73,23 +71,30 @@ class RelatedMediaCategory extends Component
   {
     $this->row = 1;
     $this->externalmedia = true;
+    for ($i = 1; $i <= $this->row; $i++) {
+      $this->file_locations[$i] = $this->locations->first()->id;
+    }
   }
   public function plus()
   {
     $this->row++;
+    for ($i = 1; $i <= $this->row; $i++) {
+      $this->file_locations[$i] = $this->locations->first()->id;
+    }
   }
   public function clear($i)
   {
     array_splice($this->file_sequences, $i, 1);
     array_splice($this->file_link, $i, 1);
     array_splice($this->file_name, $i, 1);
+    array_splice($this->file_locations, $i, 1);
     $this->row--;
-    if ($this->row < 1) {
-      $this->externalmedia = false;
-      $this->file_sequences = [];
-      $this->file_link = [];
-      $this->file_name = [];
-    }
+
+    // Reindex the arrays
+    $this->file_sequences = array_values($this->file_sequences);
+    $this->file_link = array_values($this->file_link);
+    $this->file_name = array_values($this->file_name);
+    $this->file_locations = array_values($this->file_locations);
   }
   public function saveexternal()
   {
@@ -127,17 +132,26 @@ class RelatedMediaCategory extends Component
   {
     $this->editedMediaIndex = $index;
     $media = Media::find($id);
-    $this->filess = [
-      $index . '.name' => $media->name,
-      $index . '.location_id' => $media->location_id,
-      $index . '.sequence' => $media->sequence,
-    ];
+    if ($media->external == 1) {
+      $this->filess = [
+        $index . '.path' => $media->path,
+        $index . '.name' => $media->name,
+        $index . '.location_id' => $media->location_id,
+        $index . '.sequence' => $media->sequence,
+      ];
+    } else {
+      $this->filess = [
+        $index . '.name' => $media->name,
+        $index . '.location_id' => $media->location_id,
+        $index . '.sequence' => $media->sequence,
+      ];
+    }
   }
   public function cancel()
   {
     $this->medias = [];
     $this->file_sequences = ['0'];
-    $this->file_locations = ['1'];
+    $this->file_locations = [];
   }
   public function cancelMedia()
   {
@@ -148,45 +162,48 @@ class RelatedMediaCategory extends Component
   {
     $media_new = $this->filess[$mediaIndex] ?? NULL;
     if (!is_null($media_new)) {
-      $media_for_cat = Media::find($id);
+      $media_for_prod = Media::find($id);
+      if ($media_for_prod->external == 1) {
+        if (array_key_exists('path', $media_new)) {
+          $media_for_prod->path = $media_new['path'];
+        }
+      }
       if (array_key_exists('sequence', $media_new)) {
-        $media_for_cat->sequence = $media_new['sequence'];
+        $media_for_prod->sequence = $media_new['sequence'];
       }
       if (array_key_exists('location_id', $media_new)) {
-        $media_for_cat->location_id = $media_new['location_id'];
+        $media_for_prod->location_id = $media_new['location_id'];
       }
       if (array_key_exists('name', $media_new)) {
-        $newName = $media_new['name'] . '.' . $media_for_cat->type;
-        $oldName = $media_for_cat->name;
+        $newName = $media_new['name'] . '.' . $media_for_prod->type;
+        $oldName = $media_for_prod->name;
         if ($newName !== $oldName) {
-          $path = $media_for_cat->path;
+          $path = $media_for_prod->path;
           if (file_exists($path . $newName)) {
             $i = 1;
-            while (file_exists($path . $media_new['name'] . '(' . $i . ').' . $media_for_cat->type)) {
+            while (file_exists($path . $media_new['name'] . '(' . $i . ').' . $media_for_prod->type)) {
               $i++;
             }
-            $newName = $media_new['name'] . '(' . $i . ').' . $media_for_cat->type;
+            $newName = $media_new['name'] . '(' . $i . ').' . $media_for_prod->type;
           }
           $oldFilePath = $path . $oldName;
           $newFilePath = $path . $newName;
-          $media_for_cat->name = $newName;
-          $media_for_cat->save();
+          $media_for_prod->name = $newName;
+          $media_for_prod->save();
           if (file_exists($oldFilePath)) {
             rename($oldFilePath, $newFilePath);
           }
         }
       }
-      $media_for_cat->save();
+      $media_for_prod->save();
       session()->flash('notification', [
         'message' => 'Record edited successfully!',
         'type' => 'success',
         'title' => 'Success'
       ]);
     }
-
     $this->filess = [];
     $this->editedMediaIndex = null;
-    $this->render();
   }
   public function showColumn($column)
   {
