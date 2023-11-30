@@ -42,6 +42,14 @@ class StoreController extends Controller
   {
     return view('store.privacy');
   }
+  public function about()
+  {
+    return view('store.about');
+  }
+  public function contact()
+  {
+    return view('store.contact');
+  }
   public function products($categoryId = null)
   {
     $category = Category::find($categoryId);
