@@ -27,7 +27,7 @@
                             <div class="basket__top">
                                 @if (count($cartItem->product->media) > 0)
                                     @foreach ($cartItem->product->media as $media)
-                                        @if ($media->location->location == 'main')
+                                        @if ($media->location->location == "main")
                                             @if ($media->external)
                                                 <img src="{{ $media->path }}" alt="{{ $media->path }}">
                                             @else
@@ -62,7 +62,7 @@
                                         </path>
                                     </svg>
                                 </button>
-                                <button class="basket__wish @if ($cartItem->product->wishlists->where('session_id', $session_id)->isNotEmpty()) active @endif"
+                                <button class="basket__wish @if ($cartItem->product->wishlists->where("session_id", $session_id)->isNotEmpty()) active @endif"
                                     wire:click="toggleWishlist({{ $cartItem->product->id }})">
                                     <svg viewBox="0 0 512 512" width="20" title="heart">
                                         <path
@@ -175,4 +175,9 @@
             <!------------------------------------------------------>
         </div>
     </section>
+    <!---------------------------------------------------------->
+    <!--------------------- support button --------------------->
+    <x-help-button />
+    <!------------------- End support button ------------------->
+    <!---------------------------------------------------------->
 </div>
