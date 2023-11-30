@@ -1,4 +1,4 @@
-<x-store-head :title='"Termeni si condifii | "' />
+<x-store-head :title='"Termeni si conditii | "' />
 <x-store-header />
 <main>
     <div class="terms container">
@@ -6,7 +6,7 @@
             Termeni și condiții
         </h1>
         <p>
-            Magazinul online <a href="#">www.ecosticle.ro</a> (”magazin online”, ”site”) este deținut și
+            Magazinul online <a href="{{ url('/') }}">www.noren.ro</a> (”magazin online”, ”site”) este deținut și
             operat de Moldaso Line
             S.R.L. (”vânzătorul”), cu sediul social în București, Sectorul 1, str. Bulevardul Bucureștii Noi, Nr. 50A,
             bl. Tronson A+C, et.10, ap. 64, având număr de ordine în Registrul Comerțului J40/15607/15.11.2019 cod unic
