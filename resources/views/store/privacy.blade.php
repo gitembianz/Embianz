@@ -1,292 +1,376 @@
 <x-store-head :title='"Termeni si conditii | "' />
 <x-store-header />
 <main>
-    <div class="terms container">
-        <h1>
-            Termeni și condiții
-        </h1>
-        <p>
-            Magazinul online <a href="{{ url('/') }}">www.noren.ro</a> (”magazin online”, ”site”) este deținut și
-            operat de Moldaso Line
-            S.R.L. (”vânzătorul”), cu sediul social în București, Sectorul 1, str. Bulevardul Bucureștii Noi, Nr. 50A,
-            bl. Tronson A+C, et.10, ap. 64, având număr de ordine în Registrul Comerțului J40/15607/15.11.2019 cod unic
-            de înregistrare fiscală RO41903669
-        </p>
-        <h4>CONTRACTUL</h4>
-        <p>
-            Prin accesarea siteului, înregistrarea unui cont pe site sau prin plasarea unei comenzi, declarați că aveți
-            vârsta de sau mai mare de 16 ani.
-        </p>
-        <p>
-            Prin inregistrarea unei comenzi pe site, utilizatorul este de acord cu forma de comunicare (telefonic sau
-            e-mail) în vederea operațiunilor aferente livrării comenzii.
-            Notificarea primita de catre utilizator, dupa efectuarea comenzii are rol de informare si nu reprezinta
-            acceptarea comenzii. Aceasta notificare se face electronic (e-mail) sau telefonic.
-            Pentru motive justificate, vanzatorul isi rezerva dreptul de a modifica cantitatea bunurilor si/sau
-            serviciilor din comanda. Daca modifica cantitatea de bunuri si/sau servicii din comanda va anunta
-            utilizatorul la adresa de e-mail sau la numarul de telefon puse la dispozitia vanzatorului la efectuarea
-            comenzii si va returna suma achitata aferenta modificarii cantitatilor.
-            Contractul se considera incheiat intre vanzator si utilizator in momentul primirii de catre utilizator de la
-            vanzator, prin intermediul postei electronice si/sau SMS a notificarii de expediere a comenzii.
-            Documentul si informatiile puse la dispozitie de catre vanzator pe site vor sta la baza contractului.
-        </p>
-        <h4>
-            POLITICA DE VANZARE ONLINE
-        </h4>
-        <p>
-            Accesul in vederea efectuarii unei comenzii ii este permis oricarui utlizator/client/cumparator.
-            Pentru motive justificate Moldaso Line S.R.L isi rezerva dreptul de a restrictiona accesul
-            clientului/cumparatorului in vederea efectuarii unei comenzi si/sau la unele din modalitatile de plata
-            acceptate, in cazul in care considera ca in baza conduitei sau a activitatii clientului/cumparatorului pe
-            site, actiunile acestuia ar putea prejudicia in vreun fel Moldaso Line S.R.L sau ar incalca legislatia
-            aplicabila. In oricare dintre aceste cazuri, clientul/cumparatorul se poate adresa magazinului online,
-            pentru a fi informat cu privire la motivele care au condus la aplicarea masurilor sus mentionate.
-            Comunicarea cu vanzatorul se poate realiza prin adresele mentionate la sectiunea “contact” din Site.
-            Toate tarifele aferente bunurilor si/sau serviciilor prezentate pe site sunt exprimate in lei (RON) si
-            includ T.V.A., cu excepția situațiilor în care este indicat altfel.
-            In cazul platilor online vanzatorul nu este/nu poate fi facut responsabil pentru niciun alt cost suplimentar
-            suportat de cumparator, incluzand dar nelimitandu-se la comisioane de conversie valutara aplicate de catre
-            banca emitenta a cardului acestuia, in cazul in care moneda de emitere a acestuia difera de RON.
-            Responsabilitatea pentru aceasta actiune o poarta numai cumparatorul.
-            Toate informatiile folosite pentru descrierea bunurilor si/sau a serviciilor disponibile pe Site (imagini
-            statice / dinamice / prezentari multimedia / etc.) nu reprezinta o obligatie contractuala din partea
-            vanzatorului, acestea fiind utilizate exclusiv cu titlu de prezentare.
-        </p>
-        <h4>
-            CESIONAREA SI SUBCONTRACTAREA
-        </h4>
-        <p>
-            Vanzatorul poate cesiona si/sau subcontracta o terta parte pentru servicii ce tin de onorarea comenzii,
-            nefiind necesar acordul acestuia.
-        </p>
-        <h4>
-            DREPTUL DE PROPRIETATE INTELECTUALA SI INDUSTRIALA
-        </h4>
-        <p>
-            Întreg continutul www.ecosticle.ro, incluzand dar nelimitandu-se la logo-uri, reprezentari stilizate,
-            simboluri comerciale, imagini statice, imagini dinamice, text si/sau continut multimedia prezentate pe site,
-            sunt proprietatea exclusiva a Moldaso Line S.R.L acestuia fiindu-i rezervate toate drepturile obtinute in
-            acest sens in mod direct sau indirect (prin licente de utilizare si/sau publicare).
-            Utilizatorului / clientului / cumparatorului nu ii este permisa copierea, distribuirea, publicarea,
-            transferul catre terte parti, modificarea si/sau altfel alterarea, utilizarea, legarea la, expunerea,
-            includerea oricarui continut in orice alt context decat cel original intentionat de Moldaso Line S.R.L,
-            includerea oricarui continut in afara site-ului, indepartarea insemnelor care semnifica dreptul de autor al
-            Moldaso Line S.R.L. asupra continutului precum si participarea la transferul, vanzarea, distributia unor
-            materiale realizate prin reproducerea, modificarea sau afisarea continutului, decat cu acordul scris expres
-            al Moldaso Line S.R.L..
-            Orice continut la care utilizatorul / clientul / cumparatorul are si/sau obtine acces prin orice mijloc, se
-            afla sub incidenta prezentelor termeni și condiții, in cazul in care continutul nu este insotit de un acord
-            de utilizare specific si valid incheiat intre Moldaso Line S.R.L. si acesta, si fara nicio garantie implicit
-            sau expres formulata din partea Moldaso Line S.R.L. cu referire la acel continut.
-            Niciun continut transmis catre client sau cumparator, prin orice mijloc de comunicare (electronic,
-            telefonic, etc) sau dobandit de acesta prin accesare, vizitare si/sau vizualizare nu constituie o obligatie
-            contractuala din partea Moldaso Line S.R.L. si/sau al angajatului/prepusului Moldaso Line S.R.L. care a
-            mijlocit transferul de continut, in cazul in care aceasta exista, fata de respectivul continut.
-            Este interzisa orice utilizare a continutului in alte scopuri decat cele permise expres prin prezentele
-            Termeni și Condiții sau de acordul de utilizare care il insoteste, in cazul in care acesta exista.
-        </p>
-        <h4>
-            COMANDA
-        </h4>
-        <p>
-            Utilizatorul / clientul poate efectua comenzi pe site, prin adaugarea bunurilor si/sau serviciilor dorite in
-            cosul de cumparaturi, urmand a finaliza comanda efectuand plata prin una dintre modalitatile indicate
-            expres. Adaugarea unui bun/serviciu in cosul de cumparaturi, in lipsa finalizarii comenzii, nu atrage dupa
-            sine inregistrarea unei comenzi, implicit nici rezervarea automata a bunului/serviciului.
-            Prin finalizarea comenzii utilizatorul / clientul consimte ca toate datele furnizate de acesta, necesare
-            procesului de cumparare, sunt corecte, complete si adevarate la data plasarii comenzii.
-            Prin finalizarea comenzii, utlizatorul consimte ca vanzatorul poate sa il contacteze, prin orice mijloc pus
-            la dispoziția vanzatorului, in orice situatie in care este necesara contactarea utilizatorului, în vederea
-            prestării serviciului solicitat de utilizator.
-            Vanzatorul poate anula comanda efectuata de catre utilizator / client, in urma unei notificari prealabile
-            adresate cumparatorului, fara nicio obligatie ulterioara a vreunei parti fata de cealalta sau fara ca vreo
-            parte sa poata sa pretinda celeilalte daune-interese in urmatoarele cazuri:
-            - neacceptarea de catre banca emitenta a cardului utilizatorului / clientului, a tranzactiei, in cazul
-            platii online;
-            - invalidarea tranzactiei de catre procesatorul de carduri agreat de vanzator, in cazul platii online;
-            - datele furnizate de catre client/cumparator, pe site sunt incomplete si/sau incorecte;
-        </p>
-        <p>
-            Cumparatorul are dreptul sa se retraga din contract, respectiv sa returneze un bun sau sa renunțe la un
-            serviciu, în termen de 14 zile calendaristice, fara invocarea niciunui motiv si fara a suporta alte costuri
-            decât cele de livrare.
-            Astfel, potrivit OUG nr. 34/2014, perioada de returnare a unui bun sau renunțare la un serviciu expiră în
-            termen de 14 zile de la:
-            - ziua în care cumparatorul intră în posesia fizică a ultimului bun - în cazul în care cumparatorul comandă
-            printr-o singură comandă produse multiple care vor fi livrate separat
-            - ziua în care cumparatorul intră în posesia fizică a ultimului bun sau a ultimei piese - în cazul livrării
-            unui produs care constă din mai multe loturi sau piese.
-            In cazul in care cumparatorul decide sa se retraga din contract, acesta va contacta vanzatorul la datele de
-            contact puse la dispoziție pe Site.
-            In cazul in care clientul/cumparatorul solicita retragerea din contract in cadrul termenului legal de
-            retragere din contract, trebuie sa returneze si eventualele cadouri care au insotit produsul respectiv. In
-            cazul in care comanda este achitata, vanzatorul va rambursa suma in maxim 14 (paisprezece) zile de la data
-            informarii vanzatorului de catre cumparator asupra deciziei sale de retragere din Contract. Suma va fi
-            returnata dupa cum urmeaza:
-            - pentru comenzile achitate cu card online - prin restituire in contul din care a fost efectuata plata;
-            - pentru comenzile achitate cu OP/ramburs/Transfer - prin virament bancar.
-            Vanzatorul va putea amana rambursarea sumei pana la primirea bunurilor vandute sau pana la primirea unei
-            dovezi conform careia acestea au fost expediate, in cazul in care nu s-a oferit sa recupereze el insusi
-            bunurile (se va lua data cea mai recenta).
-        </p>
-        <h4>
-            BUNURI/SERVICII PENTRU CARE NU SE ASIGURA DREPTUL DE RETRAGERE
-        </h4>
-        <p>
-            Potrivit legislației aplicabile, sunt exceptate de la dreptul de retragere din contract următoarele:
-            - contractele de prestări de servicii, după prestarea completă a serviciilor, dacă executarea a început cu
-            acordul prealabil expres al consumatorului şi după ce acesta a confirmat că a luat cunoştinţă de faptul că
-            îşi va pierde dreptul la retragere după executarea completă a contractului de către profesionist;
-            - furnizarea de produse sau servicii al căror preţ depinde de fluctuaţiile de pe piaţa financiară pe care
-            profesionistul nu le poate controla şi care pot avea loc pe parcursul perioadei de retragere;
-            - furnizarea de produse confecţionate după specificaţiile prezentate de consumator sau personalizate în mod
-            clar;
-            - furnizarea de produse care sunt susceptibile a se deteriora sau a expira rapid;
-            - furnizarea de produse sigilate care nu pot fi returnate din motive de protecţie a sănătăţii sau din motive
-            de igienă şi care au fost desigilate de consumator;
-            - furnizarea de produse care sunt, după livrare, potrivit naturii acestora, inseparabil amestecate cu alte
-            elemente;
-            - furnizarea de băuturi alcoolice al căror preţ a fost convenit în momentul încheierii contractului de
-            vânzare, a căror livrare nu poate fi efectuată înainte de 30 de zile şi a căror valoare reală depinde de
-            fluctuaţiile de pe piaţă pe care profesionistul nu le poate controla;
-            - contractele în cazul cărora consumatorul a solicitat în mod special profesionistului să se deplaseze la
-            domiciliul său pentru a efectua lucrări urgente de reparaţie sau de întreţinere. Dacă, cu ocazia unei astfel
-            de vizite, profesionistul prestează alte servicii în afara celor solicitate în mod expres de consumator sau
-            furnizează alte produse decât piesele de schimb indispensabile pentru executarea lucrărilor de întreţinere
-            sau de reparaţie, dreptul de retragere se aplică respectivelor servicii sau produse suplimentare;
-            - furnizarea de înregistrări audio sau video sigilate sau de programe informatice sigilate care au fost
-            desigilate după livrare;
-            - furnizarea de ziare, periodice şi reviste, cu excepţia contractelor de abonament pentru furnizarea de
-            astfel de publicaţii;
-            - contractele încheiate în cadrul unei licitaţii;
-            - prestarea de servicii de cazare, pentru alt scop decât cel rezidenţial, transport de mărfuri, închiriere
-            de maşini, catering sau serviciile privind activităţile de agrement, în cazul în care contractul prevede o
-            dată sau o perioadă de executare specifică;
-            - furnizarea de conţinut digital care nu este livrat pe un suport material, dacă prestarea a început cu
-            acordul prealabil expres al consumatorului şi după ce acesta a confirmat că a luat cunoştinţă de faptul că
-            îşi va pierde dreptul la retragere.
-        </p>
-        <h4>
-            PRELUCRAREA DATELOR CU CARACTER PERSONAL
-        </h4>
-        <p>
-            Politica de confidențialitate cu privire la prelucrarea datelor cu caracter personal poate fi consultată
-            aici, fiind parte integrantă din prezentul document.
-        </p>
-        <h4>
-            COOKIE
-        </h4>
-        <p>
-            Politica de cookies poate fi consultată <a href="#">aici</a>, fiind parte integrantă din prezentul
-            document.
-        </p>
-        <h4>
-            COMUNICĂRI COMERCIALE
-        </h4>
-        <p>
-            Comunicările comerciale ale ecosticle.ro sunt transmise de catre Moldaso Line S.R.L. sau prin intermediul
-            partenerilor specializati si agreati de Moldaso Line S.R.L.. Astfel, sunt asigurate confidentialitatea si
-            securitatea informatiilor.
-            In momentul in care, clientul isi creaza un cont pe site, are posibilitatea sa isi exprime acordul cu
-            privire la primirea de newslettere.
-            Clientul isi poate modifica optiunea cu privire la acordul emis catre vanzator in orice moment:
-            - prin contactarea Moldaso Line S.R.L. in acest sens.
-            - prin accesarea link-ului de dezabonare afisat in mesajele comerciale primite de la vanzator.
-            Renuntarea la primirea comunicările comerciale nu implica renuntarea la acceptul dat pentru prezentele
-            termeni si conditii.
-        </p>
-        <p>
-            In urma achizitionarii unui bun sau serviciu, Moldaso Line S.R.L. poate transmite
-            cumparatorului/utilizatorului comunicari comerciale cu privire la sugestii de bunuri sau servicii
-            recomandate a fi utilizate impreuna cu bunul sau serviciul achizitionat.FACTURARE - PLATA
-            Preturile bunurilor si serviciilor afisate in cadrul site-ului www.ecosticle.ro includ T.V.A. conform
-            legislatiei in vigoare.
-            Pretul, modalitatea de plata si termenul de plata sunt specificate in fiecare comanda. Vanzatorul va emite
-            catre Cumparator o factura pentru bunurile si serviciile livrate, obligatia cumparatorului fiind sa
-            furnizeze toate informatiile necesare emiterii facturii conform cu legislatia in vigoare.
-            Vanzatorul va transmite cumparatorului factura aferenta comenzii ce contine bunuri si/sau servicii vandute
-            la momentul livrării acestora.
-            Pentru o corecta comunicare a facturii aferente comenzii, cumparatorului ii revin obligatiile de a-si
-            actualiza ori de cate ori este cazul datele din contul sau si de a accesa informatiile si documentele
-            aferente fiecarei comenzi, existente in cont.
-            Datele cardului de plata ale clientului/ utilizatorului/ cumparatorului nu vor fi accesibile Moldaso Line
-            S.R.L. si nici nu vor fi stocate de catre Moldaso Line S.R.L., ci doar de catre institutia de autorizare a
-            tranzactiei sau o alta entitateautorizata sa presteze servicii de stocare date de identificare a cardului,
-            despre a carei identitate clientul/ utilizatorul/ cumparatorul va fi informat, anterior introducerii
-            datelor.
-        </p>
-        <p>
-            In anumite cazuri, pentru mentinerea securitatii tranzactiilor, la inregistrarea comenzii, Cumparatorului i
-            se va solicita sa autorizeze plata prin reintroducerea parolei aferente contului sau utilizarea amprentei
-            digitale in cazul terminalelor mobile care au aceasta facilitate.
-            Pentru motive de securitate a tranzactiilor clientul/ utilizatorul/ cumparatorul este sfatuit sa nu ramana
-            logat pe site si sa nu seteze optiunea de logare automata pe dispozitivele mobile. Divulgarea parolei de
-            acces in cont nu este permisa si se recomanda folosirea unei parole cu caracter puternic de securitate (de
-            ex.: sa contina cel putin opt caractere, incluzand litere mari, litere mici, cifre si caractere speciale).
-        </p>
-        <h4>
-            LIVRAREA BUNURILOR
-        </h4>
-        <p>
-            Vanzatorul se obliga sa livreze bunurile in sistem de curierat door-to-door catre cumparator sau la punctele
-            sale de lucru, conform optiunii clientului.
-            Vanzatorul va asigura ambalarea corespunzatoare a bunurilor si va asigura transmiterea documentelor
-            insotitoare.
-        </p>
-        <h4>
-            TRANSFERUL PROPRIETATII BUNURILOR
-        </h4>
-        <p>
-            Proprietatea asupra bunurilor va fi transferata la livrare, dupa efectuarea platii din partea cumparatorului
-            in locatia indicata in comanda (intelegand prin livrare - semnarea de primire a documentului de transport
-            furnizat de curier sau semnarea de primire pe factura fiscala in cazul livrarilor efectuate de personalul
-            vanzatorului).
-        </p>
-        <h4>
-            RASPUNDERE
-        </h4>
-        <p>
-            Vanzatorul nu poate fi responsabil pentru daune de orice fel pe care cumparatorul sau oricare terta parte o
-            poate suferi ca rezultat al indeplinirii de catre vanzator a oricarei din obligatiile sale conform comenzii
-            si pentru daune care rezulta din utilizarea bunurilor si serviciilor dupa livrare si in special pentru
-            pierderea acestora.
-            Prin crearea si utilizarea contului, clientul / utilizatorul/ cumparatorul isi asuma raspunderea pentru
-            mentinerea confidentialitatii datelor de cont (user si parola) si pentru gestionarea accesarii contului, si,
-            in masura permisa de legislatia in vigoare, este responsabil de activitatea derulata prin intermediul
-            Contului sau.
-            Prin crearea contului si/sau utilizarea continutului si/sau plasarea comenzilor, clientul / utilizatorul/
-            cumparatorul accepta in mod expres si fara echivoc termenii si conditiile site-ului in ultima versiune
-            actualizata care este comunicata in cadrul site-ului, existenta la data crearii contului si/sau utilizarii
-            continutului si/sau la data plasarii comenzii.
-            Vanzatorul isi rezervă dreptul de a actualiza și modifica periodic Termenele si Conditiile Site-ului pentru
-            a reflecta orice modificări ale modului si conditiilor de functionare a Site-ului sau orice modificări ale
-            cerințelor legale. Documentul este opozabili Clientilor / Utilizatorilor/ Cumparatorilor de la momentul
-            afisarii in Site. În cazul oricărei astfel de modificări, vom afișa pe Site versiunea modificată a
-            Documentului, motiv pentru care va rugam sa verificati periodic continutul acestui Document.
-        </p>
-        <h4>
-            FORTA MAJORA
-        </h4>
-        <p>
-            Nici una din parti nu va fi raspunzatoare pentru neexecutarea obligatiilor sale contractuale, daca o astfel
-            de neexecutare la termen si/sau in mod corespunzator, total sau partial este datorata unui eveniment de
-            forta majora. Forta majora este evenimentul imprevizibil, in afara controlului partilor si care nu poate fi
-            evitat.
-            Daca in termen de 15 (cincisprezece) zile de la data producerii lui, respectivul eveniment nu inceteaza
-            fiecare parte va avea dreptul sa notifice celeilalte parti incetarea de plin drept a contractului fara ca
-            vreuna dintre ele sa poata pretinde celeilalte alte daune-interese.
-        </p>
-        <h4>
-            LEGEA APLICABILA - JURISDICTIA
-        </h4>
-        <p>
-            Prezentul contract este supus legii romane. Eventualele litigii aparute intre Moldaso Line S.R.L. si clienti
-            / cumparatori se vor rezolva pe cale amiabila sau, in cazul in care aceasta nu va fi posibila, litigiile vor
-            fi solutionate de instantele judecatoresti romane competente din Municipiul Bucuresti.
-        </p>
-        <div class="details__btns">
-            <a href="#">Back to Up</a>
-        </div>
-    </div>
-</main>
-<x-store-footer />
+    <x-header :title='__("privacy.pageTitle") . " | Eztem Corp"' :metadescription='__("privacy.metadescription")' :canonical="url("/privacy")" />
+
+    <main>
+        <section class="section__header container">
+            <h2 class="section__title">ANUNȚ DE CONFIDENȚIALITATE</h2>
+            <p>
+                Acest Anunț de Confidențialitate explică cum și de ce Eztem Corp utilizează datele personale ale
+                persoanelor care achiziționează produse de la noi, vizitează site-ul nostru web, solicită informații
+                despre produse sau comunică în orice alt mod sau fac afaceri cu noi.
+            </p>
+        </section>
+        <section class="section__header container">
+            <ol class="numeric">
+                <li>
+                    <h3>
+                        Despre Noi
+                    </h3>
+                    <ol class="sub-numeric">
+                        <li>
+                            <p>
+                                Suntem EZTEM CORP SRL, o companie înregistrată în România. Sediul nostru înregistrat
+                                este în România, București, Sectorul 1, Bulevardul Bucureștii Noi, nr. 50A, bl. Tr. A+C,
+                                et. 10, Ap. 64
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                Ne puteți contacta cu întrebări despre acest Anunț sau despre modul în care utilizăm
+                                datele personale, scriind la Eztem Corp SRL, România, București, Sectorul 1, Bulevardul
+                                Bucureștii Noi, nr. 50A, bl. Tr. A+C, et. 10, Ap. 64
+                            </p>
+                        </li>
+                    </ol>
+                </li>
+                <li>
+                    <h3>
+                        CE INFORMAȚII COLECTĂM
+                    </h3>
+                    <ol class="sub-numeric">
+                        <li>
+                            <p>
+                                Colectăm date personale de la persoanele fizice deoarece avem nevoie de aceste
+                                informații pentru a îndeplini comenzile și pentru a ține la curent clienții actuali și
+                                potențiali cu știri despre noi și produsele noastre. Informațiile pe care le colectăm
+                                pot include numele și datele de contact (inclusiv numărul de telefon, adresa și adresa
+                                de email) sau informații despre activitățile dvs. (detalii privind achizițiile,
+                                contactul cu noi) sau preferințele. Dacă efectuați o achiziție de la noi, vom utiliza
+                                informațiile financiare pentru a procesa plata dvs. Dacă ne contactați (de exemplu, cu o
+                                întrebare despre un produs sau despre o reclamație în garanție), putem stoca acea
+                                corespondență sau ținem o înregistrare a ei.
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                Nu colectăm sau procesăm informații personale despre vizitatorii site-ului nostru care
+                                pot să-i identifice direct, decât dacă aleg să furnizeze informații, cum ar fi prin
+                                abonarea la o listă de corespondență sau efectuarea unei achiziții. Putem colecta
+                                informații pseudonimizate despre vizitatorii site-ului nostru, deoarece acestea ne ajută
+                                să optimizăm și să îmbunătățim site-ul web. Aceste informații pot include adresa
+                                protocolului de internet, browserul folosit pentru conectarea la site-ul nostru,
+                                dispozitivul (de exemplu, sistemul său de operare) și tipul de conexiune (de exemplu,
+                                furnizorul de servicii de internet utilizat). Cu toate acestea, niciuna dintre aceste
+                                informații nu vă va identifica direct. Site-ul nostru utilizează, de asemenea,
+                                cookie-uri (vă rugăm să consultați Paragraful 5 pentru mai multe detalii).
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                Marea majoritate a informațiilor pe care le deținem ne-au fost furnizate de dvs. În
+                                anumite situații, putem obține informații de la o terță parte, de exemplu, dacă
+                                achiziționați unul dintre produsele noastre de la un revânzător autorizat și ne cere să
+                                livrăm acel produs direct către dvs., revânzătorul va împărtăși numele dvs., numărul de
+                                telefon, adresa de email și adresa de livrare cu noi. Am putea să comisionăm, de
+                                asemenea, terțe părți să vă contacteze pentru a efectua cercetări de piață sau pentru a
+                                furniza asistență post-vânzare.
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                De obicei, nu colectăm sau procesăm informații personale sensibile (cum ar fi informații
+                                despre starea de sănătate sau credințele cuiva). În cazul puțin probabil în care avem un
+                                motiv legal pentru a face acest lucru (de exemplu, dacă are loc un accident în incinta
+                                noastră), vom asigura că aceste informații sunt păstrate private și în siguranță și
+                                pentru nu mai mult decât este necesar în acest scop.
+                            </p>
+                        </li>
+                    </ol>
+                </li>
+                <li>
+                    <h3>
+                        DE CE FOLOSIM INFORMAȚIILE PERSONALE
+                    </h3>
+                    <ol class="sub-numeric">
+                        <li>
+                            <p>
+                                Vom utiliza doar informațiile dvs. în următoarele scopuri:
+                            </p>
+                            <ol class="sub-sub-numeric">
+                                <li>
+                                    <p>
+                                        atunci când este necesar pentru a încheia sau a executa un contract cu dvs.
+                                        (aceasta include atât vânzările, cât și îndeplinirea obligațiilor noastre în
+                                        cadrul garanției, pe care nu le-am putea face fără informațiile dvs.);
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        pentru a respecta o obligație legală;
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        atunci când este necesar pentru a urmări interesele noastre legitime de a opera
+                                        afacerea noastră și de a promova produsele noastre;
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        atunci când niciuna dintre cele de mai sus nu se aplică (ceea ce în practică
+                                        este probabil limitat la activitățile de marketing sau interacțiunile pe
+                                        rețelele de socializare) cu consimțământul dvs., care poate fi retras în orice
+                                        moment.
+                                    </p>
+                                </li>
+                            </ol>
+                        </li>
+                        <li>
+                            <p>
+                                Informațiile dvs. vor fi utilizate doar în scopul sau scopurile pentru care au fost
+                                colectate (sau pentru un scop strâns legat, cum ar fi păstrarea unui înregistrare a unei
+                                plăți odată ce tranzacția este completă).
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                Nu vom vinde niciodată informațiile dvs. personale. Partajăm informații cu furnizorii
+                                noștri (de exemplu, dacă plasați o comandă cu noi, vom partaja adresa dvs. cu firma de
+                                livrare), dar li se va permite să utilizeze informațiile numai în acest scop și vom avea
+                                un contract scris care să asigure protecția informațiilor dvs.
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                Ocazional, am putea fi nevoiți să utilizăm informațiile dvs. în alte scopuri decât cele
+                                pentru care au fost colectate inițial. Acest lucru ar putea fi necesar pentru că avem o
+                                obligație legală de a dezvălui informațiile (de exemplu, autorităților sau în urma unei
+                                ordonanțe judecătorești) sau în cazul în care intrăm în negocieri sau într-un acord de
+                                vânzare sau cumpărare a unei părți a afacerii.
+                            </p>
+                        </li>
+                    </ol>
+                </li>
+                <li>
+                    <h3>
+                        COMUNICĂRI
+                    </h3>
+                    <ol class="sub-numeric">
+                        <li>
+                            <p>
+                                Dacă plasați o comandă cu noi, vă vom contacta pentru a confirma comanda, când aceasta a
+                                fost expediată și vă vom informa dacă avem întrebări sau probleme legate de aceasta.
+                                Dacă aveți un cont online, putem să vă contactăm cu actualizări sau informații despre
+                                contul dvs. din când în când. Vă putem contacta, de asemenea, pentru a vă notifica cu
+                                privire la modificările la termenii noștri de afaceri sau la acest Anunț.
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                Dacă sunteți un client existent, vă vom trimite comunicări de marketing (prin email,
+                                telefon sau poștă) despre produse sau servicii similare care v-ar putea interesa, cu
+                                excepția cazului în care ne solicitați să nu o facem sau decideți să vă dezabonați (vă
+                                rugăm să consultați Paragraful 4.4 pentru modul de a face acest lucru).
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                Dacă nu sunteți un client existent, vă vom trimite doar comunicări de marketing (care
+                                pot fi prin email, telefon sau poștă) dacă solicitați să le primiți. Puteți opta pentru
+                                marketing furnizându-ne datele de contact și vă puteți înscrie la buletinele noastre
+                                informative sau bifând o casetă de opțiune (de exemplu, pe site-ul nostru).
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                Puteți schimba modul în care primiți comunicări de la noi sau vă puteți dezabona de la
+                                marketing în orice moment. Puteți face acest lucru făcând clic pe link-ul „dezabonare”
+                                din oricare dintre emailurile noastre sau scriindu-ne sau trimitându-ne un email
+                                (folosind detaliile din Paragraful 1.2) cu detaliile solicitării dvs. Dacă ați primit o
+                                comunicare de marketing în mod eronat și doriți să vă plângeți, vă rugăm să ne
+                                contactați (contact@eztemcorp.com).
+                            </p>
+                        </li>
+                    </ol>
+                </li>
+                <li>
+                    <h3>
+                        COOKIE-URI
+                    </h3>
+                    <ol class="sub-numeric">
+                        <li>
+                            <p>
+                                Atunci când vizitați site-ul nostru web, vom utiliza cookie-uri pentru a urmări ceea ce
+                                puneți în coșul dvs. și pentru a vă aminti când reveniți pe site. Acestea sunt folosite,
+                                de asemenea, pentru a urmări modul în care vizitatorii utilizează site-ul nostru web și
+                                pentru a măsura eficacitatea campaniilor noastre de marketing online, în scopul de a
+                                îmbunătăți în ansamblu experiența dvs. pe site. Pentru mai multe detalii despre cum
+                                folosim cookie-urile, vă rugăm să vizitați pagina noastră Cookie.
+                            </p>
+                        </li>
+                    </ol>
+                </li>
+                <li>
+                    <h3>
+                        SECURITATE
+                    </h3>
+                    <ol class="sub-numeric">
+                        <li>
+                            <p>
+                                Folosim o varietate de măsuri fizice și tehnice pentru a menține în siguranță datele
+                                personale și pentru a preveni accesul neautorizat la acestea sau utilizarea sau
+                                dezvăluirea acestora. Datele electronice și bazele de date sunt stocate pe sisteme de
+                                calcul securizate și controlăm cine are acces la ele (utilizând mijloace atât fizice,
+                                cât și electronice). Personalul nostru primește training privind protecția datelor și
+                                avem un set de proceduri detaliate privind protecția datelor pe care personalul este
+                                obligat să le urmeze atunci când lucrează cu datele personale.
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                Site-ul nostru respectă Standardul de Securitate a Datelor din Industria Cardurilor de
+                                Plată (PCI-DSS), iar orice informații de plată pe care le furnizați ne vor fi transmise
+                                printr-o conexiune securizată. Cu toate acestea, nu putem garanta absolut siguranța
+                                internetului sau a rețelelor externe sau a propriului dvs. dispozitiv, astfel încât
+                                orice comunicare online (de exemplu, informații furnizate prin email sau prin
+                                intermediul site-ului nostru) sunt la propriul dvs. risc.
+                            </p>
+                        </li>
+                    </ol>
+                </li>
+                <li>
+                    <h3>
+                        STOCARE DATE
+                    </h3>
+                    <ol class="sub-numeric">
+                        <li>
+                            <p>
+                                De obicei, stocăm date doar în Spațiul Economic European (SEE). Dacă unul dintre
+                                subcontractanții noștri (cum ar fi un procesator de plăți) trebuie să le transfere în
+                                afara SEE, vom lua măsuri pentru a ne asigura că sunt în vigoare niveluri adecvate de
+                                protecție a confidențialității, în conformitate cu legea română privind protecția
+                                datelor. Aceste măsuri vor fi de obicei contractuale și/sau rezultatul unei decizii a
+                                Uniunii Europene care permite transferul.
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                Dacă credeți că oricare dintre informațiile pe care le deținem despre dvs. sunt
+                                incorecte sau incomplete, vă rugăm să ne trimiteți un email la adresa din Paragraful 1.2
+                                de mai sus.
+                            </p>
+                        </li>
+                    </ol>
+                </li>
+                <li>
+                    <h3>
+                        DREPTURILE DVS.
+                    </h3>
+                    <ol class="sub-numeric">
+                        <li>
+                            <p>
+                                Dorim să ne asigurăm că rămâneți în controlul informațiilor dvs. personale. Parte din
+                                aceasta este de a vă asigura că înțelegeți drepturile dvs. legale, care sunt
+                                următoarele:
+                            </p>
+                            <ol class="sub-sub-numeric">
+                                <li>
+                                    <p>
+                                        acolo unde informațiile dvs. sunt procesate pe baza consimțământului dvs.,
+                                        dreptul de a retrage acel consimțământ;
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        dreptul de a confirma dacă avem sau nu datele dvs. personale și, în caz
+                                        afirmativ, de a obține o copie a datelor personale (acest lucru este de obicei
+                                        cunoscut sub numele de „cerere de acces la datele subiectului”);
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        dreptul de a rectifica datele inexacte;
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        dreptul de a vă opune folosirea datelor dvs. pe baza intereselor legitime ale
+                                        noastre sau în scopuri de marketing sau profilare;
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        dreptul de a șterge anumite date despre dvs. în anumite circumstanțe (uneori
+                                        denumit „dreptul de a fi uitat”);
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        dreptul de a vă opune sau de a restricționa modul în care informațiile dvs.
+                                        personale sunt utilizate.
+                                    </p>
+                                </li>
+                            </ol>
+                        </li>
+                        <li>
+                            <p>
+                                Dacă doriți mai multe informații despre drepturile dvs. sau doriți să le exercitați, vă
+                                rugăm să ne contactați folosind detaliile din paragraful 1.2 de mai sus.
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                Vă rugăm să rețineți că există excepții de la drepturile de mai sus și, deși vom încerca
+                                întotdeauna să răspundem într-un mod care să vă satisfacă, pot exista situații în care
+                                nu vom putea face acest lucru. Dacă nu sunteți mulțumit de răspunsul nostru sau credeți
+                                că drepturile dvs. de protecție a datelor sau de confidențialitate au fost încălcate, ar
+                                trebui să contactați Autoritatea Națională de Supraveghere a Prelucrării Datelor cu
+                                Caracter Personal din România. Detalii despre cum puteți face acest lucru pot fi găsite
+                                la www.dataprotection.ro.
+                            </p>
+                        </li>
+                    </ol>
+                </li>
+                <li>
+                    <h3>
+                        LEGAȚII CĂTRE ALTE SITE-URI
+                    </h3>
+                    <ol class="sub-numeric">
+                        <li>
+                            <p>
+                                Site-ul nostru web poate conține hyperlink-uri către altele care nu ne aparțin sau nu
+                                sunt operate de noi. Nu suntem responsabili pentru conținutul sau funcționalitatea
+                                oricărui dintre acele site-uri externe. Dacă un site web extern solicită informații
+                                personale de la dvs. (de exemplu, în legătură cu o comandă pentru bunuri sau servicii),
+                                informațiile pe care le furnizați nu vor fi acoperite de acest Anunț. Vă sugerăm să
+                                citiți anunțul nostru de confidențialitate înainte de a furniza orice informații
+                                personale.
+                            </p>
+                        </li>
+                    </ol>
+                </li>
+                <li>
+                    <h3>
+                        MODIFICĂRI ALE ACESTOR TERMENI
+                    </h3>
+                    <ol class="sub-numeric">
+                        <li>
+                            <p>
+                                Putem revizui acest Anunț în orice moment prin modificarea acestei pagini. Vă recomandăm
+                                să verificați această pagină din când în când pentru a fi la curent cu orice modificări
+                                pe care le-am făcut, deoarece ele sunt obligatorii pentru dvs.
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                Acest Anunț a fost actualizat ultima dată la 14 februarie 2022.
+                            </p>
+                        </li>
+                    </ol>
+                </li>
+            </ol>
+        </section>
+    </main>
+    <x-store-footer />
