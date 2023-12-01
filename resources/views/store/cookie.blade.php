@@ -1,6 +1,20 @@
 <x-store-head :title='" Cookie | "' />
 <x-store-header />
 <main>
+    <!---------------------------------------------------------->
+    <!------------------------Breadcrumbs----------------------->
+    <section>
+        <div class="breadcrumbs container">
+            <a class="breadcrumbs__link" href="{{ url("/") }}">
+                Acasa
+            </a>
+            <a class="breadcrumbs__link" href="{{ url("/cookie") }}">
+                Politica de Cookie-uri
+            </a>
+        </div>
+    </section>
+    <!----------------------End Breadcrumbs--------------------->
+    <!---------------------------------------------------------->
     <section class="section__header container">
         <h2 class="section__title">Politica de Cookie-uri</h2>
     </section>
