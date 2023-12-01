@@ -170,4 +170,5 @@
     <x-help-button />
     <!------------------- End support button ------------------->
     <!---------------------------------------------------------->
+    <script src="/script/product.js" async defer></script>
 </div>
