@@ -29,6 +29,7 @@
     height: auto;
     aspect-ratio: 1 / 1;
     object-fit: contain;
+    object-position: center;
     pointer-events: none;
     text-decoration: none;
 
@@ -75,7 +76,8 @@
     background: #333;
     height: auto;
     aspect-ratio: 1 / 1;
-    object-fit: cover;
+    object-fit: contain;
+    object-position: center;
     border-radius: 10px;
     transition: filter 0.3s ease-in-out;
     position: relative;

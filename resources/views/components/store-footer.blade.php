@@ -1,7 +1,7 @@
 {{-- <footer> --}}
 <livewire:store-footer />
 {{-- </footer> --}}
-<script src="/script/main.js" async defer></script>
+<script src="/script/store/general.js" async defer></script>
 @livewireScripts
 </body>
 

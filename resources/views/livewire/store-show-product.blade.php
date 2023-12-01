@@ -78,7 +78,7 @@
                 </button>
             </div>
             <div class="product__price">
-                <span>Price</span>
+                <span>Pret</span>
                 <span>
                     @if ($product->product_prices->first() !== null)
                         {{ $product->product_prices->first()->value }}
@@ -90,7 +90,7 @@
             </div>
             @if ($product->product_prices->first() !== null)
                 <div class="quantity">
-                    <span>Quantity</span>
+                    <span>Cantitate</span>
                     <div class="quantity__buttons">
                         <button class="quantity__arrow" wire:click="decrementCounter">
                             <svg>
@@ -119,7 +119,7 @@
                 $price = $product->product_prices->first();
             @endphp
             @if ($price && $product->quantity != 0)
-                <button wire:click="addToCart({{ $product }})" class="product__button">Add to cart</button>
+                <button wire:click="addToCart({{ $product }})" class="product__button">Adauga in coș</button>
             @endif
             <!---------------- End Product (Details) --------------->
             <!------------------------------------------------------>
@@ -127,9 +127,9 @@
             <div class="tab">
                 <div class="tab__top">
                     <button class="tab__button @if ($activeTab === 0) active @endif"
-                        wire:click="switchTab(0)">Description</button>
+                        wire:click="switchTab(0)">Descriere</button>
                     <button class="tab__button @if ($activeTab === 1) active @endif"
-                        wire:click="switchTab(1)">Details</button>
+                        wire:click="switchTab(1)">Detalii</button>
                 </div>
                 <div class="tab__content @if ($activeTab === 0) active @endif">
                     <p class="tab__info">{!! $product->long_description !!}</p>
@@ -138,8 +138,8 @@
                     <table class="tab__table">
                         <thead>
                             <tr>
-                                <th>Specification </th>
-                                <th>Description</th>
+                                <th>Specificatii </th>
+                                <th>Descriere</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -152,7 +152,7 @@
                                 @endforeach
                             @else
                                 <tr>
-                                    <td colspan="2">No Specs for this product</td>
+                                    <td colspan="2">Nu exista specificatii pentru acest product</td>
                                 </tr>
                             @endif
                         </tbody>
@@ -170,4 +170,5 @@
     <x-help-button />
     <!------------------- End support button ------------------->
     <!---------------------------------------------------------->
+    <script src="/script/store/product.js" async defer></script>
 </div>

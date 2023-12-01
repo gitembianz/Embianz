@@ -262,4 +262,5 @@
     <x-help-button />
     <!------------------- End support button ------------------->
     <!---------------------------------------------------------->
+    <script src="/script/store/catalog.js" async defer></script>
 </div>
