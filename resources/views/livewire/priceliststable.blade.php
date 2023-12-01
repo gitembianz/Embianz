@@ -187,8 +187,8 @@
                     <td class="table__empty" colspan="{{ count($selectedColumns) + 3 }}">No record found.</td>
                 </tr>
             @else
-                @foreach ($pricelists as $index => $price)
-                    <tr class="@if ($this->isChecked($price->id)) table__row--selected @endif">
+                @foreach ($pricelists as $price)
+                    <tr @if ($loop->last) id="last_record" @endif class="@if ($this->isChecked($price->id)) table__row--selected @endif">
 
                         <td data-title="Check">
                             <input type="checkbox" value="{{ $price->id }}" wire:model="checked">
@@ -245,9 +245,5 @@
             @endif
         </tbody>
     </table>
-    @if ($loadAmount <= count($pricelists))
-                  <div class="table__load-more" wire:click="loadMore">
-                      Load more
-                  </div>
-    @endif
+    <x-lazy />
 </div>

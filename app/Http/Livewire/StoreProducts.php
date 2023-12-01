@@ -16,7 +16,7 @@ class StoreProducts extends Component
 {
   use WithPagination;
 
-  public $loadAmount = 10;
+  public $loadAmount = 11;
   public $search = "";
   public $quantity = 10;
   public $wishlist = [];
@@ -24,7 +24,6 @@ class StoreProducts extends Component
   public $specification;
   public $orderBy = 'best_selling'; // Default sorting order
   public $orderAsc = true;
-  public $products;
   public $category;
   public $categoryname;
   public $property = false;
@@ -44,8 +43,7 @@ class StoreProducts extends Component
   }
   public function render()
   {
-    $this->products = $this->getProducts();
-    return view('livewire.store-products');
+    return view('livewire.store-products', ['products' => $this->products]);
   }
   public function mount()
   {
@@ -121,9 +119,9 @@ class StoreProducts extends Component
     $this->selectedSpecNames = [];
     $this->selectedKeys = [];
   }
-  public function getProducts()
+  public function getProductsProperty()
   {
-    $query = Product::name($this->search)->where('active', true)->with('media.location', 'product_prices.pricelist.currency', 'wishlists', 'media');
+    $query = Product::name($this->search)->where('active', true)->with('media.location', 'product_prices.pricelist', 'product_prices.pricelist.currency', 'wishlists', 'media', 'product_categories');
     if ($this->category) {
       $this->categoryname = Category::find($this->category)->name;
       $query->whereHas('product_categories.category', function ($query) {
@@ -157,7 +155,7 @@ class StoreProducts extends Component
         break;
     }
 
-    return $query->limit($this->loadAmount)->get();
+    return $query->paginate($this->loadAmount);
   }
   public function addToWishlist($productId)
   {

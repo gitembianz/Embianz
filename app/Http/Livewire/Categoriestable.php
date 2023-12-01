@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Schema;
 class Categoriestable extends Component
 {
   use WithPagination;
-  public $loadAmount = 10;
+  public $loadAmount = 20;
   public $search = '';
   public $orderBy = 'id';
   public $orderAsc = true;
@@ -29,8 +29,6 @@ class Categoriestable extends Component
 
   public function render()
   {
-    $categories = $this->categories;
-
     if ($this->all) {
       $this->selectedColumns = $this->columns;
     }
