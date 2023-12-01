@@ -173,17 +173,17 @@
                                     <table class="table table-top">
                                         <thead>
                                             <tr>
-                                                <th class="wid-2">
+                                                <th class="wid-3">
                                                     <div class="table__header--btn">Name</div>
                                                 </th>
 
                                                 <th class="wid-1">
                                                     <div class="table__header--btn">Sequence</div>
                                                 </th>
-                                                <th class="wid-3">
+                                                <th class="wid-4">
                                                     <div class="table__header--btn">Link</div>
                                                 </th>
-                                                <th class="wid-2">
+                                                <th class="wid-1">
                                                     <div class="table__header--btn">Location</div>
                                                 </th>
                                                 <th class="wid-1"></th>
@@ -194,7 +194,7 @@
                                         <tbody>
                                             @for ($i = 1; $i <= $row; $i++)
                                                 <tr>
-                                                    <td class="wid-2">
+                                                    <td class="wid-3">
                                                         <input required type="text" class="table__edit"
                                                             wire:model="file_name.{{ $i }}">
                                                     </td>
@@ -203,26 +203,18 @@
                                                             class="table__edit"
                                                             wire:model="file_sequences.{{ $i }}">
                                                     </td>
-                                                    <td class="wid-3">
+                                                    <td class="wid-4">
                                                         <input required type="url" class="table__edit"
                                                             wire:model="file_link.{{ $i }}">
                                                     </td>
-                                                    <td class="wid-2">
-                                                        <select class="table__edit" required
-                                                            wire:model="file_locations.{{ $i }}">
-                                                            @php
-                                                                $firstLocation = $locations->first();
-                                                            @endphp
-                                                            <option value="{{ $firstLocation->id }}" selected>
-                                                                {{ $firstLocation->location }}</option>
-                                                            @foreach ($locations as $index => $location)
-                                                                @if ($loop->first)
-                                                                    @continue
-                                                                @endif
-                                                                <option value="{{ $location->id }}">
-                                                                    {{ $location->location }}</option>
-                                                            @endforeach
-                                                        </select>
+                                                    <td class="wid-1">
+                                                         <select required wire:model="file_locations.{{ $i }}" class="table__edit">
+        @foreach ($locations as $location)
+            <option value="{{ $location->id }}" @if ($file_locations[$i] == $location->id) selected @endif>
+                {{ $location->location }}
+            </option>
+        @endforeach
+    </select>
                                                     </td>
                                                     <td class="wid-1">
                                                         <div class="table__buttons">
@@ -287,7 +279,7 @@
                         </div>
                     </form>
                 @endif
-                @if ($category->media()->count() > 0)
+                @if ($category->media->count() > 0)
                     <div class="panel__header">
                         <input class="panel__header--input" type="text" wire:model.debounce.300ms="search"
                             placeholder="Search..." style="grid-column: 1/4">
@@ -475,7 +467,14 @@
                                                     <video src="/{{ $file->path . $file->name }}" width="50"
                                                         controls="true"></video>
                                                 @else
-                                                    <img src="{{ $file->path }}" width="100" alt="">
+                                                    @if ($editedMediaIndex !== $index)
+                                                      <img src="{{ $file->path }}" width="100" height="50"
+                                                      alt="{{ $file->path }}">
+                                                      @else
+                                                      <input type="url" class="table__edit"
+                                                          wire:model.defer="filess.{{ $index }}.path"
+                                                         >
+                                                    @endif
                                                 @endif
                                             </td>
                                         @endif
