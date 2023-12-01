@@ -127,9 +127,9 @@
             <div class="tab">
                 <div class="tab__top">
                     <button class="tab__button @if ($activeTab === 0) active @endif"
-                        wire:click="switchTab(0)">Description</button>
+                        wire:click="switchTab(0)">Descriere</button>
                     <button class="tab__button @if ($activeTab === 1) active @endif"
-                        wire:click="switchTab(1)">Details</button>
+                        wire:click="switchTab(1)">Detalii</button>
                 </div>
                 <div class="tab__content @if ($activeTab === 0) active @endif">
                     <p class="tab__info">{!! $product->long_description !!}</p>
