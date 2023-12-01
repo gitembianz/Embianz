@@ -180,4 +180,5 @@
     <x-help-button />
     <!------------------- End support button ------------------->
     <!---------------------------------------------------------->
+    <script src="/script/checkout.js" async defer></script>
 </div>
