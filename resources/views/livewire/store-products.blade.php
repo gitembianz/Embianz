@@ -71,7 +71,7 @@
             <p>Nu au fost produse gasite</p>
         @else
             @foreach ($products as $product)
-                <div class="card" role="listitem">
+                <div @if ($loop->last) id="last_record" @endif class="card" role="listitem">
                     <a href="/product/{{ $product->id }}">
                         @if (count($product->media) > 0)
                             @foreach ($product->media as $media)
@@ -91,7 +91,7 @@
                                 alt="something wrong">
                         @endif
                     </a>
-                    <?php if ($product->product_prices()->count() > 0) {
+                    <?php if ($product->product_prices->count() != 0) {
                         $price = $product->product_prices->first()->value;
                     } else {
                         $price = null;
@@ -149,6 +149,7 @@
                     </div>
                 </div>
             @endforeach
+            <x-lazy />
         @endif
     </section>
     <!-----------------------End Catalogue---------------------->

@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Schema;
 class Vouchertable extends Component
 {
   use WithPagination;
-  public $loadAmount = 10;
+  public $loadAmount = 20;
   public $search = '';
   public $orderBy = 'id';
   public $orderAsc = true;
