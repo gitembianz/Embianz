@@ -161,10 +161,3 @@ sliderProduct(".product-slider");
 modalProduct(".product-modal", ".product-slider");
 //<---------------------- End Start Functions IOS ---------------------->
 //<--------------------------------------------------------------------->
-//<------------------------- Start Functions PC ------------------------>
-document.addEventListener("DOMContentLoaded", function () {
-  sliderProduct(".product-slider");
-  modalProduct(".product-modal", ".product-slider");
-});
-//<----------------------- End Start Functions PC ---------------------->
-//<--------------------------------------------------------------------->
