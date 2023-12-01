@@ -2209,6 +2209,8 @@ header {
   gap: 15px;
   background: #333333;
   color: #f2f2f2;
+  font-size: 18px;
+  font-weight: 500;
 }
 .filter__close:hover {
   background: #1a1a1a;
@@ -2275,7 +2277,8 @@ header {
   background: #f2f2f2;
 }
 .filter__link > h4 {
-  font-size: 18px;
+  font-size: 16px;
+  font-weight: 400;
   color: #333333;
   width: 100%;
   height: 100%;
@@ -2414,6 +2417,7 @@ header {
 .dropfilter__button--link > h4 {
   font-size: 18px;
   color: #333333;
+  font-weight: 400;
 }
 @media (max-width: 576px) {
   .dropfilter__button--link > h4 {
@@ -2480,8 +2484,9 @@ header {
   border-radius: 7px;
 }
 .dropfilter__link > h4 {
-  font-size: 18px;
+  font-size: 16px;
   color: #333333;
+  font-weight: 400;
 }
 @media (max-width: 576px) {
   .dropfilter__link > h4 {
@@ -3906,6 +3911,7 @@ header {
   height: auto;
   aspect-ratio: 1/1;
   object-fit: contain;
+  object-position: center;
   pointer-events: none;
   text-decoration: none;
 }
@@ -3949,7 +3955,8 @@ header {
   background: #333;
   height: auto;
   aspect-ratio: 1/1;
-  object-fit: cover;
+  object-fit: contain;
+  object-position: center;
   border-radius: 10px;
   transition: filter 0.3s ease-in-out;
   position: relative;
