@@ -78,7 +78,7 @@
                 </button>
             </div>
             <div class="product__price">
-                <span>Price</span>
+                <span>Pret</span>
                 <span>
                     @if ($product->product_prices->first() !== null)
                         {{ $product->product_prices->first()->value }}
@@ -90,7 +90,7 @@
             </div>
             @if ($product->product_prices->first() !== null)
                 <div class="quantity">
-                    <span>Quantity</span>
+                    <span>Cantitate</span>
                     <div class="quantity__buttons">
                         <button class="quantity__arrow" wire:click="decrementCounter">
                             <svg>
@@ -119,7 +119,7 @@
                 $price = $product->product_prices->first();
             @endphp
             @if ($price && $product->quantity != 0)
-                <button wire:click="addToCart({{ $product }})" class="product__button">Add to cart</button>
+                <button wire:click="addToCart({{ $product }})" class="product__button">Adauga in coș</button>
             @endif
             <!---------------- End Product (Details) --------------->
             <!------------------------------------------------------>
@@ -138,8 +138,8 @@
                     <table class="tab__table">
                         <thead>
                             <tr>
-                                <th>Specification </th>
-                                <th>Description</th>
+                                <th>Specificatii </th>
+                                <th>Descriere</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -152,7 +152,7 @@
                                 @endforeach
                             @else
                                 <tr>
-                                    <td colspan="2">No Specs for this product</td>
+                                    <td colspan="2">Nu exista specificatii pentru acest product</td>
                                 </tr>
                             @endif
                         </tbody>
