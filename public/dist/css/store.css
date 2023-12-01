@@ -492,6 +492,7 @@ section {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 15px;
 }
 .section__header > .logo {
   height: 100%;
@@ -879,6 +880,89 @@ section {
   font-weight: normal;
   position: absolute;
   left: -30px;
+}
+
+.faq__accordions {
+  display: grid;
+  gap: 25px;
+}
+@media (min-width: 768px) {
+  .faq__accordions {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (min-width: 1200px) {
+  .faq__accordions {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+.accordion {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.accordion.active > .accordion-button {
+  border-radius: 5px 5px 0 0;
+}
+.accordion.active > .accordion-button::after {
+  transform: translateY(-50%) rotateX(180deg);
+}
+
+.accordion-button {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 15px;
+  text-align: left;
+  position: relative;
+  padding: 10px;
+  background-color: #e3e3e3;
+  cursor: pointer;
+  border: none;
+  font-size: 1rem;
+  border-radius: 5px;
+  outline: none;
+  padding-right: 30px;
+  transition: background-color 0.3s ease-in-out;
+}
+.accordion-button:hover, .accordion-button:focus, .accordion-button:active {
+  background-color: #d9d9d9;
+}
+.accordion-button::after {
+  content: "";
+  background-image: url("../img/arrow-down.svg");
+  width: 15px;
+  height: 15px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 15px;
+  transition: all 0.3s ease-in-out;
+}
+
+.accordion-wrapper {
+  display: grid;
+  grid-template-rows: 0fr;
+  background-color: #e3e3e3;
+  border-radius: 0 0 5px 5px;
+  overflow: hidden;
+  transition: grid-template-rows 0.3s ease-in-out;
+}
+.accordion-wrapper.active {
+  grid-template-rows: 1fr;
+}
+.accordion-wrapper.active > .accordion-content {
+  padding: 10px;
+}
+
+.accordion-content {
+  min-height: 0;
+  transition: padding-top 0.3s ease-in-out, padding-bottom 0.3s ease-in-out;
+  padding: 0 10px;
 }
 
 .banner {

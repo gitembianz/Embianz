@@ -4,6 +4,16 @@
     <x-header :title='__("privacy.pageTitle") . " | Eztem Corp"' :metadescription='__("privacy.metadescription")' :canonical="url("/privacy")" />
 
     <main>
+        <section>
+            <div class="breadcrumbs container">
+                <a class="breadcrumbs__link" href="{{ url("/") }}">
+                    Acasa
+                </a>
+                <a class="breadcrumbs__link" href="{{ url("/privacy") }}">
+                    Politica de Confidențialitate
+                </a>
+            </div>
+        </section>
         <section class="section__header container">
             <h2 class="section__title">ANUNȚ DE CONFIDENȚIALITATE</h2>
             <p>
