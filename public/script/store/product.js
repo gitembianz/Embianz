@@ -67,6 +67,8 @@ function sliderProduct(sliderId) {
       });
 
       pagination.appendChild(thumbnail);
+    } else {
+      console.error(`Elementul media lipsește în slide-ul cu indexul ${index}`);
     }
   }
 
@@ -82,37 +84,49 @@ function sliderProduct(sliderId) {
     const touchEndX = event.changedTouches[0].clientX;
     const swipeDistance = touchEndX - touchStartX;
 
-    const isInsideModal = event.target.closest(".modal") !== null;
-
-    if (!isInsideModal) {
-      if (swipeDistance > 50 && index > 0) {
-        currentIndex = index - 1;
-      } else if (swipeDistance < -50 && index < slides.length - 1) {
-        currentIndex = index + 1;
-      }
-
-      updatePagination();
-      updateTransform(wrapper);
+    // Eliminarea verificării pentru modal
+    if (swipeDistance > 50 && index > 0) {
+      currentIndex = index - 1;
+    } else if (swipeDistance < -50 && index < slides.length - 1) {
+      currentIndex = index + 1;
     }
+
+    updatePagination();
+    updateTransform(wrapper);
 
     touchStartX = 0;
   }
 
   slides.forEach((slide, index) => {
+    let isSwiping = false;
+
     slide.addEventListener("touchstart", (event) => {
       touchStartX = event.touches[0].clientX;
     });
 
     slide.addEventListener("touchmove", (event) => {
       if (touchStartX) {
-        event.preventDefault(); // Evită derularea implicită a paginii pe swipe
+        const swipeDistance = event.changedTouches[0].clientX - touchStartX;
+
+        // Dacă se realizează un swipe în orizontală și nu se derulează, blocăm derularea implicită
+        if (Math.abs(swipeDistance) > 10 && !isScrolling()) {
+          isSwiping = true;
+          event.preventDefault();
+        }
       }
     });
 
     slide.addEventListener("touchend", (event) => {
-      handleSlideSwipe(event, index);
+      if (isSwiping) {
+        handleSlideSwipe(event, index);
+        isSwiping = false;
+      }
     });
   });
+
+  function isScrolling() {
+    return false; // Adăugați aici logica pentru a verifica dacă derularea este în curs de desfășurare
+  }
 
   window.addEventListener("load", () => updatePagination());
 }
@@ -157,7 +171,9 @@ function modalProduct(modalId, sliderId) {
 //<----------------------- End Modal Product --------------------------->
 //<--------------------------------------------------------------------->
 //<------------------------ Start Functions IOS ------------------------>
-sliderProduct(".product-slider");
-modalProduct(".product-modal", ".product-slider");
+document.addEventListener("DOMContentLoaded", function () {
+  sliderProduct(".product-slider");
+  modalProduct(".product-modal", ".product-slider");
+});
 //<---------------------- End Start Functions IOS ---------------------->
 //<--------------------------------------------------------------------->
