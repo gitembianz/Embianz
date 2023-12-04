@@ -2643,6 +2643,7 @@ header {
 .tag__button > svg {
   transform: scale(0.7);
   stroke-width: 1.5px;
+  stroke: #fff;
 }
 
 .product {
