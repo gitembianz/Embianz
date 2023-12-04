@@ -395,7 +395,7 @@ class StoreOrder extends Component
         $rules = [
           'individual_billing_first' => 'required|string',
           'individual_billing_last' => 'required|string',
-          'individual_billing_phone' => 'required|numeric',
+          'individual_billing_phone' => 'required|regex:/^\+?\d{1,4}?\s?\(?\d{1,4}\)?[-.\s]?\d{1,10}$/',
           'individual_billing_email' => 'required|email',
           'individual_billing_address1' => 'required|string',
           'individual_billing_country' => 'required|string',
@@ -416,7 +416,7 @@ class StoreOrder extends Component
           $shippingRules = [
             'individual_shipping_first' => 'required|string',
             'individual_shipping_last' => 'required|string',
-            'individual_shipping_phone' => 'required|numeric',
+            'individual_billing_phone' => 'required|regex:/^\+?\d{1,4}?\s?\(?\d{1,4}\)?[-.\s]?\d{1,10}$/',
             'individual_shipping_email' => 'required|email',
             'individual_shipping_address1' => 'required|string',
             'individual_shipping_country' => 'required|string',
@@ -443,7 +443,7 @@ class StoreOrder extends Component
         $rules = [
           'juridic_billing_first' => 'required',
           'juridic_billing_last' => 'required|string',
-          'juridic_billing_phone' => 'required|numeric',
+          'juridic_billing_phone' => 'required|regex:/^\+?\d{1,4}?\s?\(?\d{1,4}\)?[-.\s]?\d{1,10}$/',
           'juridic_billing_email' => 'required|email',
           'juridic_billing_company_name' => 'required|string',
           'juridic_billing_registration_code' => 'required|string',
@@ -467,7 +467,7 @@ class StoreOrder extends Component
           $shippingRules = [
             'juridic_shipping_first' => 'required|string',
             'juridic_shipping_last' => 'required|string',
-            'juridic_shipping_phone' => 'required|numeric',
+            'juridic_shipping_phone' => 'required|regex:/^\+?\d{1,4}?\s?\(?\d{1,4}\)?[-.\s]?\d{1,10}$/',
             'juridic_shipping_email' => 'required|email',
             'juridic_shipping_address1' => 'required|string',
             'juridic_shipping_country' => 'required|string',
