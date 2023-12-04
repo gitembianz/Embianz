@@ -1,47 +1,31 @@
 //<--------------------------------------------------------------------->
 //<---------------------------- ScrollEvent ---------------------------->
 function scrollEvent() {
-  let header = document.querySelector("header");
-  let banner = document.querySelector(".banner");
-  let main = document.querySelector("main");
-  let body = document.body;
+  const header = document.querySelector("header");
+  const banner = document.querySelector(".banner");
+  const main = document.querySelector("main");
 
-  function updateStyles() {
-    main.style.paddingTop = header.clientHeight + banner.clientHeight + "px";
-    header.style.top = banner.clientHeight + "px";
-  }
+  const headerHeight = header.offsetHeight;
+  const bannerHeight = banner.offsetHeight;
 
-  function handleOverflowChange() {
-    if (body.style.overflow === "hidden") {
-      main.style.paddingTop = header.clientHeight + "px";
-    }
-  }
+  console.log("height of header: ", headerHeight);
+  console.log("height of banner: ", bannerHeight);
 
-  if (header && banner && main) {
-    updateStyles();
+  main.style.paddingTop = `${headerHeight + bannerHeight}px`;
+  header.style.top = `${bannerHeight}px`;
 
-    document.addEventListener("scroll", function () {
-      if (window.scrollY > banner.clientHeight) {
-        header.style.top = "0";
-        banner.style.visibility = "hidden";
-      } else {
-        header.style.top = banner.clientHeight + "px";
-        banner.style.visibility = "visible";
-      }
-    });
-
-    window.addEventListener("resize", function () {
-      // Actualizează stilurile atunci când se schimbă dimensiunea ecranului
-      updateStyles();
-    });
-
-    // Monitorizează schimbările la proprietatea overflow
-    const observer = new MutationObserver(handleOverflowChange);
-    observer.observe(body, { attributes: true, attributeFilter: ["style"] });
+  if (window.pageYOffset > 0) {
+    banner.style.top = `-${headerHeight + bannerHeight}px`;
+    header.style.top = "0px";
   } else {
-    return;
+    banner.style.top = "0px";
+    header.style.top = `${bannerHeight}px`;
   }
 }
+
+scrollEvent();
+window.addEventListener("scroll", scrollEvent);
+window.addEventListener("resize", scrollEvent);
 //<-------------------------- End ScrollEvent -------------------------->
 //<--------------------------------------------------------------------->
 //<------------------------ DropMenu on leftbar ------------------------>
@@ -123,7 +107,7 @@ function searchBar() {
 //<--------------------------- End SearchBar --------------------------->
 //<--------------------------------------------------------------------->
 //<------------------------ Start Functions IOS ------------------------>
-scrollEvent();
+// scrollEvent();
 searchBar();
 leftbar("basketOpen", "basketClose", "basketList", "basketContent");
 leftbar("wishOpen", "wishClose", "wishList", "wishContent");
@@ -135,7 +119,7 @@ dropmenus(".dropmenu", true);
 //<------------------------- Start Functions PC ------------------------>
 document.addEventListener("DOMContentLoaded", function () {
   searchBar();
-  scrollEvent();
+  // scrollEvent();
   leftbar("basketOpen", "basketClose", "basketList", "basketContent");
   leftbar("wishOpen", "wishClose", "wishList", "wishContent");
   leftbar("menuOpen", "menuClose", "menuList", "menuContent");

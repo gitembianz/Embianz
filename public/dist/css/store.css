@@ -547,12 +547,6 @@ section {
   justify-content: flex-start;
   flex-wrap: wrap;
   gap: 5px;
-  padding-top: 60px;
-}
-@media (min-width: 768px) {
-  .breadcrumbs {
-    padding-top: 20px;
-  }
 }
 
 .breadcrumbs__link {
@@ -833,27 +827,33 @@ section {
 
 .numeric > li {
   counter-increment: category-counter;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   position: relative;
+}
+.numeric > li > h3 {
+  margin-bottom: 15px;
 }
 
 .numeric > li::before {
   content: counter(category-counter) ". ";
   font-weight: bold;
   position: absolute;
-  left: -20px;
+  left: -25px;
 }
 
 .sub-numeric {
   counter-reset: sub-category-counter;
   list-style-type: none;
-  padding-left: 20px;
+  padding-left: 25px;
 }
 
 .sub-numeric > li {
   counter-increment: sub-category-counter;
-  margin-bottom: 5px;
+  margin-bottom: 20px;
   position: relative;
+}
+.sub-numeric > li > h3 {
+  margin-bottom: 15px;
 }
 
 .sub-numeric > li::before {
@@ -866,20 +866,23 @@ section {
 .sub-sub-numeric {
   counter-reset: sub-category-counter;
   list-style-type: none;
-  padding-left: 20px;
+  padding-left: 25px;
 }
 
 .sub-sub-numeric > li {
   counter-increment: sub-category-counter;
-  margin-bottom: 5px;
+  margin-bottom: 20px;
   position: relative;
+}
+.sub-sub-numeric > li > h3 {
+  margin-bottom: 15px;
 }
 
 .sub-sub-numeric > li::before {
   content: counter(category-counter) "." counter(sub-category-counter) " ";
   font-weight: normal;
   position: absolute;
-  left: -30px;
+  left: -40px;
 }
 
 .faq__accordions {
@@ -2626,6 +2629,7 @@ header {
   border: none;
   background: #333333;
   padding: 0 10px;
+  color: #fff;
 }
 .tag__button:hover {
   background: #0b2c0b;
@@ -2633,6 +2637,7 @@ header {
 .tag__button > svg {
   transform: scale(0.7);
   stroke-width: 1.5px;
+  stroke: #fff;
 }
 
 .product {
@@ -3977,6 +3982,7 @@ header {
 @media (min-width: 768px) {
   .product-slider {
     width: 50%;
+    margin-left: 0;
   }
 }
 
