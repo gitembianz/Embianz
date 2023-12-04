@@ -13,7 +13,6 @@ class ShowOrder extends Component
     public $orderId;
     public $record = [];
     public $edititem = null;
-    public $cart;
     public $statuses;
     public function render()
     {
@@ -27,12 +26,11 @@ class ShowOrder extends Component
     }
     public function getOrderQueryProperty()
     {
-        return Order::with('account')->with('currency')->with('status')->find($this->orderId);
+        return Order::with('account', 'currency', 'status', 'cart')->find($this->orderId);
     }
     public function mount($orderId)
     {
         $this->orderId = $orderId;
-        $this->cart = Cart::where('order_id', $this->orderId)->get('name');
     }
     public function canceledit()
     {

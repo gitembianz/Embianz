@@ -5,7 +5,7 @@
         <div class="accordion__btn-flex">
             <button class="accordion__btn"
                 wire:click.prevent="@if ($showrelatedspecs === false) $set('showrelatedspecs', true) @else $set('showrelatedspecs', false) @endif">
-                {{ __('Specs ') }}({{ $item->product_specs()->count() }})
+                {{ __('Specs ') }}({{ $item->product_specs->count() }})
             </button>
             <button wire:click.prevent="addrelated()" class="accordion__upload">
                 <svg>
@@ -31,10 +31,10 @@
                         <table class="table table-top">
                             <thead>
                                 <tr>
-                                    <th><button class="table__header--btn">Product</button></th>
-                                    <th><button class="table__header--btn">Specification</button></th>
-                                    <th><button class="table__header--btn">Value</button></th>
-                                    <th></th>
+                                    <th class="wid-1"><button class="table__header--btn">Product</button></th>
+                                    <th class="wid-2"><button class="table__header--btn">Specification</button></th>
+                                    <th class="wid-1"><button class="table__header--btn">Value</button></th>
+                                    <th class="wid-1"></th>
                                 </tr>
                             </thead>
                         </table>
@@ -42,10 +42,10 @@
                             <tbody>
                                 @foreach ($specsAndValues as $index => $specAndValue)
                                     <tr>
-                                        <td data-title="Name">
+                                        <td class="wid-1" data-title="Name">
                                             {{ $item->name }}
                                         </td>
-                                        <td data-title="Specification">
+                                        <td class="wid-2" data-title="Specification">
                                             @if ($specAndValue['allow'])
                                                 <div class="table__drop" style="position: relative">
                                                     <input class="table__drop--input"
@@ -97,7 +97,7 @@
                                             <input type="hidden"
                                                 wire:model.defer="specsAndValues.{{ $index }}.spec.name">
                                         </td>
-                                        <td data-title="Value">
+                                        <td class="wid-1" data-title="Value">
                                             <input type="text" required class="table__drop--input"
                                                 wire:model.defer="specsAndValues.{{ $index }}.spec.value">
                                         </td>
@@ -177,9 +177,9 @@
                         <table class="table table-top">
                             <thead>
                                 <tr>
-                                    <th><button class="table__header--btn">Product</button></th>
-                                    <th><button class="table__header--btn">Specification</button></th>
-                                    <th><button class="table__header--btn">Value</button></th>
+                                    <th class="wid-1"><button class="table__header--btn">Product</button></th>
+                                    <th class="wid-1"><button class="table__header--btn">Specification</button></th>
+                                    <th class="wid-1"><button class="table__header--btn">Value</button></th>
                                 </tr>
                             </thead>
                         </table>
@@ -187,10 +187,10 @@
                             <tbody>
                                 @foreach ($specsAndValues as $index => $specAndValue)
                                     <tr>
-                                        <td data-title="Name">
+                                        <td class="wid-1" data-title="Name">
                                             {{ $item->name }}
                                         </td>
-                                        <td data-title="Specification">
+                                        <td class="wid-1" data-title="Specification">
                                             @if ($specAndValue['allow'])
                                                 <div class="table__drop" style="position: relative">
                                                     <input class="table__drop--input" wire:model.live="searchadd"
@@ -238,7 +238,7 @@
                                             <input type="hidden"
                                                 wire:model.defer="specsAndValues.{{ $index }}.spec.idrel">
                                         </td>
-                                        <td data-title="Value">
+                                        <td class="wid-1" data-title="Value">
                                             <input type="text" required class="table__drop--input"
                                                 wire:model.defer="specsAndValues.{{ $index }}.spec.value">
                                         </td>

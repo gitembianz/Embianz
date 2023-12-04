@@ -231,10 +231,10 @@
                 </div>
             </div>
             <div class="tabs__content">
-                @livewire('related-media-product', ['productId' => $product->id])
-                @livewire('related-category-product', ['productId' => $product->id])
-                @livewire('related-spec-product', ['productId' => $product->id])
-                @livewire('related-pricelist', ['productId' => $product->id])
+                @livewire('related-media-product', ['product' => $product])
+                @livewire('related-category-product', ['product' => $product])
+                @livewire('related-spec-product', ['product' => $product])
+                @livewire('related-pricelist', ['product' => $product])
             </div>
         </div>
     </div>

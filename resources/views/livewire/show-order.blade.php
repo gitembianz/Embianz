@@ -80,7 +80,7 @@
                         <label>Account </label>
                     </div>
                     <div class="item__form-input-close">
-                        <div><a href="/show_cart/{{ $order->cart_id }}">{{ $cart->first()->name }}</a></div>
+                        <div><a href="/show_cart/{{ $order->cart->id }}">{{ $order->cart->name }}</a></div>
                         <label>Cart </label>
                     </div>
                     <div class="item__form-input-close">
@@ -127,7 +127,7 @@
                 </div>
             </div>
             <div class="tabs__content">
-                @livewire('related-order-items', ['orderId' => $order->id])
+                @livewire('related-order-items', ['order' => $order])
             </div>
         </div>
     </div>

@@ -43,13 +43,19 @@
             <div class="item__form-input">
                 <input type="text" name="sku" required value="{{ old('sku') }}">
                 <label>Product Sku</label>
+                @error('sku')
+                    <span style="position: absolute; top: 2.5rem; color: red;">{{ $message }}</span>
+                @enderror
             </div>
             <div class="item__form-input">
                 <input type="text" name="ean" required value="{{ old('ean') }}">
                 <label>Product Ean</label>
+                @error('ean')
+                    <span style="position: absolute; top: 2.5rem; color: red;">{{ $message }}</span>
+                @enderror
             </div>
             <div class="item__form-input">
-                <input type="date" id="start_date"  name="start_date">
+                <input type="date" id="start_date" name="start_date">
                 <label>Product Start Date</label>
             </div>
             <div class="item__form-input">
@@ -82,13 +88,13 @@
                 <textarea name="long_description">{{ old('long_description') }}</textarea>
             </div>
             <div class="item__form-input item__form-long">
-                <input type="text" name="seo_title" ue="{{ old('seo_title') }}">
+                <input type="text" name="seo_title" value="{{ old('seo_title') }}">
                 <label>SEO Title</label>
             </div>
             <input class="item__form-btn item__form-long" type="submit" value="Add new" name="submit">
         </div>
     </form>
-    <a href="#" class="top-up-btn" id="topUp">
+    <a href="#title" class="top-up-btn" id="topUp">
         <svg>
             <polyline points="18 15 12 9 6 15"></polyline>
         </svg>
