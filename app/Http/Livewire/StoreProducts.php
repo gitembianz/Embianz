@@ -121,7 +121,7 @@ class StoreProducts extends Component
   }
   public function getProductsProperty()
   {
-    $query = Product::name($this->search)->where('active', true)->with('media.location', 'product_prices.pricelist', 'product_prices.pricelist.currency', 'wishlists', 'media', 'product_categories');
+    $query = Product::name($this->search)->where('active', true)->with('media.location', 'product_prices.pricelist', 'product_prices.pricelist.currency', 'wishlists', 'media');
     if ($this->category) {
       $this->categoryname = Category::find($this->category)->name;
       $query->whereHas('product_categories.category', function ($query) {
