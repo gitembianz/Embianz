@@ -41,10 +41,10 @@ class RelatedOrderItems extends Component
             'orderproducts' => $orderproducts,
         ]);
     }
-    public function mount($orderId)
+    public function mount(Order $order)
     {
-        $this->orderId = $orderId;
-        $this->order = Order::find($orderId);
+        $this->orderId = $order->id;
+        $this->order = $order;
         $this->selectedColumns = $this->columns;
     }
     //function for related products
@@ -102,7 +102,7 @@ class RelatedOrderItems extends Component
     public function getOrderproductsQueryProperty()
     {
         return Order_Item::where('order_id', $this->orderId)
-            ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->with('product');
+            ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc');
     }
     public function confirmItemRemoval($id)
     {

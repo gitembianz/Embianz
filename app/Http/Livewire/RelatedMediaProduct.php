@@ -49,10 +49,9 @@ class RelatedMediaProduct extends Component
   public $row = 1;
   public $externalmedia = false;
 
-  public function mount($productId)
+  public function mount(Product $product)
   {
-    $this->productId = $productId;
-    $this->product = Product::find($productId);
+    $this->product = $product;
     $this->locations = MediaLocation::all();
     $this->productType = class_basename(get_class($this->product));
     $this->selectedColumns = $this->columns;
@@ -236,10 +235,11 @@ class RelatedMediaProduct extends Component
     $this->file_link = [];
     $this->file_name = [];
     $this->file_locations = [];
+    $this->mount($this->product);
   }
   public function save()
   {
-    $data = Product::find($this->productId);
+    $data = $this->product;
     $productType = class_basename(get_class($data));
     $filespath = 'media/' . $productType . '/';
     if (!File::exists($filespath)) {
@@ -248,7 +248,7 @@ class RelatedMediaProduct extends Component
     if (!File::exists($filespath . "$data->id")) {
       File::makeDirectory($filespath . "$data->id", 0755, true);
     }
-    $path = $filespath . "$this->productId" . "/";
+    $path = $filespath . "$data->id" . "/";
     $this->i = 0;
     foreach ($this->medias as $file) {
       $media = new Media();
@@ -396,8 +396,7 @@ class RelatedMediaProduct extends Component
       ->get();
 
     return view('livewire.related-media-product', [
-      'product' => $this->product,
-      'filteredMedia' => $filteredMedia,
+      'filteredMedia' => $filteredMedia
     ]);
   }
 }

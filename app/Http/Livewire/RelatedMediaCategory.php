@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Category;
 use getID3;
 use App\Models\Media;
 use Livewire\Component;
@@ -45,7 +46,7 @@ class RelatedMediaCategory extends Component
   public $row = 1;
   public $externalmedia = false;
 
-  public function mount($category)
+  public function mount(Category $category)
   {
     $this->categoryId = $category->id;
     $this->category = $category;
@@ -127,6 +128,7 @@ class RelatedMediaCategory extends Component
     $this->file_sequences = [];
     $this->file_link = [];
     $this->file_name = [];
+    $this->mount($this->category);
   }
   public function editMedia($index, $id)
   {
@@ -380,8 +382,7 @@ class RelatedMediaCategory extends Component
       ->get();
 
     return view('livewire.related-media-category', [
-      'category' => $this->category,
-      'filteredMedia' => $filteredMedia,
+      'filteredMedia' => $filteredMedia
     ]);
   }
 }

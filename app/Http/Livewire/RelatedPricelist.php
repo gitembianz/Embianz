@@ -59,11 +59,10 @@ class RelatedPricelist extends Component
       'addprices' => $this->addprices,
     ]);
   }
-  public function mount($productId)
+  public function mount(Product $product)
   {
-    $this->productId = $productId;
     $this->selectedColumns = $this->columns;
-    $this->item = Product::find($productId);
+    $this->item = $product;
     $this->priceAndValues[] = [
       'allow' => false,
       'itemselected' => null,
@@ -122,8 +121,8 @@ class RelatedPricelist extends Component
   }
   public function getRelatedpricesQueryProperty()
   {
-    return PricelistEntries::where('product_id', $this->productId)
-      ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->with('pricelist');
+    return PricelistEntries::where('product_id', $this->item->id)
+      ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->with('pricelist.currency');
   }
   public function confirmRemoval($id)
   {
@@ -172,6 +171,7 @@ class RelatedPricelist extends Component
     $this->pricelist = [
       $index . '.name' => $this->itemselected,
       $index . '.value' => $val->value,
+      $index . '.tva' => $val->tva_percent,
     ];
   }
   public function canceledit()
@@ -200,7 +200,9 @@ class RelatedPricelist extends Component
     $val = $this->pricelist;
     if (isset($val["$index"]['value'])) {
       if ($val["$index"]['value'] != "") {
-        $new->value = $val["$index"]['value'];
+        if ($val["$index"]['tva'] != "") {
+          $new->tva_percent = $val["$index"]['tva'];
+        }
         $new->save();
         $this->allow = false;
         $this->priceid = null;
@@ -301,6 +303,7 @@ class RelatedPricelist extends Component
       'type' => 'success',
       'title' => 'Success'
     ]);
+    $this->mount($this->item);
   }
   public function allow()
   {
@@ -389,7 +392,7 @@ class RelatedPricelist extends Component
     foreach ($this->priceAndValues as  $priceAndValue) {
       if (isset($priceAndValue['price']['value'])) {
         $new = new PricelistEntries();
-        $new->product_id = $this->productId;
+        $new->product_id = $this->item->id;
         $new->pricelist_id = $priceAndValue['price']['idrel'];
         $new->value = $priceAndValue['price']['value'];
         $new->tva_percent = $priceAndValue['price']['tva'];
@@ -418,6 +421,7 @@ class RelatedPricelist extends Component
       'type' => 'success',
       'title' => 'Success'
     ]);
+    $this->mount($this->item);
   }
   public function getAddpricesProperty()
   {
@@ -426,7 +430,7 @@ class RelatedPricelist extends Component
     if (!empty($this->searchadd)) {
       $unrelated->where('name', 'like', '%' . $this->searchadd . '%');
     }
-    $unrelated->orderBy($this->orderByadd, $this->orderAscadd ? 'asc' : 'desc');
+    $unrelated->with('currency')->orderBy($this->orderByadd, $this->orderAscadd ? 'asc' : 'desc');
     return $unrelated->get();
   }
 }

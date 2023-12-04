@@ -27,14 +27,20 @@ class ProductController extends Controller
   {
     $rules = [
       'end_date' => 'required|date|after_or_equal:today|after_or_equal:start_date',
+      'sku' => 'required|unique:products',
+      'ean' => 'required|unique:products',
 
       // Add other validation rules as needed
     ];
+
     // Custom validation messages
     $messages = [
       'end_date.after_or_equal' => 'Data de încheiere a produsului trebuie să fie în viitor și după data de început.',
+      'sku.unique' => 'SKU-ul trebuie să fie unic.',
+      'ean.unique' => 'EAN-ul trebuie să fie unic.',
       // Add other custom messages as needed
     ];
+
     $validator = $this->validate($request, $rules, $messages);
 
     $newproduct = Product::create([
@@ -52,6 +58,7 @@ class ProductController extends Controller
       'created_by' => Auth::user()->name,
       'last_modified_by' => Auth::user()->name,
     ]);
+
     return redirect()->back()->with([
       'notification' => [
         'message' => 'Record added successfully! Click here  <a href="/show_product/' . $newproduct->id . '">' . $newproduct->name . '</a>',
@@ -60,6 +67,7 @@ class ProductController extends Controller
       ],
     ]);
   }
+
   public function show($id)
   {
     $data = Product::find($id);

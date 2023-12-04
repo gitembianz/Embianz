@@ -20,7 +20,6 @@ class RelatedSpecProduct extends Component
   public $selectPage = false;
   public $selectAll = false;
   public $showrelatedspecs = false;
-  public $productId;
   public $col = false;
   public $all = false;
   public $columns = ['Id', 'Unit', 'Value', 'Created At'];
@@ -59,11 +58,10 @@ class RelatedSpecProduct extends Component
       'addspecs' => $this->addspecs,
     ]);
   }
-  public function mount($productId)
+  public function mount($product)
   {
-    $this->productId = $productId;
     $this->selectedColumns = $this->columns;
-    $this->item = Product::find($productId);
+    $this->item = $product;
     $this->specsAndValues[] = [
       'allow' => false,
       'itemselected' => null,
@@ -109,7 +107,7 @@ class RelatedSpecProduct extends Component
   }
   public function getRelatedspecsQueryProperty()
   {
-    return Product_Spec::where('product_id', $this->productId)
+    return Product_Spec::where('product_id', $this->item->id)
       ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->with('spec');
   }
   public function confirmRemoval($id)
@@ -393,7 +391,7 @@ class RelatedSpecProduct extends Component
       foreach ($this->specsAndValues as  $specAndValue) {
         $val = $specAndValue['spec'];
         $newspec = new Product_Spec();
-        $newspec->product_id = $this->productId;
+        $newspec->product_id = $this->item->id;
         $newspec->spec_id = $specAndValue['spec']['idrel'];
         $newspec->value = $specAndValue['spec']['value'];
         $newspec->save();

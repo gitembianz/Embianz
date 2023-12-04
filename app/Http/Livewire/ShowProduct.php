@@ -41,15 +41,11 @@ class ShowProduct extends Component
       'quantity' => $this->product->quantity,
       'sku' => $this->product->sku,
       'ean' => $this->product->ean,
-      // Add other properties as needed
     ];
     $this->editproduct = true;
   }
+
   public function getProductProperty()
-  {
-    return $this->productQuery;
-  }
-  public function getProductQueryProperty()
   {
     return Product::find($this->productId);
   }
