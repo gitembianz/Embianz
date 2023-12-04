@@ -547,12 +547,6 @@ section {
   justify-content: flex-start;
   flex-wrap: wrap;
   gap: 5px;
-  padding-top: 60px;
-}
-@media (min-width: 768px) {
-  .breadcrumbs {
-    padding-top: 20px;
-  }
 }
 
 .breadcrumbs__link {
@@ -3988,6 +3982,7 @@ header {
 @media (min-width: 768px) {
   .product-slider {
     width: 50%;
+    margin-left: 0;
   }
 }
 
