@@ -151,9 +151,19 @@ class StoreHeader extends Component
     // Check if the setting exists and has a valid numeric value
     $limit = $limitSetting && is_numeric($limitSetting->value) ? $limitSetting->value : 5;
 
-    // Use eager loading to load relationships with the main query
-    return $this->categoriesQuery->limit($limit)->with('subcategory.category.media.location', 'subcategory.category')->get();
+    // Use eager loading to load relationships with constraints
+    return $this->categoriesQuery
+      ->limit($limit)
+      ->with([
+        'subcategory' => function ($query) {
+          $query->whereHas('category', function ($subQuery) {
+            $subQuery->where('store_tab', 1);
+          })->with('category.media.location', 'category');
+        }
+      ])
+      ->get();
   }
+
 
   public function getCategoriesQueryProperty()
   {
@@ -173,7 +183,7 @@ class StoreHeader extends Component
   }
   public function getCatsQueryProperty()
   {
-    return Category::name($this->search)->where('active', true)->where('store_tab', true)->with('media.location');
+    return Category::name($this->search)->where('active', true)->with('media.location');
   }
 
   public function continue()
