@@ -86,8 +86,8 @@
                     </svg>
                 </button>
                 <button class="header__btn" wire:click="$set('showwis', true)" id="wishOpen">
-                    @if (!empty($wishlistitems) && $wishlistitems->count() > 0)
-                        <span class="header__count" id="wishlistCount">{{ $wishlistitems->count() }}</span>
+                    @if ($wishlists && $wishlists->count() > 0)
+                        <span class="header__count" id="wishlistCount">{{ count($wishlists) }}</span>
                     @endif
                     <svg>
                         <path
@@ -299,14 +299,14 @@
             </div>
 
             <ul class="leftbar__list">
-                @if (empty($wishlistitems))
+                @if (empty($wishlists))
                     <span class="leftbar__empty">Niciun produs în lista de favorite </span>
                 @else
-                    @foreach ($wishlistitems as $product)
+                    @foreach ($wishlists as $item)
                         <li class="leftbar__item">
-                            <a class="leftbar__link wishlist__link" href="/product/{{ $product->id }}">
-                                @if ($product->media->count() != 0)
-                                    @foreach ($product->media as $media)
+                            <a class="leftbar__link wishlist__link" href="/product/{{ $item->product->id }}">
+                                @if ($item->product->media->count() != 0)
+                                    @foreach ($item->product->media as $media)
                                         @if ($media->location->location == 'main')
                                             @if ($media->external)
                                                 <img class="heart__list--img" src="{{ $media->path }}"
@@ -324,10 +324,11 @@
                                         alt="something wrong">
                                 @endif
                                 <div class="leftbar__link--text">
-                                    <h4>{{ $product->name }}</h4>
+                                    <h4>{{ $item->product->name }}</h4>
                                 </div>
                             </a>
-                            <button class="leftbar__delete" wire:click="removeFromWishlist({{ $product->id }})">
+                            <button class="leftbar__delete"
+                                wire:click="removeFromWishlist({{ $item->product->id }})">
                                 <svg>
                                     <line x1="18" y1="6" x2="6" y2="18"></line>
                                     <line x1="6" y1="6" x2="18" y2="18"></line>
