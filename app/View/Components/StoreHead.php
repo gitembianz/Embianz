@@ -10,12 +10,21 @@ use Illuminate\View\Component;
 class StoreHead extends Component
 {
     public $title;
+
     /**
      * Create a new component instance.
      */
     public function __construct($title = "")
     {
-        $this->title = $title . Store_Settings::where('parameter', 'site_name')->first()->value;
+        $this->title = $title . $this->getSiteName();
+    }
+
+    /**
+     * Get the site name from the settings.
+     */
+    private function getSiteName(): string
+    {
+        return Store_Settings::where('parameter', 'site_name')->value('value') ?? '';
     }
 
     /**

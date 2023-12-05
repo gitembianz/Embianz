@@ -52,14 +52,15 @@ class StoreController extends Controller
   }
   public function products($categoryId = null)
   {
-    $category = Category::find($categoryId);
-    if ($category) {
-      $data = $category->id;
-    } else {
+    $data = Category::where('id', $categoryId)->value('id');
+
+    if ($data === null) {
       $data = "";
     }
+
     return view('store.products', compact('data'));
   }
+
   public function terms()
   {
     return view('store.terms');
