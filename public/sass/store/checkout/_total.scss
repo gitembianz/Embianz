@@ -30,7 +30,7 @@
   gap: 15px;
   padding: 10px;
   border-radius: 7px;
-  background: $text;
+  background: $secondary;
   align-items: center;
   justify-content: flex-start;
   grid-area: 1;
@@ -71,7 +71,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: $secondary;
+  background: $background;
   padding: 10px;
   gap: 15px;
   border-radius: 7px;
@@ -92,8 +92,8 @@
   width: 100%;
   flex: 1;
   text-align: left;
-  font-size: 22px;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 500;
   color: $text;
   margin: 0;
 
