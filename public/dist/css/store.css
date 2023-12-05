@@ -976,6 +976,7 @@ section {
   transition: all 0.1s ease-in-out;
   position: fixed;
   top: 0;
+  z-index: 300;
 }
 
 .banner__container {
@@ -1268,6 +1269,7 @@ header {
 .leftbar__link > span {
   flex: 1;
   text-wrap: nowrap;
+  word-break: break-word;
   display: flex;
   align-items: center;
   justify-content: center;
