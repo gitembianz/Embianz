@@ -26,6 +26,7 @@
                                         <img src="/{{ $item->category->media->first()->path }}{{ $item->category->media->first()->name }}"
                                             draggable="false" alt="{{ $item->category->media->first()->path }}">
                                     @endif
+
                                 @endif
                                 <div class="main-slider__text container">
                                     <h3>{{ $item->category->name }}</h3>
@@ -59,7 +60,7 @@
                 <h2 class="section__title">Descoperă produsele noastre populare!</h2>
                 <p class="section__text">Explorează colecția noastră de produse și găsește
                     accesoriile perfecte pentru a-ți completa stilul.
-                    <br><a href="{{ url('/storeproducts') }}">Vezi produsele!</a>
+                    <br><a href="{{ url("/storeproducts") }}">Vezi produsele!</a>
                 </p>
             </div>
         </section>
@@ -76,7 +77,7 @@
                                     <a href="/product/{{ $product->id }}">
                                         @if ($product->media->count() != 0)
                                             @foreach ($product->media as $media)
-                                                @if ($media->location->location == 'main')
+                                                @if ($media->location->location == "main")
                                                     @if ($media->external)
                                                         <img class="card-image" src="{{ $media->path }}"
                                                             draggable="false" alt="{{ $media->path }}">
@@ -93,8 +94,8 @@
                                                 draggable="false" alt="something wrong">
                                         @endif
                                     </a>
-                                    <button class="card-favorites @if ($product->wishlists->where('session_id', $session_id)->isNotEmpty()) active @endif"
-                                        wire:click="toggleWishlist({{ $product->id }})">
+                                    <button class="card-favorites @if ($product->wishlists->where("session_id", $session_id)->isNotEmpty()) active @endif"
+                                        wire:click="toggleWishlist({{ $product->id }})" onclick="handleClick()">
                                         <svg viewBox="0 0 512 512" width="20" title="heart">
                                             <path
                                                 d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z" />
@@ -111,12 +112,13 @@
                                                     {{ $product->product_prices->first()->value }}
                                                     {{ $product->product_prices->first()->pricelist->currency->name }}
                                                 @else
-                                                    {{ __('Indisponibil') }}
+                                                    {{ __("Indisponibil") }}
                                                 @endif
                                             </p>
                                         </div>
                                         @if ($product->product_prices->first() && $product->quantity != 0)
-                                            <a class="card-button" wire:click="addToCart({{ $product->id }})">Adauga
+                                            <a class="card-button" wire:click="addToCart({{ $product->id }})"
+                                                onclick="handleClick()">Adauga
                                                 in coș</a>
                                         @endif
                                     </div>

@@ -32,6 +32,7 @@
   justify-content: space-between;
   align-items: flex-start;
   gap: 5px;
+  padding: 5px;
 }
 
 .card-text {
@@ -105,13 +106,7 @@
   border-radius: 50px;
 
   &>svg {
-    fill: #a9a9a9;
-  }
-
-  &:hover {
-    &>svg {
-      fill: #d2042d;
-    }
+    fill: #ccc;
   }
 
   &.active {
