@@ -108,12 +108,6 @@
     fill: #a9a9a9;
   }
 
-  &:hover {
-    &>svg {
-      fill: #d2042d;
-    }
-  }
-
   &.active {
     &>svg {
       fill: #d2042d;

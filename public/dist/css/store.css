@@ -2136,9 +2136,6 @@ header {
 .card-favorites > svg {
   fill: #a9a9a9;
 }
-.card-favorites:hover > svg {
-  fill: #d2042d;
-}
 .card-favorites.active > svg {
   fill: #d2042d;
 }
