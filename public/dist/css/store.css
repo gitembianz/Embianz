@@ -886,21 +886,6 @@ section {
   left: -40px;
 }
 
-.faq__accordions {
-  display: grid;
-  gap: 25px;
-}
-@media (min-width: 768px) {
-  .faq__accordions {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-@media (min-width: 1200px) {
-  .faq__accordions {
-    grid-template-columns: 1fr 1fr 1fr;
-  }
-}
-
 .accordion {
   width: 100%;
   display: flex;
@@ -967,6 +952,166 @@ section {
   min-height: 0;
   transition: padding-top 0.3s ease-in-out, padding-bottom 0.3s ease-in-out;
   padding: 0 10px;
+}
+
+.faq__accordions {
+  display: grid;
+  gap: 25px;
+}
+@media (min-width: 768px) {
+  .faq__accordions {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (min-width: 1200px) {
+  .faq__accordions {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+.contact__title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  grid-column: 1/3;
+}
+.contact__title--text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  text-align: center;
+}
+
+.contact__container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 50px;
+}
+@media (min-width: 992px) {
+  .contact__container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+    align-items: center;
+    justify-items: center;
+  }
+}
+
+.contact__form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  align-items: center;
+  gap: 25px;
+}
+@media (min-width: 768px) {
+  .contact__form {
+    flex: 1;
+  }
+}
+
+.contact__solutions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  width: 100%;
+}
+.contact__solutions > span {
+  grid-row: 1/5;
+}
+@media (min-width: 576px) {
+  .contact__solutions {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+.contact__label {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 50px;
+}
+.contact__label > label {
+  width: max-content;
+  min-width: 90px;
+}
+.contact__label > input {
+  width: 100%;
+  height: 2.5rem;
+  border-radius: 6px;
+  border: 1.5px solid #9b9b9a;
+  text-align: center;
+  flex: 1;
+}
+.contact__label > textarea {
+  width: 100%;
+  height: 7.5rem;
+  border-radius: 6px;
+  border: 1.5px solid #9b9b9a;
+  padding: 10px;
+  resize: none;
+  flex: 1;
+}
+.contact__label :last-child {
+  align-items: flex-start;
+}
+
+.contact-image > input[type=checkbox] {
+  display: none;
+}
+.contact-image label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+  margin: 10px;
+  cursor: pointer;
+}
+.contact-image label img {
+  width: 80px;
+  height: auto;
+  filter: grayscale(1);
+  transition: filter 0.2s ease-in-out;
+}
+.contact-image :checked + label img {
+  filter: grayscale(0);
+}
+
+.contact__connect {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 25px;
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+.contact__connect > img {
+  aspect-ratio: 1/1;
+  object-fit: contain;
+  width: 70%;
+  height: auto;
+}
+
+.contact__link {
+  color: #4b7a55;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 1rem;
+}
+.contact__link > svg {
+  stroke-width: 2.5px;
 }
 
 .banner {

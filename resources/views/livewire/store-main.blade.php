@@ -26,7 +26,6 @@
                                         <img src="/{{ $item->category->media->first()->path }}{{ $item->category->media->first()->name }}"
                                             draggable="false" alt="{{ $item->category->media->first()->path }}">
                                     @endif
-
                                 @endif
                                 <div class="main-slider__text container">
                                     <h3>{{ $item->category->name }}</h3>
@@ -149,7 +148,7 @@
         <!---------------------------------------------------------->
         <!---------------------- Loading Logo ---------------------->
         <div class="loading-logo" id="loadingLogo">
-            <img src="/images/store/logo-black.svg" alt="logo-black">
+            <img src="/images/store/svg/noren-black.svg" alt="logo-black">
         </div>
         <!-------------------- End Loading Logo -------------------->
         <!---------------------------------------------------------->
