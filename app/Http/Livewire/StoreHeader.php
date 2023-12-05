@@ -20,10 +20,11 @@ class StoreHeader extends Component
   public $showcart = false;
   public $total;
   public $cart;
+  public $wishlists;
   public $session_id;
   public $closedStatusId;
   protected $listeners = [
-    'wishlistUpdated' => 'mount',
+    'wishlistUpdated' => 'updatewis',
     'cartUpdated' => 'updatecart'
   ];
 
@@ -34,18 +35,15 @@ class StoreHeader extends Component
         'categories' => $this->categories,
         'objects' => $this->objects,
         'cats' => $this->cats,
-        'wishlistitems' => $this->wishlistitems,
       ];
     } elseif ($this->showcart) {
       $data = [
         'categories' => $this->categories,
         'cartItems' => $this->cartItems,
-        'wishlistitems' => $this->wishlistitems,
       ];
     } else {
       $data = [
         'categories' => $this->categories,
-        'wishlistitems' => $this->wishlistitems,
       ];
     }
 
@@ -56,12 +54,17 @@ class StoreHeader extends Component
     $this->session_id = $this->getCookieId();
 
     $this->updatecart();
+    $this->updatewis();
   }
   public function updatecart()
   {
     $this->cart = Cart::where('session_id', $this->session_id)
       ->where('status_id', '!=', Status::where('name', 'closed')->where('type', 'cart')->value('id'))
       ->latest()->first();
+  }
+  public function updatewis()
+  {
+    $this->wishlists = Wishlist::where('session_id', $this->session_id)->with('product.media.location', 'product')->get();
   }
 
   private function getCookieId()
@@ -77,16 +80,7 @@ class StoreHeader extends Component
     $this->active = false;
     $this->search = '';
   }
-  public function getWishlistitemsProperty()
-  {
-    $wishlist = Wishlist::where('session_id', $this->session_id)->pluck('product_id')->toArray();
 
-    if (!empty($wishlist)) {
-      return Product::whereIn('id', $wishlist)->with('media', 'media.location')->get();
-    }
-
-    return collect(); // Return an empty collection if $wishlist is empty
-  }
   public function getCartItemsProperty()
   {
     if ($this->cart !== null) {
