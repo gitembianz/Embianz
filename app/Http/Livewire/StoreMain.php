@@ -74,12 +74,20 @@ class StoreMain extends Component
 
   public function getSubcategoriesProperty()
   {
-    if ($this->category) {
-      return Subcategory::where('parrent_id', $this->category->id)
-        ->with('category.media.location', 'category.media', 'category')
-        ->get();
-    }
+    return Subcategory::where('parrent_id', $this->category->id)
+      ->with([
+        'category' => function ($query) {
+          $query->select('id', 'name', 'short_description');
+        },
+        'category.media' => function ($query) {
+          $query->whereHas('location', function ($locationQuery) {
+            $locationQuery->where('location', 'details');
+          })->select('external', 'path', 'name');
+        },
+      ])
+      ->get();
   }
+
 
 
 
