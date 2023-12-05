@@ -106,7 +106,7 @@ class RelatedSubcategory extends Component
   }
   public function getCategoriesProperty()
   {
-    $relatedcatsIds = $this->relatedsubcats->pluck('category_id')->merge([$this->categoryId])->toArray();
+    $relatedcatsIds = $this->relatedsubcats->pluck('category_id')->merge([$this->category->id])->toArray();
     $unrelatedCatsQuery = Category::whereNotIn('id', $relatedcatsIds);
     if (!empty($this->searchadd)) {
       $unrelatedCatsQuery->where('name', 'like', '%' . $this->searchadd . '%');
@@ -129,7 +129,7 @@ class RelatedSubcategory extends Component
     $rec = new  Subcategory();
     $rec->name = $category->name;
     $rec->category_id = $category->id;
-    $rec->parrent_id = $this->categoryId;
+    $rec->parrent_id = $this->category->id;
     $rec->save();
     $this->checkedadd = array_diff($this->checkedadd, [$this->catidbeinglink]);
     session()->flash('notification', [
@@ -140,14 +140,12 @@ class RelatedSubcategory extends Component
   }
   public function linkRecords()
   {
-
     $categories = Category::whereKey($this->checkedadd)->get();
-
     foreach ($categories as $category) {
       $add = new Subcategory();
       $add->name = $category->name;
       $add->category_id = $category->id;
-      $add->parrent_id = $this->categoryId;
+      $add->parrent_id = $this->category->id;
       $add->save();
     }
 
@@ -223,8 +221,8 @@ class RelatedSubcategory extends Component
   }
   public function getRelatedsubcatsQueryProperty()
   {
-    return Subcategory::where('parrent_id', $this->categoryId)
-      ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->with('parrent');
+    return Subcategory::where('parrent_id', $this->category->id)
+      ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->with('category');
   }
   public function confirmItemRemoval($productid)
   {
@@ -284,9 +282,8 @@ class RelatedSubcategory extends Component
       ]);
     }
   }
-  public function mount($category)
+  public function mount(Category $category)
   {
-    $this->categoryId = $category->id;
     $this->category = $category;
     $this->selectedColumns = $this->columns;
     $this->selectedColumnsadd = $this->columnsadd;

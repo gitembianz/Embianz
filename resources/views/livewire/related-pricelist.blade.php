@@ -5,7 +5,7 @@
         <div class="accordion__btn-flex">
             <button class="accordion__btn"
                 wire:click.prevent="@if ($showrelatedprice === false) $set('showrelatedprice', true) @else $set('showrelatedprice', false) @endif">
-                {{ __('Price List ') }}({{ $item->product_prices()->count() }})
+                {{ __('Price List ') }}({{ $item->product_prices->count() }})
             </button>
             <button wire:click.prevent="addrelated()" class="accordion__upload">
                 <svg>
@@ -32,7 +32,7 @@
                             <thead>
                                 <tr>
                                     <th class="wid-1"><button class="table__header--btn">Product</button></th>
-                                    <th class="wid-5"><button class="table__header--btn">Pricelist</button></th>
+                                    <th class="wid-3"><button class="table__header--btn">Pricelist</button></th>
                                     <th class="wid-3"><button class="table__header--btn">Value</button></th>
                                     <th class="wid-1"><button class="table__header--btn">TVA</button></th>
                                     <th class="wid-1"></th>
@@ -46,7 +46,7 @@
                                         <td class="wid-1" data-title="Name">
                                             {{ $item->name }}
                                         </td>
-                                        <td class="wid-5" data-title="Specification">
+                                        <td class="wid-3" data-title="Specification">
                                             @if ($priceAndValue['allow'])
                                                 <div class="table__drop" style="position: relative">
                                                     <input class="table__drop--input"
@@ -101,10 +101,10 @@
                                                 wire:model.defer="priceAndValues.{{ $index }}.price.value">
                                         </td>
                                         <td class="wid-1" data-title="TVA">
-    <input type="text" required class="table__drop--input"
-        wire:model.defer="priceAndValues.{{ $index }}.price.tva"
-        value="{{ old('priceAndValues.' . $index . '.price.tva', 19) }}">
-</td>
+                                            <input type="text" required class="table__drop--input"
+                                                wire:model.defer="priceAndValues.{{ $index }}.price.tva"
+                                                value="{{ old('priceAndValues.' . $index . '.price.tva', 19) }}">
+                                        </td>
 
                                         <td class="wid-1" data-title="Action">
                                             <div class="table__buttons">
@@ -183,9 +183,9 @@
                         <table class="table table-top">
                             <thead>
                                 <tr>
-                                    <th><button class="table__header--btn">Product</button></th>
-                                    <th><button class="table__header--btn">Pricelist</button></th>
-                                    <th><button class="table__header--btn">Value</button></th>
+                                    <th class="wid-2"><button class="table__header--btn">Product</button></th>
+                                    <th class="wid-2"><button class="table__header--btn">Pricelist</button></th>
+                                    <th class="wid-1"><button class="table__header--btn">Value</button></th>
                                 </tr>
                             </thead>
                         </table>
@@ -193,10 +193,10 @@
                             <tbody>
                                 @foreach ($priceAndValues as $index => $priceAndValue)
                                     <tr wire:key="price-row-{{ $index }}">
-                                        <td data-title="Name">
+                                        <td class="wid-2" data-title="Name">
                                             {{ $item->name }}
                                         </td>
-                                        <td data-title="Pricelist">
+                                        <td class="wid-2" data-title="Pricelist">
                                             @if ($priceAndValue['allow'])
                                                 <div class="table__drop" style="position: relative">
                                                     <input class="table__drop--input"
@@ -248,7 +248,7 @@
                                             <input type="hidden"
                                                 wire:model.defer="priceAndValues.{{ $index }}.price.name">
                                         </td>
-                                        <td data-title="Value">
+                                        <td class="wid-1" data-title="Value">
                                             <input type="text" required class="table__drop--input"
                                                 wire:model.defer="priceAndValues.{{ $index }}.price.value">
                                         </td>
@@ -277,7 +277,7 @@
         @if ($showrelatedprice)
             <div class="accordion__content">
                 <div>
-                    @if ($item->product_prices()->count() > 0)
+                    @if ($item->product_prices->count() > 0)
                         {{-- delete single record --}}
                         <div class="modal" id="confirmationmodalprice">
                             <div class="modal-content">
@@ -415,7 +415,7 @@
                                             </button>
                                         </th>
                                     @endif
-                                     @if ($this->showColumn('TVA'))
+                                    @if ($this->showColumn('TVA'))
                                         <th>
                                             <button class="table__header--btn">
                                                 TVA

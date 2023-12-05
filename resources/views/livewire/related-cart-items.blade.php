@@ -5,7 +5,7 @@
         <div class="accordion__btn-flex">
             <button class="accordion__btn"
                 wire:click.prevent="@if ($showrelatedprod === false) $set('showrelatedprod', true) @else $set('showrelatedprod', false) @endif">
-                {{ __('Cart Items ') }}({{ $cart->carts()->count() }})
+                {{ __('Cart Items ') }}({{ $cart->carts->count() }})
             </button>
             <button class="accordion__upload">
                 <svg>

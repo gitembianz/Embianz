@@ -42,7 +42,7 @@ class RelatedCartItems extends Component
             'cartproducts' => $cartproducts,
         ]);
     }
-    public function mount($cart)
+    public function mount(Cart $cart)
     {
         $this->cartId = $cart->id;
         $this->cart = $cart;
@@ -103,7 +103,7 @@ class RelatedCartItems extends Component
     public function getCartproductsQueryProperty()
     {
         return Cart_Item::where('cart_id', $this->cartId)
-            ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->with('product');
+            ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc');
     }
     public function confirmItemRemoval($id)
     {
