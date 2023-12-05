@@ -202,6 +202,7 @@
   &>span {
     flex: 1;
     text-wrap: nowrap;
+    word-break: break-word;
     display: flex;
     align-items: center;
     justify-content: center;
