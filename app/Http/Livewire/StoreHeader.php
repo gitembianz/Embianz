@@ -19,6 +19,7 @@ class StoreHeader extends Component
   public $showwis = false;
   public $showcart = false;
   public $total;
+  public $cart;
   public $session_id;
   public $closedStatusId;
   protected $listeners = [
@@ -46,6 +47,14 @@ class StoreHeader extends Component
 
     return view('livewire.store-header', $data);
   }
+  public function mount()
+  {
+    $this->session_id = $this->getCookieId();
+
+    $this->cart = Cart::where('session_id', $this->session_id)
+      ->where('status_id', '!=', Status::where('name', 'closed')->where('type', 'cart')->value('id'))
+      ->latest()->first();
+  }
 
   private function getCookieId()
   {
@@ -72,12 +81,8 @@ class StoreHeader extends Component
   }
   public function getCartItemsProperty()
   {
-    $cart = Cart::where('session_id', $this->session_id)
-      ->where('status_id', '!=', $this->closedStatusId)
-      ->latest()->first();
-
-    if ($cart !== null) {
-      $cartItems = Cart_Item::where('cart_id', $cart->id)->with('product.media.location', 'product.product_prices.pricelist.currency')->get();
+    if ($this->cart !== null) {
+      $cartItems = Cart_Item::where('cart_id', $this->cart->id)->with('product.media.location', 'product.product_prices.pricelist.currency')->get();
 
       return $cartItems;
     }
@@ -112,63 +117,44 @@ class StoreHeader extends Component
   }
   public function removeFromCart($productId)
   {
-    $cart = Cart::where('session_id', $this->session_id)
-      ->where('status_id', '!=', $this->closedStatusId)
-      ->latest()->first();
     $product = Product::find($productId);
 
-    if ($cart !== null) {
+    if ($this->cart !== null) {
       $cart_item = Cart_Item::firstOrNew([
-        'cart_id' => $cart->id,
+        'cart_id' => $this->cart->id,
         'product_id' => $productId,
       ]);
 
       if ($cart_item->exists) {
-        $cart->quantity_amount -= $cart_item->quantity;
-        $cart->sum_amount -= ($product->product_prices->first()->value * $cart_item->quantity);
-        $cart->save();
+        $this->cart->quantity_amount -= $cart_item->quantity;
+        $this->cart->sum_amount -= ($product->product_prices->first()->value * $cart_item->quantity);
+        $this->cart->save();
         $cart_item->delete();
         $this->emit('cartUpdated');
       }
     }
   }
-  public function mount()
-  {
-    $this->closedStatusId = Status::where('name', 'closed')->where('type', 'cart')->first()->id;
 
-    $this->session_id = $this->getCookieId();
-    $this->total = Cart::where('session_id', $this->session_id)
-      ->where('status_id', '!=', $this->closedStatusId)
-      ->latest()
-      ->value('quantity_amount');
-  }
+
+
 
   public function getCategoriesProperty()
   {
-    // Retrieve the limit from the settings table
-    $limitSetting = Store_Settings::where('parameter', 'limit_category')->first();
+    $limit = Store_Settings::where('parameter', 'limit_category')->value('value') ?? '5';
 
-    // Check if the setting exists and has a valid numeric value
-    $limit = $limitSetting && is_numeric($limitSetting->value) ? $limitSetting->value : 5;
-
-    // Use eager loading to load relationships with constraints
-    return $this->categoriesQuery
-      ->limit($limit)
+    return Category::where('active', 1)
+      ->where('store_tab', '1')
       ->with([
         'subcategory' => function ($query) {
           $query->whereHas('category', function ($subQuery) {
             $subQuery->where('store_tab', 1);
-          })->with('category.media.location', 'category');
+          })->with(['category.media.location']);
         }
       ])
+      ->limit($limit)
       ->get();
   }
 
-
-  public function getCategoriesQueryProperty()
-  {
-    return Category::where('active', true)->where('store_tab', '1');
-  }
   public function getObjectsProperty()
   {
     return $this->objectsQuery->get();
@@ -189,11 +175,8 @@ class StoreHeader extends Component
   public function continue()
   {
     $delivery = Store_Settings::where('parameter', 'delivery_price')->first()->value;
-    $cart = Cart::where('session_id', $this->session_id)
-      ->where('status_id', '!=', $this->closedStatusId)
-      ->latest()->first();
     $validatequantity = true;
-    $cartitems = Cart_Item::where('cart_id', $cart->id)->get();
+    $cartitems = Cart_Item::where('cart_id', $this->cart->id)->get();
     if ($cartitems) {
       foreach ($cartitems as $item) {
         if ($item->quantity > $item->product->quantity) {
@@ -206,10 +189,10 @@ class StoreHeader extends Component
     if ($validatequantity) {
 
       $newStatusId = Status::where('name', 'checkout')->where('type', 'cart')->first()->id;
-      $cart->final_amount = $cart->sum_amount + $delivery;
-      $cart->status_id = $newStatusId;
-      $cart->delivery_price = $delivery;
-      $cart->save();
+      $this->cart->final_amount = $this->cart->sum_amount + $delivery;
+      $this->cart->status_id = $newStatusId;
+      $this->cart->delivery_price = $delivery;
+      $this->cart->save();
       return redirect()->route('order');
     }
   }
