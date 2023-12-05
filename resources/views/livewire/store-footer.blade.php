@@ -20,7 +20,7 @@
             <!---------------------Logo and Social--------------------->
             <div class="footer__top">
                 <a class="logo" href="{{ url("/") }}">
-                    <img src="/images/store/logo-white.svg" alt="logo">
+                    <img src="/images/store/svg/noren-white.svg" alt="logo">
                 </a>
                 <div class="social__list">
                     <a href="#" class="social__item">
