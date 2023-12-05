@@ -1,6 +1,6 @@
 //<---------------------------- Card ---------------------------->
 .card {
-  background: $background;
+  background: $secondary;
   display: flex;
   flex-direction: column;
   scroll-snap-align: start;
@@ -16,7 +16,7 @@
   height: 300px;
   object-fit: contain;
   object-position: center;
-  background: $background;
+  background: $secondary;
   transition: all 0.5s ease-in-out;
 
   &:hover {

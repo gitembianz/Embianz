@@ -8,8 +8,8 @@ function scrollEvent() {
   const headerHeight = header.offsetHeight;
   const bannerHeight = banner.offsetHeight;
 
-  console.log("height of header: ", headerHeight);
-  console.log("height of banner: ", bannerHeight);
+  // console.log("height of header: ", headerHeight);
+  // console.log("height of banner: ", bannerHeight);
 
   main.style.paddingTop = `${headerHeight + bannerHeight}px`;
   header.style.top = `${bannerHeight}px`;
