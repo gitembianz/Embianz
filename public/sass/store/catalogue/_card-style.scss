@@ -92,6 +92,23 @@
   }
 }
 
+.card-info>.card-button-disabled {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 40px;
+  background: $text;
+  border: 2px solid $text;
+  text-transform: uppercase;
+  font-size: 14px;
+  letter-spacing: 0.7px;
+  font-weight: 500;
+  color: $background;
+  transition: all 0.3s ease-in-out;
+  cursor: not-allowed;
+}
+
 .card-favorites {
   display: flex;
   align-items: center;
