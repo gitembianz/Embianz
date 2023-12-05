@@ -35,32 +35,34 @@ class StoreMain extends Component
   public function mount()
   {
     $this->session_id = $this->getCookieId();
-    // if (now()->diffInHours($this->lastUpdated($this->session_id)) >= 24) {
-    //   $this->isLoading = true;
-    // } else {
-    //   $this->isLoading = false;
-    // }
-    $sliderCategory = Store_Settings::where('parameter', 'slider_category')->first();
+    $sliderCategory = Store_Settings::where('parameter', 'slider_category')->value('value');
 
     if ($sliderCategory) {
-      $categoryId = $sliderCategory->value;
-      $this->category = Category::find($categoryId);
+      $this->category = Category::find($sliderCategory);
     } else {
       $this->category = null;
     }
   }
-  private function lastUpdated()
-  {
-    return now();
-  }
   public function getPopProductsProperty()
   {
-    return $this->popproductsQuery->limit($this->limit)->get();
+    return $this->popproductsQuery
+      ->with([
+        'media.location',
+        'product_prices' => function ($query) {
+          $query->with('pricelist.currency');
+        },
+        'wishlists'
+      ])
+      ->limit($this->limit)
+      ->get();
   }
+
   public function getPopProductsQueryProperty()
   {
-    return Product::where('active', true)->orderBy('popularity', 'desc')->with('media.location', 'product_prices.pricelist.currency', 'wishlists');
+    return Product::where('active', true)
+      ->orderBy('popularity', 'desc');
   }
+
   public function render()
   {
     return view('livewire.store-main', [
@@ -74,7 +76,7 @@ class StoreMain extends Component
   {
     if ($this->category) {
       return Subcategory::where('parrent_id', $this->category->id)
-        ->with('category.media.location', 'category')
+        ->with('category.media.location', 'category.media', 'category')
         ->get();
     }
   }
