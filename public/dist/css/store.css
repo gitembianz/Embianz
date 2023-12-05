@@ -718,7 +718,7 @@ section {
 }
 
 .suport__item {
-  background: #e1e1e1;
+  background: #ededed;
   border-radius: 5px;
   padding: 10px;
   width: 100%;
@@ -798,6 +798,7 @@ section {
   box-shadow: 0 0 0 0 rgb(255, 166, 0);
   transform: scale(1);
   animation: pulse 2s infinite;
+  display: none;
 }
 .help__button > svg {
   stroke: #333;
@@ -1199,8 +1200,6 @@ header {
   overflow-y: auto;
   overflow-x: hidden;
   width: 100%;
-  height: 100%;
-  flex: 1;
   scrollbar-color: #333333 transparent;
   scrollbar-width: thin;
 }
@@ -1360,6 +1359,8 @@ header {
   font-size: 20px;
   font-weight: 500;
   color: #333333;
+  width: 100%;
+  text-align: end;
 }
 .leftbar__total--text > span {
   font-size: 20px;
@@ -2067,6 +2068,7 @@ header {
   justify-content: space-between;
   align-items: flex-start;
   gap: 5px;
+  padding: 5px;
 }
 
 .card-text {
@@ -2134,7 +2136,7 @@ header {
   border-radius: 50px;
 }
 .card-favorites > svg {
-  fill: #a9a9a9;
+  fill: #ccc;
 }
 .card-favorites.active > svg {
   fill: #d2042d;
@@ -2220,7 +2222,7 @@ header {
   height: 40px;
   border-radius: 7px;
   padding: 0 10px;
-  font-size: 12px;
+  font-size: 16px;
   font-weight: 500;
   color: #333333;
   border: none;
@@ -2251,19 +2253,23 @@ header {
 .filter.active > .filter__content {
   transform: translateX(0%);
 }
+.filter.active > #sortContent {
+  right: 0;
+  transform: translateX(0%);
+}
 
 .filter__content {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  gap: 15px;
+  gap: 10px;
   width: 50%;
   height: 100%;
   position: absolute;
-  right: 0;
+  left: 0;
   top: 0;
-  transform: translateX(100%);
+  transform: translateX(-100%);
   transition: all 0.3s ease-in-out;
   padding: 15px;
   background-color: #ffffff;
@@ -2277,6 +2283,12 @@ header {
   .filter__content {
     width: 30%;
   }
+}
+
+#sortContent {
+  left: unset;
+  right: 0;
+  transform: translateX(100%);
 }
 
 .filter__close {
@@ -2318,7 +2330,7 @@ header {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  gap: 15px;
+  gap: 10px;
   overflow-y: auto;
   overflow-x: hidden;
   width: 100%;
@@ -4217,6 +4229,7 @@ header {
   border-radius: 7px;
   background: #ffffff;
   color: #333333;
+  font-size: 16px;
   padding: 5px 90px 5px 10px;
   outline: none;
 }

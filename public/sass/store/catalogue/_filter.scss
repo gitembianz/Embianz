@@ -18,21 +18,29 @@
     &>.filter__content {
       transform: translateX(0%);
     }
+
+    &>#sortContent {
+      right: 0;
+      transform: translateX(0%);
+    }
   }
 }
+
+
+
 
 .filter__content {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  gap: 15px;
+  gap: 10px;
   width: 50%;
   height: 100%;
   position: absolute;
-  right: 0;
+  left: 0;
   top: 0;
-  transform: translateX(100%);
+  transform: translateX(-100%);
   transition: all .3s ease-in-out;
   padding: 15px;
   background-color: $background;
@@ -45,6 +53,13 @@
     width: 30%;
   }
 }
+
+#sortContent {
+  left: unset;
+  right: 0;
+  transform: translateX(100%);
+}
+
 
 .filter__close {
   width: 100%;
@@ -87,7 +102,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  gap: 15px;
+  gap: 10px;
   overflow-y: auto;
   overflow-x: hidden;
   width: 100%;
