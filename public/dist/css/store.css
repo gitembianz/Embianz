@@ -2865,17 +2865,17 @@ header {
   color: #333333;
   font-size: 14px;
   font-weight: 400;
+  outline: 1px solid black;
+  border-radius: 0 0 7px 7px;
+  outline-offset: -0.5px;
 }
 .tab__table tbody tr:not(:last-child) th,
 .tab__table tbody tr:not(:last-child) td {
   border-left: 1px solid #333333;
   border-right: 1px solid #333333;
 }
-.tab__table tbody tr:last-child th,
-.tab__table tbody tr:last-child td {
-  outline: 1px solid #333333;
-  border-radius: 0 0 5px 5px;
-  outline-offset: -0.5px;
+.tab__table tbody tr td:last-child {
+  border-left: 1px solid black;
 }
 .tab__table tbody tr:nth-of-type(even) {
   background-color: #ffffff;

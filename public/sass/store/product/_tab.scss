@@ -84,6 +84,9 @@
     color: $text;
     font-size: 14px;
     font-weight: 400;
+    outline: 1px solid black;
+    border-radius: 0 0 7px 7px;
+    outline-offset: -0.5px;
 
     tr:not(:last-child) th,
     tr:not(:last-child) td {
@@ -91,11 +94,8 @@
       border-right: 1px solid $text;
     }
 
-    tr:last-child th,
-    tr:last-child td {
-      outline: 1px solid $text;
-      border-radius: 0 0 5px 5px;
-      outline-offset: -0.5px;
+    tr td:last-child {
+      border-left: 1px solid black;
     }
 
     tr:nth-of-type(even) {
