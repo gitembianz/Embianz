@@ -1,4 +1,4 @@
-<div>
+<div id="store-show-product">
     <section>
         <div class="breadcrumbs container">
             <a class="breadcrumbs__link" href="{{ url('/') }}">
