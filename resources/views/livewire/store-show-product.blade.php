@@ -1,10 +1,10 @@
 <div id="store-show-product">
     <section>
         <div class="breadcrumbs container">
-            <a class="breadcrumbs__link" href="{{ url('/') }}">
+            <a class="breadcrumbs__link" href="{{ url("/") }}">
                 Acasa
             </a>
-            <a class="breadcrumbs__link" href="{{ url('/storeproducts') }}">
+            <a class="breadcrumbs__link" href="{{ url("/storeproducts") }}">
                 Produse
             </a>
             <a class="breadcrumbs__link">{{ $product->name }}</a>
@@ -13,32 +13,37 @@
     <section class="product container">
         <!-------------------- Slider Product ------------------>
         <div class="product-slider">
-            <div class="product-slider__wrapper">
-                @foreach ($product->media as $media)
-                    @if ($media->location->location == 'main' || $media->location->location == 'details')
-                        <div class="product-slider__slide">
-                            @if ($media->external)
-                                <img src="{{ $media->path }}" alt="{{ $media->path }}">
-                            @else
-                                <img src="/{{ $media->path }}{{ $media->name }}" alt="{{ $media->path }}">
-                            @endif
-                        </div>
-                    @endif
-                @endforeach
+            <div class="product-slider__center">
+
+                <div class="product-slider__wrapper">
+                    @foreach ($product->media as $media)
+                        @if ($media->location->location == "main" || $media->location->location == "details")
+                            <div class="product-slider__slide">
+                                @if ($media->external)
+                                    <img src="{{ $media->path }}" alt="{{ $media->path }}">
+                                @else
+                                    <img src="/{{ $media->path }}{{ $media->name }}" alt="{{ $media->path }}">
+                                @endif
+                            </div>
+                        @endif
+                    @endforeach
+                </div>
+                <div class="product-slider__navigation">
+                    <button class="product-slider__prev" aria-label="Previous slide">
+                        <svg>
+                            <polyline points="15 18 9 12 15 6"></polyline>
+                        </svg>
+                    </button>
+                    <button class="product-slider__next" aria-label="Next slide">
+                        <svg>
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </button>
+                </div>
             </div>
+
             <div class="product-slider__pagination"></div>
-            <div class="product-slider__navigation">
-                <button class="product-slider__prev" aria-label="Previous slide">
-                    <svg>
-                        <polyline points="15 18 9 12 15 6"></polyline>
-                    </svg>
-                </button>
-                <button class="product-slider__next" aria-label="Next slide">
-                    <svg>
-                        <polyline points="9 18 15 12 9 6"></polyline>
-                    </svg>
-                </button>
-            </div>
+
         </div>
         <!------------------ End Slider Product ---------------->
         <!------------------------------------------------------>
@@ -65,7 +70,7 @@
                     <span class="product__subtitle">{{ $product->short_description }}</span>
                     <h1 class="product__title">{{ $product->name }}</h1>
                 </div>
-                <button class="product__wishlist @if ($product->wishlists->where('session_id', $session_id)->isNotEmpty()) active @endif"
+                <button class="product__wishlist @if ($product->wishlists->where("session_id", $session_id)->isNotEmpty()) active @endif"
                     wire:click="toggleWishlist({{ $product->id }})">
 
                     <svg viewBox="0 0 512 512" width="20" title="heart">
