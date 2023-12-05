@@ -13,32 +13,37 @@
     <section class="product container">
         <!-------------------- Slider Product ------------------>
         <div class="product-slider">
-            <div class="product-slider__wrapper">
-                @foreach ($product->media as $media)
-                    @if ($media->location->location == "main" || $media->location->location == "details")
-                        <div class="product-slider__slide">
-                            @if ($media->external)
-                                <img src="{{ $media->path }}" alt="{{ $media->path }}">
-                            @else
-                                <img src="/{{ $media->path }}{{ $media->name }}" alt="{{ $media->path }}">
-                            @endif
-                        </div>
-                    @endif
-                @endforeach
+            <div class="product-slider__center">
+
+                <div class="product-slider__wrapper">
+                    @foreach ($product->media as $media)
+                        @if ($media->location->location == "main" || $media->location->location == "details")
+                            <div class="product-slider__slide">
+                                @if ($media->external)
+                                    <img src="{{ $media->path }}" alt="{{ $media->path }}">
+                                @else
+                                    <img src="/{{ $media->path }}{{ $media->name }}" alt="{{ $media->path }}">
+                                @endif
+                            </div>
+                        @endif
+                    @endforeach
+                </div>
+                <div class="product-slider__navigation">
+                    <button class="product-slider__prev" aria-label="Previous slide">
+                        <svg>
+                            <polyline points="15 18 9 12 15 6"></polyline>
+                        </svg>
+                    </button>
+                    <button class="product-slider__next" aria-label="Next slide">
+                        <svg>
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </button>
+                </div>
             </div>
+
             <div class="product-slider__pagination"></div>
-            <div class="product-slider__navigation">
-                <button class="product-slider__prev" aria-label="Previous slide">
-                    <svg>
-                        <polyline points="15 18 9 12 15 6"></polyline>
-                    </svg>
-                </button>
-                <button class="product-slider__next" aria-label="Next slide">
-                    <svg>
-                        <polyline points="9 18 15 12 9 6"></polyline>
-                    </svg>
-                </button>
-            </div>
+
         </div>
         <!------------------ End Slider Product ---------------->
         <!------------------------------------------------------>

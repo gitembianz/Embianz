@@ -633,82 +633,75 @@
                         <!---------------------------------------------------->
                         <!-------------- Checkout List of Forms -------------->
                         @if ($individual)
-                            <div class="checkout__form">
+                            <div class="look__form">
                                 <!---------------------------------------------------->
                                 <!------------- Checkout Header Name --------------->
-                                <div class="checkout__top">
-                                    <h3>
-                                        Informatii de facturare &check;
-                                    </h3>
-                                </div>
+                                <h3>
+                                    Informatii de facturare &check;
+                                </h3>
                                 <!----------- End Checkout Header Name ------------->
                                 <!---------------------------------------------------->
                                 <!------------- Checkout List of Items --------------->
                                 <span class="total__message">Nume si Prenume:
-                                    {{ $individual_billing_first }}
-                                    {{ $individual_billing_last }}</span>
+                                    <strong>{{ $individual_billing_first }}</strong>
+                                    <strong>{{ $individual_billing_last }}</strong></span>
                                 <!---------------------------------------------------->
                                 <span class="total__message">Telefon:
-                                    {{ $individual_billing_phone }}</span>
+                                    <strong>{{ $individual_billing_phone }}</strong></span>
                                 <!---------------------------------------------------->
                                 <span class="total__message">Email:
-                                    {{ $individual_billing_email }}</span>
+                                    <strong>{{ $individual_billing_email }}</strong></span>
                                 <!---------------------------------------------------->
                                 <span class="total__message">Adresa:
-                                    {{ $individual_billing_address1 }}
-                                    {{ $individual_billing_address2 }}</span>
+                                    <strong>{{ $individual_billing_address1 }}</strong>
+                                    <strong>{{ $individual_billing_address2 }}</strong></span>
                                 <!---------------------------------------------------->
                                 <span class="total__message">Tara:
-                                    {{ $individual_billing_country }}</span>
+                                    <strong>{{ $individual_billing_country }}</strong></span>
                                 <!---------------------------------------------------->
                                 <span class="total__message">Judet:
-                                    {{ $individual_billing_county }}</span>
+                                    <strong>{{ $individual_billing_county }}</strong></span>
                                 <!---------------------------------------------------->
                                 <span class="total__message">Oras:
-                                    {{ $individual_billing_city }}</span>
+                                    <strong>{{ $individual_billing_city }}</strong></span>
                                 <!---------------------------------------------------->
                                 <span class="total__message">Cod Postal:
-                                    {{ $individual_billing_zipcode }}</span>
+                                    <strong>{{ $individual_billing_zipcode }}</strong></span>
                                 <!----------- End Checkout List of Items ------------->
                                 <!---------------------------------------------------->
-                            </div>
-                            <!---------------------------------------------------->
-                            <div class="checkout__form">
                                 <!---------------------------------------------------->
                                 <!------------- Checkout Header Name --------------->
-                                <div class="checkout__top">
-                                    <h3>
-                                        Informatii de livrare &check;
-                                    </h3>
-                                </div>
+                                <h3>
+                                    Informatii de livrare &check;
+                                </h3>
                                 <!----------- End Checkout Header Name ------------->
                                 <!---------------------------------------------------->
                                 <!------------- Checkout List of Items --------------->
                                 <span class="total__message">Nume si Prenume:
-                                    {{ $individual_shipping_first }}
-                                    {{ $individual_shipping_last }}</span>
+                                    <strong>{{ $individual_shipping_first }}</strong>
+                                    <strong>{{ $individual_shipping_last }}</strong></span>
                                 <!---------------------------------------------------->
                                 <span class="total__message">Telefon:
-                                    {{ $individual_shipping_phone }}</span>
+                                    <strong>{{ $individual_shipping_phone }}</strong></span>
                                 <!---------------------------------------------------->
                                 <span class="total__message">Email:
-                                    {{ $individual_shipping_email }}</span>
+                                    <strong>{{ $individual_shipping_email }}</strong></span>
                                 <!---------------------------------------------------->
                                 <span class="total__message">Adresa:
-                                    {{ $individual_shipping_address1 }}
-                                    {{ $individual_shipping_address2 }}</span>
+                                    <strong>{{ $individual_shipping_address1 }}</strong>
+                                    <strong>{{ $individual_shipping_address2 }}</strong></span>
                                 <!---------------------------------------------------->
                                 <span class="total__message">Tara:
-                                    {{ $individual_shipping_country }}</span>
+                                    <strong>{{ $individual_shipping_country }}</strong></span>
                                 <!---------------------------------------------------->
                                 <span class="total__message">Judet:
-                                    {{ $individual_shipping_county }}</span>
+                                    <strong>{{ $individual_shipping_county }}</strong></span>
                                 <!---------------------------------------------------->
                                 <span class="total__message">Oras:
-                                    {{ $individual_shipping_city }}</span>
+                                    <strong>{{ $individual_shipping_city }}</strong></span>
                                 <!---------------------------------------------------->
                                 <span class="total__message">Cod Postal:
-                                    {{ $individual_shipping_zipcode }}</span>
+                                    <strong>{{ $individual_shipping_zipcode }}</strong></span>
                                 <!----------- End Checkout List of Items ------------->
                                 <!---------------------------------------------------->
                             </div>
@@ -718,97 +711,91 @@
                             <div class="checkout__form">
                                 <!---------------------------------------------------->
                                 <!------------- Checkout Header Name --------------->
-                                <div class="checkout__top">
-                                    <h3>
-                                        Informatii de facturare &check;
-                                    </h3>
-                                </div>
+                                <h3>
+                                    Informatii de facturare &check;
+                                </h3>
                                 <!----------- End Checkout Header Name ------------->
                                 <!---------------------------------------------------->
                                 <!------------- Checkout List of Items --------------->
                                 <span class="total__message">Nume si Prenume:
-                                    {{ $juridic_billing_first }}
-                                    {{ $juridic_billing_last }}</span>
+                                    <strong>{{ $juridic_billing_first }}</strong>
+                                    <strong>{{ $juridic_billing_last }}</strong></span>
                                 <!---------------------------------------------------->
                                 <span class="total__message">Telefon:
-                                    {{ $juridic_billing_phone }}</span>
+                                    <strong>{{ $juridic_billing_phone }}</strong></span>
                                 <!---------------------------------------------------->
                                 <span class="total__message">Email:
-                                    {{ $juridic_billing_email }}</span>
+                                    <strong>{{ $juridic_billing_email }}</strong></span>
                                 <!---------------------------------------------------->
                                 <span class="total__message">Companie:
-                                    {{ $juridic_billing_company_name }}</span>
+                                    <strong>{{ $juridic_billing_company_name }}</strong></span>
                                 <!---------------------------------------------------->
                                 <span class="total__message">Cod de înregistrare:
-                                    {{ $juridic_billing_registration_code }}</span>
+                                    <strong>{{ $juridic_billing_registration_code }}</strong></span>
                                 <!---------------------------------------------------->
                                 <span class="total__message">Număr de înregistrare:
-                                    {{ $juridic_billing_registration_number }}</span>
+                                    <strong>{{ $juridic_billing_registration_number }}</strong></span>
                                 <!---------------------------------------------------->
                                 <span class="total__message">Denumirea Bancii:
-                                    {{ $juridic_billing_bank }}</span>
+                                    <strong>{{ $juridic_billing_bank }}</strong></span>
                                 <!---------------------------------------------------->
                                 <span class="total__message">COnt IBAN:
-                                    {{ $juridic_billing_account }}</span>
+                                    <strong>{{ $juridic_billing_account }}</strong></span>
                                 <!---------------------------------------------------->
                                 <span class="total__message">Adresa:
-                                    {{ $juridic_billing_address1 }}
-                                    {{ $juridic_billing_address2 }}</span>
+                                    <strong>{{ $juridic_billing_address1 }}</strong>
+                                    <strong>{{ $juridic_billing_address2 }}</strong></span>
                                 <!---------------------------------------------------->
                                 <span class="total__message">Tara:
-                                    {{ $juridic_billing_country }}</span>
+                                    <strong>{{ $juridic_billing_country }}</strong></span>
                                 <!---------------------------------------------------->
                                 <span class="total__message">Judet:
-                                    {{ $juridic_billing_county }}</span>
+                                    <strong>{{ $juridic_billing_county }}</strong></span>
                                 <!---------------------------------------------------->
                                 <span class="total__message">Oras:
-                                    {{ $juridic_billing_city }}</span>
+                                    <strong>{{ $juridic_billing_city }}</strong></span>
                                 <!---------------------------------------------------->
                                 <span class="total__message">Cod Postal:
-                                    {{ $juridic_billing_zipcode }}</span>
+                                    <strong>{{ $juridic_billing_zipcode }}</strong></span>
+                                <!----------- End Checkout List of Items ------------->
+                                <!---------------------------------------------------->
+                                <!---------------------------------------------------->
+                                <!------------- Checkout Header Name --------------->
+                                <h3>
+                                    Informatii de livrare &check;
+                                </h3>
+                                <!----------- End Checkout Header Name ------------->
+                                <!---------------------------------------------------->
+                                <!------------- Checkout List of Items --------------->
+                                <span class="total__message">Nume si Prenume:
+                                    <strong>{{ $juridic_shipping_first }}</strong>
+                                    <strong>{{ $juridic_shipping_last }}</strong></span>
+                                <!---------------------------------------------------->
+                                <span class="total__message">telefon:
+                                    <strong>{{ $juridic_shipping_phone }}</strong></span>
+                                <!---------------------------------------------------->
+                                <span class="total__message">Email:
+                                    <strong>{{ $juridic_shipping_email }}</strong></span>
+                                <!---------------------------------------------------->
+                                <span class="total__message">Adresa:
+                                    <strong>{{ $juridic_shipping_address1 }}</strong>
+                                    <strong>{{ $juridic_shipping_address2 }}</strong></span>
+                                <!---------------------------------------------------->
+                                <span class="total__message">Tara:
+                                    <strong>{{ $juridic_shipping_country }}</strong></span>
+                                <!---------------------------------------------------->
+                                <span class="total__message">Judet:
+                                    <strong>{{ $juridic_shipping_county }}</strong></span>
+                                <!---------------------------------------------------->
+                                <span class="total__message">Oras:
+                                    <strong>{{ $juridic_shipping_city }}</strong></span>
+                                <!---------------------------------------------------->
+                                <span class="total__message">Cod Postal:
+                                    <strong>{{ $juridic_shipping_zipcode }}</strong></span>
                                 <!----------- End Checkout List of Items ------------->
                                 <!---------------------------------------------------->
                             </div>
                             <!---------------------------------------------------->
-                            <div class="checkout__form">
-                                <!---------------------------------------------------->
-                                <!------------- Checkout Header Name --------------->
-                                <div class="checkout__top">
-                                    <h3>
-                                        Informatii de livrare &check;
-                                    </h3>
-                                </div>
-                                <!----------- End Checkout Header Name ------------->
-                                <!---------------------------------------------------->
-                                <!------------- Checkout List of Items --------------->
-                                <span class="total__message">Nume si Prenume:
-                                    {{ $juridic_shipping_first }}
-                                    {{ $juridic_shipping_last }}</span>
-                                <!---------------------------------------------------->
-                                <span class="total__message">telefon:
-                                    {{ $juridic_shipping_phone }}</span>
-                                <!---------------------------------------------------->
-                                <span class="total__message">Email:
-                                    {{ $juridic_shipping_email }}</span>
-                                <!---------------------------------------------------->
-                                <span class="total__message">Adresa:
-                                    {{ $juridic_shipping_address1 }}
-                                    {{ $juridic_shipping_address2 }}</span>
-                                <!---------------------------------------------------->
-                                <span class="total__message">Tara:
-                                    {{ $juridic_shipping_country }}</span>
-                                <!---------------------------------------------------->
-                                <span class="total__message">Judet:
-                                    {{ $juridic_shipping_county }}</span>
-                                <!---------------------------------------------------->
-                                <span class="total__message">Oras:
-                                    {{ $juridic_shipping_city }}</span>
-                                <!---------------------------------------------------->
-                                <span class="total__message">Cod Postal:
-                                    {{ $juridic_shipping_zipcode }}</span>
-                                <!----------- End Checkout List of Items ------------->
-                                <!---------------------------------------------------->
-                            </div>
                         @endif
                         <!---------------------------------------------------->
                         <div class="total__info">
@@ -911,7 +898,7 @@
                             vă aduce fericire. Vă mulțumim că ați ales produsele noastre și așteptăm cu nerăbdare să vă
                             mai servim în viitor. 🙏😊<br>Cu cele mai bune urări,</p>
                         <a href="{{ url("/") }}" class="logo">
-                            <img src="/images/store/logo.svg" alt="logo">
+                            <img src="/images/store/logo-black.webp" alt="logo">
                         </a>
                     </div>
                 @endif

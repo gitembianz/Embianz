@@ -22,7 +22,7 @@
         <div class="header__container container">
             <!-------------------------Logo------------------------->
             <a class="logo" href="{{ url("/") }}">
-                <img src="/images/store/logo-black.svg" alt="Embianz Logo">
+                <img src="/images/store/logo-black.webp" alt="Embianz Logo">
             </a>
             <!-----------------------END-Logo----------------------->
             <!------------------------------------------------------>

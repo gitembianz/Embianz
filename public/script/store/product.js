@@ -191,7 +191,7 @@ function handleClick() {
   setTimeout(() => {
     sliderProduct(".product-slider");
     modalProduct(".product-modal", ".product-slider");
-  }, 1000);
+  }, 200);
 }
 
 // Adaugă un event listener pe body
