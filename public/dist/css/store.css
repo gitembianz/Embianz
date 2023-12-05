@@ -2169,11 +2169,7 @@ header {
 .catalogue {
   display: grid;
   gap: 30px;
-}
-@media (min-width: 0) {
-  .catalogue {
-    grid-template-columns: repeat(1, 1fr);
-  }
+  grid-template-columns: repeat(1, 1fr);
 }
 @media (min-width: 576px) {
   .catalogue {
@@ -2188,11 +2184,6 @@ header {
 @media (min-width: 992px) {
   .catalogue {
     grid-template-columns: repeat(4, 1fr);
-  }
-}
-@media (min-width: 1200px) {
-  .catalogue {
-    grid-template-columns: repeat(5, 1fr);
   }
 }
 
@@ -2314,6 +2305,11 @@ header {
 }
 .filter__close > svg {
   stroke: #ffffff;
+}
+
+#sortClose {
+  justify-content: space-between;
+  padding: 0 10px;
 }
 
 .filter__top {
@@ -2477,6 +2473,9 @@ header {
 .dropfilter.active > .dropfilter__list > .dropfilter__link {
   transform: scaleY(1);
 }
+.dropfilter.active > .dropfilter__button > .dropfilter__open > svg {
+  transform: rotateX(180deg);
+}
 
 .dropfilter__button {
   width: 100%;
@@ -2530,14 +2529,15 @@ header {
   justify-content: center;
   border-radius: 7px;
   border: none;
-  background: #fafafa;
+  background: #e1e1e1;
 }
 .dropfilter__open > svg {
+  transition: all 0.3s ease-in-out;
   stroke: #333333;
 }
 
 .dropfilter__list {
-  background: #c7c7c7;
+  background: #ededed;
   z-index: 500;
   transform: scaleY(0);
   transform-origin: top;
@@ -2903,7 +2903,7 @@ header {
   flex: 1;
   display: flex;
   align-items: flex-start;
-  justify-content: space-between;
+  justify-content: flex-start;
   flex-direction: column;
   gap: 15px;
   scrollbar-color: #333333 transparent;
@@ -4006,7 +4006,7 @@ header {
   width: 100%;
 }
 .product-slider__slide > video, .product-slider__slide > img {
-  background: #333;
+  background: #fafafa;
   width: 100%;
   height: auto;
   aspect-ratio: 1/1;

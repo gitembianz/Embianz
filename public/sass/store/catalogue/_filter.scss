@@ -88,6 +88,11 @@
   }
 }
 
+#sortClose {
+  justify-content: space-between;
+  padding: 0 10px;
+}
+
 .filter__top {
   display: flex;
   align-items: center;
@@ -264,6 +269,10 @@
         transform: scaleY(1);
       }
     }
+
+    &>.dropfilter__button>.dropfilter__open>svg {
+      transform: rotateX(180deg);
+    }
   }
 }
 
@@ -320,15 +329,18 @@
   justify-content: center;
   border-radius: 7px;
   border: none;
-  background: $secondary;
+  background: darken($secondary, 10%);
 
   &>svg {
+    transition: all .3s ease-in-out;
     stroke: $text;
   }
 }
 
+
+
 .dropfilter__list {
-  background: darken($secondary, 20%);
+  background: darken($secondary, 5%);
   z-index: 500;
   transform: scaleY(0);
   transform-origin: top;
