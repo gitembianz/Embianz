@@ -4,28 +4,22 @@ function scrollEvent() {
   const header = document.querySelector("header");
   const banner = document.querySelector(".banner");
   const main = document.querySelector("main");
+  const body = document.body;
 
   const headerHeight = header.offsetHeight;
   const bannerHeight = banner.offsetHeight;
 
-  // console.log("height of header: ", headerHeight);
-  // console.log("height of banner: ", bannerHeight);
-
-  main.style.paddingTop = `${headerHeight + bannerHeight}px`;
-  header.style.top = `${bannerHeight}px`;
-
-  if (window.pageYOffset > 0) {
-    banner.style.top = `-${headerHeight + bannerHeight}px`;
+  if (window.pageYOffset > 200) {
+    banner.style.top = `-${bannerHeight}px`;
+    main.style.paddingTop = `${headerHeight}px`;
     header.style.top = "0px";
   } else {
     banner.style.top = "0px";
+    main.style.paddingTop = `${headerHeight + bannerHeight}px`;
     header.style.top = `${bannerHeight}px`;
   }
 }
 
-scrollEvent();
-window.addEventListener("scroll", scrollEvent);
-window.addEventListener("resize", scrollEvent);
 //<-------------------------- End ScrollEvent -------------------------->
 //<--------------------------------------------------------------------->
 //<------------------------ DropMenu on leftbar ------------------------>
@@ -68,6 +62,7 @@ function leftbar(idOpen, idClose, idList, idContent) {
     buttonOpen.addEventListener("click", () => {
       list.classList.add("active");
       body.style.overflow = "hidden";
+      scrollEvent();
     });
     buttonClose.addEventListener("click", () => {
       list.classList.remove("active");
@@ -107,7 +102,6 @@ function searchBar() {
 //<--------------------------- End SearchBar --------------------------->
 //<--------------------------------------------------------------------->
 //<------------------------ Start Functions IOS ------------------------>
-// scrollEvent();
 searchBar();
 leftbar("basketOpen", "basketClose", "basketList", "basketContent");
 leftbar("wishOpen", "wishClose", "wishList", "wishContent");
@@ -119,7 +113,6 @@ dropmenus(".dropmenu", true);
 //<------------------------- Start Functions PC ------------------------>
 document.addEventListener("DOMContentLoaded", function () {
   searchBar();
-  // scrollEvent();
   leftbar("basketOpen", "basketClose", "basketList", "basketContent");
   leftbar("wishOpen", "wishClose", "wishList", "wishContent");
   leftbar("menuOpen", "menuClose", "menuList", "menuContent");
@@ -127,3 +120,6 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 //<----------------------- End Start Functions PC ---------------------->
 //<--------------------------------------------------------------------->
+scrollEvent();
+window.addEventListener("scroll", scrollEvent);
+window.addEventListener("resize", scrollEvent);

@@ -976,6 +976,7 @@ section {
   transition: all 0.1s ease-in-out;
   position: fixed;
   top: 0;
+  z-index: 300;
 }
 
 .banner__container {
@@ -1219,9 +1220,15 @@ header {
 }
 
 .leftbar__empty {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 400;
   color: #333333;
+  height: 100%;
+  width: 100%;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .leftbar__item {
@@ -1262,6 +1269,7 @@ header {
 .leftbar__link > span {
   flex: 1;
   text-wrap: nowrap;
+  word-break: break-word;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2122,6 +2130,23 @@ header {
   color: #fafafa;
 }
 
+.card-button-disabled {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 40px;
+  background: #333333;
+  border: 2px solid #333333;
+  text-transform: uppercase;
+  font-size: 14px;
+  letter-spacing: 0.7px;
+  font-weight: 500;
+  color: #ffffff;
+  transition: all 0.3s ease-in-out;
+  cursor: not-allowed;
+}
+
 .card-favorites {
   display: flex;
   align-items: center;
@@ -2840,17 +2865,17 @@ header {
   color: #333333;
   font-size: 14px;
   font-weight: 400;
+  outline: 1px solid black;
+  border-radius: 0 0 7px 7px;
+  outline-offset: -0.5px;
 }
 .tab__table tbody tr:not(:last-child) th,
 .tab__table tbody tr:not(:last-child) td {
   border-left: 1px solid #333333;
   border-right: 1px solid #333333;
 }
-.tab__table tbody tr:last-child th,
-.tab__table tbody tr:last-child td {
-  outline: 1px solid #333333;
-  border-radius: 0 0 5px 5px;
-  outline-offset: -0.5px;
+.tab__table tbody tr td:last-child {
+  border-left: 1px solid black;
 }
 .tab__table tbody tr:nth-of-type(even) {
   background-color: #ffffff;

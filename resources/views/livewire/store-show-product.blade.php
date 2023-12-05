@@ -122,6 +122,8 @@
             @endphp
             @if ($price && $product->quantity != 0)
                 <button wire:click="addToCart({{ $product }})" class="product__button">Adauga in coș</button>
+            @else
+                <a class="card-button-disabled" onclick="handleClick()">Indisponibil</a>
             @endif
             <!---------------- End Product (Details) --------------->
             <!------------------------------------------------------>
@@ -172,4 +174,5 @@
     <x-help-button />
     <!------------------- End support button ------------------->
     <!---------------------------------------------------------->
+    <script src="/script/store/product.js" async defer></script>
 </div>
