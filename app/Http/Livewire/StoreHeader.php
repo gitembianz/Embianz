@@ -24,7 +24,7 @@ class StoreHeader extends Component
   public $closedStatusId;
   protected $listeners = [
     'wishlistUpdated' => 'mount',
-    'cartUpdated' => 'mount'
+    'cartUpdated' => 'updatecart'
   ];
 
   public function render()
@@ -35,13 +35,17 @@ class StoreHeader extends Component
         'objects' => $this->objects,
         'cats' => $this->cats,
         'wishlistitems' => $this->wishlistitems,
+      ];
+    } elseif ($this->showcart) {
+      $data = [
+        'categories' => $this->categories,
         'cartItems' => $this->cartItems,
+        'wishlistitems' => $this->wishlistitems,
       ];
     } else {
       $data = [
         'categories' => $this->categories,
         'wishlistitems' => $this->wishlistitems,
-        'cartItems' => $this->cartItems,
       ];
     }
 
@@ -51,6 +55,10 @@ class StoreHeader extends Component
   {
     $this->session_id = $this->getCookieId();
 
+    $this->updatecart();
+  }
+  public function updatecart()
+  {
     $this->cart = Cart::where('session_id', $this->session_id)
       ->where('status_id', '!=', Status::where('name', 'closed')->where('type', 'cart')->value('id'))
       ->latest()->first();
