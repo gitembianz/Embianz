@@ -33,8 +33,7 @@ class StoreProducts extends Component
   public $selectedSpecNames = [];
 
   protected $listeners = [
-    'wishlistUpdated' => 'mount',
-    'cartUpdated' => 'mount'
+    'wishlistUpdated' => 'updateWishlistsRelationship'
   ];
 
   public function loadMore()
@@ -119,9 +118,31 @@ class StoreProducts extends Component
     $this->selectedSpecNames = [];
     $this->selectedKeys = [];
   }
+  public function updateWishlistsRelationship()
+  {
+    // Convert $this->wishlist to a collection if it's an array
+    $wishlistCollection = is_array($this->wishlist) ? collect($this->wishlist) : $this->wishlist;
+
+    // Update the 'wishlists' relationship on relevant products
+    Product::whereIn('id', $wishlistCollection->pluck('product_id')->toArray())
+      ->each(function ($product) use ($wishlistCollection) {
+        $filteredWishlists = $wishlistCollection->where('product_id', $product->id);
+        $product->setRelation('wishlists', $filteredWishlists);
+        $product->save(); // Save the changes
+      });
+  }
+
   public function getProductsProperty()
   {
-    $query = Product::name($this->search)->where('active', true)->with('media.location', 'product_prices.pricelist', 'product_prices.pricelist.currency', 'wishlists', 'media');
+    $query = Product::name($this->search)->where('active', true)->with([
+      'media.location',
+      'product_prices.pricelist',
+      'product_prices.pricelist.currency',
+      'media',
+      'wishlists' => function ($query) {
+        $query->where('session_id', $this->session_id);
+      }
+    ]);
     if ($this->category) {
       $this->categoryname = Category::find($this->category)->name;
       $query->whereHas('product_categories.category', function ($query) {
