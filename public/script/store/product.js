@@ -191,7 +191,7 @@ function handleClick() {
   setTimeout(() => {
     sliderProduct(".product-slider");
     modalProduct(".product-modal", ".product-slider");
-  }, 200);
+  }, 500);
 }
 
 const prevButton = document.querySelector(".product-slider__prev");
