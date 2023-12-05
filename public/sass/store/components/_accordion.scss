@@ -1,16 +1,3 @@
-.faq__accordions {
-  display: grid;
-  gap: 25px;
-
-  @media (min-width: map-get($grid-breakpoints, md)) {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  @media (min-width: map-get($grid-breakpoints, xl)) {
-    grid-template-columns: 1fr 1fr 1fr;
-  }
-}
-
 .accordion {
   width: 100%;
   display: flex;

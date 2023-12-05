@@ -898,7 +898,7 @@
                             vă aduce fericire. Vă mulțumim că ați ales produsele noastre și așteptăm cu nerăbdare să vă
                             mai servim în viitor. 🙏😊<br>Cu cele mai bune urări,</p>
                         <a href="{{ url("/") }}" class="logo">
-                            <img src="/images/store/logo-black.webp" alt="logo">
+                            <img src="/images/store/svg/noren-black.svg" alt="logo">
                         </a>
                     </div>
                 @endif

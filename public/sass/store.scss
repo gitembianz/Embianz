@@ -16,8 +16,13 @@
 @import "store/components/support";
 @import "store/components/help-button";
 @import "store/components/numeric-list";
-@import "store/components/faq";
+@import "store/components/accordion";
 //<---------------------- End Components ----------------------->
+//<------------------------------------------------------------->
+//<------------------------ Other Pages ------------------------>
+@import "store/other-page/faq";
+@import "store/other-page/contact";
+//<---------------------- End Other Pages ---------------------->
 //<------------------------------------------------------------->
 //<-------------------------- Header --------------------------->
 @import "store/header/banner";
