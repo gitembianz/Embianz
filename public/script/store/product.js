@@ -194,11 +194,20 @@ function handleClick() {
   }, 200);
 }
 
+const prevButton = document.querySelector(".product-slider__prev");
+const nextButton = document.querySelector(".product-slider__next");
+
 // Adaugă un event listener pe body
 document.body.addEventListener("click", function (event) {
   // Verifică dacă elementul pe care s-a dat click este în body
   if (event.target.closest("body")) {
-    // Apelarea funcției handleClick
-    handleClick();
+    // Verifică dacă elementul pe care s-a dat click NU este butonul "prev" sau "next"
+    if (
+      !event.target.closest(".product-slider__prev") &&
+      !event.target.closest(".product-slider__next")
+    ) {
+      // Apelarea funcției handleClick
+      handleClick();
+    }
   }
 });
