@@ -19,20 +19,17 @@
                         @foreach ($subcategories as $item)
                             <div class="main-slider__slide">
                                 @if ($item->category->media)
-                                    @foreach ($item->category->media as $media)
-                                        @if ($media->location->location == "details")
-                                            @if ($media->external)
-                                                <img src="{{ $media->path }}" draggable="false" alt="{{ $media->path }}">
-                                            @else
-                                                <img src="/{{ $media->path }}{{ $media->name }}" draggable="false"
-                                                    alt="{{ $media->path }}">
-                                            @endif
-                                            <?php break; ?>
-                                        @endif
-                                    @endforeach
+                                    @if ($item->category->media->first()->external)
+                                        <img src="{{ $item->category->media->first()->path }}" draggable="false"
+                                            alt="{{ $item->category->media->first()->path }}">
+                                    @else
+                                        <img src="/{{ $item->category->media->first()->path }}{{ $item->category->media->first()->name }}"
+                                            draggable="false" alt="{{ $item->category->media->first()->path }}">
+                                    @endif
+
                                 @endif
                                 <div class="main-slider__text container">
-                                    <h3>{{ $item->name }}</h3>
+                                    <h3>{{ $item->category->name }}</h3>
                                     <p>{{ $item->category->short_description }}</p>
                                     <a class="main-slider__link"
                                         href="/storeproducts/{{ $item->id }}">Acceseaza!</a>

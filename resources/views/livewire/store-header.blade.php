@@ -22,7 +22,7 @@
         <div class="header__container container">
             <!-------------------------Logo------------------------->
 
-            <a class="logo" href="{{ url("/") }}">
+            <a class="logo" href="{{ url('/') }}">
                 <img src="/images/store/logo-black.webp" alt="Embianz Logo">
 
             </a>
@@ -215,10 +215,10 @@
                 </button>
             </div>
 
-            <ul class="leftbar__list">
-                @if ($cartItems->isEmpty())
-                    <span class="leftbar__empty">Cosul de cumparaturi este gol</span>
-                @else
+            @if (!isset($cartItems) || $cartItems->isEmpty())
+                <span class="leftbar__empty">Cosul de cumparaturi este gol</span>
+            @else
+                <ul class="leftbar__list">
                     <?php $total = 0; ?>
                     @foreach ($cartItems as $cartItem)
                         <li class="leftbar__item">
@@ -271,10 +271,10 @@
                         </li>
                         <?php $total += $cartItem->price * $cartItem->quantity; ?>
                     @endforeach
-                @endif
-            </ul>
+                </ul>
+            @endif
 
-            @if (!$cartItems->isEmpty())
+            @if (isset($cartItems) && !$cartItems->isEmpty())
                 <div class="leftbar__total">
                     <h5 class="leftbar__total--text">Total: <span>{{ $total }} {{ $currency }}</span></h5>
                     <a class="leftbar__button" wire:click.prevent="continue">Finalizare Comanda</a>
