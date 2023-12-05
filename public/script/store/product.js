@@ -51,6 +51,15 @@ function sliderProduct(sliderId) {
   }
 
   function createThumb(slide, index) {
+    const existingThumbnail = pagination.querySelector(
+      `.thumbnail[data-index="${index}"]`
+    );
+
+    // Verificăm dacă thumbnail-ul există deja
+    if (existingThumbnail) {
+      return;
+    }
+
     const thumbnail = document.createElement("img");
     const mediaElement =
       slide.querySelector("img") || slide.querySelector("video");
@@ -59,6 +68,7 @@ function sliderProduct(sliderId) {
       thumbnail.src = mediaElement.src;
       thumbnail.alt = `Thumbnail ${index + 1}`;
       thumbnail.classList.add("thumbnail");
+      thumbnail.setAttribute("data-index", index); // Adăugăm un atribut pentru a identifica slide-ul asociat
 
       thumbnail.addEventListener("click", () => {
         currentIndex = index;
@@ -177,3 +187,18 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 //<---------------------- End Start Functions IOS ---------------------->
 //<--------------------------------------------------------------------->
+function handleClick() {
+  setTimeout(() => {
+    sliderProduct(".product-slider");
+    modalProduct(".product-modal", ".product-slider");
+  }, 1000);
+}
+
+// Adaugă un event listener pe body
+document.body.addEventListener("click", function (event) {
+  // Verifică dacă elementul pe care s-a dat click este în body
+  if (event.target.closest("body")) {
+    // Apelarea funcției handleClick
+    handleClick();
+  }
+});
