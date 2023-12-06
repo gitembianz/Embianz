@@ -969,36 +969,16 @@ section {
   }
 }
 
-.contact__title {
+.contact {
+  width: 100%;
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 30px;
-  grid-column: 1/3;
+  justify-content: space-between;
+  gap: 20px;
 }
-.contact__title--text {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 15px;
-  text-align: center;
-}
-
-.contact__container {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
-  gap: 50px;
-}
-@media (min-width: 992px) {
-  .contact__container {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 25px;
-    align-items: center;
-    justify-items: center;
+@media (max-width: 1200px) {
+  .contact {
+    flex-direction: column-reverse;
   }
 }
 
@@ -1006,9 +986,10 @@ section {
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
   align-items: center;
+  justify-content: space-between;
   gap: 25px;
+  flex: 1;
 }
 @media (min-width: 768px) {
   .contact__form {
@@ -1016,26 +997,14 @@ section {
   }
 }
 
-.contact__solutions {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  width: 100%;
-}
-.contact__solutions > span {
-  grid-row: 1/5;
-}
-@media (min-width: 576px) {
-  .contact__solutions {
-    grid-template-columns: repeat(5, 1fr);
-  }
-}
-
 .contact__label {
   width: 100%;
+  max-width: 600px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  gap: 50px;
+  gap: 5px;
+  flex-direction: column;
 }
 .contact__label > label {
   width: max-content;
@@ -1043,75 +1012,63 @@ section {
 }
 .contact__label > input {
   width: 100%;
-  height: 2.5rem;
+  height: 40px;
   border-radius: 6px;
   border: 1.5px solid #9b9b9a;
-  text-align: center;
+  text-align: start;
+  padding: 10px;
   flex: 1;
+  outline: none;
+  font-size: 16px;
+  font-weight: 400;
+  color: #333;
 }
 .contact__label > textarea {
   width: 100%;
-  height: 7.5rem;
+  height: 150px;
   border-radius: 6px;
   border: 1.5px solid #9b9b9a;
   padding: 10px;
   resize: none;
   flex: 1;
+  outline: none;
+  font-size: 16px;
+  font-weight: 400;
+  color: #333;
+  padding: 10px;
 }
-.contact__label :last-child {
+.contact__label:last-child {
   align-items: flex-start;
 }
 
-.contact-image > input[type=checkbox] {
-  display: none;
-}
-.contact-image label {
+.contact__button {
+  height: 50px;
+  padding: 0 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
+  background: #333;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 5px;
   gap: 10px;
-  position: relative;
-  margin: 10px;
-  cursor: pointer;
 }
-.contact-image label img {
-  width: 80px;
-  height: auto;
-  filter: grayscale(1);
-  transition: filter 0.2s ease-in-out;
-}
-.contact-image :checked + label img {
-  filter: grayscale(0);
+.contact__button > svg {
+  stroke: #fff;
 }
 
-.contact__connect {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 25px;
-  position: relative;
-  height: 100%;
-  width: 100%;
-}
-.contact__connect > img {
+.contact__img {
   aspect-ratio: 1/1;
   object-fit: contain;
-  width: 70%;
+  object-position: center;
+  max-width: 600px;
   height: auto;
 }
-
-.contact__link {
-  color: #4b7a55;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  font-size: 1rem;
-}
-.contact__link > svg {
-  stroke-width: 2.5px;
+@media (max-width: 768px) {
+  .contact__img {
+    max-width: 300px;
+  }
 }
 
 .banner {
