@@ -976,7 +976,7 @@ section {
   justify-content: space-between;
   gap: 20px;
 }
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
   .contact {
     flex-direction: column-reverse;
   }
