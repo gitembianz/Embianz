@@ -1053,6 +1053,7 @@ section {
   font-weight: 500;
   border-radius: 5px;
   gap: 10px;
+  border: none;
 }
 .contact__button > svg {
   stroke: #fff;
@@ -2249,13 +2250,16 @@ header {
   cursor: not-allowed;
 }
 
+.card-action {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+
 .card-favorites {
   display: flex;
   align-items: center;
   justify-content: center;
-  position: absolute;
-  top: 5px;
-  right: 5px;
   width: 33px;
   height: 33px;
   background: transparent;
@@ -2815,6 +2819,14 @@ header {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  justify-content: center;
+  flex: 1;
+}
+.product__text > .product__action {
+  width: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
   justify-content: center;
   flex: 1;
 }

@@ -109,13 +109,16 @@
   cursor: not-allowed;
 }
 
+.card-action {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+
 .card-favorites {
   display: flex;
   align-items: center;
   justify-content: center;
-  position: absolute;
-  top: 5px;
-  right: 5px;
   width: 33px;
   height: 33px;
   background: transparent;

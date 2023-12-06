@@ -5,10 +5,10 @@
     <!------------------------Breadcrumbs----------------------->
     <section>
         <div class="breadcrumbs container">
-            <a class="breadcrumbs__link" href="{{ url('/') }}">
+            <a class="breadcrumbs__link" href="{{ url("/") }}">
                 Acasa
             </a>
-            <a class="breadcrumbs__link" href="{{ url('/storeproducts') }}">
+            <a class="breadcrumbs__link" href="{{ url("/storeproducts") }}">
                 Produse
             </a>
             <!-------------------If Category is appear------------------>
@@ -75,7 +75,7 @@
                     <a href="/product/{{ $product->id }}">
                         @if (count($product->media) > 0)
                             @foreach ($product->media as $media)
-                                @if ($media->location->location == 'main')
+                                @if ($media->location->location == "main")
                                     @if ($media->external)
                                         <img class="card-image" src="{{ $media->path }}" draggable="false"
                                             alt="{{ $media->path }}">
@@ -117,13 +117,16 @@
                         </p>
                     @endif
                     {{-- alt="Card-Image"> --}}
-                    <button class="card-favorites @if ($product->wishlists->count() != 0) active @endif"
-                        wire:click="toggleWishlist({{ $product->id }})">
-                        <svg viewBox="0 0 512 512" width="20" title="heart">
-                            <path
-                                d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z" />
-                        </svg>
-                    </button>
+                    <div class="card-action">
+                        <button class="card-favorites @if ($product->wishlists->count() != 0) active @endif"
+                            wire:click="toggleWishlist({{ $product->id }})">
+                            <svg viewBox="0 0 512 512" width="20" title="heart">
+                                <path
+                                    d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z" />
+                            </svg>
+                        </button>
+                    </div>
+
 
                     <div class="card-info">
                         <div class="card-text">
@@ -136,7 +139,7 @@
                                     {{ $price }}
                                     {{ $product->product_prices->first()->pricelist->currency->name }}
                                 @else
-                                    {{ __('') }}
+                                    {{ __("") }}
                                 @endif
                             </p>
                         </div>
