@@ -7,7 +7,6 @@ use App\Models\Status;
 use App\Models\Product;
 use Livewire\Component;
 use App\Models\Category;
-use App\Models\Wishlist;
 use App\Models\Cart_Item;
 use App\Models\Store_Settings;
 use App\Models\Subcategory;
@@ -20,11 +19,8 @@ class StoreMain extends Component
   public $category;
   public $quantity = 10;
   public $session_id;
-  public $wishlist = [];
   // public $isLoading = true;
-  protected $listeners = [
-    'wishlistUpdated' => 'mount'
-  ];
+
   private function getCookieId()
   {
     if (isset($_COOKIE['sessionId'])) {
@@ -88,45 +84,6 @@ class StoreMain extends Component
       ->get();
   }
 
-
-
-
-  public function addToWishlist($productId)
-  {
-    if (!in_array($productId, $this->wishlist)) {
-      $this->wishlist[] = $productId;
-      $this->saveToSession();
-
-      Wishlist::updateOrCreate(
-        ['session_id' => $this->session_id, 'product_id' => $productId]
-      );
-      $this->emit('wishlistUpdated');
-    }
-  }
-  public function removeFromWishlist($productId)
-  {
-    $this->wishlist = array_diff($this->wishlist, [$productId]);
-    $this->saveToSession();
-
-    Wishlist::where('session_id', $this->session_id)
-      ->where('product_id', $productId)
-      ->delete();
-    $this->emit('wishlistUpdated');
-  }
-  private function saveToSession()
-  {
-    session([
-      'wishlist' => $this->wishlist,
-    ]);
-  }
-  public function toggleWishlist($productId)
-  {
-    if (in_array($productId, $this->wishlist)) {
-      $this->removeFromWishlist($productId);
-    } else {
-      $this->addToWishlist($productId);
-    }
-  }
   public function addToCart($productId)
   {
     $closedStatusId = Status::where('name', 'closed')->where('type', 'cart')->value('id');

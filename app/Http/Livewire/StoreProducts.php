@@ -8,7 +8,6 @@ use App\Models\Cart_Item;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Specs;
-use App\Models\Wishlist;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -19,7 +18,6 @@ class StoreProducts extends Component
   public $loadAmount = 11;
   public $search = "";
   public $quantity = 10;
-  public $wishlist = [];
   public $session_id;
   public $specification;
   public $orderBy = 'best_selling'; // Default sorting order
@@ -31,10 +29,6 @@ class StoreProducts extends Component
   public $selectedSpecValues = [];
   public $selectedKeys = [];
   public $selectedSpecNames = [];
-
-  protected $listeners = [
-    'wishlistUpdated' => 'updateWishlistsRelationship'
-  ];
 
   public function loadMore()
   {
@@ -118,19 +112,6 @@ class StoreProducts extends Component
     $this->selectedSpecNames = [];
     $this->selectedKeys = [];
   }
-  public function updateWishlistsRelationship()
-  {
-    // Convert $this->wishlist to a collection if it's an array
-    $wishlistCollection = is_array($this->wishlist) ? collect($this->wishlist) : $this->wishlist;
-
-    // Update the 'wishlists' relationship on relevant products
-    Product::whereIn('id', $wishlistCollection->pluck('product_id')->toArray())
-      ->each(function ($product) use ($wishlistCollection) {
-        $filteredWishlists = $wishlistCollection->where('product_id', $product->id);
-        $product->setRelation('wishlists', $filteredWishlists);
-        $product->save(); // Save the changes
-      });
-  }
 
   public function getProductsProperty()
   {
@@ -178,18 +159,7 @@ class StoreProducts extends Component
 
     return $query->paginate($this->loadAmount);
   }
-  public function addToWishlist($productId)
-  {
-    if (!in_array($productId, $this->wishlist)) {
-      $this->wishlist[] = $productId;
-      $this->saveToSession();
 
-      Wishlist::updateOrCreate(
-        ['session_id' => $this->session_id, 'product_id' => $productId]
-      );
-      $this->emit('wishlistUpdated');
-    }
-  }
   public function addToCart($productId)
   {
     $closedStatusId = Status::where('name', 'closed')->where('type', 'cart')->first()->id;
@@ -233,29 +203,5 @@ class StoreProducts extends Component
     }
     $cart->save();
     $this->emit('cartUpdated');
-  }
-  public function removeFromWishlist($productId)
-  {
-    $this->wishlist = array_diff($this->wishlist, [$productId]);
-    $this->saveToSession();
-
-    Wishlist::where('session_id', $this->session_id)
-      ->where('product_id', $productId)
-      ->delete();
-    $this->emit('wishlistUpdated');
-  }
-  private function saveToSession()
-  {
-    session([
-      'wishlist' => $this->wishlist,
-    ]);
-  }
-  public function toggleWishlist($productId)
-  {
-    if (in_array($productId, $this->wishlist)) {
-      $this->removeFromWishlist($productId);
-    } else {
-      $this->addToWishlist($productId);
-    }
   }
 }

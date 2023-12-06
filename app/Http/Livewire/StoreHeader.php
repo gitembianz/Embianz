@@ -24,8 +24,7 @@ class StoreHeader extends Component
   public $session_id;
   public $closedStatusId;
   protected $listeners = [
-    'wishlistUpdated' => 'updatewis',
-    'cartUpdated' => 'updatecart'
+    'wishlistUpdated' => 'updatewis'
   ];
 
   public function render()
@@ -56,11 +55,14 @@ class StoreHeader extends Component
     $this->updatecart();
     $this->updatewis();
   }
-  public function updatecart()
+  public function updateCart()
   {
     $this->cart = Cart::where('session_id', $this->session_id)
       ->where('status_id', '!=', Status::where('name', 'closed')->where('type', 'cart')->value('id'))
       ->latest()->first();
+
+    // Ensure $this->cart is initialized as an empty array if it is null
+    $this->cart = $this->cart ?? [];
   }
   public function updatewis()
   {
