@@ -38,6 +38,15 @@
     justify-content: center;
     flex: 1;
   }
+
+  &>.product__action {
+    width: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    flex: 1;
+  }
 }
 
 .product__subtitle {
