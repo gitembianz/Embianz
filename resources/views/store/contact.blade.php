@@ -26,6 +26,8 @@
     </section>
     <!--------------------End Section Header-------------------->
     <!---------------------------------------------------------->
+    <!---------------------------------------------------------->
+    <!-----------------------Contact Form----------------------->
     <section class="contact container">
         <form class="contact__form" action="https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8"
             method="POST">
@@ -78,6 +80,7 @@
         </form>
         <img class="contact__img" src="/images/store/contact-form.webp" alt="contact form image">
     </section>
-
+    <!---------------------End Contact Form--------------------->
+    <!---------------------------------------------------------->
 </main>
 <x-store-footer />
