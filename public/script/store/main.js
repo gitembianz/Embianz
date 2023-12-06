@@ -152,9 +152,9 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 //<----------------------- End Start Functions PC ---------------------->
 //<--------------------------------------------------------------------->
-function handleClick() {
-  setTimeout(() => {
-    slider(".main-slider");
-    slider(".card-slider");
-  }, 500);
-}
+// function handleClick() {
+//   setTimeout(() => {
+//     slider(".main-slider");
+//     slider(".card-slider");
+//   }, 500);
+// }

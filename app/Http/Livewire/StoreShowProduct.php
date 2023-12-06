@@ -7,7 +7,6 @@ use App\Models\Cart_Item;
 use App\Models\Status;
 use App\Models\Product;
 use Livewire\Component;
-use App\Models\Wishlist;
 
 class StoreShowProduct extends Component
 {
@@ -17,10 +16,7 @@ class StoreShowProduct extends Component
   public $limit = null;
   public $maxlimit = null;
   public $session_id;
-  public $wishlist = [];
-  protected $listeners = [
-    'wishlistUpdated' => 'refreshComponent'
-  ];
+
 
 
   public function mount($productId)
@@ -35,11 +31,6 @@ class StoreShowProduct extends Component
       'product' => $this->product
     ]);
   }
-  public function refreshComponent()
-  {
-    $this->mount($this->productId);
-    $this->render(); // This triggers Livewire to re-render the component
-  }
   public function switchTab($index)
   {
     $this->activeTab = $index;
@@ -48,42 +39,7 @@ class StoreShowProduct extends Component
   {
     $this->quantity = $this->quantity;
   }
-  public function addToWishlist()
-  {
-    if (!in_array($this->productId, $this->wishlist)) {
-      $this->wishlist[] = $this->productId;
-      $this->saveToSession();
 
-      Wishlist::updateOrCreate(
-        ['session_id' => $this->session_id, 'product_id' => $this->productId]
-      );
-      $this->emit('wishlistUpdated');
-    }
-  }
-  public function removeFromWishlist()
-  {
-    $this->wishlist = array_diff($this->wishlist, [$this->productId]);
-    $this->saveToSession();
-
-    Wishlist::where('session_id', $this->session_id)
-      ->where('product_id', $this->productId)
-      ->delete();
-    $this->emit('wishlistUpdated');
-  }
-  private function saveToSession()
-  {
-    session([
-      'wishlist' => $this->wishlist,
-    ]);
-  }
-  public function toggleWishlist()
-  {
-    if (in_array($this->productId, $this->wishlist)) {
-      $this->removeFromWishlist();
-    } else {
-      $this->addToWishlist();
-    }
-  }
   public function incrementCounter()
   {
     $this->limit = $this->product->quantity;
