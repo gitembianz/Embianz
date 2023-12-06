@@ -410,7 +410,7 @@
                     @else
                         <!-------------------- Dropdown (Menu) -------------------->
                         <a class="menu__link" href="/storeproducts/{{ $category->id }}">
-                            @if ($category->media_count != 0)
+                            @if ($category->media->count() != 0)
                                 @foreach ($category->media as $media)
                                     @if ($media->location->location == "main")
                                         @if ($media->external)
