@@ -19,6 +19,7 @@
   color: $text;
   font-size: 16px;
   font-weight: 400;
+  padding: 10px;
 }
 
 //-----------------------
@@ -62,6 +63,10 @@
     @media (max-width: map-get($grid-breakpoints, sm)) {
       font-size: 12px;
     }
+  }
+
+  &>span:last-child {
+    font-weight: 600;
   }
 }
 

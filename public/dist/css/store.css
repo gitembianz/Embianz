@@ -359,6 +359,16 @@ input[type=checkbox]:checked:after {
   opacity: 1;
 }
 
+.logo {
+  height: 100%;
+}
+.logo > img {
+  width: auto;
+  height: 100%;
+  object-fit: contain;
+  aspect-ratio: 2/1;
+}
+
 .loading-logo {
   position: fixed;
   left: 0;
@@ -1113,16 +1123,6 @@ header {
   }
 }
 
-.logo {
-  height: 100%;
-}
-.logo > img {
-  width: auto;
-  height: 100%;
-  object-fit: contain;
-  aspect-ratio: 1/1;
-}
-
 .header__buttons {
   display: flex;
   justify-content: space-between;
@@ -1531,7 +1531,7 @@ header {
   width: 0;
   height: 2.5px;
   border-radius: 2px;
-  background: #1a691a;
+  background: #333333;
   transition: width 0.3s ease-in-out;
 }
 .dropdown__button:hover::after,
@@ -2421,7 +2421,8 @@ header {
   border-radius: 5px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  padding: 0 10px;
   transition: all 0.3s ease-in-out;
   font-weight: 500;
   flex: 1;
@@ -2436,11 +2437,6 @@ header {
 }
 .filter__close > svg {
   stroke: #ffffff;
-}
-
-#sortClose {
-  justify-content: space-between;
-  padding: 0 10px;
 }
 
 .filter__top {
@@ -3454,7 +3450,7 @@ header {
   width: min-content;
   height: 40px;
   padding: 0 10px;
-  background: #ededed;
+  background: #fafafa;
   color: #333333;
   font-size: 16px;
   font-weight: 500;
@@ -3502,7 +3498,7 @@ header {
   height: 100%;
   display: flex;
   flex-direction: column;
-  background: #ededed;
+  background: #fafafa;
   padding: 15px;
   gap: 15px;
   border-radius: 5px;
@@ -3523,8 +3519,7 @@ header {
   height: 100%;
   display: flex;
   flex-direction: column;
-  background: #ededed;
-  padding: 15px;
+  background: #fafafa;
   gap: 15px;
   border-radius: 5px;
 }
@@ -3532,10 +3527,14 @@ header {
   color: #333333;
   font-size: 18px;
   font-weight: 500;
-  margin-bottom: 10px;
-  padding-bottom: 10px;
+  padding: 10px 0;
+  text-align: center;
+  background: #fff;
   border-bottom: 1px solid #333;
   width: 100%;
+}
+.look__form > h3:last-child {
+  border-top: 10px solid #fff;
 }
 
 .checkout__top {
@@ -3747,6 +3746,7 @@ header {
   color: #333333;
   font-size: 16px;
   font-weight: 400;
+  padding: 10px;
 }
 
 .total__info {
@@ -3789,6 +3789,9 @@ header {
   .total__item > span {
     font-size: 12px;
   }
+}
+.total__item > span:last-child {
+  font-weight: 600;
 }
 
 .total__product {
