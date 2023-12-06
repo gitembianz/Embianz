@@ -68,7 +68,7 @@
                 <span for="description" id="description">
                     Mesaj
                 </span>
-                <textarea name="description" required placeholder="Spune-ne mai multe. Incepe sa scrii aici..."></textarea>
+                <textarea name="description" rows="30" required placeholder="Spune-ne mai multe. Incepe sa scrii aici..."></textarea>
             </div>
             <button class="contact__button" type="submit" name="submit">
                 Trimite
