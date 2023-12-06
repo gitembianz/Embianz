@@ -11,12 +11,17 @@
   align-items: center;
   justify-content: space-between;
   gap: 15px;
+  flex-direction: column-reverse;
+
+  @media (min-width: map-get($grid-breakpoints, md)) {
+    flex-direction: row;
+  }
 }
 
 .checkout__navigation {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   gap: 15px;
 }
 
@@ -37,6 +42,7 @@
   border-radius: 3px;
   transition: all .3s ease-in-out;
   border: none;
+  gap: 10px;
 
   &:hover {
     background: darken($secondary, 20%);
