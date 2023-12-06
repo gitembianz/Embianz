@@ -76,7 +76,7 @@
                 <button class="header__btn" wire:click="$set('showcart', true)" id="basketOpen">
                     @if ($cart != null)
                         @if ($cart->quantity_amount > 0)
-                            <span class="header__count" id="cartCount">{{ $cart->quantity_amount }}</span>
+                            <div class="header__count" id="cartCount">{{ $cart->quantity_amount }}</div>
                         @endif
                     @endif
                     <svg>
@@ -87,7 +87,7 @@
                 </button>
                 <button class="header__btn" wire:click="$set('showwis', true)" id="wishOpen">
                     @if ($wishlists && $wishlists->count() > 0)
-                        <span class="header__count" id="wishlistCount">{{ count($wishlists) }}</span>
+                        <div class="header__count" id="wishlistCount">{{ count($wishlists) }}</div>
                     @endif
                     <svg>
                         <path
@@ -308,8 +308,7 @@
                             <a class="leftbar__link wishlist__link" href="/product/{{ $item->product->id }}">
                                 @if ($item->product->media->count() != 0)
                                     @foreach ($item->product->media as $media)
-                                        @if ($media->location->location == 'main')
-
+                                        @if ($media->location->location == "main")
                                             @if ($media->external)
                                                 <img class="heart__list--img" src="{{ $media->path }}"
                                                     alt="{{ $media->path }}">
