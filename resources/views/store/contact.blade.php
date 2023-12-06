@@ -20,8 +20,8 @@
         <h2 class="section__title">
             Contactează-ne
         </h2>
-        <p>
-            Completează formularul, trimite un e-mail sau contactează-ne direct pe rețelele de socializare.
+        <p class="section__text">
+            Completează formularul sau contactează-ne direct pe e-mail <a href="#">noren@gmail.com</a>.
         </p>
     </section>
     <!--------------------End Section Header-------------------->
