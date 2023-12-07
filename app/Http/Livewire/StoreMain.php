@@ -70,18 +70,21 @@ class StoreMain extends Component
 
   public function getSubcategoriesProperty()
   {
-    return Subcategory::where('parrent_id', $this->category->id)
-      ->with([
-        'category' => function ($query) {
-          $query->select('id', 'name', 'short_description');
-        },
-        'category.media' => function ($query) {
-          $query->whereHas('location', function ($locationQuery) {
-            $locationQuery->where('location', 'details');
-          })->select('external', 'path', 'name');
-        },
-      ])
-      ->get();
+    if ($this->category != null) {
+      return Subcategory::where('parrent_id', $this->category->id)
+        ->with([
+          'category' => function ($query) {
+            $query->select('id', 'name', 'short_description');
+          },
+          'category.media' => function ($query) {
+            $query->whereHas('location', function ($locationQuery) {
+              $locationQuery->where('location', 'details');
+            })->select('external', 'path', 'name');
+          },
+        ])
+        ->get();
+    }
+    return collect();
   }
 
   public function addToCart($productId)
