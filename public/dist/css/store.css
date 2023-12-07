@@ -738,6 +738,9 @@ section {
   justify-content: flex-start;
   gap: 15px;
 }
+.suport__item:not(:last-child, :first-child) {
+  justify-content: space-between;
+}
 .suport__item > div {
   width: 100%;
   display: flex;
@@ -771,21 +774,19 @@ section {
   font-weight: 400;
   color: #666666;
 }
-
-.support__quick {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 25px;
-  flex-wrap: wrap;
+.support__subtitle > a {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333333;
 }
 
-.support__link {
-  font-size: 14px;
-  font-weight: 400;
-  color: #333333;
-  text-decoration: underline;
+.support__brand--item {
+  width: auto;
+  height: 25px;
+  object-fit: contain;
+  object-position: center;
+  aspect-ratio: 2/1;
+  border-radius: 2px;
 }
 
 .help__button {
@@ -2242,6 +2243,9 @@ header {
 .card-info > .card-button:hover {
   background: #333333;
   color: #fafafa;
+}
+.card-info > .card-button:active {
+  transform: scale(0.9);
 }
 
 .card-button-disabled {
