@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\Wishlist;
+use Illuminate\Support\Facades\Session;
 
 class ProductWishlistButton extends Component
 {
@@ -19,7 +20,12 @@ class ProductWishlistButton extends Component
 
     public function mount($product)
     {
-        $this->session_id = $_COOKIE['sessionId'];
+        $cookieId = isset($_COOKIE['sessionId']) && !empty($_COOKIE['sessionId'])
+            ? $_COOKIE['sessionId']
+            : null;
+
+        // If $cookieId is null, use Session::getId()
+        $this->session_id = $cookieId ?? Session::getId();
         $this->product = $product;
         $this->wishlists = $this->product->wishlists->where('session_id', $this->session_id);
     }

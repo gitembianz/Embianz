@@ -155,7 +155,7 @@ class StoreHeader extends Component
           })->with(['category.media.location']);
         }
       ])
-      ->limit($limit)
+      ->limit($limit)->orderby('sequence')
       ->get();
   }
 

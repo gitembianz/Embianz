@@ -1,4 +1,4 @@
-<div @if ($cart->quantity_amount != 0) class="header__count"
+<div @if ($cart && $cart->quantity_amount != 0) class="header__count"
 @else
     style ="dispaly:none !important" @endif
     id="cartCount">
