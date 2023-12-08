@@ -59,7 +59,7 @@
         </div>
         <div class="tab__list">
             <div class="tabs__content active" id="Details">
-                <form>
+                <form method="POST">
                     @csrf
                     <div class="item__form">
                         @if ($editcategory === null)
@@ -126,8 +126,7 @@
                             </div>
                         @else
                             <div style="display: flex; align-items: center;justify-content: flex-start;gap: 10px">
-                                <input type="checkbox" wire:model.defer="cat.active"
-                                    {{ $cat['active'] == 1 ? 'checked' : '' }}>
+                                <input type="checkbox" wire:model.defer="cat.active">
                                 <span>Active</span>
                             </div>
 
@@ -151,10 +150,11 @@
                                 @endif
                             </div>
                         @else
-                            <div style="display: flex; align-items: center; justify-content: flex-start; gap: 10px">
-                                <input type="checkbox" value="{{ $cat['visible'] }}" name="visible">
-                                <span>Display on Header? </span>
+                            <div style="display: flex; align-items: center;justify-content: flex-start;gap: 10px">
+                                <input type="checkbox" wire:model.defer="cat.visible">
+                                <span>Display on Header?</span>
                             </div>
+
                         @endif
                         @if ($editcategory === null)
                             <div class="item__form-input-close item__form-long">
