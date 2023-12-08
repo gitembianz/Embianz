@@ -31,7 +31,7 @@ class ShowProduct extends Component
   {
     $this->prod = [
       'product_name' => $this->product->name,
-      'active' => $this->product->active,
+      'active' => $this->product->active == 1 ? true : false,
       'start_date' => $this->product->start_date,
       'end_date' => $this->product->end_date,
       'popularity' => $this->product->popularity,

@@ -60,7 +60,7 @@ class ShowPricelist extends Component
     $this->record = [
       'name' => $this->pricelist->name,
       'currency' => $this->pricelist->currency->id,
-      'active' => $this->pricelist->active,
+      'active' => $this->pricelist->active == 1 ? true : false,
     ];
     $this->edititem = true;
   }

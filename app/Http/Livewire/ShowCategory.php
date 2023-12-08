@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\Category;
 use App\Models\Products_categories;
 use App\Models\Subcategory;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 
@@ -36,8 +37,8 @@ class ShowCategory extends Component
   {
     $this->cat = [
       'name' => $this->category->name,
-      'active' => $this->category->active,
-      'visible' => $this->category->store_tab,
+      'active' => $this->category->active == 1 ? true : false,
+      'visible' => $this->category->store_tab == 1 ? true : false,
       'start_date' => $this->category->start_date,
       'end_date' => $this->category->end_date,
       'sequence' => $this->category->sequence,
@@ -61,11 +62,11 @@ class ShowCategory extends Component
       if (array_key_exists('name', $category_new)) {
         $new->name = $category_new['name'];
       }
-      if (array_key_exists('active', $category_new)) {
-        $new->active = $category_new['active'];
-      }
       if (array_key_exists('visible', $category_new)) {
         $new->store_tab = $category_new['visible'];
+      }
+      if (array_key_exists('active', $category_new)) {
+        $new->active = $category_new['active'];
       }
       if (array_key_exists('start_date', $category_new)) {
         $new->start_date = $category_new['start_date'];
