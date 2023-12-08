@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\Category;
 use App\Models\Products_categories;
 use App\Models\Subcategory;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 
@@ -53,7 +54,7 @@ class ShowCategory extends Component
     $this->editcategory = null;
     $this->cat = [];
   }
-  public function savecategory()
+  public function savecategory(Request $request)
   {
     $category_new = $this->cat ?? NULL;
     if (!is_null($category_new)) {
@@ -64,8 +65,8 @@ class ShowCategory extends Component
       if (array_key_exists('active', $category_new)) {
         $new->active = $category_new['active'];
       }
-      if (array_key_exists('visible', $category_new)) {
-        $new->store_tab = $category_new['visible'];
+      if ($request->visible) {
+        $new->store_tab = $request->visible;
       }
       if (array_key_exists('start_date', $category_new)) {
         $new->start_date = $category_new['start_date'];
