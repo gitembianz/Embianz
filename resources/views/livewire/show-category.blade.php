@@ -150,7 +150,7 @@
                         </div>
                     @else
                         <div style="display: flex; align-items: center; justify-content: flex-start; gap: 10px">
-                            <input type="checkbox" wire:model.defer="cat.visible"
+                            <input type="checkbox" wire:model.defer="cat.visible" name="visible_checkbox"
                                 @if ($cat['visible']) checked @endif>
                             <span>Display on Store? </span>
                         </div>
