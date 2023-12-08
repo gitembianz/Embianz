@@ -134,6 +134,9 @@ class RelatedMediaProduct extends Component
   {
     $this->showmedia = true;
     $this->dispatchBrowserEvent('media');
+    for ($i = 1; $i <= $this->row; $i++) {
+      $this->file_locations[$i] = $this->locations->first()->id;
+    }
   }
   public function external()
   {

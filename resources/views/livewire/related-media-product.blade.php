@@ -108,19 +108,14 @@
                                                             wire:model="file_sequences.{{ $loop->index }}">
                                                     </td>
                                                     <td>
-                                                        <select required class="table__edit"
-                                                            wire:model="file_locations.{{ $loop->index }}">
-                                                            @php
-                                                                $firstLocation = $locations->first();
-                                                            @endphp
-                                                            <option value="{{ $firstLocation->id }}" selected>
-                                                                {{ $firstLocation->location }}</option>
-                                                            @foreach ($locations as $index => $location)
-                                                                @if ($loop->first)
-                                                                    @continue
-                                                                @endif
-                                                                <option value="{{ $location->id }}">
-                                                                    {{ $location->location }}</option>
+                                                        <select required
+                                                            wire:model="file_locations.{{ $i }}"
+                                                            class="table__edit">
+                                                            @foreach ($locations as $location)
+                                                                <option value="{{ $location->id }}"
+                                                                    @if ($file_locations[$i] == $location->id) selected @endif>
+                                                                    {{ $location->location }}
+                                                                </option>
                                                             @endforeach
                                                         </select>
                                                     </td>
