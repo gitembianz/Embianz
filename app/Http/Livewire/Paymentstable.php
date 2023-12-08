@@ -129,7 +129,7 @@ class Paymentstable extends Component
         $this->editeindex = $index;
         $item = Payment::find($id);
         $this->isactive = [
-            $index . '.active' => $item->active,
+            $index . '.active' => $item->active == 1 ? true : false,
         ];
     }
     public function cancel()

@@ -84,7 +84,7 @@ class Vouchertable extends Component
       $index . '.code' => $record->code,
       $index . '.percent' => $record->percent,
       $index . '.status_id' => $record->status->name,
-      $index . '.single_use' => $record->single_use,
+      $index . '.single_use' => $record->single_use == 1 ? true : false,
       $index . '.start_date' => $record->start_date,
       $index . '.end_date' => $record->end_date,
     ];
