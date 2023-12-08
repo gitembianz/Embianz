@@ -149,8 +149,9 @@
                             @endif
                         </div>
                     @else
-                        <div style="display: flex; align-items: center;justify-content: flex-start;gap: 10px">
-                            <input type="checkbox" value="{{ $cat['visible'] }}">
+                        <div style="display: flex; align-items: center; justify-content: flex-start; gap: 10px">
+                            <input type="checkbox" wire:model.defer="cat.visible"
+                                @if ($cat['visible']) checked @endif>
                             <span>Display on Store? </span>
                         </div>
                     @endif
