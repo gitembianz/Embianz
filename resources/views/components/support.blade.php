@@ -19,6 +19,11 @@
                         <h4 class="support__title">Livrare gratis de la 250 lei</h4>
                     </div>
                     <span class="support__subtitle">pentru produsele vandute de embianz.com</span>
+                    <div class="support__brand">
+                        <img class="support__brand--item" src="/images/store/brands/dhl.webp" alt="dhl">
+                        <img class="support__brand--item" src="/images/store/brands/fan.webp" alt="fan">
+
+                    </div>
                 </div>
                 <div class="suport__item">
                     <div>
@@ -26,21 +31,19 @@
                         <h4 class="support__title">Comenzi si plati 100% sigure</h4>
                     </div>
                     <span class="support__subtitle">Toate datele sunt transmise securizat</span>
+                    <div class="support__brand">
+                        <img class="support__brand--item" src="/images/store/brands/visa.webp" alt="visa">
+                        <img class="support__brand--item" src="/images/store/brands/mastercard.webp" alt="mastercard">
+                    </div>
                 </div>
                 <div class="suport__item">
                     <div>
                         <img src="/images/store/svg/chat.svg" alt="chat">
-                        <h4 class="support__title">FAQ</h4>
+                        <h4 class="support__title">Intrebari frecvente (FAQ)</h4>
                     </div>
-                    <span class="support__subtitle">Gaseste raspunsuri la intrebari frecvente</span>
+                    <span class="support__subtitle">Gaseste raspunsuri la intrebari frecvente <a
+                            href="{{ url("/faq") }}">aici</a></span>
                 </div>
-            </div>
-            <h2 class="support__text">Poti afla mai multe:</h2>
-            <div class="support__quick">
-                <a class="support__link" href="#">Modalitate de plata</a>
-                <a class="support__link" href="#">Modalitate de livrare</a>
-                <a class="support__link" href="#">Politica de utilizare Cookie-uri</a>
-                <a class="support__link" href="#">Termeni si conditii</a>
             </div>
         </div>
     </div>

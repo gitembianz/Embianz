@@ -90,6 +90,10 @@
     background: $text;
     color: $secondary;
   }
+
+  &:active {
+    transform: scale(0.9);
+  }
 }
 
 .card-button-disabled {

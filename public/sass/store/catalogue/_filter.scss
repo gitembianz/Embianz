@@ -69,7 +69,8 @@
   border-radius: 5px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  padding: 0 10px;
   transition: all .3s ease-in-out;
   font-weight: 500;
   flex: 1;
@@ -86,11 +87,6 @@
   &>svg {
     stroke: $background;
   }
-}
-
-#sortClose {
-  justify-content: space-between;
-  padding: 0 10px;
 }
 
 .filter__top {

@@ -20,12 +20,14 @@
         <h2 class="section__title">
             Contactează-ne
         </h2>
-        <p>
-            Completează formularul, trimite un e-mail sau contactează-ne direct pe rețelele de socializare.
+        <p class="section__text">
+            Completează formularul sau contactează-ne direct pe e-mail <a href="#">noren@gmail.com</a>.
         </p>
     </section>
     <!--------------------End Section Header-------------------->
     <!---------------------------------------------------------->
+    <!---------------------------------------------------------->
+    <!-----------------------Contact Form----------------------->
     <section class="contact container">
         <form class="contact__form" action="https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8"
             method="POST">
@@ -66,7 +68,7 @@
                 <span for="description" id="description">
                     Mesaj
                 </span>
-                <textarea name="description" required placeholder="Spune-ne mai multe. Incepe sa scrii aici..."></textarea>
+                <textarea name="description" rows="30" required placeholder="Spune-ne mai multe. Incepe sa scrii aici..."></textarea>
             </div>
             <button class="contact__button" type="submit" name="submit">
                 Trimite
@@ -78,6 +80,7 @@
         </form>
         <img class="contact__img" src="/images/store/contact-form.webp" alt="contact form image">
     </section>
-
+    <!---------------------End Contact Form--------------------->
+    <!---------------------------------------------------------->
 </main>
 <x-store-footer />
