@@ -138,7 +138,7 @@
                                         <polyline points="20 6 9 17 4 12"></polyline>
                                     </svg>
                                 </div>
-                                {{ _('Show in Store: Visible') }}
+                                {{ _('Show in Header: Visible') }}
                             @else
                                 <div class="simple__checkbox--disabled">
                                     <svg>
@@ -150,8 +150,8 @@
                         </div>
                     @else
                         <div style="display: flex; align-items: center;justify-content: flex-start;gap: 10px">
-                            <input type="checkbox" wire:model.defer="cat.visible">
-                            <span>Display on Store?</span>
+                            <input type="checkbox" value="{{ $cat['visible'] }}" wire:model.defer="cat.visible">
+                            <span>Display on Store? </span>
                         </div>
                     @endif
                     @if ($editcategory === null)
