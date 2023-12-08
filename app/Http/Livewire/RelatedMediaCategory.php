@@ -34,7 +34,7 @@ class RelatedMediaCategory extends Component
   public $columns = ['Id', 'Media', 'Media Location', 'Sequence', 'Created At'];
   public $selectedColumns = [];
   public $locations;
-  public $file_sequences = ['0'];
+  public $file_sequences = [];
   public $file_locations = [];
   public $file_link = [];
   public $file_name = [];
@@ -67,6 +67,17 @@ class RelatedMediaCategory extends Component
     $this->file_sequences = [];
     $this->file_link = [];
     $this->file_name = [];
+  }
+  public function updatingMedias($value)
+  {
+    $mediaCount = count($value);
+    // dd($value);
+
+    // Reinitialize $file_locations array
+    $this->file_locations = [];
+    for ($i = 0; $i <= $mediaCount; $i++) {
+      $this->file_locations[$i] = $this->locations->first()->id;
+    }
   }
   public function external()
   {
@@ -152,7 +163,7 @@ class RelatedMediaCategory extends Component
   public function cancel()
   {
     $this->medias = [];
-    $this->file_sequences = ['0'];
+    $this->file_sequences = [];
     $this->file_locations = [];
   }
   public function cancelMedia()
@@ -291,6 +302,8 @@ class RelatedMediaCategory extends Component
       $this->i += 1;
     }
     $this->medias = [];
+    $this->file_sequences = [];
+    $this->file_locations = [];
     session()->flash('notification', [
       'message' => 'Record related successfully!',
       'type' => 'success',
@@ -299,7 +312,12 @@ class RelatedMediaCategory extends Component
   }
   public function removemedia($index)
   {
+    array_splice($this->file_sequences, $index, 1);
+    array_splice($this->file_locations, $index, 1);
     array_splice($this->medias, $index, 1);
+
+    $this->file_sequences = array_values($this->file_sequences);
+    $this->file_locations = array_values($this->file_locations);
   }
   public function sortBy($columnName)
   {
