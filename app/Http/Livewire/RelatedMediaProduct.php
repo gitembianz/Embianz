@@ -37,8 +37,8 @@ class RelatedMediaProduct extends Component
   public $columns = ['Id', 'Media', 'Media Location', 'Sequence'];
   public $selectedColumns = [];
   public $locations;
-  public $file_sequences = ['0'];
-  public $file_locations = ['0'];
+  public $file_sequences = [];
+  public $file_locations = [];
   public $file_link = [];
   public $file_name = [];
   public $col = false;
@@ -82,6 +82,17 @@ class RelatedMediaProduct extends Component
   {
     $this->editedMediaIndex = null;
     $this->filess = [];
+  }
+  public function updatingMedias($value)
+  {
+    $mediaCount = count($value);
+    // dd($value);
+
+    // Reinitialize $file_locations array
+    $this->file_locations = [];
+    for ($i = 0; $i <= $mediaCount; $i++) {
+      $this->file_locations[$i] = $this->locations->first()->id;
+    }
   }
   public function saveMedia($mediaIndex, $id)
   {
@@ -150,8 +161,6 @@ class RelatedMediaProduct extends Component
       $this->file_locations[$i] = $this->locations->first()->id;
     }
   }
-
-
   public function updatedChecked()
   {
     $this->selectPage = false;
@@ -193,13 +202,6 @@ class RelatedMediaProduct extends Component
     $this->file_name = array_values($this->file_name);
     $this->file_locations = array_values($this->file_locations);
   }
-  public function initializeLocation()
-  {
-    // This method will be called during Livewire initialization
-    // Set default value for the first location in the first row
-    $this->file_locations[1] = $this->locations->first()->id;
-  }
-
   public function saveexternal()
   {
 
@@ -249,6 +251,7 @@ class RelatedMediaProduct extends Component
       File::makeDirectory($filespath . "$data->id", 0755, true);
     }
     $path = $filespath . "$data->id" . "/";
+
     $this->i = 0;
     foreach ($this->medias as $file) {
       $media = new Media();
@@ -300,6 +303,8 @@ class RelatedMediaProduct extends Component
       $this->i += 1;
     }
     $this->medias = [];
+    $this->file_locations = [];
+    $this->file_sequences = [];
     session()->flash('notification', [
       'message' => 'Record edited successfully!',
       'type' => 'success',
@@ -308,14 +313,19 @@ class RelatedMediaProduct extends Component
   }
   public function removemedia($index)
   {
+    array_splice($this->file_sequences, $index, 1);
+    array_splice($this->file_locations, $index, 1);
     array_splice($this->medias, $index, 1);
+
+    $this->file_sequences = array_values($this->file_sequences);
+    $this->file_locations = array_values($this->file_locations);
   }
   public function cancel()
   {
 
     $this->medias = [];
-    $this->file_sequences = ['0'];
-    $this->file_locations = ['1'];
+    $this->file_sequences = [];
+    $this->file_locations = [];
   }
   public function sortBy($columnName)
   {

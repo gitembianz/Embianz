@@ -60,71 +60,67 @@
                                     <table class="table table-top">
                                         <thead>
                                             <tr>
-                                                <th>
+                                                <th class="wid-3">
                                                     <div class="table__header--btn">Media</div>
                                                 </th>
-                                                <th>
+                                                <th class="wid-2">
                                                     <div class="table__header--btn">Name</div>
                                                 </th>
-                                                <th>
+                                                <th class="wid-1">
                                                     <div class="table__header--btn">Size</div>
                                                 </th>
-                                                <th>
+                                                <th class="wid-1">
                                                     <div class="table__header--btn">Type</div>
                                                 </th>
-                                                <th>
+                                                <th class="wid-1">
                                                     <div class="table__header--btn">Sequence</div>
                                                 </th>
-                                                <th>
+                                                <th class="wid-1">
                                                     <div class="table__header--btn">Location</div>
                                                 </th>
-                                                <th>
+                                                <th class="wid-1">
                                                     <div class="table__header--btn float-r">Action</div>
                                                 </th>
                                             </tr>
                                         </thead>
                                     </table>
-                                    <table class="table" style="margin-top: 2rem">
+                                    <table class="table" style="margin-top: 1.5rem">
                                         <tbody>
-                                            @foreach ($medias as $media)
+                                            @foreach ($medias as $index => $media)
                                                 <tr>
-                                                    <td>
+                                                    <td class="wid-3">
                                                         @if (str_starts_with($media->getMimeType(), 'image'))
-                                                            <img src="{{ $media->temporaryUrl() }}" width="50px">
+                                                            <img src="data:{{ $media->getMimeType() }};base64,{{ base64_encode($media->get()) }}"
+                                                                width="50px">
                                                         @elseif (str_starts_with($media->getMimeType(), 'video'))
                                                             <video width="100px" controls>
-                                                                <source src="{{ $media->temporaryUrl() }}"
+                                                                <source
+                                                                    src="data:{{ $media->getMimeType() }};base64,{{ base64_encode($media->get()) }}"
                                                                     type="{{ $media->getMimeType() }}">
-                                                                <span>{{ __('Your browser not suport video tag') }}</span>
+                                                                <span>{{ __('Your browser does not support the video tag') }}</span>
                                                             </video>
                                                         @endif
                                                     </td>
-                                                    <td>{{ $media->getClientOriginalName() }}</td>
-                                                    <td>{{ $media->getSize() }} KB</td>
-                                                    <td>{{ $media->getClientOriginalExtension() }}</td>
-                                                    <td>
+                                                    <td class="wid-2">{{ $media->getClientOriginalName() }}</td>
+                                                    <td class="wid-1">{{ $media->getSize() }} KB</td>
+                                                    <td class="wid-1">{{ $media->getClientOriginalExtension() }}</td>
+                                                    <td class="wid-1">
                                                         <input type="number" class="table__edit"
                                                             placeholder="Media sequence" min="0" required
                                                             wire:model="file_sequences.{{ $loop->index }}">
                                                     </td>
-                                                    <td>
+                                                    <td class="wid-1">
                                                         <select required class="table__edit"
-                                                            wire:model="file_locations.{{ $loop->index }}">
-                                                            @php
-                                                                $firstLocation = $locations->first();
-                                                            @endphp
-                                                            <option value="{{ $firstLocation->id }}" selected>
-                                                                {{ $firstLocation->location }}</option>
-                                                            @foreach ($locations as $index => $location)
-                                                                @if ($loop->first)
-                                                                    @continue
-                                                                @endif
-                                                                <option value="{{ $location->id }}">
-                                                                    {{ $location->location }}</option>
+                                                            wire:model="file_locations.{{ $index }}">
+                                                            @foreach ($locations as $location)
+                                                                <option value="{{ $location->id }}"
+                                                                    @if ($file_locations[$index] == $location->id) selected @endif>
+                                                                    {{ $location->location }}
+                                                                </option>
                                                             @endforeach
                                                         </select>
                                                     </td>
-                                                    <td>
+                                                    <td class="wid-1">
                                                         <div class="table__buttons">
                                                             <button class="edit"
                                                                 wire:click.prevent="removemedia({{ $loop->index }})">
