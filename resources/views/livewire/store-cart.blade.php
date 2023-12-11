@@ -27,7 +27,7 @@
                             <div class="basket__top">
                                 @if (count($cartItem->product->media) > 0)
                                     @foreach ($cartItem->product->media as $media)
-                                        @if ($media->location->location == "main")
+                                        @if ($media->location->location == 'main')
                                             @if ($media->external)
                                                 <img src="{{ $media->path }}" alt="{{ $media->path }}">
                                             @else
@@ -46,7 +46,7 @@
                                     <span class="basket__price">
                                         <?php $currency = $cartItem->product->product_prices->first()->pricelist->currency->name; ?>
                                         @if ($currency !== null)
-                                            {{ $cartItem->price }}
+                                            {{ number_format($cartItem->price, 2, ',', '.') }}
                                             {{ $currency }}
                                         @else
                                             pret indisponibil
@@ -62,7 +62,7 @@
                                         </path>
                                     </svg>
                                 </button>
-                                <button class="basket__wish @if ($cartItem->product->wishlists->where("session_id", $session_id)->isNotEmpty()) active @endif"
+                                <button class="basket__wish @if ($cartItem->product->wishlists->where('session_id', $session_id)->isNotEmpty()) active @endif"
                                     wire:click="toggleWishlist({{ $cartItem->product->id }})">
                                     <svg viewBox="0 0 512 512" width="20" title="heart">
                                         <path
@@ -101,7 +101,7 @@
                             <div class="basket__subtotal">
                                 <span>Subtotal:</span>
                                 <span>
-                                    {{ $cartItem->quantity * $cartItem->price }}
+                                    {{ number_format($cartItem->quantity * $cartItem->price, 2, ',', '.') }}
                                     {{ $currency }}
                                 </span>
                             </div>
@@ -118,7 +118,7 @@
                         <h2 class="details__title">Detalii comanda</h2>
                         <div class="details__text">
                             <h4>Produse:</h4>
-                            <span> {{ $cart->sum_amount }}
+                            <span> {{ number_format($cart->sum_amount, 2, ',', '.') }}
                                 {{ $currency }}</span>
                         </div>
                         <div class="details__text">
@@ -127,7 +127,7 @@
                                 @if ($delivery == 0)
                                     Gratuit
                                 @else
-                                    {{ $delivery }} {{ $currency }}
+                                    {{ number_format($delivery, 2, ',', '.') }} {{ $currency }}
                                 @endif
                             </span>
                         </div>
@@ -141,9 +141,9 @@
                                 ?>
                                 @if ($new_price)
                                     <span
-                                        style="text-decoration: line-through; color:red; margin-right:1rem">{{ $total }}{{ $currency }}</span>{{ $cart->final_amount }}{{ $currency }}
+                                        style="text-decoration: line-through; color:red; margin-right:1rem">{{ number_format($total, 2, ',', '.') }}{{ $currency }}</span>{{ number_format($cart->final_amount, 2, ',', '.') }}{{ $currency }}
                                 @else
-                                    {{ $total }} {{ $currency }}
+                                    {{ number_format($total, 2, ',', '.') }} {{ $currency }}
                                 @endif
                             </span>
                         </div>

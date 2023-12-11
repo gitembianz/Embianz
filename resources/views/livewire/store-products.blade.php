@@ -92,7 +92,7 @@
                         @endif
                     </a>
                     <?php if ($product->product_prices->count() != 0) {
-                        $price = $product->product_prices->first()->value;
+                        $price = number_format($product->product_prices->first()->value, 2, ',', '.');
                     } else {
                         $price = null;
                     }
