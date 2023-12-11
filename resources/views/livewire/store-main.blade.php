@@ -102,7 +102,7 @@
                                             <h3>{{ $product->name }}</h3>
                                             <p>
                                                 @if ($product->product_prices->first())
-                                                    {{ $product->product_prices->first()->value }}
+                                                    {{ number_format($product->product_prices->first()->value, 2, ',', '.') }}
                                                     {{ $product->product_prices->first()->pricelist->currency->name }}
                                                 @else
                                                     {{ __('Indisponibil') }}
