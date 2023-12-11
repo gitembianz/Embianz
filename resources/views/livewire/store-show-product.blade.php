@@ -1,10 +1,10 @@
 <div id="store-show-product">
     <section>
         <div class="breadcrumbs container">
-            <a class="breadcrumbs__link" href="{{ url('/') }}">
+            <a class="breadcrumbs__link" href="{{ url("/") }}">
                 Acasa
             </a>
-            <a class="breadcrumbs__link" href="{{ url('/storeproducts') }}">
+            <a class="breadcrumbs__link" href="{{ url("/storeproducts") }}">
                 Produse
             </a>
             <a class="breadcrumbs__link">{{ $product->name }}</a>
@@ -17,7 +17,7 @@
 
                 <div class="product-slider__wrapper">
                     @foreach ($product->media as $media)
-                        @if ($media->location->location == 'main' || $media->location->location == 'details')
+                        @if ($media->location->location == "main" || $media->location->location == "details")
                             <div class="product-slider__slide">
                                 @if ($media->external)
                                     <img src="{{ $media->path }}" alt="{{ $media->path }}">
@@ -70,7 +70,7 @@
                     <span class="product__subtitle">{{ $product->short_description }}</span>
                     <h1 class="product__title">{{ $product->name }}</h1>
                 </div>
-                @livewire('wishlist-button', ['product' => $product])
+                @livewire("wishlist-button", ["product" => $product])
             </div>
             <div class="product__price">
                 <span>Pret</span>
@@ -83,6 +83,9 @@
                     @endif
                 </span>
             </div>
+            <span class="product__tva">
+                Pretul include taxa TVA de 9%;
+            </span>
             @if ($product->product_prices->first() !== null)
                 <div class="quantity">
                     <span>Cantitate</span>
