@@ -12,22 +12,9 @@ class StoreFooter extends Component
   public $email;
   public $response = null;
   public $cookieConsent;
-  public $cookieId;
   public function mount()
   {
-    $this->cookieId = $this->getCookieId();
-
-    if (!$this->cookieId) {
-      $this->saveSessionId();
-    }
     $this->cookieConsent = $this->checkCookieConsent();
-  }
-  private function getCookieId()
-  {
-    if (isset($_COOKIE['sessionId'])) {
-      return $_COOKIE['sessionId'];
-    }
-    return null;
   }
 
   public function render()
@@ -49,13 +36,6 @@ class StoreFooter extends Component
     ]);
   }
 
-  private function saveSessionId()
-  {
-    $sessionId = session()->getId();
-    setcookie('sessionId', $sessionId, time() + (30 * 24 * 60 * 60), '/');
-    $this->emit('updateCookieConsent', $sessionId);
-    $this->cookieId = true;
-  }
   private function checkCookieConsent()
   {
     if (isset($_COOKIE['cookieConsent']) && $_COOKIE['cookieConsent'] === 'accepted') {
