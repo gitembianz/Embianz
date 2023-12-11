@@ -16,14 +16,14 @@ return new class extends Migration
       $table->string('name');
       $table->string('session_id');
       $table->integer('quantity_amount')->default(0);
-      $table->double('sum_amount')->default(0);
+      $table->double('sum_amount', 5, 2)->default(0);
       $table->unsignedBigInteger('currency_id')->index()->nullable();
       $table->foreign('currency_id')->references('id')->on('currencies');
       $table->unsignedBigInteger('status_id')->index()->nullable();
       $table->foreign('status_id')->references('id')->on('statuses');
-      $table->double('final_amount')->default(0);
+      $table->double('final_amount', 5, 2)->default(0);
       $table->unsignedBigInteger('order_id')->index()->nullable();
-      $table->string('delivery_price')->nullable();
+      $table->double('delivery_price')->nullable();
       $table->unsignedBigInteger('voucher_id')->index()->nullable();
       $table->foreign('voucher_id')->references('id')->on('vouchers');
       $table->timestamps();

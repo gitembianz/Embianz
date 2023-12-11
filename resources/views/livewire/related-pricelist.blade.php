@@ -519,12 +519,7 @@
                                             @endif
                                             @if ($this->showColumn('TVA'))
                                                 <td>
-                                                    @if ($editedrow !== $index)
-                                                        {{ $prices->tva_percent }}
-                                                    @else
-                                                        <input type="text" required class="table__edit"
-                                                            wire:model="pricelist.{{ $index }}.tva">
-                                                    @endif
+                                                    {{ $prices->tva_percent }}
                                                 </td>
                                             @endif
                                             @if ($this->showColumn('Created At'))
