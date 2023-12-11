@@ -248,11 +248,11 @@
                                     <h4>{{ $cartItem->product->name }}</h4>
                                     <span>
                                         @php
-                                            $price = $cartItem->product->product_prices->first();
-                                            $currency = $price->pricelist->currency->name;
+                                            $price = number_format($cartItem->product->product_prices->first()->value, 2, ',', '.');
+                                            $currency = $cartItem->product->product_prices->first()->pricelist->currency->name;
                                         @endphp
                                         @if ($price)
-                                            {{ $price->value }} {{ $currency }}
+                                            {{ $price }} {{ $currency }}
                                         @else
                                             indisponibil
                                         @endif
@@ -275,7 +275,8 @@
 
             @if (isset($cartItems) && !$cartItems->isEmpty())
                 <div class="leftbar__total">
-                    <h5 class="leftbar__total--text">Total: <span>{{ $total }} {{ $currency }}</span></h5>
+                    <h5 class="leftbar__total--text">Total: <span>{{ number_format($total, 2, ',', '.') }}
+                            {{ $currency }}</span></h5>
                     <a class="leftbar__button" wire:click.prevent="continue">Finalizare Comanda</a>
                 </div>
             @endif
