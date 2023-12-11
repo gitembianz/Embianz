@@ -197,31 +197,30 @@ class RelatedPricelist extends Component
       }
     }
 
-    $val = $this->pricelist;
-    if (isset($val["$index"]['value'])) {
-      if ($val["$index"]['value'] != "") {
-        if ($val["$index"]['tva'] != "") {
-          $new->tva_percent = $val["$index"]['tva'];
-        }
-        $new->save();
-        $this->allow = false;
-        $this->priceid = null;
-        $this->pricelist = [];
-        $this->itemselected = null;
-        $this->editedrow = null;
-        $this->search = '';
-        session()->flash('notification', [
-          'message' => 'Record edited successfully!',
-          'type' => 'success',
-          'title' => 'Success'
-        ]);
-      } else {
-        session()->flash('notification', [
-          'message' => 'Please provide a value!',
-          'type' => 'warning',
-          'title' => 'Missing Values'
-        ]);
+    $val = $this->pricelist[$index] ?? NULL;
+    if (!is_null($val)) {
+      if (array_key_exists('value', $val)) {
+        // Replace commas with dots for consistent decimal representation
+        $newValue = str_replace(',', '.', $val["value"]);
+        // Convert the string to a float
+        $floatValue = floatval($newValue);
+        // Format the float to have two decimal places
+        $formattedValue = number_format($floatValue, 2, '.', '');
+
+        $new->value = $formattedValue;
       }
+      $new->save();
+      $this->allow = false;
+      $this->priceid = null;
+      $this->pricelist = [];
+      $this->itemselected = null;
+      $this->editedrow = null;
+      $this->search = '';
+      session()->flash('notification', [
+        'message' => 'Record edited successfully!',
+        'type' => 'success',
+        'title' => 'Success'
+      ]);
     } else {
       $this->allow = false;
       $this->priceid = null;

@@ -21,7 +21,7 @@ return new class extends Migration
       $table->unsignedBigInteger('cart_id')->index()->nullable();
       $table->foreign('cart_id')->references('id')->on('carts');
       $table->integer('quantity_amount')->default(0);
-      $table->double('sum_amount')->default(0);
+      $table->double('sum_amount', 5, 2)->default(0);
       $table->unsignedBigInteger('currency_id')->index()->nullable();
       $table->foreign('currency_id')->references('id')->on('currencies');
       $table->unsignedBigInteger('status_id')->index()->nullable();
