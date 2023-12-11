@@ -965,6 +965,82 @@ section {
   padding: 0 10px;
 }
 
+.custom-select {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.custom-select .select-selected {
+  width: 100%;
+  height: 40px;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  z-index: 5;
+  background: transparent;
+  border-bottom: 1.5px solid #333333;
+  color: #333;
+  font-size: 16px;
+  font-weight: 400;
+  outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 5px;
+  position: relative;
+}
+.custom-select .select-selected::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  width: 25px;
+  height: 25px;
+  background-image: url("/images/store/svg/chevron-down.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  aspect-ratio: 1/1;
+}
+
+.select-items {
+  position: absolute;
+  top: 45px;
+  left: 0;
+  display: none;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+  border-radius: 15px;
+  max-height: 300px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-color: #f5f5f5;
+  z-index: 2;
+  margin-top: 10px;
+}
+.select-items div {
+  padding: 10px;
+  cursor: pointer;
+  width: 100%;
+}
+.select-items div:first-child {
+  border-top: 1px solid #ccc;
+}
+.select-items div:hover {
+  background-color: #ccc;
+}
+
+#hidden-select {
+  opacity: 0;
+  visibility: hidden;
+}
+
 .faq__accordions {
   display: grid;
   gap: 25px;
@@ -3645,6 +3721,39 @@ header {
   font-size: 16px;
   font-weight: 500;
   flex: 1;
+}
+
+.checkout__terms {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background: #fafafa;
+  padding: 5px 10px;
+  gap: 15px;
+  border-radius: 5px;
+  grid-column: 1/3;
+}
+.checkout__terms > span {
+  color: gray;
+  font-size: 16px;
+  font-weight: 500;
+  flex: 1;
+}
+.checkout__terms > input:checked ~ span {
+  color: #333333;
+}
+
+.checkout__error {
+  width: 100%;
+  color: red;
+  border: 1px solid red;
+  background: #fafafa;
+  font-size: 16px;
+  text-align: center;
+  font-weight: 500;
+  padding: 15px;
+  border-radius: 7px;
 }
 
 .step__container {
