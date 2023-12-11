@@ -7,6 +7,8 @@ use App\Models\Cart_Item;
 use App\Models\Status;
 use App\Models\Product;
 use Livewire\Component;
+use Illuminate\Support\Facades\Session;
+
 
 class StoreShowProduct extends Component
 {
@@ -16,8 +18,6 @@ class StoreShowProduct extends Component
   public $limit = null;
   public $maxlimit = null;
   public $session_id;
-
-
 
   public function mount($productId)
   {
@@ -81,6 +81,7 @@ class StoreShowProduct extends Component
         'status_id' => $newStatusId,
         'currency_id' => $product->product_prices->first()->pricelist->currency_id,
       ]);
+      $this->emit('newcart');
     }
     $cartItem = Cart_Item::where('cart_id', $cart->id)->where('product_id', $product->id)->first();
     if (!$cartItem) {

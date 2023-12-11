@@ -3,13 +3,14 @@
 namespace App\Http\Livewire;
 
 use App\Models\Cart;
-use App\Models\Status;
-use App\Models\Cart_Item;
-use App\Models\Category;
-use App\Models\Product;
 use App\Models\Specs;
+use App\Models\Status;
+use App\Models\Product;
 use Livewire\Component;
+use App\Models\Category;
+use App\Models\Cart_Item;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\Session;
 
 class StoreProducts extends Component
 {
@@ -38,6 +39,7 @@ class StoreProducts extends Component
   {
     return view('livewire.store-products', ['products' => $this->products]);
   }
+
   public function mount()
   {
     $this->session_id = $_COOKIE['sessionId'];
@@ -182,6 +184,7 @@ class StoreProducts extends Component
         'status_id' => $newStatusId,
         'currency_id' => $product->product_prices->first()->pricelist->currency_id,
       ]);
+      $this->emit('newcart');
     }
     $cartItem = Cart_Item::where('cart_id', $cart->id)->where('product_id', $productId)->first();
     if (!$cartItem) {

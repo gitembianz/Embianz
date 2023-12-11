@@ -21,16 +21,9 @@ class StoreMain extends Component
   public $session_id;
   // public $isLoading = true;
 
-  private function getCookieId()
-  {
-    if (isset($_COOKIE['sessionId'])) {
-      return $_COOKIE['sessionId'];
-    }
-    return Session::getId();
-  }
   public function mount()
   {
-    $this->session_id = $this->getCookieId();
+    $this->session_id = $_COOKIE['sessionId'];
     $sliderCategory = Store_Settings::where('parameter', 'slider_category')->value('value');
 
     if ($sliderCategory) {
@@ -109,6 +102,7 @@ class StoreMain extends Component
         'status_id' => $newStatusId,
         'currency_id' => $product->product_prices->first()->pricelist->currency_id,
       ]);
+      $this->emit('newcart');
     }
     $cartItem = Cart_Item::where('cart_id', $cart->id)->where('product_id', $productId)->first();
     if (!$cartItem) {

@@ -10,7 +10,6 @@ use App\Models\Category;
 use App\Models\Wishlist;
 use App\Models\Cart_Item;
 use App\Models\Store_Settings;
-use Illuminate\Support\Facades\Session;
 
 class StoreHeader extends Component
 {
@@ -24,7 +23,8 @@ class StoreHeader extends Component
   public $session_id;
   public $closedStatusId;
   protected $listeners = [
-    'wishlistUpdated' => 'updatewis'
+    'wishlistUpdated' => 'updatewis',
+    'newcart' => 'mount'
   ];
 
   public function render()
@@ -50,7 +50,7 @@ class StoreHeader extends Component
   }
   public function mount()
   {
-    $this->session_id = $this->getCookieId();
+    $this->session_id = $_COOKIE['sessionId'];
 
     $this->updatecart();
     $this->updatewis();
@@ -67,14 +67,6 @@ class StoreHeader extends Component
   public function updatewis()
   {
     $this->wishlists = Wishlist::where('session_id', $this->session_id)->with('product.media.location', 'product')->get();
-  }
-
-  private function getCookieId()
-  {
-    if (isset($_COOKIE['sessionId'])) {
-      return $_COOKIE['sessionId'];
-    }
-    return Session::getId();
   }
 
   public function close()
