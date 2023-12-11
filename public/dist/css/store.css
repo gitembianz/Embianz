@@ -2891,6 +2891,14 @@ header {
   color: #333333;
 }
 
+.product__tva {
+  width: 100%;
+  text-align: end;
+  font-size: 14px;
+  color: #acaaaa;
+  font-weight: 400;
+}
+
 .product__button {
   display: flex;
   align-items: center;
@@ -3542,7 +3550,6 @@ header {
   display: flex;
   flex-direction: column;
   background: #fafafa;
-  gap: 15px;
   border-radius: 5px;
 }
 .look__form > h3 {
@@ -3790,14 +3797,14 @@ header {
   color: #333333;
   font-size: 16px;
   font-weight: 400;
-  padding: 10px;
+  padding: 5px;
 }
 
 .total__info {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 5px;
   padding: 10px;
   border-radius: 7px;
   background: #fafafa;
