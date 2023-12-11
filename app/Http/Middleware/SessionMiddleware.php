@@ -24,10 +24,6 @@ class SessionMiddleware
             // Set the new sessionId in the cookie
             setcookie('sessionId', $sessionId, time() + 30 * 24 * 60 * 60, '/', null, false, true);
         }
-
-        // Pass the session ID to the request
-        $request->merge(['sessionId' => $sessionId]);
-
         return $next($request);
     }
 }
