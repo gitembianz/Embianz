@@ -22,7 +22,17 @@ class StoreShowProduct extends Component
   public function mount($productId)
   {
     $this->productId = $productId;
-    $this->session_id = $_COOKIE['sessionId'];
+    if (array_key_exists('sessionId', $_COOKIE)) {
+      $this->session_id = $_COOKIE['sessionId'];
+    } else {
+      // If not present, generate a new sessionId
+      $sessionId = session()->getId();
+
+      // Set the new sessionId in the cookie
+      setcookie('sessionId', $sessionId, time() + 30 * 24 * 60 * 60, '/', null, false, true);
+
+      $this->session_id = $sessionId;
+    }
     $this->quantity = 1;
   }
   public function render()

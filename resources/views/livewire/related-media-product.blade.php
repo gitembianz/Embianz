@@ -75,9 +75,9 @@
                                                 <th class="wid-1">
                                                     <div class="table__header--btn">Sequence</div>
                                                 </th>
-                                                {{-- <th class="wid-1">
-                                                    <div class="table__header--btn">Location</div>
-                                                </th> --}}
+                                                <th class="wid-1">
+                                                    <div class="table__header--btn">Automatic resize</div>
+                                                </th>
                                                 <th class="wid-1">
                                                     <div class="table__header--btn float-r">Action</div>
                                                 </th>
@@ -107,19 +107,13 @@
                                                     <td class="wid-1">
                                                         <input type="number" class="table__edit"
                                                             placeholder="Media sequence ex: 1,2..." min="0"
-                                                            required wire:model="file_sequences.{{ $loop->index }}">
+                                                            required
+                                                            wire:model.defer="file_sequences.{{ $index }}">
                                                     </td>
-                                                    {{-- <td class="wid-1">
-                                                        <select required class="table__edit"
-                                                            wire:model="file_locations.{{ $index }}">
-                                                            @foreach ($locations as $location)
-                                                                <option value="{{ $location->id }}"
-                                                                    @if ($file_locations[$index] == $location->id) selected @endif>
-                                                                    {{ $location->location }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                    </td> --}}
+                                                    <td class="wid-1">
+                                                        <input type="checkbox" class="table__edit"
+                                                            wire:model.defer="file_resize.{{ $index }}">
+                                                    </td>
                                                     <td class="wid-1">
                                                         <div class="table__buttons">
                                                             <button class="edit"
