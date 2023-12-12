@@ -16,9 +16,8 @@ return new class extends Migration
       $table->longText('path')->nullable();
       $table->string('sequence')->nullable();
       $table->string('type')->nullable();
+      $table->string('extension')->nullable();
       $table->string('name')->nullable();
-      $table->unsignedBigInteger('location_id')->index()->nullable();
-      $table->foreign('location_id')->references('id')->on('media_locations');
       $table->string('width')->nullable();
       $table->string('height')->nullable();
       $table->string('size')->nullable();

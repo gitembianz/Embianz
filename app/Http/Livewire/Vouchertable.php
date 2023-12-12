@@ -18,7 +18,6 @@ class Vouchertable extends Component
   public $checked = [];
   public $selectPage = false;
   public $selectAll = false;
-  public $tableName;
   public $columns;
   public $selectedColumns = [];
   public $col = false;
@@ -38,8 +37,7 @@ class Vouchertable extends Component
   }
   public function mount($tableName)
   {
-    $this->tableName = $tableName;
-    $this->columns = Schema::getColumnListing($this->tableName);
+    $this->columns = Schema::getColumnListing($tableName);
 
     if (session()->has('selectedColumns')) {
       $this->selectedColumns = session('selectedColumns');

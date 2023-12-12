@@ -15,9 +15,8 @@ class SessionMiddleware
     public function handle($request, Closure $next)
     {
         // Check if sessionId is present in the cookie
-        if (isset($_COOKIE['sessionId'])) {
-            $sessionId = $_COOKIE['sessionId'];
-        } else {
+        if (!array_key_exists('sessionId', $_COOKIE)) {
+
             // If not present, generate a new sessionId
             $sessionId = Session::getId();
 
