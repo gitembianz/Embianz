@@ -60,7 +60,7 @@
                                     <table class="table table-top">
                                         <thead>
                                             <tr>
-                                                <th class="wid-3">
+                                                <th class="wid-1">
                                                     <div class="table__header--btn">Media</div>
                                                 </th>
                                                 <th class="wid-2">
@@ -70,14 +70,14 @@
                                                     <div class="table__header--btn">Size</div>
                                                 </th>
                                                 <th class="wid-1">
-                                                    <div class="table__header--btn">Type</div>
+                                                    <div class="table__header--btn">Extension Type</div>
                                                 </th>
                                                 <th class="wid-1">
                                                     <div class="table__header--btn">Sequence</div>
                                                 </th>
-                                                <th class="wid-1">
+                                                {{-- <th class="wid-1">
                                                     <div class="table__header--btn">Location</div>
-                                                </th>
+                                                </th> --}}
                                                 <th class="wid-1">
                                                     <div class="table__header--btn float-r">Action</div>
                                                 </th>
@@ -88,7 +88,7 @@
                                         <tbody>
                                             @foreach ($medias as $index => $media)
                                                 <tr>
-                                                    <td class="wid-3">
+                                                    <td class="wid-1">
                                                         @if (str_starts_with($media->getMimeType(), 'image'))
                                                             <img src="data:{{ $media->getMimeType() }};base64,{{ base64_encode($media->get()) }}"
                                                                 width="50px">
@@ -106,10 +106,10 @@
                                                     <td class="wid-1">{{ $media->getClientOriginalExtension() }}</td>
                                                     <td class="wid-1">
                                                         <input type="number" class="table__edit"
-                                                            placeholder="Media sequence" min="0" required
-                                                            wire:model="file_sequences.{{ $loop->index }}">
+                                                            placeholder="Media sequence ex: 1,2..." min="0"
+                                                            required wire:model="file_sequences.{{ $loop->index }}">
                                                     </td>
-                                                    <td class="wid-1">
+                                                    {{-- <td class="wid-1">
                                                         <select required class="table__edit"
                                                             wire:model="file_locations.{{ $index }}">
                                                             @foreach ($locations as $location)
@@ -119,7 +119,7 @@
                                                                 </option>
                                                             @endforeach
                                                         </select>
-                                                    </td>
+                                                    </td> --}}
                                                     <td class="wid-1">
                                                         <div class="table__buttons">
                                                             <button class="edit"
@@ -203,7 +203,7 @@
                                                         <input required type="url" class="table__edit"
                                                             wire:model="file_link.{{ $i }}">
                                                     </td>
-                                                    <td class="wid-1">
+                                                    {{-- <td class="wid-1">
                                                         <select required
                                                             wire:model="file_locations.{{ $i }}"
                                                             class="table__edit">
@@ -214,7 +214,7 @@
                                                                 </option>
                                                             @endforeach
                                                         </select>
-                                                    </td>
+                                                    </td> --}}
                                                     <td class="wid-1">
                                                         <div class="table__buttons">
                                                             @if ($i == $row)
@@ -402,11 +402,11 @@
                                             <div class="table__header--btn">Name</div>
                                         </th>
                                     @endif
-                                    @if ($this->showColumn('Media Location'))
+                                    {{-- @if ($this->showColumn('Media Location'))
                                         <th>
                                             <div class="table__header--btn">Location</div>
                                         </th>
-                                    @endif
+                                    @endif --}}
                                     @if ($this->showColumn('Sequence'))
                                         <th>
                                             <div class="table__header--btn">Sequence</div>
@@ -440,10 +440,10 @@
                                             @endif
                                             @if ($this->showColumn('Media'))
                                                 <td data-title="Media">
-                                                    @if (in_array($file->type, ['jpg', 'jpeg', 'png', 'gif', 'svg', 'jfif', 'webp']))
+                                                    @if (in_array($file->extension, ['jpg', 'jpeg', 'png', 'gif', 'svg', 'jfif', 'webp']))
                                                         <img src="/{{ $file->path . $file->name }}"
                                                             alt="{{ $file->name }}" width="50">
-                                                    @elseif (in_array($file->type, ['mp4', 'mov', 'avi']))
+                                                    @elseif (in_array($file->extension, ['mp4', 'mov', 'avi']))
                                                         <video src="/{{ $file->path . $file->name }}" width="50"
                                                             controls="true"></video>
                                                     @else
@@ -468,7 +468,7 @@
                                                     @endif
                                                 </td>
                                             @endif
-                                            @if ($this->showColumn('Media Location'))
+                                            {{-- @if ($this->showColumn('Media Location'))
                                                 <td data-title="Media Location">
                                                     @if ($editedMediaIndex !== $index)
                                                         {{ $file->location->location }}
@@ -482,7 +482,7 @@
                                                         </select>
                                                     @endif
                                                 </td>
-                                            @endif
+                                            @endif --}}
                                             @if ($this->showColumn('Sequence'))
                                                 <td data-title="Sequence">
                                                     @if ($editedMediaIndex !== $index)
