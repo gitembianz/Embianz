@@ -23,9 +23,7 @@
 |
 */
 
-  Route::get('/', function () {
-    return view('store.home');
-  });
+
 
   Route::middleware(['auth', 'usertype'])->group(function () {
 
@@ -87,7 +85,7 @@
   //store routes
   Route::middleware(['session'])->group(function () {
     // Your routes here
-    route::get('/home', [StoreController::class, 'index'])->name('home');
+    route::get('/', [StoreController::class, 'index'])->name('home');
     route::get('/cart', [StoreController::class, 'cart'])->name('cart');
     route::get('/wishlist', [StoreController::class, 'wislist'])->name('wislist');
     route::get('/complete', [StoreController::class, 'complete'])->name('complete');
