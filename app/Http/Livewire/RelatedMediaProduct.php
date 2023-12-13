@@ -276,11 +276,19 @@ class RelatedMediaProduct extends Component
       if ($this->file_resize[$this->i]) {
         //Resize system
         //Min image -Search
-        $ismin = $this->product->media()->where('type', 'min')->first();
-        if (!$ismin) {
-          $this->resizeImage($file, $path, 70, 'min', $media->name, $type);
+        if ($this->file_sequences[$this->i] == '1') {
+          $ismin = $this->product->media()->where('type', 'min')->first();
+
+          if (!$ismin) {
+            $this->resizeImage($file, $path, 70, 'min', $media->name, $type);
+          } else {
+            $path = $ismin->path . $ismin->name;
+            if (File::exists($path)) {
+              File::delete($path);
+            }
+          }
+          $this->resizeImage($file, $path,  300, 'main', $media->name, $type);
         }
-        $this->resizeImage($file, $path,  300, 'mid', $media->name, $type);
 
         $this->resizeImage($file, $path, 640, 'full', $media->name, $type);
       }

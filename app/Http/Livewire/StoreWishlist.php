@@ -8,7 +8,6 @@ use App\Models\Wishlist;
 
 class StoreWishlist extends Component
 {
-  public $wishlistitems;
   public $session_id;
   protected $listeners = ['wishlistUpdated' => 'mount'];
 
@@ -45,6 +44,5 @@ class StoreWishlist extends Component
 
       $this->session_id = $sessionId;
     }
-    $this->wishlistitems = $this->getWishlistItemsProperty();
   }
 }
