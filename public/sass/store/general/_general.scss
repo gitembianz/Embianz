@@ -12,11 +12,22 @@ body {
   font-family: "Montserrat", sans-serif;
   background-color: $background;
   margin: 0;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+
+  scrollbar-width: auto;
+  scrollbar-color: #333333 #ffffff;
 
   &::-webkit-scrollbar {
-    display: none;
+    width: 12px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #ffffff;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #333333;
+    border-radius: 23px;
+    border: 2px solid #ffffff;
   }
 }
 
