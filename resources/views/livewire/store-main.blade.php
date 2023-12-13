@@ -59,7 +59,7 @@
                 <h2 class="section__title">Descoperă produsele noastre populare!</h2>
                 <p class="section__text">Explorează colecția noastră de produse și găsește
                     accesoriile perfecte pentru a-ți completa stilul.
-                    <br><a href="{{ url('/storeproducts') }}">Vezi produsele!</a>
+                    <br><a href="{{ url("/storeproducts") }}">Vezi produsele!</a>
                 </p>
             </div>
         </section>
@@ -76,7 +76,7 @@
                                     <a href="/product/{{ $product->id }}">
                                         @if ($product->media->count() != 0)
                                             @foreach ($product->media as $media)
-                                                @if ($media->location->location == 'main')
+                                                @if ($media->location->location == "main")
                                                     @if ($media->external)
                                                         <img class="card-image" src="{{ $media->path }}"
                                                             draggable="false" alt="{{ $media->path }}">
@@ -93,7 +93,7 @@
                                                 draggable="false" alt="something wrong">
                                         @endif
                                     </a>
-                                    @livewire('product-wishlist-button', ['product' => $product], key($product->id))
+                                    @livewire("product-wishlist-button", ["product" => $product], key($product->id))
                                     <div class="card-info">
                                         <div class="card-text">
                                             <span>{{ $product->short_description }}</span>
@@ -102,10 +102,10 @@
                                             <h3>{{ $product->name }}</h3>
                                             <p>
                                                 @if ($product->product_prices->first())
-                                                    {{ number_format($product->product_prices->first()->value, 2, ',', '.') }}
+                                                    {{ number_format($product->product_prices->first()->value, 2, ",", ".") }}
                                                     {{ $product->product_prices->first()->pricelist->currency->name }}
                                                 @else
-                                                    {{ __('Indisponibil') }}
+                                                    {{ __("Indisponibil") }}
                                                 @endif
                                             </p>
                                         </div>
@@ -139,11 +139,7 @@
         <x-support />
         <!-------------------- End Support Center ------------------>
         <!---------------------------------------------------------->
-        <!---------------------- Loading Logo ---------------------->
-        <div class="loading-logo" id="loadingLogo">
-            <img src="/images/store/svg/noren-black.svg" alt="logo-black">
-        </div>
-        <!-------------------- End Loading Logo -------------------->
+
         <!---------------------------------------------------------->
         <!--------------------- support button --------------------->
         <x-help-button />
