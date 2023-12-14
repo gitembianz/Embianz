@@ -1,6 +1,5 @@
 //<---------------------------- Animated-Logo Styles ---------------------------->
 .loading-logo {
-  // display: none !important;
   position: fixed;
   left: 0;
   top: 0;
@@ -12,7 +11,7 @@
   flex-direction: column;
   gap: 15px;
   z-index: 99;
-  background-color: $background;
+  background-color: #fff;
   // Animation
   animation-name: bg-anim;
   animation-duration: 2s;

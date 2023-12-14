@@ -45,7 +45,7 @@
     flex-direction: column;
     align-items: flex-end;
     justify-content: center;
-    flex: 1;
+    flex: unset;
   }
 }
 
@@ -56,7 +56,7 @@
 }
 
 .product__title {
-  font-size: 30px;
+  font-size: 23px;
   font-weight: 600;
   color: $text;
   margin: 0;

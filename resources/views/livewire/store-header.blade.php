@@ -22,9 +22,8 @@
         <div class="header__container container">
             <!-------------------------Logo------------------------->
 
-            <a class="logo" href="{{ url('/') }}">
+            <a class="logo" href="{{ url("/") }}">
                 <img src="/images/store/svg/noren-black.svg" alt="Embianz Logo">
-
             </a>
             <!-----------------------END-Logo----------------------->
             <!------------------------------------------------------>
@@ -73,9 +72,12 @@
                         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                     </svg>
                 </button>
+                <a class="logo__hidden" href="{{ url("/") }}">
+                    <img src="/images/store/svg/noren-black.svg" alt="Embianz Logo">
+                </a>
                 <button class="header__btn" wire:click="$set('showcart', true)" id="basketOpen">
                     @if ($cart)
-                        @livewire('cart-quantity', ['cart' => $cart])
+                        @livewire("cart-quantity", ["cart" => $cart])
                     @endif
                     <svg>
                         <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
@@ -127,7 +129,7 @@
                                     <a class="search__link" href="/product/{{ $product->id }}">
                                         @if (count($product->media) > 0)
                                             @foreach ($product->media as $media)
-                                                @if ($media->location->location == 'search')
+                                                @if ($media->location->location == "search")
                                                     @if ($media->external)
                                                         <img src="{{ $media->path }}" alt="{{ $media->path }}">
                                                     @else
@@ -167,7 +169,7 @@
                                     <a class="search__link" href="/storeproducts/{{ $category->id }}">
                                         @if (count($category->media) > 0)
                                             @foreach ($category->media as $media)
-                                                @if ($media->location->location == 'search')
+                                                @if ($media->location->location == "search")
                                                     @if ($media->external)
                                                         <img src="{{ $media->path }}" alt="{{ $media->path }}">
                                                     @else
@@ -190,7 +192,7 @@
                             @endforeach
                         @endif
                     @else
-                        <span>{{ __('Niciun element gasit') }}</span>
+                        <span>{{ __("Niciun element gasit") }}</span>
                     @endif
                 </ul>
             @endif
@@ -205,7 +207,7 @@
         <button class="leftbar__hidden--close" wire:click="$set('showcart', false)"></button>
         <div class="leftbar__content" id="basketContent">
             <div class="leftbar__top">
-                <a class="leftbar__button" href="{{ url('/cart') }}">Vizualizare cos de cumparaturi </a>
+                <a class="leftbar__button" href="{{ url("/cart") }}">Vizualizare cos de cumparaturi </a>
                 <button class="leftbar__close" id="basketClose" wire:click="$set('showcart', false)">
                     <svg>
                         <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -227,7 +229,7 @@
                                 </span>
                                 @if (count($cartItem->product->media) > 0)
                                     @foreach ($cartItem->product->media as $media)
-                                        @if ($media->location->location == 'main')
+                                        @if ($media->location->location == "main")
                                             @if ($media->external)
                                                 <img class="cart__list--img" src="{{ $media->path }}"
                                                     alt="{{ $media->path }}">
@@ -248,7 +250,7 @@
                                     <h4>{{ $cartItem->product->name }}</h4>
                                     <span>
                                         @php
-                                            $price = number_format($cartItem->product->product_prices->first()->value, 2, ',', '.');
+                                            $price = number_format($cartItem->product->product_prices->first()->value, 2, ",", ".");
                                             $currency = $cartItem->product->product_prices->first()->pricelist->currency->name;
                                         @endphp
                                         @if ($price)
@@ -275,7 +277,7 @@
 
             @if (isset($cartItems) && !$cartItems->isEmpty())
                 <div class="leftbar__total">
-                    <h5 class="leftbar__total--text">Total: <span>{{ number_format($total, 2, ',', '.') }}
+                    <h5 class="leftbar__total--text">Total: <span>{{ number_format($total, 2, ",", ".") }}
                             {{ $currency }}</span></h5>
                     <a class="leftbar__button" wire:click.prevent="continue">Finalizare Comanda</a>
                 </div>
@@ -308,7 +310,7 @@
                             <a class="leftbar__link wishlist__link" href="/product/{{ $item->product->id }}">
                                 @if ($item->product->media->count() != 0)
                                     @foreach ($item->product->media as $media)
-                                        @if ($media->location->location == 'main')
+                                        @if ($media->location->location == "main")
                                             @if ($media->external)
                                                 <img class="heart__list--img" src="{{ $media->path }}"
                                                     alt="{{ $media->path }}">
@@ -364,7 +366,7 @@
                                 <a class="dropmenu__button--link" href="/storeproducts/{{ $category->id }}">
                                     @if ($category->media->count() != 0)
                                         @foreach ($category->media as $media)
-                                            @if ($media->location->location == 'main')
+                                            @if ($media->location->location == "main")
                                                 @if ($media->external)
                                                     <img src="{{ $media->path }}" alt="{{ $media->path }}">
                                                 @else
@@ -388,7 +390,7 @@
                                     <a class="dropmenu__link" href="/storeproducts/{{ $subcategory->category_id }}">
                                         @if ($subcategory->category->media->count() != 0)
                                             @foreach ($subcategory->category->media as $media)
-                                                @if ($media->location->location == 'main')
+                                                @if ($media->location->location == "main")
                                                     @if ($media->external)
                                                         <img src="{{ $media->path }}" alt="{{ $media->path }}">
                                                     @else
@@ -411,7 +413,7 @@
                         <a class="menu__link" href="/storeproducts/{{ $category->id }}">
                             @if ($category->media->count() != 0)
                                 @foreach ($category->media as $media)
-                                    @if ($media->location->location == 'main')
+                                    @if ($media->location->location == "main")
                                         @if ($media->external)
                                             <img src="{{ $media->path }}" alt="{{ $media->path }}">
                                         @else
