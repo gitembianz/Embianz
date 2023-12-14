@@ -5,7 +5,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-
+  touch-action: manipulation !important;
 }
 
 body {
@@ -47,7 +47,6 @@ a,
 label,
 input[type="submit"] {
   cursor: pointer;
-  touch-action: manipulation;
 }
 
 label {
