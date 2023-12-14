@@ -4300,7 +4300,7 @@ header {
 }
 @media (min-width: 768px) {
   .card-slider__button.prev {
-    left: -20px;
+    left: 0px;
   }
 }
 .card-slider__button.next {
@@ -4309,7 +4309,7 @@ header {
 }
 @media (min-width: 768px) {
   .card-slider__button.next {
-    right: -20px;
+    right: 0px;
   }
 }
 @keyframes LeftToRight {
