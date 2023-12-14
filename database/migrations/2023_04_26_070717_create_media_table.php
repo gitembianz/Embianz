@@ -21,7 +21,6 @@ return new class extends Migration
       $table->string('width')->nullable();
       $table->string('height')->nullable();
       $table->string('size')->nullable();
-      $table->boolean('external');
       $table->string('createdby')->nullable();
       $table->string('lastmodifiedby')->nullable();
       $table->timestamps();
