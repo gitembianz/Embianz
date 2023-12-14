@@ -47,6 +47,7 @@ a,
 label,
 input[type="submit"] {
   cursor: pointer;
+  touch-action: manipulation;
 }
 
 label {
