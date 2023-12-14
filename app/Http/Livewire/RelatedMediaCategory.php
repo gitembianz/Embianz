@@ -18,7 +18,6 @@ class RelatedMediaCategory extends Component
 {
   use WithFileUploads;
   use WithPagination;
-  public $categoryId;
   public $category;
   public $showmedia = false;
   public $medias = [];
@@ -31,11 +30,9 @@ class RelatedMediaCategory extends Component
   public $selectPage = false;
   public $selectAll = false;
   public $mediaidbeingremoved = null;
-  public $columns = ['Id', 'Media', 'Media Location', 'Sequence', 'Created At'];
+  public $columns = ['Id', 'Media', 'Sequence', 'Created At'];
   public $selectedColumns = [];
-  public $locations;
   public $file_sequences = [];
-  public $file_locations = [];
   public $file_link = [];
   public $file_name = [];
   public $col = false;
@@ -48,10 +45,8 @@ class RelatedMediaCategory extends Component
 
   public function mount(Category $category)
   {
-    $this->categoryId = $category->id;
     $this->category = $category;
     $this->selectedColumns = $this->columns;
-    $this->locations = MediaLocation::all();
     $this->i = null;
     $this->j = null;
   }
@@ -68,66 +63,133 @@ class RelatedMediaCategory extends Component
     $this->file_link = [];
     $this->file_name = [];
   }
-  public function updatingMedias($value)
-  {
-    $mediaCount = count($value);
-    // dd($value);
-
-    // Reinitialize $file_locations array
-    $this->file_locations = [];
-    for ($i = 0; $i <= $mediaCount; $i++) {
-      $this->file_locations[$i] = $this->locations->first()->id;
-    }
-  }
   public function external()
   {
     $this->row = 1;
     $this->externalmedia = true;
-    for ($i = 1; $i <= $this->row; $i++) {
-      $this->file_locations[$i] = $this->locations->first()->id;
-    }
   }
   public function plus()
   {
     $this->row++;
-    for ($i = 1; $i <= $this->row; $i++) {
-      $this->file_locations[$i] = $this->locations->first()->id;
-    }
   }
   public function clear($i)
   {
     array_splice($this->file_sequences, $i, 1);
     array_splice($this->file_link, $i, 1);
     array_splice($this->file_name, $i, 1);
-    array_splice($this->file_locations, $i, 1);
     $this->row--;
 
     // Reindex the arrays
     $this->file_sequences = array_values($this->file_sequences);
     $this->file_link = array_values($this->file_link);
     $this->file_name = array_values($this->file_name);
-    $this->file_locations = array_values($this->file_locations);
   }
   public function saveexternal()
   {
+    $productType = class_basename(get_class($this->category));
+    //check for directory
+    $filespath = 'media/' . $productType . '/';
+    if (!File::exists($filespath)) {
+      File::makeDirectory($filespath, 0755, true);
+    }
+    if (!File::exists($filespath . $this->category->id)) {
+      File::makeDirectory($filespath . $this->category->id, 0755, true);
+    }
+    $path = $filespath . $this->category->id . "/";
+
     for ($this->i = 1; $this->i <= $this->row; $this->i++) {
       $this->resetErrorBag();
       $this->validate([
         'file_sequences.*' => 'required',
-        'file_locations.*' => 'required',
         'file_link.*' => 'required|url',
         'file_name.*' => 'required'
       ]);
-      $media = new Media();
-      $media->name = $this->file_name[$this->i];
-      $media->sequence = $this->file_sequences[$this->i];
-      $media->location_id = $this->file_locations[$this->i];
-      $media->path = $this->file_link[$this->i];
-      $media->external = true;
-      $media->createdby = Auth::user()->name;
-      $media->lastmodifiedby = Auth::user()->name;
-      $media->save();
-      $this->category->media()->attach($media->id);
+      $fileContent = file_get_contents($this->file_link[$this->i]);
+      // Get image information
+      $imageInfo = getimagesizefromstring($fileContent);
+      //extension
+      $fileExtension = image_type_to_extension($imageInfo[2], false);
+      $name = $this->file_name[$this->i] . '.' . $fileExtension;
+      if (file_exists($path . $this->file_name[$this->i])) {
+        $this->j = 1;
+        while (file_exists($path . $this->file_name[$this->i] . '(' . $this->j . ').' . $fileExtension)) {
+          $this->j++;
+        }
+        $name = $this->file_name[$this->i] . '(' . $this->j . ').' . $fileExtension;
+      }
+      Storage::disk('public_upload')->put($path . $name, $fileContent);
+      $filePath = $path . $name;
+      $file = Storage::disk('public_upload')->get($filePath);
+      if ($this->file_sequences[$this->i] == '1') {
+        $ismin = $this->category->media()->where('type', 'min')->first();
+
+        if (!$ismin) {
+
+          $resizedImage = Image::make($file)
+            ->resize(70, 70, function ($constraint) {
+              $constraint->aspectRatio();
+              $constraint->upsize();
+            });
+
+          $resizedImage->encode('webp')->save($path . "resized70_" . $name);
+          $media = new Media();
+          $media->path = $path;
+          $media->name = "resized70_" . $name;
+          $media->sequence = $this->file_sequences[$this->i];
+          $media->extension = $fileExtension;
+          $media->width = $resizedImage->width();
+          $media->height = $resizedImage->height();
+          $media->type = 'min';
+          $media->size = strlen($fileContent);
+          $media->createdby = Auth::user()->name;
+          $media->lastmodifiedby = Auth::user()->name;
+          $media->save();
+          $this->category->media()->attach($media->id);
+        } else {
+          $oldPath = $ismin->path . $ismin->name;
+          if (File::exists($oldPath)) {
+            File::delete($oldPath);
+          }
+
+          $resizedImage = Image::make($file)
+            ->resize(70, 70, function ($constraint) {
+              $constraint->aspectRatio();
+              $constraint->upsize();
+            });
+
+          $newPath = $ismin->path . "resized70_" . $name;
+          $resizedImage->encode('webp')->save($newPath);
+          $ismin->path = $ismin->path;
+          $ismin->name = "resized70_" . $name;
+          $ismin->sequence = $this->file_sequences[$this->i];
+          $ismin->extension = $fileExtension;
+          $ismin->width = $resizedImage->width();
+          $ismin->height = $resizedImage->height();
+          $ismin->size = File::size($newPath);
+          $ismin->lastmodifiedby = Auth::user()->name;
+          $ismin->save();
+        }
+        $oldPath = $path . $name;
+        File::delete($oldPath);
+      } else {
+        $media = new Media();
+        $media->path = $path;
+        $media->name = $name;
+        $media->sequence =
+          $this->file_sequences[$this->i];
+        $media->extension = $fileExtension;
+        $media->type = 'original';
+        $image = Image::make($file);
+        $width = $image->width();
+        $height = $image->height();
+        $media->width = $width;
+        $media->height = $height;
+        $media->size = File::size($path . $name);
+        $media->createdby = Auth::user()->name;
+        $media->lastmodifiedby = Auth::user()->name;
+        $media->save();
+        $this->category->media()->attach($media->id);
+      }
     }
     session()->flash('notification', [
       'message' => 'Record related successfully!',
@@ -145,26 +207,16 @@ class RelatedMediaCategory extends Component
   {
     $this->editedMediaIndex = $index;
     $media = Media::find($id);
-    if ($media->external == 1) {
-      $this->filess = [
-        $index . '.path' => $media->path,
-        $index . '.name' => $media->name,
-        $index . '.location_id' => $media->location_id,
-        $index . '.sequence' => $media->sequence,
-      ];
-    } else {
-      $this->filess = [
-        $index . '.name' => $media->name,
-        $index . '.location_id' => $media->location_id,
-        $index . '.sequence' => $media->sequence,
-      ];
-    }
+
+    $this->filess = [
+      $index . '.name' => $media->name,
+      $index . '.sequence' => $media->sequence,
+    ];
   }
   public function cancel()
   {
     $this->medias = [];
     $this->file_sequences = [];
-    $this->file_locations = [];
   }
   public function cancelMedia()
   {
@@ -176,16 +228,8 @@ class RelatedMediaCategory extends Component
     $media_new = $this->filess[$mediaIndex] ?? NULL;
     if (!is_null($media_new)) {
       $media_for_prod = Media::find($id);
-      if ($media_for_prod->external == 1) {
-        if (array_key_exists('path', $media_new)) {
-          $media_for_prod->path = $media_new['path'];
-        }
-      }
       if (array_key_exists('sequence', $media_new)) {
         $media_for_prod->sequence = $media_new['sequence'];
-      }
-      if (array_key_exists('location_id', $media_new)) {
-        $media_for_prod->location_id = $media_new['location_id'];
       }
       if (array_key_exists('name', $media_new)) {
         $newName = $media_new['name'] . '.' . $media_for_prod->type;
@@ -240,70 +284,98 @@ class RelatedMediaCategory extends Component
   public function save()
   {
     $this->validate([
-      'medias.*' => 'mimetypes:image/jpeg,image/png,image/webp,image/svg+xml,video/mp4,video/quicktime|max:10240', // Max 10MB for all files
+      'medias.*' => 'mimetypes:image/jpeg,image/png,image/webp,image/svg+xml|max:10240', // Max 10MB for all files
     ]);
     $productType = class_basename(get_class($this->category));
     $filespath = 'media/' . $productType . '/';
     if (!File::exists($filespath)) {
       File::makeDirectory($filespath, 0755, true);
     }
-    if (!File::exists($filespath . "$this->categoryId")) {
-      File::makeDirectory($filespath . "$this->categoryId", 0755, true);
+    if (!File::exists($filespath . $this->category->id)) {
+      File::makeDirectory($filespath . $this->category->id, 0755, true);
     }
-    $path = $filespath . "$this->categoryId" . "/";
-    $this->i = 0;
-    foreach ($this->medias as $file) {
-      $media = new Media();
+    $path = $filespath . $this->category->id . "/";
+    foreach ($this->medias as $index => $file) {
       $type = $file->getClientOriginalExtension();
-      if ($type === 'mp4' || $type === 'ogg') {
-        $filePath = $file->getRealPath();
-        $contents = Storage::get($filePath);
-        $getID3 = new getID3();
-        $fileInfo = $getID3->analyze($contents);
-        if (isset($fileInfo['video']) && isset($fileInfo['video']['resolution_x']) && isset($fileInfo['video']['resolution_y'])) {
-          $width = $fileInfo['video']['resolution_x'];
-          $height = $fileInfo['video']['resolution_y'];
-        } else {
-          $width = "unnable to get";
-          $height = "unnable to get";
-        }
-      } elseif ($type === 'svg') {
-        $svg = simplexml_load_file($file->getRealPath());
-        $width = (string) $svg['width'];
-        $height = (string) $svg['height'];
-      } else {
-        $image = Image::make($file);
-        $width = $image->width();
-        $height = $image->height();
-      }
-      $media->path = $path;
-      $media->name = $file->getClientOriginalName();
       $filename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-      $media->name = $filename . '.' . $type;
-      if (file_exists($path . $media->name)) {
+      $name = $filename . '.' . $type;
+      if (file_exists($path . $name)) {
         $this->j = 1;
         while (file_exists($path . $filename . '(' . $this->j . ').' . $type)) {
           $this->j++;
         }
-        $media->name = $filename . '(' . $this->j . ').' . $type;
+        $name = $filename . '(' . $this->j . ').' . $type;
       }
-      $file->storeAs($path, $media->name, 'public_upload');
-      $media->sequence = $this->file_sequences[$this->i];
-      $media->location_id = MediaLocation::where('id', $this->file_locations[$this->i])->first()->id;
-      $media->type = $type;
-      $media->width = $width;
-      $media->height =  $height;
-      $media->external = false;
-      $media->size = $file->getSize();
-      $media->createdby = Auth::user()->name;
-      $media->lastmodifiedby = Auth::user()->name;
-      $media->save();
-      $this->category->media()->attach($media->id);
-      $this->i += 1;
+      if ($this->file_sequences[$index] == '1') {
+        $ismin = $this->category->media()->where('type', 'min')->first();
+
+        if (!$ismin) {
+          $resizedImage = Image::make($file)
+            ->resize(70, 70, function ($constraint) {
+              $constraint->aspectRatio();
+              $constraint->upsize();
+            });
+
+          $resizedImage->encode('webp')->save($path . "resized70_" . $name);
+          $media = new Media();
+          $media->path = $path;
+          $media->name = "resized70_" . $name;
+          $media->sequence = $this->file_sequences[$index];
+          $media->extension = $type;
+          $media->width = $resizedImage->width();
+          $media->height = $resizedImage->height();
+          $media->type = 'min';
+          $media->size = $file->getSize();
+          $media->createdby = Auth::user()->name;
+          $media->lastmodifiedby = Auth::user()->name;
+          $media->save();
+          $this->category->media()->attach($media->id);
+        } else {
+          $oldPath = $ismin->path . $ismin->name;
+          if (File::exists($oldPath)) {
+            File::delete($oldPath);
+          }
+
+          $resizedImage = Image::make($file->getRealPath())
+            ->resize(70, 70, function ($constraint) {
+              $constraint->aspectRatio();
+              $constraint->upsize();
+            });
+
+          $newPath = $ismin->path . "resized70_" . $name;
+          $resizedImage->encode('webp')->save($newPath);
+          $ismin->path = $ismin->path;
+          $ismin->name = "resized70_" . $name;
+          $ismin->sequence = $this->file_sequences[$index];
+          $ismin->extension = $type;
+          $ismin->width = $resizedImage->width();
+          $ismin->height = $resizedImage->height();
+          $ismin->size = File::size($newPath);
+          $ismin->lastmodifiedby = Auth::user()->name;
+          $ismin->save();
+        }
+      } else {
+        $file->storeAs($path, $name, 'public_upload');
+        $media = new Media();
+        $image = Image::make($file);
+        $width = $image->width();
+        $height = $image->height();
+        $media->path = $path;
+        $media->name = $name;
+        $media->sequence = $this->file_sequences[$index];
+        $media->type = 'original';
+        $media->extension = $type;
+        $media->width = $width;
+        $media->height =  $height;
+        $media->size = $file->getSize();
+        $media->createdby = Auth::user()->name;
+        $media->lastmodifiedby = Auth::user()->name;
+        $media->save();
+        $this->category->media()->attach($media->id);
+      }
     }
     $this->medias = [];
     $this->file_sequences = [];
-    $this->file_locations = [];
     session()->flash('notification', [
       'message' => 'Record related successfully!',
       'type' => 'success',
@@ -313,11 +385,7 @@ class RelatedMediaCategory extends Component
   public function removemedia($index)
   {
     array_splice($this->file_sequences, $index, 1);
-    array_splice($this->file_locations, $index, 1);
     array_splice($this->medias, $index, 1);
-
-    $this->file_sequences = array_values($this->file_sequences);
-    $this->file_locations = array_values($this->file_locations);
   }
   public function sortBy($columnName)
   {
