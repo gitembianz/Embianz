@@ -30,8 +30,9 @@ header {
   height: 100%;
   padding: 0 15px;
 
-  @media (max-width: map-get($grid-breakpoints, sm)) {
+  @media (max-width: map-get($grid-breakpoints, lg)) {
     padding: 0;
+    width: 100%;
   }
 }
 
