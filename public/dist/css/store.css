@@ -2956,7 +2956,7 @@ header {
 }
 
 .product__title {
-  font-size: 30px;
+  font-size: 23px;
   font-weight: 600;
   color: #333333;
   margin: 0;
@@ -4300,7 +4300,7 @@ header {
 }
 @media (min-width: 768px) {
   .card-slider__button.prev {
-    left: -20px;
+    left: 0px;
   }
 }
 .card-slider__button.next {
@@ -4309,7 +4309,7 @@ header {
 }
 @media (min-width: 768px) {
   .card-slider__button.next {
-    right: -20px;
+    right: 0px;
   }
 }
 @keyframes LeftToRight {
