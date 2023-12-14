@@ -370,8 +370,30 @@ input[type=checkbox]:checked:after {
 
 .logo {
   height: 100%;
+  display: block;
+}
+@media (max-width: 992px) {
+  .logo {
+    display: none;
+  }
 }
 .logo > img {
+  width: auto;
+  height: 100%;
+  object-fit: contain;
+  aspect-ratio: 2/1;
+}
+
+.logo__hidden {
+  height: 100%;
+  display: none;
+}
+@media (max-width: 992px) {
+  .logo__hidden {
+    display: block;
+  }
+}
+.logo__hidden > img {
   width: auto;
   height: 100%;
   object-fit: contain;
@@ -503,7 +525,7 @@ input[type=checkbox]:checked:after {
 }
 
 section {
-  padding-top: 30px !important;
+  padding-top: 10px !important;
 }
 
 .section__header {
@@ -1228,9 +1250,10 @@ header {
   height: 100%;
   padding: 0 15px;
 }
-@media (max-width: 576px) {
+@media (max-width: 992px) {
   .header__buttons {
     padding: 0;
+    width: 100%;
   }
 }
 
@@ -1769,9 +1792,9 @@ header {
   width: 50%;
   height: 100%;
   position: absolute;
-  right: 0;
+  left: 0;
   top: 0;
-  transform: translateX(100%);
+  transform: translateX(-100%);
   transition: all 0.3s ease-in-out;
   padding: 15px;
   background-color: #ffffff;
@@ -2052,7 +2075,6 @@ header {
   height: 100%;
   background: rgba(0, 0, 0, 0.8);
   opacity: 0;
-  transition: opacity 0.3s ease-in-out;
   transform: translateY(-100%);
   z-index: 500;
 }
