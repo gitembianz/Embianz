@@ -247,6 +247,7 @@ template {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  touch-action: manipulation !important;
 }
 
 body {
@@ -389,7 +390,7 @@ input[type=checkbox]:checked:after {
   flex-direction: column;
   gap: 15px;
   z-index: 99;
-  background-color: #ffffff;
+  background-color: #fff;
   animation-name: bg-anim;
   animation-duration: 2s;
   animation-delay: 1s;
@@ -2923,7 +2924,7 @@ header {
   flex-direction: column;
   align-items: flex-end;
   justify-content: center;
-  flex: 1;
+  flex: unset;
 }
 
 .product__subtitle {
