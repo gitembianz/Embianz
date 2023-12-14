@@ -75,9 +75,6 @@
                                                     <div class="table__header--btn">Sequence</div>
                                                 </th>
                                                 <th class="wid-1">
-                                                    <div class="table__header--btn">Location</div>
-                                                </th>
-                                                <th class="wid-1">
                                                     <div class="table__header--btn float-r">Action</div>
                                                 </th>
 
@@ -106,22 +103,11 @@
                                                     <td class="wid-1">{{ $media->getClientOriginalExtension() }}</td>
                                                     <td class="wid-1"><input type="number" class="table__edit"
                                                             placeholder="Media sequence" min="0" required
-                                                            wire:model="file_sequences.{{ $loop->index }}"></td>
-                                                    <td class="wid-1">
-                                                        <select required class="table__edit"
-                                                            wire:model="file_locations.{{ $index }}">
-                                                            @foreach ($locations as $location)
-                                                                <option value="{{ $location->id }}"
-                                                                    @if ($file_locations[$index] == $location->id) selected @endif>
-                                                                    {{ $location->location }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                    </td>
+                                                            wire:model="file_sequences.{{ $index }}"></td>
                                                     <td class="wid-1">
                                                         <div class="table__buttons">
                                                             <button class="edit"
-                                                                wire:click.prevent="removemedia({{ $loop->index }})">
+                                                                wire:click.prevent="removemedia({{ $index }})">
                                                                 <svg>
                                                                     <polyline points="3 6 5 6 21 6"></polyline>
                                                                     <path
@@ -178,41 +164,28 @@
                                                 <th class="wid-4">
                                                     <div class="table__header--btn">Link</div>
                                                 </th>
-                                                <th class="wid-1">
-                                                    <div class="table__header--btn">Location</div>
-                                                </th>
                                                 <th class="wid-1"></th>
                                             </tr>
                                         </thead>
                                     </table>
-                                    <table class="table" style="margin-top: 2rem">
+                                    <table class="table" style="margin-top: 1.5rem">
                                         <tbody>
                                             @for ($i = 1; $i <= $row; $i++)
                                                 <tr>
                                                     <td class="wid-3">
-                                                        <input required type="text" class="table__edit"
+                                                        <input required type="text" placeholder="Media name"
+                                                            class="table__edit"
                                                             wire:model="file_name.{{ $i }}">
                                                     </td>
                                                     <td class="wid-1">
-                                                        <input required type="number" min="0"
-                                                            class="table__edit"
+                                                        <input placeholder="Ex: 1,2,3.." required type="number"
+                                                            min="0" class="table__edit"
                                                             wire:model="file_sequences.{{ $i }}">
                                                     </td>
                                                     <td class="wid-4">
-                                                        <input required type="url" class="table__edit"
+                                                        <input required placeholder="Media external link"
+                                                            type="url" class="table__edit"
                                                             wire:model="file_link.{{ $i }}">
-                                                    </td>
-                                                    <td class="wid-1">
-                                                        <select required
-                                                            wire:model="file_locations.{{ $i }}"
-                                                            class="table__edit">
-                                                            @foreach ($locations as $location)
-                                                                <option value="{{ $location->id }}"
-                                                                    @if ($file_locations[$i] == $location->id) selected @endif>
-                                                                    {{ $location->location }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
                                                     </td>
                                                     <td class="wid-1">
                                                         <div class="table__buttons">
@@ -419,12 +392,6 @@
                                         <div class="table__header--btn">Name</div>
                                     </th>
                                 @endif
-
-                                @if ($this->showColumn('Media Location'))
-                                    <th>
-                                        <div class="table__header--btn">Location</div>
-                                    </th>
-                                @endif
                                 @if ($this->showColumn('Sequence'))
                                     <th>
                                         <div class="table__header--btn">Sequence</div>
@@ -443,7 +410,7 @@
                         <tbody>
                             @if ($filteredMedia->isEmpty())
                                 <tr>
-                                    <td class="table__empty" colspan="{{ count($columns) + 3 }}">
+                                    <td class="table__empty" colspan="{{ count($columns) + 2 }}">
                                         No record found.
                                     </td>
                                 </tr>
@@ -458,20 +425,11 @@
                                         @endif
                                         @if ($this->showColumn('Media'))
                                             <td data-title="Media">
-                                                @if (in_array($file->type, ['jpg', 'jpeg', 'png', 'gif', 'svg', 'jfif', 'webp']))
+                                                @if (in_array($file->extension, ['jpg', 'jpeg', 'png', 'gif', 'svg', 'jfif', 'webp']))
                                                     <img src="/{{ $file->path . $file->name }}"
                                                         alt="{{ $file->name }}" width="50">
-                                                @elseif (in_array($file->type, ['mp4', 'mov', 'avi']))
-                                                    <video src="/{{ $file->path . $file->name }}" width="50"
-                                                        controls="true"></video>
                                                 @else
-                                                    @if ($editedMediaIndex !== $index)
-                                                        <img src="{{ $file->path }}" width="100" height="50"
-                                                            alt="{{ $file->path }}">
-                                                    @else
-                                                        <input type="url" class="table__edit"
-                                                            wire:model.defer="filess.{{ $index }}.path">
-                                                    @endif
+                                                    A problem with media
                                                 @endif
                                             </td>
                                         @endif
@@ -483,21 +441,6 @@
                                                     <input type="text" class="table__edit"
                                                         wire:model.defer="filess.{{ $index }}.name"
                                                         value="{{ $file->name }}">
-                                                @endif
-                                            </td>
-                                        @endif
-                                        @if ($this->showColumn('Media Location'))
-                                            <td data-title="Media Location">
-                                                @if ($editedMediaIndex !== $index)
-                                                    <div>{{ $file->location->location }}</div>
-                                                @else
-                                                    <select class="table__edit"
-                                                        wire:model.defer="filess.{{ $index }}.location_id">
-                                                        @foreach ($locations as $location)
-                                                            <option value="{{ $location->id }}">
-                                                                {{ $location->location }}</option>
-                                                        @endforeach
-                                                    </select>
                                                 @endif
                                             </td>
                                         @endif
