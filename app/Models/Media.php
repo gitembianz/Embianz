@@ -8,9 +8,4 @@ use Illuminate\Database\Eloquent\Model;
 class Media extends Model
 {
     use HasFactory;
-
-    public function location()
-    {
-        return $this->belongsTo(MediaLocation::class, 'location_id');
-    }
 }

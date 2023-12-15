@@ -2,17 +2,16 @@
 
 namespace App\Http\Livewire;
 
-use getID3;
 use App\Models\Media;
 use App\Models\Product;
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Models\MediaLocation;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\UploadedFile;
 
 class RelatedMediaProduct extends Component
 {
@@ -132,10 +131,12 @@ class RelatedMediaProduct extends Component
   {
     $this->row = 1;
     $this->externalmedia = true;
+    $this->file_resize[1] = false;
   }
   public function plus()
   {
     $this->row++;
+    $this->file_resize[$this->row] = false;
   }
   public function updatedChecked()
   {
@@ -169,15 +170,25 @@ class RelatedMediaProduct extends Component
     array_splice($this->file_sequences, $i, 1);
     array_splice($this->file_link, $i, 1);
     array_splice($this->file_name, $i, 1);
+    array_splice($this->file_resize, $i, 1);
     $this->row--;
 
-    // Reindex the arrays
-    $this->file_sequences = array_values($this->file_sequences);
-    $this->file_link = array_values($this->file_link);
-    $this->file_name = array_values($this->file_name);
+    if ($this->row < 1) {
+      $this->externalmedia = false;
+    }
   }
   public function saveexternal()
   {
+    $productType = class_basename(get_class($this->product));
+    //check for directory
+    $filespath = 'media/' . $productType . '/';
+    if (!File::exists($filespath)) {
+      File::makeDirectory($filespath, 0755, true);
+    }
+    if (!File::exists($filespath . $this->product->id)) {
+      File::makeDirectory($filespath . $this->product->id, 0755, true);
+    }
+    $path = $filespath . $this->product->id . "/";
 
     for ($i = 1; $i <= $this->row; $i++) {
       $this->resetErrorBag();
@@ -187,28 +198,114 @@ class RelatedMediaProduct extends Component
         'file_name.*' => 'required'
       ]);
       $fileContent = file_get_contents($this->file_link[$i]);
-
       // Get image information
       $imageInfo = getimagesizefromstring($fileContent);
-
-      // Extract mime type
-      $mimeType = $imageInfo['mime'];
-
-      // Extract file extension
-      $extension = pathinfo($this->file_link[$i], PATHINFO_EXTENSION);
-
-      dd($imageInfo, $extension);
+      //extension
+      $fileExtension = image_type_to_extension($imageInfo[2], false);
+      $name = $this->file_name[$i] . '.' . $fileExtension;
+      if (file_exists($path . $name)) {
+        $this->j = 1;
+        while (file_exists($path . $this->file_name[$i] . '(' . $this->j . ').' . $fileExtension)) {
+          $this->j++;
+        }
+        $name = $this->file_name[$i] . '(' . $this->j . ').' . $fileExtension;
+      }
+      Storage::disk('public_upload')->put($path . $name, $fileContent);
       $media = new Media();
-      $media->name = $this->file_name[$i];
+      $media->name = $name;
+      $media->extension = $fileExtension;
+      $media->width = $imageInfo[0];
+      $media->height =  $imageInfo[1];
+      $media->size = strlen($fileContent);
+      $media->type = 'original';
       $media->sequence = $this->file_sequences[$i];
-      $media->location_id = $this->file_resize[$i];
-      $media->path = $this->file_link[$i];
-      $media->external = true;
+      $media->path = $path;
       $media->createdby = Auth::user()->name;
       $media->lastmodifiedby = Auth::user()->name;
-
       $media->save();
       $this->product->media()->attach($media->id);
+
+      //Resize system
+      $filePath = $path . $name;
+      $file = Storage::disk('public_upload')->get($filePath);
+
+      // Set the file content
+      if ($this->file_resize[$i]) {
+        //Resize system
+        //Min image -Search
+        if ($this->file_sequences[$i] == '1') {
+          $ismin = $this->product->media()->where('type', 'min')->first();
+
+          if (!$ismin) {
+            $this->resizeImage(
+              $file,
+              $path,
+              70,
+              'min',
+              $name,
+              $fileExtension,
+              true,
+              $this->file_sequences[$i]
+            );
+          } else {
+            $oldPath = $ismin->path . $ismin->name;
+            if (File::exists($oldPath)) {
+              File::delete($oldPath);
+            }
+
+            $resizedImage = Image::make($file)
+              ->resize(70, 70, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+              });
+
+            $newPath = $ismin->path . "resized70_" . $name;
+            $resizedImage->encode('webp')->save($newPath);
+            $ismin->path = $ismin->path;
+            $ismin->name = "resized70_" . $name;
+            $ismin->sequence = $this->file_sequences[$i];
+            $ismin->extension = $fileExtension;
+            $ismin->width = $resizedImage->width();
+            $ismin->height = $resizedImage->height();
+            $ismin->size = File::size($newPath);
+            $ismin->lastmodifiedby = Auth::user()->name;
+            $ismin->save();
+          }
+
+          $ismaim = $this->product->media()->where('type', 'main')->first();
+          if (!$ismaim) {
+            $this->resizeImage($file, $path, 300, 'main', $name, $fileExtension, true, $this->file_sequences[$i]);
+          } else {
+            $oldPath = $ismaim->path . $ismaim->name;
+            if (File::exists($oldPath)) {
+              File::delete($oldPath);
+            }
+
+            $resizedImage = Image::make($file)
+              ->resize(300, 300, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+              });
+
+            $newPath = $ismaim->path . "resized300_" . $name;
+            $resizedImage->encode('webp')->save($newPath);
+            $ismaim->path = $ismaim->path;
+            $ismaim->name = "resized300_" . $name;
+            $ismaim->sequence = $this->file_sequences[$i];
+            $ismaim->extension = $fileExtension;
+            $ismaim->width = $resizedImage->width();
+            $ismaim->height = $resizedImage->height();
+            $ismaim->size = File::size($newPath);
+            $ismaim->lastmodifiedby = Auth::user()->name;
+            $ismaim->save();
+          }
+        }
+
+
+        $this->resizeImage($file, $path, 640, 'full', $name, $fileExtension, true, $this->file_sequences[$i]);
+      }
+
+
       session()->flash('notification', [
         'message' => 'Record related successfully!',
         'type' => 'success',
@@ -240,15 +337,9 @@ class RelatedMediaProduct extends Component
     foreach ($this->medias as $file) {
       $media = new Media();
       $type = $file->getClientOriginalExtension();
-      if ($type === 'svg') {
-        $svg = simplexml_load_file($file->getRealPath());
-        $width = (string) $svg['width'];
-        $height = (string) $svg['height'];
-      } else {
-        $image = Image::make($file);
-        $width = $image->width();
-        $height = $image->height();
-      }
+      $image = Image::make($file);
+      $width = $image->width();
+      $height = $image->height();
       $media->path = $path;
       $media->name = $file->getClientOriginalName();
       //name-checker
@@ -265,7 +356,6 @@ class RelatedMediaProduct extends Component
       $media->sequence = $this->file_sequences[$this->i];
       $media->type = 'original';
       $media->extension = $type;
-      $media->external = false;
       $media->width = $width;
       $media->height =  $height;
       $media->size = $file->getSize();
@@ -280,22 +370,77 @@ class RelatedMediaProduct extends Component
           $ismin = $this->product->media()->where('type', 'min')->first();
 
           if (!$ismin) {
-            $this->resizeImage($file, $path, 70, 'min', $media->name, $type);
+            $this->resizeImage(
+              $file,
+              $path,
+              70,
+              'min',
+              $media->name,
+              $type,
+              false,
+              $this->file_sequences[$this->i]
+            );
           } else {
-            $path = $ismin->path . $ismin->name;
-            if (File::exists($path)) {
-              File::delete($path);
+            $oldPath = $ismin->path . $ismin->name;
+            if (File::exists($oldPath)) {
+              File::delete($oldPath);
             }
+
+            $resizedImage = Image::make($file->getRealPath())
+              ->resize(70, 70, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+              });
+
+            $newPath = $ismin->path . "resized70_" . $media->name;
+            $resizedImage->encode('webp')->save($newPath);
+            $ismin->path = $ismin->path;
+            $ismin->name = "resized70_" . $media->name;
+            $ismin->sequence = $this->file_sequences[$this->i];
+            $ismin->extension = $type;
+            $ismin->width = $resizedImage->width();
+            $ismin->height = $resizedImage->height();
+            $ismin->size = File::size($newPath);
+            $ismin->lastmodifiedby = Auth::user()->name;
+            $ismin->save();
           }
-          $this->resizeImage($file, $path,  300, 'main', $media->name, $type);
+
+          $ismaim = $this->product->media()->where('type', 'main')->first();
+          if (!$ismaim) {
+            $this->resizeImage($file, $path, 300, 'main', $media->name, $type, false, $this->file_sequences[$this->i]);
+          } else {
+            $oldPath = $ismaim->path . $ismaim->name;
+            if (File::exists($oldPath)) {
+              File::delete($oldPath);
+            }
+
+            $resizedImage = Image::make($file->getRealPath())
+              ->resize(300, 300, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+              });
+
+            $newPath = $ismaim->path . "resized300_" . $media->name;
+            $resizedImage->encode('webp')->save($newPath);
+            $ismaim->path = $ismaim->path;
+            $ismaim->name = "resized300_" . $media->name;
+            $ismaim->sequence = $this->file_sequences[$this->i];
+            $ismaim->extension = $type;
+            $ismaim->width = $resizedImage->width();
+            $ismaim->height = $resizedImage->height();
+            $ismaim->size = File::size($newPath);
+            $ismaim->lastmodifiedby = Auth::user()->name;
+            $ismaim->save();
+          }
         }
 
-        $this->resizeImage($file, $path, 640, 'full', $media->name, $type);
+
+        $this->resizeImage($file, $path, 640, 'full', $media->name, $type, false, $this->file_sequences[$this->i]);
       }
       $this->i += 1;
     }
     $this->medias = [];
-    $this->initiate = true;
+    $this->initiate = false;
     $this->file_sequences = [];
     $this->file_resize = [];
     session()->flash('notification', [
@@ -304,23 +449,31 @@ class RelatedMediaProduct extends Component
       'title' => 'Success'
     ]);
   }
-  private function resizeImage($file, $path, $size, $type, $name, $extension)
+  private function resizeImage($file, $path, $size, $type, $name, $extension, $external, $sequence)
   {
-    $resizedImage = Image::make($file->getRealPath())
-      ->resize($size, $size, function ($constraint) {
-        $constraint->aspectRatio();
-        $constraint->upsize();
-      });
+    if ($external) {
+      $resizedImage = Image::make($file)
+        ->resize($size, $size, function ($constraint) {
+          $constraint->aspectRatio();
+          $constraint->upsize();
+        });
+    } else {
+
+      $resizedImage = Image::make($file->getRealPath())
+        ->resize($size, $size, function ($constraint) {
+          $constraint->aspectRatio();
+          $constraint->upsize();
+        });
+    }
 
     $resizedImage->encode('webp')->save($path . "resized{$size}_" . $name);
 
     $resizedMedia = new Media();
     $resizedMedia->path = $path;
     $resizedMedia->name = "resized{$size}_" . $name;
-    $resizedMedia->sequence = $this->file_sequences[$this->i];
+    $resizedMedia->sequence = $sequence;
     $resizedMedia->extension = $extension;
-    $resizedMedia->type = strtolower(substr($type, 0, 3));
-    $resizedMedia->external = false;
+    $resizedMedia->type = $type;
     $resizedMedia->width = $resizedImage->width();
     $resizedMedia->height = $resizedImage->height();
     $resizedMedia->size = File::size($path . "resized{$size}_" . $name);

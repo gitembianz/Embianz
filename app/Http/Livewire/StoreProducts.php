@@ -10,7 +10,6 @@ use Livewire\Component;
 use App\Models\Category;
 use App\Models\Cart_Item;
 use Livewire\WithPagination;
-use Illuminate\Support\Facades\Session;
 
 class StoreProducts extends Component
 {
@@ -128,10 +127,11 @@ class StoreProducts extends Component
   public function getProductsProperty()
   {
     $query = Product::name($this->search)->where('active', true)->with([
-      'media.location',
       'product_prices.pricelist',
       'product_prices.pricelist.currency',
-      'media',
+      'media' => function ($query) {
+        $query->where('type', 'main')->take(1); // Filter and limit the media relationship
+      },
       'wishlists' => function ($query) {
         $query->where('session_id', $this->session_id);
       }

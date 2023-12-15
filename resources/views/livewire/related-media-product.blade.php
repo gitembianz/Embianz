@@ -164,51 +164,45 @@
                                     <table class="table table-top">
                                         <thead>
                                             <tr>
-                                                <th class="wid-3">
+                                                <th class="wid-2">
                                                     <div class="table__header--btn">Name</div>
                                                 </th>
                                                 <th class="wid-1">
                                                     <div class="table__header--btn">Sequence</div>
                                                 </th>
-                                                <th class="wid-4">
+                                                <th class="wid-5">
                                                     <div class="table__header--btn">Link</div>
                                                 </th>
                                                 <th class="wid-1">
-                                                    <div class="table__header--btn">Location</div>
+                                                    <div class="table__header--btn">Automatic resize</div>
                                                 </th>
                                                 <th class="wid-1"></th>
                                             </tr>
                                         </thead>
                                     </table>
-                                    <table class="table" style="margin-top: 2rem">
+                                    <table class="table" style="margin-top: 1.5rem">
                                         <tbody>
                                             @for ($i = 1; $i <= $row; $i++)
                                                 <tr wire:key="{{ $i }}">
-                                                    <td class="wid-3">
-                                                        <input required type="text" class="table__edit"
+                                                    <td class="wid-2">
+                                                        <input required placeholder="Media name" type="text"
+                                                            class="table__edit"
                                                             wire:model="file_name.{{ $i }}">
                                                     </td>
                                                     <td class="wid-1">
-                                                        <input required type="number" min="0"
-                                                            class="table__edit"
+                                                        <input placeholder="Ex: 1,2,3.." required type="number"
+                                                            min="0" class="table__edit"
                                                             wire:model="file_sequences.{{ $i }}">
                                                     </td>
-                                                    <td class="wid-4">
-                                                        <input required type="url" class="table__edit"
+                                                    <td class="wid-5">
+                                                        <input placeholder="Media external link" required
+                                                            type="url" class="table__edit"
                                                             wire:model="file_link.{{ $i }}">
                                                     </td>
-                                                    {{-- <td class="wid-1">
-                                                        <select required
-                                                            wire:model="file_locations.{{ $i }}"
-                                                            class="table__edit">
-                                                            @foreach ($locations as $location)
-                                                                <option value="{{ $location->id }}"
-                                                                    @if ($file_locations[$i] == $location->id) selected @endif>
-                                                                    {{ $location->location }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                    </td> --}}
+                                                    <td class="wid-1">
+                                                        <input type="checkbox" class="table__edit"
+                                                            wire:model.defer="file_resize.{{ $i }}">
+                                                    </td>
                                                     <td class="wid-1">
                                                         <div class="table__buttons">
                                                             @if ($i == $row)
@@ -396,11 +390,7 @@
                                             <div class="table__header--btn">Name</div>
                                         </th>
                                     @endif
-                                    {{-- @if ($this->showColumn('Media Location'))
-                                        <th>
-                                            <div class="table__header--btn">Location</div>
-                                        </th>
-                                    @endif --}}
+
                                     @if ($this->showColumn('Sequence'))
                                         <th>
                                             <div class="table__header--btn">Sequence</div>
@@ -437,17 +427,8 @@
                                                     @if (in_array($file->extension, ['jpg', 'jpeg', 'png', 'gif', 'svg', 'jfif', 'webp']))
                                                         <img src="/{{ $file->path . $file->name }}"
                                                             alt="{{ $file->name }}" width="50">
-                                                    @elseif (in_array($file->extension, ['mp4', 'mov', 'avi']))
-                                                        <video src="/{{ $file->path . $file->name }}" width="50"
-                                                            controls="true"></video>
                                                     @else
-                                                        @if ($editedMediaIndex !== $index)
-                                                            <img src="{{ $file->path }}" width="100"
-                                                                height="50" alt="{{ $file->path }}">
-                                                        @else
-                                                            <input type="url" class="table__edit"
-                                                                wire:model.defer="filess.{{ $index }}.path">
-                                                        @endif
+                                                        A problem with media
                                                     @endif
                                                 </td>
                                             @endif
@@ -462,21 +443,6 @@
                                                     @endif
                                                 </td>
                                             @endif
-                                            {{-- @if ($this->showColumn('Media Location'))
-                                                <td data-title="Media Location">
-                                                    @if ($editedMediaIndex !== $index)
-                                                        {{ $file->location->location }}
-                                                    @else
-                                                        <select class="table__edit"
-                                                            wire:model.defer="filess.{{ $index }}.location_id">
-                                                            @foreach ($locations as $location)
-                                                                <option value="{{ $location->id }}">
-                                                                    {{ $location->location }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    @endif
-                                                </td>
-                                            @endif --}}
                                             @if ($this->showColumn('Sequence'))
                                                 <td data-title="Sequence">
                                                     @if ($editedMediaIndex !== $index)

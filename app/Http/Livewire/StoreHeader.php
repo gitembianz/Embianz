@@ -89,10 +89,17 @@ class StoreHeader extends Component
   public function getCartItemsProperty()
   {
     if ($this->cart !== null) {
-      $cartItems = Cart_Item::where('cart_id', $this->cart->id)->with('product.media.location', 'product.product_prices.pricelist.currency')->get();
+      $cartItems = Cart_Item::where('cart_id', $this->cart->id)
+        ->with([
+          'product.media' => function ($query) {
+            $query->where('type', 'min')->take(1); // Filter and limit the media relationship
+          },
+          'product.product_prices.pricelist.currency'
+        ])->get();
 
       return $cartItems;
     }
+
     return collect(); // Return an empty collection if no cart items are found
   }
   public function wishlistshow()
@@ -155,28 +162,35 @@ class StoreHeader extends Component
         'subcategory' => function ($query) {
           $query->whereHas('category', function ($subQuery) {
             $subQuery->where('store_tab', 1);
-          })->with(['category.media.location']);
+          })->with([
+            'category.media' => function ($query) {
+              $query->where('type', 'min')->take(1); // Filter and limit the media relationship
+            }
+          ]);
         }
       ])
       ->limit($limit)->orderby('sequence')
       ->get();
   }
 
+
   public function getObjectsProperty()
   {
-    return $this->objectsQuery->get();
+    return Product::name($this->search)->where('active', true)->with([
+      'media' => function ($query) {
+        $query->where('type', 'min')->take(1); // Filter and limit the media relationship
+      },
+      'product_prices.pricelist.currency'
+    ])->get();
   }
-  public function getObjectsQueryProperty()
-  {
-    return Product::name($this->search)->where('active', true)->with('product_prices.pricelist.currency', 'media.location');
-  }
+
   public function getCatsProperty()
   {
-    return $this->catsQuery->get();
-  }
-  public function getCatsQueryProperty()
-  {
-    return Category::name($this->search)->where('active', true)->with('media.location');
+    return Category::name($this->search)->where('active', true)->with([
+      'media' => function ($query) {
+        $query->where('type', 'min')->take(1); // Filter and limit the media relationship
+      }
+    ])->get();
   }
 
   public function continue()

@@ -22,7 +22,7 @@
         <div class="header__container container">
             <!-------------------------Logo------------------------->
 
-            <a class="logo" href="{{ url("/") }}">
+            <a class="logo" href="{{ url('/') }}">
                 <img src="/images/store/svg/noren-black.svg" alt="Embianz Logo">
             </a>
             <!-----------------------END-Logo----------------------->
@@ -72,12 +72,12 @@
                         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                     </svg>
                 </button>
-                <a class="logo__hidden" href="{{ url("/") }}">
+                <a class="logo__hidden" href="{{ url('/') }}">
                     <img src="/images/store/svg/noren-black.svg" alt="Embianz Logo">
                 </a>
                 <button class="header__btn" wire:click="$set('showcart', true)" id="basketOpen">
                     @if ($cart)
-                        @livewire("cart-quantity", ["cart" => $cart])
+                        @livewire('cart-quantity', ['cart' => $cart])
                     @endif
                     <svg>
                         <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
@@ -127,19 +127,13 @@
                             @foreach ($objects as $product)
                                 <li class="search__item">
                                     <a class="search__link" href="/product/{{ $product->id }}">
-                                        @if (count($product->media) > 0)
-                                            @foreach ($product->media as $media)
-                                                @if ($media->location->location == "search")
-                                                    @if ($media->external)
-                                                        <img src="{{ $media->path }}" alt="{{ $media->path }}">
-                                                    @else
-                                                        <img src="/{{ $media->path }}{{ $media->name }}"
-                                                            alt="{{ $media->path }}">
-                                                    @endif
-                                                    <?php break; ?>
-                                                @endif
-                                            @endforeach
+                                        @if ($product->media->first() != null)
+                                            <img src="/{{ $product->media->first()->path }}/{{ $product->media->first()->name }}"
+                                                alt="{{ $product->media->first()->path }}">
+                                        @else
+                                            <img src="/images/store/default/default70.webp" alt="something wrong">
                                         @endif
+
                                         <div class="search__link--text">
                                             <div class="search__link--top">
                                                 <p>{{ $product->short_description }}</p>
@@ -162,26 +156,19 @@
                                     </a>
                                 </li>
                             @endforeach
+
                         @endif
                         @if (count($cats) > 0)
                             @foreach ($cats as $category)
                                 <li class="search__item">
                                     <a class="search__link" href="/storeproducts/{{ $category->id }}">
-                                        @if (count($category->media) > 0)
-                                            @foreach ($category->media as $media)
-                                                @if ($media->location->location == "search")
-                                                    @if ($media->external)
-                                                        <img src="{{ $media->path }}" alt="{{ $media->path }}">
-                                                    @else
-                                                        <img src="/{{ $media->path }}{{ $media->name }}"
-                                                            alt="{{ $media->path }}">
-                                                    @endif
-                                                    <?php break; ?>
-                                                @endif
-                                            @endforeach
+                                        @if ($category->media->first() != null)
+                                            <img src="/{{ $category->media->first()->path }}/{{ $category->media->first()->name }}"
+                                                alt="{{ $category->media->first()->path }}">
                                         @else
-                                            <img src="/images/store/default/default.svg" alt="something wrong">
+                                            <img src="/images/store/default/default70.webp" alt="something wrong">
                                         @endif
+
                                         <div class="search__link--text">
                                             <div class="search__link--bottom">
                                                 <h4>{{ $category->name }}</h4>
@@ -192,7 +179,7 @@
                             @endforeach
                         @endif
                     @else
-                        <span>{{ __("Niciun element gasit") }}</span>
+                        <span>{{ __('Niciun element gasit') }}</span>
                     @endif
                 </ul>
             @endif
@@ -207,7 +194,7 @@
         <button class="leftbar__hidden--close" wire:click="$set('showcart', false)"></button>
         <div class="leftbar__content" id="basketContent">
             <div class="leftbar__top">
-                <a class="leftbar__button" href="{{ url("/cart") }}">Vizualizare cos de cumparaturi </a>
+                <a class="leftbar__button" href="{{ url('/cart') }}">Vizualizare cos de cumparaturi </a>
                 <button class="leftbar__close" id="basketClose" wire:click="$set('showcart', false)">
                     <svg>
                         <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -227,22 +214,12 @@
                                 <span>
                                     {{ $cartItem->quantity }} x
                                 </span>
-                                @if (count($cartItem->product->media) > 0)
-                                    @foreach ($cartItem->product->media as $media)
-                                        @if ($media->location->location == "main")
-                                            @if ($media->external)
-                                                <img class="cart__list--img" src="{{ $media->path }}"
-                                                    alt="{{ $media->path }}">
-                                            @else
-                                                <img class="cart__list--img"
-                                                    src="/{{ $media->path }}{{ $media->name }}"
-                                                    alt="{{ $media->path }}">
-                                            @endif
-                                            <?php break; ?>
-                                        @endif
-                                    @endforeach
+                                @if ($cartItem->product->media->first())
+                                    <img class="cart__list--img"
+                                        src="/{{ $cartItem->product->media->first()->path }}{{ $cartItem->product->media->first()->name }}"
+                                        alt="{{ $cartItem->product->media->first()->path }}">
                                 @else
-                                    <img class="cart__list--img" src="/images/store/default/default.svg"
+                                    <img class="cart__list--img" src="/images/store/default/default70.webp"
                                         alt="something wrong">
                                 @endif
 
@@ -250,7 +227,7 @@
                                     <h4>{{ $cartItem->product->name }}</h4>
                                     <span>
                                         @php
-                                            $price = number_format($cartItem->product->product_prices->first()->value, 2, ",", ".");
+                                            $price = number_format($cartItem->product->product_prices->first()->value, 2, ',', '.');
                                             $currency = $cartItem->product->product_prices->first()->pricelist->currency->name;
                                         @endphp
                                         @if ($price)
@@ -277,7 +254,7 @@
 
             @if (isset($cartItems) && !$cartItems->isEmpty())
                 <div class="leftbar__total">
-                    <h5 class="leftbar__total--text">Total: <span>{{ number_format($total, 2, ",", ".") }}
+                    <h5 class="leftbar__total--text">Total: <span>{{ number_format($total, 2, ',', '.') }}
                             {{ $currency }}</span></h5>
                     <a class="leftbar__button" wire:click.prevent="continue">Finalizare Comanda</a>
                 </div>
@@ -308,22 +285,12 @@
                         <li class="leftbar__item">
 
                             <a class="leftbar__link wishlist__link" href="/product/{{ $item->product->id }}">
-                                @if ($item->product->media->count() != 0)
-                                    @foreach ($item->product->media as $media)
-                                        @if ($media->location->location == "main")
-                                            @if ($media->external)
-                                                <img class="heart__list--img" src="{{ $media->path }}"
-                                                    alt="{{ $media->path }}">
-                                            @else
-                                                <img class="heart__list--img"
-                                                    src="/{{ $media->path }}{{ $media->name }}"
-                                                    alt="{{ $media->path }}">
-                                            @endif
-                                            <?php break; ?>
-                                        @endif
-                                    @endforeach
+                                @if ($item->product->media->first())
+                                    <img class="cart__list--img"
+                                        src="/{{ $item->product->media->first()->path }}{{ $item->product->media->first()->name }}"
+                                        alt="{{ $item->product->media->first()->path }}">
                                 @else
-                                    <img class="heart__list--img" src="/images/store/default/default.svg"
+                                    <img class="heart__list--img" src="/images/store/default/default70.webp"
                                         alt="something wrong">
                                 @endif
                                 <div class="leftbar__link--text">
@@ -366,7 +333,7 @@
                                 <a class="dropmenu__button--link" href="/storeproducts/{{ $category->id }}">
                                     @if ($category->media->count() != 0)
                                         @foreach ($category->media as $media)
-                                            @if ($media->location->location == "main")
+                                            @if ($media->location->location == 'main')
                                                 @if ($media->external)
                                                     <img src="{{ $media->path }}" alt="{{ $media->path }}">
                                                 @else
@@ -388,20 +355,11 @@
                             <div class="dropmenu__list">
                                 @foreach ($category->subcategory as $subcategory)
                                     <a class="dropmenu__link" href="/storeproducts/{{ $subcategory->category_id }}">
-                                        @if ($subcategory->category->media->count() != 0)
-                                            @foreach ($subcategory->category->media as $media)
-                                                @if ($media->location->location == "main")
-                                                    @if ($media->external)
-                                                        <img src="{{ $media->path }}" alt="{{ $media->path }}">
-                                                    @else
-                                                        <img src="/{{ $media->path }}{{ $media->name }}"
-                                                            alt="{{ $media->path }}">
-                                                    @endif
-                                                    <?php break; ?>
-                                                @endif
-                                            @endforeach
+                                        @if ($subcategory->category->media->first() != null)
+                                            <img src="/{{ $subcategory->category->media->first()->path }}/{{ $subcategory->category->media->first()->name }}"
+                                                alt="{{ $subcategory->category->media->first()->path }}">
                                         @else
-                                            <img src="/images/store/default/default.svg" alt="something wrong">
+                                            <img src="/images/store/default/default70.webp" alt="something wrong">
                                         @endif
                                         <h4>{{ $subcategory->category->name }}</h4>
                                     </a>
@@ -411,20 +369,11 @@
                     @else
                         <!-------------------- Dropdown (Menu) -------------------->
                         <a class="menu__link" href="/storeproducts/{{ $category->id }}">
-                            @if ($category->media->count() != 0)
-                                @foreach ($category->media as $media)
-                                    @if ($media->location->location == "main")
-                                        @if ($media->external)
-                                            <img src="{{ $media->path }}" alt="{{ $media->path }}">
-                                        @else
-                                            <img src="/{{ $media->path }}{{ $media->name }}"
-                                                alt="{{ $media->path }}">
-                                        @endif
-                                        <?php break; ?>
-                                    @endif
-                                @endforeach
+                            @if ($category->media->first() != null)
+                                <img src="/{{ $category->media->first()->path }}/{{ $category->media->first()->name }}"
+                                    alt="{{ $category->media->first()->path }}">
                             @else
-                                <img src="/images/store/default/default.svg" alt="something wrong">
+                                <img src="/images/store/default/default70.webp" alt="something wrong">
                             @endif
                             <h4> {{ $category->name }}</h4>
                         </a>

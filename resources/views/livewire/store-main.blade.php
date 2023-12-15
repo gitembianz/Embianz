@@ -18,20 +18,17 @@
                     <div class="main-slider__wrapper">
                         @foreach ($subcategories as $item)
                             <div class="main-slider__slide">
-                                @if ($item->category->media)
-                                    @if ($item->category->media->first()->external)
-                                        <img src="{{ $item->category->media->first()->path }}" draggable="false"
-                                            alt="{{ $item->category->media->first()->path }}">
-                                    @else
-                                        <img src="/{{ $item->category->media->first()->path }}{{ $item->category->media->first()->name }}"
-                                            draggable="false" alt="{{ $item->category->media->first()->path }}">
-                                    @endif
+                                @if ($item->category->media->first() != null)
+                                    <img src="/{{ $item->category->media->first()->path }}/{{ $item->category->media->first()->name }}"
+                                        alt="{{ $item->category->media->first()->path }}">
+                                @else
+                                    <img src="/images/store/default/default.webp" alt="something wrong">
                                 @endif
+
                                 <div class="main-slider__text container">
                                     <h3>{{ $item->category->name }}</h3>
                                     <p>{{ $item->category->short_description }}</p>
-                                    <a class="main-slider__link"
-                                        href="/storeproducts/{{ $item->id }}">Acceseaza!</a>
+                                    <a class="main-slider__link" href="/storeproducts/{{ $item->id }}">Acceseaza!</a>
                                 </div>
                             </div>
                         @endforeach
@@ -59,7 +56,7 @@
                 <h2 class="section__title">Descoperă produsele noastre populare!</h2>
                 <p class="section__text">Explorează colecția noastră de produse și găsește
                     accesoriile perfecte pentru a-ți completa stilul.
-                    <br><a href="{{ url("/storeproducts") }}">Vezi produsele!</a>
+                    <br><a href="{{ url('/storeproducts') }}">Vezi produsele!</a>
                 </p>
             </div>
         </section>
@@ -74,26 +71,16 @@
                             <div class="card-slider__slide">
                                 <div class="card" role="listitem">
                                     <a href="/product/{{ $product->id }}">
-                                        @if ($product->media->count() != 0)
-                                            @foreach ($product->media as $media)
-                                                @if ($media->location->location == "main")
-                                                    @if ($media->external)
-                                                        <img class="card-image" src="{{ $media->path }}"
-                                                            draggable="false" alt="{{ $media->path }}">
-                                                    @else
-                                                        <img class="card-image"
-                                                            src="/{{ $media->path }}{{ $media->name }}"
-                                                            draggable="false" alt="{{ $media->path }}">
-                                                    @endif
-                                                    <?php break; ?>
-                                                @endif
-                                            @endforeach
+                                        @if ($product->media->first() != null)
+                                            <img class="card-image"
+                                                src="/{{ $product->media->first()->path }}/{{ $product->media->first()->name }}"
+                                                alt="{{ $product->media->first()->path }}">
                                         @else
-                                            <img class="card-image" src="/images/store/default/default.svg"
-                                                draggable="false" alt="something wrong">
+                                            <img class="card-image" src="/images/store/default/default300.webp"
+                                                alt="something wrong">
                                         @endif
                                     </a>
-                                    @livewire("product-wishlist-button", ["product" => $product], key($product->id))
+                                    @livewire('product-wishlist-button', ['product' => $product], key($product->id))
                                     <div class="card-info">
                                         <div class="card-text">
                                             <span>{{ $product->short_description }}</span>
@@ -102,10 +89,10 @@
                                             <h3>{{ $product->name }}</h3>
                                             <p>
                                                 @if ($product->product_prices->first())
-                                                    {{ number_format($product->product_prices->first()->value, 2, ",", ".") }}
+                                                    {{ number_format($product->product_prices->first()->value, 2, ',', '.') }}
                                                     {{ $product->product_prices->first()->pricelist->currency->name }}
                                                 @else
-                                                    {{ __("Indisponibil") }}
+                                                    {{ __('Indisponibil') }}
                                                 @endif
                                             </p>
                                         </div>
