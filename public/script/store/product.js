@@ -161,12 +161,36 @@ function modalProduct(modalId, sliderId) {
       modal.classList.remove("active");
       body.style.overflow = "auto";
     });
-
     slides.forEach((slide, index) => {
       slide.addEventListener("click", () => {
-        modalContent.innerHTML = slide.innerHTML;
-        modal.classList.add("active");
-        body.style.overflow = "hidden";
+        // Găsește elementul <img> în cadrul fiecărui slide
+        var imgElement = slide.querySelector("img");
+
+        // Verifică dacă elementul <img> există
+        if (imgElement) {
+          // Accesează atributul data-img-src
+          var dataSrcValue = imgElement.getAttribute("data-img-src");
+
+          // Creează un nou element <img>
+          var newImgElement = document.createElement("img");
+
+          // Setează atributul src al noului element <img> la valoarea din data-img-src
+          newImgElement.src = dataSrcValue;
+
+          // Adaugă noul element <img> în conținutul modalului
+          modalContent.innerHTML = "";
+          modalContent.appendChild(newImgElement);
+
+          // Adaugă clasa "active" la modal
+          modal.classList.add("active");
+
+          // Blochează scroll-ul paginii
+          body.style.overflow = "hidden";
+        } else {
+          console.error(
+            "Elementul <img> nu a fost găsit în cadrul slide-ului."
+          );
+        }
       });
     });
 

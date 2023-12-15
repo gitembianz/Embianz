@@ -1818,16 +1818,17 @@ header {
   border-radius: 5px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   transition: all 0.3s ease-in-out;
   font-weight: 500;
   flex: 1;
   gap: 15px;
   background: #333333;
   color: #ffffff;
+  padding: 10px;
 }
 .menu__close:hover {
-  background: #333333, 10%;
+  background: #1a1a1a;
 }
 .menu__close > svg {
   stroke: #ffffff;
@@ -3724,6 +3725,7 @@ header {
   border: none;
   background: transparent;
   border-bottom: 1.5px solid #333333;
+  border-radius: 0;
   color: #333333;
   font-size: 16px;
   font-weight: 400;

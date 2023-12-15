@@ -628,11 +628,7 @@
                             @endif
                         @endif
                     @endforeach
-                    <label class="checkout__terms">
-                        <input type="checkbox" name="terms" id="terms">
-                        <span>Sunt de acord cu termeni si conditii</span>
-                    </label>
-                    <div class="checkout__error">A iesit o eroare oarecare. Te rugam sa verifici.</div>
+
                 @endif
                 <!------------------ End Step First -------------------->
                 <!------------------------------------------------------>
@@ -649,6 +645,8 @@
                     <div class="section__header">
                         <h2 class="section__title">Verificați detaliile dumneavoastră.</h2>
                     </div>
+
+                    <div class="checkout__error">A iesit o eroare oarecare. Te rugam sa verifici.</div>
                     <div class="total__container">
                         <!---------------------------------------------------->
                         <!-------------- Checkout List of Forms -------------->
@@ -899,6 +897,10 @@
                         <!------------ End Checkout List of Forms ------------>
                         <!---------------------------------------------------->
                     </div>
+                    <label class="checkout__terms">
+                        <input type="checkbox" name="terms" id="terms">
+                        <span>Sunt de acord cu termeni si conditii</span>
+                    </label>
                 @endif
                 <!------------------- End Step Middle ------------------>
                 <!------------------------------------------------------>
