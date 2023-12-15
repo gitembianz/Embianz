@@ -1,10 +1,10 @@
 <div id="store-show-product">
     <section>
         <div class="breadcrumbs container">
-            <a class="breadcrumbs__link" href="{{ url("/") }}">
+            <a class="breadcrumbs__link" href="{{ url('/') }}">
                 Acasa
             </a>
-            <a class="breadcrumbs__link" href="{{ url("/storeproducts") }}">
+            <a class="breadcrumbs__link" href="{{ url('/storeproducts') }}">
                 Produse
             </a>
             <a class="breadcrumbs__link">{{ $product->name }}</a>
@@ -15,21 +15,21 @@
         <div class="product-slider">
             <div class="product-slider__center">
 
-              <div class="product-slider__wrapper">
-                    @foreach ($product->media as $media)
-                        @if ($media->location->location == "main" || $media->location->location == "details")
+                <div class="product-slider__wrapper">
+                    @if ($product->media->count() != 0)
+                        @foreach ($product->media->where('type', 'full') as $media)
                             <div class="product-slider__slide">
-                                @if ($media->external)
-                                    <img src="{{ $media->path }}" alt="{{ $media->path }}"
-                                        data-img-src="exemplu de text">
-                                @else
-                                    <img src="/{{ $media->path }}{{ $media->name }}" alt="{{ $media->path }}"
-                                        data-img-src="exemplu de text">
-                                @endif
+                                <img src="/{{ $media->path }}{{ $media->name }}" alt="{{ $media->path }}"
+                                    data-img-src="/{{ $product->media->where('type', 'original')->where('sequence', $media->sequence)->first()->path }}{{ $product->media->where('type', 'original')->where('sequence', $media->sequence)->first()->name }}">
                             </div>
-                        @endif
-                    @endforeach
+                        @endforeach
+                    @else
+                        <div class="product-slider__slide">
+                            <img src="/images/store/default/default.webp" alt="something wrong">
+                        </div>
+                    @endif
                 </div>
+
                 <div class="product-slider__navigation">
                     <button class="product-slider__prev" aria-label="Previous slide">
                         <svg>
@@ -72,13 +72,13 @@
                     <span class="product__subtitle">{{ $product->short_description }}</span>
                     <h1 class="product__title">{{ $product->name }}</h1>
                 </div>
-                @livewire("wishlist-button", ["product" => $product])
+                @livewire('wishlist-button', ['product' => $product])
             </div>
             <div class="product__price">
                 <span>Pret</span>
                 <span>
                     @if ($product->product_prices->first() !== null)
-                        {{ number_format($product->product_prices->first()->value, 2, ",", ".") }}
+                        {{ number_format($product->product_prices->first()->value, 2, ',', '.') }}
                         {{ $product->product_prices->first()->pricelist->currency->name }}
                     @else
                         Pret Indisponibil
@@ -88,7 +88,7 @@
             @if ($product->product_prices->first() !== null)
                 <span class="product__tva">
                     Pretul include taxa TVA de
-                    {{ number_format($product->product_prices->first()->tva_percent, 2, ",", ".") }}%
+                    {{ number_format($product->product_prices->first()->tva_percent, 2, ',', '.') }}%
                 </span>
                 <div class="quantity">
                     <span>Cantitate</span>

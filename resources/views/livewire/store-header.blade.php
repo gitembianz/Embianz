@@ -369,20 +369,11 @@
                     @else
                         <!-------------------- Dropdown (Menu) -------------------->
                         <a class="menu__link" href="/storeproducts/{{ $category->id }}">
-                            @if ($category->media->count() != 0)
-                                @foreach ($category->media as $media)
-                                    @if ($media->location->location == 'main')
-                                        @if ($media->external)
-                                            <img src="{{ $media->path }}" alt="{{ $media->path }}">
-                                        @else
-                                            <img src="/{{ $media->path }}{{ $media->name }}"
-                                                alt="{{ $media->path }}">
-                                        @endif
-                                        <?php break; ?>
-                                    @endif
-                                @endforeach
+                            @if ($category->media->first() != null)
+                                <img src="/{{ $category->media->first()->path }}/{{ $category->media->first()->name }}"
+                                    alt="{{ $category->media->first()->path }}">
                             @else
-                                <img src="/images/store/default/default.svg" alt="something wrong">
+                                <img src="/images/store/default/default70.webp" alt="something wrong">
                             @endif
                             <h4> {{ $category->name }}</h4>
                         </a>
