@@ -18,7 +18,7 @@ header {
   gap: 30px;
 
   @media (max-width: map-get($grid-breakpoints, sm)) {
-    gap: 0;
+    gap: 15px;
   }
 }
 
@@ -33,6 +33,7 @@ header {
   @media (max-width: map-get($grid-breakpoints, lg)) {
     padding: 0;
     width: 100%;
+    gap: 25px;
   }
 }
 
@@ -54,7 +55,7 @@ header {
 
 .header__count {
   position: absolute;
-  background: $text;
+  background: #d2042d;
   color: $background;
   font-size: 10px;
   width: 20px;

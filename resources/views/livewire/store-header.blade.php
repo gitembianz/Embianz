@@ -22,7 +22,7 @@
         <div class="header__container container">
             <!-------------------------Logo------------------------->
 
-            <a class="logo" href="{{ url('/') }}">
+            <a class="logo" href="{{ url("/") }}">
                 <img src="/images/store/svg/noren-black.svg" alt="Embianz Logo">
             </a>
             <!-----------------------END-Logo----------------------->
@@ -72,20 +72,9 @@
                         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                     </svg>
                 </button>
-                <a class="logo__hidden" href="{{ url('/') }}">
+                <a class="logo__hidden" href="{{ url("/") }}">
                     <img src="/images/store/svg/noren-black.svg" alt="Embianz Logo">
                 </a>
-                <button class="header__btn" wire:click="$set('showcart', true)" id="basketOpen">
-                    @if ($cart)
-                        @livewire('cart-quantity', ['cart' => $cart])
-                    @endif
-                    <svg>
-                        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-                        <line x1="3" y1="6" x2="21" y2="6"></line>
-                        <path d="M16 10a4 4 0 0 1-8 0"></path>
-                    </svg>
-                </button>
-
                 <button class="header__btn" wire:click="$set('showwis', true)" id="wishOpen">
                     @if ($wishlists && $wishlists->count() > 0)
                         <div class="header__count" id="wishlistCount">{{ count($wishlists) }}</div>
@@ -94,6 +83,16 @@
                         <path
                             d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
                         </path>
+                    </svg>
+                </button>
+                <button class="header__btn" wire:click="$set('showcart', true)" id="basketOpen">
+                    @if ($cart)
+                        @livewire("cart-quantity", ["cart" => $cart])
+                    @endif
+                    <svg>
+                        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <path d="M16 10a4 4 0 0 1-8 0"></path>
                     </svg>
                 </button>
             </div>
@@ -179,7 +178,7 @@
                             @endforeach
                         @endif
                     @else
-                        <span>{{ __('Niciun element gasit') }}</span>
+                        <span>{{ __("Niciun element gasit") }}</span>
                     @endif
                 </ul>
             @endif
@@ -194,7 +193,7 @@
         <button class="leftbar__hidden--close" wire:click="$set('showcart', false)"></button>
         <div class="leftbar__content" id="basketContent">
             <div class="leftbar__top">
-                <a class="leftbar__button" href="{{ url('/cart') }}">Vizualizare cos de cumparaturi </a>
+                <a class="leftbar__button" href="{{ url("/cart") }}">Vizualizare cos de cumparaturi </a>
                 <button class="leftbar__close" id="basketClose" wire:click="$set('showcart', false)">
                     <svg>
                         <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -227,7 +226,7 @@
                                     <h4>{{ $cartItem->product->name }}</h4>
                                     <span>
                                         @php
-                                            $price = number_format($cartItem->product->product_prices->first()->value, 2, ',', '.');
+                                            $price = number_format($cartItem->product->product_prices->first()->value, 2, ",", ".");
                                             $currency = $cartItem->product->product_prices->first()->pricelist->currency->name;
                                         @endphp
                                         @if ($price)
@@ -254,7 +253,7 @@
 
             @if (isset($cartItems) && !$cartItems->isEmpty())
                 <div class="leftbar__total">
-                    <h5 class="leftbar__total--text">Total: <span>{{ number_format($total, 2, ',', '.') }}
+                    <h5 class="leftbar__total--text">Total: <span>{{ number_format($total, 2, ",", ".") }}
                             {{ $currency }}</span></h5>
                     <a class="leftbar__button" wire:click.prevent="continue">Finalizare Comanda</a>
                 </div>
@@ -333,7 +332,7 @@
                                 <a class="dropmenu__button--link" href="/storeproducts/{{ $category->id }}">
                                     @if ($category->media->count() != 0)
                                         @foreach ($category->media as $media)
-                                            @if ($media->location->location == 'main')
+                                            @if ($media->location->location == "main")
                                                 @if ($media->external)
                                                     <img src="{{ $media->path }}" alt="{{ $media->path }}">
                                                 @else
