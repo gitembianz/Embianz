@@ -202,15 +202,17 @@ class RelatedMediaProduct extends Component
       $imageInfo = getimagesizefromstring($fileContent);
       //extension
       $fileExtension = image_type_to_extension($imageInfo[2], false);
-      $media = new Media();
-      if (file_exists($path . $this->file_name[$i])) {
+      $name = $this->file_name[$i] . '.' . $fileExtension;
+      if (file_exists($path . $name)) {
         $this->j = 1;
         while (file_exists($path . $this->file_name[$i] . '(' . $this->j . ').' . $fileExtension)) {
           $this->j++;
         }
-        $media->name = $this->file_name[$i] . '(' . $this->j . ').' . $fileExtension;
+        $name = $this->file_name[$i] . '(' . $this->j . ').' . $fileExtension;
       }
-      Storage::disk('public_upload')->put($path . $media->name, $fileContent);
+      Storage::disk('public_upload')->put($path . $name, $fileContent);
+      $media = new Media();
+      $media->name = $name;
       $media->extension = $fileExtension;
       $media->width = $imageInfo[0];
       $media->height =  $imageInfo[1];
@@ -224,7 +226,7 @@ class RelatedMediaProduct extends Component
       $this->product->media()->attach($media->id);
 
       //Resize system
-      $filePath = $path . $media->name;
+      $filePath = $path . $name;
       $file = Storage::disk('public_upload')->get($filePath);
 
       // Set the file content
@@ -240,7 +242,7 @@ class RelatedMediaProduct extends Component
               $path,
               70,
               'min',
-              $media->name,
+              $name,
               $fileExtension,
               true,
               $this->file_sequences[$i]
@@ -257,10 +259,10 @@ class RelatedMediaProduct extends Component
                 $constraint->upsize();
               });
 
-            $newPath = $ismin->path . "resized70_" . $media->name;
+            $newPath = $ismin->path . "resized70_" . $name;
             $resizedImage->encode('webp')->save($newPath);
             $ismin->path = $ismin->path;
-            $ismin->name = "resized70_" . $media->name;
+            $ismin->name = "resized70_" . $name;
             $ismin->sequence = $this->file_sequences[$i];
             $ismin->extension = $fileExtension;
             $ismin->width = $resizedImage->width();
@@ -272,7 +274,7 @@ class RelatedMediaProduct extends Component
 
           $ismaim = $this->product->media()->where('type', 'main')->first();
           if (!$ismaim) {
-            $this->resizeImage($file, $path, 300, 'main', $media->name, $fileExtension, true, $this->file_sequences[$i]);
+            $this->resizeImage($file, $path, 300, 'main', $name, $fileExtension, true, $this->file_sequences[$i]);
           } else {
             $oldPath = $ismaim->path . $ismaim->name;
             if (File::exists($oldPath)) {
@@ -285,10 +287,10 @@ class RelatedMediaProduct extends Component
                 $constraint->upsize();
               });
 
-            $newPath = $ismaim->path . "resized300_" . $media->name;
+            $newPath = $ismaim->path . "resized300_" . $name;
             $resizedImage->encode('webp')->save($newPath);
             $ismaim->path = $ismaim->path;
-            $ismaim->name = "resized300_" . $media->name;
+            $ismaim->name = "resized300_" . $name;
             $ismaim->sequence = $this->file_sequences[$i];
             $ismaim->extension = $fileExtension;
             $ismaim->width = $resizedImage->width();
@@ -300,7 +302,7 @@ class RelatedMediaProduct extends Component
         }
 
 
-        $this->resizeImage($file, $path, 640, 'full', $media->name, $fileExtension, true, $this->file_sequences[$i]);
+        $this->resizeImage($file, $path, 640, 'full', $name, $fileExtension, true, $this->file_sequences[$i]);
       }
 
 

@@ -25,20 +25,13 @@
                     @foreach ($cartItems as $cartItem)
                         <div class="basket__product">
                             <div class="basket__top">
-                                @if (count($cartItem->product->media) > 0)
-                                    @foreach ($cartItem->product->media as $media)
-                                        @if ($media->location->location == 'main')
-                                            @if ($media->external)
-                                                <img src="{{ $media->path }}" alt="{{ $media->path }}">
-                                            @else
-                                                <img src="/{{ $media->path }}{{ $media->name }}"
-                                                    alt="{{ $media->path }}">
-                                            @endif
-                                            <?php break; ?>
-                                        @endif
-                                    @endforeach
+                                @if ($cartItem->product->media->first())
+                                    <img class="cart__list--img"
+                                        src="/{{ $cartItem->product->media->first()->path }}{{ $cartItem->product->media->first()->name }}"
+                                        alt="{{ $cartItem->product->media->first()->path }}">
                                 @else
-                                    <img src="/images/store/default/default.svg" alt="something wrong">
+                                    <img class="cart__list--img" src="/images/store/default/default70.webp"
+                                        alt="something wrong">
                                 @endif
                                 <div>
                                     <a href="/product/{{ $cartItem->product->id }}"

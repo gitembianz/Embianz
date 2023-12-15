@@ -16,7 +16,7 @@
             <div class="product-slider__center">
 
                 <div class="product-slider__wrapper">
-                    @foreach ($product->media as $media)
+                    {{-- @foreach ($product->media as $media)
                         @if ($media->location->location == 'main' || $media->location->location == 'details')
                             <div class="product-slider__slide">
                                 @if ($media->external)
@@ -24,9 +24,12 @@
                                 @else
                                     <img src="/{{ $media->path }}{{ $media->name }}" alt="{{ $media->path }}">
                                 @endif
-                            </div>
-                        @endif
-                    @endforeach
+                            @else --}}
+                    <div class="product-slider__slide">
+                        <img src="/images/store/default/default640.webp" alt="something wrong">
+                    </div>
+                    {{-- @endif
+                    @endforeach --}}
                 </div>
                 <div class="product-slider__navigation">
                     <button class="product-slider__prev" aria-label="Previous slide">
