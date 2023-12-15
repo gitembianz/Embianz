@@ -140,10 +140,12 @@ input[type='checkbox'] {
 
   @media (max-width: map-get($grid-breakpoints, lg)) {
     display: block;
+    padding: 15px;
+    width: 100%;
   }
 
   &>img {
-    width: auto;
+    width: 100%;
     height: 100%;
     object-fit: contain;
     aspect-ratio: 2/1;
