@@ -1493,6 +1493,7 @@ header {
   flex: 1;
   text-wrap: nowrap;
   word-break: break-word;
+  white-space: nowrap;
   display: flex;
   align-items: center;
   justify-content: center;
