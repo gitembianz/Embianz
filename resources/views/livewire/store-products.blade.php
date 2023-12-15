@@ -74,10 +74,11 @@
                 <div @if ($loop->last) id="last_record" @endif class="card" role="listitem">
                     <a href="/product/{{ $product->id }}">
                         @if ($product->media->first() != null)
-                            <img src="/{{ $product->media->first()->path }}/{{ $product->media->first()->name }}"
+                            <img class="card-image"
+                                src="/{{ $product->media->first()->path }}/{{ $product->media->first()->name }}"
                                 alt="{{ $product->media->first()->path }}">
                         @else
-                            <img src="/images/store/default/default300.webp" alt="something wrong">
+                            <img class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
                         @endif
                     </a>
                     <?php if ($product->product_prices->count() != 0) {

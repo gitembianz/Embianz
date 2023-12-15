@@ -121,7 +121,8 @@ class StoreShowProduct extends Component
   {
     return Product::where('id', $this->productId)->with([
       'media' => function ($query) {
-        $query->where('type', 'full'); // Filter and limit the media relationship
+        $query->whereIn('type', ['full', 'original']) // Include both types
+          ->orderBy('sequence'); // Order by sequence
       },
       'product_prices' => function ($query) {
         $query->with('pricelist.currency');
