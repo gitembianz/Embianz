@@ -73,22 +73,11 @@
             @foreach ($products as $product)
                 <div @if ($loop->last) id="last_record" @endif class="card" role="listitem">
                     <a href="/product/{{ $product->id }}">
-                        @if (count($product->media) > 0)
-                            @foreach ($product->media as $media)
-                                @if ($media->location->location == 'main')
-                                    @if ($media->external)
-                                        <img class="card-image" src="{{ $media->path }}" draggable="false"
-                                            alt="{{ $media->path }}">
-                                    @else
-                                        <img class="card-image" src="/{{ $media->path }}{{ $media->name }}"
-                                            draggable="false" alt="{{ $media->path }}">
-                                    @endif
-                                    <?php break; ?>
-                                @endif
-                            @endforeach
+                        @if ($product->media->first() != null)
+                            <img src="/{{ $product->media->first()->path }}/{{ $product->media->first()->name }}"
+                                alt="{{ $product->media->first()->path }}">
                         @else
-                            <img class="card-image" src="/images/store/default/default.svg" draggable="false"
-                                alt="something wrong">
+                            <img src="/images/store/default/default300.webp" alt="something wrong">
                         @endif
                     </a>
                     <?php if ($product->product_prices->count() != 0) {

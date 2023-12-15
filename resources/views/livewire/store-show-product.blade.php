@@ -15,7 +15,7 @@
         <div class="product-slider">
             <div class="product-slider__center">
 
-                <div class="product-slider__wrapper">
+              <div class="product-slider__wrapper">
                     @foreach ($product->media as $media)
                         @if ($media->location->location == "main" || $media->location->location == "details")
                             <div class="product-slider__slide">

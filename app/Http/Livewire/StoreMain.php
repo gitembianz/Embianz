@@ -10,7 +10,6 @@ use App\Models\Category;
 use App\Models\Cart_Item;
 use App\Models\Store_Settings;
 use App\Models\Subcategory;
-use Illuminate\Support\Facades\Session;
 
 class StoreMain extends Component
 {
@@ -46,7 +45,9 @@ class StoreMain extends Component
   {
     return $this->popproductsQuery
       ->with([
-        'media.location',
+        'media' => function ($query) {
+          $query->where('type', 'main')->take(1); // Filter and limit the media relationship
+        },
         'product_prices' => function ($query) {
           $query->with('pricelist.currency');
         },
@@ -80,10 +81,8 @@ class StoreMain extends Component
             $query->select('id', 'name', 'short_description');
           },
           'category.media' => function ($query) {
-            $query->whereHas('location', function ($locationQuery) {
-              $locationQuery->where('location', 'details');
-            })->select('external', 'path', 'name');
-          },
+            $query->where('type', 'original')->take(1); // Filter and limit the media relationship
+          }
         ])
         ->get();
     }

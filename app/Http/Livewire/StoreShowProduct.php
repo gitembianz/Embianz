@@ -7,7 +7,6 @@ use App\Models\Cart_Item;
 use App\Models\Status;
 use App\Models\Product;
 use Livewire\Component;
-use Illuminate\Support\Facades\Session;
 
 
 class StoreShowProduct extends Component
@@ -120,10 +119,14 @@ class StoreShowProduct extends Component
   }
   public function getProductProperty()
   {
-    return $this->productQuery;
-  }
-  public function getProductQueryProperty()
-  {
-    return Product::find($this->productId);
+    return Product::where('id', $this->productId)->with([
+      'media' => function ($query) {
+        $query->where('type', 'full'); // Filter and limit the media relationship
+      },
+      'product_prices' => function ($query) {
+        $query->with('pricelist.currency');
+      },
+      'wishlists'
+    ])->first();
   }
 }

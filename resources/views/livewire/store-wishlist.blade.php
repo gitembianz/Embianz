@@ -21,19 +21,11 @@
                 @foreach ($wishlistitems as $product)
                     <div class="basket__product">
                         <div class="basket__top">
-                            @if (count($product->media) > 0)
-                                @foreach ($product->media as $media)
-                                    @if ($media->location->location == "main")
-                                        @if ($media->external)
-                                            <img src="{{ $media->path }}" alt="{{ $media->path }}">
-                                        @else
-                                            <img src="/{{ $media->path }}{{ $media->name }}" alt="{{ $media->path }}">
-                                        @endif
-                                        <?php break; ?>
-                                    @endif
-                                @endforeach
+                            @if ($product->media->first() != null)
+                                <img src="/{{ $product->media->first()->path }}/{{ $product->media->first()->name }}"
+                                    alt="{{ $product->media->first()->path }}">
                             @else
-                                <img src="/images/store/default/default.svg"alt="something wrong">
+                                <img src="/images/store/default/default70.webp" alt="something wrong">
                             @endif
                             <div>
                                 <span class="basket__price">
