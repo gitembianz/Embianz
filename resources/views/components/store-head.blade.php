@@ -7,10 +7,9 @@
         <title>{{ $title }}</title>
         <meta name="description"
             content="Ecosticle.ro is a website dedicated to providing eco-friendly products for a sustainable lifestyle. Shop our wide range of environmentally-friendly products including reusable items, zero-waste essentials, and more.">
-        <script src="/script/store/head.js"></script>
         <link rel="stylesheet" type="text/css" href="/dist/css/loading-screen.css">
         <link rel="icon" type="image/x-icon" href="/images/store/svg/noren-icon.svg">
-        <link rel="stylesheet" type="text/css" href="/dist/css/store.css" defer>
+        <link rel="stylesheet" type="text/css" href="/dist/css/store.css">
         @livewireStyles
     </head>
 
@@ -20,4 +19,6 @@
         <div class="loading-logo" id="loadingLogo">
             <img src="/images/store/svg/noren-black.svg" alt="logo-black">
         </div>
+        <script src="/script/store/head.js"></script>
+
         <!-------------------- End Loading Logo -------------------->

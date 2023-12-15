@@ -25,6 +25,7 @@ function displayLoading() {
     }
   }
 }
-//<---------------------- End Display Loading -------------------------->
+
+// Afișează banner-ul imediat după încărcarea scripturilor în head
 displayLoading();
-window.onload = displayLoading;
+//<---------------------- End Display Loading -------------------------->
