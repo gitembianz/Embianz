@@ -2424,6 +2424,33 @@ header {
   background: #333333;
 }
 
+.product {
+  position: relative;
+}
+
+.flying-img {
+  position: absolute;
+  animation: fly_to_cart 1.5s ease-in-out;
+  width: 150px;
+  height: 150px;
+  aspect-ratio: 1/1;
+  object-fit: contain;
+  border-radius: 50%;
+  user-select: none;
+  cursor: pointer;
+}
+
+@keyframes fly_to_cart {
+  0% {
+    left: 0px;
+    top: 0px;
+  }
+  100% {
+    left: calc(var(--left) + 30px);
+    top: calc(var(--top) + 30px);
+    transform: scale(0.2);
+  }
+}
 .catalogue {
   display: grid;
   gap: 30px;
