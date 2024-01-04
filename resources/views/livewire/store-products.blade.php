@@ -5,10 +5,10 @@
     <!------------------------Breadcrumbs----------------------->
     <section>
         <div class="breadcrumbs container">
-            <a class="breadcrumbs__link" href="{{ url('/') }}">
+            <a class="breadcrumbs__link" href="{{ url("/") }}">
                 Acasa
             </a>
-            <a class="breadcrumbs__link" href="{{ url('/storeproducts') }}">
+            <a class="breadcrumbs__link" href="{{ url("/storeproducts") }}">
                 Produse
             </a>
             <!-------------------If Category is appear------------------>
@@ -71,66 +71,69 @@
             <p>Nu au fost produse gasite</p>
         @else
             @foreach ($products as $product)
-                <div @if ($loop->last) id="last_record" @endif class="card" role="listitem">
-                    <a href="/product/{{ $product->id }}">
-                        @if ($product->media->first() != null)
-                            <img class="card-image"
-                                src="/{{ $product->media->first()->path }}/{{ $product->media->first()->name }}"
-                                alt="{{ $product->media->first()->path }}">
-                        @else
-                            <img class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
-                        @endif
-                    </a>
-                    <?php if ($product->product_prices->count() != 0) {
-                        $price = number_format($product->product_prices->first()->value, 2, ',', '.');
-                    } else {
-                        $price = null;
-                    }
-                    ?>
+                <div class="product">
+                    <div @if ($loop->last) id="last_record" @endif class="card" role="listitem">
+                        <a href="/product/{{ $product->id }}">
+                            @if ($product->media->first() != null)
+                                <img class="card-image"
+                                    src="/{{ $product->media->first()->path }}/{{ $product->media->first()->name }}"
+                                    alt="{{ $product->media->first()->path }}">
+                            @else
+                                <img class="card-image" src="/images/store/default/default300.webp"
+                                    alt="something wrong">
+                            @endif
+                        </a>
+                        <?php if ($product->product_prices->count() != 0) {
+                            $price = number_format($product->product_prices->first()->value, 2, ",", ".");
+                        } else {
+                            $price = null;
+                        }
+                        ?>
 
-                    @if ($price)
-                        {{-- Out- negru // save - rosu --}}
-                        @if ($product->quantity < $quantity && $product->quantity > 0)
-                            <p class="card-status out">
-                                Ultimele produse!
-                            </p>
-                        @elseif($product->quantity == 0)
+                        @if ($price)
+                            {{-- Out- negru // save - rosu --}}
+                            @if ($product->quantity < $quantity && $product->quantity > 0)
+                                <p class="card-status out">
+                                    Ultimele produse!
+                                </p>
+                            @elseif($product->quantity == 0)
+                                <p class="card-status save">
+                                    Produs indisponibil!
+                                </p>
+                            @else
+                                <p></p>
+                            @endif
+                        @else
                             <p class="card-status save">
-                                Produs indisponibil!
+                                În curând!
                             </p>
-                        @else
-                            <p></p>
                         @endif
-                    @else
-                        <p class="card-status save">
-                            În curând!
-                        </p>
-                    @endif
-                    {{-- alt="Card-Image"> --}}
-                    @livewire('product-wishlist-button', ['product' => $product], key($product->id))
+                        {{-- alt="Card-Image"> --}}
+                        @livewire("product-wishlist-button", ["product" => $product], key($product->id))
 
-                    <div class="card-info">
-                        <div class="card-text">
-                            <span>{{ $product->short_description }}</span>
+                        <div class="card-info">
+                            <div class="card-text">
+                                <span>{{ $product->short_description }}</span>
+                            </div>
+                            <div class="card-text">
+                                <h3>{{ $product->name }}</h3>
+                                <p>
+                                    @if ($product->product_prices->first())
+                                        {{ $price }}
+                                        {{ $product->product_prices->first()->pricelist->currency->name }}
+                                    @else
+                                        {{ __("") }}
+                                    @endif
+                                </p>
+                            </div>
+
+                            @if ($price && $product->quantity != 0)
+                                <a class="card-button add-to-cart" wire:click="addToCart({{ $product->id }})">Adauga in coș</a>
+                            @else
+                                <a class="card-button-disabled" onclick="handleClick()">Indisponibil</a>
+                            @endif
+
                         </div>
-                        <div class="card-text">
-                            <h3>{{ $product->name }}</h3>
-                            <p>
-                                @if ($product->product_prices->first())
-                                    {{ $price }}
-                                    {{ $product->product_prices->first()->pricelist->currency->name }}
-                                @else
-                                    {{ __('') }}
-                                @endif
-                            </p>
-                        </div>
-
-                        @if ($price && $product->quantity != 0)
-                            <a class="card-button" wire:click="addToCart({{ $product->id }})">Adauga in coș</a>
-                        @else
-                            <a class="card-button-disabled" onclick="handleClick()">Indisponibil</a>
-                        @endif
-
                     </div>
                 </div>
             @endforeach
