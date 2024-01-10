@@ -52,6 +52,52 @@
                         </a>
                     @endif
                 @endforeach
+                <!------------------------------------------------------>
+                <!-------------------- New-Dropdown -------------------->
+                <div class="dropdown">
+                    <a class="dropdown__button" href="/">
+                        Category-Exemple
+                        <svg>
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </a>
+                    <div class="dropdown__list">
+                        {{-- This is sub-sub-category in navbar --}}
+                        {{-- sub-subcategory-Exemple 1 --}}
+                        <div class="dropdown__item">
+                            <a class="dropdown__item--button" href="/">Subcategory-Exemple</a>
+                            <div class="dropdown__item--list">
+                                <a href="/">Exemple 1</a>
+                                <a href="/">Exemple 2</a>
+                                <a href="/">Exemple 3</a>
+                            </div>
+                        </div>
+                        {{-- sub-subcategory-Exemple 2 --}}
+                        <div class="dropdown__item">
+                            <a class="dropdown__item--button" href="/">Subcategory-Exemple</a>
+                            <div class="dropdown__item--list">
+                                <a href="/">Exemple 1</a>
+                                <a href="/">Exemple 2</a>
+                                <a href="/">Exemple 3</a>
+                            </div>
+                        </div>
+                        {{-- sub-subcategory-Exemple 3 --}}
+                        <div class="dropdown__item">
+                            <a class="dropdown__item--button" href="/">Subcategory-Exemple</a>
+                            <div class="dropdown__item--list">
+                                <a href="/">Exemple 1</a>
+                                <a href="/">Exemple 2</a>
+                                <a href="/">Exemple 3</a>
+                            </div>
+                        </div>
+                        {{-- This is just normal Link --}}
+                        <div class="dropdown__item">
+                            <a class="dropdown__item--button" href="/">Subcategory-Exemple</a>
+                        </div>
+                    </div>
+                </div>
+                <!------------------ End-New-Dropdown ------------------>
+                <!------------------------------------------------------>
             </div>
             <!---------------------NavMenu bar--------------------->
             <!------------------------------------------------------>
@@ -378,6 +424,46 @@
                         </a>
                     @endif
                 @endforeach
+                <!------------------------------------------------------>
+                <!-------------------- New-Dropdown -------------------->
+                <div class="dropmenu">
+                    <div class="dropmenu__button">
+                        <a class="dropmenu__button--link" href="/">
+                            <img src="https://picsum.photos/300/300" alt="Random-Image">
+                            <h4>category</h4>
+                        </a>
+                        <button class="dropmenu__open" href="#">
+                            <svg>
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="dropmenu__list">
+                        {{-- sub-subcategory-Exemple --}}
+                        <div class="submenu">
+                            <div class="submenu__button">
+                                <a class="submenu__button--link" href="/">
+                                    <img src="https://picsum.photos/300/300" alt="Random-Image">
+                                    <h4>category</h4>
+                                </a>
+                                <button class="submenu__open" href="#">
+                                    <svg>
+                                        <polyline points="6 9 12 15 18 9"></polyline>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="submenu__list">
+                                <a class="submenu__link" href="/">
+                                    <img src="https://picsum.photos/300/300" alt="something wrong">
+                                    <h4>subcategory</h4>
+                                </a>
+                            </div>
+                        </div>
+                        {{-- sub-subcategory-Exemple --}}
+                    </div>
+                </div>
+                <!------------------ End-New-Dropdown ------------------>
+                <!------------------------------------------------------>
             </div>
         </div>
     </div>

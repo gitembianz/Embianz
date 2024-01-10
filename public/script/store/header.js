@@ -107,6 +107,7 @@ leftbar("basketOpen", "basketClose", "basketList", "basketContent");
 leftbar("wishOpen", "wishClose", "wishList", "wishContent");
 leftbar("menuOpen", "menuClose", "menuList", "menuContent");
 dropmenus(".dropmenu", true);
+dropmenus(".submenu", true);
 
 //<---------------------- End Start Functions IOS ---------------------->
 //<--------------------------------------------------------------------->
@@ -117,6 +118,7 @@ document.addEventListener("DOMContentLoaded", function () {
   leftbar("wishOpen", "wishClose", "wishList", "wishContent");
   leftbar("menuOpen", "menuClose", "menuList", "menuContent");
   dropmenus(".dropmenu", true);
+  dropmenus(".submenu", true);
 });
 //<----------------------- End Start Functions PC ---------------------->
 //<--------------------------------------------------------------------->
