@@ -1725,6 +1725,7 @@ header {
   color: #333333;
   position: relative;
   font-size: 0;
+  gap: 10px;
 }
 .dropdown__item--button:nth-child(1) {
   transition: all 0.3s ease-in-out 0.25s;
