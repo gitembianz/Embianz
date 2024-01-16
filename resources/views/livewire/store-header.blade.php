@@ -40,8 +40,11 @@
                             </a>
                             <div class="dropdown__list">
                                 @foreach ($category->subcategory as $subcategory)
-                                    <a class="dropdown__item"
-                                        href="/storeproducts/{{ $subcategory->category_id }}">{{ $subcategory->name }}</a>
+                                    <div class="dropdown__item">
+                                        <a class="dropdown__item--button"
+                                            href="/storeproducts/{{ $subcategory->category_id }}">{{ $subcategory->name }}
+                                        </a>
+                                    </div>
                                 @endforeach
 
                             </div>
