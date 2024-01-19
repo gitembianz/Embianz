@@ -386,10 +386,10 @@
                         <div class="dropmenu">
                             <div class="dropmenu__button">
                                 <a class="dropmenu__button--link" href="/storeproducts/{{ $category->id }}">
-                                    @if ($item->category->media->first())
+                                    @if ($category->media->first())
                                         <img class="cart__list--img"
-                                            src="/{{ $item->category->media->first()->path }}{{ $item->category->media->first()->name }}"
-                                            alt="{{ $item->category->media->first()->path }}">
+                                            src="/{{ $category->media->first()->path }}{{ $category->media->first()->name }}"
+                                            alt="{{ $category->media->first()->path }}">
                                     @else
                                         <img class="heart__list--img" src="/images/store/default/default70.webp"
                                             alt="something wrong">
