@@ -77,7 +77,7 @@ class StoreHeader extends Component
   }
   public function updatewis()
   {
-    $this->wishlists = Wishlist::where('session_id', $this->session_id)->with('product.media.location', 'product')->get();
+    $this->wishlists = Wishlist::where('session_id', $this->session_id)->with('product.media', 'product')->get();
   }
 
   public function close()
