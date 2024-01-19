@@ -46,7 +46,7 @@ class StoreMain extends Component
     return $this->popproductsQuery
       ->with([
         'media' => function ($query) {
-          $query->where('type', 'main')->take(1); // Filter and limit the media relationship
+          $query->where('type', 'main'); // Filter and limit the media relationship
         },
         'product_prices' => function ($query) {
           $query->with('pricelist.currency');
@@ -81,7 +81,7 @@ class StoreMain extends Component
             $query->select('id', 'name', 'short_description');
           },
           'category.media' => function ($query) {
-            $query->where('type', 'original')->take(1); // Filter and limit the media relationship
+            $query->where('type', 'original'); // Filter and limit the media relationship
           }
         ])
         ->get();

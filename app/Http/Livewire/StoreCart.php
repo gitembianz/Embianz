@@ -68,7 +68,7 @@ class StoreCart extends Component
     if ($this->cart) {
       $cartItems = Cart_Item::where('cart_id', $this->cart->id)->with([
         'product.media' => function ($query) {
-          $query->where('type', 'min')->take(1); // Filter and limit the media relationship
+          $query->where('type', 'min'); // Filter and limit the media relationship
         },
         'product.product_prices' => function ($query) {
           $query->with('pricelist.currency');

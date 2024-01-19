@@ -114,7 +114,7 @@ class StoreOrder extends Component
       $this->back = true;
     }
     $this->resetForm();
-    $this->step = 1;
+    $this->step = 2;
     $this->individual_identic = true;
     $this->juridic_identic = true;
   }
@@ -134,7 +134,16 @@ class StoreOrder extends Component
   public function getCartItemsProperty()
   {
     if ($this->cart) {
-      $cartItems = Cart_Item::where('cart_id', $this->cart->id)->with('product')->get();
+      $cartItems = Cart_Item::where('cart_id', $this->cart->id)
+        ->with([
+          'product.media' => function ($query) {
+            $query->where('type', 'min'); // Filter and limit the media relationship
+          },
+          'product.product_prices',
+          'product.product_prices.pricelist.currency',
+
+
+        ])->get();
       return $cartItems;
     }
     return collect(); // Return an empty collection if no cart items are found
