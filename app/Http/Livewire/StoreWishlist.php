@@ -31,7 +31,7 @@ class StoreWishlist extends Component
     $wishlist = Wishlist::where('session_id', $this->session_id)->pluck('product_id')->toArray();
     return Product::whereIn('id', $wishlist)->with([
       'media' => function ($query) {
-        $query->where('type', 'min')->take(1); // Filter and limit the media relationship
+        $query->where('type', 'min'); // Filter and limit the media relationship
       }
     ])->get();
   }

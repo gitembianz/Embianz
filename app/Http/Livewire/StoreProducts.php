@@ -130,7 +130,7 @@ class StoreProducts extends Component
       'product_prices.pricelist',
       'product_prices.pricelist.currency',
       'media' => function ($query) {
-        $query->where('type', 'main')->take(1); // Filter and limit the media relationship
+        $query->where('type', 'main'); // Filter and limit the media relationship
       },
       'wishlists' => function ($query) {
         $query->where('session_id', $this->session_id);

@@ -92,9 +92,12 @@ class StoreHeader extends Component
       $cartItems = Cart_Item::where('cart_id', $this->cart->id)
         ->with([
           'product.media' => function ($query) {
-            $query->where('type', 'min')->take(1); // Filter and limit the media relationship
+            $query->where('type', 'min'); // Filter and limit the media relationship
           },
-          'product.product_prices.pricelist.currency'
+          'product.product_prices',
+          'product.product_prices.pricelist.currency',
+
+
         ])->get();
 
       return $cartItems;
@@ -164,7 +167,7 @@ class StoreHeader extends Component
             $subQuery->where('store_tab', 1);
           })->with([
             'category.media' => function ($query) {
-              $query->where('type', 'min')->take(1); // Filter and limit the media relationship
+              $query->where('type', 'min'); // Filter and limit the media relationship
             }
           ]);
         }
@@ -178,7 +181,7 @@ class StoreHeader extends Component
   {
     return Product::name($this->search)->where('active', true)->with([
       'media' => function ($query) {
-        $query->where('type', 'min')->take(1); // Filter and limit the media relationship
+        $query->where('type', 'min'); // Filter and limit the media relationship
       },
       'product_prices.pricelist.currency'
     ])->get();
@@ -188,7 +191,7 @@ class StoreHeader extends Component
   {
     return Category::name($this->search)->where('active', true)->with([
       'media' => function ($query) {
-        $query->where('type', 'min')->take(1); // Filter and limit the media relationship
+        $query->where('type', 'min'); // Filter and limit the media relationship
       }
     ])->get();
   }
