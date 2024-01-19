@@ -40,8 +40,11 @@
                             </a>
                             <div class="dropdown__list">
                                 @foreach ($category->subcategory as $subcategory)
-                                    <a class="dropdown__item"
-                                        href="/storeproducts/{{ $subcategory->category_id }}">{{ $subcategory->name }}</a>
+                                    <div class="dropdown__item">
+                                        <a class="dropdown__item--button"
+                                            href="/storeproducts/{{ $subcategory->category_id }}">{{ $subcategory->name }}
+                                        </a>
+                                    </div>
                                 @endforeach
 
                             </div>
@@ -54,7 +57,7 @@
                 @endforeach
                 <!------------------------------------------------------>
                 <!-------------------- New-Dropdown -------------------->
-                <div class="dropdown">
+                {{-- <div class="dropdown">
                     <a class="dropdown__button" href="/">
                         Category-Exemple
                         <svg>
@@ -62,40 +65,47 @@
                         </svg>
                     </a>
                     <div class="dropdown__list">
-                        {{-- This is sub-sub-category in navbar --}}
-                        {{-- sub-subcategory-Exemple 1 --}}
                         <div class="dropdown__item">
-                            <a class="dropdown__item--button" href="/">Subcategory-Exemple</a>
+                            <a class="dropdown__item--button" href="/">Subcategory-Exemple
+                                <svg>
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </a>
                             <div class="dropdown__item--list">
                                 <a href="/">Exemple 1</a>
                                 <a href="/">Exemple 2</a>
                                 <a href="/">Exemple 3</a>
                             </div>
                         </div>
-                        {{-- sub-subcategory-Exemple 2 --}}
                         <div class="dropdown__item">
-                            <a class="dropdown__item--button" href="/">Subcategory-Exemple</a>
+                            <a class="dropdown__item--button" href="/">Subcategory-Exemple
+                                <svg>
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </a>
                             <div class="dropdown__item--list">
                                 <a href="/">Exemple 1</a>
                                 <a href="/">Exemple 2</a>
                                 <a href="/">Exemple 3</a>
                             </div>
                         </div>
-                        {{-- sub-subcategory-Exemple 3 --}}
                         <div class="dropdown__item">
-                            <a class="dropdown__item--button" href="/">Subcategory-Exemple</a>
+                            <a class="dropdown__item--button" href="/">Subcategory-Exemple
+                                <svg>
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </a>
                             <div class="dropdown__item--list">
                                 <a href="/">Exemple 1</a>
                                 <a href="/">Exemple 2</a>
                                 <a href="/">Exemple 3</a>
                             </div>
                         </div>
-                        {{-- This is just normal Link --}}
                         <div class="dropdown__item">
                             <a class="dropdown__item--button" href="/">Subcategory-Exemple</a>
                         </div>
                     </div>
-                </div>
+                </div> --}}
                 <!------------------ End-New-Dropdown ------------------>
                 <!------------------------------------------------------>
             </div>
@@ -156,7 +166,8 @@
                         <circle cx="11" cy="11" r="8"></circle>
                         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                     </svg>
-                    <input id="searchInput" wire:model.debounce.300ms="search" type="text" placeholder="Cauta...">
+                    <input id="searchInput" wire:model.debounce.300ms="search" type="text"
+                        placeholder="Cauta...">
                 </div>
                 <button class="search__close" type="button" id="searchClose" wire:click.prevent="close">
                     <svg>
@@ -426,7 +437,7 @@
                 @endforeach
                 <!------------------------------------------------------>
                 <!-------------------- New-Dropdown -------------------->
-                <div class="dropmenu">
+                {{-- <div class="dropmenu">
                     <div class="dropmenu__button">
                         <a class="dropmenu__button--link" href="/">
                             <img src="https://picsum.photos/300/300" alt="Random-Image">
@@ -439,7 +450,6 @@
                         </button>
                     </div>
                     <div class="dropmenu__list">
-                        {{-- sub-subcategory-Exemple --}}
                         <div class="submenu">
                             <div class="submenu__button">
                                 <a class="submenu__button--link" href="/">
@@ -459,9 +469,8 @@
                                 </a>
                             </div>
                         </div>
-                        {{-- sub-subcategory-Exemple --}}
                     </div>
-                </div>
+                </div> --}}
                 <!------------------ End-New-Dropdown ------------------>
                 <!------------------------------------------------------>
             </div>
