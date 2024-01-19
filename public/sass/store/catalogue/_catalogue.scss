@@ -4,15 +4,15 @@
   gap: 30px;
   grid-template-columns: repeat(1, 1fr);
 
-  @media (min-width: map-get($grid-breakpoints, sm)) {
+  @media (min-width: map-get($grid-breakpoints, md)) {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  @media (min-width: map-get($grid-breakpoints, md)) {
+  @media (min-width: map-get($grid-breakpoints, lg)) {
     grid-template-columns: repeat(3, 1fr);
   }
 
-  @media (min-width: map-get($grid-breakpoints, lg)) {
+  @media (min-width: map-get($grid-breakpoints, xl)) {
     grid-template-columns: repeat(4, 1fr);
   }
 }

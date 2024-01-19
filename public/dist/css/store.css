@@ -2713,17 +2713,17 @@ header {
   gap: 30px;
   grid-template-columns: repeat(1, 1fr);
 }
-@media (min-width: 576px) {
+@media (min-width: 768px) {
   .catalogue {
     grid-template-columns: repeat(2, 1fr);
   }
 }
-@media (min-width: 768px) {
+@media (min-width: 992px) {
   .catalogue {
     grid-template-columns: repeat(3, 1fr);
   }
 }
-@media (min-width: 992px) {
+@media (min-width: 1200px) {
   .catalogue {
     grid-template-columns: repeat(4, 1fr);
   }
