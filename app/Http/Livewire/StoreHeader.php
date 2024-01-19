@@ -88,7 +88,7 @@ class StoreHeader extends Component
 
   public function getCartItemsProperty()
   {
-    if ($this->cart !== null) {
+    if ($this->cart !== null && !empty($this->cart)) {
       $cartItems = Cart_Item::where('cart_id', $this->cart->id)
         ->with([
           'product.media' => function ($query) {
