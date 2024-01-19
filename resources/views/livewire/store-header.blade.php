@@ -57,7 +57,7 @@
                 @endforeach
                 <!------------------------------------------------------>
                 <!-------------------- New-Dropdown -------------------->
-                <div class="dropdown">
+                {{-- <div class="dropdown">
                     <a class="dropdown__button" href="/">
                         Category-Exemple
                         <svg>
@@ -65,8 +65,6 @@
                         </svg>
                     </a>
                     <div class="dropdown__list">
-                        {{-- This is sub-sub-category in navbar --}}
-                        {{-- sub-subcategory-Exemple 1 --}}
                         <div class="dropdown__item">
                             <a class="dropdown__item--button" href="/">Subcategory-Exemple
                                 <svg>
@@ -79,7 +77,6 @@
                                 <a href="/">Exemple 3</a>
                             </div>
                         </div>
-                        {{-- sub-subcategory-Exemple 2 --}}
                         <div class="dropdown__item">
                             <a class="dropdown__item--button" href="/">Subcategory-Exemple
                                 <svg>
@@ -92,7 +89,6 @@
                                 <a href="/">Exemple 3</a>
                             </div>
                         </div>
-                        {{-- sub-subcategory-Exemple 3 --}}
                         <div class="dropdown__item">
                             <a class="dropdown__item--button" href="/">Subcategory-Exemple
                                 <svg>
@@ -105,12 +101,11 @@
                                 <a href="/">Exemple 3</a>
                             </div>
                         </div>
-                        {{-- This is just normal Link --}}
                         <div class="dropdown__item">
                             <a class="dropdown__item--button" href="/">Subcategory-Exemple</a>
                         </div>
                     </div>
-                </div>
+                </div> --}}
                 <!------------------ End-New-Dropdown ------------------>
                 <!------------------------------------------------------>
             </div>
@@ -442,7 +437,7 @@
                 @endforeach
                 <!------------------------------------------------------>
                 <!-------------------- New-Dropdown -------------------->
-                <div class="dropmenu">
+                {{-- <div class="dropmenu">
                     <div class="dropmenu__button">
                         <a class="dropmenu__button--link" href="/">
                             <img src="https://picsum.photos/300/300" alt="Random-Image">
@@ -455,7 +450,6 @@
                         </button>
                     </div>
                     <div class="dropmenu__list">
-                        {{-- sub-subcategory-Exemple --}}
                         <div class="submenu">
                             <div class="submenu__button">
                                 <a class="submenu__button--link" href="/">
@@ -475,9 +469,8 @@
                                 </a>
                             </div>
                         </div>
-                        {{-- sub-subcategory-Exemple --}}
                     </div>
-                </div>
+                </div> --}}
                 <!------------------ End-New-Dropdown ------------------>
                 <!------------------------------------------------------>
             </div>
