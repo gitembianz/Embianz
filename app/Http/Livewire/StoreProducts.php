@@ -2,13 +2,10 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Cart;
 use App\Models\Specs;
-use App\Models\Status;
 use App\Models\Product;
 use Livewire\Component;
 use App\Models\Category;
-use App\Models\Cart_Item;
 use Livewire\WithPagination;
 
 class StoreProducts extends Component
@@ -30,10 +27,7 @@ class StoreProducts extends Component
   public $selectedKeys = [];
   public $selectedSpecNames = [];
 
-  public function loadMore()
-  {
-    $this->loadAmount += 10;
-  }
+
   public function render()
   {
     return view('livewire.store-products', ['products' => $this->products]);
@@ -55,6 +49,7 @@ class StoreProducts extends Component
 
     $this->specification = Specs::with('product_spec')->get();
   }
+  // start filter-spec function
   public function getUniqueSpecValues($specId)
   {
     $uniqueValues = [];
@@ -123,7 +118,9 @@ class StoreProducts extends Component
     $this->selectedSpecNames = [];
     $this->selectedKeys = [];
   }
+  // end filter-spec function
 
+  // Products function
   public function getProductsProperty()
   {
     $query = Product::name($this->search)->where('active', true)->with([
@@ -172,49 +169,8 @@ class StoreProducts extends Component
     return $query->paginate($this->loadAmount);
   }
 
-  public function addToCart($productId)
+  public function loadMore()
   {
-    $closedStatusId = Status::where('name', 'closed')->where('type', 'cart')->first()->id;
-    $product = Product::with('product_prices.pricelist')->find($productId);
-    $newStatusId = Status::where('name', 'new')->where('type', 'cart')->first()->id;
-    $cart = Cart::where('session_id', $this->session_id)->where('status_id', '!=', $closedStatusId)->latest()->first();
-    if (!$cart) {
-      $baseName = class_basename(Cart::class);
-      $cartNumber = 1;
-      $uniqueName = $baseName . '_' . str_pad($cartNumber, 2, '0', STR_PAD_LEFT);
-      while (Cart::where('name', $uniqueName)->exists()) {
-        $cartNumber++;
-        $uniqueName = $baseName . '_' . str_pad($cartNumber, 2, '0', STR_PAD_LEFT);
-      }
-      $cart = Cart::create([
-        'session_id' => $this->session_id,
-        'name' => $uniqueName,
-        'quantity_amount' => 0,
-        'sum_amount' => 0,
-        'status_id' => $newStatusId,
-        'currency_id' => $product->product_prices->first()->pricelist->currency_id,
-      ]);
-      $this->emit('newcart');
-    }
-    $cartItem = Cart_Item::where('cart_id', $cart->id)->where('product_id', $productId)->first();
-    if (!$cartItem) {
-      $cartItem = Cart_Item::create([
-        'cart_id' => $cart->id,
-        'product_id' => $productId,
-        'price' => $product->product_prices->first()->value,
-        'quantity' => 1
-      ]);
-      $cart->increment('quantity_amount');
-      $cart->sum_amount += $product->product_prices->first()->value;
-    } else {
-      if ($cartItem->quantity < $product->quantity) {
-
-        $cartItem->increment('quantity');
-        $cart->increment('quantity_amount');
-        $cart->sum_amount += $product->product_prices->first()->value;
-      }
-    }
-    $cart->save();
-    $this->emit('cartUpdated');
+    $this->loadAmount += 10;
   }
 }

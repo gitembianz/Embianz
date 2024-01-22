@@ -81,6 +81,12 @@
                                         @endif
                                     </a>
                                     @livewire('product-wishlist-button', ['product' => $product], key($product->id))
+                                    <?php if ($product->product_prices->count() != 0) {
+                                        $price = number_format($product->product_prices->first()->value, 2, ',', '.');
+                                    } else {
+                                        $price = null;
+                                    }
+                                    ?>
                                     <div class="card-info">
                                         <div class="card-text">
                                             <span>{{ $product->short_description }}</span>
@@ -96,11 +102,8 @@
                                                 @endif
                                             </p>
                                         </div>
-                                        @if ($product->product_prices->first() && $product->quantity != 0)
-                                            <a class="card-button" wire:click="addToCart({{ $product->id }})">Adauga
-                                                in coș</a>
-                                        @else
-                                            <a class="card-button-disabled">Indisponibil</a>
+                                        @if ($product->product_prices->first())
+                                            @livewire('add-to-cart-button', ['product' => $product], key($product->id))
                                         @endif
                                     </div>
                                 </div>
