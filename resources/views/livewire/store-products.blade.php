@@ -5,10 +5,10 @@
     <!------------------------Breadcrumbs----------------------->
     <section>
         <div class="breadcrumbs container">
-            <a class="breadcrumbs__link" href="{{ url("/") }}">
+            <a class="breadcrumbs__link" href="{{ url('/') }}">
                 Acasa
             </a>
-            <a class="breadcrumbs__link" href="{{ url("/storeproducts") }}">
+            <a class="breadcrumbs__link" href="{{ url('/storeproducts') }}">
                 Produse
             </a>
             <!-------------------If Category is appear------------------>
@@ -84,7 +84,7 @@
                             @endif
                         </a>
                         <?php if ($product->product_prices->count() != 0) {
-                            $price = number_format($product->product_prices->first()->value, 2, ",", ".");
+                            $price = number_format($product->product_prices->first()->value, 2, ',', '.');
                         } else {
                             $price = null;
                         }
@@ -109,7 +109,7 @@
                             </p>
                         @endif
                         {{-- alt="Card-Image"> --}}
-                        @livewire("product-wishlist-button", ["product" => $product], key($product->id))
+                        @livewire('product-wishlist-button', ['product' => $product], key($product->id))
 
                         <div class="card-info">
                             <div class="card-text">
@@ -122,16 +122,21 @@
                                         {{ $price }}
                                         {{ $product->product_prices->first()->pricelist->currency->name }}
                                     @else
-                                        {{ __("") }}
+                                        {{ __('') }}
                                     @endif
                                 </p>
                             </div>
-
-                            @if ($price && $product->quantity != 0)
-                                <a class="card-button add-to-cart" wire:click="addToCart({{ $product->id }})">Adauga in coș</a>
-                            @else
-                                <a class="card-button-disabled" onclick="handleClick()">Indisponibil</a>
+                            @if ($product->product_prices->first())
+                                @livewire('add-to-cart-button', ['product' => $product], key($product->id))
                             @endif
+
+                            {{-- <div class="card-button add-to-cart">
+                                @if ($price && $product->quantity != 0)
+                                    <a wire:click="addToCart({{ $product->id }})">Adauga in coș</a>
+                                @else
+                                    <a class="card-button-disabled" onclick="handleClick()">Indisponibil</a>
+                                @endif
+                            </div> --}}
 
                         </div>
                     </div>
