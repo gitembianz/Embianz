@@ -60,7 +60,8 @@ class StoreMain extends Component
     if ($this->category != null) {
       return view('livewire.store-main', [
         'popproducts' => $this->popproducts,
-        'subcategories' => $this->subcategories
+        'subcategories' => $this->subcategories,
+
       ]);
     } else {
       return view('livewire.store-main', [

@@ -18,33 +18,23 @@ class CartProductsList extends Component
     public function render()
     {
         $cartItems = $this->getCartItemsProperty();
-        if ($this->cart !== null && !empty($this->cart)) {
-            $total = $this->cart->sum_amount;
-        }
+        $total = $this->cart ? $this->cart->sum_amount : 0;
 
         return view('livewire.cart-products-list', [
             'cartItems' => $cartItems,
             'total' => $total,
+            'currency' => $cartItems->isNotEmpty() ? $cartItems->first()->product->product_prices->first()->pricelist->currency->name : '',
         ]);
     }
     public function getCartItemsProperty()
     {
-        if ($this->cart !== null && !empty($this->cart)) {
-            $cartItems = Cart_Item::where('cart_id', $this->cart->id)
-                ->with([
-                    'product.media' => function ($query) {
-                        $query->where('type', 'min'); // Filter and limit the media relationship
-                    },
-                    'product.product_prices',
-                    'product.product_prices.pricelist.currency',
-
-
-                ])->get();
-
-            return $cartItems;
-        }
-
-        return collect(); // Return an empty collection if no cart items are found
+        return $this->cart ? Cart_Item::where('cart_id', $this->cart->id)
+            ->with([
+                'product.media' => function ($query) {
+                    $query->where('type', 'min');
+                },
+                'product.product_prices'
+            ])->get() : collect();
     }
     public function mount($cart)
     {
@@ -62,7 +52,7 @@ class CartProductsList extends Component
     {
         $product = Product::find($productId);
 
-        if ($this->cart !== null) {
+        if ($this->cart) {
             $cart_item = Cart_Item::firstOrNew([
                 'cart_id' => $this->cart->id,
                 'product_id' => $productId,
@@ -82,7 +72,8 @@ class CartProductsList extends Component
         $delivery = Store_Settings::where('parameter', 'delivery_price')->first()->value;
         $validatequantity = true;
         $cartitems = Cart_Item::where('cart_id', $this->cart->id)->get();
-        if ($cartitems) {
+
+        if ($cartitems->isNotEmpty()) {
             foreach ($cartitems as $item) {
                 if ($item->quantity > $item->product->quantity) {
                     $validatequantity = false;
@@ -91,8 +82,8 @@ class CartProductsList extends Component
                 }
             }
         }
-        if ($validatequantity) {
 
+        if ($validatequantity) {
             $newStatusId = Status::where('name', 'checkout')->where('type', 'cart')->first()->id;
             $this->cart->final_amount = $this->cart->sum_amount + $delivery;
             $this->cart->status_id = $newStatusId;
