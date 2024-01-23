@@ -72,7 +72,7 @@
                     <span class="product__subtitle">{{ $product->short_description }}</span>
                     <h1 class="product__title">{{ $product->name }}</h1>
                 </div>
-                @livewire('wishlist-button', ['product' => $product])
+                @livewire('wishlist-button', ['productId' => $product->id])
             </div>
             <div class="product__price">
                 <span>Pret</span>
