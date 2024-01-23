@@ -53,13 +53,4 @@ class ProductWishlistButton extends Component
     {
         return view('livewire.product-wishlist-button');
     }
-
-    public function removeActiveClass($removedProductId)
-    {
-        // Check if the removed product ID matches the current product ID
-        if ($removedProductId == $this->productId) {
-            $this->is_in_wishlist = false;
-            $this->render();
-        }
-    }
 }
