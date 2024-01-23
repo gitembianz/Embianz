@@ -9,69 +9,50 @@ use Illuminate\Support\Facades\Session;
 class ProductWishlistButton extends Component
 {
     public $wishlists;
-    public $product;
+    public  $productId;
+    public $is_in_wishlist;
     public $session_id;
-    public $wishlist = [];
 
-    protected $listeners = [
-        'wishlistUpdated' => 'refreshComponent'
-    ];
-
-
-    public function mount($product)
+    public function mount($productId)
     {
         $cookieId = isset($_COOKIE['sessionId']) && !empty($_COOKIE['sessionId'])
             ? $_COOKIE['sessionId']
             : null;
-
-        // If $cookieId is null, use Session::getId()
         $this->session_id = $cookieId ?? Session::getId();
-        $this->product = $product;
-        $this->wishlists = $this->product->wishlists->where('session_id', $this->session_id);
+        $this->productId  = $productId;
+
+        // Use first() to execute the query and get a single result
+        $wishlistItem = Wishlist::where('session_id', $this->session_id)
+            ->where('product_id', $this->productId)
+            ->first();
+
+        // If the wishlist item exists, set $this->is_in_wishlist to true, otherwise false
+        $this->is_in_wishlist = $wishlistItem ? true : false;
     }
+
     public function refreshComponent()
     {
-        $this->mount($this->product);
-        $this->render();
+        $this->mount($this->productId);
     }
     public function addToWishlist($id)
     {
-        if (!in_array($id, $this->wishlist)) {
-            $this->wishlist[] = $id;
-            $this->saveToSession();
-
-            Wishlist::updateOrCreate(
-                ['session_id' => $this->session_id, 'product_id' => $id]
-            );
-            $this->emit('wishlistUpdated');
-        }
+        Wishlist::updateOrCreate(
+            ['session_id' => $this->session_id, 'product_id' => $id]
+        );
+        $this->emit('wishlistUpdated');
+        $this->refreshComponent();
     }
     public function removeFromWishlist($id)
     {
-        $this->wishlist = array_diff($this->wishlist, [$id]);
-        $this->saveToSession();
-
         Wishlist::where('session_id', $this->session_id)
             ->where('product_id', $id)
             ->delete();
         $this->emit('wishlistUpdated');
+        $this->refreshComponent();
     }
-    private function saveToSession()
-    {
-        session([
-            'wishlist' => $this->wishlist,
-        ]);
-    }
-    public function toggleWishlist($id)
-    {
-        if (in_array($id, $this->wishlist)) {
-            $this->removeFromWishlist($id);
-        } else {
-            $this->addToWishlist($id);
-        }
-    }
+
     public function render()
     {
-        return view('livewire.product-wishlist-button');
+        return view('livewire.product-wishlist-button')->with('productId', $this->productId);
     }
 }
