@@ -8,10 +8,11 @@ use Illuminate\Support\Facades\Session;
 
 class ProductWishlistButton extends Component
 {
-    public $wishlists;
-    public  $productId;
+    public $productId;
     public $is_in_wishlist;
     public $session_id;
+
+    public $listeners = [];
 
     public function mount($productId)
     {
@@ -21,13 +22,10 @@ class ProductWishlistButton extends Component
         $this->session_id = $cookieId ?? Session::getId();
         $this->productId  = $productId;
 
-        // Use first() to execute the query and get a single result
-        $wishlistItem = Wishlist::where('session_id', $this->session_id)
+        $this->is_in_wishlist = Wishlist::where('session_id', $this->session_id)
             ->where('product_id', $this->productId)
-            ->first();
-
-        // If the wishlist item exists, set $this->is_in_wishlist to true, otherwise false
-        $this->is_in_wishlist = $wishlistItem ? true : false;
+            ->first() ? true : false;
+        $this->listeners = ["update-wish-" . $this->productId => "refreshComponent"];
     }
 
     public function refreshComponent()
@@ -53,6 +51,15 @@ class ProductWishlistButton extends Component
 
     public function render()
     {
-        return view('livewire.product-wishlist-button')->with('productId', $this->productId);
+        return view('livewire.product-wishlist-button');
+    }
+
+    public function removeActiveClass($removedProductId)
+    {
+        // Check if the removed product ID matches the current product ID
+        if ($removedProductId == $this->productId) {
+            $this->is_in_wishlist = false;
+            $this->render();
+        }
     }
 }

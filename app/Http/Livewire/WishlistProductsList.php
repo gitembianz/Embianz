@@ -52,7 +52,8 @@ class WishlistProductsList extends Component
         Wishlist::where('session_id', $this->session_id)
             ->where('product_id', $productId)
             ->delete();
-        $this->emit('wishlistUpdated');
+        $this->emit('wishlistProductRemoved');
+        $this->emit('update-wish-' . $productId);
         $this->mount();
     }
 }

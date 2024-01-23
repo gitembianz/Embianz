@@ -71,7 +71,7 @@
             <p>Nu au fost produse gasite</p>
         @else
             @foreach ($products as $product)
-                <div class="product">
+                <div class="product" wire:key="{{ $product->id }}">
                     <div @if ($loop->last) id="last_record" @endif class="card" role="listitem">
                         <a href="/product/{{ $product->id }}">
                             @if ($product->media->first() != null)
