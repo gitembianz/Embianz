@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Cart;
 use App\Models\Status;
 use App\Models\Product;
 use Livewire\Component;
@@ -12,8 +13,9 @@ class CartProductsList extends Component
 {
     public $showcart = false;
     public $cart;
+    public $session_id;
     protected $listeners = [
-        'showcart' => 'cartshow'
+        'showcart' => 'cartshow',
     ];
     public function render()
     {
@@ -36,9 +38,23 @@ class CartProductsList extends Component
                 'product.product_prices'
             ])->get() : collect();
     }
-    public function mount($cart)
+    public function mount()
     {
-        $this->cart = $cart;
+        if (array_key_exists('sessionId', $_COOKIE)) {
+            $this->session_id = $_COOKIE['sessionId'];
+        } else {
+            // If not present, generate a new sessionId
+            $sessionId = session()->getId();
+
+            // Set the new sessionId in the cookie
+            setcookie('sessionId', $sessionId, time() + 30 * 24 * 60 * 60, '/', null, false, true);
+
+            $this->session_id = $sessionId;
+        }
+
+        $this->cart = Cart::where('session_id', $this->session_id)
+            ->where('status_id', '!=', Status::where('name', 'closed')->where('type', 'cart')->value('id'))
+            ->latest()->first();
     }
     public function cartshow()
     {
@@ -46,6 +62,7 @@ class CartProductsList extends Component
             $this->showcart = false;
         } else {
             $this->showcart = true;
+            $this->mount();
         }
     }
     public function removeFromCart($productId)
