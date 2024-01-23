@@ -58,12 +58,8 @@ class CartProductsList extends Component
     }
     public function cartshow()
     {
-        if ($this->showcart == true) {
-            $this->showcart = false;
-        } else {
-            $this->showcart = true;
-            $this->mount();
-        }
+        $this->showcart = true;
+        $this->mount();
     }
     public function removeFromCart($productId)
     {

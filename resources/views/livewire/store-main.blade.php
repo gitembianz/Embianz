@@ -80,7 +80,7 @@
                                                 alt="something wrong">
                                         @endif
                                     </a>
-                                    @livewire('product-wishlist-button', ['product' => $product], key($product->id))
+                                    @livewire('product-wishlist-button', ['productId' => $product->id], key($product->id))
                                     <?php if ($product->product_prices->count() != 0) {
                                         $price = number_format($product->product_prices->first()->value, 2, ',', '.');
                                     } else {
