@@ -18,11 +18,10 @@ class StoreHeader extends Component
   // public $showcart = false;
   public $total;
   public $cart;
-  public $wishlists;
+  // public $wishlists;
   public $session_id;
   public $closedStatusId;
   protected $listeners = [
-    'wishlistUpdated' => 'updatewis',
     'newcart' => 'mount'
   ];
 
@@ -56,7 +55,7 @@ class StoreHeader extends Component
       $this->session_id = $sessionId;
     }
     $this->updatecart();
-    $this->updatewis();
+    // $this->updatewis();
   }
   public function updateCart()
   {
@@ -67,10 +66,10 @@ class StoreHeader extends Component
     // Ensure $this->cart is initialized as an empty array if it is null
     $this->cart = $this->cart ?? [];
   }
-  public function updatewis()
-  {
-    $this->wishlists = Wishlist::where('session_id', $this->session_id)->with('product.media', 'product')->get();
-  }
+  // public function updatewis()
+  // {
+  //   $this->wishlists = Wishlist::where('session_id', $this->session_id)->with('product.media', 'product')->get();
+  // }
 
   public function close()
   {
@@ -83,15 +82,15 @@ class StoreHeader extends Component
     $this->emit('showcart');
   }
 
-  public function wishlistshow()
-  {
-    if ($this->showwis === false) {
-      // $this->showcart = false;
-      $this->showwis = true;
-    } else {
-      $this->showwis = false;
-    }
-  }
+  // public function wishlistshow()
+  // {
+  //   if ($this->showwis === false) {
+  //     // $this->showcart = false;
+  //     $this->showwis = true;
+  //   } else {
+  //     $this->showwis = false;
+  //   }
+  // }
 
   public function removeFromWishlist($productId)
   {
