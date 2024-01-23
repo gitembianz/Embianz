@@ -14,7 +14,7 @@ class WishlistButton extends Component
     public $wishlist = [];
 
     protected $listeners = [
-        'wishlistUpdated' => 'refreshComponent'
+        'wishlistmodify' => 'refreshComponent'
     ];
 
 
@@ -48,7 +48,7 @@ class WishlistButton extends Component
             Wishlist::updateOrCreate(
                 ['session_id' => $this->session_id, 'product_id' => $id]
             );
-            $this->emit('wishlistUpdated');
+            $this->emit('wishlistmodify');
         }
     }
     public function removeFromWishlist($id)
@@ -59,7 +59,7 @@ class WishlistButton extends Component
         Wishlist::where('session_id', $this->session_id)
             ->where('product_id', $id)
             ->delete();
-        $this->emit('wishlistUpdated');
+        $this->emit('wishlistmodify');
     }
     private function saveToSession()
     {

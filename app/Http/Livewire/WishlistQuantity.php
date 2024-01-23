@@ -10,7 +10,8 @@ class WishlistQuantity extends Component
     public $count;
     public $session_id;
     protected $listeners = [
-        'wishlistUpdated' => 'mount'
+        'wishlistUpdated' => 'mount',
+        'wishlistProductRemoved' => 'mount'
     ];
     public function render()
     {

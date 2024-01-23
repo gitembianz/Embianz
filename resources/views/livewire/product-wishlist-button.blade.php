@@ -1,6 +1,6 @@
 <div class="card-action">
-    <button class="card-favorites @if (!$wishlists->isEmpty()) active @endif"
-        wire:click="toggleWishlist({{ $product->id }})">
+    <button class="card-favorites @if ($is_in_wishlist) active @endif"
+        @if ($is_in_wishlist) wire:click="removeFromWishlist({{ $productId }})" wire:key="{{ $productId }}"@else wire:click="addToWishlist({{ $productId }})" wire:key="{{ $productId }}" @endif>
 
         <svg viewBox="0 0 512 512" width="20" title="heart">
             <path
