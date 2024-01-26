@@ -42,11 +42,23 @@
                                 @foreach ($category->subcategory as $subcategory)
                                     <div class="dropdown__item">
                                         <a class="dropdown__item--button"
-                                            href="/storeproducts/{{ $subcategory->category_id }}">{{ $subcategory->name }}
+                                            href="/storeproducts/{{ $subcategory->category_id }}">
+                                            {{ $subcategory->name }}
+                                            @if ($subcategory->category->subcategory->count() != 0)
+                                                <svg>
+                                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                                </svg>
+                                            @endif
                                         </a>
+                                        <div class="dropdown__item--list">
+                                            @foreach ($subcategory->category->subcategory as $subsubCategory)
+                                                <a href="/storeproducts/{{ $subsubCategory->category_id }}">
+                                                    {{ $subsubCategory->name }}
+                                                </a>
+                                            @endforeach
+                                        </div>
                                     </div>
                                 @endforeach
-
                             </div>
                         </div>
                     @else
@@ -55,6 +67,7 @@
                         </a>
                     @endif
                 @endforeach
+
                 <!------------------------------------------------------>
                 <!-------------------- New-Dropdown -------------------->
                 {{-- <div class="dropdown">
@@ -289,6 +302,7 @@
                                 </button>
                             </div>
                             <div class="dropmenu__list">
+                                {{-- <div class="submenu"> --}}
                                 @foreach ($category->subcategory as $subcategory)
                                     <a class="dropmenu__link" href="/storeproducts/{{ $subcategory->category_id }}">
                                         @if ($subcategory->category->media->first() != null)
@@ -300,6 +314,7 @@
                                         <h4>{{ $subcategory->category->name }}</h4>
                                     </a>
                                 @endforeach
+                                {{-- </div> --}}
                             </div>
                         </div>
                     @else
