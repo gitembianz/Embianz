@@ -8,11 +8,52 @@ use App\Models\Account;
 use App\Models\Voucher;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
+
 
 
 class AdminController extends Controller
 {
+
+  function correctMediaSequence()
+  {
+    // Select original and full media entries with duplicate paths
+    $mediaGroups = DB::table('media')
+      ->select('path')
+      ->groupBy('path')
+      ->get();
+
+    foreach ($mediaGroups as $mediaGroup) {
+      // Get the associated media entries
+      $mediaEntries = DB::table('media')
+        ->where('path', $mediaGroup->path)
+        ->where(
+          'sequence',
+          '!=',
+          1
+        )
+        ->get();
+      $index = 2;
+
+      foreach ($mediaEntries as $item) {
+        // Update the sequence and name for each media entry
+        DB::table('media')
+          ->where('id', $item->id)
+          ->where('type', 'original')
+          ->update([
+            'sequence' => $index,
+          ]);
+        DB::table('media')
+          ->where('id', $item->id)
+          ->where('type', 'full')
+          ->update([
+            'sequence' => $index - 1,
+          ]);
+        $index++;
+      }
+    }
+    return true;
+  }
   //admin function
 
   public function storesettings()

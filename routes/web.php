@@ -31,6 +31,7 @@
       $drop_and_seed = Artisan::call('migrate:fresh --seed');
       echo "New fresh app";
     });
+    route::get('/corectsequence', [AdminController::class, 'correctMediaSequence']);
 
     //Category routes
     route::get('/category', [CategoryController::class, 'category'])->name('category');
