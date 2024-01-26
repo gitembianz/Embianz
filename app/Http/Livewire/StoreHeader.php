@@ -77,20 +77,49 @@ class StoreHeader extends Component
 
     return Category::where('active', 1)
       ->where('store_tab', '1')
+      ->where('has_parrent', '0')
       ->with([
         'subcategory' => function ($query) {
           $query->whereHas('category', function ($subQuery) {
-            $subQuery->where('store_tab', 1);
+
+            $subQuery->where('store_tab', 1)->where('active', 1);
           })->with([
             'category.media' => function ($query) {
               $query->where('type', 'min'); // Filter and limit the media relationship
-            }
+            },
+            'category.subcategory'
           ]);
+        },
+        'media' => function ($query) {
+          $query->where('type', 'min'); // Filter and limit the media relationship
         }
-      ])
-      ->limit($limit)->orderby('sequence')
-      ->get();
+      ])->limit($limit)->orderby('sequence')->get();
   }
+
+  // public function getCategoriesProperty()
+  // {
+  //   $limit = Store_Settings::where('parameter', 'limit_category')->value('value') ?? '5';
+
+  //   return Category::where('active', 1)
+  //     ->where('store_tab', '1')
+  //     ->where('has_parrent', '0')
+  //     ->with([
+  //       'subcategory' => function ($query) {
+  //         $query->whereHas('category', function ($subQuery) {
+
+  //           $subQuery->where('store_tab', 1)->where('active', 1);
+  //         })->with([
+  //           'category.media' => function ($query) {
+  //             $query->where('type', 'min'); // Filter and limit the media relationship
+  //           },
+  //           'category.subcategory'
+  //         ]);
+  //       },
+  //       'media' => function ($query) {
+  //         $query->where('type', 'min'); // Filter and limit the media relationship
+  //       }
+  //     ])->limit($limit)->orderby('sequence')->get();
+  // }
 
   public function getObjectsProperty()
   {

@@ -114,7 +114,7 @@ class StoreOrder extends Component
       $this->back = true;
     }
     $this->resetForm();
-    $this->step = 1;
+    $this->step = 2;
     $this->individual_identic = true;
     $this->juridic_identic = true;
   }

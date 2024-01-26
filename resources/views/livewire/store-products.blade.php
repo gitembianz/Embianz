@@ -1,6 +1,7 @@
 <div wire:scroll="loadMore">
     <!-- Acesta este Store Products (Catalogol Magazinului), acesta
     are sistemul de filtre, card-uri, si stilul Catalogului -->
+
     <!---------------------------------------------------------->
     <!------------------------Breadcrumbs----------------------->
     <section>
@@ -21,7 +22,15 @@
     </section>
     <!----------------------End Breadcrumbs--------------------->
     <!---------------------------------------------------------->
-
+    @if ($category)
+        <section class="section__header container">
+            <h2 class="section__title">{{ $categoryname }}</h2>
+            <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo repellendus labore ipsam officiis, modi
+                nostrum ullam deserunt maxime! Unde reprehenderit tempora error. Ex, rem consectetur.
+            </p>
+        </section>
+    @endif
     <!---------------------------------------------------------->
     <!---------------------------Filter------------------------->
     <section class="controls container">
