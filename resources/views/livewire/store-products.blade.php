@@ -70,8 +70,8 @@
         @if ($products->isEmpty())
             <p>Nu au fost produse gasite</p>
         @else
-            @foreach ($products as $product)
-                <div class="product" wire:key="{{ $product->id }}">
+            @foreach ($products as $index => $product)
+                <div class="product">
                     <div @if ($loop->last) id="last_record" @endif class="card" role="listitem">
                         <a href="/product/{{ $product->id }}">
                             @if ($product->media->first() != null)
@@ -125,7 +125,7 @@
                                 </p>
                             </div>
                             @if ($product->product_prices->first())
-                                @livewire('add-to-cart-button', ['product' => $product], key($product->id))
+                                @livewire('add-to-cart-button', ['product' => $product], key($product->id . $index))
                             @endif
                         </div>
                     </div>
@@ -181,7 +181,7 @@
                 <!-------------------- Dropdown (filter) -------------------->
             </div>
             <div class="filter__bottom">
-                <button class="filter__apply" id="closeFilter" wire:click.prevent="applyFilter">
+                <button class="filter__apply" id="closeFilter" wire:click="applyFilter">
                     Aplica
                 </button>
                 <button class="filter__reset" id="resetFilter" wire:click="resetFilter">
