@@ -302,19 +302,52 @@
                                 </button>
                             </div>
                             <div class="dropmenu__list">
-                                {{-- <div class="submenu"> --}}
                                 @foreach ($category->subcategory as $subcategory)
-                                    <a class="dropmenu__link" href="/storeproducts/{{ $subcategory->category_id }}">
-                                        @if ($subcategory->category->media->first() != null)
-                                            <img src="/{{ $subcategory->category->media->first()->path }}/{{ $subcategory->category->media->first()->name }}"
-                                                alt="{{ $subcategory->category->media->first()->path }}">
-                                        @else
-                                            <img src="/images/store/default/default70.webp" alt="something wrong">
-                                        @endif
-                                        <h4>{{ $subcategory->category->name }}</h4>
-                                    </a>
+                                    @if ($subcategory->category->subcategory->count() != 0)
+                                        <div class="submenu">
+                                            <div class="submenu__button">
+                                                <a class="submenu__button--link"
+                                                    href="/storeproducts/{{ $subcategory->category_id }}">
+                                                    @if ($subcategory->category->media->first() != null)
+                                                        <img src="/{{ $subcategory->category->media->first()->path }}/{{ $subcategory->category->media->first()->name }}"
+                                                            alt="{{ $subcategory->category->media->first()->path }}">
+                                                    @else
+                                                        <img src="/images/store/default/default70.webp"
+                                                            alt="something wrong">
+                                                    @endif
+                                                    <h4>{{ $subcategory->category->name }}</h4>
+                                                </a>
+                                            </div>
+                                            @foreach ($subcategory->category->subcategory as $subsubCategory)
+                                                <div class="submenu__list">
+                                                    <a class="submenu__link"
+                                                        href="/storeproducts/{{ $subsubCategory->category_id }}">
+                                                        @if ($subsubCategory->category->media->first() != null)
+                                                            <img src="/{{ $subsubCategory->category->media->first()->path }}/{{ $subsubCategory->category->media->first()->name }}"
+                                                                alt="{{ $subsubCategory->category->media->first()->path }}">
+                                                        @else
+                                                            <img src="/images/store/default/default70.webp"
+                                                                alt="something wrong">
+                                                        @endif
+                                                        <h4>{{ $subsubCategory->category->name }}</h4>
+                                                    </a>
+                                                </div>
+                                            @endforeach
+
+                                        </div>
+                                    @else
+                                        <a class="dropmenu__link"
+                                            href="/storeproducts/{{ $subcategory->category_id }}">
+                                            @if ($subcategory->category->media->first() != null)
+                                                <img src="/{{ $subcategory->category->media->first()->path }}/{{ $subcategory->category->media->first()->name }}"
+                                                    alt="{{ $subcategory->category->media->first()->path }}">
+                                            @else
+                                                <img src="/images/store/default/default70.webp" alt="something wrong">
+                                            @endif
+                                            <h4>{{ $subcategory->category->name }}</h4>
+                                        </a>
+                                    @endif
                                 @endforeach
-                                {{-- </div> --}}
                             </div>
                         </div>
                     @else
