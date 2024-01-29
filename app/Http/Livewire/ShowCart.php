@@ -25,7 +25,7 @@ class ShowCart extends Component
     }
     public function getCartQueryProperty()
     {
-        return Cart::find($this->cartId)->with('currency', 'status', 'order')->first();
+        return Cart::find($this->cartId)->with('currency', 'status', 'order');
     }
     public function mount($cartId)
     {
