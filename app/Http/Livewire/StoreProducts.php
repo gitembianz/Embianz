@@ -12,7 +12,7 @@ class StoreProducts extends Component
 {
   use WithPagination;
 
-  public $loadAmount = 11;
+  public $loadAmount = 16;
   public $search = "";
   public $quantity = 10;
   public $session_id;
@@ -150,7 +150,7 @@ class StoreProducts extends Component
 
     switch ($this->orderBy) {
       case 'best_selling':
-        $query->orderBy('popularity', $this->orderAsc ? 'asc' : 'desc');
+        $query->orderBy('popularity', 'desc');
         break;
       case 'name_az':
         $query->orderBy('name', $this->orderAsc ? 'asc' : 'desc');
