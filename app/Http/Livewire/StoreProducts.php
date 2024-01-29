@@ -171,6 +171,6 @@ class StoreProducts extends Component
 
   public function loadMore()
   {
-    $this->loadAmount += 10;
+    $this->loadAmount += 16;
   }
 }
