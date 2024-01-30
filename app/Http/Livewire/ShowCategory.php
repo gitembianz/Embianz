@@ -45,6 +45,7 @@ class ShowCategory extends Component
       'short_description' => $this->category->short_description,
       'long_description' => $this->category->long_description,
       'seo_title' => $this->category->seo_title,
+      'slider_sequence' => $this->category->slider_sequence,
       // Add other properties as needed
     ];
     $this->editcategory = true;
@@ -64,6 +65,9 @@ class ShowCategory extends Component
       }
       if (array_key_exists('visible', $category_new)) {
         $new->store_tab = $category_new['visible'];
+      }
+      if (array_key_exists('slider_sequence', $category_new)) {
+        $new->slider_sequence = $category_new['slider_sequence'];
       }
       if (array_key_exists('active', $category_new)) {
         $new->active = $category_new['active'];

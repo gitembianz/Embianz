@@ -95,17 +95,28 @@
                                 <label>End Date</label>
                             </div>
                         @endif
-                        @if ($editcategory === null)
-                            <div class="item__form-input-close">
-                                <div>{{ $category->sequence }}</div>
-                                <label>Sequence</label>
-                            </div>
-                        @else
-                            <div class="item__form-input">
-                                <input type="number" wire:model.defer="cat.sequence">
-                                <label>Sequence</label>
-                            </div>
-                        @endif
+                        <div style="display: flex;">
+                            @if ($editcategory === null)
+                                <div class="item__form-input-close">
+                                    <div>{{ $category->sequence }}</div>
+                                    <label>Sequence</label>
+                                </div>
+                                <div class="item__form-input-close">
+                                    <div>{{ $category->slider_sequence }}</div>
+                                    <label>Slider Sequence</label>
+                                </div>
+                            @else
+                                <div class="item__form-input">
+                                    <input type="number" wire:model.defer="cat.sequence">
+                                    <label>Sequence</label>
+                                </div>
+                                <div class="item__form-input">
+                                    <input type="number" wire:model.defer="cat.slider_sequence">
+                                    <label>Slider Sequence</label>
+                                </div>
+                            @endif
+                        </div>
+
                         @if ($editcategory === null)
                             <div style="display: flex; align-items: center;justify-content: flex-start;gap: 10px">
                                 @if ($category->active)
