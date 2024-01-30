@@ -12,39 +12,37 @@
         ensures a streamlined structure for managing the dynamic aspects of the sliders on the Main Page. -->
         <!---------------------------------------------------------->
         <!---------------------- Slider Images --------------------->
-        @if ($category)
-            @if (!$subcategories->isEmpty())
-                <div class="main-slider">
-                    <div class="main-slider__wrapper">
-                        @foreach ($subcategories as $item)
-                            <div class="main-slider__slide">
-                                @if ($item->category->media->first() != null)
-                                    <img src="/{{ $item->category->media->first()->path }}/{{ $item->category->media->first()->name }}"
-                                        alt="{{ $item->category->media->first()->path }}">
-                                @else
-                                    <img src="/images/store/default/default.webp" alt="something wrong">
-                                @endif
+        @if (!$slideritems->isEmpty())
+            <div class="main-slider">
+                <div class="main-slider__wrapper">
+                    @foreach ($slideritems as $item)
+                        <div class="main-slider__slide">
+                            @if ($item->media->first() != null)
+                                <img src="/{{ $item->media->first()->path }}/{{ $item->media->first()->name }}"
+                                    alt="{{ $item->media->first()->path }}">
+                            @else
+                                <img src="/images/store/default/default.webp" alt="something wrong">
+                            @endif
 
-                                <div class="main-slider__text container">
-                                    <h3>{{ $item->category->name }}</h3>
-                                    <p>{{ $item->category->short_description }}</p>
-                                    <a class="main-slider__link" href="/storeproducts/{{ $item->id }}">Acceseaza!</a>
-                                </div>
+                            <div class="main-slider__text container">
+                                <h3>{{ $item->name }}</h3>
+                                <p>{{ $item->short_description }}</p>
+                                <a class="main-slider__link" href="/storeproducts/{{ $item->id }}">Acceseaza!</a>
                             </div>
-                        @endforeach
-                    </div>
-                    <div class="main-slider__button prev">
-                        <svg>
-                            <polyline points="15 18 9 12 15 6"></polyline>
-                        </svg>
-                    </div>
-                    <div class="main-slider__button next">
-                        <svg>
-                            <polyline points="9 18 15 12 9 6"></polyline>
-                        </svg>
-                    </div>
+                        </div>
+                    @endforeach
                 </div>
-            @endif
+                <div class="main-slider__button prev">
+                    <svg>
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                </div>
+                <div class="main-slider__button next">
+                    <svg>
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </div>
+            </div>
         @endif
 
         <!-------------------- End Slider Images ------------------->
