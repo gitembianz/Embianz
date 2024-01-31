@@ -18,8 +18,10 @@
                     @foreach ($slideritems as $item)
                         <div class="main-slider__slide">
                             @if ($item->media->first() != null)
-                                <img src="/{{ $item->media->first()->path }}/{{ $item->media->first()->name }}"
-                                    alt="{{ $item->media->first()->path }}">
+                                <a href="/storeproducts/{{ $item->id }}">
+                                    <img src="/{{ $item->media->first()->path }}/{{ $item->media->first()->name }}"
+                                        alt="{{ $item->media->first()->path }}">
+                                </a>
                             @else
                                 <img src="/images/store/default/default.webp" alt="something wrong">
                             @endif
