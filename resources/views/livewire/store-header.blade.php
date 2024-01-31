@@ -274,9 +274,9 @@
                                                 @foreach ($subcategory->category->subcategory as $subsubCategory)
                                                     <a class="submenu__link"
                                                         href="/storeproducts/{{ $subsubCategory->category_id }}">
-                                                        @if ($subcategory->category->media->first() != null)
-                                                            <img src="/{{ $subcategory->category->media->first()->path }}/{{ $subcategory->category->media->first()->name }}"
-                                                                alt="{{ $subcategory->category->media->first()->path }}">
+                                                        @if ($subsubCategory->category->media->first() != null)
+                                                            <img src="/{{ $subsubCategory->category->media->first()->path }}/{{ $subsubCategory->category->media->first()->name }}"
+                                                                alt="{{ $subsubCategory->category->media->first()->path }}">
                                                         @else
                                                             <img src="/images/store/default/default70.webp"
                                                                 alt="something wrong">
