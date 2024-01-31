@@ -43,7 +43,7 @@
                 <label for="last_name">
                     <span class="red__label">*</span> Nume
                 </label>
-                <input id="last_name" maxlength="80" name="last_name" type="text" placeholder="Nume">
+                <input id="last_name" maxlength="80" name="last_name" type="text" placeholder="Nume" required>
             </div>
             <div class="contact__label">
                 <label for="company">
