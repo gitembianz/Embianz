@@ -114,6 +114,14 @@
                                 În curând!
                             </p>
                         @endif
+                        <!--------------------------------------------------------->
+                        <!--------------------- Discount Code --------------------->
+                        <p class="card-status discount">
+                            -25%
+                        </p>
+                        <!------------------- End Discount Code ------------------->
+                        <!--------------------------------------------------------->
+
                         @livewire("product-wishlist-button", ["productId" => $product->id, "is_in_wishlist" => $product->is_in_wishlist], key($product->id))
                         <div class="card-info">
                             <div class="card-text">
@@ -122,9 +130,13 @@
                             <div class="card-text">
                                 <h3>{{ $product->name }}</h3>
                                 <p class="card-price">
-                                    {{-- <span>
+                                    <!--------------------------------------------------------->
+                                    <!--------------------- Discount Code --------------------->
+                                    <span>
                                         35,00 EUR
-                                    </span> --}}
+                                    </span>
+                                    <!------------------- End Discount Code ------------------->
+                                    <!--------------------------------------------------------->
                                     @if ($product->product_prices->first())
                                         {{ $price }}
                                         {{ $product->product_prices->first()->pricelist->currency->name }}

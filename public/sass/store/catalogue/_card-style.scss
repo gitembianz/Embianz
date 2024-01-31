@@ -147,6 +147,18 @@
   text-decoration: line-through;
 }
 
+.card-price {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: flex-end;
+  justify-content: center;
+
+  &>span {
+    text-decoration: line-through;
+    color: #cc0000;
+  }
+}
+
 .card-status {
   position: absolute;
   top: 25px;
@@ -159,6 +171,10 @@
 
   &.save {
     background: #d2042d;
+  }
+
+  &.discount {
+    background: #cc0000;
   }
 
   &.out {
