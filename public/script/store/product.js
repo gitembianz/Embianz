@@ -205,33 +205,33 @@ function modalProduct(modalId, sliderId) {
 //<----------------------- End Modal Product --------------------------->
 //<--------------------------------------------------------------------->
 //<------------------------ Start Functions IOS ------------------------>
-document.addEventListener("DOMContentLoaded", function () {
-  sliderProduct(".product-slider");
-  modalProduct(".product-modal", ".product-slider");
-});
+// document.addEventListener("DOMContentLoaded", function () {
+sliderProduct(".product-slider");
+modalProduct(".product-modal", ".product-slider");
+// });
 //<---------------------- End Start Functions IOS ---------------------->
 //<--------------------------------------------------------------------->
-function handleClick() {
-  setTimeout(() => {
-    sliderProduct(".product-slider");
-    modalProduct(".product-modal", ".product-slider");
-  }, 500);
-}
+// function handleClick() {
+//   setTimeout(() => {
+//     sliderProduct(".product-slider");
+//     modalProduct(".product-modal", ".product-slider");
+//   }, 500);
+// }
 
-const prevButton = document.querySelector(".product-slider__prev");
-const nextButton = document.querySelector(".product-slider__next");
+// const prevButton = document.querySelector(".product-slider__prev");
+// const nextButton = document.querySelector(".product-slider__next");
 
-// Adaugă un event listener pe body
-document.body.addEventListener("click", function (event) {
-  // Verifică dacă elementul pe care s-a dat click este în body
-  if (event.target.closest("body")) {
-    // Verifică dacă elementul pe care s-a dat click NU este butonul "prev" sau "next"
-    if (
-      !event.target.closest(".product-slider__prev") &&
-      !event.target.closest(".product-slider__next")
-    ) {
-      // Apelarea funcției handleClick
-      handleClick();
-    }
-  }
-});
+// // Adaugă un event listener pe body
+// document.body.addEventListener("click", function (event) {
+//   // Verifică dacă elementul pe care s-a dat click este în body
+//   if (event.target.closest("body")) {
+//     // Verifică dacă elementul pe care s-a dat click NU este butonul "prev" sau "next"
+//     if (
+//       !event.target.closest(".product-slider__prev") &&
+//       !event.target.closest(".product-slider__next")
+//     ) {
+//       // Apelarea funcției handleClick
+//       handleClick();
+//     }
+//   }
+// });
