@@ -2102,7 +2102,7 @@ header {
   opacity: 0;
   visibility: hidden;
   gap: 10px;
-  padding: 15px 8px;
+  padding: 15px 0 0;
   grid-template-rows: 0 auto;
   overflow: hidden;
   border-radius: 0 0 5px 5px;
