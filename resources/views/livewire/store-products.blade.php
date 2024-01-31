@@ -132,17 +132,19 @@
                                 <p class="card-price">
                                     <!--------------------------------------------------------->
                                     <!--------------------- Discount Code --------------------->
-                                    <span>
+                                    <span class="card-price discount">
                                         35,00 EUR
                                     </span>
                                     <!------------------- End Discount Code ------------------->
                                     <!--------------------------------------------------------->
-                                    @if ($product->product_prices->first())
-                                        {{ $price }}
-                                        {{ $product->product_prices->first()->pricelist->currency->name }}
-                                    @else
-                                        {{ __("") }}
-                                    @endif
+                                    <span class="card-price oldprice">
+                                        @if ($product->product_prices->first())
+                                            {{ $price }}
+                                            {{ $product->product_prices->first()->pricelist->currency->name }}
+                                        @else
+                                            {{ __("") }}
+                                        @endif
+                                    </span>
                                 </p>
                             </div>
                             @if ($product->product_prices->first())

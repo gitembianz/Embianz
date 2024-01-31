@@ -2606,7 +2606,6 @@ header {
 }
 .card-text p {
   font-size: 14px;
-  color: #333333;
   font-weight: 500;
   text-wrap: nowrap;
 }
@@ -2698,13 +2697,28 @@ header {
 
 .card-price {
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
   align-items: flex-end;
   justify-content: center;
 }
-.card-price > span {
-  text-decoration: line-through;
+.card-price.discount {
+  font-size: 14px;
   color: #cc0000;
+  font-weight: 500;
+  text-wrap: nowrap;
+}
+.card-price.oldprice {
+  text-decoration: line-through;
+  font-size: 14px;
+  color: #333333;
+  font-weight: 500;
+  text-wrap: nowrap;
+}
+.card-price.price {
+  font-size: 14px;
+  color: #333333;
+  font-weight: 500;
+  text-wrap: nowrap;
 }
 
 .card-status {
