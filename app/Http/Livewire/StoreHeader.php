@@ -80,7 +80,7 @@ class StoreHeader extends Component
       ->where('has_parrent', '0')
       ->with([
         'subcategory' => function ($query) {
-          $query->whereHas('category', function ($subQuery) {
+          $query->with('category', function ($subQuery) {
 
             $subQuery->where('store_tab', 1)->where('active', 1);
           })->with([
