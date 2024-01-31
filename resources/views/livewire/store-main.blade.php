@@ -16,7 +16,7 @@
             <div class="main-slider">
                 <div class="main-slider__wrapper">
                     @foreach ($slideritems as $item)
-                        <div class="main-slider__slide">
+                        <a class="main-slider__slide" href="/storeproducts/{{ $item->id }}">
                             @if ($item->media->first() != null)
                                 <img src="/{{ $item->media->first()->path }}/{{ $item->media->first()->name }}"
                                     alt="{{ $item->media->first()->path }}">
@@ -29,7 +29,7 @@
                                 <p>{{ $item->short_description }}</p>
                                 <a class="main-slider__link" href="/storeproducts/{{ $item->id }}">Acceseaza!</a>
                             </div> --}}
-                        </div>
+                        </a>
                     @endforeach
                 </div>
                 <div class="main-slider__button prev">
