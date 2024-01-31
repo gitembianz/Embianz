@@ -54,7 +54,7 @@
                 <h2 class="section__title">Descoperă produsele noastre populare!</h2>
                 <p class="section__text">Explorează colecția noastră de produse și găsește
                     accesoriile perfecte pentru a-ți completa stilul.
-                    <br><a href="{{ url("/storeproducts") }}">Vezi produsele!</a>
+                    <br><a href="{{ url('/storeproducts') }}">Vezi produsele!</a>
                 </p>
             </div>
         </section>
@@ -78,9 +78,9 @@
                                                 alt="something wrong">
                                         @endif
                                     </a>
-                                    @livewire("product-wishlist-button", ["productId" => $product->id], key($product->id))
+                                    @livewire('product-wishlist-button', ['productId' => $product->id, 'is_in_wishlist' => $product->is_in_wishlist], key($product->id))
                                     <?php if ($product->product_prices->count() != 0) {
-                                        $price = number_format($product->product_prices->first()->value, 2, ",", ".");
+                                        $price = number_format($product->product_prices->first()->value, 2, ',', '.');
                                     } else {
                                         $price = null;
                                     }
@@ -93,15 +93,15 @@
                                             <h3>{{ $product->name }}</h3>
                                             <p>
                                                 @if ($product->product_prices->first())
-                                                    {{ number_format($product->product_prices->first()->value, 2, ",", ".") }}
+                                                    {{ number_format($product->product_prices->first()->value, 2, ',', '.') }}
                                                     {{ $product->product_prices->first()->pricelist->currency->name }}
                                                 @else
-                                                    {{ __("Indisponibil") }}
+                                                    {{ __('Indisponibil') }}
                                                 @endif
                                             </p>
                                         </div>
                                         @if ($product->product_prices->first())
-                                            @livewire("add-to-cart-button", ["product" => $product], key($product->id))
+                                            @livewire('add-to-cart-button', ['product' => $product], key($product->id))
                                         @endif
                                     </div>
                                 </div>

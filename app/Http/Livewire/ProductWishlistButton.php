@@ -14,24 +14,24 @@ class ProductWishlistButton extends Component
 
     public $listeners = [];
 
-    public function mount($productId)
+    public function mount($productId, $is_in_wishlist)
     {
         $cookieId = isset($_COOKIE['sessionId']) && !empty($_COOKIE['sessionId'])
             ? $_COOKIE['sessionId']
             : null;
         $this->session_id = $cookieId ?? Session::getId();
         $this->productId  = $productId;
-
-        $this->is_in_wishlist = Wishlist::where('session_id', $this->session_id)
-            ->where('product_id', $this->productId)
-            ->first() ? true : false;
+        $this->is_in_wishlist = $is_in_wishlist;
         $this->listeners = ["update-wish-" . $this->productId => "refreshComponent"];
     }
 
     public function refreshComponent()
     {
-        $this->mount($this->productId);
+        $this->is_in_wishlist = !$this->is_in_wishlist;
+        $this->mount($this->productId, $this->is_in_wishlist);
     }
+
+
     public function addToWishlist($id)
     {
         Wishlist::updateOrCreate(
@@ -40,11 +40,13 @@ class ProductWishlistButton extends Component
         $this->emit('wishlistUpdated');
         $this->refreshComponent();
     }
+
     public function removeFromWishlist($id)
     {
         Wishlist::where('session_id', $this->session_id)
             ->where('product_id', $id)
             ->delete();
+
         $this->emit('wishlistUpdated');
         $this->refreshComponent();
     }
