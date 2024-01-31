@@ -14,7 +14,7 @@
             </a>
             <!-------------------If Category is appear------------------>
             @if ($category)
-                <a class="breadcrumbs__link">{{ $categoryname }}</a>
+                <a class="breadcrumbs__link">{{ $category_details->name }}</a>
             @endif
             <!-----------------End If Category is appear---------------->
 
@@ -24,11 +24,8 @@
     <!---------------------------------------------------------->
     @if ($category)
         <section class="section__header container">
-            <h2 class="section__title">{{ $categoryname }}</h2>
-            <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo repellendus labore ipsam officiis, modi
-                nostrum ullam deserunt maxime! Unde reprehenderit tempora error. Ex, rem consectetur.
-            </p>
+            <h2 class="section__title">{{ $category_details->name }}</h2>
+            <p>{{ $category_details->long_description }}</p>
         </section>
     @endif
     <!---------------------------------------------------------->
