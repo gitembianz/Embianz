@@ -46,7 +46,7 @@
 
   p {
     font-size: 14px;
-    color: $text;
+    // color: $text;
     font-weight: 500;
     text-wrap: nowrap;
 
@@ -149,13 +149,30 @@
 
 .card-price {
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
   align-items: flex-end;
   justify-content: center;
 
-  &>span {
-    text-decoration: line-through;
+  &.discount {
+    font-size: 14px;
     color: #cc0000;
+    font-weight: 500;
+    text-wrap: nowrap;
+  }
+
+  &.oldprice {
+    text-decoration: line-through;
+    font-size: 14px;
+    color: $text;
+    font-weight: 500;
+    text-wrap: nowrap;
+  }
+
+  &.price {
+    font-size: 14px;
+    color: $text;
+    font-weight: 500;
+    text-wrap: nowrap;
   }
 }
 
