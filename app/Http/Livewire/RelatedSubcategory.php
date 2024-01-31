@@ -130,6 +130,8 @@ class RelatedSubcategory extends Component
     $rec->name = $category->name;
     $rec->category_id = $category->id;
     $rec->parrent_id = $this->category->id;
+    $category->has_parrent = true;
+    $category->save();
     $rec->save();
     $this->checkedadd = array_diff($this->checkedadd, [$this->catidbeinglink]);
     session()->flash('notification', [
@@ -142,10 +144,13 @@ class RelatedSubcategory extends Component
   {
     $categories = Category::whereKey($this->checkedadd)->get();
     foreach ($categories as $category) {
+      $cat = Category::find($category->id);
       $add = new Subcategory();
       $add->name = $category->name;
       $add->category_id = $category->id;
       $add->parrent_id = $this->category->id;
+      $cat->has_parrent = true;
+      $cat->save();
       $add->save();
     }
 
@@ -164,6 +169,7 @@ class RelatedSubcategory extends Component
   {
     $this->dispatchBrowserEvent('show-link-modal-multiple');
   }
+
   //related subcatecory functions
   public function showColumn($column)
   {
@@ -231,10 +237,16 @@ class RelatedSubcategory extends Component
   }
   public function deleteSingleRecord()
   {
-    $id = $this->subcatidbeingremoved;
-    $record = Subcategory::findOrFail($id);
+    $record = Subcategory::findOrFail($this->subcatidbeingremoved);
+    $still_has_parrents = Subcategory::where('category_id', $record->category_id)->count();
+    if ($still_has_parrents == 1) {
+      $cat = Category::findOrFail($record->category_id);
+      $cat->has_parrent = false;
+      $cat->save();
+    }
     $record->delete();
-    $this->checked = array_diff($this->checked, [$id]);
+
+    $this->checked = array_diff($this->checked, [$this->subcatidbeingremoved]);
     session()->flash('notification', [
       'message' => 'Record deleted successfully!',
       'type' => 'success',
@@ -245,13 +257,16 @@ class RelatedSubcategory extends Component
   {
     $records = Subcategory::whereKey($this->checked)->get();
     foreach ($records as $record) {
-      $id = $record->id;
-      $recordtodel = Subcategory::find($id);
+      $recordtodel = Subcategory::find($record->id);
+      $still_has_parrents = Subcategory::where('category_id', $recordtodel->category_id)->count();
+      if ($still_has_parrents == 1) {
+        $cat = Category::findOrFail($recordtodel->category_id);
+        $cat->has_parrent = false;
+        $cat->save();
+      }
       $recordtodel->delete();
     }
-
     $this->checked = [];
-
     session()->flash('notification', [
       'message' => 'Records deleted successfully!',
       'type' => 'success',

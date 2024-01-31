@@ -1,6 +1,7 @@
 <div wire:scroll="loadMore">
     <!-- Acesta este Store Products (Catalogol Magazinului), acesta
     are sistemul de filtre, card-uri, si stilul Catalogului -->
+
     <!---------------------------------------------------------->
     <!------------------------Breadcrumbs----------------------->
     <section>
@@ -13,7 +14,7 @@
             </a>
             <!-------------------If Category is appear------------------>
             @if ($category)
-                <a class="breadcrumbs__link">{{ $categoryname }}</a>
+                <a class="breadcrumbs__link">{{ $category_details->name }}</a>
             @endif
             <!-----------------End If Category is appear---------------->
 
@@ -21,7 +22,12 @@
     </section>
     <!----------------------End Breadcrumbs--------------------->
     <!---------------------------------------------------------->
-
+    @if ($category)
+        <section class="section__header container">
+            <h2 class="section__title">{{ $category_details->name }}</h2>
+            <p>{{ $category_details->long_description }}</p>
+        </section>
+    @endif
     <!---------------------------------------------------------->
     <!---------------------------Filter------------------------->
     <section class="controls container">

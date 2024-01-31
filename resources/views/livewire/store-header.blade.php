@@ -42,11 +42,25 @@
                                 @foreach ($category->subcategory as $subcategory)
                                     <div class="dropdown__item">
                                         <a class="dropdown__item--button"
-                                            href="/storeproducts/{{ $subcategory->category_id }}">{{ $subcategory->name }}
+                                            href="/storeproducts/{{ $subcategory->category_id }}">
+                                            {{ $subcategory->name }}
+                                            @if ($subcategory->category->subcategory->count() != 0)
+                                                <svg>
+                                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                                </svg>
+                                            @endif
                                         </a>
+                                        @if ($subcategory->category->subcategory->count() != 0)
+                                            <div class="dropdown__item--list">
+                                                @foreach ($subcategory->category->subcategory as $subsubCategory)
+                                                    <a href="/storeproducts/{{ $subsubCategory->category_id }}">
+                                                        {{ $subsubCategory->name }}
+                                                    </a>
+                                                @endforeach
+                                            </div>
+                                        @endif
                                     </div>
                                 @endforeach
-
                             </div>
                         </div>
                     @else
@@ -55,59 +69,6 @@
                         </a>
                     @endif
                 @endforeach
-                <!------------------------------------------------------>
-                <!-------------------- New-Dropdown -------------------->
-                {{-- <div class="dropdown">
-                    <a class="dropdown__button" href="/">
-                        Category-Exemple
-                        <svg>
-                            <polyline points="6 9 12 15 18 9"></polyline>
-                        </svg>
-                    </a>
-                    <div class="dropdown__list">
-                        <div class="dropdown__item">
-                            <a class="dropdown__item--button" href="/">Subcategory-Exemple
-                                <svg>
-                                    <polyline points="9 18 15 12 9 6"></polyline>
-                                </svg>
-                            </a>
-                            <div class="dropdown__item--list">
-                                <a href="/">Exemple 1</a>
-                                <a href="/">Exemple 2</a>
-                                <a href="/">Exemple 3</a>
-                            </div>
-                        </div>
-                        <div class="dropdown__item">
-                            <a class="dropdown__item--button" href="/">Subcategory-Exemple
-                                <svg>
-                                    <polyline points="9 18 15 12 9 6"></polyline>
-                                </svg>
-                            </a>
-                            <div class="dropdown__item--list">
-                                <a href="/">Exemple 1</a>
-                                <a href="/">Exemple 2</a>
-                                <a href="/">Exemple 3</a>
-                            </div>
-                        </div>
-                        <div class="dropdown__item">
-                            <a class="dropdown__item--button" href="/">Subcategory-Exemple
-                                <svg>
-                                    <polyline points="9 18 15 12 9 6"></polyline>
-                                </svg>
-                            </a>
-                            <div class="dropdown__item--list">
-                                <a href="/">Exemple 1</a>
-                                <a href="/">Exemple 2</a>
-                                <a href="/">Exemple 3</a>
-                            </div>
-                        </div>
-                        <div class="dropdown__item">
-                            <a class="dropdown__item--button" href="/">Subcategory-Exemple</a>
-                        </div>
-                    </div>
-                </div> --}}
-                <!------------------ End-New-Dropdown ------------------>
-                <!------------------------------------------------------>
             </div>
             <!---------------------NavMenu bar--------------------->
             <!------------------------------------------------------>
@@ -268,7 +229,6 @@
             <div class="menu__list">
                 @foreach ($categories as $category)
                     @if ($category->subcategory->count() != 0)
-                        <!------------------ End Dropdown (Menu) ------------------>
                         <div class="dropmenu">
                             <div class="dropmenu__button">
                                 <a class="dropmenu__button--link" href="/storeproducts/{{ $category->id }}">
@@ -280,7 +240,7 @@
                                         <img class="heart__list--img" src="/images/store/default/default70.webp"
                                             alt="something wrong">
                                     @endif
-                                    <h4> {{ $category->name }}</h4>
+                                    <h4>{{ $category->name }}</h4>
                                 </a>
                                 <button class="dropmenu__open" href="#">
                                     <svg>
@@ -290,20 +250,49 @@
                             </div>
                             <div class="dropmenu__list">
                                 @foreach ($category->subcategory as $subcategory)
-                                    <a class="dropmenu__link" href="/storeproducts/{{ $subcategory->category_id }}">
-                                        @if ($subcategory->category->media->first() != null)
-                                            <img src="/{{ $subcategory->category->media->first()->path }}/{{ $subcategory->category->media->first()->name }}"
-                                                alt="{{ $subcategory->category->media->first()->path }}">
-                                        @else
-                                            <img src="/images/store/default/default70.webp" alt="something wrong">
+                                    <div class="submenu">
+                                        <div class="submenu__button">
+                                            <a class="submenu__button--link"
+                                                href="/storeproducts/{{ $subcategory->category_id }}">
+                                                @if ($subcategory->category->media->first() != null)
+                                                    <img src="/{{ $subcategory->category->media->first()->path }}/{{ $subcategory->category->media->first()->name }}"
+                                                        alt="{{ $subcategory->category->media->first()->path }}">
+                                                @else
+                                                    <img src="/images/store/default/default70.webp"
+                                                        alt="something wrong">
+                                                @endif
+                                                <h4>{{ $subcategory->name }}</h4>
+                                            </a>
+                                            @if ($subcategory->category->subcategory->count() != 0)
+                                                <button class="submenu__open" href="#">
+                                                    <svg>
+                                                        <polyline points="6 9 12 15 18 9"></polyline>
+                                                    </svg>
+                                                </button>
+                                            @endif
+                                        </div>
+                                        @if ($subcategory->category->subcategory->count() != 0)
+                                            <div class="submenu__list">
+                                                @foreach ($subcategory->category->subcategory as $subsubCategory)
+                                                    <a class="submenu__link"
+                                                        href="/storeproducts/{{ $subsubCategory->category_id }}">
+                                                        @if ($subsubCategory->category->media->first() != null)
+                                                            <img src="/{{ $subsubCategory->category->media->first()->path }}/{{ $subsubCategory->category->media->first()->name }}"
+                                                                alt="{{ $subsubCategory->category->media->first()->path }}">
+                                                        @else
+                                                            <img src="/images/store/default/default70.webp"
+                                                                alt="something wrong">
+                                                        @endif
+                                                        <h4>{{ $subsubCategory->name }}</h4>
+                                                    </a>
+                                                @endforeach
+                                            </div>
                                         @endif
-                                        <h4>{{ $subcategory->category->name }}</h4>
-                                    </a>
+                                    </div>
                                 @endforeach
                             </div>
                         </div>
                     @else
-                        <!-------------------- Dropdown (Menu) -------------------->
                         <a class="menu__link" href="/storeproducts/{{ $category->id }}">
                             @if ($category->media->first() != null)
                                 <img src="/{{ $category->media->first()->path }}/{{ $category->media->first()->name }}"
@@ -315,44 +304,6 @@
                         </a>
                     @endif
                 @endforeach
-                <!------------------------------------------------------>
-                <!-------------------- New-Dropdown -------------------->
-                {{-- <div class="dropmenu">
-                    <div class="dropmenu__button">
-                        <a class="dropmenu__button--link" href="/">
-                            <img src="https://picsum.photos/300/300" alt="Random-Image">
-                            <h4>category</h4>
-                        </a>
-                        <button class="dropmenu__open" href="#">
-                            <svg>
-                                <polyline points="6 9 12 15 18 9"></polyline>
-                            </svg>
-                        </button>
-                    </div>
-                    <div class="dropmenu__list">
-                        <div class="submenu">
-                            <div class="submenu__button">
-                                <a class="submenu__button--link" href="/">
-                                    <img src="https://picsum.photos/300/300" alt="Random-Image">
-                                    <h4>category</h4>
-                                </a>
-                                <button class="submenu__open" href="#">
-                                    <svg>
-                                        <polyline points="6 9 12 15 18 9"></polyline>
-                                    </svg>
-                                </button>
-                            </div>
-                            <div class="submenu__list">
-                                <a class="submenu__link" href="/">
-                                    <img src="https://picsum.photos/300/300" alt="something wrong">
-                                    <h4>subcategory</h4>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div> --}}
-                <!------------------ End-New-Dropdown ------------------>
-                <!------------------------------------------------------>
             </div>
         </div>
     </div>

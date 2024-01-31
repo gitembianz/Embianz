@@ -149,7 +149,8 @@
                     </tr>
                 @else
                     @foreach ($categories as $category)
-                        <tr  @if ($loop->last) id="last_record" @endif class="@if ($this->isChecked($category->id)) table__row--selected @endif">
+                        <tr @if ($loop->last) id="last_record" @endif
+                            class="@if ($this->isChecked($category->id)) table__row--selected @endif">
                             <td data-title="Check">
                                 <input type="checkbox" value="{{ $category->id }}" wire:model="checked">
                             </td>
@@ -193,20 +194,12 @@
                                             {{ $category->$column }}
                                         </div>
                                     </td>
-                                @elseif ($column === 'active')
+                                @elseif ($column === 'active' || $column === 'store_tab' || $column === 'has_parrent')
                                     <td data-title="{{ $column }}">
                                         @if ($category->$column)
-                                            active
+                                            true
                                         @else
-                                            inactive
-                                        @endif
-                                    </td>
-                                @elseif ($column === 'store_tab')
-                                    <td data-title="{{ $column }}">
-                                        @if ($category->$column)
-                                            visible
-                                        @else
-                                            hidden
+                                            false
                                         @endif
                                     </td>
                                 @else

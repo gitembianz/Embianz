@@ -12,7 +12,7 @@ class StoreProducts extends Component
 {
   use WithPagination;
 
-  public $loadAmount = 11;
+  public $loadAmount = 16;
   public $search = "";
   public $quantity = 10;
   public $session_id;
@@ -20,7 +20,7 @@ class StoreProducts extends Component
   public $orderBy = 'best_selling'; // Default sorting order
   public $orderAsc = true;
   public $category;
-  public $categoryname;
+  public $category_details;
   public $property = false;
   public $specfilter = false;
   public $selectedSpecValues = [];
@@ -134,7 +134,7 @@ class StoreProducts extends Component
       }
     ]);
     if ($this->category) {
-      $this->categoryname = Category::find($this->category)->name;
+      $this->category_details = Category::find($this->category, ['name', 'long_description']);
       $query->whereHas('product_categories.category', function ($query) {
         $query->where('id', $this->category);
       });
@@ -150,7 +150,7 @@ class StoreProducts extends Component
 
     switch ($this->orderBy) {
       case 'best_selling':
-        $query->orderBy('popularity', $this->orderAsc ? 'asc' : 'desc');
+        $query->orderBy('popularity', 'desc');
         break;
       case 'name_az':
         $query->orderBy('name', $this->orderAsc ? 'asc' : 'desc');
@@ -171,6 +171,6 @@ class StoreProducts extends Component
 
   public function loadMore()
   {
-    $this->loadAmount += 10;
+    $this->loadAmount += 16;
   }
 }
