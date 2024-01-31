@@ -2088,7 +2088,6 @@ header {
 }
 
 .dropmenu__list {
-  background: #d4d4d4;
   z-index: 500;
   transform: scaleY(0);
   transform-origin: top;
@@ -2193,7 +2192,7 @@ header {
 }
 
 .submenu__button {
-  width: 100%;
+  width: 92%;
   height: 50px;
   display: flex;
   align-items: center;
@@ -2203,6 +2202,20 @@ header {
   text-decoration: none;
   border-radius: 7px;
   z-index: 5;
+  margin-left: auto;
+  position: relative;
+}
+.submenu__button::after {
+  content: "";
+  width: 20px;
+  height: 25px;
+  background: transparent;
+  position: absolute;
+  left: -20px;
+  border-bottom: 2px solid gray;
+  border-left: 2px solid gray;
+  border-radius: 0px 0px 0px 10px;
+  transform: translateY(-50%);
 }
 
 .submenu__button--link {
@@ -2216,7 +2229,7 @@ header {
   border-radius: 7px 0 0 7px;
   background-color: #fafafa;
   transition: all 0.3s ease-in-out;
-  margin-left: 5px;
+  padding: 5px;
 }
 .submenu__button--link > img {
   width: 40px;
@@ -2251,7 +2264,6 @@ header {
 }
 
 .submenu__list {
-  background: #bababa;
   z-index: 500;
   transform: scaleY(0);
   transform-origin: top;
@@ -2264,7 +2276,7 @@ header {
   opacity: 0;
   visibility: hidden;
   gap: 10px;
-  padding: 15px 8px;
+  padding: 15px 0px;
   grid-template-rows: 0 auto;
   overflow: hidden;
   border-radius: 0 0 5px 5px;
@@ -2273,8 +2285,8 @@ header {
 }
 
 .submenu__link {
-  width: 100%;
-  height: 40px;
+  width: 82%;
+  height: 50px;
   text-decoration: none;
   gap: 10px;
   display: flex;
@@ -2285,11 +2297,24 @@ header {
   transform: scaleY(0);
   transform-origin: top;
   padding: 0 7px;
+  margin-left: auto;
   transition: all 0.3s ease-in-out;
 }
+.submenu__link::after {
+  content: "";
+  width: 20px;
+  height: 25px;
+  background: transparent;
+  position: absolute;
+  left: -20px;
+  border-bottom: 2px solid gray;
+  border-left: 2px solid gray;
+  border-radius: 0px 0px 0px 10px;
+  transform: translateY(-50%);
+}
 .submenu__link > img {
-  width: 30px;
-  height: 30px;
+  width: 40px;
+  height: 40px;
   object-fit: contain;
   aspect-ratio: 1/1;
   border-radius: 7px;
