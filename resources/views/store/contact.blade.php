@@ -41,32 +41,32 @@
             </select>
             <div class="contact__label">
                 <label for="last_name">
-                    Nume
+                    <span class="red__label">*</span> Nume
                 </label>
                 <input id="last_name" maxlength="80" name="last_name" type="text" placeholder="Nume">
             </div>
             <div class="contact__label">
                 <label for="company">
-                    Companie
+                    <span class="red__label">*</span> Companie
                 </label>
                 <input id="company" maxlength="80" name="company" type="text" placeholder="Companie">
             </div>
             <div class="contact__label">
                 <label for="email">
-                    Email
+                    <span class="red__label">*</span> Email
                 </label>
                 <input type="email" id="email" name="email" autocomplete="email" required placeholder="E-mail"
                     maxlength="80">
             </div>
             <div class="contact__label">
                 <label for="nr_order">
-                    Numarul Comenzii
+                    <span class="red__label">*</span> Numarul Comenzii
                 </label>
                 <input type="text" id="nr_order" name="nr_order" placeholder="Numarul Comenzii" maxlength="80">
             </div>
             <div class="contact__label">
                 <span for="description" id="description">
-                    Mesaj
+                    <span class="red__label">*</span> Mesaj
                 </span>
                 <textarea name="description" rows="30" required placeholder="Spune-ne mai multe. Incepe sa scrii aici..."></textarea>
             </div>
@@ -78,7 +78,7 @@
                 </svg>
             </button>
         </form>
-        <img class="contact__img" src="/images/store/contact-form.webp" alt="contact form image">
+        {{-- <img class="contact__img" src="/images/store/contact-form.webp" alt="contact form image"> --}}
     </section>
     <!---------------------End Contact Form--------------------->
     <!---------------------------------------------------------->
