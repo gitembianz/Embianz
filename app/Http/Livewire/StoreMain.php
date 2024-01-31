@@ -13,7 +13,9 @@ class StoreMain extends Component
 
   public function getSliderItemsProperty()
   {
-    return Category::where('slider_sequence', '!=', '0')->with('media')->orderby('sequence')->get();
+    return Category::where('slider_sequence', '!=', '0')->with(['media' => function ($query) {
+      $query->where('type', 'original');
+    }])->orderby('sequence')->get();
   }
 
   public function getPopProductsProperty()
