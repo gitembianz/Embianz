@@ -2696,6 +2696,17 @@ header {
   text-decoration: line-through;
 }
 
+.card-price {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: flex-end;
+  justify-content: center;
+}
+.card-price > span {
+  text-decoration: line-through;
+  color: #cc0000;
+}
+
 .card-status {
   position: absolute;
   top: 25px;
@@ -2708,6 +2719,9 @@ header {
 }
 .card-status.save {
   background: #d2042d;
+}
+.card-status.discount {
+  background: #cc0000;
 }
 .card-status.out {
   background: #333333;
