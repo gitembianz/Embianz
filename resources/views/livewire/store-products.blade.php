@@ -6,10 +6,10 @@
     <!------------------------Breadcrumbs----------------------->
     <section>
         <div class="breadcrumbs container">
-            <a class="breadcrumbs__link" href="{{ url('/') }}">
+            <a class="breadcrumbs__link" href="{{ url("/") }}">
                 Acasa
             </a>
-            <a class="breadcrumbs__link" href="{{ url('/storeproducts') }}">
+            <a class="breadcrumbs__link" href="{{ url("/storeproducts") }}">
                 Produse
             </a>
             <!-------------------If Category is appear------------------>
@@ -90,7 +90,7 @@
                             @endif
                         </a>
                         <?php if ($product->product_prices->count() != 0) {
-                            $price = number_format($product->product_prices->first()->value, 2, ',', '.');
+                            $price = number_format($product->product_prices->first()->value, 2, ",", ".");
                         } else {
                             $price = null;
                         }
@@ -114,24 +114,27 @@
                                 În curând!
                             </p>
                         @endif
-                        @livewire('product-wishlist-button', ['productId' => $product->id, 'is_in_wishlist' => $product->is_in_wishlist], key($product->id))
+                        @livewire("product-wishlist-button", ["productId" => $product->id, "is_in_wishlist" => $product->is_in_wishlist], key($product->id))
                         <div class="card-info">
                             <div class="card-text">
                                 <span>{{ $product->short_description }}</span>
                             </div>
                             <div class="card-text">
                                 <h3>{{ $product->name }}</h3>
-                                <p>
+                                <p class="card-price">
+                                    {{-- <span>
+                                        35,00 EUR
+                                    </span> --}}
                                     @if ($product->product_prices->first())
                                         {{ $price }}
                                         {{ $product->product_prices->first()->pricelist->currency->name }}
                                     @else
-                                        {{ __('') }}
+                                        {{ __("") }}
                                     @endif
                                 </p>
                             </div>
                             @if ($product->product_prices->first())
-                                @livewire('add-to-cart-button', ['product' => $product], key($product->id . $index))
+                                @livewire("add-to-cart-button", ["product" => $product], key($product->id . $index))
                             @endif
                         </div>
                     </div>
