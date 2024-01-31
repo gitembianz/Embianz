@@ -2210,7 +2210,7 @@ header {
 .submenu__button::after {
   content: "";
   width: 20px;
-  height: 25px;
+  height: 400%;
   background: transparent;
   position: absolute;
   left: -20px;
@@ -2242,7 +2242,7 @@ header {
   border-radius: 7px;
 }
 .submenu__button--link > h4 {
-  font-size: 18px;
+  font-size: 16px;
   color: #333333;
 }
 @media (max-width: 576px) {
@@ -2278,7 +2278,7 @@ header {
   opacity: 0;
   visibility: hidden;
   gap: 10px;
-  padding: 15px 0px;
+  padding: 15px 0 0;
   grid-template-rows: 0 auto;
   overflow: hidden;
   border-radius: 0 0 5px 5px;
@@ -2305,7 +2305,7 @@ header {
 .submenu__link::after {
   content: "";
   width: 20px;
-  height: 25px;
+  height: 400%;
   background: transparent;
   position: absolute;
   left: -20px;
