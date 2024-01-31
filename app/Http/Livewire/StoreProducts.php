@@ -20,7 +20,7 @@ class StoreProducts extends Component
   public $orderBy = 'best_selling'; // Default sorting order
   public $orderAsc = true;
   public $category;
-  public $categoryname;
+  public $category_details;
   public $property = false;
   public $specfilter = false;
   public $selectedSpecValues = [];
@@ -134,7 +134,7 @@ class StoreProducts extends Component
       }
     ]);
     if ($this->category) {
-      $this->categoryname = Category::find($this->category)->name;
+      $this->category_details = Category::find($this->category, ['name', 'long_description']);
       $query->whereHas('product_categories.category', function ($query) {
         $query->where('id', $this->category);
       });

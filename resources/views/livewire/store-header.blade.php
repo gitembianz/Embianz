@@ -50,13 +50,15 @@
                                                 </svg>
                                             @endif
                                         </a>
-                                        <div class="dropdown__item--list">
-                                            @foreach ($subcategory->category->subcategory as $subsubCategory)
-                                                <a href="/storeproducts/{{ $subsubCategory->category_id }}">
-                                                    {{ $subsubCategory->name }}
-                                                </a>
-                                            @endforeach
-                                        </div>
+                                        @if ($subcategory->category->subcategory->count() != 0)
+                                            <div class="dropdown__item--list">
+                                                @foreach ($subcategory->category->subcategory as $subsubCategory)
+                                                    <a href="/storeproducts/{{ $subsubCategory->category_id }}">
+                                                        {{ $subsubCategory->name }}
+                                                    </a>
+                                                @endforeach
+                                            </div>
+                                        @endif
                                     </div>
                                 @endforeach
                             </div>

@@ -87,7 +87,10 @@ class StoreHeader extends Component
             'category.media' => function ($query) {
               $query->where('type', 'min'); // Filter and limit the media relationship
             },
-            'category.subcategory'
+            'category.subcategory',
+            'category.subcategory.category.media' => function ($query) {
+              $query->where('type', 'min'); // Filter and limit the media relationship
+            },
           ]);
         },
         'media' => function ($query) {
