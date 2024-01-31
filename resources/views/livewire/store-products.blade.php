@@ -91,8 +91,10 @@
                         </a>
                         <?php if ($product->product_prices->count() != 0) {
                             $price = number_format($product->product_prices->first()->value, 2, ',', '.');
+                            $discount = $product->product_prices->first()->discount != 0 ? true : false;
                         } else {
                             $price = null;
+                            $discount = false;
                         }
                         ?>
 
@@ -108,6 +110,12 @@
                                 </p>
                             @else
                                 <p></p>
+                            @endif
+                            {{-- tagul de discount --}}
+                            @if ($discount)
+                                <p class="card-status save">
+                                    -10%
+                                </p>
                             @endif
                         @else
                             <p class="card-status save">
@@ -130,22 +138,43 @@
                             <div class="card-text">
                                 <h3>{{ $product->name }}</h3>
                                 <p>
-                                    @if ($product->product_prices->first())
-                                        {{ $price }}
-                                        {{ $product->product_prices->first()->pricelist->currency->name }}
+                                    @if ($discount)
+                                        <span style="color: red; text-decoration: line-through;">
+                                            {{ $product->product_prices->first()->rrp_value }}
+                                            {{ $product->product_prices->first()->pricelist->currency->name }}
+                                        </span>
+                                        <span>
+                                            @if ($product->product_prices->first())
+                                                {{ $price }}
+                                                {{ $product->product_prices->first()->pricelist->currency->name }}
+                                            @endif
+                                        </span>
                                     @else
-                                        {{ __('') }}
+                                        <span>
+                                            @if ($product->product_prices->first())
+                                                {{ $price }}
+                                                {{ $product->product_prices->first()->pricelist->currency->name }}
+                                            @endif
+                                        </span>
                                     @endif
+
                                 </p>
                             </div>
-                            @if ($product->product_prices->first())
+                            @if ($price)
                                 @livewire('add-to-cart-button', ['product' => $product], key($product->id . $index))
+                            @else
+                                <a class="card-button-disabled" onclick="handleClick()">Indisponibil</a>
                             @endif
                         </div>
                     </div>
                 </div>
             @endforeach
-            <x-lazy />
+            {{-- <x-lazy> --}}
+            @if ($products->count() >= $loadAmount)
+                <div style="width: 100%" wire:click="loadMore" wire:loading.remove>
+                    <button class="filter__apply">Vezi mai mult...</button>
+                </div>
+            @endif
         @endif
     </section>
     <!-----------------------End Catalogue---------------------->
@@ -182,8 +211,7 @@
                                     <label class="dropfilter__link" for="{{ $innerIndex }}_{{ $uniqueValue }}">
                                         <input type="checkbox"
                                             wire:model.defer="selectedSpecValues.{{ $innerIndex }}.{{ $uniqueValue }}"
-                                            wire:key="checkbox-{{ $innerIndex }}-{{ $uniqueValue }}"
-                                            id="{{ $innerIndex }}_{{ $uniqueValue }}">
+                                            {{-- wire:key="checkbox-{{ $innerIndex }}-{{ $uniqueValue }}" --}} id="{{ $innerIndex }}_{{ $uniqueValue }}">
 
                                         <h4>{{ $uniqueValue }}</h4>
                                     </label>

@@ -8,7 +8,6 @@ use App\Models\Product;
 use Livewire\Component;
 use App\Models\Category;
 use App\Models\Store_Settings;
-use Illuminate\Support\Facades\Session;
 
 class StoreHeader extends Component
 {
@@ -17,7 +16,7 @@ class StoreHeader extends Component
   public $session_id;
 
   protected $listeners = [
-    'newcart' => '$refresh'
+    'newcart' => 'mount'
   ];
 
   public function render()
@@ -36,14 +35,20 @@ class StoreHeader extends Component
 
       ];
     }
-
     return view('livewire.store-header', $data);
   }
-
+  public function mount()
+  {
+    if (array_key_exists('sessionId', $_COOKIE)) {
+      $this->session_id = $_COOKIE['sessionId'];
+    } else {
+      $sessionId = session()->getId();
+      setcookie('sessionId', $sessionId, time() + 30 * 24 * 60 * 60, '/', null, false, true);
+      $this->session_id = $sessionId;
+    }
+  }
   public function getCartProperty()
   {
-    $cookieId = request()->cookie('sessionId');
-    $this->session_id = $cookieId ?? Session::getId();
     $cart = Cart::where('session_id', $this->session_id)
       ->where('status_id', '!=', Status::where('name', 'closed')->where('type', 'cart')->value('id'))
       ->latest()->first();

@@ -95,13 +95,13 @@
                                                 @if ($product->product_prices->first())
                                                     {{ number_format($product->product_prices->first()->value, 2, ',', '.') }}
                                                     {{ $product->product_prices->first()->pricelist->currency->name }}
-                                                @else
-                                                    {{ __('Indisponibil') }}
                                                 @endif
                                             </p>
                                         </div>
-                                        @if ($product->product_prices->first())
+                                        @if ($price)
                                             @livewire('add-to-cart-button', ['product' => $product], key($product->id))
+                                        @else
+                                            <a class="card-button-disabled" onclick="handleClick()">Indisponibil</a>
                                         @endif
                                     </div>
                                 </div>
