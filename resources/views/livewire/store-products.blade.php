@@ -114,7 +114,15 @@
                                 În curând!
                             </p>
                         @endif
-                        @livewire('product-wishlist-button', ['productId' => $product->id, 'is_in_wishlist' => $product->is_in_wishlist], key($product->id))
+                        @livewire(
+                            'product-wishlist-button',
+                            [
+                                'productId' => $product->id,
+                                'is_in_wishlist' => $product->wishlists->isNotEmpty(), // true if there are wishlist records, false otherwise
+                            ],
+                            key($product->id)
+                        )
+
                         <div class="card-info">
                             <div class="card-text">
                                 <span>{{ $product->short_description }}</span>
