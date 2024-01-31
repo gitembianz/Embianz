@@ -47,7 +47,7 @@
             </div>
             <div class="contact__label">
                 <label for="company">
-                    <span class="red__label">*</span> Companie
+                    Companie
                 </label>
                 <input id="company" maxlength="80" name="company" type="text" placeholder="Companie">
             </div>
@@ -60,7 +60,7 @@
             </div>
             <div class="contact__label">
                 <label for="nr_order">
-                    <span class="red__label">*</span> Numarul Comenzii
+                    Numarul Comenzii
                 </label>
                 <input type="text" id="nr_order" name="nr_order" placeholder="Numarul Comenzii" maxlength="80">
             </div>
