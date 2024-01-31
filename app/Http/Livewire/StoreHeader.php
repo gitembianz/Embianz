@@ -17,7 +17,7 @@ class StoreHeader extends Component
   public $session_id;
 
   protected $listeners = [
-    'newcart' => 'mount'
+    'newcart' => 'updateCart'
   ];
 
   public function render()
@@ -36,20 +36,10 @@ class StoreHeader extends Component
 
     return view('livewire.store-header', $data);
   }
-  public function mount()
-  {
-    if (array_key_exists('sessionId', $_COOKIE)) {
-      $this->session_id = $_COOKIE['sessionId'];
-    } else {
-      $sessionId = session()->getId();
-      setcookie('sessionId', $sessionId, time() + 30 * 24 * 60 * 60, '/', null, false, true);
-      $this->session_id = $sessionId;
-    }
-    $this->updatecart();
-  }
-
   public function updateCart()
   {
+
+    $this->session_id = $_COOKIE['sessionId'];
     $this->cart = Cart::where('session_id', $this->session_id)
       ->where('status_id', '!=', Status::where('name', 'closed')->where('type', 'cart')->value('id'))
       ->latest()->first();
@@ -98,31 +88,6 @@ class StoreHeader extends Component
         }
       ])->limit($limit)->orderby('sequence')->get();
   }
-
-  // public function getCategoriesProperty()
-  // {
-  //   $limit = Store_Settings::where('parameter', 'limit_category')->value('value') ?? '5';
-
-  //   return Category::where('active', 1)
-  //     ->where('store_tab', '1')
-  //     ->where('has_parrent', '0')
-  //     ->with([
-  //       'subcategory' => function ($query) {
-  //         $query->whereHas('category', function ($subQuery) {
-
-  //           $subQuery->where('store_tab', 1)->where('active', 1);
-  //         })->with([
-  //           'category.media' => function ($query) {
-  //             $query->where('type', 'min'); // Filter and limit the media relationship
-  //           },
-  //           'category.subcategory'
-  //         ]);
-  //       },
-  //       'media' => function ($query) {
-  //         $query->where('type', 'min'); // Filter and limit the media relationship
-  //       }
-  //     ])->limit($limit)->orderby('sequence')->get();
-  // }
 
   public function getObjectsProperty()
   {
