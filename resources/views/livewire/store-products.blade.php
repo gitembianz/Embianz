@@ -169,10 +169,10 @@
                     </div>
                 </div>
             @endforeach
-            {{-- <x-lazy> --}}
+            <x-lazy />
             @if ($products->count() >= $loadAmount)
                 <div style="width: 100%" wire:click="loadMore" wire:loading.remove>
-                    <button class="filter__apply">Vezi mai mult...</button>
+                    <button class="filter__apply">Vezi mai mult!</button>
                 </div>
             @endif
         @endif
