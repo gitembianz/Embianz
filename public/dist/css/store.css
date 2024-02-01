@@ -2741,6 +2741,10 @@ header {
 .card-status.save {
   background: #d2042d;
 }
+.card-status.save-secondary {
+  background: #d2042d;
+  top: 50px;
+}
 .card-status.discount {
   background: #cc0000;
 }
@@ -3989,7 +3993,7 @@ header {
 .checkout__form {
   width: 100%;
   height: 100%;
-  display: flex;
+  display: none;
   flex-direction: column;
   background: #fafafa;
   padding: 15px;
@@ -4005,6 +4009,9 @@ header {
     justify-items: center;
     align-content: flex-start;
   }
+}
+.checkout__form.active {
+  display: flex;
 }
 
 .look__form {
@@ -5011,4 +5018,4 @@ header {
   color: #b3b3b3;
   font-size: 14px;
   text-align: center;
-}
+}/*# sourceMappingURL=store.css.map */
