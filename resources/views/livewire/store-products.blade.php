@@ -6,10 +6,10 @@
     <!------------------------Breadcrumbs----------------------->
     <section>
         <div class="breadcrumbs container">
-            <a class="breadcrumbs__link" href="{{ url('/') }}">
+            <a class="breadcrumbs__link" href="{{ url("/") }}">
                 Acasa
             </a>
-            <a class="breadcrumbs__link" href="{{ url('/storeproducts') }}">
+            <a class="breadcrumbs__link" href="{{ url("/storeproducts") }}">
                 Produse
             </a>
             <!-------------------If Category is appear------------------>
@@ -90,7 +90,7 @@
                             @endif
                         </a>
                         <?php if ($product->product_prices->count() != 0) {
-                            $price = number_format($product->product_prices->first()->value, 2, ',', '.');
+                            $price = number_format($product->product_prices->first()->value, 2, ",", ".");
                             $discount = $product->product_prices->first()->discount != 0 ? true : false;
                         } else {
                             $price = null;
@@ -104,34 +104,33 @@
                                 <p class="card-status out">
                                     Ultimele produse!
                                 </p>
-                                 @if ($discount)
-                                <p class="card-status save-secondary">
-                                    -{{ $product->product_prices->first()->discount }}%
-                                </p>
-                            @endif
+                                @if ($discount)
+                                    <p class="card-status save-secondary">
+                                        -{{ $product->product_prices->first()->discount }}%
+                                    </p>
+                                @endif
                             @elseif($product->quantity == 0)
                                 <p class="card-status save">
                                     Produs indisponibil!
                                 </p>
-                                @else
-                                 @if ($discount)
-                                <p class="card-status save">
-                                    -{{ $product->product_prices->first()->discount }}%
-                                </p>
-                            @endif
+                            @else
+                                @if ($discount)
+                                    <p class="card-status save">
+                                        -{{ $product->product_prices->first()->discount }}%
+                                    </p>
+                                @endif
                             @endif
                             {{-- tagul de discount --}}
-                           
                         @else
                             <p class="card-status save">
                                 În curând!
                             </p>
                         @endif
                         @livewire(
-                            'product-wishlist-button',
+                            "product-wishlist-button",
                             [
-                                'productId' => $product->id,
-                                'is_in_wishlist' => $product->wishlists->isNotEmpty(), // true if there are wishlist records, false otherwise
+                                "productId" => $product->id,
+                                "is_in_wishlist" => $product->wishlists->isNotEmpty(), // true if there are wishlist records, false otherwise
                             ],
                             key($product->id)
                         )
@@ -166,7 +165,7 @@
                                 </p>
                             </div>
                             @if ($price)
-                                @livewire('add-to-cart-button', ['product' => $product], key($product->id . $index))
+                                @livewire("add-to-cart-button", ["product" => $product], key($product->id . $index))
                             @else
                                 <a class="card-button-disabled" onclick="handleClick()">Indisponibil</a>
                             @endif
@@ -175,13 +174,14 @@
                 </div>
             @endforeach
             <x-lazy />
-            @if ($products->count() >= $loadAmount)
-                <div style="width: 100%" wire:click="loadMore" wire:loading.remove>
-                    <button class="filter__apply">Vezi mai mult!</button>
-                </div>
-            @endif
         @endif
     </section>
+
+    @if ($products->count() >= $loadAmount)
+        <section class="container">
+            <button class="filter__apply" wire:click="loadMore" wire:loading.remove>Vezi mai mult!</button>
+        </section>
+    @endif
     <!-----------------------End Catalogue---------------------->
     <!---------------------------------------------------------->
     <!---------------------------Filter------------------------->
