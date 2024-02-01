@@ -104,17 +104,24 @@
                                 <p class="card-status out">
                                     Ultimele produse!
                                 </p>
+                                 @if ($discount)
+                                <p class="card-status save-secondary">
+                                    -{{ $product->product_prices->first()->discount }}%
+                                </p>
+                            @endif
                             @elseif($product->quantity == 0)
                                 <p class="card-status save">
                                     Produs indisponibil!
                                 </p>
-                            @endif
-                            {{-- tagul de discount --}}
-                            @if ($discount)
-                                <p class="card-status discount">
+                                @else
+                                 @if ($discount)
+                                <p class="card-status save">
                                     -{{ $product->product_prices->first()->discount }}%
                                 </p>
                             @endif
+                            @endif
+                            {{-- tagul de discount --}}
+                           
                         @else
                             <p class="card-status save">
                                 În curând!

@@ -88,23 +88,33 @@
                                     }
                                     ?>
                                     @if ($price)
-                                        {{-- Out- negru // save - rosu --}}
-                                        @if ($product->quantity == 0)
-                                            <p class="card-status save">
-                                                Produs indisponibil!
-                                            </p>
-                                        @endif
-                                        {{-- tagul de discount --}}
-                                        @if ($discount)
-                                            <p class="card-status discount">
-                                                -{{ $product->product_prices->first()->discount }}%
-                                            </p>
-                                        @endif
-                                    @else
-                                        <p class="card-status save">
-                                            În curând!
-                                        </p>
-                                    @endif
+                            @if ($product->quantity < $quantity && $product->quantity > 0)
+                                <p class="card-status out">
+                                    Ultimele produse!
+                                </p>
+                                 @if ($discount)
+                                <p class="card-status save-secondary">
+                                    -{{ $product->product_prices->first()->discount }}%
+                                </p>
+                            @endif
+                            @elseif($product->quantity == 0)
+                                <p class="card-status save">
+                                    Produs indisponibil!
+                                </p>
+                                @else
+                                 @if ($discount)
+                                <p class="card-status save">
+                                    -{{ $product->product_prices->first()->discount }}%
+                                </p>
+                            @endif
+                            @endif
+                            {{-- tagul de discount --}}
+                           
+                        @else
+                            <p class="card-status save">
+                                În curând!
+                            </p>
+                        @endif
                                     <div class="card-info">
                                         <div class="card-text">
                                             <span>{{ $product->short_description }}</span>
