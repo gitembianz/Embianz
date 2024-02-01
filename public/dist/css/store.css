@@ -2741,6 +2741,10 @@ header {
 .card-status.save {
   background: #d2042d;
 }
+.card-status.save-secondary {
+  background: #d2042d;
+  top: 50px;
+}
 .card-status.discount {
   background: #cc0000;
 }
@@ -5011,4 +5015,4 @@ header {
   color: #b3b3b3;
   font-size: 14px;
   text-align: center;
-}
+}/*# sourceMappingURL=store.css.map */
