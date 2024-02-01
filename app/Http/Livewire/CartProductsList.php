@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Cart;
 use App\Models\Status;
 use App\Models\Product;
 use Livewire\Component;
@@ -15,16 +16,16 @@ class CartProductsList extends Component
     public $session_id;
     protected $listeners = [
         'showcart' => 'cartshow',
+        'newcart' => 'mount',
     ];
     public function render()
     {
-        $cartItems = $this->getCartItemsProperty();
         $total = $this->cart ? $this->cart->sum_amount : 0;
 
         return view('livewire.cart-products-list', [
-            'cartItems' => $cartItems,
+            'cartItems' => $this->cartItems,
             'total' => $total,
-            'currency' => $cartItems->isNotEmpty() ? $cartItems->first()->product->product_prices->first()->pricelist->currency->name : '',
+            'currency' => $this->cartItems->isNotEmpty() ? $this->cartItems->first()->product->product_prices->first()->pricelist->currency->name : '',
         ]);
     }
     public function getCartItemsProperty()
@@ -37,9 +38,18 @@ class CartProductsList extends Component
                 'product.product_prices'
             ])->get() : collect();
     }
-    public function mount($cart)
+    public function mount()
     {
-        $this->cart = $cart;
+        if (array_key_exists('sessionId', $_COOKIE)) {
+            $this->session_id = $_COOKIE['sessionId'];
+        } else {
+            $sessionId = session()->getId();
+            setcookie('sessionId', $sessionId, time() + 30 * 24 * 60 * 60, '/', null, false, true);
+            $this->session_id = $sessionId;
+        }
+        $this->cart = Cart::where('session_id', $this->session_id)
+            ->where('status_id', '!=', Status::where('name', 'closed')->where('type', 'cart')->value('id'))
+            ->latest()->first();
     }
     public function cartshow()
     {

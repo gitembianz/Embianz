@@ -2640,6 +2640,13 @@ header {
   color: black;
   transition: all 0.3s ease-in-out;
 }
+.card-info > .card-button > a {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .card-info > .card-button:hover {
   background: #333333;
   color: #fafafa;
@@ -5004,4 +5011,4 @@ header {
   color: #b3b3b3;
   font-size: 14px;
   text-align: center;
-}/*# sourceMappingURL=store.css.map */
+}

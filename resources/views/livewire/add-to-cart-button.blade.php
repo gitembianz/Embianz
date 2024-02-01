@@ -1,4 +1,4 @@
-<div class="card-button add-to-cart">
+<div class="card-button">
     @if ($product->quantity != 0)
         <a wire:click="addToCart({{ $product->id }})">Adauga in coș</a>
     @else
