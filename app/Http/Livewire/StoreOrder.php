@@ -4,14 +4,15 @@ namespace App\Http\Livewire;
 
 use App\Models\Cart;
 use App\Models\Order;
+use App\Models\Store_Settings;
 use App\Models\Status;
 use App\Models\Account;
 use App\Models\Address;
+use App\Models\Payment;
+use App\Models\Voucher;
 use Livewire\Component;
 use App\Models\Cart_Item;
 use App\Models\Order_Item;
-use App\Models\Payment;
-use App\Models\Voucher;
 
 class StoreOrder extends Component
 {
@@ -23,6 +24,7 @@ class StoreOrder extends Component
   public $back = false;
   public $session_id;
   public $cart;
+  public $default_country;
 
   public $individual_billing_first;
   public $individual_billing_last;
@@ -117,6 +119,12 @@ class StoreOrder extends Component
     $this->step = 1;
     $this->individual_identic = true;
     $this->juridic_identic = true;
+    // default country
+    $this->default_country = Store_Settings::where('parameter', 'default_country')->value('value') ?? 'Romania';
+    $this->individual_billing_country = $this->default_country;
+    $this->individual_shipping_country = $this->default_country;
+    $this->juridic_billing_country = $this->default_country;
+    $this->juridic_shipping_country = $this->default_country;
   }
   public function showindividual()
   {
@@ -125,6 +133,10 @@ class StoreOrder extends Component
     $this->juridic = false;
     $this->juridic_identic = false;
     $this->step = 1;
+    $this->individual_billing_country = $this->default_country;
+    $this->individual_shipping_country = $this->default_country;
+    $this->juridic_billing_country = $this->default_country;
+    $this->juridic_shipping_country = $this->default_country;
   }
   public function finish()
   {
@@ -155,6 +167,10 @@ class StoreOrder extends Component
     $this->juridic = true;
     $this->individual_identic = false;
     $this->step = 1;
+    $this->individual_billing_country = $this->default_country;
+    $this->individual_shipping_country = $this->default_country;
+    $this->juridic_billing_country = $this->default_country;
+    $this->juridic_shipping_country = $this->default_country;
   }
   public function confirm()
   {
