@@ -98,6 +98,7 @@
     route::get('/privacy', [StoreController::class, 'privacy'])->name('privacy');
     route::get('/contact', [StoreController::class, 'contact'])->name('contact');
     route::get('/about', [StoreController::class, 'about'])->name('about');
+    route::get('/confirm', [StoreController::class, 'confirm'])->name('confirm');
   });
 
 

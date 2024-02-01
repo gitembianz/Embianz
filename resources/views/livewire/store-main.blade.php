@@ -81,21 +81,67 @@
                                     @livewire('product-wishlist-button', ['productId' => $product->id, 'is_in_wishlist' => $product->is_in_wishlist], key($product->id))
                                     <?php if ($product->product_prices->count() != 0) {
                                         $price = number_format($product->product_prices->first()->value, 2, ',', '.');
+                                        $discount = $product->product_prices->first()->discount != 0 ? true : false;
                                     } else {
                                         $price = null;
+                                        $discount = false;
                                     }
                                     ?>
+                                    @if ($price)
+                            @if ($product->quantity < $quantity && $product->quantity > 0)
+                                <p class="card-status out">
+                                    Ultimele produse!
+                                </p>
+                                 @if ($discount)
+                                <p class="card-status save-secondary">
+                                    -{{ $product->product_prices->first()->discount }}%
+                                </p>
+                            @endif
+                            @elseif($product->quantity == 0)
+                                <p class="card-status save">
+                                    Produs indisponibil!
+                                </p>
+                                @else
+                                 @if ($discount)
+                                <p class="card-status save">
+                                    -{{ $product->product_prices->first()->discount }}%
+                                </p>
+                            @endif
+                            @endif
+                            {{-- tagul de discount --}}
+                           
+                        @else
+                            <p class="card-status save">
+                                În curând!
+                            </p>
+                        @endif
                                     <div class="card-info">
                                         <div class="card-text">
                                             <span>{{ $product->short_description }}</span>
                                         </div>
                                         <div class="card-text">
                                             <h3>{{ $product->name }}</h3>
-                                            <p>
-                                                @if ($product->product_prices->first())
-                                                    {{ number_format($product->product_prices->first()->value, 2, ',', '.') }}
-                                                    {{ $product->product_prices->first()->pricelist->currency->name }}
+                                            <p class="card-price">
+                                                @if ($discount)
+                                                    <span class="card-price discount">
+                                                        @if ($product->product_prices->first())
+                                                            {{ $price }}
+                                                            {{ $product->product_prices->first()->pricelist->currency->name }}
+                                                        @endif
+                                                    </span>
+                                                    <span class="card-price oldprice">
+                                                        {{ $product->product_prices->first()->rrp_value }}
+                                                        {{ $product->product_prices->first()->pricelist->currency->name }}
+                                                    </span>
+                                                @else
+                                                    <span>
+                                                        @if ($product->product_prices->first())
+                                                            {{ $price }}
+                                                            {{ $product->product_prices->first()->pricelist->currency->name }}
+                                                        @endif
+                                                    </span>
                                                 @endif
+
                                             </p>
                                         </div>
                                         @if ($price)
