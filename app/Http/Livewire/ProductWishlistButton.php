@@ -4,7 +4,6 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\Wishlist;
-use Illuminate\Support\Facades\Session;
 
 class ProductWishlistButton extends Component
 {
