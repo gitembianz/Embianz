@@ -3993,7 +3993,7 @@ header {
 .checkout__form {
   width: 100%;
   height: 100%;
-  display: flex;
+  display: none;
   flex-direction: column;
   background: #fafafa;
   padding: 15px;
@@ -4009,6 +4009,9 @@ header {
     justify-items: center;
     align-content: flex-start;
   }
+}
+.checkout__form.active {
+  display: flex;
 }
 
 .look__form {
