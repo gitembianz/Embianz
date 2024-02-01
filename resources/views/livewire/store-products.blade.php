@@ -6,10 +6,10 @@
     <!------------------------Breadcrumbs----------------------->
     <section>
         <div class="breadcrumbs container">
-            <a class="breadcrumbs__link" href="{{ url('/') }}">
+            <a class="breadcrumbs__link" href="{{ url("/") }}">
                 Acasa
             </a>
-            <a class="breadcrumbs__link" href="{{ url('/storeproducts') }}">
+            <a class="breadcrumbs__link" href="{{ url("/storeproducts") }}">
                 Produse
             </a>
             <!-------------------If Category is appear------------------>
@@ -90,8 +90,10 @@
                             @endif
                         </a>
                         <?php if ($product->product_prices->count() != 0) {
+
                             $price = number_format($product->product_prices->first()->value, 2, ',', '.');
                             $discount = $product->product_prices->first()->discount != 0 ? true : false;
+
                         } else {
                             $price = null;
                             $discount = false;
@@ -113,9 +115,9 @@
                             @endif
                             {{-- tagul de discount --}}
                             @if ($discount)
-                                <p class="card-status save">
-                                    -10%
-                                </p>
+                                <p class="card-status discount">
+                            -25%
+                        </p>
                             @endif
                         @else
                             <p class="card-status save">
@@ -131,19 +133,20 @@
                             key($product->id)
                         )
 
+
                         <div class="card-info">
                             <div class="card-text">
                                 <span>{{ $product->short_description }}</span>
                             </div>
                             <div class="card-text">
                                 <h3>{{ $product->name }}</h3>
-                                <p>
+                                 <p class="card-price">
                                     @if ($discount)
-                                        <span style="color: red; text-decoration: line-through;">
+                                        <span class="card-price discount">
                                             {{ $product->product_prices->first()->rrp_value }}
                                             {{ $product->product_prices->first()->pricelist->currency->name }}
                                         </span>
-                                        <span>
+                                        <span class="card-price oldprice">
                                             @if ($product->product_prices->first())
                                                 {{ $price }}
                                                 {{ $product->product_prices->first()->pricelist->currency->name }}
@@ -164,6 +167,7 @@
                                 @livewire('add-to-cart-button', ['product' => $product], key($product->id . $index))
                             @else
                                 <a class="card-button-disabled" onclick="handleClick()">Indisponibil</a>
+
                             @endif
                         </div>
                     </div>
