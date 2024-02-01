@@ -18,10 +18,8 @@ class WishlistButton extends Component
 
     public function mount($productId)
     {
-        $cookieId = isset($_COOKIE['sessionId']) && !empty($_COOKIE['sessionId'])
-            ? $_COOKIE['sessionId']
-            : null;
-        $this->session_id = $cookieId ?? Session::getId();
+        $this->session_id = isset($_COOKIE['sessionId']) ? $_COOKIE['sessionId'] : session()->getId();
+
         $this->productId  = $productId;
 
         $this->is_in_wishlist = Wishlist::where('session_id', $this->session_id)

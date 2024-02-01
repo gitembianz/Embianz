@@ -16,10 +16,8 @@ class ProductWishlistButton extends Component
 
     public function mount($productId, $is_in_wishlist)
     {
-        $cookieId = isset($_COOKIE['sessionId']) && !empty($_COOKIE['sessionId'])
-            ? $_COOKIE['sessionId']
-            : null;
-        $this->session_id = $cookieId ?? Session::getId();
+        $this->session_id = isset($_COOKIE['sessionId']) ? $_COOKIE['sessionId'] : session()->getId();
+
         $this->productId  = $productId;
         $this->is_in_wishlist = $is_in_wishlist;
         $this->listeners = ["update-wish-" . $this->productId => "refreshComponent"];
