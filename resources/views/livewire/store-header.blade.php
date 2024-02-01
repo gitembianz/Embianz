@@ -43,7 +43,7 @@
                                     <div class="dropdown__item">
                                         <a class="dropdown__item--button"
                                             href="/storeproducts/{{ $subcategory->category_id }}">
-                                            {{ $subcategory->name }}
+                                            {{ $subcategory->category->name }}
                                             @if ($subcategory->category->subcategory->count() != 0)
                                                 <svg>
                                                     <polyline points="9 18 15 12 9 6"></polyline>
@@ -54,7 +54,7 @@
                                             <div class="dropdown__item--list">
                                                 @foreach ($subcategory->category->subcategory as $subsubCategory)
                                                     <a href="/storeproducts/{{ $subsubCategory->category_id }}">
-                                                        {{ $subsubCategory->name }}
+                                                        {{ $subsubCategory->category->name }}
                                                     </a>
                                                 @endforeach
                                             </div>
@@ -207,7 +207,9 @@
     <!-----------------------END-Searchbar---------------------->
     <!---------------------------------------------------------->
     <!---------------------Basket (Leftbar)--------------------->
+    <!-- In your Blade view -->
     @livewire('cart-products-list', ['cart' => $cart])
+
     <!-------------------END-Basket (Leftbar)------------------->
     <!---------------------------------------------------------->
     <!----------------------Wish (Leftbar)---------------------->
@@ -261,7 +263,7 @@
                                                     <img src="/images/store/default/default70.webp"
                                                         alt="something wrong">
                                                 @endif
-                                                <h4>{{ $subcategory->name }}</h4>
+                                                <h4>{{ $subcategory->category->name }}</h4>
                                             </a>
                                             @if ($subcategory->category->subcategory->count() != 0)
                                                 <button class="submenu__open" href="#">
@@ -283,7 +285,7 @@
                                                             <img src="/images/store/default/default70.webp"
                                                                 alt="something wrong">
                                                         @endif
-                                                        <h4>{{ $subsubCategory->name }}</h4>
+                                                        <h4>{{ $subsubCategory->category->name }}</h4>
                                                     </a>
                                                 @endforeach
                                             </div>
