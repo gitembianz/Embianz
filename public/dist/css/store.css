@@ -4002,7 +4002,7 @@ header {
 }
 @media (min-width: 768px) {
   .checkout__form {
-    display: grid;
+    display: none;
     grid-template-columns: repeat(2, 1fr);
     column-gap: 20px;
     align-items: start;
@@ -4012,6 +4012,11 @@ header {
 }
 .checkout__form.active {
   display: flex;
+}
+@media (min-width: 768px) {
+  .checkout__form.active {
+    display: grid;
+  }
 }
 
 .look__form {
@@ -5018,4 +5023,4 @@ header {
   color: #b3b3b3;
   font-size: 14px;
   text-align: center;
-}/*# sourceMappingURL=store.css.map */
+}

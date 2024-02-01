@@ -88,7 +88,7 @@
   border-radius: 5px;
 
   @media (min-width: map-get($grid-breakpoints, md)) {
-    display: grid;
+    display: none;
     grid-template-columns: repeat(2, 1fr);
     column-gap: 20px;
     align-items: start;
@@ -98,6 +98,10 @@
 
   &.active {
     display: flex;
+
+    @media (min-width: map-get($grid-breakpoints, md)) {
+      display: grid;
+    }
   }
 }
 
