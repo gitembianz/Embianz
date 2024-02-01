@@ -25,6 +25,7 @@ class StoreOrder extends Component
   public $session_id;
   public $cart;
   public $default_country;
+  public $terms = false;
 
   public $individual_billing_first;
   public $individual_billing_last;
