@@ -675,7 +675,7 @@
                         <!-------------- End Checkout Checkbox --------------->
                         <!---------------------------------------------------->
                         {{-- @if (!$individual_identic) --}}
-                        <div class="checkout__form @if (!$individual_identic) active @endif">
+                        <div class="checkout__form @if (!$individual_identic && $individual) active @endif">
                             <!---------------------------------------------------->
                             <!------------- Checkout Header Name --------------->
                             <div class="checkout__top">
@@ -726,7 +726,7 @@
                             <!---------------------------------------------------->
                         </div>
                         <!---------------------------------------------------->
-                        <div class="checkout__form @if (!$individual_identic) active @endif"">
+                        <div class="checkout__form @if (!$individual_identic && $individual) active @endif">
                             <!---------------------------------------------------->
                             <!------------- Checkout Header Name --------------->
                             <div class="checkout__top">
@@ -1935,7 +1935,7 @@
                         <!-------------- End Checkout Checkbox --------------->
                         <!---------------------------------------------------->
                         {{-- @if (!$juridic_identic) --}}
-                        <div class="checkout__form @if (!$juridic_identic) active @endif">
+                        <div class="checkout__form @if (!$juridic_identic && $juridic) active @endif">
                             <!---------------------------------------------------->
                             <!------------- Checkout Header Name --------------->
                             <div class="checkout__top">
@@ -1987,7 +1987,7 @@
                             <!---------------------------------------------------->
                         </div>
                         <!---------------------------------------------------->
-                        <div class="checkout__form @if (!$juridic_identic) active @endif"">
+                        <div class="checkout__form @if (!$juridic_identic && $juridic) active @endif"">
                             <!---------------------------------------------------->
                             <!------------- Checkout Header Name --------------->
                             <div class="checkout__top">
@@ -2081,7 +2081,7 @@
                                     <div>Eritrea</div>
                                     <div>Estonia</div>
                                     <div>Ethiopia</div>
-                                    <div>Falkland Islands (Malvinas"</div>
+                                    <div>Falkland Islands (Malvinas)</div>
                                     <div>Faroe Islands</div>
                                     <div>Fiji</div>
                                     <div>Finland</div>
@@ -2107,7 +2107,7 @@
                                     <div>Guyana</div>
                                     <div>Haiti</div>
                                     <div>Heard Island and Mcdonald Islands</div>
-                                    <div>Holy See (Vatican City State"</div>
+                                    <div>Holy See (Vatican City State)</div>
                                     <div>Honduras</div>
                                     <div>Hong Kong</div>
                                     <div>Hungary</div>
@@ -2323,7 +2323,7 @@
                                     <option value="67">Eritrea</option>
                                     <option value="68">Estonia</option>
                                     <option value="69">Ethiopia</option>
-                                    <option value="70">Falkland Islands (Malvinas"</option>
+                                    <option value="70">Falkland Islands (Malvinas)</option>
                                     <option value="71">Faroe Islands</option>
                                     <option value="72">Fiji</option>
                                     <option value="73">Finland</option>
@@ -2349,7 +2349,7 @@
                                     <option value="93">Guyana</option>
                                     <option value="94">Haiti</option>
                                     <option value="95">Heard Island and Mcdonald Islands</option>
-                                    <option value="96">Holy See (Vatican City State"</option>
+                                    <option value="96">Holy See (Vatican City State)</option>
                                     <option value="97">Honduras</option>
                                     <option value="98">Hong Kong</option>
                                     <option value="99">Hungary</option>
