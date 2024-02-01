@@ -43,7 +43,7 @@
                                     <div class="dropdown__item">
                                         <a class="dropdown__item--button"
                                             href="/storeproducts/{{ $subcategory->category_id }}">
-                                            {{ $subcategory->name }}
+                                            {{ $subcategory->category->name }}
                                             @if ($subcategory->category->subcategory->count() != 0)
                                                 <svg>
                                                     <polyline points="9 18 15 12 9 6"></polyline>
@@ -54,7 +54,7 @@
                                             <div class="dropdown__item--list">
                                                 @foreach ($subcategory->category->subcategory as $subsubCategory)
                                                     <a href="/storeproducts/{{ $subsubCategory->category_id }}">
-                                                        {{ $subsubCategory->name }}
+                                                        {{ $subsubCategory->category->name }}
                                                     </a>
                                                 @endforeach
                                             </div>

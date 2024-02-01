@@ -466,7 +466,7 @@
                                             @if ($this->showColumn('Name'))
                                                 <td data-title="Name">
                                                     <a href="/show_category/{{ $subcat->category_id }}">
-                                                        {{ $subcat->name }}
+                                                        {{ $subcat->category->name }}
                                                     </a>
                                                 </td>
                                             @endif
