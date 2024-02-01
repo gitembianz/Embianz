@@ -32,7 +32,7 @@
         <form class="contact__form" action="https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8"
             method="POST">
             <input type=hidden name="oid" value="00D09000008XPQu">
-            <input type=hidden name="retURL" value="{{ "/" }}">
+            <input type=hidden name="retURL" value="{{ "/confirm" }}">
             <select id="00N9N000000PrL5" name="00N9N000000PrL5" title="Exact Source" hidden>
                 <option value="www.eztemcorp.com">noren.ro</option>
             </select>

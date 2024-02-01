@@ -46,6 +46,10 @@ class StoreController extends Controller
   {
     return view('store.about');
   }
+  public function confirm()
+  {
+    return view('store.confirm');
+  }
   public function contact()
   {
     return view('store.contact');
