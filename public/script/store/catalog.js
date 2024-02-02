@@ -59,14 +59,23 @@ function leftbar(idOpen, idClose, idList, idContent) {
 //<--------------------------------------------------------------------->
 //<---------------------------- FilterLive ----------------------------->
 //Filtrele se deschid cu Livewire function, acesta este pentru active
-function filterLive(idList, idContent) {
+function filterLive(idOpen, idClose, idList, idContent) {
+  const buttonOpen = document.getElementById(idOpen);
+  const buttonClose = document.getElementById(idClose);
   const list = document.getElementById(idList);
   const content = document.getElementById(idContent);
   const body = document.querySelector("body");
 
   if (!buttonOpen || !buttonClose || !list || !content) {
+    // console.log("leftbar error");
     return;
   } else {
+    buttonOpen.addEventListener("click", () => {
+      body.style.overflow = "hidden";
+    });
+    buttonClose.addEventListener("click", () => {
+      body.style.overflow = "auto";
+    });
     list.addEventListener("click", (event) => {
       if (
         !content.contains(event.target) &&
@@ -132,7 +141,7 @@ document.addEventListener("DOMContentLoaded", function () {
   dropmenus(".dropfilter", true);
   applyFilter("closeFilter", "resetFilter");
   applySort(".sort__item");
-  filterLive("filterList", "filterContent");
+  filterLive("filterOpen", ".filterClose", ".filterList", "filterContent");
 });
 //<----------------------- End Start Functions PC ---------------------->
 //<--------------------------------------------------------------------->
