@@ -427,7 +427,7 @@ class StoreOrder extends Component
         $rules = [
           'individual_billing_first' => 'required|string',
           'individual_billing_last' => 'required|string',
-          'individual_billing_phone' => 'required|regex:/^\+?\d{1,4}?\s?\(?\d{1,4}\)?[-.\s]?\d{1,10}$/',
+          'individual_billing_phone' => 'required|regex:/^\+?\d{1,4}?\s?\(?\d{1,4}\)?[-.\s]?\d{1,10}[-.\s]?\d{1,10}$/',
           'individual_billing_email' => 'required|email',
           'individual_billing_address1' => 'required|string',
           'individual_billing_country' => 'required|string',
@@ -448,7 +448,7 @@ class StoreOrder extends Component
           $shippingRules = [
             'individual_shipping_first' => 'required|string',
             'individual_shipping_last' => 'required|string',
-            'individual_billing_phone' => 'required|regex:/^\+?\d{1,4}?\s?\(?\d{1,4}\)?[-.\s]?\d{1,10}$/',
+            'individual_billing_phone' => 'required|regex:/^\+?\d{1,4}?\s?\(?\d{1,4}\)?[-.\s]?\d{1,10}[-.\s]?\d{1,10}$/',
             'individual_shipping_email' => 'required|email',
             'individual_shipping_address1' => 'required|string',
             'individual_shipping_country' => 'required|string',
