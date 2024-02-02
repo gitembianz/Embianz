@@ -2998,12 +2998,34 @@ header {
   stroke: #ffffff;
 }
 
+.filter__close-modal {
+  position: absolute;
+  right: 0;
+  width: 50%;
+  height: 100%;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+@media (max-width: 576px) {
+  .filter__close-modal {
+    width: 0%;
+  }
+}
+@media (min-width: 992px) {
+  .filter__close-modal {
+    width: 70%;
+  }
+}
+
 .filter__top {
   display: flex;
   align-items: center;
+  flex-direction: column;
   justify-content: space-between;
   width: 100%;
-  gap: 15px;
+  height: 90px;
+  gap: 10px;
 }
 
 .filter__list {
@@ -5100,4 +5122,4 @@ header {
   color: #b3b3b3;
   font-size: 14px;
   text-align: center;
-}
+}/*# sourceMappingURL=store.css.map */
