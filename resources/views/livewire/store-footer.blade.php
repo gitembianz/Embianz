@@ -71,17 +71,18 @@
             <div class="footer__bottom">
                 <div class="footer__list">
                     <h3 class="footer__title">Serviciu clienți</h3>
-                    <a class="footer__link" href="{{ url("/cookie") }}">Politica de Cookies</a>
-                    <a class="footer__link" href="{{ url("/faq") }}">Întrebări Frecvente</a>
-                    <a class="footer__link" href="{{ url("/privacy") }}">Politica de confidențialitate</a>
+                    <a class="footer__link" target="blank" href="{{ url("/cookie") }}">Politica de Cookies</a>
+                    <a class="footer__link" target="blank" href="{{ url("/faq") }}">Întrebări Frecvente</a>
+                    <a class="footer__link" target="blank" href="{{ url("/privacy") }}">Politica de confidențialitate</a>
                     <a class="footer__link" href="{{ url("/") }}">Hartă Site</a>
-                    <a class="footer__link" href="https://anpc.ro/">ANPC</a>
+                    <a class="footer__link" target="blank" href="https://anpc.ro/">ANPC</a>
 
                 </div>
                 <div class="footer__list">
                     <h3 class="footer__title">Informații</h3>
+                    <a class="footer__link" target="blank" href="{{ url("/terms") }}">Termeni si conditii</a>
                     <a class="footer__link" href="{{ url("/contact") }}">Contactează-ne</a>
-                    <a class="footer__link" href="{{ url("/about") }}">Despre Noi</a>
+                    <a class="footer__link" target="blank" href="{{ url("/about") }}">Despre Noi</a>
                 </div>
             </div>
             <!---------------------END-Quick Links--------------------->

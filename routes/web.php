@@ -99,6 +99,7 @@
     route::get('/contact', [StoreController::class, 'contact'])->name('contact');
     route::get('/about', [StoreController::class, 'about'])->name('about');
     route::get('/confirm', [StoreController::class, 'confirm'])->name('confirm');
+    route::get('/terms', [StoreController::class, 'terms'])->name('terms');
   });
 
 

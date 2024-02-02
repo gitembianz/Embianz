@@ -9,7 +9,7 @@ class CartQuantity extends Component
     public $cart;
 
     protected $listeners = [
-        'cartUpdated' => 'update'
+        'cartUpdated' => 'update',
     ];
 
     public function mount($cart)

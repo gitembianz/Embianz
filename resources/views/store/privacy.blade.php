@@ -1,8 +1,6 @@
-<x-store-head :title='"Termeni si conditii | "' />
+<x-store-head :title='"Politica de confidențialitate | "' />
 <x-store-header />
 <main>
-    <x-header :title='__("privacy.pageTitle") . " | Eztem Corp"' :metadescription='__("privacy.metadescription")' :canonical="url("/privacy")" />
-
     <main>
         <section>
             <div class="breadcrumbs container">
