@@ -60,7 +60,7 @@ class StoreProducts extends Component
     $this->selectedSpecValues = [];
     $this->selectedSpecNames = [];
     $this->selectedKeys = [];
-    $this->property = false;
+    $this->specfilter = false;
   }
   public function applyFilter()
   {
@@ -107,6 +107,7 @@ class StoreProducts extends Component
     $this->selectedSpecValues = [];
     $this->selectedSpecNames = [];
     $this->selectedKeys = [];
+    $this->specfilter = false;
   }
   // end filter-spec function
 
@@ -130,7 +131,7 @@ class StoreProducts extends Component
       });
     }
 
-    if ($this->specfilter) {
+    if ($this->specfilter && !empty($this->selectedKeys)) {
       $query->whereHas('product_specs', function ($query) {
         $query->whereIn('value', $this->selectedKeys);
       });
