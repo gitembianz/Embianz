@@ -3021,9 +3021,11 @@ header {
 .filter__top {
   display: flex;
   align-items: center;
+  flex-direction: column;
   justify-content: space-between;
   width: 100%;
-  gap: 15px;
+  height: 90px;
+  gap: 10px;
 }
 
 .filter__list {
