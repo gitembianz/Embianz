@@ -34,7 +34,7 @@
     <!---------------------------------------------------------->
     <!---------------------------Filter------------------------->
     <section class="controls container">
-        <button class="controls__button" id="filterOpen">
+        <button class="controls__button" wire:click="$set('showspecfilter', true)" id="filterOpen">
             <svg>
                 <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
             </svg>
@@ -189,10 +189,11 @@
     <!-----------------------End Catalogue---------------------->
     <!---------------------------------------------------------->
     <!---------------------------Filter------------------------->
-    <div class="filter" id="filterList">
+    <div class="filter @if ($showspecfilter) active @endif" id="filterList">
         <div class="filter__content" id="filterContent">
             <div class="filter__top">
-                <button class="filter__close" id="filterClose" href="#">
+                <button class="filter__close" wire:click="$set('showspecfilter', false)" id="filterClose"
+                    href="#">
                     Inchideti Filtrele
                     <svg>
                         <line x1="18" y1="6" x2="6" y2="18"></line>
