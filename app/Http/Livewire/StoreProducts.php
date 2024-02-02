@@ -17,8 +17,7 @@ class StoreProducts extends Component
   public $quantity = 10;
   public $session_id;
   public $specification;
-  public $orderBy = 'best_selling'; // Default sorting order
-  public $orderAsc = true;
+  public $orderBy = 'name_az'; // Default sorting order
   public $category;
   public $category_details;
   public $property = false;
@@ -113,7 +112,7 @@ class StoreProducts extends Component
   public function getProductsProperty()
   {
     $query = Product::name($this->search)->where('active', true)->with([
-      'product_prices.pricelist',
+      'product_prices',
       'product_prices.pricelist.currency',
       'media' => function ($query) {
         $query->where('type', 'main'); // Filter and limit the media relationship
@@ -130,11 +129,9 @@ class StoreProducts extends Component
     }
 
     if ($this->specfilter) {
-      foreach ($this->selectedKeys as $value) {
-        $query->whereHas('product_specs', function ($query) use ($value) {
-          $query->where('value', $value);
-        });
-      }
+      $query->whereHas('product_specs', function ($query) {
+        $query->whereIn('value', $this->selectedKeys);
+      });
     }
 
     switch ($this->orderBy) {
@@ -142,16 +139,28 @@ class StoreProducts extends Component
         $query->orderBy('popularity', 'desc');
         break;
       case 'name_az':
-        $query->orderBy('name', $this->orderAsc ? 'asc' : 'desc');
+        $query->orderBy('name');
         break;
       case 'name_za':
-        $query->orderBy('name', $this->orderAsc ? 'desc' : 'asc');
+        $query->orderBy('name', 'desc');
         break;
       case 'date_old_new':
-        $query->orderBy('created_at', $this->orderAsc ? 'asc' : 'desc');
+        $query->orderBy('created_at');
         break;
       case 'date_new_old':
-        $query->orderBy('created_at', $this->orderAsc ? 'desc' : 'asc');
+        $query->orderBy('created_at', 'desc');
+      case 'quantity':
+        $query->where('quantity', '>', 0)->orderBy('quantity', 'desc');
+        break;
+      case 'price_az':
+        $query->whereHas('product_prices', function ($subquery) {
+          $subquery->orderBy('value', 'asc');
+        });
+        break;
+      case 'price_za':
+        $query->whereHas('product_prices', function ($subquery) {
+          $subquery->orderBy('value', 'desc');
+        });
         break;
     }
 
