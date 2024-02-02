@@ -18,10 +18,12 @@ class StoreProducts extends Component
   public $session_id;
   public $specification;
   public $orderBy = 'name_az'; // Default sorting order
+  public $orderAsc = true;
   public $category;
   public $category_details;
   public $property = false;
   public $specfilter = false;
+  public $showspecfilter = false;
   public $selectedSpecValues = [];
   public $selectedKeys = [];
   public $selectedSpecNames = [];
@@ -139,16 +141,16 @@ class StoreProducts extends Component
         $query->orderBy('popularity', 'desc');
         break;
       case 'name_az':
-        $query->orderBy('name');
+        $query->orderBy('name', $this->orderAsc ? 'asc' : 'desc');
         break;
       case 'name_za':
-        $query->orderBy('name', 'desc');
+        $query->orderBy('name', $this->orderAsc ? 'desc' : 'asc');
         break;
       case 'date_old_new':
-        $query->orderBy('created_at');
+        $query->orderBy('created_at', $this->orderAsc ? 'asc' : 'desc');
         break;
       case 'date_new_old':
-        $query->orderBy('created_at', 'desc');
+        $query->orderBy('created_at', $this->orderAsc ? 'desc' : 'asc');
       case 'quantity':
         $query->where('quantity', '>', 0)->orderBy('quantity', 'desc');
         break;
