@@ -57,6 +57,39 @@ function leftbar(idOpen, idClose, idList, idContent) {
 }
 //<---------------------------- End LeftBar ---------------------------->
 //<--------------------------------------------------------------------->
+//<---------------------------- FilterLive ----------------------------->
+//Filtrele se deschid cu Livewire function, acesta este pentru active
+function filterLive(idOpen, idClose, idList, idContent) {
+  const buttonOpen = document.getElementById(idOpen);
+  const buttonClose = document.getElementById(idClose);
+  const list = document.getElementById(idList);
+  const content = document.getElementById(idContent);
+  const body = document.querySelector("body");
+
+  if (!buttonOpen || !buttonClose || !list || !content) {
+    // console.log("leftbar error");
+    return;
+  } else {
+    buttonOpen.addEventListener("click", () => {
+      body.style.overflow = "hidden";
+    });
+    buttonClose.addEventListener("click", () => {
+      body.style.overflow = "auto";
+    });
+    list.addEventListener("click", (event) => {
+      if (
+        !content.contains(event.target) &&
+        !buttonOpen.contains(event.target)
+      ) {
+        list.classList.remove("active");
+        body.style.overflow = "auto";
+      }
+    });
+  }
+}
+
+//<-------------------------- End FilterLive --------------------------->
+//<--------------------------------------------------------------------->
 //<---------------------------- Apply Filter --------------------------->
 function applyFilter(Close, Reset) {
   const buttonClose = document.getElementById(Close);
@@ -64,7 +97,6 @@ function applyFilter(Close, Reset) {
   const body = document.querySelector("body");
 
   if (!buttonClose || !buttonReset) {
-    // console.log("leftbar error");
     return;
   } else {
     buttonClose.addEventListener("click", () => {
@@ -96,20 +128,20 @@ function applySort(selector) {
 //<------------------------ End Apply Asortiment ----------------------->
 //<--------------------------------------------------------------------->
 //<------------------------ Start Functions IOS ------------------------>
-leftbar("filterOpen", "filterClose", "filterList", "filterContent");
 leftbar("sortOpen", "sortClose", "sortList", "sortContent");
 dropmenus(".dropfilter", true);
 applyFilter("closeFilter", "resetFilter");
 applySort(".sort__item");
+filterLive("filterList", "filterContent");
 //<---------------------- End Start Functions IOS ---------------------->
 //<--------------------------------------------------------------------->
 //<------------------------- Start Functions PC ------------------------>
 document.addEventListener("DOMContentLoaded", function () {
-  leftbar("filterOpen", "filterClose", "filterList", "filterContent");
   leftbar("sortOpen", "sortClose", "sortList", "sortContent");
   dropmenus(".dropfilter", true);
   applyFilter("closeFilter", "resetFilter");
   applySort(".sort__item");
+  filterLive("filterOpen", ".filterClose", ".filterList", "filterContent");
 });
 //<----------------------- End Start Functions PC ---------------------->
 //<--------------------------------------------------------------------->
