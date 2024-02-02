@@ -6,10 +6,10 @@
     <!------------------------Breadcrumbs----------------------->
     <section>
         <div class="breadcrumbs container">
-            <a class="breadcrumbs__link" href="{{ url("/") }}">
+            <a class="breadcrumbs__link" href="{{ url('/') }}">
                 Acasa
             </a>
-            <a class="breadcrumbs__link" href="{{ url("/storeproducts") }}">
+            <a class="breadcrumbs__link" href="{{ url('/storeproducts') }}">
                 Produse
             </a>
             <!-------------------If Category is appear------------------>
@@ -22,12 +22,15 @@
     </section>
     <!----------------------End Breadcrumbs--------------------->
     <!---------------------------------------------------------->
+    <!----------------------Categorie + detalii--------------------->
     @if ($category)
         <section class="section__header container">
             <h2 class="section__title">{{ $category_details->name }}</h2>
             <p>{{ $category_details->long_description }}</p>
         </section>
     @endif
+    <!----------------------End Categorie + detalii--------------------->
+
     <!---------------------------------------------------------->
     <!---------------------------Filter------------------------->
     <section class="controls container">
@@ -46,9 +49,10 @@
             </svg>
         </button>
     </section>
-    <!-------------------------End Filter----------------------->
+    <!-------------------------End c----------------------->
     <!---------------------------------------------------------->
-    <!----------------------------Tags-------------------------->
+    <!----------------------Categorie + detalii--------------------->
+    <!---------------------------- Tags-------------------------->
     @if (!empty($selectedSpecNames))
         <section class="tag container">
             @foreach ($selectedSpecNames as $key => $name)
@@ -69,7 +73,7 @@
             </button>
         </section>
     @endif
-    <!--------------------------End Tags------------------------>
+    <!--------------------------End  Tags------------------------>
     <!---------------------------------------------------------->
     <!-------------------------Catalogue------------------------>
     <section class="catalogue container">
@@ -90,7 +94,7 @@
                             @endif
                         </a>
                         <?php if ($product->product_prices->count() != 0) {
-                            $price = number_format($product->product_prices->first()->value, 2, ",", ".");
+                            $price = number_format($product->product_prices->first()->value, 2, ',', '.');
                             $discount = $product->product_prices->first()->discount != 0 ? true : false;
                         } else {
                             $price = null;
@@ -127,10 +131,10 @@
                             </p>
                         @endif
                         @livewire(
-                            "product-wishlist-button",
+                            'product-wishlist-button',
                             [
-                                "productId" => $product->id,
-                                "is_in_wishlist" => $product->wishlists->isNotEmpty(), // true if there are wishlist records, false otherwise
+                                'productId' => $product->id,
+                                'is_in_wishlist' => $product->wishlists->isNotEmpty(), // true if there are wishlist records, false otherwise
                             ],
                             key($product->id)
                         )
@@ -165,7 +169,7 @@
                                 </p>
                             </div>
                             @if ($price)
-                                @livewire("add-to-cart-button", ["product" => $product], key($product->id . $index))
+                                @livewire('add-to-cart-button', ['product' => $product], key($product->id . $index))
                             @else
                                 <a class="card-button-disabled" onclick="handleClick()">Indisponibil</a>
                             @endif
@@ -195,6 +199,14 @@
                         <line x1="6" y1="6" x2="18" y2="18"></line>
                     </svg>
                 </button>
+                <button class="filter__close" id="resetFilter" wire:click="resetFilter">
+                    Șterge Filtrele
+                    <svg>
+                        <polyline points="23 4 23 10 17 10"></polyline>
+                        <polyline points="1 20 1 14 7 14"></polyline>
+                        <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                    </svg>
+                </button>
             </div>
             <div class="filter__list">
                 <!------------------ End Dropdown (filter) ------------------>
@@ -216,8 +228,7 @@
                                     <label class="dropfilter__link" for="{{ $innerIndex }}_{{ $uniqueValue }}">
                                         <input type="checkbox"
                                             wire:model.defer="selectedSpecValues.{{ $innerIndex }}.{{ $uniqueValue }}"
-                                            {{-- wire:key="checkbox-{{ $innerIndex }}-{{ $uniqueValue }}" --}} id="{{ $innerIndex }}_{{ $uniqueValue }}">
-
+                                            wire:change="applyFilter" id="{{ $innerIndex }}_{{ $uniqueValue }}">
                                         <h4>{{ $uniqueValue }}</h4>
                                     </label>
                                 @endforeach
@@ -226,18 +237,6 @@
                     @endif
                 @endforeach
                 <!-------------------- Dropdown (filter) -------------------->
-            </div>
-            <div class="filter__bottom">
-                <button class="filter__apply" id="closeFilter" wire:click="applyFilter">
-                    Aplica
-                </button>
-                <button class="filter__reset" id="resetFilter" wire:click="resetFilter">
-                    <svg>
-                        <polyline points="23 4 23 10 17 10"></polyline>
-                        <polyline points="1 20 1 14 7 14"></polyline>
-                        <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
-                    </svg>
-                </button>
             </div>
         </div>
     </div>
@@ -257,28 +256,43 @@
             </div>
             <div class="filter__list">
                 <input class="filter__input" wire:model="orderBy" type="radio" name="sort"
-                    value="best_selling" id="sort2">
-                <label class="filter__link sort__item" for="sort2">
-                    <h4>Cel mai bine vândut</h4>
+                    value="best_selling" id="sort">
+                <label class="filter__link sort__item" for="sort">
+                    <h4>Popularitate</h4>
                 </label>
-                <input class="filter__input" wire:model="orderBy" type="radio" name="sort" value="name_az"
+                <input class="filter__input" wire:model="orderBy" type="radio" name="sort1" value="price_az"
+                    id="sort1">
+                <label class="filter__link sort__item" for="sort1">
+                    <h4>Pret crescator</h4>
+                </label>
+                <input class="filter__input" wire:model="orderBy" type="radio" name="sort2" value="price_za"
+                    id="sort2">
+                <label class="filter__link sort__item" for="sort2">
+                    <h4>Pret descrescator</h4>
+                </label>
+                <input class="filter__input" wire:model="orderBy" type="radio" name="sort3" value="quantity"
                     id="sort3">
                 <label class="filter__link sort__item" for="sort3">
-                    <h4>Alfabetic, A-Z</h4>
+                    <h4>DIsponibilitate</h4>
                 </label>
-                <input class="filter__input" wire:model="orderBy" type="radio" name="sort" value="name_za"
+                <input class="filter__input" wire:model="orderBy" type="radio" name="sort4" value="name_az"
                     id="sort4">
                 <label class="filter__link sort__item" for="sort4">
+                    <h4>Alfabetic, A-Z</h4>
+                </label>
+                <input class="filter__input" wire:model="orderBy" type="radio" name="sort5" value="name_za"
+                    id="sort5">
+                <label class="filter__link sort__item" for="sort5">
                     <h4>Alfabetic, Z-A</h4>
                 </label>
-                <input class="filter__input" wire:model="orderBy" type="radio" name="sort"
-                    value="date_old_new" id="sort7">
-                <label class="filter__link sort__item" for="sort7">
+                <input class="filter__input" wire:model="orderBy" type="radio" name="sort6"
+                    value="date_old_new" id="sort6">
+                <label class="filter__link sort__item" for="sort6">
                     <h4>Data, de la vechi la nou</h4>
                 </label>
-                <input class="filter__input" wire:model="orderBy" type="radio" name="sort"
-                    value="date_new_old" id="sort8">
-                <label class="filter__link sort__item" for="sort8">
+                <input class="filter__input" wire:model="orderBy" type="radio" name="sort7"
+                    value="date_new_old" id="sort7">
+                <label class="filter__link sort__item" for="sort7">
                     <h4>Data, de la nou la vechi</h4>
                 </label>
             </div>
