@@ -6,8 +6,8 @@
         <section>
             <div class="checkout container">
                 <div class="section__header container">
-                    <h2 class="section__title">Ups, ceva nu a mers bine!</h2>
-                    <a class="section__text" href="/home">
+                    <h2 class="section__title">Ups, a aparut o eroare!</h2>
+                    <a class="section__text" href="{{ url('/') }}">
                         Va rugam sa va intoarceti la pagina initiala
                     </a>
                 </div>
@@ -2582,9 +2582,10 @@
                     <div class="section__header">
                         <h2 class="section__title">Verificați detaliile dumneavoastră.</h2>
                     </div>
-
-                    {{-- <div class="checkout__error">A iesit o eroare oarecare. Te rugam sa verifici.</div>
-                    <div class="total__container"> --}}
+@if ($errorterms && $terms == false)
+<div class="checkout__error">Va rugam sa acceptati termenii si conditiile!</div>
+@endif
+                    <div class="total__container">
                         <!---------------------------------------------------->
                         <!-------------- Checkout List of Forms -------------->
                         @if ($individual)
@@ -2780,7 +2781,6 @@
 
                                     </div>
                                 @endforeach
-                            @endif
 
                             <div class="total__item">
                                 <span>Modalitate de plata</span>
@@ -2805,7 +2805,6 @@
                                     </span>
                                 </div>
                             @endif
-                            @if (!$cartItems->isEmpty())
                                 <div class="total__item">
                                     <span>total</span>
                                     @if ($cart->voucher)
@@ -2826,7 +2825,7 @@
                     </div>
                     <label class="checkout__terms">
                         <input type="checkbox" wire:model="terms" name="terms" id="terms">
-                        <span>Sunt de acord cu termeni si conditii</span>
+                        <a href="{{ url('/terms') }}">Sunt de acord cu termeni si conditii</a>
                     </label>
                 @endif
                 <!------------------- End Step Middle ------------------>

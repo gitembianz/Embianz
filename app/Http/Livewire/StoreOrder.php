@@ -26,6 +26,7 @@ class StoreOrder extends Component
   public $cart;
   public $default_country;
   public $terms = false;
+  public $errorterms = false;
 
   public $individual_billing_first;
   public $individual_billing_last;
@@ -83,6 +84,7 @@ class StoreOrder extends Component
   public $delivery = 'Plata cash la livrare';
   protected $listeners = [
     'nocard' => 'mount',
+    'cartUpdated' => 'mount',
   ];
 
   //declaration juridic person
@@ -101,16 +103,16 @@ class StoreOrder extends Component
   {
     $this->payments = Payment::get();
     $this->session_id = isset($_COOKIE['sessionId']) ? $_COOKIE['sessionId'] : session()->getId();
-
     $closedStatusId = Status::where('name', 'closed')->where('type', 'cart')->first()->id;
     $this->cart = Cart::where('session_id', $this->session_id)->where('status_id', '!=', $closedStatusId)->latest()->first();
     if (!$this->cart) {
       $this->back = true;
     }
     $this->resetForm();
-    $this->step = 1;
+    $this->step = 2;
     $this->individual_identic = true;
     $this->juridic_identic = true;
+
     // default country
     $this->default_country = Store_Settings::where('parameter', 'default_country')->value('value') ?? 'Romania';
     $this->individual_billing_country = $this->default_country;
@@ -148,6 +150,9 @@ class StoreOrder extends Component
 
 
         ])->get();
+      if ($cartItems->count() == 0) {
+        $this->back = true;
+      }
       return $cartItems;
     }
     return collect(); // Return an empty collection if no cart items are found
@@ -166,10 +171,14 @@ class StoreOrder extends Component
   }
   public function confirm()
   {
-    $cartitems = Cart_Item::where('cart_id', $this->cart->id)->get();
-    if ($cartitems) {
-      foreach ($cartitems as $item) {
-        if ($item->quantity > $item->product->quantity) {
+    if ($this->terms == false) {
+      $this->errorterms = true;
+      return;
+    }
+
+    if ($this->cartitems) {
+      foreach ($this->cartitems as $item) {
+        if ($item->quantity >= $item->product->quantity) {
           $this->validatequantity = false;
           $this->dispatchBrowserEvent('alert__modal');
           return;
@@ -314,14 +323,14 @@ class StoreOrder extends Component
         'payment_id' => $paymentId,
         'voucher_id' =>  $this->cart->voucher_id,
       ]);
-      if ($cartitems) {
+      if ($this->cartitems) {
         $order = Order::where('cart_id', $this->cart->id)->first();
         $orderNumber = 'NRN' . now()->format('Ymd') . str_pad($order->id, 3, '0', STR_PAD_LEFT);
 
         // Update the order with the generated order number
         $order->order_number = $orderNumber;
         $order->save();
-        foreach ($cartitems as $item) {
+        foreach ($this->cartitems as $item) {
           $item->product->quantity -= $item->quantity;
           $item->product->save();
           Order_Item::create([
@@ -345,7 +354,7 @@ class StoreOrder extends Component
       $this->cart->status_id = $newStatusId;
       $this->cart->save();
       $this->step++;
-      $this->emit('cartUpdated');
+      $this->emit('orderprocess');
     }
   }
   public function next()
