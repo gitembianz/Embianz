@@ -130,11 +130,6 @@ class StoreOrder extends Component
     $this->juridic_billing_country = $this->default_country;
     $this->juridic_shipping_country = $this->default_country;
   }
-  public function finish()
-  {
-    //Finish order code
-    return redirect('/home');
-  }
   public function getCartItemsProperty()
   {
     if ($this->cart) {

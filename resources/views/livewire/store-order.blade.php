@@ -2589,7 +2589,7 @@
                         <h2 class="section__title">Verificați detaliile dumneavoastră.</h2>
                     </div>
 @if ($errorterms && $terms == false)
-<div class="checkout__error">Va rugam sa acceptati termenii si conditiile!</div>
+<div class="checkout__error">Pentru a procesa comanda trebuie sa acceptati termenii si conditiile!</div>
 @endif
                     <div class="total__container">
                         <!---------------------------------------------------->
@@ -2831,7 +2831,7 @@
                     </div>
                     <label class="checkout__terms">
                         <input type="checkbox" wire:model="terms" name="terms" id="terms">
-                        <a href="{{ url('/terms') }}">Sunt de acord cu termeni si conditii</a>
+                        <a href="{{ url('/terms') }}">Sunt de acord cu termenii si conditiile</a>
                     </label>
                 @endif
                 <!------------------- End Step Middle ------------------>
@@ -2884,10 +2884,6 @@
                                 <line x1="5" y1="12" x2="19" y2="12"></line>
                                 <polyline points="12 5 19 12 12 19"></polyline>
                             </svg>
-                        </a>
-                    @elseif ($step == 3)
-                        <a class="checkout__link" wire:click.prevent="finish()">
-                            Mulțumim pentru comanda dumneavoastră
                         </a>
                     @endif
 
