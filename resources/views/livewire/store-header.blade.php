@@ -137,7 +137,7 @@
                     </svg>
                 </button>
             </div>
-            @if ($search)
+            @if ($search && $active)
                 <ul class="search__list">
                     @if (count($objects) > 0 || count($cats) > 0)
                         @if (count($objects) > 0)

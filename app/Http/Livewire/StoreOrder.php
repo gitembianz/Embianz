@@ -122,10 +122,8 @@ class StoreOrder extends Component
   }
   public function showindividual()
   {
-    $this->resetForm();
     $this->individual = true;
     $this->juridic = false;
-    $this->juridic_identic = false;
     $this->step = 1;
     $this->individual_billing_country = $this->default_country;
     $this->individual_shipping_country = $this->default_country;
@@ -159,10 +157,8 @@ class StoreOrder extends Component
   }
   public function showjuridic()
   {
-    $this->resetForm();
     $this->individual = false;
     $this->juridic = true;
-    $this->individual_identic = false;
     $this->step = 1;
     $this->individual_billing_country = $this->default_country;
     $this->individual_shipping_country = $this->default_country;
