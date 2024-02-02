@@ -2573,10 +2573,16 @@
                 @if ($step == 2)
                     <div class="checkout__header">
                         <button class="checkout__button" wire:click.prevent="previous()">
-                            Pasul anterior
+                            <svg>
+                                <line x1="19" y1="12" x2="5" y2="12"></line>
+                                <polyline points="12 19 5 12 12 5"></polyline>
+                            </svg>Pasul anterior
                         </button>
                         <button class="checkout__button" wire:click.prevent="confirm()">
-                            Confirma Comanda
+                            Confirma Comanda <svg>
+                                <polyline points="9 11 12 14 22 4"></polyline>
+                                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                            </svg>
                         </button>
                     </div>
                     <div class="section__header">
@@ -2872,7 +2878,7 @@
                             </svg>
                         </a>
                     @elseif ($step == 1)
-                        <a class="checkout__link" style="margin: auto" wire:click.prevent="next()">
+                        <a class="checkout__link" wire:click.prevent="next()">
                             Pasul următor
                             <svg>
                                 <line x1="5" y1="12" x2="19" y2="12"></line>
