@@ -17,7 +17,8 @@ class StoreHeader extends Component
   public $session_id;
 
   protected $listeners = [
-    'newcart' => 'getCart'
+    'newcart' => 'getCart',
+    'orderprocess' => 'mount',
   ];
 
   public function render()

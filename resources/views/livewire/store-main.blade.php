@@ -90,7 +90,7 @@
                                     @if ($price)
                             @if ($product->quantity < $quantity && $product->quantity > 0)
                                 <p class="card-status out">
-                                    Ultimele produse!
+                                    Stock limitat!!
                                 </p>
                                  @if ($discount)
                                 <p class="card-status save-secondary">

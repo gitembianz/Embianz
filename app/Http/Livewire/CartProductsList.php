@@ -17,6 +17,7 @@ class CartProductsList extends Component
     protected $listeners = [
         'showcart' => 'cartshow',
         'newcart' => 'mount',
+        'orderprocess' => 'mount',
     ];
     public function render()
     {
@@ -40,13 +41,8 @@ class CartProductsList extends Component
     }
     public function mount()
     {
-        if (array_key_exists('sessionId', $_COOKIE)) {
-            $this->session_id = $_COOKIE['sessionId'];
-        } else {
-            $sessionId = session()->getId();
-            setcookie('sessionId', $sessionId, time() + 30 * 24 * 60 * 60, '/', null, false, true);
-            $this->session_id = $sessionId;
-        }
+        $this->session_id = isset($_COOKIE['sessionId']) ? $_COOKIE['sessionId'] : session()->getId();
+
         $this->cart = Cart::where('session_id', $this->session_id)
             ->where('status_id', '!=', Status::where('name', 'closed')->where('type', 'cart')->value('id'))
             ->latest()->first();

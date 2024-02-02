@@ -19,17 +19,7 @@ class WishlistQuantity extends Component
     }
     public function mount()
     {
-        if (array_key_exists('sessionId', $_COOKIE)) {
-            $this->session_id = $_COOKIE['sessionId'];
-        } else {
-            // If not present, generate a new sessionId
-            $sessionId = session()->getId();
-
-            // Set the new sessionId in the cookie
-            setcookie('sessionId', $sessionId, time() + 30 * 24 * 60 * 60, '/', null, false, true);
-
-            $this->session_id = $sessionId;
-        }
+        $this->session_id = isset($_COOKIE['sessionId']) ? $_COOKIE['sessionId'] : session()->getId();
         $this->count = Wishlist::where('session_id', $this->session_id)->count();
     }
 }

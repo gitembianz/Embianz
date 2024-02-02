@@ -25,6 +25,8 @@ class StoreOrder extends Component
   public $session_id;
   public $cart;
   public $default_country;
+  public $terms = false;
+  public $errorterms = false;
 
   public $individual_billing_first;
   public $individual_billing_last;
@@ -82,6 +84,7 @@ class StoreOrder extends Component
   public $delivery = 'Plata cash la livrare';
   protected $listeners = [
     'nocard' => 'mount',
+    'cartUpdated' => 'mount',
   ];
 
   //declaration juridic person
@@ -99,17 +102,7 @@ class StoreOrder extends Component
   public function mount()
   {
     $this->payments = Payment::get();
-    if (array_key_exists('sessionId', $_COOKIE)) {
-      $this->session_id = $_COOKIE['sessionId'];
-    } else {
-      // If not present, generate a new sessionId
-      $sessionId = session()->getId();
-
-      // Set the new sessionId in the cookie
-      setcookie('sessionId', $sessionId, time() + 30 * 24 * 60 * 60, '/', null, false, true);
-
-      $this->session_id = $sessionId;
-    }
+    $this->session_id = isset($_COOKIE['sessionId']) ? $_COOKIE['sessionId'] : session()->getId();
     $closedStatusId = Status::where('name', 'closed')->where('type', 'cart')->first()->id;
     $this->cart = Cart::where('session_id', $this->session_id)->where('status_id', '!=', $closedStatusId)->latest()->first();
     if (!$this->cart) {
@@ -119,6 +112,7 @@ class StoreOrder extends Component
     $this->step = 1;
     $this->individual_identic = true;
     $this->juridic_identic = true;
+
     // default country
     $this->default_country = Store_Settings::where('parameter', 'default_country')->value('value') ?? 'Romania';
     $this->individual_billing_country = $this->default_country;
@@ -128,20 +122,13 @@ class StoreOrder extends Component
   }
   public function showindividual()
   {
-    $this->resetForm();
     $this->individual = true;
     $this->juridic = false;
-    $this->juridic_identic = false;
     $this->step = 1;
     $this->individual_billing_country = $this->default_country;
     $this->individual_shipping_country = $this->default_country;
     $this->juridic_billing_country = $this->default_country;
     $this->juridic_shipping_country = $this->default_country;
-  }
-  public function finish()
-  {
-    //Finish order code
-    return redirect('/home');
   }
   public function getCartItemsProperty()
   {
@@ -156,16 +143,17 @@ class StoreOrder extends Component
 
 
         ])->get();
+      if ($cartItems->count() == 0) {
+        $this->back = true;
+      }
       return $cartItems;
     }
     return collect(); // Return an empty collection if no cart items are found
   }
   public function showjuridic()
   {
-    $this->resetForm();
     $this->individual = false;
     $this->juridic = true;
-    $this->individual_identic = false;
     $this->step = 1;
     $this->individual_billing_country = $this->default_country;
     $this->individual_shipping_country = $this->default_country;
@@ -174,10 +162,14 @@ class StoreOrder extends Component
   }
   public function confirm()
   {
-    $cartitems = Cart_Item::where('cart_id', $this->cart->id)->get();
-    if ($cartitems) {
-      foreach ($cartitems as $item) {
-        if ($item->quantity > $item->product->quantity) {
+    if ($this->terms == false) {
+      $this->errorterms = true;
+      return;
+    }
+
+    if ($this->cartitems) {
+      foreach ($this->cartitems as $item) {
+        if ($item->quantity >= $item->product->quantity) {
           $this->validatequantity = false;
           $this->dispatchBrowserEvent('alert__modal');
           return;
@@ -322,14 +314,14 @@ class StoreOrder extends Component
         'payment_id' => $paymentId,
         'voucher_id' =>  $this->cart->voucher_id,
       ]);
-      if ($cartitems) {
+      if ($this->cartitems) {
         $order = Order::where('cart_id', $this->cart->id)->first();
         $orderNumber = 'NRN' . now()->format('Ymd') . str_pad($order->id, 3, '0', STR_PAD_LEFT);
 
         // Update the order with the generated order number
         $order->order_number = $orderNumber;
         $order->save();
-        foreach ($cartitems as $item) {
+        foreach ($this->cartitems as $item) {
           $item->product->quantity -= $item->quantity;
           $item->product->save();
           Order_Item::create([
@@ -353,7 +345,7 @@ class StoreOrder extends Component
       $this->cart->status_id = $newStatusId;
       $this->cart->save();
       $this->step++;
-      $this->emit('cartUpdated');
+      $this->emit('orderprocess');
     }
   }
   public function next()
@@ -407,18 +399,18 @@ class StoreOrder extends Component
   {
     $this->reset([
       'individual_billing_first', 'individual_billing_last', 'individual_billing_phone', 'individual_billing_email',
-      'individual_billing_address1', 'individual_billing_address2', 'individual_billing_country', 'individual_billing_county',
+      'individual_billing_address1', 'individual_billing_address2', 'individual_billing_county',
       'individual_billing_city', 'individual_billing_zipcode',
       'individual_shipping_first', 'individual_shipping_last', 'individual_shipping_phone', 'individual_shipping_email',
-      'individual_shipping_address1', 'individual_shipping_address2', 'individual_shipping_country', 'individual_shipping_county',
+      'individual_shipping_address1', 'individual_shipping_address2', 'individual_shipping_county',
       'individual_shipping_city', 'individual_shipping_zipcode',
       'juridic_billing_first', 'juridic_billing_last', 'juridic_billing_phone', 'juridic_billing_email',
       'juridic_billing_company_name', 'juridic_billing_registration_code', 'juridic_billing_registration_number',
       'juridic_billing_bank', 'juridic_billing_account',
-      'juridic_billing_address1', 'juridic_billing_address2', 'juridic_billing_country', 'juridic_billing_county',
+      'juridic_billing_address1', 'juridic_billing_address2', 'juridic_billing_county',
       'juridic_billing_city', 'juridic_billing_zipcode',
       'juridic_shipping_first', 'juridic_shipping_last', 'juridic_shipping_phone', 'juridic_shipping_email',
-      'juridic_shipping_address1', 'juridic_shipping_address2', 'juridic_shipping_country', 'juridic_shipping_county',
+      'juridic_shipping_address1', 'juridic_shipping_address2', 'juridic_shipping_county',
       'juridic_shipping_city', 'juridic_shipping_zipcode'
     ]);
   }
@@ -430,7 +422,7 @@ class StoreOrder extends Component
         $rules = [
           'individual_billing_first' => 'required|string',
           'individual_billing_last' => 'required|string',
-          'individual_billing_phone' => 'required|regex:/^\+?\d{1,4}?\s?\(?\d{1,4}\)?[-.\s]?\d{1,10}$/',
+          'individual_billing_phone' => 'required|regex:/^\+?\d{1,4}?\s?\(?\d{1,4}\)?[-.\s]?\d{1,10}[-.\s]?\d{1,10}$/',
           'individual_billing_email' => 'required|email',
           'individual_billing_address1' => 'required|string',
           'individual_billing_country' => 'required|string',
@@ -451,7 +443,7 @@ class StoreOrder extends Component
           $shippingRules = [
             'individual_shipping_first' => 'required|string',
             'individual_shipping_last' => 'required|string',
-            'individual_billing_phone' => 'required|regex:/^\+?\d{1,4}?\s?\(?\d{1,4}\)?[-.\s]?\d{1,10}$/',
+            'individual_billing_phone' => 'required|regex:/^\+?\d{1,4}?\s?\(?\d{1,4}\)?[-.\s]?\d{1,10}[-.\s]?\d{1,10}$/',
             'individual_shipping_email' => 'required|email',
             'individual_shipping_address1' => 'required|string',
             'individual_shipping_country' => 'required|string',

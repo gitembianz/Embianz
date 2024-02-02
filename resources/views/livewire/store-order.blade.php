@@ -6,8 +6,8 @@
         <section>
             <div class="checkout container">
                 <div class="section__header container">
-                    <h2 class="section__title">Ups, ceva nu a mers bine!</h2>
-                    <a class="section__text" href="/home">
+                    <h2 class="section__title">Ups, a aparut o eroare!</h2>
+                    <a class="section__text" href="{{ url('/') }}">
                         Va rugam sa va intoarceti la pagina initiala
                     </a>
                 </div>
@@ -54,7 +54,7 @@
                                     <polyline points="1 4 1 10 7 10"></polyline>
                                     <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
                                 </svg>
-                                Reseteaza
+                                 Șterge Datele
                             </button>
                             <button class="checkout__button" wire:click.prevent="next()">
                                 Pasul urmator
@@ -145,16 +145,8 @@
                                     placeholder="Address 2 (optional)">
                             </div>
                             <!---------------------------------------------------->
-                            {{-- <div class="checkout__item">
-                                <input type="text" wire:model="individual_billing_country" placeholder="Tara">
-                                <span>
-                                    @error("individual_billing_country")
-                                        {{ $message }}
-                                    @enderror
-                                </span>
-                            </div> --}}
                             <div class="custom-select">
-                                <div class="select-selected">Romania</div>
+                                <div class="select-selected">{{ $individual_billing_country }}</div>
                                 <div class="select-items">
                                     <div>Afghanistan</div>
                                     <div>Åland Islands</div>
@@ -397,7 +389,7 @@
                                     <div>Zambia</div>
                                     <div>Zimbabwe</div>
                                 </div>
-                                <select class="hidden-select">
+                                <select wire:model="individual_billing_country" class="hidden-select">
                                     <option value="Afghanistan">Afghanistan</option>
                                     <option value="Åland Islands">Åland Islands</option>
                                     <option value="Albania">Albania</option>
@@ -580,7 +572,7 @@
                                     <option value="Puerto Rico">Puerto Rico</option>
                                     <option value="Qatar">Qatar</option>
                                     <option value="Reunion">Reunion</option>
-                                    <option value="selected>Romania" selected>Romania</option>
+                                    <option value="Romania">Romania</option>
                                     <option value="Russian Federation">Russian Federation</option>
                                     <option value="Rwanda">Rwanda</option>
                                     <option value="Saint Helena">Saint Helena</option>
@@ -760,17 +752,9 @@
                                     placeholder="Address 2 (optional)">
                             </div>
                             <!---------------------------------------------------->
-                            {{-- <div class="checkout__item">
-                                    <input type="text" wire:model="individual_shipping_country"
-                                        placeholder="Tara">
-                                    <span>
-                                        @error("individual_shipping_country")
-                                            {{ $message }}
-                                        @enderror
-                                    </span>
-                                </div> --}}
+                           
                             <div class="custom-select">
-                                <div class="select-selected">Romania</div>
+                                <div class="select-selected">{{ $individual_shipping_country }}</div>
                                 <div class="select-items">
                                     <div>Afghanistan</div>
                                     <div>Åland Islands</div>
@@ -1013,7 +997,7 @@
                                     <div>Zambia</div>
                                     <div>Zimbabwe</div>
                                 </div>
-                                <select class="hidden-select">
+                                <select wire:model="individual_shipping_country" class="hidden-select">
                                     <option value="Afghanistan">Afghanistan</option>
                                     <option value="Åland Islands">Åland Islands</option>
                                     <option value="Albania">Albania</option>
@@ -1196,7 +1180,7 @@
                                     <option value="Puerto Rico">Puerto Rico</option>
                                     <option value="Qatar">Qatar</option>
                                     <option value="Reunion">Reunion</option>
-                                    <option value="selected>Romania" selected>Romania</option>
+                                    <option value="Romania">Romania</option>
                                     <option value="Russian Federation">Russian Federation</option>
                                     <option value="Rwanda">Rwanda</option>
                                     <option value="Saint Helena">Saint Helena</option>
@@ -1291,7 +1275,6 @@
                             <!----------- End Checkout List of Items ------------->
                             <!---------------------------------------------------->
                         </div>
-                        {{-- @endif --}}
                         <!------------ End Checkout List of Forms ------------>
                         <!---------------------------------------------------->
                     </div>
@@ -1424,16 +1407,8 @@
                                     placeholder="Address 2 (optional)">
                             </div>
                             <!---------------------------------------------------->
-                            {{-- <div class="checkout__item">
-                                <input type="text" wire:model="juridic_billing_country" placeholder="Tara">
-                                <span>
-                                    @error("juridic_billing_country")
-                                        {{ $message }}
-                                    @enderror
-                                </span>
-                            </div> --}}
                             <div class="custom-select">
-                                <div class="select-selected">Romania</div>
+                                <div class="select-selected">{{ $juridic_billing_country }}</div>
                                 <div class="select-items">
                                     <div>Afghanistan</div>
                                     <div>Åland Islands</div>
@@ -1676,7 +1651,7 @@
                                     <div>Zambia</div>
                                     <div>Zimbabwe</div>
                                 </div>
-                                <select class="hidden-select">
+                                <select wire:model="juridic_billing_country" class="hidden-select">
                                     <option value="Afghanistan">Afghanistan</option>
                                     <option value="Åland Islands">Åland Islands</option>
                                     <option value="Albania">Albania</option>
@@ -1859,7 +1834,7 @@
                                     <option value="Puerto Rico">Puerto Rico</option>
                                     <option value="Qatar">Qatar</option>
                                     <option value="Reunion">Reunion</option>
-                                    <option value="selected>Romania" selected>Romania</option>
+                                    <option value="Romania">Romania</option>
                                     <option value="Russian Federation">Russian Federation</option>
                                     <option value="Rwanda">Rwanda</option>
                                     <option value="Saint Helena">Saint Helena</option>
@@ -1961,7 +1936,6 @@
                         </label>
                         <!-------------- End Checkout Checkbox --------------->
                         <!---------------------------------------------------->
-                        {{-- @if (!$juridic_identic) --}}
                         <div class="checkout__form @if (!$juridic_identic && $juridic) active @endif">
                             <!---------------------------------------------------->
                             <!------------- Checkout Header Name --------------->
@@ -2027,18 +2001,16 @@
                             <!---------------------------------------------------->
                             <!------------- Checkout List of Items --------------->
                             <div class="checkout__item">
-                                <input type="text" placeholder="Address 1*">
+                                <input type="text" wire:model="juridic_shipping_address1" placeholder="Address 1*">
                             </div>
                             <!---------------------------------------------------->
                             <div class="checkout__item">
-                                <input type="text" placeholder="Address 2 (optional)">
+                                <input type="text"  wire:model="juridic_shipping_address2" placeholder="Address 2 (optional)">
                             </div>
                             <!---------------------------------------------------->
-                            {{-- <div class="checkout__item">
-                                    <input type="text" placeholder="Tara">
-                                </div> --}}
+                            
                             <div class="custom-select">
-                                <div class="select-selected">Romania</div>
+                                <div class="select-selected">{{ $juridic_shipping_country }}</div>
                                 <div class="select-items">
                                     <div>Afghanistan</div>
                                     <div>Åland Islands</div>
@@ -2281,7 +2253,7 @@
                                     <div>Zambia</div>
                                     <div>Zimbabwe</div>
                                 </div>
-                                <select class="hidden-select">
+                                <select wire:model="juridic_shipping_country" class="hidden-select">
                                     <option value="Afghanistan">Afghanistan</option>
                                     <option value="Åland Islands">Åland Islands</option>
                                     <option value="Albania">Albania</option>
@@ -2464,7 +2436,7 @@
                                     <option value="Puerto Rico">Puerto Rico</option>
                                     <option value="Qatar">Qatar</option>
                                     <option value="Reunion">Reunion</option>
-                                    <option value="selected>Romania" selected>Romania</option>
+                                    <option value="Romania">Romania</option>
                                     <option value="Russian Federation">Russian Federation</option>
                                     <option value="Rwanda">Rwanda</option>
                                     <option value="Saint Helena">Saint Helena</option>
@@ -2535,20 +2507,19 @@
                             </div>
                             <!---------------------------------------------------->
                             <div class="checkout__item">
-                                <input type="text" placeholder="Judet">
+                                <input type="text" wire:model="juridic_shipping_county" placeholder="Judet">
                             </div>
                             <!---------------------------------------------------->
                             <div class="checkout__item">
-                                <input type="text" placeholder="Oras">
+                                <input type="text" wire:model="juridic_shipping_city" placeholder="Oras">
                             </div>
                             <!---------------------------------------------------->
                             <div class="checkout__item">
-                                <input type="text" placeholder="Cod Postal">
+                                <input type="text" wire:model="juridic_shipping_zipcode" placeholder="Cod Postal">
                             </div>
                             <!----------- End Checkout List of Items ------------->
                             <!---------------------------------------------------->
                         </div>
-                        {{-- @endif --}}
                         <!------------ End Checkout List of Forms ------------>
                         <!---------------------------------------------------->
                     </div>
@@ -2602,17 +2573,24 @@
                 @if ($step == 2)
                     <div class="checkout__header">
                         <button class="checkout__button" wire:click.prevent="previous()">
-                            Pasul anterior
+                            <svg>
+                                <line x1="19" y1="12" x2="5" y2="12"></line>
+                                <polyline points="12 19 5 12 12 5"></polyline>
+                            </svg>Pasul anterior
                         </button>
                         <button class="checkout__button" wire:click.prevent="confirm()">
-                            Confirma Comanda
+                            Confirma Comanda <svg>
+                                <polyline points="9 11 12 14 22 4"></polyline>
+                                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                            </svg>
                         </button>
                     </div>
                     <div class="section__header">
                         <h2 class="section__title">Verificați detaliile dumneavoastră.</h2>
                     </div>
-
-                    <div class="checkout__error">A iesit o eroare oarecare. Te rugam sa verifici.</div>
+@if ($errorterms && $terms == false)
+<div class="checkout__error">Pentru a procesa comanda trebuie sa acceptati termenii si conditiile!</div>
+@endif
                     <div class="total__container">
                         <!---------------------------------------------------->
                         <!-------------- Checkout List of Forms -------------->
@@ -2809,7 +2787,6 @@
 
                                     </div>
                                 @endforeach
-                            @endif
 
                             <div class="total__item">
                                 <span>Modalitate de plata</span>
@@ -2834,7 +2811,6 @@
                                     </span>
                                 </div>
                             @endif
-                            @if (!$cartItems->isEmpty())
                                 <div class="total__item">
                                     <span>total</span>
                                     @if ($cart->voucher)
@@ -2854,8 +2830,8 @@
                         <!---------------------------------------------------->
                     </div>
                     <label class="checkout__terms">
-                        <input type="checkbox" name="terms" id="terms">
-                        <span>Sunt de acord cu termeni si conditii</span>
+                        <input type="checkbox" wire:model="terms" name="terms" id="terms">
+                        <a href="{{ url('/terms') }}">Sunt de acord cu termenii si conditiile</a>
                     </label>
                 @endif
                 <!------------------- End Step Middle ------------------>
@@ -2902,16 +2878,12 @@
                             </svg>
                         </a>
                     @elseif ($step == 1)
-                        <a class="checkout__link" style="margin: auto" wire:click.prevent="next()">
+                        <a class="checkout__link" wire:click.prevent="next()">
                             Pasul următor
                             <svg>
                                 <line x1="5" y1="12" x2="19" y2="12"></line>
                                 <polyline points="12 5 19 12 12 19"></polyline>
                             </svg>
-                        </a>
-                    @elseif ($step == 3)
-                        <a class="checkout__link" wire:click.prevent="finish()">
-                            Mulțumim pentru comanda dumneavoastră
                         </a>
                     @endif
 
@@ -2959,15 +2931,5 @@
                 }
             });
         });
-        // }
-
-        // document.addEventListener("DOMContentLoaded", function() {
-        //     initializeCustomSelects();
-
-        //     document.body.addEventListener("click", function() {
-        //         // Reinițializează dropdown-urile personalizate la fiecare clic pe corpul documentului
-        //         initializeCustomSelects();
-        //     });
-        // });
     </script>
 </div>
