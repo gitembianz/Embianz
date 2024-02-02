@@ -89,6 +89,25 @@
   }
 }
 
+.filter__close-modal {
+  position: absolute;
+  right: 0;
+  width: 50%;
+  height: 100%;
+  border: none;
+  background: none;
+  cursor: pointer;
+
+  @media (max-width: map-get($grid-breakpoints, sm)) {
+    width: 0%;
+  }
+
+  @media (min-width: map-get($grid-breakpoints, lg)) {
+    width: 70%;
+  }
+
+}
+
 .filter__top {
   display: flex;
   align-items: center;
