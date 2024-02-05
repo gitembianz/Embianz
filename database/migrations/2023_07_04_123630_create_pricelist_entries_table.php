@@ -18,6 +18,10 @@ return new class extends Migration
       $table->unsignedBigInteger('pricelist_id')->index();
       $table->foreign('pricelist_id')->references('id')->on('price_lists');
       $table->decimal('value', 10, 2)->nullable();
+      $table->decimal('rrp_value', 10, 2)->nullable()->after('value');
+      $table->integer('discount')->nullable()->after('value')->default(
+        '0'
+      );
       $table->decimal('tva_percent', 5, 2)->nullable();
       $table->timestamps();
     });
