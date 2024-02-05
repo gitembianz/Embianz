@@ -5,24 +5,30 @@
         <div>
             <span class="product__subtitle">{{ $product->short_description }}</span>
             <h1 class="product__title">{{ $product->name }}</h1>
+            <span class="product__discount">-5%</span>
         </div>
-        @livewire('wishlist-button', ['productId' => $product->id])
+        @livewire("wishlist-button", ["productId" => $product->id])
     </div>
     <div class="product__price">
         <span>Pret</span>
-        <span>
+        {{-- <span>
             @if ($product->product_prices->first() !== null)
-                {{ number_format($product->product_prices->first()->value, 2, ',', '.') }}
+                {{ number_format($product->product_prices->first()->value, 2, ",", ".") }}
                 {{ $product->product_prices->first()->pricelist->currency->name }}
             @else
                 Pret Indisponibil
             @endif
-        </span>
+
+        </span> --}}
+        <div class="product__price--discount">
+            <span class="product__price--oldprice">250 lei</span>
+            <span class="product__price--newprice">250 lei</span>
+        </div>
     </div>
     @if ($product->product_prices->first() !== null)
         <span class="product__tva">
             Pretul include taxa TVA de
-            {{ number_format($product->product_prices->first()->tva_percent, 2, ',', '.') }}%
+            {{ number_format($product->product_prices->first()->tva_percent, 2, ",", ".") }}%
         </span>
         <div class="quantity">
             <span>Cantitate</span>
