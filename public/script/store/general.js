@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
 //<--------------------------------------------------------------------->
 //<------------------------- header Animation -------------------------->
 function headerAnimation() {
-  const buttons = document.querySelectorAll(".card-button");
+  const buttons = document.querySelectorAll(".add-button");
   const cart = document.querySelector(".header__count");
 
   for (button of buttons) {
