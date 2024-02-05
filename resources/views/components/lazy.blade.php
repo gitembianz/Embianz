@@ -10,7 +10,7 @@
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 @this.loadMore()
-                observer.unobserve(lastRecord); // Stop observing to avoid multiple calls
+                observer.unobserve(lastRecord);
             }
         });
     }, options);
