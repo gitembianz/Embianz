@@ -68,8 +68,8 @@ class StoreProducts extends Component
     $filteredValues = array_filter($this->selectedSpecValues, function ($values) {
       return in_array(true, $values);
     });
-    // Extract keys where the value is true
-    $allKeys = array_keys(array_merge(...$filteredValues));
+    $allKeys = array_keys(array_merge(...array_values($filteredValues)));
+    // dd($this->selectedSpecValues);
     $this->selectedKeys = $allKeys;
     foreach ($this->specification as $spec) {
       foreach ($this->selectedKeys as $key) {
@@ -100,7 +100,7 @@ class StoreProducts extends Component
     }
     unset($this->selectedSpecNames[$key]);
     $allKeys = array_keys(array_merge(...$this->selectedSpecValues));
-    $this->selectedKeys = $allKeys; // Update selectedKeys
+    $this->selectedKeys = $allKeys;
   }
   public function clearall()
   {
@@ -109,16 +109,14 @@ class StoreProducts extends Component
     $this->selectedKeys = [];
     $this->specfilter = false;
   }
-  // end filter-spec function
 
-  // Products function
   public function getProductsProperty()
   {
     $query = Product::name($this->search)->where('active', true)->with([
       'product_prices',
       'product_prices.pricelist.currency',
       'media' => function ($query) {
-        $query->where('type', 'main'); // Filter and limit the media relationship
+        $query->where('type', 'main');
       },
       'wishlists' => function ($query) {
         $query->where('session_id', $this->session_id);
@@ -130,12 +128,23 @@ class StoreProducts extends Component
         $query->where('id', $this->category);
       });
     }
-
-    if ($this->specfilter && !empty($this->selectedKeys)) {
-      $query->whereHas('product_specs', function ($query) {
-        $query->whereIn('value', $this->selectedKeys);
+    if ($this->specfilter && !empty($this->selectedSpecValues)) {
+      $query->where(function ($subQuery) {
+        foreach ($this->selectedSpecValues as $specId => $values) {
+          $subQuery->Where(function ($specSubQuery) use ($specId, $values) {
+            foreach ($values as $value => $isSelected) {
+              if ($isSelected) {
+                $specSubQuery->orWhereHas('product_specs', function ($query) use ($specId, $value) {
+                  $query->where('spec_id', $specId)
+                    ->where('value', $value);
+                });
+              }
+            }
+          });
+        }
       });
     }
+
 
     switch ($this->orderBy) {
       case 'best_selling':
