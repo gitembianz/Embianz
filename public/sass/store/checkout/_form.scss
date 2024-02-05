@@ -11,10 +11,9 @@
   align-items: center;
   justify-content: space-between;
   gap: 15px;
-  flex-direction: column-reverse;
 
-  @media (min-width: map-get($grid-breakpoints, md)) {
-    flex-direction: row;
+  @media (max-width: map-get($grid-breakpoints, md)) {
+    gap: 10px;
   }
 }
 
@@ -23,6 +22,13 @@
   align-items: center;
   justify-content: space-between;
   gap: 15px;
+
+  @media (max-width: map-get($grid-breakpoints, md)) {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 10px;
+    width: 100%;
+  }
 }
 
 .checkout__link,
@@ -43,6 +49,17 @@
   transition: all .3s ease-in-out;
   border: none;
   gap: 10px;
+
+  @media (max-width: map-get($grid-breakpoints, md)) {
+    gap: 5px;
+    font-size: 14px;
+    padding: 0 5px;
+    width: 100%;
+
+    &>svg {
+      transform: scale(0.7);
+    }
+  }
 
   &:hover {
     background: darken($secondary, 20%);
@@ -112,6 +129,7 @@
   flex-direction: column;
   background: $secondary;
   border-radius: 5px;
+  gap: 10px;
 
   &>h3 {
     color: $text;

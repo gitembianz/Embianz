@@ -20,6 +20,10 @@
   font-size: 16px;
   font-weight: 400;
   padding: 5px;
+
+  &>strong {
+    margin-left: 5px;
+  }
 }
 
 //-----------------------
