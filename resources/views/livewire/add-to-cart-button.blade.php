@@ -1,6 +1,6 @@
 <div class="card-button">
     @if ($product->quantity != 0)
-        <a onclick="headerAnimation()" wire:click="addToCart({{ $product->id }})">Adauga in coș</a>
+        <a class="add-to-cart" onclick="addToCartClick()" wire:click="addToCart({{ $product->id }})">Adauga in coș</a>
     @else
         <a class="card-button-disabled" onclick="handleClick()">Indisponibil</a>
     @endif
