@@ -22,7 +22,7 @@
                     <div class="support__brand">
                         {{-- Support Images --}}
                         <img class="support__brand--item" src="/images/store/brands/dhl.webp" alt="dhl">
-                        <img class="support__brand--item" src="/images/store/brands/fan.webp" alt="fan">
+                        <img class="support__brand--item" src="/images/store/brands/Fan.webp" alt="fan">
                     </div>
                 </div>
                 <div class="suport__item">
