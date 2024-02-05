@@ -257,41 +257,55 @@
                 </button>
             </div>
             <div class="filter__list">
+
                 <input class="filter__input" wire:model="orderBy" type="radio" name="sort"
                     value="best_selling" id="sort">
                 <label class="filter__link sort__item" for="sort">
-                    <h4>Popularitate</h4>
+                    <h4>Cele mai vandute</h4>
                 </label>
-                <input class="filter__input" wire:model="orderBy" type="radio" name="sort1" value="price_az"
+
+                <input class="filter__input" wire:model="orderBy" type="radio" name="sort1" value="price_as"
                     id="sort1">
                 <label class="filter__link sort__item" for="sort1">
                     <h4>Pret crescator</h4>
                 </label>
-                <input class="filter__input" wire:model="orderBy" type="radio" name="sort2" value="price_za"
+
+                <input class="filter__input" wire:model="orderBy" type="radio" name="sort2" value="price_ds"
                     id="sort2">
                 <label class="filter__link sort__item" for="sort2">
                     <h4>Pret descrescator</h4>
                 </label>
+
                 <input class="filter__input" wire:model="orderBy" type="radio" name="sort3" value="quantity"
                     id="sort3">
                 <label class="filter__link sort__item" for="sort3">
-                    <h4>DIsponibilitate</h4>
+                    <h4>Disponibilitate (stock descrescator)</h4>
                 </label>
+
+                    <input class="filter__input" wire:model="orderBy" type="radio" name="sort8" value="quantity_as"
+                    id="sort8">
+                <label class="filter__link sort__item" for="sort8">
+                    <h4>Disponibilitate (stock crescator)</h4>
+                </label>
+
                 <input class="filter__input" wire:model="orderBy" type="radio" name="sort4" value="name_az"
                     id="sort4">
                 <label class="filter__link sort__item" for="sort4">
                     <h4>Alfabetic, A-Z</h4>
                 </label>
+
                 <input class="filter__input" wire:model="orderBy" type="radio" name="sort5" value="name_za"
                     id="sort5">
                 <label class="filter__link sort__item" for="sort5">
                     <h4>Alfabetic, Z-A</h4>
                 </label>
+
                 <input class="filter__input" wire:model="orderBy" type="radio" name="sort6"
                     value="date_old_new" id="sort6">
                 <label class="filter__link sort__item" for="sort6">
                     <h4>Data, de la vechi la nou</h4>
                 </label>
+                
                 <input class="filter__input" wire:model="orderBy" type="radio" name="sort7"
                     value="date_new_old" id="sort7">
                 <label class="filter__link sort__item" for="sort7">
