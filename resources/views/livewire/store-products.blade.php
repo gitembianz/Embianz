@@ -228,7 +228,7 @@
                                 @foreach ($this->getUniqueSpecValues($spec->id) as $innerIndex => $uniqueValue)
                                     <label class="dropfilter__link" for="{{ $innerIndex }}_{{ $uniqueValue }}">
                                         <input type="checkbox"
-                                            wire:model.defer="selectedSpecValues.{{ $innerIndex }}.{{ $uniqueValue }}"
+                                            wire:model.defer="selectedSpecValues.{{ $spec->id }}.{{ $uniqueValue }}"
                                             wire:change="applyFilter" id="{{ $innerIndex }}_{{ $uniqueValue }}">
                                         <h4>{{ $uniqueValue }}</h4>
                                     </label>
