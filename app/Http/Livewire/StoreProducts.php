@@ -129,20 +129,17 @@ class StoreProducts extends Component
       });
     }
     if ($this->specfilter && !empty($this->selectedSpecValues)) {
-      $query->where(function ($subQuery) {
-        foreach ($this->selectedSpecValues as $specId => $values) {
-          $subQuery->Where(function ($specSubQuery) use ($specId, $values) {
-            foreach ($values as $value => $isSelected) {
-              if ($isSelected) {
-                $specSubQuery->orWhereHas('product_specs', function ($query) use ($specId, $value) {
-                  $query->where('spec_id', $specId)
-                    ->where('value', $value);
-                });
-              }
+      foreach ($this->selectedSpecValues as $values) {
+        $query->Where(function ($specSubQuery) use ($values) {
+          foreach ($values as $value => $isSelected) {
+            if ($isSelected) {
+              $specSubQuery->orWhereHas('product_specs', function ($query) use ($value) {
+                $query->where('value', $value);
+              });
             }
-          });
-        }
-      });
+          }
+        });
+      }
     }
 
 
