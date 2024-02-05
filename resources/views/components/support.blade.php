@@ -20,9 +20,9 @@
                     </div>
                     <span class="support__subtitle">pentru produsele vandute de embianz.com</span>
                     <div class="support__brand">
+                        {{-- Support Images --}}
                         <img class="support__brand--item" src="/images/store/brands/dhl.webp" alt="dhl">
                         <img class="support__brand--item" src="/images/store/brands/fan.webp" alt="fan">
-
                     </div>
                 </div>
                 <div class="suport__item">
@@ -32,6 +32,7 @@
                     </div>
                     <span class="support__subtitle">Toate datele sunt transmise securizat</span>
                     <div class="support__brand">
+                        {{-- Support Images --}}
                         <img class="support__brand--item" src="/images/store/brands/visa.webp" alt="visa">
                         <img class="support__brand--item" src="/images/store/brands/mastercard.webp" alt="mastercard">
                     </div>
