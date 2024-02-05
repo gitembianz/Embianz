@@ -226,26 +226,46 @@
   border-radius: 5px;
   grid-column: 1/3;
 
-  &>a {
+  &>span {
     color: lighten($text, 30%);
     font-size: 16px;
     font-weight: 500;
     flex: 1;
+    text-decoration: none;
+
+    &>a {
+      color: $text;
+      text-decoration: underline;
+      font-weight: 600;
+    }
   }
 
   &>input:checked~a {
     color: $text;
   }
+
+  &.error {
+    background: lighten(red, 45%);
+    border: 1px solid red;
+
+    &>span {
+      color: red;
+
+      &>a {
+        color: red;
+      }
+    }
+  }
 }
 
-.checkout__error {
-  width: 100%;
-  color: red;
-  border: 1px solid red;
-  background: #fafafa;
-  font-size: 16px;
-  text-align: center;
-  font-weight: 500;
-  padding: 15px;
-  border-radius: 7px;
-}
+// .checkout__error {
+//   width: 100%;
+//   color: red;
+//   border: 1px solid red;
+//   background: #fafafa;
+//   font-size: 16px;
+//   text-align: center;
+//   font-weight: 500;
+//   padding: 15px;
+//   border-radius: 7px;
+// }

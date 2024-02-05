@@ -2836,7 +2836,7 @@
                     </div>
                     <label class="checkout__terms">
                         <input type="checkbox" wire:model="terms" name="terms" id="terms">
-                        <a href="{{ url("/terms") }}">Sunt de acord cu termenii si conditiile</a>
+                        <span>Sunt de acord cu <a href="{{ url("/terms") }}">termenii si conditiile</a></span>
                     </label>
                 @endif
                 <!------------------- End Step Middle ------------------>
