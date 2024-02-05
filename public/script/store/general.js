@@ -43,20 +43,13 @@ document.addEventListener("DOMContentLoaded", function () {
 //<--------------------------------------------------------------------->
 //<--------------------------------------------------------------------->
 //<------------------------- header Animation -------------------------->
-// This is the animation for cart number
 function headerAnimation() {
-  const buttons = document.querySelectorAll(".add-button");
   const cart = document.querySelector(".header__count");
-
-  for (button of buttons) {
-    button.addEventListener("click", () => {
-      cart.classList.add("active");
-      setTimeout(function () {
-        cart.classList.remove("active");
-      }, 600);
-    });
-  }
+  cart.classList.add("active");
+  console.log("clicked");
+  setTimeout(function () {
+    cart.classList.remove("active");
+  }, 600);
 }
-headerAnimation();
 //<----------------------- End header Animation ------------------------>
 //<--------------------------------------------------------------------->
