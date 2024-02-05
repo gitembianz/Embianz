@@ -152,14 +152,18 @@ class StoreProducts extends Component
         break;
       case 'date_new_old':
         $query->orderBy('created_at', $this->orderAsc ? 'desc' : 'asc');
+        break;
+      case 'quantity_as':
+        $query->where('quantity', '>', 0)->orderBy('quantity');
+        break;
       case 'quantity':
         $query->where('quantity', '>', 0)->orderBy('quantity', 'desc');
         break;
-      case 'price_az':
+      case 'price_as':
         $query->join('pricelist_entries', 'products.id', '=', 'pricelist_entries.product_id')
           ->orderByRaw('CAST(value AS DECIMAL(10, 2)) asc');
         break;
-      case 'price_za':
+      case 'price_ds':
         $query->join('pricelist_entries', 'products.id', '=', 'pricelist_entries.product_id')
           ->orderByRaw('CAST(value AS DECIMAL(10, 2)) desc');
         break;
