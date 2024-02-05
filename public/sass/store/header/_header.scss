@@ -68,20 +68,18 @@ header {
   border-radius: 50%;
 
   &.active {
-    animation: rotating 2s ease-in-out;
+    animation-name: scaling;
+    animation-duration: 0.4s;
+    animation-iteration-count: 1;
   }
 
-  @keyframes rotating {
-    0% {
-      transform: rotateY(360deg * 0)
+  @keyframes scaling {
+    from {
+      transform: scale(1);
     }
 
-    50% {
-      transform: rotateY(360deg * 3);
-    }
-
-    100% {
-      transform: rotateY(360deg * 0)
+    to {
+      transform: scale(1.5);
     }
   }
 }
