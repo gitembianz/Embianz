@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", function () {
 function headerAnimation() {
   const cart = document.querySelector(".header__count");
   cart.classList.add("active");
-  console.log("clicked");
+  // console.log("clicked");
   setTimeout(function () {
     cart.classList.remove("active");
   }, 600);
