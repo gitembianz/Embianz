@@ -1,82 +1,13 @@
-.custom-select {
+.select {
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-
-  .select-selected {
-    width: 100%;
-    height: 40px;
-    border: none;
-    cursor: pointer;
-    outline: none;
-    z-index: 5;
-    background: transparent;
-    border-bottom: 1.5px solid #333333;
-    color: #333;
-    font-size: 16px;
-    font-weight: 400;
-    outline: none;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 0 5px;
-    position: relative;
-
-    &::after {
-      content: "";
-      position: absolute;
-      top: 50%;
-      right: 10px;
-      transform: translateY(-50%);
-      width: 25px;
-      height: 25px;
-      background-image: url("/images/store/svg/chevron-down.svg");
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: contain;
-      aspect-ratio: 1/1;
-    }
-  }
-}
-
-.select-items {
-  position: absolute;
-  top: 45px;
-  left: 0;
-  display: none;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-  width: 100%;
-  border-radius: 15px;
-  max-height: 300px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  background-color: #f5f5f5;
-  z-index: 50;
-  margin-top: 10px; // Separare între dropdown-uri
-
-  div {
-    padding: 10px;
-    cursor: pointer;
-    width: 100%;
-
-    &:first-child {
-      border-top: 1px solid #ccc;
-    }
-
-    &:hover {
-      background-color: #ccc;
-    }
-  }
-}
-
-.hidden-select {
-  opacity: 0;
-  visibility: hidden;
-  width: 0;
-  height: 0;
+  height: 40px;
+  border: none;
+  background: transparent;
+  border-bottom: 1.5px solid #333333;
+  border-radius: 0;
+  color: #333333;
+  font-size: 16px;
+  font-weight: 400;
+  outline: none;
+  padding: 0 5px;
 }
