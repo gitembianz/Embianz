@@ -43,6 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
 //<--------------------------------------------------------------------->
 //<--------------------------------------------------------------------->
 //<------------------------- header Animation -------------------------->
+// This is the animation for cart number
 function headerAnimation() {
   const buttons = document.querySelectorAll(".add-button");
   const cart = document.querySelector(".header__count");
