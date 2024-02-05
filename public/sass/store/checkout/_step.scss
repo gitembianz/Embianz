@@ -33,7 +33,7 @@
     width: 125px;
     text-align: center;
 
-    @media (max-width: map-get($grid-breakpoints, sm)) {
+    @media (max-width: map-get($grid-breakpoints, md)) {
       display: none;
     }
   }
