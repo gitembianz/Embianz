@@ -4975,6 +4975,7 @@ header {
     left: 0;
     justify-content: center;
     width: 100%;
+    gap: 0;
   }
 }
 .product-slider__pagination > img, .product-slider__pagination > video {
@@ -5008,9 +5009,9 @@ header {
 }
 @media (max-width: 768px) {
   .product-slider__pagination > img.active, .product-slider__pagination > video.active {
-    width: 0;
+    width: 50px;
     height: 0;
-    border-radius: 50%;
+    border-radius: 200px;
     outline: 2px solid #333333;
     border: 10px solid #333333;
     margin: 5px;
