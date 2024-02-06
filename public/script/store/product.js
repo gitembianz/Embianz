@@ -47,6 +47,12 @@ function sliderProduct(sliderId) {
     } else {
       nextButton.classList.remove("disabled");
     }
+    // Dezactivați butonul din stânga când ajungeți la primul slide
+    if (currentIndex === 0) {
+      prevButton.classList.add("disabled");
+    } else {
+      prevButton.classList.remove("disabled");
+    }
 
     updatePagination();
     updateTransform(wrapper);
@@ -66,6 +72,19 @@ function sliderProduct(sliderId) {
     thumbnails.forEach((thumbnail, index) => {
       thumbnail.classList.toggle("active", index === currentIndex);
     });
+    // Dezactivați butonul din stânga când ajungeți la primul slide
+    if (currentIndex === 0) {
+      prevButton.classList.add("disabled");
+    } else {
+      prevButton.classList.remove("disabled");
+    }
+
+    // Dezactivați butonul din dreapta când ajungeți la ultimul slide
+    if (currentIndex === slides.length - 1) {
+      nextButton.classList.add("disabled");
+    } else {
+      nextButton.classList.remove("disabled");
+    }
   }
 
   function updateTransform(element) {

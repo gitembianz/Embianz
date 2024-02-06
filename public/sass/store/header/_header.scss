@@ -53,6 +53,22 @@ header {
   }
 }
 
+#basketOpen.header__btn {
+  &.active>.header__count {
+    animation-name: scaling;
+    animation-duration: 0.35s;
+    animation-iteration-count: 1;
+  }
+}
+
+#wishOpen.header__btn {
+  &.active>.header__count {
+    animation-name: scaling;
+    animation-duration: 0.35s;
+    animation-iteration-count: 1;
+  }
+}
+
 // Cart Count & Animation for Cart Number
 
 
@@ -69,21 +85,15 @@ header {
   align-items: center;
   justify-content: center;
   border-radius: 50%;
+}
 
-  &.active {
-    animation-name: scaling;
-    animation-duration: 0.4s;
-    animation-iteration-count: 1;
+@keyframes scaling {
+  from {
+    transform: scale(1);
   }
 
-  @keyframes scaling {
-    from {
-      transform: scale(1);
-    }
-
-    to {
-      transform: scale(2.5);
-    }
+  to {
+    transform: scale(2);
   }
 }
 
