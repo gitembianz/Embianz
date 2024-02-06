@@ -42,10 +42,10 @@ document.addEventListener("DOMContentLoaded", function () {
 //<----------------------- End Start Functions PC ---------------------->
 //<--------------------------------------------------------------------->
 //<------------------------- header Animation -------------------------->
-function headerAnimation() {
-  const cart = document.querySelector(".header__count");
-  cart.classList.add("active");
+function headerAnimation(targetElement) {
+  const cart = document.getElementById(targetElement);
   // console.log("clicked");
+  cart.classList.add("active");
   setTimeout(function () {
     cart.classList.remove("active");
   }, 600);
@@ -58,6 +58,7 @@ function startShoppingAnimation(button) {
   const shopping_cart = document.getElementById("basketOpen");
 
   // for (cart_btn of cart_btns) {
+
   button.onclick = (e) => {
     shopping_cart.classList.add("active");
 
@@ -99,10 +100,18 @@ function startShoppingAnimation(button) {
 }
 //<-------------------------- End Fly to Cart -------------------------->
 //<--------------------------------------------------------------------->
-//<------------------ Starting the function on click ------------------->
-function addToCartClick() {
-  startShoppingAnimation(this);
-  headerAnimation();
+//<------------------ Onclick function (Cart & wish) ------------------->
+function addToCartClick(button) {
+  if (button.classList.contains("add-to-cart")) {
+    headerAnimation("cartCount");
+    startShoppingAnimation(button);
+  }
 }
-//<---------------- End Starting the function on click ----------------->
+//<--------------------------------------------------------------------->
+function addToWishClick(button) {
+  if (button.classList.contains("card-favorites")) {
+    headerAnimation("wishlistCount");
+  }
+}
+//<---------------- End Onclick function (Cart & wish) ----------------->
 //<--------------------------------------------------------------------->
