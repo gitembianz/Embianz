@@ -22,15 +22,6 @@ function sliderProduct(sliderId) {
     return;
   }
 
-  // function navigation(direction) {
-  //   currentIndex =
-  //     (currentIndex + (direction === "next" ? 1 : slides.length - 1)) %
-  //     slides.length;
-
-  //   updatePagination();
-  //   updateTransform(wrapper);
-  // }
-
   function navigation(direction) {
     let newIndex;
     if (direction === "next") {
@@ -49,6 +40,13 @@ function sliderProduct(sliderId) {
       nextButton.classList.remove("disabled");
     }
     currentIndex = newIndex;
+
+    // Dezactivați butonul din dreapta când ajungeți la ultimul slide
+    if (currentIndex === slides.length - 1) {
+      nextButton.classList.add("disabled");
+    } else {
+      nextButton.classList.remove("disabled");
+    }
 
     updatePagination();
     updateTransform(wrapper);
