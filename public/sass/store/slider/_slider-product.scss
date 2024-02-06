@@ -77,6 +77,7 @@
     left: 0;
     justify-content: center;
     width: 100%;
+    gap: 0;
   }
 
   &>img,
@@ -109,9 +110,9 @@
       z-index: 5;
 
       @media (max-width: map-get($grid-breakpoints, md)) {
-        width: 0;
+        width: 50px;
         height: 0;
-        border-radius: 50%;
+        border-radius: 200px;
         outline: 2px solid $text;
         border: 10px solid $text;
         margin: 5px;

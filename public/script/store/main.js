@@ -118,15 +118,9 @@ slider(".card-slider");
 //<---------------------- End Start Functions IOS ---------------------->
 //<--------------------------------------------------------------------->
 //<------------------------- Start Functions PC ------------------------>
-document.addEventListener("DOMContentLoaded", function () {
-  slider(".main-slider");
-  slider(".card-slider");
-});
+// document.addEventListener("DOMContentLoaded", function () {
+//   slider(".main-slider");
+//   slider(".card-slider");
+// });
 //<----------------------- End Start Functions PC ---------------------->
 //<--------------------------------------------------------------------->
-// function handleClick() {
-//   setTimeout(() => {
-//     slider(".main-slider");
-//     slider(".card-slider");
-//   }, 500);
-// }
