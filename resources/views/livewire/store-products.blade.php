@@ -192,21 +192,26 @@
     <div class="filter @if ($showspecfilter) active @endif" id="filterList">
         <div class="filter__content" id="filterContent">
             <div class="filter__top">
-                <button class="filter__close" wire:click="$set('showspecfilter', false)" id="filterClose"
-                    href="#">
-                    Inchideti Filtrele
-                    <svg>
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                </button>
-                <button class="filter__close" id="resetFilter" wire:click="resetFilter">
+                <button class="filter__apply" id="resetFilter" wire:click="resetFilter">
                     Șterge Filtrele
                     <svg>
                         <polyline points="23 4 23 10 17 10"></polyline>
                         <polyline points="1 20 1 14 7 14"></polyline>
                         <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
                     </svg>
+                </button>
+                <button class="filter__reset" wire:click="$set('showspecfilter', false)" id="filterClose"
+                    href="#">
+                    <svg>
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="filter__top">
+                <span>25 de produse</span>
+                <button class="filter__show">
+                    Afișează
                 </button>
             </div>
             <div class="filter__list">
@@ -248,8 +253,10 @@
     <div class="filter" id="sortList">
         <div class="filter__content" id="sortContent">
             <div class="filter__top">
-                <button class="filter__close" id="sortClose" href="#">
-                    Inchideti
+                <div class="filter__show filter__show--long">
+                    Ordoneaza după
+                </div>
+                <button class="filter__reset" id="sortClose" href="#">
                     <svg>
                         <line x1="18" y1="6" x2="6" y2="18"></line>
                         <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -282,7 +289,7 @@
                     <h4>Disponibilitate (stock descrescator)</h4>
                 </label>
 
-                    <input class="filter__input" wire:model="orderBy" type="radio" name="sort8" value="quantity_as"
+                <input class="filter__input" wire:model="orderBy" type="radio" name="sort8" value="quantity_as"
                     id="sort8">
                 <label class="filter__link sort__item" for="sort8">
                     <h4>Disponibilitate (stock crescator)</h4>
@@ -305,7 +312,7 @@
                 <label class="filter__link sort__item" for="sort6">
                     <h4>Data, de la vechi la nou</h4>
                 </label>
-                
+
                 <input class="filter__input" wire:model="orderBy" type="radio" name="sort7"
                     value="date_new_old" id="sort7">
                 <label class="filter__link sort__item" for="sort7">
