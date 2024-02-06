@@ -92,7 +92,7 @@ function startShoppingAnimation(button) {
 //<--------------------------------------------------------------------->
 //<------------------ Onclick function (Cart & wish) ------------------->
 function addToCartClick(button) {
-  startShoppingAnimation(button);
+  startShoppingAnimation(this);
   button.onclick = () => {
     const cart = document.getElementById("basketOpen");
 
