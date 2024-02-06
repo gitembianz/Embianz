@@ -171,7 +171,7 @@
                             @if ($price)
                                 @livewire("add-to-cart-button", ["product" => $product], key($product->id . $index))
                             @else
-                                <a class="card-button-disabled" onclick="handleClick()">Indisponibil</a>
+                                <a class="card-button-disabled">Indisponibil</a>
                             @endif
                         </div>
                     </div>
