@@ -1474,7 +1474,6 @@ header {
   justify-content: center;
   transition: all 0.3s ease-in-out;
   font-weight: 500;
-  flex: 1;
   background-color: #333333;
   color: #ffffff;
 }
@@ -4040,6 +4039,7 @@ header {
 @media (max-width: 768px) {
   .checkout__header {
     gap: 10px;
+    flex-direction: column;
   }
 }
 
@@ -4051,8 +4051,9 @@ header {
 }
 @media (max-width: 768px) {
   .checkout__navigation {
-    display: grid;
-    grid-template-columns: repeat(1, 1fr);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     gap: 10px;
     width: 100%;
   }
@@ -4098,6 +4099,10 @@ header {
 .checkout__button.active {
   background: #333333;
   color: #fafafa;
+}
+
+.checkout__button--confirm {
+  border: 1px solid #333333;
 }
 
 .checkout__container {
@@ -4443,7 +4448,7 @@ header {
   width: 100%;
   text-align: left;
   color: #333333;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 400;
   padding: 5px;
 }
@@ -4483,14 +4488,9 @@ header {
   border-radius: 7px;
 }
 .total__item > span {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 400;
   color: #333333;
-}
-@media (max-width: 576px) {
-  .total__item > span {
-    font-size: 12px;
-  }
 }
 .total__item > span:last-child {
   font-weight: 600;
@@ -4520,26 +4520,24 @@ header {
   width: 100%;
   flex: 1;
   text-align: left;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 500;
   color: #333333;
   margin: 0;
 }
-@media (max-width: 576px) {
-  .total__name {
-    font-size: 18px;
-  }
-}
 
-.total__price {
-  font-size: 15px;
+.total__price,
+.total__quantity {
+  font-size: 14px;
   font-weight: 400;
   color: #666666;
+  text-wrap: nowrap;
+  word-break: break-word;
+  white-space: nowrap;
 }
-@media (max-width: 576px) {
-  .total__price {
-    font-size: 12px;
-  }
+
+.total__quantity {
+  width: 40px;
 }
 
 .main-slider__text {

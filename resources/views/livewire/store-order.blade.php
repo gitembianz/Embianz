@@ -56,8 +56,8 @@
                                 </svg>
                                 Șterge Datele
                             </button>
-                            <button class="checkout__button" wire:click.prevent="next()">
-                                Pasul urmator
+                            <button class="checkout__button checkout__button--confirm" wire:click.prevent="next()">
+                                Pasul următor
                                 <svg>
                                     <line x1="5" y1="12" x2="19" y2="12"></line>
                                     <polyline points="12 5 19 12 12 19"></polyline>
@@ -2581,8 +2581,8 @@
                                 <polyline points="12 19 5 12 12 5"></polyline>
                             </svg>Pasul anterior
                         </button>
-                        <button class="checkout__button" wire:click.prevent="confirm()">
-                            Confirma Comanda <svg>
+                        <button class="checkout__button checkout__button--confirm" wire:click.prevent="confirm()">
+                            Confirmă <svg>
                                 <polyline points="9 11 12 14 22 4"></polyline>
                                 <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
                             </svg>
@@ -2768,7 +2768,7 @@
                             @if (!$cartItems->isEmpty())
                                 @foreach ($cartItems as $cartItem)
                                     <div class="total__product">
-                                        <span class="total__price">
+                                        <span class="total__quantity">
                                             {{ $cartItem->quantity }} x
                                         </span>
                                         @if ($cartItem->product->media->first())
@@ -2834,7 +2834,8 @@
                         <!------------ End Checkout List of Forms ------------>
                         <!---------------------------------------------------->
                     </div>
-                    <label id="termsbutton" class="checkout__terms @if ($errorterms && $terms == false) error @endif">
+                    <label id="termsbutton"
+                        class="checkout__terms @if ($errorterms && $terms == false) error @endif">
                         <input type="checkbox" wire:model="terms" name="terms">
                         <span>Sunt de acord cu <a href="{{ url("/terms") }}">termenii si conditiile</a></span>
 
@@ -2843,12 +2844,12 @@
                 {{-- script for terms error --}}
                 <script>
                     window.addEventListener('terms__error', event => {
-        var newLink = document.createElement('a');
-            newLink.href = '#termsbutton';
-            newLink.click();
-    });
-</script>
-{{-- end script for terms error --}}
+                        var newLink = document.createElement('a');
+                        newLink.href = '#termsbutton';
+                        newLink.click();
+                    });
+                </script>
+                {{-- end script for terms error --}}
                 <!------------------- End Step Middle ------------------>
                 <!------------------------------------------------------>
                 <!--------------------- Step Final --------------------->
@@ -2885,15 +2886,15 @@
                             </svg>
                             Pasul Anterior
                         </a>
-                        <a class="checkout__button" wire:click.prevent="confirm()">
-                            Confirma Comanda
+                        <a class="checkout__button checkout__button--confirm" wire:click.prevent="confirm()">
+                            Confirmă
                             <svg>
                                 <polyline points="9 11 12 14 22 4"></polyline>
                                 <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
                             </svg>
                         </a>
                     @elseif ($step == 1)
-                        <a class="checkout__link" wire:click.prevent="next()">
+                        <a class="checkout__link checkout__button--confirm" wire:click.prevent="next()">
                             Pasul următor
                             <svg>
                                 <line x1="5" y1="12" x2="19" y2="12"></line>

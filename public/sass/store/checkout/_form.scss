@@ -14,6 +14,7 @@
 
   @media (max-width: map-get($grid-breakpoints, md)) {
     gap: 10px;
+    flex-direction: column;
   }
 }
 
@@ -24,8 +25,9 @@
   gap: 15px;
 
   @media (max-width: map-get($grid-breakpoints, md)) {
-    display: grid;
-    grid-template-columns: repeat(1, 1fr);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     gap: 10px;
     width: 100%;
   }
@@ -69,6 +71,10 @@
     background: $text;
     color: $secondary;
   }
+}
+
+.checkout__button--confirm {
+  border: 1px solid $text;
 }
 
 .checkout__container {
