@@ -63,8 +63,11 @@ function startShoppingAnimation(button) {
     shopping_cart.classList.add("active");
 
     // finding first grandparent of target button
-    let target_parent = e.target.parentNode.parentNode.parentNode;
-    target_parent.style.zIndex = "200";
+    // let target_parent = e.target.parentNode.parentNode.parentNode;
+    let target_parent = e.target.closest(".card");
+
+    // target_parent.style.zIndex = "200";
+    target_parent.classList.add("flying");
     // Creating separate Image
     let img = target_parent.querySelector("img");
     let flying_img = img.cloneNode();
@@ -91,7 +94,8 @@ function startShoppingAnimation(button) {
                           `;
 
     setTimeout(() => {
-      target_parent.style.zIndex = "";
+      // target_parent.style.zIndex = "";
+      target_parent.classList.remove("flying");
       target_parent.removeChild(flying_img);
       shopping_cart.classList.remove("active");
     }, 1500);
@@ -102,9 +106,9 @@ function startShoppingAnimation(button) {
 //<--------------------------------------------------------------------->
 //<------------------ Onclick function (Cart & wish) ------------------->
 function addToCartClick(button) {
-  if (button.classList.contains("add-to-cart")) {
+  if (button && button.classList.contains("add-to-cart")) {
     headerAnimation("cartCount");
-    startShoppingAnimation(button);
+    startShoppingAnimation(this);
   }
 }
 //<--------------------------------------------------------------------->
