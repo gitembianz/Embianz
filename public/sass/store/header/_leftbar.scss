@@ -221,6 +221,8 @@
     aspect-ratio: 1/1;
     border-radius: 3px;
     background-color: $background;
+    user-select: none;
+    pointer-events: none;
 
     @media (max-width: map-get($grid-breakpoints, sm)) {
       width: 55px;

@@ -208,11 +208,8 @@
                     </svg>
                 </button>
             </div>
-            <div class="filter__top">
-                <span>25 de produse</span>
-                <button class="filter__show">
-                    Afișează
-                </button>
+            <div class="filter__top filter__top--center">
+                <p>Am gasit <span>25</span> de rezultate</p>
             </div>
             <div class="filter__list">
                 <!------------------ End Dropdown (filter) ------------------>

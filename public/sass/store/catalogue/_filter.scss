@@ -115,14 +115,23 @@
   width: 100%;
   gap: 10px;
 
-  &>span {
+  &>p {
     font-size: 16px;
     font-weight: 500;
     color: $text;
     text-wrap: nowrap;
     word-break: break-word;
     white-space: nowrap;
+
+    &>span {
+      color: red;
+      font-weight: 600;
+    }
   }
+}
+
+.filter__top--center {
+  justify-content: center;
 }
 
 .filter__list {

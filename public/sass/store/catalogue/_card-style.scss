@@ -22,6 +22,8 @@
   object-position: center;
   background: $secondary;
   transition: all 0.5s ease-in-out;
+  user-select: none;
+  pointer-events: none;
 
   &:hover {
     scale: 1.05;

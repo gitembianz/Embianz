@@ -19,6 +19,7 @@
   font-size: 20px;
   font-weight: 500;
   color: $text;
+  user-select: none;
 }
 
 
@@ -67,6 +68,8 @@
       object-fit: contain;
       object-position: center;
       aspect-ratio: 1/1;
+      user-select: none;
+      pointer-events: none;
 
       @media (max-width: map-get($grid-breakpoints, md)) {
         width: 30px;
@@ -103,4 +106,5 @@
   object-position: center;
   aspect-ratio: 2/1;
   border-radius: 2px;
+  user-select: none;
 }

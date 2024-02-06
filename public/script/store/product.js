@@ -22,10 +22,33 @@ function sliderProduct(sliderId) {
     return;
   }
 
+  // function navigation(direction) {
+  //   currentIndex =
+  //     (currentIndex + (direction === "next" ? 1 : slides.length - 1)) %
+  //     slides.length;
+
+  //   updatePagination();
+  //   updateTransform(wrapper);
+  // }
+
   function navigation(direction) {
-    currentIndex =
-      (currentIndex + (direction === "next" ? 1 : slides.length - 1)) %
-      slides.length;
+    let newIndex;
+    if (direction === "next") {
+      newIndex = currentIndex + 1;
+      if (newIndex >= slides.length) {
+        newIndex = slides.length - 1;
+        nextButton.classList.add("disabled");
+      }
+      prevButton.classList.remove("disabled");
+    } else {
+      newIndex = currentIndex - 1;
+      if (newIndex < 0) {
+        newIndex = 0;
+        prevButton.classList.add("disabled");
+      }
+      nextButton.classList.remove("disabled");
+    }
+    currentIndex = newIndex;
 
     updatePagination();
     updateTransform(wrapper);
@@ -38,6 +61,7 @@ function sliderProduct(sliderId) {
   prevButton.addEventListener("click", () => {
     navigation("prev");
   });
+  prevButton.classList.add("disabled");
 
   function updatePagination() {
     const thumbnails = Array.from(pagination.children);
