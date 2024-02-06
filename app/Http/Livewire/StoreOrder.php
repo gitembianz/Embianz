@@ -164,6 +164,7 @@ class StoreOrder extends Component
   {
     if ($this->terms == false) {
       $this->errorterms = true;
+      $this->dispatchBrowserEvent('terms__error');
       return;
     }
 
