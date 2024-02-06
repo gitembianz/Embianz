@@ -1354,6 +1354,12 @@ header {
   animation-iteration-count: 1;
 }
 
+#wishOpen.header__btn.active > .header__count {
+  animation-name: scaling;
+  animation-duration: 0.35s;
+  animation-iteration-count: 1;
+}
+
 .header__count {
   position: absolute;
   background: #d2042d;
@@ -1367,11 +1373,6 @@ header {
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-}
-.header__count.active {
-  animation-name: scaling;
-  animation-duration: 0.35s;
-  animation-iteration-count: 1;
 }
 
 @keyframes scaling {
@@ -1489,6 +1490,7 @@ header {
   font-weight: 500;
   background-color: #333333;
   color: #ffffff;
+  flex: 1;
 }
 .leftbar__button:hover {
   background: #0d0d0d;

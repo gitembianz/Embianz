@@ -41,17 +41,6 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 //<----------------------- End Start Functions PC ---------------------->
 //<--------------------------------------------------------------------->
-//<------------------------- header Animation -------------------------->
-function headerAnimation(element) {
-  const cartSpan = document.querySelector(element);
-  // console.log("clicked");
-  cartSpan.classList.add("active");
-  setTimeout(function () {
-    cartSpan.classList.remove("active");
-  }, 10);
-}
-//<----------------------- End header Animation ------------------------>
-//<--------------------------------------------------------------------->
 //<---------------------------- Fly to Cart ---------------------------->
 function startShoppingAnimation(button) {
   // const cart_btns = document.querySelectorAll(".add-to-cart");
@@ -104,13 +93,51 @@ function startShoppingAnimation(button) {
 //<------------------ Onclick function (Cart & wish) ------------------->
 function addToCartClick(button) {
   startShoppingAnimation(button);
-  headerAnimation(".header__count");
+  button.onclick = () => {
+    const cart = document.getElementById("basketOpen");
+
+    // Anularea animației anterioare dacă există un timer activ
+    if (wishAnimationTimer) {
+      clearTimeout(wishAnimationTimer);
+      cart.classList.remove("active"); // Asigură eliminarea clasei 'active' în cazul în care animația este în curs
+    }
+
+    if (cart.classList.contains("active")) {
+      cart.classList.remove("active");
+    } else {
+      cart.classList.add("active");
+
+      // Setează un nou timer și stocază-l în variabila globală
+      wishAnimationTimer = setTimeout(function () {
+        cart.classList.remove("active");
+      }, 400);
+    }
+  };
 }
 //<--------------------------------------------------------------------->
+let wishAnimationTimer; // Variabilă globală pentru a stoca timerul animației
+
 function addToWishClick(button) {
-  if (button.classList.contains("card-favorites")) {
-    headerAnimation("wishlistCount");
-  }
+  button.onclick = () => {
+    const cart = document.getElementById("wishOpen");
+
+    // Anularea animației anterioare dacă există un timer activ
+    if (wishAnimationTimer) {
+      clearTimeout(wishAnimationTimer);
+      cart.classList.remove("active"); // Asigură eliminarea clasei 'active' în cazul în care animația este în curs
+    }
+
+    if (cart.classList.contains("active")) {
+      cart.classList.remove("active");
+    } else {
+      cart.classList.add("active");
+
+      // Setează un nou timer și stocază-l în variabila globală
+      wishAnimationTimer = setTimeout(function () {
+        cart.classList.remove("active");
+      }, 400);
+    }
+  };
 }
 //<---------------- End Onclick function (Cart & wish) ----------------->
 //<--------------------------------------------------------------------->
