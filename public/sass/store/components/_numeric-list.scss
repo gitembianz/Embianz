@@ -9,7 +9,25 @@
   position: relative;
 
   &>h3 {
-    margin-bottom: 15px;
+    margin-bottom: 10px;
+    margin-left: 30px;
+    line-height: 150%;
+  }
+
+  &>p {
+    line-height: 150%;
+
+    &>a {
+      text-decoration: underline;
+      color: $text;
+      font-weight: 600;
+    }
+  }
+
+  &>a {
+    text-decoration: underline;
+    color: $text;
+    font-weight: 600;
   }
 }
 
@@ -17,13 +35,14 @@
   content: counter(category-counter) ". ";
   font-weight: bold;
   position: absolute;
-  left: -25px;
+  left: 0px;
+  top: 4.5px;
 }
 
 .sub-numeric {
   counter-reset: sub-category-counter;
   list-style-type: none;
-  padding-left: 25px;
+  padding-left: 70px;
 }
 
 .sub-numeric>li {
@@ -32,7 +51,24 @@
   position: relative;
 
   &>h3 {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
+    line-height: 150%;
+  }
+
+  &>p {
+    line-height: 150%;
+
+    &>a {
+      text-decoration: underline;
+      color: $text;
+      font-weight: 600;
+    }
+  }
+
+  &>a {
+    text-decoration: underline;
+    color: $text;
+    font-weight: 600;
   }
 }
 
@@ -40,28 +76,47 @@
   content: counter(category-counter) "." counter(sub-category-counter) " ";
   font-weight: normal;
   position: absolute;
-  left: -25px;
+  left: -40px;
+  top: 4.5px;
 }
 
 .sub-sub-numeric {
-  counter-reset: sub-category-counter;
+  counter-reset: sub-sub-category-counter;
   list-style-type: none;
-  padding-left: 25px;
+  padding-left: 70px;
 }
 
 .sub-sub-numeric>li {
-  counter-increment: sub-category-counter;
+  counter-increment: sub-sub-category-counter;
   margin-bottom: 20px;
   position: relative;
 
   &>h3 {
-    margin-bottom: 15px;
+    margin-bottom: 10px;
+    line-height: 150%;
+  }
+
+  &>p {
+    line-height: 150%;
+
+    &>a {
+      text-decoration: underline;
+      color: $text;
+      font-weight: 600;
+    }
+  }
+
+  &>a {
+    text-decoration: underline;
+    color: $text;
+    font-weight: 600;
   }
 }
 
 .sub-sub-numeric>li::before {
-  content: counter(category-counter) "." counter(sub-category-counter) " ";
+  content: counter(category-counter) "." counter(sub-category-counter) "." counter(sub-sub-category-counter) " ";
   font-weight: normal;
   position: absolute;
-  left: -40px;
+  left: -70px;
+  top: 4.5px;
 }

@@ -2836,7 +2836,8 @@
                     </div>
                     <label id="termsbutton" class="checkout__terms @if ($errorterms && $terms == false) error @endif">
                         <input type="checkbox" wire:model="terms" name="terms">
-                        <a href="{{ url("/terms") }}">Sunt de acord cu termenii si conditiile</a>
+                        <span>Sunt de acord cu <a href="{{ url("/terms") }}">termenii si conditiile</a></span>
+
                     </label>
                 @endif
                 {{-- script for terms error --}}
@@ -2875,16 +2876,16 @@
                 <!------------------- End Step Final ------------------->
                 <!------------------------------------------------------>
                 <!------------------- Checkout Links ------------------->
-                <div class="checkout__navigation">
+                <div class="checkout__header">
                     @if ($step == 2)
-                        <a class="checkout__link" wire:click.prevent="previous()">
+                        <a class="checkout__button" wire:click.prevent="previous()">
                             <svg>
                                 <line x1="19" y1="12" x2="5" y2="12"></line>
                                 <polyline points="12 19 5 12 12 5"></polyline>
                             </svg>
                             Pasul Anterior
                         </a>
-                        <a class="checkout__link" wire:click.prevent="confirm()">
+                        <a class="checkout__button" wire:click.prevent="confirm()">
                             Confirma Comanda
                             <svg>
                                 <polyline points="9 11 12 14 22 4"></polyline>

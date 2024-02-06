@@ -11,10 +11,9 @@
   align-items: center;
   justify-content: space-between;
   gap: 15px;
-  flex-direction: column-reverse;
 
-  @media (min-width: map-get($grid-breakpoints, md)) {
-    flex-direction: row;
+  @media (max-width: map-get($grid-breakpoints, md)) {
+    gap: 10px;
   }
 }
 
@@ -23,6 +22,13 @@
   align-items: center;
   justify-content: space-between;
   gap: 15px;
+
+  @media (max-width: map-get($grid-breakpoints, md)) {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 10px;
+    width: 100%;
+  }
 }
 
 .checkout__link,
@@ -43,6 +49,17 @@
   transition: all .3s ease-in-out;
   border: none;
   gap: 10px;
+
+  @media (max-width: map-get($grid-breakpoints, md)) {
+    gap: 5px;
+    font-size: 14px;
+    padding: 0 5px;
+    width: 100%;
+
+    &>svg {
+      transform: scale(0.7);
+    }
+  }
 
   &:hover {
     background: darken($secondary, 20%);
@@ -112,6 +129,7 @@
   flex-direction: column;
   background: $secondary;
   border-radius: 5px;
+  gap: 10px;
 
   &>h3 {
     color: $text;
@@ -226,26 +244,46 @@
   border-radius: 5px;
   grid-column: 1/3;
 
-  &>a {
+  &>span {
     color: lighten($text, 30%);
     font-size: 16px;
     font-weight: 500;
     flex: 1;
+    text-decoration: none;
+
+    &>a {
+      color: $text;
+      text-decoration: underline;
+      font-weight: 600;
+    }
   }
 
   &>input:checked~a {
     color: $text;
   }
+
+  &.error {
+    background: lighten(red, 45%);
+    border: 1px solid red;
+
+    &>span {
+      color: red;
+
+      &>a {
+        color: red;
+      }
+    }
+  }
 }
 
-.checkout__error {
-  width: 100%;
-  color: red;
-  border: 1px solid red;
-  background: #fafafa;
-  font-size: 16px;
-  text-align: center;
-  font-weight: 500;
-  padding: 15px;
-  border-radius: 7px;
-}
+// .checkout__error {
+//   width: 100%;
+//   color: red;
+//   border: 1px solid red;
+//   background: #fafafa;
+//   font-size: 16px;
+//   text-align: center;
+//   font-weight: 500;
+//   padding: 15px;
+//   border-radius: 7px;
+// }

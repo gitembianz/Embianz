@@ -41,21 +41,68 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 //<----------------------- End Start Functions PC ---------------------->
 //<--------------------------------------------------------------------->
-//<--------------------------------------------------------------------->
 //<------------------------- header Animation -------------------------->
 function headerAnimation() {
-  const buttons = document.querySelectorAll(".add-button");
   const cart = document.querySelector(".header__count");
-
-  for (button of buttons) {
-    button.addEventListener("click", () => {
-      cart.classList.add("active");
-      setTimeout(function () {
-        cart.classList.remove("active");
-      }, 600);
-    });
-  }
+  cart.classList.add("active");
+  // console.log("clicked");
+  setTimeout(function () {
+    cart.classList.remove("active");
+  }, 600);
 }
-headerAnimation();
 //<----------------------- End header Animation ------------------------>
+//<--------------------------------------------------------------------->
+//<---------------------------- Fly to Cart ---------------------------->
+function startShoppingAnimation(button) {
+  // const cart_btns = document.querySelectorAll(".add-to-cart");
+  const shopping_cart = document.getElementById("basketOpen");
+
+  // for (cart_btn of cart_btns) {
+  button.onclick = (e) => {
+    shopping_cart.classList.add("active");
+
+    // finding first grandparent of target button
+    let target_parent = e.target.parentNode.parentNode.parentNode;
+    target_parent.style.zIndex = "200";
+    // Creating separate Image
+    let img = target_parent.querySelector("img");
+    let flying_img = img.cloneNode();
+    flying_img.classList.add("flying-img");
+
+    target_parent.appendChild(flying_img);
+
+    // Finding position of flying image
+    const flying_img_pos = flying_img.getBoundingClientRect();
+    const shopping_cart_pos = shopping_cart.getBoundingClientRect();
+
+    let data = {
+      left:
+        shopping_cart_pos.left -
+        (shopping_cart_pos.width / 2 +
+          flying_img_pos.left +
+          flying_img_pos.width / 2),
+      top: shopping_cart_pos.bottom - flying_img_pos.bottom + 30,
+    };
+
+    flying_img.style.cssText = `
+                          --left : ${data.left.toFixed(2)}px;
+                          --top : ${data.top.toFixed(2)}px;
+                          `;
+
+    setTimeout(() => {
+      target_parent.style.zIndex = "";
+      target_parent.removeChild(flying_img);
+      shopping_cart.classList.remove("active");
+    }, 1500);
+  };
+  // }
+}
+//<-------------------------- End Fly to Cart -------------------------->
+//<--------------------------------------------------------------------->
+//<------------------ Starting the function on click ------------------->
+function addToCartClick() {
+  startShoppingAnimation(this);
+  headerAnimation();
+}
+//<---------------- End Starting the function on click ----------------->
 //<--------------------------------------------------------------------->
