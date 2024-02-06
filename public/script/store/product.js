@@ -47,6 +47,12 @@ function sliderProduct(sliderId) {
     } else {
       nextButton.classList.remove("disabled");
     }
+    // Dezactivați butonul din stânga când ajungeți la primul slide
+    if (currentIndex === 0) {
+      prevButton.classList.add("disabled");
+    } else {
+      prevButton.classList.remove("disabled");
+    }
 
     updatePagination();
     updateTransform(wrapper);
