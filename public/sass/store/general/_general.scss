@@ -121,6 +121,7 @@ input[type='checkbox'] {
 .logo {
   height: 100%;
   display: block;
+  user-select: none;
 
   @media (max-width: map-get($grid-breakpoints, lg)) {
     display: none;
@@ -131,12 +132,14 @@ input[type='checkbox'] {
     height: 100%;
     object-fit: contain;
     aspect-ratio: 2/1;
+    user-select: none;
   }
 }
 
 .logo__hidden {
   height: 100%;
   display: none;
+  user-select: none;
 
   @media (max-width: map-get($grid-breakpoints, lg)) {
     display: block;

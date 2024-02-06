@@ -1,5 +1,5 @@
 .product-slider {
-  // position: relative;
+  position: relative;
   width: 100%;
   overflow: hidden;
 
@@ -33,6 +33,7 @@
     object-position: center;
     pointer-events: none;
     text-decoration: none;
+    user-select: none;
 
     @media (min-width: map-get($grid-breakpoints, md)) {
       border-radius: 7px;
@@ -41,11 +42,19 @@
 }
 
 .product-slider__pagination {
-  display: none;
+  // display: none;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 20px;
+  border-radius: 10px;
+  margin-top: 10px;
+
   overflow-x: auto;
   padding-bottom: 10px;
   scrollbar-width: auto;
   scrollbar-color: #333 transparent;
+  cursor: pointer;
 
   &::-webkit-scrollbar {
     width: 5px;
@@ -62,13 +71,12 @@
     border: unset;
   }
 
-  @media (min-width: map-get($grid-breakpoints, md)) {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 20px;
-    border-radius: 10px;
-    margin-top: 10px;
+  @media (max-width: map-get($grid-breakpoints, md)) {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    justify-content: center;
+    width: 100%;
   }
 
   &>img,
@@ -80,13 +88,35 @@
     object-fit: contain;
     object-position: center;
     border-radius: 10px;
-    transition: filter 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
     position: relative;
+    user-select: none;
+    cursor: pointer;
+
+    @media (max-width: map-get($grid-breakpoints, md)) {
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      outline: 2px solid $text;
+      border: 10px solid $background;
+      outline-offset: -1px;
+      margin: 5px;
+    }
 
     &.active {
-      filter: contrast(20%) brightness(180%);
+      filter: contrast(-20%) brightness(160%);
       border: 2px solid #333;
       z-index: 5;
+
+      @media (max-width: map-get($grid-breakpoints, md)) {
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        outline: 2px solid $text;
+        border: 10px solid $text;
+        margin: 5px;
+        filter: none;
+      }
     }
   }
 }
@@ -116,11 +146,19 @@
   height: 40px;
   border-radius: 50%;
   border: none;
-  background-color: white;
+  background-color: $text;
   display: flex;
   align-items: center;
   justify-content: center;
   pointer-events: all;
+
+  &>svg {
+    stroke: $background;
+  }
+
+  &.disabled {
+    opacity: 0.5;
+  }
 }
 
 .product-slider__prev {
@@ -130,8 +168,6 @@
 .product-slider__next {
   right: 16px;
 }
-
-
 
 .product-modal {
   position: fixed;

@@ -48,7 +48,7 @@ function headerAnimation(targetElement) {
   cart.classList.add("active");
   setTimeout(function () {
     cart.classList.remove("active");
-  }, 600);
+  }, 400);
 }
 //<----------------------- End header Animation ------------------------>
 //<--------------------------------------------------------------------->
