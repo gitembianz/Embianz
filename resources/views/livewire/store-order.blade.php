@@ -2591,10 +2591,10 @@
                     <div class="section__header">
                         <h2 class="section__title">Verificați detaliile dumneavoastră.</h2>
                     </div>
-                    @if ($errorterms && $terms == false)
+                    {{-- @if ($errorterms && $terms == false)
                         <div class="checkout__error">Pentru a procesa comanda trebuie sa acceptati termenii si
                             conditiile!</div>
-                    @endif
+                    @endif --}}
                     <div class="total__container">
                         <!---------------------------------------------------->
                         <!-------------- Checkout List of Forms -------------->
@@ -2834,11 +2834,21 @@
                         <!------------ End Checkout List of Forms ------------>
                         <!---------------------------------------------------->
                     </div>
-                    <label class="checkout__terms">
-                        <input type="checkbox" wire:model="terms" name="terms" id="terms">
+                    <label id="termsbutton" class="checkout__terms @if ($errorterms && $terms == false) error @endif">
+                        <input type="checkbox" wire:model="terms" name="terms">
                         <span>Sunt de acord cu <a href="{{ url("/terms") }}">termenii si conditiile</a></span>
+
                     </label>
                 @endif
+                {{-- script for terms error --}}
+                <script>
+                    window.addEventListener('terms__error', event => {
+        var newLink = document.createElement('a');
+            newLink.href = '#termsbutton';
+            newLink.click();
+    });
+</script>
+{{-- end script for terms error --}}
                 <!------------------- End Step Middle ------------------>
                 <!------------------------------------------------------>
                 <!--------------------- Step Final --------------------->
