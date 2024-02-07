@@ -31,17 +31,21 @@
                             </div> --}}
                         </a>
                     @endforeach
-                    <a class="main-slider__slide" href="/storeproducts/{{ $item->id }}">
-                        <img src="/images/store/default/default.webp" alt="something wrong">
+                    {{-- -- Modelul de schimb de imagini pe slider la rezolutie -- --}}
+                    <a class="main-slider__slide" href="#">
                         <picture>
                             {{-- Default (Desktop) --}}
-                            <img src="img_orange_flowers.jpg" alt="Flowers" style="width:auto;">
+                            <source media="(min-width: 992px)"
+                                srcset="https://images.unsplash.com/photo-1529336953128-a85760f58cb5?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
                             {{-- Tablet Picture --}}
-                            <source media="(max-width:650px)" srcset="img_pink_flowers.jpg">
+                            <source media="(min-width: 576px)"
+                                srcset="https://images.unsplash.com/photo-1527698266440-12104e498b76?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
                             {{-- Mobile Picture --}}
-                            <source media="(max-width:465px)" srcset="img_white_flower.jpg">
+                            <img alt="Flowers"
+                                src="https://images.unsplash.com/photo-1585060544812-6b45742d762f?q=80&w=2681&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
                         </picture>
                     </a>
+                    {{-- End Modelul de schimb de imagini pe slider la rezolutie --}}
                 </div>
                 <div class="main-slider__button prev">
                     <svg>
