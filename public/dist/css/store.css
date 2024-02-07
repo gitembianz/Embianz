@@ -4952,7 +4952,7 @@ header {
     height: 0;
     border-radius: 50%;
     outline: 2px solid #333333;
-    border: 10px solid #ffffff;
+    border: 6px solid #ffffff;
     outline-offset: -1px;
     margin: 5px;
   }
@@ -4968,7 +4968,7 @@ header {
     height: 0;
     border-radius: 200px;
     outline: 2px solid #333333;
-    border: 10px solid #333333;
+    border: 6px solid #333333;
     margin: 5px;
     filter: none;
   }
