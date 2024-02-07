@@ -145,8 +145,8 @@
                                 <li class="search__item">
                                     <a class="search__link" href="/product/{{ $product->id }}">
                                         @if ($product->media->first() != null)
-                                            <img src="/{{ $product->media->first()->path }}/{{ $product->media->first()->name }}"
-                                                alt="{{ $product->media->first()->path }}">
+                                            <img src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}"
+                                                alt="{{ $product->media->first()->name }} {{ $product->name }}">
                                         @else
                                             <img src="/images/store/default/default70.webp" alt="something wrong">
                                         @endif
@@ -180,8 +180,8 @@
                                 <li class="search__item">
                                     <a class="search__link" href="/storeproducts/{{ $category->id }}">
                                         @if ($category->media->first() != null)
-                                            <img src="/{{ $category->media->first()->path }}/{{ $category->media->first()->name }}"
-                                                alt="{{ $category->media->first()->path }}">
+                                            <img src="/{{ $category->media->first()->path }}{{ $category->media->first()->name }}"
+                                                alt="{{ $category->media->first()->name }} {{ $category->name }}">
                                         @else
                                             <img src="/images/store/default/default70.webp" alt="something wrong">
                                         @endif
@@ -237,7 +237,7 @@
                                     @if ($category->media->first())
                                         <img class="cart__list--img"
                                             src="/{{ $category->media->first()->path }}{{ $category->media->first()->name }}"
-                                            alt="{{ $category->media->first()->path }}">
+                                            alt="{{ $category->media->first()->name }}{{ $category->name }}">
                                     @else
                                         <img class="heart__list--img" src="/images/store/default/default70.webp"
                                             alt="something wrong">
@@ -257,8 +257,8 @@
                                             <a class="submenu__button--link"
                                                 href="/storeproducts/{{ $subcategory->category_id }}">
                                                 @if ($subcategory->category->media->first() != null)
-                                                    <img src="/{{ $subcategory->category->media->first()->path }}/{{ $subcategory->category->media->first()->name }}"
-                                                        alt="{{ $subcategory->category->media->first()->path }}">
+                                                    <img src="/{{ $subcategory->category->media->first()->path }}{{ $subcategory->category->media->first()->name }}"
+                                                        alt="{{ $subcategory->category->media->first()->name }}{{ $subcategory->category->name }}">
                                                 @else
                                                     <img src="/images/store/default/default70.webp"
                                                         alt="something wrong">
@@ -279,8 +279,8 @@
                                                     <a class="submenu__link"
                                                         href="/storeproducts/{{ $subsubCategory->category_id }}">
                                                         @if ($subsubCategory->category->media->first() != null)
-                                                            <img src="/{{ $subsubCategory->category->media->first()->path }}/{{ $subsubCategory->category->media->first()->name }}"
-                                                                alt="{{ $subsubCategory->category->media->first()->path }}">
+                                                            <img src="/{{ $subsubCategory->category->media->first()->path }}{{ $subsubCategory->category->media->first()->name }}"
+                                                                alt="{{ $subsubCategory->category->media->first()->name }}{{ $subsubCategory->category->name }}">
                                                         @else
                                                             <img src="/images/store/default/default70.webp"
                                                                 alt="something wrong">
@@ -297,8 +297,8 @@
                     @else
                         <a class="menu__link" href="/storeproducts/{{ $category->id }}">
                             @if ($category->media->first() != null)
-                                <img src="/{{ $category->media->first()->path }}/{{ $category->media->first()->name }}"
-                                    alt="{{ $category->media->first()->path }}">
+                                <img src="/{{ $category->media->first()->path }}{{ $category->media->first()->name }}"
+                                    alt="{{ $category->media->first()->name }} {{ $category->name }}">
                             @else
                                 <img src="/images/store/default/default70.webp" alt="something wrong">
                             @endif

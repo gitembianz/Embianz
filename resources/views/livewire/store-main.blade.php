@@ -18,17 +18,11 @@
                     @foreach ($slideritems as $item)
                         <a class="main-slider__slide" href="/storeproducts/{{ $item->id }}">
                             @if ($item->media->first() != null)
-                                <img src="/{{ $item->media->first()->path }}/{{ $item->media->first()->name }}"
-                                    alt="{{ $item->media->first()->path }}">
+                                <img src="/{{ $item->media->first()->path }}{{ $item->media->first()->name }}"
+                                    alt="{{ $item->media->first()->name }} {{ $item->name }}">
                             @else
                                 <img src="/images/store/default/default.webp" alt="something wrong">
                             @endif
-
-                            {{-- <div class="main-slider__text container">
-                                <h3>{{ $item->name }}</h3>
-                                <p>{{ $item->short_description }}</p>
-                                <a class="main-slider__link" href="/storeproducts/{{ $item->id }}">Acceseaza!</a>
-                            </div> --}}
                         </a>
                     @endforeach
                     {{-- -- Modelul de schimb de imagini pe slider la rezolutie -- --}}
@@ -68,7 +62,7 @@
                 <h2 class="section__title">Descoperă produsele noastre populare!</h2>
                 <p class="section__text">Explorează colecția noastră de produse și găsește
                     accesoriile perfecte pentru a-ți completa stilul.
-                    <br><a href="{{ url("/storeproducts") }}">Vezi produsele!</a>
+                    <br><a href="{{ url('/storeproducts') }}">Vezi produsele!</a>
                 </p>
             </div>
         </section>
@@ -85,16 +79,16 @@
                                     <a href="/product/{{ $product->id }}">
                                         @if ($product->media->first() != null)
                                             <img class="card-image"
-                                                src="/{{ $product->media->first()->path }}/{{ $product->media->first()->name }}"
-                                                alt="{{ $product->media->first()->path }}">
+                                                src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}"
+                                                alt="{{ $product->media->first()->name }} {{ $product->name }}">
                                         @else
                                             <img class="card-image" src="/images/store/default/default300.webp"
                                                 alt="something wrong">
                                         @endif
                                     </a>
-                                    @livewire("product-wishlist-button", ["productId" => $product->id, "is_in_wishlist" => $product->is_in_wishlist], key($product->id))
+                                    @livewire('product-wishlist-button', ['productId' => $product->id, 'is_in_wishlist' => $product->is_in_wishlist], key($product->id))
                                     <?php if ($product->product_prices->count() != 0) {
-                                        $price = number_format($product->product_prices->first()->value, 2, ",", ".");
+                                        $price = number_format($product->product_prices->first()->value, 2, ',', '.');
                                         $discount = $product->product_prices->first()->discount != 0 ? true : false;
                                     } else {
                                         $price = null;
@@ -158,7 +152,7 @@
                                             </p>
                                         </div>
                                         @if ($price)
-                                            @livewire("add-to-cart-button", ["product" => $product], key($product->id))
+                                            @livewire('add-to-cart-button', ['product' => $product], key($product->id))
                                         @else
                                             <a class="card-button-disabled" onclick="handleClick()">Indisponibil</a>
                                         @endif
