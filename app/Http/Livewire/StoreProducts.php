@@ -4,6 +4,8 @@ namespace App\Http\Livewire;
 
 use App\Models\Specs;
 use App\Models\Product;
+use App\Models\Product_Spec;
+
 use Livewire\Component;
 use App\Models\Category;
 use Livewire\WithPagination;
@@ -17,8 +19,7 @@ class StoreProducts extends Component
   public $quantity = 10;
   public $session_id;
   public $specification;
-  public $orderBy = 'name_az'; // Default sorting order
-  public $orderAsc = true;
+  public $orderBy = 'name_az';
   public $category;
   public $category_details;
   public $property = false;
@@ -27,34 +28,42 @@ class StoreProducts extends Component
   public $selectedSpecValues = [];
   public $selectedKeys = [];
   public $selectedSpecNames = [];
-
+  public $productCount;
 
   public function render()
   {
-    return view('livewire.store-products', ['products' => $this->products]);
+    return view('livewire.store-products', [
+      'products' => $this->products,
+      'filtervalues' => $this->filtervalues
+    ]);
   }
 
   public function mount()
   {
     $this->session_id = isset($_COOKIE['sessionId']) ? $_COOKIE['sessionId'] : session()->getId();
-    $this->specification = Specs::with('product_spec')->get();
+    $this->specification = Specs::get();
   }
-  // start filter-spec function
-  public function getUniqueSpecValues($specId)
-  {
-    $uniqueValues = [];
 
-    foreach ($this->specification as $spec) {
-      if ($spec->id === $specId) {
-        foreach ($spec->product_spec as $value) {
-          $uniqueValues[] = $value->value;
-        }
-        break; // Exit the loop once the specific spec is found and processed
-      }
+  // start filter-spec function
+  public function getFilterValuesProperty()
+  {
+    $query = Product_Spec::select('value', 'spec_id')
+      ->groupBy('spec_id', 'value')
+      ->with(['spec' => function ($query) {
+        $query->select('id', 'name');
+      }]);
+
+    if ($this->category) {
+      $query->whereHas('product.product_categories', function ($query) {
+        $query->where('category_id', $this->category);
+      });
     }
 
-    return array_unique($uniqueValues);
+    return $query->get();
   }
+
+
+  // aply filter sistem
   public function resetFilter()
   {
     $this->selectedSpecValues = [];
@@ -68,6 +77,7 @@ class StoreProducts extends Component
     $filteredValues = array_filter($this->selectedSpecValues, function ($values) {
       return in_array(true, $values);
     });
+    dd($filteredValues);
     $allKeys = array_keys(array_merge(...array_values($filteredValues)));
     // dd($this->selectedSpecValues);
     $this->selectedKeys = $allKeys;
@@ -110,6 +120,7 @@ class StoreProducts extends Component
     $this->specfilter = false;
   }
 
+  // products function
   public function getProductsProperty()
   {
     $query = Product::name($this->search)->where('active', true)->with([
@@ -148,16 +159,16 @@ class StoreProducts extends Component
         $query->orderBy('popularity', 'desc');
         break;
       case 'name_az':
-        $query->orderBy('name', $this->orderAsc ? 'asc' : 'desc');
+        $query->orderBy('name');
         break;
       case 'name_za':
-        $query->orderBy('name', $this->orderAsc ? 'desc' : 'asc');
+        $query->orderBy('name', 'desc');
         break;
       case 'date_old_new':
-        $query->orderBy('created_at', $this->orderAsc ? 'asc' : 'desc');
+        $query->orderBy('created_at');
         break;
       case 'date_new_old':
-        $query->orderBy('created_at', $this->orderAsc ? 'desc' : 'asc');
+        $query->orderBy('created_at', 'desc');
         break;
       case 'quantity_as':
         $query->where('quantity', '>', 0)->orderBy('quantity');
@@ -174,8 +185,13 @@ class StoreProducts extends Component
           ->orderByRaw('CAST(value AS DECIMAL(10, 2)) desc');
         break;
     }
+    // Get the count and paginate in a single query
+    $products = $query->paginate($this->loadAmount);
 
-    return $query->paginate($this->loadAmount);
+    // Set the total count to the property
+    $this->productCount = $products->total();
+
+    return $products;
   }
 
   public function loadMore()
