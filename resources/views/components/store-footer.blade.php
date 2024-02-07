@@ -5,6 +5,10 @@
 @livewireScripts
 {{-- -------------------------- Special Script -------------------------- --}}
 <style type='text/css'>
+    .embeddedServiceHelpButton {
+        z-index: 10;
+    }
+
     .embeddedServiceHelpButton .helpButton .uiButton {
         background-color: #005290;
         font-family: "Arial", sans-serif;
