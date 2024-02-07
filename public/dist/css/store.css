@@ -4664,7 +4664,7 @@ header {
   pointer-events: none;
   user-select: none;
   object-position: center;
-  aspect-ratio: 32/11;
+  aspect-ratio: 1/5.5;
 }
 .main-slider__slide > picture {
   display: block;
