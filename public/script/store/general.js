@@ -41,17 +41,6 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 //<----------------------- End Start Functions PC ---------------------->
 //<--------------------------------------------------------------------->
-//<------------------------- header Animation -------------------------->
-function headerAnimation() {
-  const cart = document.querySelector(".header__count");
-  cart.classList.add("active");
-  // console.log("clicked");
-  setTimeout(function () {
-    cart.classList.remove("active");
-  }, 600);
-}
-//<----------------------- End header Animation ------------------------>
-//<--------------------------------------------------------------------->
 //<---------------------------- Fly to Cart ---------------------------->
 function startShoppingAnimation(button) {
   // const cart_btns = document.querySelectorAll(".add-to-cart");
@@ -62,8 +51,11 @@ function startShoppingAnimation(button) {
     shopping_cart.classList.add("active");
 
     // finding first grandparent of target button
-    let target_parent = e.target.parentNode.parentNode.parentNode;
-    target_parent.style.zIndex = "200";
+    // let target_parent = e.target.parentNode.parentNode.parentNode;
+    let target_parent = e.target.closest(".card");
+
+    // target_parent.style.zIndex = "200";
+    target_parent.classList.add("flying");
     // Creating separate Image
     let img = target_parent.querySelector("img");
     let flying_img = img.cloneNode();
@@ -90,19 +82,62 @@ function startShoppingAnimation(button) {
                           `;
 
     setTimeout(() => {
-      target_parent.style.zIndex = "";
+      target_parent.classList.remove("flying");
       target_parent.removeChild(flying_img);
       shopping_cart.classList.remove("active");
     }, 1500);
   };
-  // }
 }
 //<-------------------------- End Fly to Cart -------------------------->
 //<--------------------------------------------------------------------->
-//<------------------ Starting the function on click ------------------->
-function addToCartClick() {
+//<------------------ Onclick function (Cart & wish) ------------------->
+function addToCartClick(button) {
   startShoppingAnimation(this);
-  headerAnimation();
+  button.onclick = () => {
+    const cart = document.getElementById("basketOpen");
+
+    // Anularea animației anterioare dacă există un timer activ
+    if (wishAnimationTimer) {
+      clearTimeout(wishAnimationTimer);
+      cart.classList.remove("active"); // Asigură eliminarea clasei 'active' în cazul în care animația este în curs
+    }
+
+    if (cart.classList.contains("active")) {
+      cart.classList.remove("active");
+    } else {
+      cart.classList.add("active");
+
+      // Setează un nou timer și stocază-l în variabila globală
+      wishAnimationTimer = setTimeout(function () {
+        cart.classList.remove("active");
+      }, 400);
+    }
+  };
 }
-//<---------------- End Starting the function on click ----------------->
+//<--------------------------------------------------------------------->
+let wishAnimationTimer; // Variabilă globală pentru a stoca timerul animației
+
+function addToWishClick(button) {
+  button.onclick = () => {
+    const cart = document.getElementById("wishOpen");
+
+    // Anularea animației anterioare dacă există un timer activ
+    if (wishAnimationTimer) {
+      clearTimeout(wishAnimationTimer);
+      cart.classList.remove("active"); // Asigură eliminarea clasei 'active' în cazul în care animația este în curs
+    }
+
+    if (cart.classList.contains("active")) {
+      cart.classList.remove("active");
+    } else {
+      cart.classList.add("active");
+
+      // Setează un nou timer și stocază-l în variabila globală
+      wishAnimationTimer = setTimeout(function () {
+        cart.classList.remove("active");
+      }, 400);
+    }
+  };
+}
+//<---------------- End Onclick function (Cart & wish) ----------------->
 //<--------------------------------------------------------------------->

@@ -104,9 +104,9 @@
   justify-content: center;
   transition: all .3s ease-in-out;
   font-weight: 500;
-  flex: 1;
   background-color: $text;
   color: $background;
+  flex: 1;
 
   &:hover {
     background: darken($text, 15%);
@@ -222,6 +222,8 @@
     aspect-ratio: 1/1;
     border-radius: 3px;
     background-color: $background;
+    user-select: none;
+    pointer-events: none;
 
     @media (max-width: map-get($grid-breakpoints, sm)) {
       width: 55px;

@@ -19,13 +19,13 @@
 
 @keyframes fly_to_cart {
   0% {
-    left: 0px;
-    top: 0px;
+    left: 100px;
+    top: 230px;
   }
 
   100% {
-    left: calc(var(--left) + 30px);
-    top: calc(var(--top) + 30px);
+    left: calc(var(--left) + 100px + 30px);
+    top: calc(var(--top) + 230px + 30px);
     transform: scale(0.2);
   }
 }
