@@ -2648,6 +2648,9 @@ header {
 .card.flying {
   z-index: 200;
 }
+.card:hover .card-image {
+  scale: 1.1;
+}
 
 .card-image {
   width: 100%;
@@ -2657,9 +2660,6 @@ header {
   transition: all 0.5s ease-in-out;
   user-select: none;
   pointer-events: none;
-}
-.card-image:hover {
-  scale: 1.1;
 }
 
 .card-info {
