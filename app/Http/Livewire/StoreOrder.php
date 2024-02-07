@@ -346,6 +346,7 @@ class StoreOrder extends Component
       $this->cart->status_id = $newStatusId;
       $this->cart->save();
       $this->step++;
+      $this->dispatchBrowserEvent('final_step');
       $this->emit('orderprocess');
     }
   }
@@ -387,6 +388,7 @@ class StoreOrder extends Component
           $this->juridic_shipping_zipcode = $this->juridic_billing_zipcode;
         }
       }
+      $this->dispatchBrowserEvent('next_step');
     } else {
       $this->emit('nocard');
     }

@@ -20,6 +20,7 @@
         <!----------------------- Checkout --------------------->
 
         <!------------------------------------------------------>
+        <input id="step__container_bulins" type="hidden">
         <section>
             <div class="checkout container">
                 <!------------------------------------------------------>
@@ -2844,9 +2845,28 @@
                 {{-- script for terms error --}}
                 <script>
                     window.addEventListener('terms__error', event => {
-                        var newLink = document.createElement('a');
-                        newLink.href = '#termsbutton';
-                        newLink.click();
+                        var element = document.getElementById('termsbutton');
+                        if (element) {
+                            element.scrollIntoView({
+                                behavior: 'smooth'
+                            });
+                        }
+                    });
+                    window.addEventListener('next_step', event => {
+                        var element = document.getElementById('step__container_bulins');
+                        if (element) {
+                            element.scrollIntoView({
+                                behavior: 'smooth'
+                            });
+                        }
+                    });
+                    window.addEventListener('final_step', event => {
+                        var element = document.getElementById('step__container_bulins');
+                        if (element) {
+                            element.scrollIntoView({
+                                behavior: 'smooth'
+                            });
+                        }
                     });
                 </script>
                 {{-- end script for terms error --}}
