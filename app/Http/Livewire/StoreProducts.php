@@ -22,7 +22,6 @@ class StoreProducts extends Component
   public $orderBy = 'name_az';
   public $category;
   public $category_details;
-  public $property = false;
   public $specfilter = false;
   public $showspecfilter = false;
   public $selectedSpecValues = [];
@@ -77,9 +76,7 @@ class StoreProducts extends Component
     $filteredValues = array_filter($this->selectedSpecValues, function ($values) {
       return in_array(true, $values);
     });
-    dd($filteredValues);
     $allKeys = array_keys(array_merge(...array_values($filteredValues)));
-    // dd($this->selectedSpecValues);
     $this->selectedKeys = $allKeys;
     foreach ($this->specification as $spec) {
       foreach ($this->selectedKeys as $key) {
@@ -93,7 +90,6 @@ class StoreProducts extends Component
 
     if (isset($this->selectedKeys)) {
       $this->specfilter = true;
-      $this->property = false;
     }
   }
   public function removeSpec($key)
