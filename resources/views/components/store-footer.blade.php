@@ -19,7 +19,7 @@
 <script type='text/javascript'>
     var initESW = function(gslbBaseURL) {
         embedded_svc.settings.displayHelpButton = true; //Or false
-        embedded_svc.settings.language = ''; //For example, enter 'en' or 'en-US'
+        embedded_svc.settings.language = 'ro'; //For example, enter 'en' or 'en-US'
 
         embedded_svc.settings.defaultMinimizedText = 'Support'; //(Defaults to Chat with an Expert)
         //embedded_svc.settings.disabledMinimizedText = 'Agent Offline'; //(Defaults to Agent Offline)
