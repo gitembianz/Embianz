@@ -31,6 +31,17 @@
                             </div> --}}
                         </a>
                     @endforeach
+                    <a class="main-slider__slide" href="/storeproducts/{{ $item->id }}">
+                        <img src="/images/store/default/default.webp" alt="something wrong">
+                        <picture>
+                            {{-- Default (Desktop) --}}
+                            <img src="img_orange_flowers.jpg" alt="Flowers" style="width:auto;">
+                            {{-- Tablet Picture --}}
+                            <source media="(max-width:650px)" srcset="img_pink_flowers.jpg">
+                            {{-- Mobile Picture --}}
+                            <source media="(max-width:465px)" srcset="img_white_flower.jpg">
+                        </picture>
+                    </a>
                 </div>
                 <div class="main-slider__button prev">
                     <svg>
