@@ -99,7 +99,7 @@
       height: 0;
       border-radius: 50%;
       outline: 2px solid $text;
-      border: 10px solid $background;
+      border: 6px solid $background;
       outline-offset: -1px;
       margin: 5px;
     }
@@ -114,7 +114,7 @@
         height: 0;
         border-radius: 200px;
         outline: 2px solid $text;
-        border: 10px solid $text;
+        border: 6px solid $text;
         margin: 5px;
         filter: none;
       }

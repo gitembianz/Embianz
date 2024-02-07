@@ -117,10 +117,3 @@ slider(".main-slider");
 slider(".card-slider");
 //<---------------------- End Start Functions IOS ---------------------->
 //<--------------------------------------------------------------------->
-//<------------------------- Start Functions PC ------------------------>
-// document.addEventListener("DOMContentLoaded", function () {
-//   slider(".main-slider");
-//   slider(".card-slider");
-// });
-//<----------------------- End Start Functions PC ---------------------->
-//<--------------------------------------------------------------------->
