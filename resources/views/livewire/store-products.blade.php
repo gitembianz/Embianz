@@ -87,7 +87,7 @@
                             @if ($product->media->first() != null)
                                 <img class="card-image"
                                     src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}"
-                                    alt="{{ $product->media->first()->path }}">
+                                    alt="{{ $product->media->first()->name }} {{ $product->name }}">
                             @else
                                 <img class="card-image" src="/images/store/default/default300.webp"
                                     alt="something wrong">
