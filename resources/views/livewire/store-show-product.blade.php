@@ -1,10 +1,10 @@
 <div id="store-show-product">
     <section>
         <div class="breadcrumbs container">
-            <a class="breadcrumbs__link" href="{{ url("/") }}">
+            <a class="breadcrumbs__link" href="{{ url('/') }}">
                 Acasa
             </a>
-            <a class="breadcrumbs__link" href="{{ url("/storeproducts") }}">
+            <a class="breadcrumbs__link" href="{{ url('/storeproducts') }}">
                 Produse
             </a>
             <a class="breadcrumbs__link">{{ $product->name }}</a>
@@ -17,10 +17,11 @@
 
                 <div class="product-slider__wrapper">
                     @if ($product->media->count() != 0)
-                        @foreach ($product->media->where("type", "full") as $media)
+                        @foreach ($product->media->where('type', 'full') as $media)
                             <div class="product-slider__slide">
-                                <img src="/{{ $media->path }}{{ $media->name }}" alt="{{ $media->path }}"
-                                    data-img-src="/{{ $product->media->where("type", "original")->where("sequence", $media->sequence)->first()->path }}{{ $product->media->where("type", "original")->where("sequence", $media->sequence)->first()->name }}">
+                                <img src="/{{ $media->path }}{{ $media->name }}"
+                                    alt="{{ $media->name }}{{ $product->name }}"
+                                    data-img-src="/{{ $product->media->where('type', 'original')->where('sequence', $media->sequence)->first()->path }}{{ $product->media->where('type', 'original')->where('sequence', $media->sequence)->first()->name }}">
                             </div>
                         @endforeach
                     @else
@@ -64,7 +65,7 @@
         <!------------------ End Modal Product ---------------->
         <!------------------------------------------------------>
         <!----------------------- Product details ---------------------->
-        @livewire("product-details", ["product" => $product])
+        @livewire('product-details', ['product' => $product])
         <!--------------------- End Product details -------------------->
         <!------------------------------------------------------>
     </section>

@@ -22,8 +22,8 @@
                     <div class="basket__product">
                         <div class="basket__top">
                             @if ($product->media->first() != null)
-                                <img src="/{{ $product->media->first()->path }}/{{ $product->media->first()->name }}"
-                                    alt="{{ $product->media->first()->path }}">
+                                <img src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}"
+                                    alt="{{ $product->media->first()->name }} {{ $product->name }}">
                             @else
                                 <img src="/images/store/default/default70.webp" alt="something wrong">
                             @endif

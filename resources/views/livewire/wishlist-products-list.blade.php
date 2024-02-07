@@ -22,7 +22,7 @@
                             @if ($item->product->media->first())
                                 <img class="cart__list--img"
                                     src="/{{ $item->product->media->first()->path }}{{ $item->product->media->first()->name }}"
-                                    alt="{{ $item->product->media->first()->path }}">
+                                    alt="{{ $item->product->media->first()->name }} {{ $item->product->name }}">
                             @else
                                 <img class="heart__list--img" src="/images/store/default/default70.webp"
                                     alt="something wrong">
