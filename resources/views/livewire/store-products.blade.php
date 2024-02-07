@@ -34,7 +34,8 @@
     <!---------------------------------------------------------->
     <!---------------------------Filter------------------------->
     <section class="controls container">
-        <button class="controls__button" wire:click="$set('showspecfilter', true)" id="filterOpen">
+        <button class="controls__button" id="filterOpen" wire:click="$set('showspecfilter', true)">
+
             <svg>
                 <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
             </svg>
@@ -49,6 +50,11 @@
             </svg>
         </button>
     </section>
+    <script>
+        document.getElementById('filterOpen').addEventListener('click', function() {
+            Livewire.emit('toggleShowSpecFilter');
+        });
+    </script>
     <!-------------------------End c----------------------->
     <!---------------------------------------------------------->
     <!----------------------Categorie + detalii--------------------->
@@ -209,35 +215,32 @@
                 </button>
             </div>
             <div class="filter__top filter__top--center">
-                <p>Am gasit <span>25</span> de rezultate</p>
+                <p>Am gasit <span>{{ $productCount }}</span> de rezultate</p>
             </div>
-            <div class="filter__list">
-                <!------------------ End Dropdown (filter) ------------------>
-                @foreach ($specification as $index => $spec)
-                    @if ($spec->product_spec->count() > 0)
-                        <div class="dropfilter">
-                            <div class="dropfilter__button">
-                                <div class="dropfilter__button--link">
-                                    <h4>{{ $spec->name }}</h4>
-                                </div>
-                                <button class="dropfilter__open" href="#">
-                                    <svg>
-                                        <polyline points="6 9 12 15 18 9"></polyline>
-                                    </svg>
-                                </button>
+            <div wire:ignore class="filter__list">
+                @foreach ($filtervalues->groupBy('spec_id') as $values)
+                    <div class="dropfilter">
+                        <div class="dropfilter__button">
+                            <div class="dropfilter__button--link">
+                                <h4>{{ $values->first()->spec->name }}</h4>
                             </div>
-                            <div class="dropfilter__list">
-                                @foreach ($this->getUniqueSpecValues($spec->id) as $innerIndex => $uniqueValue)
-                                    <label class="dropfilter__link" for="{{ $innerIndex }}_{{ $uniqueValue }}">
-                                        <input type="checkbox"
-                                            wire:model.defer="selectedSpecValues.{{ $spec->id }}.{{ $uniqueValue }}"
-                                            wire:change="applyFilter" id="{{ $innerIndex }}_{{ $uniqueValue }}">
-                                        <h4>{{ $uniqueValue }}</h4>
-                                    </label>
-                                @endforeach
-                            </div>
+                            <button class="dropfilter__open" href="#">
+                                <svg>
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </button>
                         </div>
-                    @endif
+                        <div class="dropfilter__list">
+                            @foreach ($values as $value)
+                                <label class="dropfilter__link" for="{{ $value->id }}{{ $value->value }}">
+                                    <input type="checkbox"
+                                        wire:model="selectedSpecValues.{{ $value->spec_id }}.{{ $value->value }}"
+                                        wire:change="applyFilter" id="{{ $value->id }}{{ $value->value }}">
+                                    <h4>{{ $value->value }}</h4>
+                                </label>
+                            @endforeach
+                        </div>
+                    </div>
                 @endforeach
                 <!-------------------- Dropdown (filter) -------------------->
             </div>
