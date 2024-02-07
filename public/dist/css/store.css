@@ -2654,13 +2654,12 @@ header {
   height: 300px;
   object-fit: contain;
   object-position: center;
-  background: #fafafa;
   transition: all 0.5s ease-in-out;
   user-select: none;
   pointer-events: none;
 }
 .card-image:hover {
-  scale: 1.05;
+  scale: 1.1;
 }
 
 .card-info {
@@ -4597,50 +4596,6 @@ header {
   width: 40px;
 }
 
-.main-slider__text {
-  position: absolute;
-  left: 50%;
-  bottom: 40px;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  gap: 15px;
-  background: rgba(0, 0, 0, 0.7);
-  padding: 25px;
-  border-radius: 7px;
-}
-@media (max-width: 768px) {
-  .main-slider__text {
-    text-align: center;
-    align-items: center;
-    padding-left: 70px;
-    padding-right: 70px;
-  }
-}
-.main-slider__text > h3 {
-  font-size: 30px;
-  font-weight: 600;
-  color: #ffffff;
-}
-@media (max-width: 768px) {
-  .main-slider__text > h3 {
-    font-size: 25px;
-  }
-}
-.main-slider__text > p {
-  font-size: 20px;
-  font-weight: 400;
-  color: #b3b3b3;
-}
-@media (max-width: 768px) {
-  .main-slider__text > p {
-    font-size: 18px;
-  }
-}
-
 .main-slider__link {
   padding: 10px 20px;
   font-size: 20px;
@@ -4659,7 +4614,7 @@ header {
 
 .main-slider {
   width: 100%;
-  height: 80vh;
+  height: 550px;
   position: relative;
 }
 
@@ -4997,7 +4952,7 @@ header {
     height: 0;
     border-radius: 50%;
     outline: 2px solid #333333;
-    border: 10px solid #ffffff;
+    border: 6px solid #ffffff;
     outline-offset: -1px;
     margin: 5px;
   }
@@ -5013,7 +4968,7 @@ header {
     height: 0;
     border-radius: 200px;
     outline: 2px solid #333333;
-    border: 10px solid #333333;
+    border: 6px solid #333333;
     margin: 5px;
     filter: none;
   }
