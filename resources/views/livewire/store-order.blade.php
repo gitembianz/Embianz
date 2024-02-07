@@ -647,7 +647,8 @@
                             </div>
                             <!---------------------------------------------------->
                             <div class="checkout__item">
-                                <input type="text" wire:model="individual_billing_city" placeholder="Oras">
+                                <input type="text" wire:model="individual_billing_city"
+                                    placeholder="Localitate (oras, comuna sau sat)">
                                 <span>
                                     @error("individual_billing_city")
                                         {{ $message }}
@@ -1255,7 +1256,8 @@
                             </div>
                             <!---------------------------------------------------->
                             <div class="checkout__item">
-                                <input type="text" wire:model="individual_shipping_city" placeholder="Oras">
+                                <input type="text" wire:model="individual_shipping_city"
+                                    placeholder="Localitate (oras, comuna sau sat)">
                                 <span>
                                     @error("individual_shipping_city")
                                         {{ $message }}
@@ -1909,7 +1911,8 @@
                             </div>
                             <!---------------------------------------------------->
                             <div class="checkout__item">
-                                <input type="text" wire:model="juridic_billing_city" placeholder="Oras">
+                                <input type="text" wire:model="juridic_billing_city"
+                                    placeholder="Localitate (oras, comuna sau sat)">
                                 <span>
                                     @error("juridic_billing_city")
                                         {{ $message }}
@@ -2513,7 +2516,8 @@
                             </div>
                             <!---------------------------------------------------->
                             <div class="checkout__item">
-                                <input type="text" wire:model="juridic_shipping_city" placeholder="Oras">
+                                <input type="text" wire:model="juridic_shipping_city"
+                                    placeholder="Localitate (oras, comuna sau sat)">
                             </div>
                             <!---------------------------------------------------->
                             <div class="checkout__item">
@@ -2628,7 +2632,7 @@
                                 <span class="total__message">Judet:
                                     <strong>{{ $individual_billing_county }}</strong></span>
                                 <!---------------------------------------------------->
-                                <span class="total__message">Oras:
+                                <span class="total__message">Localitate (oras, comuna sau sat):
                                     <strong>{{ $individual_billing_city }}</strong></span>
                                 <!---------------------------------------------------->
                                 <span class="total__message">Cod Postal:
@@ -2663,7 +2667,7 @@
                                 <span class="total__message">Judet:
                                     <strong>{{ $individual_shipping_county }}</strong></span>
                                 <!---------------------------------------------------->
-                                <span class="total__message">Oras:
+                                <span class="total__message">Localitate (oras, comuna sau sat):
                                     <strong>{{ $individual_shipping_city }}</strong></span>
                                 <!---------------------------------------------------->
                                 <span class="total__message">Cod Postal:
@@ -2718,7 +2722,7 @@
                                 <span class="total__message">Judet:
                                     <strong>{{ $juridic_billing_county }}</strong></span>
                                 <!---------------------------------------------------->
-                                <span class="total__message">Oras:
+                                <span class="total__message">Localitate (oras, comuna sau sat):
                                     <strong>{{ $juridic_billing_city }}</strong></span>
                                 <!---------------------------------------------------->
                                 <span class="total__message">Cod Postal:
@@ -2753,7 +2757,7 @@
                                 <span class="total__message">Judet:
                                     <strong>{{ $juridic_shipping_county }}</strong></span>
                                 <!---------------------------------------------------->
-                                <span class="total__message">Oras:
+                                <span class="total__message">Localitate (oras, comuna sau sat):
                                     <strong>{{ $juridic_shipping_city }}</strong></span>
                                 <!---------------------------------------------------->
                                 <span class="total__message">Cod Postal:
