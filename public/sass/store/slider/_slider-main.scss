@@ -98,9 +98,9 @@
 
 .main-slider__slide {
   scroll-snap-align: start;
-  position: relative;
+  // position: relative;
   width: 100%;
-  height: 80vh;
+  height: 550px;
   background: $text;
 
   &:first-child {
@@ -108,6 +108,7 @@
   }
 
   &>img,
+  picture,
   picture img {
     width: 100%;
     height: 100%;
@@ -116,9 +117,14 @@
     pointer-events: none;
     user-select: none;
     object-position: center;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 32 / 11;
+  }
+
+  &>picture {
+    display: block;
   }
 }
+
 
 .main-slider__button {
   position: absolute;

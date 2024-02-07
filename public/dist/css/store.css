@@ -4648,15 +4648,15 @@ header {
 
 .main-slider__slide {
   scroll-snap-align: start;
-  position: relative;
   width: 100%;
-  height: 80vh;
+  height: 550px;
   background: #333333;
 }
 .main-slider__slide:first-child {
   z-index: 5;
 }
 .main-slider__slide > img,
+.main-slider__slide picture,
 .main-slider__slide picture img {
   width: 100%;
   height: 100%;
@@ -4664,7 +4664,10 @@ header {
   pointer-events: none;
   user-select: none;
   object-position: center;
-  aspect-ratio: 16/9;
+  aspect-ratio: 32/11;
+}
+.main-slider__slide > picture {
+  display: block;
 }
 
 .main-slider__button {
