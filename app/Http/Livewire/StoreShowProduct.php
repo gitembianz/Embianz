@@ -10,6 +10,7 @@ use Livewire\Component;
 class StoreShowProduct extends Component
 {
   public $productId;
+  public $quantity = 10;
 
   public function render()
   {
@@ -24,11 +25,21 @@ class StoreShowProduct extends Component
 
   public function getProductProperty()
   {
-    return Product::where('id', $this->productId)->with([
+    return Product::with([
       'media' => function ($query) {
-        $query->whereIn('type', ['full', 'original'])
-          ->orderBy('sequence');
-      }
-    ])->first();
+        $query->whereIn('type', ['full', 'original'])->orderBy('sequence');
+      },
+      'related_product.product' => function ($query) {
+        $query->with([
+          'media' => function ($query) {
+            $query->where('type', 'main');
+          },
+          'product_prices' => function ($query) {
+            $query->with('pricelist.currency');
+          },
+          'wishlists'
+        ]);
+      },
+    ])->where('id', $this->productId)->first();
   }
 }

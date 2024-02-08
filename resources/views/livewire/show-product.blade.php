@@ -233,6 +233,7 @@
             <div class="tabs__content">
                 @livewire('related-media-product', ['product' => $product])
                 @livewire('related-category-product', ['product' => $product])
+                @livewire('related-products', ['product' => $product])
                 @livewire('related-spec-product', ['product' => $product])
                 @livewire('related-pricelist', ['product' => $product])
             </div>

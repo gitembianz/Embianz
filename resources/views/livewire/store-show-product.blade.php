@@ -71,102 +71,127 @@
     </section>
     <!---------------------------------------------------------->
     <!------------------- Section Description ------------------>
-    <section>
-        <div class="section__header container">
-            <h2 class="section__title">Descoperă și alte opțiuni similare</h2>
-            <p class="section__text">
-                În căutarea perfectă? Explorează și alte propuneri care te-ar putea interesa.
-                Descoperă produse similare, perfecte pentru gusturile tale și nevoile tale. În continuare, vei găsi
-                opțiuni care completează gama noastră și care îți pot satisface preferințele. Alege cu încredere dintre
-                aceste alternative și găsește exact ceea ce cauți.
-            </p>
-        </div>
-    </section>
-    <!----------------- End Section Description ---------------->
-    <!---------------------------------------------------------->
-    <!---------------------- Slider Cards ---------------------->
-    <section>
-        <div class="card-slider container">
-            <div class="card-slider__wrapper">
-                <div class="card-slider__slide">
-                    <div class="card" role="listitem">
-                        <a href="#">
-                            <img class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
-                        </a>
-                        <div class="card-info">
-                            <div class="card-text">
-                                <span>description</span>
-                            </div>
-                            <div class="card-text">
-                                <h3>Product Name</h3>
-                                <p class="card-price">
-                                    <span>
-                                        15.00$
-                                    </span>
-                                </p>
-                            </div>
+    @if ($product->related_product()->count() > 0)
+        <section>
+            <div class="section__header container">
+                <h2 class="section__title">Descoperă și alte opțiuni similare</h2>
+                <p class="section__text">
+                    În căutarea perfectă? Explorează și alte propuneri care te-ar putea interesa.
+                    Descoperă produse similare, perfecte pentru gusturile tale și nevoile tale. În continuare, vei găsi
+                    opțiuni care completează gama noastră și care îți pot satisface preferințele. Alege cu încredere
+                    dintre
+                    aceste alternative și găsește exact ceea ce cauți.
+                </p>
+            </div>
+        </section>
+        <!----------------- End Section Description ---------------->
+        <!---------------------------------------------------------->
+        <!---------------------- Slider Cards ---------------------->
+        <section>
+            <div class="card-slider container">
+                <div class="card-slider__wrapper">
+                    @foreach ($product->related_product as $product)
+                        <div class="card-slider__slide">
+                            <div class="card" role="listitem">
+                                <a href="/product/{{ $product->product->id }}">
+                                    @if ($product->product->media->first() != null)
+                                        <img class="card-image"
+                                            src="/{{ $product->product->media->first()->path }}{{ $product->product->media->first()->name }}"
+                                            alt="{{ $product->product->media->first()->name }} {{ $product->product->name }}">
+                                    @else
+                                        <img class="card-image" src="/images/store/default/default300.webp"
+                                            alt="something wrong">
+                                    @endif
+                                </a>
+                                @livewire('product-wishlist-button', ['productId' => $product->product->id, 'is_in_wishlist' => $product->product->is_in_wishlist], key($product->product->id))
+                                <?php if ($product->product->product_prices->count() != 0) {
+                                    $price = number_format($product->product->product_prices->first()->value, 2, ',', '.');
+                                    $discount = $product->product->product_prices->first()->discount != 0 ? true : false;
+                                } else {
+                                    $price = null;
+                                    $discount = false;
+                                }
+                                ?>
+                                @if ($price)
+                                    @if ($product->product->quantity < $quantity && $product->product->quantity > 0)
+                                        <p class="card-status out">
+                                            Stock limitat!!
+                                        </p>
+                                        @if ($discount)
+                                            <p class="card-status save-secondary">
+                                                -{{ $product->product->product_prices->first()->discount }}%
+                                            </p>
+                                        @endif
+                                    @elseif($product->product->quantity == 0)
+                                        <p class="card-status save">
+                                            Produs indisponibil!
+                                        </p>
+                                    @else
+                                        @if ($discount)
+                                            <p class="card-status save">
+                                                -{{ $product->product->product_prices->first()->discount }}%
+                                            </p>
+                                        @endif
+                                    @endif
+                                    {{-- tagul de discount --}}
+                                @else
+                                    <p class="card-status save">
+                                        În curând!
+                                    </p>
+                                @endif
+                                <div class="card-info">
+                                    <div class="card-text">
+                                        <span>{{ $product->product->short_description }}</span>
+                                    </div>
+                                    <div class="card-text">
+                                        <h3>{{ $product->product->name }}</h3>
+                                        <p class="card-price">
+                                            @if ($discount)
+                                                <span class="card-price discount">
+                                                    @if ($product->product->product_prices->first())
+                                                        {{ $price }}
+                                                        {{ $product->product->product_prices->first()->pricelist->currency->name }}
+                                                    @endif
+                                                </span>
+                                                <span class="card-price oldprice">
+                                                    {{ $product->product->product_prices->first()->rrp_value }}
+                                                    {{ $product->product->product_prices->first()->pricelist->currency->name }}
+                                                </span>
+                                            @else
+                                                <span>
+                                                    @if ($product->product->product_prices->first())
+                                                        {{ $price }}
+                                                        {{ $product->product->product_prices->first()->pricelist->currency->name }}
+                                                    @endif
+                                                </span>
+                                            @endif
 
-                            <a class="card-button-disabled">Indisponibil</a>
+                                        </p>
+                                    </div>
+                                    @if ($price)
+                                        @livewire('add-to-cart-button', ['product' => $product->product], key($product->product->id))
+                                    @else
+                                        <a class="card-button-disabled" onclick="handleClick()">Indisponibil</a>
+                                    @endif
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    @endforeach
                 </div>
-                <div class="card-slider__slide">
-                    <div class="card" role="listitem">
-                        <a href="#">
-                            <img class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
-                        </a>
-                        <div class="card-info">
-                            <div class="card-text">
-                                <span>description</span>
-                            </div>
-                            <div class="card-text">
-                                <h3>Product Name</h3>
-                                <p class="card-price">
-                                    <span>
-                                        15.00$
-                                    </span>
-                                </p>
-                            </div>
-
-                            <a class="card-button-disabled">Indisponibil</a>
-                        </div>
-                    </div>
+                <div class="card-slider__button prev">
+                    <svg>
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
                 </div>
-                <div class="card-slider__slide">
-                    <div class="card" role="listitem">
-                        <a href="#">
-                            <img class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
-                        </a>
-                        <div class="card-info">
-                            <div class="card-text">
-                                <span>description</span>
-                            </div>
-                            <div class="card-text">
-                                <h3>Product Name</h3>
-                                <p class="card-price">
-                                    <span>
-                                        15.00$
-                                    </span>
-                                </p>
-                            </div>
-
-                            <a class="card-button-disabled">Indisponibil</a>
-                        </div>
-                    </div>
+                <div class="card-slider__button next">
+                    <svg>
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
                 </div>
             </div>
-            <div class="card-slider__button prev">
-                <svg>
-                    <polyline points="15 18 9 12 15 6"></polyline>
-                </svg>
-            </div>
-            <div class="card-slider__button next">
-                <svg>
-                    <polyline points="9 18 15 12 9 6"></polyline>
-                </svg>
-            </div>
-        </div>
-    </section>
+        </section>
+    @endif
+
     <!-------------------- End Slider Cards -------------------->
     <!---------------------------------------------------------->
     <!--------------------- support button --------------------->
