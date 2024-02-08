@@ -10,7 +10,7 @@ use Livewire\Component;
 class StoreShowProduct extends Component
 {
   public $productId;
-  public $quantity = 10;
+  public $quantity;
 
   public function render()
   {
@@ -21,6 +21,7 @@ class StoreShowProduct extends Component
   public function mount($productId)
   {
     $this->productId = $productId;
+    $this->quantity = app('global_low_stock');
   }
 
   public function getProductProperty()
@@ -38,7 +39,7 @@ class StoreShowProduct extends Component
             $query->with('pricelist.currency');
           },
           'wishlists'
-        ]);
+        ])->take(app('global_limit_slideritems'));
       },
     ])->where('id', $this->productId)->first();
   }

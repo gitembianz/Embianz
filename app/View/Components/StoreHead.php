@@ -2,7 +2,6 @@
 
 namespace App\View\Components;
 
-use App\Models\Store_Settings;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
@@ -16,16 +15,13 @@ class StoreHead extends Component
      */
     public function __construct($title = "")
     {
-        $this->title = $title . $this->getSiteName();
+        $this->title = $title . app('global_site_name');;
     }
 
     /**
      * Get the site name from the settings.
      */
-    private function getSiteName(): string
-    {
-        return Store_Settings::where('parameter', 'site_name')->value('value') ?? '';
-    }
+
 
     /**
      * Get the view / contents that represent the component.

@@ -4,8 +4,6 @@ namespace App\Http\Livewire;
 
 use App\Models\Cart;
 use App\Models\Cart_Item;
-
-use App\Models\Status;
 use App\Models\Product;
 use Livewire\Component;
 
@@ -16,7 +14,6 @@ class ProductDetails extends Component
     public $quantity;
     public $limit = null;
     public $maxlimit = null;
-    public $session_id;
     public $product;
 
     public function render()
@@ -26,17 +23,6 @@ class ProductDetails extends Component
     public function mount($product)
     {
         $this->product = $product;
-        if (array_key_exists('sessionId', $_COOKIE)) {
-            $this->session_id = $_COOKIE['sessionId'];
-        } else {
-            // If not present, generate a new sessionId
-            $sessionId = session()->getId();
-
-            // Set the new sessionId in the cookie
-            setcookie('sessionId', $sessionId, time() + 30 * 24 * 60 * 60, '/', null, false, true);
-
-            $this->session_id = $sessionId;
-        }
         $this->quantity = 1;
     }
     public function switchTab($index)
@@ -70,9 +56,7 @@ class ProductDetails extends Component
     }
     public function addToCart(Product $product)
     {
-        $closedStatusId = Status::where('name', 'closed')->where('type', 'cart')->first()->id;
-        $newStatusId = Status::where('name', 'new')->where('type', 'cart')->first()->id;
-        $cart = Cart::where('session_id', $this->session_id)->where('status_id', '!=', $closedStatusId)->latest()->first();
+        $cart = Cart::where('session_id', app('global_session_id'))->where('status_id', '!=', app('global_cart_closed'))->latest()->first();
         if (!$cart) {
             $baseName = class_basename(Cart::class);
             $cartNumber = 1;
@@ -82,11 +66,11 @@ class ProductDetails extends Component
                 $uniqueName = $baseName . '_' . str_pad($cartNumber, 2, '0', STR_PAD_LEFT);
             }
             $cart = Cart::create([
-                'session_id' => $this->session_id,
+                'session_id' => app('global_session_id'),
                 'name' => $uniqueName,
                 'quantity_amount' =>  0,
                 'sum_amount' => 0,
-                'status_id' => $newStatusId,
+                'status_id' => app('global_cart_new'),
                 'currency_id' => $product->product_prices->first()->pricelist->currency_id,
             ]);
             $this->emit('newcart');

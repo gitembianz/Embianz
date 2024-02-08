@@ -3,27 +3,23 @@
 namespace App\Http\Livewire;
 
 use App\Models\Cart;
-use App\Models\Status;
 use App\Models\Product;
 use App\Models\Voucher;
 use Livewire\Component;
 use App\Models\Wishlist;
 use App\Models\Cart_Item;
-use App\Models\Store_Settings;
 
 class StoreCart extends Component
 
 {
   public $cartitems;
   public $wishlist = [];
-  public $session_id;
   public $cart;
   public $delivery;
   public $voucher;
   public $new_price = false;
   public $price;
   public $message;
-  public $closedStatusId;
   public $currency;
   public $validatequantity;
   protected $listeners = [
@@ -32,12 +28,8 @@ class StoreCart extends Component
   ];
   public function mount()
   {
-    // Initial load of cartitems
-    $this->session_id = isset($_COOKIE['sessionId']) ? $_COOKIE['sessionId'] : session()->getId();
-
-    $this->delivery = Store_Settings::where('parameter', 'delivery_price')->first()->value;
-    $this->closedStatusId = Status::where('name', 'closed')->where('type', 'cart')->first()->id;
-    $this->cart = Cart::where('session_id', $this->session_id)->where('status_id', '!=', $this->closedStatusId)->with('voucher')->first();
+    $this->delivery = app('global_delivery_price');
+    $this->cart = Cart::where('session_id', app('global_session_id'))->where('status_id', '!=', app('global_cart_closed'))->with('voucher')->first();
     if ($this->cart) {
       $this->currency = $this->cart->currency->name;
       if ($this->cart->voucher_id) {
@@ -133,7 +125,7 @@ class StoreCart extends Component
       $this->saveToSession();
 
       Wishlist::updateOrCreate(
-        ['session_id' => $this->session_id, 'product_id' => $productId]
+        ['session_id' => app('global_session_id'), 'product_id' => $productId]
       );
       $this->emit('wishlistUpdated');
     }
@@ -143,7 +135,7 @@ class StoreCart extends Component
     $this->wishlist = array_diff($this->wishlist, [$productId]);
     $this->saveToSession();
 
-    Wishlist::where('session_id', $this->session_id)
+    Wishlist::where('session_id', app('global_session_id'))
       ->where('product_id', $productId)
       ->delete();
     $this->emit('wishlistUpdated');
@@ -166,8 +158,7 @@ class StoreCart extends Component
   {
     if ($this->cart->exists) {
       // Search for a voucher with the provided code in the database
-      $StatusId = Status::where('name', 'Active')->where('type', 'voucher')->first()->id;
-      $voucher = Voucher::where('code', $this->voucher)->where('status_id', $StatusId)->first();
+      $voucher = Voucher::where('code', $this->voucher)->where('status_id', app('global_voucher_active'))->first();
 
       if ($voucher) {
         // Voucher found, calculate discount based on percentage
@@ -198,14 +189,12 @@ class StoreCart extends Component
       }
     }
     if ($this->validatequantity) {
-
-      $newStatusId = Status::where('name', 'checkout')->where('type', 'cart')->first()->id;
       if ($this->new_price) {
         $this->cart->final_amount;
       } else {
         $this->cart->final_amount = $this->cart->sum_amount + $this->delivery;
       }
-      $this->cart->status_id = $newStatusId;
+      $this->cart->status_id = app('global_cart_checkout');
       $this->cart->delivery_price = $this->delivery;
       $this->cart->save();
       return redirect()->route('order');

@@ -8,7 +8,6 @@ use App\Models\Wishlist;
 class WishlistQuantity extends Component
 {
     public $count;
-    public $session_id;
     protected $listeners = [
         'wishlistUpdated' => 'mount',
         'wishlistProductRemoved' => 'mount'
@@ -19,7 +18,6 @@ class WishlistQuantity extends Component
     }
     public function mount()
     {
-        $this->session_id = isset($_COOKIE['sessionId']) ? $_COOKIE['sessionId'] : session()->getId();
-        $this->count = Wishlist::where('session_id', $this->session_id)->count();
+        $this->count = Wishlist::where('session_id', app('global_session_id'))->count();
     }
 }

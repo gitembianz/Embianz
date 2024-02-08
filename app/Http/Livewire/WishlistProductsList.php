@@ -9,7 +9,6 @@ class WishlistProductsList extends Component
 {
     public $showwis = false;
     public $items;
-    public $session_id;
     protected $listeners = [
         'showwis' => 'wishshow'
     ];
@@ -27,8 +26,7 @@ class WishlistProductsList extends Component
 
     public function mount()
     {
-        $this->session_id = isset($_COOKIE['sessionId']) ? $_COOKIE['sessionId'] : session()->getId();
-        $this->items = Wishlist::where('session_id', $this->session_id)->with([
+        $this->items = Wishlist::where('session_id', app('global_session_id'))->with([
             'product.media' => function ($query) {
                 $query->where('type', 'min');
             },
@@ -38,7 +36,7 @@ class WishlistProductsList extends Component
 
     public function removeFromWishlist($productId)
     {
-        Wishlist::where('session_id', $this->session_id)
+        Wishlist::where('session_id', app('global_session_id'))
             ->where('product_id', $productId)
             ->delete();
         $this->emit('wishlistProductRemoved');

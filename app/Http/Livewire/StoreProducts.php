@@ -14,9 +14,9 @@ class StoreProducts extends Component
 {
   use WithPagination;
 
-  public $loadAmount = 16;
+  public $loadAmount;
   public $search = "";
-  public $quantity = 10;
+  public $quantity;
   public $session_id;
   public $specification;
   public $orderBy = 'name_az';
@@ -39,7 +39,8 @@ class StoreProducts extends Component
 
   public function mount()
   {
-    $this->session_id = isset($_COOKIE['sessionId']) ? $_COOKIE['sessionId'] : session()->getId();
+    $this->loadAmount = app('global_limit_load');
+    $this->quantity = app('global_low_stock');
     $this->specification = Specs::get();
   }
 
@@ -126,7 +127,7 @@ class StoreProducts extends Component
         $query->where('type', 'main');
       },
       'wishlists' => function ($query) {
-        $query->where('session_id', $this->session_id);
+        $query->where('session_id', app('global_session_id'));
       }
     ]);
     if ($this->category) {
