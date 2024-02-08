@@ -7,7 +7,7 @@
   height: 100%;
   background: rgba($color: #000000, $alpha: 0);
   opacity: 0;
-  transition: transform 0.3s ease-in-out, opacity 0.15s ease-in-out, background 0.3s ease-in-out 0.3s;
+  transition: transform 0.2s ease-in-out, background 0.2s ease-in-out 0.2s;
   transform: translateY(-100%) scaleY(0);
   transform-origin: top;
   z-index: 500;
