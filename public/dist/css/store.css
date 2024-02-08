@@ -4347,7 +4347,7 @@ header {
   gap: 15px;
   border-radius: 5px;
   grid-column: 1/3;
-  scroll-margin-top: 100px;
+  scroll-margin-top: 150px;
 }
 .checkout__terms > span {
   color: gray;
