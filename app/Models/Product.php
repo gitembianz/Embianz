@@ -18,6 +18,11 @@ class Product extends Model
     return $this->hasMany(Product_Spec::class, 'product_id');
   }
 
+  public function related_product()
+  {
+    return $this->hasMany(Related_Products::class, 'parrent_id');
+  }
+
   public function product_prices()
   {
     return $this->hasMany(PricelistEntries::class, 'product_id');
