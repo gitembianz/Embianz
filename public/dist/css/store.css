@@ -999,6 +999,7 @@ section {
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  text-decoration: none;
   gap: 15px;
   text-align: left;
   position: relative;
@@ -1797,8 +1798,8 @@ header {
   padding: 7px 10px;
   background: #ffffff;
   display: flex;
-  align-items: flex-start;
-  justify-content: center;
+  align-items: center;
+  justify-content: space-between;
   text-wrap: nowrap;
   text-decoration: none;
   line-height: 150%;
@@ -2441,14 +2442,17 @@ header {
   top: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0);
   opacity: 0;
-  transform: translateY(-100%);
+  transition: transform 0.3s ease-in-out, opacity 0.15s ease-in-out, background 0.3s ease-in-out 0.3s;
+  transform: translateY(-100%) scaleY(0);
+  transform-origin: top;
   z-index: 500;
 }
 .search.active {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) scaleY(1);
+  background: rgba(0, 0, 0, 0.8);
 }
 
 .search__close--hidden {
@@ -3040,8 +3044,21 @@ header {
   font-weight: 600;
 }
 
-.filter__top--center {
+.filter__top--button {
+  width: 100%;
+  height: 40px;
+  display: flex;
+  align-items: center;
   justify-content: center;
+  border: none;
+  background: #333333;
+  color: #ffffff;
+  gap: 10px;
+  border-radius: 5px;
+}
+.filter__top--button > span {
+  color: red;
+  font-weight: 600;
 }
 
 .filter__list {

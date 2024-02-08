@@ -130,8 +130,22 @@
   }
 }
 
-.filter__top--center {
+.filter__top--button {
+  width: 100%;
+  height: 40px;
+  display: flex;
+  align-items: center;
   justify-content: center;
+  border: none;
+  background: $text;
+  color: $background;
+  gap: 10px;
+  border-radius: 5px;
+
+  &>span {
+    color: red;
+    font-weight: 600;
+  }
 }
 
 .filter__list {
