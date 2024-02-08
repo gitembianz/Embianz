@@ -92,49 +92,49 @@ function startShoppingAnimation(button) {
 //<--------------------------------------------------------------------->
 //<------------------ Onclick function (Cart & wish) ------------------->
 function addToCartClick(button) {
-  startShoppingAnimation(this);
-  button.onclick = () => {
-    const cart = document.getElementById("basketOpen");
+  // button.onclick = () => {
+  startShoppingAnimation(button);
 
-    // Anularea animației anterioare dacă există un timer activ
-    if (wishAnimationTimer) {
-      clearTimeout(wishAnimationTimer);
-      cart.classList.remove("active"); // Asigură eliminarea clasei 'active' în cazul în care animația este în curs
-    }
+  // const cart = document.getElementById("basketOpen");
+  // // Anularea animației anterioare dacă există un timer activ
+  // if (wishAnimationTimer) {
+  //   clearTimeout(wishAnimationTimer);
+  //   cart.classList.remove("active"); // Asigură eliminarea clasei 'active' în cazul în care animația este în curs
+  // }
 
-    if (cart.classList.contains("active")) {
-      cart.classList.remove("active");
-    } else {
-      cart.classList.add("active");
+  // if (cart.classList.contains("active")) {
+  //   cart.classList.remove("active");
+  // } else {
+  //   cart.classList.add("active");
 
-      // Setează un nou timer și stocază-l în variabila globală
-      wishAnimationTimer = setTimeout(function () {
-        cart.classList.remove("active");
-      }, 400);
-    }
-  };
+  //   // Setează un nou timer și stocază-l în variabila globală
+  //   wishAnimationTimer = setTimeout(function () {
+  //     cart.classList.remove("active");
+  //   }, 400);
+  // }
+  // };
 }
 //<--------------------------------------------------------------------->
 let wishAnimationTimer; // Variabilă globală pentru a stoca timerul animației
 
 function addToWishClick(button) {
   button.onclick = () => {
-    const cart = document.getElementById("wishOpen");
+    const wish = document.getElementById("wishOpen");
 
     // Anularea animației anterioare dacă există un timer activ
     if (wishAnimationTimer) {
       clearTimeout(wishAnimationTimer);
-      cart.classList.remove("active"); // Asigură eliminarea clasei 'active' în cazul în care animația este în curs
+      wish.classList.remove("active"); // Asigură eliminarea clasei 'active' în cazul în care animația este în curs
     }
 
-    if (cart.classList.contains("active")) {
-      cart.classList.remove("active");
+    if (wish.classList.contains("active")) {
+      wish.classList.remove("active");
     } else {
-      cart.classList.add("active");
+      wish.classList.add("active");
 
       // Setează un nou timer și stocază-l în variabila globală
       wishAnimationTimer = setTimeout(function () {
-        cart.classList.remove("active");
+        wish.classList.remove("active");
       }, 400);
     }
   };
