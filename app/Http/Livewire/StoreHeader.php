@@ -3,18 +3,15 @@
 namespace App\Http\Livewire;
 
 use App\Models\Cart;
-use App\Models\Status;
 use App\Models\Product;
 use Livewire\Component;
 use App\Models\Category;
-use App\Models\Store_Settings;
 
 class StoreHeader extends Component
 {
   public $search = '';
   public $active = false;
   public $cart;
-  public $session_id;
 
   protected $listeners = [
     'newcart' => 'getCart',
@@ -39,19 +36,12 @@ class StoreHeader extends Component
   }
   public function mount()
   {
-    if (array_key_exists('sessionId', $_COOKIE)) {
-      $this->session_id = $_COOKIE['sessionId'];
-    } else {
-      $sessionId = session()->getId();
-      setcookie('sessionId', $sessionId, time() + 30 * 24 * 60 * 60, '/', null, false, true);
-      $this->session_id = $sessionId;
-    }
     $this->getCart();
   }
   public function getCart()
   {
-    $this->cart = Cart::where('session_id', $this->session_id)
-      ->where('status_id', '!=', Status::where('name', 'closed')->where('type', 'cart')->value('id'))
+    $this->cart = Cart::where('session_id', app('global_session_id'))
+      ->where('status_id', '!=', app('global_cart_closed'))
       ->latest()->first();
     return $this->cart ?? [];
   }
@@ -73,7 +63,7 @@ class StoreHeader extends Component
 
   public function getCategoriesProperty()
   {
-    $limit = Store_Settings::where('parameter', 'limit_category')->value('value') ?? '5';
+    $limit = app('global_limit_category');
 
     return Category::where('active', 1)
       ->where('store_tab', '1')

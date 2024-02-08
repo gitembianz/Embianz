@@ -121,10 +121,7 @@
     echo "App is optimized and updated";
   });
 
-
-
-  //Update app
-  Route::get('/updateapp', function () {
-    exec('composer dump-autoload');
-    echo 'composer dump-autoload';
+  Route::get('/seed', function () {
+    $seed = Artisan::call('db:seed');
+    echo 'Database seeded';
   });

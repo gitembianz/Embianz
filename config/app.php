@@ -186,7 +186,7 @@ return [
          * Package Service Providers...
          */
 
-         Maatwebsite\Excel\ExcelServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
 
 
         /*
@@ -199,6 +199,8 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\FortifyServiceProvider::class,
         App\Providers\JetstreamServiceProvider::class,
+        App\Providers\GlobalVariablesServiceProvider::class,
+
 
     ],
 

@@ -3,20 +3,16 @@
 namespace App\Http\Livewire;
 
 use App\Models\Cart;
-use App\Models\Status;
 use Livewire\Component;
 use App\Models\Cart_Item;
 
 class AddToCartButton extends Component
 {
     public $product;
-    public $session_id;
 
     public function mount($product)
     {
         $this->product = $product;
-
-        $this->session_id = isset($_COOKIE['sessionId']) ? $_COOKIE['sessionId'] : session()->getId();
     }
 
     public function render()
@@ -26,9 +22,7 @@ class AddToCartButton extends Component
 
     public function addToCart($productId)
     {
-        $closedStatusId = Status::where('name', 'closed')->where('type', 'cart')->first()->id;
-        $newStatusId = Status::where('name', 'new')->where('type', 'cart')->first()->id;
-        $cart = Cart::where('session_id', $this->session_id)->where('status_id', '!=', $closedStatusId)->latest()->first();
+        $cart = Cart::where('session_id', app('global_session_id'))->where('status_id', '!=', app('global_cart_closed'))->latest()->first();
         if (!$cart) {
             $baseName = class_basename(Cart::class);
             $cartNumber = 1;
@@ -38,11 +32,11 @@ class AddToCartButton extends Component
                 $uniqueName = $baseName . '_' . str_pad($cartNumber, 2, '0', STR_PAD_LEFT);
             }
             $cart = Cart::create([
-                'session_id' => $this->session_id,
+                'session_id' => app('global_session_id'),
                 'name' => $uniqueName,
                 'quantity_amount' => 0,
                 'sum_amount' => 0,
-                'status_id' => $newStatusId,
+                'status_id' => app('global_cart_new'),
                 'currency_id' => $this->product->product_prices->first()->pricelist->currency_id,
             ]);
             $this->emit('newcart');
