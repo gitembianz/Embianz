@@ -13,7 +13,7 @@ class StoreHeader extends Component
   public $active = false;
 
   protected $listeners = [
-    'newcart' => 'getCartProperty',
+    'newcart' => 'NewCart',
     'orderprocess' => 'getCartProperty',
   ];
 
@@ -57,6 +57,12 @@ class StoreHeader extends Component
   public function showwis()
   {
     $this->emit('showwis');
+  }
+
+  public function NewCart()
+  {
+    $this->getCategoriesProperty();
+    $this->emit('newcartlist');
   }
 
   public function getCategoriesProperty()

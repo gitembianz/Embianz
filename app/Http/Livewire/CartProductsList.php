@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Cart;
 use App\Models\Product;
 use Livewire\Component;
 use App\Models\Cart_Item;
@@ -10,35 +11,40 @@ use App\Models\Store_Settings;
 class CartProductsList extends Component
 {
     public $showcart = false;
-    public $cart;
+    public $cartId;
+    public $total;
     protected $listeners = [
         'showcart' => 'cartshow',
-        'newcart' => 'mount',
         'orderprocess' => 'mount',
+        'newcartlist' => 'getCartItemsProperty',
+
     ];
     public function render()
     {
-        $total = $this->cart ? $this->cart->sum_amount : 0;
 
         return view('livewire.cart-products-list', [
             'cartItems' => $this->cartItems,
-            'total' => $total,
             'currency' => $this->cartItems->isNotEmpty() ? $this->cartItems->first()->product->product_prices->first()->pricelist->currency->name : '',
         ]);
     }
     public function getCartItemsProperty()
     {
-        return $this->cart ? Cart_Item::where('cart_id', $this->cart->id)
-            ->with([
-                'product.media' => function ($query) {
-                    $query->where('type', 'min');
-                },
-                'product.product_prices'
-            ])->get() : collect();
+        if ($this->cartId) {
+            return  Cart_Item::where('cart_id', $this->cartId)
+                ->with([
+                    'product.media' => function ($query) {
+                        $query->where('type', 'min');
+                    },
+                    'product.product_prices'
+                ])->get();
+        } else {
+            return collect();
+        }
     }
-    public function mount($cart)
+    public function mount($cartId, $total)
     {
-        $this->cart = $cart;
+        $this->cartId = $cartId;
+        $this->total = $total;
     }
     public function cartshow()
     {
@@ -48,16 +54,17 @@ class CartProductsList extends Component
     {
         $product = Product::find($productId);
 
-        if ($this->cart) {
+        if ($this->cartId) {
             $cart_item = Cart_Item::firstOrNew([
-                'cart_id' => $this->cart->id,
+                'cart_id' => $this->cartId,
                 'product_id' => $productId,
             ]);
 
             if ($cart_item->exists) {
-                $this->cart->quantity_amount -= $cart_item->quantity;
-                $this->cart->sum_amount -= ($product->product_prices->first()->value * $cart_item->quantity);
-                $this->cart->save();
+                $cart = Cart::find($this->cartId);
+                $cart->quantity_amount -= $cart_item->quantity;
+                $cart->sum_amount -= ($product->product_prices->first()->value * $cart_item->quantity);
+                $cart->save();
                 $cart_item->delete();
                 $this->emit('cartUpdated');
             }
