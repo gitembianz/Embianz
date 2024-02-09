@@ -19,7 +19,7 @@
                 <ul class="leftbar__list">
                     @foreach ($cartItems as $cartItem)
                         <li class="leftbar__item">
-                            <a class="leftbar__link" href="/product/{{ $cartItem->product->id }}">
+                            <a class="leftbar__link" href="{{ route('product', $cartItem->product) }}">
                                 <span>
                                     {{ $cartItem->quantity }} x
                                 </span>

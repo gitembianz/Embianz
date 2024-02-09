@@ -34,7 +34,7 @@
                                         alt="something wrong">
                                 @endif
                                 <div>
-                                    <a href="/product/{{ $cartItem->product->id }}"
+                                    <a href="{{ route('product', $cartItem->product) }}"
                                         class="basket__title">{{ $cartItem->product->name }}</a>
                                     <span class="basket__price">
                                         <?php $currency = $cartItem->product->product_prices->first()->pricelist->currency->name; ?>
