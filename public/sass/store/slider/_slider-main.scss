@@ -141,6 +141,7 @@
   justify-content: center;
   transition: all .3s ease-in-out;
   z-index: 99;
+  border: none;
 
   &>svg {
     stroke: $background;
