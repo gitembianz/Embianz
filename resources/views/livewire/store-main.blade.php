@@ -41,16 +41,16 @@
                     </a>
                     {{-- End Modelul de schimb de imagini pe slider la rezolutie --}}
                 </div>
-                <div class="main-slider__button prev">
+                <button class="main-slider__button prev">
                     <svg>
                         <polyline points="15 18 9 12 15 6"></polyline>
                     </svg>
-                </div>
-                <div class="main-slider__button next">
+                </button>
+                <button class="main-slider__button next">
                     <svg>
                         <polyline points="9 18 15 12 9 6"></polyline>
                     </svg>
-                </div>
+                </button>
             </div>
         @endif
 
@@ -62,7 +62,7 @@
                 <h2 class="section__title">Descoperă produsele noastre populare!</h2>
                 <p class="section__text">Explorează colecția noastră de produse și găsește
                     accesoriile perfecte pentru a-ți completa stilul.
-                    <br><a href="{{ url('/storeproducts') }}">Vezi produsele!</a>
+                    <br><a href="{{ url("/storeproducts") }}">Vezi produsele!</a>
                 </p>
             </div>
         </section>
@@ -86,9 +86,9 @@
                                                 alt="something wrong">
                                         @endif
                                     </a>
-                                    @livewire('product-wishlist-button', ['productId' => $product->id, 'is_in_wishlist' => $product->is_in_wishlist], key($product->id))
+                                    @livewire("product-wishlist-button", ["productId" => $product->id, "is_in_wishlist" => $product->is_in_wishlist], key($product->id))
                                     <?php if ($product->product_prices->count() != 0) {
-                                        $price = number_format($product->product_prices->first()->value, 2, ',', '.');
+                                        $price = number_format($product->product_prices->first()->value, 2, ",", ".");
                                         $discount = $product->product_prices->first()->discount != 0 ? true : false;
                                     } else {
                                         $price = null;
@@ -152,7 +152,7 @@
                                             </p>
                                         </div>
                                         @if ($price)
-                                            @livewire('add-to-cart-button', ['product' => $product], key($product->id))
+                                            @livewire("add-to-cart-button", ["product" => $product], key($product->id))
                                         @else
                                             <a class="card-button-disabled" onclick="handleClick()">Indisponibil</a>
                                         @endif
@@ -161,16 +161,16 @@
                             </div>
                         @endforeach
                     </div>
-                    <div class="card-slider__button prev">
+                    <button class="card-slider__button prev">
                         <svg>
                             <polyline points="15 18 9 12 15 6"></polyline>
                         </svg>
-                    </div>
-                    <div class="card-slider__button next">
+                    </button>
+                    <button class="card-slider__button next">
                         <svg>
                             <polyline points="9 18 15 12 9 6"></polyline>
                         </svg>
-                    </div>
+                    </button>
                 </div>
             </section>
         @endif

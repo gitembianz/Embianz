@@ -278,6 +278,7 @@ svg {
   stroke-linecap: round;
   stroke-linejoin: round;
   pointer-events: none;
+  user-select: none;
 }
 
 button,
@@ -745,7 +746,6 @@ section {
   font-size: 20px;
   font-weight: 500;
   color: #333333;
-  user-select: none;
 }
 
 .support__categories {
@@ -1715,7 +1715,7 @@ header {
   display: flex;
   align-items: center;
   justify-content: center;
-  text-align: right;
+  text-align: center;
 }
 .dropdown__button > svg,
 .navbar__link > svg {
@@ -1795,7 +1795,7 @@ header {
 
 .dropdown__item--button {
   width: 100%;
-  height: 100%;
+  height: 40px;
   padding: 7px 10px;
   background: #ffffff;
   display: flex;
@@ -1809,6 +1809,9 @@ header {
   position: relative;
   font-size: 0;
   gap: 10px;
+}
+.dropdown__item--button > svg {
+  transform: scale(0.8);
 }
 .dropdown__item--button:nth-child(1) {
   transition: all 0.3s ease-in-out 0.25s;
@@ -1857,7 +1860,7 @@ header {
 .dropdown__item--list {
   position: absolute;
   left: calc(100% + 7px);
-  top: 0;
+  top: -5px;
   opacity: 0;
   background: #ffffff;
   z-index: 500;
@@ -1868,7 +1871,7 @@ header {
   align-items: center;
   justify-content: flex-start;
   gap: 10px;
-  padding: 10px 7px;
+  padding: 5px;
   transition: all 0.3s ease-in-out;
   visibility: hidden;
 }
@@ -3964,6 +3967,9 @@ header {
   .details.sticky > .details__content > .voucher {
     display: none;
   }
+  .details.sticky > .voucher__error {
+    display: none;
+  }
 }
 
 .details__hidden {
@@ -4075,7 +4081,7 @@ header {
 .voucher__error {
   font-size: 16px;
   line-height: 150%;
-  color: red;
+  color: #ffffff;
   width: 100%;
   text-align: center;
 }
@@ -4708,6 +4714,7 @@ header {
   justify-content: center;
   transition: all 0.3s ease-in-out;
   z-index: 99;
+  border: none;
 }
 .main-slider__button > svg {
   stroke: #ffffff;
@@ -4819,6 +4826,7 @@ header {
   width: 50px;
   height: 50px;
   color: white;
+  border: none;
   border-radius: 50%;
   cursor: pointer;
   display: flex;
@@ -5111,7 +5119,7 @@ header {
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
+  gap: 10px;
   padding: 20px;
 }
 

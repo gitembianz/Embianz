@@ -35,6 +35,10 @@
       &>.details__content>.voucher {
         display: none;
       }
+
+      &>.voucher__error {
+        display: none;
+      }
     }
   }
 }
@@ -148,7 +152,7 @@
 .voucher__error {
   font-size: 16px;
   line-height: 150%;
-  color: red;
+  color: $background;
   width: 100%;
   text-align: center;
 
