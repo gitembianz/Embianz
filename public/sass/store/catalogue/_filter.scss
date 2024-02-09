@@ -141,6 +141,7 @@
   color: $background;
   gap: 10px;
   border-radius: 5px;
+  font-size: 14px;
 
   &>span {
     color: red;
@@ -254,6 +255,7 @@
   padding: 10px;
   background: $text;
   color: $background;
+  font-size: 14px;
 
   &:hover {
     background: darken($text, 10%);
@@ -284,6 +286,7 @@
   gap: 15px;
   background: $text;
   color: $background;
+  font-size: 14px;
 
   &:hover {
     background: darken($text, 10%);
