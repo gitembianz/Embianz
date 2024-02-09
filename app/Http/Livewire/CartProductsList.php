@@ -6,13 +6,11 @@ use App\Models\Cart;
 use App\Models\Product;
 use Livewire\Component;
 use App\Models\Cart_Item;
-use App\Models\Store_Settings;
 
 class CartProductsList extends Component
 {
     public $showcart = false;
     public $cartId;
-    public $total;
     protected $listeners = [
         'showcart' => 'cartshow',
         'orderprocess' => 'mount',
@@ -41,10 +39,9 @@ class CartProductsList extends Component
             return collect();
         }
     }
-    public function mount($cartId, $total)
+    public function mount($cartId)
     {
         $this->cartId = $cartId;
-        $this->total = $total;
     }
     public function cartshow()
     {
@@ -72,9 +69,8 @@ class CartProductsList extends Component
     }
     public function continue()
     {
-        $delivery = Store_Settings::where('parameter', 'delivery_price')->first()->value;
         $validatequantity = true;
-        $cartitems = Cart_Item::where('cart_id', $this->cart->id)->get();
+        $cartitems = Cart_Item::where('cart_id', $this->cartId)->get();
 
         if ($cartitems->isNotEmpty()) {
             foreach ($cartitems as $item) {
@@ -87,10 +83,11 @@ class CartProductsList extends Component
         }
 
         if ($validatequantity) {
-            $this->cart->final_amount = $this->cart->sum_amount + $delivery;
-            $this->cart->status_id = app('global_cart_checkout');
-            $this->cart->delivery_price = $delivery;
-            $this->cart->save();
+            $cart = Cart::find($this->cartId);
+            $cart->final_amount = $cart->sum_amount + app('global_delivery_price');
+            $cart->status_id = app('global_cart_checkout');
+            $cart->delivery_price = app('global_delivery_price');
+            $cart->save();
             return redirect()->route('order');
         }
     }
