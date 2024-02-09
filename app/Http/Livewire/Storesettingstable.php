@@ -5,6 +5,8 @@ namespace App\Http\Livewire;
 use App\Models\Store_Settings;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\Cache;
+
 
 class Storesettingstable extends Component
 {
@@ -145,6 +147,8 @@ class Storesettingstable extends Component
         $item->description = $update['description'];
       }
       $item->save();
+      // Correct cache key construction
+      Cache::forget('global_variables');
       session()->flash('notification', [
         'message' => 'Record edited successfully!',
         'type' => 'success',

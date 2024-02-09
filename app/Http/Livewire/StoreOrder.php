@@ -4,8 +4,6 @@ namespace App\Http\Livewire;
 
 use App\Models\Cart;
 use App\Models\Order;
-use App\Models\Store_Settings;
-use App\Models\Status;
 use App\Models\Account;
 use App\Models\Address;
 use App\Models\Payment;
@@ -22,11 +20,11 @@ class StoreOrder extends Component
   public $individual_identic;
   public $juridic_identic;
   public $back = false;
-  public $session_id;
   public $cart;
-  public $default_country;
   public $terms = false;
   public $errorterms = false;
+  public $default_country;
+
 
   public $individual_billing_first;
   public $individual_billing_last;
@@ -78,6 +76,7 @@ class StoreOrder extends Component
   public $juridic_shipping_zipcode;
   // public $card = false;
   public $rtc = true;
+  public $session_id;
   public $invoice = false;
   public $payments;
   public $validatequantity = true;
@@ -101,10 +100,9 @@ class StoreOrder extends Component
   }
   public function mount()
   {
+    $this->session_id = app('global_session_id');
     $this->payments = Payment::get();
-    $this->session_id = isset($_COOKIE['sessionId']) ? $_COOKIE['sessionId'] : session()->getId();
-    $closedStatusId = Status::where('name', 'closed')->where('type', 'cart')->first()->id;
-    $this->cart = Cart::where('session_id', $this->session_id)->where('status_id', '!=', $closedStatusId)->latest()->first();
+    $this->cart = Cart::where('session_id', $this->session_id)->where('status_id', '!=', app('global_cart_closed'))->latest()->first();
     if (!$this->cart) {
       $this->back = true;
     }
@@ -114,7 +112,7 @@ class StoreOrder extends Component
     $this->juridic_identic = true;
 
     // default country
-    $this->default_country = Store_Settings::where('parameter', 'default_country')->value('value') ?? 'Romania';
+    $this->default_country = app('global_default_country');
     $this->individual_billing_country = $this->default_country;
     $this->individual_shipping_country = $this->default_country;
     $this->juridic_billing_country = $this->default_country;
@@ -301,7 +299,6 @@ class StoreOrder extends Component
         $cartNumber++;
         $uniqueName = $baseName . '_' . str_pad($cartNumber, 2, '0', STR_PAD_LEFT);
       }
-      $statusId = Status::where('name', 'new')->where('type', 'order')->first()->id;
       $paymentId = Payment::where('name', $this->delivery)->first()->id;
       Order::create([
         'name' => $uniqueName,
@@ -311,7 +308,7 @@ class StoreOrder extends Component
         'quantity_amount' => $this->cart->quantity_amount,
         'sum_amount' => $this->cart->final_amount,
         'currency_id' => $this->cart->currency_id,
-        'status_id' =>  $statusId,
+        'status_id' =>  app('global_order_new'),
         'payment_id' => $paymentId,
         'voucher_id' =>  $this->cart->voucher_id,
       ]);
@@ -336,14 +333,12 @@ class StoreOrder extends Component
         if ($this->cart->voucher) {
           if ($this->cart->voucher->single_use) {
             $vouch = Voucher::find($this->cart->voucher_id);
-            $newStatusvouch = Status::where('name', 'Closed')->where('type', 'voucher')->first()->id;
-            $vouch->status_id = $newStatusvouch;
+            $vouch->status_id = app('global_voucher_closed');
             $vouch->save();
           }
         }
       }
-      $newStatusId = Status::where('name', 'Closed')->where('type', 'cart')->first()->id;
-      $this->cart->status_id = $newStatusId;
+      $this->cart->status_id = app('global_cart_closed');
       $this->cart->save();
       $this->step++;
       $this->dispatchBrowserEvent('final_step');

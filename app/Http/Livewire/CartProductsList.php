@@ -2,8 +2,6 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Cart;
-use App\Models\Status;
 use App\Models\Product;
 use Livewire\Component;
 use App\Models\Cart_Item;
@@ -13,7 +11,6 @@ class CartProductsList extends Component
 {
     public $showcart = false;
     public $cart;
-    public $session_id;
     protected $listeners = [
         'showcart' => 'cartshow',
         'newcart' => 'mount',
@@ -39,13 +36,9 @@ class CartProductsList extends Component
                 'product.product_prices'
             ])->get() : collect();
     }
-    public function mount()
+    public function mount($cart)
     {
-        $this->session_id = isset($_COOKIE['sessionId']) ? $_COOKIE['sessionId'] : session()->getId();
-
-        $this->cart = Cart::where('session_id', $this->session_id)
-            ->where('status_id', '!=', Status::where('name', 'closed')->where('type', 'cart')->value('id'))
-            ->latest()->first();
+        $this->cart = $cart;
     }
     public function cartshow()
     {
@@ -87,9 +80,8 @@ class CartProductsList extends Component
         }
 
         if ($validatequantity) {
-            $newStatusId = Status::where('name', 'checkout')->where('type', 'cart')->first()->id;
             $this->cart->final_amount = $this->cart->sum_amount + $delivery;
-            $this->cart->status_id = $newStatusId;
+            $this->cart->status_id = app('global_cart_checkout');
             $this->cart->delivery_price = $delivery;
             $this->cart->save();
             return redirect()->route('order');

@@ -33,6 +33,12 @@
     window.addEventListener('show-delete-item', event => {
         document.getElementById('confirmationmodalcart').style.display = 'flex';
     });
+    window.addEventListener('show-deleterelatedprod-modal', event => {
+        document.getElementById('confirmationmodalrelatedprod').style.display = 'flex';
+    });
+    window.addEventListener('show-deleterelatedprod-modal-multiple', event => {
+        document.getElementById('confirmationmodalmultiplerelatedprod').style.display = 'flex';
+    });
 
 
     // JavaScript code
