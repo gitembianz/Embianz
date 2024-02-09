@@ -61,8 +61,6 @@ class StoreHeader extends Component
 
   public function getCategoriesProperty()
   {
-    $limit = app('global_limit_category');
-
     return Category::where('active', 1)
       ->where('store_tab', '1')
       ->where('has_parrent', '0')
@@ -84,7 +82,7 @@ class StoreHeader extends Component
         'media' => function ($query) {
           $query->where('type', 'min'); // Filter and limit the media relationship
         }
-      ])->limit($limit)->orderby('sequence')->get();
+      ])->limit(app('global_limit_category'))->orderby('sequence')->get();
   }
 
   public function getObjectsProperty()
