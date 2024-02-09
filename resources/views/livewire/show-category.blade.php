@@ -180,7 +180,7 @@
                         @endif
                         @if ($editcategory === null)
                             <div class="item__form-input-close item__form-textarea">
-                                <div>{{ $category->long_description }}</div>
+                                <div>{!! $category->long_description !!}</div>
                                 <label>Long Description</label>
                             </div>
                         @else

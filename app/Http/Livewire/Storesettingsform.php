@@ -5,6 +5,8 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use App\Models\Store_Settings;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+
 
 class Storesettingsform extends Component
 {
@@ -37,6 +39,7 @@ class Storesettingsform extends Component
 
     Store_Settings::insert($values);
     $this->reset();
+    Cache::forget('global_variables');
     session()->flash('notification', [
       'message' => 'Record added successfully!',
       'type' => 'success',

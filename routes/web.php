@@ -84,23 +84,21 @@
   });
 
   //store routes
-  Route::middleware(['session'])->group(function () {
-    // Your routes here
-    route::get('/', [StoreController::class, 'index'])->name('home');
-    route::get('/cart', [StoreController::class, 'cart'])->name('cart');
-    route::get('/wishlist', [StoreController::class, 'wislist'])->name('wislist');
-    route::get('/complete', [StoreController::class, 'complete'])->name('complete');
-    route::get('/order', [StoreController::class, 'order'])->name('order');
-    route::get('/product/{id}/', [StoreController::class, 'show'])->name('product');
-    Route::get('/storeproducts/{category?}', [StoreController::class, 'products']);
-    route::get('/faq', [StoreController::class, 'faq'])->name('faq');
-    route::get('/cookie', [StoreController::class, 'cookie'])->name('cookie');
-    route::get('/privacy', [StoreController::class, 'privacy'])->name('privacy');
-    route::get('/contact', [StoreController::class, 'contact'])->name('contact');
-    route::get('/about', [StoreController::class, 'about'])->name('about');
-    route::get('/confirm', [StoreController::class, 'confirm'])->name('confirm');
-    route::get('/terms', [StoreController::class, 'terms'])->name('terms');
-  });
+  // Your routes here
+  route::get('/', [StoreController::class, 'index'])->name('home');
+  route::get('/cart', [StoreController::class, 'cart'])->name('cart');
+  route::get('/wishlist', [StoreController::class, 'wislist'])->name('wislist');
+  route::get('/complete', [StoreController::class, 'complete'])->name('complete');
+  route::get('/order', [StoreController::class, 'order'])->name('order');
+  route::get('/product/{id}/', [StoreController::class, 'show'])->name('product');
+  Route::get('/storeproducts/{category?}', [StoreController::class, 'products']);
+  route::get('/faq', [StoreController::class, 'faq'])->name('faq');
+  route::get('/cookie', [StoreController::class, 'cookie'])->name('cookie');
+  route::get('/privacy', [StoreController::class, 'privacy'])->name('privacy');
+  route::get('/contact', [StoreController::class, 'contact'])->name('contact');
+  route::get('/about', [StoreController::class, 'about'])->name('about');
+  route::get('/confirm', [StoreController::class, 'confirm'])->name('confirm');
+  route::get('/terms', [StoreController::class, 'terms'])->name('terms');
 
 
 
