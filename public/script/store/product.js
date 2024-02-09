@@ -341,7 +341,7 @@ function slider(sliderID) {
       // Autoplay the wrapper after every 2500 ms
       timeoutId = setTimeout(
         () => (wrapper.scrollLeft += firstCardWidth),
-        2500
+        9999999
       );
     };
     autoPlay();

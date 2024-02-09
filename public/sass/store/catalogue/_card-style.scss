@@ -13,6 +13,12 @@
   &.flying {
     z-index: 200;
   }
+
+  &:hover {
+    .card-image {
+      scale: 1.1;
+    }
+  }
 }
 
 .card-image {
@@ -24,9 +30,9 @@
   user-select: none;
   pointer-events: none;
 
-  &:hover {
-    scale: 1.1;
-  }
+  // &:hover {
+  //   scale: 1.1;
+  // }
 }
 
 .card-info {
