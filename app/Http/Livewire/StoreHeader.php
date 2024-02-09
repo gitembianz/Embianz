@@ -11,11 +11,10 @@ class StoreHeader extends Component
 {
   public $search = '';
   public $active = false;
-  public $cart;
 
   protected $listeners = [
-    'newcart' => 'getCart',
-    'orderprocess' => 'mount',
+    'newcart' => 'getCartProperty',
+    'orderprocess' => 'getCartProperty',
   ];
 
   public function render()
@@ -25,25 +24,24 @@ class StoreHeader extends Component
         'categories' => $this->categories,
         'objects' => $this->objects,
         'cats' => $this->cats,
+        'cart' => $this->cart,
+
       ];
     } else {
       $data = [
         'categories' => $this->categories,
+        'cart' => $this->cart,
 
       ];
     }
     return view('livewire.store-header', $data);
   }
-  public function mount()
+
+  public function getCartProperty()
   {
-    $this->getCart();
-  }
-  public function getCart()
-  {
-    $this->cart = Cart::where('session_id', app('global_session_id'))
+    return Cart::where('session_id', app('global_session_id'))
       ->where('status_id', '!=', app('global_cart_closed'))
-      ->latest()->first();
-    return $this->cart ?? [];
+      ->latest()->first() ?? [];
   }
 
   public function close()

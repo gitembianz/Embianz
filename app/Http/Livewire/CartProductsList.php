@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Cart;
 use App\Models\Product;
 use Livewire\Component;
 use App\Models\Cart_Item;
@@ -37,11 +36,9 @@ class CartProductsList extends Component
                 'product.product_prices'
             ])->get() : collect();
     }
-    public function mount()
+    public function mount($cart)
     {
-        $this->cart = Cart::where('session_id', app('global_session_id'))
-            ->where('status_id', '!=', app('global_cart_closed'))
-            ->latest()->first();
+        $this->cart = $cart;
     }
     public function cartshow()
     {
