@@ -94,7 +94,7 @@
                     <img src="/images/store/svg/noren-black.svg" alt="Site Logo">
                 </a>
                 {{-- wislist button --}}
-                <button class="header__btn" wire:click="showwis" id="wishOpen">
+                <button class="header__btn" wire:click="$emit('showwis')" id="wishOpen">
                     @livewire('wishlist-quantity')
                     <svg>
                         <path
@@ -103,7 +103,7 @@
                     </svg>
                 </button>
                 {{-- cart button --}}
-                <button class="header__btn" wire:click="showcart" id="basketOpen">
+                <button class="header__btn" wire:click="$emit('showcart')" id="basketOpen">
                     @if ($cart)
                         @livewire('cart-quantity', ['cart' => $cart])
                     @endif
@@ -208,7 +208,11 @@
     <!---------------------------------------------------------->
     <!---------------------Basket (Leftbar)--------------------->
     <!-- In your Blade view -->
-    @livewire('cart-products-list', ['cart' => $cart])
+    @if ($cart != [])
+        @livewire('cart-products-list', ['cartId' => $cart->id, 'total' => $cart->sum_amount ?? 0])
+    @else
+        @livewire('cart-products-list', ['cartId' => 0, 'total' => $cart->sum_amount ?? 0])
+    @endif
 
     <!-------------------END-Basket (Leftbar)------------------->
     <!---------------------------------------------------------->
