@@ -21,7 +21,7 @@
                       @if (count($objects) > 0)
                           @foreach ($objects as $product)
                               <li class="search__item">
-                                  <a class="search__link" href="/product/{{ $product->id }}">
+                                  <a class="search__link" href="{{ route('product', $product) }}">
                                       @if ($product->media->first() != null)
                                           <img src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}"
                                               alt="{{ $product->media->first()->name }} {{ $product->name }}">
@@ -56,7 +56,7 @@
                       @if (count($cats) > 0)
                           @foreach ($cats as $category)
                               <li class="search__item">
-                                  <a class="search__link" href="/storeproducts/{{ $category->id }}">
+                                  <a class="search__link" href="{{ route('products', $category->seo_id) }}">
                                       @if ($category->media->first() != null)
                                           <img src="/{{ $category->media->first()->path }}{{ $category->media->first()->name }}"
                                               alt="{{ $category->media->first()->name }} {{ $category->name }}">

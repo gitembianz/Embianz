@@ -93,7 +93,7 @@
                     @foreach ($product->related_product as $product)
                         <div class="card-slider__slide">
                             <div class="card" role="listitem">
-                                <a href="/product/{{ $product->product->id }}">
+                                <a href="{{ route('product', $product->product) }}">
                                     @if ($product->product->media->first() != null)
                                         <img class="card-image"
                                             src="/{{ $product->product->media->first()->path }}{{ $product->product->media->first()->name }}"
