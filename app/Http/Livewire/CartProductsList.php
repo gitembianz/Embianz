@@ -19,7 +19,6 @@ class CartProductsList extends Component
     ];
     public function render()
     {
-
         return view('livewire.cart-products-list', [
             'cartItems' => $this->cartItems,
             'currency' => $this->cartItems->isNotEmpty() ? $this->cartItems->first()->product->product_prices->first()->pricelist->currency->name : '',
@@ -27,7 +26,7 @@ class CartProductsList extends Component
     }
     public function getCartItemsProperty()
     {
-        if ($this->cartId) {
+        if ($this->cartId && $this->showcart) {
             return  Cart_Item::where('cart_id', $this->cartId)
                 ->with([
                     'product.media' => function ($query) {
