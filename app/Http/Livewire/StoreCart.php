@@ -21,6 +21,7 @@ class StoreCart extends Component
   public $price;
   public $message;
   public $currency;
+  public $session_id;
   public $validatequantity;
   protected $listeners = [
     'cartUpdated' => 'mount',
@@ -28,6 +29,7 @@ class StoreCart extends Component
   ];
   public function mount()
   {
+    $this->session_id = app('global_session_id');
     $this->delivery = app('global_delivery_price');
     $this->cart = Cart::where('session_id', app('global_session_id'))->where('status_id', '!=', app('global_cart_closed'))->with('voucher')->first();
     if ($this->cart) {
