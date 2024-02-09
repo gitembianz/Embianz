@@ -98,16 +98,18 @@
 
 .main-slider__slide {
   scroll-snap-align: start;
-  position: relative;
+  // position: relative;
   width: 100%;
-  height: 80vh;
+  height: 550px;
   background: $text;
 
   &:first-child {
     z-index: 5;
   }
 
-  &>img {
+  &>img,
+  picture,
+  picture img {
     width: 100%;
     height: 100%;
     // filter: brightness(0.4);
@@ -115,9 +117,14 @@
     pointer-events: none;
     user-select: none;
     object-position: center;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 1 / 5.5;
+  }
+
+  &>picture {
+    display: block;
   }
 }
+
 
 .main-slider__button {
   position: absolute;

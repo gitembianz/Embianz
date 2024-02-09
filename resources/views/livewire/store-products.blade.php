@@ -6,10 +6,10 @@
     <!------------------------Breadcrumbs----------------------->
     <section>
         <div class="breadcrumbs container">
-            <a class="breadcrumbs__link" href="{{ url('/') }}">
+            <a class="breadcrumbs__link" href="{{ url("/") }}">
                 Acasa
             </a>
-            <a class="breadcrumbs__link" href="{{ url('/storeproducts') }}">
+            <a class="breadcrumbs__link" href="{{ url("/storeproducts") }}">
                 Produse
             </a>
             <!-------------------If Category is appear------------------>
@@ -100,7 +100,7 @@
                             @endif
                         </a>
                         <?php if ($product->product_prices->count() != 0) {
-                            $price = number_format($product->product_prices->first()->value, 2, ',', '.');
+                            $price = number_format($product->product_prices->first()->value, 2, ",", ".");
                             $discount = $product->product_prices->first()->discount != 0 ? true : false;
                         } else {
                             $price = null;
@@ -137,10 +137,10 @@
                             </p>
                         @endif
                         @livewire(
-                            'product-wishlist-button',
+                            "product-wishlist-button",
                             [
-                                'productId' => $product->id,
-                                'is_in_wishlist' => $product->wishlists->isNotEmpty(), // true if there are wishlist records, false otherwise
+                                "productId" => $product->id,
+                                "is_in_wishlist" => $product->wishlists->isNotEmpty(), // true if there are wishlist records, false otherwise
                             ],
                             key($product->id)
                         )
@@ -175,7 +175,7 @@
                                 </p>
                             </div>
                             @if ($price)
-                                @livewire('add-to-cart-button', ['product' => $product], key($product->id . $index))
+                                @livewire("add-to-cart-button", ["product" => $product], key($product->id . $index))
                             @else
                                 <a class="card-button-disabled">Indisponibil</a>
                             @endif
@@ -214,11 +214,11 @@
                     </svg>
                 </button>
             </div>
-            <div class="filter__top filter__top--center">
-                <p>Am gasit <span>{{ $productCount }}</span> de rezultate</p>
-            </div>
+            <button class="filter__top filter__top--button" wire:click="$set('showspecfilter', false)">
+                Afișează rezultate: <span>{{ $productCount }}</span>
+            </button>
             <div wire:ignore class="filter__list">
-                @foreach ($filtervalues->groupBy('spec_id') as $values)
+                @foreach ($filtervalues->groupBy("spec_id") as $values)
                     <div class="dropfilter">
                         <div class="dropfilter__button">
                             <div class="dropfilter__button--link">
