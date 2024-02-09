@@ -1492,6 +1492,7 @@ header {
   background-color: #333333;
   color: #ffffff;
   flex: 1;
+  font-size: 14px;
 }
 .leftbar__button:hover {
   background: #0d0d0d;
@@ -3056,6 +3057,7 @@ header {
   color: #ffffff;
   gap: 10px;
   border-radius: 5px;
+  font-size: 14px;
 }
 .filter__top--button > span {
   color: red;
@@ -3161,6 +3163,7 @@ header {
   padding: 10px;
   background: #333333;
   color: #ffffff;
+  font-size: 14px;
 }
 .filter__show:hover {
   background: #1a1a1a;
@@ -3189,6 +3192,7 @@ header {
   gap: 15px;
   background: #333333;
   color: #ffffff;
+  font-size: 14px;
 }
 .filter__apply:hover {
   background: #1a1a1a;

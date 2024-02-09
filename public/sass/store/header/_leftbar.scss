@@ -107,6 +107,7 @@
   background-color: $text;
   color: $background;
   flex: 1;
+  font-size: 14px;
 
   &:hover {
     background: darken($text, 15%);
