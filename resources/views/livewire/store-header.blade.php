@@ -209,9 +209,9 @@
     <!---------------------Basket (Leftbar)--------------------->
     <!-- In your Blade view -->
     @if ($cart != [])
-        @livewire('cart-products-list', ['cartId' => $cart->id, 'total' => $cart->sum_amount ?? 0])
+        @livewire('cart-products-list', ['cartId' => $cart->id])
     @else
-        @livewire('cart-products-list', ['cartId' => 0, 'total' => $cart->sum_amount ?? 0])
+        @livewire('cart-products-list', ['cartId' => 0])
     @endif
 
     <!-------------------END-Basket (Leftbar)------------------->
