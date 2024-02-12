@@ -42,78 +42,78 @@ document.addEventListener("DOMContentLoaded", function () {
 //<----------------------- End Start Functions PC ---------------------->
 //<--------------------------------------------------------------------->
 //<---------------------------- Fly to Cart ---------------------------->
-function startShoppingAnimation(button) {
-  // const cart_btns = document.querySelectorAll(".add-to-cart");
-  const shopping_cart = document.getElementById("basketOpen");
+// function startShoppingAnimation(button) {
+//   // const cart_btns = document.querySelectorAll(".add-to-cart");
+//   const shopping_cart = document.getElementById("basketOpen");
 
-  // for (cart_btn of cart_btns) {
-  button.onclick = (e) => {
-    shopping_cart.classList.add("active");
+//   // for (cart_btn of cart_btns) {
+//   button.onclick = (e) => {
+//     shopping_cart.classList.add("active");
 
-    // finding first grandparent of target button
-    // let target_parent = e.target.parentNode.parentNode.parentNode;
-    let target_parent = e.target.closest(".card");
+//     // finding first grandparent of target button
+//     // let target_parent = e.target.parentNode.parentNode.parentNode;
+//     let target_parent = e.target.closest(".card");
 
-    // target_parent.style.zIndex = "200";
-    target_parent.classList.add("flying");
-    // Creating separate Image
-    let img = target_parent.querySelector("img");
-    let flying_img = img.cloneNode();
-    flying_img.classList.add("flying-img");
+//     // target_parent.style.zIndex = "200";
+//     target_parent.classList.add("flying");
+//     // Creating separate Image
+//     let img = target_parent.querySelector("img");
+//     let flying_img = img.cloneNode();
+//     flying_img.classList.add("flying-img");
 
-    target_parent.appendChild(flying_img);
+//     target_parent.appendChild(flying_img);
 
-    // Finding position of flying image
-    const flying_img_pos = flying_img.getBoundingClientRect();
-    const shopping_cart_pos = shopping_cart.getBoundingClientRect();
+//     // Finding position of flying image
+//     const flying_img_pos = flying_img.getBoundingClientRect();
+//     const shopping_cart_pos = shopping_cart.getBoundingClientRect();
 
-    let data = {
-      left:
-        shopping_cart_pos.left -
-        (shopping_cart_pos.width / 2 +
-          flying_img_pos.left +
-          flying_img_pos.width / 2),
-      top: shopping_cart_pos.bottom - flying_img_pos.bottom + 30,
-    };
+//     let data = {
+//       left:
+//         shopping_cart_pos.left -
+//         (shopping_cart_pos.width / 2 +
+//           flying_img_pos.left +
+//           flying_img_pos.width / 2),
+//       top: shopping_cart_pos.bottom - flying_img_pos.bottom + 30,
+//     };
 
-    flying_img.style.cssText = `
-                          --left : ${data.left.toFixed(2)}px;
-                          --top : ${data.top.toFixed(2)}px;
-                          `;
+//     flying_img.style.cssText = `
+//                           --left : ${data.left.toFixed(2)}px;
+//                           --top : ${data.top.toFixed(2)}px;
+//                           `;
 
-    setTimeout(() => {
-      target_parent.classList.remove("flying");
-      target_parent.removeChild(flying_img);
-      shopping_cart.classList.remove("active");
-    }, 1500);
-  };
-}
+//     setTimeout(() => {
+//       target_parent.classList.remove("flying");
+//       target_parent.removeChild(flying_img);
+//       shopping_cart.classList.remove("active");
+//     }, 1500);
+//   };
+// }
 //<-------------------------- End Fly to Cart -------------------------->
 //<--------------------------------------------------------------------->
 //<------------------ Onclick function (Cart & wish) ------------------->
-function addToCartClick(button) {
-  // button.onclick = () => {
-  startShoppingAnimation(button);
+// function addToCartClick(button) {
+//   // button.onclick = () => {
+//   startShoppingAnimation(button);
 
-  // const cart = document.getElementById("basketOpen");
-  // // Anularea animației anterioare dacă există un timer activ
-  // if (wishAnimationTimer) {
-  //   clearTimeout(wishAnimationTimer);
-  //   cart.classList.remove("active"); // Asigură eliminarea clasei 'active' în cazul în care animația este în curs
-  // }
+//   // const cart = document.getElementById("basketOpen");
+//   // // Anularea animației anterioare dacă există un timer activ
+//   // if (wishAnimationTimer) {
+//   //   clearTimeout(wishAnimationTimer);
+//   //   cart.classList.remove("active"); // Asigură eliminarea clasei 'active' în cazul în care animația este în curs
+//   // }
 
-  // if (cart.classList.contains("active")) {
-  //   cart.classList.remove("active");
-  // } else {
-  //   cart.classList.add("active");
+//   // if (cart.classList.contains("active")) {
+//   //   cart.classList.remove("active");
+//   // } else {
+//   //   cart.classList.add("active");
 
-  //   // Setează un nou timer și stocază-l în variabila globală
-  //   wishAnimationTimer = setTimeout(function () {
-  //     cart.classList.remove("active");
-  //   }, 400);
-  // }
-  // };
-}
+//   //   // Setează un nou timer și stocază-l în variabila globală
+//   //   wishAnimationTimer = setTimeout(function () {
+//   //     cart.classList.remove("active");
+//   //   }, 400);
+//   // }
+//   // };
+// }
 //<--------------------------------------------------------------------->
 let wishAnimationTimer; // Variabilă globală pentru a stoca timerul animației
 
@@ -141,3 +141,44 @@ function addToWishClick(button) {
 }
 //<---------------- End Onclick function (Cart & wish) ----------------->
 //<--------------------------------------------------------------------->
+function flyToCart(button) {
+  const shopping_cart = document.getElementById("basketOpen");
+  const target_parent = button.closest(".product"); // Obținem cel mai apropiat părinte cu clasa "product"
+
+  if (!target_parent) {
+    console.error("Nu s-a găsit părintele 'product'.");
+    return;
+  }
+
+  shopping_cart.classList.add("active");
+
+  // Creăm o imagine separată
+  let img = target_parent.querySelector("img");
+  let flying_img = img.cloneNode();
+  flying_img.classList.add("flying-img");
+  target_parent.appendChild(flying_img);
+
+  // Obținem poziția imaginii care va zbura
+  const flying_img_pos = flying_img.getBoundingClientRect();
+  const shopping_cart_pos = shopping_cart.getBoundingClientRect();
+
+  let data = {
+    left:
+      shopping_cart_pos.left -
+      (shopping_cart_pos.width / 2 +
+        flying_img_pos.left +
+        flying_img_pos.width / 2),
+    top: shopping_cart_pos.bottom - flying_img_pos.bottom + 30,
+  };
+
+  flying_img.style.cssText = `
+      --left : ${data.left.toFixed(2)}px;
+      --top : ${data.top.toFixed(2)}px;
+  `;
+
+  setTimeout(() => {
+    target_parent.style.zIndex = "";
+    target_parent.removeChild(flying_img);
+    shopping_cart.classList.remove("active");
+  }, 1500);
+}
