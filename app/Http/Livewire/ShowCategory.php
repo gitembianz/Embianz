@@ -6,9 +6,10 @@ use Livewire\Component;
 use App\Models\Category;
 use App\Models\Products_categories;
 use App\Models\Subcategory;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
+
 
 class ShowCategory extends Component
 {
@@ -45,8 +46,8 @@ class ShowCategory extends Component
       'short_description' => $this->category->short_description,
       'long_description' => $this->category->long_description,
       'seo_title' => $this->category->seo_title,
+      'seo_id' => $this->category->seo_id,
       'slider_sequence' => $this->category->slider_sequence,
-      // Add other properties as needed
     ];
     $this->editcategory = true;
   }
@@ -55,6 +56,19 @@ class ShowCategory extends Component
     $this->editcategory = null;
     $this->cat = [];
   }
+  private function generateUniqueSeoId($name)
+  {
+    $seoId = Str::slug($name, '-');
+    $baseSeoId = $seoId;
+    $counter = 1;
+    while (
+      Category::where('seo_id', $seoId)->orWhere('seo_id', $seoId . '-' . $counter)->exists()
+    ) {
+      $seoId = $baseSeoId . '-' . $counter;
+      $counter++;
+    }
+    return $seoId;
+  }
   public function savecategory()
   {
     $category_new = $this->cat ?? NULL;
@@ -62,6 +76,9 @@ class ShowCategory extends Component
       $new = Category::find($this->categoryId);
       if (array_key_exists('name', $category_new)) {
         $new->name = $category_new['name'];
+      }
+      if (array_key_exists('seo_id', $category_new)) {
+        $new->seo_id = $this->generateUniqueSeoId($category_new['seo_id']);
       }
       if (array_key_exists('visible', $category_new)) {
         $new->store_tab = $category_new['visible'];

@@ -11,6 +11,8 @@ use App\Models\PricelistEntries;
 use App\Models\Products_categories;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
+
 
 class ShowProduct extends Component
 {
@@ -41,6 +43,7 @@ class ShowProduct extends Component
       'quantity' => $this->product->quantity,
       'sku' => $this->product->sku,
       'ean' => $this->product->ean,
+      'seo_id' => $this->product->seo_id
     ];
     $this->editproduct = true;
   }
@@ -49,6 +52,20 @@ class ShowProduct extends Component
   {
     return Product::find($this->productId);
   }
+  private function generateUniqueSeoId($name)
+  {
+    $seoId = Str::slug($name, '-');
+    $baseSeoId = $seoId;
+    $counter = 1;
+    while (
+      Product::where('seo_id', $seoId)->orWhere('seo_id', $seoId . '-' . $counter)->exists()
+    ) {
+      $seoId = $baseSeoId . '-' . $counter;
+      $counter++;
+    }
+    return $seoId;
+  }
+
   public function saveproduct()
   {
     $product_new = $this->prod ?? NULL;
@@ -56,6 +73,9 @@ class ShowProduct extends Component
       $new = Product::find($this->productId);
       if (array_key_exists('product_name', $product_new)) {
         $new->name = $product_new['product_name'];
+      }
+      if (array_key_exists('seo_id', $product_new)) {
+        $new->seo_id = $this->generateUniqueSeoId($product_new['seo_id']);
       }
       if (array_key_exists('start_date', $product_new)) {
         $new->start_date = $product_new['start_date'];

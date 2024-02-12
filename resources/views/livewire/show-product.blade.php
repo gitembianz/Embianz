@@ -196,14 +196,25 @@
                         </div>
                     @endif
                     @if ($editproduct === null)
-                        <div class="item__form-input-close item__form-long">
+                        <div class="item__form-input-close">
                             <div>{{ $product->seo_title }}</div>
                             <label>SEO Title</label>
                         </div>
                     @else
-                        <div class="item__form-input item__form-long">
+                        <div class="item__form-input">
                             <input type="text" wire:model.defer="prod.seo_title" required>
                             <label>SEO Title</label>
+                        </div>
+                    @endif
+                    @if ($editproduct === null)
+                        <div class="item__form-input-close">
+                            <div>{{ $product->seo_id }}</div>
+                            <label>Friendly URL</label>
+                        </div>
+                    @else
+                        <div class="item__form-input">
+                            <input type="text" wire:model.defer="prod.seo_id" required>
+                            <label>Friendly URL</label>
                         </div>
                     @endif
                     <div class="item__form-input-close">

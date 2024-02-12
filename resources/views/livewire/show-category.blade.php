@@ -190,14 +190,25 @@
                             </div>
                         @endif
                         @if ($editcategory === null)
-                            <div class="item__form-input-close item__form-long">
+                            <div class="item__form-input-close">
                                 <div id="seo_title">{{ $category->seo_title }}</div>
                                 <label>SEO Title</label>
                             </div>
                         @else
-                            <div class="item__form-input item__form-long">
+                            <div class="item__form-input">
                                 <input type="text" wire:model.defer="cat.seo_title" required>
                                 <label>SEO Title</label>
+                            </div>
+                        @endif
+                        @if ($editcategory === null)
+                            <div class="item__form-input-close">
+                                <div>{{ $category->seo_id }}</div>
+                                <label>Friendly URL</label>
+                            </div>
+                        @else
+                            <div class="item__form-input">
+                                <input type="text" wire:model.defer="cat.seo_id" required>
+                                <label>Friendly URL</label>
                             </div>
                         @endif
                         <div class="item__form-input-close">
