@@ -44,7 +44,7 @@ class GeneralSearch extends Component
                 $query->where('type', 'min'); // Filter and limit the media relationship
             },
             'product_prices.pricelist.currency'
-        ])->limit(app('global_limit_searchitems'))->get();
+        ])->orderBy('popularity', 'desc')->limit(app('global_limit_searchitems'))->get();
     }
 
     public function getCatsProperty()
