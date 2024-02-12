@@ -3423,6 +3423,23 @@ header {
   stroke: #fff;
 }
 
+.product__related {
+  overflow: auto;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  scroll-snap-type: x mandatory;
+  gap: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.product__related > .card {
+  flex-shrink: 0;
+  scroll-snap-align: center;
+  width: 100%;
+  flex: 1;
+}
+
 .product {
   display: flex;
   align-items: flex-start;

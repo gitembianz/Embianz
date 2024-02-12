@@ -189,7 +189,179 @@
             </div>
         </section>
     @endif
-
+    <section class="product__related container">
+        <div class="card" role="listitem">
+            <a href="#">
+                <img class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
+            </a>
+            <div class="card-info">
+                <div class="card-text">
+                    <span>description</span>
+                </div>
+                <div class="card-text">
+                    <h3>name</h3>
+                    <p class="card-price">
+                        <span>
+                            45,00$
+                        </span>
+                    </p>
+                </div>
+                <a class="card-button-disabled">Indisponibil</a>
+            </div>
+        </div>
+        <div class="card" role="listitem">
+            <a href="#">
+                <img class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
+            </a>
+            <div class="card-info">
+                <div class="card-text">
+                    <span>description</span>
+                </div>
+                <div class="card-text">
+                    <h3>name</h3>
+                    <p class="card-price">
+                        <span>
+                            45,00$
+                        </span>
+                    </p>
+                </div>
+                <a class="card-button-disabled">Indisponibil</a>
+            </div>
+        </div>
+        <div class="card" role="listitem">
+            <a href="#">
+                <img class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
+            </a>
+            <div class="card-info">
+                <div class="card-text">
+                    <span>description</span>
+                </div>
+                <div class="card-text">
+                    <h3>name</h3>
+                    <p class="card-price">
+                        <span>
+                            45,00$
+                        </span>
+                    </p>
+                </div>
+                <a class="card-button-disabled">Indisponibil</a>
+            </div>
+        </div>
+        <div class="card" role="listitem">
+            <a href="#">
+                <img class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
+            </a>
+            <div class="card-info">
+                <div class="card-text">
+                    <span>description</span>
+                </div>
+                <div class="card-text">
+                    <h3>name</h3>
+                    <p class="card-price">
+                        <span>
+                            45,00$
+                        </span>
+                    </p>
+                </div>
+                <a class="card-button-disabled">Indisponibil</a>
+            </div>
+        </div>
+        <div class="card" role="listitem">
+            <a href="#">
+                <img class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
+            </a>
+            <div class="card-info">
+                <div class="card-text">
+                    <span>description</span>
+                </div>
+                <div class="card-text">
+                    <h3>name</h3>
+                    <p class="card-price">
+                        <span>
+                            45,00$
+                        </span>
+                    </p>
+                </div>
+                <a class="card-button-disabled">Indisponibil</a>
+            </div>
+        </div>
+        <div class="card" role="listitem">
+            <a href="#">
+                <img class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
+            </a>
+            <div class="card-info">
+                <div class="card-text">
+                    <span>description</span>
+                </div>
+                <div class="card-text">
+                    <h3>name</h3>
+                    <p class="card-price">
+                        <span>
+                            45,00$
+                        </span>
+                    </p>
+                </div>
+                <a class="card-button-disabled">Indisponibil</a>
+            </div>
+        </div>
+        <div class="card" role="listitem">
+            <a href="#">
+                <img class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
+            </a>
+            <div class="card-info">
+                <div class="card-text">
+                    <span>description</span>
+                </div>
+                <div class="card-text">
+                    <h3>name</h3>
+                    <p class="card-price">
+                        <span>
+                            45,00$
+                        </span>
+                    </p>
+                </div>
+                <a class="card-button-disabled">Indisponibil</a>
+            </div>
+        </div>
+        <div class="card" role="listitem">
+            <a href="#">
+                <img class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
+            </a>
+            <div class="card-info">
+                <div class="card-text">
+                    <span>description</span>
+                </div>
+                <div class="card-text">
+                    <h3>name</h3>
+                    <p class="card-price">
+                        <span>
+                            45,00$
+                        </span>
+                    </p>
+                </div>
+                <a class="card-button-disabled">Indisponibil</a>
+            </div>
+        </div>
+        <div class="card" role="listitem">
+            <a href="#">
+                <img class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
+            </a>
+            <div class="card-info">
+                <div class="card-text">
+                    <span>description</span>
+                </div>
+                <div class="card-text">
+                    <h3>name</h3>
+                    <p class="card-price">
+                        <span>
+                            45,00$
+                        </span>
+                    </p>
+                </div>
+                <a class="card-button-disabled">Indisponibil</a>
+            </div>
+        </div>
+    </section>
     <!-------------------- End Slider Cards -------------------->
     <!---------------------------------------------------------->
     <!--------------------- support button --------------------->
