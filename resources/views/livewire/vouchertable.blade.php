@@ -125,20 +125,20 @@
                 <tr>
                     <th><input type="checkbox" wire:model="selectPage"></th>
                     @foreach ($selectedColumns as $column)
-    @if ($this->showColumn($column))
-        <th wire:click="sortBy('{{ $column }}')">
-            <button class="table__header--btn"
-                @if ($orderBy === $column && $orderAsc === '1') data-symbol="up"
+                        @if ($this->showColumn($column))
+                            <th wire:click="sortBy('{{ $column }}')">
+                                <button class="table__header--btn"
+                                    @if ($orderBy === $column && $orderAsc === '1') data-symbol="up"
                 @else data-symbol="down" @endif>
-                {{ str_replace('_id', '', $column) }} {{-- Remove '_id' from column name --}}
-                <svg>
-                    <line x1="12" y1="5" x2="12" y2="19"></line>
-                    <polyline points="19 12 12 19 5 12"></polyline>
-                </svg>
-            </button>
-        </th>
-    @endif
-@endforeach
+                                    {{ str_replace('_id', '', $column) }} {{-- Remove '_id' from column name --}}
+                                    <svg>
+                                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                                        <polyline points="19 12 12 19 5 12"></polyline>
+                                    </svg>
+                                </button>
+                            </th>
+                        @endif
+                    @endforeach
                     <th></th>
                 </tr>
             </thead>
@@ -149,7 +149,8 @@
                     </tr>
                 @else
                     @foreach ($vouchers as $index => $voucher)
-                        <tr @if ($loop->last) id="last_record" @endif class="@if ($this->isChecked($voucher->id)) table__row--selected @endif">
+                        <tr @if ($loop->last) id="last_record" @endif
+                            class="@if ($this->isChecked($voucher->id)) table__row--selected @endif">
                             <td data-title="Check">
                                 <input type="checkbox" value="{{ $voucher->id }}" wire:model="checked">
                             </td>

@@ -32,7 +32,8 @@
                 @foreach ($categories as $category)
                     @if ($category->subcategory->count() != 0)
                         <div class="dropdown">
-                            <a class="dropdown__button" href="{{ route('products', $category->seo_id) }}">
+                            <a class="dropdown__button"
+                                href="{{ route('products', ['categorySlug' => $category->seo_id !== null && $category->seo_id !== '' ? $category->seo_id : $category->id]) }}">
                                 {{ $category->name }}
                                 <svg>
                                     <polyline points="6 9 12 15 18 9"></polyline>
@@ -42,7 +43,7 @@
                                 @foreach ($category->subcategory as $subcategory)
                                     <div class="dropdown__item">
                                         <a class="dropdown__item--button"
-                                            href="{{ route('products', $subcategory->category->seo_id) }}">
+                                            href="{{ route('products', ['categorySlug' => $subcategory->category->seo_id !== null && $subcategory->category->seo_id !== '' ? $subcategory->category->seo_id : $subcategory->category->id]) }}">
                                             {{ $subcategory->category->name }}
                                             @if ($subcategory->category->subcategory->count() != 0)
                                                 <svg>
@@ -54,7 +55,7 @@
                                             <div class="dropdown__item--list">
                                                 @foreach ($subcategory->category->subcategory as $subsubCategory)
                                                     <a
-                                                        href="{{ route('products', $subsubCategory->category->seo_id) }}">
+                                                        href="{{ route('products', ['categorySlug' => $subsubCategory->category->seo_id !== null && $subsubCategory->category->seo_id !== '' ? $subsubCategory->category->seo_id : $subsubCategory->category->id]) }}">
                                                         {{ $subsubCategory->category->name }}
                                                     </a>
                                                 @endforeach
@@ -65,7 +66,8 @@
                             </div>
                         </div>
                     @else
-                        <a class="navbar__link" href="{{ route('products', $category->seo_id) }}">
+                        <a class="navbar__link"
+                            href="{{ route('products', ['categorySlug' => $category->seo_id !== null && $category->seo_id !== '' ? $category->seo_id : $category->id]) }}">
                             {{ $category->name }}
                         </a>
                     @endif
@@ -153,7 +155,8 @@
                     @if ($category->subcategory->count() != 0)
                         <div class="dropmenu">
                             <div class="dropmenu__button">
-                                <a class="dropmenu__button--link" href="{{ route('products', $category->seo_id) }}">
+                                <a class="dropmenu__button--link"
+                                    href="{{ route('products', ['categorySlug' => $category->seo_id !== null && $category->seo_id !== '' ? $category->seo_id : $category->id]) }}">
                                     @if ($category->media->first())
                                         <img class="cart__list--img"
                                             src="/{{ $category->media->first()->path }}{{ $category->media->first()->name }}"
@@ -175,7 +178,7 @@
                                     <div class="submenu">
                                         <div class="submenu__button">
                                             <a class="submenu__button--link"
-                                                href="{{ route('products', $subcategory->category->seo_id) }}">
+                                                href="{{ route('products', ['categorySlug' => $subcategory->category->seo_id !== null && $subcategory->category->seo_id !== '' ? $subcategory->category->seo_id : $subcategory->category->id]) }}">
                                                 @if ($subcategory->category->media->first() != null)
                                                     <img src="/{{ $subcategory->category->media->first()->path }}{{ $subcategory->category->media->first()->name }}"
                                                         alt="{{ $subcategory->category->media->first()->name }}{{ $subcategory->category->name }}">
@@ -197,7 +200,7 @@
                                             <div class="submenu__list">
                                                 @foreach ($subcategory->category->subcategory as $subsubCategory)
                                                     <a class="submenu__link"
-                                                        href="{{ route('products', $subsubCategory->category->seo_id) }}">
+                                                        href="{{ route('products', ['categorySlug' => $subsubCategory->category->seo_id !== null && $subsubCategory->category->seo_id !== '' ? $subsubCategory->category->seo_id : $subsubCategory->category->id]) }}">
                                                         @if ($subsubCategory->category->media->first() != null)
                                                             <img src="/{{ $subsubCategory->category->media->first()->path }}{{ $subsubCategory->category->media->first()->name }}"
                                                                 alt="{{ $subsubCategory->category->media->first()->name }}{{ $subsubCategory->category->name }}">
@@ -215,7 +218,8 @@
                             </div>
                         </div>
                     @else
-                        <a class="menu__link" href="{{ route('products', $category->seo_id) }}">
+                        <a class="menu__link"
+                            href="{{ route('products', ['categorySlug' => $category->seo_id !== null && $category->seo_id !== '' ? $category->seo_id : $category->id]) }}">
                             @if ($category->media->first() != null)
                                 <img src="/{{ $category->media->first()->path }}{{ $category->media->first()->name }}"
                                     alt="{{ $category->media->first()->name }} {{ $category->name }}">

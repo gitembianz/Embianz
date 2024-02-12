@@ -59,7 +59,12 @@ class StoreController extends Controller
     $data = null;
 
     if ($categorySlug) {
-      $category = Category::where('seo_id', $categorySlug)->first();
+      if (is_numeric($categorySlug)) {
+        $category = Category::find($categorySlug);
+      } else {
+
+        $category = Category::where('seo_id', $categorySlug)->first();
+      }
       if ($category) {
         $data = $category->id;
       }
@@ -96,9 +101,14 @@ class StoreController extends Controller
   /**
    * Display the specified resource.
    */
-  public function show($productSlug)
+  public function show($productSlug = null)
   {
-    $data = Product::where('seo_id', $productSlug)->first();
+    if (is_numeric($productSlug)) {
+      $data = Product::find($productSlug);
+    } else {
+
+      $data = Product::where('seo_id', $productSlug)->first();
+    }
     // $product variable will contain the product instance resolved by Laravel
     return view('store.product', ['data' => $data]);
   }
