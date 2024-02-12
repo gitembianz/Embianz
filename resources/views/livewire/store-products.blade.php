@@ -84,7 +84,7 @@
             @foreach ($products as $index => $product)
                 <div class="product">
                     <div @if ($loop->last) id="last_record" @endif class="card" role="listitem">
-                        <a href="{{ route('product', $product) }}">
+                        <a href="{{ route('product', $product->seo_id) }}">
                             @if ($product->media->first() != null)
                                 <img class="card-image"
                                     src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}"
