@@ -3,7 +3,7 @@
 <x-alert />
 {{-- End Section session message --}}
 <x-dashboardsidebar :active="__('voucher')" />
-{{-- Page content start   --}}
+{{-- Page content start --}}
 
 <section class="content">
     <form action="{{ url('/add_voucher') }}" method="POST">

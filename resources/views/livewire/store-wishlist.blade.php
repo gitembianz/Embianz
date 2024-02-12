@@ -28,7 +28,7 @@
                                 <img src="/images/store/default/default70.webp" alt="something wrong">
                             @endif
                             <div>
-                                <a href="{{ route("product", $product) }}"
+                                <a href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}"
                                     class="basket__title">{{ $product->name }}</a>
                                 <span class="basket__price">
                                     @if ($product->product_prices->first() !== null)

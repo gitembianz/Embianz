@@ -1,9 +1,9 @@
 <div id="store-show-product">
     <div class="breadcrumbs container">
-        <a class="breadcrumbs__link" href="{{ url("/") }}">
+        <a class="breadcrumbs__link" href="{{ url('/') }}">
             Acasa
         </a>
-        <a class="breadcrumbs__link" href="{{ url("/storeproducts") }}">
+        <a class="breadcrumbs__link" href="{{ url('/storeproducts') }}">
             Produse
         </a>
         <a class="breadcrumbs__link">{{ $product->name }}</a>
@@ -15,11 +15,11 @@
 
                 <div class="product-slider__wrapper">
                     @if ($product->media->count() != 0)
-                        @foreach ($product->media->where("type", "full") as $media)
+                        @foreach ($product->media->where('type', 'full') as $media)
                             <div class="product-slider__slide">
                                 <img src="/{{ $media->path }}{{ $media->name }}"
                                     alt="{{ $media->name }}{{ $product->name }}"
-                                    data-img-src="/{{ $product->media->where("type", "original")->where("sequence", $media->sequence)->first()->path }}{{ $product->media->where("type", "original")->where("sequence", $media->sequence)->first()->name }}">
+                                    data-img-src="/{{ $product->media->where('type', 'original')->where('sequence', $media->sequence)->first()->path }}{{ $product->media->where('type', 'original')->where('sequence', $media->sequence)->first()->name }}">
                             </div>
                         @endforeach
                     @else
@@ -63,7 +63,7 @@
         <!------------------ End Modal Product ---------------->
         <!------------------------------------------------------>
         <!----------------------- Product details ---------------------->
-        @livewire("product-details", ["product" => $product])
+        @livewire('product-details', ['product' => $product])
         <!--------------------- End Product details -------------------->
         <!------------------------------------------------------>
     </section>
@@ -91,7 +91,8 @@
                     @foreach ($product->related_product as $product)
                         <div class="card-slider__slide">
                             <div class="card" role="listitem">
-                                <a href="{{ route("product", $product->product->seo_id) }}">
+                                <a
+                                    href="{{ route('product', ['product' => $product->product->seo_id !== null && $product->product->seo_id !== '' ? $product->product->seo_id : $product->product->id]) }}">
                                     @if ($product->product->media->first() != null)
                                         <img class="card-image"
                                             src="/{{ $product->product->media->first()->path }}{{ $product->product->media->first()->name }}"
@@ -101,9 +102,9 @@
                                             alt="something wrong">
                                     @endif
                                 </a>
-                                @livewire("product-wishlist-button", ["productId" => $product->product->id, "is_in_wishlist" => $product->product->is_in_wishlist], key($product->product->id))
+                                @livewire('product-wishlist-button', ['productId' => $product->product->id, 'is_in_wishlist' => $product->product->is_in_wishlist], key($product->product->id))
                                 <?php if ($product->product->product_prices->count() != 0) {
-                                    $price = number_format($product->product->product_prices->first()->value, 2, ",", ".");
+                                    $price = number_format($product->product->product_prices->first()->value, 2, ',', '.');
                                     $discount = $product->product->product_prices->first()->discount != 0 ? true : false;
                                 } else {
                                     $price = null;
@@ -167,7 +168,7 @@
                                         </p>
                                     </div>
                                     @if ($price)
-                                        @livewire("add-to-cart-button", ["product" => $product->product], key($product->product->id))
+                                        @livewire('add-to-cart-button', ['product' => $product->product], key($product->product->id))
                                     @else
                                         <a class="card-button-disabled" onclick="handleClick()">Indisponibil</a>
                                     @endif
