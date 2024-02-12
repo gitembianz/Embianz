@@ -47,13 +47,12 @@
             </div>
 
             <div class="item__form-input">
-                <input type="number" name="percent" value="{{ old('percent') }}" required>
+                <input type="number" name="percent" value="{{ old('percent') }}">
                 <label>Percent %</label>
             </div>
-
-            <div style="display: flex; align-items: center;justify-content: flex-start;gap: 10px">
-                <input type="checkbox" name="single_use" {{ old('single_use') ? 'checked' : '' }}>
-                <span>Single Use</span>
+            <div class="item__form-input">
+                <input type="number" name="value" value="{{ old('value') }}">
+                <label>Value</label>
             </div>
 
             <div class="item__form-input">
@@ -76,6 +75,10 @@
     top: 2.5rem;
     color: red;">{{ $message }}</span>
                 @enderror
+            </div>
+            <div style="display: flex; align-items: center;justify-content: flex-start;gap: 10px">
+                <input type="checkbox" name="single_use" {{ old('single_use') ? 'checked' : '' }}>
+                <span>Single Use</span>
             </div>
 
             <input class="item__form-btn  item__form-long" type="submit" value="Add New" name="submit">

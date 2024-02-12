@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
-use App\Models\Status;
 use App\Models\Account;
 use App\Models\Voucher;
 use Illuminate\Http\Request;
@@ -90,21 +89,36 @@ class AdminController extends Controller
     $rules = [
       'start_date' => 'required|date|after_or_equal:today',
       'end_date' => 'required|date|after_or_equal:start_date',
-      // Add other validation rules as needed
     ];
     // Custom validation messages
     $messages = [
       'start_date.after_or_equal' => 'The start date must be in the future or present.',
       'end_date.after_or_equal' => 'The end date must be in the future and after the start date.',
-      // Add other custom messages as needed
     ];
-    $validator = $this->validate($request, $rules, $messages);
-    $statusId = Status::where('name', 'Active')->where('type', 'voucher')->first()->id;
+    $rules['percent_or_value'] = 'required_without_all:percent,value';
+
+    $this->validate(
+      $request,
+      $rules,
+      $messages
+    );
+
+    // If neither percent nor value is provided, redirect back with an error
+    if ($request->filled('percent') && $request->filled('value')) {
+      return redirect()->back()->withInput()->with([
+        'notification' => [
+          'message' => 'The voucher accepts either a percent or a value, not both!',
+          'type' => 'error',
+          'title' => 'Something went wrong'
+        ],
+      ]);
+    }
     $voucher = new Voucher();
     $voucher->name = $request->name;
     $voucher->code = $request->code;
     $voucher->percent = $request->percent;
-    $voucher->status_id = $statusId;
+    $voucher->value = $request->value;
+    $voucher->status_id = app('global_voucher_active');
     $voucher->start_date = $request->start_date;
     $voucher->end_date = $request->end_date;
     $voucher->single_use = $request->has('single_use');
