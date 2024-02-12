@@ -6,6 +6,8 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+
 
 
 class ProductController extends Controller
@@ -22,6 +24,19 @@ class ProductController extends Controller
     //return a view where you cand add a new product
     return view('admin.add_products');
   }
+  private function generateUniqueSeoId($name)
+  {
+    $seoId = Str::slug($name, '-');
+    $baseSeoId = $seoId;
+    $counter = 1;
+    while (
+      Product::where('seo_id', $seoId)->orWhere('seo_id', $seoId . '-' . $counter)->exists()
+    ) {
+      $seoId = $baseSeoId . '-' . $counter;
+      $counter++;
+    }
+    return $seoId;
+  }
 
   public function new(Request $request)
   {
@@ -29,6 +44,7 @@ class ProductController extends Controller
       'end_date' => 'required|date|after_or_equal:today|after_or_equal:start_date',
       'sku' => 'required|unique:products',
       'ean' => 'required|unique:products',
+
 
       // Add other validation rules as needed
     ];
@@ -38,11 +54,15 @@ class ProductController extends Controller
       'end_date.after_or_equal' => 'Data de încheiere a produsului trebuie să fie în viitor și după data de început.',
       'sku.unique' => 'SKU-ul trebuie să fie unic.',
       'ean.unique' => 'EAN-ul trebuie să fie unic.',
+
       // Add other custom messages as needed
     ];
-
-    $validator = $this->validate($request, $rules, $messages);
-
+    $this->validate($request, $rules, $messages);
+    if ($request->seo_id != null) {
+      $seo_id = $this->generateUniqueSeoId($request->seo_id);
+    } else {
+      $seo_id = $this->generateUniqueSeoId($request->product_name);
+    }
     $newproduct = Product::create([
       'name' => $request->product_name,
       'sku' => $request->sku,
@@ -57,6 +77,7 @@ class ProductController extends Controller
       'active' => $request->has('active'),
       'created_by' => Auth::user()->name,
       'last_modified_by' => Auth::user()->name,
+      'seo_id' => $seo_id
     ]);
 
     return redirect()->back()->with([
