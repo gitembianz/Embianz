@@ -57,7 +57,7 @@
                                 </svg>
                                 Șterge Datele
                             </button>
-                            <button class="checkout__button checkout__button--confirm" wire:click.prevent="next()">
+                            <button class="checkout__button checkout__button--confirm" id="orderValidation" wire:click.prevent="next()">
                                 Pasul următor
                                 <svg>
                                     <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -81,40 +81,61 @@
                             <!----------- End Checkout Header Name ------------->
                             <!---------------------------------------------------->
                             <!------------- Checkout List of Items --------------->
-                            <div class="checkout__item">
+                            {{-- <div class="checkout__item">
                                 <input type="text" wire:model="individual_billing_first" placeholder="Nume">
                                 <span>
                                     @error("individual_billing_first")
                                         {{ $message }}
                                     @enderror
                                 </span>
+                            </div> --}}
+                            <div class="checkout__item checkout__item--required" id="individualShippingFirstName">
+                                <input type="text" name="individualShippingFirstName"
+                                    placeholder="Individual Shipping First Name" autocomplete="given-name" required>
+                                <span></span>
                             </div>
                             <!---------------------------------------------------->
-                            <div class="checkout__item">
+                            {{-- <div class="checkout__item">
                                 <input type="text" wire:model="individual_billing_last" placeholder="Prenume">
                                 <span>
                                     @error("individual_billing_last")
                                         {{ $message }}
                                     @enderror
                                 </span>
+                            </div> --}}
+                            <div class="checkout__item checkout__item--required" id="individualShippingLastName">
+                                <input type="text" name="individualShippingLastName"
+                                    placeholder="Individual Shipping Last Name" autocomplete="family-name" required>
+                                <span></span>
                             </div>
                             <!---------------------------------------------------->
-                            <div class="checkout__item">
+                            {{-- <div class="checkout__item">
                                 <input type="tel" wire:model="individual_billing_phone" placeholder="Telefon">
                                 <span>
                                     @error("individual_billing_phone")
                                         {{ $message }}
                                     @enderror
                                 </span>
+                            </div> --}}
+                            <div class="checkout__item checkout__item--required" id="individualShippingPhone">
+                                <input type="tel" name="individualShippingPhone"
+                                    placeholder="Individual Shipping Phone Number" autocomplete="tel" pattern="[0-9]*"
+                                    inputmode="numeric" required>
+                                <span></span>
                             </div>
                             <!---------------------------------------------------->
-                            <div class="checkout__item">
+                            {{-- <div class="checkout__item">
                                 <input type="email" wire:model="individual_billing_email" placeholder="Email">
                                 <span>
                                     @error("individual_billing_email")
                                         {{ $message }}
                                     @enderror
                                 </span>
+                            </div> --}}
+                            <div class="checkout__item checkout__item--required" id="individualShippingEmail">
+                                <input type="email" name="individualShippingEmail"
+                                    placeholder="Individual Shipping Email" autocomplete="email" required>
+                                <span></span>
                             </div>
                             <!----------- End Checkout List of Items ------------->
                             <!---------------------------------------------------->
@@ -132,264 +153,32 @@
                             <!----------- End Checkout Header Name ------------->
                             <!---------------------------------------------------->
                             <!------------- Checkout List of Items --------------->
-                            <div class="checkout__item">
+                            {{-- <div class="checkout__item">
                                 <input type="text" wire:model="individual_billing_address1" placeholder="Address 1*">
                                 <span>
                                     @error("individual_billing_address1")
                                         {{ $message }}
                                     @enderror
                                 </span>
+                            </div> --}}
+                            <div class="checkout__item checkout__item--required" id="individualShippingAddress">
+                                <input type="text" name="individualShippingAddress"
+                                    placeholder="Individual Shipping Address 1" autocomplete="street-address" required>
+                                <span></span>
                             </div>
-                            <!---------------------------------------------------->
+                            {{-- <!---------------------------------------------------->
                             <div class="checkout__item">
                                 <input type="text" wire:model="individual_billing_address2"
                                     placeholder="Address 2 (optional)">
+                            </div> --}}
+                            <div class="checkout__item" id="individualShippingAddress2">
+                                <input type="text" name="individualShippingAddress2"
+                                    placeholder="Individual Shipping Address 2 (optional)"
+                                    autocomplete="address-level2">
+                                <span></span>
                             </div>
-                            <!---------------------------------------------------->
-                            {{-- <div class="custom-select">
-                                <div class="select-selected">{{ $individual_billing_country }}</div>
-                                <div class="select-items">
-                                    <div>Afghanistan</div>
-                                    <div>Åland Islands</div>
-                                    <div>Albania</div>
-                                    <div>Algeria</div>
-                                    <div>American Samoa</div>
-                                    <div>Andorra</div>
-                                    <div>Angola</div>
-                                    <div>Anguilla</div>
-                                    <div>Antarctica</div>
-                                    <div>Antigua and Barbuda</div>
-                                    <div>Argentina</div>
-                                    <div>Armenia</div>
-                                    <div>Aruba</div>
-                                    <div>Australia</div>
-                                    <div>Austria</div>
-                                    <div>Azerbaijan</div>
-                                    <div>Bahamas</div>
-                                    <div>Bahrain</div>
-                                    <div>Bangladesh</div>
-                                    <div>Barbados</div>
-                                    <div>Belarus</div>
-                                    <div>Belgium</div>
-                                    <div>Belize</div>
-                                    <div>Benin</div>
-                                    <div>Bermuda</div>
-                                    <div>Bhutan</div>
-                                    <div>Bolivia</div>
-                                    <div>Bosnia and Herzegovina</div>
-                                    <div>Botswana</div>
-                                    <div>Bouvet Island</div>
-                                    <div>Brazil</div>
-                                    <div>British Indian Ocean Territory</div>
-                                    <div>Brunei Darussalam</div>
-                                    <div>Bulgaria</div>
-                                    <div>Burkina Faso</div>
-                                    <div>Burundi</div>
-                                    <div>Cambodia</div>
-                                    <div>Cameroon</div>
-                                    <div>Canada</div>
-                                    <div>Cape Verde</div>
-                                    <div>Cayman Islands</div>
-                                    <div>Central African Republic</div>
-                                    <div>Chad</div>
-                                    <div>Chile</div>
-                                    <div>China</div>
-                                    <div>Christmas Island</div>
-                                    <div>Cocos (Keeling) Islands</div>
-                                    <div>Colombia</div>
-                                    <div>Comoros</div>
-                                    <div>Congo</div>
-                                    <div>Congo, The Democratic Republic of the</div>
-                                    <div>Cook Islands</div>
-                                    <div>Costa Rica</div>
-                                    <div>Croatia</div>
-                                    <div>Cuba</div>
-                                    <div>Cyprus</div>
-                                    <div>Czech Republic</div>
-                                    <div>Denmark</div>
-                                    <div>Djibouti</div>
-                                    <div>Dominica</div>
-                                    <div>Dominican Republic</div>
-                                    <div>Ecuador</div>
-                                    <div>Egypt</div>
-                                    <div>El Salvador</div>
-                                    <div>Equatorial Guinea</div>
-                                    <div>Eritrea</div>
-                                    <div>Estonia</div>
-                                    <div>Ethiopia</div>
-                                    <div>Falkland Islands (Malvinas)</div>
-                                    <div>Faroe Islands</div>
-                                    <div>Fiji</div>
-                                    <div>Finland</div>
-                                    <div>France</div>
-                                    <div>French Guiana</div>
-                                    <div>French Polynesia</div>
-                                    <div>French Southern Territories</div>
-                                    <div>Gabon</div>
-                                    <div>Gambia</div>
-                                    <div>Georgia</div>
-                                    <div>Germany</div>
-                                    <div>Ghana</div>
-                                    <div>Gibraltar</div>
-                                    <div>Greece</div>
-                                    <div>Greenland</div>
-                                    <div>Grenada</div>
-                                    <div>Guadeloupe</div>
-                                    <div>Guam</div>
-                                    <div>Guatemala</div>
-                                    <div>Guernsey</div>
-                                    <div>Guinea</div>
-                                    <div>Guinea-Bissau</div>
-                                    <div>Guyana</div>
-                                    <div>Haiti</div>
-                                    <div>Heard Island and Mcdonald Islands</div>
-                                    <div>Holy See (Vatican City State)</div>
-                                    <div>Honduras</div>
-                                    <div>Hong Kong</div>
-                                    <div>Hungary</div>
-                                    <div>Iceland</div>
-                                    <div>India</div>
-                                    <div>Indonesia</div>
-                                    <div>Iran, Islamic Republic Of</div>
-                                    <div>Iraq</div>
-                                    <div>Ireland</div>
-                                    <div>Isle of Man</div>
-                                    <div>Israel</div>
-                                    <div>Italy</div>
-                                    <div>Jamaica</div>
-                                    <div>Japan</div>
-                                    <div>Jersey</div>
-                                    <div>Jordan</div>
-                                    <div>Kazakhstan</div>
-                                    <div>Kenya</div>
-                                    <div>Kiribati</div>
-                                    <div>Korea, Republic of</div>
-                                    <div>Kuwait</div>
-                                    <div>Kyrgyzstan</div>
-                                    <div>Latvia</div>
-                                    <div>Lebanon</div>
-                                    <div>Lesotho</div>
-                                    <div>Liberia</div>
-                                    <div>Libyan Arab Jamahiriya</div>
-                                    <div>Liechtenstein</div>
-                                    <div>Lithuania</div>
-                                    <div>Luxembourg</div>
-                                    <div>Macao</div>
-                                    <div>North Macedonia</div>
-                                    <div>Madagascar</div>
-                                    <div>Malawi</div>
-                                    <div>Malaysia</div>
-                                    <div>Maldives</div>
-                                    <div>Mali</div>
-                                    <div>Malta</div>
-                                    <div>Marshall Islands</div>
-                                    <div>Martinique</div>
-                                    <div>Mauritania</div>
-                                    <div>Mauritius</div>
-                                    <div>Mayotte</div>
-                                    <div>Mexico</div>
-                                    <div>Micronesia, Federated States of</div>
-                                    <div>Republic of Moldova</div>
-                                    <div>Monaco</div>
-                                    <div>Mongolia</div>
-                                    <div>Montserrat</div>
-                                    <div>Morocco</div>
-                                    <div>Mozambique</div>
-                                    <div>Myanmar</div>
-                                    <div>Namibia</div>
-                                    <div>Nauru</div>
-                                    <div>Nepal</div>
-                                    <div>Netherlands</div>
-                                    <div>Netherlands Antilles</div>
-                                    <div>New Caledonia</div>
-                                    <div>New Zealand</div>
-                                    <div>Nicaragua</div>
-                                    <div>Niger</div>
-                                    <div>Nigeria</div>
-                                    <div>Niue</div>
-                                    <div>Norfolk Island</div>
-                                    <div>Northern Mariana Islands</div>
-                                    <div>Norway</div>
-                                    <div>Oman</div>
-                                    <div>Pakistan</div>
-                                    <div>Palau</div>
-                                    <div>Palestinian Territory, Occupied</div>
-                                    <div>Panama</div>
-                                    <div>Papua New Guinea</div>
-                                    <div>Paraguay</div>
-                                    <div>Peru</div>
-                                    <div>Philippines</div>
-                                    <div>Pitcairn Islands</div>
-                                    <div>Poland</div>
-                                    <div>Portugal</div>
-                                    <div>Puerto Rico</div>
-                                    <div>Qatar</div>
-                                    <div>Reunion</div>
-                                    <div>Romania</div>
-                                    <div>Russian Federation</div>
-                                    <div>Rwanda</div>
-                                    <div>Saint Helena</div>
-                                    <div>Saint Kitts and Nevis</div>
-                                    <div>Saint Lucia</div>
-                                    <div>Saint Pierre and Miquelon</div>
-                                    <div>Saint Vincent and the Grenadines</div>
-                                    <div>Samoa</div>
-                                    <div>San Marino</div>
-                                    <div>Sao Tome and Principe</div>
-                                    <div>Saudi Arabia</div>
-                                    <div>Senegal</div>
-                                    <div>Serbia and Montenegro</div>
-                                    <div>Seychelles</div>
-                                    <div>Sierra Leone</div>
-                                    <div>Singapore</div>
-                                    <div>Slovakia</div>
-                                    <div>Slovenia</div>
-                                    <div>Solomon Islands</div>
-                                    <div>Somalia</div>
-                                    <div>South Africa</div>
-                                    <div>South Georgia and the South Sandwich Islands</div>
-                                    <div>Spain</div>
-                                    <div>Sri Lanka</div>
-                                    <div>Sudan</div>
-                                    <div>Suriname</div>
-                                    <div>Svalbard and Jan Mayen</div>
-                                    <div>Swaziland</div>
-                                    <div>Sweden</div>
-                                    <div>Switzerland</div>
-                                    <div>Syrian Arab Republic</div>
-                                    <div>Taiwan</div>
-                                    <div>Tajikistan</div>
-                                    <div>Tanzania, United Republic of</div>
-                                    <div>Thailand</div>
-                                    <div>Timor-Leste</div>
-                                    <div>Togo</div>
-                                    <div>Tokelau</div>
-                                    <div>Tonga</div>
-                                    <div>Trinidad and Tobago</div>
-                                    <div>Tunisia</div>
-                                    <div>Turkey</div>
-                                    <div>Turkmenistan</div>
-                                    <div>Turks and Caicos Islands</div>
-                                    <div>Tuvalu</div>
-                                    <div>Uganda</div>
-                                    <div>Ukraine</div>
-                                    <div>United Arab Emirates</div>
-                                    <div>United Kingdom</div>
-                                    <div>United States</div>
-                                    <div>United States Minor Outlying Islands</div>
-                                    <div>Uruguay</div>
-                                    <div>Uzbekistan</div>
-                                    <div>Vanuatu</div>
-                                    <div>Venezuela</div>
-                                    <div>Vietnam</div>
-                                    <div>Virgin Islands, British</div>
-                                    <div>Virgin Islands, U.S"</div>
-                                    <div>Wallis and Futuna</div>
-                                    <div>Western Sahara</div>
-                                    <div>Yemen</div>
-                                    <div>Zambia</div>
-                                    <div>Zimbabwe</div>
-                                </div> --}}
+                            <!------------------------------------------------------------------->
+
                             <select wire:model="individual_billing_country" class="select">
                                 <option value="Afghanistan">Afghanistan</option>
                                 <option value="Åland Islands">Åland Islands</option>
@@ -641,13 +430,17 @@
                                 <option value="Zambia">Zambia</option>
                                 <option value="Zimbabwe">Zimbabwe</option>
                             </select>
-                            {{-- </div> --}}
                             <!---------------------------------------------------->
-                            <div class="checkout__item">
+                            {{-- <div class="checkout__item">
                                 <input type="text" wire:model="individual_billing_county" placeholder="Judet">
+                            </div> --}}
+                            <div class="checkout__item checkout__item--required" id="individualShippingCounty">
+                                <input type="text" name="individualShippingCounty"
+                                    placeholder="Individual Shipping County" autocomplete="county" required>
+                                <span></span>
                             </div>
                             <!---------------------------------------------------->
-                            <div class="checkout__item">
+                            {{-- <div class="checkout__item">
                                 <input type="text" wire:model="individual_billing_city"
                                     placeholder="Localitate (oras, comuna sau sat)">
                                 <span>
@@ -655,9 +448,14 @@
                                         {{ $message }}
                                     @enderror
                                 </span>
+                            </div> --}}
+                            <div class="checkout__item checkout__item--required" id="individualShippingCity">
+                                <input type="text" name="individualShippingCity"
+                                    placeholder="Individual Shipping City" autocomplete="city" required>
+                                <span></span>
                             </div>
                             <!---------------------------------------------------->
-                            <div class="checkout__item">
+                            {{-- <div class="checkout__item">
                                 <input type="text" placeholder="Post Code" wire:model="individual_billing_zipcode"
                                     placeholder="Cod Postal">
                                 <span>
@@ -665,6 +463,11 @@
                                         {{ $message }}
                                     @enderror
                                 </span>
+                            </div> --}}
+                            <div class="checkout__item checkout__item--required" id="individualShippingPostal">
+                                <input type="text" name="individualShippingPostal"
+                                    placeholder="Individual Shipping Postal Code" autocomplete="postal-code" required>
+                                <span></span>
                             </div>
                             <!----------- End Checkout List of Items ------------->
                             <!---------------------------------------------------->
@@ -690,40 +493,61 @@
                             <!----------- End Checkout Header Name ------------->
                             <!---------------------------------------------------->
                             <!------------- Checkout List of Items --------------->
-                            <div class="checkout__item">
+                            {{-- <div class="checkout__item">
                                 <input type="text" wire:model="individual_shipping_first" placeholder="Nume">
                                 <span>
                                     @error("individual_shipping_first")
                                         {{ $message }}
                                     @enderror
                                 </span>
+                            </div> --}}
+                            <div class="checkout__item checkout__item--required" id="individualBillingFirstName">
+                                <input type="text" name="individualBillingFirstName"
+                                    placeholder="Individual Billing First Name" autocomplete="given-name" required>
+                                <span></span>
                             </div>
                             <!---------------------------------------------------->
-                            <div class="checkout__item">
+                            {{-- <div class="checkout__item">
                                 <input type="text" wire:model="individual_shipping_last" placeholder="Prenume">
                                 <span>
                                     @error("individual_shipping_last")
                                         {{ $message }}
                                     @enderror
                                 </span>
+                            </div> --}}
+                            <div class="checkout__item checkout__item--required" id="individualBillingLastName">
+                                <input type="text" name="individualBillingLastName"
+                                    placeholder="Individual Billing Last Name" autocomplete="family-name" required>
+                                <span></span>
                             </div>
                             <!---------------------------------------------------->
-                            <div class="checkout__item">
+                            {{-- <div class="checkout__item">
                                 <input type="tel" wire:model="individual_shipping_phone" placeholder="Telefon">
                                 <span>
                                     @error("individual_shipping_phone")
                                         {{ $message }}
                                     @enderror
                                 </span>
+                            </div> --}}
+                            <div class="checkout__item checkout__item--required" id="individualBillingEmail">
+                                <input type="email" name="individualBillingEmail"
+                                    placeholder="Individual Billing Email" autocomplete="email" required>
+                                <span></span>
                             </div>
                             <!---------------------------------------------------->
-                            <div class="checkout__item">
+                            {{-- <div class="checkout__item">
                                 <input type="email" wire:model="individual_shipping_email" placeholder="Email">
                                 <span>
                                     @error("individual_shipping_email")
                                         {{ $message }}
                                     @enderror
                                 </span>
+                            </div> --}}
+                            <div class="checkout__item checkout__item--required" id="individualBillingPhone">
+                                <input type="tel" name="individualBillingPhone"
+                                    placeholder="Individual Billing Phone Number" autocomplete="tel" pattern="[0-9]*"
+                                    inputmode="numeric" required>
+                                <span></span>
                             </div>
                             <!----------- End Checkout List of Items ------------->
                             <!---------------------------------------------------->
@@ -741,264 +565,30 @@
                             <!----------- End Checkout Header Name ------------->
                             <!---------------------------------------------------->
                             <!------------- Checkout List of Items --------------->
-                            <div class="checkout__item">
+                            {{-- <div class="checkout__item">
                                 <input type="text" wire:model="individual_shipping_address1"
                                     placeholder="Address 1*">
                                 @error("individual_shipping_address1")
                                     {{ $message }}
                                 @enderror
+                            </div> --}}
+                            <div class="checkout__item checkout__item--required" id="individualBillingAddress">
+                                <input type="text" name="individualBillingAddress"
+                                    placeholder="Individual Billing Address" autocomplete="street-address" required>
+                                <span></span>
                             </div>
                             <!---------------------------------------------------->
-                            <div class="checkout__item">
+                            {{-- <div class="checkout__item">
                                 <input type="text" wire:model="individual_shipping_address2"
                                     placeholder="Address 2 (optional)">
+                            </div> --}}
+                            <div class="checkout__item" id="individualBillingAddress2">
+                                <input type="text" name="individualBillingAddress2"
+                                    placeholder="Individual Billing Address 2 (optional)"
+                                    autocomplete="address-level2">
+                                <span></span>
                             </div>
                             <!---------------------------------------------------->
-
-                            {{-- <div class="custom-select">
-                                <div class="select-selected">{{ $individual_shipping_country }}</div>
-                                <div class="select-items">
-                                    <div>Afghanistan</div>
-                                    <div>Åland Islands</div>
-                                    <div>Albania</div>
-                                    <div>Algeria</div>
-                                    <div>American Samoa</div>
-                                    <div>Andorra</div>
-                                    <div>Angola</div>
-                                    <div>Anguilla</div>
-                                    <div>Antarctica</div>
-                                    <div>Antigua and Barbuda</div>
-                                    <div>Argentina</div>
-                                    <div>Armenia</div>
-                                    <div>Aruba</div>
-                                    <div>Australia</div>
-                                    <div>Austria</div>
-                                    <div>Azerbaijan</div>
-                                    <div>Bahamas</div>
-                                    <div>Bahrain</div>
-                                    <div>Bangladesh</div>
-                                    <div>Barbados</div>
-                                    <div>Belarus</div>
-                                    <div>Belgium</div>
-                                    <div>Belize</div>
-                                    <div>Benin</div>
-                                    <div>Bermuda</div>
-                                    <div>Bhutan</div>
-                                    <div>Bolivia</div>
-                                    <div>Bosnia and Herzegovina</div>
-                                    <div>Botswana</div>
-                                    <div>Bouvet Island</div>
-                                    <div>Brazil</div>
-                                    <div>British Indian Ocean Territory</div>
-                                    <div>Brunei Darussalam</div>
-                                    <div>Bulgaria</div>
-                                    <div>Burkina Faso</div>
-                                    <div>Burundi</div>
-                                    <div>Cambodia</div>
-                                    <div>Cameroon</div>
-                                    <div>Canada</div>
-                                    <div>Cape Verde</div>
-                                    <div>Cayman Islands</div>
-                                    <div>Central African Republic</div>
-                                    <div>Chad</div>
-                                    <div>Chile</div>
-                                    <div>China</div>
-                                    <div>Christmas Island</div>
-                                    <div>Cocos (Keeling) Islands</div>
-                                    <div>Colombia</div>
-                                    <div>Comoros</div>
-                                    <div>Congo</div>
-                                    <div>Congo, The Democratic Republic of the</div>
-                                    <div>Cook Islands</div>
-                                    <div>Costa Rica</div>
-                                    <div>Croatia</div>
-                                    <div>Cuba</div>
-                                    <div>Cyprus</div>
-                                    <div>Czech Republic</div>
-                                    <div>Denmark</div>
-                                    <div>Djibouti</div>
-                                    <div>Dominica</div>
-                                    <div>Dominican Republic</div>
-                                    <div>Ecuador</div>
-                                    <div>Egypt</div>
-                                    <div>El Salvador</div>
-                                    <div>Equatorial Guinea</div>
-                                    <div>Eritrea</div>
-                                    <div>Estonia</div>
-                                    <div>Ethiopia</div>
-                                    <div>Falkland Islands (Malvinas)</div>
-                                    <div>Faroe Islands</div>
-                                    <div>Fiji</div>
-                                    <div>Finland</div>
-                                    <div>France</div>
-                                    <div>French Guiana</div>
-                                    <div>French Polynesia</div>
-                                    <div>French Southern Territories</div>
-                                    <div>Gabon</div>
-                                    <div>Gambia</div>
-                                    <div>Georgia</div>
-                                    <div>Germany</div>
-                                    <div>Ghana</div>
-                                    <div>Gibraltar</div>
-                                    <div>Greece</div>
-                                    <div>Greenland</div>
-                                    <div>Grenada</div>
-                                    <div>Guadeloupe</div>
-                                    <div>Guam</div>
-                                    <div>Guatemala</div>
-                                    <div>Guernsey</div>
-                                    <div>Guinea</div>
-                                    <div>Guinea-Bissau</div>
-                                    <div>Guyana</div>
-                                    <div>Haiti</div>
-                                    <div>Heard Island and Mcdonald Islands</div>
-                                    <div>Holy See (Vatican City State)</div>
-                                    <div>Honduras</div>
-                                    <div>Hong Kong</div>
-                                    <div>Hungary</div>
-                                    <div>Iceland</div>
-                                    <div>India</div>
-                                    <div>Indonesia</div>
-                                    <div>Iran, Islamic Republic Of</div>
-                                    <div>Iraq</div>
-                                    <div>Ireland</div>
-                                    <div>Isle of Man</div>
-                                    <div>Israel</div>
-                                    <div>Italy</div>
-                                    <div>Jamaica</div>
-                                    <div>Japan</div>
-                                    <div>Jersey</div>
-                                    <div>Jordan</div>
-                                    <div>Kazakhstan</div>
-                                    <div>Kenya</div>
-                                    <div>Kiribati</div>
-                                    <div>Korea, Republic of</div>
-                                    <div>Kuwait</div>
-                                    <div>Kyrgyzstan</div>
-                                    <div>Latvia</div>
-                                    <div>Lebanon</div>
-                                    <div>Lesotho</div>
-                                    <div>Liberia</div>
-                                    <div>Libyan Arab Jamahiriya</div>
-                                    <div>Liechtenstein</div>
-                                    <div>Lithuania</div>
-                                    <div>Luxembourg</div>
-                                    <div>Macao</div>
-                                    <div>North Macedonia</div>
-                                    <div>Madagascar</div>
-                                    <div>Malawi</div>
-                                    <div>Malaysia</div>
-                                    <div>Maldives</div>
-                                    <div>Mali</div>
-                                    <div>Malta</div>
-                                    <div>Marshall Islands</div>
-                                    <div>Martinique</div>
-                                    <div>Mauritania</div>
-                                    <div>Mauritius</div>
-                                    <div>Mayotte</div>
-                                    <div>Mexico</div>
-                                    <div>Micronesia, Federated States of</div>
-                                    <div>Republic of Moldova</div>
-                                    <div>Monaco</div>
-                                    <div>Mongolia</div>
-                                    <div>Montserrat</div>
-                                    <div>Morocco</div>
-                                    <div>Mozambique</div>
-                                    <div>Myanmar</div>
-                                    <div>Namibia</div>
-                                    <div>Nauru</div>
-                                    <div>Nepal</div>
-                                    <div>Netherlands</div>
-                                    <div>Netherlands Antilles</div>
-                                    <div>New Caledonia</div>
-                                    <div>New Zealand</div>
-                                    <div>Nicaragua</div>
-                                    <div>Niger</div>
-                                    <div>Nigeria</div>
-                                    <div>Niue</div>
-                                    <div>Norfolk Island</div>
-                                    <div>Northern Mariana Islands</div>
-                                    <div>Norway</div>
-                                    <div>Oman</div>
-                                    <div>Pakistan</div>
-                                    <div>Palau</div>
-                                    <div>Palestinian Territory, Occupied</div>
-                                    <div>Panama</div>
-                                    <div>Papua New Guinea</div>
-                                    <div>Paraguay</div>
-                                    <div>Peru</div>
-                                    <div>Philippines</div>
-                                    <div>Pitcairn Islands</div>
-                                    <div>Poland</div>
-                                    <div>Portugal</div>
-                                    <div>Puerto Rico</div>
-                                    <div>Qatar</div>
-                                    <div>Reunion</div>
-                                    <div>Romania</div>
-                                    <div>Russian Federation</div>
-                                    <div>Rwanda</div>
-                                    <div>Saint Helena</div>
-                                    <div>Saint Kitts and Nevis</div>
-                                    <div>Saint Lucia</div>
-                                    <div>Saint Pierre and Miquelon</div>
-                                    <div>Saint Vincent and the Grenadines</div>
-                                    <div>Samoa</div>
-                                    <div>San Marino</div>
-                                    <div>Sao Tome and Principe</div>
-                                    <div>Saudi Arabia</div>
-                                    <div>Senegal</div>
-                                    <div>Serbia and Montenegro</div>
-                                    <div>Seychelles</div>
-                                    <div>Sierra Leone</div>
-                                    <div>Singapore</div>
-                                    <div>Slovakia</div>
-                                    <div>Slovenia</div>
-                                    <div>Solomon Islands</div>
-                                    <div>Somalia</div>
-                                    <div>South Africa</div>
-                                    <div>South Georgia and the South Sandwich Islands</div>
-                                    <div>Spain</div>
-                                    <div>Sri Lanka</div>
-                                    <div>Sudan</div>
-                                    <div>Suriname</div>
-                                    <div>Svalbard and Jan Mayen</div>
-                                    <div>Swaziland</div>
-                                    <div>Sweden</div>
-                                    <div>Switzerland</div>
-                                    <div>Syrian Arab Republic</div>
-                                    <div>Taiwan</div>
-                                    <div>Tajikistan</div>
-                                    <div>Tanzania, United Republic of</div>
-                                    <div>Thailand</div>
-                                    <div>Timor-Leste</div>
-                                    <div>Togo</div>
-                                    <div>Tokelau</div>
-                                    <div>Tonga</div>
-                                    <div>Trinidad and Tobago</div>
-                                    <div>Tunisia</div>
-                                    <div>Turkey</div>
-                                    <div>Turkmenistan</div>
-                                    <div>Turks and Caicos Islands</div>
-                                    <div>Tuvalu</div>
-                                    <div>Uganda</div>
-                                    <div>Ukraine</div>
-                                    <div>United Arab Emirates</div>
-                                    <div>United Kingdom</div>
-                                    <div>United States</div>
-                                    <div>United States Minor Outlying Islands</div>
-                                    <div>Uruguay</div>
-                                    <div>Uzbekistan</div>
-                                    <div>Vanuatu</div>
-                                    <div>Venezuela</div>
-                                    <div>Vietnam</div>
-                                    <div>Virgin Islands, British</div>
-                                    <div>Virgin Islands, U.S"</div>
-                                    <div>Wallis and Futuna</div>
-                                    <div>Western Sahara</div>
-                                    <div>Yemen</div>
-                                    <div>Zambia</div>
-                                    <div>Zimbabwe</div>
-                                </div> --}}
                             <select wire:model="individual_shipping_country" class="select">
                                 <option value="Afghanistan">Afghanistan</option>
                                 <option value="Åland Islands">Åland Islands</option>
@@ -1250,13 +840,17 @@
                                 <option value="Zambia">Zambia</option>
                                 <option value="Zimbabwe">Zimbabwe</option>
                             </select>
-                            {{-- </div> --}}
                             <!---------------------------------------------------->
-                            <div class="checkout__item">
+                            {{-- <div class="checkout__item">
                                 <input type="text" wire:model="individual_shipping_county" placeholder="Judet">
+                            </div> --}}
+                            <div class="checkout__item checkout__item--required" id="individualBillingCounty">
+                                <input type="text" name="individualBillingCounty"
+                                    placeholder="Individual Billing County" autocomplete="county" required>
+                                <span></span>
                             </div>
                             <!---------------------------------------------------->
-                            <div class="checkout__item">
+                            {{-- <div class="checkout__item">
                                 <input type="text" wire:model="individual_shipping_city"
                                     placeholder="Localitate (oras, comuna sau sat)">
                                 <span>
@@ -1264,9 +858,14 @@
                                         {{ $message }}
                                     @enderror
                                 </span>
+                            </div> --}}
+                            <div class="checkout__item checkout__item--required" id="individualBillingCity">
+                                <input type="text" name="individualBillingCity"
+                                    placeholder="Individual Billing City" autocomplete="city" required>
+                                <span></span>
                             </div>
                             <!---------------------------------------------------->
-                            <div class="checkout__item">
+                            {{-- <div class="checkout__item">
                                 <input type="text" wire:model="individual_shipping_zipcode"
                                     placeholder="Cod Postal">
                                 <span>
@@ -1274,6 +873,11 @@
                                         {{ $message }}
                                     @enderror
                                 </span>
+                            </div> --}}
+                            <div class="checkout__item checkout__item--required" id="individualBillingPostal">
+                                <input type="text" name="individualBillingPostal"
+                                    placeholder="Individual Billing Postal Code" autocomplete="postal-code" required>
+                                <span></span>
                             </div>
                             <!----------- End Checkout List of Items ------------->
                             <!---------------------------------------------------->
@@ -1296,43 +900,64 @@
                             <!----------- End Checkout Header Name ------------->
                             <!---------------------------------------------------->
                             <!------------- Checkout List of Items --------------->
-                            <div class="checkout__item">
+                            {{-- <div class="checkout__item">
                                 <input type="text" wire:model="juridic_billing_first" placeholder="Nume">
                                 <span>
                                     @error("juridic_billing_first")
                                         {{ $message }}
                                     @enderror
                                 </span>
+                            </div> --}}
+                            <div class="checkout__item checkout__item--required" id="juridicShippingFirstName">
+                                <input type="text" name="individualShippingFirstName"
+                                    placeholder="Juridic Shipping First Name" autocomplete="given-name" required>
+                                <span></span>
                             </div>
                             <!---------------------------------------------------->
-                            <div class="checkout__item">
+                            {{-- <div class="checkout__item">
                                 <input type="text" wire:model="juridic_billing_last" placeholder="Prenume">
                                 <span>
                                     @error("juridic_billing_last")
                                         {{ $message }}
                                     @enderror
                                 </span>
+                            </div> --}}
+                            <div class="checkout__item checkout__item--required" id="juridicShippingLastName">
+                                <input type="text" name="juridicShippingLastName"
+                                    placeholder="Juridic Shipping Last Name" autocomplete="family-name" required>
+                                <span></span>
                             </div>
                             <!---------------------------------------------------->
-                            <div class="checkout__item">
+                            {{-- <div class="checkout__item">
                                 <input type="tel" wire:model="juridic_billing_phone" placeholder="Telefon">
                                 <span>
                                     @error("juridic_billing_phone")
                                         {{ $message }}
                                     @enderror
                                 </span>
+                            </div> --}}
+                            <div class="checkout__item checkout__item--required" id="juridicShippingPhone">
+                                <input type="tel" name="juridicShippingPhone"
+                                    placeholder="Juridic Shipping Phone Number" autocomplete="tel" pattern="[0-9]*"
+                                    inputmode="numeric" required>
+                                <span></span>
                             </div>
                             <!---------------------------------------------------->
-                            <div class="checkout__item">
+                            {{-- <div class="checkout__item">
                                 <input type="email" wire:model="juridic_billing_email" placeholder="Email">
                                 <span>
                                     @error("juridic_billing_email")
                                         {{ $message }}
                                     @enderror
                                 </span>
+                            </div> --}}
+                            <div class="checkout__item checkout__item--required" id="juridicShippingEmail">
+                                <input type="email" name="juridicShippingEmail"
+                                    placeholder="Juridic Shipping Email" autocomplete="email" required>
+                                <span></span>
                             </div>
                             <!---------------------------------------------------->
-                            <div class="checkout__item">
+                            {{-- <div class="checkout__item">
                                 <input type="text" wire:model="juridic_billing_company_name"
                                     placeholder="Denumirea Companiei">
                                 <span>
@@ -1340,9 +965,14 @@
                                         {{ $message }}
                                     @enderror
                                 </span>
+                            </div> --}}
+                            <div class="checkout__item checkout__item--required" id="companyName">
+                                <input type="text" name="companyName" placeholder="Juridic Shipping Company name"
+                                    autocomplete="organization" required>
+                                <span></span>
                             </div>
                             <!---------------------------------------------------->
-                            <div class="checkout__item">
+                            {{-- <div class="checkout__item">
                                 <input type="text" wire:model="juridic_billing_registration_code"
                                     placeholder="Cod de înregistrare">
                                 <span>
@@ -1350,9 +980,15 @@
                                         {{ $message }}
                                     @enderror
                                 </span>
+                            </div> --}}
+                            <div class="checkout__item checkout__item--required" id="registerCode">
+                                <input type="text" name="registerCode"
+                                    placeholder="Juridic Shipping Register Code" autocomplete="organization-code"
+                                    required>
+                                <span></span>
                             </div>
                             <!---------------------------------------------------->
-                            <div class="checkout__item">
+                            {{-- <div class="checkout__item">
                                 <input type="text" wire:model="juridic_billing_registration_number"
                                     placeholder="Număr de înregistrare.">
                                 <span>
@@ -1360,9 +996,15 @@
                                         {{ $message }}
                                     @enderror
                                 </span>
+                            </div> --}}
+                            <div class="checkout__item checkout__item--required" id="registerNumber">
+                                <input type="text" name="registerNumber"
+                                    placeholder="Juridic Shipping Register Number" autocomplete="organization-number"
+                                    required>
+                                <span></span>
                             </div>
                             <!---------------------------------------------------->
-                            <div class="checkout__item">
+                            {{-- <div class="checkout__item">
                                 <input type="text" wire:model="juridic_billing_bank"
                                     placeholder="Denumirea Bancii">
                                 <span>
@@ -1370,15 +1012,25 @@
                                         {{ $message }}
                                     @enderror
                                 </span>
+                            </div> --}}
+                            <div class="checkout__item" id="bankName">
+                                <input type="text" name="bankName" placeholder="Juridic Shipping Name of Bank"
+                                    autocomplete="bank-name">
+                                <span></span>
                             </div>
                             <!---------------------------------------------------->
-                            <div class="checkout__item">
+                            {{-- <div class="checkout__item">
                                 <input type="text" wire:model="juridic_billing_account" placeholder="Cont IBAN">
                                 <span>
                                     @error("juridic_billing_account")
                                         {{ $message }}
                                     @enderror
                                 </span>
+                            </div> --}}
+                            <div class="checkout__item" id="IBAN">
+                                <input type="text" name="IBAN" placeholder="Juridic Shipping IBAN"
+                                    autocomplete="IBAN">
+                                <span></span>
                             </div>
                             <!----------- End Checkout List of Items ------------->
                             <!---------------------------------------------------->
@@ -1396,264 +1048,30 @@
                             <!----------- End Checkout Header Name ------------->
                             <!---------------------------------------------------->
                             <!------------- Checkout List of Items --------------->
-                            <div class="checkout__item">
+                            {{-- <div class="checkout__item">
                                 <input type="text" wire:model="juridic_billing_address1" placeholder="Address 1*">
                                 <span>
                                     @error("juridic_billing_address1")
                                         {{ $message }}
                                     @enderror
                                 </span>
+                            </div> --}}
+                            <div class="checkout__item checkout__item--required" id="juridicShippingAddress">
+                                <input type="text" name="juridicShippingAddress"
+                                    placeholder="Juridic Shipping Address 1" autocomplete="street-address" required>
+                                <span></span>
                             </div>
                             <!---------------------------------------------------->
-                            <div class="checkout__item">
+                            {{-- <div class="checkout__item">
                                 <input type="text" wire:model="juridic_billing_address2"
                                     placeholder="Address 2 (optional)">
+                            </div> --}}
+                            <div class="checkout__item" id="juridicShippingAddress2">
+                                <input type="text" name="juridicShippingAddress2"
+                                    placeholder="Juridic Shipping Address 2" autocomplete="address-level2" required>
+                                <span></span>
                             </div>
                             <!---------------------------------------------------->
-                            {{-- <div class="custom-select">
-                                <div class="select-selected">{{ $juridic_billing_country }}</div>
-                                <div class="select-items">
-                                    <div>Afghanistan</div>
-                                    <div>Åland Islands</div>
-                                    <div>Albania</div>
-                                    <div>Algeria</div>
-                                    <div>American Samoa</div>
-                                    <div>Andorra</div>
-                                    <div>Angola</div>
-                                    <div>Anguilla</div>
-                                    <div>Antarctica</div>
-                                    <div>Antigua and Barbuda</div>
-                                    <div>Argentina</div>
-                                    <div>Armenia</div>
-                                    <div>Aruba</div>
-                                    <div>Australia</div>
-                                    <div>Austria</div>
-                                    <div>Azerbaijan</div>
-                                    <div>Bahamas</div>
-                                    <div>Bahrain</div>
-                                    <div>Bangladesh</div>
-                                    <div>Barbados</div>
-                                    <div>Belarus</div>
-                                    <div>Belgium</div>
-                                    <div>Belize</div>
-                                    <div>Benin</div>
-                                    <div>Bermuda</div>
-                                    <div>Bhutan</div>
-                                    <div>Bolivia</div>
-                                    <div>Bosnia and Herzegovina</div>
-                                    <div>Botswana</div>
-                                    <div>Bouvet Island</div>
-                                    <div>Brazil</div>
-                                    <div>British Indian Ocean Territory</div>
-                                    <div>Brunei Darussalam</div>
-                                    <div>Bulgaria</div>
-                                    <div>Burkina Faso</div>
-                                    <div>Burundi</div>
-                                    <div>Cambodia</div>
-                                    <div>Cameroon</div>
-                                    <div>Canada</div>
-                                    <div>Cape Verde</div>
-                                    <div>Cayman Islands</div>
-                                    <div>Central African Republic</div>
-                                    <div>Chad</div>
-                                    <div>Chile</div>
-                                    <div>China</div>
-                                    <div>Christmas Island</div>
-                                    <div>Cocos (Keeling) Islands</div>
-                                    <div>Colombia</div>
-                                    <div>Comoros</div>
-                                    <div>Congo</div>
-                                    <div>Congo, The Democratic Republic of the</div>
-                                    <div>Cook Islands</div>
-                                    <div>Costa Rica</div>
-                                    <div>Croatia</div>
-                                    <div>Cuba</div>
-                                    <div>Cyprus</div>
-                                    <div>Czech Republic</div>
-                                    <div>Denmark</div>
-                                    <div>Djibouti</div>
-                                    <div>Dominica</div>
-                                    <div>Dominican Republic</div>
-                                    <div>Ecuador</div>
-                                    <div>Egypt</div>
-                                    <div>El Salvador</div>
-                                    <div>Equatorial Guinea</div>
-                                    <div>Eritrea</div>
-                                    <div>Estonia</div>
-                                    <div>Ethiopia</div>
-                                    <div>Falkland Islands (Malvinas)</div>
-                                    <div>Faroe Islands</div>
-                                    <div>Fiji</div>
-                                    <div>Finland</div>
-                                    <div>France</div>
-                                    <div>French Guiana</div>
-                                    <div>French Polynesia</div>
-                                    <div>French Southern Territories</div>
-                                    <div>Gabon</div>
-                                    <div>Gambia</div>
-                                    <div>Georgia</div>
-                                    <div>Germany</div>
-                                    <div>Ghana</div>
-                                    <div>Gibraltar</div>
-                                    <div>Greece</div>
-                                    <div>Greenland</div>
-                                    <div>Grenada</div>
-                                    <div>Guadeloupe</div>
-                                    <div>Guam</div>
-                                    <div>Guatemala</div>
-                                    <div>Guernsey</div>
-                                    <div>Guinea</div>
-                                    <div>Guinea-Bissau</div>
-                                    <div>Guyana</div>
-                                    <div>Haiti</div>
-                                    <div>Heard Island and Mcdonald Islands</div>
-                                    <div>Holy See (Vatican City State)</div>
-                                    <div>Honduras</div>
-                                    <div>Hong Kong</div>
-                                    <div>Hungary</div>
-                                    <div>Iceland</div>
-                                    <div>India</div>
-                                    <div>Indonesia</div>
-                                    <div>Iran, Islamic Republic Of</div>
-                                    <div>Iraq</div>
-                                    <div>Ireland</div>
-                                    <div>Isle of Man</div>
-                                    <div>Israel</div>
-                                    <div>Italy</div>
-                                    <div>Jamaica</div>
-                                    <div>Japan</div>
-                                    <div>Jersey</div>
-                                    <div>Jordan</div>
-                                    <div>Kazakhstan</div>
-                                    <div>Kenya</div>
-                                    <div>Kiribati</div>
-                                    <div>Korea, Republic of</div>
-                                    <div>Kuwait</div>
-                                    <div>Kyrgyzstan</div>
-                                    <div>Latvia</div>
-                                    <div>Lebanon</div>
-                                    <div>Lesotho</div>
-                                    <div>Liberia</div>
-                                    <div>Libyan Arab Jamahiriya</div>
-                                    <div>Liechtenstein</div>
-                                    <div>Lithuania</div>
-                                    <div>Luxembourg</div>
-                                    <div>Macao</div>
-                                    <div>North Macedonia</div>
-                                    <div>Madagascar</div>
-                                    <div>Malawi</div>
-                                    <div>Malaysia</div>
-                                    <div>Maldives</div>
-                                    <div>Mali</div>
-                                    <div>Malta</div>
-                                    <div>Marshall Islands</div>
-                                    <div>Martinique</div>
-                                    <div>Mauritania</div>
-                                    <div>Mauritius</div>
-                                    <div>Mayotte</div>
-                                    <div>Mexico</div>
-                                    <div>Micronesia, Federated States of</div>
-                                    <div>Republic of Moldova</div>
-                                    <div>Monaco</div>
-                                    <div>Mongolia</div>
-                                    <div>Montserrat</div>
-                                    <div>Morocco</div>
-                                    <div>Mozambique</div>
-                                    <div>Myanmar</div>
-                                    <div>Namibia</div>
-                                    <div>Nauru</div>
-                                    <div>Nepal</div>
-                                    <div>Netherlands</div>
-                                    <div>Netherlands Antilles</div>
-                                    <div>New Caledonia</div>
-                                    <div>New Zealand</div>
-                                    <div>Nicaragua</div>
-                                    <div>Niger</div>
-                                    <div>Nigeria</div>
-                                    <div>Niue</div>
-                                    <div>Norfolk Island</div>
-                                    <div>Northern Mariana Islands</div>
-                                    <div>Norway</div>
-                                    <div>Oman</div>
-                                    <div>Pakistan</div>
-                                    <div>Palau</div>
-                                    <div>Palestinian Territory, Occupied</div>
-                                    <div>Panama</div>
-                                    <div>Papua New Guinea</div>
-                                    <div>Paraguay</div>
-                                    <div>Peru</div>
-                                    <div>Philippines</div>
-                                    <div>Pitcairn Islands</div>
-                                    <div>Poland</div>
-                                    <div>Portugal</div>
-                                    <div>Puerto Rico</div>
-                                    <div>Qatar</div>
-                                    <div>Reunion</div>
-                                    <div>Romania</div>
-                                    <div>Russian Federation</div>
-                                    <div>Rwanda</div>
-                                    <div>Saint Helena</div>
-                                    <div>Saint Kitts and Nevis</div>
-                                    <div>Saint Lucia</div>
-                                    <div>Saint Pierre and Miquelon</div>
-                                    <div>Saint Vincent and the Grenadines</div>
-                                    <div>Samoa</div>
-                                    <div>San Marino</div>
-                                    <div>Sao Tome and Principe</div>
-                                    <div>Saudi Arabia</div>
-                                    <div>Senegal</div>
-                                    <div>Serbia and Montenegro</div>
-                                    <div>Seychelles</div>
-                                    <div>Sierra Leone</div>
-                                    <div>Singapore</div>
-                                    <div>Slovakia</div>
-                                    <div>Slovenia</div>
-                                    <div>Solomon Islands</div>
-                                    <div>Somalia</div>
-                                    <div>South Africa</div>
-                                    <div>South Georgia and the South Sandwich Islands</div>
-                                    <div>Spain</div>
-                                    <div>Sri Lanka</div>
-                                    <div>Sudan</div>
-                                    <div>Suriname</div>
-                                    <div>Svalbard and Jan Mayen</div>
-                                    <div>Swaziland</div>
-                                    <div>Sweden</div>
-                                    <div>Switzerland</div>
-                                    <div>Syrian Arab Republic</div>
-                                    <div>Taiwan</div>
-                                    <div>Tajikistan</div>
-                                    <div>Tanzania, United Republic of</div>
-                                    <div>Thailand</div>
-                                    <div>Timor-Leste</div>
-                                    <div>Togo</div>
-                                    <div>Tokelau</div>
-                                    <div>Tonga</div>
-                                    <div>Trinidad and Tobago</div>
-                                    <div>Tunisia</div>
-                                    <div>Turkey</div>
-                                    <div>Turkmenistan</div>
-                                    <div>Turks and Caicos Islands</div>
-                                    <div>Tuvalu</div>
-                                    <div>Uganda</div>
-                                    <div>Ukraine</div>
-                                    <div>United Arab Emirates</div>
-                                    <div>United Kingdom</div>
-                                    <div>United States</div>
-                                    <div>United States Minor Outlying Islands</div>
-                                    <div>Uruguay</div>
-                                    <div>Uzbekistan</div>
-                                    <div>Vanuatu</div>
-                                    <div>Venezuela</div>
-                                    <div>Vietnam</div>
-                                    <div>Virgin Islands, British</div>
-                                    <div>Virgin Islands, U.S"</div>
-                                    <div>Wallis and Futuna</div>
-                                    <div>Western Sahara</div>
-                                    <div>Yemen</div>
-                                    <div>Zambia</div>
-                                    <div>Zimbabwe</div>
-                                </div> --}}
                             <select wire:model="juridic_billing_country" class="select">
                                 <option value="Afghanistan">Afghanistan</option>
                                 <option value="Åland Islands">Åland Islands</option>
@@ -1905,13 +1323,17 @@
                                 <option value="Zambia">Zambia</option>
                                 <option value="Zimbabwe">Zimbabwe</option>
                             </select>
-                            {{-- </div> --}}
                             <!---------------------------------------------------->
-                            <div class="checkout__item">
+                            {{-- <div class="checkout__item">
                                 <input type="text" wire:model="juridic_billing_county" placeholder="Judet">
+                            </div> --}}
+                            <div class="checkout__item checkout__item--required" id="juridicShippingCounty">
+                                <input type="text" name="juridicShippingCounty"
+                                    placeholder="Juridic Shipping County" autocomplete="county" required>
+                                <span></span>
                             </div>
                             <!---------------------------------------------------->
-                            <div class="checkout__item">
+                            {{-- <div class="checkout__item">
                                 <input type="text" wire:model="juridic_billing_city"
                                     placeholder="Localitate (oras, comuna sau sat)">
                                 <span>
@@ -1919,15 +1341,25 @@
                                         {{ $message }}
                                     @enderror
                                 </span>
+                            </div> --}}
+                            <div class="checkout__item checkout__item--required" id="juridicShippingCity">
+                                <input type="text" name="juridicShippingCity" placeholder="Juridic Shipping City"
+                                    autocomplete="city" required>
+                                <span></span>
                             </div>
                             <!---------------------------------------------------->
-                            <div class="checkout__item">
+                            {{-- <div class="checkout__item">
                                 <input type="text" wire:model="juridic_billing_zipcode" placeholder="Cod Postal">
                                 <span>
                                     @error("juridic_billing_zipcode")
                                         {{ $message }}
                                     @enderror
                                 </span>
+                            </div> --}}
+                            <div class="checkout__item checkout__item--required" id="juridicShippingPostal">
+                                <input type="text" name="juridicShippingPostal"
+                                    placeholder="Juridic Shipping Postal Code" autocomplete="postal-code" required>
+                                <span></span>
                             </div>
                             <!----------- End Checkout List of Items ------------->
                             <!---------------------------------------------------->
@@ -1952,42 +1384,60 @@
                             <!----------- End Checkout Header Name ------------->
                             <!---------------------------------------------------->
                             <!------------- Checkout List of Items --------------->
-                            <div class="checkout__item">
+                            {{-- <div class="checkout__item">
                                 <input type="text" wire:model="juridic_shipping_first" placeholder="Nume">
                                 <span>
                                     @error("juridic_shipping_first")
                                         {{ $message }}
                                     @enderror
                                 </span>
+                            </div> --}}
+                            <div class="checkout__item checkout__item--required" id="juridicBillingFirstName">
+                                <input type="text" name="juridicBillingFirstName"
+                                    placeholder="Juridic Billing First Name" autocomplete="given-name" required>
+                                <span></span>
                             </div>
                             <!---------------------------------------------------->
-                            <div class="checkout__item">
+                            {{-- <div class="checkout__item">
                                 <input type="text" wire:model="juridic_shipping_last" placeholder="Prenume">
                                 <span>
                                     @error("juridic_shipping_last")
                                         {{ $message }}
                                     @enderror
                                 </span>
+                            </div> --}}
+                            <div class="checkout__item checkout__item--required" id="juridicBillingLastName">
+                                <input type="text" name="juridicBillingLastName"
+                                    placeholder="Juridic Billing Last Name" autocomplete="family-name" required>
+                                <span></span>
                             </div>
                             <!---------------------------------------------------->
-                            <div class="checkout__item">
+                            {{-- <div class="checkout__item">
                                 <input type="tel" wire:model="juridic_shipping_phone" placeholder="Telefon">
                                 <span>
                                     @error("juridic_shipping_phone")
                                         {{ $message }}
                                     @enderror
                                 </span>
+                            </div> --}}
+                            <div class="checkout__item checkout__item--required" id="juridicBillingPhone">
+                              <input type="tel" name="juridicBillingPhone" placeholder="Juridic Billing Phone Number" autocomplete="tel" pattern="[0-9]*" inputmode="numeric" required>
+                              <span></span>
                             </div>
                             <!---------------------------------------------------->
-                            <div class="checkout__item">
+                            {{-- <div class="checkout__item">
                                 <input type="email" wire:model="juridic_shipping_email" placeholder="Email">
                                 <span>
                                     @error("juridic_shipping_email")
                                         {{ $message }}
                                     @enderror
                                 </span>
+                            </div> --}}
+                            <div class="checkout__item checkout__item--required" id="juridicBillingEmail">
+                                <input type="email" name="juridicBillingEmail" placeholder="Juridic Billing Email"
+                                    autocomplete="email" required>
+                                <span></span>
                             </div>
-
                             <!----------- End Checkout List of Items ------------->
                             <!---------------------------------------------------->
                         </div>
@@ -2004,261 +1454,24 @@
                             <!----------- End Checkout Header Name ------------->
                             <!---------------------------------------------------->
                             <!------------- Checkout List of Items --------------->
-                            <div class="checkout__item">
+                            {{-- <div class="checkout__item">
                                 <input type="text" wire:model="juridic_shipping_address1"
                                     placeholder="Address 1*">
+                            </div> --}}
+                            <div class="checkout__item checkout__item--required" id="juridicBillingAddress">
+                              <input type="text" name="juridicBillingAddress" placeholder="Juridic Billing Address" autocomplete="street-address" required>
+                              <span></span>
                             </div>
                             <!---------------------------------------------------->
-                            <div class="checkout__item">
+                            {{-- <div class="checkout__item">
                                 <input type="text" wire:model="juridic_shipping_address2"
                                     placeholder="Address 2 (optional)">
+                            </div> --}}
+                            <div class="checkout__item" id="juridicBillingAddress2">
+                              <input type="text" name="juridicBillingAddress2" placeholder="Juridic Billing Address 2" autocomplete="address-level2">
+                              <span></span>
                             </div>
                             <!---------------------------------------------------->
-
-                            {{-- <div class="custom-select">
-                                <div class="select-selected">{{ $juridic_shipping_country }}</div>
-                                <div class="select-items">
-                                    <div>Afghanistan</div>
-                                    <div>Åland Islands</div>
-                                    <div>Albania</div>
-                                    <div>Algeria</div>
-                                    <div>American Samoa</div>
-                                    <div>Andorra</div>
-                                    <div>Angola</div>
-                                    <div>Anguilla</div>
-                                    <div>Antarctica</div>
-                                    <div>Antigua and Barbuda</div>
-                                    <div>Argentina</div>
-                                    <div>Armenia</div>
-                                    <div>Aruba</div>
-                                    <div>Australia</div>
-                                    <div>Austria</div>
-                                    <div>Azerbaijan</div>
-                                    <div>Bahamas</div>
-                                    <div>Bahrain</div>
-                                    <div>Bangladesh</div>
-                                    <div>Barbados</div>
-                                    <div>Belarus</div>
-                                    <div>Belgium</div>
-                                    <div>Belize</div>
-                                    <div>Benin</div>
-                                    <div>Bermuda</div>
-                                    <div>Bhutan</div>
-                                    <div>Bolivia</div>
-                                    <div>Bosnia and Herzegovina</div>
-                                    <div>Botswana</div>
-                                    <div>Bouvet Island</div>
-                                    <div>Brazil</div>
-                                    <div>British Indian Ocean Territory</div>
-                                    <div>Brunei Darussalam</div>
-                                    <div>Bulgaria</div>
-                                    <div>Burkina Faso</div>
-                                    <div>Burundi</div>
-                                    <div>Cambodia</div>
-                                    <div>Cameroon</div>
-                                    <div>Canada</div>
-                                    <div>Cape Verde</div>
-                                    <div>Cayman Islands</div>
-                                    <div>Central African Republic</div>
-                                    <div>Chad</div>
-                                    <div>Chile</div>
-                                    <div>China</div>
-                                    <div>Christmas Island</div>
-                                    <div>Cocos (Keeling) Islands</div>
-                                    <div>Colombia</div>
-                                    <div>Comoros</div>
-                                    <div>Congo</div>
-                                    <div>Congo, The Democratic Republic of the</div>
-                                    <div>Cook Islands</div>
-                                    <div>Costa Rica</div>
-                                    <div>Croatia</div>
-                                    <div>Cuba</div>
-                                    <div>Cyprus</div>
-                                    <div>Czech Republic</div>
-                                    <div>Denmark</div>
-                                    <div>Djibouti</div>
-                                    <div>Dominica</div>
-                                    <div>Dominican Republic</div>
-                                    <div>Ecuador</div>
-                                    <div>Egypt</div>
-                                    <div>El Salvador</div>
-                                    <div>Equatorial Guinea</div>
-                                    <div>Eritrea</div>
-                                    <div>Estonia</div>
-                                    <div>Ethiopia</div>
-                                    <div>Falkland Islands (Malvinas)</div>
-                                    <div>Faroe Islands</div>
-                                    <div>Fiji</div>
-                                    <div>Finland</div>
-                                    <div>France</div>
-                                    <div>French Guiana</div>
-                                    <div>French Polynesia</div>
-                                    <div>French Southern Territories</div>
-                                    <div>Gabon</div>
-                                    <div>Gambia</div>
-                                    <div>Georgia</div>
-                                    <div>Germany</div>
-                                    <div>Ghana</div>
-                                    <div>Gibraltar</div>
-                                    <div>Greece</div>
-                                    <div>Greenland</div>
-                                    <div>Grenada</div>
-                                    <div>Guadeloupe</div>
-                                    <div>Guam</div>
-                                    <div>Guatemala</div>
-                                    <div>Guernsey</div>
-                                    <div>Guinea</div>
-                                    <div>Guinea-Bissau</div>
-                                    <div>Guyana</div>
-                                    <div>Haiti</div>
-                                    <div>Heard Island and Mcdonald Islands</div>
-                                    <div>Holy See (Vatican City State)</div>
-                                    <div>Honduras</div>
-                                    <div>Hong Kong</div>
-                                    <div>Hungary</div>
-                                    <div>Iceland</div>
-                                    <div>India</div>
-                                    <div>Indonesia</div>
-                                    <div>Iran, Islamic Republic Of</div>
-                                    <div>Iraq</div>
-                                    <div>Ireland</div>
-                                    <div>Isle of Man</div>
-                                    <div>Israel</div>
-                                    <div>Italy</div>
-                                    <div>Jamaica</div>
-                                    <div>Japan</div>
-                                    <div>Jersey</div>
-                                    <div>Jordan</div>
-                                    <div>Kazakhstan</div>
-                                    <div>Kenya</div>
-                                    <div>Kiribati</div>
-                                    <div>Korea, Republic of</div>
-                                    <div>Kuwait</div>
-                                    <div>Kyrgyzstan</div>
-                                    <div>Latvia</div>
-                                    <div>Lebanon</div>
-                                    <div>Lesotho</div>
-                                    <div>Liberia</div>
-                                    <div>Libyan Arab Jamahiriya</div>
-                                    <div>Liechtenstein</div>
-                                    <div>Lithuania</div>
-                                    <div>Luxembourg</div>
-                                    <div>Macao</div>
-                                    <div>North Macedonia</div>
-                                    <div>Madagascar</div>
-                                    <div>Malawi</div>
-                                    <div>Malaysia</div>
-                                    <div>Maldives</div>
-                                    <div>Mali</div>
-                                    <div>Malta</div>
-                                    <div>Marshall Islands</div>
-                                    <div>Martinique</div>
-                                    <div>Mauritania</div>
-                                    <div>Mauritius</div>
-                                    <div>Mayotte</div>
-                                    <div>Mexico</div>
-                                    <div>Micronesia, Federated States of</div>
-                                    <div>Republic of Moldova</div>
-                                    <div>Monaco</div>
-                                    <div>Mongolia</div>
-                                    <div>Montserrat</div>
-                                    <div>Morocco</div>
-                                    <div>Mozambique</div>
-                                    <div>Myanmar</div>
-                                    <div>Namibia</div>
-                                    <div>Nauru</div>
-                                    <div>Nepal</div>
-                                    <div>Netherlands</div>
-                                    <div>Netherlands Antilles</div>
-                                    <div>New Caledonia</div>
-                                    <div>New Zealand</div>
-                                    <div>Nicaragua</div>
-                                    <div>Niger</div>
-                                    <div>Nigeria</div>
-                                    <div>Niue</div>
-                                    <div>Norfolk Island</div>
-                                    <div>Northern Mariana Islands</div>
-                                    <div>Norway</div>
-                                    <div>Oman</div>
-                                    <div>Pakistan</div>
-                                    <div>Palau</div>
-                                    <div>Palestinian Territory, Occupied</div>
-                                    <div>Panama</div>
-                                    <div>Papua New Guinea</div>
-                                    <div>Paraguay</div>
-                                    <div>Peru</div>
-                                    <div>Philippines</div>
-                                    <div>Pitcairn Islands</div>
-                                    <div>Poland</div>
-                                    <div>Portugal</div>
-                                    <div>Puerto Rico</div>
-                                    <div>Qatar</div>
-                                    <div>Reunion</div>
-                                    <div>Romania</div>
-                                    <div>Russian Federation</div>
-                                    <div>Rwanda</div>
-                                    <div>Saint Helena</div>
-                                    <div>Saint Kitts and Nevis</div>
-                                    <div>Saint Lucia</div>
-                                    <div>Saint Pierre and Miquelon</div>
-                                    <div>Saint Vincent and the Grenadines</div>
-                                    <div>Samoa</div>
-                                    <div>San Marino</div>
-                                    <div>Sao Tome and Principe</div>
-                                    <div>Saudi Arabia</div>
-                                    <div>Senegal</div>
-                                    <div>Serbia and Montenegro</div>
-                                    <div>Seychelles</div>
-                                    <div>Sierra Leone</div>
-                                    <div>Singapore</div>
-                                    <div>Slovakia</div>
-                                    <div>Slovenia</div>
-                                    <div>Solomon Islands</div>
-                                    <div>Somalia</div>
-                                    <div>South Africa</div>
-                                    <div>South Georgia and the South Sandwich Islands</div>
-                                    <div>Spain</div>
-                                    <div>Sri Lanka</div>
-                                    <div>Sudan</div>
-                                    <div>Suriname</div>
-                                    <div>Svalbard and Jan Mayen</div>
-                                    <div>Swaziland</div>
-                                    <div>Sweden</div>
-                                    <div>Switzerland</div>
-                                    <div>Syrian Arab Republic</div>
-                                    <div>Taiwan</div>
-                                    <div>Tajikistan</div>
-                                    <div>Tanzania, United Republic of</div>
-                                    <div>Thailand</div>
-                                    <div>Timor-Leste</div>
-                                    <div>Togo</div>
-                                    <div>Tokelau</div>
-                                    <div>Tonga</div>
-                                    <div>Trinidad and Tobago</div>
-                                    <div>Tunisia</div>
-                                    <div>Turkey</div>
-                                    <div>Turkmenistan</div>
-                                    <div>Turks and Caicos Islands</div>
-                                    <div>Tuvalu</div>
-                                    <div>Uganda</div>
-                                    <div>Ukraine</div>
-                                    <div>United Arab Emirates</div>
-                                    <div>United Kingdom</div>
-                                    <div>United States</div>
-                                    <div>United States Minor Outlying Islands</div>
-                                    <div>Uruguay</div>
-                                    <div>Uzbekistan</div>
-                                    <div>Vanuatu</div>
-                                    <div>Venezuela</div>
-                                    <div>Vietnam</div>
-                                    <div>Virgin Islands, British</div>
-                                    <div>Virgin Islands, U.S"</div>
-                                    <div>Wallis and Futuna</div>
-                                    <div>Western Sahara</div>
-                                    <div>Yemen</div>
-                                    <div>Zambia</div>
-                                    <div>Zimbabwe</div>
-                                </div> --}}
                             <select wire:model="juridic_shipping_country" class="select">
                                 <option value="Afghanistan">Afghanistan</option>
                                 <option value="Åland Islands">Åland Islands</option>
@@ -2510,20 +1723,31 @@
                                 <option value="Zambia">Zambia</option>
                                 <option value="Zimbabwe">Zimbabwe</option>
                             </select>
-                            {{-- </div> --}}
                             <!---------------------------------------------------->
-                            <div class="checkout__item">
+                            {{-- <div class="checkout__item">
                                 <input type="text" wire:model="juridic_shipping_county" placeholder="Judet">
+                            </div> --}}
+                            <div class="checkout__item checkout__item--required" id="juridicBillingCounty">
+                              <input type="text" name="juridicBillingCounty" placeholder="Juridic Billing County" autocomplete="county" required>
+                              <span></span>
                             </div>
                             <!---------------------------------------------------->
-                            <div class="checkout__item">
+                            {{-- <div class="checkout__item">
                                 <input type="text" wire:model="juridic_shipping_city"
                                     placeholder="Localitate (oras, comuna sau sat)">
+                            </div> --}}
+                            <div class="checkout__item checkout__item--required" id="juridicBillingCity">
+                              <input type="text" name="juridicBillingCity" placeholder="Juridic Billing City" autocomplete="city" required>
+                              <span></span>
                             </div>
                             <!---------------------------------------------------->
-                            <div class="checkout__item">
+                            {{-- <div class="checkout__item">
                                 <input type="text" wire:model="juridic_shipping_zipcode"
                                     placeholder="Cod Postal">
+                            </div> --}}
+                            <div class="checkout__item checkout__item--required" id="juridicBillingPostal">
+                              <input type="text" name="juridicBillingPostal" placeholder="Juridic Billing Postal Code" autocomplete="postal-code" required>
+                              <span></span>
                             </div>
                             <!----------- End Checkout List of Items ------------->
                             <!---------------------------------------------------->
@@ -2596,10 +1820,6 @@
                     <div class="section__header">
                         <h2 class="section__title">Verificați detaliile dumneavoastră.</h2>
                     </div>
-                    {{-- @if ($errorterms && $terms == false)
-                        <div class="checkout__error">Pentru a procesa comanda trebuie sa acceptati termenii si
-                            conditiile!</div>
-                    @endif --}}
                     <div class="total__container">
                         <!---------------------------------------------------->
                         <!-------------- Checkout List of Forms -------------->
@@ -2943,4 +2163,5 @@
     <x-help-button />
     <!------------------- End support button ------------------->
     <!---------------------------------------------------------->
+    <script src="/script/store/order.js" async defer></script>
 </div>
