@@ -16,14 +16,12 @@
     <!----------------------End Breadcrumbs--------------------->
     <!---------------------------------------------------------->
     <!----------------------Section Header---------------------->
-    <section class="section__header container">
-        <h2 class="section__title">
-            Contactează-ne
-        </h2>
-        <p class="section__text">
-            Completează formularul sau contactează-ne direct pe e-mail <a href="#">noren@gmail.com</a>.
-        </p>
-    </section>
+    <h2 class="section__title">
+        Contactează-ne
+    </h2>
+    <p class="section__text">
+        Completează formularul sau contactează-ne direct pe e-mail <a href="#">noren@gmail.com</a>.
+    </p>
     <!--------------------End Section Header-------------------->
     <!---------------------------------------------------------->
     <!-----------------------Contact Form----------------------->

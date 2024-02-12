@@ -4,16 +4,14 @@
     <main>
         <!---------------------------------------------------------->
         <!------------------------Breadcrumbs----------------------->
-        <section>
-            <div class="breadcrumbs container">
-                <a class="breadcrumbs__link" href="{{ url("/") }}">
-                    Acasa
-                </a>
-                <a class="breadcrumbs__link" href="{{ url("/privacy") }}">
-                    Politica de Confidențialitate
-                </a>
-            </div>
-        </section>
+        <div class="breadcrumbs container">
+            <a class="breadcrumbs__link" href="{{ url("/") }}">
+                Acasa
+            </a>
+            <a class="breadcrumbs__link" href="{{ url("/privacy") }}">
+                Politica de Confidențialitate
+            </a>
+        </div>
         <!----------------------End Breadcrumbs--------------------->
         <!---------------------------------------------------------->
         <!----------------------Section Header---------------------->

@@ -594,6 +594,13 @@ section {
   justify-content: flex-start;
   flex-wrap: wrap;
   gap: 5px;
+  position: sticky;
+  top: 60px;
+  z-index: 100;
+  background: #ffffff;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  transition: all 0.3s ease-in-out;
 }
 
 .breadcrumbs__link {
@@ -2879,6 +2886,13 @@ header {
   align-items: center;
   justify-content: center;
   gap: 15px;
+  position: sticky;
+  top: 90px;
+  z-index: 100;
+  background: #ffffff;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  transition: all 0.3s ease-in-out;
 }
 
 .controls__button {
