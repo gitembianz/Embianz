@@ -3,13 +3,11 @@
 <main>
     <!---------------------------------------------------------->
     <!------------------------Breadcrumbs----------------------->
-    <section>
-        <div class="breadcrumbs container">
-            <a class="breadcrumbs__link" href="{{ url("/") }}">
-                Acasa
-            </a>
-        </div>
-    </section>
+    <div class="breadcrumbs container">
+        <a class="breadcrumbs__link" href="{{ url("/") }}">
+            Acasa
+        </a>
+    </div>
     <!----------------------End Breadcrumbs--------------------->
     <!---------------------------------------------------------->
     <!---------------------------------------------------------->
@@ -34,7 +32,7 @@
     <script>
         setTimeout(function() {
             window.location.href =
-                "/"; 
+                "/";
         }, 5000);
     </script>
     <!---------------------------------------------------------->

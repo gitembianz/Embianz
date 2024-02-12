@@ -1,15 +1,13 @@
 <div id="store-show-product">
-    <section>
-        <div class="breadcrumbs container">
-            <a class="breadcrumbs__link" href="{{ url("/") }}">
-                Acasa
-            </a>
-            <a class="breadcrumbs__link" href="{{ url("/storeproducts") }}">
-                Produse
-            </a>
-            <a class="breadcrumbs__link">{{ $product->name }}</a>
-        </div>
-    </section>
+    <div class="breadcrumbs container">
+        <a class="breadcrumbs__link" href="{{ url("/") }}">
+            Acasa
+        </a>
+        <a class="breadcrumbs__link" href="{{ url("/storeproducts") }}">
+            Produse
+        </a>
+        <a class="breadcrumbs__link">{{ $product->name }}</a>
+    </div>
     <section class="product container">
         <!-------------------- Slider Product ------------------>
         <div class="product-slider">
@@ -93,7 +91,7 @@
                     @foreach ($product->related_product as $product)
                         <div class="card-slider__slide">
                             <div class="card" role="listitem">
-                                <a href="{{ route('product', $product->product->seo_id) }}">
+                                <a href="{{ route("product", $product->product->seo_id) }}">
                                     @if ($product->product->media->first() != null)
                                         <img class="card-image"
                                             src="/{{ $product->product->media->first()->path }}{{ $product->product->media->first()->name }}"
