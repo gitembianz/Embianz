@@ -2,7 +2,7 @@
     <button class="leftbar__hidden--close" wire:click="$set('showcart', false)"></button>
     <div class="leftbar__content" id="basketContent">
         <div class="leftbar__top">
-            <a class="leftbar__button" href="{{ url('/cart') }}">Vizualizare cos de cumparaturi </a>
+            <a class="leftbar__button" href="{{ url("/cart") }}">Vizualizare cos de cumparaturi </a>
             <button class="leftbar__close" id="basketClose" wire:click="$set('showcart', false)">
                 <svg>
                     <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -19,7 +19,7 @@
                 <ul class="leftbar__list">
                     @foreach ($cartItems as $cartItem)
                         <li class="leftbar__item">
-                            <a class="leftbar__link" href="{{ route('product', $cartItem->product->seo_id) }}">
+                            <a class="leftbar__link" href="{{ route("product", $cartItem->product->seo_id) }}">
                                 <span>
                                     {{ $cartItem->quantity }} x
                                 </span>
@@ -36,7 +36,7 @@
                                     <h4>{{ $cartItem->product->name }}</h4>
                                     <span>
                                         @php
-                                            $price = number_format($cartItem->product->product_prices->first()->value, 2, ',', '.');
+                                            $price = number_format($cartItem->product->product_prices->first()->value, 2, ",", ".");
                                             $total = $total + $cartItem->quantity * $cartItem->product->product_prices->first()->value;
                                         @endphp
                                         @if ($price)
@@ -60,9 +60,9 @@
                 </ul>
 
                 <div class="leftbar__total">
-                    <h5 class="leftbar__total--text">Total: <span>{{ number_format($total, 2, ',', '.') }}
+                    <h5 class="leftbar__total--text">Total: <span>{{ number_format($total, 2, ",", ".") }}
                             {{ $currency }}</span></h5>
-                    <a class="leftbar__button" wire:click.prevent="continue">Finalizare Comanda</a>
+                    <a class="leftbar__button leftbar__button--long" wire:click.prevent="continue">Finalizare Comanda</a>
                 </div>
             @endif
         @else

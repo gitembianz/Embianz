@@ -1,5 +1,5 @@
 <div class="card-action">
-    <button class="card-favorites @if ($is_in_wishlist) active @endif" onclick="addToWishClick(this)"
+    <button class="card-favorites @if ($is_in_wishlist) active @endif" onclick="addWishList(this)"
         wire:click="@if ($is_in_wishlist) removeFromWishlist({{ $productId }}) @else addToWishlist({{ $productId }}) @endif"
         wire:model="is_in_wishlist">
         <svg viewBox="0 0 512 512" width="20" title="heart">
