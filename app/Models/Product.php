@@ -8,11 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
   use HasFactory;
-
-  public function getRouteKeyName()
-  {
-    return 'seo_id'; // Use the 'slug' column for route model binding
-  }
   public function product_categories()
   {
     return $this->hasMany(Products_categories::class, 'product_id');

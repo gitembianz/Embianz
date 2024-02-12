@@ -21,7 +21,7 @@
                       @if (count($objects) > 0)
                           @foreach ($objects as $product)
                               <li class="search__item">
-                                  <a class="search__link" href="{{ route('product', $product) }}">
+                                  <a class="search__link" href="{{ route('product', $product->seo_id) }}">
                                       @if ($product->media->first() != null)
                                           <img src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}"
                                               alt="{{ $product->media->first()->name }} {{ $product->name }}">

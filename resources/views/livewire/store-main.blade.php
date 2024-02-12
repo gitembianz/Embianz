@@ -76,7 +76,7 @@
                         @foreach ($popproducts as $product)
                             <div class="card-slider__slide">
                                 <div class="card" role="listitem">
-                                    <a href="{{ route('product', $product) }}">
+                                    <a href="{{ route('product', $product->seo_id) }}">
                                         @if ($product->media->first() != null)
                                             <img class="card-image"
                                                 src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}"

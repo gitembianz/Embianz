@@ -96,10 +96,11 @@ class StoreController extends Controller
   /**
    * Display the specified resource.
    */
-  public function show(Product $product)
+  public function show($productSlug)
   {
+    $data = Product::where('seo_id', $productSlug)->first();
     // $product variable will contain the product instance resolved by Laravel
-    return view('store.product', ['data' => $product]);
+    return view('store.product', ['data' => $data]);
   }
 
   /**
