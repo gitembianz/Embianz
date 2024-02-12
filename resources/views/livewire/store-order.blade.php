@@ -7,7 +7,7 @@
             <div class="checkout container">
                 <div class="section__header container">
                     <h2 class="section__title">Ups, a aparut o eroare!</h2>
-                    <a class="section__text" href="{{ url('/') }}">
+                    <a class="section__text" href="{{ url("/") }}">
                         Va rugam sa va intoarceti la pagina initiala
                     </a>
                 </div>
@@ -84,7 +84,7 @@
                             <div class="checkout__item">
                                 <input type="text" wire:model="individual_billing_first" placeholder="Nume">
                                 <span>
-                                    @error('individual_billing_first')
+                                    @error("individual_billing_first")
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -93,7 +93,7 @@
                             <div class="checkout__item">
                                 <input type="text" wire:model="individual_billing_last" placeholder="Prenume">
                                 <span>
-                                    @error('individual_billing_last')
+                                    @error("individual_billing_last")
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -102,7 +102,7 @@
                             <div class="checkout__item">
                                 <input type="tel" wire:model="individual_billing_phone" placeholder="Telefon">
                                 <span>
-                                    @error('individual_billing_phone')
+                                    @error("individual_billing_phone")
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -111,7 +111,7 @@
                             <div class="checkout__item">
                                 <input type="email" wire:model="individual_billing_email" placeholder="Email">
                                 <span>
-                                    @error('individual_billing_email')
+                                    @error("individual_billing_email")
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -135,7 +135,7 @@
                             <div class="checkout__item">
                                 <input type="text" wire:model="individual_billing_address1" placeholder="Address 1*">
                                 <span>
-                                    @error('individual_billing_address1')
+                                    @error("individual_billing_address1")
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -651,7 +651,7 @@
                                 <input type="text" wire:model="individual_billing_city"
                                     placeholder="Localitate (oras, comuna sau sat)">
                                 <span>
-                                    @error('individual_billing_city')
+                                    @error("individual_billing_city")
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -661,7 +661,7 @@
                                 <input type="text" placeholder="Post Code" wire:model="individual_billing_zipcode"
                                     placeholder="Cod Postal">
                                 <span>
-                                    @error('individual_billing_zipcode')
+                                    @error("individual_billing_zipcode")
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -693,7 +693,7 @@
                             <div class="checkout__item">
                                 <input type="text" wire:model="individual_shipping_first" placeholder="Nume">
                                 <span>
-                                    @error('individual_shipping_first')
+                                    @error("individual_shipping_first")
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -702,7 +702,7 @@
                             <div class="checkout__item">
                                 <input type="text" wire:model="individual_shipping_last" placeholder="Prenume">
                                 <span>
-                                    @error('individual_shipping_last')
+                                    @error("individual_shipping_last")
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -711,7 +711,7 @@
                             <div class="checkout__item">
                                 <input type="tel" wire:model="individual_shipping_phone" placeholder="Telefon">
                                 <span>
-                                    @error('individual_shipping_phone')
+                                    @error("individual_shipping_phone")
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -720,7 +720,7 @@
                             <div class="checkout__item">
                                 <input type="email" wire:model="individual_shipping_email" placeholder="Email">
                                 <span>
-                                    @error('individual_shipping_email')
+                                    @error("individual_shipping_email")
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -744,7 +744,7 @@
                             <div class="checkout__item">
                                 <input type="text" wire:model="individual_shipping_address1"
                                     placeholder="Address 1*">
-                                @error('individual_shipping_address1')
+                                @error("individual_shipping_address1")
                                     {{ $message }}
                                 @enderror
                             </div>
@@ -1260,7 +1260,7 @@
                                 <input type="text" wire:model="individual_shipping_city"
                                     placeholder="Localitate (oras, comuna sau sat)">
                                 <span>
-                                    @error('individual_shipping_city')
+                                    @error("individual_shipping_city")
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -1270,7 +1270,7 @@
                                 <input type="text" wire:model="individual_shipping_zipcode"
                                     placeholder="Cod Postal">
                                 <span>
-                                    @error('individual_shipping_zipcode')
+                                    @error("individual_shipping_zipcode")
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -1299,7 +1299,7 @@
                             <div class="checkout__item">
                                 <input type="text" wire:model="juridic_billing_first" placeholder="Nume">
                                 <span>
-                                    @error('juridic_billing_first')
+                                    @error("juridic_billing_first")
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -1308,7 +1308,7 @@
                             <div class="checkout__item">
                                 <input type="text" wire:model="juridic_billing_last" placeholder="Prenume">
                                 <span>
-                                    @error('juridic_billing_last')
+                                    @error("juridic_billing_last")
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -1317,7 +1317,7 @@
                             <div class="checkout__item">
                                 <input type="tel" wire:model="juridic_billing_phone" placeholder="Telefon">
                                 <span>
-                                    @error('juridic_billing_phone')
+                                    @error("juridic_billing_phone")
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -1326,7 +1326,7 @@
                             <div class="checkout__item">
                                 <input type="email" wire:model="juridic_billing_email" placeholder="Email">
                                 <span>
-                                    @error('juridic_billing_email')
+                                    @error("juridic_billing_email")
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -1336,7 +1336,7 @@
                                 <input type="text" wire:model="juridic_billing_company_name"
                                     placeholder="Denumirea Companiei">
                                 <span>
-                                    @error('juridic_billing_company_name')
+                                    @error("juridic_billing_company_name")
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -1346,7 +1346,7 @@
                                 <input type="text" wire:model="juridic_billing_registration_code"
                                     placeholder="Cod de înregistrare">
                                 <span>
-                                    @error('juridic_billing_registration_code')
+                                    @error("juridic_billing_registration_code")
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -1356,7 +1356,7 @@
                                 <input type="text" wire:model="juridic_billing_registration_number"
                                     placeholder="Număr de înregistrare.">
                                 <span>
-                                    @error('juridic_billing_registration_number')
+                                    @error("juridic_billing_registration_number")
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -1366,7 +1366,7 @@
                                 <input type="text" wire:model="juridic_billing_bank"
                                     placeholder="Denumirea Bancii">
                                 <span>
-                                    @error('juridic_billing_bank')
+                                    @error("juridic_billing_bank")
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -1375,7 +1375,7 @@
                             <div class="checkout__item">
                                 <input type="text" wire:model="juridic_billing_account" placeholder="Cont IBAN">
                                 <span>
-                                    @error('juridic_billing_account')
+                                    @error("juridic_billing_account")
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -1399,7 +1399,7 @@
                             <div class="checkout__item">
                                 <input type="text" wire:model="juridic_billing_address1" placeholder="Address 1*">
                                 <span>
-                                    @error('juridic_billing_address1')
+                                    @error("juridic_billing_address1")
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -1915,7 +1915,7 @@
                                 <input type="text" wire:model="juridic_billing_city"
                                     placeholder="Localitate (oras, comuna sau sat)">
                                 <span>
-                                    @error('juridic_billing_city')
+                                    @error("juridic_billing_city")
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -1924,7 +1924,7 @@
                             <div class="checkout__item">
                                 <input type="text" wire:model="juridic_billing_zipcode" placeholder="Cod Postal">
                                 <span>
-                                    @error('juridic_billing_zipcode')
+                                    @error("juridic_billing_zipcode")
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -1955,7 +1955,7 @@
                             <div class="checkout__item">
                                 <input type="text" wire:model="juridic_shipping_first" placeholder="Nume">
                                 <span>
-                                    @error('juridic_shipping_first')
+                                    @error("juridic_shipping_first")
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -1964,7 +1964,7 @@
                             <div class="checkout__item">
                                 <input type="text" wire:model="juridic_shipping_last" placeholder="Prenume">
                                 <span>
-                                    @error('juridic_shipping_last')
+                                    @error("juridic_shipping_last")
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -1973,7 +1973,7 @@
                             <div class="checkout__item">
                                 <input type="tel" wire:model="juridic_shipping_phone" placeholder="Telefon">
                                 <span>
-                                    @error('juridic_shipping_phone')
+                                    @error("juridic_shipping_phone")
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -1982,7 +1982,7 @@
                             <div class="checkout__item">
                                 <input type="email" wire:model="juridic_shipping_email" placeholder="Email">
                                 <span>
-                                    @error('juridic_shipping_email')
+                                    @error("juridic_shipping_email")
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -2535,7 +2535,7 @@
                         <h2 class="section__title">Metoda de plata</h2>
                     </div>
                     @foreach ($payments as $payment)
-                        @if ($payment->name == 'Plata cash la livrare' && $cart->final_amount <= '1000')
+                        @if ($payment->name == "Plata cash la livrare" && $cart->final_amount <= "1000")
                             @if ($payment->active)
                                 <div class="payment">
                                     <label class="payment__wrapper" for="rtc"
@@ -2551,7 +2551,7 @@
                                 </div>
                             @endif
                         @endif
-                        @if ($payment->name == 'Ordin de plata')
+                        @if ($payment->name == "Ordin de plata")
                             @if ($payment->active)
                                 @if ($juridic)
                                     <div class="payment">
@@ -2790,7 +2790,7 @@
 
                                             {{-- {{ $cartItem->product->price }} --}}
                                             <?php $currency = $cartItem->product->product_prices->first()->pricelist->currency->name; ?>
-                                            {{ number_format($cartItem->quantity * $cartItem->price, 2, ',', '.') }}
+                                            {{ number_format($cartItem->quantity * $cartItem->price, 2, ",", ".") }}
                                             {{ $currency }}
                                         </span>
 
@@ -2807,7 +2807,7 @@
                                         @if ($cart->delivery_price == 0)
                                             Gratuit
                                         @else
-                                            {{ number_format($cart->delivery_price, 2, ',', '.') }}
+                                            {{ number_format($cart->delivery_price, 2, ",", ".") }}
                                             {{ $currency }}
                                         @endif
                                     </span>
@@ -2825,12 +2825,12 @@
                                     <span>total</span>
                                     @if ($cart->voucher)
                                         <span style="text-decoration: line-through; color:red;">
-                                            {{ number_format($cart->sum_amount + $cart->delivery_price, 2, ',', '.') }}{{ $currency }}
+                                            {{ number_format($cart->sum_amount + $cart->delivery_price, 2, ",", ".") }}{{ $currency }}
                                         </span>
-                                        {{ number_format($cart->final_amount, 2, ',', '.') }} {{ $currency }}
+                                        {{ number_format($cart->final_amount, 2, ",", ".") }} {{ $currency }}
                                         </span>
                                     @else
-                                        <span>{{ number_format($cart->final_amount, 2, ',', '.') }}
+                                        <span>{{ number_format($cart->final_amount, 2, ",", ".") }}
                                             {{ $currency }}</span>
                                     @endif
                                 </div>
@@ -2842,7 +2842,8 @@
                     <label id="termsbutton"
                         class="checkout__terms @if ($errorterms && $terms == false) error @endif">
                         <input type="checkbox" wire:model="terms" name="terms">
-                        <span>Sunt de acord cu <a href="{{ url('/terms') }}">termenii si conditiile</a></span>
+                        <span>Sunt de acord cu <a href="{{ url("/terms") }}" target="_blank">termenii si
+                                conditiile</a></span>
 
                     </label>
                 @endif
@@ -2893,7 +2894,7 @@
                         <p class="section__text">Apreciem afacerea dumneavoastră și sperăm că achiziția dumneavoastră
                             vă aduce fericire. Vă mulțumim că ați ales produsele noastre și așteptăm cu nerăbdare să vă
                             mai servim în viitor. 🙏😊<br>Cu cele mai bune urări,</p>
-                        <a href="{{ url('/') }}" class="logo">
+                        <a href="{{ url("/") }}" class="logo">
                             <img src="/images/store/svg/noren-black.svg" alt="logo">
                         </a>
                     </div>

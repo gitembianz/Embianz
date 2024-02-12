@@ -1498,6 +1498,10 @@ header {
   background: #0d0d0d;
 }
 
+.leftbar__button--long {
+  flex: unset;
+}
+
 .leftbar__list {
   list-style: none;
   display: flex;
