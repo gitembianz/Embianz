@@ -18,7 +18,8 @@
                 @foreach ($items as $item)
                     <li class="leftbar__item">
 
-                        <a class="leftbar__link wishlist__link" href="{{ route("product", $item->product->seo_id) }}">
+                        <a class="leftbar__link wishlist__link"
+                            href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">
                             @if ($item->product->media->first())
                                 <img class="cart__list--img"
                                     src="/{{ $item->product->media->first()->path }}{{ $item->product->media->first()->name }}"

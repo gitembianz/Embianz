@@ -2004,7 +2004,7 @@
                                             <img class="cart__list--img" src="/images/store/default/default70.webp"
                                                 alt="something wrong">
                                         @endif
-                                        <a href="/product/{{ $cartItem->product->id }}" target="_blank"
+                                        <a href="{{ route('product', ['product' => $cartItem->product->seo_id !== null && $cartItem->product->seo_id !== '' ? $cartItem->product->seo_id : $cartItem->product->id]) }}" target="_blank"
                                             class="total__name">{{ $cartItem->product->name }}</a>
                                         <span class="total__price">
 

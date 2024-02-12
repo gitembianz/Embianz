@@ -72,9 +72,16 @@
                 <textarea name="long_description">{{ old('long_description') }}</textarea>
                 <label>Long Description</label>
             </div>
-            <div class="item__form-input item__form-long">
+            <div class="item__form-input">
                 <input type="text" name="seo_title" value="{{ old('seo_title') }}">
                 <label>SEO Title</label>
+            </div>
+            <div class="item__form-input">
+                <input type="text" name="seo_id" value="{{ old('seo_id') }}">
+                <label>Friendly URL</label>
+                @error('seo_id')
+                    <span style="position: absolute; top: 2.5rem; color: red;">{{ $message }}</span>
+                @enderror
             </div>
             <input class="item__form-btn item__form-long" type="submit" value="Add New" name="submit">
         </div>

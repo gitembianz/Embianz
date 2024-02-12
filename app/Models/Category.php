@@ -16,19 +16,14 @@ class Category extends Model
   {
     return $this->hasMany(Products_categories::class, 'category_id');
   }
-
   public function subcategory()
   {
     return $this->hasMany(Subcategory::class, 'parrent_id');
   }
-
-
   public function media()
   {
     return $this->morphToMany(Media::class, 'mediable', 'item_media');
   }
-
-
 
   protected $fillable = [
     'name',
