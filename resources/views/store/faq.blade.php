@@ -3,16 +3,14 @@
 <main>
     <!---------------------------------------------------------->
     <!------------------------Breadcrumbs----------------------->
-    <section>
-        <div class="breadcrumbs container">
-            <a class="breadcrumbs__link" href="{{ url("/") }}">
-                Acasa
-            </a>
-            <a class="breadcrumbs__link" href="{{ url("/faq") }}">
-                Întrebări frecvente (FAQ)
-            </a>
-        </div>
-    </section>
+    <div class="breadcrumbs container">
+        <a class="breadcrumbs__link" href="{{ url("/") }}">
+            Acasa
+        </a>
+        <a class="breadcrumbs__link" href="{{ url("/faq") }}">
+            Întrebări frecvente (FAQ)
+        </a>
+    </div>
     <!----------------------End Breadcrumbs--------------------->
     <!---------------------------------------------------------->
     <!----------------------Section Header---------------------->
