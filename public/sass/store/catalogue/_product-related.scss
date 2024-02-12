@@ -1,0 +1,18 @@
+.product__related {
+  overflow: auto;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  scroll-snap-type: x mandatory;
+  gap: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+
+  &>.card {
+    flex-shrink: 0;
+    scroll-snap-align: center;
+    width: 100%;
+    min-width: 250px;
+    flex: 1;
+  }
+}
