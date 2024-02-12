@@ -28,6 +28,8 @@
                                 <img src="/images/store/default/default70.webp" alt="something wrong">
                             @endif
                             <div>
+                                <a href="{{ route("product", $product) }}"
+                                    class="basket__title">{{ $product->name }}</a>
                                 <span class="basket__price">
                                     @if ($product->product_prices->first() !== null)
                                         {{ $product->product_prices->first()->value }}
@@ -36,8 +38,6 @@
                                         price unavailable
                                     @endif
                                 </span>
-                                <a href="{{ route('product', $product) }}"
-                                    class="basket__title">{{ $product->name }}</a>
                             </div>
                             <button class="basket__delete" wire:click="removeFromWishlist({{ $product->id }})">
                                 <svg>
@@ -47,19 +47,31 @@
                                     </path>
                                 </svg>
                             </button>
-                            {{-- <button class="basket__delete">
+                            <button class="basket__delete">
                                 <svg>
-                                    <line x1="12" y1="5" x2="12" y2="19"></line>
-                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                                    <path d="M16 10a4 4 0 0 1-8 0"></path>
                                 </svg>
-                            </button> --}}
+                            </button>
                         </div>
                         <button class="basket__delete--hidden" wire:click="removeFromWishlist({{ $product->id }})">
-                            Remove from Wishlist
+                            Șterge din coș
+                            <svg>
+                                <polyline points="3 6 5 6 21 6"></polyline>
+                                <path
+                                    d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                </path>
+                            </svg>
                         </button>
-                        {{-- <button class="basket__delete--hidden">
-                            Add to Cart
-                        </button> --}}
+                        <button class="basket__add--hidden">
+                            Adauga în coș
+                            <svg>
+                                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                                <line x1="3" y1="6" x2="21" y2="6"></line>
+                                <path d="M16 10a4 4 0 0 1-8 0"></path>
+                            </svg>
+                        </button>
                     </div>
                 @endforeach
             @endif

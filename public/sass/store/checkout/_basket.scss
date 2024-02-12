@@ -92,7 +92,7 @@
   }
 
   @media (max-width: map-get($grid-breakpoints, lg)) {
-    column-gap: 0;
+    column-gap: 10px;
     row-gap: 5px;
   }
 }
@@ -127,25 +127,17 @@
 }
 
 .basket__price {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 400;
   color: lighten($color: $text, $amount: 20%);
-
-  @media (max-width: map-get($grid-breakpoints, sm)) {
-    font-size: 12px;
-  }
 }
 
 .basket__title {
-  font-size: 22px;
+  font-size: 16px;
   font-weight: 600;
   color: $text;
   margin: 0;
   text-decoration: none;
-
-  @media (max-width: map-get($grid-breakpoints, lg)) {
-    font-size: 18px;
-  }
 }
 
 .basket__delete {
@@ -210,10 +202,12 @@
   border-radius: 5px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  gap: 15px;
   height: 40px;
-  background: darken($secondary, 10%);
-  font-size: 16px;
+  background: lighten(#d2042d, 45%);
+  font-size: 14px;
   border: none;
   transition: all 0.3s ease-in-out;
   color: $text;
@@ -223,8 +217,51 @@
     display: none;
   }
 
+  @media (max-width: map-get($grid-breakpoints, lg)) {
+    grid-column: unset;
+  }
+
+  @media (max-width: map-get($grid-breakpoints, sm)) {
+    grid-column: 1/3;
+  }
+
   &:hover {
     background: #d2042d;
+    color: $secondary;
+  }
+}
+
+.basket__add--hidden {
+  grid-column: 1/3;
+  width: 100%;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  height: 40px;
+  padding: 0 10px;
+  background: darken($secondary, 10%);
+  font-size: 14px;
+  border: none;
+  transition: all 0.3s ease-in-out;
+  color: $text;
+  font-weight: 500;
+
+  @media (min-width: map-get($grid-breakpoints, lg)) {
+    display: none;
+  }
+
+  @media (max-width: map-get($grid-breakpoints, lg)) {
+    grid-column: unset;
+  }
+
+  @media (max-width: map-get($grid-breakpoints, sm)) {
+    grid-column: 1/3;
+  }
+
+  &:hover {
+    background: $text;
     color: $secondary;
   }
 }

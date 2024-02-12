@@ -91,25 +91,17 @@
   border-bottom: 1px solid $secondary;
 
   &>h4 {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 500;
     color: $secondary;
     margin: 0;
-
-    @media (max-width: map-get($grid-breakpoints, sm)) {
-      font-size: 12px;
-    }
   }
 
   &>span {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 400;
     color: $secondary;
     margin: 0;
-
-    @media (max-width: map-get($grid-breakpoints, sm)) {
-      font-size: 12px;
-    }
   }
 }
 
@@ -174,4 +166,39 @@
   transition: all 0.3s ease-in-out;
   color: $text;
   font-weight: 500;
+}
+
+.details__delete {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  width: 30px;
+  color: $text;
+  font-weight: 500;
+  border-radius: 50%;
+  border: none;
+  background: $secondary;
+  transition: all 0.3s ease-in-out;
+
+  &>svg {
+    stroke: $text;
+    transform: scale(0.7);
+  }
+
+  &:hover {
+    background: $text;
+    border: 1px solid $secondary;
+
+    &>svg {
+      stroke: $secondary;
+    }
+  }
+}
+
+.voucher__choice {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
 }
