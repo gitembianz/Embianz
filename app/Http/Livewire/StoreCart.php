@@ -29,15 +29,25 @@ class StoreCart extends Component
   ];
   public function mount()
   {
-    $this->session_id = app('global_session_id');
+    $this->session_id = $this->getSessionId();
     $this->delivery = app('global_delivery_price');
-    $this->cart = Cart::where('session_id', app('global_session_id'))->where('status_id', '!=', app('global_cart_closed'))->with('voucher')->first();
+    $this->cart = Cart::where('session_id', $this->session_id)->where('status_id', '!=', app('global_cart_closed'))->with('voucher')->first();
     if ($this->cart) {
       $this->currency = $this->cart->currency->name;
       if ($this->cart->voucher_id) {
         $this->new_price = true;
         $this->voucher = $this->cart->voucher->code;
       }
+    }
+  }
+  private function getSessionId()
+  {
+    if (array_key_exists('sessionId', $_COOKIE)) {
+      return $_COOKIE['sessionId'];
+    } else {
+      $sessionId = session()->getId();
+      setcookie('sessionId', $sessionId, time() + 30 * 24 * 60 * 60, '/', null, false, true);
+      return $sessionId;
     }
   }
   public function render()
@@ -127,7 +137,7 @@ class StoreCart extends Component
       $this->saveToSession();
 
       Wishlist::updateOrCreate(
-        ['session_id' => app('global_session_id'), 'product_id' => $productId]
+        ['session_id' => $this->session_id, 'product_id' => $productId]
       );
       $this->emit('wishlistUpdated');
     }
@@ -137,7 +147,7 @@ class StoreCart extends Component
     $this->wishlist = array_diff($this->wishlist, [$productId]);
     $this->saveToSession();
 
-    Wishlist::where('session_id', app('global_session_id'))
+    Wishlist::where('session_id', $this->session_id)
       ->where('product_id', $productId)
       ->delete();
     $this->emit('wishlistUpdated');

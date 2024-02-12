@@ -24,7 +24,6 @@ class GlobalVariablesServiceProvider extends ServiceProvider
     {
         $this->loadGlobalVariables();
         $this->loadGlobalStatuses();
-        $this->loadGlobalSessionId();
     }
     private function loadGlobalVariables()
     {
@@ -56,32 +55,6 @@ class GlobalVariablesServiceProvider extends ServiceProvider
 
         foreach ($globalStatuses as $key => $value) {
             $this->app->instance('global_' . $key, $value);
-        }
-    }
-
-    public function loadGlobalSessionId()
-    {
-        // Suppressing any output here
-        ob_start();
-
-        // Load the session ID
-        $sessionId = $this->getSessionId();
-
-        // Send any buffered output before setting the cookie
-        ob_end_flush();
-
-        // Set the global session ID instance
-        app()->instance('global_session_id', $sessionId);
-    }
-
-    private function getSessionId()
-    {
-        if (array_key_exists('sessionId', $_COOKIE)) {
-            return $_COOKIE['sessionId'];
-        } else {
-            $sessionId = session()->getId();
-            setcookie('sessionId', $sessionId, time() + 30 * 24 * 60 * 60, '/', null, false, true);
-            return $sessionId;
         }
     }
 }
