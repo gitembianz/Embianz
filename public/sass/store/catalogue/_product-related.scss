@@ -10,21 +10,25 @@
   scroll-snap-type: x mandatory;
   gap: 20px;
 
-  // -ms-overflow-style: none;
-  // scrollbar-width: none;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 
-  // &::-webkit-scrollbar {
-  //   display: none;
-  // }
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   &>.card {
     flex-shrink: 0;
     scroll-snap-align: center;
     width: 100%;
-    min-width: 250px;
-    max-width: 305px;
-    flex: 1;
+
+    @media (min-width: map-get($grid-breakpoints, md)) {
+      flex: 1;
+      min-width: 250px;
+      max-width: 305px;
+    }
   }
+
 }
 
 .related__btn {

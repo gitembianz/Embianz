@@ -3434,14 +3434,23 @@ header {
   justify-content: flex-start;
   scroll-snap-type: x mandatory;
   gap: 20px;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.related__wrapper::-webkit-scrollbar {
+  display: none;
 }
 .related__wrapper > .card {
   flex-shrink: 0;
   scroll-snap-align: center;
   width: 100%;
-  min-width: 250px;
-  max-width: 305px;
-  flex: 1;
+}
+@media (min-width: 768px) {
+  .related__wrapper > .card {
+    flex: 1;
+    min-width: 250px;
+    max-width: 305px;
+  }
 }
 
 .related__btn {
