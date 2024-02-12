@@ -114,6 +114,10 @@
   }
 }
 
+.leftbar__button--long {
+  flex: unset;
+}
+
 .leftbar__list {
   list-style: none;
   display: flex;
