@@ -36,7 +36,8 @@
                                         price unavailable
                                     @endif
                                 </span>
-                                <a href="/product/{{ $product->id }}" class="basket__title">{{ $product->name }}</a>
+                                <a href="{{ route('product', $product) }}"
+                                    class="basket__title">{{ $product->name }}</a>
                             </div>
                             <button class="basket__delete" wire:click="removeFromWishlist({{ $product->id }})">
                                 <svg>

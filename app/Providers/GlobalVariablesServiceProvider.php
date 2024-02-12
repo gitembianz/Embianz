@@ -59,9 +59,18 @@ class GlobalVariablesServiceProvider extends ServiceProvider
         }
     }
 
-    private function loadGlobalSessionId()
+    public function loadGlobalSessionId()
     {
+        // Suppressing any output here
+        ob_start();
+
+        // Load the session ID
         $sessionId = $this->getSessionId();
+
+        // Send any buffered output before setting the cookie
+        ob_end_flush();
+
+        // Set the global session ID instance
         app()->instance('global_session_id', $sessionId);
     }
 

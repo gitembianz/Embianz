@@ -9,9 +9,6 @@ use App\Models\Category;
 
 class StoreHeader extends Component
 {
-  public $search = '';
-  public $active = false;
-
   protected $listeners = [
     'newcart' => 'NewCart',
     'orderprocess' => 'getCartProperty',
@@ -19,21 +16,11 @@ class StoreHeader extends Component
 
   public function render()
   {
-    if ($this->active) {
-      $data = [
-        'categories' => $this->categories,
-        'objects' => $this->objects,
-        'cats' => $this->cats,
-        'cart' => $this->cart,
+    $data = [
+      'categories' => $this->categories,
+      'cart' => $this->cart,
 
-      ];
-    } else {
-      $data = [
-        'categories' => $this->categories,
-        'cart' => $this->cart,
-
-      ];
-    }
+    ];
     return view('livewire.store-header', $data);
   }
 
@@ -42,21 +29,6 @@ class StoreHeader extends Component
     return Cart::where('session_id', app('global_session_id'))
       ->where('status_id', '!=', app('global_cart_closed'))
       ->latest()->first() ?? [];
-  }
-
-  public function close()
-  {
-    $this->active = false;
-    $this->search = '';
-  }
-
-  public function showcart()
-  {
-    $this->emit('showcart');
-  }
-  public function showwis()
-  {
-    $this->emit('showwis');
   }
 
   public function NewCart()
@@ -89,24 +61,5 @@ class StoreHeader extends Component
           $query->where('type', 'min'); // Filter and limit the media relationship
         }
       ])->limit(app('global_limit_category'))->orderby('sequence')->get();
-  }
-
-  public function getObjectsProperty()
-  {
-    return Product::name($this->search)->where('active', true)->with([
-      'media' => function ($query) {
-        $query->where('type', 'min'); // Filter and limit the media relationship
-      },
-      'product_prices.pricelist.currency'
-    ])->get();
-  }
-
-  public function getCatsProperty()
-  {
-    return Category::name($this->search)->where('active', true)->with([
-      'media' => function ($query) {
-        $query->where('type', 'min'); // Filter and limit the media relationship
-      }
-    ])->get();
   }
 }

@@ -15,10 +15,11 @@
             @if ($cartItems->isEmpty())
                 <span class="leftbar__empty">Cosul de cumparaturi este gol</span>
             @else
+                <?php $total = 0; ?>
                 <ul class="leftbar__list">
                     @foreach ($cartItems as $cartItem)
                         <li class="leftbar__item">
-                            <a class="leftbar__link" href="/product/{{ $cartItem->product->id }}">
+                            <a class="leftbar__link" href="{{ route('product', $cartItem->product->seo_id) }}">
                                 <span>
                                     {{ $cartItem->quantity }} x
                                 </span>
@@ -36,6 +37,7 @@
                                     <span>
                                         @php
                                             $price = number_format($cartItem->product->product_prices->first()->value, 2, ',', '.');
+                                            $total = $total + $cartItem->quantity * $cartItem->product->product_prices->first()->value;
                                         @endphp
                                         @if ($price)
                                             {{ $price }} {{ $currency }}

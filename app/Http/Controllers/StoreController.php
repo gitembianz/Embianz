@@ -54,12 +54,15 @@ class StoreController extends Controller
   {
     return view('store.contact');
   }
-  public function products($categoryId = null)
+  public function products($categorySlug = null)
   {
-    $data = Category::where('id', $categoryId)->value('id');
+    $data = null;
 
-    if ($data === null) {
-      $data = "";
+    if ($categorySlug) {
+      $category = Category::where('seo_id', $categorySlug)->first();
+      if ($category) {
+        $data = $category->id;
+      }
     }
 
     return view('store.products', compact('data'));
@@ -93,10 +96,11 @@ class StoreController extends Controller
   /**
    * Display the specified resource.
    */
-  public function show($id)
+  public function show($productSlug)
   {
-    $data = Product::find($id);
-    return view('store.product', compact('data'));
+    $data = Product::where('seo_id', $productSlug)->first();
+    // $product variable will contain the product instance resolved by Laravel
+    return view('store.product', ['data' => $data]);
   }
 
   /**

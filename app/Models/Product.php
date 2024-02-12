@@ -61,7 +61,8 @@ class Product extends Model
     'created_by',
     'last_modified_by',
     'seo_title',
-    'popularity'
+    'popularity',
+    'seo_id'
   ];
 
   public static function search($search)

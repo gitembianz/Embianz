@@ -32,7 +32,7 @@
                 @foreach ($categories as $category)
                     @if ($category->subcategory->count() != 0)
                         <div class="dropdown">
-                            <a class="dropdown__button" href="/storeproducts/{{ $category->id }}">
+                            <a class="dropdown__button" href="{{ route('products', $category->seo_id) }}">
                                 {{ $category->name }}
                                 <svg>
                                     <polyline points="6 9 12 15 18 9"></polyline>
@@ -42,7 +42,7 @@
                                 @foreach ($category->subcategory as $subcategory)
                                     <div class="dropdown__item">
                                         <a class="dropdown__item--button"
-                                            href="/storeproducts/{{ $subcategory->category_id }}">
+                                            href="{{ route('products', $subcategory->category->seo_id) }}">
                                             {{ $subcategory->category->name }}
                                             @if ($subcategory->category->subcategory->count() != 0)
                                                 <svg>
@@ -53,7 +53,8 @@
                                         @if ($subcategory->category->subcategory->count() != 0)
                                             <div class="dropdown__item--list">
                                                 @foreach ($subcategory->category->subcategory as $subsubCategory)
-                                                    <a href="/storeproducts/{{ $subsubCategory->category_id }}">
+                                                    <a
+                                                        href="{{ route('products', $subsubCategory->category->seo_id) }}">
                                                         {{ $subsubCategory->category->name }}
                                                     </a>
                                                 @endforeach
@@ -64,7 +65,7 @@
                             </div>
                         </div>
                     @else
-                        <a class="navbar__link" href="/storeproducts/{{ $category->id }}">
+                        <a class="navbar__link" href="{{ route('products', $category->seo_id) }}">
                             {{ $category->name }}
                         </a>
                     @endif
@@ -82,9 +83,7 @@
                     </svg>
                 </button>
                 {{-- search button --}}
-                <button class="header__btn"
-                    wire:click.prevent="@if ($active === false) $set('active', true) @else $set('active', false) @endif"
-                    id="searchOpen">
+                <button class="header__btn" wire:click="$emit('showsearch')" id="searchOpen">
                     <svg>
                         <circle cx="11" cy="11" r="8"></circle>
                         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
@@ -120,98 +119,15 @@
     <!------------------------END-Header------------------------>
     <!---------------------------------------------------------->
     <!-------------------------Searchbar------------------------>
-    <div class="search @if ($active) active @endif" id="searchList">
-        <div class="search__container container" id="searchContent">
-            <div class="search__top">
-                <div class="search__input">
-                    <svg>
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                    </svg>
-                    <input id="searchInput" wire:model.debounce.300ms="search" type="text" placeholder="Cauta...">
-                </div>
-                <button class="search__close" type="button" id="searchClose" wire:click.prevent="close">
-                    <svg>
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                </button>
-            </div>
-            @if ($search && $active)
-                <ul class="search__list">
-                    @if (count($objects) > 0 || count($cats) > 0)
-                        @if (count($objects) > 0)
-                            @foreach ($objects as $product)
-                                <li class="search__item">
-                                    <a class="search__link" href="/product/{{ $product->id }}">
-                                        @if ($product->media->first() != null)
-                                            <img src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}"
-                                                alt="{{ $product->media->first()->name }} {{ $product->name }}">
-                                        @else
-                                            <img src="/images/store/default/default70.webp" alt="something wrong">
-                                        @endif
-
-                                        <div class="search__link--text">
-                                            <div class="search__link--top">
-                                                <p>{{ $product->short_description }}</p>
-                                            </div>
-                                            <div class="search__link--bottom">
-                                                <h4>{{ $product->name }}</h4>
-                                                @if ($product->product_prices->first())
-                                                    <span>
-                                                        @php
-                                                            $price = $product->product_prices->first();
-                                                            $currency = $price->pricelist->currency->name;
-                                                        @endphp
-                                                        @if ($price)
-                                                            {{ $price->value }} {{ $currency }}
-                                                        @endif
-                                                    </span>
-                                                @endif
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                            @endforeach
-
-                        @endif
-                        @if (count($cats) > 0)
-                            @foreach ($cats as $category)
-                                <li class="search__item">
-                                    <a class="search__link" href="/storeproducts/{{ $category->id }}">
-                                        @if ($category->media->first() != null)
-                                            <img src="/{{ $category->media->first()->path }}{{ $category->media->first()->name }}"
-                                                alt="{{ $category->media->first()->name }} {{ $category->name }}">
-                                        @else
-                                            <img src="/images/store/default/default70.webp" alt="something wrong">
-                                        @endif
-
-                                        <div class="search__link--text">
-                                            <div class="search__link--bottom">
-                                                <h4>{{ $category->name }}</h4>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                            @endforeach
-                        @endif
-                    @else
-                        <span>{{ __('Niciun element gasit') }}</span>
-                    @endif
-                </ul>
-            @endif
-        </div>
-        <button class="search__close--hidden" id="modalClose" type="button" wire:click.prevent="close">
-        </button>
-    </div>
+    @livewire('general-search')
     <!-----------------------END-Searchbar---------------------->
     <!---------------------------------------------------------->
     <!---------------------Basket (Leftbar)--------------------->
     <!-- In your Blade view -->
     @if ($cart != [])
-        @livewire('cart-products-list', ['cartId' => $cart->id, 'total' => $cart->sum_amount ?? 0])
+        @livewire('cart-products-list', ['cartId' => $cart->id])
     @else
-        @livewire('cart-products-list', ['cartId' => 0, 'total' => $cart->sum_amount ?? 0])
+        @livewire('cart-products-list', ['cartId' => 0])
     @endif
 
     <!-------------------END-Basket (Leftbar)------------------->
@@ -237,7 +153,7 @@
                     @if ($category->subcategory->count() != 0)
                         <div class="dropmenu">
                             <div class="dropmenu__button">
-                                <a class="dropmenu__button--link" href="/storeproducts/{{ $category->id }}">
+                                <a class="dropmenu__button--link" href="{{ route('products', $category->seo_id) }}">
                                     @if ($category->media->first())
                                         <img class="cart__list--img"
                                             src="/{{ $category->media->first()->path }}{{ $category->media->first()->name }}"
@@ -259,7 +175,7 @@
                                     <div class="submenu">
                                         <div class="submenu__button">
                                             <a class="submenu__button--link"
-                                                href="/storeproducts/{{ $subcategory->category_id }}">
+                                                href="{{ route('products', $subcategory->category->seo_id) }}">
                                                 @if ($subcategory->category->media->first() != null)
                                                     <img src="/{{ $subcategory->category->media->first()->path }}{{ $subcategory->category->media->first()->name }}"
                                                         alt="{{ $subcategory->category->media->first()->name }}{{ $subcategory->category->name }}">
@@ -281,7 +197,7 @@
                                             <div class="submenu__list">
                                                 @foreach ($subcategory->category->subcategory as $subsubCategory)
                                                     <a class="submenu__link"
-                                                        href="/storeproducts/{{ $subsubCategory->category_id }}">
+                                                        href="{{ route('products', $subsubCategory->category->seo_id) }}">
                                                         @if ($subsubCategory->category->media->first() != null)
                                                             <img src="/{{ $subsubCategory->category->media->first()->path }}{{ $subsubCategory->category->media->first()->name }}"
                                                                 alt="{{ $subsubCategory->category->media->first()->name }}{{ $subsubCategory->category->name }}">
@@ -299,7 +215,7 @@
                             </div>
                         </div>
                     @else
-                        <a class="menu__link" href="/storeproducts/{{ $category->id }}">
+                        <a class="menu__link" href="{{ route('products', $category->seo_id) }}">
                             @if ($category->media->first() != null)
                                 <img src="/{{ $category->media->first()->path }}{{ $category->media->first()->name }}"
                                     alt="{{ $category->media->first()->name }} {{ $category->name }}">
