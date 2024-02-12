@@ -8,8 +8,7 @@ use App\Models\Category;
 
 class StoreMain extends Component
 {
-  public $limit = 10;
-  public $quantity = 10;
+  public $quantity;
 
   public function getSliderItemsProperty()
   {
@@ -31,7 +30,7 @@ class StoreMain extends Component
         },
         'wishlists'
       ])
-      ->limit($this->limit)
+      ->limit(app('global_limit_slideritems'))
       ->get();
   }
 
@@ -42,5 +41,9 @@ class StoreMain extends Component
       'slideritems' => $this->slideritems,
 
     ]);
+  }
+  public function mount()
+  {
+    $this->quantity = app('global_low_stock');
   }
 }

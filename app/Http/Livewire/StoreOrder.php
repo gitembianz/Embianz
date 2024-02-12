@@ -98,9 +98,19 @@ class StoreOrder extends Component
       return view('livewire.store-order');
     }
   }
+  private function getSessionId()
+  {
+    if (array_key_exists('sessionId', $_COOKIE)) {
+      return $_COOKIE['sessionId'];
+    } else {
+      $sessionId = session()->getId();
+      setcookie('sessionId', $sessionId, time() + 30 * 24 * 60 * 60, '/', null, false, true);
+      return $sessionId;
+    }
+  }
   public function mount()
   {
-    $this->session_id = app('global_session_id');
+    $this->session_id = $this->getSessionId();
     $this->payments = Payment::get();
     $this->cart = Cart::where('session_id', $this->session_id)->where('status_id', '!=', app('global_cart_closed'))->latest()->first();
     if (!$this->cart) {

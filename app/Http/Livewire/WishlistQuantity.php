@@ -8,6 +8,8 @@ use App\Models\Wishlist;
 class WishlistQuantity extends Component
 {
     public $count;
+    public $session_id;
+
     protected $listeners = [
         'wishlistUpdated' => 'mount',
         'wishlistProductRemoved' => 'mount'
@@ -16,8 +18,20 @@ class WishlistQuantity extends Component
     {
         return view('livewire.wishlist-quantity');
     }
+    private function getSessionId()
+    {
+        if (array_key_exists('sessionId', $_COOKIE)) {
+            return $_COOKIE['sessionId'];
+        } else {
+            $sessionId = session()->getId();
+            setcookie('sessionId', $sessionId, time() + 30 * 24 * 60 * 60, '/', null, false, true);
+            return $sessionId;
+        }
+    }
     public function mount()
     {
-        $this->count = Wishlist::where('session_id', app('global_session_id'))->count();
+        $this->session_id = $this->getSessionId();
+
+        $this->count = Wishlist::where('session_id', $this->session_id)->count();
     }
 }

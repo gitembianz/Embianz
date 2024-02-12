@@ -3,7 +3,6 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
-use App\Models\Category;
 use App\Models\Subscribers;
 
 class StoreFooter extends Component

@@ -37,11 +37,23 @@ class StoreProducts extends Component
     ]);
   }
 
+  private function getSessionId()
+  {
+    if (array_key_exists('sessionId', $_COOKIE)) {
+      return $_COOKIE['sessionId'];
+    } else {
+      $sessionId = session()->getId();
+      setcookie('sessionId', $sessionId, time() + 30 * 24 * 60 * 60, '/', null, false, true);
+      return $sessionId;
+    }
+  }
+
   public function mount()
   {
     $this->loadAmount = app('global_limit_load');
     $this->quantity = app('global_low_stock');
     $this->specification = Specs::get();
+    $this->session_id = $this->getSessionId();
   }
 
   // start filter-spec function
@@ -127,7 +139,7 @@ class StoreProducts extends Component
         $query->where('type', 'main');
       },
       'wishlists' => function ($query) {
-        $query->where('session_id', app('global_session_id'));
+        $query->where('session_id', $this->session_id);
       }
     ]);
     if ($this->category) {
