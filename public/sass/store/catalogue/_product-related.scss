@@ -10,12 +10,12 @@
   scroll-snap-type: x mandatory;
   gap: 20px;
 
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+  // -ms-overflow-style: none;
+  // scrollbar-width: none;
 
-  &::-webkit-scrollbar {
-    display: none;
-  }
+  // &::-webkit-scrollbar {
+  //   display: none;
+  // }
 
   &>.card {
     flex-shrink: 0;

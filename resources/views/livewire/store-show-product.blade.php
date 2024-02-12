@@ -262,120 +262,6 @@
                     <a class="card-button-disabled">Indisponibil</a>
                 </div>
             </div>
-            <div class="card" role="listitem">
-                <a href="#">
-                    <img class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
-                </a>
-                <div class="card-info">
-                    <div class="card-text">
-                        <span>description</span>
-                    </div>
-                    <div class="card-text">
-                        <h3>name</h3>
-                        <p class="card-price">
-                            <span>
-                                45,00$
-                            </span>
-                        </p>
-                    </div>
-                    <a class="card-button-disabled">Indisponibil</a>
-                </div>
-            </div>
-            <div class="card" role="listitem">
-                <a href="#">
-                    <img class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
-                </a>
-                <div class="card-info">
-                    <div class="card-text">
-                        <span>description</span>
-                    </div>
-                    <div class="card-text">
-                        <h3>name</h3>
-                        <p class="card-price">
-                            <span>
-                                45,00$
-                            </span>
-                        </p>
-                    </div>
-                    <a class="card-button-disabled">Indisponibil</a>
-                </div>
-            </div>
-            <div class="card" role="listitem">
-                <a href="#">
-                    <img class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
-                </a>
-                <div class="card-info">
-                    <div class="card-text">
-                        <span>description</span>
-                    </div>
-                    <div class="card-text">
-                        <h3>name</h3>
-                        <p class="card-price">
-                            <span>
-                                45,00$
-                            </span>
-                        </p>
-                    </div>
-                    <a class="card-button-disabled">Indisponibil</a>
-                </div>
-            </div>
-            <div class="card" role="listitem">
-                <a href="#">
-                    <img class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
-                </a>
-                <div class="card-info">
-                    <div class="card-text">
-                        <span>description</span>
-                    </div>
-                    <div class="card-text">
-                        <h3>name</h3>
-                        <p class="card-price">
-                            <span>
-                                45,00$
-                            </span>
-                        </p>
-                    </div>
-                    <a class="card-button-disabled">Indisponibil</a>
-                </div>
-            </div>
-            <div class="card" role="listitem">
-                <a href="#">
-                    <img class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
-                </a>
-                <div class="card-info">
-                    <div class="card-text">
-                        <span>description</span>
-                    </div>
-                    <div class="card-text">
-                        <h3>name</h3>
-                        <p class="card-price">
-                            <span>
-                                45,00$
-                            </span>
-                        </p>
-                    </div>
-                    <a class="card-button-disabled">Indisponibil</a>
-                </div>
-            </div>
-            <div class="card" role="listitem">
-                <a href="#">
-                    <img class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
-                </a>
-                <div class="card-info">
-                    <div class="card-text">
-                        <span>description</span>
-                    </div>
-                    <div class="card-text">
-                        <h3>name</h3>
-                        <p class="card-price">
-                            <span>
-                                45,00$
-                            </span>
-                        </p>
-                    </div>
-                    <a class="card-button-disabled">Indisponibil</a>
-                </div>
-            </div>
         </div>
 
     </section>
@@ -398,6 +284,23 @@
                     behavior: 'smooth'
                 });
             }
+
+            function toggleButtonsVisibility() {
+                const hasVerticalScrollbar = wrapper1.scrollHeight > wrapper1.clientHeight;
+                const hasHorizontalScrollbar = wrapper1.scrollWidth > wrapper1.clientWidth;
+
+                // Ascundem sau afișăm butoanele în funcție de existența scrollbar-ului
+                if (hasVerticalScrollbar || hasHorizontalScrollbar) {
+                    left1.style.display = 'flex';
+                    right1.style.display = 'flex';
+                } else {
+                    left1.style.display = 'none';
+                    right1.style.display = 'none';
+                }
+            }
+
+            window.addEventListener('resize', toggleButtonsVisibility);
+            window.addEventListener('DOMContentLoaded', toggleButtonsVisibility);
 
             left1.addEventListener('click', () => {
                 scrollSlider(-updateCardWidth());
