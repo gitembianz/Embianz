@@ -4,7 +4,6 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\Wishlist;
-use Illuminate\Support\Facades\Session;
 
 
 class WishlistButton extends Component
@@ -19,11 +18,23 @@ class WishlistButton extends Component
     public function mount($productId)
     {
         $this->productId  = $productId;
+        $this->session_id = $this->getSessionId();
 
-        $this->is_in_wishlist = Wishlist::where('session_id', app('global_session_id'))
+        $this->is_in_wishlist = Wishlist::where('session_id', $this->session_id)
             ->where('product_id', $this->productId)
             ->first() ? true : false;
         $this->listeners = ["update-wish-" . $this->productId => "refreshComponent"];
+    }
+
+    private function getSessionId()
+    {
+        if (array_key_exists('sessionId', $_COOKIE)) {
+            return $_COOKIE['sessionId'];
+        } else {
+            $sessionId = session()->getId();
+            setcookie('sessionId', $sessionId, time() + 30 * 24 * 60 * 60, '/', null, false, true);
+            return $sessionId;
+        }
     }
 
     public function refreshComponent()
@@ -33,14 +44,14 @@ class WishlistButton extends Component
     public function addToWishlist($id)
     {
         Wishlist::updateOrCreate(
-            ['session_id' => app('global_session_id'), 'product_id' => $id]
+            ['session_id' => $this->session_id, 'product_id' => $id]
         );
         $this->emit('wishlistUpdated');
         $this->refreshComponent();
     }
     public function removeFromWishlist($id)
     {
-        Wishlist::where('session_id', app('global_session_id'))
+        Wishlist::where('session_id', $this->session_id)
             ->where('product_id', $id)
             ->delete();
         $this->emit('wishlistUpdated');

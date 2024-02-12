@@ -9,10 +9,22 @@ use App\Models\Category;
 
 class StoreHeader extends Component
 {
+  public $session_id;
   protected $listeners = [
     'newcart' => 'NewCart',
     'orderprocess' => 'getCartProperty',
   ];
+
+  private function getSessionId()
+  {
+    if (array_key_exists('sessionId', $_COOKIE)) {
+      return $_COOKIE['sessionId'];
+    } else {
+      $sessionId = session()->getId();
+      setcookie('sessionId', $sessionId, time() + 30 * 24 * 60 * 60, '/', null, false, true);
+      return $sessionId;
+    }
+  }
 
   public function render()
   {
@@ -23,10 +35,14 @@ class StoreHeader extends Component
     ];
     return view('livewire.store-header', $data);
   }
+  public function mount()
+  {
+    $this->session_id = $this->getSessionId();
+  }
 
   public function getCartProperty()
   {
-    return Cart::where('session_id', app('global_session_id'))
+    return Cart::where('session_id', $this->session_id)
       ->where('status_id', '!=', app('global_cart_closed'))
       ->latest()->first() ?? [];
   }

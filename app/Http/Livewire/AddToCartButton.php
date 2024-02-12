@@ -9,10 +9,22 @@ use App\Models\Cart_Item;
 class AddToCartButton extends Component
 {
     public $product;
+    public $session_id;
 
     public function mount($product)
     {
         $this->product = $product;
+        $this->session_id = $this->getSessionId();
+    }
+    private function getSessionId()
+    {
+        if (array_key_exists('sessionId', $_COOKIE)) {
+            return $_COOKIE['sessionId'];
+        } else {
+            $sessionId = session()->getId();
+            setcookie('sessionId', $sessionId, time() + 30 * 24 * 60 * 60, '/', null, false, true);
+            return $sessionId;
+        }
     }
 
     public function render()
@@ -22,7 +34,7 @@ class AddToCartButton extends Component
 
     public function addToCart($productId)
     {
-        $cart = Cart::where('session_id', app('global_session_id'))->where('status_id', '!=', app('global_cart_closed'))->latest()->first();
+        $cart = Cart::where('session_id', $this->session_id)->where('status_id', '!=', app('global_cart_closed'))->latest()->first();
         if (!$cart) {
             $baseName = class_basename(Cart::class);
             $cartNumber = 1;
@@ -32,7 +44,7 @@ class AddToCartButton extends Component
                 $uniqueName = $baseName . '_' . str_pad($cartNumber, 2, '0', STR_PAD_LEFT);
             }
             $cart = Cart::create([
-                'session_id' => app('global_session_id'),
+                'session_id' => $this->session_id,
                 'name' => $uniqueName,
                 'quantity_amount' => 0,
                 'sum_amount' => 0,
