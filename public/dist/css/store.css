@@ -3434,11 +3434,6 @@ header {
   justify-content: flex-start;
   scroll-snap-type: x mandatory;
   gap: 20px;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-.related__wrapper::-webkit-scrollbar {
-  display: none;
 }
 .related__wrapper > .card {
   flex-shrink: 0;
