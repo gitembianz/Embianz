@@ -174,6 +174,15 @@
                                                 wire:model.defer="voucher.{{ $index }}.{{ $column }}">
                                         @endif
                                     </td>
+                                @elseif ($column === 'value')
+                                    <td data-title="{{ $column }}">
+                                        @if ($editindex !== $index)
+                                            {{ $voucher->$column }} %
+                                        @else
+                                            <input type="number" min="0" required class="table__edit"
+                                                wire:model.defer="voucher.{{ $index }}.{{ $column }}">
+                                        @endif
+                                    </td>
                                 @elseif ($column === 'status_id')
                                     <td data-title="{{ $column }}">
                                         @if ($editindex !== $index)

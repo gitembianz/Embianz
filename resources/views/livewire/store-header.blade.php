@@ -126,7 +126,7 @@
     <!---------------------------------------------------------->
     <!---------------------Basket (Leftbar)--------------------->
     <!-- In your Blade view -->
-    @if ($cart != [])
+    @if ($cart)
         @livewire('cart-products-list', ['cartId' => $cart->id])
     @else
         @livewire('cart-products-list', ['cartId' => 0])

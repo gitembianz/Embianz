@@ -44,7 +44,7 @@ class StoreHeader extends Component
   {
     return Cart::where('session_id', $this->session_id)
       ->where('status_id', '!=', app('global_cart_closed'))
-      ->latest()->first() ?? [];
+      ->latest()->first() ?? null;
   }
 
   public function NewCart()

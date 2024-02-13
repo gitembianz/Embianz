@@ -351,7 +351,6 @@ class StoreOrder extends Component
       $this->cart->status_id = app('global_cart_closed');
       $this->cart->save();
       $this->step++;
-      $this->dispatchBrowserEvent('final_step');
       $this->emit('orderprocess');
     }
   }
