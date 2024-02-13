@@ -3,7 +3,6 @@
 namespace App\Http\Livewire;
 
 use App\Models\Cart;
-use App\Models\Product;
 use Livewire\Component;
 use App\Models\Category;
 
@@ -42,9 +41,11 @@ class StoreHeader extends Component
 
   public function getCartProperty()
   {
-    return Cart::where('session_id', $this->session_id)
+    return Cart::select('id', 'quantity_amount')
+      ->where('session_id', $this->session_id)
       ->where('status_id', '!=', app('global_cart_closed'))
-      ->latest()->first() ?? null;
+      ->latest()
+      ->first() ?? null;
   }
 
   public function NewCart()
@@ -65,16 +66,16 @@ class StoreHeader extends Component
             $subQuery->where('store_tab', 1)->where('active', 1);
           })->with([
             'category.media' => function ($query) {
-              $query->where('type', 'min'); // Filter and limit the media relationship
+              $query->where('type', 'min');
             },
             'category.subcategory',
             'category.subcategory.category.media' => function ($query) {
-              $query->where('type', 'min'); // Filter and limit the media relationship
+              $query->where('type', 'min');
             },
           ]);
         },
         'media' => function ($query) {
-          $query->where('type', 'min'); // Filter and limit the media relationship
+          $query->where('type', 'min');
         }
       ])->limit(app('global_limit_category'))->orderby('sequence')->get();
   }
