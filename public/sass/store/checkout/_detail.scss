@@ -121,6 +121,10 @@
     font-weight: 500;
     background: $secondary;
     outline: none;
+
+    &::placeholder {
+      font-size: 14px;
+    }
   }
 
   &>button {

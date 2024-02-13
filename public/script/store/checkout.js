@@ -39,8 +39,8 @@ stickyElement(".details");
 //<---------------------- End Start Functions IOS ---------------------->
 //<--------------------------------------------------------------------->
 //<------------------------- Start Functions PC ------------------------>
-document.addEventListener("DOMContentLoaded", function () {
-  stickyElement(".details");
-});
+// document.addEventListener("DOMContentLoaded", function () {
+//   stickyElement(".details");
+// });
 //<----------------------- End Start Functions PC ---------------------->
 //<--------------------------------------------------------------------->

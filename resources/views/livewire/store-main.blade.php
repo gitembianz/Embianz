@@ -72,10 +72,10 @@
         @if (!$popproducts->isEmpty())
             <section>
                 <div class="card-slider container">
-                    <div class="card-slider__wrapper" style="position: unset">
+                    <div class="card-slider__wrapper">
                         @foreach ($popproducts as $product)
-                            <div class="card-slider__slide" style="position: unset">
-                                <div class="card" style="position: unset" role="listitem">
+                            <div class="card-slider__slide">
+                                <div class="card" role="listitem">
                                     <a
                                         href="{{ route("product", ["product" => $product->seo_id !== null && $product->seo_id !== "" ? $product->seo_id : $product->id]) }}">
                                         @if ($product->media->first() != null)

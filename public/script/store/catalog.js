@@ -133,7 +133,7 @@ function flyToCart(button) {
   const numberCart = shopping_cart.querySelector(".header__count");
   const target_parent = button.closest(".product"); // Obținem cel mai apropiat părinte cu clasa "product"
 
-  numberCart.style.scale = 1.4;
+  numberCart.style.scale = 1.5;
 
   if (!target_parent) {
     console.error("Nu s-a găsit părintele 'product'.");
@@ -164,27 +164,17 @@ function flyToCart(button) {
   flying_img.style.cssText = `
       --left : ${data.left.toFixed(2)}px;
       --top : ${data.top.toFixed(2)}px;
+      z-index: 400;
   `;
 
   setTimeout(() => {
-    target_parent.style.zIndex = "";
+    // target_parent.style.zIndex = "";
     target_parent.removeChild(flying_img);
     shopping_cart.classList.remove("active");
     numberCart.style.scale = 1;
   }, 1500);
 }
 //<-------------------------- End Add to Cart -------------------------->
-//<--------------------------------------------------------------------->
-//<------------------------- Add On WishList --------------------------->
-function addWishList(button) {
-  const wish = document.getElementById("wishlistCount");
-  wish.style.scale = 1.4;
-
-  setTimeout(() => {
-    wish.style.scale = 1;
-  }, 1500);
-}
-//<----------------------- End Add On WishList ------------------------->
 //<--------------------------------------------------------------------->
 //<------------------------ Start Functions IOS ------------------------>
 leftbar("sortOpen", "sortClose", "sortList", "sortContent");
