@@ -91,7 +91,7 @@ class Vouchertable extends Component
 
   public function saveitem($index, $id)
   {
-    $record = $this->voucher[$index] ?? NULL;
+    $record = $this->voucher[$index] ?? null;
     if (!is_null($record)) {
       $new = Voucher::find($id);
       if (array_key_exists('name', $record)) {
@@ -102,6 +102,11 @@ class Vouchertable extends Component
       }
       if (array_key_exists('percent', $record)) {
         $new->percent = $record['percent'];
+        $new->value = null;
+      }
+      if (array_key_exists('value', $record)) {
+        $new->value = $record['value'];
+        $new->percent = null;
       }
       if (array_key_exists('status_id', $record)) {
         $new->status_id = $record['status_id'];
@@ -124,13 +129,15 @@ class Vouchertable extends Component
     } else {
       session()->flash('notification', [
         'message' => 'Nothing was edited!',
-        'type' => 'success',
-        'title' => 'Success'
+        'type' => 'warning',
+        'title' => 'Warning'
       ]);
     }
     $this->editindex = null;
     $this->voucher = [];
   }
+
+
 
   public function canceledit()
   {
