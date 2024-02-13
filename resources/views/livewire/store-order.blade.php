@@ -57,7 +57,8 @@
                                 </svg>
                                 Șterge Datele
                             </button>
-                            <button class="checkout__button checkout__button--confirm" id="orderValidation" wire:click.prevent="next()">
+                            <button class="checkout__button checkout__button--confirm" id="orderValidation"
+                                wire:click.prevent="next()">
                                 Pasul următor
                                 <svg>
                                     <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -90,8 +91,9 @@
                                 </span>
                             </div> --}}
                             <div class="checkout__item checkout__item--required" id="individualShippingFirstName">
-                                <input type="text" name="individualShippingFirstName"
-                                    placeholder="Individual Shipping First Name" autocomplete="given-name" required>
+                                <input type="text" wire:model="individual_billing_first"
+                                    name="individualShippingFirstName" placeholder="Individual Shipping First Name"
+                                    autocomplete="given-name" required>
                                 <span></span>
                             </div>
                             <!---------------------------------------------------->
@@ -104,8 +106,9 @@
                                 </span>
                             </div> --}}
                             <div class="checkout__item checkout__item--required" id="individualShippingLastName">
-                                <input type="text" name="individualShippingLastName"
-                                    placeholder="Individual Shipping Last Name" autocomplete="family-name" required>
+                                <input type="text" wire:model="individual_billing_last"
+                                    name="individualShippingLastName" placeholder="Individual Shipping Last Name"
+                                    autocomplete="family-name" required>
                                 <span></span>
                             </div>
                             <!---------------------------------------------------->
@@ -118,9 +121,9 @@
                                 </span>
                             </div> --}}
                             <div class="checkout__item checkout__item--required" id="individualShippingPhone">
-                                <input type="tel" name="individualShippingPhone"
-                                    placeholder="Individual Shipping Phone Number" autocomplete="tel" pattern="[0-9]*"
-                                    inputmode="numeric" required>
+                                <input type="tel" wire:model="individual_billing_phone"
+                                    name="individualShippingPhone" placeholder="Individual Shipping Phone Number"
+                                    autocomplete="tel" pattern="[0-9]*" inputmode="numeric" required>
                                 <span></span>
                             </div>
                             <!---------------------------------------------------->
@@ -133,8 +136,9 @@
                                 </span>
                             </div> --}}
                             <div class="checkout__item checkout__item--required" id="individualShippingEmail">
-                                <input type="email" name="individualShippingEmail"
-                                    placeholder="Individual Shipping Email" autocomplete="email" required>
+                                <input type="email" wire:model="individual_billing_email"
+                                    name="individualShippingEmail" placeholder="Individual Shipping Email"
+                                    autocomplete="email" required>
                                 <span></span>
                             </div>
                             <!----------- End Checkout List of Items ------------->
@@ -162,8 +166,9 @@
                                 </span>
                             </div> --}}
                             <div class="checkout__item checkout__item--required" id="individualShippingAddress">
-                                <input type="text" name="individualShippingAddress"
-                                    placeholder="Individual Shipping Address 1" autocomplete="street-address" required>
+                                <input type="text" wire:model="individual_billing_address1"
+                                    name="individualShippingAddress" placeholder="Individual Shipping Address 1"
+                                    autocomplete="street-address" required>
                                 <span></span>
                             </div>
                             {{-- <!---------------------------------------------------->
@@ -172,7 +177,8 @@
                                     placeholder="Address 2 (optional)">
                             </div> --}}
                             <div class="checkout__item" id="individualShippingAddress2">
-                                <input type="text" name="individualShippingAddress2"
+                                <input type="text" wire:model="individual_billing_address2"
+                                    name="individualShippingAddress2"
                                     placeholder="Individual Shipping Address 2 (optional)"
                                     autocomplete="address-level2">
                                 <span></span>
@@ -435,8 +441,9 @@
                                 <input type="text" wire:model="individual_billing_county" placeholder="Judet">
                             </div> --}}
                             <div class="checkout__item checkout__item--required" id="individualShippingCounty">
-                                <input type="text" name="individualShippingCounty"
-                                    placeholder="Individual Shipping County" autocomplete="county" required>
+                                <input type="text" wire:model="individual_billing_county"
+                                    name="individualShippingCounty" placeholder="Individual Shipping County"
+                                    autocomplete="county" required>
                                 <span></span>
                             </div>
                             <!---------------------------------------------------->
@@ -450,8 +457,9 @@
                                 </span>
                             </div> --}}
                             <div class="checkout__item checkout__item--required" id="individualShippingCity">
-                                <input type="text" name="individualShippingCity"
-                                    placeholder="Individual Shipping City" autocomplete="city" required>
+                                <input type="text" wire:model="individual_billing_city"
+                                    name="individualShippingCity" placeholder="Individual Shipping City"
+                                    autocomplete="city" required>
                                 <span></span>
                             </div>
                             <!---------------------------------------------------->
@@ -465,8 +473,9 @@
                                 </span>
                             </div> --}}
                             <div class="checkout__item checkout__item--required" id="individualShippingPostal">
-                                <input type="text" name="individualShippingPostal"
-                                    placeholder="Individual Shipping Postal Code" autocomplete="postal-code" required>
+                                <input type="text" wire:model="individual_billing_zipcode"
+                                    name="individualShippingPostal" placeholder="Individual Shipping Postal Code"
+                                    autocomplete="postal-code" required>
                                 <span></span>
                             </div>
                             <!----------- End Checkout List of Items ------------->
@@ -502,8 +511,9 @@
                                 </span>
                             </div> --}}
                             <div class="checkout__item checkout__item--required" id="individualBillingFirstName">
-                                <input type="text" name="individualBillingFirstName"
-                                    placeholder="Individual Billing First Name" autocomplete="given-name" required>
+                                <input type="text" wire:model="individual_shipping_first"
+                                    name="individualBillingFirstName" placeholder="Individual Billing First Name"
+                                    autocomplete="given-name" required>
                                 <span></span>
                             </div>
                             <!---------------------------------------------------->
@@ -516,8 +526,9 @@
                                 </span>
                             </div> --}}
                             <div class="checkout__item checkout__item--required" id="individualBillingLastName">
-                                <input type="text" name="individualBillingLastName"
-                                    placeholder="Individual Billing Last Name" autocomplete="family-name" required>
+                                <input type="text" wire:model="individual_shipping_last"
+                                    name="individualBillingLastName" placeholder="Individual Billing Last Name"
+                                    autocomplete="family-name" required>
                                 <span></span>
                             </div>
                             <!---------------------------------------------------->
@@ -530,8 +541,9 @@
                                 </span>
                             </div> --}}
                             <div class="checkout__item checkout__item--required" id="individualBillingEmail">
-                                <input type="email" name="individualBillingEmail"
-                                    placeholder="Individual Billing Email" autocomplete="email" required>
+                                <input type="email" wire:model="individual_shipping_phone"
+                                    name="individualBillingEmail" placeholder="Individual Billing Email"
+                                    autocomplete="email" required>
                                 <span></span>
                             </div>
                             <!---------------------------------------------------->
@@ -544,9 +556,9 @@
                                 </span>
                             </div> --}}
                             <div class="checkout__item checkout__item--required" id="individualBillingPhone">
-                                <input type="tel" name="individualBillingPhone"
-                                    placeholder="Individual Billing Phone Number" autocomplete="tel" pattern="[0-9]*"
-                                    inputmode="numeric" required>
+                                <input type="tel" wire:model="individual_shipping_email"
+                                    name="individualBillingPhone" placeholder="Individual Billing Phone Number"
+                                    autocomplete="tel" pattern="[0-9]*" inputmode="numeric" required>
                                 <span></span>
                             </div>
                             <!----------- End Checkout List of Items ------------->
@@ -573,8 +585,9 @@
                                 @enderror
                             </div> --}}
                             <div class="checkout__item checkout__item--required" id="individualBillingAddress">
-                                <input type="text" name="individualBillingAddress"
-                                    placeholder="Individual Billing Address" autocomplete="street-address" required>
+                                <input type="text" wire:model="individual_shipping_address1"
+                                    name="individualBillingAddress" placeholder="Individual Billing Address"
+                                    autocomplete="street-address" required>
                                 <span></span>
                             </div>
                             <!---------------------------------------------------->
@@ -583,7 +596,8 @@
                                     placeholder="Address 2 (optional)">
                             </div> --}}
                             <div class="checkout__item" id="individualBillingAddress2">
-                                <input type="text" name="individualBillingAddress2"
+                                <input type="text" wire:model="individual_shipping_address2"
+                                    name="individualBillingAddress2"
                                     placeholder="Individual Billing Address 2 (optional)"
                                     autocomplete="address-level2">
                                 <span></span>
@@ -845,8 +859,9 @@
                                 <input type="text" wire:model="individual_shipping_county" placeholder="Judet">
                             </div> --}}
                             <div class="checkout__item checkout__item--required" id="individualBillingCounty">
-                                <input type="text" name="individualBillingCounty"
-                                    placeholder="Individual Billing County" autocomplete="county" required>
+                                <input type="text" wire:model="individual_shipping_county"
+                                    name="individualBillingCounty" placeholder="Individual Billing County"
+                                    autocomplete="county" required>
                                 <span></span>
                             </div>
                             <!---------------------------------------------------->
@@ -860,8 +875,9 @@
                                 </span>
                             </div> --}}
                             <div class="checkout__item checkout__item--required" id="individualBillingCity">
-                                <input type="text" name="individualBillingCity"
-                                    placeholder="Individual Billing City" autocomplete="city" required>
+                                <input type="text" wire:model="individual_shipping_city"
+                                    name="individualBillingCity" placeholder="Individual Billing City"
+                                    autocomplete="city" required>
                                 <span></span>
                             </div>
                             <!---------------------------------------------------->
@@ -875,8 +891,9 @@
                                 </span>
                             </div> --}}
                             <div class="checkout__item checkout__item--required" id="individualBillingPostal">
-                                <input type="text" name="individualBillingPostal"
-                                    placeholder="Individual Billing Postal Code" autocomplete="postal-code" required>
+                                <input type="text" wire:model="individual_shipping_zipcode"
+                                    name="individualBillingPostal" placeholder="Individual Billing Postal Code"
+                                    autocomplete="postal-code" required>
                                 <span></span>
                             </div>
                             <!----------- End Checkout List of Items ------------->
@@ -909,8 +926,9 @@
                                 </span>
                             </div> --}}
                             <div class="checkout__item checkout__item--required" id="juridicShippingFirstName">
-                                <input type="text" name="individualShippingFirstName"
-                                    placeholder="Juridic Shipping First Name" autocomplete="given-name" required>
+                                <input type="text" wire:model="juridic_billing_first"
+                                    name="individualShippingFirstName" placeholder="Juridic Shipping First Name"
+                                    autocomplete="given-name" required>
                                 <span></span>
                             </div>
                             <!---------------------------------------------------->
@@ -923,8 +941,9 @@
                                 </span>
                             </div> --}}
                             <div class="checkout__item checkout__item--required" id="juridicShippingLastName">
-                                <input type="text" name="juridicShippingLastName"
-                                    placeholder="Juridic Shipping Last Name" autocomplete="family-name" required>
+                                <input type="text" wire:model="juridic_billing_last"
+                                    name="juridicShippingLastName" placeholder="Juridic Shipping Last Name"
+                                    autocomplete="family-name" required>
                                 <span></span>
                             </div>
                             <!---------------------------------------------------->
@@ -937,7 +956,7 @@
                                 </span>
                             </div> --}}
                             <div class="checkout__item checkout__item--required" id="juridicShippingPhone">
-                                <input type="tel" name="juridicShippingPhone"
+                                <input type="tel" wire:model="juridic_billing_phone" name="juridicShippingPhone"
                                     placeholder="Juridic Shipping Phone Number" autocomplete="tel" pattern="[0-9]*"
                                     inputmode="numeric" required>
                                 <span></span>
@@ -952,7 +971,7 @@
                                 </span>
                             </div> --}}
                             <div class="checkout__item checkout__item--required" id="juridicShippingEmail">
-                                <input type="email" name="juridicShippingEmail"
+                                <input type="email" wire:model="juridic_billing_email" name="juridicShippingEmail"
                                     placeholder="Juridic Shipping Email" autocomplete="email" required>
                                 <span></span>
                             </div>
@@ -967,8 +986,8 @@
                                 </span>
                             </div> --}}
                             <div class="checkout__item checkout__item--required" id="companyName">
-                                <input type="text" name="companyName" placeholder="Juridic Shipping Company name"
-                                    autocomplete="organization" required>
+                                <input type="text" wire:model="juridic_billing_company_name" name="companyName"
+                                    placeholder="Juridic Shipping Company name" autocomplete="organization" required>
                                 <span></span>
                             </div>
                             <!---------------------------------------------------->
@@ -982,9 +1001,9 @@
                                 </span>
                             </div> --}}
                             <div class="checkout__item checkout__item--required" id="registerCode">
-                                <input type="text" name="registerCode"
-                                    placeholder="Juridic Shipping Register Code" autocomplete="organization-code"
-                                    required>
+                                <input type="text" wire:model="juridic_billing_registration_code"
+                                    name="registerCode" placeholder="Juridic Shipping Register Code"
+                                    autocomplete="organization-code" required>
                                 <span></span>
                             </div>
                             <!---------------------------------------------------->
@@ -998,9 +1017,9 @@
                                 </span>
                             </div> --}}
                             <div class="checkout__item checkout__item--required" id="registerNumber">
-                                <input type="text" name="registerNumber"
-                                    placeholder="Juridic Shipping Register Number" autocomplete="organization-number"
-                                    required>
+                                <input type="text" wire:model="juridic_billing_registration_number"
+                                    name="registerNumber" placeholder="Juridic Shipping Register Number"
+                                    autocomplete="organization-number" required>
                                 <span></span>
                             </div>
                             <!---------------------------------------------------->
@@ -1014,8 +1033,8 @@
                                 </span>
                             </div> --}}
                             <div class="checkout__item" id="bankName">
-                                <input type="text" name="bankName" placeholder="Juridic Shipping Name of Bank"
-                                    autocomplete="bank-name">
+                                <input type="text" wire:model="juridic_billing_bank" name="bankName"
+                                    placeholder="Juridic Shipping Name of Bank" autocomplete="bank-name">
                                 <span></span>
                             </div>
                             <!---------------------------------------------------->
@@ -1028,8 +1047,8 @@
                                 </span>
                             </div> --}}
                             <div class="checkout__item" id="IBAN">
-                                <input type="text" name="IBAN" placeholder="Juridic Shipping IBAN"
-                                    autocomplete="IBAN">
+                                <input type="text" wire:model="juridic_billing_account" name="IBAN"
+                                    placeholder="Juridic Shipping IBAN" autocomplete="IBAN">
                                 <span></span>
                             </div>
                             <!----------- End Checkout List of Items ------------->
@@ -1057,8 +1076,9 @@
                                 </span>
                             </div> --}}
                             <div class="checkout__item checkout__item--required" id="juridicShippingAddress">
-                                <input type="text" name="juridicShippingAddress"
-                                    placeholder="Juridic Shipping Address 1" autocomplete="street-address" required>
+                                <input type="text" wire:model="juridic_billing_address1"
+                                    name="juridicShippingAddress" placeholder="Juridic Shipping Address 1"
+                                    autocomplete="street-address" required>
                                 <span></span>
                             </div>
                             <!---------------------------------------------------->
@@ -1067,8 +1087,9 @@
                                     placeholder="Address 2 (optional)">
                             </div> --}}
                             <div class="checkout__item" id="juridicShippingAddress2">
-                                <input type="text" name="juridicShippingAddress2"
-                                    placeholder="Juridic Shipping Address 2" autocomplete="address-level2" required>
+                                <input type="text" wire:model="juridic_billing_address2"
+                                    name="juridicShippingAddress2" placeholder="Juridic Shipping Address 2"
+                                    autocomplete="address-level2" required>
                                 <span></span>
                             </div>
                             <!---------------------------------------------------->
@@ -1328,8 +1349,9 @@
                                 <input type="text" wire:model="juridic_billing_county" placeholder="Judet">
                             </div> --}}
                             <div class="checkout__item checkout__item--required" id="juridicShippingCounty">
-                                <input type="text" name="juridicShippingCounty"
-                                    placeholder="Juridic Shipping County" autocomplete="county" required>
+                                <input type="text" wire:model="juridic_billing_county"
+                                    name="juridicShippingCounty" placeholder="Juridic Shipping County"
+                                    autocomplete="county" required>
                                 <span></span>
                             </div>
                             <!---------------------------------------------------->
@@ -1343,8 +1365,8 @@
                                 </span>
                             </div> --}}
                             <div class="checkout__item checkout__item--required" id="juridicShippingCity">
-                                <input type="text" name="juridicShippingCity" placeholder="Juridic Shipping City"
-                                    autocomplete="city" required>
+                                <input type="text" wire:model="juridic_billing_city" name="juridicShippingCity"
+                                    placeholder="Juridic Shipping City" autocomplete="city" required>
                                 <span></span>
                             </div>
                             <!---------------------------------------------------->
@@ -1357,8 +1379,9 @@
                                 </span>
                             </div> --}}
                             <div class="checkout__item checkout__item--required" id="juridicShippingPostal">
-                                <input type="text" name="juridicShippingPostal"
-                                    placeholder="Juridic Shipping Postal Code" autocomplete="postal-code" required>
+                                <input type="text" wire:model="juridic_billing_zipcode"
+                                    name="juridicShippingPostal" placeholder="Juridic Shipping Postal Code"
+                                    autocomplete="postal-code" required>
                                 <span></span>
                             </div>
                             <!----------- End Checkout List of Items ------------->
@@ -1393,8 +1416,9 @@
                                 </span>
                             </div> --}}
                             <div class="checkout__item checkout__item--required" id="juridicBillingFirstName">
-                                <input type="text" name="juridicBillingFirstName"
-                                    placeholder="Juridic Billing First Name" autocomplete="given-name" required>
+                                <input type="text" wire:model="juridic_shipping_first"
+                                    name="juridicBillingFirstName" placeholder="Juridic Billing First Name"
+                                    autocomplete="given-name" required>
                                 <span></span>
                             </div>
                             <!---------------------------------------------------->
@@ -1407,8 +1431,9 @@
                                 </span>
                             </div> --}}
                             <div class="checkout__item checkout__item--required" id="juridicBillingLastName">
-                                <input type="text" name="juridicBillingLastName"
-                                    placeholder="Juridic Billing Last Name" autocomplete="family-name" required>
+                                <input type="text" wire:model="juridic_shipping_last"
+                                    name="juridicBillingLastName" placeholder="Juridic Billing Last Name"
+                                    autocomplete="family-name" required>
                                 <span></span>
                             </div>
                             <!---------------------------------------------------->
@@ -1421,8 +1446,10 @@
                                 </span>
                             </div> --}}
                             <div class="checkout__item checkout__item--required" id="juridicBillingPhone">
-                              <input type="tel" name="juridicBillingPhone" placeholder="Juridic Billing Phone Number" autocomplete="tel" pattern="[0-9]*" inputmode="numeric" required>
-                              <span></span>
+                                <input type="tel" wire:model="juridic_shipping_phone"
+                                    name="juridicBillingPhone" placeholder="Juridic Billing Phone Number"
+                                    autocomplete="tel" pattern="[0-9]*" inputmode="numeric" required>
+                                <span></span>
                             </div>
                             <!---------------------------------------------------->
                             {{-- <div class="checkout__item">
@@ -1434,7 +1461,8 @@
                                 </span>
                             </div> --}}
                             <div class="checkout__item checkout__item--required" id="juridicBillingEmail">
-                                <input type="email" name="juridicBillingEmail" placeholder="Juridic Billing Email"
+                                <input type="email" wire:model="juridic_shipping_email"
+                                    name="juridicBillingEmail" placeholder="Juridic Billing Email"
                                     autocomplete="email" required>
                                 <span></span>
                             </div>
@@ -1459,8 +1487,10 @@
                                     placeholder="Address 1*">
                             </div> --}}
                             <div class="checkout__item checkout__item--required" id="juridicBillingAddress">
-                              <input type="text" name="juridicBillingAddress" placeholder="Juridic Billing Address" autocomplete="street-address" required>
-                              <span></span>
+                                <input type="text" wire:model="juridic_shipping_address1"
+                                    name="juridicBillingAddress" placeholder="Juridic Billing Address"
+                                    autocomplete="street-address" required>
+                                <span></span>
                             </div>
                             <!---------------------------------------------------->
                             {{-- <div class="checkout__item">
@@ -1468,8 +1498,10 @@
                                     placeholder="Address 2 (optional)">
                             </div> --}}
                             <div class="checkout__item" id="juridicBillingAddress2">
-                              <input type="text" name="juridicBillingAddress2" placeholder="Juridic Billing Address 2" autocomplete="address-level2">
-                              <span></span>
+                                <input type="text" wire:model="juridic_shipping_address2"
+                                    name="juridicBillingAddress2" placeholder="Juridic Billing Address 2"
+                                    autocomplete="address-level2">
+                                <span></span>
                             </div>
                             <!---------------------------------------------------->
                             <select wire:model="juridic_shipping_country" class="select">
@@ -1728,8 +1760,10 @@
                                 <input type="text" wire:model="juridic_shipping_county" placeholder="Judet">
                             </div> --}}
                             <div class="checkout__item checkout__item--required" id="juridicBillingCounty">
-                              <input type="text" name="juridicBillingCounty" placeholder="Juridic Billing County" autocomplete="county" required>
-                              <span></span>
+                                <input type="text" wire:model="juridic_shipping_county"
+                                    name="juridicBillingCounty" placeholder="Juridic Billing County"
+                                    autocomplete="county" required>
+                                <span></span>
                             </div>
                             <!---------------------------------------------------->
                             {{-- <div class="checkout__item">
@@ -1737,8 +1771,9 @@
                                     placeholder="Localitate (oras, comuna sau sat)">
                             </div> --}}
                             <div class="checkout__item checkout__item--required" id="juridicBillingCity">
-                              <input type="text" name="juridicBillingCity" placeholder="Juridic Billing City" autocomplete="city" required>
-                              <span></span>
+                                <input type="text" wire:model="juridic_shipping_city" name="juridicBillingCity"
+                                    placeholder="Juridic Billing City" autocomplete="city" required>
+                                <span></span>
                             </div>
                             <!---------------------------------------------------->
                             {{-- <div class="checkout__item">
@@ -1746,8 +1781,10 @@
                                     placeholder="Cod Postal">
                             </div> --}}
                             <div class="checkout__item checkout__item--required" id="juridicBillingPostal">
-                              <input type="text" name="juridicBillingPostal" placeholder="Juridic Billing Postal Code" autocomplete="postal-code" required>
-                              <span></span>
+                                <input type="text" wire:model="juridic_shipping_zipcode"
+                                    name="juridicBillingPostal" placeholder="Juridic Billing Postal Code"
+                                    autocomplete="postal-code" required>
+                                <span></span>
                             </div>
                             <!----------- End Checkout List of Items ------------->
                             <!---------------------------------------------------->
@@ -2004,8 +2041,8 @@
                                             <img class="cart__list--img" src="/images/store/default/default70.webp"
                                                 alt="something wrong">
                                         @endif
-                                        <a href="{{ route('product', ['product' => $cartItem->product->seo_id !== null && $cartItem->product->seo_id !== '' ? $cartItem->product->seo_id : $cartItem->product->id]) }}" target="_blank"
-                                            class="total__name">{{ $cartItem->product->name }}</a>
+                                        <a href="{{ route("product", ["product" => $cartItem->product->seo_id !== null && $cartItem->product->seo_id !== "" ? $cartItem->product->seo_id : $cartItem->product->id]) }}"
+                                            target="_blank" class="total__name">{{ $cartItem->product->name }}</a>
                                         <span class="total__price">
 
                                             {{-- {{ $cartItem->product->price }} --}}
