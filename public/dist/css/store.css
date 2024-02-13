@@ -250,6 +250,10 @@ template {
   touch-action: manipulation !important;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: "Montserrat", sans-serif;
   background-color: #ffffff;
@@ -5424,4 +5428,4 @@ header {
   color: #b3b3b3;
   font-size: 14px;
   text-align: center;
-}/*# sourceMappingURL=store.css.map */
+}
