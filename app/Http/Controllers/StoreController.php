@@ -101,13 +101,13 @@ class StoreController extends Controller
   /**
    * Display the specified resource.
    */
-  public function show($productSlug = null)
+  public function show($product = null)
   {
-    if (is_numeric($productSlug)) {
-      $data = Product::find($productSlug);
+    if (is_numeric($product)) {
+      $data = Product::find($product);
     } else {
 
-      $data = Product::where('seo_id', $productSlug)->first();
+      $data = Product::where('seo_id', $product)->first();
     }
     // $product variable will contain the product instance resolved by Laravel
     return view('store.product', ['data' => $data]);
