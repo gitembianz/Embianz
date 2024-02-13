@@ -43,12 +43,12 @@
 @import "store/catalogue/control";
 @import "store/catalogue/filter";
 @import "store/catalogue/tag";
-@import "store/catalogue/product-related";
 //<----------------------- End Catalogue ----------------------->
 //<------------------------------------------------------------->
 //<------------------------- Product --------------------------->
 @import "store/product/product";
 @import "store/product/tab";
+@import "store/product/related-slider";
 //<----------------------- End Product ------------------------->
 //<-------------- Cart, wish and checkout page ----------------->
 @import "store/checkout/basket";
