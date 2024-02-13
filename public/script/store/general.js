@@ -40,3 +40,6 @@ document.addEventListener("DOMContentLoaded", function () {
   modal(".modal");
 });
 //<----------------------- End Start Functions PC ---------------------->
+
+// Asigurați-vă că apelați funcția atunci când are loc evenimentul de scroll
+// window.addEventListener("scroll", hiddenOnScroll);
