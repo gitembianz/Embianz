@@ -13,7 +13,7 @@ class CartProductsList extends Component
     public $cartId;
     protected $listeners = [
         'showcart' => 'cartshow',
-        'orderprocess' => 'mount',
+        'orderprocess' => 'orderprocess',
         'newcartlist' => 'getCartItemsProperty',
 
     ];
@@ -37,6 +37,10 @@ class CartProductsList extends Component
         } else {
             return collect();
         }
+    }
+    public function orderprocess()
+    {
+        $this->mount(null);
     }
     public function mount($cartId)
     {
