@@ -177,7 +177,7 @@
                                 @elseif ($column === 'value')
                                     <td data-title="{{ $column }}">
                                         @if ($editindex !== $index)
-                                            {{ $voucher->$column }} %
+                                            {{ $voucher->$column }}
                                         @else
                                             <input type="number" min="0" required class="table__edit"
                                                 wire:model.defer="voucher.{{ $index }}.{{ $column }}">
