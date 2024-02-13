@@ -30,16 +30,63 @@ function modal(modalID) {
   }
 }
 //<----------------------------- End Modal ----------------------------->
+//<--------------- Hidden On Scroll(breadcrumb & Control) -------------->
+let lastScrollTop = 0;
+
+function hiddenOnScroll() {
+  const breadcrumbs = document.querySelector(".breadcrumbs");
+  const control = document.querySelector(".controls");
+  const currentScrollTop =
+    window.pageYOffset || document.documentElement.scrollTop;
+
+  if (breadcrumbs) {
+    if (currentScrollTop > lastScrollTop) {
+      // Scrolling down
+      breadcrumbs.style.top = "-60px";
+    } else {
+      // Scrolling up
+      breadcrumbs.style.top = "59px";
+    }
+  }
+
+  if (control) {
+    if (currentScrollTop > lastScrollTop) {
+      // Scrolling down
+      control.style.top = "-90px";
+    } else {
+      // Scrolling up
+      control.style.top = "89px";
+    }
+  }
+
+  lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop;
+}
+//<------------- End Hidden On Scroll(breadcrumb & Control) ------------>
 //<--------------------------------------------------------------------->
-//<------------------------ Start Functions IOS ------------------------>
-modal(".modal");
-//<---------------------- End Start Functions IOS ---------------------->
+//<------------------------- Add On WishList --------------------------->
+function addWishList(button) {
+  const wish = document.getElementById("wishlistCount");
+  wish.style.scale = 1.5;
+
+  setTimeout(() => {
+    wish.style.scale = 1;
+  }, 1500);
+}
+
+function flyToCart(button) {
+  const shopping_cart = document.getElementById("basketOpen");
+  const numberCart = shopping_cart.querySelector(".header__count");
+  numberCart.style.scale = 1.5;
+
+  setTimeout(() => {
+    numberCart.style.scale = 1;
+  }, 1500);
+}
+//<----------------------- End Add On WishList ------------------------->
 //<--------------------------------------------------------------------->
 //<------------------------- Start Functions PC ------------------------>
 document.addEventListener("DOMContentLoaded", function () {
   modal(".modal");
+  window.addEventListener("scroll", hiddenOnScroll);
 });
 //<----------------------- End Start Functions PC ---------------------->
-
-// Asigurați-vă că apelați funcția atunci când are loc evenimentul de scroll
-// window.addEventListener("scroll", hiddenOnScroll);

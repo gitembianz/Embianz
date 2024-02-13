@@ -1581,7 +1581,7 @@ header {
   height: 100%;
   color: #333333;
   font-weight: 400;
-  font-size: 12px;
+  font-size: 14px;
   text-decoration: none;
 }
 .leftbar__link > img {
@@ -1618,24 +1618,19 @@ header {
   width: 100%;
 }
 .leftbar__link--text > p {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 400;
   color: #333333;
 }
 .leftbar__link--text > span {
   color: #333333;
   font-weight: 400;
-  font-size: 11px;
+  font-size: 12px;
 }
 .leftbar__link--text > h4 {
   font-size: 14px;
   color: #333333;
   font-weight: 500;
-}
-@media (max-width: 576px) {
-  .leftbar__link--text > h4 {
-    font-size: 12px;
-  }
 }
 
 .leftbar__delete {
@@ -1670,14 +1665,14 @@ header {
 }
 
 .leftbar__total--text {
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 500;
   color: #333333;
   width: 100%;
   text-align: end;
 }
 .leftbar__total--text > span {
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 400;
   margin-left: 10px;
   color: #333333;
@@ -4092,6 +4087,9 @@ header {
   font-weight: 500;
   background: #fafafa;
   outline: none;
+}
+.voucher > input::placeholder {
+  font-size: 14px;
 }
 .voucher > button {
   position: absolute;

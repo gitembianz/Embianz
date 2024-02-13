@@ -73,7 +73,7 @@
         <span>Cantitatea maxima a produsului este {{ $limit }}</span>
     @endif
     @if ($price && $product->quantity != 0)
-        <button wire:click="addToCart({{ $product }})" class="product__button" onclick="headerAnimation()">Adauga
+        <button wire:click="addToCart({{ $product }})" class="product__button" onclick="flyToCart(this)">Adauga
             in coș</button>
     @else
         <a class="card-button-disabled" onclick="handleClick()">Indisponibil</a>

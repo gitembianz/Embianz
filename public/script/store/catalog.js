@@ -176,17 +176,6 @@ function flyToCart(button) {
 }
 //<-------------------------- End Add to Cart -------------------------->
 //<--------------------------------------------------------------------->
-//<------------------------- Add On WishList --------------------------->
-function addWishList(button) {
-  const wish = document.getElementById("wishlistCount");
-  wish.style.scale = 1.5;
-
-  setTimeout(() => {
-    wish.style.scale = 1;
-  }, 1500);
-}
-//<----------------------- End Add On WishList ------------------------->
-//<--------------------------------------------------------------------->
 //<------------------------ Start Functions IOS ------------------------>
 leftbar("sortOpen", "sortClose", "sortList", "sortContent");
 dropmenus(".dropfilter", true);
@@ -202,39 +191,6 @@ document.addEventListener("DOMContentLoaded", function () {
   applyFilter("closeFilter", "resetFilter");
   applySort(".sort__item");
   filterLive("filterOpen", ".filterClose", ".filterList", "filterContent");
-  window.addEventListener("scroll", hiddenOnScroll);
 });
 //<----------------------- End Start Functions PC ---------------------->
 //<--------------------------------------------------------------------->
-let lastScrollTop = 0;
-
-function hiddenOnScroll() {
-  const breadcrumbs = document.querySelector(".breadcrumbs");
-  const control = document.querySelector(".controls");
-  const currentScrollTop =
-    window.pageYOffset || document.documentElement.scrollTop;
-
-  if (breadcrumbs) {
-    if (currentScrollTop > lastScrollTop) {
-      // Scrolling down
-      breadcrumbs.style.top = "-60px";
-    } else {
-      // Scrolling up
-      breadcrumbs.style.top = "59px";
-    }
-  }
-
-  if (control) {
-    if (currentScrollTop > lastScrollTop) {
-      // Scrolling down
-      control.style.top = "-90px";
-    } else {
-      // Scrolling up
-      control.style.top = "89px";
-    }
-  }
-
-  lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop;
-}
-
-// Adăugarea funcției ca un ascultător de eveniment pentru scroll
