@@ -122,17 +122,6 @@ function flyToCart(button) {
 }
 //<-------------------------- End Add to Cart -------------------------->
 //<--------------------------------------------------------------------->
-//<------------------------- Add On WishList --------------------------->
-function addWishList(button) {
-  const wish = document.getElementById("wishlistCount");
-  wish.style.scale = 1.5;
-
-  setTimeout(() => {
-    wish.style.scale = 1;
-  }, 1500);
-}
-//<----------------------- End Add On WishList ------------------------->
-//<--------------------------------------------------------------------->
 //<------------------------ Start Functions IOS ------------------------>
 slider(".main-slider");
 slider(".card-slider");
