@@ -47,6 +47,11 @@
   &>svg {
     stroke: $secondary;
   }
+
+  &.disabled {
+    opacity: .5;
+    cursor: not-allowed;
+  }
 }
 
 .related__navigation {

@@ -390,6 +390,24 @@ function relatedSlider() {
     }
   }
 
+  function updateButtonStates() {
+    const scrollLeft = wrapper.scrollLeft;
+    const maxScrollLeft = wrapper.scrollWidth - wrapper.clientWidth;
+    const cardWidth = updateCardWidth();
+
+    if (scrollLeft === 0) {
+      left.classList.add("disabled");
+    } else {
+      left.classList.remove("disabled");
+    }
+
+    if (scrollLeft >= maxScrollLeft - cardWidth) {
+      right.classList.add("disabled");
+    } else {
+      right.classList.remove("disabled");
+    }
+  }
+
   // Creăm un nou ResizeObserver
   const resizeObserver = new ResizeObserver(toggleButtonsVisibility);
 
@@ -397,12 +415,18 @@ function relatedSlider() {
   resizeObserver.observe(wrapper);
 
   left.addEventListener("click", () => {
-    scrollSlider(-updateCardWidth());
+    if (!left.classList.contains("disabled")) {
+      scrollSlider(-updateCardWidth());
+    }
   });
 
   right.addEventListener("click", () => {
-    scrollSlider(updateCardWidth());
+    if (!right.classList.contains("disabled")) {
+      scrollSlider(updateCardWidth());
+    }
   });
+
+  wrapper.addEventListener("scroll", updateButtonStates);
 
   window.addEventListener("resize", () => {
     const cardWidth = updateCardWidth();
@@ -410,14 +434,17 @@ function relatedSlider() {
   });
 
   window.cardWidth = updateCardWidth();
+
+  // Actualizăm starea butoanelor la încărcarea paginii
+  updateButtonStates();
 }
 
-relatedSlider();
 //<------------------------- End Related-Slider ------------------------>
 //<--------------------------------------------------------------------->
 //<-------------------------- Start Functions -------------------------->
 sliderProduct(".product-slider");
 modalProduct(".product-modal", ".product-slider");
 slider(".card-slider");
+relatedSlider();
 //<------------------------ End Start Functions ------------------------>
 //<--------------------------------------------------------------------->
