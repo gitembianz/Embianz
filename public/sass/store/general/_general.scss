@@ -8,6 +8,10 @@
   touch-action: manipulation !important;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: "Montserrat", sans-serif;
   background-color: $background;

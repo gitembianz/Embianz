@@ -7,7 +7,7 @@
             <div class="checkout container">
                 <div class="section__header container">
                     <h2 class="section__title">Ups, a aparut o eroare!</h2>
-                    <a class="section__text" href="{{ url("/") }}">
+                    <a class="section__text" href="{{ url('/') }}">
                         Va rugam sa va intoarceti la pagina initiala
                     </a>
                 </div>
@@ -30,7 +30,8 @@
                     <span class="step__line @if ($step == 1) half @else full @endif"></span>
                     <div class="step @if ($step > 1 || $step == 3) active @endif" data-step="Plasare comanda">2
                     </div>
-                    <span class="step__line @if ($step == 3) full @endif"></span>
+                    <span
+                        class="step__line @if ($step == 2) half @elseif($step == 3) full @endif"></span>
                     <div class="step @if ($step == 3) active @endif" data-step="Confirmare">3
                     </div>
                 </div>
@@ -70,7 +71,7 @@
                     <div class="checkout__container @if ($individual) active @endif">
                         <!---------------------------------------------------->
                         <!-------------- Checkout List of Forms -------------->
-                        <div class="checkout__form active">
+                        <div wire:ignore class="checkout__form active">
                             <!---------------------------------------------------->
                             <!------------- Checkout Header Name --------------->
                             <div class="checkout__top">
@@ -85,7 +86,7 @@
                             {{-- <div class="checkout__item">
                                 <input type="text" wire:model="individual_billing_first" placeholder="Nume">
                                 <span>
-                                    @error("individual_billing_first")
+                                    @error('individual_billing_first')
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -100,7 +101,7 @@
                             {{-- <div class="checkout__item">
                                 <input type="text" wire:model="individual_billing_last" placeholder="Prenume">
                                 <span>
-                                    @error("individual_billing_last")
+                                    @error('individual_billing_last')
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -115,7 +116,7 @@
                             {{-- <div class="checkout__item">
                                 <input type="tel" wire:model="individual_billing_phone" placeholder="Telefon">
                                 <span>
-                                    @error("individual_billing_phone")
+                                    @error('individual_billing_phone')
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -130,7 +131,7 @@
                             {{-- <div class="checkout__item">
                                 <input type="email" wire:model="individual_billing_email" placeholder="Email">
                                 <span>
-                                    @error("individual_billing_email")
+                                    @error('individual_billing_email')
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -145,7 +146,7 @@
                             <!---------------------------------------------------->
                         </div>
                         <!---------------------------------------------------->
-                        <div class="checkout__form active">
+                        <div wire:ignore class="checkout__form active">
                             <!---------------------------------------------------->
                             <!------------- Checkout Header Name --------------->
                             <div class="checkout__top">
@@ -160,7 +161,7 @@
                             {{-- <div class="checkout__item">
                                 <input type="text" wire:model="individual_billing_address1" placeholder="Address 1*">
                                 <span>
-                                    @error("individual_billing_address1")
+                                    @error('individual_billing_address1')
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -451,7 +452,7 @@
                                 <input type="text" wire:model="individual_billing_city"
                                     placeholder="Localitate (oras, comuna sau sat)">
                                 <span>
-                                    @error("individual_billing_city")
+                                    @error('individual_billing_city')
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -467,7 +468,7 @@
                                 <input type="text" placeholder="Post Code" wire:model="individual_billing_zipcode"
                                     placeholder="Cod Postal">
                                 <span>
-                                    @error("individual_billing_zipcode")
+                                    @error('individual_billing_zipcode')
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -489,7 +490,6 @@
                         </label>
                         <!-------------- End Checkout Checkbox --------------->
                         <!---------------------------------------------------->
-                        {{-- @if (!$individual_identic) --}}
                         <div class="checkout__form @if (!$individual_identic && $individual) active @endif">
                             <!---------------------------------------------------->
                             <!------------- Checkout Header Name --------------->
@@ -505,12 +505,13 @@
                             {{-- <div class="checkout__item">
                                 <input type="text" wire:model="individual_shipping_first" placeholder="Nume">
                                 <span>
-                                    @error("individual_shipping_first")
+                                    @error('individual_shipping_first')
                                         {{ $message }}
                                     @enderror
                                 </span>
                             </div> --}}
-                            <div class="checkout__item checkout__item--required" id="individualBillingFirstName">
+                            <div wire:ignore class="checkout__item checkout__item--required"
+                                id="individualBillingFirstName">
                                 <input type="text" wire:model="individual_shipping_first"
                                     name="individualBillingFirstName" placeholder="Individual Billing First Name"
                                     autocomplete="given-name" required>
@@ -520,12 +521,13 @@
                             {{-- <div class="checkout__item">
                                 <input type="text" wire:model="individual_shipping_last" placeholder="Prenume">
                                 <span>
-                                    @error("individual_shipping_last")
+                                    @error('individual_shipping_last')
                                         {{ $message }}
                                     @enderror
                                 </span>
                             </div> --}}
-                            <div class="checkout__item checkout__item--required" id="individualBillingLastName">
+                            <div wire:ignore class="checkout__item checkout__item--required"
+                                id="individualBillingLastName">
                                 <input type="text" wire:model="individual_shipping_last"
                                     name="individualBillingLastName" placeholder="Individual Billing Last Name"
                                     autocomplete="family-name" required>
@@ -535,12 +537,13 @@
                             {{-- <div class="checkout__item">
                                 <input type="tel" wire:model="individual_shipping_phone" placeholder="Telefon">
                                 <span>
-                                    @error("individual_shipping_phone")
+                                    @error('individual_shipping_phone')
                                         {{ $message }}
                                     @enderror
                                 </span>
                             </div> --}}
-                            <div class="checkout__item checkout__item--required" id="individualBillingEmail">
+                            <div wire:ignore class="checkout__item checkout__item--required"
+                                id="individualBillingEmail">
                                 <input type="email" wire:model="individual_shipping_phone"
                                     name="individualBillingEmail" placeholder="Individual Billing Email"
                                     autocomplete="email" required>
@@ -550,12 +553,13 @@
                             {{-- <div class="checkout__item">
                                 <input type="email" wire:model="individual_shipping_email" placeholder="Email">
                                 <span>
-                                    @error("individual_shipping_email")
+                                    @error('individual_shipping_email')
                                         {{ $message }}
                                     @enderror
                                 </span>
                             </div> --}}
-                            <div class="checkout__item checkout__item--required" id="individualBillingPhone">
+                            <div wire:ignore class="checkout__item checkout__item--required"
+                                id="individualBillingPhone">
                                 <input type="tel" wire:model="individual_shipping_email"
                                     name="individualBillingPhone" placeholder="Individual Billing Phone Number"
                                     autocomplete="tel" pattern="[0-9]*" inputmode="numeric" required>
@@ -580,11 +584,12 @@
                             {{-- <div class="checkout__item">
                                 <input type="text" wire:model="individual_shipping_address1"
                                     placeholder="Address 1*">
-                                @error("individual_shipping_address1")
+                                @error('individual_shipping_address1')
                                     {{ $message }}
                                 @enderror
                             </div> --}}
-                            <div class="checkout__item checkout__item--required" id="individualBillingAddress">
+                            <div wire:ignore class="checkout__item checkout__item--required"
+                                id="individualBillingAddress">
                                 <input type="text" wire:model="individual_shipping_address1"
                                     name="individualBillingAddress" placeholder="Individual Billing Address"
                                     autocomplete="street-address" required>
@@ -595,7 +600,7 @@
                                 <input type="text" wire:model="individual_shipping_address2"
                                     placeholder="Address 2 (optional)">
                             </div> --}}
-                            <div class="checkout__item" id="individualBillingAddress2">
+                            <div wire:ignore class="checkout__item" id="individualBillingAddress2">
                                 <input type="text" wire:model="individual_shipping_address2"
                                     name="individualBillingAddress2"
                                     placeholder="Individual Billing Address 2 (optional)"
@@ -603,7 +608,7 @@
                                 <span></span>
                             </div>
                             <!---------------------------------------------------->
-                            <select wire:model="individual_shipping_country" class="select">
+                            <select wire:ignore wire:model="individual_shipping_country" class="select">
                                 <option value="Afghanistan">Afghanistan</option>
                                 <option value="Åland Islands">Åland Islands</option>
                                 <option value="Albania">Albania</option>
@@ -858,7 +863,8 @@
                             {{-- <div class="checkout__item">
                                 <input type="text" wire:model="individual_shipping_county" placeholder="Judet">
                             </div> --}}
-                            <div class="checkout__item checkout__item--required" id="individualBillingCounty">
+                            <div wire:ignore class="checkout__item checkout__item--required"
+                                id="individualBillingCounty">
                                 <input type="text" wire:model="individual_shipping_county"
                                     name="individualBillingCounty" placeholder="Individual Billing County"
                                     autocomplete="county" required>
@@ -869,12 +875,13 @@
                                 <input type="text" wire:model="individual_shipping_city"
                                     placeholder="Localitate (oras, comuna sau sat)">
                                 <span>
-                                    @error("individual_shipping_city")
+                                    @error('individual_shipping_city')
                                         {{ $message }}
                                     @enderror
                                 </span>
                             </div> --}}
-                            <div class="checkout__item checkout__item--required" id="individualBillingCity">
+                            <div wire:ignore class="checkout__item checkout__item--required"
+                                id="individualBillingCity">
                                 <input type="text" wire:model="individual_shipping_city"
                                     name="individualBillingCity" placeholder="Individual Billing City"
                                     autocomplete="city" required>
@@ -885,12 +892,13 @@
                                 <input type="text" wire:model="individual_shipping_zipcode"
                                     placeholder="Cod Postal">
                                 <span>
-                                    @error("individual_shipping_zipcode")
+                                    @error('individual_shipping_zipcode')
                                         {{ $message }}
                                     @enderror
                                 </span>
                             </div> --}}
-                            <div class="checkout__item checkout__item--required" id="individualBillingPostal">
+                            <div wire:ignore class="checkout__item checkout__item--required"
+                                id="individualBillingPostal">
                                 <input type="text" wire:model="individual_shipping_zipcode"
                                     name="individualBillingPostal" placeholder="Individual Billing Postal Code"
                                     autocomplete="postal-code" required>
@@ -905,7 +913,7 @@
                     <div class="checkout__container @if ($juridic) active @endif">
                         <!---------------------------------------------------->
                         <!-------------- Checkout List of Forms -------------->
-                        <div class="checkout__form active">
+                        <div wire:ignore class="checkout__form active">
                             <!---------------------------------------------------->
                             <!------------- Checkout Header Name --------------->
                             <div class="checkout__top">
@@ -920,7 +928,7 @@
                             {{-- <div class="checkout__item">
                                 <input type="text" wire:model="juridic_billing_first" placeholder="Nume">
                                 <span>
-                                    @error("juridic_billing_first")
+                                    @error('juridic_billing_first')
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -935,7 +943,7 @@
                             {{-- <div class="checkout__item">
                                 <input type="text" wire:model="juridic_billing_last" placeholder="Prenume">
                                 <span>
-                                    @error("juridic_billing_last")
+                                    @error('juridic_billing_last')
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -950,7 +958,7 @@
                             {{-- <div class="checkout__item">
                                 <input type="tel" wire:model="juridic_billing_phone" placeholder="Telefon">
                                 <span>
-                                    @error("juridic_billing_phone")
+                                    @error('juridic_billing_phone')
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -965,7 +973,7 @@
                             {{-- <div class="checkout__item">
                                 <input type="email" wire:model="juridic_billing_email" placeholder="Email">
                                 <span>
-                                    @error("juridic_billing_email")
+                                    @error('juridic_billing_email')
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -980,7 +988,7 @@
                                 <input type="text" wire:model="juridic_billing_company_name"
                                     placeholder="Denumirea Companiei">
                                 <span>
-                                    @error("juridic_billing_company_name")
+                                    @error('juridic_billing_company_name')
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -995,7 +1003,7 @@
                                 <input type="text" wire:model="juridic_billing_registration_code"
                                     placeholder="Cod de înregistrare">
                                 <span>
-                                    @error("juridic_billing_registration_code")
+                                    @error('juridic_billing_registration_code')
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -1011,7 +1019,7 @@
                                 <input type="text" wire:model="juridic_billing_registration_number"
                                     placeholder="Număr de înregistrare.">
                                 <span>
-                                    @error("juridic_billing_registration_number")
+                                    @error('juridic_billing_registration_number')
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -1027,7 +1035,7 @@
                                 <input type="text" wire:model="juridic_billing_bank"
                                     placeholder="Denumirea Bancii">
                                 <span>
-                                    @error("juridic_billing_bank")
+                                    @error('juridic_billing_bank')
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -1041,7 +1049,7 @@
                             {{-- <div class="checkout__item">
                                 <input type="text" wire:model="juridic_billing_account" placeholder="Cont IBAN">
                                 <span>
-                                    @error("juridic_billing_account")
+                                    @error('juridic_billing_account')
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -1055,7 +1063,7 @@
                             <!---------------------------------------------------->
                         </div>
                         <!---------------------------------------------------->
-                        <div class="checkout__form active">
+                        <div wire:ignore class="checkout__form active">
                             <!---------------------------------------------------->
                             <!------------- Checkout Header Name --------------->
                             <div class="checkout__top">
@@ -1070,7 +1078,7 @@
                             {{-- <div class="checkout__item">
                                 <input type="text" wire:model="juridic_billing_address1" placeholder="Address 1*">
                                 <span>
-                                    @error("juridic_billing_address1")
+                                    @error('juridic_billing_address1')
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -1359,7 +1367,7 @@
                                 <input type="text" wire:model="juridic_billing_city"
                                     placeholder="Localitate (oras, comuna sau sat)">
                                 <span>
-                                    @error("juridic_billing_city")
+                                    @error('juridic_billing_city')
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -1373,7 +1381,7 @@
                             {{-- <div class="checkout__item">
                                 <input type="text" wire:model="juridic_billing_zipcode" placeholder="Cod Postal">
                                 <span>
-                                    @error("juridic_billing_zipcode")
+                                    @error('juridic_billing_zipcode')
                                         {{ $message }}
                                     @enderror
                                 </span>
@@ -1410,12 +1418,13 @@
                             {{-- <div class="checkout__item">
                                 <input type="text" wire:model="juridic_shipping_first" placeholder="Nume">
                                 <span>
-                                    @error("juridic_shipping_first")
+                                    @error('juridic_shipping_first')
                                         {{ $message }}
                                     @enderror
                                 </span>
                             </div> --}}
-                            <div class="checkout__item checkout__item--required" id="juridicBillingFirstName">
+                            <div wire:ignore class="checkout__item checkout__item--required"
+                                id="juridicBillingFirstName">
                                 <input type="text" wire:model="juridic_shipping_first"
                                     name="juridicBillingFirstName" placeholder="Juridic Billing First Name"
                                     autocomplete="given-name" required>
@@ -1425,12 +1434,13 @@
                             {{-- <div class="checkout__item">
                                 <input type="text" wire:model="juridic_shipping_last" placeholder="Prenume">
                                 <span>
-                                    @error("juridic_shipping_last")
+                                    @error('juridic_shipping_last')
                                         {{ $message }}
                                     @enderror
                                 </span>
                             </div> --}}
-                            <div class="checkout__item checkout__item--required" id="juridicBillingLastName">
+                            <div wire:ignore class="checkout__item checkout__item--required"
+                                id="juridicBillingLastName">
                                 <input type="text" wire:model="juridic_shipping_last"
                                     name="juridicBillingLastName" placeholder="Juridic Billing Last Name"
                                     autocomplete="family-name" required>
@@ -1440,12 +1450,13 @@
                             {{-- <div class="checkout__item">
                                 <input type="tel" wire:model="juridic_shipping_phone" placeholder="Telefon">
                                 <span>
-                                    @error("juridic_shipping_phone")
+                                    @error('juridic_shipping_phone')
                                         {{ $message }}
                                     @enderror
                                 </span>
                             </div> --}}
-                            <div class="checkout__item checkout__item--required" id="juridicBillingPhone">
+                            <div wire:ignore class="checkout__item checkout__item--required"
+                                id="juridicBillingPhone">
                                 <input type="tel" wire:model="juridic_shipping_phone"
                                     name="juridicBillingPhone" placeholder="Juridic Billing Phone Number"
                                     autocomplete="tel" pattern="[0-9]*" inputmode="numeric" required>
@@ -1455,12 +1466,13 @@
                             {{-- <div class="checkout__item">
                                 <input type="email" wire:model="juridic_shipping_email" placeholder="Email">
                                 <span>
-                                    @error("juridic_shipping_email")
+                                    @error('juridic_shipping_email')
                                         {{ $message }}
                                     @enderror
                                 </span>
                             </div> --}}
-                            <div class="checkout__item checkout__item--required" id="juridicBillingEmail">
+                            <div wire:ignore class="checkout__item checkout__item--required"
+                                id="juridicBillingEmail">
                                 <input type="email" wire:model="juridic_shipping_email"
                                     name="juridicBillingEmail" placeholder="Juridic Billing Email"
                                     autocomplete="email" required>
@@ -1486,7 +1498,8 @@
                                 <input type="text" wire:model="juridic_shipping_address1"
                                     placeholder="Address 1*">
                             </div> --}}
-                            <div class="checkout__item checkout__item--required" id="juridicBillingAddress">
+                            <div wire:ignore class="checkout__item checkout__item--required"
+                                id="juridicBillingAddress">
                                 <input type="text" wire:model="juridic_shipping_address1"
                                     name="juridicBillingAddress" placeholder="Juridic Billing Address"
                                     autocomplete="street-address" required>
@@ -1497,14 +1510,14 @@
                                 <input type="text" wire:model="juridic_shipping_address2"
                                     placeholder="Address 2 (optional)">
                             </div> --}}
-                            <div class="checkout__item" id="juridicBillingAddress2">
+                            <div wire:ignore class="checkout__item" id="juridicBillingAddress2">
                                 <input type="text" wire:model="juridic_shipping_address2"
                                     name="juridicBillingAddress2" placeholder="Juridic Billing Address 2"
                                     autocomplete="address-level2">
                                 <span></span>
                             </div>
                             <!---------------------------------------------------->
-                            <select wire:model="juridic_shipping_country" class="select">
+                            <select wire:ignore wire:model="juridic_shipping_country" class="select">
                                 <option value="Afghanistan">Afghanistan</option>
                                 <option value="Åland Islands">Åland Islands</option>
                                 <option value="Albania">Albania</option>
@@ -1759,7 +1772,8 @@
                             {{-- <div class="checkout__item">
                                 <input type="text" wire:model="juridic_shipping_county" placeholder="Judet">
                             </div> --}}
-                            <div class="checkout__item checkout__item--required" id="juridicBillingCounty">
+                            <div wire:ignore class="checkout__item checkout__item--required"
+                                id="juridicBillingCounty">
                                 <input type="text" wire:model="juridic_shipping_county"
                                     name="juridicBillingCounty" placeholder="Juridic Billing County"
                                     autocomplete="county" required>
@@ -1770,7 +1784,8 @@
                                 <input type="text" wire:model="juridic_shipping_city"
                                     placeholder="Localitate (oras, comuna sau sat)">
                             </div> --}}
-                            <div class="checkout__item checkout__item--required" id="juridicBillingCity">
+                            <div wire:ignore class="checkout__item checkout__item--required"
+                                id="juridicBillingCity">
                                 <input type="text" wire:model="juridic_shipping_city" name="juridicBillingCity"
                                     placeholder="Juridic Billing City" autocomplete="city" required>
                                 <span></span>
@@ -1780,7 +1795,8 @@
                                 <input type="text" wire:model="juridic_shipping_zipcode"
                                     placeholder="Cod Postal">
                             </div> --}}
-                            <div class="checkout__item checkout__item--required" id="juridicBillingPostal">
+                            <div wire:ignore class="checkout__item checkout__item--required"
+                                id="juridicBillingPostal">
                                 <input type="text" wire:model="juridic_shipping_zipcode"
                                     name="juridicBillingPostal" placeholder="Juridic Billing Postal Code"
                                     autocomplete="postal-code" required>
@@ -1796,7 +1812,7 @@
                         <h2 class="section__title">Metoda de plata</h2>
                     </div>
                     @foreach ($payments as $payment)
-                        @if ($payment->name == "Plata cash la livrare" && $cart->final_amount <= "1000")
+                        @if ($payment->name == 'Plata cash la livrare' && $cart->final_amount <= '1000')
                             @if ($payment->active)
                                 <div class="payment">
                                     <label class="payment__wrapper" for="rtc"
@@ -1812,7 +1828,7 @@
                                 </div>
                             @endif
                         @endif
-                        @if ($payment->name == "Ordin de plata")
+                        @if ($payment->name == 'Ordin de plata')
                             @if ($payment->active)
                                 @if ($juridic)
                                     <div class="payment">
@@ -2041,13 +2057,13 @@
                                             <img class="cart__list--img" src="/images/store/default/default70.webp"
                                                 alt="something wrong">
                                         @endif
-                                        <a href="{{ route("product", ["product" => $cartItem->product->seo_id !== null && $cartItem->product->seo_id !== "" ? $cartItem->product->seo_id : $cartItem->product->id]) }}"
+                                        <a href="{{ route('product', ['product' => $cartItem->product->seo_id !== null && $cartItem->product->seo_id !== '' ? $cartItem->product->seo_id : $cartItem->product->id]) }}"
                                             target="_blank" class="total__name">{{ $cartItem->product->name }}</a>
                                         <span class="total__price">
 
                                             {{-- {{ $cartItem->product->price }} --}}
                                             <?php $currency = $cartItem->product->product_prices->first()->pricelist->currency->name; ?>
-                                            {{ number_format($cartItem->quantity * $cartItem->price, 2, ",", ".") }}
+                                            {{ number_format($cartItem->quantity * $cartItem->price, 2, ',', '.') }}
                                             {{ $currency }}
                                         </span>
 
@@ -2064,7 +2080,7 @@
                                         @if ($cart->delivery_price == 0)
                                             Gratuit
                                         @else
-                                            {{ number_format($cart->delivery_price, 2, ",", ".") }}
+                                            {{ number_format($cart->delivery_price, 2, ',', '.') }}
                                             {{ $currency }}
                                         @endif
                                     </span>
@@ -2082,12 +2098,12 @@
                                     <span>total</span>
                                     @if ($cart->voucher)
                                         <span style="text-decoration: line-through; color:red;">
-                                            {{ number_format($cart->sum_amount + $cart->delivery_price, 2, ",", ".") }}{{ $currency }}
+                                            {{ number_format($cart->sum_amount + $cart->delivery_price, 2, ',', '.') }}{{ $currency }}
                                         </span>
-                                        {{ number_format($cart->final_amount, 2, ",", ".") }} {{ $currency }}
+                                        {{ number_format($cart->final_amount, 2, ',', '.') }} {{ $currency }}
                                         </span>
                                     @else
-                                        <span>{{ number_format($cart->final_amount, 2, ",", ".") }}
+                                        <span>{{ number_format($cart->final_amount, 2, ',', '.') }}
                                             {{ $currency }}</span>
                                     @endif
                                 </div>
@@ -2099,7 +2115,7 @@
                     <label id="termsbutton"
                         class="checkout__terms @if ($errorterms && $terms == false) error @endif">
                         <input type="checkbox" wire:model="terms" name="terms">
-                        <span>Sunt de acord cu <a href="{{ url("/terms") }}" target="_blank">termenii si
+                        <span>Sunt de acord cu <a href="{{ url('/terms') }}" target="_blank">termenii si
                                 conditiile</a></span>
 
                     </label>
@@ -2109,25 +2125,19 @@
                     window.addEventListener('terms__error', event => {
                         var element = document.getElementById('termsbutton');
                         if (element) {
-                            element.scrollIntoView({
-                                behavior: 'smooth'
-                            });
+                            element.scrollIntoView();
                         }
                     });
                     window.addEventListener('next_step', event => {
                         var element = document.getElementById('step__container_bulins');
                         if (element) {
-                            element.scrollIntoView({
-                                behavior: 'smooth'
-                            });
+                            element.scrollIntoView();
                         }
                     });
                     window.addEventListener('final_step', event => {
                         var element = document.getElementById('step__container_bulins');
                         if (element) {
-                            element.scrollIntoView({
-                                behavior: 'smooth'
-                            });
+                            element.scrollIntoView();
                         }
                     });
                 </script>
@@ -2151,7 +2161,7 @@
                         <p class="section__text">Apreciem afacerea dumneavoastră și sperăm că achiziția dumneavoastră
                             vă aduce fericire. Vă mulțumim că ați ales produsele noastre și așteptăm cu nerăbdare să vă
                             mai servim în viitor. 🙏😊<br>Cu cele mai bune urări,</p>
-                        <a href="{{ url("/") }}" class="logo">
+                        <a href="{{ url('/') }}" class="logo">
                             <img src="/images/store/svg/noren-black.svg" alt="logo">
                         </a>
                     </div>
