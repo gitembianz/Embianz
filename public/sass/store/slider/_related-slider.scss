@@ -68,9 +68,6 @@
   z-index: 10;
 
   @media (max-width: map-get($grid-breakpoints, md)) {
-    position: static;
-    transform: none;
-    justify-content: flex-end;
-    margin-bottom: 5px;
+    width: 85%;
   }
 }

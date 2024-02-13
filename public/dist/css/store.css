@@ -2850,7 +2850,6 @@ header {
   cursor: pointer;
   background: none;
   background-color: transparent;
-  z-index: 300;
 }
 
 @keyframes fly_to_cart {
@@ -5293,10 +5292,7 @@ header {
 }
 @media (max-width: 768px) {
   .related__navigation {
-    position: static;
-    transform: none;
-    justify-content: flex-end;
-    margin-bottom: 5px;
+    width: 85%;
   }
 }
 
