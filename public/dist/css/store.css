@@ -4443,10 +4443,8 @@ header {
 .checkout__item.error {
   background: #ffe6e6;
 }
-.checkout__item.error > input {
-  border-color: red;
+.checkout__item.error::after {
   color: red;
-  scroll-margin-top: 100px;
 }
 .checkout__item.error > span {
   font-size: 13px;
@@ -4497,7 +4495,7 @@ header {
   font-size: 20px;
   font-weight: 500;
   line-height: 150%;
-  color: red;
+  color: #333;
   text-align: center;
   vertical-align: center;
 }
