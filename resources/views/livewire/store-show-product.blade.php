@@ -1,9 +1,9 @@
 <div id="store-show-product">
     <div class="breadcrumbs container">
-        <a class="breadcrumbs__link" href="{{ url('/') }}">
+        <a class="breadcrumbs__link" href="{{ url("/") }}">
             Acasa
         </a>
-        <a class="breadcrumbs__link" href="{{ url('/storeproducts') }}">
+        <a class="breadcrumbs__link" href="{{ url("/storeproducts") }}">
             Produse
         </a>
         <a class="breadcrumbs__link">{{ $product->name }}</a>
@@ -15,11 +15,11 @@
 
                 <div class="product-slider__wrapper">
                     @if ($product->media->count() != 0)
-                        @foreach ($product->media->where('type', 'full') as $media)
+                        @foreach ($product->media->where("type", "full") as $media)
                             <div class="product-slider__slide">
                                 <img src="/{{ $media->path }}{{ $media->name }}"
                                     alt="{{ $media->name }}{{ $product->name }}"
-                                    data-img-src="/{{ $product->media->where('type', 'original')->where('sequence', $media->sequence)->first()->path }}{{ $product->media->where('type', 'original')->where('sequence', $media->sequence)->first()->name }}">
+                                    data-img-src="/{{ $product->media->where("type", "original")->where("sequence", $media->sequence)->first()->path }}{{ $product->media->where("type", "original")->where("sequence", $media->sequence)->first()->name }}">
                             </div>
                         @endforeach
                     @else
@@ -63,7 +63,7 @@
         <!------------------ End Modal Product ---------------->
         <!------------------------------------------------------>
         <!----------------------- Product details ---------------------->
-        @livewire('product-details', ['product' => $product])
+        @livewire("product-details", ["product" => $product])
         <!--------------------- End Product details -------------------->
         <!------------------------------------------------------>
     </section>
@@ -85,112 +85,112 @@
         <!----------------- End Section Description ---------------->
         <!---------------------------------------------------------->
         <!---------------------- Slider Cards ---------------------->
-        <section>
-            <div class="card-slider container">
-                <div class="card-slider__wrapper">
-                    @foreach ($product->related_product as $product)
-                        <div class="card-slider__slide">
-                            <div class="card" role="listitem">
-                                <a
-                                    href="{{ route('product', ['product' => $product->product->seo_id !== null && $product->product->seo_id !== '' ? $product->product->seo_id : $product->product->id]) }}">
-                                    @if ($product->product->media->first() != null)
-                                        <img class="card-image"
-                                            src="/{{ $product->product->media->first()->path }}{{ $product->product->media->first()->name }}"
-                                            alt="{{ $product->product->media->first()->name }} {{ $product->product->name }}">
-                                    @else
-                                        <img class="card-image" src="/images/store/default/default300.webp"
-                                            alt="something wrong">
-                                    @endif
-                                </a>
-                                @livewire('product-wishlist-button', ['productId' => $product->product->id, 'is_in_wishlist' => $product->product->is_in_wishlist], key($product->product->id))
-                                <?php if ($product->product->product_prices->count() != 0) {
-                                    $price = number_format($product->product->product_prices->first()->value, 2, ',', '.');
-                                    $discount = $product->product->product_prices->first()->discount != 0 ? true : false;
-                                } else {
-                                    $price = null;
-                                    $discount = false;
-                                }
-                                ?>
-                                @if ($price)
-                                    @if ($product->product->quantity < $quantity && $product->product->quantity > 0)
-                                        <p class="card-status out">
-                                            Stock limitat!!
-                                        </p>
-                                        @if ($discount)
-                                            <p class="card-status save-secondary">
-                                                -{{ $product->product->product_prices->first()->discount }}%
-                                            </p>
-                                        @endif
-                                    @elseif($product->product->quantity == 0)
-                                        <p class="card-status save">
-                                            Produs indisponibil!
-                                        </p>
-                                    @else
-                                        @if ($discount)
-                                            <p class="card-status save">
-                                                -{{ $product->product->product_prices->first()->discount }}%
-                                            </p>
-                                        @endif
-                                    @endif
-                                    {{-- tagul de discount --}}
-                                @else
-                                    <p class="card-status save">
-                                        În curând!
+        <section id="relatedSlider" class="related__slider container">
+            <div class="related__navigation">
+                <button class="related__btn prev">
+                    <svg>
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                </button>
+                <button class="related__btn next">
+                    <svg>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </button>
+            </div>
+            <div class="related__wrapper">
+                @foreach ($product->related_product as $product)
+                    <div class="card" role="listitem">
+                        <a href="{{ route("product", $product->product->seo_id) }}">
+                            @if ($product->product->media->first() != null)
+                                <img class="card-image"
+                                    src="/{{ $product->product->media->first()->path }}{{ $product->product->media->first()->name }}"
+                                    alt="{{ $product->product->media->first()->name }} {{ $product->product->name }}">
+                            @else
+                                <img class="card-image" src="/images/store/default/default300.webp"
+                                    alt="something wrong">
+                            @endif
+                        </a>
+                        @livewire("product-wishlist-button", ["productId" => $product->product->id, "is_in_wishlist" => $product->product->is_in_wishlist], key($product->product->id))
+                        <?php if ($product->product->product_prices->count() != 0) {
+                            $price = number_format($product->product->product_prices->first()->value, 2, ",", ".");
+                            $discount = $product->product->product_prices->first()->discount != 0 ? true : false;
+                        } else {
+                            $price = null;
+                            $discount = false;
+                        }
+                        ?>
+                        @if ($price)
+                            @if ($product->product->quantity < $quantity && $product->product->quantity > 0)
+                                <p class="card-status out">
+                                    Stock limitat!!
+                                </p>
+                                @if ($discount)
+                                    <p class="card-status save-secondary">
+                                        -{{ $product->product->product_prices->first()->discount }}%
                                     </p>
                                 @endif
-                                <div class="card-info">
-                                    <div class="card-text">
-                                        <span>{{ $product->product->short_description }}</span>
-                                    </div>
-                                    <div class="card-text">
-                                        <h3>{{ $product->product->name }}</h3>
-                                        <p class="card-price">
-                                            @if ($discount)
-                                                <span class="card-price discount">
-                                                    @if ($product->product->product_prices->first())
-                                                        {{ $price }}
-                                                        {{ $product->product->product_prices->first()->pricelist->currency->name }}
-                                                    @endif
-                                                </span>
-                                                <span class="card-price oldprice">
-                                                    {{ $product->product->product_prices->first()->rrp_value }}
-                                                    {{ $product->product->product_prices->first()->pricelist->currency->name }}
-                                                </span>
-                                            @else
-                                                <span>
-                                                    @if ($product->product->product_prices->first())
-                                                        {{ $price }}
-                                                        {{ $product->product->product_prices->first()->pricelist->currency->name }}
-                                                    @endif
-                                                </span>
-                                            @endif
-
-                                        </p>
-                                    </div>
-                                    @if ($price)
-                                        @livewire('add-to-cart-button', ['product' => $product->product], key($product->product->id))
-                                    @else
-                                        <a class="card-button-disabled" onclick="handleClick()">Indisponibil</a>
-                                    @endif
-                                </div>
+                            @elseif($product->product->quantity == 0)
+                                <p class="card-status save">
+                                    Produs indisponibil!
+                                </p>
+                            @else
+                                @if ($discount)
+                                    <p class="card-status save">
+                                        -{{ $product->product->product_prices->first()->discount }}%
+                                    </p>
+                                @endif
+                            @endif
+                            {{-- tagul de discount --}}
+                        @else
+                            <p class="card-status save">
+                                În curând!
+                            </p>
+                        @endif
+                        <div class="card-info">
+                            <div class="card-text">
+                                <span>{{ $product->product->short_description }}</span>
                             </div>
+                            <div class="card-text">
+                                <h3>{{ $product->product->name }}</h3>
+                                <p class="card-price">
+                                    @if ($discount)
+                                        <span class="card-price discount">
+                                            @if ($product->product->product_prices->first())
+                                                {{ $price }}
+                                                {{ $product->product->product_prices->first()->pricelist->currency->name }}
+                                            @endif
+                                        </span>
+                                        <span class="card-price oldprice">
+                                            {{ $product->product->product_prices->first()->rrp_value }}
+                                            {{ $product->product->product_prices->first()->pricelist->currency->name }}
+                                        </span>
+                                    @else
+                                        <span>
+                                            @if ($product->product->product_prices->first())
+                                                {{ $price }}
+                                                {{ $product->product->product_prices->first()->pricelist->currency->name }}
+                                            @endif
+                                        </span>
+                                    @endif
+
+                                </p>
+                            </div>
+                            @if ($price)
+                                @livewire("add-to-cart-button", ["product" => $product->product], key($product->product->id))
+                            @else
+                                <a class="card-button-disabled" onclick="handleClick()">Indisponibil</a>
+                            @endif
                         </div>
-                    @endforeach
-                </div>
-                <button class="card-slider__button prev">
-                    <svg>
-                        <polyline points="15 18 9 12 15 6"></polyline>
-                    </svg>
-                </button>
-                <button class="card-slider__button next">
-                    <svg>
-                        <polyline points="9 18 15 12 9 6"></polyline>
-                    </svg>
-                </button>
+                    </div>
+                @endforeach
             </div>
         </section>
     @endif
 
+    <script></script>
     <!-------------------- End Slider Cards -------------------->
     <!---------------------------------------------------------->
     <!--------------------- support button --------------------->

@@ -356,8 +356,68 @@ function slider(sliderID) {
 }
 //<------------------------- End Slider-Images ------------------------->
 //<--------------------------------------------------------------------->
+//<--------------------------- Related-Slider -------------------------->
+function relatedSlider() {
+  const slider = document.getElementById("relatedSlider");
+  const wrapper = slider.querySelector(".related__wrapper");
+  const left = slider.querySelector(".related__btn.prev");
+  const right = slider.querySelector(".related__btn.next");
+
+  function updateCardWidth() {
+    const cards = wrapper.querySelectorAll(".card");
+    const cardWidth = cards[0].offsetWidth + 20; // adăugăm 20px pentru gap-ul dintre card-uri
+    return cardWidth;
+  }
+
+  function scrollSlider(distance) {
+    wrapper.scrollBy({
+      left: distance,
+      behavior: "smooth",
+    });
+  }
+
+  function toggleButtonsVisibility(entries) {
+    const hasVerticalScrollbar = wrapper.scrollHeight > wrapper.clientHeight;
+    const hasHorizontalScrollbar = wrapper.scrollWidth > wrapper.clientWidth;
+
+    // Ascundem sau afișăm butoanele în funcție de existența scrollbar-ului
+    if (hasVerticalScrollbar || hasHorizontalScrollbar) {
+      left.style.display = "flex";
+      right.style.display = "flex";
+    } else {
+      left.style.display = "none";
+      right.style.display = "none";
+    }
+  }
+
+  // Creăm un nou ResizeObserver
+  const resizeObserver = new ResizeObserver(toggleButtonsVisibility);
+
+  // Observăm schimbările în dimensiunile wrapper-ului
+  resizeObserver.observe(wrapper);
+
+  left.addEventListener("click", () => {
+    scrollSlider(-updateCardWidth());
+  });
+
+  right.addEventListener("click", () => {
+    scrollSlider(updateCardWidth());
+  });
+
+  window.addEventListener("resize", () => {
+    const cardWidth = updateCardWidth();
+    window.cardWidth = cardWidth;
+  });
+
+  window.cardWidth = updateCardWidth();
+}
+
+relatedSlider();
+//<------------------------- End Related-Slider ------------------------>
+//<--------------------------------------------------------------------->
 //<-------------------------- Start Functions -------------------------->
 sliderProduct(".product-slider");
 modalProduct(".product-modal", ".product-slider");
 slider(".card-slider");
 //<------------------------ End Start Functions ------------------------>
+//<--------------------------------------------------------------------->
