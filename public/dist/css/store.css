@@ -5293,10 +5293,7 @@ header {
 }
 @media (max-width: 768px) {
   .related__navigation {
-    position: static;
-    transform: none;
-    justify-content: flex-end;
-    margin-bottom: 5px;
+    width: 85%;
   }
 }
 
