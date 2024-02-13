@@ -95,7 +95,7 @@ function slider(sliderID) {
       // Autoplay the wrapper after every 2500 ms
       timeoutId = setTimeout(
         () => (wrapper.scrollLeft += firstCardWidth),
-        2500
+        25000
       );
     };
     autoPlay();
@@ -114,7 +114,7 @@ function slider(sliderID) {
 function flyToCart(button) {
   const shopping_cart = document.getElementById("basketOpen");
   const numberCart = shopping_cart.querySelector(".header__count");
-  const target_parent = button.closest(".product"); // Obținem cel mai apropiat părinte cu clasa "product"
+  const target_parent = button.closest(".card"); // Obținem cel mai apropiat părinte cu clasa "product"
 
   numberCart.style.scale = 1.4;
 
@@ -147,6 +147,7 @@ function flyToCart(button) {
   flying_img.style.cssText = `
       --left : ${data.left.toFixed(2)}px;
       --top : ${data.top.toFixed(2)}px;
+      z-index: 400;
   `;
 
   setTimeout(() => {

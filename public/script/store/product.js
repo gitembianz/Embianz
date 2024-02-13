@@ -482,6 +482,7 @@ function flyToCart(button) {
   flying_img.style.cssText = `
       --left : ${data.left.toFixed(2)}px;
       --top : ${data.top.toFixed(2)}px;
+      z-index: 400;
   `;
 
   setTimeout(() => {
