@@ -3,32 +3,35 @@
 }
 
 .related__wrapper {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 100%;
+  gap: 16px;
   overflow-x: auto;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
+  overflow-y: hidden;
   scroll-snap-type: x mandatory;
-  gap: 20px;
-
-  -ms-overflow-style: none;
+  scroll-behavior: smooth;
   scrollbar-width: none;
+  transition: all .3s ease-in-out;
+  -ms-overflow-style: none;
+
+  @media (min-width: map-get($grid-breakpoints, sm)) {
+    grid-auto-columns: calc((100% / 2) - 9px);
+  }
+
+  @media (min-width: map-get($grid-breakpoints, md)) {
+    grid-auto-columns: calc((100% / 3) - 12px);
+  }
+
+  @media (min-width: map-get($grid-breakpoints, lg)) {
+    grid-auto-columns: calc((100% / 4) - 12px);
+  }
 
   &::-webkit-scrollbar {
     display: none;
   }
-
-  &>.card {
-    flex-shrink: 0;
-    scroll-snap-align: center;
-    width: 100%;
-
-    @media (min-width: map-get($grid-breakpoints, md)) {
-      flex: 1;
-      min-width: 250px;
-      max-width: 305px;
-    }
-  }
-
 }
 
 .related__btn {
@@ -43,6 +46,11 @@
 
   &>svg {
     stroke: $secondary;
+  }
+
+  &.disabled {
+    opacity: .5;
+    cursor: not-allowed;
   }
 }
 
