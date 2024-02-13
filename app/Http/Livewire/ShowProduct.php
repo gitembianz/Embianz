@@ -75,7 +75,11 @@ class ShowProduct extends Component
         $new->name = $product_new['product_name'];
       }
       if (array_key_exists('seo_id', $product_new)) {
-        $new->seo_id = $this->generateUniqueSeoId($product_new['seo_id']);
+        if ($product_new['seo_id'] == "") {
+          $new->seo_id = null;
+        } elseif ($new->seo_id != $product_new['seo_id']) {
+          $new->seo_id = $this->generateUniqueSeoId($product_new['seo_id']);
+        }
       }
       if (array_key_exists('start_date', $product_new)) {
         $new->start_date = $product_new['start_date'];

@@ -90,7 +90,7 @@
   route::get('/wishlist', [StoreController::class, 'wislist'])->name('wislist');
   route::get('/complete', [StoreController::class, 'complete'])->name('complete');
   route::get('/order', [StoreController::class, 'order'])->name('order');
-  Route::get('/product/{productSlug?}', [StoreController::class, 'show'])->name('product');
+  Route::get('/product/{product}', [StoreController::class, 'show'])->name('product');
   Route::get('/storeproducts/{categorySlug?}', [StoreController::class, 'products'])->name('products');
   route::get('/faq', [StoreController::class, 'faq'])->name('faq');
   route::get('/cookie', [StoreController::class, 'cookie'])->name('cookie');

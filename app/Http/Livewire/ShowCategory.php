@@ -78,7 +78,11 @@ class ShowCategory extends Component
         $new->name = $category_new['name'];
       }
       if (array_key_exists('seo_id', $category_new)) {
-        $new->seo_id = $this->generateUniqueSeoId($category_new['seo_id']);
+        if ($category_new['seo_id'] == "") {
+          $new->seo_id = null;
+        } elseif ($new->seo_id != $category_new['seo_id']) {
+          $new->seo_id = $this->generateUniqueSeoId($category_new['seo_id']);
+        }
       }
       if (array_key_exists('visible', $category_new)) {
         $new->store_tab = $category_new['visible'];
