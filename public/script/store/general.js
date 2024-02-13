@@ -30,74 +30,63 @@ function modal(modalID) {
   }
 }
 //<----------------------------- End Modal ----------------------------->
-//<--------------------------------------------------------------------->
-//<------------------------ Start Functions IOS ------------------------>
-modal(".modal");
-//<---------------------- End Start Functions IOS ---------------------->
-//<--------------------------------------------------------------------->
-//<------------------------- Start Functions PC ------------------------>
-document.addEventListener("DOMContentLoaded", function () {
-  modal(".modal");
-});
-//<----------------------- End Start Functions PC ---------------------->
-//<--------------------------------------------------------------------->
-//<---------------------------- Add to Cart ---------------------------->
-function flyToCart(button) {
-  const shopping_cart = document.getElementById("basketOpen");
-  const numberCart = shopping_cart.querySelector(".header__count");
-  const target_parent = button.closest(".product"); // Obținem cel mai apropiat părinte cu clasa "product"
+//<--------------- Hidden On Scroll(breadcrumb & Control) -------------->
+let lastScrollTop = 0;
 
-  numberCart.style.scale = 1.4;
+function hiddenOnScroll() {
+  const breadcrumbs = document.querySelector(".breadcrumbs");
+  const control = document.querySelector(".controls");
+  const currentScrollTop =
+    window.pageYOffset || document.documentElement.scrollTop;
 
-  if (!target_parent) {
-    console.error("Nu s-a găsit părintele 'product'.");
-    return;
+  if (breadcrumbs) {
+    if (currentScrollTop > lastScrollTop) {
+      // Scrolling down
+      breadcrumbs.style.top = "-60px";
+    } else {
+      // Scrolling up
+      breadcrumbs.style.top = "59px";
+    }
   }
 
-  shopping_cart.classList.add("active");
+  if (control) {
+    if (currentScrollTop > lastScrollTop) {
+      // Scrolling down
+      control.style.top = "-90px";
+    } else {
+      // Scrolling up
+      control.style.top = "89px";
+    }
+  }
 
-  // Creăm o imagine separată
-  let img = target_parent.querySelector("img");
-  let flying_img = img.cloneNode();
-  flying_img.classList.add("flying-img");
-  target_parent.appendChild(flying_img);
-
-  // Obținem poziția imaginii care va zbura
-  const flying_img_pos = flying_img.getBoundingClientRect();
-  const shopping_cart_pos = shopping_cart.getBoundingClientRect();
-
-  let data = {
-    left:
-      shopping_cart_pos.left -
-      (shopping_cart_pos.width / 2 +
-        flying_img_pos.left +
-        flying_img_pos.width / 2),
-    top: shopping_cart_pos.bottom - flying_img_pos.bottom + 30,
-  };
-
-  flying_img.style.cssText = `
-      --left : ${data.left.toFixed(2)}px;
-      --top : ${data.top.toFixed(2)}px;
-  `;
-
-  setTimeout(() => {
-    target_parent.style.zIndex = "";
-    target_parent.removeChild(flying_img);
-    shopping_cart.classList.remove("active");
-    numberCart.style.scale = 1;
-  }, 1500);
+  lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop;
 }
-
-//<-------------------------- End Add to Cart -------------------------->
+//<------------- End Hidden On Scroll(breadcrumb & Control) ------------>
 //<--------------------------------------------------------------------->
 //<------------------------- Add On WishList --------------------------->
 function addWishList(button) {
   const wish = document.getElementById("wishlistCount");
-  wish.style.scale = 1.4;
+  wish.style.scale = 1.5;
 
   setTimeout(() => {
     wish.style.scale = 1;
   }, 1500);
 }
+
+function flyToCart(button) {
+  const shopping_cart = document.getElementById("basketOpen");
+  const numberCart = shopping_cart.querySelector(".header__count");
+  numberCart.style.scale = 1.5;
+
+  setTimeout(() => {
+    numberCart.style.scale = 1;
+  }, 1500);
+}
 //<----------------------- End Add On WishList ------------------------->
 //<--------------------------------------------------------------------->
+//<------------------------- Start Functions PC ------------------------>
+document.addEventListener("DOMContentLoaded", function () {
+  modal(".modal");
+  window.addEventListener("scroll", hiddenOnScroll);
+});
+//<----------------------- End Start Functions PC ---------------------->

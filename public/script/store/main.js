@@ -95,7 +95,7 @@ function slider(sliderID) {
       // Autoplay the wrapper after every 2500 ms
       timeoutId = setTimeout(
         () => (wrapper.scrollLeft += firstCardWidth),
-        2500
+        25000
       );
     };
     autoPlay();
@@ -110,7 +110,28 @@ function slider(sliderID) {
 }
 //<------------------------- End Slider-Images ------------------------->
 //<--------------------------------------------------------------------->
+//<---------------------------- Add to Cart ---------------------------->
+function flyToCart(button) {
+  const shopping_cart = document.getElementById("basketOpen");
+  const numberCart = shopping_cart.querySelector(".header__count");
+  numberCart.style.scale = 1.5;
 
+  setTimeout(() => {
+    numberCart.style.scale = 1;
+  }, 1500);
+}
+//<-------------------------- End Add to Cart -------------------------->
+//<--------------------------------------------------------------------->
+//<------------------------- Add On WishList --------------------------->
+function addWishList(button) {
+  const wish = document.getElementById("wishlistCount");
+  wish.style.scale = 1.5;
+
+  setTimeout(() => {
+    wish.style.scale = 1;
+  }, 1500);
+}
+//<----------------------- End Add On WishList ------------------------->
 //<--------------------------------------------------------------------->
 //<------------------------ Start Functions IOS ------------------------>
 slider(".main-slider");

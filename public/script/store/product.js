@@ -359,65 +359,96 @@ function slider(sliderID) {
 //<--------------------------- Related-Slider -------------------------->
 function relatedSlider() {
   const slider = document.getElementById("relatedSlider");
-  const wrapper = slider.querySelector(".related__wrapper");
-  const left = slider.querySelector(".related__btn.prev");
-  const right = slider.querySelector(".related__btn.next");
 
-  function updateCardWidth() {
-    const cards = wrapper.querySelectorAll(".card");
-    const cardWidth = cards[0].offsetWidth + 20; // adăugăm 20px pentru gap-ul dintre card-uri
-    return cardWidth;
-  }
+  if (!slider) {
+    return;
+  } else {
+    const wrapper = slider.querySelector(".related__wrapper");
+    const left = slider.querySelector(".related__btn.prev");
+    const right = slider.querySelector(".related__btn.next");
 
-  function scrollSlider(distance) {
-    wrapper.scrollBy({
-      left: distance,
-      behavior: "smooth",
-    });
-  }
-
-  function toggleButtonsVisibility(entries) {
-    const hasVerticalScrollbar = wrapper.scrollHeight > wrapper.clientHeight;
-    const hasHorizontalScrollbar = wrapper.scrollWidth > wrapper.clientWidth;
-
-    // Ascundem sau afișăm butoanele în funcție de existența scrollbar-ului
-    if (hasVerticalScrollbar || hasHorizontalScrollbar) {
-      left.style.display = "flex";
-      right.style.display = "flex";
-    } else {
-      left.style.display = "none";
-      right.style.display = "none";
+    function updateCardWidth() {
+      const cards = wrapper.querySelectorAll(".card");
+      const cardWidth = cards[0].offsetWidth + 20; // adăugăm 20px pentru gap-ul dintre card-uri
+      return cardWidth;
     }
+
+    function scrollSlider(distance) {
+      wrapper.scrollBy({
+        left: distance,
+        behavior: "smooth",
+      });
+    }
+
+    function toggleButtonsVisibility(entries) {
+      const hasVerticalScrollbar = wrapper.scrollHeight > wrapper.clientHeight;
+      const hasHorizontalScrollbar = wrapper.scrollWidth > wrapper.clientWidth;
+
+      // Ascundem sau afișăm butoanele în funcție de existența scrollbar-ului
+      if (hasVerticalScrollbar || hasHorizontalScrollbar) {
+        left.style.display = "flex";
+        right.style.display = "flex";
+      } else {
+        left.style.display = "none";
+        right.style.display = "none";
+      }
+    }
+
+    function updateButtonStates() {
+      const scrollLeft = wrapper.scrollLeft;
+      const maxScrollLeft = wrapper.scrollWidth - wrapper.clientWidth;
+
+      if (scrollLeft <= 0) {
+        left.classList.add("disabled");
+      } else {
+        left.classList.remove("disabled");
+      }
+
+      if (scrollLeft >= maxScrollLeft) {
+        right.classList.add("disabled");
+      } else {
+        right.classList.remove("disabled");
+      }
+    }
+
+    // Creăm un nou ResizeObserver
+    const resizeObserver = new ResizeObserver(toggleButtonsVisibility);
+
+    // Observăm schimbările în dimensiunile wrapper-ului
+    resizeObserver.observe(wrapper);
+
+    left.addEventListener("click", () => {
+      if (!left.classList.contains("disabled")) {
+        scrollSlider(-updateCardWidth());
+      }
+    });
+
+    right.addEventListener("click", () => {
+      if (!right.classList.contains("disabled")) {
+        scrollSlider(updateCardWidth());
+      }
+    });
+
+    wrapper.addEventListener("scroll", updateButtonStates);
+
+    window.addEventListener("resize", () => {
+      const cardWidth = updateCardWidth();
+      window.cardWidth = cardWidth;
+    });
+
+    window.cardWidth = updateCardWidth();
+
+    // Actualizăm starea butoanelor la încărcarea paginii
+    updateButtonStates();
   }
-
-  // Creăm un nou ResizeObserver
-  const resizeObserver = new ResizeObserver(toggleButtonsVisibility);
-
-  // Observăm schimbările în dimensiunile wrapper-ului
-  resizeObserver.observe(wrapper);
-
-  left.addEventListener("click", () => {
-    scrollSlider(-updateCardWidth());
-  });
-
-  right.addEventListener("click", () => {
-    scrollSlider(updateCardWidth());
-  });
-
-  window.addEventListener("resize", () => {
-    const cardWidth = updateCardWidth();
-    window.cardWidth = cardWidth;
-  });
-
-  window.cardWidth = updateCardWidth();
 }
 
-relatedSlider();
 //<------------------------- End Related-Slider ------------------------>
 //<--------------------------------------------------------------------->
 //<-------------------------- Start Functions -------------------------->
 sliderProduct(".product-slider");
 modalProduct(".product-modal", ".product-slider");
 slider(".card-slider");
+relatedSlider();
 //<------------------------ End Start Functions ------------------------>
 //<--------------------------------------------------------------------->
