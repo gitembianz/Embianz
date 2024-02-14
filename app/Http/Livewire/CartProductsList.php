@@ -6,6 +6,8 @@ use App\Models\Cart;
 use App\Models\Product;
 use Livewire\Component;
 use App\Models\Cart_Item;
+use Illuminate\Support\Facades\DB;
+
 
 class CartProductsList extends Component
 {
@@ -27,12 +29,22 @@ class CartProductsList extends Component
     public function getCartItemsProperty()
     {
         if ($this->cartId && $this->showcart) {
-            return  Cart_Item::where('cart_id', $this->cartId)
+            return Cart_Item::select('id', 'quantity', 'product_id')
+                ->where('cart_id', $this->cartId)
                 ->with([
-                    'product.media' => function ($query) {
-                        $query->where('type', 'min');
-                    },
-                    'product.product_prices'
+                    'product' => function ($query) {
+                        $query->select('id', 'name', 'seo_id')->with([
+                            'media' => function ($query) {
+                                $query->select('path', 'name')->where('type', 'min');
+                            },
+                            'product_prices' => function ($query) {
+                                $query->select('product_id', 'value', 'pricelist_id')
+                                    ->with(['pricelist' => function ($query) {
+                                        $query->select('id', 'currency_id')->with('currency:id,name');
+                                    }]);
+                            }
+                        ]);
+                    }
                 ])->get();
         } else {
             return collect();
@@ -42,55 +54,58 @@ class CartProductsList extends Component
     {
         $this->mount(null);
     }
+
     public function mount($cartId)
     {
         $this->cartId = $cartId;
     }
+
     public function cartshow()
     {
         $this->showcart = true;
     }
     public function removeFromCart($productId)
     {
-        $product = Product::find($productId);
-
+        $product = Product::select('id')->with(['product_prices' => function ($query) {
+            $query->select('id', 'value', 'product_id');
+        }])->findOrFail($productId);
         if ($this->cartId) {
-            $cart_item = Cart_Item::firstOrNew([
-                'cart_id' => $this->cartId,
-                'product_id' => $productId,
-            ]);
-
-            if ($cart_item->exists) {
-                $cart = Cart::find($this->cartId);
-                $cart->quantity_amount -= $cart_item->quantity;
-                $cart->sum_amount -= ($product->product_prices->first()->value * $cart_item->quantity);
-                $cart->save();
-                $cart_item->delete();
+            $cartItem = Cart_Item::where('cart_id', $this->cartId)
+                ->where('product_id', $productId)
+                ->first();
+            if ($cartItem) {
+                $amountToSubtract = $product->product_prices->first()->value * $cartItem->quantity;
+                Cart::where('id', $this->cartId)->update([
+                    'quantity_amount' => DB::raw("quantity_amount - $cartItem->quantity"),
+                    'sum_amount' => DB::raw("sum_amount - $amountToSubtract"),
+                ]);
+                $cartItem->delete();
                 $this->emit('cartUpdated');
             }
         }
     }
+
     public function continue()
     {
-        $validatequantity = true;
-        $cartitems = Cart_Item::where('cart_id', $this->cartId)->get();
+        $validateQuantity = true;
 
-        if ($cartitems->isNotEmpty()) {
-            foreach ($cartitems as $item) {
-                if ($item->quantity > $item->product->quantity) {
-                    $validatequantity = false;
+        if ($this->cartItems->isNotEmpty()) {
+            foreach ($this->cartItems as $item) {
+                if ($item->quantity < $item->product->quantity) {
+                    $validateQuantity = false;
                     $this->dispatchBrowserEvent('alert__modal');
                     return;
                 }
             }
         }
 
-        if ($validatequantity) {
-            $cart = Cart::find($this->cartId);
-            $cart->final_amount = $cart->sum_amount + app('global_delivery_price');
-            $cart->status_id = app('global_cart_checkout');
-            $cart->delivery_price = app('global_delivery_price');
-            $cart->save();
+        if ($validateQuantity) {
+            Cart::where('id', $this->cartId)->update([
+                'final_amount' => DB::raw("sum_amount + " . app('global_delivery_price')),
+                'status_id' => app('global_cart_checkout'),
+                'delivery_price' => app('global_delivery_price')
+            ]);
+
             return redirect()->route('order');
         }
     }
