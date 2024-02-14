@@ -56,27 +56,39 @@ class StoreHeader extends Component
 
   public function getCategoriesProperty()
   {
-    return Category::where('active', 1)
+    return Category::select('id', 'name', 'seo_id')
+      ->with([
+        'media' => function ($query) {
+          $query->select('path', 'name')->where('type', 'min');
+        },
+        'subcategory' => function ($query) {
+          $query->with([
+            'category' => function ($query) {
+              $query->select('id', 'name', 'seo_id')->where('store_tab', 1)->where('active', 1)->with([
+                'media' => function ($query) {
+                  $query->select('path', 'name')->where('type', 'min');
+                },
+                'subcategory' => function ($query) {
+                  $query->with([
+                    'category' => function ($query) {
+                      $query->select('id', 'name', 'seo_id')->where('store_tab', 1)->where('active', 1)->with([
+                        'media' => function ($query) {
+                          $query->select('path', 'name')->where('type', 'min');
+                        }
+                      ]);
+                    }
+                  ]);
+                }
+              ]);
+            }
+          ]);
+        }
+      ])
+      ->where('active', 1)
       ->where('store_tab', '1')
       ->where('has_parrent', '0')
-      ->with([
-        'subcategory' => function ($query) {
-          $query->with('category', function ($subQuery) {
-
-            $subQuery->where('store_tab', 1)->where('active', 1);
-          })->with([
-            'category.media' => function ($query) {
-              $query->where('type', 'min');
-            },
-            'category.subcategory',
-            'category.subcategory.category.media' => function ($query) {
-              $query->where('type', 'min');
-            },
-          ]);
-        },
-        'media' => function ($query) {
-          $query->where('type', 'min');
-        }
-      ])->limit(app('global_limit_category'))->orderby('sequence')->get();
+      ->limit(app('global_limit_category'))
+      ->orderBy('sequence')
+      ->get();
   }
 }

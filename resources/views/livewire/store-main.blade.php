@@ -62,7 +62,7 @@
                 <h2 class="section__title">Descoperă produsele noastre populare!</h2>
                 <p class="section__text">Explorează colecția noastră de produse și găsește
                     accesoriile perfecte pentru a-ți completa stilul.
-                    <br><a href="{{ url("/storeproducts") }}">Vezi produsele!</a>
+                    <br><a href="{{ url('/storeproducts') }}">Vezi produsele!</a>
                 </p>
             </div>
         </section>
@@ -77,7 +77,7 @@
                             <div class="card-slider__slide">
                                 <div class="card" role="listitem">
                                     <a
-                                        href="{{ route("product", ["product" => $product->seo_id !== null && $product->seo_id !== "" ? $product->seo_id : $product->id]) }}">
+                                        href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">
                                         @if ($product->media->first() != null)
                                             <img class="card-image"
                                                 src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}"
@@ -87,15 +87,17 @@
                                                 alt="something wrong">
                                         @endif
                                     </a>
-                                    @livewire("product-wishlist-button", ["productId" => $product->id, "is_in_wishlist" => $product->is_in_wishlist], key($product->id))
-                                    <?php if ($product->product_prices->count() != 0) {
-                                        $price = number_format($product->product_prices->first()->value, 2, ",", ".");
+                                    @livewire('product-wishlist-button', ['productId' => $product->id, 'is_in_wishlist' => $product->is_in_wishlist], key($product->id))
+                                    <?php
+                                    $price = null;
+                                    $discount = false;
+                                    
+                                    if ($product->product_prices->count() != 0) {
+                                        $price = number_format($product->product_prices->first()->value, 2, ',', '.');
                                         $discount = $product->product_prices->first()->discount != 0 ? true : false;
-                                    } else {
-                                        $price = null;
-                                        $discount = false;
                                     }
                                     ?>
+
                                     @if ($price)
                                         @if ($product->quantity < $quantity && $product->quantity > 0)
                                             <p class="card-status out">
@@ -153,7 +155,7 @@
                                             </p>
                                         </div>
                                         @if ($price)
-                                            @livewire("add-to-cart-button", ["product" => $product], key($product->id))
+                                            @livewire('add-to-cart-button', ['product' => $product], key($product->id))
                                         @else
                                             <a class="card-button-disabled" onclick="handleClick()">Indisponibil</a>
                                         @endif
