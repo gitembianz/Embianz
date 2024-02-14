@@ -171,7 +171,8 @@
                             </div>
                             <!------------------------------------------------------------------->
 
-                            <select wire:model="individual_billing_country" class="select">
+                            <select wire:model="individual_billing_country" class="select"
+                                aria-label="select a country">
                                 <option value="Afghanistan">Afghanistan</option>
                                 <option value="Åland Islands">Åland Islands</option>
                                 <option value="Albania">Albania</option>
@@ -586,7 +587,8 @@
                                 <label for="individualBillingAddress2">Adresa 2 (opțional)</label>
                             </div>
                             <!---------------------------------------------------->
-                            <select wire:ignore wire:model="individual_shipping_country" class="select">
+                            <select wire:ignore wire:model="individual_shipping_country" class="select"
+                                aria-label="select a country">
                                 <option value="Afghanistan">Afghanistan</option>
                                 <option value="Åland Islands">Åland Islands</option>
                                 <option value="Albania">Albania</option>
@@ -1032,7 +1034,8 @@
                                 <label for="juridicShippingAddress2">Adresa 2 (optional)</label>
                             </div>
                             <!---------------------------------------------------->
-                            <select wire:model="juridic_billing_country" class="select">
+                            <select wire:model="juridic_billing_country" class="select"
+                                aria-label="select a country">
                                 <option value="Afghanistan">Afghanistan</option>
                                 <option value="Åland Islands">Åland Islands</option>
                                 <option value="Albania">Albania</option>
@@ -1420,7 +1423,8 @@
                                 <label for="juridicBillingAddress2">Adresa 2 (Opțional)</label>
                             </div>
                             <!---------------------------------------------------->
-                            <select wire:ignore wire:model="juridic_shipping_country" class="select">
+                            <select wire:ignore wire:model="juridic_shipping_country" class="select"
+                                aria-label="select a country">
                                 <option value="Afghanistan">Afghanistan</option>
                                 <option value="Åland Islands">Åland Islands</option>
                                 <option value="Albania">Albania</option>
@@ -1717,7 +1721,7 @@
                                         <span>Plata cash la livrare</span>
                                     </label>
                                     <div class="payment__text @if ($rtc) active @endif">
-                                        <h4>Veți plăti când comanda va fi livrată.</h4>
+                                        <h3>Veți plăti când comanda va fi livrată.</h3>
                                         <span>Limita maxima este de 1000 RON</span>
                                     </div>
                                 </div>
@@ -1734,10 +1738,10 @@
                                             <span>Ordin de plata</span>
                                         </label>
                                         <div class="payment__text @if ($invoice) active @endif"">
-                                            <h4>
+                                            <h3>
                                                 Metoda de plată utilizată de entitățile legale. După plasarea comenzii,
                                                 veți primi prin e-mail factura proformă cu toate detaliile de plată.
-                                            </h4>
+                                            </h3>
                                         </div>
 
                                     </div>
@@ -2056,7 +2060,7 @@
                         <p class="section__text">Apreciem afacerea dumneavoastră și sperăm că achiziția dumneavoastră
                             vă aduce fericire. Vă mulțumim că ați ales produsele noastre și așteptăm cu nerăbdare să vă
                             mai servim în viitor. 🙏😊<br>Cu cele mai bune urări,</p>
-                        <a href="{{ url("/") }}" class="logo">
+                        <a href="{{ url("/") }}" class="logo" aria-label="go to home page">
                             <img src="/images/store/svg/noren-black.svg" alt="logo">
                         </a>
                     </div>
@@ -2066,28 +2070,31 @@
                 <!------------------- Checkout Links ------------------->
                 <div class="checkout__header">
                     @if ($step == 2)
-                        <a class="checkout__button" wire:click.prevent="previous()">
+                        <button class="checkout__button" wire:click.prevent="previous()"
+                            aria-label="go to previous step">
                             <svg>
                                 <line x1="19" y1="12" x2="5" y2="12"></line>
                                 <polyline points="12 19 5 12 12 5"></polyline>
                             </svg>
                             Pasul Anterior
-                        </a>
-                        <a class="checkout__button checkout__button--confirm" wire:click.prevent="confirm()">
+                        </button>
+                        <button class="checkout__button checkout__button--confirm" wire:click.prevent="confirm()"
+                            aria-label="confirm button">
                             Confirmă
                             <svg>
                                 <polyline points="9 11 12 14 22 4"></polyline>
                                 <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
                             </svg>
-                        </a>
+                        </button>
                     @elseif ($step == 1)
-                        <a class="checkout__link checkout__button--confirm" wire:click.prevent="next()">
+                        <button class="checkout__link checkout__button--confirm" wire:click.prevent="next()"
+                            aria-label="go to next step">
                             Pasul următor
                             <svg>
                                 <line x1="5" y1="12" x2="19" y2="12"></line>
                                 <polyline points="12 5 19 12 12 19"></polyline>
                             </svg>
-                        </a>
+                        </button>
                     @endif
 
                 </div>

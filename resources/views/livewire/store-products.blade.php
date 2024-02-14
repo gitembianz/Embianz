@@ -33,14 +33,14 @@
     <!---------------------------------------------------------->
     <!---------------------------Filter------------------------->
     <section class="controls container">
-        <button class="controls__button" id="filterOpen" wire:click="$set('showspecfilter', true)">
-
+        <button class="controls__button" id="filterOpen" wire:click="$set('showspecfilter', true)"
+            aria-label="Open filter button">
             <svg>
                 <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
             </svg>
         </button>
         <input class="controls__search" type="text" wire:model="search" placeholder="Cauta produsul aici...">
-        <button class="controls__button" id="sortOpen">
+        <button class="controls__button" id="sortOpen" aria-label="Open sort button">
             <svg>
                 <line x1="21" y1="10" x2="7" y2="10"></line>
                 <line x1="21" y1="6" x2="3" y2="6"></line>
@@ -172,7 +172,8 @@
                             @if ($price)
                                 @livewire("add-to-cart-button", ["product" => $product], key($product->id . $index))
                             @else
-                                <a class="card-button-disabled">Indisponibil</a>
+                                <button class="card-button-disabled"
+                                    aria-disabled="disabled add to cart button">Indisponibil</button>
                             @endif
                         </div>
                     </div>

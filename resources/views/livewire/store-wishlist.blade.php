@@ -3,7 +3,7 @@
         <!------------------------------------------------------>
         <!------------------- Basket Section ------------------->
         <div class="section__header container">
-            <h class="section__title">Produse favorite</h>
+            <h1 class="section__title">Produse favorite</h1>
             <p class="section__text">
                 Vezi produsele alese mai jos
             </p>
@@ -28,7 +28,7 @@
                                 <img src="/images/store/default/default70.webp" alt="something wrong">
                             @endif
                             <div>
-                                <a href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}"
+                                <a href="{{ route("product", ["product" => $product->seo_id !== null && $product->seo_id !== "" ? $product->seo_id : $product->id]) }}"
                                     class="basket__title">{{ $product->name }}</a>
                                 <span class="basket__price">
                                     @if ($product->product_prices->first() !== null)
@@ -39,7 +39,8 @@
                                     @endif
                                 </span>
                             </div>
-                            <button class="basket__delete" wire:click="removeFromWishlist({{ $product->id }})">
+                            <button class="basket__delete" wire:click="removeFromWishlist({{ $product->id }})"
+                                aria-label="Remove from wishlist">
                                 <svg>
                                     <polyline points="3 6 5 6 21 6"></polyline>
                                     <path
@@ -47,7 +48,7 @@
                                     </path>
                                 </svg>
                             </button>
-                            <button class="basket__delete">
+                            <button class="basket__delete" aria-label="add to cart">
                                 <svg>
                                     <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
                                     <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -55,7 +56,8 @@
                                 </svg>
                             </button>
                         </div>
-                        <button class="basket__delete--hidden" wire:click="removeFromWishlist({{ $product->id }})">
+                        <button class="basket__delete--hidden" wire:click="removeFromWishlist({{ $product->id }})"
+                            aria-label="Remove from wishlist">
                             Șterge din coș
                             <svg>
                                 <polyline points="3 6 5 6 21 6"></polyline>
@@ -64,7 +66,7 @@
                                 </path>
                             </svg>
                         </button>
-                        <button class="basket__add--hidden">
+                        <button class="basket__add--hidden" aria-label="Add product">
                             Adauga în coș
                             <svg>
                                 <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>

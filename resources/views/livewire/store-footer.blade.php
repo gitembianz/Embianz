@@ -31,7 +31,8 @@
                             <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
                         </svg>
                     </a> --}}
-                    <a href="https://www.facebook.com/norenRomania" class="social__item">
+                    <a href="https://www.facebook.com/norenRomania" class="social__item"
+                        aria-label="open our Facebook page">
                         <svg>
                             <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
                         </svg>
@@ -57,13 +58,13 @@
             <!--------------------------------------------------------->
             <!------------------------Subscribe------------------------>
             <div class="footer__middle">
-                <h3>Aboneaza-te la newsletter-ul nostru</h3>
-                <form class="subscribe" wire:submit.prevent="store">
-                    <input type="email" wire:model="email" name="email" id="email"
-                        placeholder="Introduceți adresa dvs. de email" aria-describedby="email-error"
-                        autocomplete="email">
-                    <button type="submit">Trimite</button>
-                </form>
+                <h2>Aboneaza-te la newsletter-ul nostru</h3>
+                    <form class="subscribe" wire:submit.prevent="store">
+                        <input type="email" wire:model="email" name="email" id="email"
+                            placeholder="Introduceți adresa dvs. de email" aria-describedby="email-error"
+                            autocomplete="email">
+                        <button type="submit">Trimite</button>
+                    </form>
             </div>
             <!----------------------END-Subscribe---------------------->
             <!--------------------------------------------------------->

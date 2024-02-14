@@ -26,9 +26,9 @@
     <section class="container">
         <ol class="numeric">
             <li>
-                <h3>
+                <h2>
                     Politica de utilizare Cookie-uri și tehnologii similare
-                </h3>
+                </h2>
                 <ol class="sub-numeric">
                     <li>
                         <p>
@@ -38,9 +38,9 @@
                         </p>
                     </li>
                     <li>
-                        <h3>
+                        <h2>
                             Cookie-urile sunt folosite pentru următoarele scopuri:
-                        </h3>
+                        </h2>
                         <ol class="sub-sub-numeric">
                             <li>
                                 <p>
@@ -78,9 +78,9 @@
                 </ol>
             </li>
             <li>
-                <h3>
+                <h2>
                     Ce sunt Cookie-urile?
-                </h3>
+                </h2>
                 <ol class="sub-numeric">
                     <li>
                         <p>
@@ -93,9 +93,9 @@
                 </ol>
             </li>
             <li>
-                <h3>
+                <h2>
                     La ce sunt folosite Cookie-urile?
-                </h3>
+                </h2>
                 <ol class="sub-numeric">
                     <li>
                         <p>
@@ -111,9 +111,9 @@
                 </ol>
             </li>
             <li>
-                <h3>
+                <h2>
                     Ce Cookie-uri folosim?
-                </h3>
+                </h2>
                 <ol class="sub-numeric">
                     <li>
                         <p>
@@ -126,14 +126,14 @@
                 </ol>
             </li>
             <li>
-                <h3>
+                <h2>
                     Cum sunt folosite cookie-urile de către acest site?
-                </h3>
+                </h2>
                 <ol class="sub-numeric">
                     <li>
-                        <h3>
+                        <h2>
                             O vizită pe acest site poate plasa următoarele tipuri de cookie-uri:
-                        </h3>
+                        </h2>
                         <ol class="sub-sub-numeric">
                             <li>
                                 <p>
@@ -169,9 +169,9 @@
                 </ol>
             </li>
             <li>
-                <h3>
+                <h2>
                     Conțin Cookie-urile sau tehnologiile similare date personale?
-                </h3>
+                </h2>
                 <ol class="sub-numeric">
                     <li>
                         <p>
@@ -184,9 +184,9 @@
                         </p>
                     </li>
                     <li>
-                        <h3>
+                        <h2>
                             Ce sunt tehnologiile similare?
-                        </h3>
+                        </h2>
                         <ol class="sub-sub-numeric">
                             <li>
                                 <p>
@@ -204,17 +204,17 @@
                 </ol>
             </li>
             <li>
-                <h3>
+                <h2>
                     Blocare cookie-uri
-                </h3>
+                </h2>
                 <ol class="sub-numeric">
 
                     <li>
-                        <h3>
+                        <h2>
                             În cazul în care doriți sa blocați cookie-urile, unele funcționalități ale site‑ului vor fi
                             oprite, iar acest lucru poate genera anumite disfuncționalități sau erori în folosirea
                             site-ului nostru. De exemplu, blocarea cookie-urilor vă poate împiedica să:
-                        </h3>
+                        </h2>
                         <ol class="sub-sub-numeric">
                             <li>
                                 <p>
@@ -229,10 +229,10 @@
                         </ol>
                     </li>
                     <li>
-                        <h3>
+                        <h2>
                             În cazul în care ești de acord cu aceste limitări și dorești să blochezi cookie-urile,
                             urmează instrucțiunile de mai jos:
-                        </h3>
+                        </h2>
                         <ol class="sub-sub-numeric">
                             <li>
                                 <p>
@@ -249,9 +249,9 @@
                         </ol>
                     </li>
                     <li>
-                        <h3>
+                        <h2>
                             Microsoft Internet Explorer 9 (sistem de operare Windows 7)
-                        </h3>
+                        </h2>
                         <ol class="sub-sub-numeric">
                             <li>
                                 <p>
@@ -276,9 +276,9 @@
                         </ol>
                     </li>
                     <li>
-                        <h3>
+                        <h2>
                             Google Chrome
-                        </h3>
+                        </h2>
                         <ol class="sub-sub-numeric">
                             <li>
                                 <p>
@@ -308,9 +308,9 @@
                         </ol>
                     </li>
                     <li>
-                        <h3>
+                        <h2>
                             Safari
-                        </h3>
+                        </h2>
                         <ol class="sub-sub-numeric">
                             <li>
                                 <p>
@@ -335,9 +335,9 @@
                         </ol>
                     </li>
                     <li>
-                        <h3>
+                        <h2>
                             Mozilla Firefox
-                        </h3>
+                        </h2>
                         <ol class="sub-sub-numeric">
                             <li>
                                 <p>
@@ -370,9 +370,9 @@
                 </ol>
             </li>
             <li>
-                <h3>
+                <h2>
                     Administrarea preferințelor cu privire la plasarea de Cookie-uri
-                </h3>
+                </h2>
                 <ol class="sub-numeric">
                     <li>
                         <p>
@@ -388,9 +388,9 @@
                 </ol>
             </li>
             <li>
-                <h3>
+                <h2>
                     De ce sunt Cookie-urile și/sau tehnologiile similare importante pentru Internet?
-                </h3>
+                </h2>
                 <ol class="sub-numeric">
                     <li>
                         <p>
@@ -408,10 +408,10 @@
                         </p>
                     </li>
                     <li>
-                        <h3>
+                        <h2>
                             Exemple de întrebuințări importante ale Cookie-urilor (care nu necesită autentificarea unui
                             utilizator prin intermediul unui cont):
-                        </h3>
+                        </h2>
                         <ol class="sub-sub-numeric">
                             <li>
                                 <p>
@@ -461,9 +461,9 @@
                 </ol>
             </li>
             <li>
-                <h3>
+                <h2>
                     Securitate și aspecte legate de confidențialitate
-                </h3>
+                </h2>
                 <ol class="sub-numeric">
                     <li>
                         <p>
@@ -473,9 +473,9 @@
                         </p>
                     </li>
                     <li>
-                        <h3>
+                        <h2>
                             Alte aspecte de securitate legate de Cookie-uri:
-                        </h3>
+                        </h2>
                         <ol class="sub-sub-numeric">
                             <li>
                                 <p>
@@ -504,9 +504,9 @@
                 </ol>
             </li>
             <li>
-                <h3>
+                <h2>
                     Linkuri și informații suplimentare utile
-                </h3>
+                </h2>
                 <ol class="sub-numeric">
                     <li>
                         <p>

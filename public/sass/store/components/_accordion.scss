@@ -6,7 +6,7 @@
   &.active>.accordion-button {
     border-radius: 5px 5px 0 0;
 
-    &::after {
+    &>svg {
       transform: translateY(-50%) rotateX(180deg);
     }
   }
@@ -15,7 +15,7 @@
 .accordion-button {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
   text-decoration: none;
   gap: 15px;
   text-align: left;
@@ -28,7 +28,7 @@
   border-radius: 5px;
   outline: none;
   padding-right: 30px;
-  transition: background-color 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
 
   &:hover,
   &:focus,
@@ -36,14 +36,9 @@
     background-color: darken(#f2f2f2, 10%);
   }
 
-  &::after {
-    content: "";
-    background-image: url("../img/arrow-down.svg");
-    width: 15px;
-    height: 15px;
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
+  &>svg {
+    width: 24px;
+    height: 24px;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);

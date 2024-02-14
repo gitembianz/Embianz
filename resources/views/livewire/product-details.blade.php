@@ -49,7 +49,7 @@
         <div class="quantity">
             <span>Cantitate</span>
             <div class="quantity__buttons">
-                <button class="quantity__arrow" wire:click="decrementCounter">
+                <button class="quantity__arrow" wire:click="decrementCounter" aria-label="Decrement quantity">
                     <svg>
                         <circle cx="12" cy="12" r="10"></circle>
                         <line x1="8" y1="12" x2="16" y2="12"></line>
@@ -58,7 +58,7 @@
                 <span class="quantity__input" name="count" id="count">
                     {{ $quantity }}
                 </span>
-                <button class="quantity__arrow" wire:click="incrementCounter">
+                <button class="quantity__arrow" wire:click="incrementCounter" aria-label="Increment quantity">
                     <svg>
                         <circle cx="12" cy="12" r="10"></circle>
                         <line x1="12" y1="8" x2="12" y2="16"></line>
@@ -73,10 +73,11 @@
         <span>Cantitatea maxima a produsului este {{ $limit }}</span>
     @endif
     @if ($price && $product->quantity != 0)
-        <button wire:click="addToCart({{ $product }})" class="product__button" onclick="flyToCart(this)">Adauga
+        <button wire:click="addToCart({{ $product }})" class="product__button" onclick="flyToCart(this)"
+            aria-label="Add to cart button">Adauga
             in coș</button>
     @else
-        <a class="card-button-disabled" onclick="handleClick()">Indisponibil</a>
+        <button class="card-button-disabled" aria-label="Disabled Add to cart button">Indisponibil</button>
     @endif
     <!---------------- End Product (Details) --------------->
     <!------------------------------------------------------>
