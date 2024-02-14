@@ -72,16 +72,6 @@ function addWishList(button) {
     wish.style.scale = 1;
   }, 1500);
 }
-
-function flyToCart(button) {
-  const shopping_cart = document.getElementById("basketOpen");
-  const numberCart = shopping_cart.querySelector(".header__count");
-  numberCart.style.scale = 1.5;
-
-  setTimeout(() => {
-    numberCart.style.scale = 1;
-  }, 1500);
-}
 //<----------------------- End Add On WishList ------------------------->
 //<--------------------------------------------------------------------->
 //<------------------------- Start Functions PC ------------------------>

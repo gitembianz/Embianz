@@ -15,7 +15,7 @@
     <!---------------------------------------------------------->
     <!----------------------Section Header---------------------->
     <section class="section__header container">
-        <h2 class="section__title">TERMENI SI CONDITII</h2>
+        <h1 class="section__title">TERMENI SI CONDITII</h1>
         <p class="section__text">
             Magazinul online www.noren.ro (”magazin online”, ”site”) este deținut și operat de Moldaso Line S.R.L.
             (”vânzătorul”), cu sediul social în București, Sectorul 1, str. Bulevardul Bucureștii Noi, Nr. 50A, bl.

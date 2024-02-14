@@ -15,9 +15,9 @@
     <!---------------------------------------------------------->
     <!----------------------Section Header---------------------->
     <section class="section__header container">
-        <h2 class="section__title">
+        <h1 class="section__title">
             Descoperă Noren
-        </h2>
+        </h1>
         <p class="section__text">
             Magazinul "Noren" reprezintă cu mândrie rezultatul colaborării strânse cu echipa Eztem Corp, consolidându-se
             ca un hub digital de excepție. Înființat cu pasiune și dedicare, "Noren" se distinge prin oferirea unei game

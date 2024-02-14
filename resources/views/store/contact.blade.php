@@ -16,9 +16,9 @@
     <!----------------------End Breadcrumbs--------------------->
     <!---------------------------------------------------------->
     <!----------------------Section Header---------------------->
-    <h2 class="section__title">
+    <h1 class="section__title">
         Contactează-ne
-    </h2>
+    </h1>
     <p class="section__text">
         Completează formularul sau contactează-ne direct pe e-mail <a href="#">noren@gmail.com</a>.
     </p>
