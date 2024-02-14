@@ -28,31 +28,50 @@ class GeneralSearch extends Component
             return view('livewire.general-search');
         }
     }
+
     public function searchshow()
     {
         $this->active = true;
     }
+
     public function close()
     {
         $this->active = false;
         $this->search = '';
     }
+
     public function getObjectsProperty()
     {
-        return Product::search($this->search)->where('active', true)->with([
-            'media' => function ($query) {
-                $query->where('type', 'min'); // Filter and limit the media relationship
-            },
-            'product_prices.pricelist.currency'
-        ])->orderBy('popularity', 'desc')->limit(app('global_limit_searchitems'))->get();
+        return Product::name($this->search)
+            ->select('id', 'name', 'seo_id', 'short_description')
+            ->where('active', true)
+            ->with([
+                'media' => function ($query) {
+                    $query->select('path', 'name')->where('type', 'min');
+                },
+                'product_prices' => function ($query) {
+                    $query->select('product_id', 'value', 'pricelist_id')
+                        ->with(['pricelist' => function ($query) {
+                            $query->select('id', 'currency_id')->with('currency:id,name');
+                        }]);
+                }
+            ])
+            ->orderBy('popularity', 'desc')
+            ->limit(app('global_limit_searchitems'))
+            ->get();
     }
 
     public function getCatsProperty()
     {
-        return Category::search($this->search)->where('active', true)->with([
-            'media' => function ($query) {
-                $query->where('type', 'min'); // Filter and limit the media relationship
-            }
-        ])->limit(app('global_limit_searchitems'))->get();
+        return Category::search_by_name($this->search)
+            ->select('id', 'name', 'seo_id')
+            ->where('active', true)
+            ->with([
+                'media' => function ($query) {
+                    $query->select('path', 'name')->where('type', 'min');
+                }
+            ])
+            ->limit(app('global_limit_searchitems'))
+            ->get();
     }
 }
