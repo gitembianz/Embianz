@@ -3897,6 +3897,9 @@ header {
   background: #d2042d;
   color: #fafafa;
 }
+.basket__delete--hidden:hover > svg {
+  stroke: #fafafa;
+}
 
 .basket__add--hidden {
   grid-column: 1/3;
@@ -3933,6 +3936,9 @@ header {
 .basket__add--hidden:hover {
   background: #333333;
   color: #fafafa;
+}
+.basket__add--hidden:hover > svg {
+  stroke: #fafafa;
 }
 
 .basket__subtotal {
