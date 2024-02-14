@@ -189,12 +189,12 @@ filterLive("filterList", "filterContent");
 //<---------------------- End Start Functions IOS ---------------------->
 //<--------------------------------------------------------------------->
 //<------------------------- Start Functions PC ------------------------>
-document.addEventListener("DOMContentLoaded", function () {
-  leftbar("sortOpen", "sortClose", "sortList", "sortContent");
-  dropmenus(".dropfilter", true);
-  applyFilter("closeFilter", "resetFilter");
-  applySort(".sort__item");
-  filterLive("filterOpen", ".filterClose", ".filterList", "filterContent");
-});
+// document.addEventListener("DOMContentLoaded", function () {
+//   leftbar("sortOpen", "sortClose", "sortList", "sortContent");
+//   dropmenus(".dropfilter", true);
+//   applyFilter("closeFilter", "resetFilter");
+//   applySort(".sort__item");
+//   filterLive("filterOpen", ".filterClose", ".filterList", "filterContent");
+// });
 //<----------------------- End Start Functions PC ---------------------->
 //<--------------------------------------------------------------------->
