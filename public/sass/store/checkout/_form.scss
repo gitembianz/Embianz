@@ -113,7 +113,8 @@
   @media (min-width: map-get($grid-breakpoints, md)) {
     display: none;
     grid-template-columns: repeat(2, 1fr);
-    column-gap: 20px;
+    column-gap: 15px;
+    row-gap: 25px;
     align-items: start;
     justify-items: center;
     align-content: flex-start;
@@ -193,41 +194,48 @@
 
 .checkout__item {
   width: 100%;
-  height: 40px;
-  border-radius: 5px 5px 0 0;
   padding: 1px;
   padding-bottom: 0;
   position: relative;
-  margin-bottom: 15px;
   background: transparent;
   transition: all 0.3s ease-in-out;
 
   &.error {
-    background: lighten(red, 45%);
 
     &::after {
       color: red;
     }
 
+    &>input {
+      background: lighten(red, 45%);
+    }
+
     &>span {
       font-size: 13px;
+    }
+
+    &>label {
+      color: red;
     }
   }
 
   &>input {
+    position: relative;
     width: 100%;
-    height: 100%;
+    height: 40px;
     border: none;
     outline: none;
     border-radius: 0;
     background: none;
     border-bottom: 1px solid #333;
+    border-radius: 5px 5px 0 0;
     font-size: 16px;
     font-weight: 500;
     color: #333;
     padding: 0 10px;
     -moz-appearance: textfield;
     transition: all 0.3s ease-in-out;
+    background: darken($secondary, 3%);
 
     &::-webkit-outer-spin-button,
     &::-webkit-inner-spin-button {
@@ -236,18 +244,39 @@
     }
 
     &::placeholder {
-      font-size: 16px;
+      font-size: 0px;
       font-weight: 500;
       color: lighten(#333, 30%);
       user-select: none;
     }
+
+    &~label {
+      position: absolute;
+      font-size: 16px;
+      font-weight: 500;
+      color: lighten(#333, 30%);
+      user-select: none;
+      top: 50%;
+      left: 20px;
+      transform: translateY(-50%);
+      transition: all 0.3s ease-in-out;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    &:focus~label,
+    &:active~label,
+    &:not(:placeholder-shown)~label {
+      top: -14px;
+      left: 0;
+      transform: translate(0);
+      font-size: 12px;
+    }
   }
 
+
+
   &>span {
-    position: absolute;
-    width: 100%;
-    top: 100%;
-    left: 0;
     font-size: 0px;
     font-weight: 500;
     color: red;
@@ -261,14 +290,12 @@
     content: "*";
     position: absolute;
     left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 10px;
     font-size: 14px;
     font-weight: 500;
     line-height: 150%;
     color: #333;
     text-align: center;
-    vertical-align: center;
   }
 
   &>input {

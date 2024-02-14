@@ -16,7 +16,7 @@
         <!---------------------------------------------------------->
         <!----------------------Section Header---------------------->
         <section class="section__header container">
-            <h2 class="section__title">POLITICA DE CONFIDENTIALITATE</h2>
+            <h1 class="section__title">POLITICA DE CONFIDENTIALITATE</h1>
         </section>
         <!--------------------End Section Header-------------------->
         <!---------------------------------------------------------->

@@ -93,6 +93,7 @@
                                         {{ $message }}
                                     @enderror
                                 </span>
+                                <label for="individualShippingFirstName">Nume</label>
                             </div>
                             <!---------------------------------------------------->
                             <div class="checkout__item checkout__item--required" id="individualShippingLastName">
@@ -104,6 +105,7 @@
                                         {{ $message }}
                                     @enderror
                                 </span>
+                                <label for="individualShippingLastName">Prenume</label>
                             </div>
                             <!---------------------------------------------------->
                             <div class="checkout__item checkout__item--required" id="individualShippingPhone">
@@ -115,6 +117,7 @@
                                         {{ $message }}
                                     @enderror
                                 </span>
+                                <label for="individualShippingPhone">Telefon</label>
                             </div>
                             <!---------------------------------------------------->
                             <div class="checkout__item checkout__item--required" id="individualShippingEmail">
@@ -125,6 +128,7 @@
                                         {{ $message }}
                                     @enderror
                                 </span>
+                                <label for="individualShippingEmail">Email</label>
                             </div>
                             <!----------- End Checkout List of Items ------------->
                             <!---------------------------------------------------->
@@ -151,6 +155,7 @@
                                         {{ $message }}
                                     @enderror
                                 </span>
+                                <label for="individualShippingAddress">Adresa 1</label>
                             </div>
                             {{-- <!---------------------------------------------------->
                             <div class="checkout__item">
@@ -162,6 +167,7 @@
                                     name="individualShippingAddress2" placeholder="Adresa 2 (opțional)"
                                     autocomplete="address-level2">
                                 <span></span>
+                                <label for="individualShippingAddress2">Adresa 2 (opțional)</label>
                             </div>
                             <!------------------------------------------------------------------->
 
@@ -422,14 +428,15 @@
                             </div> --}}
                             <div class="checkout__item checkout__item--required" id="individualShippingCounty">
                                 <input type="text" wire:model="individual_billing_county"
-                                    name="individualShippingCounty" placeholder="Localitate (oraș, comuna sau sat)"
+                                    name="individualShippingCounty" placeholder="Localitate (oraș, comună sau sat)"
                                     autocomplete="county" required>
                                 <span></span>
+                                <label for="individualShippingCounty">Localitate (oraș, comună sau sat)</label>
                             </div>
                             <!---------------------------------------------------->
                             {{-- <div class="checkout__item">
                                 <input type="text" wire:model="individual_billing_city"
-                                    placeholder="Localitate (oras, comuna sau sat)">
+                                    placeholder="Localitate (oras, comună sau sat)">
                                 <span>
 
                                 </span>
@@ -442,6 +449,7 @@
                                         {{ $message }}
                                     @enderror
                                 </span>
+                                <label for="individualShippingCity">Oraș</label>
                             </div>
                             <!---------------------------------------------------->
                             {{-- <div class="checkout__item">
@@ -460,6 +468,7 @@
                                         {{ $message }}
                                     @enderror
                                 </span>
+                                <label for="individualShippingPostal">Cod Poștal</label>
                             </div>
                             <!----------- End Checkout List of Items ------------->
                             <!---------------------------------------------------->
@@ -500,6 +509,7 @@
                                         {{ $message }}
                                     @enderror
                                 </span>
+                                <label for="individualBillingFirstName">Nume</label>
                             </div>
                             <!---------------------------------------------------->
                             <div wire:ignore class="checkout__item checkout__item--required"
@@ -512,6 +522,7 @@
                                         {{ $message }}
                                     @enderror
                                 </span>
+                                <label for="individualBillingLastName">Prenume</label>
                             </div>
                             <!---------------------------------------------------->
                             <div wire:ignore class="checkout__item checkout__item--required"
@@ -523,6 +534,7 @@
                                         {{ $message }}
                                     @enderror
                                 </span>
+                                <label for="individualBillingEmail">Email</label>
                             </div>
                             <!---------------------------------------------------->
                             <div wire:ignore class="checkout__item checkout__item--required"
@@ -535,6 +547,7 @@
                                         {{ $message }}
                                     @enderror
                                 </span>
+                                <label for="individualBillingPhone">Telefon</label>
                             </div>
                             <!----------- End Checkout List of Items ------------->
                             <!---------------------------------------------------->
@@ -562,6 +575,7 @@
                                         {{ $message }}
                                     @enderror
                                 </span>
+                                <label for="individualBillingAddress">Adresa 1</label>
                             </div>
                             <!---------------------------------------------------->
                             <div wire:ignore class="checkout__item" id="individualBillingAddress2">
@@ -569,6 +583,7 @@
                                     name="individualBillingAddress2" placeholder="Adresa 2 (optional)"
                                     autocomplete="address-level2">
                                 <span></span>
+                                <label for="individualBillingAddress2">Adresa 2 (opțional)</label>
                             </div>
                             <!---------------------------------------------------->
                             <select wire:ignore wire:model="individual_shipping_country" class="select">
@@ -826,9 +841,10 @@
                             <div wire:ignore class="checkout__item checkout__item--required"
                                 id="individualBillingCounty">
                                 <input type="text" wire:model="individual_shipping_county"
-                                    name="individualBillingCounty" placeholder="Localitate (oraș, comuna sau sat)"
+                                    name="individualBillingCounty" placeholder="Localitate (oraș, comună sau sat)"
                                     autocomplete="county" required>
                                 <span></span>
+                                <label for="individualBillingCounty">Localitate (oraș, comună sau sat)</label>
                             </div>
                             <!---------------------------------------------------->
 
@@ -841,6 +857,7 @@
                                         {{ $message }}
                                     @enderror
                                 </span>
+                                <label for="individualBillingCity">Oraș</label>
                             </div>
                             <!---------------------------------------------------->
                             <div wire:ignore class="checkout__item checkout__item--required"
@@ -853,6 +870,7 @@
                                         {{ $message }}
                                     @enderror
                                 </span>
+                                <label for="individualBillingPostal">Cod Poștal</label>
                             </div>
                             <!----------- End Checkout List of Items ------------->
                             <!---------------------------------------------------->
@@ -877,13 +895,14 @@
                             <!------------- Checkout List of Items --------------->
                             <div class="checkout__item checkout__item--required" id="juridicShippingFirstName">
                                 <input type="text" wire:model="juridic_billing_first"
-                                    name="individualShippingFirstName" placeholder="Nume" autocomplete="given-name"
+                                    name="juridicShippingFirstName" placeholder="Nume" autocomplete="given-name"
                                     required>
                                 <span>
                                     @error("juridic_billing_first")
                                         {{ $message }}
                                     @enderror
                                 </span>
+                                <label for="juridicShippingFirstName">Nume</label>
                             </div>
                             <!---------------------------------------------------->
                             <div class="checkout__item checkout__item--required" id="juridicShippingLastName">
@@ -895,6 +914,7 @@
                                         {{ $message }}
                                     @enderror
                                 </span>
+                                <label for="juridicShippingLastName">Prenume</label>
                             </div>
                             <!---------------------------------------------------->
                             <div class="checkout__item checkout__item--required" id="juridicShippingPhone">
@@ -906,6 +926,7 @@
                                         {{ $message }}
                                     @enderror
                                 </span>
+                                <label for="juridicShippingPhone">Telefon</label>
                             </div>
                             <!---------------------------------------------------->
                             <div class="checkout__item checkout__item--required" id="juridicShippingEmail">
@@ -916,6 +937,7 @@
                                         {{ $message }}
                                     @enderror
                                 </span>
+                                <label for="juridicShippingEmail">Email</label>
                             </div>
                             <!---------------------------------------------------->
                             <div class="checkout__item checkout__item--required" id="companyName">
@@ -926,6 +948,7 @@
                                         {{ $message }}
                                     @enderror
                                 </span>
+                                <label for="companyName">Numele Companiei</label>
                             </div>
                             <!---------------------------------------------------->
                             <div class="checkout__item checkout__item--required" id="registerCode">
@@ -937,6 +960,7 @@
                                         {{ $message }}
                                     @enderror
                                 </span>
+                                <label for="registerCode">Cod de înregistrare</label>
                             </div>
                             <!---------------------------------------------------->
                             <div class="checkout__item checkout__item--required" id="registerNumber">
@@ -948,6 +972,7 @@
                                         {{ $message }}
                                     @enderror
                                 </span>
+                                <label for="registerNumber">Număr de înregistrare</label>
                             </div>
                             <!---------------------------------------------------->
                             <div class="checkout__item" id="bankName">
@@ -958,6 +983,7 @@
                                         {{ $message }}
                                     @enderror
                                 </span>
+                                <label for="bankName">Numele Băncii</label>
                             </div>
                             <!---------------------------------------------------->
                             <div class="checkout__item" id="IBAN">
@@ -968,6 +994,7 @@
                                         {{ $message }}
                                     @enderror
                                 </span>
+                                <label for="IBAN">IBAN</label>
                             </div>
                             <!----------- End Checkout List of Items ------------->
                             <!---------------------------------------------------->
@@ -994,6 +1021,7 @@
                                         {{ $message }}
                                     @enderror
                                 </span>
+                                <label for="juridicShippingAddress">Adresa 1</label>
                             </div>
                             <!---------------------------------------------------->
                             <div class="checkout__item" id="juridicShippingAddress2">
@@ -1001,6 +1029,7 @@
                                     name="juridicShippingAddress2" placeholder="Adresa 2 (optional)"
                                     autocomplete="address-level2">
                                 <span></span>
+                                <label for="juridicShippingAddress2">Adresa 2 (optional)</label>
                             </div>
                             <!---------------------------------------------------->
                             <select wire:model="juridic_billing_country" class="select">
@@ -1257,9 +1286,10 @@
                             <!---------------------------------------------------->
                             <div class="checkout__item checkout__item--required" id="juridicShippingCounty">
                                 <input type="text" wire:model="juridic_billing_county"
-                                    name="juridicShippingCounty" placeholder="Localitate (oraș, comuna sau sat)"
+                                    name="juridicShippingCounty" placeholder="Localitate (oraș, comună sau sat)"
                                     autocomplete="county" required>
                                 <span></span>
+                                <label for="juridicShippingCounty">Localitate (oraș, comună sau sat)</label>
                             </div>
                             <!---------------------------------------------------->
                             <div class="checkout__item checkout__item--required" id="juridicShippingCity">
@@ -1270,6 +1300,7 @@
                                         {{ $message }}
                                     @enderror
                                 </span>
+                                <label for="juridicShippingCity">Oraș</label>
                             </div>
                             <!---------------------------------------------------->
                             <div class="checkout__item checkout__item--required" id="juridicShippingPostal">
@@ -1281,6 +1312,7 @@
                                         {{ $message }}
                                     @enderror
                                 </span>
+                                <label for="juridicShippingPostal">Cod Poștal</label>
                             </div>
                             <!----------- End Checkout List of Items ------------->
                             <!---------------------------------------------------->
@@ -1315,6 +1347,7 @@
                                         {{ $message }}
                                     @enderror
                                 </span>
+                                <label for="juridicBillingFirstName">Nume</label>
                             </div>
                             <!---------------------------------------------------->
                             <div wire:ignore class="checkout__item checkout__item--required"
@@ -1327,6 +1360,7 @@
                                         {{ $message }}
                                     @enderror
                                 </span>
+                                <label for="juridicBillingLastName">Prenume</label>
                             </div>
                             <!---------------------------------------------------->
                             <div wire:ignore class="checkout__item checkout__item--required"
@@ -1339,6 +1373,7 @@
                                         {{ $message }}
                                     @enderror
                                 </span>
+                                <label for="juridicBillingPhone">Telefon</label>
                             </div>
                             <!---------------------------------------------------->
                             <div wire:ignore class="checkout__item checkout__item--required"
@@ -1350,6 +1385,7 @@
                                         {{ $message }}
                                     @enderror
                                 </span>
+                                <label for="juridicBillingEmail">Email</label>
                             </div>
                             <!----------- End Checkout List of Items ------------->
                             <!---------------------------------------------------->
@@ -1373,13 +1409,15 @@
                                     name="juridicBillingAddress" placeholder="Adresa 1"
                                     autocomplete="street-address" required>
                                 <span></span>
+                                <label for="juridicBillingAddress">Adresa</label>
                             </div>
                             <!---------------------------------------------------->
                             <div wire:ignore class="checkout__item" id="juridicBillingAddress2">
                                 <input type="text" wire:model="juridic_shipping_address2"
-                                    name="juridicBillingAddress2" placeholder="Adresa 2"
+                                    name="juridicBillingAddress2" placeholder="Adresa 2 (Opțional)"
                                     autocomplete="address-level2">
                                 <span></span>
+                                <label for="juridicBillingAddress2">Adresa 2 (Opțional)</label>
                             </div>
                             <!---------------------------------------------------->
                             <select wire:ignore wire:model="juridic_shipping_country" class="select">
@@ -1637,9 +1675,10 @@
                             <div wire:ignore class="checkout__item checkout__item--required"
                                 id="juridicBillingCounty">
                                 <input type="text" wire:model="juridic_shipping_county"
-                                    name="juridicBillingCounty" placeholder="Localitate (oraș, comuna sau sat)"
+                                    name="juridicBillingCounty" placeholder="Localitate (oraș, comună sau sat)"
                                     autocomplete="county" required>
                                 <span></span>
+                                <label for="juridicBillingCounty">Localitate (oraș, comună sau sat)</label>
                             </div>
                             <!---------------------------------------------------->
                             <div wire:ignore class="checkout__item checkout__item--required"
@@ -1647,6 +1686,7 @@
                                 <input type="text" wire:model="juridic_shipping_city" name="juridicBillingCity"
                                     placeholder="Oraș" autocomplete="city" required>
                                 <span></span>
+                                <label for="juridicBillingCity">Oraș</label>
                             </div>
                             <!---------------------------------------------------->
                             <div wire:ignore class="checkout__item checkout__item--required"
@@ -1655,6 +1695,7 @@
                                     name="juridicBillingPostal" placeholder="Cod Poștal"
                                     autocomplete="postal-code" required>
                                 <span></span>
+                                <label for="juridicBillingPostal">Cod Poștal</label>
                             </div>
                             <!----------- End Checkout List of Items ------------->
                             <!---------------------------------------------------->
@@ -1760,7 +1801,7 @@
                                 <span class="total__message">Judet:
                                     <strong>{{ $individual_billing_county }}</strong></span>
                                 <!---------------------------------------------------->
-                                <span class="total__message">Localitate (oras, comuna sau sat):
+                                <span class="total__message">Localitate (oras, comună sau sat):
                                     <strong>{{ $individual_billing_city }}</strong></span>
                                 <!---------------------------------------------------->
                                 <span class="total__message">Cod Postal:
@@ -1795,7 +1836,7 @@
                                 <span class="total__message">Judet:
                                     <strong>{{ $individual_shipping_county }}</strong></span>
                                 <!---------------------------------------------------->
-                                <span class="total__message">Localitate (oras, comuna sau sat):
+                                <span class="total__message">Localitate (oras, comună sau sat):
                                     <strong>{{ $individual_shipping_city }}</strong></span>
                                 <!---------------------------------------------------->
                                 <span class="total__message">Cod Postal:
@@ -1850,7 +1891,7 @@
                                 <span class="total__message">Judet:
                                     <strong>{{ $juridic_billing_county }}</strong></span>
                                 <!---------------------------------------------------->
-                                <span class="total__message">Localitate (oras, comuna sau sat):
+                                <span class="total__message">Localitate (oras, comună sau sat):
                                     <strong>{{ $juridic_billing_city }}</strong></span>
                                 <!---------------------------------------------------->
                                 <span class="total__message">Cod Postal:
@@ -1885,7 +1926,7 @@
                                 <span class="total__message">Judet:
                                     <strong>{{ $juridic_shipping_county }}</strong></span>
                                 <!---------------------------------------------------->
-                                <span class="total__message">Localitate (oras, comuna sau sat):
+                                <span class="total__message">Localitate (oras, comună sau sat):
                                     <strong>{{ $juridic_shipping_city }}</strong></span>
                                 <!---------------------------------------------------->
                                 <span class="total__message">Cod Postal:

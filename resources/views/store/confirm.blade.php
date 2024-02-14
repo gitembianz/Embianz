@@ -13,9 +13,9 @@
     <!---------------------------------------------------------->
     <!----------------------Section Header---------------------->
     <section class="section__header container">
-        <h2 class="section__title">
+        <h1 class="section__title">
             Mulțumim pentru completarea formularului.
-        </h2>
+        </h1>
         <p class="section__text">
             Veți fi redirecționat la pagina principală în 5 secunde...
         </p>

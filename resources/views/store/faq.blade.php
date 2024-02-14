@@ -15,8 +15,8 @@
     <!---------------------------------------------------------->
     <!----------------------Section Header---------------------->
     <section class="section__header container">
-        <h2 class="section__title">Întrebări frecvente (FAQ)
-        </h2>
+        <h1 class="section__title">Întrebări frecvente (FAQ)
+        </h1>
         <p>
             Bine ați venit în secțiunea noastră de Întrebări frecvente (FAQ) - ghidul dvs. rapid către o experiență
             lipsită de probleme pe platforma noastră inovatoare de creare a proiectelor. Aici veți găsi răspunsuri la
