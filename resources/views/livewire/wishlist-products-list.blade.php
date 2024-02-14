@@ -11,15 +11,15 @@
             </button>
         </div>
 
-        <ul class="leftbar__list">
-            @if (empty($items))
-                <span class="leftbar__empty">Niciun produs în lista de favorite </span>
-            @else
+        @if ($items->isEmpty())
+            <span class="leftbar__empty">Niciun produs favorit</span>
+        @else
+            <ul class="leftbar__list">
                 @foreach ($items as $item)
                     <li class="leftbar__item">
 
                         <a class="leftbar__link wishlist__link"
-                            href="{{ route("product", ["product" => $item->product->seo_id !== null && $item->product->seo_id !== "" ? $item->product->seo_id : $item->product->id]) }}">
+                            href="{{ route('product', ['product' => $item->product->seo_id !== null && $item->product->seo_id !== '' ? $item->product->seo_id : $item->product->id]) }}">
                             @if ($item->product->media->first())
                                 <img class="cart__list--img"
                                     src="/{{ $item->product->media->first()->path }}{{ $item->product->media->first()->name }}"
@@ -41,7 +41,7 @@
                         </button>
                     </li>
                 @endforeach
-            @endif
-        </ul>
+            </ul>
+        @endif
     </div>
 </div>

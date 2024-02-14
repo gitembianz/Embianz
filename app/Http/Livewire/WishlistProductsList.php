@@ -50,7 +50,7 @@ class WishlistProductsList extends Component
                         $query->select('name', 'path')->where('type', 'min');
                     }]);
                 }
-            ])->get();
+            ])->get() ?? collect();
     }
 
     public function removeFromWishlist($productId)
