@@ -13,17 +13,18 @@ class StoreMain extends Component
   public function getSliderItemsProperty()
   {
     return Category::where('slider_sequence', '!=', '0')->with(['media' => function ($query) {
-      $query->where('type', 'original');
+      $query->select('path', 'name')->where('type', 'original');
     }])->orderby('sequence')->get();
   }
 
   public function getPopProductsProperty()
   {
-    return Product::where('active', true)
+    return Product::select('id', 'name', 'seo_id', 'quantity', 'short_description')
+      ->where('active', true)
       ->orderBy('popularity', 'desc')
       ->with([
         'media' => function ($query) {
-          $query->where('type', 'main');
+          $query->select('path', 'name')->where('type', 'main');
         },
         'product_prices' => function ($query) {
           $query->with('pricelist.currency');
@@ -33,6 +34,7 @@ class StoreMain extends Component
       ->limit(app('global_limit_slideritems'))
       ->get();
   }
+
 
   public function render()
   {
