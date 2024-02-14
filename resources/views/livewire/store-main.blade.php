@@ -92,7 +92,7 @@
                                     $price = null;
                                     $discount = false;
                                     
-                                    if (isset$product->product_prices) && $product->product_prices->isNotEmpty()) {
+                                    if ($product->product_prices->count() != 0) {
                                         $price = number_format($product->product_prices->first()->value, 2, ',', '.');
                                         $discount = $product->product_prices->first()->discount != 0 ? true : false;
                                     }
