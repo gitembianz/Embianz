@@ -132,14 +132,14 @@ class StoreProducts extends Component
   // products function
   public function getProductsProperty()
   {
-    $query = Product::name($this->search)->where('active', true)->with([
+    $query = Product::name($this->search)->select('id', 'name', 'seo_id', 'quantity', 'short_description')->where('active', true)->with([
       'product_prices',
       'product_prices.pricelist.currency',
       'media' => function ($query) {
-        $query->where('type', 'main');
+        $query->select('path', 'name')->where('type', 'main');
       },
       'wishlists' => function ($query) {
-        $query->where('session_id', $this->session_id);
+        $query->select('id', 'product_id')->where('session_id', $this->session_id);
       }
     ]);
     if ($this->category) {
@@ -161,8 +161,6 @@ class StoreProducts extends Component
         });
       }
     }
-
-
     switch ($this->orderBy) {
       case 'best_selling':
         $query->orderBy('popularity', 'desc');
@@ -186,11 +184,11 @@ class StoreProducts extends Component
         $query->where('quantity', '>', 0)->orderBy('quantity', 'desc');
         break;
       case 'price_as':
-        $query->join('pricelist_entries', 'products.id', '=', 'pricelist_entries.product_id')
+        $query->join('pricelist_entries', 'products:id', '=', 'pricelist_entries.product_id')
           ->orderByRaw('CAST(value AS DECIMAL(10, 2)) asc');
         break;
       case 'price_ds':
-        $query->join('pricelist_entries', 'products.id', '=', 'pricelist_entries.product_id')
+        $query->join('pricelist_entries', 'products:id', '=', 'pricelist_entries.product_id')
           ->orderByRaw('CAST(value AS DECIMAL(10, 2)) desc');
         break;
     }

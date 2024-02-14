@@ -39,7 +39,7 @@ class GeneralSearch extends Component
     }
     public function getObjectsProperty()
     {
-        return Product::name($this->search)->where('active', true)->with([
+        return Product::search($this->search)->where('active', true)->with([
             'media' => function ($query) {
                 $query->where('type', 'min'); // Filter and limit the media relationship
             },
@@ -49,7 +49,7 @@ class GeneralSearch extends Component
 
     public function getCatsProperty()
     {
-        return Category::name($this->search)->where('active', true)->with([
+        return Category::search($this->search)->where('active', true)->with([
             'media' => function ($query) {
                 $query->where('type', 'min'); // Filter and limit the media relationship
             }
