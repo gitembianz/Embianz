@@ -14,10 +14,12 @@ class WishlistQuantity extends Component
         'wishlistUpdated' => 'mount',
         'wishlistProductRemoved' => 'mount'
     ];
+
     public function render()
     {
         return view('livewire.wishlist-quantity');
     }
+
     private function getSessionId()
     {
         if (array_key_exists('sessionId', $_COOKIE)) {
@@ -28,10 +30,10 @@ class WishlistQuantity extends Component
             return $sessionId;
         }
     }
+
     public function mount()
     {
         $this->session_id = $this->getSessionId();
-
         $this->count = Wishlist::where('session_id', $this->session_id)->count();
     }
 }
