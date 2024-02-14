@@ -72,7 +72,7 @@
     @if ($product->related_product()->count() > 0)
         <section>
             <div class="section__header container">
-                <h2 class="section__title">Descoperă și alte opțiuni similare</h2>
+                <h1 class="section__title">Descoperă și alte opțiuni similare</h1>
                 <p class="section__text">
                     În căutarea perfectă? Explorează și alte propuneri care te-ar putea interesa.
                     Descoperă produse similare, perfecte pentru gusturile tale și nevoile tale. În continuare, vei găsi

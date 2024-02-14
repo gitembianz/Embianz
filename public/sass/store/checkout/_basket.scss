@@ -228,6 +228,10 @@
   &:hover {
     background: #d2042d;
     color: $secondary;
+
+    &>svg {
+      stroke: $secondary;
+    }
   }
 }
 
@@ -263,6 +267,10 @@
   &:hover {
     background: $text;
     color: $secondary;
+
+    &>svg {
+      stroke: $secondary;
+    }
   }
 }
 
