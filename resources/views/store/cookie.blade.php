@@ -15,10 +15,10 @@
     <!---------------------------------------------------------->
     <!----------------------Section Header---------------------->
     <section class="section__header container">
-        <h1 class="section__title">Politica de Cookie-uri</h2>
-            <p class="section__text">
-                Politica de utilizare Cookie-uri și tehnologii similare
-            </p>
+        <h1 class="section__title">Politica de Cookie-uri</h1>
+        <p class="section__text">
+            Politica de utilizare Cookie-uri și tehnologii similare
+        </p>
     </section>
     <!--------------------End Section Header-------------------->
     <!---------------------------------------------------------->

@@ -555,17 +555,33 @@ section {
   aspect-ratio: 1/1;
 }
 
-.section__title {
+h1.section__title {
   width: 100%;
   font-size: 25px;
   font-weight: 500;
   color: #333333;
   text-align: center;
   line-height: 150%;
+  margin: 0;
 }
 @media (max-width: 768px) {
-  .section__title {
+  h1.section__title {
     font-size: 18px;
+  }
+}
+
+h2.section__title {
+  width: 100%;
+  font-size: 20px;
+  font-weight: 500;
+  color: #333333;
+  text-align: center;
+  line-height: 150%;
+  margin: 0;
+}
+@media (max-width: 768px) {
+  h2.section__title {
+    font-size: 16px;
   }
 }
 
