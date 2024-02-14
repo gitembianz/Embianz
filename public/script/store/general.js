@@ -75,8 +75,10 @@ function addWishList(button) {
 //<----------------------- End Add On WishList ------------------------->
 //<--------------------------------------------------------------------->
 //<------------------------- Start Functions PC ------------------------>
-document.addEventListener("DOMContentLoaded", function () {
-  modal(".modal");
-  window.addEventListener("scroll", hiddenOnScroll);
-});
+window.addEventListener("scroll", hiddenOnScroll);
+window.addEventListener("resize", hiddenOnScroll);
+modal(".modal");
+
+// document.addEventListener("DOMContentLoaded", function () {
+// });
 //<----------------------- End Start Functions PC ---------------------->

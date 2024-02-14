@@ -112,14 +112,14 @@ dropmenus(".submenu", false);
 //<---------------------- End Start Functions IOS ---------------------->
 //<--------------------------------------------------------------------->
 //<------------------------- Start Functions PC ------------------------>
-document.addEventListener("DOMContentLoaded", function () {
-  searchBar();
-  leftbar("basketOpen", "basketClose", "basketList", "basketContent");
-  leftbar("wishOpen", "wishClose", "wishList", "wishContent");
-  leftbar("menuOpen", "menuClose", "menuList", "menuContent");
-  // dropmenus(".dropmenu", false);
-  // dropmenus(".submenu", false);
-});
+// document.addEventListener("DOMContentLoaded", function () {
+// searchBar();
+// leftbar("basketOpen", "basketClose", "basketList", "basketContent");
+// leftbar("wishOpen", "wishClose", "wishList", "wishContent");
+// leftbar("menuOpen", "menuClose", "menuList", "menuContent");
+// dropmenus(".dropmenu", false);
+// dropmenus(".submenu", false);
+// });
 //<----------------------- End Start Functions PC ---------------------->
 //<--------------------------------------------------------------------->
 scrollEvent();
