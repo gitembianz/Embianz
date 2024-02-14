@@ -74,6 +74,7 @@
                 <div class="card-slider container">
                     <div class="card-slider__wrapper" role="list">
                         @foreach ($popproducts as $product)
+
                             <div class="card-slider__slide card" role="listitem">
                                 <a
                                     href="{{ route("product", ["product" => $product->seo_id !== null && $product->seo_id !== "" ? $product->seo_id : $product->id]) }}">
@@ -96,6 +97,7 @@
                                     $discount = $product->product_prices->first()->discount != 0 ? true : false;
                                 }
                                 ?>
+
 
                                 @if ($price)
                                     @if ($product->quantity < $quantity && $product->quantity > 0)

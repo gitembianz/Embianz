@@ -136,10 +136,10 @@ class StoreProducts extends Component
       'product_prices',
       'product_prices.pricelist.currency',
       'media' => function ($query) {
-        $query->where('type', 'main');
+        $query->select('path', 'name')->where('type', 'main');
       },
       'wishlists' => function ($query) {
-        $query->where('session_id', $this->session_id);
+        $query->select('id', 'product_id')->where('session_id', $this->session_id);
       }
     ]);
     if ($this->category) {
@@ -161,8 +161,6 @@ class StoreProducts extends Component
         });
       }
     }
-
-
     switch ($this->orderBy) {
       case 'best_selling':
         $query->orderBy('popularity', 'desc');
