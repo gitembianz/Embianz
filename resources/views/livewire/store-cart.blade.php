@@ -4,7 +4,7 @@
         <!------------------------------------------------------>
         <!------------------- Basket Section ------------------->
         <div class="section__header container">
-            <h2 class="section__title">Cosul de cumparaturi!</h2>
+            <h1 class="section__title">Cosul de cumparaturi!</h1>
             <p class="section__text">
                 Vezi produsele mai jos
             </p>
@@ -46,7 +46,7 @@
                                         @endif
                                     </span>
                                 </div>
-                                <button class="basket__delete"
+                                <button class="basket__delete" aria-label="Remove from cart button"
                                     wire:click="removeFromCart({{ $cartItem->product->id }})">
                                     <svg>
                                         <polyline points="3 6 5 6 21 6"></polyline>
@@ -63,7 +63,7 @@
                                     </svg>
                                 </button>
                             </div>
-                            <button class="basket__delete--hidden"
+                            <button class="basket__delete--hidden" aria-label="Remove from cart"
                                 wire:click="removeFromCart({{ $cartItem->product->id }})">
                                 Șterge din coș
                                 <svg>
@@ -77,7 +77,7 @@
                                 <span>Cantitatea</span>
 
                                 <div class="quantity__buttons">
-                                    <button class="quantity__arrow"
+                                    <button class="quantity__arrow" aria-label="Decrease quantity"
                                         wire:click="decrement({{ $cartItem->product->id }})">
                                         <svg>
                                             <circle cx="12" cy="12" r="10"></circle>
@@ -87,7 +87,7 @@
                                     <span class="quantity__input">
                                         {{ $cartItem->quantity }}
                                     </span>
-                                    <button class="quantity__arrow"
+                                    <button class="quantity__arrow" aria-label="Increase quantity"
                                         wire:click="increment({{ $cartItem->product->id }})">
                                         <svg>
                                             <circle cx="12" cy="12" r="10"></circle>
@@ -116,12 +116,12 @@
                     <div class="details__content">
                         <h2 class="details__title">Detalii comanda</h2>
                         <div class="details__text">
-                            <h4>Produse:</h4>
+                            <h3>Produse:</h3>
                             <span> {{ number_format($cart->sum_amount, 2, ",", ".") }}
                                 {{ $currency }}</span>
                         </div>
                         <div class="details__text">
-                            <h4>Livrare:</h4>
+                            <h3>Livrare:</h3>
                             <span>
                                 @if ($delivery == 0)
                                     Gratuit
@@ -131,10 +131,10 @@
                             </span>
                         </div>
                         <div class="details__text">
-                            <h4>Voucher:</h4>
+                            <h3>Voucher:</h3>
                             <span class="voucher__choice">
                                 -20%
-                                <button class="details__delete">
+                                <button class="details__delete" aria-label="Remove voucher">
                                     <svg>
                                         <polyline points="3 6 5 6 21 6"></polyline>
                                         <path
@@ -147,7 +147,7 @@
                     </div>
                     <div class="details__content">
                         <div class="details__text">
-                            <h4>Total:</h4>
+                            <h3>Total:</h3>
                             <span>
                                 <?php
                                 $total = $cart->sum_amount + $delivery;
@@ -179,7 +179,8 @@
                                 <p class="voucher__error">{{ $message }}</p>
                             @endif
                         @endif
-                        <a class="details__button" wire:click="continue()">Continua</a>
+                        <button class="details__button" wire:click="continue()"
+                            aria-label="Continue form">Continua</button>
                     </div>
 
                 </div>

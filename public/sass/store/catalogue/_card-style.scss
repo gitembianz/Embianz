@@ -57,7 +57,6 @@
 
   p {
     font-size: 14px;
-    // color: $text;
     font-weight: 500;
     text-wrap: nowrap;
 
@@ -66,13 +65,13 @@
     }
   }
 
-  &>h3 {
+  &>h3,
+  &>h2 {
     font-size: 14px;
     color: $text;
     font-weight: 500;
     width: 100%;
     flex: 1;
-
   }
 
   &>span {
@@ -94,16 +93,30 @@
   font-size: 14px;
   letter-spacing: 0.7px;
   font-weight: 500;
-  color: black;
+  color: $text;
 
   transition: all 0.3s ease-in-out;
 
-  &>a {
+  &>button {
     height: 100%;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+    background: none;
+    border: none;
+    border-radius: none;
+    font-size: 14px;
+    letter-spacing: 0.7px;
+    font-weight: 500;
+    color: $text;
+    transition: all 0.3s ease-in-out;
+
+
+    &:hover {
+      background: $text;
+      color: $secondary;
+    }
   }
 
   &:hover {
