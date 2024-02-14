@@ -6,7 +6,7 @@
         <section>
             <div class="checkout container">
                 <div class="section__header container">
-                    <h2 class="section__title">Ups, a aparut o eroare!</h2>
+                    <h1 class="section__title">Ups, a aparut o eroare!</h1>
                     <a class="section__text" href="{{ url("/") }}">
                         Va rugam sa va intoarceti la pagina initiala
                     </a>

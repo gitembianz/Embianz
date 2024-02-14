@@ -133,8 +133,6 @@ function flyToCart(button) {
   const numberCart = shopping_cart.querySelector(".header__count");
   const target_parent = button.closest(".product"); // Obținem cel mai apropiat părinte cu clasa "product"
 
-  numberCart.style.scale = 1.5;
-
   if (!target_parent) {
     console.error("Nu s-a găsit părintele 'product'.");
     return;
@@ -168,12 +166,18 @@ function flyToCart(button) {
   `;
 
   setTimeout(() => {
-    // target_parent.style.zIndex = "";
     target_parent.removeChild(flying_img);
     shopping_cart.classList.remove("active");
-    numberCart.style.scale = 1;
+    if (numberCart) {
+      numberCart.style.scale = 1;
+    }
   }, 1500);
+
+  if (numberCart) {
+    numberCart.style.scale = 1.5;
+  }
 }
+
 //<-------------------------- End Add to Cart -------------------------->
 //<--------------------------------------------------------------------->
 //<------------------------ Start Functions IOS ------------------------>

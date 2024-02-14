@@ -3,7 +3,7 @@
         <!------------------------------------------------------>
         <!------------------- Basket Section ------------------->
         <div class="section__header container">
-            <h2 class="section__title">Produse favorite</h2>
+            <h class="section__title">Produse favorite</h>
             <p class="section__text">
                 Vezi produsele alese mai jos
             </p>
