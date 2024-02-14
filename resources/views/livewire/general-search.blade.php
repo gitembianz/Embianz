@@ -23,7 +23,7 @@
                           @foreach ($objects as $product)
                               <li class="search__item">
                                   <a class="search__link"
-                                      href="{{ route("product", ["product" => $product->seo_id !== null && $product->seo_id !== "" ? $product->seo_id : $product->id]) }}">
+                                      href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">
                                       @if ($product->media->first() != null)
                                           <img src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}"
                                               alt="{{ $product->media->first()->name }} {{ $product->name }}">
@@ -37,14 +37,15 @@
                                           </div>
                                           <div class="search__link--bottom">
                                               <h4>{{ $product->name }}</h4>
-                                              @if ($product->product_prices->first())
+
+                                              @if ($product->product_prices->count() != 0)
                                                   <span>
                                                       @php
-                                                          $price = $product->product_prices->first();
-                                                          $currency = $price->pricelist->currency->name;
+                                                          $price = number_format($product->product_prices->first()->value, 2, ',', '.');
+                                                          $currency = $product->product_prices->first()->pricelist->currency->name;
                                                       @endphp
                                                       @if ($price)
-                                                          {{ $price->value }} {{ $currency }}
+                                                          {{ $price }} {{ $currency }}
                                                       @endif
                                                   </span>
                                               @endif
@@ -59,7 +60,7 @@
                           @foreach ($cats as $category)
                               <li class="search__item">
                                   <a class="search__link"
-                                      href="{{ route("products", ["categorySlug" => $category->seo_id !== null && $category->seo_id !== "" ? $category->seo_id : $category->id]) }}">
+                                      href="{{ route('products', ['categorySlug' => $category->seo_id !== null && $category->seo_id !== '' ? $category->seo_id : $category->id]) }}">
                                       @if ($category->media->first() != null)
                                           <img src="/{{ $category->media->first()->path }}{{ $category->media->first()->name }}"
                                               alt="{{ $category->media->first()->name }} {{ $category->name }}">
@@ -77,7 +78,7 @@
                           @endforeach
                       @endif
                   @else
-                      <span>{{ __("Niciun element gasit") }}</span>
+                      <span>{{ __('Niciun element gasit') }}</span>
                   @endif
               </ul>
           @endif
