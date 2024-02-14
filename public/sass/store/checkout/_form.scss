@@ -254,12 +254,12 @@
       position: absolute;
       font-size: 16px;
       font-weight: 500;
-      color: lighten(#333, 30%);
+      color: lighten(#333, 20%);
       user-select: none;
       top: 50%;
       left: 20px;
       transform: translateY(-50%);
-      transition: all 0.3s ease-in-out;
+      transition: all 0.2s ease-in-out;
       user-select: none;
       pointer-events: none;
     }

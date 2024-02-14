@@ -51,6 +51,9 @@
         <div class="accordion">
             <button class="accordion-button">
                 Ce este acest site web și ce oferă?
+                <svg>
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
             </button>
             <div class="accordion-wrapper">
                 <div class="accordion-content">
@@ -64,6 +67,9 @@
         <div class="accordion">
             <button class="accordion-button">
                 Cum funcționează?
+                <svg>
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
             </button>
             <div class="accordion-wrapper">
                 <div class="accordion-content">
@@ -78,6 +84,9 @@
         <div class="accordion">
             <button class="accordion-button">
                 Este necesară crearea unui cont sau înregistrarea?
+                <svg>
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
             </button>
             <div class="accordion-wrapper">
                 <div class="accordion-content">
@@ -91,6 +100,9 @@
         <div class="accordion">
             <button class="accordion-button">
                 Care sunt etapele pentru a iniția un proiect?
+                <svg>
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
             </button>
             <div class="accordion-wrapper">
                 <div class="accordion-content">
@@ -104,7 +116,10 @@
         </div>
         <div class="accordion">
             <button class="accordion-button">
-                Care sunt avantajele alegerii serviciilor dvs.?
+                Care sunt avantajele alegerii serviciilor dvs?
+                <svg>
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
             </button>
             <div class="accordion-wrapper">
                 <div class="accordion-content">
@@ -119,6 +134,9 @@
         <div class="accordion">
             <button class="accordion-button">
                 Cum pot obține mai multe informații despre tarife?
+                <svg>
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
             </button>
             <div class="accordion-wrapper">
                 <div class="accordion-content">
@@ -133,6 +151,9 @@
         <div class="accordion">
             <button class="accordion-button">
                 Cât durează să se completeze un proiect?
+                <svg>
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
             </button>
             <div class="accordion-wrapper">
                 <div class="accordion-content">
@@ -147,6 +168,9 @@
         <div class="accordion">
             <button class="accordion-button">
                 Ce se întâmplă după ce trimit formularul de contact?
+                <svg>
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
             </button>
             <div class="accordion-wrapper">
                 <div class="accordion-content">
@@ -162,6 +186,9 @@
         <div class="accordion">
             <button class="accordion-button">
                 Cum pot obține asistență suplimentară sau răspunsuri la întrebările mele?
+                <svg>
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
             </button>
             <div class="accordion-wrapper">
                 <div class="accordion-content">
@@ -176,6 +203,9 @@
         <div class="accordion">
             <button class="accordion-button">
                 Ce metode de plată sunt acceptate?
+                <svg>
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
             </button>
             <div class="accordion-wrapper">
                 <div class="accordion-content">

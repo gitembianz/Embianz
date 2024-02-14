@@ -24,9 +24,9 @@
         <section class="container">
             <ol class="numeric">
                 <li>
-                    <h3>
+                    <h2>
                         Politică de Confidențialitate cu privire la prelucrarea datelor cu caracter personal
-                    </h3>
+                    </h2>
                     <ol class="sub-numeric">
                         <li>
                             <p>
@@ -57,9 +57,9 @@
                     </ol>
                 </li>
                 <li>
-                    <h3>
+                    <h2>
                         Cine suntem și cum ne puteți contacta
-                    </h3>
+                    </h2>
                     <ol class="sub-numeric">
                         <li>
                             <p>
@@ -92,16 +92,16 @@
                     </ol>
                 </li>
                 <li>
-                    <h3>
+                    <h2>
                         Ce categorii de date cu caracter personal prelucrăm
-                    </h3>
+                    </h2>
                     <ol class="sub-numeric">
                         <li>
-                            <h3>
+                            <h2>
                                 În general, colectăm datele cu caracter personal direct de la dumneavoastră, astfel
                                 încât aveți controlul asupra tipului de informație pe care ne-o oferiți. Cu titlul de
                                 exemplu, primim informații de la dvs astfel:
-                            </h3>
+                            </h2>
                             <ol class="sub-sub-numeric">
                                 <li>
                                     <p>
@@ -172,9 +172,9 @@
                     </ol>
                 </li>
                 <li>
-                    <h3>
+                    <h2>
                         Care sunt scopurile și temeiurile prelucrării
-                    </h3>
+                    </h2>
                     <ol class="sub-numeric">
                         <li>
                             <p>
@@ -187,9 +187,9 @@
                             </p>
                         </li>
                         <li>
-                            <h3>
+                            <h2>
                                 Acest scop general poate include, după caz, următoarele:
-                            </h3>
+                            </h2>
                             <ol class="sub-sub-numeric">
                                 <li>
                                     <p>
@@ -237,9 +237,9 @@
                     </ol>
                 </li>
                 <li>
-                    <h3>
+                    <h2>
                         Pentru îmbunătățirea serviciilor noastre
-                    </h3>
+                    </h2>
                     <ol class="sub-numeric">
                         <li>
                             <p>
@@ -260,9 +260,9 @@
                     </ol>
                 </li>
                 <li>
-                    <h3>
+                    <h2>
                         Pentru marketing
-                    </h3>
+                    </h2>
                     <ol class="sub-numeric">
                         <li>
                             <p>
@@ -295,11 +295,11 @@
                             </p>
                         </li>
                         <li>
-                            <h3>
+                            <h2>
                                 În cele mai multe cazuri, ne întemeiem comunicările de marketing pe consimțământul dvs
                                 prealabil, exprimat prin bifarea căsuței “Ma abonez”. Vă puteți răzgândi și retrage
                                 consimțământul în orice moment, prin:
-                            </h3>
+                            </h2>
                             <ol class="sub-sub-numeric">
                                 <li>
                                     <p>
@@ -328,16 +328,16 @@
                     </ol>
                 </li>
                 <li>
-                    <h3>
+                    <h2>
                         Pentru apărarea intereselor noastre legitime
-                    </h3>
+                    </h2>
                     <ol class="sub-numeric">
 
                         <li>
-                            <h3>
+                            <h2>
                                 Pot exista situații în care vom folosi sau transmite informații pentru a ne proteja
                                 drepturile și activitatea comercială. Acestea pot include:
-                            </h3>
+                            </h2>
                             <ol class="sub-sub-numeric">
                                 <li>
                                     <p>
@@ -377,9 +377,9 @@
 
                 </li>
                 <li>
-                    <h3>
+                    <h2>
                         Cât timp păstrăm datele dvs cu caracter personal
-                    </h3>
+                    </h2>
                     <ol class="sub-numeric">
                         <li>
                             <p>
@@ -401,15 +401,15 @@
                     </ol>
                 </li>
                 <li>
-                    <h3>
+                    <h2>
                         Cui transmitem datele dvs cu caracter personal
-                    </h3>
+                    </h2>
                     <ol class="sub-numeric">
                         <li>
-                            <h3>
+                            <h2>
                                 După caz, putem transmite sau oferi acces la anumite date cu caracter personal ale dvs
                                 următoarelor categorii de destinatari:
-                            </h3>
+                            </h2>
                             <ol class="sub-sub-numeric">
                                 <li>
                                     <p>
@@ -476,9 +476,9 @@
                     </ol>
                 </li>
                 <li>
-                    <h3>
+                    <h2>
                         În ce țări transferăm datele dvs cu caracter personal
-                    </h3>
+                    </h2>
                     <ol class="sub-numeric">
                         <li>
                             <p>
@@ -515,9 +515,9 @@
                     </ol>
                 </li>
                 <li>
-                    <h3>
+                    <h2>
                         Cum protejăm securitatea datelor dvs cu caracter personal
-                    </h3>
+                    </h2>
                     <ol class="sub-numeric">
                         <li>
                             <p>
@@ -549,9 +549,9 @@
                     </ol>
                 </li>
                 <li>
-                    <h3>
+                    <h2>
                         Ce drepturi aveți
-                    </h3>
+                    </h2>
                     <ol class="sub-numeric">
                         <li>
                             <p>
@@ -581,9 +581,9 @@
                     </ol>
                 </li>
                 <li>
-                    <h3>
+                    <h2>
                         Identitate
-                    </h3>
+                    </h2>
                     <ol class="sub-numeric">
                         <li>
                             <p>
@@ -597,9 +597,9 @@
                     </ol>
                 </li>
                 <li>
-                    <h3>
+                    <h2>
                         Onorarii.
-                    </h3>
+                    </h2>
                     <ol class="sub-numeric">
                         <li>
                             <p>
@@ -613,9 +613,9 @@
                     </ol>
                 </li>
                 <li>
-                    <h3>
+                    <h2>
                         Durata de răspuns
-                    </h3>
+                    </h2>
                     <ol class="sub-numeric">
                         <li>
                             <p>
@@ -631,9 +631,9 @@
                     </ol>
                 </li>
                 <li>
-                    <h3>
+                    <h2>
                         Drepturile terțelor părți.
-                    </h3>
+                    </h2>
                     <ol class="sub-numeric">
                         <li>
                             <p>
@@ -644,25 +644,25 @@
                     </ol>
                 </li>
                 <li>
-                    <h3>
+                    <h2>
                         Drepturi vizate
-                    </h3>
+                    </h2>
                 </li>
                 <li>
-                    <h3>
+                    <h2>
                         Descriere
-                    </h3>
+                    </h2>
                 </li>
                 <li>
-                    <h3>
+                    <h2>
                         Accesul
-                    </h3>
+                    </h2>
                     <ol class="sub-numeric">
 
                         <li>
-                            <h3>
+                            <h2>
                                 Puteți să ne cereți:
-                            </h3>
+                            </h2>
                             <ol class="sub-sub-numeric">
                                 <li>
                                     <p>
@@ -688,9 +688,9 @@
                     </ol>
                 </li>
                 <li>
-                    <h3>
+                    <h2>
                         Rectificarea
-                    </h3>
+                    </h2>
                     <ol class="sub-numeric">
                         <li>
                             <p>
@@ -707,14 +707,14 @@
                     </ol>
                 </li>
                 <li>
-                    <h3>
+                    <h2>
                         Ștergerea datelor
-                    </h3>
+                    </h2>
                     <ol class="sub-numeric">
                         <li>
-                            <h3>
+                            <h2>
                                 Ne puteți cere să vă ștergem datele cu caracter personal, dar numai în cazul în care:
-                            </h3>
+                            </h2>
                             <ol class="sub-sub-numeric">
                                 <li>
                                     <p>
@@ -745,11 +745,11 @@
                             </ol>
                         </li>
                         <li>
-                            <h3>
+                            <h2>
                                 Nu avem obligația de a ne conforma solicitării dvs. de ștergere a datelor dvs. cu
                                 caracter personal în cazul în care prelucrarea datelor dvs. cu caracter personal este
                                 necesară:
-                            </h3>
+                            </h2>
                             <ol class="sub-sub-numeric">
                                 <li>
                                     <p>
@@ -784,15 +784,15 @@
                     </ol>
                 </li>
                 <li>
-                    <h3>
+                    <h2>
                         Restricționarea prelucrării datelor
-                    </h3>
+                    </h2>
                     <ol class="sub-numeric">
                         <li>
-                            <h3>
+                            <h2>
                                 Ne puteți cere să restricționăm prelucrarea datelor cu caracter personal, dar numai în
                                 cazul în care:
-                            </h3>
+                            </h2>
                             <ol class="sub-sub-numeric">
                                 <li>
                                     <p>
@@ -821,10 +821,10 @@
                             </ol>
                         </li>
                         <li>
-                            <h3>
+                            <h2>
                                 Putem continua să folosim datele dvs. cu caracter personal în urma unei solicitări de
                                 restricționare, în cazul în care:
-                            </h3>
+                            </h2>
                             <ol class="sub-sub-numeric">
                                 <li>
                                     <p>
@@ -846,16 +846,16 @@
                     </ol>
                 </li>
                 <li>
-                    <h3>
+                    <h2>
                         Portabilitatea datelor
-                    </h3>
+                    </h2>
                     <ol class="sub-numeric">
                         <li>
-                            <h3>
+                            <h2>
                                 Ne puteți cere să vă furnizăm datele cu caracter personal într-un format structurat,
                                 utilizat în mod curent și care poate fi citit automat, sau puteți solicita ca acesta să
                                 fie „portat” direct către un alt operator de date, dar în fiecare caz numai dacă:
-                            </h3>
+                            </h2>
                             <ol class="sub-sub-numeric">
                                 <li>
                                     <p>
@@ -874,9 +874,9 @@
                     </ol>
                 </li>
                 <li>
-                    <h3>
+                    <h2>
                         Opoziția
-                    </h3>
+                    </h2>
                     <ol class="sub-numeric">
                         <li>
                             <p>
@@ -896,15 +896,15 @@
                     </ol>
                 </li>
                 <li>
-                    <h3>
+                    <h2>
                         Luarea de decizii automate
-                    </h3>
+                    </h2>
                     <ol class="sub-numeric">
                         <li>
-                            <h3>
+                            <h2>
                                 Puteți cere să nu faceți obiectul unei decizii bazate exclusiv pe prelucrarea automată,
                                 dar numai atunci când decizia respectivă:
-                            </h3>
+                            </h2>
                             <ol class="sub-sub-numeric">
                                 <li>
                                     <p>
@@ -919,10 +919,10 @@
                             </ol>
                         </li>
                         <li>
-                            <h3>
+                            <h2>
                                 Acest drept nu se aplică în cazul în care decizia la care s-a ajuns în urma luării
                                 automate a deciziilor:
-                            </h3>
+                            </h2>
                             <ol class="sub-sub-numeric">
                                 <li>
                                     <p>
@@ -945,9 +945,9 @@
                     </ol>
                 </li>
                 <li>
-                    <h3>
+                    <h2>
                         Plângeri
-                    </h3>
+                    </h2>
                     <ol class="sub-numeric">
                         <li>
                             <p>
@@ -980,11 +980,11 @@
                     </ol>
                 </li>
                 <li>
-                    <h3>
+                    <h2>
                         Fără a vă afecta dreptul dvs de a contacta în orice moment autoritatea de supraveghere, vă rugăm
                         să ne contactați în prealabil, și vă promitem că vom depune toate eforturile necesare pentru a
                         rezolva orice problemă pe cale amiabilă.
-                    </h3>
+                    </h2>
                     <ol class="sub-numeric">
                         <li>
                             <p>

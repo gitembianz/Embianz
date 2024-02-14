@@ -1,8 +1,9 @@
 <div class="card-button">
     @if ($product->quantity != 0)
-        <a class="add-to-cart" onclick="flyToCart(this)" wire:click="addToCart({{ $product->id }})">Adauga in
-            coș</a>
+        <button aria-label="Add to cart button" class="add-to-cart" onclick="flyToCart(this)"
+            wire:click="addToCart({{ $product->id }})">Adauga in
+            coș</button>
     @else
-        <a class="card-button-disabled">Indisponibil</a>
+        <button class="card-button-disabled" aria-label="Disabled Add to cart button">Indisponibil</button>
     @endif
 </div>

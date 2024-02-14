@@ -9,14 +9,14 @@
                 <div class="suport__item">
                     <div>
                         <img src="/images/store/svg/headset.svg" alt="headset">
-                        <h4 class="support__title">24/7 Suport Disponibil</h4>
+                        <h3 class="support__title">24/7 Suport Disponibil</h3>
                     </div>
                     <span class="support__subtitle">Operatorii nostri sunt gata sa-ti raspunda</span>
                 </div>
                 <div class="suport__item">
                     <div>
                         <img src="/images/store/svg/truck.svg" alt="truck">
-                        <h4 class="support__title">Livrare gratis de la 250 lei</h4>
+                        <h3 class="support__title">Livrare gratis de la 250 lei</h3>
                     </div>
                     <span class="support__subtitle">pentru produsele vandute de embianz.com</span>
                     <div class="support__brand">
@@ -28,7 +28,7 @@
                 <div class="suport__item">
                     <div>
                         <img src="/images/store/svg/shield.svg" alt="shield">
-                        <h4 class="support__title">Comenzi si plati 100% sigure</h4>
+                        <h3 class="support__title">Comenzi si plati 100% sigure</h3>
                     </div>
                     <span class="support__subtitle">Toate datele sunt transmise securizat</span>
                     <div class="support__brand">
@@ -40,7 +40,7 @@
                 <div class="suport__item">
                     <div>
                         <img src="/images/store/svg/chat.svg" alt="chat">
-                        <h4 class="support__title">Intrebari frecvente (FAQ)</h4>
+                        <h3 class="support__title">Intrebari frecvente (FAQ)</h3>
                     </div>
                     <span class="support__subtitle">Gaseste raspunsuri la intrebari frecvente <a
                             href="{{ url("/faq") }}">aici</a></span>

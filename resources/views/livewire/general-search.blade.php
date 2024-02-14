@@ -8,7 +8,8 @@
                   </svg>
                   <input id="searchInput" wire:model.debounce.300ms="search" type="text" placeholder="Cauta...">
               </div>
-              <button class="search__close" type="button" id="searchClose" wire:click.prevent="close">
+              <button class="search__close" type="button" id="searchClose" wire:click.prevent="close"
+                  aria-label="Close general searchbar">
                   <svg>
                       <line x1="18" y1="6" x2="6" y2="18"></line>
                       <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -22,7 +23,7 @@
                           @foreach ($objects as $product)
                               <li class="search__item">
                                   <a class="search__link"
-                                      href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">
+                                      href="{{ route("product", ["product" => $product->seo_id !== null && $product->seo_id !== "" ? $product->seo_id : $product->id]) }}">
                                       @if ($product->media->first() != null)
                                           <img src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}"
                                               alt="{{ $product->media->first()->name }} {{ $product->name }}">
@@ -58,7 +59,7 @@
                           @foreach ($cats as $category)
                               <li class="search__item">
                                   <a class="search__link"
-                                      href="{{ route('products', ['categorySlug' => $category->seo_id !== null && $category->seo_id !== '' ? $category->seo_id : $category->id]) }}">
+                                      href="{{ route("products", ["categorySlug" => $category->seo_id !== null && $category->seo_id !== "" ? $category->seo_id : $category->id]) }}">
                                       @if ($category->media->first() != null)
                                           <img src="/{{ $category->media->first()->path }}{{ $category->media->first()->name }}"
                                               alt="{{ $category->media->first()->name }} {{ $category->name }}">
@@ -76,11 +77,12 @@
                           @endforeach
                       @endif
                   @else
-                      <span>{{ __('Niciun element gasit') }}</span>
+                      <span>{{ __("Niciun element gasit") }}</span>
                   @endif
               </ul>
           @endif
       </div>
-      <button class="search__close--hidden" id="modalClose" type="button" wire:click.prevent="close">
+      <button class="search__close--hidden" id="modalClose" type="button" wire:click.prevent="close"
+          aria-label="Close hidden general searchbar">
       </button>
   </div>

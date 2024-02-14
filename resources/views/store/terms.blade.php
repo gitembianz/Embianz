@@ -29,9 +29,9 @@
     <section class="container">
         <ol class="numeric">
             <li>
-                <h3>
+                <h2>
                     CONTRACTUL
-                </h3>
+                </h2>
                 <ol class="sub-numeric">
                     <li>
                         <p>
@@ -77,9 +77,9 @@
                 </ol>
             </li>
             <li>
-                <h3>
+                <h2>
                     POLITICA DE VANZARE ONLINE
-                </h3>
+                </h2>
                 <ol class="sub-numeric">
                     <li>
                         <p>
@@ -130,9 +130,9 @@
                 </ol>
             </li>
             <li>
-                <h3>
+                <h2>
                     CESIONAREA SI SUBCONTRACTAREA
-                </h3>
+                </h2>
                 <ol class="sub-numeric">
                     <li>
                         <p>
@@ -143,9 +143,9 @@
                 </ol>
             </li>
             <li>
-                <h3>
+                <h2>
                     DREPTUL DE PROPRIETATE INTELECTUALA SI INDUSTRIALA
-                </h3>
+                </h2>
                 <ol class="sub-numeric">
                     <li>
                         <p>
@@ -197,9 +197,9 @@
                 </ol>
             </li>
             <li>
-                <h3>
+                <h2>
                     COMANDA
-                </h3>
+                </h2>
                 <ol class="sub-numeric">
                     <li>
                         <p>
@@ -224,12 +224,12 @@
                         </p>
                     </li>
                     <li>
-                        <h3>
+                        <h2>
                             Vanzatorul poate anula comanda efectuata de catre utilizator / client, in urma unei
                             notificari prealabile adresate cumparatorului, fara nicio obligatie ulterioara a vreunei
                             parti fata de cealalta sau fara ca vreo parte sa poata sa pretinda celeilalte daune-interese
                             in urmatoarele cazuri:
-                        </h3>
+                        </h2>
                         <ol class="sub-sub-numeric">
                             <li>
                                 <p>
@@ -259,10 +259,10 @@
                         </p>
                     </li>
                     <li>
-                        <h3>
+                        <h2>
                             Astfel, potrivit OUG nr. 34/2014, perioada de returnare a unui bun sau renunțare la un
                             serviciu expiră în termen de 14 zile de la:
-                        </h3>
+                        </h2>
                         <ol class="sub-sub-numeric">
                             <li>
                                 <p>
@@ -286,13 +286,13 @@
                         </p>
                     </li>
                     <li>
-                        <h3>
+                        <h2>
                             In cazul in care clientul/cumparatorul solicita retragerea din contract in cadrul termenului
                             legal de retragere din contract, trebuie sa returneze si eventualele cadouri care au insotit
                             produsul respectiv. In cazul in care comanda este achitata, vanzatorul va rambursa suma in
                             maxim 14 (paisprezece) zile de la data informarii vanzatorului de catre cumparator asupra
                             deciziei sale de retragere din Contract. Suma va fi returnata dupa cum urmeaza:
-                        </h3>
+                        </h2>
                         <ol class="sub-sub-numeric">
                             <li>
                                 <p>
@@ -317,9 +317,9 @@
                 </ol>
             </li>
             <li>
-                <h3>
+                <h2>
                     BUNURI/SERVICII PENTRU CARE NU SE ASIGURA DREPTUL DE RETRAGERE
-                </h3>
+                </h2>
                 <ol class="sub-numeric">
                     <li>
                         <p>
@@ -417,9 +417,9 @@
                 </ol>
             </li>
             <li>
-                <h3>
+                <h2>
                     PRELUCRAREA DATELOR CU CARACTER PERSONAL
-                </h3>
+                </h2>
                 <ol class="sub-numeric">
                     <li>
                         <p>
@@ -430,9 +430,9 @@
                 </ol>
             </li>
             <li>
-                <h3>
+                <h2>
                     COOKIE
-                </h3>
+                </h2>
                 <ol class="sub-numeric">
                     <li>
                         <p>
@@ -443,9 +443,9 @@
                 </ol>
             </li>
             <li>
-                <h3>
+                <h2>
                     COMUNICĂRI COMERCIALE
-                </h3>
+                </h2>
                 <ol class="sub-numeric">
                     <li>
                         <p>
@@ -546,9 +546,9 @@
                 </ol>
             </li>
             <li>
-                <h3>
+                <h2>
                     LIVRAREA BUNURILOR
-                </h3>
+                </h2>
                 <ol class="sub-numeric">
                     <li>
                         <p>
@@ -565,9 +565,9 @@
                 </ol>
             </li>
             <li>
-                <h3>
+                <h2>
                     TRANSFERUL PROPRIETATII BUNURILOR
-                </h3>
+                </h2>
                 <ol class="sub-numeric">
                     <li>
                         <p>
@@ -580,9 +580,9 @@
                 </ol>
             </li>
             <li>
-                <h3>
+                <h2>
                     RASPUNDERE
-                </h3>
+                </h2>
                 <ol class="sub-numeric">
                     <li>
                         <p>
@@ -621,9 +621,9 @@
                 </ol>
             </li>
             <li>
-                <h3>
+                <h2>
                     FORTA MAJORA
-                </h3>
+                </h2>
                 <ol class="sub-numeric">
                     <li>
                         <p>
@@ -644,9 +644,9 @@
                 </ol>
             </li>
             <li>
-                <h3>
+                <h2>
                     LEGEA APLICABILA – JURISDICTIA
-                </h3>
+                </h2>
                 <ol class="sub-numeric">
                     <li>
                         <p>

@@ -68,7 +68,7 @@
                 </span>
                 <textarea name="description" rows="30" required placeholder="Spune-ne mai multe. Incepe sa scrii aici..."></textarea>
             </div>
-            <button class="contact__button" type="submit" name="submit">
+            <button class="contact__button" type="submit" name="submit" aria-label="send message">
                 Trimite
                 <svg>
                     <line x1="22" y1="2" x2="11" y2="13"></line>
