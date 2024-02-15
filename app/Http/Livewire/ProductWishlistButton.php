@@ -10,9 +10,10 @@ class ProductWishlistButton extends Component
     public $productId;
     public $is_in_wishlist;
     public $session_id;
+    public $class;
     public $listeners = [];
 
-    public function mount($productId, $is_in_wishlist)
+    public function mount($productId, $is_in_wishlist, $class)
     {
         $this->productId  = $productId;
         $this->is_in_wishlist = $is_in_wishlist;
@@ -34,7 +35,7 @@ class ProductWishlistButton extends Component
     public function refreshComponent()
     {
         $this->is_in_wishlist = !$this->is_in_wishlist;
-        $this->mount($this->productId, $this->is_in_wishlist);
+        $this->mount($this->productId, $this->is_in_wishlist, $this->class);
     }
 
     public function addToWishlist($id)

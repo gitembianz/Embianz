@@ -53,6 +53,26 @@ input[type="submit"] {
   cursor: pointer;
 }
 
+.favorite__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 35px;
+  height: 35px;
+  background: transparent;
+  border: none;
+
+  &>svg {
+    fill: #ccc;
+  }
+
+  &.active {
+    &>svg {
+      fill: #d2042d;
+    }
+  }
+}
+
 label {
   -webkit-appearance: button;
   -moz-appearance: button;
