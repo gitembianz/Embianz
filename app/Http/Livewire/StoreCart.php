@@ -59,7 +59,7 @@ class StoreCart extends Component
   public function getCartItemsProperty()
   {
     if ($this->cart) {
-      $cartItems = Cart_Item::select('id', 'quantity', 'product_id')
+      $cartItems = Cart_Item::select('id', 'quantity', 'price', 'product_id')
         ->where('cart_id', $this->cart->id)
         ->with([
           'product' => function ($query) {
