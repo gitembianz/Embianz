@@ -2,7 +2,7 @@
     <!------------------------------------------------------>
     <!------------------ Product (Details) ----------------->
     <?php if ($product->product_prices->count() != 0) {
-        $price = number_format($product->product_prices->first()->value, 2, ",", ".");
+        $price = number_format($product->product_prices->first()->value, 2, ',', '.');
         $discount = $product->product_prices->first()->discount != 0 ? true : false;
         $currency = $product->product_prices->first()->pricelist->currency->name;
     } else {
@@ -19,7 +19,13 @@
             @endif
 
         </div>
-        @livewire("wishlist-button", ["productId" => $product->id])
+        @livewire('product-wishlist-button', [
+            'productId' => $product->id,
+            'class' => 'product__action',
+            'is_in_wishlist' => $product->wishlists->where('session_id', $this->session_id)->where('product_id', $product->id)->first()
+                ? true
+                : false,
+        ])
     </div>
     <div class="product__price">
         <span>Pret</span>
@@ -44,7 +50,7 @@
     @if ($price)
         <span class="product__tva">
             Pretul include taxa TVA de
-            {{ number_format($product->product_prices->first()->tva_percent, 2, ",", ".") }}%
+            {{ number_format($product->product_prices->first()->tva_percent, 2, ',', '.') }}%
         </span>
         <div class="quantity">
             <span>Cantitate</span>

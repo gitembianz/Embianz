@@ -146,32 +146,12 @@
   cursor: not-allowed;
 }
 
-.card-action {
+.card__action {
   position: absolute;
   top: 5px;
   right: 5px;
 }
 
-.card-favorites {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 33px;
-  height: 33px;
-  background: transparent;
-  border: none;
-  border-radius: 50px;
-
-  &>svg {
-    fill: #ccc;
-  }
-
-  &.active {
-    &>svg {
-      fill: #d2042d;
-    }
-  }
-}
 
 .card-sale {
   color: #666666;

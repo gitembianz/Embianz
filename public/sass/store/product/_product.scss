@@ -39,15 +39,15 @@
     flex: 1;
   }
 
-  &>.product__action {
-    width: 50px;
+  .product__action {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
     justify-content: center;
-    flex: unset;
+    flex: 0;
   }
 }
+
 
 .product__subtitle {
   font-size: 15px;

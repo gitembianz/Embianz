@@ -124,6 +124,12 @@
     object-position: center;
     border-radius: 5px;
   }
+
+  &>.basket__action {
+    width: auto;
+    display: block;
+    flex: 0;
+  }
 }
 
 .basket__price {
