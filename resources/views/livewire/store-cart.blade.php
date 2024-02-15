@@ -59,7 +59,7 @@
                                 @livewire('product-wishlist-button', ['productId' => $cartItem->product->id, 'class' => 'basket__action', 'is_in_wishlist' => $cartItem->product->wishlists->isNotEmpty()], key($cartItem->product->id))
 
                             </div>
-                            <button class="basket__delete--hidden" aria-label="Remove from cart"
+                            <button class="basket__delete--hidden basket__delete--long" aria-label="Remove from cart"
                                 wire:click="removeFromCart({{ $cartItem->product->id }})">
                                 Șterge din coș
                                 <svg>

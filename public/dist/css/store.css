@@ -3934,6 +3934,12 @@ header {
   stroke: #fafafa;
 }
 
+@media (max-width: 992px) {
+  .basket__delete--long {
+    grid-column: 1/3;
+  }
+}
+
 .basket__add--hidden {
   grid-column: 1/3;
   width: 100%;
