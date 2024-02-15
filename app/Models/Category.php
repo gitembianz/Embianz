@@ -47,4 +47,9 @@ class Category extends Model
       ->orWhere('sequence', 'like', '%' . $search . '%')
       ->orWhere('short_description', 'like', '%' . $search . '%');
   }
+  public static function search_by_name($search)
+  {
+    return empty($search) ? static::query()
+      : static::query()->where('name', 'like', '%' . $search . '%');
+  }
 }

@@ -20,7 +20,7 @@ class WishlistButton extends Component
         $this->productId  = $productId;
         $this->session_id = $this->getSessionId();
 
-        $this->is_in_wishlist = Wishlist::where('session_id', $this->session_id)
+        $this->is_in_wishlist = Wishlist::select('id')->where('session_id', $this->session_id)
             ->where('product_id', $this->productId)
             ->first() ? true : false;
         $this->listeners = ["update-wish-" . $this->productId => "refreshComponent"];
@@ -41,11 +41,10 @@ class WishlistButton extends Component
     {
         $this->mount($this->productId);
     }
+
     public function addToWishlist($id)
     {
-        Wishlist::updateOrCreate(
-            ['session_id' => $this->session_id, 'product_id' => $id]
-        );
+        Wishlist::updateOrCreate(['session_id' => $this->session_id, 'product_id' => $id]);
         $this->emit('wishlistUpdated');
         $this->refreshComponent();
     }

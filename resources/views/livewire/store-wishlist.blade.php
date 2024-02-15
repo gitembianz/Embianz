@@ -16,7 +16,7 @@
             <!------------------------------------------------------>
             <!------------------- Basket Products ------------------>
             @if ($wishlistitems->isEmpty())
-                <span class="basket__empty">Lista este goala</span>
+                <span class="basket__empty">Niciun produs favorit adaugat</span>
             @else
                 @foreach ($wishlistitems as $product)
                     <div class="basket__product">
@@ -28,12 +28,12 @@
                                 <img src="/images/store/default/default70.webp" alt="something wrong">
                             @endif
                             <div>
-                                <a href="{{ route("product", ["product" => $product->seo_id !== null && $product->seo_id !== "" ? $product->seo_id : $product->id]) }}"
+                                <a href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}"
                                     class="basket__title">{{ $product->name }}</a>
                                 <span class="basket__price">
                                     @if ($product->product_prices->first() !== null)
                                         {{ $product->product_prices->first()->value }}
-                                        {{ $product->product_prices->first()->pricelist->currency->first()->name }}
+                                        {{ $product->product_prices->first()->pricelist->currency->name }}
                                     @else
                                         price unavailable
                                     @endif
@@ -48,7 +48,8 @@
                                     </path>
                                 </svg>
                             </button>
-                            <button class="basket__delete" aria-label="add to cart">
+                            <button class="basket__delete" wire:click="addToCart({{ $product->id }})"
+                                aria-label="add to cart">
                                 <svg>
                                     <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
                                     <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -66,7 +67,9 @@
                                 </path>
                             </svg>
                         </button>
-                        <button class="basket__add--hidden" aria-label="Add product">
+                        <button wire:click="addToCart({{ $product->id }})" class="basket__add--hidden"
+                            aria-label="Add
+                            product">
                             Adauga în coș
                             <svg>
                                 <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
