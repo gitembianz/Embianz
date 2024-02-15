@@ -124,6 +124,12 @@
     object-position: center;
     border-radius: 5px;
   }
+
+  &>.basket__action {
+    width: auto;
+    display: block;
+    flex: 0;
+  }
 }
 
 .basket__price {
@@ -232,6 +238,12 @@
     &>svg {
       stroke: $secondary;
     }
+  }
+}
+
+.basket__delete--long {
+  @media (max-width: map-get($grid-breakpoints, lg)) {
+    grid-column: 1/3;
   }
 }
 

@@ -6,14 +6,12 @@ use App\Models\Cart;
 use App\Models\Product;
 use App\Models\Voucher;
 use Livewire\Component;
-use App\Models\Wishlist;
 use App\Models\Cart_Item;
 
 class StoreCart extends Component
 
 {
   public $cartitems;
-  public $wishlist = [];
   public $cart;
   public $delivery;
   public $voucher;
@@ -25,12 +23,12 @@ class StoreCart extends Component
   public $validatequantity;
   protected $listeners = [
     'cartUpdated' => 'mount',
-    'wishlistUpdated' => 'mount'
   ];
   public function mount()
   {
     $this->session_id = $this->getSessionId();
     $this->delivery = app('global_delivery_price');
+
     $this->cart = Cart::where('session_id', $this->session_id)->where('status_id', '!=', app('global_cart_closed'))->with('voucher')->first();
     if ($this->cart) {
       $this->currency = $this->cart->currency->name;
@@ -61,18 +59,29 @@ class StoreCart extends Component
   public function getCartItemsProperty()
   {
     if ($this->cart) {
-      $cartItems = Cart_Item::where('cart_id', $this->cart->id)->with([
-        'product.media' => function ($query) {
-          $query->where('type', 'min'); // Filter and limit the media relationship
-        },
-        'product.product_prices' => function ($query) {
-          $query->with('pricelist.currency');
-        },
-        'product.wishlists'
-      ])->get();
+      $cartItems = Cart_Item::select('id', 'quantity', 'price', 'product_id')
+        ->where('cart_id', $this->cart->id)
+        ->with([
+          'product' => function ($query) {
+            $query->select('id', 'name', 'seo_id')->with([
+              'media' => function ($query) {
+                $query->select('path', 'name')->where('type', 'min');
+              },
+              'product_prices' => function ($query) {
+                $query->select('product_id', 'value', 'pricelist_id')
+                  ->with(['pricelist' => function ($query) {
+                    $query->select('id', 'currency_id')->with('currency:id,name');
+                  }]);
+              },
+              'wishlists' => function ($query) {
+                $query->select('id', 'product_id')->where('session_id', $this->session_id);
+              }
+            ]);
+          }
+        ])->get() ?? collect();
       return $cartItems;
     }
-    return collect(); // Return an empty collection if no cart items are found
+    return collect();
   }
   public function removeFromCart($productId)
   {
@@ -128,42 +137,6 @@ class StoreCart extends Component
       $this->emit('cartUpdated');
     } elseif ($cartItem->quantity == 1) {
       return;
-    }
-  }
-  public function addToWishlist($productId)
-  {
-    if (!in_array($productId, $this->wishlist)) {
-      $this->wishlist[] = $productId;
-      $this->saveToSession();
-
-      Wishlist::updateOrCreate(
-        ['session_id' => $this->session_id, 'product_id' => $productId]
-      );
-      $this->emit('wishlistUpdated');
-    }
-  }
-  public function removeFromWishlist($productId)
-  {
-    $this->wishlist = array_diff($this->wishlist, [$productId]);
-    $this->saveToSession();
-
-    Wishlist::where('session_id', $this->session_id)
-      ->where('product_id', $productId)
-      ->delete();
-    $this->emit('wishlistUpdated');
-  }
-  private function saveToSession()
-  {
-    session([
-      'wishlist' => $this->wishlist
-    ]);
-  }
-  public function toggleWishlist($productId)
-  {
-    if (in_array($productId, $this->wishlist)) {
-      $this->removeFromWishlist($productId);
-    } else {
-      $this->addToWishlist($productId);
     }
   }
   public function checkvoucher()
