@@ -74,8 +74,8 @@
                                 <span>Cantitatea</span>
 
                                 <div class="quantity__buttons">
-                                    <button class="quantity__arrow" aria-label="Decrease quantity"
-                                        wire:click="decrement({{ $cartItem->product->id }})">
+                                    <button class="quantity__arrow @if ($cartItem->quantity == 1) disabled @endif"
+                                        aria-label="Decrease quantity" wire:click="decrement({{ $cartItem->id }})">
                                         <svg>
                                             <circle cx="12" cy="12" r="10"></circle>
                                             <line x1="8" y1="12" x2="16" y2="12"></line>
@@ -85,7 +85,7 @@
                                         {{ $cartItem->quantity }}
                                     </span>
                                     <button class="quantity__arrow" aria-label="Increase quantity"
-                                        wire:click="increment({{ $cartItem->product->id }})">
+                                        wire:click="increment({{ $cartItem->id }})">
                                         <svg>
                                             <circle cx="12" cy="12" r="10"></circle>
                                             <line x1="12" y1="8" x2="12" y2="16"></line>
@@ -127,20 +127,23 @@
                                 @endif
                             </span>
                         </div>
-                        <div class="details__text">
-                            <h3>Voucher:</h3>
-                            <span class="voucher__choice">
-                                -20%
-                                <button wire:click="removevoucher" class="details__delete" aria-label="Remove voucher">
-                                    <svg>
-                                        <polyline points="3 6 5 6 21 6"></polyline>
-                                        <path
-                                            d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                        </path>
-                                    </svg>
-                                </button>
-                            </span>
-                        </div>
+                        @if ($cart->voucher_id != null)
+                            <div class="details__text">
+                                <h3>Voucher:</h3>
+                                <span class="voucher__choice">
+                                    -20%
+                                    <button wire:click="removevoucher" class="details__delete"
+                                        aria-label="Remove voucher">
+                                        <svg>
+                                            <polyline points="3 6 5 6 21 6"></polyline>
+                                            <path
+                                                d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                            </path>
+                                        </svg>
+                                    </button>
+                                </span>
+                            </div>
+                        @endif
                     </div>
                     <div class="details__content">
                         <div class="details__text">
@@ -149,34 +152,20 @@
                                 <?php
                                 $total = $cart->sum_amount + app('global_delivery_price');
                                 ?>
-                                @if ($new_price)
-                                    <span
-                                        style="text-decoration: line-through; color:red; margin-right:1rem">{{ number_format($total, 2, ',', '.') }}{{ $currency }}</span>{{ number_format($cart->final_amount, 2, ',', '.') }}{{ $currency }}
-                                @else
-                                    {{ number_format($total, 2, ',', '.') }} {{ $currency }}
-                                @endif
+
+                                {{ number_format($total, 2, ',', '.') }} {{ $currency }}
                             </span>
                         </div>
-                        @if ($new_price)
-                            <div>
-                            </div>
-                            <form wire:submit.prevent="checkvoucher" class="voucher">
-                                <input type="text" value="{{ $voucher }}" readonly>
-                            </form>
-                            @if ($message)
-                                <p class="voucher__error">{{ $message }}</p>
-                            @endif
-                        @else
-                            <form class="voucher" wire:submit.prevent="checkvoucher">
-                                <input type="text" wire:model="voucher" name="voucher"
-                                    placeholder="Ai un voucher sau card cadou?">
-                                <button type="submit">
-                                    Aplica
-                                </button>
-                            </form>
-                            @if ($message)
-                                <p class="voucher__error">{{ $message }}</p>
-                            @endif
+
+                        <form class="voucher" wire:submit.prevent="checkvoucher">
+                            <input type="text" wire:model="voucher" name="voucher"
+                                placeholder="Ai un voucher sau card cadou?">
+                            <button type="submit">
+                                Aplica
+                            </button>
+                        </form>
+                        @if ($message)
+                            <p class="voucher__error">{{ $message }}</p>
                         @endif
                         <button class="details__button" wire:click="continue()"
                             aria-label="Continue form">Continua</button>

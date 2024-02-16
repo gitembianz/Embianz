@@ -15,8 +15,7 @@ class StoreCart extends Component
 {
   public $delivery;
   public $voucher;
-  public $new_price = false;
-  public $message;
+  public $message = null;
   public $session_id;
 
   protected $listeners = [
@@ -79,39 +78,13 @@ class StoreCart extends Component
     }
   }
 
-
-
-
-
-
-
-
-
-
-  public function render()
-  {
-    $data = [
-      'cartItems' => $this->cartItems,
-      'cart' => $this->cart
-    ];
-    return view('livewire.store-cart', $data);
-  }
-
-  public function removevoucher()
-  {
-    $this->cart->voucher_id = null;
-    $this->new_price = false;
-    $this->voucher = "";
-    $this->cart->save();
-  }
-
   public function removeFromCart($productId)
   {
     $product = Product::select('id')->with(['product_prices' => function ($query) {
       $query->select('id', 'value', 'product_id');
     }])->findOrFail($productId);
 
-    if ($this->cart) {
+    if ($this->cart->id) {
       $cartItem = Cart_Item::where('cart_id', $this->cart->id)
         ->where('product_id', $productId)
         ->first();
@@ -121,68 +94,118 @@ class StoreCart extends Component
         Cart::where('id', $this->cart->id)->update([
           'quantity_amount' => DB::raw("quantity_amount - $cartItem->quantity"),
           'sum_amount' => DB::raw("sum_amount - $amountToSubtract"),
-          'final_amount' => DB::raw("CASE WHEN (sum_amount - $amountToSubtract) = 0 THEN 0 ELSE final_amount - $amountToSubtract END"),
-          'voucher_id' => DB::raw("CASE WHEN (sum_amount - $amountToSubtract) = 0 THEN NULL END"),
+          'final_amount' => DB::raw("CASE WHEN (quantity_amount) = 0 THEN 0 ELSE final_amount - $amountToSubtract END"),
+          'voucher_id' => DB::raw("CASE WHEN (quantity_amount) = 0 THEN NULL ELSE voucher_id END"),
+          'voucher_value' => DB::raw("CASE WHEN (quantity_amount) = 0 THEN 0 ELSE voucher_value END"),
+          'updated_at' => now(),
         ]);
-
         $cartItem->delete();
         $this->emit('cartUpdated');
       }
     }
   }
-  public function increment($productId)
+
+  public function increment($id)
   {
-    $product = Product::find($productId);
-    $cartItem = Cart_Item::where([
-      'cart_id' => $this->cart->id,
-      'product_id' => $productId,
-    ])->first();
-
-    if ($cartItem->quantity < $product->quantity) {
-      $cartItem->increment('quantity');
-      $this->cart->quantity_amount += 1;
-      $this->cart->sum_amount += $product->product_prices->first()->value;
-      $this->cart->save();
-      $this->emit('cartUpdated');
-    }
-  }
-
-  public function decrement($productId)
-  {
-    $product = Product::find($productId);
-    $cartItem = Cart_Item::where([
-      'cart_id' => $this->cart->id,
-      'product_id' => $productId,
-    ])->first();
-
-    if ($cartItem && $cartItem->quantity > 1) {
-      $cartItem->decrement('quantity');
-      $this->cart->quantity_amount -= 1;
-      $this->cart->sum_amount -= $product->product_prices->first()->value;
-      $this->cart->save();
-      $this->emit('cartUpdated');
-    } elseif ($cartItem->quantity == 1) {
+    if ($this->cart && $this->cartItems->isNotEmpty()) {
+      $cartitem_to_increment = $this->cartItems->where('id', $id)->first();
+      if ($cartitem_to_increment->quantity < $cartitem_to_increment->product->first()->quantity) {
+        $cartitem_to_increment->increment('quantity');
+        $this->cart->increment('quantity_amount');
+        $this->cart->delivery_price = app('global_delivery_price');
+        $this->cart->sum_amount += $cartitem_to_increment->product->product_prices->first()->value;
+        $this->cart->final_amount = $this->cart->sum_amount + app('global_delivery_price');
+        $this->cart->final_amount -= $this->cart->voucher_value;
+        $this->cart->save();
+        $this->emit('cartUpdated');
+      }
+    } else {
+      $this->emit('newcart');
       return;
     }
   }
+
+  public function decrement($id)
+  {
+    if ($this->cart && $this->cartItems->isNotEmpty()) {
+      $cartitem_to_decrement = $this->cartItems->where('id', $id)->first();
+      if ($cartitem_to_decrement && $cartitem_to_decrement->quantity > 1) {
+        $cartitem_to_decrement->decrement('quantity');
+        $this->cart->decrement('quantity_amount');
+        $this->cart->delivery_price = app('global_delivery_price');
+        $this->cart->sum_amount -= $cartitem_to_decrement->product->product_prices->first()->value;
+        $this->cart->final_amount = $this->cart->sum_amount + app('global_delivery_price');
+        $this->cart->final_amount -= $this->cart->voucher_value;
+        $this->cart->save();
+        $this->emit('cartUpdated');
+      } else {
+        return;
+      }
+    } else {
+      $this->emit('newcart');
+      return;
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   public function checkvoucher()
   {
-    if ($this->cart->exists) {
-      // Search for a voucher with the provided code in the database
-      $voucher = Voucher::where('code', $this->voucher)->where('status_id', app('global_voucher_active'))->first();
-
+    if ($this->cart) {
+      $voucher = Voucher::where('code', $this->voucher)
+        ->where('status_id', app('global_voucher_active'))
+        ->where('start_date', '<=',  now())
+        ->where('end_date', '>=',  now())
+        ->first();
       if ($voucher) {
-        // Voucher found, calculate discount based on percentage
-        $discountAmount = $voucher->percent / 100 * $this->cart->sum_amount;
-        $this->message = null;
-        $this->cart->voucher_id = $voucher->id;
-        $this->cart->final_amount = $this->cart->sum_amount - $discountAmount + app('global_delivery_price');
-        $this->cart->save();
-        $this->new_price = true;
+        if ($voucher && $voucher->percent !== null) {
+          $discountAmount = ($voucher->percent / 100) * $this->cart->sum_amount;
+
+          Cart::where('id', $this->cart->id)->update([
+            'final_amount' => DB::raw("sum_amount - $discountAmount" + app('global_delivery_price')),
+            'voucher_id' => $voucher->id,
+            'voucher_value' => $discountAmount,
+            'updated_at' => now(),
+          ]);
+        } else {
+          Cart::where('id', $this->cart->id)->update([
+            'final_amount' => DB::raw("sum_amount - $voucher->value" + app('global_delivery_price')),
+            'voucher_id' => $voucher->id,
+            'voucher_value' => $voucher->value,
+            'updated_at' => now(),
+          ]);
+        }
+        return;
       } else {
         $this->message = "Voucher not found!";
+        $this->voucher = "";
       }
+    } else {
+      $this->emit('newcart');
+      return;
     }
+  }
+
+  public function removevoucher()
+  {
+    $this->cart->voucher_id = null;
+    $this->voucher = "";
+    $this->cart->save();
   }
   public function continue()
   {
@@ -210,5 +233,14 @@ class StoreCart extends Component
       $this->cart->save();
       return redirect()->route('order');
     }
+  }
+
+  public function render()
+  {
+    $data = [
+      'cartItems' => $this->cartItems,
+      'cart' => $this->cart
+    ];
+    return view('livewire.store-cart', $data);
   }
 }
