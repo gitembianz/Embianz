@@ -168,6 +168,7 @@
     aspect-ratio: 1/1;
     border-radius: 2.5px;
     background-color: $background;
+    mix-blend-mode: multiply;
 
     @media (max-width: map-get($grid-breakpoints, sm)) {
       width: 55px;

@@ -285,10 +285,6 @@ svg {
   user-select: none;
 }
 
-img {
-  mix-blend-mode: multiply;
-}
-
 button,
 a,
 label,
@@ -1630,6 +1626,7 @@ header {
   background-color: #ffffff;
   user-select: none;
   pointer-events: none;
+  mix-blend-mode: multiply;
 }
 @media (max-width: 576px) {
   .leftbar__link > img {
@@ -2105,6 +2102,7 @@ header {
   aspect-ratio: 1/1;
   border-radius: 7px;
   background: #fafafa;
+  mix-blend-mode: multiply;
 }
 .menu__link > h4 {
   font-size: 18px;
@@ -2144,7 +2142,7 @@ header {
 
 .dropmenu__button {
   width: 100%;
-  height: 50px;
+  min-height: 50px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -2175,15 +2173,12 @@ header {
   background: #fafafa;
   border-radius: 7px;
   margin-left: 5px;
+  mix-blend-mode: multiply;
 }
 .dropmenu__button--link > h4 {
-  font-size: 18px;
+  font-size: 14px;
+  font-weight: 600;
   color: #333333;
-}
-@media (max-width: 576px) {
-  .dropmenu__button--link > h4 {
-    font-size: 14px;
-  }
 }
 
 .dropmenu__open {
@@ -2242,6 +2237,7 @@ header {
   object-fit: contain;
   aspect-ratio: 1/1;
   border-radius: 7px;
+  mix-blend-mode: multiply;
 }
 .dropmenu__link > h4 {
   font-size: 18px;
@@ -2305,8 +2301,8 @@ header {
 }
 
 .submenu__button {
-  width: 92%;
-  height: 50px;
+  width: calc(100% - 45px);
+  min-height: 50px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -2320,11 +2316,11 @@ header {
 }
 .submenu__button::after {
   content: "";
-  width: 20px;
+  width: 22.5px;
   height: 400%;
   background: transparent;
   position: absolute;
-  left: -20px;
+  left: -22.5px;
   border-bottom: 2px solid gray;
   border-left: 2px solid gray;
   border-radius: 0px 0px 0px 10px;
@@ -2351,15 +2347,12 @@ header {
   aspect-ratio: 1/1;
   background: #fafafa;
   border-radius: 7px;
+  mix-blend-mode: multiply;
 }
 .submenu__button--link > h4 {
-  font-size: 16px;
+  font-size: 14px;
   color: #333333;
-}
-@media (max-width: 576px) {
-  .submenu__button--link > h4 {
-    font-size: 14px;
-  }
+  font-weight: 600;
 }
 
 .submenu__open {
@@ -2398,8 +2391,8 @@ header {
 }
 
 .submenu__link {
-  width: 82%;
-  height: 50px;
+  width: calc(100% - 90px);
+  min-height: 50px;
   text-decoration: none;
   gap: 10px;
   display: flex;
@@ -2415,11 +2408,11 @@ header {
 }
 .submenu__link::after {
   content: "";
-  width: 20px;
+  width: 22.5px;
   height: 400%;
   background: transparent;
   position: absolute;
-  left: -20px;
+  left: -22.5px;
   border-bottom: 2px solid gray;
   border-left: 2px solid gray;
   border-radius: 0px 0px 0px 10px;
@@ -2431,15 +2424,12 @@ header {
   object-fit: contain;
   aspect-ratio: 1/1;
   border-radius: 7px;
+  mix-blend-mode: multiply;
 }
 .submenu__link > h4 {
-  font-size: 18px;
+  font-size: 14px;
+  font-weight: 600;
   color: #333333;
-}
-@media (max-width: 576px) {
-  .submenu__link > h4 {
-    font-size: 14px;
-  }
 }
 .submenu__link:nth-child(1) {
   transition: all 0.3s ease-in-out 0.25s;
@@ -2631,6 +2621,7 @@ header {
   aspect-ratio: 1/1;
   border-radius: 2.5px;
   background-color: #ffffff;
+  mix-blend-mode: multiply;
 }
 @media (max-width: 576px) {
   .search__link > img {
@@ -2690,6 +2681,7 @@ header {
 }
 .card:hover .card-image {
   scale: 1.1;
+  mix-blend-mode: multiply;
 }
 
 .card-image {
@@ -2700,6 +2692,7 @@ header {
   transition: all 0.5s ease-in-out;
   user-select: none;
   pointer-events: none;
+  mix-blend-mode: multiply;
 }
 
 .card-info {
@@ -5111,6 +5104,7 @@ header {
   pointer-events: none;
   text-decoration: none;
   user-select: none;
+  mix-blend-mode: multiply;
 }
 @media (min-width: 768px) {
   .product-slider__slide > video, .product-slider__slide > img {
@@ -5276,6 +5270,7 @@ header {
   object-fit: contain;
   object-position: center;
   aspect-ratio: 1/1;
+  mix-blend-mode: multiply;
 }
 
 .product-modal__close {

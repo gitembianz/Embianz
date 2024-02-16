@@ -34,6 +34,7 @@
     pointer-events: none;
     text-decoration: none;
     user-select: none;
+    mix-blend-mode: multiply;
 
     @media (min-width: map-get($grid-breakpoints, md)) {
       border-radius: 7px;
@@ -205,6 +206,7 @@
     object-fit: contain;
     object-position: center;
     aspect-ratio: 1 / 1;
+    mix-blend-mode: multiply;
   }
 }
 

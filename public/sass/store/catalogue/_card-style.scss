@@ -17,6 +17,7 @@
   &:hover {
     .card-image {
       scale: 1.1;
+      mix-blend-mode: multiply;
     }
   }
 }
@@ -29,6 +30,7 @@
   transition: all 0.5s ease-in-out;
   user-select: none;
   pointer-events: none;
+  mix-blend-mode: multiply;
   // &:hover {
   //   scale: 1.1;
   // }
