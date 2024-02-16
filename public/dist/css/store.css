@@ -5099,9 +5099,9 @@ header {
 .product-slider__slide {
   flex: 0 0 100%;
   width: 100%;
+  background: #fafafa;
 }
 .product-slider__slide > video, .product-slider__slide > img {
-  background: #fafafa;
   width: 100%;
   height: auto;
   aspect-ratio: 1/1;
@@ -5113,7 +5113,7 @@ header {
   mix-blend-mode: multiply;
 }
 @media (min-width: 768px) {
-  .product-slider__slide > video, .product-slider__slide > img {
+  .product-slider__slide {
     border-radius: 7px;
   }
 }
@@ -5155,7 +5155,6 @@ header {
 }
 .product-slider__pagination > img, .product-slider__pagination > video {
   width: calc(25% - 20px);
-  background: #fafafa;
   height: auto;
   aspect-ratio: 1/1;
   object-fit: contain;
@@ -5165,6 +5164,7 @@ header {
   position: relative;
   user-select: none;
   cursor: pointer;
+  border: 2px solid #f2f2f2;
 }
 @media (max-width: 768px) {
   .product-slider__pagination > img, .product-slider__pagination > video {
