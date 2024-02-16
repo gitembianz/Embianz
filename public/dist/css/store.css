@@ -2885,6 +2885,7 @@ header {
   cursor: pointer;
   background: none;
   background-color: transparent;
+  mix-blend-mode: multiply;
 }
 
 @keyframes fly_to_cart {
@@ -3153,6 +3154,7 @@ header {
   aspect-ratio: 1/1;
   border-radius: 7px;
   background: #ffffff;
+  mix-blend-mode: multiply;
 }
 .filter__link > h4 {
   font-size: 16px;
@@ -3320,6 +3322,7 @@ header {
   aspect-ratio: 1/1;
   border-radius: 7px;
   background: #ffffff;
+  mix-blend-mode: multiply;
 }
 .dropfilter__button--link > h4 {
   font-size: 18px;
@@ -3390,6 +3393,7 @@ header {
   object-fit: contain;
   aspect-ratio: 1/1;
   border-radius: 7px;
+  mix-blend-mode: multiply;
 }
 .dropfilter__link > h4 {
   font-size: 16px;
@@ -3851,6 +3855,7 @@ header {
   object-fit: contain;
   object-position: center;
   border-radius: 5px;
+  mix-blend-mode: multiply;
 }
 .basket__top > .basket__action {
   width: auto;
@@ -4777,6 +4782,7 @@ header {
   object-fit: contain;
   object-position: center;
   border-radius: 5px;
+  mix-blend-mode: multiply;
 }
 
 .total__name {
