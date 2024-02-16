@@ -1,6 +1,5 @@
 //<--------------------------------------------------------------------->
 //<--------------------------- Sticky Element -------------------------->
-stickyElement(".details");
 
 function stickyElement(elementSelector) {
   let element = document.querySelector(elementSelector);
@@ -34,6 +33,8 @@ function stickyElement(elementSelector) {
     }
   });
 }
+
+stickyElement(".details");
 
 //<------------------------- End Sticky Element ------------------------>
 //<--------------------------------------------------------------------->
