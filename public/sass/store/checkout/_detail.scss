@@ -19,12 +19,13 @@
     &.sticky {
       position: sticky;
       bottom: 20px;
+      z-index: 200;
 
       @media (max-width: map-get($grid-breakpoints, sm)) {
         width: calc(100% + 40px);
         margin-left: -20px;
         padding: 10px 20px 30px;
-        bottom: 0;
+        bottom: -5px;
         border-radius: 0;
       }
 

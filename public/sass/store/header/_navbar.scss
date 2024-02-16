@@ -9,7 +9,7 @@
   justify-content: space-between;
   gap: 15px;
 
-  @media (max-width: map-get($grid-breakpoints, lg)) {
+  @media (max-width: map-get($grid-breakpoints, xl)) {
     display: none;
   }
 }
@@ -33,7 +33,7 @@
     stroke: $text;
   }
 
-  @media (min-width: map-get($grid-breakpoints, lg)) {
+  @media (min-width: map-get($grid-breakpoints, xl)) {
     font-size: 14px;
     font-weight: 500;
   }

@@ -10,9 +10,10 @@
   visibility: hidden;
   transition: all .3s ease-in-out;
   z-index: 500;
+  display: none;
 
-  @media (min-width: map-get($grid-breakpoints, lg)) {
-    display: none;
+  @media (max-width: map-get($grid-breakpoints, xl)) {
+    display: block;
   }
 
   &.active {
@@ -26,8 +27,10 @@
 }
 
 #menuOpen {
-  @media (min-width: map-get($grid-breakpoints, lg)) {
-    display: none;
+  display: none;
+
+  @media (max-width: map-get($grid-breakpoints, xl)) {
+    display: flex;
   }
 }
 
@@ -51,7 +54,7 @@
     width: 100%;
   }
 
-  @media (min-width: map-get($grid-breakpoints, lg)) {
+  @media (min-width: map-get($grid-breakpoints, xl)) {
     width: 30%;
   }
 }
