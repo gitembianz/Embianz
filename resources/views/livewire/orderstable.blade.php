@@ -149,7 +149,8 @@
                     </tr>
                 @else
                     @foreach ($orders as $order)
-                        <tr @if ($loop->last) id="last_record" @endif class="@if ($this->isChecked($order->id)) table__row--selected @endif">
+                        <tr @if ($loop->last) id="last_record" @endif
+                            class="@if ($this->isChecked($order->id)) table__row--selected @endif">
                             <td data-title="Check">
                                 <input type="checkbox" value="{{ $order->id }}" wire:model="checked">
                             </td>
@@ -168,12 +169,18 @@
                                     <td data-title="Name"><a
                                             href="/show_order/{{ $order->id }}">{{ $order->name }}</a></td>
                                 @elseif ($column === 'account_id')
-                                    <td data-title="{{ $column }}"><a
-                                            href="/show_account/{{ $order->account_id }}">{{ $order->account->name }}</a>
+                                    <td data-title="{{ $column }}">
+                                        @if ($order->account_id)
+                                            <a
+                                                href="/show_account/{{ $order->account_id }}">{{ $order->account->name }}</a>
+                                        @endif
                                     </td>
                                 @elseif ($column === 'cart_id')
-                                    <td data-title="{{ $column }}"><a
-                                            href="/show_cart/{{ $order->cart_id }}">{{ $order->cart->name }}</a></td>
+                                    <td data-title="{{ $column }}">
+                                        @if ($order->cart_id)
+                                            <a href="/show_cart/{{ $order->cart_id }}">{{ $order->cart->name }}</a>
+                                        @endif
+                                    </td>
                                 @elseif ($column === 'currency_id')
                                     <td data-title="{{ $column }}">{{ $order->currency->name }}</td>
                                 @elseif ($column === 'status_id')

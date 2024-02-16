@@ -81,6 +81,7 @@ class ProductDetails extends Component
                 'session_id' => $this->session_id,
                 'name' => $uniqueName,
                 'quantity_amount' =>  0,
+                'delivery_price' => app('global_delivery_price'),
                 'sum_amount' => 0,
                 'status_id' => app('global_cart_new'),
                 'currency_id' => $product->product_prices->first()->pricelist->currency_id,
@@ -96,6 +97,7 @@ class ProductDetails extends Component
                 'quantity' => $this->quantity
             ]);
             $cart->quantity_amount += $this->quantity;
+            $cart->final_amount += $this->product->product_prices->first()->value;
             $cart->sum_amount += ($product->product_prices->first()->value * $this->quantity);
         } else {
             if (($cartItem->quantity + $this->quantity) <= $product->quantity) {
@@ -103,6 +105,7 @@ class ProductDetails extends Component
                 $cartItem->save();
                 $cart->quantity_amount += $this->quantity;
                 $cart->sum_amount += ($product->product_prices->first()->value * $this->quantity);
+                $cart->final_amount += $this->product->product_prices->first()->value;
             } else {
                 $this->quantity = $product->quantity;
                 $this->maxlimit = true;

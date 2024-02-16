@@ -47,6 +47,7 @@ class AddToCartButton extends Component
                 'session_id' => $this->session_id,
                 'name' => $uniqueName,
                 'quantity_amount' => 0,
+                'delivery_price' => app('global_delivery_price'),
                 'sum_amount' => 0,
                 'status_id' => app('global_cart_new'),
                 'currency_id' => $this->product->product_prices->first()->pricelist->currency_id,
@@ -62,6 +63,7 @@ class AddToCartButton extends Component
                 'quantity' => 1
             ]);
             $cart->increment('quantity_amount');
+            $cart->final_amount += $this->product->product_prices->first()->value;
             $cart->sum_amount += $this->product->product_prices->first()->value;
         } else {
             if ($cartItem->quantity < $this->product->quantity) {
@@ -69,6 +71,7 @@ class AddToCartButton extends Component
                 $cartItem->increment('quantity');
                 $cart->increment('quantity_amount');
                 $cart->sum_amount += $this->product->product_prices->first()->value;
+                $cart->final_amount += $this->product->product_prices->first()->value;
             }
         }
         $cart->save();
