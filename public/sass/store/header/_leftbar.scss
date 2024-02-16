@@ -34,7 +34,7 @@
     width: 0;
   }
 
-  @media (min-width: map-get($grid-breakpoints, lg)) {
+  @media (min-width: map-get($grid-breakpoints, xl)) {
     width: 70%;
   }
 }
@@ -59,7 +59,7 @@
     width: 100%;
   }
 
-  @media (min-width: map-get($grid-breakpoints, lg)) {
+  @media (min-width: map-get($grid-breakpoints, xl)) {
     width: 30%;
   }
 }

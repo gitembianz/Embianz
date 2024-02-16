@@ -139,7 +139,7 @@
 }
 
 .basket__title {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
   color: $text;
   margin: 0;
@@ -147,7 +147,6 @@
 }
 
 .basket__delete {
-  display: flex;
   align-items: center;
   justify-content: center;
   width: 40px;
@@ -156,10 +155,11 @@
   border: none;
   border-radius: 50px;
   transition: all .3s ease-in-out;
+  display: flex;
 
-  @media (max-width: map-get($grid-breakpoints, lg)) {
-    display: none;
-  }
+  // @media (max-width: map-get($grid-breakpoints, sm)) {
+  //   display: none;
+  // }
 
   &>svg {
     stroke: $text;
@@ -218,18 +218,19 @@
   transition: all 0.3s ease-in-out;
   color: $text;
   font-weight: 500;
+  display: none;
 
-  @media (min-width: map-get($grid-breakpoints, lg)) {
-    display: none;
-  }
+  // @media (min-width: map-get($grid-breakpoints, lg)) {
+  // }
 
-  @media (max-width: map-get($grid-breakpoints, lg)) {
-    grid-column: unset;
-  }
+  // @media (max-width: map-get($grid-breakpoints, lg)) {
+  //   grid-column: unset;
+  //   // display: none;
+  // }
 
-  @media (max-width: map-get($grid-breakpoints, sm)) {
-    grid-column: 1/3;
-  }
+  // @media (max-width: map-get($grid-breakpoints, sm)) {
+  //   grid-column: 1/3;
+  // }
 
   &:hover {
     background: #d2042d;
@@ -269,7 +270,8 @@
   }
 
   @media (max-width: map-get($grid-breakpoints, lg)) {
-    grid-column: unset;
+    // grid-column: unset;
+    display: none;
   }
 
   @media (max-width: map-get($grid-breakpoints, sm)) {
