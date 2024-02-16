@@ -2760,22 +2760,33 @@ header {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: none;
+  background: transparent;
   border: none;
-  border-radius: none;
+  border-radius: 0;
   font-size: 14px;
   letter-spacing: 0.7px;
   font-weight: 500;
   color: #333333;
   transition: all 0.3s ease-in-out;
+  outline: none;
 }
-.card-info > .card-button > button:hover {
-  background: #333333;
-  color: #fafafa;
+@media (hover: hover) {
+  .card-info > .card-button > button:hover {
+    background: #333333;
+    color: #fafafa;
+  }
 }
-.card-info > .card-button:hover {
-  background: #333333;
-  color: #fafafa;
+@media (hover: none) {
+  .card-info > .card-button > button:active {
+    background: #333333;
+    color: #fafafa;
+  }
+}
+@media (hover: hover) {
+  .card-info > .card-button:hover {
+    background: #333333;
+    color: #fafafa;
+  }
 }
 .card-info > .card-button:active {
   transform: scale(0.9);
@@ -3605,9 +3616,20 @@ header {
   color: #333333;
   transition: all 0.3s ease-in-out;
 }
-.product__button:hover {
-  background: #333333;
-  color: #ffffff;
+@media (hover: hover) {
+  .product__button:hover {
+    background: #333333;
+    color: #fafafa;
+  }
+}
+@media (hover: none) {
+  .product__button:active {
+    background: #333333;
+    color: #fafafa;
+  }
+}
+.product__button:active {
+  transform: scale(0.9);
 }
 
 .tab {

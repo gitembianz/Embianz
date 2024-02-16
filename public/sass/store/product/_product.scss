@@ -160,8 +160,22 @@
   color: $text;
   transition: all 0.3s ease-in-out;
 
-  &:hover {
-    background: $text;
-    color: $background;
+  @media (hover: hover) {
+    &:hover {
+      background: $text;
+      color: $secondary;
+
+    }
+  }
+
+  @media (hover: none) {
+    &:active {
+      background: $text;
+      color: $secondary;
+    }
+  }
+
+  &:active {
+    transform: scale(0.9);
   }
 }

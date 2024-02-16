@@ -103,25 +103,36 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: none;
+    background: transparent;
     border: none;
-    border-radius: none;
+    border-radius: 0;
     font-size: 14px;
     letter-spacing: 0.7px;
     font-weight: 500;
     color: $text;
     transition: all 0.3s ease-in-out;
+    outline: none;
 
+    @media (hover: hover) {
+      &:hover {
+        background: $text;
+        color: $secondary;
+      }
+    }
 
+    @media (hover: none) {
+      &:active {
+        background: $text;
+        color: $secondary;
+      }
+    }
+  }
+
+  @media (hover: hover) {
     &:hover {
       background: $text;
       color: $secondary;
     }
-  }
-
-  &:hover {
-    background: $text;
-    color: $secondary;
   }
 
   &:active {
@@ -159,6 +170,7 @@
   font-weight: 600;
   text-decoration: line-through;
 }
+
 
 .card-price {
   display: flex;
