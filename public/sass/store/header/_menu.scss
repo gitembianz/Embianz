@@ -6,10 +6,11 @@
   width: 100%;
   height: 100%;
   opacity: 0;
+  visibility: hidden;
   transform-origin: left;
-  transition: all .3s ease-in-out;
+  transition: all .4s ease-in-out;
   z-index: 500;
-  transform: translateX(-100%);
+  // transform: translateX(-100%);
 
   @media (min-width: map-get($grid-breakpoints, xl)) {
     display: none;
@@ -25,12 +26,13 @@
     z-index: -500;
     background: $modal;
     opacity: 0;
-    transition: all .3s ease-in-out;
+    transition: all .4s ease-in-out;
     clip-path: circle(10% at 0% 50%);
   }
 
   &.active {
-    transform: translateX(0%);
+    // transform: translateX(0%);
+    visibility: visible;
     opacity: 1;
 
     &::after {
