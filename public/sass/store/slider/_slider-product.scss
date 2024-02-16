@@ -22,10 +22,10 @@
 .product-slider__slide {
   flex: 0 0 100%;
   width: 100%;
+  background: $secondary;
 
   &>video,
   &>img {
-    background: $secondary;
     width: 100%;
     height: auto;
     aspect-ratio: 1 / 1;
@@ -36,9 +36,10 @@
     user-select: none;
     mix-blend-mode: multiply;
 
-    @media (min-width: map-get($grid-breakpoints, md)) {
-      border-radius: 7px;
-    }
+  }
+
+  @media (min-width: map-get($grid-breakpoints, md)) {
+    border-radius: 7px;
   }
 }
 
@@ -84,7 +85,7 @@
   &>img,
   &>video {
     width: calc(100% / 4 - 20px);
-    background: $secondary;
+    // background: $secondary;
     height: auto;
     aspect-ratio: 1 / 1;
     object-fit: contain;
@@ -94,6 +95,7 @@
     position: relative;
     user-select: none;
     cursor: pointer;
+    border: 2px solid lighten(#333, 75%);
 
     @media (max-width: map-get($grid-breakpoints, md)) {
       width: 0;
