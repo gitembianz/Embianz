@@ -4008,7 +4008,7 @@ header {
   max-height: 50vh;
   min-height: 400px;
 }
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
   .details {
     max-height: unset;
     min-height: unset;
@@ -4019,7 +4019,7 @@ header {
     z-index: 200;
   }
 }
-@media (max-width: 768px) and (max-width: 576px) {
+@media (max-width: 1200px) and (max-width: 768px) {
   .details.sticky {
     width: calc(100% + 40px);
     margin-left: -20px;
@@ -4028,7 +4028,7 @@ header {
     border-radius: 0;
   }
 }
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
   .details.sticky > .details__content:first-child {
     display: none;
   }
