@@ -69,21 +69,27 @@ class CartProductsList extends Component
         $product = Product::select('id')->with(['product_prices' => function ($query) {
             $query->select('id', 'value', 'product_id');
         }])->findOrFail($productId);
+
         if ($this->cartId) {
             $cartItem = Cart_Item::where('cart_id', $this->cartId)
                 ->where('product_id', $productId)
                 ->first();
+
             if ($cartItem) {
                 $amountToSubtract = $product->product_prices->first()->value * $cartItem->quantity;
                 Cart::where('id', $this->cartId)->update([
                     'quantity_amount' => DB::raw("quantity_amount - $cartItem->quantity"),
                     'sum_amount' => DB::raw("sum_amount - $amountToSubtract"),
+                    'final_amount' => DB::raw("CASE WHEN (sum_amount - $amountToSubtract) = 0 THEN 0 ELSE final_amount - $amountToSubtract END"),
+                    'voucher_id' => DB::raw("CASE WHEN (sum_amount - $amountToSubtract) = 0 THEN NULL ELSE voucher_id END"),
                 ]);
+
                 $cartItem->delete();
                 $this->emit('cartUpdated');
             }
         }
     }
+
 
     public function continue()
     {

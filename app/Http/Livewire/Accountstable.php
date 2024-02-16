@@ -3,6 +3,8 @@
 namespace App\Http\Livewire;
 
 use App\Models\Account;
+use App\Models\Address;
+use App\Models\Order;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Schema;
@@ -106,6 +108,20 @@ class Accountstable extends Component
         $accounts = Account::whereKey($this->checked)->get();
         foreach ($accounts as $account) {
             $del = Account::find($account->id);
+            $adresses = Address::where('account_id', $del->id)->get();
+            if ($adresses != NULL) {
+                foreach ($adresses as $adress) {
+                    $adress->delete();
+                }
+            }
+            $orders = Order::where('account_id', $account->id)->get();
+            if ($orders != NULL) {
+                foreach ($orders as $order) {
+                    $order->account_id = null;
+                    $order->save();
+                }
+            }
+
             $del->delete();
         }
         $this->checked = [];
@@ -119,6 +135,19 @@ class Accountstable extends Component
     public function deleteSingleRecord()
     {
         $account = Account::findOrFail($this->removedid);
+        $adresses = Address::where('account_id', $account->id)->get();
+        if ($adresses != NULL) {
+            foreach ($adresses as $adress) {
+                $adress->delete();
+            }
+        }
+        $orders = Order::where('account_id', $account->id)->get();
+        if ($orders != NULL) {
+            foreach ($orders as $order) {
+                $order->account_id = null;
+                $order->save();
+            }
+        }
         $account->delete();
         $this->checked = array_diff($this->checked, [$this->removedid]);
         session()->flash('notification', [
