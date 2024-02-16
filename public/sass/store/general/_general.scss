@@ -46,6 +46,10 @@ svg {
   user-select: none;
 }
 
+img {
+  mix-blend-mode: multiply;
+}
+
 button,
 a,
 label,
@@ -177,6 +181,8 @@ input[type='checkbox'] {
     object-fit: contain;
     aspect-ratio: 2/1;
   }
+
+
 }
 
 //<----------------------- End Checkbox Styles ----------------------->

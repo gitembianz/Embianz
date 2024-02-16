@@ -158,13 +158,13 @@
   letter-spacing: 0.7px;
   font-weight: 500;
   color: $text;
-  transition: all 0.3s ease-in-out;
 
   @media (hover: hover) {
+    transition: all 0.3s ease-in-out;
+
     &:hover {
       background: $text;
       color: $secondary;
-
     }
   }
 

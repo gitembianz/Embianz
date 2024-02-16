@@ -285,6 +285,10 @@ svg {
   user-select: none;
 }
 
+img {
+  mix-blend-mode: multiply;
+}
+
 button,
 a,
 label,
@@ -3614,9 +3618,11 @@ header {
   letter-spacing: 0.7px;
   font-weight: 500;
   color: #333333;
-  transition: all 0.3s ease-in-out;
 }
 @media (hover: hover) {
+  .product__button {
+    transition: all 0.3s ease-in-out;
+  }
   .product__button:hover {
     background: #333333;
     color: #fafafa;
