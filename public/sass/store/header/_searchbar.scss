@@ -5,17 +5,34 @@
   top: 0;
   width: 100%;
   height: 100%;
-  background: rgba($color: #000000, $alpha: 0);
   opacity: 0;
-  transition: transform 0.2s ease-in-out, background 0.2s ease-in-out 0.2s;
-  transform: translateY(-100%) scaleY(0);
-  transform-origin: top;
+  transform-origin: right;
+  transition: all .3s ease-in-out;
   z-index: 500;
+  transform: translateY(-100%);
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -500;
+    background: $modal;
+    opacity: 0;
+    transition: all .3s ease-in-out;
+    clip-path: circle(10% at 50% 0%);
+  }
 
   &.active {
+    transform: translateY(0%);
     opacity: 1;
-    transform: translateY(0) scaleY(1);
-    background: $modal;
+
+    &::after {
+      opacity: 1;
+      clip-path: circle(150% at 50% 0%);
+    }
   }
 }
 

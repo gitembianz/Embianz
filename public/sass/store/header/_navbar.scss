@@ -19,8 +19,9 @@
   color: $text;
   position: relative;
   text-decoration: none;
-  font-size: 12px;
-  font-weight: 400;
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: capitalize;
   width: 100%;
   height: 100%;
   display: flex;
@@ -33,10 +34,7 @@
     stroke: $text;
   }
 
-  @media (min-width: map-get($grid-breakpoints, xl)) {
-    font-size: 14px;
-    font-weight: 500;
-  }
+
 
   &::after {
     content: "";

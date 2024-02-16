@@ -1,19 +1,38 @@
 //<---------------------------- Leftbar Styles ---------------------------->
 .leftbar {
   position: fixed;
-  left: 0;
+  right: 0;
   top: 0;
   width: 100%;
   height: 100%;
-  background: $modal;
   opacity: 0;
-  visibility: hidden;
+  transform-origin: right;
   transition: all .3s ease-in-out;
   z-index: 500;
+  transform: translateX(100%);
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -500;
+    background: $modal;
+    opacity: 0;
+    transition: all .3s ease-in-out;
+    clip-path: circle(10% at 100% 50%);
+  }
 
   &.active {
+    transform: translateX(0%);
     opacity: 1;
-    visibility: visible;
+
+    &::after {
+      opacity: 1;
+      clip-path: circle(150% at 100% 50%);
+    }
 
     &>.leftbar__content {
       transform: translateX(0%);
@@ -258,12 +277,14 @@
   &>p {
     font-size: 12px;
     font-weight: 400;
+    text-transform: uppercase;
     color: $text;
   }
 
   &>span {
     color: $text;
     font-weight: 400;
+    text-transform: uppercase;
     font-size: 12px;
   }
 
@@ -271,6 +292,7 @@
     font-size: 14px;
     color: $text;
     font-weight: 500;
+    text-transform: uppercase;
   }
 }
 
