@@ -2760,22 +2760,33 @@ header {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: none;
+  background: transparent;
   border: none;
-  border-radius: none;
+  border-radius: 0;
   font-size: 14px;
   letter-spacing: 0.7px;
   font-weight: 500;
   color: #333333;
   transition: all 0.3s ease-in-out;
+  outline: none;
 }
-.card-info > .card-button > button:hover {
-  background: #333333;
-  color: #fafafa;
+@media (hover: hover) {
+  .card-info > .card-button > button:hover {
+    background: #333333;
+    color: #fafafa;
+  }
 }
-.card-info > .card-button:hover {
-  background: #333333;
-  color: #fafafa;
+@media (hover: none) {
+  .card-info > .card-button > button:active {
+    background: #333333;
+    color: #fafafa;
+  }
+}
+@media (hover: hover) {
+  .card-info > .card-button:hover {
+    background: #333333;
+    color: #fafafa;
+  }
 }
 .card-info > .card-button:active {
   transform: scale(0.9);
@@ -3605,9 +3616,20 @@ header {
   color: #333333;
   transition: all 0.3s ease-in-out;
 }
-.product__button:hover {
-  background: #333333;
-  color: #ffffff;
+@media (hover: hover) {
+  .product__button:hover {
+    background: #333333;
+    color: #fafafa;
+  }
+}
+@media (hover: none) {
+  .product__button:active {
+    background: #333333;
+    color: #fafafa;
+  }
+}
+.product__button:active {
+  transform: scale(0.9);
 }
 
 .tab {
@@ -3719,7 +3741,7 @@ header {
   max-height: 50vh;
   min-height: 400px;
 }
-@media (max-width: 992px) {
+@media (max-width: 1200px) {
   .basket__container {
     flex-direction: column;
     max-height: unset;
@@ -3772,7 +3794,7 @@ header {
   border-radius: 10px;
   border-left: 2px solid #ffffff;
 }
-@media (max-width: 992px) {
+@media (max-width: 1200px) {
   .basket {
     max-height: unset;
     min-height: unset;
@@ -3792,13 +3814,13 @@ header {
   padding: 0;
   border: none;
 }
-@media (max-width: 992px) {
+@media (max-width: 1200px) {
   .basket__product > .quantity {
     width: 100%;
     grid-column: 1/3;
   }
 }
-@media (max-width: 992px) {
+@media (max-width: 1200px) {
   .basket__product {
     column-gap: 10px;
     row-gap: 5px;
@@ -3919,7 +3941,7 @@ header {
   stroke: #fafafa;
 }
 
-@media (max-width: 992px) {
+@media (max-width: 1200px) {
   .basket__delete--long {
     grid-column: 1/3;
   }
@@ -3942,12 +3964,12 @@ header {
   color: #333333;
   font-weight: 500;
 }
-@media (min-width: 992px) {
+@media (min-width: 1200px) {
   .basket__add--hidden {
     display: none;
   }
 }
-@media (max-width: 992px) {
+@media (max-width: 1200px) {
   .basket__add--hidden {
     display: none;
   }
@@ -3975,7 +3997,7 @@ header {
   color: #333333;
   width: 100%;
 }
-@media (max-width: 992px) {
+@media (max-width: 1200px) {
   .basket__subtotal {
     grid-column: 1/3;
   }
