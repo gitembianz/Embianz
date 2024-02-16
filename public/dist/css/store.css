@@ -1097,17 +1097,21 @@ h2.section__title {
 }
 
 .select {
+  position: relative;
   width: 100%;
   height: 40px;
   border: none;
-  background: transparent;
-  border-bottom: 1.5px solid #333333;
+  border-bottom: 1px solid #333333;
   border-radius: 0;
   color: #333333;
   font-size: 16px;
-  font-weight: 400;
+  font-weight: 500;
   outline: none;
-  padding: 0 5px;
+  padding: 0 10px;
+  border-radius: 5px 5px 0 0;
+  background: #f2f2f2;
+  transition: all 0.3s ease-in-out;
+  -webkit-appearance: none;
 }
 
 @keyframes ldio-sl0v29xbypi-o {
@@ -3850,7 +3854,6 @@ header {
 .basket__top > img {
   width: 50px;
   height: 50px;
-  background: #fafafa;
   aspect-ratio: 1/1;
   object-fit: contain;
   object-position: center;
@@ -4777,7 +4780,6 @@ header {
 .total__product > img {
   width: 50px;
   height: 50px;
-  background: #fafafa;
   aspect-ratio: 1/1;
   object-fit: contain;
   object-position: center;
