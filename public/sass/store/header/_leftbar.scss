@@ -229,6 +229,7 @@
     background-color: $background;
     user-select: none;
     pointer-events: none;
+    mix-blend-mode: multiply;
 
     @media (max-width: map-get($grid-breakpoints, sm)) {
       width: 55px;

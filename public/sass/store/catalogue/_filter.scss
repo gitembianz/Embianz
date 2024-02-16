@@ -203,6 +203,7 @@
     aspect-ratio: 1/1;
     border-radius: 7px;
     background: $background;
+    mix-blend-mode: multiply;
   }
 
   &>h4 {
@@ -383,6 +384,7 @@
     aspect-ratio: 1/1;
     border-radius: 7px;
     background: $background;
+    mix-blend-mode: multiply;
   }
 
   &>h4 {
@@ -457,6 +459,7 @@
     object-fit: contain;
     aspect-ratio: 1/1;
     border-radius: 7px;
+    mix-blend-mode: multiply;
   }
 
   &>h4 {
