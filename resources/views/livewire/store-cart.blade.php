@@ -69,6 +69,7 @@
                                     </path>
                                 </svg>
                             </button>
+
                             <div class="quantity">
                                 <span>Cantitatea</span>
 
@@ -119,10 +120,10 @@
                         <div class="details__text">
                             <h3>Livrare:</h3>
                             <span>
-                                @if ($delivery == 0)
+                                @if (app('global_delivery_price') == 0)
                                     Gratuit
                                 @else
-                                    {{ number_format($delivery, 2, ',', '.') }} {{ $currency }}
+                                    {{ number_format(app('global_delivery_price'), 2, ',', '.') }} {{ $currency }}
                                 @endif
                             </span>
                         </div>
@@ -130,7 +131,7 @@
                             <h3>Voucher:</h3>
                             <span class="voucher__choice">
                                 -20%
-                                <button class="details__delete" aria-label="Remove voucher">
+                                <button wire:click="removevoucher" class="details__delete" aria-label="Remove voucher">
                                     <svg>
                                         <polyline points="3 6 5 6 21 6"></polyline>
                                         <path
@@ -146,7 +147,7 @@
                             <h3>Total:</h3>
                             <span>
                                 <?php
-                                $total = $cart->sum_amount + $delivery;
+                                $total = $cart->sum_amount + app('global_delivery_price');
                                 ?>
                                 @if ($new_price)
                                     <span
@@ -157,6 +158,8 @@
                             </span>
                         </div>
                         @if ($new_price)
+                            <div>
+                            </div>
                             <form wire:submit.prevent="checkvoucher" class="voucher">
                                 <input type="text" value="{{ $voucher }}" readonly>
                             </form>

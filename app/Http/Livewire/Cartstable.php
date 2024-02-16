@@ -3,6 +3,8 @@
 namespace App\Http\Livewire;
 
 use App\Models\Cart;
+use App\Models\Order;
+
 use App\Models\Cart_Item;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -101,7 +103,13 @@ class Cartstable extends Component
     $id = $this->itemidbeingremoved;
     $item = Cart::findOrFail($id);
     $cartitems = Cart_Item::where('cart_id', $id)->get();
-
+    $orders = Order::where('cart_id', $id)->get();
+    if ($orders != NULL) {
+      foreach ($orders as $order) {
+        $order->cart_id = null;
+        $order->save();
+      }
+    }
     if ($cartitems != NULL) {
       foreach ($cartitems as $cartitem) {
 
@@ -137,6 +145,13 @@ class Cartstable extends Component
         foreach ($cartitems as $cartitem) {
 
           $cartitem->delete();
+        }
+      }
+      $orders = Order::where('cart_id', $id)->get();
+      if ($orders != NULL) {
+        foreach ($orders as $order) {
+          $order->cart_id = null;
+          $order->save();
         }
       }
       $item->delete();
