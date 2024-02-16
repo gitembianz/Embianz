@@ -8,7 +8,7 @@
   opacity: 0;
   visibility: hidden;
   // transform-origin: right;
-  transition: all .3s ease-in-out;
+  transition: all .4s ease-in-out;
   z-index: 500;
   // transform: translateY(-100%);
 
@@ -22,7 +22,7 @@
     z-index: -500;
     background: $modal;
     opacity: 0;
-    transition: all .3s ease-in-out;
+    transition: all .4s ease-in-out;
     clip-path: circle(10% at 50% 0%);
   }
 

@@ -1422,7 +1422,7 @@ header {
   opacity: 0;
   visibility: hidden;
   transform-origin: right;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.4s ease-in-out;
   z-index: 500;
 }
 .leftbar::after {
@@ -1435,7 +1435,7 @@ header {
   z-index: -500;
   background: rgba(0, 0, 0, 0.8);
   opacity: 0;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.4s ease-in-out;
   clip-path: circle(10% at 100% 50%);
 }
 .leftbar.active {
@@ -1987,7 +1987,7 @@ header {
   opacity: 0;
   visibility: hidden;
   transform-origin: left;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.4s ease-in-out;
   z-index: 500;
 }
 @media (min-width: 1200px) {
@@ -2005,7 +2005,7 @@ header {
   z-index: -500;
   background: rgba(0, 0, 0, 0.8);
   opacity: 0;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.4s ease-in-out;
   clip-path: circle(10% at 0% 50%);
 }
 .menu.active {
@@ -2501,7 +2501,7 @@ header {
   height: 100%;
   opacity: 0;
   visibility: hidden;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.4s ease-in-out;
   z-index: 500;
 }
 .search::after {
@@ -2514,7 +2514,7 @@ header {
   z-index: -500;
   background: rgba(0, 0, 0, 0.8);
   opacity: 0;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.4s ease-in-out;
   clip-path: circle(10% at 50% 0%);
 }
 .search.active {
