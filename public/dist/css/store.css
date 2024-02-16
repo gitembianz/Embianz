@@ -3719,7 +3719,7 @@ header {
   max-height: 50vh;
   min-height: 400px;
 }
-@media (max-width: 992px) {
+@media (max-width: 1200px) {
   .basket__container {
     flex-direction: column;
     max-height: unset;
@@ -3772,7 +3772,7 @@ header {
   border-radius: 10px;
   border-left: 2px solid #ffffff;
 }
-@media (max-width: 992px) {
+@media (max-width: 1200px) {
   .basket {
     max-height: unset;
     min-height: unset;
@@ -3792,13 +3792,13 @@ header {
   padding: 0;
   border: none;
 }
-@media (max-width: 992px) {
+@media (max-width: 1200px) {
   .basket__product > .quantity {
     width: 100%;
     grid-column: 1/3;
   }
 }
-@media (max-width: 992px) {
+@media (max-width: 1200px) {
   .basket__product {
     column-gap: 10px;
     row-gap: 5px;
@@ -3919,7 +3919,7 @@ header {
   stroke: #fafafa;
 }
 
-@media (max-width: 992px) {
+@media (max-width: 1200px) {
   .basket__delete--long {
     grid-column: 1/3;
   }
@@ -3942,12 +3942,12 @@ header {
   color: #333333;
   font-weight: 500;
 }
-@media (min-width: 992px) {
+@media (min-width: 1200px) {
   .basket__add--hidden {
     display: none;
   }
 }
-@media (max-width: 992px) {
+@media (max-width: 1200px) {
   .basket__add--hidden {
     display: none;
   }
@@ -3975,7 +3975,7 @@ header {
   color: #333333;
   width: 100%;
 }
-@media (max-width: 992px) {
+@media (max-width: 1200px) {
   .basket__subtotal {
     grid-column: 1/3;
   }
