@@ -1420,10 +1420,10 @@ header {
   width: 100%;
   height: 100%;
   opacity: 0;
+  visibility: hidden;
   transform-origin: right;
   transition: all 0.3s ease-in-out;
   z-index: 500;
-  transform: translateX(100%);
 }
 .leftbar::after {
   content: "";
@@ -1439,8 +1439,8 @@ header {
   clip-path: circle(10% at 100% 50%);
 }
 .leftbar.active {
-  transform: translateX(0%);
   opacity: 1;
+  visibility: visible;
 }
 .leftbar.active::after {
   opacity: 1;
@@ -1985,10 +1985,10 @@ header {
   width: 100%;
   height: 100%;
   opacity: 0;
+  visibility: hidden;
   transform-origin: left;
   transition: all 0.3s ease-in-out;
   z-index: 500;
-  transform: translateX(-100%);
 }
 @media (min-width: 1200px) {
   .menu {
@@ -2009,7 +2009,7 @@ header {
   clip-path: circle(10% at 0% 50%);
 }
 .menu.active {
-  transform: translateX(0%);
+  visibility: visible;
   opacity: 1;
 }
 .menu.active::after {
@@ -2500,10 +2500,9 @@ header {
   width: 100%;
   height: 100%;
   opacity: 0;
-  transform-origin: right;
+  visibility: hidden;
   transition: all 0.3s ease-in-out;
   z-index: 500;
-  transform: translateY(-100%);
 }
 .search::after {
   content: "";
@@ -2519,8 +2518,8 @@ header {
   clip-path: circle(10% at 50% 0%);
 }
 .search.active {
-  transform: translateY(0%);
   opacity: 1;
+  visibility: visible;
 }
 .search.active::after {
   opacity: 1;
