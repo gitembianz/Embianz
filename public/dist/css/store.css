@@ -2762,6 +2762,7 @@ header {
   align-items: center;
   justify-content: center;
   background: transparent;
+  text-transform: uppercase;
   border: none;
   border-radius: 0;
   font-size: 14px;
