@@ -5,20 +5,38 @@
   top: 0;
   width: 100%;
   height: 100%;
-  background: $modal;
   opacity: 0;
-  visibility: hidden;
+  transform-origin: left;
   transition: all .3s ease-in-out;
   z-index: 500;
-  display: none;
+  transform: translateX(-100%);
 
-  @media (max-width: map-get($grid-breakpoints, xl)) {
-    display: block;
+  @media (min-width: map-get($grid-breakpoints, xl)) {
+    display: none;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -500;
+    background: $modal;
+    opacity: 0;
+    transition: all .3s ease-in-out;
+    clip-path: circle(10% at 0% 50%);
   }
 
   &.active {
+    transform: translateX(0%);
     opacity: 1;
-    visibility: visible;
+
+    &::after {
+      opacity: 1;
+      clip-path: circle(140% at 0% 50%);
+    }
 
     &>.menu__content {
       transform: translateX(0%);
@@ -148,17 +166,15 @@
   }
 
   &>h4 {
-    font-size: 18px;
     color: $text;
     width: 100%;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: flex-start;
-
-    @media (max-width: map-get($grid-breakpoints, sm)) {
-      font-size: 14px;
-    }
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: capitalize;
   }
 }
 
@@ -229,6 +245,7 @@
     font-size: 14px;
     font-weight: 600;
     color: $text;
+    text-transform: capitalize;
 
     // @media (max-width: map-get($grid-breakpoints, sm)) {
     //   font-size: 14px;
@@ -298,12 +315,10 @@
   }
 
   &>h4 {
-    font-size: 18px;
     color: $text;
-
-    @media (max-width: map-get($grid-breakpoints, sm)) {
-      font-size: 14px;
-    }
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: capitalize;
   }
 
   $transition-delay: 0.15s;
@@ -399,6 +414,7 @@
     font-size: 14px;
     color: $text;
     font-weight: 600;
+    text-transform: capitalize;
 
     // @media (max-width: map-get($grid-breakpoints, sm)) {
     //   font-size: 14px;
@@ -485,10 +501,7 @@
     font-size: 14px;
     font-weight: 600;
     color: $text;
-
-    // @media (max-width: map-get($grid-breakpoints, sm)) {
-    //   font-size: 14px;
-    // }
+    text-transform: capitalize;
   }
 
   $transition-delay: 0.15s;

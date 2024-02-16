@@ -137,6 +137,7 @@
   font-size: 14px;
   font-weight: 400;
   color: lighten($color: $text, $amount: 20%);
+  text-transform: uppercase;
 }
 
 .basket__title {
@@ -145,6 +146,7 @@
   color: $text;
   margin: 0;
   text-decoration: none;
+  text-transform: uppercase;
 }
 
 .basket__delete {

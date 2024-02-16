@@ -1415,19 +1415,36 @@ header {
 
 .leftbar {
   position: fixed;
-  left: 0;
+  right: 0;
   top: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.8);
   opacity: 0;
-  visibility: hidden;
+  transform-origin: right;
   transition: all 0.3s ease-in-out;
   z-index: 500;
+  transform: translateX(100%);
+}
+.leftbar::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -500;
+  background: rgba(0, 0, 0, 0.8);
+  opacity: 0;
+  transition: all 0.3s ease-in-out;
+  clip-path: circle(10% at 100% 50%);
 }
 .leftbar.active {
+  transform: translateX(0%);
   opacity: 1;
-  visibility: visible;
+}
+.leftbar.active::after {
+  opacity: 1;
+  clip-path: circle(150% at 100% 50%);
 }
 .leftbar.active > .leftbar__content {
   transform: translateX(0%);
@@ -1658,17 +1675,20 @@ header {
 .leftbar__link--text > p {
   font-size: 12px;
   font-weight: 400;
+  text-transform: uppercase;
   color: #333333;
 }
 .leftbar__link--text > span {
   color: #333333;
   font-weight: 400;
+  text-transform: uppercase;
   font-size: 12px;
 }
 .leftbar__link--text > h4 {
   font-size: 14px;
   color: #333333;
   font-weight: 500;
+  text-transform: uppercase;
 }
 
 .leftbar__delete {
@@ -1737,8 +1757,9 @@ header {
   color: #333333;
   position: relative;
   text-decoration: none;
-  font-size: 12px;
-  font-weight: 400;
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: capitalize;
   width: 100%;
   height: 100%;
   display: flex;
@@ -1750,13 +1771,6 @@ header {
 .navbar__link > svg {
   width: 35px;
   stroke: #333333;
-}
-@media (min-width: 1200px) {
-  .dropdown__button,
-  .navbar__link {
-    font-size: 14px;
-    font-weight: 500;
-  }
 }
 .dropdown__button::after,
 .navbar__link::after {
@@ -1970,21 +1984,37 @@ header {
   top: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.8);
   opacity: 0;
-  visibility: hidden;
+  transform-origin: left;
   transition: all 0.3s ease-in-out;
   z-index: 500;
-  display: none;
+  transform: translateX(-100%);
 }
-@media (max-width: 1200px) {
+@media (min-width: 1200px) {
   .menu {
-    display: block;
+    display: none;
   }
 }
+.menu::after {
+  content: "";
+  position: absolute;
+  top: 0%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -500;
+  background: rgba(0, 0, 0, 0.8);
+  opacity: 0;
+  transition: all 0.3s ease-in-out;
+  clip-path: circle(10% at 0% 50%);
+}
 .menu.active {
+  transform: translateX(0%);
   opacity: 1;
-  visibility: visible;
+}
+.menu.active::after {
+  opacity: 1;
+  clip-path: circle(140% at 0% 50%);
 }
 .menu.active > .menu__content {
   transform: translateX(0%);
@@ -2109,18 +2139,15 @@ header {
   mix-blend-mode: multiply;
 }
 .menu__link > h4 {
-  font-size: 18px;
   color: #333333;
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: flex-start;
-}
-@media (max-width: 576px) {
-  .menu__link > h4 {
-    font-size: 14px;
-  }
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: capitalize;
 }
 
 .dropmenu {
@@ -2183,6 +2210,7 @@ header {
   font-size: 14px;
   font-weight: 600;
   color: #333333;
+  text-transform: capitalize;
 }
 
 .dropmenu__open {
@@ -2244,13 +2272,10 @@ header {
   mix-blend-mode: multiply;
 }
 .dropmenu__link > h4 {
-  font-size: 18px;
   color: #333333;
-}
-@media (max-width: 576px) {
-  .dropmenu__link > h4 {
-    font-size: 14px;
-  }
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: capitalize;
 }
 .dropmenu__link:nth-child(1) {
   transition: all 0.3s ease-in-out 0.25s;
@@ -2357,6 +2382,7 @@ header {
   font-size: 14px;
   color: #333333;
   font-weight: 600;
+  text-transform: capitalize;
 }
 
 .submenu__open {
@@ -2434,6 +2460,7 @@ header {
   font-size: 14px;
   font-weight: 600;
   color: #333333;
+  text-transform: capitalize;
 }
 .submenu__link:nth-child(1) {
   transition: all 0.3s ease-in-out 0.25s;
@@ -2472,17 +2499,32 @@ header {
   top: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0);
   opacity: 0;
-  transition: transform 0.2s ease-in-out, background 0.2s ease-in-out 0.2s;
-  transform: translateY(-100%) scaleY(0);
-  transform-origin: top;
+  transform-origin: right;
+  transition: all 0.3s ease-in-out;
   z-index: 500;
+  transform: translateY(-100%);
+}
+.search::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -500;
+  background: rgba(0, 0, 0, 0.8);
+  opacity: 0;
+  transition: all 0.3s ease-in-out;
+  clip-path: circle(10% at 50% 0%);
 }
 .search.active {
+  transform: translateY(0%);
   opacity: 1;
-  transform: translateY(0) scaleY(1);
-  background: rgba(0, 0, 0, 0.8);
+}
+.search.active::after {
+  opacity: 1;
+  clip-path: circle(150% at 50% 0%);
 }
 
 .search__close--hidden {
@@ -3520,14 +3562,16 @@ header {
 }
 
 .product__subtitle {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 400;
   color: #666666;
+  text-transform: uppercase;
 }
 
 .product__title {
-  font-size: 23px;
+  font-size: 22px;
   font-weight: 600;
+  text-transform: uppercase;
   color: #333333;
   margin: 0;
 }
@@ -3871,6 +3915,7 @@ header {
   font-size: 14px;
   font-weight: 400;
   color: #666666;
+  text-transform: uppercase;
 }
 
 .basket__title {
@@ -3879,6 +3924,7 @@ header {
   color: #333333;
   margin: 0;
   text-decoration: none;
+  text-transform: uppercase;
 }
 
 .basket__delete {
@@ -4793,7 +4839,9 @@ header {
   flex: 1;
   text-align: left;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
+  text-transform: uppercase;
+  text-decoration: none;
   color: #333333;
   margin: 0;
 }
@@ -4802,6 +4850,7 @@ header {
 .total__quantity {
   font-size: 14px;
   font-weight: 400;
+  text-transform: uppercase;
   color: #666666;
   text-wrap: nowrap;
   word-break: break-word;
