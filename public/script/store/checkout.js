@@ -13,7 +13,7 @@ function stickyElement(elementSelector) {
   let elementPosition = element.offsetTop + element.offsetHeight + 20;
   element.classList.add("sticky");
 
-  window.addEventListener("scroll", function () {
+  function updateSticky() {
     let scrollPosition = window.scrollY;
 
     if (!isActive && scrollPosition > activationPosition) {
@@ -31,7 +31,10 @@ function stickyElement(elementSelector) {
     } else {
       element.classList.add("sticky");
     }
-  });
+  }
+
+  window.addEventListener("scroll", updateSticky);
+  window.addEventListener("resize", updateSticky);
 }
 
 stickyElement(".details");
