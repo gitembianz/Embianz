@@ -53,7 +53,7 @@ class StoreShowProduct extends Component
                   $query->select('path', 'name')->where('type', 'main');
                 },
                 'product_prices' => function ($query) {
-                  $query->select('product_id', 'value', 'pricelist_id')
+                  $query->select('product_id', 'value', 'pricelist_id', 'discount', 'rrp_value')
                     ->with(['pricelist' => function ($query) {
                       $query->select('id', 'currency_id')->with('currency:id,name');
                     }]);
