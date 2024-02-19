@@ -11,6 +11,8 @@
   use App\Http\Controllers\SpecsController;
   use App\Http\Controllers\StoreController;
   use App\Http\Controllers\TodolistController;
+  use Illuminate\Support\Facades\Cache;
+
 
   /*
 |--------------------------------------------------------------------------
@@ -83,7 +85,30 @@
     route::get('/addstoresettings', [AdminController::class, 'addstoresetting'])->name('addstoresetting');
   });
 
-  //store routes
+  //specific routes 
+  Route::get('/cleareverything', function () {
+    $clearcache = Artisan::call('cache:clear');
+    $clearview = Artisan::call('view:clear');
+    $cacheconfig = Artisan::call('config:cache');
+    $cacheclear = Artisan::call('config:clear');
+    $eventclear = Artisan::call('event:clear');
+    $queueclear = Artisan::call('queue:clear');
+    $optimize = Artisan::call('optimize:clear');
+    $migrate = Artisan::call('migrate');
+    $seed = Artisan::call('update:seo_ids');
+
+    echo "App is optimized and updated";
+  });
+
+  Route::get('/seed', function () {
+    $seed = Artisan::call('db:seed');
+    echo 'Database seeded';
+  });
+  Route::get('/clear-cache', function () {
+    Cache::forget('global_variables');
+    Cache::forget('global_statuses');
+    echo 'Cache cleared for global variables';
+  });
   // Your routes here
   route::get('/', [StoreController::class, 'index'])->name('home');
   route::get('/cart', [StoreController::class, 'cart'])->name('cart');
@@ -106,22 +131,3 @@
 
 
   //Clear Cache
-
-  Route::get('/cleareverything', function () {
-    $clearcache = Artisan::call('cache:clear');
-    $clearview = Artisan::call('view:clear');
-    $cacheconfig = Artisan::call('config:cache');
-    $cacheclear = Artisan::call('config:clear');
-    $eventclear = Artisan::call('event:clear');
-    $queueclear = Artisan::call('queue:clear');
-    $optimize = Artisan::call('optimize:clear');
-    $migrate = Artisan::call('migrate');
-    $seed = Artisan::call('update:seo_ids');
-
-    echo "App is optimized and updated";
-  });
-
-  Route::get('/seed', function () {
-    $seed = Artisan::call('db:seed');
-    echo 'Database seeded';
-  });

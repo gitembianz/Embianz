@@ -16,7 +16,8 @@ class StatusSeeder extends Seeder
 
         DB::table('statuses')->insert([
             ['name' => 'new', 'type' => 'cart', 'created_at' => $currentTime, 'updated_at' => $currentTime],
-            ['name' => 'checkout', 'type' => 'cart', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['name' => 'checkoutdetails', 'type' => 'cart', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['name' => 'checkoutpayment', 'type' => 'cart', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['name' => 'closed', 'type' => 'cart', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             // Add more status values for carts with timestamps
         ]);

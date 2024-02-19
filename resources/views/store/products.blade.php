@@ -1,4 +1,5 @@
-<x-store-head :title='"Produse | "' />
+<x-store-head :canonical="'storeproducts' . ($can ? '/' . $can : '')" :description="'All Products'" :title='"Produse | "' />
+
 <x-store-header />
 <main>
     <livewire:store-products category="{{ $data }}" />
