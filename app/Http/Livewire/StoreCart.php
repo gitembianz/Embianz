@@ -40,11 +40,11 @@ class StoreCart extends Component
 
   public function getCartProperty()
   {
-    return Cart::select('id', 'quantity_amount', 'sum_amount', 'voucher_id')
+    return Cart::select('id', 'quantity_amount', 'sum_amount', 'voucher_id', 'voucher_value')
       ->where('session_id', $this->session_id)
       ->where('status_id', '!=', app('global_cart_closed'))
       ->with(['voucher' => function ($query) {
-        $query->select('code');
+        $query->select('code', 'id', 'percent', 'value');
       }])
       ->latest()
       ->first() ?? null;
@@ -89,14 +89,23 @@ class StoreCart extends Component
         ->where('product_id', $productId)
         ->first();
 
+
+
       if ($cartItem) {
         $amountToSubtract = $product->product_prices->first()->value * $cartItem->quantity;
+        if ($this->cart->voucher && $this->cart->voucher->percent !== null) {
+          $voucher_value = ($this->cart->voucher->percent / 100) * ($this->cart->sum_amount - $amountToSubtract);
+        } elseif ($this->cart->voucher && $this->cart->voucher->value !== null) {
+          $voucher_value = $this->cart->voucher->value;
+        } else {
+          $voucher_value = 0;
+        }
         Cart::where('id', $this->cart->id)->update([
           'quantity_amount' => DB::raw("quantity_amount - $cartItem->quantity"),
           'sum_amount' => DB::raw("sum_amount - $amountToSubtract"),
           'final_amount' => DB::raw("CASE WHEN (quantity_amount) = 0 THEN 0 ELSE final_amount - $amountToSubtract END"),
           'voucher_id' => DB::raw("CASE WHEN (quantity_amount) = 0 THEN NULL ELSE voucher_id END"),
-          'voucher_value' => DB::raw("CASE WHEN (quantity_amount) = 0 THEN 0 ELSE voucher_value END"),
+          'voucher_value' => DB::raw("CASE WHEN (quantity_amount) = 0 THEN 0 ELSE $voucher_value END"),
           'updated_at' => now(),
         ]);
         $cartItem->delete();
@@ -114,6 +123,9 @@ class StoreCart extends Component
         $this->cart->increment('quantity_amount');
         $this->cart->delivery_price = app('global_delivery_price');
         $this->cart->sum_amount += $cartitem_to_increment->product->product_prices->first()->value;
+        if ($this->cart->voucher && $this->cart->voucher->percent !== null) {
+          $this->cart->voucher_value = ($this->cart->voucher->percent / 100) * $this->cart->sum_amount;
+        }
         $this->cart->final_amount = $this->cart->sum_amount + app('global_delivery_price');
         $this->cart->final_amount -= $this->cart->voucher_value;
         $this->cart->save();
@@ -134,6 +146,9 @@ class StoreCart extends Component
         $this->cart->decrement('quantity_amount');
         $this->cart->delivery_price = app('global_delivery_price');
         $this->cart->sum_amount -= $cartitem_to_decrement->product->product_prices->first()->value;
+        if ($this->cart->voucher && $this->cart->voucher->percent !== null) {
+          $this->cart->voucher_value = ($this->cart->voucher->percent / 100) * $this->cart->sum_amount;
+        }
         $this->cart->final_amount = $this->cart->sum_amount + app('global_delivery_price');
         $this->cart->final_amount -= $this->cart->voucher_value;
         $this->cart->save();
@@ -177,14 +192,14 @@ class StoreCart extends Component
           $discountAmount = ($voucher->percent / 100) * $this->cart->sum_amount;
 
           Cart::where('id', $this->cart->id)->update([
-            'final_amount' => DB::raw("sum_amount - $discountAmount" + app('global_delivery_price')),
+            'final_amount' => DB::raw("sum_amount - $discountAmount + " . app('global_delivery_price')),
             'voucher_id' => $voucher->id,
             'voucher_value' => $discountAmount,
             'updated_at' => now(),
           ]);
         } else {
           Cart::where('id', $this->cart->id)->update([
-            'final_amount' => DB::raw("sum_amount - $voucher->value" + app('global_delivery_price')),
+            'final_amount' => DB::raw("sum_amount - $voucher->value + " . app('global_delivery_price')),
             'voucher_id' => $voucher->id,
             'voucher_value' => $voucher->value,
             'updated_at' => now(),

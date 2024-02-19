@@ -76,13 +76,26 @@ class CartProductsList extends Component
                 ->first();
 
             if ($cartItem) {
+
+                $cart = Cart::with(['voucher' => function ($query) {
+                    $query->select('code', 'id', 'percent', 'value');
+                }])->find($this->cartId);
+
                 $amountToSubtract = $product->product_prices->first()->value * $cartItem->quantity;
+
+                if ($cart->voucher && $cart->voucher->percent !== null) {
+                    $voucher_value = ($cart->voucher->percent / 100) * ($cart->sum_amount - $amountToSubtract);
+                } elseif ($cart->voucher && $cart->voucher->value !== null) {
+                    $voucher_value = $cart->voucher->value;
+                } else {
+                    $voucher_value = 0;
+                }
                 Cart::where('id', $this->cartId)->update([
                     'quantity_amount' => DB::raw("quantity_amount - $cartItem->quantity"),
                     'sum_amount' => DB::raw("sum_amount - $amountToSubtract"),
-                    'final_amount' => DB::raw("CASE WHEN (quantity_amount) = 0 THEN 0 ELSE final_amount - $amountToSubtract END"),
+                    'final_amount' => DB::raw("CASE WHEN (quantity_amount) = 0 THEN 0 ELSE sum_amount - $amountToSubtract + delivery_price - $voucher_value END"),
                     'voucher_id' => DB::raw("CASE WHEN (quantity_amount) = 0 THEN NULL ELSE voucher_id END"),
-                    'voucher_value' => DB::raw("CASE WHEN (quantity_amount) = 0 THEN 0 ELSE voucher_value END"),
+                    'voucher_value' => DB::raw("CASE WHEN (quantity_amount) = 0 THEN 0 ELSE $voucher_value  END"),
                     'updated_at' => now(),
                 ]);
                 $cartItem->delete();

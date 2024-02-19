@@ -100,6 +100,9 @@ class ProductDetails extends Component
             $cart->quantity_amount += $this->quantity;
             $cart->delivery_price = app('global_delivery_price');
             $cart->sum_amount += ($this->product->product_prices->first()->value * $this->quantity);
+            if ($cart->voucher && $cart->voucher->percent !== null) {
+                $cart->voucher_value = ($cart->voucher->percent / 100) * $cart->sum_amount;
+            }
             $cart->final_amount = $cart->sum_amount + app('global_delivery_price');
             $cart->final_amount -= $cart->voucher_value;
         } else {
@@ -109,6 +112,9 @@ class ProductDetails extends Component
                 $cart->quantity_amount += $this->quantity;
                 $cart->delivery_price = app('global_delivery_price');
                 $cart->sum_amount += ($this->product->product_prices->first()->value * $this->quantity);
+                if ($cart->voucher && $cart->voucher->percent !== null) {
+                    $cart->voucher_value = ($cart->voucher->percent / 100) * $cart->sum_amount;
+                }
                 $cart->final_amount = $cart->sum_amount + app('global_delivery_price');
                 $cart->final_amount -= $cart->voucher_value;
             }

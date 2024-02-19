@@ -36,6 +36,7 @@ class AddToCartButton extends Component
     {
         $cart = Cart::where('session_id', $this->session_id)
             ->where('status_id', '!=', app('global_cart_closed'))
+            ->with('voucher')
             ->latest()
             ->first();
 
@@ -68,9 +69,13 @@ class AddToCartButton extends Component
                 'price' => $this->product->product_prices->first()->value,
                 'quantity' => 1
             ]);
-
             $cart->increment('quantity_amount');
             $cart->sum_amount += $this->product->product_prices->first()->value;
+            if ($cart->voucher && $cart->voucher->percent !== null) {
+                $cart->voucher_value = ($cart->voucher->percent / 100) * $cart->sum_amount;
+            } elseif ($cart->voucher && $cart->voucher->value !== null) {
+                $cart->voucher_value = $cart->voucher->value;
+            }
             $cart->final_amount = $cart->sum_amount + $cart->delivery_price;
             $cart->final_amount -= $cart->voucher_value;
         } else {
@@ -79,6 +84,11 @@ class AddToCartButton extends Component
                 $cart->increment('quantity_amount');
                 $cart->delivery_price = app('global_delivery_price');
                 $cart->sum_amount += $this->product->product_prices->first()->value;
+                if ($cart->voucher && $cart->voucher->percent !== null) {
+                    $cart->voucher_value = ($cart->voucher->percent / 100) * $cart->sum_amount;
+                } elseif ($cart->voucher && $cart->voucher->value !== null) {
+                    $cart->voucher_value = $cart->voucher->value;
+                }
                 $cart->final_amount = $cart->sum_amount + app('global_delivery_price');
                 $cart->final_amount -= $cart->voucher_value;
             }
