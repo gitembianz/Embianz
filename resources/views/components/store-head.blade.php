@@ -9,7 +9,8 @@
     <link rel="stylesheet" type="text/css" href="/dist/css/loading-screen.css">
     <link rel="icon" type="image/x-icon" href="/images/store/svg/noren-icon.svg">
     <link rel="stylesheet" type="text/css" href="/dist/css/store.css">
-    <link rel="canonical" href="/{{ $canonical }}">
+    <link rel="canonical" href="{{ url('/' . $canonical) }}">
+
     @livewireStyles
 
     {{-- ----------------------------------------------------------- --}}
