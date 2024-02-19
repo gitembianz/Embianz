@@ -1,5 +1,5 @@
 <div>
-    @if (!$cookieConsent)
+    {{-- @if (!$cookieConsent)
         <div class="cookie" wire:loading.remove>
             <div class="cookie__container container">
                 <img class="cookie__img" src="/images/store/cookie.svg" alt="cookie">
@@ -10,7 +10,66 @@
                 <button class="cookie__btn" wire:click="acceptCookie">Accept</button>
             </div>
         </div>
+    @endif --}}
+    @if (!$cookieConsent)
+        <section id="cookie-banner" wire:loading.remove class="hidden">
+            <div class="container cookie__container">
+                <div class="cookie__description">
+                    <span>
+                        This website utilizes cookies to enhance your browsing experience and provide you with the best
+                        possible service on our platform. See Cookies Policy
+                    </span>
+                    <a href="{{ url("/cookie") }}">
+                        See Cookies Policy
+                    </a>
+                </div>
+                <form id="cookieForm">
+                    <div class="cookie__form @if ($advance) show @endif">
+                        <div class="cookie__form--container">
+                            <label>
+                                <input type="checkbox" name="essential" disabled checked>
+                                <span>
+                                    Essential Cookies (Required)
+                                </span>
+                                <p>
+                                    These are essential cookies that ensure the proper functioning of the website and
+                                    the
+                                    preservation of your preferences (e.g., language, region).
+                                </p>
+                            </label>
+                            <label>
+                                <input type="checkbox" name="analytics">
+                                <span>
+                                    Analytical Cookies
+                                </span>
+                                <p>
+                                    These cookies encompass performance cookies and visitor analysis cookies.
+                                </p>
+                            </label>
+                            <label>
+                                <input type="checkbox" name="marketing">
+                                <span>
+                                    Marketing Cookies
+                                </span>
+                                <p>
+                                    These cookies are used for marketing purposes.
+                                </p>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="cookie-btns">
+                        <button wire:click="acceptCookie" class="cookie__button cookie__button--accept">
+                            Accept
+                        </button>
+                        <button wire:click="advancecookie" id="advanced-settings" class="cookie__button" type="button">
+                            Advanced
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
     @endif
+
     <x-alert />
     <!--------------------------------------------------------->
     <!--------------------------Footer------------------------->
@@ -58,13 +117,13 @@
             <!--------------------------------------------------------->
             <!------------------------Subscribe------------------------>
             <div class="footer__middle">
-                <h2>Aboneaza-te la newsletter-ul nostru</h3>
-                    <form class="subscribe" wire:submit.prevent="store">
-                        <input type="email" wire:model="email" name="email" id="email"
-                            placeholder="Introduceți adresa dvs. de email" aria-describedby="email-error"
-                            autocomplete="email">
-                        <button type="submit">Trimite</button>
-                    </form>
+                <h2>Aboneaza-te la newsletter-ul nostru</h2>
+                <form class="subscribe" wire:submit.prevent="store">
+                    <input type="email" wire:model="email" name="email" id="email"
+                        placeholder="Introduceți adresa dvs. de email" aria-describedby="email-error"
+                        autocomplete="email">
+                    <button type="submit">Trimite</button>
+                </form>
             </div>
             <!----------------------END-Subscribe---------------------->
             <!--------------------------------------------------------->

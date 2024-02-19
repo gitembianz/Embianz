@@ -11,6 +11,7 @@ class StoreFooter extends Component
   public $email;
   public $response = null;
   public $cookieConsent;
+  public $advance =  false;
   public function mount()
   {
     $this->cookieConsent = $this->checkCookieConsent();
@@ -19,6 +20,10 @@ class StoreFooter extends Component
   public function render()
   {
     return view('livewire.store-footer');
+  }
+  public function advancecookie()
+  {
+    $this->advance = !$this->advance;
   }
   public function store()
   {

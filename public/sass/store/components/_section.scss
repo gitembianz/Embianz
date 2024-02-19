@@ -57,6 +57,7 @@ h2.section__title {
   color: lighten($color: $text, $amount: 25%);
   text-align: center;
   line-height: 150%;
+  text-wrap: balance;
 
   @media (max-width: map-get($grid-breakpoints, md)) {
     font-size: 12px;

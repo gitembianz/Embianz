@@ -34,18 +34,22 @@
                                         alt="something wrong">
                                 @endif
                                 <div>
-                                    <a href="{{ route('product', ['product' => $cartItem->product->seo_id !== null && $cartItem->product->seo_id !== '' ? $cartItem->product->seo_id : $cartItem->product->id]) }}"
+                                    <a href="{{ route("product", ["product" => $cartItem->product->seo_id !== null && $cartItem->product->seo_id !== "" ? $cartItem->product->seo_id : $cartItem->product->id]) }}"
                                         class="basket__title">{{ $cartItem->product->name }}</a>
                                     <span class="basket__price">
                                         <?php $currency = $cartItem->product->product_prices->first()->pricelist->currency->name; ?>
                                         @if ($currency !== null)
-                                            {{ number_format($cartItem->price, 2, ',', '.') }}
+                                            {{ number_format($cartItem->price, 2, ",", ".") }}
                                             {{ $currency }}
                                         @else
                                             pret indisponibil
                                         @endif
                                     </span>
                                 </div>
+
+
+                                @livewire("product-wishlist-button", ["productId" => $cartItem->product->id, "class" => "basket__action", "is_in_wishlist" => $cartItem->product->wishlists->isNotEmpty()], key($cartItem->product->id))
+
                                 <button class="basket__delete" aria-label="Remove from cart button"
                                     wire:click="removeFromCart({{ $cartItem->product->id }})">
                                     <svg>
@@ -55,9 +59,6 @@
                                         </path>
                                     </svg>
                                 </button>
-
-                                @livewire('product-wishlist-button', ['productId' => $cartItem->product->id, 'class' => 'basket__action', 'is_in_wishlist' => $cartItem->product->wishlists->isNotEmpty()], key($cartItem->product->id))
-
                             </div>
                             <button class="basket__delete--hidden basket__delete--long" aria-label="Remove from cart"
                                 wire:click="removeFromCart({{ $cartItem->product->id }})">
@@ -97,7 +98,7 @@
                             <div class="basket__subtotal">
                                 <span>Subtotal:</span>
                                 <span>
-                                    {{ number_format($cartItem->quantity * $cartItem->price, 2, ',', '.') }}
+                                    {{ number_format($cartItem->quantity * $cartItem->price, 2, ",", ".") }}
                                     {{ $currency }}
                                 </span>
                             </div>
@@ -114,16 +115,16 @@
                         <h2 class="details__title">Detalii comanda</h2>
                         <div class="details__text">
                             <h3>Produse:</h3>
-                            <span> {{ number_format($cart->sum_amount, 2, ',', '.') }}
+                            <span> {{ number_format($cart->sum_amount, 2, ",", ".") }}
                                 {{ $currency }}</span>
                         </div>
                         <div class="details__text">
                             <h3>Livrare:</h3>
                             <span>
-                                @if (app('global_delivery_price') == 0)
+                                @if (app("global_delivery_price") == 0)
                                     Gratuit
                                 @else
-                                    {{ number_format(app('global_delivery_price'), 2, ',', '.') }} {{ $currency }}
+                                    {{ number_format(app("global_delivery_price"), 2, ",", ".") }} {{ $currency }}
                                 @endif
                             </span>
                         </div>
@@ -150,10 +151,11 @@
                             <h3>Total:</h3>
                             <span>
                                 <?php
-                                $total = $cart->sum_amount + app('global_delivery_price');
+                                $total = $cart->sum_amount + app("global_delivery_price");
                                 ?>
 
                                 {{ number_format($total, 2, ',', '.') }} {{ $currency }}
+
                             </span>
                         </div>
 
