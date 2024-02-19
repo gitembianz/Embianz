@@ -42,19 +42,18 @@
   width: min-content;
   height: 40px;
   padding: 0 10px;
-  background: $secondary;
+  background: transparent;
   color: $text;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 500;
   text-decoration: none;
   border-radius: 3px;
   transition: all .3s ease-in-out;
-  border: none;
+  border: 1px solid $text;
   gap: 10px;
 
   @media (max-width: map-get($grid-breakpoints, md)) {
     gap: 5px;
-    font-size: 14px;
     padding: 0 5px;
     width: 100%;
 
@@ -64,7 +63,8 @@
   }
 
   &:hover {
-    background: darken($secondary, 20%);
+    background: $text;
+    color: $secondary;
   }
 
   &.active {

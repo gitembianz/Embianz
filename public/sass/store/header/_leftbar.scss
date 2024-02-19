@@ -49,6 +49,7 @@
   left: 0;
   top: 0;
   border: none;
+  font-size: 14px;
   opacity: 0;
 
   @media (max-width: map-get($grid-breakpoints, sm)) {
@@ -88,21 +89,26 @@
 .leftbar__close {
   width: 40px;
   height: 40px;
-  border: none;
+  border: 1px solid $text;
   outline: none;
   border-radius: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all .3s ease-in-out;
-  background-color: $text;
+  background-color: transparent;
 
   &:hover {
-    background: darken($text, 15%);
+    background: $text;
+    color: $background;
+
+    &>svg {
+      stroke: $background;
+    }
   }
 
   &>svg {
-    stroke: $background;
+    stroke: $text;
   }
 }
 
@@ -117,21 +123,31 @@
 .leftbar__button {
   width: 100%;
   height: 40px;
-  border: none;
+  border: 1px solid $text;
   text-decoration: none;
+  text-transform: uppercase;
   border-radius: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all .3s ease-in-out;
   font-weight: 500;
-  background-color: $text;
-  color: $background;
+  background-color: transparent;
+  color: $text;
   flex: 1;
   font-size: 14px;
 
   &:hover {
-    background: darken($text, 15%);
+    background: $text;
+    color: $background;
+
+    &>svg {
+      stroke: $background;
+    }
+  }
+
+  &>svg {
+    stroke: $text;
   }
 }
 
@@ -299,23 +315,27 @@
 }
 
 .leftbar__delete {
-  width: 30px;
-  height: 30px;
-  border: none;
+  width: 35px;
+  height: 35px;
+  border: 1px solid $text;
   outline: none;
   border-radius: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all .3s ease-in-out;
-  background: $text;
+  background: transparent;
 
   &>svg {
-    stroke: $background;
+    stroke: $text;
   }
 
   &:hover {
-    background: darken($text, 10%);
+    background: $text;
+
+    &>svg {
+      stroke: $background;
+    }
   }
 }
 

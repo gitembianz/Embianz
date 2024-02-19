@@ -12,25 +12,31 @@ html {
   scroll-behavior: smooth;
 }
 
+html,
+body {
+  scrollbar-gutter: stable;
+}
+
 body {
   font-family: "Montserrat", sans-serif;
   background-color: $background;
   margin: 0;
+  overflow-x: hidden;
   scrollbar-width: auto;
-  scrollbar-color: #333333 #ffffff;
+  scrollbar-color: #333333 transparent;
 
   &::-webkit-scrollbar {
     width: 12px;
   }
 
   &::-webkit-scrollbar-track {
-    background: #ffffff;
+    background: transparent;
   }
 
   &::-webkit-scrollbar-thumb {
     background-color: #333333;
     border-radius: 23px;
-    border: 2px solid #ffffff;
+    border: 2px solid transparent;
   }
 }
 

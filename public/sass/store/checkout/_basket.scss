@@ -152,9 +152,9 @@
 .basket__delete {
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
-  background: darken($secondary, 10%);
+  width: 35px;
+  height: 35px;
+  background: transparent;
   border: none;
   border-radius: 50px;
   transition: all .3s ease-in-out;
@@ -166,11 +166,13 @@
 
   &>svg {
     stroke: $text;
-    transition: all .3s ease-in-out;
+    // transition: all .3s ease-in-out;
+
   }
 
   &:hover {
     background: $text;
+    border: 1px solid #fff;
 
     &>svg {
       stroke: $secondary;

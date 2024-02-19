@@ -7,7 +7,7 @@
   justify-content: space-between;
   gap: 10px;
   padding: 10px;
-  background: $text;
+  // background: $text;
   border-radius: 7px;
   max-height: 50vh;
   min-height: 400px;
@@ -51,7 +51,7 @@
   justify-content: space-between;
   gap: 10px;
   padding: 10px;
-  background: $text;
+  // background: $text;
   border-radius: 7px;
   display: none;
 
@@ -71,15 +71,11 @@
 
 .details__title {
   width: 100%;
-  font-size: 25px;
+  font-size: 18px;
   font-weight: 500;
-  color: $secondary;
+  color: $text;
   text-align: center;
   line-height: 150%;
-
-  @media (max-width: map-get($grid-breakpoints, md)) {
-    font-size: 18px;
-  }
 }
 
 .details__text {
@@ -89,19 +85,19 @@
   justify-content: space-between;
   gap: 10px;
   padding-bottom: 10px;
-  border-bottom: 1px solid $secondary;
+  border-bottom: 1px solid $text;
 
   &>h3 {
     font-size: 14px;
     font-weight: 500;
-    color: $secondary;
+    color: $text;
     margin: 0;
   }
 
   &>span {
     font-size: 14px;
     font-weight: 400;
-    color: $secondary;
+    color: $text;
     margin: 0;
   }
 }
@@ -115,7 +111,7 @@
     width: 100%;
     border-radius: 5px;
     height: 100%;
-    border: none;
+    border: 1px solid $text;
     padding: 0 10px;
     font-size: 16px;
     color: $text;
@@ -138,8 +134,9 @@
     align-items: center;
     justify-content: center;
     font-size: 14px;
-    color: $secondary;
+    color: $background;
     background: $text;
+    // border: 1px solid $text;
     border: none;
     border-radius: 5px;
     transform: translateY(-50%);
@@ -167,7 +164,7 @@
   height: 40px;
   background: $secondary;
   font-size: 14px;
-  border: none;
+  border: 1px solid $text;
   transition: all 0.3s ease-in-out;
   color: $text;
   font-weight: 500;
