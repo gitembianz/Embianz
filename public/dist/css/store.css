@@ -492,68 +492,134 @@ input[type=checkbox]:checked:after {
   }
 }
 
-.cookie {
+#cookie-banner {
   position: fixed;
-  left: 0;
   bottom: 0;
+  left: 0;
   width: 100%;
-  min-height: 70px;
-  transition: all 0.3s ease-in;
   background-color: #333333;
   z-index: 100;
 }
 
-.cookie__container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
-@media (max-width: 576px) {
-  .cookie__container {
-    flex-direction: column;
-  }
-}
-
-.cookie--btn {
-  width: 100%;
-  cursor: pointer;
-  background-color: #ffffff;
-  color: #333333;
-  transition: all 0.3s ease-in;
-  border-radius: 10px;
-}
-
-.cookie__img {
-  width: auto;
-  height: 100%;
-  aspect-ratio: 1/1;
-  object-fit: contain;
-  object-position: center;
-}
-
-.cookie__text {
-  font-size: 16px;
-  color: #ffffff;
-  font-weight: 500;
-  width: 100%;
-  flex: 1;
-}
-
-.cookie__btn {
-  height: 40px;
+.cookie-btns {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
-  color: #333333;
-  background-color: #ffffff;
-  border: none;
+  gap: 25px;
+  flex-wrap: wrap;
+}
+.cookie-btns > .button {
+  font-size: 14px;
+}
+
+.cookie__container {
+  padding: 10px;
+}
+
+.cookie__description {
+  text-align: center;
+  margin-bottom: 10px;
+}
+.cookie__description > span {
+  color: white;
+  font-size: 14px;
+}
+.cookie__description > a {
+  color: white;
+  text-decoration: underline;
+  font-size: 14px;
+}
+
+.cookie__form--container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  transition: all 0.3s ease-in-out;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+}
+.cookie__form--container > label {
+  text-align: left;
+}
+.cookie__form--container > label > span,
+.cookie__form--container > label p {
+  color: white;
+  font-size: 14px;
+}
+.cookie__form--container > label p {
+  margin-top: 5px;
+  font-size: 14px;
+}
+
+.cookie__form {
+  width: 100%;
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: all 0.4s ease-in-out;
+  margin-bottom: 0;
+}
+.cookie__form.show {
+  margin-bottom: 20px;
+  grid-template-rows: 1fr;
+}
+.cookie__form.show > .cookie__form--container {
+  gap: 25px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border: 1px solid white;
+  border-left: none;
+  border-right: none;
+  opacity: 1;
+  visibility: visible;
+}
+.cookie__form.show > .cookie__form--container > label {
+  display: grid;
+  grid-template-columns: 50px 100%;
+  justify-items: start;
+  align-items: center;
+}
+.cookie__form.show > .cookie__form--container > label > input {
+  border: 2px solid #fafafa;
+  transform: scale(0.8);
+}
+.cookie__form.show > .cookie__form--container > label > input:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+.cookie__form.show > .cookie__form--container > label > p {
+  grid-column: 1/3;
+  width: 100%;
+  text-wrap: balance;
+}
+
+.cookie__button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 15px;
+  height: 40px;
+  font-size: 14px;
   font-weight: 500;
   border-radius: 3px;
-  padding: 0 10px;
+  color: #fafafa;
+  border: 1px solid #fafafa;
+  background-color: transparent;
+  transition: all 0.3s ease-in-out;
+}
+.cookie__button:hover {
+  background-color: #e1e1e1;
+  color: #333333;
+}
+
+.cookie__button--accept {
+  background-color: #fafafa;
+  color: #333333;
+}
+.cookie__button--accept:hover {
+  background-color: #c7c7c7;
+  color: #333333;
 }
 
 section {
@@ -614,6 +680,7 @@ h2.section__title {
   color: #737373;
   text-align: center;
   line-height: 150%;
+  text-wrap: balance;
 }
 @media (max-width: 768px) {
   .section__text {
@@ -1491,6 +1558,7 @@ header {
   transform: translateX(100%);
   transition: all 0.3s ease-in-out;
   padding: 15px;
+  padding-right: 30px;
   background-color: #ffffff;
 }
 @media (max-width: 576px) {
@@ -2840,8 +2908,8 @@ header {
   letter-spacing: 0.7px;
   font-weight: 500;
   color: #333333;
-  transition: all 0.3s ease-in-out;
   outline: none;
+  transition: all 0.3s ease-in-out;
 }
 @media (hover: hover) {
   .card-info > .card-button > button:hover {
@@ -4159,11 +4227,27 @@ header {
   border-radius: 7px;
   max-height: 50vh;
   min-height: 400px;
+  position: relative;
+}
+.details::after {
+  content: "";
+  position: absolute;
+  width: 2px;
+  height: 100%;
+  background: #333333;
+  top: 0;
+  left: -10px;
 }
 @media (max-width: 1200px) {
   .details {
     max-height: unset;
     min-height: unset;
+  }
+  .details::after {
+    width: 100%;
+    height: 2px;
+    top: -10px;
+    left: 0px;
   }
   .details.sticky {
     position: sticky;
@@ -4223,6 +4307,7 @@ header {
   font-weight: 500;
   color: #333333;
   text-align: center;
+  text-transform: uppercase;
   line-height: 150%;
 }
 
@@ -4262,7 +4347,7 @@ header {
   font-size: 16px;
   color: #333333;
   font-weight: 500;
-  background: #fafafa;
+  background: transparent;
   outline: none;
 }
 .voucher > input::placeholder {
@@ -4280,6 +4365,7 @@ header {
   font-size: 14px;
   color: #ffffff;
   background: #333333;
+  text-transform: uppercase;
   border: none;
   border-radius: 5px;
   transform: translateY(-50%);
@@ -4305,10 +4391,11 @@ header {
   align-items: center;
   justify-content: center;
   height: 40px;
-  background: #fafafa;
+  background: transparent;
   font-size: 14px;
   border: 1px solid #333333;
   transition: all 0.3s ease-in-out;
+  text-transform: uppercase;
   color: #333333;
   font-weight: 500;
 }
@@ -4399,7 +4486,30 @@ header {
   border-radius: 3px;
   transition: all 0.3s ease-in-out;
   border: 1px solid #333333;
+  text-transform: uppercase;
   gap: 10px;
+}
+@media (hover: hover) {
+  .checkout__link:hover,
+  .checkout__button:hover {
+    background: #333333;
+    color: #fafafa;
+  }
+  .checkout__link > svg,
+  .checkout__button > svg {
+    stroke: #fafafa;
+  }
+}
+@media (hover: none) {
+  .checkout__link:active,
+  .checkout__button:active {
+    background: #333333;
+    color: #fafafa;
+  }
+  .checkout__link > svg,
+  .checkout__button > svg {
+    stroke: #fafafa;
+  }
 }
 @media (max-width: 768px) {
   .checkout__link,
@@ -4411,6 +4521,7 @@ header {
   .checkout__link > svg,
   .checkout__button > svg {
     transform: scale(0.7);
+    transition: all 0.3s ease-in-out;
   }
 }
 .checkout__link:hover,
@@ -5577,7 +5688,8 @@ header {
   height: 35px;
   background-color: #333333;
   color: #ffffff;
-  font-size: 15px;
+  text-transform: uppercase;
+  font-size: 14px;
   font-weight: 400;
   padding: 0 10px;
   border: none;
