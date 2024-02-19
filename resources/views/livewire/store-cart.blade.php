@@ -132,7 +132,7 @@
                             <div class="details__text">
                                 <h3>Voucher:</h3>
                                 <span class="voucher__choice">
-                                    -20%
+                                    -{{ number_format($cart->voucher_value, 2, ',', '.') }} {{ $currency }}
                                     <button wire:click="removevoucher" class="details__delete"
                                         aria-label="Remove voucher">
                                         <svg>
@@ -150,25 +150,24 @@
                         <div class="details__text">
                             <h3>Total:</h3>
                             <span>
-                                <?php
-                                $total = $cart->sum_amount + app("global_delivery_price");
-                                ?>
 
-                                {{ number_format($total, 2, ',', '.') }} {{ $currency }}
+                                {{ number_format($cart->final_amount, 2, ',', '.') }} {{ $currency }}
 
                             </span>
                         </div>
-
-                        <form class="voucher" wire:submit.prevent="checkvoucher">
-                            <input type="text" wire:model="voucher" name="voucher"
-                                placeholder="Ai un voucher sau card cadou?">
-                            <button type="submit">
-                                Aplica
-                            </button>
-                        </form>
                         @if ($message)
-                            <p class="voucher__error">{{ $message }}</p>
+                            <p class="voucher__error" style="color: black !important">{{ $message }}</p>
                         @endif
+                        @if ($cart->voucher_id == null)
+                            <div class="voucher">
+                                <input type="text" wire:model="voucher" name="voucher"
+                                    placeholder="Ai un voucher sau card cadou?">
+                                <button type="submit" wire:click="checkvoucher">
+                                    Aplica
+                                </button>
+                            </div>
+                        @endif
+
                         <button class="details__button" wire:click="continue()"
                             aria-label="Continue form">Continua</button>
                     </div>
