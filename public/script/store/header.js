@@ -87,9 +87,12 @@ function searchBar() {
   const closeBtn = document.getElementById("searchClose");
   const input = document.getElementById("searchInput");
   const modalClose = document.getElementById("modalClose");
+
   searchBtn.addEventListener("click", function () {
     document.body.style.overflow = "hidden";
-    input.focus();
+    setTimeout(() => {
+      input.focus();
+    }, 400);
   });
 
   closeBtn.addEventListener("click", function () {

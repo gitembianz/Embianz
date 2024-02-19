@@ -82,26 +82,34 @@
 .menu__close {
   width: 100%;
   height: 40px;
-  border: none;
+  border: 1px solid $text;
   text-decoration: none;
   border-radius: 5px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   transition: all .3s ease-in-out;
+  text-transform: uppercase;
+  font-size: 14px;
   font-weight: 500;
   flex: 1;
   gap: 15px;
-  background: $text;
-  color: $background;
+  background: $background;
+  color: $text;
   padding: 10px;
 
   &:hover {
-    background: darken($text, 10%);
+    background: $text;
+    color: $background;
+
+    &>svg {
+      stroke: $background;
+    }
   }
 
   &>svg {
-    stroke: $background;
+    stroke: $text;
+    transition: all .3s ease-in-out;
   }
 }
 
