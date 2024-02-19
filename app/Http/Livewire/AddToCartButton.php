@@ -34,7 +34,11 @@ class AddToCartButton extends Component
 
     public function addToCart($productId)
     {
-        $cart = Cart::where('session_id', $this->session_id)->where('status_id', '!=', app('global_cart_closed'))->latest()->first();
+        $cart = Cart::where('session_id', $this->session_id)
+            ->where('status_id', '!=', app('global_cart_closed'))
+            ->latest()
+            ->first();
+
         if (!$cart) {
             $baseName = class_basename(Cart::class);
             $cartNumber = 1;
@@ -46,15 +50,17 @@ class AddToCartButton extends Component
             $cart = Cart::create([
                 'session_id' => $this->session_id,
                 'name' => $uniqueName,
-                'quantity_amount' => 0,
                 'delivery_price' => app('global_delivery_price'),
-                'sum_amount' => 0,
                 'status_id' => app('global_cart_new'),
                 'currency_id' => $this->product->product_prices->first()->pricelist->currency_id,
             ]);
             $this->emit('newcart');
         }
-        $cartItem = Cart_Item::where('cart_id', $cart->id)->where('product_id', $productId)->first();
+
+        $cartItem = Cart_Item::where('cart_id', $cart->id)
+            ->where('product_id', $productId)
+            ->first();
+
         if (!$cartItem) {
             $cartItem = Cart_Item::create([
                 'cart_id' => $cart->id,
@@ -62,16 +68,19 @@ class AddToCartButton extends Component
                 'price' => $this->product->product_prices->first()->value,
                 'quantity' => 1
             ]);
+
             $cart->increment('quantity_amount');
-            $cart->final_amount += $this->product->product_prices->first()->value;
             $cart->sum_amount += $this->product->product_prices->first()->value;
+            $cart->final_amount = $cart->sum_amount + $cart->delivery_price;
+            $cart->final_amount -= $cart->voucher_value;
         } else {
             if ($cartItem->quantity < $this->product->quantity) {
-
                 $cartItem->increment('quantity');
                 $cart->increment('quantity_amount');
+                $cart->delivery_price = app('global_delivery_price');
                 $cart->sum_amount += $this->product->product_prices->first()->value;
-                $cart->final_amount += $this->product->product_prices->first()->value;
+                $cart->final_amount = $cart->sum_amount + app('global_delivery_price');
+                $cart->final_amount -= $cart->voucher_value;
             }
         }
         $cart->save();

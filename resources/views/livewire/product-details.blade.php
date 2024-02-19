@@ -79,7 +79,7 @@
         <span>Cantitatea maxima a produsului este {{ $limit }}</span>
     @endif
     @if ($price && $product->quantity != 0)
-        <button wire:click="addToCart({{ $product }})" class="product__button" onclick="flyToCart(this)"
+        <button wire:click="addToCart({{ $product->id }})" class="product__button" onclick="flyToCart(this)"
             aria-label="Add to cart button">Adauga
             in coș</button>
     @else

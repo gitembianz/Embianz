@@ -767,6 +767,10 @@ h2.section__title {
   align-items: center;
   justify-content: center;
 }
+.quantity__arrow.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 
 .support {
   background: #fafafa;

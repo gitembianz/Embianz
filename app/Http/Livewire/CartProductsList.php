@@ -80,10 +80,11 @@ class CartProductsList extends Component
                 Cart::where('id', $this->cartId)->update([
                     'quantity_amount' => DB::raw("quantity_amount - $cartItem->quantity"),
                     'sum_amount' => DB::raw("sum_amount - $amountToSubtract"),
-                    'final_amount' => DB::raw("CASE WHEN (sum_amount - $amountToSubtract) = 0 THEN 0 ELSE final_amount - $amountToSubtract END"),
-                    'voucher_id' => DB::raw("CASE WHEN (sum_amount - $amountToSubtract) = 0 THEN NULL ELSE voucher_id END"),
+                    'final_amount' => DB::raw("CASE WHEN (quantity_amount) = 0 THEN 0 ELSE final_amount - $amountToSubtract END"),
+                    'voucher_id' => DB::raw("CASE WHEN (quantity_amount) = 0 THEN NULL ELSE voucher_id END"),
+                    'voucher_value' => DB::raw("CASE WHEN (quantity_amount) = 0 THEN 0 ELSE voucher_value END"),
+                    'updated_at' => now(),
                 ]);
-
                 $cartItem->delete();
                 $this->emit('cartUpdated');
             }
@@ -107,11 +108,8 @@ class CartProductsList extends Component
 
         if ($validateQuantity) {
             Cart::where('id', $this->cartId)->update([
-                'final_amount' => DB::raw("sum_amount + " . app('global_delivery_price')),
                 'status_id' => app('global_cart_checkout'),
-                'delivery_price' => app('global_delivery_price')
             ]);
-
             return redirect()->route('order');
         }
     }
