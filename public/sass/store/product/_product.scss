@@ -50,14 +50,16 @@
 
 
 .product__subtitle {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 400;
   color: lighten($color: $text, $amount: 20%);
+  text-transform: uppercase;
 }
 
 .product__title {
-  font-size: 23px;
+  font-size: 22px;
   font-weight: 600;
+  text-transform: uppercase;
   color: $text;
   margin: 0;
 }
@@ -158,10 +160,24 @@
   letter-spacing: 0.7px;
   font-weight: 500;
   color: $text;
-  transition: all 0.3s ease-in-out;
 
-  &:hover {
-    background: $text;
-    color: $background;
+  @media (hover: hover) {
+    transition: all 0.3s ease-in-out;
+
+    &:hover {
+      background: $text;
+      color: $secondary;
+    }
+  }
+
+  @media (hover: none) {
+    &:active {
+      background: $text;
+      color: $secondary;
+    }
+  }
+
+  &:active {
+    transform: scale(0.9);
   }
 }

@@ -9,7 +9,7 @@
   justify-content: space-between;
   gap: 15px;
 
-  @media (max-width: map-get($grid-breakpoints, lg)) {
+  @media (max-width: map-get($grid-breakpoints, xl)) {
     display: none;
   }
 }
@@ -19,8 +19,9 @@
   color: $text;
   position: relative;
   text-decoration: none;
-  font-size: 12px;
-  font-weight: 400;
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: capitalize;
   width: 100%;
   height: 100%;
   display: flex;
@@ -33,10 +34,7 @@
     stroke: $text;
   }
 
-  @media (min-width: map-get($grid-breakpoints, lg)) {
-    font-size: 14px;
-    font-weight: 500;
-  }
+
 
   &::after {
     content: "";

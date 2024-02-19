@@ -182,7 +182,7 @@ function flyToCart(button) {
 //<--------------------------------------------------------------------->
 //<------------------------ Start Functions IOS ------------------------>
 leftbar("sortOpen", "sortClose", "sortList", "sortContent");
-dropmenus(".dropfilter", true);
+dropmenus(".dropfilter", false);
 applyFilter("closeFilter", "resetFilter");
 applySort(".sort__item");
 filterLive("filterList", "filterContent");

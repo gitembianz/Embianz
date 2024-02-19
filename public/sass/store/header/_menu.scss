@@ -5,19 +5,40 @@
   top: 0;
   width: 100%;
   height: 100%;
-  background: $modal;
   opacity: 0;
   visibility: hidden;
-  transition: all .3s ease-in-out;
+  transform-origin: left;
+  transition: all .4s ease-in-out;
   z-index: 500;
+  // transform: translateX(-100%);
 
-  @media (min-width: map-get($grid-breakpoints, lg)) {
+  @media (min-width: map-get($grid-breakpoints, xl)) {
     display: none;
   }
 
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -500;
+    background: $modal;
+    opacity: 0;
+    transition: all .4s ease-in-out;
+    clip-path: circle(10% at 0% 50%);
+  }
+
   &.active {
-    opacity: 1;
+    // transform: translateX(0%);
     visibility: visible;
+    opacity: 1;
+
+    &::after {
+      opacity: 1;
+      clip-path: circle(140% at 0% 50%);
+    }
 
     &>.menu__content {
       transform: translateX(0%);
@@ -26,8 +47,10 @@
 }
 
 #menuOpen {
-  @media (min-width: map-get($grid-breakpoints, lg)) {
-    display: none;
+  display: none;
+
+  @media (max-width: map-get($grid-breakpoints, xl)) {
+    display: flex;
   }
 }
 
@@ -51,7 +74,7 @@
     width: 100%;
   }
 
-  @media (min-width: map-get($grid-breakpoints, lg)) {
+  @media (min-width: map-get($grid-breakpoints, xl)) {
     width: 30%;
   }
 }
@@ -141,20 +164,19 @@
     aspect-ratio: 1/1;
     border-radius: 7px;
     background: $secondary;
+    mix-blend-mode: multiply;
   }
 
   &>h4 {
-    font-size: 18px;
     color: $text;
     width: 100%;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: flex-start;
-
-    @media (max-width: map-get($grid-breakpoints, sm)) {
-      font-size: 14px;
-    }
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: capitalize;
   }
 }
 
@@ -186,7 +208,7 @@
 
 .dropmenu__button {
   width: 100%;
-  height: 50px;
+  min-height: 50px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -218,15 +240,18 @@
     background: $secondary;
     border-radius: 7px;
     margin-left: 5px;
+    mix-blend-mode: multiply;
   }
 
   &>h4 {
-    font-size: 18px;
+    font-size: 14px;
+    font-weight: 600;
     color: $text;
+    text-transform: capitalize;
 
-    @media (max-width: map-get($grid-breakpoints, sm)) {
-      font-size: 14px;
-    }
+    // @media (max-width: map-get($grid-breakpoints, sm)) {
+    //   font-size: 14px;
+    // }
   }
 }
 
@@ -288,15 +313,14 @@
     object-fit: contain;
     aspect-ratio: 1/1;
     border-radius: 7px;
+    mix-blend-mode: multiply;
   }
 
   &>h4 {
-    font-size: 18px;
     color: $text;
-
-    @media (max-width: map-get($grid-breakpoints, sm)) {
-      font-size: 14px;
-    }
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: capitalize;
   }
 
   $transition-delay: 0.15s;
@@ -336,8 +360,8 @@
 }
 
 .submenu__button {
-  width: 92%;
-  height: 50px;
+  width: calc(100% - 45px);
+  min-height: 50px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -352,11 +376,11 @@
 
   &::after {
     content: "";
-    width: 20px;
+    width: calc(45px / 2);
     height: 400%;
     background: transparent;
     position: absolute;
-    left: -20px;
+    left: calc(-45px / 2);
     border-bottom: 2px solid gray;
     border-left: 2px solid gray;
     border-radius: 0px 0px 0px 10px;
@@ -385,16 +409,18 @@
     aspect-ratio: 1/1;
     background: $secondary;
     border-radius: 7px;
-
+    mix-blend-mode: multiply;
   }
 
   &>h4 {
-    font-size: 16px;
+    font-size: 14px;
     color: $text;
+    font-weight: 600;
+    text-transform: capitalize;
 
-    @media (max-width: map-get($grid-breakpoints, sm)) {
-      font-size: 14px;
-    }
+    // @media (max-width: map-get($grid-breakpoints, sm)) {
+    //   font-size: 14px;
+    // }
   }
 }
 
@@ -436,8 +462,8 @@
 }
 
 .submenu__link {
-  width: 82%;
-  height: 50px;
+  width: calc(100% - (45px * 2));
+  min-height: 50px;
   text-decoration: none;
   gap: 10px;
   display: flex;
@@ -453,11 +479,11 @@
 
   &::after {
     content: "";
-    width: 20px;
+    width: calc(45px / 2);
     height: 400%;
     background: transparent;
     position: absolute;
-    left: -20px;
+    left: calc(-45px / 2);
     border-bottom: 2px solid gray;
     border-left: 2px solid gray;
     border-radius: 0px 0px 0px 10px;
@@ -470,15 +496,14 @@
     object-fit: contain;
     aspect-ratio: 1/1;
     border-radius: 7px;
+    mix-blend-mode: multiply;
   }
 
   &>h4 {
-    font-size: 18px;
+    font-size: 14px;
+    font-weight: 600;
     color: $text;
-
-    @media (max-width: map-get($grid-breakpoints, sm)) {
-      font-size: 14px;
-    }
+    text-transform: capitalize;
   }
 
   $transition-delay: 0.15s;

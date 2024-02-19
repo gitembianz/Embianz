@@ -46,6 +46,10 @@ svg {
   user-select: none;
 }
 
+// img {
+//   mix-blend-mode: multiply;
+// }
+
 button,
 a,
 label,
@@ -147,7 +151,7 @@ input[type='checkbox'] {
   display: block;
   user-select: none;
 
-  @media (max-width: map-get($grid-breakpoints, lg)) {
+  @media (max-width: map-get($grid-breakpoints, xl)) {
     display: none;
   }
 
@@ -165,7 +169,7 @@ input[type='checkbox'] {
   display: none;
   user-select: none;
 
-  @media (max-width: map-get($grid-breakpoints, lg)) {
+  @media (max-width: map-get($grid-breakpoints, xl)) {
     display: block;
     padding: 10px;
     width: 100%;
@@ -177,6 +181,8 @@ input[type='checkbox'] {
     object-fit: contain;
     aspect-ratio: 2/1;
   }
+
+
 }
 
 //<----------------------- End Checkbox Styles ----------------------->
