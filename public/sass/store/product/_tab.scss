@@ -21,17 +21,24 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: lighten($text, 25%);
-  color: $background;
+  background: transparent;
+  color: $text;
   font-size: 14px;
-  font-weight: 400;
-  border: none;
-  border-radius: 5px;
+  font-weight: 500;
+  border: 1px solid $text;
+  text-transform: capitalize;
+  border-radius: 3px;
   padding: 0px 10px;
   transition: all .3s ease-in-out;
 
+  &:hover {
+    background-color: $text;
+    color: $background;
+  }
+
   &.active {
     background-color: $text;
+    color: $background;
   }
 }
 
