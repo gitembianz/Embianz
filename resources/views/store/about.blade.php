@@ -1,4 +1,4 @@
-<x-store-head :title='" Despre noi | "' />
+<x-store-head :canonical="'about'" :title='" Despre noi | "' />
 <x-store-header />
 <main>
     <!---------------------------------------------------------->

@@ -1,4 +1,4 @@
-<x-store-head :title='" FAQ | "' />
+<x-store-head :canonical="'faq'" :title='" FAQ | "' />
 <x-store-header />
 <main>
     <!---------------------------------------------------------->

@@ -9,25 +9,27 @@ use Illuminate\View\Component;
 class StoreHead extends Component
 {
     public $title;
+    public $description;
+    public $canonical;
 
     /**
      * Create a new component instance.
      */
-    public function __construct($title = "")
+    public function __construct($title = "", $description = "", $canonical = "")
     {
-        $this->title = $title . app('global_site_name');;
+        $this->title = $title . app('global_site_name');
+        $this->description = empty($description)
+            ? "Noren.ro is a website dedicated to providing eco-friendly products for a sustainable lifestyle. Shop our wide range of environmentally-friendly products including reusable items, zero-waste essentials, and more."
+            : $description;
+        $this->canonical = $canonical;
     }
 
-    /**
-     * Get the site name from the settings.
-     */
-
-
-    /**
-     * Get the view / contents that represent the component.
-     */
-    public function render(): View|Closure|string
+    public function render()
     {
-        return view('components.store-head', ['title' => $this->title]);
+        return view('components.store-head', [
+            'title' => $this->title,
+            'description' => $this->description,
+            'canonical' => $this->canonical
+        ]);
     }
 }

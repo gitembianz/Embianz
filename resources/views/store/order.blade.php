@@ -1,4 +1,4 @@
-<x-store-head :title='"Confirma comanda | "' />
+<x-store-head :canonical="'order'" :title='"Confirma comanda | "' />
 <x-store-header />
 <main>
     @livewire('store-order')
