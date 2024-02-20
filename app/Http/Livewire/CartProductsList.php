@@ -97,6 +97,7 @@ class CartProductsList extends Component
                     'voucher_id' => DB::raw("CASE WHEN (quantity_amount) = 0 THEN NULL ELSE voucher_id END"),
                     'voucher_value' => DB::raw("CASE WHEN (quantity_amount) = 0 THEN 0 ELSE $voucher_value  END"),
                     'updated_at' => now(),
+                    'status_id' => app('global_cart_new')
                 ]);
                 $cartItem->delete();
                 $this->emit('cartUpdated');
@@ -121,7 +122,7 @@ class CartProductsList extends Component
 
         if ($validateQuantity) {
             Cart::where('id', $this->cartId)->update([
-                'status_id' => app('global_cart_checkout'),
+                'status_id' => app('global_cart_checkoutdetails'),
             ]);
             return redirect()->route('order');
         }

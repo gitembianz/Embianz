@@ -105,6 +105,7 @@ class StoreCart extends Component
           'voucher_id' => DB::raw("CASE WHEN (quantity_amount) = 0 THEN NULL ELSE voucher_id END"),
           'voucher_value' => DB::raw("CASE WHEN (quantity_amount) = 0 THEN 0 ELSE $voucher_value END"),
           'updated_at' => now(),
+          'status_id' => app('global_cart_new')
         ]);
         $cartItem->delete();
         $this->emit('cartUpdated');
@@ -126,6 +127,7 @@ class StoreCart extends Component
         }
         $this->cart->final_amount = $this->cart->sum_amount + app('global_delivery_price');
         $this->cart->final_amount -= $this->cart->voucher_value;
+        $this->cart->status_id = app('global_cart_new');
         $this->cart->save();
         $this->emit('cartUpdated');
       }
@@ -149,6 +151,7 @@ class StoreCart extends Component
         }
         $this->cart->final_amount = $this->cart->sum_amount + app('global_delivery_price');
         $this->cart->final_amount -= $this->cart->voucher_value;
+        $this->cart->status_id = app('global_cart_new');
         $this->cart->save();
         $this->emit('cartUpdated');
       } else {
@@ -225,7 +228,7 @@ class StoreCart extends Component
 
     if ($validateQuantity) {
       Cart::where('id', $this->cart->id)->update([
-        'status_id' => app('global_cart_checkout'),
+        'status_id' => app('global_cart_checkoutdetails'),
       ]);
       return redirect()->route('order');
     }
