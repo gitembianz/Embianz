@@ -140,6 +140,7 @@ class ProductDetails extends Component
                 return;
             }
         }
+        $cart->status_id = app('global_cart_new');
         $cart->save();
         $this->quantity = 1;
         $this->emit('cartUpdated');
