@@ -101,7 +101,7 @@ class StoreCart extends Component
         Cart::where('id', $this->cart->id)->update([
           'quantity_amount' => DB::raw("quantity_amount - $cartItem->quantity"),
           'sum_amount' => DB::raw("sum_amount - $amountToSubtract"),
-          'final_amount' => DB::raw("CASE WHEN (quantity_amount) = 0 THEN 0 ELSE final_amount - $amountToSubtract END"),
+          'final_amount' => DB::raw("CASE WHEN (quantity_amount) = 0 THEN 0 ELSE sum_amount + delivery_price - $voucher_value END"),
           'voucher_id' => DB::raw("CASE WHEN (quantity_amount) = 0 THEN NULL ELSE voucher_id END"),
           'voucher_value' => DB::raw("CASE WHEN (quantity_amount) = 0 THEN 0 ELSE $voucher_value END"),
           'updated_at' => now(),
