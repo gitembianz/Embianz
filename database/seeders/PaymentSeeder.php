@@ -13,9 +13,9 @@ class PaymentSeeder extends Seeder
     public function run(): void
     {
         DB::table('payments')->insert([
-            ['name' => 'Plata cash la livrare', 'active' => true, 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Ordin de plata', 'active' => true, 'created_at' => now(), 'updated_at' => now()],
-            // Add more status values for carts with timestamps
+            ['name' => 'cash', 'description' => 'Plata cash la livrare', 'active' => true, 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'ordin', 'description' => 'Ordin de plata', 'active' => true, 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'card', 'description' => 'Plata cu cardul', 'active' => false, 'created_at' => now(), 'updated_at' => now()],
         ]);
     }
 }

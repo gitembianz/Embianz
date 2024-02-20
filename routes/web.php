@@ -107,6 +107,7 @@
   Route::get('/clear-cache', function () {
     Cache::forget('global_variables');
     Cache::forget('global_statuses');
+    Cache::forget('global_payments');
     echo 'Cache cleared for global variables';
   });
   // Your routes here
