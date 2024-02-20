@@ -121,7 +121,7 @@ class CartProductsList extends Component
 
         if ($validateQuantity) {
             Cart::where('id', $this->cartId)->update([
-                'status_id' => app('global_cart_checkout'),
+                'status_id' => app('global_cart_checkoutdetails'),
             ]);
             return redirect()->route('order');
         }
