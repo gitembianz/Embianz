@@ -1,4 +1,4 @@
-<x-store-head :title='"Politica de confidențialitate | "' />
+<x-store-head :canonical="'privacy'" :title='"Politica de confidențialitate | "' />
 <x-store-header />
 <main>
     <main>

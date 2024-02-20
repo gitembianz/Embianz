@@ -57,12 +57,14 @@ class StoreController extends Controller
   public function products($categorySlug = null)
   {
     $data = null;
+    $can = null;
 
     if ($categorySlug) {
       if (is_numeric($categorySlug)) {
         $category = Category::find($categorySlug);
+        $can = $category->id;
       } else {
-
+        $can = $categorySlug;
         $category = Category::where('seo_id', $categorySlug)->first();
       }
       if ($category) {
@@ -70,7 +72,7 @@ class StoreController extends Controller
       }
     }
 
-    return view('store.products', compact('data'));
+    return view('store.products', compact('data', 'can'));
   }
 
   public function terms()

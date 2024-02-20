@@ -15,16 +15,11 @@ class ProductDetails extends Component
     public $maxlimit = null;
     public $product;
     public $session_id;
+    public $prodid;
 
     public function render()
     {
         return view('livewire.product-details');
-    }
-    public function mount($product)
-    {
-        $this->product = $product;
-        $this->quantity = 1;
-        $this->session_id = $this->getSessionId();
     }
     private function getSessionId()
     {
@@ -36,13 +31,31 @@ class ProductDetails extends Component
             return $sessionId;
         }
     }
+    public function mount($product)
+    {
+        $prodid = $this->product->id;
+        $this->product = $product->select('id', 'name', 'seo_id', 'long_description', 'quantity', 'short_description')
+            ->with([
+                'product_prices' => function ($query) {
+                    $query->select('product_id', 'value', 'pricelist_id', 'discount', 'rrp_value')
+                        ->with(['pricelist' => function ($query) {
+                            $query->select('id', 'currency_id')->with('currency:id,name');
+                        }]);
+                },
+                'wishlists' => function ($query) {
+                    $query->select('id', 'product_id')->where('session_id', $this->session_id);
+                },
+                'product_specs' => function ($query) {
+                    $query->select('product_id', 'spec_id', 'value', 'id')->with('spec:id,name');
+                }
+            ])->find($prodid);
+        $this->quantity = 1;
+        $this->session_id = $this->getSessionId();
+    }
+
     public function switchTab($index)
     {
         $this->activeTab = $index;
-    }
-    public function updateCounterValue()
-    {
-        $this->quantity = $this->quantity;
     }
 
     public function incrementCounter()
@@ -55,9 +68,9 @@ class ProductDetails extends Component
             $this->quantity++;
         }
     }
+
     public  function decrementCounter()
     {
-
         if ($this->quantity > 1) {
             if ($this->quantity == $this->limit) {
                 $this->maxlimit = false;
@@ -65,6 +78,7 @@ class ProductDetails extends Component
             $this->quantity--;
         }
     }
+
     public function addToCart($productId)
     {
         $cart = Cart::where('session_id', $this->session_id)->where('status_id', '!=', app('global_cart_closed'))->latest()->first();
@@ -105,8 +119,9 @@ class ProductDetails extends Component
             }
             $cart->final_amount = $cart->sum_amount + app('global_delivery_price');
             $cart->final_amount -= $cart->voucher_value;
+            $this->maxlimit = false;
         } else {
-            if (($cartItem->quantity + $this->quantity) < $this->product->quantity) {
+            if (($cartItem->quantity + $this->quantity) <= $this->product->quantity) {
                 $cartItem->quantity += $this->quantity;
                 $cartItem->save();
                 $cart->quantity_amount += $this->quantity;
@@ -117,6 +132,12 @@ class ProductDetails extends Component
                 }
                 $cart->final_amount = $cart->sum_amount + app('global_delivery_price');
                 $cart->final_amount -= $cart->voucher_value;
+                $this->maxlimit = false;
+            } else {
+                $this->maxlimit = true;
+                $this->quantity = 1;
+                $this->limit = $this->product->quantity;
+                return;
             }
         }
         $cart->save();

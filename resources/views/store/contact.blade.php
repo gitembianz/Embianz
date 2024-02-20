@@ -1,4 +1,4 @@
-<x-store-head :title='" Contactează-ne | "' />
+<x-store-head :canonical="'contact'" :title='" Contactează-ne | "' />
 <x-store-header />
 <main>
     <!---------------------------------------------------------->

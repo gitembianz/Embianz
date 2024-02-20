@@ -1,4 +1,4 @@
-<x-store-head :title='" Confirm message | "' />
+<x-store-head :canonical="'confirm'" :title='" Confirm message | "' />
 <x-store-header />
 <main>
     <!---------------------------------------------------------->
