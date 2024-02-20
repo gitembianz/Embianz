@@ -1988,23 +1988,20 @@
                                     <div class="total__item">
                                         <span>Voucher:</span>
                                         <span>
-                                            {{ $cart->voucher->code }}
-                                            {{ intval($cart->voucher->percent) }}%
+                                            {{-- {{ $cart->voucher->code }} --}}
+                                            {{-- {{ intval($cart->voucher->percent) }}% --}}
+                                            -{{ number_format($cart->voucher_value, 2, ",", ".") }}
+                                            {{ $currency }}
+
                                         </span>
                                     </div>
                                 @endif
                                 <div class="total__item">
-                                    <span>total</span>
-                                    @if ($cart->voucher)
-                                        <span style="text-decoration: line-through; color:red;">
-                                            {{ number_format($cart->sum_amount + $cart->delivery_price, 2, ",", ".") }}{{ $currency }}
-                                        </span>
-                                        {{ number_format($cart->final_amount, 2, ",", ".") }} {{ $currency }}
-                                        </span>
-                                    @else
-                                        <span>{{ number_format($cart->final_amount, 2, ",", ".") }}
-                                            {{ $currency }}</span>
-                                    @endif
+                                    <span>Total</span>
+
+                                    <span>{{ number_format($cart->final_amount, 2, ",", ".") }}
+                                        {{ $currency }}
+                                    </span>
                                 </div>
                             @endif
                         </div>
@@ -2088,7 +2085,7 @@
                         </button>
                     @elseif ($step == 1)
                         <button class="checkout__link checkout__button--confirm" wire:click.prevent="next()"
-                            aria-label="go to next step">
+                            aria-label="go to next step" style="margin: 0 auto;">
                             Pasul următor
                             <svg>
                                 <line x1="5" y1="12" x2="19" y2="12"></line>

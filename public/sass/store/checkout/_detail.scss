@@ -189,6 +189,16 @@
   text-transform: uppercase;
   color: $text;
   font-weight: 500;
+
+  &:hover {
+    background: $text;
+    color: $secondary;
+  }
+
+  &:active {
+    background: $text;
+    color: $secondary;
+  }
 }
 
 .details__delete {

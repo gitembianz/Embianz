@@ -218,10 +218,10 @@
                 @foreach ($filtervalues->groupBy("spec_id") as $values)
                     <div class="dropfilter">
                         <div class="dropfilter__button">
-                            <div class="dropfilter__button--link">
-                                <h4>{{ $values->first()->spec->name }}</h4>
-                            </div>
+                            {{-- <div class="dropfilter__button--link"> --}}
+                            {{-- </div> --}}
                             <button class="dropfilter__open" href="#">
+                                <h4>{{ $values->first()->spec->name }}</h4>
                                 <svg>
                                     <polyline points="6 9 12 15 18 9"></polyline>
                                 </svg>

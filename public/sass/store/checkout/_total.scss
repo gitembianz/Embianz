@@ -35,7 +35,7 @@
   gap: 5px;
   padding: 10px;
   border-radius: 7px;
-  background: $secondary;
+  background: $background;
   align-items: center;
   justify-content: flex-start;
   grid-area: 1;
@@ -54,7 +54,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: $secondary;
+  background: transparent;
   padding: 10px;
   gap: 15px;
   border-radius: 7px;
@@ -66,8 +66,10 @@
   }
 
   &>span:last-child {
-    font-weight: 600;
+    font-weight: 500;
   }
+
+
 }
 
 //-----------------------
@@ -76,11 +78,12 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: $background;
+  background: $secondary;
   padding: 10px;
   gap: 15px;
   border-radius: 7px;
   width: 100%;
+  position: relative;
 
   &>img {
     width: 50px;
@@ -92,6 +95,23 @@
     border-radius: 5px;
     mix-blend-mode: multiply;
   }
+
+  &::after {
+    content: '';
+    width: 100%;
+    height: 1px;
+    background: $text;
+    position: absolute;
+    left: 0;
+    bottom: -7.5px;
+    display: block;
+  }
+}
+
+.total__product:last-child {
+  &::after {
+    display: none;
+  }
 }
 
 .total__name {
@@ -99,7 +119,7 @@
   flex: 1;
   text-align: left;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
   text-transform: uppercase;
   text-decoration: none;
   color: $text;
