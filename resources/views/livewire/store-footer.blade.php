@@ -1,16 +1,4 @@
 <div>
-    {{-- @if (!$cookieConsent)
-        <div class="cookie" wire:loading.remove>
-            <div class="cookie__container container">
-                <img class="cookie__img" src="/images/store/cookie.svg" alt="cookie">
-                <p class="cookie__text" id="cookieConsentText">
-                    We use cookies to improve your experience. By continuing to visit this site, you agree to our use of
-                    cookies.
-                </p>
-                <button class="cookie__btn" wire:click="acceptCookie">Accept</button>
-            </div>
-        </div>
-    @endif --}}
     @if (!$cookieConsent)
         <section id="cookie-banner" wire:loading.remove class="hidden">
             <div class="container cookie__container">
@@ -23,7 +11,7 @@
                         See Cookies Policy
                     </a>
                 </div>
-                <form id="cookieForm">
+                <div id="cookieForm">
                     <div class="cookie__form @if ($advance) show @endif">
                         <div class="cookie__form--container">
                             <label>
@@ -65,7 +53,7 @@
                             Advanced
                         </button>
                     </div>
-                </form>
+                </div>
             </div>
         </section>
     @endif
