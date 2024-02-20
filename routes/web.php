@@ -27,13 +27,8 @@
 
 
 
-  Route::middleware(['auth', 'usertype'])->group(function () {
+  route::middleware(['auth', 'usertype'])->group(function () {
 
-    Route::get('/update', function () {
-      $drop_and_seed = Artisan::call('migrate:fresh --seed');
-      echo "New fresh app";
-    });
-    route::get('/corectsequence', [AdminController::class, 'correctMediaSequence']);
 
     //Category routes
     route::get('/category', [CategoryController::class, 'category'])->name('category');
@@ -83,41 +78,53 @@
     route::post('/add_voucher', [AdminController::class, 'store_voucher']);
     route::get('/storesettings', [AdminController::class, 'storesettings'])->name('storesettings');
     route::get('/addstoresettings', [AdminController::class, 'addstoresetting'])->name('addstoresetting');
+
+    //specific routes 
+    route::get('/cleareverything', function () {
+      Artisan::call('cache:clear');
+      Artisan::call('view:clear');
+      Artisan::call('config:cache');
+      Artisan::call('config:clear');
+      Artisan::call('event:clear');
+      Artisan::call('queue:clear');
+      Artisan::call('optimize:clear');
+      Artisan::call('migrate');
+      echo "App is optimized and updated";
+    });
+
+    route::get('/friendlyurl', function () {
+      Artisan::call('update:seo_ids');
+      echo 'New URL-s updated!';
+    });
+
+    route::get('/seed', function () {
+      Artisan::call('db:seed');
+      echo 'Database seeded';
+    });
+
+    route::get('/clear-cache', function () {
+      Cache::forget('global_variables');
+      Cache::forget('global_statuses');
+      Cache::forget('global_payments');
+      echo 'Cache cleared for global variables';
+    });
+
+    route::get('/update', function () {
+      Artisan::call('migrate:fresh --seed');
+      echo "New fresh app";
+    });
+    route::get('/corectsequence', [AdminController::class, 'correctMediaSequence']);
   });
 
-  //specific routes 
-  Route::get('/cleareverything', function () {
-    $clearcache = Artisan::call('cache:clear');
-    $clearview = Artisan::call('view:clear');
-    $cacheconfig = Artisan::call('config:cache');
-    $cacheclear = Artisan::call('config:clear');
-    $eventclear = Artisan::call('event:clear');
-    $queueclear = Artisan::call('queue:clear');
-    $optimize = Artisan::call('optimize:clear');
-    $migrate = Artisan::call('migrate');
-    $seed = Artisan::call('update:seo_ids');
 
-    echo "App is optimized and updated";
-  });
-
-  Route::get('/seed', function () {
-    $seed = Artisan::call('db:seed');
-    echo 'Database seeded';
-  });
-  Route::get('/clear-cache', function () {
-    Cache::forget('global_variables');
-    Cache::forget('global_statuses');
-    Cache::forget('global_payments');
-    echo 'Cache cleared for global variables';
-  });
-  // Your routes here
+  // Storefront
   route::get('/', [StoreController::class, 'index'])->name('home');
   route::get('/cart', [StoreController::class, 'cart'])->name('cart');
   route::get('/wishlist', [StoreController::class, 'wislist'])->name('wislist');
   route::get('/complete', [StoreController::class, 'complete'])->name('complete');
   route::get('/order', [StoreController::class, 'order'])->name('order');
-  Route::get('/product/{product}', [StoreController::class, 'show'])->name('product');
-  Route::get('/storeproducts/{categorySlug?}', [StoreController::class, 'products'])->name('products');
+  route::get('/product/{product}', [StoreController::class, 'show'])->name('product');
+  route::get('/storeproducts/{categorySlug?}', [StoreController::class, 'products'])->name('products');
   route::get('/faq', [StoreController::class, 'faq'])->name('faq');
   route::get('/cookie', [StoreController::class, 'cookie'])->name('cookie');
   route::get('/privacy', [StoreController::class, 'privacy'])->name('privacy');

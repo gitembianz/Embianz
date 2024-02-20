@@ -58,7 +58,7 @@
                                 </svg>
                                 Șterge Datele
                             </button>
-                            <button class="checkout__button checkout__button--confirm" id="orderValidation"
+                            <button class="checkout__button checkout__button--confirm" @if ($individual && $individual_identic) id="individual" @elseif ($individual && !$individual_identic) id="individualIdentic" @elseif($juridic && $juridic_identic) id="juridic" @else id="juridicIdentic"@endif        
                                 wire:click.prevent="next()">
                                 Pasul următor
                                 <svg>
@@ -85,7 +85,7 @@
                             <!------------- Checkout List of Items --------------->
 
                             <div class="checkout__item checkout__item--required" id="individualShippingFirstName">
-                                <input type="text" wire:model="individual_billing_first"
+                                <input type="text" wire:dirty="individual_billing_first"
                                     name="individualShippingFirstName" placeholder="Nume" autocomplete="given-name"
                                     required>
                                 <span>
