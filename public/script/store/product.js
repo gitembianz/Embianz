@@ -9,6 +9,8 @@ function sliderProduct(sliderId) {
   const nextButton = slider.querySelector(sliderId + "__next");
   let currentIndex = 0;
   let touchStartX = 0;
+  let isDragging = false;
+  let startX = 0;
 
   if (
     !slider ||
@@ -41,13 +43,11 @@ function sliderProduct(sliderId) {
     }
     currentIndex = newIndex;
 
-    // Dezactivați butonul din dreapta când ajungeți la ultimul slide
     if (currentIndex === slides.length - 1) {
       nextButton.classList.add("disabled");
     } else {
       nextButton.classList.remove("disabled");
     }
-    // Dezactivați butonul din stânga când ajungeți la primul slide
     if (currentIndex === 0) {
       prevButton.classList.add("disabled");
     } else {
@@ -71,15 +71,17 @@ function sliderProduct(sliderId) {
     const thumbnails = Array.from(pagination.children);
     thumbnails.forEach((thumbnail, index) => {
       thumbnail.classList.toggle("active", index === currentIndex);
+      if (index === currentIndex) {
+        thumbnail.focus(); // Focalizăm punctul de paginare activ
+        thumbnail.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      }
     });
-    // Dezactivați butonul din stânga când ajungeți la primul slide
     if (currentIndex === 0) {
       prevButton.classList.add("disabled");
     } else {
       prevButton.classList.remove("disabled");
     }
 
-    // Dezactivați butonul din dreapta când ajungeți la ultimul slide
     if (currentIndex === slides.length - 1) {
       nextButton.classList.add("disabled");
     } else {
@@ -96,7 +98,6 @@ function sliderProduct(sliderId) {
       `.thumbnail[data-index="${index}"]`
     );
 
-    // Verificăm dacă thumbnail-ul există deja
     if (existingThumbnail) {
       return;
     }
@@ -109,7 +110,7 @@ function sliderProduct(sliderId) {
       thumbnail.src = mediaElement.src;
       thumbnail.alt = `Thumbnail ${index + 1}`;
       thumbnail.classList.add("thumbnail");
-      thumbnail.setAttribute("data-index", index); // Adăugăm un atribut pentru a identifica slide-ul asociat
+      thumbnail.setAttribute("data-index", index);
 
       thumbnail.addEventListener("click", () => {
         currentIndex = index;
@@ -135,7 +136,6 @@ function sliderProduct(sliderId) {
     const touchEndX = event.changedTouches[0].clientX;
     const swipeDistance = touchEndX - touchStartX;
 
-    // Eliminarea verificării pentru modal
     if (swipeDistance > 50 && index > 0) {
       currentIndex = index - 1;
     } else if (swipeDistance < -50 && index < slides.length - 1) {
@@ -159,7 +159,6 @@ function sliderProduct(sliderId) {
       if (touchStartX) {
         const swipeDistance = event.changedTouches[0].clientX - touchStartX;
 
-        // Dacă se realizează un swipe în orizontală și nu se derulează, blocăm derularea implicită
         if (Math.abs(swipeDistance) > 10 && !isScrolling()) {
           isSwiping = true;
           event.preventDefault();
@@ -175,12 +174,48 @@ function sliderProduct(sliderId) {
     });
   });
 
+  wrapper.addEventListener("mousedown", (event) => {
+    isDragging = true;
+    startX = event.clientX;
+    wrapper.style.cursor = "grab"; // Setează cursorul la "grab" la începutul trăgândului
+  });
+
+  wrapper.addEventListener("mousemove", (event) => {
+    if (isDragging) {
+      const swipeDistance = event.clientX - startX;
+
+      if (Math.abs(swipeDistance) > 250 && !isScrolling()) {
+        const indexChange = swipeDistance > 0 ? -1 : 1;
+        const newIndex = currentIndex + indexChange;
+
+        if (newIndex >= 0 && newIndex < slides.length) {
+          currentIndex = newIndex;
+          updatePagination();
+          updateTransform(wrapper);
+        }
+
+        startX = event.clientX;
+      }
+    }
+  });
+
+  wrapper.addEventListener("mouseup", () => {
+    isDragging = false;
+    wrapper.style.cursor = "auto"; // Resetarea cursorului la cursorul implicit la sfârșitul trăgândului
+  });
+
+  wrapper.addEventListener("mouseleave", () => {
+    isDragging = false;
+    wrapper.style.cursor = "auto"; // Resetarea cursorului la cursorul implicit la părăsirea zonei sliderului cu mouse-ul
+  });
+
   function isScrolling() {
-    return false; // Adăugați aici logica pentru a verifica dacă derularea este în curs de desfășurare
+    return false;
   }
 
   window.addEventListener("load", () => updatePagination());
 }
+
 //<----------------------- End Slider Product -------------------------->
 //<--------------------------------------------------------------------->
 //<------------------------- Modal Product ----------------------------->
@@ -188,61 +223,55 @@ function modalProduct(modalId, sliderId) {
   const modal = document.querySelector(modalId);
   const modalContent = modal.querySelector(modalId + "__content");
   const closeButton = modal.querySelector(modalId + "__close");
-
-  const slider = document.querySelector(sliderId);
-  const slides = slider.querySelectorAll(sliderId + "__slide");
-
   const body = document.querySelector("body");
+  const slider = document.querySelector(sliderId);
 
-  if (!modal || !modalContent || !closeButton) {
-    console.log("Componentele Modalului nu au fost găsite.");
+  if (!modal || !modalContent || !closeButton || !slider) {
+    console.log("Componentele Modalului sau ale Sliderului nu au fost găsite.");
     return;
-  } else {
-    closeButton.addEventListener("click", () => {
-      modal.classList.remove("active");
-      body.style.overflow = "auto";
-    });
-    slides.forEach((slide, index) => {
-      slide.addEventListener("click", () => {
-        // Găsește elementul <img> în cadrul fiecărui slide
-        var imgElement = slide.querySelector("img");
-
-        // Verifică dacă elementul <img> există
-        if (imgElement) {
-          // Accesează atributul data-img-src
-          var dataSrcValue = imgElement.getAttribute("data-img-src");
-
-          // Creează un nou element <img>
-          var newImgElement = document.createElement("img");
-
-          // Setează atributul src al noului element <img> la valoarea din data-img-src
-          newImgElement.src = dataSrcValue;
-
-          // Adaugă noul element <img> în conținutul modalului
-          modalContent.innerHTML = "";
-          modalContent.appendChild(newImgElement);
-
-          // Adaugă clasa "active" la modal
-          modal.classList.add("active");
-
-          // Blochează scroll-ul paginii
-          body.style.overflow = "hidden";
-        } else {
-          console.error(
-            "Elementul <img> nu a fost găsit în cadrul slide-ului."
-          );
-        }
-      });
-    });
-
-    window.addEventListener("click", (event) => {
-      if (event.target === modal) {
-        modal.classList.remove("active");
-        body.style.overflow = "auto";
-      }
-    });
   }
+
+  // Funcția pentru deschiderea imaginii din slide în modal
+  function openImageFromSlide(slide) {
+    const imgElement = slide.querySelector("img");
+
+    if (imgElement) {
+      const dataSrcValue = imgElement.getAttribute("data-img-src");
+      const newImgElement = document.createElement("img");
+
+      newImgElement.src = dataSrcValue;
+      modalContent.innerHTML = ""; // Golește conținutul modalului înainte de a adăuga imaginea
+      modalContent.appendChild(newImgElement); // Adaugă imaginea în conținutul modalului
+
+      modal.classList.add("active"); // Deschide modalul
+      body.style.overflow = "hidden"; // Blochează scroll-ul paginii
+    } else {
+      console.error("Elementul <img> nu a fost găsit în cadrul slide-ului.");
+    }
+  }
+
+  // Deschide modalul atunci când se face click pe fiecare slide
+  slider.querySelectorAll(sliderId + "__slide").forEach((slide) => {
+    slide.addEventListener("click", () => {
+      openImageFromSlide(slide);
+    });
+  });
+
+  // Închide modalul când se face click pe butonul de închidere
+  closeButton.addEventListener("click", () => {
+    modal.classList.remove("active");
+    body.style.overflow = "auto"; // Activează scroll-ul paginii
+  });
+
+  // Închide modalul când se face click în afara acestuia
+  window.addEventListener("click", (event) => {
+    if (event.target === modal) {
+      modal.classList.remove("active");
+      body.style.overflow = "auto"; // Activează scroll-ul paginii
+    }
+  });
 }
+
 //<----------------------- End Modal Product --------------------------->
 //<--------------------------------------------------------------------->
 //<--------------------------- Slider-Images --------------------------->
