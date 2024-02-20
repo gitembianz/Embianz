@@ -16,7 +16,7 @@
             <div class="main-slider">
                 <div class="main-slider__wrapper">
                     @foreach ($slideritems as $item)
-                        <a class="main-slider__slide" href="/storeproducts/{{ $item->id }}">
+                        <a class="main-slider__slide" href="/storeproducts/{{ $item->id }}" draggable="false">
                             @if ($item->media->first() != null)
                                 <img src="/{{ $item->media->first()->path }}{{ $item->media->first()->name }}"
                                     alt="{{ $item->media->first()->name }} {{ $item->name }}">
@@ -26,7 +26,7 @@
                         </a>
                     @endforeach
                     {{-- -- Modelul de schimb de imagini pe slider la rezolutie -- --}}
-                    <a class="main-slider__slide" href="#">
+                    <a class="main-slider__slide" href="#" draggable="false">
                         <picture>
                             {{-- Default (Desktop) --}}
                             <source media="(min-width: 992px)"
@@ -62,7 +62,7 @@
                 <h1 class="section__title">Descoperă produsele noastre populare!</h1>
                 <p class="section__text">
                     Explorează colecția noastră de produse și găsește accesoriile perfecte pentru a-ți completa stilul.
-                    <a href="{{ url('/storeproducts') }}">Vezi produsele!</a>
+                    <a href="{{ url("/storeproducts") }}">Vezi produsele!</a>
                 </p>
             </div>
         </section>
@@ -75,8 +75,8 @@
                     <div class="card-slider__wrapper" role="list">
                         @foreach ($popproducts as $product)
                             <div class="card-slider__slide card" role="listitem">
-                                <a
-                                    href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">
+                                <a draggable="false"
+                                    href="{{ route("product", ["product" => $product->seo_id !== null && $product->seo_id !== "" ? $product->seo_id : $product->id]) }}">
                                     @if ($product->media->first() != null)
                                         <img class="card-image"
                                             src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}"
@@ -86,13 +86,13 @@
                                             alt="something wrong">
                                     @endif
                                 </a>
-                                @livewire('product-wishlist-button', ['productId' => $product->id, 'class' => 'card__action', 'is_in_wishlist' => $product->wishlists->isNotEmpty()], key($product->id))
+                                @livewire("product-wishlist-button", ["productId" => $product->id, "class" => "card__action", "is_in_wishlist" => $product->wishlists->isNotEmpty()], key($product->id))
                                 <?php
                                 $price = null;
                                 $discount = false;
                                 
                                 if ($product->product_prices->count() != 0) {
-                                    $price = number_format($product->product_prices->first()->value, 2, ',', '.');
+                                    $price = number_format($product->product_prices->first()->value, 2, ",", ".");
                                     $discount = $product->product_prices->first()->discount != 0 ? true : false;
                                 }
                                 ?>
@@ -154,7 +154,7 @@
                                         </p>
                                     </div>
                                     @if ($price)
-                                        @livewire('add-to-cart-button', ['product' => $product], key($product->id))
+                                        @livewire("add-to-cart-button", ["product" => $product], key($product->id))
                                     @else
                                         <button class="card-button-disabled"
                                             aria-label="Disabled add to cart button">Indisponibil</button>
