@@ -75,7 +75,7 @@
   transform: translateX(100%);
   transition: all .3s ease-in-out;
   padding: 15px;
-  padding-right: 30px;
+  padding-right: 20px;
   background-color: $background;
 
   @media (max-width: map-get($grid-breakpoints, sm)) {
