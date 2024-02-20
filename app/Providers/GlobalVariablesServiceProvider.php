@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Payment;
 use App\Models\Status;
 use App\Models\Store_Settings;
 use Illuminate\Support\Facades\Cache;
@@ -24,6 +25,7 @@ class GlobalVariablesServiceProvider extends ServiceProvider
     {
         $this->loadGlobalVariables();
         $this->loadGlobalStatuses();
+        $this->loadGlobalPayments();
     }
     private function loadGlobalVariables()
     {
@@ -34,6 +36,17 @@ class GlobalVariablesServiceProvider extends ServiceProvider
 
         foreach ($globalVariables as $key => $value) {
             $this->app->instance('global_' . $key, $value);
+        }
+    }
+    private function loadGlobalPayments()
+    {
+        $globalPayments = Cache::get('global_payments', function () {
+            $payments = Payment::all(['id', 'active', 'name'])->keyBy('id')->toArray();
+            return $payments;
+        });
+
+        foreach ($globalPayments as $payment) {
+            $this->app->instance('global_' . $payment['name'], $payment);
         }
     }
     private function loadGlobalStatuses()
