@@ -15,6 +15,13 @@ html {
 html,
 body {
   scrollbar-gutter: stable;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-stroke-width: 0 !important;
+  overscroll-behavior: contain;
 }
 
 body {
