@@ -42,7 +42,6 @@
             <img rel="preload" as="image" src="/images/store/svg/noren-black.svg" alt="logo-black">
         </div>
         <script src="/script/store/head.js"></script>
-        <script src="/script/store/header.js" async defer></script>
-        <script src="script/store/general.js" async defer></script>
+
 
         <!-------------------- End Loading Logo -------------------->
