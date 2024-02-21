@@ -58,7 +58,8 @@
                                 </svg>
                                 Șterge Datele
                             </button>
-                            <button class="checkout__button checkout__button--confirm" @if ($individual && $individual_identic) id="individual" @elseif ($individual && !$individual_identic) id="individualIdentic" @elseif($juridic && $juridic_identic) id="juridic" @else id="juridicIdentic"@endif        
+                            <button class="checkout__button checkout__button--confirm"
+                                @if ($individual && $individual_identic) onclick="validateIndividual(this)" @elseif ($individual && !$individual_identic) onclick="validateIndividualIdentic(this)" @elseif($juridic && $juridic_identic) onclick="validateJuridic(this)" @else onclick="validateJuridicIdentic(this)" @endif
                                 wire:click.prevent="next()">
                                 Pasul următor
                                 <svg>
@@ -85,7 +86,7 @@
                             <!------------- Checkout List of Items --------------->
 
                             <div class="checkout__item checkout__item--required" id="individualShippingFirstName">
-                                <input type="text" wire:dirty="individual_billing_first"
+                                <input type="text" wire:model="individual_billing_first"
                                     name="individualShippingFirstName" placeholder="Nume" autocomplete="given-name"
                                     required>
                                 <span>
@@ -1749,7 +1750,45 @@
                             @endif
                         @endif
                     @endforeach
-
+                    <script src="/script/store/order.js"></script>
+                    <script>
+                        applyValidations("individualShippingFirstName", firstNameValidation, false);
+                        applyValidations("individualShippingLastName", lastNameValidation, false);
+                        applyValidations("individualShippingEmail", emailValidation, false);
+                        applyValidations("individualShippingPhone", phoneValidation, false);
+                        applyValidations("individualShippingAddress", addressValidations, false);
+                        applyValidations("individualShippingCounty", addressValidations, false);
+                        applyValidations("individualShippingCity", addressValidations, false);
+                        applyValidations("individualShippingPostal", addressValidations, false);
+                        applyValidations("individualBillingFirstName", firstNameValidation, false);
+                        applyValidations("individualBillingLastName", lastNameValidation, false);
+                        applyValidations("individualBillingEmail", emailValidation, false);
+                        applyValidations("individualBillingPhone", phoneValidation, false);
+                        applyValidations("individualBillingAddress", addressValidations, false);
+                        applyValidations("individualBillingCounty", addressValidations, false);
+                        applyValidations("individualBillingCity", addressValidations, false);
+                        applyValidations("individualBillingPostal", addressValidations, false);
+                        // ----------------------------------------------------------------------------
+                        applyValidations("juridicShippingFirstName", firstNameValidation, false);
+                        applyValidations("juridicShippingLastName", lastNameValidation, false);
+                        applyValidations("juridicShippingEmail", emailValidation, false);
+                        applyValidations("juridicShippingPhone", phoneValidation, false);
+                        applyValidations("juridicShippingAddress", addressValidations, false);
+                        applyValidations("juridicShippingCounty", addressValidations, false);
+                        applyValidations("juridicShippingCity", addressValidations, false);
+                        applyValidations("juridicShippingPostal", addressValidations, false);
+                        applyValidations("companyName", registerCode, false);
+                        applyValidations("registerNumber", companyName, false);
+                        applyValidations("registerCode", registerNumber, false);
+                        applyValidations("juridicBillingFirstName", firstNameValidation, false);
+                        applyValidations("juridicBillingLastName", lastNameValidation, false);
+                        applyValidations("juridicBillingEmail", emailValidation, false);
+                        applyValidations("juridicBillingPhone", phoneValidation, false);
+                        applyValidations("juridicBillingAddress", addressValidations, false);
+                        applyValidations("juridicBillingCounty", addressValidations, false);
+                        applyValidations("juridicBillingCity", addressValidations, false);
+                        applyValidations("juridicBillingPostal", addressValidations, false);
+                    </script>
                 @endif
                 <!------------------ End Step First -------------------->
                 <!------------------------------------------------------>
@@ -2084,8 +2123,9 @@
                             </svg>
                         </button>
                     @elseif ($step == 1)
-                        <button class="checkout__link checkout__button--confirm" wire:click.prevent="next()"
-                            aria-label="go to next step" style="margin: 0 auto;">
+                        <button class="checkout__link checkout__button--confirm"
+                            @if ($individual && $individual_identic) onclick="validateIndividual(this)" @elseif ($individual && !$individual_identic) onclick="validateIndividualIdentic(this)" @elseif($juridic && $juridic_identic) onclick="validateJuridic(this)" @else onclick="validateJuridicIdentic(this)" @endif
+                            wire:click.prevent="next()" aria-label="go to next step" style="margin: 0 auto;">
                             Pasul următor
                             <svg>
                                 <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -2109,5 +2149,5 @@
     <x-help-button />
     <!------------------- End support button ------------------->
     <!---------------------------------------------------------->
-    <script src="/script/store/order.js" async defer></script>
+    {{-- <script src="/script/store/order.js" async defer></script> --}}
 </div>
