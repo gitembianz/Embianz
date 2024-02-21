@@ -101,6 +101,11 @@ main {
   min-height: 80vh;
 }
 
+img,
+svg {
+  image-rendering: optimizeQuality;
+}
+
 //----------------------------------------------------------------------
 //------------------ Containers Settings (don`t edit) ------------------
 .container {
