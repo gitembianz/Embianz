@@ -3,10 +3,12 @@
   width: 100%;
   padding: 5px 0;
   background: $text;
-  transition: all .1s ease-in-out;
+  // transform: translate3d(0, -100%, 0);
+  transform-origin: top;
+  transition: transform .3s;
   position: fixed;
   top: 0;
-  z-index: 300;
+  z-index: 400;
 }
 
 .banner__container {

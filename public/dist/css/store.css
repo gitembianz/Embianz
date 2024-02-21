@@ -414,22 +414,19 @@ input[type=checkbox]:checked:after {
 }
 
 .logo__hidden {
-  height: 100%;
   display: none;
-  user-select: none;
 }
 @media (max-width: 1200px) {
   .logo__hidden {
-    display: block;
-    padding: 10px;
-    width: 100%;
+    display: flex;
+    margin: 0 auto;
   }
 }
 .logo__hidden > img {
   width: 100%;
-  height: 100%;
+  height: 50px;
+  user-select: none;
   object-fit: contain;
-  aspect-ratio: 2/1;
 }
 
 .loading-logo {
@@ -1406,10 +1403,11 @@ h2.section__title {
   width: 100%;
   padding: 5px 0;
   background: #333333;
-  transition: all 0.1s ease-in-out;
+  transform-origin: top;
+  transition: transform 0.3s;
   position: fixed;
   top: 0;
-  z-index: 300;
+  z-index: 400;
 }
 
 .banner__container {
@@ -1421,17 +1419,17 @@ h2.section__title {
 
 header {
   width: 100%;
-  height: 60px;
   z-index: 300;
   background: #ffffff;
   border-bottom: 1px solid #fafafa;
-  transition: all 0.1s ease-in-out;
+  transition: padding 0.3s;
   position: fixed;
   top: 0;
 }
 
 .header__container {
   height: 100%;
+  height: 60px;
   display: flex;
   align-items: center;
   justify-content: space-between;
