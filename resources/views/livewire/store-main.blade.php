@@ -1,4 +1,5 @@
 <div>
+    <script rel="preload" src="script/store/main.js" as="script"></script>
     <main>
         <!-- This is the Main Page;
         the <main> tag encompasses the main content and sections of the webpage,

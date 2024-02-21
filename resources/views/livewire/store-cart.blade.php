@@ -1,4 +1,5 @@
 <div>
+    <script rel="preload" src="script/store/checkout.js" as="script"></script>
     <x-store-alert />
     <section>
         <!------------------------------------------------------>
@@ -132,7 +133,7 @@
                             <div class="details__text">
                                 <h3>Voucher:</h3>
                                 <span class="voucher__choice">
-                                    -{{ number_format($cart->voucher_value, 2, ',', '.') }} {{ $currency }}
+                                    -{{ number_format($cart->voucher_value, 2, ",", ".") }} {{ $currency }}
                                     <button wire:click="removevoucher" class="details__delete"
                                         aria-label="Remove voucher">
                                         <svg>
@@ -151,7 +152,7 @@
                             <h3>Total:</h3>
                             <span>
 
-                                {{ number_format($cart->final_amount, 2, ',', '.') }} {{ $currency }}
+                                {{ number_format($cart->final_amount, 2, ",", ".") }} {{ $currency }}
 
                             </span>
                         </div>

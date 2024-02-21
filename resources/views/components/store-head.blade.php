@@ -14,14 +14,7 @@
         <link rel="stylesheet" href="/dist/css/store.css">
         <script rel="preload" src="script/store/head.js" as="script"></script>
         <script rel="preload" src="script/store/header.js" as="script"></script>
-        <script rel="preload" src="script/store/main.js" as="script"></script>
-        <script rel="preload" src="script/store/order.js" as="script"></script>
-        <script rel="preload" src="script/store/product.js" as="script"></script>
         <script rel="preload" src="script/store/general.js" as="script"></script>
-        <script rel="preload" src="script/store/faq.js" as="script"></script>
-        <script rel="preload" src="script/store/checkout.js" as="script"></script>
-        <script rel="preload" src="script/store/catalog.js" as="script"></script>
-
         @livewireStyles
 
         {{-- ----------------------------------------------------------- --}}
@@ -49,5 +42,6 @@
             <img rel="preload" as="image" src="/images/store/svg/noren-black.svg" alt="logo-black">
         </div>
         <script src="/script/store/head.js"></script>
+
 
         <!-------------------- End Loading Logo -------------------->

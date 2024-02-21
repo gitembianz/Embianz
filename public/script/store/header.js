@@ -10,23 +10,13 @@ function scrollEvent() {
   const bannerHeight = banner.offsetHeight;
 
   if (window.pageYOffset > 200) {
-    // banner.style.top = `-${bannerHeight}px`;
     banner.style.transform = `translate3d(0px, -${bannerHeight}px, 0px)`;
     main.style.paddingTop = `${headerHeight}px`;
-    // header.style.top = "0px";
-    // header.style.transform = `translate3d(0px, 0px, 0px)`;
     header.style.paddingTop = `0px`;
-    // header.style.height = `60px`;
   } else {
     banner.style.transform = `translate3d(0px, 0px, 0px)`;
-    // banner.style.top = "0px";
-
     main.style.paddingTop = `${60 + bannerHeight}px`;
-    // header.style.top = `${bannerHeight}px`;
-    // header.style.transform = `translate3d(0px, ${bannerHeight}px, 0px)`;
     header.style.paddingTop = `${bannerHeight}px`;
-    // header.style.height = `${60 + bannerHeight}px`;
-    // transform: 'translate3d(0px, -0px, 0px)'
   }
 }
 

@@ -238,5 +238,5 @@
     </div>
     <!--------------------END-Menu (Leftbar)-------------------->
     <!---------------------------------------------------------->
-    <script src="/script/store/header.js" async defer></script>
+    {{-- <script src="/script/store/header.js" async defer></script> --}}
 </div>
