@@ -12,7 +12,7 @@ function scrollEvent() {
   if (window.pageYOffset > 200) {
     banner.style.transform = `translate3d(0px, -${bannerHeight}px, 0px)`;
     main.style.paddingTop = `${headerHeight}px`;
-    header.style.paddingTop = `0px`;
+    header.style.paddingTop = 0;
   } else {
     banner.style.transform = `translate3d(0px, 0px, 0px)`;
     main.style.paddingTop = `${60 + bannerHeight}px`;
