@@ -225,8 +225,8 @@ function validateJuridic() {
   applyValidations("juridicShippingCity", addressValidations, true);
   applyValidations("juridicShippingCounty", addressValidations, true);
   applyValidations("juridicShippingAddress", addressValidations, true);
-  applyValidations("juridicShippingEmail", emailValidation, true);
   applyValidations("juridicShippingPhone", phoneValidation, true);
+  applyValidations("juridicShippingEmail", emailValidation, true);
   applyValidations("juridicShippingLastName", lastNameValidation, true);
   applyValidations("juridicShippingFirstName", firstNameValidation, true);
 }
