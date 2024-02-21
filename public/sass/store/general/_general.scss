@@ -101,9 +101,8 @@ main {
   min-height: 80vh;
 }
 
-img,
-svg {
-  image-rendering: optimizeQuality;
+img {
+  image-rendering: optimizeSpeed;
 }
 
 //----------------------------------------------------------------------
