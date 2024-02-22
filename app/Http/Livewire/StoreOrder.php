@@ -17,13 +17,11 @@ class StoreOrder extends Component
   public $step;
   public $individual = true;
   public $juridic = false;
-  public $individual_identic;
-  public $juridic_identic;
+  public $individual_identic = true;
+  public $juridic_identic = true;
   public $back = false;
-  public $cart;
   public $terms = false;
   public $errorterms = false;
-  public $default_country;
 
 
   public $individual_billing_first;
@@ -78,13 +76,36 @@ class StoreOrder extends Component
   public $rtc = true;
   public $session_id;
   public $invoice = false;
-  public $payments;
   public $validatequantity = true;
   public $delivery = 'Plata cash la livrare';
   protected $listeners = [
     'nocard' => 'mount',
     'cartUpdated' => 'mount',
   ];
+
+  private function getSessionId()
+  {
+    if (array_key_exists('sessionId', $_COOKIE)) {
+      return $_COOKIE['sessionId'];
+    } else {
+      $sessionId = session()->getId();
+      setcookie('sessionId', $sessionId, time() + 30 * 24 * 60 * 60, '/', null, false, true);
+      return $sessionId;
+    }
+  }
+
+  public function getCartProperty()
+  {
+    return Cart::select('id', 'quantity_amount', 'sum_amount', 'voucher_id', 'final_amount', 'voucher_value')
+      ->where('session_id', $this->session_id)
+      ->where('status_id', '!=', app('global_cart_closed'))
+      ->with(['voucher' => function ($query) {
+        $query->select('code', 'id', 'percent', 'value');
+      }])
+      ->latest()
+      ->first() ?? null;
+  }
+
 
   //declaration juridic person
   public function render()
@@ -98,35 +119,19 @@ class StoreOrder extends Component
       return view('livewire.store-order');
     }
   }
-  private function getSessionId()
-  {
-    if (array_key_exists('sessionId', $_COOKIE)) {
-      return $_COOKIE['sessionId'];
-    } else {
-      $sessionId = session()->getId();
-      setcookie('sessionId', $sessionId, time() + 30 * 24 * 60 * 60, '/', null, false, true);
-      return $sessionId;
-    }
-  }
+
   public function mount()
   {
     $this->session_id = $this->getSessionId();
-    $this->payments = Payment::get();
-    $this->cart = Cart::where('session_id', $this->session_id)->where('status_id', '!=', app('global_cart_closed'))->latest()->first();
-    if (!$this->cart) {
+
+    if (!$this->cartItems) {
       $this->back = true;
     }
-    $this->resetForm();
     $this->step = 1;
-    $this->individual_identic = true;
-    $this->juridic_identic = true;
-
-    // default country
-    $this->default_country = app('global_default_country');
-    $this->individual_billing_country = $this->default_country;
-    $this->individual_shipping_country = $this->default_country;
-    $this->juridic_billing_country = $this->default_country;
-    $this->juridic_shipping_country = $this->default_country;
+    $this->individual_billing_country = app('global_default_country');
+    $this->individual_shipping_country = app('global_default_country');
+    $this->juridic_billing_country = app('global_default_country');
+    $this->juridic_shipping_country = app('global_default_country');
   }
   public function showindividual()
   {
