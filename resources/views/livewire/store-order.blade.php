@@ -1,5 +1,5 @@
 <div>
-  <script rel="preload" src="script/store/order.js" as="script"></script>
+    {{-- <script rel="preload" src="script/store/order.js" as="script"></script> --}}
     <x-store-alert />
     @if ($back)
         <!------------------------------------------------------>

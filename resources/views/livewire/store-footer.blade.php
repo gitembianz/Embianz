@@ -1,4 +1,5 @@
 <div>
+
     @if (!$cookieConsent)
         <section id="cookie-banner" wire:loading.remove class="hidden">
             <div class="container cookie__container">
@@ -110,8 +111,15 @@
                     <input type="email" wire:model="email" name="email" id="email"
                         placeholder="Introduceți adresa dvs. de email" aria-describedby="email-error"
                         autocomplete="email">
-                    <button type="submit">Trimite</button>
+                    <button type="submit" @if (!$ischecked) disabled @endif>Trimite</button>
                 </form>
+                <div class="footer__checkbox">
+                    <input type="checkbox" wire:model="ischecked" name="subscribe__checkbox"id="subscribe__checkbox">
+                    <label for="subscribe__checkbox">
+                        Sunt de acord cu <a href="{{ url("/terms") }}">Termeni si
+                            conditiile</a> abonarii la newsletter privind stocarea si prelucrarea datelor cu caracter
+                        personal.</label>
+                </div>
             </div>
             <!----------------------END-Subscribe---------------------->
             <!--------------------------------------------------------->

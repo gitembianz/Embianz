@@ -1,5 +1,5 @@
 <div>
-    <script rel="preload" src="script/store/main.js" as="script"></script>
+    {{-- <script rel="preload" src="script/store/main.js" as="script"></script> --}}
     <main>
         <!-- This is the Main Page;
         the <main> tag encompasses the main content and sections of the webpage,
@@ -19,26 +19,26 @@
                     @foreach ($slideritems as $item)
                         <a class="main-slider__slide" href="/storeproducts/{{ $item->id }}" draggable="false">
                             @if ($item->media->first() != null)
-                                <img src="/{{ $item->media->first()->path }}{{ $item->media->first()->name }}"
-                                    alt="{{ $item->media->first()->name }} {{ $item->name }}">
+                                    <img src="/{{ $item->media->first()->path }}{{ $item->media->first()->name }}"
+                                        alt="{{ $item->media->first()->name }} {{ $item->name }}">
                             @else
-                                <img src="/images/store/default/default.webp" alt="something wrong">
+                                    <img src="/images/store/default/default.webp" alt="something wrong">
                             @endif
                         </a>
                     @endforeach
                     {{-- -- Modelul de schimb de imagini pe slider la rezolutie -- --}}
-                    <a class="main-slider__slide" href="#" draggable="false">
-                        <picture>
-                            {{-- Default (Desktop) --}}
-                            <source media="(min-width: 992px)"
-                                srcset="https://images.unsplash.com/photo-1529336953128-a85760f58cb5?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
-                            {{-- Tablet Picture --}}
-                            <source media="(min-width: 576px)"
-                                srcset="https://images.unsplash.com/photo-1527698266440-12104e498b76?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
-                            {{-- Mobile Picture --}}
-                            <img alt="Flowers"
-                                src="https://images.unsplash.com/photo-1585060544812-6b45742d762f?q=80&w=2681&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
-                        </picture>
+                    <a class="main-slider__slide" draggable="false">
+                            <picture>
+                                {{-- Default (Desktop) --}}
+                                <source media="(min-width: 992px)"
+                                    srcset="https://images.unsplash.com/photo-1529336953128-a85760f58cb5?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
+                                {{-- Tablet Picture --}}
+                                <source media="(min-width: 576px)"
+                                    srcset="https://images.unsplash.com/photo-1527698266440-12104e498b76?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
+                                {{-- Mobile Picture --}}
+                                <img alt="Flowers"
+                                    src="https://images.unsplash.com/photo-1585060544812-6b45742d762f?q=80&w=2681&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
+                            </picture>
                     </a>
                     {{-- End Modelul de schimb de imagini pe slider la rezolutie --}}
                 </div>
@@ -91,7 +91,7 @@
                                 <?php
                                 $price = null;
                                 $discount = false;
-                                
+
                                 if ($product->product_prices->count() != 0) {
                                     $price = number_format($product->product_prices->first()->value, 2, ",", ".");
                                     $discount = $product->product_prices->first()->discount != 0 ? true : false;

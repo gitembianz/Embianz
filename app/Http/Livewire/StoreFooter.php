@@ -12,6 +12,7 @@ class StoreFooter extends Component
   public $response = null;
   public $cookieConsent;
   public $advance =  false;
+  public $ischecked = false;
   public function mount()
   {
     $this->cookieConsent = $this->checkCookieConsent();

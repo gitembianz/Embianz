@@ -9,7 +9,7 @@ function slider(sliderID) {
     return;
   } else {
     const firstCardWidth = wrapper.querySelector(
-      `${sliderID}__slide`
+      `${sliderID}__slide`,
     ).offsetWidth;
     const wrapperChildrens = [...wrapper.children];
 
@@ -61,11 +61,19 @@ function slider(sliderID) {
       if (!isDragging) return; // if isDragging is false return from here
       // Updates the scroll position of the wrapper based on the cursor movement
       wrapper.scrollLeft = startScrollLeft - (e.pageX - startX);
+      wrapper.style.cursor = "grabbing";
+      wrapperChildrens.forEach((card) => {
+        card.style.pointerEvents = "none";
+      });
     };
 
     const dragStop = () => {
       isDragging = false;
       wrapper.classList.remove("dragging");
+      wrapper.style.cursor = "initial";
+      wrapperChildrens.forEach((card) => {
+        card.style.pointerEvents = "auto";
+      });
     };
 
     const infiniteScroll = () => {
@@ -95,7 +103,7 @@ function slider(sliderID) {
       // Autoplay the wrapper after every 2500 ms
       timeoutId = setTimeout(
         () => (wrapper.scrollLeft += firstCardWidth),
-        25000
+        25000,
       );
     };
     autoPlay();
