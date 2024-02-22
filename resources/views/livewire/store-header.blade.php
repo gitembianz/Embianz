@@ -1,4 +1,5 @@
 <div>
+    {{-- <script rel="preload" src="script/store/header.js" as="script"></script> --}}
     <x-store-alert />
     <!-- This is the Header;
     the <header> tag encompasses the Logo and component-calling buttons located below,

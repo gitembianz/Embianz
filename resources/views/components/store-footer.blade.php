@@ -1,7 +1,8 @@
 {{-- <footer> --}}
 <livewire:store-footer />
 {{-- </footer> --}}
-<script src="/script/store/general.js" async defer></script>
+{{-- <script rel="preload" src="script/store/general.js" as="script"></script> --}}
+<script src="script/store/general.js" async defer></script>
 @livewireScripts
 {{-- -------------------------- Special Script -------------------------- --}}
 <style type='text/css'>

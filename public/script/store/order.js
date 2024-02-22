@@ -153,11 +153,11 @@ const registerNumber = [
   },
 ];
 
-function applyValidations(elementId, validations, buttonId) {
+function applyValidations(elementId, validations, autoValidate) {
   const element = document.getElementById(elementId);
   const input = element.querySelector("input");
   const span = element.querySelector("span");
-  const button = document.getElementById(buttonId);
+  // const button = document.getElementById(buttonId);
 
   // Funcție care va fi apelată la apăsarea butonului
   function validate() {
@@ -181,208 +181,73 @@ function applyValidations(elementId, validations, buttonId) {
   }
 
   // Adăugăm ascultătorul de eveniment pentru click pe buton
-  button.addEventListener("click", validate);
   input.addEventListener("input", validate);
+
+  if (autoValidate) {
+    validate();
+  }
 }
 
-// Aplicăm validările și le asociem butonului dorit
+function validateIndividual() {
+  applyValidations("individualShippingPostal", addressValidations, true);
+  applyValidations("individualShippingCity", addressValidations, true);
+  applyValidations("individualShippingCounty", addressValidations, true);
+  applyValidations("individualShippingAddress", addressValidations, true);
+  applyValidations("individualShippingPhone", phoneValidation, true);
+  applyValidations("individualShippingEmail", emailValidation, true);
+  applyValidations("individualShippingLastName", lastNameValidation, true);
+  applyValidations("individualShippingFirstName", firstNameValidation, true);
+}
 
-
-// individual
-applyValidations(
-  "individualShippingFirstName",
-  firstNameValidation,
-  "individual"
-);
-applyValidations(
-  "individualShippingLastName",
-  lastNameValidation,
-  "individual"
-);
-applyValidations("individualShippingEmail", emailValidation, "individual");
-applyValidations("individualShippingPhone", phoneValidation, "individual");
-applyValidations(
-  "individualShippingAddress",
-  addressValidations,
-  "individual"
-);
-applyValidations(
-  "individualShippingCounty",
-  addressValidations,
-  "individual"
-);
-applyValidations(
-  "individualShippingCity",
-  addressValidations,
-  "individual"
-);
-applyValidations(
-  "individualShippingPostal",
-  addressValidations,
-  "individual"
-);
-
-
-
-
-
-// individualIdentic
-applyValidations(
-  "individualShippingFirstName",
-  firstNameValidation,
-  "individualIdentic"
-);
-applyValidations(
-  "individualShippingLastName",
-  lastNameValidation,
-  "individualIdentic"
-);
-applyValidations("individualShippingEmail", emailValidation, "individualIdentic");
-applyValidations("individualShippingPhone", phoneValidation, "individualIdentic");
-applyValidations(
-  "individualShippingAddress",
-  addressValidations,
-  "individualIdentic"
-);
-applyValidations(
-  "individualShippingCounty",
-  addressValidations,
-  "individualIdentic"
-);
-applyValidations(
-  "individualShippingCity",
-  addressValidations,
-  "individualIdentic"
-);
-applyValidations(
-  "individualShippingPostal",
-  addressValidations,
-  "individualIdentic"
-);
-applyValidations(
-  "individualBillingFirstName",
-  firstNameValidation,
-  "individualIdentic"
-);
-applyValidations(
-  "individualBillingLastName",
-  lastNameValidation,
-  "individualIdentic"
-);
-applyValidations("individualBillingEmail", emailValidation, "individualIdentic");
-applyValidations("individualBillingPhone", phoneValidation, "individualIdentic");
-applyValidations(
-  "individualBillingAddress",
-  addressValidations,
-  "individualIdentic"
-);
-applyValidations(
-  "individualBillingCounty",
-  addressValidations,
-  "individualIdentic"
-);
-applyValidations(
-  "individualBillingCity",
-  addressValidations,
-  "individualIdentic"
-);
-applyValidations(
-  "individualBillingPostal",
-  addressValidations,
-  "individualIdentic"
-);
-
-
-
-
-// juridic
-applyValidations(
-  "juridicShippingFirstName",
-  firstNameValidation,
-  "juridic"
-);
-applyValidations(
-  "juridicShippingLastName",
-  lastNameValidation,
-  "juridic"
-);
-applyValidations("juridicShippingEmail", emailValidation, "juridic");
-applyValidations("juridicShippingPhone", phoneValidation, "juridic");
-applyValidations(
-  "juridicShippingAddress",
-  addressValidations,
-  "juridic"
-);
-applyValidations(
-  "juridicShippingCounty",
-  addressValidations,
-  "juridic"
-);
-applyValidations("juridicShippingCity", addressValidations, "juridic");
-applyValidations(
-  "juridicShippingPostal",
-  addressValidations,
-  "juridic"
-);
-applyValidations("companyName", registerCode, "juridic");
-applyValidations("registerNumber", companyName, "juridic");
-applyValidations("registerCode", registerNumber, "juridic");
-
-
-
-
-
-
-
-// juridicIdentic
-applyValidations(
-  "juridicShippingFirstName",
-  firstNameValidation,
-  "juridicIdentic"
-);
-applyValidations(
-  "juridicShippingLastName",
-  lastNameValidation,
-  "juridicIdentic"
-);
-applyValidations("juridicShippingEmail", emailValidation, "juridicIdentic");
-applyValidations("juridicShippingPhone", phoneValidation, "juridicIdentic");
-applyValidations(
-  "juridicShippingAddress",
-  addressValidations,
-  "juridicIdentic"
-);
-applyValidations(
-  "juridicShippingCounty",
-  addressValidations,
-  "juridicIdentic"
-);
-applyValidations("juridicShippingCity", addressValidations, "juridicIdentic");
-applyValidations(
-  "juridicShippingPostal",
-  addressValidations,
-  "juridicIdentic"
-);
-applyValidations("companyName", registerCode, "juridicIdentic");
-applyValidations("registerNumber", companyName, "juridicIdentic");
-applyValidations("registerCode", registerNumber, "juridicIdentic");
-applyValidations(
-  "juridicBillingFirstName",
-  firstNameValidation,
-  "juridicIdentic"
-);
-applyValidations(
-  "juridicBillingLastName",
-  lastNameValidation,
-  "juridicIdentic"
-);
-applyValidations("juridicBillingEmail", emailValidation, "juridicIdentic");
-applyValidations("juridicBillingPhone", phoneValidation, "juridicIdentic");
-applyValidations(
-  "juridicBillingAddress",
-  addressValidations,
-  "juridicIdentic"
-);
-applyValidations("juridicBillingCounty", addressValidations, "juridicIdentic");
-applyValidations("juridicBillingCity", addressValidations, "juridicIdentic");
-applyValidations("juridicBillingPostal", addressValidations, "juridicIdentic");
+function validateIndividualIdentic() {
+  applyValidations("individualBillingPostal", addressValidations, true);
+  applyValidations("individualBillingCity", addressValidations, true);
+  applyValidations("individualBillingCounty", addressValidations, true);
+  applyValidations("individualBillingAddress", addressValidations, true);
+  applyValidations("individualBillingPhone", phoneValidation, true);
+  applyValidations("individualBillingEmail", emailValidation, true);
+  applyValidations("individualBillingLastName", lastNameValidation, true);
+  applyValidations("individualBillingFirstName", firstNameValidation, true);
+  applyValidations("individualShippingPostal", addressValidations, true);
+  applyValidations("individualShippingCity", addressValidations, true);
+  applyValidations("individualShippingCounty", addressValidations, true);
+  applyValidations("individualShippingAddress", addressValidations, true);
+  applyValidations("individualShippingPhone", phoneValidation, true);
+  applyValidations("individualShippingEmail", emailValidation, true);
+  applyValidations("individualShippingLastName", lastNameValidation, true);
+  applyValidations("individualShippingFirstName", firstNameValidation, true);
+}
+function validateJuridic() {
+  applyValidations("registerCode", registerNumber, true);
+  applyValidations("registerNumber", companyName, true);
+  applyValidations("companyName", registerCode, true);
+  applyValidations("juridicShippingPostal", addressValidations, true);
+  applyValidations("juridicShippingCity", addressValidations, true);
+  applyValidations("juridicShippingCounty", addressValidations, true);
+  applyValidations("juridicShippingAddress", addressValidations, true);
+  applyValidations("juridicShippingPhone", phoneValidation, true);
+  applyValidations("juridicShippingEmail", emailValidation, true);
+  applyValidations("juridicShippingLastName", lastNameValidation, true);
+  applyValidations("juridicShippingFirstName", firstNameValidation, true);
+}
+function validateJuridicIdentic() {
+  applyValidations("juridicBillingPostal", addressValidations, true);
+  applyValidations("juridicBillingCity", addressValidations, true);
+  applyValidations("juridicBillingCounty", addressValidations, true);
+  applyValidations("juridicBillingAddress", addressValidations, true);
+  applyValidations("juridicBillingPhone", phoneValidation, true);
+  applyValidations("juridicBillingEmail", emailValidation, true);
+  applyValidations("juridicBillingLastName", lastNameValidation, true);
+  applyValidations("juridicBillingFirstName", firstNameValidation, true);
+  applyValidations("registerCode", registerNumber, true);
+  applyValidations("registerNumber", companyName, true);
+  applyValidations("companyName", registerCode, true);
+  applyValidations("juridicShippingPostal", addressValidations, true);
+  applyValidations("juridicShippingCity", addressValidations, true);
+  applyValidations("juridicShippingCounty", addressValidations, true);
+  applyValidations("juridicShippingAddress", addressValidations, true);
+  applyValidations("juridicShippingPhone", phoneValidation, true);
+  applyValidations("juridicShippingEmail", emailValidation, true);
+  applyValidations("juridicShippingLastName", lastNameValidation, true);
+  applyValidations("juridicShippingFirstName", firstNameValidation, true);
+}
