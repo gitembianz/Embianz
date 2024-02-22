@@ -1,6 +1,6 @@
 @if (session()->has("notification"))
     {{-- aici se afla notificarea noua --}}
-    <div class="notifications">
+    {{-- <div class="notifications">
         <div class="toast {{ session("notification.type", "info") }}" id="alertevent">
             @php
                 // Determine the SVG code based on the type
@@ -62,8 +62,8 @@
                 </svg>
             </button>
         </div>
-    </div>
-    <script>
+    </div> --}}
+    {{-- <script>
         var element = document.getElementById('alertevent');
         if (element) {
             element.style.transition = 'opacity 0.6s ease';
@@ -83,5 +83,10 @@
                 });
             }
         }
-    </script>
+    </script> --}}
+    <div>
+        <h3>Lorem, ipsum dolor.</h3>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti dolorem vero natus.</p>
+        <button>x</button>
+    </div>
 @endif

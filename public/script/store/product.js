@@ -30,7 +30,7 @@ function sliderProduct(sliderId, modalId) {
     !body
   ) {
     console.log(
-      "Elementele necesare pentru slider product sau modal nu au fost găsite."
+      "Elementele necesare pentru slider product sau modal nu au fost găsite.",
     );
     return;
   }
@@ -111,7 +111,7 @@ function sliderProduct(sliderId, modalId) {
 
   function createThumb(slide, index) {
     const existingThumbnail = pagination.querySelector(
-      `.thumbnail[data-index="${index}"]`
+      `.thumbnail[data-index="${index}"]`,
     );
 
     if (existingThumbnail) {
@@ -202,7 +202,7 @@ function sliderProduct(sliderId, modalId) {
           body.style.overflow = "hidden"; // Blochează scroll-ul paginii
         } else {
           console.error(
-            "Elementul <img> nu a fost găsit în cadrul slide-ului."
+            "Elementul <img> nu a fost găsit în cadrul slide-ului.",
           );
         }
       }

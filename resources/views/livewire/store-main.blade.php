@@ -1,5 +1,5 @@
 <div>
-    <script rel="preload" src="script/store/main.js" as="script"></script>
+    {{-- <script rel="preload" src="script/store/main.js" as="script"></script> --}}
     <main>
         <!---------------------------------------------------------->
         <!---------------------- Slider Images --------------------->
@@ -50,7 +50,6 @@
                         </a>
                         {{-- End Modelul de schimb de imagini pe slider la rezolutie --}}
                     @endforeach
-
                 </div>
                 <button class="main-slider__button prev" aria-label="Previous main slider">
                     <svg>
@@ -101,7 +100,7 @@
                                 <?php
                                 $price = null;
                                 $discount = false;
-                                
+
                                 if ($product->product_prices->count() != 0) {
                                     $price = number_format($product->product_prices->first()->value, 2, ',', '.');
                                     $discount = $product->product_prices->first()->discount != 0 ? true : false;
