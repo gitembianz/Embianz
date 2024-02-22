@@ -40,7 +40,7 @@
   align-items: center;
   justify-content: center;
 
-  &>svg {
+  & > svg {
     stroke: $text;
     transform: scale(1.05);
   }
@@ -57,10 +57,10 @@
   justify-content: space-between;
   gap: 8px;
 
-  &>h2 {
+  & > h2 {
     color: $background;
     font-size: 18px;
-    font-weight: 400;
+    font-weight: 500;
     line-height: 150%;
   }
 }
@@ -69,7 +69,7 @@
   position: relative;
   width: 100%;
 
-  &>input {
+  & > input {
     width: 100%;
     height: 40px;
     border: none;
@@ -85,7 +85,7 @@
     }
   }
 
-  &>button {
+  & > button {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -96,7 +96,7 @@
     color: $background;
     text-transform: uppercase;
     font-size: 14px;
-    font-weight: 400;
+    font-weight: 500;
     padding: 0 10px;
     border: none;
     border-radius: 5px;
@@ -143,7 +143,7 @@
 .footer__link {
   color: lighten($color: $text, $amount: 50%);
   line-height: 150%;
-  font-weight: 400;
+  font-weight: 500;
   font-size: 14px;
   text-decoration: none;
 }
@@ -153,7 +153,7 @@
 //<------------------------------- Copyright ----==---------------------->
 .footer__copyright {
   width: 100%;
-  font-weight: 400;
+  font-weight: 500;
   line-height: 150%;
   color: lighten($color: $text, $amount: 50%);
   font-size: 14px;
@@ -170,9 +170,9 @@
   justify-content: center;
   gap: 10px;
 
-  &>input {
+  & > input {
     border-color: $background;
-    transform: scale(.8);
+    transform: scale(0.8);
     min-width: 30px;
 
     &:checked {
@@ -180,7 +180,7 @@
     }
   }
 
-  &>label {
+  & > label {
     // flex: 1;
     font-size: 14px;
     color: $background;
@@ -189,7 +189,7 @@
     text-wrap: pretty;
     // width: 100%;
 
-    &>a {
+    & > a {
       color: $background;
       text-decoration: underline;
       font-size: 14px;

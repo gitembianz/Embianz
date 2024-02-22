@@ -2,154 +2,156 @@
 const firstNameValidation = [
   {
     validation: (value) => value.trim() !== "",
-    message: "First name cannot be empty",
+    message: "Numele nu poate fi gol",
   },
   {
     validation: (value) => value.length >= 2,
-    message: "First name must be at least 2 characters long",
+    message: "Numele trebuie să aibă cel puțin 2 caractere",
   },
   {
     validation: (value) => value.length <= 20,
-    message: "The number of characters entered for the name is too long.",
+    message: "Numărul de caractere introduse pentru nume este prea mare.",
   },
   {
     validation: (value) => !/\s{3,}/.test(value),
-    message: "First name cannot contain consecutive spaces.",
+    message: "Numele nu poate conține spații consecutive.",
   },
   {
     validation: (value) => /^[a-zA-Z\s]*$/.test(value),
-    message: "First name can only contain letters and spaces",
+    message: "Numele poate conține doar litere și spații",
   },
 ];
 const lastNameValidation = [
   {
     validation: (value) => value.trim() !== "",
-    message: "Last name cannot be empty",
+    message: "Prenumele nu poate fi gol",
   },
   {
     validation: (value) => value.length >= 2,
-    message: "Last name must be at least 2 characters long",
+    message: "Prenumele trebuie să aibă cel puțin 2 caractere",
   },
   {
     validation: (value) => !/\s{3,}/.test(value),
-    message: "Last name cannot contain consecutive spaces.",
+    message: "Prenumele nu poate conține spații consecutive.",
   },
   {
     validation: (value) => value.length <= 20,
-    message: "The number of characters entered for the last name is too long.",
+    message: "Numărul de caractere introduse pentru prenume este prea mare.",
   },
   {
     validation: (value) => /^[a-zA-Z\s]*$/.test(value),
-    message: "Last name can only contain letters and spaces",
+    message: "Prenumele poate conține doar litere și spații",
   },
 ];
 const emailValidation = [
   {
     validation: (value) => value.trim() !== "",
-    message: "Email cannot be empty",
+    message: "Emailul nu poate fi gol",
   },
   {
     validation: (value) =>
       /^[a-zA-Z0-9._+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value),
-    message: "Please enter a valid email address.",
+    message: "Te rog introdu o adresă de email validă.",
   },
   {
     validation: (value) => !/\s{2,}/.test(value),
-    message: "Email cannot contain consecutive spaces.",
+    message: "Emailul nu poate conține spații consecutive.",
   },
   {
     validation: (value) => value.length >= 6,
-    message: "Email address is too short. Please enter a longer email address.",
+    message:
+      "Adresa de email este prea scurtă. Te rog introdu o adresă de email mai lungă.",
   },
   {
     validation: (value) => value.length <= 255,
-    message: "Email address is too long. Please enter a shorter email address.",
+    message:
+      "Adresa de email este prea lungă. Te rog introdu o adresă de email mai scurtă.",
   },
 ];
 const phoneValidation = [
   {
     validation: (value) => value.trim() !== "",
-    message: "Phone cannot be empty",
+    message: "Numărul de telefon nu poate fi gol",
   },
   {
     validation: (value) => /^[\d\-().+\s]+$/.test(value),
     message:
-      "Phone number can only contain digits, spaces, and characters +, -, (, and ).",
+      "Numărul de telefon poate conține doar cifre, spații și caracterele +, -, (, și ).",
   },
   {
     validation: (value) => !/\s{3,}/.test(value),
-    message: "Phone number cannot contain consecutive spaces.",
+    message: "Numărul de telefon nu poate conține spații consecutive.",
   },
   {
     validation: (value) =>
       value.replace(/[\s+\-.()]/g, "").length >= 5 &&
       value.replace(/[\s+\-.()]/g, "").length <= 15,
-    message: "Phone number length should be between 5 and 15 characters.",
+    message:
+      "Lungimea numărului de telefon trebuie să fie între 5 și 15 caractere.",
   },
 ];
 const addressValidations = [
   {
     validation: (value) => value.trim() !== "",
-    message: "Address cannot be empty",
+    message: "Adresa nu poate fi goală",
   },
   {
-    validation: (value) => value.length >= 5,
-    message: "Address is too short. Please enter a longer address.",
+    validation: (value) => value.length >= 1,
+    message: "Adresa este prea scurtă. Te rog introdu o adresă mai lungă.",
   },
   {
     validation: (value) => /^[a-zA-Z0-9/., _'\-`]*$/.test(value),
-    message:
-      "Address can only contain letters, digits, and the symbols: ( ), , .",
+    message: "Adresa poate conține doar litere, cifre și simbolurile: ( ), , .",
   },
   {
     validation: (value) => !/\s{3,}/.test(value),
-    message: "Address cannot contain consecutive spaces.",
+    message: "Adresa nu poate conține spații consecutive.",
   },
   {
     validation: (value) => value.length <= 100,
-    message: "Address is too long. Please enter a shorter address.",
+    message: "Adresa este prea lungă. Te rog introdu o adresă mai scurtă.",
   },
 ];
 const companyName = [
   {
     validation: (value) => value.trim() !== "",
-    message: "Company Name cannot be empty",
+    message: "Numele companiei nu poate fi gol",
   },
   {
     validation: (value) => /^[a-zA-Z0-9/., _'\-`]*$/.test(value),
-    message: "Company Name can only contain letters and digits",
+    message: "Numele companiei poate conține doar litere și cifre",
   },
   {
     validation: (value) => !/\s{3,}/.test(value),
-    message: "Company Name cannot contain consecutive spaces.",
+    message: "Numele companiei nu poate conține spații consecutive.",
   },
 ];
 const registerCode = [
   {
     validation: (value) => value.trim() !== "",
-    message: "Register code cannot be empty",
+    message: "Codul de înregistrare nu poate fi gol",
   },
   {
     validation: (value) => /^[a-zA-Z0-9]*$/.test(value),
-    message: "Register code can only contain letters and digits",
+    message: "Codul de înregistrare poate conține doar litere și cifre",
   },
   {
     validation: (value) => !/\s{3,}/.test(value),
-    message: "Register code cannot contain consecutive spaces.",
+    message: "Codul de înregistrare nu poate conține spații consecutive.",
   },
 ];
 const registerNumber = [
   {
     validation: (value) => value.trim() !== "",
-    message: "Register number cannot be empty",
+    message: "Numărul de înregistrare nu poate fi gol",
   },
   {
     validation: (value) => /^[0-9]*$/.test(value),
-    message: "Register number can only contain digits",
+    message: "Numărul de înregistrare poate conține doar cifre",
   },
   {
     validation: (value) => !/\s{3,}/.test(value),
-    message: "Register number cannot contain consecutive spaces.",
+    message: "Numărul de înregistrare nu poate conține spații consecutive.",
   },
 ];
 

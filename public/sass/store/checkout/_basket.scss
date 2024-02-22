@@ -24,7 +24,7 @@
   flex-direction: column;
   gap: 15px;
 
-  &>.basket__product>.basket__top {
+  & > .basket__product > .basket__top {
     padding-bottom: unset;
     border: none;
   }
@@ -59,7 +59,6 @@
     border-radius: 10px;
   }
 
-
   &::-webkit-scrollbar-thumb {
     background-color: $text;
     border-radius: 10px;
@@ -81,7 +80,7 @@
   border-radius: 7px;
   width: 100%;
 
-  &>.quantity {
+  & > .quantity {
     padding: 0;
     border: none;
 
@@ -106,7 +105,7 @@
   border-bottom: 1px solid $text;
   gap: 10px;
 
-  &>div {
+  & > div {
     width: 100%;
     display: flex;
     align-items: flex-start;
@@ -115,7 +114,7 @@
     flex-direction: column;
   }
 
-  &>img {
+  & > img {
     width: 50px;
     height: 50px;
     // background: $secondary;
@@ -126,7 +125,7 @@
     mix-blend-mode: multiply;
   }
 
-  &>.basket__action {
+  & > .basket__action {
     width: auto;
     display: block;
     flex: 0;
@@ -135,14 +134,14 @@
 
 .basket__price {
   font-size: 14px;
-  font-weight: 400;
+  font-weight: 500;
   color: lighten($color: $text, $amount: 20%);
   text-transform: uppercase;
 }
 
 .basket__title {
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
   color: $text;
   margin: 0;
   text-decoration: none;
@@ -157,24 +156,23 @@
   background: transparent;
   border: none;
   border-radius: 50px;
-  transition: all .3s ease-in-out;
+  transition: all 0.3s ease-in-out;
   display: flex;
 
   // @media (max-width: map-get($grid-breakpoints, sm)) {
   //   display: none;
   // }
 
-  &>svg {
+  & > svg {
     stroke: $text;
     // transition: all .3s ease-in-out;
-
   }
 
   &:hover {
     background: $text;
     border: 1px solid #fff;
 
-    &>svg {
+    & > svg {
       stroke: $secondary;
     }
   }
@@ -190,18 +188,18 @@
   border: none;
   border-radius: 50px;
 
-  &>svg {
+  & > svg {
     fill: #a9a9a9;
   }
 
   &:hover {
-    &>svg {
+    & > svg {
       fill: #d2042d;
     }
   }
 
   &.active {
-    &>svg {
+    & > svg {
       fill: #d2042d;
     }
   }
@@ -241,7 +239,7 @@
     background: #d2042d;
     color: $secondary;
 
-    &>svg {
+    & > svg {
       stroke: $secondary;
     }
   }
@@ -287,7 +285,7 @@
     background: $text;
     color: $secondary;
 
-    &>svg {
+    & > svg {
       stroke: $secondary;
     }
   }
@@ -299,7 +297,7 @@
   justify-content: space-between;
   gap: 10px;
   font-size: 15px;
-  font-weight: 400;
+  font-weight: 500;
   color: $text;
   width: 100%;
 
