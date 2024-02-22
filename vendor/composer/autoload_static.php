@@ -441,8 +441,7 @@ class ComposerStaticInitdbceb679be78fc0f2f620fcaf24d3e3e
         ),
         'Maatwebsite\\Excel\\' => 
         array (
-            0 => __DIR__ . '/..' . '/maatwebsite/src',
-            1 => __DIR__ . '/..' . '/maatwebsite/excel/src',
+            0 => __DIR__ . '/..' . '/maatwebsite/excel/src',
         ),
         'Livewire\\' => 
         array (

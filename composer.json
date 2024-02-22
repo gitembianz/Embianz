@@ -34,8 +34,7 @@
     "psr-4": {
       "App\\": "app/",
       "Database\\Factories\\": "database/factories/",
-      "Database\\Seeders\\": "database/seeders/",
-      "Maatwebsite\\Excel\\": "vendor/maatwebsite/src"
+      "Database\\Seeders\\": "database/seeders/"
     }
   },
   "autoload-dev": {

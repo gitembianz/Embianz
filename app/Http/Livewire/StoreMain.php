@@ -14,7 +14,7 @@ class StoreMain extends Component
   public function getSliderItemsProperty()
   {
     return Category::select('id', 'slider_sequence')->where('slider_sequence', '!=', '0')->with(['media' => function ($query) {
-      $query->select('path', 'name')->where('type', 'original');
+      $query->select('path', 'name', 'sequence')->where('type', 'original');
     }])->orderby('sequence')->get();
   }
 
