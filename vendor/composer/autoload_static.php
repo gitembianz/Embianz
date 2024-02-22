@@ -128,7 +128,6 @@ class ComposerStaticInitdbceb679be78fc0f2f620fcaf24d3e3e
             'Monolog\\' => 8,
             'Mockery\\' => 8,
             'Matrix\\' => 7,
-            'Maatwebsite\\Excel\\' => 18,
         ),
         'L' => 
         array (
@@ -437,10 +436,6 @@ class ComposerStaticInitdbceb679be78fc0f2f620fcaf24d3e3e
         'Matrix\\' => 
         array (
             0 => __DIR__ . '/..' . '/markbaker/matrix/classes/src',
-        ),
-        'Maatwebsite\\Excel\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/maatwebsite/src',
         ),
         'Livewire\\' => 
         array (
