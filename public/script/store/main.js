@@ -3,12 +3,15 @@
 function slider(sliderID) {
   const slider = document.querySelector(sliderID);
   const wrapper = document.querySelector(`${sliderID}__wrapper`);
-  const sliderControl = document.querySelectorAll(`${sliderID}__button`);
+  // const sliderControl = document.querySelectorAll(`${sliderID}__button`);
 
-  if (!slider || !wrapper || !sliderControl.length) {
+  const buttonPrev = document.querySelector(`${sliderID}__button.prev`);
+  const buttonNext = document.querySelector(`${sliderID}__button.next`);
+
+  if (!slider || !wrapper || !buttonPrev || !buttonNext) {
     return;
   } else {
-    const firstCardWidth = wrapper.querySelector(
+    let firstCardWidth = wrapper.querySelector(
       `${sliderID}__slide`,
     ).offsetWidth;
     const wrapperChildrens = [...wrapper.children];
@@ -41,12 +44,14 @@ function slider(sliderID) {
     wrapper.classList.remove("no-transition");
 
     // Add event listeners for the arrow buttons to scroll the wrapper left and right
-    sliderControl.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        wrapper.scrollLeft += btn.classList.contains("prev")
-          ? -firstCardWidth
-          : firstCardWidth;
-      });
+    buttonPrev.addEventListener("click", () => {
+      // Derulează sliderul spre stânga cu o distanță egală cu lățimea primei cărți
+      wrapper.scrollLeft -= firstCardWidth;
+    });
+
+    buttonNext.addEventListener("click", () => {
+      // Derulează sliderul spre dreapta cu o distanță egală cu lățimea primei cărți
+      wrapper.scrollLeft += firstCardWidth;
     });
 
     const dragStart = (e) => {
@@ -61,6 +66,7 @@ function slider(sliderID) {
       if (!isDragging) return; // if isDragging is false return from here
       // Updates the scroll position of the wrapper based on the cursor movement
       wrapper.scrollLeft = startScrollLeft - (e.pageX - startX);
+      // wrapper.scrollIntoView({ behavior: "smooth", block: "nearest" });
       wrapper.style.cursor = "grabbing";
       wrapperChildrens.forEach((card) => {
         card.style.pointerEvents = "none";
@@ -108,6 +114,20 @@ function slider(sliderID) {
     };
     autoPlay();
 
+    const adjustInitialScrollPosition = () => {
+      wrapper.scrollLeft = wrapper.offsetWidth;
+    };
+
+    const resizeHandler = () => {
+      // Recalculează lățimea primei cărți în funcție de dimensiunea actualizată a ferestrei de browser
+      firstCardWidth = wrapper.querySelector(`${sliderID}__slide`).offsetWidth;
+      // Reajustăm poziția de scroll initială pentru a menține consistența în cazul redimensionărilor
+      adjustInitialScrollPosition();
+    };
+
+    // Adaugă evenimentul de redimensionare la fereastra browser-ului
+    window.addEventListener("resize", resizeHandler);
+
     wrapper.addEventListener("mousedown", dragStart);
     wrapper.addEventListener("mousemove", dragging);
     document.addEventListener("mouseup", dragStop);
@@ -116,6 +136,7 @@ function slider(sliderID) {
     slider.addEventListener("mouseleave", autoPlay);
   }
 }
+
 //<------------------------- End Slider-Images ------------------------->
 //<--------------------------------------------------------------------->
 //<---------------------------- Add to Cart ---------------------------->
