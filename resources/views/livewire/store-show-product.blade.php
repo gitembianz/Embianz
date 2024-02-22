@@ -1,5 +1,5 @@
 <div id="store-show-product">
-    <script rel="preload" src="script/store/product.js" as="script"></script>
+    {{-- <script rel="preload" src="/script/store/product.js" as="script"></script> --}}
 
     <div class="breadcrumbs container">
         <a class="breadcrumbs__link" href="{{ url("/") }}">

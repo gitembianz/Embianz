@@ -1,5 +1,5 @@
 <div wire:scroll="loadMore">
-    <script rel="preload" src="script/store/catalog.js" as="script"></script>
+    {{-- <script rel="preload" src="script/store/catalog.js" as="script"></script> --}}
 
     <!-- Acesta este Store Products (Catalogol Magazinului), acesta
     are sistemul de filtre, card-uri, si stilul Catalogului -->

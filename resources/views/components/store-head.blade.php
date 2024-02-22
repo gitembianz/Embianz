@@ -12,7 +12,7 @@
         <link rel="preload" href="/dist/css/store.css" as="style">
         <link rel="stylesheet" href="/dist/css/loading-screen.css">
         <link rel="stylesheet" href="/dist/css/store.css">
-        <script rel="preload" src="script/store/head.js" as="script"></script>
+        {{-- <script rel="preload" src="script/store/head.js" as="script"></script> --}}
         @livewireStyles
 
         {{-- ----------------------------------------------------------- --}}

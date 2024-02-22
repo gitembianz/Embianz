@@ -162,3 +162,39 @@
 
 //<----------------------------- End Copyright -------------------------->
 //<---------------------------------------------------------------------->
+
+.footer__checkbox {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  &>input {
+    border-color: $background;
+    transform: scale(.8);
+    min-width: 30px;
+
+    &:checked {
+      border-color: $background;
+    }
+  }
+
+  &>label {
+    // flex: 1;
+    font-size: 14px;
+    color: $background;
+    font-weight: 500;
+    line-height: 150%;
+    text-wrap: pretty;
+    // width: 100%;
+
+    &>a {
+      color: $background;
+      text-decoration: underline;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 150%;
+    }
+  }
+}

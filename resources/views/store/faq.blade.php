@@ -1,4 +1,4 @@
-<x-store-head :canonical=""faq"" :title='" FAQ | "' />
+<x-store-head :canonical='"faq"' :title='" FAQ | "' />
 <x-store-header />
 <main>
     <script rel="preload" src="script/store/faq.js" as="script"></script>
