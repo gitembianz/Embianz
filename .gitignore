@@ -4,7 +4,6 @@ public/dist/.DS_Store
 .DS_Store
 .gitignore
 storage/app/livewire-tmp
-.env
 public/dist/css/main.css.map
-.gitignore
 public/dist/css/loading-screen.css.map
+
