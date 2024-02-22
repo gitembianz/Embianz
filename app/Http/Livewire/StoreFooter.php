@@ -34,11 +34,7 @@ class StoreFooter extends Component
     ]);
     Subscribers::create($validatedData);
     $this->reset();
-    session()->flash('notification', [
-      'message' => 'Thank you for subscription!',
-      'type' => 'success',
-      'title' => 'Success'
-    ]);
+    session()->flash('subscribtion');
   }
 
   private function checkCookieConsent()

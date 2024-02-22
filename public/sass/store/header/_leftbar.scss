@@ -8,7 +8,7 @@
   opacity: 0;
   visibility: hidden;
   transform-origin: right;
-  transition: all .4s ease-in-out;
+  transition: all 0.4s ease-in-out;
   z-index: 500;
   // transform: translateX(100%);
 
@@ -22,7 +22,7 @@
     z-index: -500;
     background: $modal;
     opacity: 0;
-    transition: all .4s ease-in-out;
+    transition: all 0.4s ease-in-out;
     clip-path: circle(10% at 100% 50%);
   }
 
@@ -36,7 +36,7 @@
       clip-path: circle(150% at 100% 50%);
     }
 
-    &>.leftbar__content {
+    & > .leftbar__content {
       transform: translateX(0%);
     }
   }
@@ -73,7 +73,7 @@
   right: 0;
   top: 0;
   transform: translateX(100%);
-  transition: all .3s ease-in-out;
+  transition: all 0.3s ease-in-out;
   padding: 15px;
   padding-right: 20px;
   background-color: $background;
@@ -96,19 +96,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all .3s ease-in-out;
+  transition: all 0.3s ease-in-out;
   background-color: transparent;
 
   &:hover {
     background: $text;
     color: $background;
 
-    &>svg {
+    & > svg {
       stroke: $background;
     }
   }
 
-  &>svg {
+  & > svg {
     stroke: $text;
   }
 }
@@ -131,7 +131,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all .3s ease-in-out;
+  transition: all 0.3s ease-in-out;
   font-weight: 500;
   background-color: transparent;
   color: $text;
@@ -142,12 +142,12 @@
     background: $text;
     color: $background;
 
-    &>svg {
+    & > svg {
       stroke: $background;
     }
   }
 
-  &>svg {
+  & > svg {
     stroke: $text;
   }
 }
@@ -183,7 +183,6 @@
     border-radius: 10px;
   }
 
-
   &::-webkit-scrollbar-thumb {
     background-color: $text;
     border-radius: 10px;
@@ -193,7 +192,7 @@
 
 .leftbar__empty {
   font-size: 16px;
-  font-weight: 400;
+  font-weight: 500;
   color: $text;
   height: 100%;
   width: 100%;
@@ -212,7 +211,7 @@
   position: relative;
   padding: 7px;
   border-radius: 5px;
-  transition: all .3s ease-in-out;
+  transition: all 0.3s ease-in-out;
   background: $secondary;
 
   &:hover {
@@ -221,7 +220,7 @@
 
   &:not(:last-child) {
     &::after {
-      content: '';
+      content: "";
       width: 100%;
       height: 1px;
       display: block;
@@ -242,7 +241,7 @@
   gap: 10px;
   flex: 1;
 
-  &>span {
+  & > span {
     flex: 1;
     text-wrap: nowrap;
     word-break: break-word;
@@ -253,12 +252,12 @@
     width: 100%;
     height: 100%;
     color: $text;
-    font-weight: 400;
+    font-weight: 500;
     font-size: 14px;
     text-decoration: none;
   }
 
-  &>img {
+  & > img {
     width: 65px;
     height: 65px;
     object-fit: contain;
@@ -293,21 +292,21 @@
   height: 100%;
   width: 100%;
 
-  &>p {
+  & > p {
     font-size: 12px;
-    font-weight: 400;
+    font-weight: 500;
     text-transform: uppercase;
     color: $text;
   }
 
-  &>span {
+  & > span {
     color: $text;
-    font-weight: 400;
+    font-weight: 500;
     text-transform: uppercase;
     font-size: 12px;
   }
 
-  &>h4 {
+  & > h4 {
     font-size: 14px;
     color: $text;
     font-weight: 500;
@@ -324,17 +323,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all .3s ease-in-out;
+  transition: all 0.3s ease-in-out;
   background: transparent;
 
-  &>svg {
+  & > svg {
     stroke: $text;
   }
 
   &:hover {
     background: $text;
 
-    &>svg {
+    & > svg {
       stroke: $background;
     }
   }
@@ -359,9 +358,9 @@
   width: 100%;
   text-align: end;
 
-  &>span {
+  & > span {
     font-size: 16px;
-    font-weight: 400;
+    font-weight: 500;
     margin-left: 10px;
     color: $text;
   }
