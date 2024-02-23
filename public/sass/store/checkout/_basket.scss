@@ -43,7 +43,6 @@
   flex-direction: column;
   gap: 15px;
 
-  // Scrollbar Settings if its appear
   scrollbar-color: $text transparent;
   scrollbar-width: thin;
 
@@ -117,7 +116,6 @@
   & > img {
     width: 50px;
     height: 50px;
-    // background: $secondary;
     aspect-ratio: 1/1;
     object-fit: contain;
     object-position: center;
@@ -159,13 +157,8 @@
   transition: all 0.3s ease-in-out;
   display: flex;
 
-  // @media (max-width: map-get($grid-breakpoints, sm)) {
-  //   display: none;
-  // }
-
   & > svg {
     stroke: $text;
-    // transition: all .3s ease-in-out;
   }
 
   &:hover {
@@ -223,18 +216,6 @@
   font-weight: 500;
   display: none;
 
-  // @media (min-width: map-get($grid-breakpoints, xl)) {
-  // }
-
-  // @media (max-width: map-get($grid-breakpoints, xl)) {
-  //   grid-column: unset;
-  //   // display: none;
-  // }
-
-  // @media (max-width: map-get($grid-breakpoints, sm)) {
-  //   grid-column: 1/3;
-  // }
-
   &:hover {
     background: #d2042d;
     color: $secondary;
@@ -273,7 +254,6 @@
   }
 
   @media (max-width: map-get($grid-breakpoints, xl)) {
-    // grid-column: unset;
     display: none;
   }
 
