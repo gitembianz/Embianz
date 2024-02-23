@@ -14,16 +14,16 @@ use App\Models\Order_Item;
 
 class StoreOrder extends Component
 {
-  public $step;
-  public $individual = true;
-  public $juridic = false;
-  public $individual_identic = true;
-  public $juridic_identic = true;
+  public $step = 1;
   public $back = false;
   public $terms = false;
   public $errorterms = false;
-
-
+  public $session_id;
+  public $cash;
+  public $ordin;
+  // individual declaration
+  public $individual = true;
+  public $individual_identic = true;
   public $individual_billing_first;
   public $individual_billing_last;
   public $individual_billing_phone;
@@ -34,7 +34,6 @@ class StoreOrder extends Component
   public $individual_billing_county;
   public $individual_billing_city;
   public $individual_billing_zipcode;
-
   public $individual_shipping_first;
   public $individual_shipping_last;
   public $individual_shipping_phone;
@@ -46,6 +45,9 @@ class StoreOrder extends Component
   public $individual_shipping_city;
   public $individual_shipping_zipcode;
 
+  // Juridic declaration
+  public $juridic = false;
+  public $juridic_identic = true;
   public $juridic_billing_first;
   public $juridic_billing_last;
   public $juridic_billing_phone;
@@ -61,7 +63,6 @@ class StoreOrder extends Component
   public $juridic_billing_county;
   public $juridic_billing_city;
   public $juridic_billing_zipcode;
-
   public $juridic_shipping_first;
   public $juridic_shipping_last;
   public $juridic_shipping_phone;
@@ -72,9 +73,8 @@ class StoreOrder extends Component
   public $juridic_shipping_county;
   public $juridic_shipping_city;
   public $juridic_shipping_zipcode;
-  // public $card = false;
+
   public $rtc = true;
-  public $session_id;
   public $invoice = false;
   public $validatequantity = true;
   public $delivery = 'Plata cash la livrare';
@@ -106,13 +106,128 @@ class StoreOrder extends Component
       ->first() ?? null;
   }
 
+  public function getCartItemsProperty()
+  {
+    if ($this->cart) {
+      return Cart_Item::select('id', 'quantity', 'price', 'product_id')
+        ->where('cart_id', $this->cart->id)
+        ->with([
+          'product' => function ($query) {
+            $query->select('id', 'name', 'seo_id')->with([
+              'media' => function ($query) {
+                $query->select('path', 'name')->where('type', 'min');
+              },
+              'product_prices' => function ($query) {
+                $query->select('product_id', 'value', 'pricelist_id')
+                  ->with(['pricelist' => function ($query) {
+                    $query->select('id', 'currency_id')->with('currency:id,name');
+                  }]);
+              }
+            ]);
+          }
+        ])->get() ?? collect();
+    } else {
+      return collect();
+    }
+  }
 
-  //declaration juridic person
+  public function showindividual()
+  {
+    $this->individual = true;
+    $this->juridic = false;
+  }
+  public function showjuridic()
+  {
+    $this->individual = false;
+    $this->juridic = true;
+  }
+
+  public function previous()
+  {
+    $this->step--;
+    $this->resetErrorBag();
+  }
+
+  public function resetForm()
+  {
+    $this->reset([
+      'individual_billing_first', 'individual_billing_last', 'individual_billing_phone', 'individual_billing_email',
+      'individual_billing_address1', 'individual_billing_address2', 'individual_billing_county',
+      'individual_billing_city', 'individual_billing_zipcode',
+      'individual_shipping_first', 'individual_shipping_last', 'individual_shipping_phone', 'individual_shipping_email',
+      'individual_shipping_address1', 'individual_shipping_address2', 'individual_shipping_county',
+      'individual_shipping_city', 'individual_shipping_zipcode',
+      'juridic_billing_first', 'juridic_billing_last', 'juridic_billing_phone', 'juridic_billing_email',
+      'juridic_billing_company_name', 'juridic_billing_registration_code', 'juridic_billing_registration_number',
+      'juridic_billing_bank', 'juridic_billing_account',
+      'juridic_billing_address1', 'juridic_billing_address2', 'juridic_billing_county',
+      'juridic_billing_city', 'juridic_billing_zipcode',
+      'juridic_shipping_first', 'juridic_shipping_last', 'juridic_shipping_phone', 'juridic_shipping_email',
+      'juridic_shipping_address1', 'juridic_shipping_address2', 'juridic_shipping_county',
+      'juridic_shipping_city', 'juridic_shipping_zipcode'
+    ]);
+  }
+
+  public function next()
+  {
+    if (!$this->cartItems || !$this->cart) {
+      $this->back = true;
+    } else {
+      $this->resetErrorBag();
+      $this->validateData();
+      $this->step++;
+      if ($this->individual_identic) {
+        $this->individual_shipping_first = $this->individual_billing_first;
+        $this->individual_shipping_last = $this->individual_billing_last;
+        $this->individual_shipping_phone = $this->individual_billing_phone;
+        $this->individual_shipping_email = $this->individual_billing_email;
+        $this->individual_shipping_address1 = $this->individual_billing_address1;
+        $this->individual_shipping_address2 = $this->individual_billing_address2;
+        $this->individual_shipping_country = $this->individual_billing_country;
+        $this->individual_shipping_county = $this->individual_billing_county;
+        $this->individual_shipping_city = $this->individual_billing_city;
+        $this->individual_shipping_zipcode = $this->individual_billing_zipcode;
+      }
+      if ($this->juridic_identic) {
+        $this->juridic_shipping_first = $this->juridic_billing_first;
+        $this->juridic_shipping_last = $this->juridic_billing_last;
+        $this->juridic_shipping_phone = $this->juridic_billing_phone;
+        $this->juridic_shipping_email = $this->juridic_billing_email;
+        $this->juridic_shipping_address1 = $this->juridic_billing_address1;
+        $this->juridic_shipping_address2 = $this->juridic_billing_address2;
+        $this->juridic_shipping_country = $this->juridic_billing_country;
+        $this->juridic_shipping_county = $this->juridic_billing_county;
+        $this->juridic_shipping_city = $this->juridic_billing_city;
+        $this->juridic_shipping_zipcode = $this->juridic_billing_zipcode;
+      }
+      $this->cart->update([
+        'status_id' => app('global_cart_checkoutpayment')
+      ]);
+      $this->dispatchBrowserEvent('next_step');
+    }
+  }
+
+  public function mount()
+  {
+    $this->session_id = $this->getSessionId();
+    $this->cash = app('global_cash');
+    $this->ordin = app('global_ordin');
+
+    if (!$this->cartItems || !$this->cart) {
+      $this->back = true;
+    }
+    $this->individual_billing_country = app('global_default_country');
+    $this->individual_shipping_country = app('global_default_country');
+    $this->juridic_billing_country = app('global_default_country');
+    $this->juridic_shipping_country = app('global_default_country');
+  }
+
   public function render()
   {
     if ($this->step == 2) {
       $data = [
         'cartItems' => $this->cartItems,
+        'cart' => $this->cart
       ];
       return view('livewire.store-order', $data);
     } else {
@@ -120,59 +235,11 @@ class StoreOrder extends Component
     }
   }
 
-  public function mount()
-  {
-    $this->session_id = $this->getSessionId();
-
-    if (!$this->cartItems) {
-      $this->back = true;
-    }
-    $this->step = 1;
-    $this->individual_billing_country = app('global_default_country');
-    $this->individual_shipping_country = app('global_default_country');
-    $this->juridic_billing_country = app('global_default_country');
-    $this->juridic_shipping_country = app('global_default_country');
-  }
-  public function showindividual()
-  {
-    $this->individual = true;
-    $this->juridic = false;
-    $this->step = 1;
-    $this->individual_billing_country = $this->default_country;
-    $this->individual_shipping_country = $this->default_country;
-    $this->juridic_billing_country = $this->default_country;
-    $this->juridic_shipping_country = $this->default_country;
-  }
-  public function getCartItemsProperty()
-  {
-    if ($this->cart) {
-      $cartItems = Cart_Item::where('cart_id', $this->cart->id)
-        ->with([
-          'product.media' => function ($query) {
-            $query->where('type', 'min'); // Filter and limit the media relationship
-          },
-          'product.product_prices',
-          'product.product_prices.pricelist.currency',
 
 
-        ])->get();
-      if ($cartItems->count() == 0) {
-        $this->back = true;
-      }
-      return $cartItems;
-    }
-    return collect(); // Return an empty collection if no cart items are found
-  }
-  public function showjuridic()
-  {
-    $this->individual = false;
-    $this->juridic = true;
-    $this->step = 1;
-    $this->individual_billing_country = $this->default_country;
-    $this->individual_shipping_country = $this->default_country;
-    $this->juridic_billing_country = $this->default_country;
-    $this->juridic_shipping_country = $this->default_country;
-  }
+
+
+
   public function confirm()
   {
     if ($this->terms == false) {
@@ -359,73 +426,9 @@ class StoreOrder extends Component
       $this->emit('orderprocess');
     }
   }
-  public function next()
-  {
-    if ($this->cart) {
-      $this->resetErrorBag();
-      $this->validateData();
-      if ($this->delivery == NULL) {
-        session()->flash('notification', [
-          'message' => 'Please select a payment method',
-          'type' => 'warning',
-          'title' => 'Payment method'
-        ]);
-      } else {
-        $this->step++;
-        if ($this->individual_identic == true) {
-          $this->individual_shipping_first = $this->individual_billing_first;
-          $this->individual_shipping_last = $this->individual_billing_last;
-          $this->individual_shipping_phone = $this->individual_billing_phone;
-          $this->individual_shipping_email = $this->individual_billing_email;
-          $this->individual_shipping_address1 = $this->individual_billing_address1;
-          $this->individual_shipping_address2 = $this->individual_billing_address2;
-          $this->individual_shipping_country = $this->individual_billing_country;
-          $this->individual_shipping_county = $this->individual_billing_county;
-          $this->individual_shipping_city = $this->individual_billing_city;
-          $this->individual_shipping_zipcode = $this->individual_billing_zipcode;
-        }
-        if ($this->juridic_identic == true) {
-          $this->juridic_shipping_first = $this->juridic_billing_first;
-          $this->juridic_shipping_last = $this->juridic_billing_last;
-          $this->juridic_shipping_phone = $this->juridic_billing_phone;
-          $this->juridic_shipping_email = $this->juridic_billing_email;
-          $this->juridic_shipping_address1 = $this->juridic_billing_address1;
-          $this->juridic_shipping_address2 = $this->juridic_billing_address2;
-          $this->juridic_shipping_country = $this->juridic_billing_country;
-          $this->juridic_shipping_county = $this->juridic_billing_county;
-          $this->juridic_shipping_city = $this->juridic_billing_city;
-          $this->juridic_shipping_zipcode = $this->juridic_billing_zipcode;
-        }
-      }
-      $this->dispatchBrowserEvent('next_step');
-    } else {
-      $this->emit('nocard');
-    }
-  }
-  public function previous()
-  {
-    $this->step--;
-    $this->resetErrorBag();
-  }
-  public function resetForm()
-  {
-    $this->reset([
-      'individual_billing_first', 'individual_billing_last', 'individual_billing_phone', 'individual_billing_email',
-      'individual_billing_address1', 'individual_billing_address2', 'individual_billing_county',
-      'individual_billing_city', 'individual_billing_zipcode',
-      'individual_shipping_first', 'individual_shipping_last', 'individual_shipping_phone', 'individual_shipping_email',
-      'individual_shipping_address1', 'individual_shipping_address2', 'individual_shipping_county',
-      'individual_shipping_city', 'individual_shipping_zipcode',
-      'juridic_billing_first', 'juridic_billing_last', 'juridic_billing_phone', 'juridic_billing_email',
-      'juridic_billing_company_name', 'juridic_billing_registration_code', 'juridic_billing_registration_number',
-      'juridic_billing_bank', 'juridic_billing_account',
-      'juridic_billing_address1', 'juridic_billing_address2', 'juridic_billing_county',
-      'juridic_billing_city', 'juridic_billing_zipcode',
-      'juridic_shipping_first', 'juridic_shipping_last', 'juridic_shipping_phone', 'juridic_shipping_email',
-      'juridic_shipping_address1', 'juridic_shipping_address2', 'juridic_shipping_county',
-      'juridic_shipping_city', 'juridic_shipping_zipcode'
-    ]);
-  }
+
+
+
   public function validateData()
   {
 

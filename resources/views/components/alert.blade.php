@@ -1,12 +1,12 @@
-@if (session()->has("notification"))
+@if (session()->has('notification'))
     {{-- aici se afla notificarea noua --}}
-    {{-- <div class="notifications">
-        <div class="toast {{ session("notification.type", "info") }}" id="alertevent">
+    <div class="notifications">
+        <div class="toast {{ session('notification.type', 'info') }}" id="alertevent">
             @php
                 // Determine the SVG code based on the type
-                $svg = "";
-                switch (session("notification.type", "info")) {
-                    case "success":
+                $svg = '';
+                switch (session('notification.type', 'info')) {
+                    case 'success':
                         $svg = '<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 50.00 50.00" xml:space="preserve" width="64px"
                     height="64px" fill="#000000">
@@ -21,7 +21,7 @@
                     </g>
                 </svg>';
                         break;
-                    case "warning":
+                    case 'warning':
                         $svg = '<svg style="fill: yellow;stroke: black;" viewBox="0 0 32 32">
                                   <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                                   <g id="SVGRepo_iconCarrier">
@@ -29,7 +29,7 @@
                                   </g>
                                 </svg>';
                         break;
-                    case "error":
+                    case 'error':
                         $svg = '<svg style="fill: red;stroke: black;" viewBox="0 0 1200 1200">
                                   <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                                   <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -42,15 +42,15 @@
                         break;
                     default:
                         // If the type is not recognized, use default success SVG
-                        $svg = "";
+                        $svg = '';
                         break;
                 }
             @endphp
             {!! $svg !!}
 
             <div class="toast__text">
-                <h3><strong>{{ session("notification.title", "Info") }}</h3>
-                <span>{!! session("notification.message") !!}</span>
+                <h3><strong>{{ session('notification.title', 'Info') }}</h3>
+                <span>{!! session('notification.message') !!}</span>
             </div>
             <button type="button" class="close-button cursor-p" data-bs-dismiss="alertevent" aria-hidden="true"
                 style="border: none">
@@ -62,8 +62,8 @@
                 </svg>
             </button>
         </div>
-    </div> --}}
-    {{-- <script>
+    </div>
+    <script>
         var element = document.getElementById('alertevent');
         if (element) {
             element.style.transition = 'opacity 0.6s ease';
@@ -83,10 +83,5 @@
                 });
             }
         }
-    </script> --}}
-    <div>
-        <h3>Lorem, ipsum dolor.</h3>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti dolorem vero natus.</p>
-        <button>x</button>
-    </div>
+    </script>
 @endif
