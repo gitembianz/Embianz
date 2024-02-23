@@ -2,7 +2,6 @@
   position: relative;
   width: 100%;
   overflow: hidden;
-
   width: calc(100% + 40px);
   display: inline-flex;
   margin-left: -20px;
@@ -43,7 +42,6 @@
 }
 
 .product-slider__pagination {
-  // display: none;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -84,7 +82,6 @@
   & > img,
   & > video {
     width: calc(100% / 4 - 20px);
-    // background: $secondary;
     height: auto;
     aspect-ratio: 1 / 1;
     object-fit: contain;
