@@ -4,14 +4,13 @@
   justify-content: flex-start;
   flex-wrap: wrap;
   gap: 5px;
-  // --------------
   position: sticky;
   top: 60px;
   z-index: 100;
   background: $background;
   padding-top: 10px;
   padding-bottom: 10px;
-  transition: all .3s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 
 .breadcrumbs__link {
@@ -29,7 +28,6 @@
   &:hover {
     color: darken($color: $text, $amount: 10%);
   }
-
 
   &:not(:last-child)::after {
     content: "/";

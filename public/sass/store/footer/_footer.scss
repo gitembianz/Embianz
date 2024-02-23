@@ -181,13 +181,12 @@
   }
 
   & > label {
-    // flex: 1;
     font-size: 14px;
     color: $background;
     font-weight: 500;
     line-height: 150%;
     text-wrap: pretty;
-    // width: 100%;
+    width: 100%;
 
     & > a {
       color: $background;

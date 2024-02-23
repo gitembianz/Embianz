@@ -114,15 +114,15 @@ function slider(sliderID) {
     };
     autoPlay();
 
-    const adjustInitialScrollPosition = () => {
-      wrapper.scrollLeft = wrapper.offsetWidth;
-    };
+    // const adjustInitialScrollPosition = () => {
+    //   wrapper.scrollLeft = wrapper.offsetWidth;
+    // };
 
     const resizeHandler = () => {
       // Recalculează lățimea primei cărți în funcție de dimensiunea actualizată a ferestrei de browser
       firstCardWidth = wrapper.querySelector(`${sliderID}__slide`).offsetWidth;
       // Reajustăm poziția de scroll initială pentru a menține consistența în cazul redimensionărilor
-      adjustInitialScrollPosition();
+      // adjustInitialScrollPosition();
     };
 
     // Adaugă evenimentul de redimensionare la fereastra browser-ului
