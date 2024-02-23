@@ -132,6 +132,7 @@ return array(
     'App\\Providers\\JetstreamServiceProvider' => $baseDir . '/app/Providers/JetstreamServiceProvider.php',
     'App\\Providers\\RouteServiceProvider' => $baseDir . '/app/Providers/RouteServiceProvider.php',
     'App\\View\\Components\\Alert' => $baseDir . '/app/View/Components/Alert.php',
+    'App\\View\\Components\\AlertNewsletter' => $baseDir . '/app/View/Components/AlertNewsletter.php',
     'App\\View\\Components\\AppLayout' => $baseDir . '/app/View/Components/AppLayout.php',
     'App\\View\\Components\\Dashboardfooter' => $baseDir . '/app/View/Components/Dashboardfooter.php',
     'App\\View\\Components\\Dashboardheader' => $baseDir . '/app/View/Components/Dashboardheader.php',
