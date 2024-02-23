@@ -7,7 +7,6 @@
   justify-content: space-between;
   gap: 10px;
   padding: 10px;
-  // background: $text;
   border-radius: 7px;
   max-height: 50vh;
   min-height: 400px;
@@ -47,15 +46,15 @@
         border-radius: 0;
       }
 
-      &>.details__content:first-child {
+      & > .details__content:first-child {
         display: none;
       }
 
-      &>.details__content>.voucher {
+      & > .details__content > .voucher {
         display: none;
       }
 
-      &>.voucher__error {
+      & > .voucher__error {
         display: none;
       }
     }
@@ -69,7 +68,6 @@
   justify-content: space-between;
   gap: 10px;
   padding: 10px;
-  // background: $text;
   border-radius: 7px;
   display: none;
 
@@ -106,16 +104,16 @@
   padding-bottom: 10px;
   border-bottom: 1px solid $text;
 
-  &>h3 {
+  & > h3 {
     font-size: 14px;
     font-weight: 500;
     color: $text;
     margin: 0;
   }
 
-  &>span {
+  & > span {
     font-size: 14px;
-    font-weight: 400;
+    font-weight: 500;
     color: $text;
     margin: 0;
   }
@@ -126,7 +124,7 @@
   height: 40px;
   position: relative;
 
-  &>input {
+  & > input {
     width: 100%;
     border-radius: 5px;
     height: 100%;
@@ -143,7 +141,7 @@
     }
   }
 
-  &>button {
+  & > button {
     position: absolute;
     top: 50%;
     right: 5px;
@@ -153,9 +151,9 @@
     align-items: center;
     justify-content: center;
     font-size: 14px;
+    font-weight: 500;
     color: $background;
     background: $text;
-    // border: 1px solid $text;
     text-transform: uppercase;
     border: none;
     border-radius: 5px;
@@ -214,7 +212,7 @@
   background: $secondary;
   transition: all 0.3s ease-in-out;
 
-  &>svg {
+  & > svg {
     stroke: $text;
     transform: scale(0.7);
   }
@@ -223,7 +221,7 @@
     background: $text;
     border: 1px solid $secondary;
 
-    &>svg {
+    & > svg {
       stroke: $secondary;
     }
   }

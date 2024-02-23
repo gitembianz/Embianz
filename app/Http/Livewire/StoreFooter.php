@@ -12,6 +12,7 @@ class StoreFooter extends Component
   public $response = null;
   public $cookieConsent;
   public $advance =  false;
+  public $ischecked = false;
   public function mount()
   {
     $this->cookieConsent = $this->checkCookieConsent();
@@ -33,11 +34,7 @@ class StoreFooter extends Component
     ]);
     Subscribers::create($validatedData);
     $this->reset();
-    session()->flash('notification', [
-      'message' => 'Thank you for subscription!',
-      'type' => 'success',
-      'title' => 'Success'
-    ]);
+    session()->flash('subscribtion');
   }
 
   private function checkCookieConsent()

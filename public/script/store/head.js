@@ -15,7 +15,7 @@ function displayLoading() {
         new Date(
           currentDate.getFullYear(),
           currentDate.getMonth(),
-          currentDate.getDate() + 1
+          currentDate.getDate() + 1,
         ).toUTCString() +
         "; path=/";
 
