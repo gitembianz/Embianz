@@ -170,7 +170,7 @@ class StoreOrder extends Component
 
   public function next()
   {
-    if (!$this->cartItems || !$this->cart) {
+    if ($this->cartItems->isEmpty() || !$this->cart) {
       $this->back = true;
     } else {
       $this->resetErrorBag();
@@ -425,15 +425,33 @@ class StoreOrder extends Component
     }
   }
 
+  public function togglepayment($item)
+  {
+    if ($item == 'rtc') {
+      $this->payment = $this->cash['description'];
+      $this->rtc = true;
+      $this->invoice = false;
+    }
+    if ($item == 'invoice') {
+      $this->payment = $this->ordin['description'];
+      $this->rtc = false;
+      $this->invoice = true;
+    }
+  }
+
   public function mount()
   {
     $this->session_id = $this->getSessionId();
     $this->cash = app('global_cash');
     $this->ordin = app('global_ordin');
     $this->payment = $this->cash['description'];
-
-    if (!$this->cartItems || !$this->cart) {
+    if ($this->cartItems->isEmpty() || !$this->cart) {
       $this->back = true;
+    }
+    if ($this->step == 2) {
+      $this->cart->update([
+        'status_id' => app('global_cart_checkoutpayment')
+      ]);
     }
     $this->individual_billing_country = app('global_default_country');
     $this->individual_shipping_country = app('global_default_country');
@@ -461,13 +479,13 @@ class StoreOrder extends Component
 
   public function confirm()
   {
-    if ($this->terms == false) {
+    if (!$this->terms) {
       $this->errorterms = true;
       $this->dispatchBrowserEvent('terms__error');
       return;
     }
 
-    if ($this->cartitems) {
+    if ($this->cartitems && ($this->cart->status_id == app('global_cart_checkoutpayment'))) {
       foreach ($this->cartitems as $item) {
         if ($item->quantity >= $item->product->quantity) {
           $this->validatequantity = false;
@@ -477,6 +495,10 @@ class StoreOrder extends Component
           $this->validatequantity = true;
         }
       }
+    } else {
+      $this->emit('cartUpdated');
+      $this->validatequantity = false;
+      $this->dispatchBrowserEvent('alert__modal');
     }
     if ($this->validatequantity) {
 
@@ -643,23 +665,6 @@ class StoreOrder extends Component
       $this->cart->save();
       $this->step++;
       $this->emit('orderprocess');
-    }
-  }
-
-
-
-
-  public function togglepayment($item)
-  {
-    if ($item == 'rtc') {
-      $this->payment = $this->cash['description'];
-      $this->rtc = true;
-      $this->invoice = false;
-    }
-    if ($item == 'invoice') {
-      $this->payment = $this->ordin['description'];
-      $this->rtc = false;
-      $this->invoice = true;
     }
   }
 }
