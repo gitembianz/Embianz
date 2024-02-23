@@ -48,22 +48,20 @@
   font-weight: 500;
   text-decoration: none;
   border-radius: 3px;
-  transition: all .3s ease-in-out;
+  transition: all 0.3s ease-in-out;
   border: 1px solid $text;
   text-transform: uppercase;
   gap: 10px;
-
 
   @media (hover: hover) {
     &:hover {
       background: $text;
       color: $secondary;
 
-      &>svg {
+      & > svg {
         stroke: $secondary;
       }
     }
-
   }
 
   @media (hover: none) {
@@ -71,11 +69,10 @@
       background: $text;
       color: $secondary;
 
-      &>svg {
+      & > svg {
         stroke: $secondary;
       }
     }
-
   }
 
   @media (max-width: map-get($grid-breakpoints, lg)) {
@@ -83,9 +80,9 @@
     padding: 0 5px;
     width: 100%;
 
-    &>svg {
+    & > svg {
       transform: scale(0.7);
-      transition: all .3s ease-in-out;
+      transition: all 0.3s ease-in-out;
     }
   }
 
@@ -93,12 +90,12 @@
     background: $text;
     color: $secondary;
 
-    &>svg {
+    & > svg {
       stroke: $secondary;
     }
   }
 
-  &>svg {
+  & > svg {
     stroke: $text;
   }
 }
@@ -168,7 +165,7 @@
   border-radius: 5px;
   gap: 10px;
 
-  &>h3 {
+  & > h3 {
     color: $text;
     font-size: 18px;
     font-weight: 500;
@@ -198,7 +195,7 @@
     grid-column: 1/3;
   }
 
-  &>span {
+  & > span {
     position: absolute;
     top: 50%;
     left: 0;
@@ -215,7 +212,7 @@
     font-weight: 500;
   }
 
-  &>h3 {
+  & > h3 {
     color: $text;
     font-size: 18px;
     font-weight: 500;
@@ -231,25 +228,24 @@
   transition: all 0.3s ease-in-out;
 
   &.error {
-
     &::after {
       color: red;
     }
 
-    &>input {
+    & > input {
       background: lighten(red, 45%);
     }
 
-    &>span {
+    & > span {
       font-size: 13px;
     }
 
-    &>label {
+    & > label {
       color: red;
     }
   }
 
-  &>input {
+  & > input {
     position: relative;
     width: 100%;
     height: 40px;
@@ -280,33 +276,29 @@
       user-select: none;
     }
 
-    &~label {
+    & ~ label {
       position: absolute;
       font-size: 16px;
       font-weight: 500;
       color: lighten(#333, 20%);
       user-select: none;
-      // top: 50%;
       left: 20px;
       top: 14px;
-      // transform: translateY(-50%);
       transition: all 0.2s ease-in-out;
       user-select: none;
       pointer-events: none;
     }
 
-    &:focus~label,
-    &:active~label,
-    &:not(:placeholder-shown)~label {
+    &:focus ~ label,
+    &:active ~ label,
+    &:not(:placeholder-shown) ~ label {
       top: -14px;
       left: 0;
-      // transform: translate(0);
       font-size: 12px;
     }
   }
 
-
-  &>span {
+  & > span {
     font-size: 0px;
     font-weight: 500;
     color: red;
@@ -328,11 +320,10 @@
     text-align: center;
   }
 
-  &>input {
+  & > input {
     padding-left: 20px;
   }
 }
-
 
 .checkout__checkbox {
   width: 100%;
@@ -345,7 +336,7 @@
   border-radius: 5px;
   grid-column: 1/3;
 
-  &>span {
+  & > span {
     color: $text;
     font-size: 16px;
     font-weight: 500;
@@ -365,21 +356,21 @@
   grid-column: 1/3;
   scroll-margin-top: 150px;
 
-  &>span {
+  & > span {
     color: lighten($text, 30%);
     font-size: 16px;
     font-weight: 500;
     flex: 1;
     text-decoration: none;
 
-    &>a {
+    & > a {
       color: $text;
       text-decoration: underline;
       font-weight: 600;
     }
   }
 
-  &>input:checked~a {
+  & > input:checked ~ a {
     color: $text;
   }
 
@@ -387,24 +378,12 @@
     background: lighten(red, 45%);
     border: 1px solid red;
 
-    &>span {
+    & > span {
       color: red;
 
-      &>a {
+      & > a {
         color: red;
       }
     }
   }
 }
-
-// .checkout__error {
-//   width: 100%;
-//   color: red;
-//   border: 1px solid red;
-//   background: #fafafa;
-//   font-size: 16px;
-//   text-align: center;
-//   font-weight: 500;
-//   padding: 15px;
-//   border-radius: 7px;
-// }

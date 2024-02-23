@@ -59,10 +59,6 @@ svg {
   user-select: none;
 }
 
-// img {
-//   mix-blend-mode: multiply;
-// }
-
 button,
 a,
 label,
@@ -79,12 +75,12 @@ input[type="submit"] {
   background: transparent;
   border: none;
 
-  &>svg {
+  & > svg {
     fill: #ccc;
   }
 
   &.active {
-    &>svg {
+    & > svg {
       fill: #d2042d;
     }
   }
@@ -121,7 +117,7 @@ img {
 
 //----------------------------------------------------------------------
 //<------------------------- Checkbox Styles ------------------------->
-input[type='checkbox'] {
+input[type="checkbox"] {
   appearance: none;
   height: 30px;
   width: 30px;
@@ -133,29 +129,29 @@ input[type='checkbox'] {
   border: 1px solid $text;
   border-radius: 7px;
   background: transparent;
-  transition: all .2s ease-in-out;
+  transition: all 0.2s ease-in-out;
 
   &:after {
-    content: '';
+    content: "";
     display: block;
     left: 0;
     top: 0;
     position: absolute;
-    background-image: url('/images/store/check.svg');
+    background-image: url("/images/store/check.svg");
     background-repeat: no-repeat;
     background-position: center;
     width: 100%;
     height: 100%;
     background-size: contain;
     aspect-ratio: 1/1;
-    transition: all .2s ease-in-out;
+    transition: all 0.2s ease-in-out;
     opacity: 0;
   }
 
   &:checked {
     background-color: $text;
     border-color: $text;
-    transition: all .2s ease-in-out;
+    transition: all 0.2s ease-in-out;
 
     &:after {
       opacity: 1;
@@ -172,7 +168,7 @@ input[type='checkbox'] {
     display: none;
   }
 
-  &>img {
+  & > img {
     width: auto;
     height: 100%;
     object-fit: contain;
@@ -187,18 +183,14 @@ input[type='checkbox'] {
   @media (max-width: map-get($grid-breakpoints, xl)) {
     display: flex;
     margin: 0 auto;
-    // width: 100%;
   }
 
-  &>img {
+  & > img {
     width: 100%;
     height: 50px;
     user-select: none;
     object-fit: contain;
-    // aspect-ratio: 2/1;
   }
-
-
 }
 
 //<----------------------- End Checkbox Styles ----------------------->
