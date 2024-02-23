@@ -1919,7 +1919,7 @@
                                 <span class="total__message">Denumirea Bancii:
                                     <strong>{{ $juridic_billing_bank }}</strong></span>
                                 <!---------------------------------------------------->
-                                <span class="total__message">COnt IBAN:
+                                <span class="total__message">Cont IBAN:
                                     <strong>{{ $juridic_billing_account }}</strong></span>
                                 <!---------------------------------------------------->
                                 <span class="total__message">Adresa:
@@ -2008,15 +2008,15 @@
 
                                 <div class="total__item">
                                     <span>Modalitate de plata</span>
-                                    <span>{{ $delivery }}</span>
+                                    <span>{{ $payment }}</span>
                                 </div>
                                 <div class="total__item">
-                                    <span>Delivery Price:</span>
+                                    <span>Cost Livrare:</span>
                                     <span>
-                                        @if ($cart->delivery_price == 0)
+                                        @if (app('global_delivery_price') == 0)
                                             Gratuit
                                         @else
-                                            {{ number_format($cart->delivery_price, 2, ',', '.') }}
+                                            {{ number_format(app('global_delivery_price'), 2, ',', '.') }}
                                             {{ $currency }}
                                         @endif
                                     </span>
@@ -2025,11 +2025,8 @@
                                     <div class="total__item">
                                         <span>Voucher:</span>
                                         <span>
-                                            {{-- {{ $cart->voucher->code }} --}}
-                                            {{-- {{ intval($cart->voucher->percent) }}% --}}
                                             -{{ number_format($cart->voucher_value, 2, ',', '.') }}
                                             {{ $currency }}
-
                                         </span>
                                     </div>
                                 @endif
