@@ -20,7 +20,7 @@
   animation-fill-mode: forwards;
   z-index: 1000;
 
-  &>img {
+  & > img {
     width: 90%;
     height: 90%;
     // Animation
@@ -29,8 +29,6 @@
     animation-timing-function: ease-in;
     animation-fill-mode: forwards;
   }
-
-
 
   @keyframes svg-anim {
     0% {

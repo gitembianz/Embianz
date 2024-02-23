@@ -10,7 +10,6 @@
   transform-origin: left;
   transition: all 0.4s ease-in-out;
   z-index: 500;
-  // transform: translateX(-100%);
 
   @media (min-width: map-get($grid-breakpoints, xl)) {
     display: none;
@@ -31,7 +30,6 @@
   }
 
   &.active {
-    // transform: translateX(0%);
     visibility: visible;
     opacity: 1;
 
@@ -224,7 +222,6 @@
   color: $background;
   text-decoration: none;
   border-radius: 7px;
-  // padding: 0 7px;
   z-index: 5;
 }
 
@@ -256,10 +253,6 @@
     font-weight: 500;
     color: $text;
     text-transform: capitalize;
-
-    // @media (max-width: map-get($grid-breakpoints, sm)) {
-    //   font-size: 14px;
-    // }
   }
 }
 
@@ -279,7 +272,6 @@
 }
 
 .dropmenu__list {
-  // background: darken($secondary, 15%);
   z-index: 500;
   transform: scaleY(0);
   transform-origin: top;
@@ -380,7 +372,6 @@
   color: $background;
   text-decoration: none;
   border-radius: 7px;
-  // padding: 0 7px;
   z-index: 5;
   margin-left: auto;
   position: relative;
@@ -427,10 +418,6 @@
     color: $text;
     font-weight: 500;
     text-transform: capitalize;
-
-    // @media (max-width: map-get($grid-breakpoints, sm)) {
-    //   font-size: 14px;
-    // }
   }
 }
 
@@ -450,7 +437,6 @@
 }
 
 .submenu__list {
-  // background: darken($secondary, 25%);
   z-index: 500;
   transform: scaleY(0);
   transform-origin: top;
