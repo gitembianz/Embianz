@@ -77,7 +77,7 @@ class StoreOrder extends Component
   public $rtc = true;
   public $invoice = false;
   public $validatequantity = true;
-  public $delivery = 'Plata cash la livrare';
+  public $payment;
   protected $listeners = [
     'nocard' => 'mount',
     'cartUpdated' => 'mount',
@@ -207,11 +207,230 @@ class StoreOrder extends Component
     }
   }
 
+  public function validateData()
+  {
+
+    if ($this->individual) {
+      $rules = [
+        'individual_billing_first' => [
+          'required',
+          'min:2',
+          'max:20',
+          'regex:/^[^\s]+(\s+[^\s]+)*$/',
+          'regex:/^[a-zA-Z\s]*$/'
+        ],
+        'individual_billing_last' => [
+          'required',
+          'min:2',
+          'max:20',
+          'regex:/^[^\s]+(\s+[^\s]+)*$/',
+          'regex:/^[a-zA-Z\s]*$/'
+        ],
+        'individual_billing_phone' => 'required|regex:/^\+?\d{1,4}?\s?\(?\d{1,4}\)?[-.\s]?\d{1,10}[-.\s]?\d{1,10}$/',
+        'individual_billing_email' => 'required|email',
+        'individual_billing_address1' => [
+          'required',
+          'min:1',
+          'max:100',
+          'regex:/^[^\s]+(\s+[^\s]+)*$/',
+          'regex:/^[a-zA-Z0-9\/., _\'`-]*$/'
+        ],
+        'individual_billing_county' => [
+          'required',
+          'min:1',
+          'max:100',
+          'regex:/^[^\s]+(\s+[^\s]+)*$/',
+          'regex:/^[a-zA-Z0-9\/., _\'`-]*$/'
+        ],
+        'individual_billing_city' => [
+          'required',
+          'min:1',
+          'max:100',
+          'regex:/^[^\s]+(\s+[^\s]+)*$/',
+          'regex:/^[a-zA-Z0-9\/., _\'`-]*$/'
+        ],
+        'individual_billing_zipcode' => [
+          'required',
+          'min:1',
+          'max:100',
+          'regex:/^[^\s]+(\s+[^\s]+)*$/',
+          'regex:/^[a-zA-Z0-9\/., _\'`-]*$/'
+        ]
+      ];
+
+      if (!$this->individual_identic) {
+        $shippingRules = [
+          'individual_shipping_first' => [
+            'required',
+            'min:2',
+            'max:20',
+            'regex:/^[^\s]+(\s+[^\s]+)*$/',
+            'regex:/^[a-zA-Z\s]*$/'
+          ],
+          'individual_shipping_last' => [
+            'required',
+            'min:2',
+            'max:20',
+            'regex:/^[^\s]+(\s+[^\s]+)*$/',
+            'regex:/^[a-zA-Z\s]*$/'
+          ],
+          'individual_billing_phone' => 'required|regex:/^\+?\d{1,4}?\s?\(?\d{1,4}\)?[-.\s]?\d{1,10}[-.\s]?\d{1,10}$/',
+          'individual_shipping_email' => 'required|email',
+          'individual_shipping_address1' => [
+            'required',
+            'min:1',
+            'max:100',
+            'regex:/^[^\s]+(\s+[^\s]+)*$/',
+            'regex:/^[a-zA-Z0-9\/., _\'`-]*$/'
+          ],
+          'individual_shipping_county' => [
+            'required',
+            'min:1',
+            'max:100',
+            'regex:/^[^\s]+(\s+[^\s]+)*$/',
+            'regex:/^[a-zA-Z0-9\/., _\'`-]*$/'
+          ],
+          'individual_shipping_city' => [
+            'required',
+            'min:1',
+            'max:100',
+            'regex:/^[^\s]+(\s+[^\s]+)*$/',
+            'regex:/^[a-zA-Z0-9\/., _\'`-]*$/'
+          ],
+          'individual_shipping_zipcode' => [
+            'required',
+            'min:1',
+            'max:100',
+            'regex:/^[^\s]+(\s+[^\s]+)*$/',
+            'regex:/^[a-zA-Z0-9\/., _\'`-]*$/'
+          ]
+        ];
+        $rules = array_merge($rules, $shippingRules);
+      }
+
+      $this->validate($rules);
+    }
+    if ($this->juridic) {
+      $rules = [
+        'juridic_billing_first' => [
+          'required',
+          'min:2',
+          'max:20',
+          'regex:/^[^\s]+(\s+[^\s]+)*$/',
+          'regex:/^[a-zA-Z\s]*$/'
+        ],
+        'juridic_billing_last' => [
+          'required',
+          'min:2',
+          'max:20',
+          'regex:/^[^\s]+(\s+[^\s]+)*$/',
+          'regex:/^[a-zA-Z\s]*$/'
+        ],
+        'juridic_billing_phone' => 'required|regex:/^\+?\d{1,4}?\s?\(?\d{1,4}\)?[-.\s]?\d{1,10}$/',
+        'juridic_billing_email' => 'required|email',
+        'juridic_billing_company_name' => [
+          'required',
+          'regex:/^[a-zA-Z0-9]*$/',
+          'regex:/^[^\s]+(\s+[^\s]+)*$/'
+        ],
+        'juridic_billing_registration_code' => [
+          'required',
+          'regex:/^[a-zA-Z0-9]*$/',
+          'regex:/^[^\s]+(\s+[^\s]+)*$/'
+        ],
+        'juridic_billing_registration_number' => [
+          'required',
+          'regex:/^[0-9]*$/',
+          'regex:/^[^\s]+(\s+[^\s]+)*$/'
+        ],
+        'juridic_billing_address1' => [
+          'required',
+          'min:1',
+          'max:100',
+          'regex:/^[^\s]+(\s+[^\s]+)*$/',
+          'regex:/^[a-zA-Z0-9\/., _\'`-]*$/'
+        ],
+        'juridic_billing_county' => [
+          'required',
+          'min:1',
+          'max:100',
+          'regex:/^[^\s]+(\s+[^\s]+)*$/',
+          'regex:/^[a-zA-Z0-9\/., _\'`-]*$/'
+        ],
+        'juridic_billing_city' => [
+          'required',
+          'min:1',
+          'max:100',
+          'regex:/^[^\s]+(\s+[^\s]+)*$/',
+          'regex:/^[a-zA-Z0-9\/., _\'`-]*$/'
+        ],
+        'juridic_billing_zipcode' => [
+          'required',
+          'min:1',
+          'max:100',
+          'regex:/^[^\s]+(\s+[^\s]+)*$/',
+          'regex:/^[a-zA-Z0-9\/., _\'`-]*$/'
+        ],
+      ];
+      if (!$this->juridic_identic) {
+        $shippingRules = [
+          'juridic_shipping_first' => [
+            'required',
+            'min:2',
+            'max:20',
+            'regex:/^[^\s]+(\s+[^\s]+)*$/',
+            'regex:/^[a-zA-Z\s]*$/'
+          ],
+          'juridic_shipping_last' => [
+            'required',
+            'min:2',
+            'max:20',
+            'regex:/^[^\s]+(\s+[^\s]+)*$/',
+            'regex:/^[a-zA-Z\s]*$/'
+          ],
+          'juridic_shipping_phone' => 'required|regex:/^\+?\d{1,4}?\s?\(?\d{1,4}\)?[-.\s]?\d{1,10}$/',
+          'juridic_shipping_email' => 'required|email',
+          'juridic_shipping_address1' => [
+            'required',
+            'min:1',
+            'max:100',
+            'regex:/^[^\s]+(\s+[^\s]+)*$/',
+            'regex:/^[a-zA-Z0-9\/., _\'`-]*$/'
+          ],
+          'juridic_shipping_county' => [
+            'required',
+            'min:1',
+            'max:100',
+            'regex:/^[^\s]+(\s+[^\s]+)*$/',
+            'regex:/^[a-zA-Z0-9\/., _\'`-]*$/'
+          ],
+          'juridic_shipping_city' => [
+            'required',
+            'min:1',
+            'max:100',
+            'regex:/^[^\s]+(\s+[^\s]+)*$/',
+            'regex:/^[a-zA-Z0-9\/., _\'`-]*$/'
+          ],
+          'juridic_shipping_zipcode' => [
+            'required',
+            'min:1',
+            'max:100',
+            'regex:/^[^\s]+(\s+[^\s]+)*$/',
+            'regex:/^[a-zA-Z0-9\/., _\'`-]*$/'
+          ],
+        ];
+        $rules = array_merge($rules, $shippingRules);
+      }
+      $this->validate($rules);
+    }
+  }
+
   public function mount()
   {
     $this->session_id = $this->getSessionId();
     $this->cash = app('global_cash');
     $this->ordin = app('global_ordin');
+    $this->payment = $this->cash['description'];
 
     if (!$this->cartItems || !$this->cart) {
       $this->back = true;
@@ -429,127 +648,16 @@ class StoreOrder extends Component
 
 
 
-  public function validateData()
-  {
 
-    if ($this->step == 1) {
-      if ($this->individual) {
-        $rules = [
-          'individual_billing_first' => 'required|string',
-          'individual_billing_last' => 'required|string',
-          'individual_billing_phone' => 'required|regex:/^\+?\d{1,4}?\s?\(?\d{1,4}\)?[-.\s]?\d{1,10}[-.\s]?\d{1,10}$/',
-          'individual_billing_email' => 'required|email',
-          'individual_billing_address1' => 'required|string',
-          'individual_billing_country' => 'required|string',
-          'individual_billing_city' => 'required|string',
-          'individual_billing_zipcode' => 'required|string',
-        ];
-        // Address line 2 and county are optional, so we don't need to include them in the validation unless they are provided.
-        if (!empty($this->individual_billing_address2)) {
-          $rules['individual_billing_address2'] = 'string';
-        }
-
-        if (!empty($this->individual_billing_county)) {
-          $rules['individual_billing_county'] = 'string';
-        }
-
-        if (!$this->individual_identic) {
-          // Include shipping address rules only if individual_identic is false
-          $shippingRules = [
-            'individual_shipping_first' => 'required|string',
-            'individual_shipping_last' => 'required|string',
-            'individual_billing_phone' => 'required|regex:/^\+?\d{1,4}?\s?\(?\d{1,4}\)?[-.\s]?\d{1,10}[-.\s]?\d{1,10}$/',
-            'individual_shipping_email' => 'required|email',
-            'individual_shipping_address1' => 'required|string',
-            'individual_shipping_country' => 'required|string',
-            'individual_shipping_city' => 'required|string',
-            'individual_shipping_zipcode' => 'required|string',
-          ];
-
-          // Address line 2 and county are optional for shipping address too
-          if (!empty($this->individual_shipping_address2)) {
-            $shippingRules['individual_shipping_address2'] = 'string';
-          }
-
-          if (!empty($this->individual_shipping_county)) {
-            $shippingRules['individual_shipping_county'] = 'string';
-          }
-
-          // Merge shipping address rules with existing rules
-          $rules = array_merge($rules, $shippingRules);
-        }
-
-        $this->validate($rules);
-      }
-      if ($this->juridic) {
-        $rules = [
-          'juridic_billing_first' => 'required',
-          'juridic_billing_last' => 'required|string',
-          'juridic_billing_phone' => 'required|regex:/^\+?\d{1,4}?\s?\(?\d{1,4}\)?[-.\s]?\d{1,10}$/',
-          'juridic_billing_email' => 'required|email',
-          'juridic_billing_company_name' => 'required|string',
-          'juridic_billing_registration_code' => 'required|string',
-          'juridic_billing_registration_number' => 'required|string',
-          'juridic_billing_bank' => 'required|string',
-          'juridic_billing_account' => 'required|string',
-          'juridic_billing_address1' => 'required|string',
-          'juridic_billing_country' => 'required|string',
-          'juridic_billing_city' => 'required|string',
-          'juridic_billing_zipcode' => 'required|string',
-        ];
-        if (!empty($this->juridic_billing_address2)) {
-          $rules['juridic_billing_address2'] = 'string';
-        }
-
-        if (!empty($this->juridic_billing_county)) {
-          $rules['juridic_billing_county'] = 'string';
-        }
-        if (!$this->juridic_identic) {
-          // Include shipping address rules only if individual_identic is false
-          $shippingRules = [
-            'juridic_shipping_first' => 'required|string',
-            'juridic_shipping_last' => 'required|string',
-            'juridic_shipping_phone' => 'required|regex:/^\+?\d{1,4}?\s?\(?\d{1,4}\)?[-.\s]?\d{1,10}$/',
-            'juridic_shipping_email' => 'required|email',
-            'juridic_shipping_address1' => 'required|string',
-            'juridic_shipping_country' => 'required|string',
-            'juridic_shipping_city' => 'required|string',
-            'juridic_shipping_zipcode' => 'required|string',
-          ];
-
-          // Address line 2 and county are optional for shipping address too
-          if (!empty($this->juridic_shipping_address2)) {
-            $shippingRules['juridic_shipping_address2'] = 'string';
-          }
-
-          if (!empty($this->juridic_shipping_county)) {
-            $shippingRules['juridic_shipping_county'] = 'string';
-          }
-
-          // Merge shipping address rules with existing rules
-          $rules = array_merge($rules, $shippingRules);
-        }
-        $this->validate($rules);
-      }
-    }
-  }
   public function togglepayment($item)
   {
-    // if ($item == 'card') {
-    //   $this->delivery = 'card';
-    //   $this->card = true;
-    //   $this->rtc = false;
-    //   $this->invoice = false;
-    // }
     if ($item == 'rtc') {
-      $this->delivery = 'Plata cash la livrare';
-      // $this->card = false;
+      $this->payment = $this->cash['description'];
       $this->rtc = true;
       $this->invoice = false;
     }
     if ($item == 'invoice') {
-      $this->delivery = 'Ordin de plata';
-      // $this->card = false;
+      $this->payment = $this->ordin['description'];
       $this->rtc = false;
       $this->invoice = true;
     }

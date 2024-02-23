@@ -220,9 +220,9 @@ function validateIndividualIdentic() {
   applyValidations("individualShippingFirstName", firstNameValidation, true);
 }
 function validateJuridic() {
-  applyValidations("registerCode", registerNumber, true);
-  applyValidations("registerNumber", companyName, true);
-  applyValidations("companyName", registerCode, true);
+  applyValidations("registerCode", registerCode, true);
+  applyValidations("registerNumber", registerNumber, true);
+  applyValidations("companyName", companyName, true);
   applyValidations("juridicShippingPostal", addressValidations, true);
   applyValidations("juridicShippingCity", addressValidations, true);
   applyValidations("juridicShippingCounty", addressValidations, true);
@@ -241,9 +241,9 @@ function validateJuridicIdentic() {
   applyValidations("juridicBillingEmail", emailValidation, true);
   applyValidations("juridicBillingLastName", lastNameValidation, true);
   applyValidations("juridicBillingFirstName", firstNameValidation, true);
-  applyValidations("registerCode", registerNumber, true);
-  applyValidations("registerNumber", companyName, true);
-  applyValidations("companyName", registerCode, true);
+  applyValidations("registerCode", registerCode, true);
+  applyValidations("registerNumber", registerNumber, true);
+  applyValidations("companyName", companyName, true);
   applyValidations("juridicShippingPostal", addressValidations, true);
   applyValidations("juridicShippingCity", addressValidations, true);
   applyValidations("juridicShippingCounty", addressValidations, true);
