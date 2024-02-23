@@ -766,6 +766,7 @@ class ComposerStaticInitdbceb679be78fc0f2f620fcaf24d3e3e
         'App\\Providers\\JetstreamServiceProvider' => __DIR__ . '/../..' . '/app/Providers/JetstreamServiceProvider.php',
         'App\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/app/Providers/RouteServiceProvider.php',
         'App\\View\\Components\\Alert' => __DIR__ . '/../..' . '/app/View/Components/Alert.php',
+        'App\\View\\Components\\AlertNewsletter' => __DIR__ . '/../..' . '/app/View/Components/AlertNewsletter.php',
         'App\\View\\Components\\AppLayout' => __DIR__ . '/../..' . '/app/View/Components/AppLayout.php',
         'App\\View\\Components\\Dashboardfooter' => __DIR__ . '/../..' . '/app/View/Components/Dashboardfooter.php',
         'App\\View\\Components\\Dashboardheader' => __DIR__ . '/../..' . '/app/View/Components/Dashboardheader.php',
