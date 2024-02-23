@@ -10,10 +10,10 @@ section {
   justify-content: center;
   gap: 15px;
 
-  &>.logo {
+  & > .logo {
     height: 100%;
 
-    &>img {
+    & > img {
       width: 100px;
       height: 100%;
       object-fit: contain;
@@ -64,7 +64,7 @@ h2.section__title {
     width: 90%;
   }
 
-  &>a {
+  & > a {
     text-decoration: underline;
     text-underline-offset: 3px;
     font-weight: 500;

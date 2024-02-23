@@ -1,5 +1,5 @@
 @if (session()->has("subscribtion"))
-{{-- <div class="newsletter">
+	{{-- <div class="newsletter">
   <div class="newsletter__content">
     <img class="newsletter__img" src="https://img.freepik.com/free-vector/mention-concept-illustration_114360-231.jpg?w=826&t=st=1708524616~exp=1708525216~hmac=5a64a65434936232b5241898d2d16bbfafa7ff6d74daf2f26f723440e8783b01" alt="news">
     <div class="newsletter__text">
@@ -16,9 +16,9 @@
   </div>
 </div> --}}
 
-{{-- <button class="newsletter__open">open the newsletter</button> --}}
+	{{-- <button class="newsletter__open">open the newsletter</button> --}}
 
-{{-- <script>
+	{{-- <script>
 function newsletterToggle(this) {
   const newsletter = document.querySelector(".newsletter");
   const body = document.querySelector("body");

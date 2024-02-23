@@ -1,6 +1,3 @@
-$newsletter: rgba(3, 3, 3, 0.8);
-$background: #fafafa;
-$text: #333;
 $red: #ee4b2b;
 $newsletterShadow:
   rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
@@ -8,7 +5,7 @@ $newsletterShadow:
 
 .newsletter {
   position: fixed;
-  background: rgba(3, 3, 3, 0.8);
+  background: $modal;
   left: 0;
   top: 0;
   width: 100%;
@@ -98,7 +95,7 @@ $newsletterShadow:
   border-radius: 5px;
   background: #ee4b2b;
   border: none;
-  color: #fafafa;
+  color: $background;
   text-align: center;
   font-size: 14px;
   font-weight: 500;
