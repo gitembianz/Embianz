@@ -14,7 +14,7 @@
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
   scrollbar-width: none;
-  transition: all .3s ease-in-out;
+  transition: all 0.3s ease-in-out;
   -ms-overflow-style: none;
 
   @media (min-width: map-get($grid-breakpoints, sm)) {
@@ -44,12 +44,12 @@
   border-radius: 50%;
   border: none;
 
-  &>svg {
+  & > svg {
     stroke: $secondary;
   }
 
   &.disabled {
-    opacity: .5;
+    opacity: 0.5;
     cursor: not-allowed;
   }
 }

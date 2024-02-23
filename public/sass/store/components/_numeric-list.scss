@@ -3,12 +3,12 @@
   list-style-type: none;
 }
 
-.numeric>li {
+.numeric > li {
   counter-increment: category-counter;
   margin-bottom: 20px;
   position: relative;
 
-  &>h2 {
+  & > h2 {
     margin: 0;
     font-size: 20px;
     margin-bottom: 10px;
@@ -16,24 +16,24 @@
     line-height: 150%;
   }
 
-  &>p {
+  & > p {
     line-height: 150%;
 
-    &>a {
+    & > a {
       text-decoration: underline;
       color: $text;
       font-weight: 600;
     }
   }
 
-  &>a {
+  & > a {
     text-decoration: underline;
     color: $text;
     font-weight: 600;
   }
 }
 
-.numeric>li::before {
+.numeric > li::before {
   content: counter(category-counter) ". ";
   font-weight: bold;
   position: absolute;
@@ -47,36 +47,36 @@
   padding-left: 70px;
 }
 
-.sub-numeric>li {
+.sub-numeric > li {
   counter-increment: sub-category-counter;
   margin-bottom: 20px;
   position: relative;
 
-  &>h2 {
+  & > h2 {
     margin: 0;
     font-size: 20px;
     margin-bottom: 20px;
     line-height: 150%;
   }
 
-  &>p {
+  & > p {
     line-height: 150%;
 
-    &>a {
+    & > a {
       text-decoration: underline;
       color: $text;
       font-weight: 600;
     }
   }
 
-  &>a {
+  & > a {
     text-decoration: underline;
     color: $text;
     font-weight: 600;
   }
 }
 
-.sub-numeric>li::before {
+.sub-numeric > li::before {
   content: counter(category-counter) "." counter(sub-category-counter) " ";
   font-weight: normal;
   position: absolute;
@@ -90,37 +90,38 @@
   padding-left: 70px;
 }
 
-.sub-sub-numeric>li {
+.sub-sub-numeric > li {
   counter-increment: sub-sub-category-counter;
   margin-bottom: 20px;
   position: relative;
 
-  &>h2 {
+  & > h2 {
     margin: 0;
     font-size: 20px;
     margin-bottom: 10px;
     line-height: 150%;
   }
 
-  &>p {
+  & > p {
     line-height: 150%;
 
-    &>a {
+    & > a {
       text-decoration: underline;
       color: $text;
       font-weight: 600;
     }
   }
 
-  &>a {
+  & > a {
     text-decoration: underline;
     color: $text;
     font-weight: 600;
   }
 }
 
-.sub-sub-numeric>li::before {
-  content: counter(category-counter) "." counter(sub-category-counter) "." counter(sub-sub-category-counter) " ";
+.sub-sub-numeric > li::before {
+  content: counter(category-counter) "." counter(sub-category-counter) "."
+    counter(sub-sub-category-counter) " ";
   font-weight: normal;
   position: absolute;
   left: -70px;
