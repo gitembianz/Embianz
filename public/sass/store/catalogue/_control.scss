@@ -10,7 +10,7 @@
   background: $background;
   padding-top: 10px;
   padding-bottom: 10px;
-  transition: all .3s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 
 .controls__button {
@@ -23,7 +23,7 @@
   background-color: $secondary;
   border: none;
 
-  &>svg {
+  & > svg {
     stroke: $text;
   }
 }
