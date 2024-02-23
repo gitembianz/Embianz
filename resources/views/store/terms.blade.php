@@ -1,4 +1,4 @@
-<x-store-head :canonical=""terms"" :title='" Termeni si Conditii | "' />
+<x-store-head :canonical="'terms'" :title='" Termeni si Conditii | "' />
 <x-store-header />
 <main>
 	<!---------------------------------------------------------->
