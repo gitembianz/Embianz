@@ -42,10 +42,12 @@ class StoreFooter extends Component
 
       Subscribers::create($validatedData);
       $this->reset();
+      $this->cookieConsent = $this->checkCookieConsent();
       $this->dispatchBrowserEvent('newsletterToggle');
     } catch (QueryException $e) {
       if ($e->errorInfo[1] === 1062) {
         $this->reset();
+        $this->cookieConsent = $this->checkCookieConsent();
         $this->dispatchBrowserEvent('newsletterToggle');
       } else {
       }
@@ -54,7 +56,7 @@ class StoreFooter extends Component
 
   private function checkCookieConsent()
   {
-    if (isset($_COOKIE['cookieConsent']) && $_COOKIE['cookieConsent'] === 'accepted') {
+    if (isset($_COOKIE['cookieConsent']) && $_COOKIE['cookieConsent'] == 'accepted') {
       return true;
     }
     return false;
