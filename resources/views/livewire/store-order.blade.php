@@ -1967,12 +1967,10 @@
           @endif
          </span>
         </div>
-        @if ($cart->voucher)
+        @if ($cart->voucher && $cart->voucher_value > 0)
          <div class="total__item">
           <span>Voucher:</span>
           <span>
-           {{-- {{ $cart->voucher->code }} --}}
-           {{-- {{ intval($cart->voucher->percent) }}% --}}
            -{{ number_format($cart->voucher_value, 2, ',', '.') }}
            {{ $currency }}
 

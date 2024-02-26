@@ -168,8 +168,8 @@ class StoreCart extends Component
     if ($this->cart) {
       $voucher = Voucher::where('code', $this->voucher)
         ->where('status_id', app('global_voucher_active'))
-        ->where('start_date', '<=',  now())
-        ->where('end_date', '>=',  now())
+        ->where('start_date', '<',  now())
+        ->where('end_date', '>',  now())
         ->first();
       if ($voucher) {
         if ($voucher && $voucher->percent !== null) {
@@ -207,6 +207,7 @@ class StoreCart extends Component
       'voucher_id' => null,
       'voucher_value' => 0,
       'updated_at' => now(),
+      'status_id' => app('global_cart_new')
     ]);
     $this->message = null;
     $this->voucher = "";
