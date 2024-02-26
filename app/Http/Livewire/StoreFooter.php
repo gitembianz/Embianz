@@ -45,6 +45,7 @@ class StoreFooter extends Component
       $this->dispatchBrowserEvent('newsletterToggle');
     } catch (QueryException $e) {
       if ($e->errorInfo[1] === 1062) {
+        $this->reset();
         $this->dispatchBrowserEvent('newsletterToggle');
       } else {
       }
