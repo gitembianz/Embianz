@@ -63,17 +63,13 @@
 
 	<div class="newsletter">
 		<div class="newsletter__content">
-			<img class="newsletter__img" src="https://img.freepik.com/free-vector/mention-concept-illustration_114360-231.jpg?w=826&t=st=1708524616~exp=1708525216~hmac=5a64a65434936232b5241898d2d16bbfafa7ff6d74daf2f26f723440e8783b01" alt="news">
+			<img class="newsletter__img" src="/images/store/svg/thankyou.svg" alt="thank you">
 			<div class="newsletter__text">
 				<h3 class="newsletter__title">Bun venit în Comunitatea Noastră!</h3>
 				<p class="newsletter__descr">Mulțumim mult că te-ai abonat la newsletter-ul nostru! Apreciem interesul tău și suntem încântați să facem parte din călătoria ta online. Te vom ține la curent cu cele mai recente știri, oferte speciale și actualizări. Dacă dorești să ne contactezi sau ai întrebări, nu ezita să ne scrii</p>
 			</div>
 			<button class="newsletter__close">
-				Inchide Modal
-				<svg>
-					<line x1="18" y1="6" x2="6" y2="18"></line>
-					<line x1="6" y1="6" x2="18" y2="18"></line>
-				</svg>
+				Inchide
 			</button>
 		</div>
 	</div>
@@ -140,18 +136,54 @@
 			<!------------------------Subscribe------------------------>
 			<div class="footer__middle">
 				<h2>Aboneaza-te la newsletter-ul nostru</h2>
-				<form class="subscribe" wire:submit.prevent="store">
-					<input type="email" wire:model="email" name="email" id="email" placeholder="Introduceți adresa dvs. de email" aria-describedby="email-error" autocomplete="email">
-					<button type="submit" @if (!$ischecked) disabled @endif>Trimite</button>
-				</form>
 				<div class="footer__checkbox">
-					<input type="checkbox" wire:model="ischecked" name="subscribe__checkbox"id="subscribe__checkbox">
-					<label for="subscribe__checkbox">
+					<input type="checkbox" id="subscribeCheckbox" name="subscribe__checkbox">
+					<label for="subscribeCheckbox">
 						Sunt de acord cu <a href="{{ url("/terms") }}">Termeni si
 							conditiile</a> abonarii la newsletter privind stocarea si prelucrarea datelor cu caracter
 						personal.</label>
 				</div>
+				<form class="subscribe" wire:submit.prevent="store">
+					<input type="email" id="subscribeInput" wire:model="email" name="email" id="email" placeholder="Introduceți adresa dvs. de email" aria-describedby="email-error" autocomplete="email">
+					<button type="submit" id="subscribeSend" disabled>Trimite</button>
+				</form>
 			</div>
+
+			<script>
+				function checkForm(checkboxID, inputID, sendID) {
+					const checkbox = document.getElementById(checkboxID);
+					const input = document.getElementById(inputID);
+					const send = document.getElementById(sendID);
+
+					if (!checkbox || !input || !send) {
+						return;
+					} else {
+						// Adăugați un ascultător pentru evenimentul de click pe checkbox
+						checkbox.addEventListener("click", enableButton);
+						// Adăugați un ascultător pentru evenimentul de input pe câmpul de email
+						input.addEventListener("input", enableButton);
+					}
+
+					function enableButton() {
+						// Verifică dacă checkbox-ul este bifat și adresa de email este validă
+						if (checkbox.checked && validateEmail(input.value)) {
+							// Activează butonul de trimitere
+							send.disabled = false;
+						} else {
+							// Dezactivează butonul de trimitere
+							send.disabled = true;
+						}
+					}
+
+					function validateEmail(email) {
+						// Definiți expresia regulată pentru validarea adresei de email
+						const regex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/;
+						// Testați adresa de email folosind expresia regulată și returnați rezultatul
+						return regex.test(email);
+					}
+				}
+				checkForm("subscribeCheckbox", "subscribeInput", "subscribeSend");
+			</script>
 			<!----------------------END-Subscribe---------------------->
 			<!--------------------------------------------------------->
 			<!-----------------------Quick Links----------------------->
