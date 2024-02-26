@@ -6,7 +6,12 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 		<title>{{ $title }}</title>
 		<meta name="description" content="{{ $description }}">
-		<link rel="icon" type="image/x-icon" href="/images/store/svg/noren-icon.svg">
+
+		{{-- DormiSoft Favicon --}}
+		<link rel="icon" type="image/x-icon" href="/images/store/svg/dormisoft_favicon.svg">
+		{{-- Noren Favicon --}}
+		<link rel="icon" type="image/x-icon" href="/images/store/svg/noren_favicon.svg">
+
 		<link rel="canonical" href="{{ url("/" . $canonical) }}">
 		<link rel="preload" href="/dist/css/loading-screen.css" as="style">
 		<link rel="preload" href="/dist/css/store.css" as="style">
@@ -40,5 +45,4 @@
 			<img rel="preload" as="image" src="/images/store/svg/noren-black.svg" alt="logo-black">
 		</div>
 		<script src="/script/store/head.js"></script>
-
 		<!-------------------- End Loading Logo -------------------->
