@@ -39,10 +39,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: all 0.3s ease-in-out;
 
   & > svg {
     stroke: $text;
     transform: scale(1.05);
+  }
+
+  &:hover {
+    background: darken($background, 20%);
   }
 }
 
@@ -178,6 +183,10 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
+
+  @media (min-width: map-get($grid-breakpoints, md)) {
+    width: 70%;
+  }
 
   & > input {
     border-color: $background;

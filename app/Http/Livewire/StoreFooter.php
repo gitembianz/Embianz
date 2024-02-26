@@ -30,8 +30,12 @@ class StoreFooter extends Component
   {
     $this->resetErrorBag();
     $validatedData = $this->validate([
-      'email' => 'required|email'
-    ]);
+      'email' => ['required', 'email', function ($attribute, $value, $fail) {
+          if (!preg_match('/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/', $value)) {
+              $fail('The email format is invalid.');
+          }
+      }],
+  ]);
     Subscribers::create($validatedData);
     $this->reset();
     session()->flash('subscribtion');
