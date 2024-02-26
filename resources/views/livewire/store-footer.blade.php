@@ -137,7 +137,7 @@
 			<div class="footer__middle">
 				<h2>Aboneaza-te la newsletter-ul nostru</h2>
 				<div class="footer__checkbox">
-					<input type="checkbox" id="subscribeCheckbox" name="subscribe__checkbox">
+					<input type="checkbox" wire:model="ischecked" id="subscribeCheckbox" name="subscribe__checkbox">
 					<label for="subscribeCheckbox">
 						Sunt de acord cu <a href="{{ url("/terms") }}">Termeni si
 							conditiile</a> abonarii la newsletter privind stocarea si prelucrarea datelor cu caracter
@@ -145,45 +145,9 @@
 				</div>
 				<form class="subscribe" wire:submit.prevent="store">
 					<input type="email" id="subscribeInput" wire:model="email" name="email" id="email" placeholder="Introduceți adresa dvs. de email" aria-describedby="email-error" autocomplete="email">
-					<button type="submit" id="subscribeSend" disabled>Trimite</button>
+					<button type="submit" id="subscribeSend" @if (!$ischecked) disabled @endif>Trimite</button>
 				</form>
 			</div>
-
-			<script>
-				function checkForm(checkboxID, inputID, sendID) {
-					const checkbox = document.getElementById(checkboxID);
-					const input = document.getElementById(inputID);
-					const send = document.getElementById(sendID);
-
-					if (!checkbox || !input || !send) {
-						return;
-					} else {
-						// Adăugați un ascultător pentru evenimentul de click pe checkbox
-						checkbox.addEventListener("click", enableButton);
-						// Adăugați un ascultător pentru evenimentul de input pe câmpul de email
-						input.addEventListener("input", enableButton);
-					}
-
-					function enableButton() {
-						// Verifică dacă checkbox-ul este bifat și adresa de email este validă
-						if (checkbox.checked && validateEmail(input.value)) {
-							// Activează butonul de trimitere
-							send.disabled = false;
-						} else {
-							// Dezactivează butonul de trimitere
-							send.disabled = true;
-						}
-					}
-
-					function validateEmail(email) {
-						// Definiți expresia regulată pentru validarea adresei de email
-						const regex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/;
-						// Testați adresa de email folosind expresia regulată și returnați rezultatul
-						return regex.test(email);
-					}
-				}
-				checkForm("subscribeCheckbox", "subscribeInput", "subscribeSend");
-			</script>
 			<!----------------------END-Subscribe---------------------->
 			<!--------------------------------------------------------->
 			<!-----------------------Quick Links----------------------->
