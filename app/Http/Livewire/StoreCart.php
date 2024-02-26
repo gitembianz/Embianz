@@ -207,6 +207,7 @@ class StoreCart extends Component
       'voucher_id' => null,
       'voucher_value' => 0,
       'updated_at' => now(),
+      'status_id' => app('global_cart_new')
     ]);
     $this->message = null;
     $this->voucher = "";
