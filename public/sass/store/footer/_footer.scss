@@ -101,13 +101,22 @@
     border: none;
     border-radius: 5px;
 
+    &:disabled {
+      background-color: lighten($color: $text, $amount: 50%);
+      cursor: not-allowed;
+
+      &:hover {
+        background-color: lighten($color: $text, $amount: 50%);
+      }
+    }
+
     &:hover {
       background-color: darken($color: $text, $amount: 10%);
     }
   }
 
   @media (min-width: map-get($grid-breakpoints, md)) {
-    width: 60%;
+    width: 70%;
   }
 }
 
@@ -186,7 +195,6 @@
     font-weight: 500;
     line-height: 150%;
     text-wrap: pretty;
-    width: 100%;
 
     & > a {
       color: $background;
