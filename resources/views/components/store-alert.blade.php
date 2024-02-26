@@ -1,13 +1,32 @@
-<div class="modal">
-	<div class="modal__content">
-		<h3>
-			Ceva nu a mers bine, va rog verificati cantitatea produselor si reincercati!
-		</h3>
-		<button class="modal__close">
-			<svg>
-				<line x1="18" y1="6" x2="6" y2="18"></line>
-				<line x1="6" y1="6" x2="18" y2="18"></line>
-			</svg>
-		</button>
-	</div>
+<div class="newsletter">
+ <div class="newsletter__content">
+  <img class="newsletter__img" src="/images/store/svg/noren.svg" alt="logo">
+  <div class="newsletter__text">
+   <h3 class="newsletter__title">Ceva nu a mers bine!</h3>
+   <p class="newsletter__descr">Va rog sa revizuiti detaliile comenzii, deoarece ceva nu a mers bine, voucherul expirat
+    sau cantitatea produselor nu mai este valabila.</p>
+  </div>
+  <button class="newsletter__close">
+   Inchide
+  </button>
+ </div>
+ <script>
+  function newsletterToggle() {
+   const newsletter = document.querySelector(".newsletter");
+   const body = document.querySelector("body");
+   const close = document.querySelector(".newsletter__close");
+   newsletter.classList.remove("out");
+   newsletter.classList.add("active");
+   body.style.overflow = "hidden";
+   close.addEventListener("click", () => {
+    newsletter.classList.add("out");
+    newsletter.classList.remove("active");
+    body.style.overflow = "auto";
+   });
+  }
+
+  window.addEventListener('alert__modal', event => {
+   newsletterToggle();
+  });
+ </script>
 </div>

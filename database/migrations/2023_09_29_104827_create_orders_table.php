@@ -30,6 +30,9 @@ return new class extends Migration
       $table->foreign('payment_id')->references('id')->on('payments');
       $table->unsignedBigInteger('voucher_id')->index()->nullable();
       $table->foreign('voucher_id')->references('id')->on('vouchers');
+      $table->decimal('voucher_value', 10, 2)->default(0);
+      $table->decimal('delivery_price', 5, 2)->default(0);
+      $table->decimal('final_amount', 10, 2)->default(0);
       $table->timestamps();
     });
   }
