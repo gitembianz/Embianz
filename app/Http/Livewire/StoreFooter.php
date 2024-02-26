@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\Subscribers;
+use Illuminate\Database\QueryException;
 
 class StoreFooter extends Component
 {
@@ -29,16 +30,25 @@ class StoreFooter extends Component
   public function store()
   {
     $this->resetErrorBag();
-    $validatedData = $this->validate([
-      'email' => ['required', 'email', function ($attribute, $value, $fail) {
+
+    try {
+      $validatedData = $this->validate([
+        'email' => ['required', 'email', function ($attribute, $value, $fail) {
           if (!preg_match('/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/', $value)) {
-              $fail('The email format is invalid.');
+            $fail('The email format is invalid.');
           }
-      }],
-  ]);
-    Subscribers::create($validatedData);
-    $this->reset();
-    session()->flash('subscribtion');
+        }],
+      ]);
+
+      Subscribers::create($validatedData);
+      $this->reset();
+      $this->dispatchBrowserEvent('newsletterToggle');
+    } catch (QueryException $e) {
+      if ($e->errorInfo[1] === 1062) {
+        $this->dispatchBrowserEvent('newsletterToggle');
+      } else {
+      }
+    }
   }
 
   private function checkCookieConsent()
