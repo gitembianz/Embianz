@@ -643,7 +643,7 @@ class StoreOrder extends Component
         'sum_amount' => $this->cart->sum_amount,
         'final_amount' => ($this->cart->sum_amount + app('global_delivery_price') - $this->cart->voucher_value),
         'delivery_price' => app('global_delivery_price'),
-        'voucher_value' => $this->cart->voucher_value,
+        'voucher_value' => $this->cart->voucher_value ?? 0,
         'currency_id' => $this->cart->currency_id,
         'status_id' =>  app('global_order_new'),
         'payment_id' => $this->payment['id'],
