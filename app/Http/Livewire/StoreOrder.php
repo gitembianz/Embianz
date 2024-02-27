@@ -6,7 +6,6 @@ use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Account;
 use App\Models\Address;
-use App\Models\Payment;
 use App\Models\Voucher;
 use Livewire\Component;
 use App\Models\Cart_Item;
@@ -21,6 +20,7 @@ class StoreOrder extends Component
   public $session_id;
   public $cash;
   public $ordin;
+  public $orderNumber;
   // individual declaration
   public $individual = true;
   public $individual_identic = true;
@@ -96,7 +96,7 @@ class StoreOrder extends Component
 
   public function getCartProperty()
   {
-    return Cart::select('id', 'quantity_amount', 'sum_amount', 'voucher_id', 'final_amount', 'voucher_value')
+    return Cart::select('id', 'quantity_amount', 'currency_id', 'sum_amount', 'voucher_id', 'final_amount', 'voucher_value', 'status_id')
       ->where('session_id', $this->session_id)
       ->where('status_id', '!=', app('global_cart_closed'))
       ->with(['voucher' => function ($query) {
@@ -113,7 +113,7 @@ class StoreOrder extends Component
         ->where('cart_id', $this->cart->id)
         ->with([
           'product' => function ($query) {
-            $query->select('id', 'name', 'seo_id')->with([
+            $query->select('id', 'name', 'seo_id', 'quantity')->with([
               'media' => function ($query) {
                 $query->select('path', 'name')->where('type', 'min');
               },
@@ -428,12 +428,12 @@ class StoreOrder extends Component
   public function togglepayment($item)
   {
     if ($item == 'rtc') {
-      $this->payment = $this->cash['description'];
+      $this->payment = $this->cash;
       $this->rtc = true;
       $this->invoice = false;
     }
     if ($item == 'invoice') {
-      $this->payment = $this->ordin['description'];
+      $this->payment = $this->ordin;
       $this->rtc = false;
       $this->invoice = true;
     }
@@ -444,7 +444,7 @@ class StoreOrder extends Component
     $this->session_id = $this->getSessionId();
     $this->cash = app('global_cash');
     $this->ordin = app('global_ordin');
-    $this->payment = $this->cash['description'];
+    $this->payment = $this->cash;
     if ($this->cartItems->isEmpty() || !$this->cart) {
       $this->back = true;
     }
@@ -452,6 +452,7 @@ class StoreOrder extends Component
       $this->cart->update([
         'status_id' => app('global_cart_checkoutpayment')
       ]);
+      $this->validatequantity = true;
     }
     $this->individual_billing_country = app('global_default_country');
     $this->individual_shipping_country = app('global_default_country');
@@ -486,183 +487,195 @@ class StoreOrder extends Component
     }
 
     if ($this->cartitems && ($this->cart->status_id == app('global_cart_checkoutpayment'))) {
+      if ($this->cart->voucher) {
+        if (($this->cart->voucher->status_id != app('global_voucher_active')) || ($this->cart->voucher->start_date > now()) || ($this->cart->voucher->end_date < now())) {
+          $this->dispatchBrowserEvent('alert__modal');
+          $this->cart->update([
+            'final_amount' => ($this->cart->sum_amount + app('global_delivery_price')),
+            'voucher_id' => null,
+            'voucher_value' => 0,
+            'updated_at' => now(),
+          ]);
+          return;
+        }
+      }
       foreach ($this->cartitems as $item) {
-        if ($item->quantity >= $item->product->quantity) {
+        if ($item->quantity > $item->product->quantity) {
           $this->validatequantity = false;
           $this->dispatchBrowserEvent('alert__modal');
           return;
-        } else {
-          $this->validatequantity = true;
         }
       }
     } else {
       $this->emit('cartUpdated');
       $this->validatequantity = false;
       $this->dispatchBrowserEvent('alert__modal');
+      return;
     }
     if ($this->validatequantity) {
 
       if ($this->individual) {
-        $account = new Account();
-        $account->name = $this->individual_billing_first . " " . $this->individual_billing_last;
-        $account->type = 'individual';
-        $account->first_name = $this->individual_billing_first;
-        $account->last_name = $this->individual_billing_last;
-        $account->phone = $this->individual_billing_phone;
-        $account->email = $this->individual_billing_email;
-        $account->save();
+        $account = Account::create([
+          'name' => $this->individual_billing_first . " " . $this->individual_billing_last,
+          'type' => 'individual',
+          'first_name' => $this->individual_billing_first,
+          'last_name' => $this->individual_billing_last,
+          'phone' => $this->individual_billing_phone,
+          'email' => $this->individual_billing_email
+        ]);
 
-        $address = new Address();
-        $address->account_id = $account->id;
-        $address->address1 = $this->individual_billing_address1;
-        $address->address2 = $this->individual_billing_address2;
-        $address->country = $this->individual_billing_country;
-        $address->county = $this->individual_billing_county;
-        $address->city = $this->individual_billing_city;
-        $address->zipcode = $this->individual_billing_zipcode;
-        $address->type = 'billing';
-        $address->save();
+        Address::create([
+          'account_id' => $account->id,
+          'address1' => $this->individual_billing_address1,
+          'address2' => $this->individual_billing_address2,
+          'type' => 'billing',
+          'country' => $this->individual_billing_country,
+          'county' => $this->individual_billing_county,
+          'city' => $this->individual_billing_city,
+          'zipcode' => $this->individual_billing_zipcode
+        ]);
 
-        if ($this->individual_identic == false) {
-          $address_shipping = new Address();
-          $address_shipping->account_id = $account->id;
-          $address_shipping->first_name = $this->individual_shipping_first;
-          $address_shipping->last_name = $this->individual_shipping_last;
-          $address_shipping->phone = $this->individual_shipping_phone;
-          $address_shipping->email = $this->individual_shipping_email;
-          $address_shipping->address1 = $this->individual_shipping_address1;
-          $address_shipping->address2 = $this->individual_shipping_address2;
-          $address_shipping->country = $this->individual_shipping_country;
-          $address_shipping->county = $this->individual_shipping_county;
-          $address_shipping->city = $this->individual_shipping_city;
-          $address_shipping->zipcode = $this->individual_shipping_zipcode;
-          $address_shipping->type = 'shipping';
-          $address_shipping->save();
+        if (!$this->individual_identic) {
+          Address::create([
+            'account_id' => $account->id,
+            'first_name' => $this->individual_shipping_first,
+            'last_name' => $this->individual_shipping_last,
+            'phone' => $this->individual_shipping_phone,
+            'email' => $this->individual_shipping_email,
+            'address1' => $this->individual_shipping_address1,
+            'address2' => $this->individual_shipping_address2,
+            'type' => 'shipping',
+            'country' => $this->individual_shipping_country,
+            'county' => $this->individual_shipping_county,
+            'city' => $this->individual_shipping_city,
+            'zipcode' => $this->individual_shipping_zipcode
+          ]);
         } else {
-          $address_shipping = new Address();
-          $address_shipping->account_id = $account->id;
-          $address_shipping->first_name = $this->individual_billing_first;
-          $address_shipping->last_name = $this->individual_billing_last;
-          $address_shipping->phone = $this->individual_billing_phone;
-          $address_shipping->email = $this->individual_billing_email;
-          $address_shipping->address1 = $this->individual_billing_address1;
-          $address_shipping->address2 = $this->individual_billing_address2;
-          $address_shipping->country = $this->individual_billing_country;
-          $address_shipping->county = $this->individual_billing_county;
-          $address_shipping->city = $this->individual_billing_city;
-          $address_shipping->zipcode = $this->individual_billing_zipcode;
-          $address_shipping->type = 'shipping';
-          $address_shipping->save();
+          Address::create([
+            'account_id' => $account->id,
+            'first_name' => $this->individual_billing_first,
+            'last_name' => $this->individual_billing_last,
+            'phone' => $this->individual_billing_phone,
+            'email' => $this->individual_billing_email,
+            'address1' => $this->individual_billing_address1,
+            'address2' => $this->individual_billing_address2,
+            'type' => 'shipping',
+            'country' => $this->individual_billing_country,
+            'county' => $this->individual_billing_county,
+            'city' => $this->individual_billing_city,
+            'zipcode' => $this->individual_billing_zipcode
+          ]);
         }
       }
       if ($this->juridic) {
-        $account = new Account();
-        $account->name = $this->juridic_billing_first . " " . $this->juridic_billing_last . ", " . $this->juridic_billing_company_name;
-        $account->type = 'juridic';
-        $account->first_name = $this->juridic_billing_first;
-        $account->last_name = $this->juridic_billing_last;
-        $account->phone = $this->juridic_billing_phone;
-        $account->email = $this->juridic_billing_email;
-        $account->company_name = $this->juridic_billing_company_name;
-        $account->registration_code = $this->juridic_billing_registration_code;
-        $account->registration_number = $this->juridic_billing_registration_number;
-        $account->bank_name = $this->juridic_billing_bank;
-        $account->account = $this->juridic_billing_account;
-        $account->save();
+        $account = Account::create([
+          'name' => $this->juridic_billing_first . " " . $this->juridic_billing_last . ", " . $this->juridic_billing_company_name,
+          'type' => 'juridic',
+          'first_name' => $this->juridic_billing_first,
+          'last_name' => $this->juridic_billing_last,
+          'phone' => $this->juridic_billing_phone,
+          'email' => $this->juridic_billing_email,
+          'company_name' => $this->juridic_billing_company_name,
+          'registration_code' => $this->juridic_billing_registration_code,
+          'registration_number' => $this->juridic_billing_registration_number,
+          'bank_name' => $this->juridic_billing_bank,
+          'account' => $this->juridic_billing_account,
+        ]);
 
-        $address = new Address();
-        $address->account_id = $account->id;
-        $address->address1 = $this->juridic_billing_address1;
-        $address->address2 = $this->juridic_billing_address2;
-        $address->country = $this->juridic_billing_country;
-        $address->county = $this->juridic_billing_county;
-        $address->city = $this->juridic_billing_city;
-        $address->zipcode = $this->juridic_billing_zipcode;
-        $address->type = 'billing';
-        $address->save();
+        Address::create([
+          'account_id' => $account->id,
+          'address1' => $this->juridic_billing_address1,
+          'address2' => $this->juridic_billing_address2,
+          'type' => 'billing',
+          'country' => $this->juridic_billing_country,
+          'county' => $this->juridic_billing_county,
+          'city' => $this->juridic_billing_city,
+          'zipcode' => $this->juridic_billing_zipcode
+        ]);
 
-        if ($this->juridic_identic == false) {
-          $address_shipping = new Address();
-          $address_shipping->account_id = $account->id;
-          $address_shipping->first_name = $this->juridic_billing_first;
-          $address_shipping->last_name = $this->juridic_billing_last;
-          $address_shipping->phone = $this->juridic_billing_phone;
-          $address_shipping->email = $this->juridic_billing_email;
-          $address_shipping->address1 = $this->juridic_billing_address1;
-          $address_shipping->address2 = $this->juridic_billing_address2;
-          $address_shipping->country = $this->juridic_billing_country;
-          $address_shipping->county = $this->juridic_billing_county;
-          $address_shipping->city = $this->juridic_billing_city;
-          $address_shipping->zipcode = $this->juridic_billing_zipcode;
-          $address_shipping->type = 'shipping';
-          $address_shipping->save();
+        if (!$this->juridic_identic) {
+          Address::create([
+            'account_id' => $account->id,
+            'first_name' => $this->juridic_shipping_first,
+            'last_name' => $this->juridic_shipping_last,
+            'phone' => $this->juridic_shipping_phone,
+            'email' => $this->juridic_shipping_email,
+            'address1' => $this->juridic_shipping_address1,
+            'address2' => $this->juridic_shipping_address2,
+            'type' => 'shipping',
+            'country' => $this->juridic_shipping_country,
+            'county' => $this->juridic_shipping_county,
+            'city' => $this->juridic_shipping_city,
+            'zipcode' => $this->juridic_shipping_zipcode
+          ]);
         } else {
-          $address_shipping = new Address();
-          $address_shipping->account_id = $account->id;
-          $address_shipping->first_name = $this->juridic_shipping_first;
-          $address_shipping->last_name = $this->juridic_shipping_last;
-          $address_shipping->phone = $this->juridic_shipping_phone;
-          $address_shipping->email = $this->juridic_shipping_email;
-          $address_shipping->address1 = $this->juridic_shipping_address1;
-          $address_shipping->address2 = $this->juridic_shipping_address2;
-          $address_shipping->country = $this->juridic_shipping_country;
-          $address_shipping->county = $this->juridic_shipping_county;
-          $address_shipping->city = $this->juridic_shipping_city;
-          $address_shipping->zipcode = $this->juridic_shipping_zipcode;
-          $address_shipping->type = 'shipping';
-          $address_shipping->save();
+          Address::create([
+            'account_id' => $account->id,
+            'first_name' => $this->juridic_billing_first,
+            'last_name' => $this->juridic_billing_last,
+            'phone' => $this->juridic_billing_phone,
+            'email' => $this->juridic_billing_email,
+            'address1' => $this->juridic_billing_address1,
+            'address2' => $this->juridic_billing_address2,
+            'type' => 'shipping',
+            'country' => $this->juridic_billing_country,
+            'county' => $this->juridic_billing_county,
+            'city' => $this->juridic_billing_city,
+            'zipcode' => $this->juridic_billing_zipcode
+          ]);
         }
       }
-      $baseName = class_basename(Order::class); // Gets the base name of the Cart model class (e.g., "Cart")
+
+      $baseName = class_basename(Order::class);
       $cartNumber = 1;
       $uniqueName = $baseName . '_' . str_pad($cartNumber, 2, '0', STR_PAD_LEFT);
-
-      // Check for uniqueness, generate a new name if it's not unique
       while (Order::where('name', $uniqueName)->exists()) {
         $cartNumber++;
         $uniqueName = $baseName . '_' . str_pad($cartNumber, 2, '0', STR_PAD_LEFT);
       }
-      $paymentId = Payment::where('name', $this->delivery)->first()->id;
-      Order::create([
+
+      $order = Order::create([
         'name' => $uniqueName,
         'session_id' => $this->session_id,
         'account_id' => $account->id,
         'cart_id' => $this->cart->id,
         'quantity_amount' => $this->cart->quantity_amount,
-        'sum_amount' => $this->cart->final_amount,
+        'sum_amount' => $this->cart->sum_amount,
+        'final_amount' => ($this->cart->sum_amount + app('global_delivery_price') - $this->cart->voucher_value),
+        'delivery_price' => app('global_delivery_price'),
+        'voucher_value' => $this->cart->voucher_value ?? 0,
         'currency_id' => $this->cart->currency_id,
         'status_id' =>  app('global_order_new'),
-        'payment_id' => $paymentId,
-        'voucher_id' =>  $this->cart->voucher_id,
+        'payment_id' => $this->payment['id'],
+        'voucher_id' =>  $this->cart->voucher_id
       ]);
-      if ($this->cartitems) {
-        $order = Order::where('cart_id', $this->cart->id)->first();
-        $orderNumber = 'NRN' . now()->format('Ymd') . str_pad($order->id, 3, '0', STR_PAD_LEFT);
 
-        // Update the order with the generated order number
-        $order->order_number = $orderNumber;
-        $order->save();
-        foreach ($this->cartitems as $item) {
-          $item->product->quantity -= $item->quantity;
-          $item->product->save();
-          Order_Item::create([
-            'order_id' => $order->id,
-            'product_id' => $item->product_id,
-            'price' => $item->price,
-            'quantity' => $item->quantity,
-          ]);
-        }
-        $this->cart->order_id = $order->id;
-        if ($this->cart->voucher) {
-          if ($this->cart->voucher->single_use) {
-            $vouch = Voucher::find($this->cart->voucher_id);
-            $vouch->status_id = app('global_voucher_closed');
-            $vouch->save();
-          }
-        }
+      $this->orderNumber = 'NRN' . now()->format('Ymd') . str_pad($order->id, 3, '0', STR_PAD_LEFT);
+      $order->update([
+        'order_number' => $this->orderNumber
+      ]);
+
+      foreach ($this->cartitems as $item) {
+        $item->product->quantity -= $item->quantity;
+        $item->product->save();
+
+        Order_Item::create([
+          'order_id' => $order->id,
+          'product_id' => $item->product_id,
+          'price' => $item->price,
+          'quantity' => $item->quantity,
+        ]);
       }
-      $this->cart->status_id = app('global_cart_closed');
-      $this->cart->save();
+
+      if ($this->cart->voucher && $this->cart->voucher->single_use) {
+        Voucher::where('id', $this->cart->voucher_id)->update([
+          'status_id' => app('global_voucher_closed')
+        ]);
+      }
+      $this->cart->update([
+        'order_id' => $order->id,
+        'status_id' => app('global_cart_closed')
+      ]);
       $this->step++;
       $this->emit('orderprocess');
     }
