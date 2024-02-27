@@ -16,11 +16,11 @@
 
 .dropdown__button,
 .navbar__link {
-  color: $text;
+  color: $lightBlack;
   position: relative;
   text-decoration: none;
-  font-size: 14px;
-  font-weight: 500;
+  font-size: $textSize;
+  font-weight: $lightWeight;
   text-transform: capitalize;
   width: 100%;
   height: 100%;
@@ -31,7 +31,7 @@
 
   & > svg {
     width: 35px;
-    stroke: $text;
+    stroke: $lightBlack;
   }
 
   &::after {
@@ -42,7 +42,7 @@
     width: 0;
     height: 2.5px;
     border-radius: 2px;
-    background: $text;
+    background: $lightBlack;
     transition: width 0.3s ease-in-out;
   }
 
@@ -62,7 +62,7 @@
     transform: translateX(-50%) scaleY(1);
 
     & > .dropdown__item > .dropdown__item--button {
-      font-size: 14px;
+      font-size: $textSize;
     }
   }
 }
@@ -97,7 +97,7 @@
     transform: scaleY(1);
 
     & > a {
-      font-size: 14px;
+      font-size: $textSize;
     }
   }
 }
@@ -113,8 +113,8 @@
   text-wrap: nowrap;
   text-decoration: none;
   line-height: 150%;
-  font-weight: 500;
-  color: $text;
+  font-weight: $lightWeight;
+  color: $lightBlack;
   position: relative;
   font-size: 0;
   gap: 10px;
@@ -141,7 +141,7 @@
     left: 0;
     width: 0%;
     height: 2px;
-    background: $text;
+    background: $lightBlack;
     transition: all 0.3s ease-in-out;
   }
 
@@ -179,8 +179,8 @@
     text-wrap: nowrap;
     text-decoration: none;
     line-height: 150%;
-    font-weight: 500;
-    color: $text;
+    font-weight: $lightWeight;
+    color: $lightBlack;
     position: relative;
     font-size: 0px;
     $transition-delay: 0.15s;
@@ -202,7 +202,7 @@
       left: 0;
       width: 0%;
       height: 2px;
-      background: $text;
+      background: $lightBlack;
       transition: all 0.3s ease-in-out;
     }
 

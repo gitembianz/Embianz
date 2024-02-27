@@ -80,7 +80,7 @@
 .menu__close {
   width: 100%;
   height: 40px;
-  border: 1px solid $text;
+  border: 1px solid $lightBlack;
   text-decoration: none;
   border-radius: 5px;
   display: flex;
@@ -88,16 +88,16 @@
   justify-content: space-between;
   transition: all 0.3s ease-in-out;
   text-transform: uppercase;
-  font-size: 14px;
-  font-weight: 500;
+  font-size: $textSize;
+  font-weight: $lightWeight;
   flex: 1;
   gap: 15px;
   background: $background;
-  color: $text;
+  color: $lightBlack;
   padding: 10px;
 
   &:hover {
-    background: $text;
+    background: $lightBlack;
     color: $background;
 
     & > svg {
@@ -106,7 +106,7 @@
   }
 
   & > svg {
-    stroke: $text;
+    stroke: $lightBlack;
     transition: all 0.3s ease-in-out;
   }
 }
@@ -131,7 +131,7 @@
   width: 100%;
   height: 100%;
   flex: 1;
-  scrollbar-color: $text transparent;
+  scrollbar-color: $lightBlack transparent;
   scrollbar-width: thin;
 
   &::-webkit-scrollbar {
@@ -143,7 +143,7 @@
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: $text;
+    background-color: $lightBlack;
     border-radius: 10px;
     border-left: $background;
   }
@@ -159,7 +159,7 @@
   gap: 10px;
   border-radius: 7px;
   transition: all 0.3s ease-in-out;
-  background: $secondary;
+  background: $primary;
   border-radius: 7px;
   padding: 0 7px;
 
@@ -169,19 +169,19 @@
     object-fit: contain;
     aspect-ratio: 1/1;
     border-radius: 7px;
-    background: $secondary;
+    background: $primary;
     mix-blend-mode: multiply;
   }
 
   & > h4 {
-    color: $text;
+    color: $lightBlack;
     width: 100%;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    font-size: 14px;
-    font-weight: 500;
+    font-size: $textSize;
+    font-weight: $lightWeight;
     text-transform: capitalize;
   }
 }
@@ -218,7 +218,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: $secondary;
+  background: $primary;
   color: $background;
   text-decoration: none;
   border-radius: 7px;
@@ -234,7 +234,7 @@
   display: flex;
   align-items: center;
   border-radius: 7px 0 0 7px;
-  background-color: $secondary;
+  background-color: $primary;
   transition: all 0.3s ease-in-out;
 
   & > img {
@@ -242,16 +242,16 @@
     height: 40px;
     object-fit: contain;
     aspect-ratio: 1/1;
-    background: $secondary;
+    background: $primary;
     border-radius: 7px;
     margin-left: 5px;
     mix-blend-mode: multiply;
   }
 
   & > h4 {
-    font-size: 14px;
-    font-weight: 500;
-    color: $text;
+    font-size: $textSize;
+    font-weight: $lightWeight;
+    color: $lightBlack;
     text-transform: capitalize;
   }
 }
@@ -264,10 +264,10 @@
   justify-content: center;
   border-radius: 0 7px 7px 0;
   border: none;
-  background: $secondary;
+  background: $primary;
 
   & > svg {
-    stroke: $text;
+    stroke: $lightBlack;
   }
 }
 
@@ -301,7 +301,7 @@
   align-items: center;
   position: relative;
   border-radius: 7px;
-  background-color: $secondary;
+  background-color: $primary;
   transform: scaleY(0);
   transform-origin: top;
   padding: 0 7px;
@@ -317,9 +317,9 @@
   }
 
   & > h4 {
-    color: $text;
-    font-size: 14px;
-    font-weight: 500;
+    color: $lightBlack;
+    font-size: $textSize;
+    font-weight: $lightWeight;
     text-transform: capitalize;
   }
 
@@ -368,7 +368,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: $secondary;
+  background: $primary;
   color: $background;
   text-decoration: none;
   border-radius: 7px;
@@ -383,8 +383,8 @@
     background: transparent;
     position: absolute;
     left: calc(-45px / 2);
-    border-bottom: 2px solid gray;
-    border-left: 2px solid gray;
+    border-bottom: 2px solid $darkGray;
+    border-left: 2px solid $darkGray;
     border-radius: 0px 0px 0px 10px;
     transform: translateY(-50%);
   }
@@ -399,7 +399,7 @@
   display: flex;
   align-items: center;
   border-radius: 7px 0 0 7px;
-  background-color: $secondary;
+  background-color: $primary;
   transition: all 0.3s ease-in-out;
   padding: 5px;
 
@@ -408,15 +408,15 @@
     height: 40px;
     object-fit: contain;
     aspect-ratio: 1/1;
-    background: $secondary;
+    background: $primary;
     border-radius: 7px;
     mix-blend-mode: multiply;
   }
 
   & > h4 {
-    font-size: 14px;
-    color: $text;
-    font-weight: 500;
+    font-size: $textSize;
+    color: $lightBlack;
+    font-weight: $lightWeight;
     text-transform: capitalize;
   }
 }
@@ -429,10 +429,10 @@
   justify-content: center;
   border-radius: 0 7px 7px 0;
   border: none;
-  background: $secondary;
+  background: $primary;
 
   & > svg {
-    stroke: $text;
+    stroke: $lightBlack;
   }
 }
 
@@ -466,7 +466,7 @@
   align-items: center;
   position: relative;
   border-radius: 7px;
-  background-color: $secondary;
+  background-color: $primary;
   transform: scaleY(0);
   transform-origin: top;
   padding: 0 7px;
@@ -480,8 +480,8 @@
     background: transparent;
     position: absolute;
     left: calc(-45px / 2);
-    border-bottom: 2px solid gray;
-    border-left: 2px solid gray;
+    border-bottom: 2px solid $darkGray;
+    border-left: 2px solid $darkGray;
     border-radius: 0px 0px 0px 10px;
     transform: translateY(-50%);
   }
@@ -496,9 +496,9 @@
   }
 
   & > h4 {
-    font-size: 14px;
-    font-weight: 500;
-    color: $text;
+    font-size: $textSize;
+    font-weight: $lightWeight;
+    color: $lightBlack;
     text-transform: capitalize;
   }
 

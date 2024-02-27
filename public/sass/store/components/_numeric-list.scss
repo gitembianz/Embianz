@@ -21,21 +21,21 @@
 
     & > a {
       text-decoration: underline;
-      color: $text;
-      font-weight: 600;
+      color: $lightBlack;
+      font-weight: $lightWeight;
     }
   }
 
   & > a {
     text-decoration: underline;
-    color: $text;
-    font-weight: 600;
+    color: $lightBlack;
+    font-weight: $lightWeight;
   }
 }
 
 .numeric > li::before {
   content: counter(category-counter) ". ";
-  font-weight: bold;
+  font-weight: $boldWeight;
   position: absolute;
   left: 0px;
   top: 4.5px;
@@ -64,15 +64,15 @@
 
     & > a {
       text-decoration: underline;
-      color: $text;
-      font-weight: 600;
+      color: $lightBlack;
+      font-weight: $lightWeight;
     }
   }
 
   & > a {
     text-decoration: underline;
-    color: $text;
-    font-weight: 600;
+    color: $lightBlack;
+    font-weight: $lightWeight;
   }
 }
 
@@ -107,15 +107,15 @@
 
     & > a {
       text-decoration: underline;
-      color: $text;
-      font-weight: 600;
+      color: $lightBlack;
+      font-weight: $lightWeight;
     }
   }
 
   & > a {
     text-decoration: underline;
-    color: $text;
-    font-weight: 600;
+    color: $lightBlack;
+    font-weight: $lightWeight;
   }
 }
 
