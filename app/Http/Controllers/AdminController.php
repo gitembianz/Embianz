@@ -7,6 +7,7 @@ use App\Models\Account;
 use App\Models\Voucher;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\CustomScript;
 use Illuminate\Support\Facades\DB;
 
 
@@ -59,6 +60,11 @@ class AdminController extends Controller
   {
     return view('admin.store_settings');
   }
+  public function customscripts()
+  {
+    return view('admin.customscripts');
+  }
+
   public function accounts()
   {
     return view('admin.accounts');
@@ -82,6 +88,50 @@ class AdminController extends Controller
     return view('admin.add_voucher');
   }
 
+  public function create_script()
+  {
+    return view('admin.add_script');
+  }
+
+  public function store_script(Request $request)
+  {
+    if (!$request->filled('content')) {
+      return redirect()->back()->withInput()->with([
+        'notification' => [
+          'message' => 'Please provide the specific script!',
+          'type' => 'error',
+          'title' => 'Something went wrong'
+        ],
+      ]);
+    }
+    $item = CustomScript::where('type', $request->type)->first();
+    if ($item) {
+      $item->update([
+        'content' => $request->content,
+        'active' => $request->has('active')
+      ]);
+      return redirect()->back()->with([
+        'notification' => [
+          'message' => 'Record edited successfully!',
+          'type' => 'success',
+          'title' => 'Success'
+        ],
+      ]);
+    } else {
+      CustomScript::create([
+        'type' => $request->type,
+        'content' => $request->content,
+        'active' => $request->has('active')
+      ]);
+      return redirect()->back()->with([
+        'notification' => [
+          'message' => 'Record added successfully!',
+          'type' => 'success',
+          'title' => 'Success'
+        ],
+      ]);
+    }
+  }
 
   public function store_voucher(Request $request)
   {

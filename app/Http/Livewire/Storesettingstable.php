@@ -6,6 +6,8 @@ use App\Models\Store_Settings;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Artisan;
+
 
 
 class Storesettingstable extends Component
@@ -41,6 +43,26 @@ class Storesettingstable extends Component
       return true;
     }
     return in_array($column, $this->selectedColumns);
+  }
+  public function actualizeaza()
+  {
+    Artisan::call('cache:clear');
+    Artisan::call('clear-compiled');
+    Artisan::call('view:clear');
+    Artisan::call('config:cache');
+    Artisan::call('config:clear');
+    Artisan::call('event:clear');
+    Artisan::call('queue:clear');
+    Artisan::call('optimize:clear');
+    Artisan::call('migrate');
+    Cache::forget('global_variables');
+    Cache::forget('global_statuses');
+    Cache::forget('global_payments');
+    session()->flash('notification', [
+      'message' => 'Website is updated!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
   }
   public function updatedSelectPage($value)
   {
