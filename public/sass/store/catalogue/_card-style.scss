@@ -1,6 +1,6 @@
 //<---------------------------- Card ---------------------------->
 .card {
-  background: $secondary;
+  background: $primary;
   display: flex;
   flex-direction: column;
   scroll-snap-align: start;
@@ -9,6 +9,7 @@
   gap: 15px;
   width: 100%;
   height: 100%;
+  box-shadow: $boxShadow;
 
   &.flying {
     z-index: 200;
@@ -54,28 +55,28 @@
   letter-spacing: 0.7px;
 
   p {
-    font-size: 14px;
-    font-weight: 500;
+    font-size: $textSize;
+    font-weight: $lightWeight;
     text-wrap: nowrap;
 
     &.sale {
-      color: #d2042d;
+      color: $darkRed;
     }
   }
 
   & > h3,
   & > h2 {
-    font-size: 14px;
-    color: $text;
-    font-weight: 500;
+    font-size: $textSize;
+    color: $lightBlack;
+    font-weight: $lightWeight;
     width: 100%;
     flex: 1;
   }
 
   & > span {
-    color: lighten($color: $text, $amount: 20%);
-    font-size: 10px;
-    font-weight: 400;
+    color: $darkGray;
+    font-size: $spanSize;
+    font-weight: $lightWeight;
   }
 }
 
@@ -86,12 +87,12 @@
   width: 100%;
   height: 40px;
   background: transparent;
-  border: 2px solid $text;
+  border: 2px solid $lightBlack;
   text-transform: uppercase;
-  font-size: 14px;
-  letter-spacing: 0.7px;
-  font-weight: 500;
-  color: $text;
+  font-size: $textSize;
+  // letter-spacing: 0.7px;
+  font-weight: $lightWeight;
+  color: $lightBlack;
 
   transition: all 0.3s ease-in-out;
 
@@ -105,32 +106,25 @@
     text-transform: uppercase;
     border: none;
     border-radius: 0;
-    font-size: 14px;
+    font-size: $textSize;
     letter-spacing: 0.7px;
-    font-weight: 500;
-    color: $text;
+    font-weight: $lightWeight;
+    color: $lightBlack;
     outline: none;
     transition: all 0.3s ease-in-out;
 
     @media (hover: hover) {
       &:hover {
-        background: $text;
-        color: $secondary;
+        background: $lightBlack;
+        color: $primary;
       }
     }
 
     @media (hover: none) {
       &:active {
-        background: $text;
-        color: $secondary;
+        background: $lightBlack;
+        color: $primary;
       }
-    }
-  }
-
-  @media (hover: hover) {
-    &:hover {
-      background: $text;
-      color: $secondary;
     }
   }
 
@@ -145,12 +139,12 @@
   justify-content: center;
   width: 100%;
   height: 40px;
-  background: $text;
-  border: 2px solid $text;
+  background: $lightBlack;
+  border: 2px solid $lightBlack;
   text-transform: uppercase;
-  font-size: 14px;
+  font-size: $textSize;
   letter-spacing: 0.7px;
-  font-weight: 500;
+  font-weight: $lightWeight;
   color: $background;
   transition: all 0.3s ease-in-out;
   cursor: not-allowed;
@@ -163,9 +157,9 @@
 }
 
 .card-sale {
-  color: #666666;
-  font-size: 14px;
-  font-weight: 600;
+  color: $darkGray;
+  font-size: $textSize;
+  font-weight: $lightWeight;
   text-decoration: line-through;
 }
 
@@ -176,24 +170,24 @@
   justify-content: center;
 
   &.discount {
-    font-size: 14px;
-    color: #cc0000;
-    font-weight: 500;
+    font-size: $textSize;
+    color: $darkRed;
+    font-weight: $lightWeight;
     text-wrap: nowrap;
   }
 
   &.oldprice {
     text-decoration: line-through;
-    font-size: 14px;
-    color: $text;
-    font-weight: 500;
+    font-size: $textSize;
+    color: $lightBlack;
+    font-weight: $lightWeight;
     text-wrap: nowrap;
   }
 
   &.price {
-    font-size: 14px;
-    color: $text;
-    font-weight: 500;
+    font-size: $textSize;
+    color: $lightBlack;
+    font-weight: $lightWeight;
     text-wrap: nowrap;
   }
 }
@@ -202,27 +196,27 @@
   position: absolute;
   top: 25px;
   left: 0;
-  color: $background;
+  color: $lightPink;
   padding: 5px 10px;
   text-transform: uppercase;
-  font-size: 12px;
-  font-weight: 400;
+  font-size: $textSize;
+  font-weight: $lightWeight;
 
   &.save {
-    background: #d2042d;
+    background: $darkRed;
   }
 
   &.save-secondary {
-    background: #d2042d;
+    background: $darkRed;
     top: 50px;
   }
 
   &.discount {
-    background: #cc0000;
+    background: $darkRed;
   }
 
   &.out {
-    background: $text;
+    background: $accentBackground;
   }
 }
 

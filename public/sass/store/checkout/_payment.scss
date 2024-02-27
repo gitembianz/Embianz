@@ -16,9 +16,9 @@
   gap: 10px;
 
   & > span {
-    font-size: 16px;
-    font-weight: 500;
-    color: $text;
+    font-size: $inputSize;
+    font-weight: $lightWeight;
+    color: $lightBlack;
   }
 }
 
@@ -53,16 +53,16 @@
   & > h3 {
     width: 100%;
     text-align: left;
-    color: $text;
-    font-size: 14px;
-    font-weight: 500;
+    color: $lightBlack;
+    font-size: $textSize;
+    font-weight: $lightWeight;
   }
 
   & > span {
     width: 100%;
     text-align: left;
-    color: #e20000;
-    font-size: 14px;
+    color: $darkRed;
+    font-size: $textSize;
     font-weight: 400;
   }
 }

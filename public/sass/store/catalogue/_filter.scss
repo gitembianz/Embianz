@@ -69,16 +69,15 @@
   justify-content: space-between;
   padding: 0 10px;
   transition: all 0.3s ease-in-out;
-  font-weight: 500;
   flex: 1;
   gap: 15px;
-  background: $text;
+  background: $lightBlack;
   color: $background;
-  font-size: 18px;
-  font-weight: 500;
+  font-size: $textSize;
+  font-weight: $lightWeight;
 
   &:hover {
-    background: darken($text, 10%);
+    background: $darkBlack;
   }
 
   & > svg {
@@ -112,16 +111,16 @@
   gap: 10px;
 
   & > p {
-    font-size: 14px;
-    font-weight: 500;
-    color: $text;
+    font-size: $textSize;
+    font-weight: $lightWeight;
+    color: $lightBlack;
     text-wrap: nowrap;
     word-break: break-word;
     white-space: nowrap;
 
     & > span {
-      color: red;
-      font-weight: 600;
+      color: $darkRed;
+      font-weight: $lightWeight;
     }
   }
 }
@@ -132,25 +131,25 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid $text;
+  border: 1px solid $lightBlack;
   background: transparent;
   text-transform: uppercase;
-  color: $text;
+  color: $lightBlack;
   gap: 10px;
   border-radius: 5px;
-  font-size: 14px;
-  font-weight: 500;
+  font-size: $textSize;
+  font-weight: $lightWeight;
   transition: all 0.3s ease-in-out;
-  border: 1px solid $text;
+  border: 1px solid $lightBlack;
 
   &:hover {
     color: $background;
-    background: $text;
+    background: $lightBlack;
   }
 
   & > span {
-    color: red;
-    font-weight: 600;
+    color: $darkRed;
+    font-weight: $boldWeight;
   }
 }
 
@@ -166,7 +165,7 @@
   width: 100%;
   height: 100%;
   flex: 1;
-  scrollbar-color: $text transparent;
+  scrollbar-color: $lightBlack transparent;
   scrollbar-width: thin;
 
   &::-webkit-scrollbar {
@@ -178,7 +177,7 @@
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: $text;
+    background-color: $lightBlack;
     border-radius: 10px;
     border-left: $background;
   }
@@ -197,7 +196,7 @@
   background: $secondary;
   border-radius: 7px;
   padding: 0 7px;
-  font-size: 14px;
+  font-size: $textSize;
 
   & > img {
     width: 40px;
@@ -210,9 +209,9 @@
   }
 
   & > h4 {
-    font-size: 14px;
-    font-weight: 500;
-    color: $text;
+    font-size: $textSize;
+    font-weight: $lightWeight;
+    color: $lightBlack;
     width: 100%;
     height: 100%;
     display: flex;
@@ -231,14 +230,14 @@
 }
 
 .filter__input:checked + .filter__link.sort__item {
-  background: $text;
+  background: $lightBlack;
 
   & > h4 {
     color: $secondary;
   }
 
   &:hover {
-    background: $text;
+    background: $lightBlack;
 
     & > h4 {
       color: $secondary;
@@ -263,16 +262,16 @@
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease-in-out;
-  font-weight: 500;
+  font-weight: $lightWeight;
   gap: 15px;
   padding: 10px;
-  background: $text;
+  background: $lightBlack;
   color: $background;
   text-transform: uppercase;
-  font-size: 14px;
+  font-size: $textSize;
 
   &:hover {
-    background: darken($text, 10%);
+    background: darken($lightBlack, 10%);
   }
 
   & > svg {
@@ -291,39 +290,39 @@
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease-in-out;
-  font-weight: 500;
+  font-weight: $lightWeight;
   gap: 15px;
   padding: 10px;
   background: $background;
-  color: $text;
-  font-size: 14px;
+  color: $lightBlack;
+  font-size: $textSize;
   text-transform: capitalize;
 
   & > svg {
-    stroke: $text;
+    stroke: $lightBlack;
   }
 }
 
 .filter__apply {
   width: 100%;
   height: 40px;
-  border: 1px solid $text;
+  border: 1px solid $lightBlack;
   text-decoration: none;
   border-radius: 3px;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease-in-out;
-  font-weight: 500;
+  font-weight: $lightWeight;
   flex: 1;
   gap: 15px;
   background: transparent;
-  color: $text;
+  color: $lightBlack;
   text-transform: uppercase;
-  font-size: 14px;
+  font-size: $textSize;
 
   &:hover {
-    background: $text;
+    background: $lightBlack;
     color: $background;
 
     & > svg {
@@ -332,7 +331,7 @@
   }
 
   & > svg {
-    stroke: $text;
+    stroke: $lightBlack;
     transition: all 0.3s ease-in-out;
   }
 }
@@ -340,21 +339,21 @@
 .filter__reset {
   width: 40px;
   height: 40px;
-  border: 1px solid $text;
+  border: 1px solid $lightBlack;
   text-decoration: none;
   border-radius: 3px;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease-in-out;
-  font-weight: 500;
+  font-weight: $lightWeight;
   gap: 15px;
   background: transparent;
-  color: $text;
+  color: $lightBlack;
   text-transform: uppercase;
 
   &:hover {
-    background: $text;
+    background: $lightBlack;
     color: $background;
 
     & > svg {
@@ -364,7 +363,7 @@
 
   & > svg {
     transition: all 0.3s ease-in-out;
-    stroke: $text;
+    stroke: $lightBlack;
   }
 }
 
@@ -404,10 +403,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: $secondary;
-  color: $text;
+  // background: $primary;
+  // color: $lightBlack;
   text-decoration: none;
-  text-transform: uppercase;
+  // text-transform: uppercase;
   border-radius: 7px;
   z-index: 5;
 }
@@ -421,7 +420,7 @@
   align-items: center;
   text-transform: uppercase;
   border-radius: 7px;
-  background-color: $secondary;
+  background-color: $primary;
   transition: all 0.3s ease-in-out;
 
   & > img {
@@ -444,29 +443,29 @@
   border-radius: 7px;
   padding: 0 10px;
   border: none;
-  background: #fafafa;
+  background: $primary;
   outline: none;
   transition: all 0.3s ease-in-out;
 
   & > h4 {
     text-transform: uppercase;
-    font-size: 14px;
-    font-weight: 500;
-    color: #333;
+    font-size: $lightBlack;
+    font-weight: $lightWeight;
+    color: $lightBlack;
   }
 
   & > svg {
     transition: all 0.3s ease-in-out;
-    stroke: $text;
+    stroke: $lightBlack;
   }
 
   &:hover {
-    background: darken($secondary, 15%);
+    background: $secondary;
   }
 }
 
 .dropfilter__list {
-  background: darken($secondary, 5%);
+  background: $primary;
   z-index: 500;
   transform: scaleY(0);
   transform-origin: top;
@@ -513,9 +512,9 @@
   }
 
   & > h4 {
-    font-size: 14px;
-    color: $text;
-    font-weight: 500;
+    font-size: $lightBlack;
+    color: $lightBlack;
+    font-weight: $lightWeight;
     text-transform: capitalize;
   }
 

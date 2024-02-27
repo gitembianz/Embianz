@@ -17,7 +17,7 @@
     position: absolute;
     width: 2px;
     height: 100%;
-    background: $text;
+    background: $lightBlack;
     top: 0;
     left: -10px;
   }
@@ -37,6 +37,11 @@
       position: sticky;
       bottom: 20px;
       z-index: 200;
+      background: $background;
+
+      &::after {
+        top: 0px;
+      }
 
       @media (max-width: map-get($grid-breakpoints, md)) {
         width: calc(100% + 40px);
@@ -87,12 +92,12 @@
 
 .details__title {
   width: 100%;
-  font-size: 18px;
-  font-weight: 500;
-  color: $text;
+  font-size: $textSize;
+  font-weight: $lightWeight;
+  color: $lightBlack;
   text-align: center;
   text-transform: uppercase;
-  line-height: 150%;
+  line-height: $lineHeight;
 }
 
 .details__text {
@@ -102,19 +107,19 @@
   justify-content: space-between;
   gap: 10px;
   padding-bottom: 10px;
-  border-bottom: 1px solid $text;
+  border-bottom: 1px solid $lightBlack;
 
   & > h3 {
-    font-size: 14px;
-    font-weight: 500;
-    color: $text;
+    font-size: $textSize;
+    font-weight: $lightWeight;
+    color: $lightBlack;
     margin: 0;
   }
 
   & > span {
-    font-size: 14px;
-    font-weight: 500;
-    color: $text;
+    font-size: $textSize;
+    font-weight: $lightWeight;
+    color: $lightBlack;
     margin: 0;
   }
 }
@@ -128,16 +133,16 @@
     width: 100%;
     border-radius: 5px;
     height: 100%;
-    border: 1px solid $text;
+    border: 1px solid $lightBlack;
     padding: 0 10px;
-    font-size: 16px;
-    color: $text;
-    font-weight: 500;
+    font-size: $inputSize;
+    color: $lightBlack;
+    font-weight: $lightWeight;
     background: transparent;
     outline: none;
 
     &::placeholder {
-      font-size: 14px;
+      font-size: $textSize;
     }
   }
 
@@ -150,10 +155,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 14px;
-    font-weight: 500;
+    font-size: $textSize;
+    font-weight: $lightWeight;
     color: $background;
-    background: $text;
+    background: $lightBlack;
     text-transform: uppercase;
     border: none;
     border-radius: 5px;
@@ -162,15 +167,11 @@
 }
 
 .voucher__error {
-  font-size: 16px;
-  line-height: 150%;
+  font-size: $lightBlack;
+  line-height: $lineHeight;
   color: $background;
   width: 100%;
   text-align: center;
-
-  @media (max-width: map-get($grid-breakpoints, sm)) {
-    font-size: 12px;
-  }
 }
 
 .details__button {
@@ -181,20 +182,20 @@
   justify-content: center;
   height: 40px;
   background: transparent;
-  font-size: 14px;
-  border: 1px solid $text;
+  font-size: $textSize;
+  border: 2px solid $lightBlack;
   transition: all 0.3s ease-in-out;
   text-transform: uppercase;
-  color: $text;
-  font-weight: 500;
+  color: $lightBlack;
+  font-weight: $lightWeight;
 
   &:hover {
-    background: $text;
+    background: $lightBlack;
     color: $secondary;
   }
 
   &:active {
-    background: $text;
+    background: $lightBlack;
     color: $secondary;
   }
 }
@@ -205,20 +206,20 @@
   justify-content: center;
   height: 30px;
   width: 30px;
-  color: $text;
-  font-weight: 500;
+  color: $lightBlack;
+  font-weight: $lightWeight;
   border-radius: 50%;
   border: none;
   background: $secondary;
   transition: all 0.3s ease-in-out;
 
   & > svg {
-    stroke: $text;
+    stroke: $lightBlack;
     transform: scale(0.7);
   }
 
   &:hover {
-    background: $text;
+    background: $lightBlack;
     border: 1px solid $secondary;
 
     & > svg {
