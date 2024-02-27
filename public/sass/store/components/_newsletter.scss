@@ -38,7 +38,7 @@ $newsletterShadow:
   width: 70vw;
   max-width: 400px;
   height: auto;
-  background-color: #fafafa;
+  background-color: $primary;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -73,17 +73,17 @@ $newsletterShadow:
 .newsletter__title,
 .newsletter__descr {
   width: 100%;
-  font-size: 14px;
-  color: $text;
-  font-weight: 500;
-  line-height: 150%;
+  font-size: $textSize;
+  color: $lightBlack;
+  font-weight: $lightWeight;
+  line-height: $lineHeight;
   text-align: center;
   text-wrap: balance;
   margin: 0;
 }
 .newsletter__title {
   font-size: 20px;
-  font-weight: 500;
+  font-weight: $lightWeight;
 }
 .newsletter__close {
   width: 100%;
@@ -92,18 +92,18 @@ $newsletterShadow:
   align-items: center;
   justify-content: center;
   border-radius: 3px;
-  background: $text;
+  background: $lightBlack;
   text-transform: uppercase;
   border: none;
   color: $background;
   text-align: center;
-  font-size: 14px;
-  font-weight: 500;
+  font-size: $textSize;
+  font-weight: $lightWeight;
   transition: background 0.3s ease-in-out;
   cursor: pointer;
 
   &:hover {
-    background: darken($text, 15%);
+    background: $darkBlack;
   }
 }
 
@@ -114,19 +114,19 @@ $newsletterShadow:
   border: none;
   border-radius: 5px;
   height: 40px;
-  font-size: 14px;
-  font-weight: 500;
+  font-size: $textSize;
+  font-weight: $lightWeight;
   text-transform: uppercase;
-  line-height: 150%;
+  line-height: $lineHeight;
   padding: 0 20px;
   box-shadow: $newsletterShadow;
   transition: all 0.3s ease-in-out;
   color: $background;
-  background: $text;
+  background: $lightBlack;
   cursor: pointer;
 
   &:hover {
-    background: darken($text, 20%);
+    background: $lightBlack;
   }
 }
 

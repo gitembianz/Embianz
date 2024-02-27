@@ -84,7 +84,7 @@
     top: 50%;
     right: 10px;
     transform: translateY(-50%) scale(0.8);
-    stroke: $text;
+    stroke: $lightBlack;
   }
 
   & > input {
@@ -97,7 +97,7 @@
     padding: 0 40px 0 10px;
     outline: none;
     background: $background;
-    color: $text;
+    color: $lightBlack;
   }
 }
 
@@ -113,7 +113,7 @@
   background: $background;
 
   & > svg {
-    stroke: $text;
+    stroke: $lightBlack;
   }
 }
 
@@ -164,7 +164,7 @@
   background: $background;
 
   &:hover {
-    background: darken($color: $background, $amount: 10%);
+    background: $secondary;
   }
 }
 
@@ -209,7 +209,7 @@
   span {
     font-size: 12px;
     font-weight: 500;
-    color: $text;
+    color: $lightBlack;
   }
 }
 
@@ -218,7 +218,7 @@
   span {
     font-size: 14px;
     font-weight: 500;
-    color: $text;
+    color: $lightBlack;
   }
 }
 

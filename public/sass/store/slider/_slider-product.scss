@@ -21,7 +21,7 @@
 .product-slider__slide {
   flex: 0 0 100%;
   width: 100%;
-  background: $secondary;
+  background: $primary;
 
   & > video,
   & > img {
@@ -52,7 +52,7 @@
   overflow-x: auto;
   padding-bottom: 10px;
   scrollbar-width: auto;
-  scrollbar-color: #333 transparent;
+  scrollbar-color: $lightBlack transparent;
   cursor: pointer;
 
   &::-webkit-scrollbar {
@@ -65,7 +65,7 @@
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: #333;
+    background-color: $lightBlack;
     border-radius: 13px;
     border: unset;
   }
@@ -91,13 +91,13 @@
     position: relative;
     user-select: none;
     cursor: pointer;
-    border: 2px solid lighten(#333, 75%);
+    border: 2px solid lighten($lightBlack, 75%);
 
     @media (max-width: map-get($grid-breakpoints, md)) {
       width: 0;
       height: 0;
       border-radius: 50%;
-      outline: 2px solid $text;
+      outline: 2px solid $lightBlack;
       border: 6px solid $background;
       outline-offset: -1px;
       margin: 5px;
@@ -105,15 +105,15 @@
 
     &.active {
       filter: contrast(-20%) brightness(160%);
-      border: 2px solid #333;
+      border: 2px solid $lightBlack;
       z-index: 5;
 
       @media (max-width: map-get($grid-breakpoints, md)) {
         width: 50px;
         height: 0;
         border-radius: 200px;
-        outline: 2px solid $text;
-        border: 6px solid $text;
+        outline: 2px solid $lightBlack;
+        border: 6px solid $lightBlack;
         margin: 5px;
         filter: none;
       }
@@ -146,7 +146,7 @@
   height: 40px;
   border-radius: 50%;
   border: none;
-  background-color: $text;
+  background-color: $lightBlack;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -175,7 +175,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: $modal;
   opacity: 0;
   visibility: hidden;
   transition: all 0.3s ease-in-out;
@@ -194,9 +194,9 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: #fff;
+  background-color: $background;
   text-align: center;
-  border-radius: 7px;
+  // border-radius: 7px;
 
   & > img {
     width: 100%;
@@ -216,12 +216,12 @@
   cursor: pointer;
   width: 40px;
   height: 40px;
-  background-color: #333;
+  background-color: $lightBlack;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
 
   & > svg {
-    stroke: #f2f2f2;
+    stroke: $primary;
   }
 }

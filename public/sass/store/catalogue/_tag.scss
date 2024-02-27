@@ -11,15 +11,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
-  font-weight: 400;
+  font-size: $textSize;
+  font-weight: $lightWeight;
   border: none;
   background: $text;
   padding: 0 10px;
   color: #fff;
 
   &:hover {
-    background: darken($color: $accent, $amount: 15%);
+    // background: darken($color: $accent, $amount: 15%);
   }
 
   & > svg {

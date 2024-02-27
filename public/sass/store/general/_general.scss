@@ -15,12 +15,6 @@ html {
 html,
 body {
   scrollbar-gutter: stable;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -ms-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%;
-  -webkit-tap-highlight-color: transparent;
-  -webkit-text-stroke-width: 0 !important;
   overscroll-behavior: contain;
 }
 
@@ -30,20 +24,20 @@ body {
   margin: 0;
   overflow-x: hidden;
   scrollbar-width: auto;
-  scrollbar-color: #333333 transparent;
+  scrollbar-color: $lightBlack $background;
 
   &::-webkit-scrollbar {
     width: 12px;
   }
 
   &::-webkit-scrollbar-track {
-    background: transparent;
+    background: $background;
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: #333333;
+    background-color: $lightBlack;
     border-radius: 23px;
-    border: 2px solid transparent;
+    border: 2px solid $background;
   }
 }
 
@@ -76,12 +70,12 @@ input[type="submit"] {
   border: none;
 
   & > svg {
-    fill: #ccc;
+    fill: $lightGray;
   }
 
   &.active {
     & > svg {
-      fill: #d2042d;
+      fill: $darkRed;
     }
   }
 }
@@ -95,10 +89,6 @@ label {
 main {
   padding-bottom: 30px;
   min-height: 80vh;
-}
-
-img {
-  image-rendering: optimizeSpeed;
 }
 
 //----------------------------------------------------------------------

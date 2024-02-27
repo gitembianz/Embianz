@@ -2,7 +2,7 @@
 .banner {
   width: 100%;
   padding: 5px 0;
-  background: $text;
+  background: $accentBackground;
   transform-origin: top;
   transition: transform 0.3s;
   position: fixed;
@@ -11,9 +11,9 @@
 }
 
 .banner__container {
-  color: $background;
-  font-size: 14px;
-  font-weight: 500;
+  color: $accentText;
+  font-size: $textSize;
+  font-weight: $lightWeight;
   text-align: center;
 }
 

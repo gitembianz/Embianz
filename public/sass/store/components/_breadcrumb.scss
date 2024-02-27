@@ -14,11 +14,11 @@
 }
 
 .breadcrumbs__link {
-  font-size: 12px;
-  font-weight: 500;
-  color: $text;
+  font-size: $textSize;
+  font-weight: $lightWeight;
+  color: $lightBlack;
   text-decoration: underline;
-  text-decoration-color: $text;
+  text-decoration-color: $lightBlack;
   text-underline-offset: 3px;
   text-wrap: nowrap;
   text-transform: capitalize;
@@ -26,7 +26,7 @@
   padding-right: 10px;
 
   &:hover {
-    color: darken($color: $text, $amount: 10%);
+    color: $darkBlack;
   }
 
   &:not(:last-child)::after {
