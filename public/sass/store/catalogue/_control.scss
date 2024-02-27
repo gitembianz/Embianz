@@ -19,11 +19,12 @@
   width: 40px;
   height: 40px;
   border-radius: 7px;
-  background-color: $secondary;
+  background-color: $primary;
   border: none;
+  box-shadow: $boxShadow;
 
   & > svg {
-    stroke: $text;
+    stroke: $lightBlack;
   }
 }
 
@@ -32,15 +33,18 @@
   height: 40px;
   border-radius: 7px;
   padding: 0 10px;
-  font-size: 16px;
-  font-weight: 500;
-  color: $text;
+  font-size: $inputSize;
+  font-weight: $lightWeight;
+  color: $lightBlack;
   border: none;
   flex: 1;
-  background-color: $secondary;
+  background-color: $primary;
   outline: none;
+  box-shadow: $boxShadow;
 
   &::placeholder {
-    color: lighten($color: $text, $amount: 30%);
+    color: $darkGray;
+    font-size: $inputSize;
+    font-weight: $lightWeight;
   }
 }

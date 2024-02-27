@@ -43,34 +43,34 @@
   height: 40px;
   padding: 0 10px;
   background: transparent;
-  color: $text;
-  font-size: 14px;
-  font-weight: 500;
+  color: $lightBlack;
+  font-size: $textSize;
+  font-weight: $lightWeight;
   text-decoration: none;
   border-radius: 3px;
   transition: all 0.3s ease-in-out;
-  border: 1px solid $text;
+  border: 1px solid $lightBlack;
   text-transform: uppercase;
   gap: 10px;
 
   @media (hover: hover) {
     &:hover {
-      background: $text;
-      color: $secondary;
+      background: $lightBlack;
+      color: $primary;
 
       & > svg {
-        stroke: $secondary;
+        stroke: $primary;
       }
     }
   }
 
   @media (hover: none) {
     &:active {
-      background: $text;
-      color: $secondary;
+      background: $lightBlack;
+      color: $primary;
 
       & > svg {
-        stroke: $secondary;
+        stroke: $primary;
       }
     }
   }
@@ -87,21 +87,21 @@
   }
 
   &.active {
-    background: $text;
-    color: $secondary;
+    background: $lightBlack;
+    color: $primary;
 
     & > svg {
-      stroke: $secondary;
+      stroke: $primary;
     }
   }
 
   & > svg {
-    stroke: $text;
+    stroke: $lightBlack;
   }
 }
 
 .checkout__button--confirm {
-  border: 1px solid $text;
+  border: 1px solid $lightBlack;
 }
 
 .checkout__container {
@@ -132,7 +132,7 @@
   height: 100%;
   display: none;
   flex-direction: column;
-  background: $secondary;
+  background: $primary;
   padding: 15px;
   gap: 15px;
   border-radius: 5px;
@@ -161,22 +161,22 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  background: $secondary;
+  background: $primary;
   border-radius: 5px;
   gap: 10px;
 
   & > h3 {
-    color: $text;
-    font-size: 18px;
-    font-weight: 500;
+    color: $lightBlack;
+    font-size: $inputSize;
+    font-weight: $lightWeight;
     padding: 10px 0;
     text-align: center;
-    background: #fff;
-    border-bottom: 1px solid #333;
+    background: $background;
+    border-bottom: 1px solid $lightBlack;
     width: 100%;
 
     &:last-child {
-      border-top: 10px solid #fff;
+      border-top: 10px solid $background;
     }
   }
 }
@@ -206,16 +206,16 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1.5px solid $text;
-    color: $text;
-    font-size: 18px;
-    font-weight: 500;
+    border: 1.5px solid $lightBlack;
+    color: $lightBlack;
+    font-size: $inputSize;
+    font-weight: $lightWeight;
   }
 
   & > h3 {
-    color: $text;
-    font-size: 18px;
-    font-weight: 500;
+    color: $lightBlack;
+    font-size: $inputSize;
+    font-weight: $lightWeight;
   }
 }
 
@@ -229,19 +229,19 @@
 
   &.error {
     &::after {
-      color: red;
+      color: $darkRed;
     }
 
     & > input {
-      background: lighten(red, 45%);
+      background: lighten($darkRed, 35%);
     }
 
     & > span {
-      font-size: 13px;
+      font-size: $textSize;
     }
 
     & > label {
-      color: red;
+      color: $darkRed;
     }
   }
 
@@ -253,15 +253,15 @@
     outline: none;
     border-radius: 0;
     background: none;
-    border-bottom: 1px solid #333;
+    border-bottom: 1px solid $lightBlack;
     border-radius: 5px 5px 0 0;
-    font-size: 16px;
-    font-weight: 500;
-    color: #333;
+    font-size: $inputSize;
+    font-weight: $lightWeight;
+    color: $lightBlack;
     padding: 0 10px;
     -moz-appearance: textfield;
     transition: all 0.3s ease-in-out;
-    background: darken($secondary, 3%);
+    background: $secondary;
 
     &::-webkit-outer-spin-button,
     &::-webkit-inner-spin-button {
@@ -271,37 +271,41 @@
 
     &::placeholder {
       font-size: 0px;
-      font-weight: 500;
-      color: lighten(#333, 30%);
+      font-weight: $lightWeight;
+      color: $darkGray;
       user-select: none;
     }
 
     & ~ label {
       position: absolute;
-      font-size: 16px;
-      font-weight: 500;
-      color: lighten(#333, 20%);
+      font-size: $inputSize;
+      font-weight: $lightWeight;
+      color: $darkGray;
       user-select: none;
       left: 20px;
-      top: 14px;
-      transition: all 0.2s ease-in-out;
+      top: 0px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      transition: all 0.3s ease-in-out;
       user-select: none;
       pointer-events: none;
+      text-wrap: balance;
     }
 
     &:focus ~ label,
     &:active ~ label,
     &:not(:placeholder-shown) ~ label {
-      top: -14px;
+      top: -28px;
       left: 0;
-      font-size: 12px;
+      font-size: $spanSize;
     }
   }
 
   & > span {
     font-size: 0px;
-    font-weight: 500;
-    color: red;
+    font-weight: $lightWeight;
+    color: $darkRed;
     transition: all 0.3s ease-in-out;
     line-height: 150%;
   }
@@ -312,12 +316,15 @@
     content: "*";
     position: absolute;
     left: 10px;
-    top: 10px;
-    font-size: 14px;
-    font-weight: 500;
+    top: 0px;
+    height: 40px;
+    font-size: $textSize;
+    font-weight: $lightWeight;
     line-height: 150%;
-    color: #333;
+    color: $lightBlack;
     text-align: center;
+    display: flex;
+    align-items: center;
   }
 
   & > input {
@@ -330,16 +337,16 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  background: $secondary;
+  background: $primary;
   padding: 5px 10px;
   gap: 15px;
   border-radius: 5px;
   grid-column: 1/3;
 
   & > span {
-    color: $text;
-    font-size: 16px;
-    font-weight: 500;
+    color: $lightBlack;
+    font-size: $inputSize;
+    font-weight: $lightWeight;
     flex: 1;
   }
 }
@@ -349,7 +356,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  background: $secondary;
+  background: $primary;
   padding: 5px 10px;
   gap: 15px;
   border-radius: 5px;
@@ -357,32 +364,32 @@
   scroll-margin-top: 150px;
 
   & > span {
-    color: lighten($text, 30%);
-    font-size: 16px;
-    font-weight: 500;
+    color: $darkGray;
+    font-size: $inputSize;
+    font-weight: $lightWeight;
     flex: 1;
     text-decoration: none;
 
     & > a {
-      color: $text;
+      color: $lightBlack;
       text-decoration: underline;
       font-weight: 600;
     }
   }
 
   & > input:checked ~ a {
-    color: $text;
+    color: $lightBlack;
   }
 
   &.error {
-    background: lighten(red, 44%);
-    border: 1px solid red;
+    background: lighten($darkRed, 44%);
+    border: 1px solid $darkRed;
 
     & > span {
-      color: red;
+      color: $darkRed;
 
       & > a {
-        color: red;
+        color: $darkRed;
       }
     }
   }

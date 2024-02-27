@@ -6,12 +6,12 @@
   align-items: center;
   width: 100%;
   padding-bottom: 10px;
-  border-bottom: 1px solid $text;
+  border-bottom: 1px solid $lightBlack;
 
   & > span {
-    color: $text;
-    font-size: 14px;
-    font-weight: 500;
+    color: $lightBlack;
+    font-size: $textSize;
+    font-weight: $lightWeight;
     width: 100%;
     flex: 1;
   }
@@ -24,9 +24,9 @@
   height: 24px;
   width: 50px;
   padding: 20px;
-  font-size: 14px;
+  font-size: $textSize;
   font-weight: 400;
-  color: $text;
+  color: $lightBlack;
   background: transparent;
   margin: 0;
   border: none;

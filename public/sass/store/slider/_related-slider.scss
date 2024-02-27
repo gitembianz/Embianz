@@ -38,14 +38,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: $text;
+  background: $lightBlack;
   width: 40px;
   height: 40px;
   border-radius: 50%;
   border: none;
 
   & > svg {
-    stroke: $secondary;
+    stroke: $primary;
   }
 
   &.disabled {

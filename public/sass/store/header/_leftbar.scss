@@ -47,7 +47,7 @@
   left: 0;
   top: 0;
   border: none;
-  font-size: 14px;
+  font-size: $textSize;
   opacity: 0;
 
   @media (max-width: map-get($grid-breakpoints, sm)) {
@@ -88,7 +88,7 @@
 .leftbar__close {
   width: 40px;
   height: 40px;
-  border: 1px solid $text;
+  border: 1px solid $lightBlack;
   outline: none;
   border-radius: 5px;
   display: flex;
@@ -98,7 +98,7 @@
   background-color: transparent;
 
   &:hover {
-    background: $text;
+    background: $lightBlack;
     color: $background;
 
     & > svg {
@@ -107,7 +107,7 @@
   }
 
   & > svg {
-    stroke: $text;
+    stroke: $lightBlack;
   }
 }
 
@@ -122,7 +122,7 @@
 .leftbar__button {
   width: 100%;
   height: 40px;
-  border: 1px solid $text;
+  border: 1px solid $lightBlack;
   text-decoration: none;
   text-transform: uppercase;
   border-radius: 5px;
@@ -130,14 +130,14 @@
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease-in-out;
-  font-weight: 500;
+  font-weight: $lightWeight;
   background-color: transparent;
-  color: $text;
+  color: $lightBlack;
   flex: 1;
-  font-size: 14px;
+  font-size: $textSize;
 
   &:hover {
-    background: $text;
+    background: $lightBlack;
     color: $background;
 
     & > svg {
@@ -146,7 +146,7 @@
   }
 
   & > svg {
-    stroke: $text;
+    stroke: $lightBlack;
   }
 }
 
@@ -166,7 +166,7 @@
   width: 100%;
 
   // Scrollbar Settings if its appear
-  scrollbar-color: $text transparent;
+  scrollbar-color: $lightBlack transparent;
   scrollbar-width: thin;
 
   &::-webkit-scrollbar {
@@ -182,16 +182,16 @@
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: $text;
+    background-color: $lightBlack;
     border-radius: 10px;
     border-left: 2px solid $background;
   }
 }
 
 .leftbar__empty {
-  font-size: 16px;
-  font-weight: 500;
-  color: $text;
+  font-size: $textSize;
+  font-weight: $lightWeight;
+  color: $lightBlack;
   height: 100%;
   width: 100%;
   flex: 1;
@@ -210,10 +210,10 @@
   padding: 7px;
   border-radius: 5px;
   transition: all 0.3s ease-in-out;
-  background: $secondary;
+  background: $primary;
 
   &:hover {
-    background: darken($secondary, 10%);
+    background: $secondary;
   }
 
   &:not(:last-child) {
@@ -224,7 +224,7 @@
       display: block;
       position: absolute;
       top: calc(100% + 10px);
-      background: $secondary;
+      background: $primary;
     }
   }
 }
@@ -249,9 +249,9 @@
     justify-content: center;
     width: 100%;
     height: 100%;
-    color: $text;
-    font-weight: 500;
-    font-size: 14px;
+    color: $lightBlack;
+    font-weight: $lightWeight;
+    font-size: $textSize;
     text-decoration: none;
   }
 
@@ -291,23 +291,23 @@
   width: 100%;
 
   & > p {
-    font-size: 12px;
-    font-weight: 500;
+    font-size: $spanSize;
+    font-weight: $lightWeight;
     text-transform: uppercase;
-    color: $text;
+    color: $lightBlack;
   }
 
   & > span {
-    color: $text;
-    font-weight: 500;
+    color: $lightBlack;
+    font-weight: $lightWeight;
     text-transform: uppercase;
-    font-size: 12px;
+    font-size: $spanSize;
   }
 
   & > h4 {
-    font-size: 14px;
-    color: $text;
-    font-weight: 500;
+    font-size: $textSize;
+    color: $lightBlack;
+    font-weight: $lightWeight;
     text-transform: uppercase;
   }
 }
@@ -315,7 +315,7 @@
 .leftbar__delete {
   width: 35px;
   height: 35px;
-  border: 1px solid $text;
+  border: 1px solid $lightBlack;
   outline: none;
   border-radius: 30px;
   display: flex;
@@ -325,11 +325,11 @@
   background: transparent;
 
   & > svg {
-    stroke: $text;
+    stroke: $lightBlack;
   }
 
   &:hover {
-    background: $text;
+    background: $lightBlack;
 
     & > svg {
       stroke: $background;
@@ -346,21 +346,21 @@
   justify-content: space-between;
   padding-top: 15px;
   gap: 10px;
-  border-top: 1px solid $text;
+  border-top: 1px solid $lightBlack;
 }
 
 .leftbar__total--text {
-  font-size: 16px;
-  font-weight: 500;
-  color: $text;
+  font-size: $textSize;
+  font-weight: $lightWeight;
+  color: $lightBlack;
   width: 100%;
   text-align: end;
 
   & > span {
-    font-size: 16px;
-    font-weight: 500;
+    font-size: $textSize;
+    font-weight: $lightWeight;
     margin-left: 10px;
-    color: $text;
+    color: $lightBlack;
   }
 }
 

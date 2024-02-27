@@ -27,14 +27,14 @@
 
   & > h3 {
     font-size: 18px;
-    font-weight: 500;
+    font-weight: $lightWeight;
     color: $text;
   }
 
   & > span {
-    font-size: 14px;
-    font-weight: 400;
-    color: lighten($color: $text, $amount: 20%);
+    font-size: $textSize;
+    font-weight: $lightWeight;
+    color: $darkGray;
   }
 }
 
@@ -46,10 +46,10 @@
   height: 40px;
   border: none;
   border-radius: 50%;
-  background: red;
+  background: $darkRed;
 
   &:hover {
-    background: darken($color: red, $amount: 15%);
+    background: $darkRed;
   }
 
   svg {

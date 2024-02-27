@@ -22,29 +22,29 @@
   align-items: center;
   justify-content: center;
   background: transparent;
-  color: $text;
-  font-size: 14px;
-  font-weight: 500;
-  border: 1px solid $text;
+  color: $lightBlack;
+  font-size: $textSize;
+  font-weight: $lightWeight;
+  border: 1px solid $lightBlack;
   text-transform: capitalize;
   border-radius: 3px;
   padding: 0px 10px;
   transition: all 0.3s ease-in-out;
 
   &:hover {
-    background-color: $text;
+    background-color: $lightBlack;
     color: $background;
   }
 
   &.active {
-    background-color: $text;
+    background-color: $lightBlack;
     color: $background;
   }
 }
 
 .tab__content {
   display: none;
-  background-color: $secondary;
+  background-color: $primary;
   border-radius: 5px;
   padding: 10px;
   width: 100%;
@@ -55,9 +55,9 @@
 }
 
 .tab__info {
-  font-size: 14px;
-  font-weight: 400;
-  color: $text;
+  font-size: $textSize;
+  font-weight: $lightWeight;
+  color: $lightBlack;
   line-height: 150%;
 }
 
@@ -66,39 +66,39 @@
   width: 100%;
 
   thead tr {
-    background-color: $text;
+    background-color: $lightBlack;
     text-align: left;
     color: $background;
-    font-size: 14px;
-    font-weight: 400;
+    font-size: $textSize;
+    font-weight: $lightWeight;
 
     & th {
       &:first-child {
         border-radius: 5px 0 0 0;
-        outline: 1px solid $text;
+        outline: 1px solid $lightBlack;
         outline-offset: -0.5px;
       }
 
       &:last-child {
         border-radius: 0 5px 0 0;
-        outline: 1px solid $text;
+        outline: 1px solid $lightBlack;
         outline-offset: -0.5px;
       }
     }
   }
 
   tbody {
-    color: $text;
-    font-size: 14px;
-    font-weight: 400;
+    color: $lightBlack;
+    font-size: $textSize;
+    font-weight: $lightWeight;
     outline: 1px solid black;
     border-radius: 0 0 7px 7px;
     outline-offset: -0.5px;
 
     tr:not(:last-child) th,
     tr:not(:last-child) td {
-      border-left: 1px solid $text;
-      border-right: 1px solid $text;
+      border-left: 1px solid $lightBlack;
+      border-right: 1px solid $lightBlack;
     }
 
     tr td:last-child {
@@ -107,7 +107,7 @@
 
     tr:nth-of-type(even) {
       background-color: $background;
-      border-top: 1px solid $text;
+      border-top: 1px solid $lightBlack;
     }
   }
 

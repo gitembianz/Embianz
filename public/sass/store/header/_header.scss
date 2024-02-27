@@ -50,7 +50,7 @@ header {
   position: relative;
 
   & > svg {
-    stroke: $text;
+    stroke: $lightBlack;
   }
 }
 
@@ -58,9 +58,9 @@ header {
 
 .header__count {
   position: absolute;
-  background: #d2042d;
+  background: $darkRed;
   color: $background;
-  font-size: 10px;
+  font-size: $spanSize;
   width: 20px;
   height: 20px;
   right: -7px;

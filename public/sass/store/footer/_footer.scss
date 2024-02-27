@@ -1,7 +1,7 @@
 //<---------------------------------------------------------------------->
 //<------------------------------- Footer ------------------------------->
 .footer {
-  background: $text;
+  background: $lightBlack;
 }
 
 .footer__container {
@@ -42,12 +42,12 @@
   transition: all 0.3s ease-in-out;
 
   & > svg {
-    stroke: $text;
+    stroke: $lightBlack;
     transform: scale(1.05);
   }
 
   &:hover {
-    background: darken($background, 20%);
+    background: $secondary;
   }
 }
 
@@ -64,9 +64,9 @@
 
   & > h2 {
     color: $background;
-    font-size: 18px;
-    font-weight: 500;
-    line-height: 150%;
+    font-size: $inputSize;
+    font-weight: $lightWeight;
+    line-height: $lineHeight;
   }
 }
 
@@ -80,13 +80,13 @@
     border: none;
     border-radius: 7px;
     background: $background;
-    color: $text;
-    font-size: 16px;
+    color: $lightBlack;
+    font-size: $inputSize;
     padding: 5px 90px 5px 10px;
     outline: none;
 
     &::placeholder {
-      color: lighten($color: $text, $amount: 50%);
+      color: $darkGray;
     }
   }
 
@@ -97,26 +97,26 @@
     right: 5px;
     z-index: 2;
     height: 35px;
-    background-color: $text;
+    background-color: $lightBlack;
     color: $background;
     text-transform: uppercase;
-    font-size: 14px;
-    font-weight: 500;
+    font-size: $textSize;
+    font-weight: $lightWeight;
     padding: 0 10px;
     border: none;
     border-radius: 5px;
 
     &:disabled {
-      background-color: lighten($color: $text, $amount: 50%);
+      background-color: $lightGray;
       cursor: not-allowed;
 
       &:hover {
-        background-color: lighten($color: $text, $amount: 50%);
+        background-color: $darkGray;
       }
     }
 
     &:hover {
-      background-color: darken($color: $text, $amount: 10%);
+      background-color: $darkBlack;
     }
   }
 
@@ -148,17 +148,17 @@
 
 .footer__title {
   color: $background;
-  line-height: 150%;
-  font-weight: 500;
-  font-size: 18px;
+  line-height: $lineHeight;
+  font-weight: $lightWeight;
+  font-size: $inputSize;
   margin-bottom: 5px;
 }
 
 .footer__link {
-  color: lighten($color: $text, $amount: 50%);
-  line-height: 150%;
-  font-weight: 500;
-  font-size: 14px;
+  color: $secondary;
+  line-height: $lineHeight;
+  font-weight: $lightWeight;
+  font-size: $textSize;
   text-decoration: none;
 }
 
@@ -167,10 +167,10 @@
 //<------------------------------- Copyright ----==---------------------->
 .footer__copyright {
   width: 100%;
-  font-weight: 500;
-  line-height: 150%;
-  color: lighten($color: $text, $amount: 50%);
-  font-size: 14px;
+  font-weight: $lightWeight;
+  line-height: $lineHeight;
+  color: $secondary;
+  font-size: $textSize;
   text-align: center;
 }
 
@@ -199,18 +199,18 @@
   }
 
   & > label {
-    font-size: 14px;
+    font-size: $textSize;
     color: $background;
-    font-weight: 500;
-    line-height: 150%;
+    font-weight: $lightWeight;
+    line-height: $lineHeight;
     text-wrap: pretty;
 
     & > a {
       color: $background;
       text-decoration: underline;
-      font-size: 14px;
-      font-weight: 500;
-      line-height: 150%;
+      font-size: $textSize;
+      font-weight: $lightWeight;
+      line-height: $lineHeight;
     }
   }
 }
