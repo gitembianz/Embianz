@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\CustomScript;
 use App\Models\Payment;
 use App\Models\Status;
 use App\Models\Store_Settings;
@@ -26,6 +27,7 @@ class GlobalVariablesServiceProvider extends ServiceProvider
         $this->loadGlobalVariables();
         $this->loadGlobalStatuses();
         $this->loadGlobalPayments();
+        $this->loadGlobalCustomScripts();
     }
     private function loadGlobalVariables()
     {
@@ -36,6 +38,19 @@ class GlobalVariablesServiceProvider extends ServiceProvider
 
         foreach ($globalVariables as $key => $value) {
             $this->app->instance('global_' . $key, $value);
+        }
+    }
+    private function loadGlobalCustomScripts()
+    {
+        $globalScripts = Cache::get('global_scripts', function () {
+            $scripts = CustomScript::select(['id', 'name', 'type', 'content', 'active'])->where('active', true)->get()->groupBy('type');
+            return $scripts->map(function ($group) {
+                return $group->pluck('content')->implode('');
+            });
+        });
+
+        foreach ($globalScripts as $type => $content) {
+            $this->app->instance('global_script_' . $type, $content);
         }
     }
     private function loadGlobalPayments()

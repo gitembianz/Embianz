@@ -4,6 +4,8 @@ namespace App\Http\Livewire;
 
 use App\Models\CustomScript;
 use Livewire\Component;
+use Illuminate\Support\Facades\Cache;
+
 
 class ShowScript extends Component
 {
@@ -100,6 +102,8 @@ class ShowScript extends Component
             }
             $new->updated_at = now();
             $new->save();
+            Cache::forget('global_scripts');
+
             session()->flash('notification', [
                 'message' => 'Record edited successfully!',
                 'type' => 'success',

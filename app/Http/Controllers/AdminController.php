@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\CustomScript;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
+
 
 
 
@@ -125,6 +127,8 @@ class AdminController extends Controller
       'content' => $request->content,
       'active' => $request->has('active')
     ]);
+    Cache::forget('global_scripts');
+
     return redirect()->back()->with([
       'notification' => [
         'message' => 'Record added successfully!',
