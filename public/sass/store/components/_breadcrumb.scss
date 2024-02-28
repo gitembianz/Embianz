@@ -24,6 +24,9 @@
   text-transform: capitalize;
   position: relative;
   padding-right: 10px;
+  line-height: 150%;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 2px;
 
   &:hover {
     color: $darkBlack;
