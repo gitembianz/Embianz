@@ -71,9 +71,7 @@
  }
 </script>
 @if (app()->has('global_script_body-bottom'))
- <script>
-  {{ app('global_script_body-bottom') }}
- </script>
+ {!! app('global_script_body-bottom') !!}
 @endif
 {{-- ------------------------ End Special Script ------------------------ --}}
 </body>

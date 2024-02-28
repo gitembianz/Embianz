@@ -38,23 +38,18 @@
  <meta property="twitter:description" content="{{ $description }}" />
  {{-- ----------------------------------------------------------- --}}
  @if (app()->has('global_script_head-top'))
-  <script>
-   {{ app('global_script_head-top') }}
-  </script>
+  {!! app('global_script_head-top') !!}
  @endif
+
  @if (app()->has('global_script_head-bottom'))
-  <script>
-   {{ app('global_script_head-bottom') }}
-  </script>
+  {!! app('global_script_head-bottom') !!}
  @endif
 
 </head>
 
 <body id="body">
  @if (app()->has('global_script_body-top'))
-  <script>
-   {{ app('global_script_body-top') }}
-  </script>
+  {!! app('global_script_body-top') !!}
  @endif
  <!---------------------- Loading Logo ---------------------->
  <div class="loading-logo" id="loadingLogo">
