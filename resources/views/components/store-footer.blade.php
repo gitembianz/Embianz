@@ -72,7 +72,7 @@
 </script>
 @if (app()->has('global_script_body-bottom'))
  <script>
-  app('global_script_body-bottom')
+  {{ app('global_script_body-bottom') }}
  </script>
 @endif
 {{-- ------------------------ End Special Script ------------------------ --}}

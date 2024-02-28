@@ -39,12 +39,12 @@
  {{-- ----------------------------------------------------------- --}}
  @if (app()->has('global_script_head-top'))
   <script>
-   app('global_script_head-top')
+   {{ app('global_script_head-top') }}
   </script>
  @endif
  @if (app()->has('global_script_head-bottom'))
   <script>
-   app('global_script_head-bottom')
+   {{ app('global_script_head-bottom') }}
   </script>
  @endif
 
@@ -53,7 +53,7 @@
 <body id="body">
  @if (app()->has('global_script_body-top'))
   <script>
-   app('global_script_body-top')
+   {{ app('global_script_body-top') }}
   </script>
  @endif
  <!---------------------- Loading Logo ---------------------->
