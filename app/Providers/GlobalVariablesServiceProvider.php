@@ -29,7 +29,7 @@ class GlobalVariablesServiceProvider extends ServiceProvider
         $this->loadGlobalVariables();
         $this->loadGlobalStatuses();
         $this->loadGlobalPayments();
-        // $this->loadGlobalCustomScripts();
+        $this->loadGlobalCustomScripts();
     }
     private function loadGlobalVariables()
     {
