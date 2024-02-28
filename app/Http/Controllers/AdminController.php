@@ -144,11 +144,23 @@ class AdminController extends Controller
     $rules = [
       'start_date' => 'required|date|after_or_equal:today',
       'end_date' => 'required|date|after_or_equal:start_date',
+      'percent' => [
+        'nullable',
+        'integer',
+        'between:1,100',
+      ],
+      'value' => [
+        'nullable',
+        'gt:0'
+      ]
     ];
     // Custom validation messages
     $messages = [
       'start_date.after_or_equal' => 'The start date must be in the future or present.',
       'end_date.after_or_equal' => 'The end date must be in the future and after the start date.',
+      'percent' => 'The percent must be between 1-100',
+      'value' => 'The value must be bigger than 0'
+
     ];
     $rules['percent_or_value'] = 'required_without_all:percent,value';
 

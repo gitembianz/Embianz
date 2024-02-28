@@ -488,7 +488,7 @@ class StoreOrder extends Component
 
     if ($this->cartitems && ($this->cart->status_id == app('global_cart_checkoutpayment'))) {
       if ($this->cart->voucher) {
-        if (($this->cart->voucher->status_id != app('global_voucher_active')) || ($this->cart->voucher->start_date > now()) || ($this->cart->voucher->end_date < now())) {
+        if (($this->cart->voucher->first()->status_id == app('global_voucher_closed')) || ($this->cart->voucher->first()->start_date > now()) || ($this->cart->voucher->first()->end_date < now())) {
           $this->dispatchBrowserEvent('alert__modal');
           $this->cart->update([
             'final_amount' => ($this->cart->sum_amount + app('global_delivery_price')),
