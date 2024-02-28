@@ -8,15 +8,15 @@
   @csrf
   {{-- Item Header --}}
   <div class="item__header">
-   <h1 class="item__header-title" id="title">{{ __('Add new custom script') }}</h1>
+   <h1 class="item__header-title" id="title">{{ __('Add new custom code') }}</h1>
    <div class="item__header-buttons">
-    <button class="item__header-btn" type="submit" data-tooltip-right="Add custom script">
+    <button class="item__header-btn" type="submit" data-tooltip-right="Add custom code">
      <svg>
       <line x1="12" y1="5" x2="12" y2="19"></line>
       <line x1="5" y1="12" x2="19" y2="12"></line>
      </svg>
     </button>
-    <a class="item__header-btn" href="{{ route('customscripts') }}" data-tooltip-center="Back to all custom scripts">
+    <a class="item__header-btn" href="{{ route('customscripts') }}" data-tooltip-center="Back to all custom codes">
      <svg>
       <polyline points="11 17 6 12 11 7"></polyline>
       <polyline points="18 17 13 12 18 7"></polyline>
@@ -45,7 +45,7 @@
      <option value="body-top">body-top</option>
      <option value="body-bottom">body-bottom</option>
     </select>
-    <label>Script position</label>
+    <label>Code position</label>
    </div>
 
    <div class="item__form-input item__form-textarea">

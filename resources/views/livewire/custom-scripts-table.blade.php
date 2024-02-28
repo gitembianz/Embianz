@@ -43,7 +43,7 @@
  {{-- Header of the table --}}
  <div class="panel__header">
   <h1 class="panel__header--title">
-   {{ __('Custom Scripts') }}
+   {{ __('Custom Codes') }}
   </h1>
   <input class="panel__header--input" type="text" wire:model.debounce.300ms="search" placeholder="Search...">
   <div class="panel__header--bundle">
