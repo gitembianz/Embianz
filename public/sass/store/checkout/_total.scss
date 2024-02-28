@@ -44,6 +44,9 @@
     grid-row: 1/3;
     height: 100%;
   }
+  & > .total__product:last-child::after {
+    display: block;
+  }
 }
 
 .total__item {
@@ -96,12 +99,6 @@
     position: absolute;
     left: 0;
     bottom: -7.5px;
-    display: block;
-  }
-}
-
-.total__product:last-child {
-  &::after {
     display: none;
   }
 }

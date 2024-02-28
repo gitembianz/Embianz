@@ -152,6 +152,7 @@
 
     @media (min-width: map-get($grid-breakpoints, lg)) {
       display: grid;
+      height: auto;
     }
   }
 }
