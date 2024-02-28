@@ -650,7 +650,7 @@ class StoreOrder extends Component
         'voucher_id' =>  $this->cart->voucher_id
       ]);
 
-      $this->orderNumber = 'NRN' . now()->format('Ymd') . str_pad($order->id, 3, '0', STR_PAD_LEFT);
+      $this->orderNumber = app('global_order_prefix') . now()->format('Ymd') . str_pad($order->id, 3, '0', STR_PAD_LEFT);
       $order->update([
         'order_number' => $this->orderNumber
       ]);

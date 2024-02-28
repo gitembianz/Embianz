@@ -77,6 +77,10 @@
     route::get('/newvoucher', [AdminController::class, 'create_voucher'])->name('newvoucher');
     route::post('/add_voucher', [AdminController::class, 'store_voucher']);
     route::get('/storesettings', [AdminController::class, 'storesettings'])->name('storesettings');
+    route::get('/customscripts', [AdminController::class, 'customscripts'])->name('customscripts');
+    route::get('/new_script', [AdminController::class, 'create_script'])->name('newscript');
+    route::post('/add_script', [AdminController::class, 'store_script']);
+
     route::get('/addstoresettings', [AdminController::class, 'addstoresetting'])->name('addstoresetting');
 
     //specific routes 
