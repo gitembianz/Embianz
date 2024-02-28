@@ -146,7 +146,7 @@
         </path>
        </svg>
       </button>
-      <span>Store Settings</span>
+      <span>Store</span>
      </a>
      <a class="sidebar__subitem @if ($active == 'scripts') active @endif" href="{{ route('customscripts') }}">
       <button class="sidebar__icon">
@@ -155,7 +155,7 @@
         <polyline points="8 6 2 12 8 18"></polyline>
        </svg>
       </button>
-      <span>Scripts</span>
+      <span>Code</span>
      </a>
      <a class="sidebar__subitem @if ($active == 'payment') active @endif" href="{{ route('payments') }}">
       <button class="sidebar__icon">

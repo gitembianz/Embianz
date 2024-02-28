@@ -2,7 +2,7 @@
  <x-alert />
  <x-loading />
  <div class="item__header">
-  <h1 class="item__header-title" id="title">Custom Script: {{ $script->name }}</h1>
+  <h1 class="item__header-title" id="title">Custom Code: {{ $script->name }}</h1>
   <div class="item__header-buttons">
    <a class="item__header-btn" href="{{ route('customscripts') }}" data-tooltip-left="Back to all Custom Scripts">
     <svg>
