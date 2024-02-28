@@ -15,7 +15,7 @@ return new class extends Migration
       $table->id();
       $table->string('name');
       $table->string('code')->unique();
-      $table->decimal('percent', 5, 2);
+      $table->decimal('percent', 5, 2)->nullable();
       $table->unsignedBigInteger('status_id')->index()->nullable();
       $table->foreign('status_id')->references('id')->on('statuses');
       $table->boolean('single_use')->default(true);
