@@ -117,7 +117,8 @@
     <form class="subscribe" wire:submit.prevent="store">
      <input type="email" id="subscribeInput" wire:model="email" name="email" id="email"
       placeholder="Introduceți adresa dvs. de email" aria-describedby="email-error" autocomplete="email">
-     <button type="submit" id="subscribeSend" @if (!$ischecked) disabled @endif>Trimite</button>
+     <button type="submit" id="subscribeSend" @if (!$ischecked || !($email && filter_var($email, FILTER_VALIDATE_EMAIL))) disabled @endif>Trimite</button>
+
     </form>
    </div>
    <!----------------------END-Subscribe---------------------->

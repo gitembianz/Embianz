@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('custom_scripts', function (Blueprint $table) {
             $table->id();
+            $table->string('name')->nullable();
             $table->string('type')->nullable();
             $table->longText('content')->nullable();
             $table->boolean('active')->nullable();

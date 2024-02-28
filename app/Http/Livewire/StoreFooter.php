@@ -9,7 +9,7 @@ use Illuminate\Database\QueryException;
 class StoreFooter extends Component
 {
 
-  public $email;
+  public $email = null;
   public $response = null;
   public $cookieConsent;
   public $advance =  false;
@@ -33,11 +33,7 @@ class StoreFooter extends Component
 
     try {
       $validatedData = $this->validate([
-        'email' => ['required', 'email', function ($attribute, $value, $fail) {
-          if (!preg_match('/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/', $value)) {
-            $fail('The email format is invalid.');
-          }
-        }],
+        'email' => 'required|email',
       ]);
 
       Subscribers::create($validatedData);

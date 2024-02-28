@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\CustomScript;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
+
 
 
 
@@ -74,6 +76,11 @@ class AdminController extends Controller
     $data = Account::find($id);
     return view('admin.show_account', compact('data'));
   }
+  public function show_script($id)
+  {
+    $data = CustomScript::find($id);
+    return view('admin.show_script', compact('data'));
+  }
   public function vouchers()
   {
     return view('admin.voucher');
@@ -104,33 +111,31 @@ class AdminController extends Controller
         ],
       ]);
     }
-    $item = CustomScript::where('type', $request->type)->first();
-    if ($item) {
-      $item->update([
-        'content' => $request->content,
-        'active' => $request->has('active')
-      ]);
-      return redirect()->back()->with([
+    if (!$request->filled('name')) {
+      return redirect()->back()->withInput()->with([
         'notification' => [
-          'message' => 'Record edited successfully!',
-          'type' => 'success',
-          'title' => 'Success'
-        ],
-      ]);
-    } else {
-      CustomScript::create([
-        'type' => $request->type,
-        'content' => $request->content,
-        'active' => $request->has('active')
-      ]);
-      return redirect()->back()->with([
-        'notification' => [
-          'message' => 'Record added successfully!',
-          'type' => 'success',
-          'title' => 'Success'
+          'message' => 'Please provide the script name!',
+          'type' => 'error',
+          'title' => 'Something went wrong'
         ],
       ]);
     }
+
+    CustomScript::create([
+      'name' => $request->name,
+      'type' => $request->type,
+      'content' => $request->content,
+      'active' => $request->has('active')
+    ]);
+    Cache::forget('global_scripts');
+
+    return redirect()->back()->with([
+      'notification' => [
+        'message' => 'Record added successfully!',
+        'type' => 'success',
+        'title' => 'Success'
+      ],
+    ]);
   }
 
   public function store_voucher(Request $request)

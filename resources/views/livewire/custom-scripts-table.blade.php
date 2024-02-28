@@ -3,7 +3,7 @@
  <x-alert />
 
  {{-- delete single record --}}
- <div class="modal" id="confirmationmodal">
+ <div class="modal" id="confirmationmodalscript">
   <div class="modal-content">
    <h1 class="modal-content-title">
     {{ __('Are you sure to delete this record?') }}
@@ -21,7 +21,7 @@
   </div>
  </div>
  {{-- delete myltiple records --}}
- <div class="modal" id="confirmationmodalmultiple">
+ <div class="modal" id="confirmationmodalmultiplescript">
   <div class="modal-content">
    <h1 class="modal-content-title">
     {{ __('Are you sure to delete those records?') }}
@@ -151,8 +151,8 @@
         <input type="checkbox" value="{{ $item->id }}" wire:model="checked">
        </td>
        @foreach ($selectedColumns as $column)
-        @if ($column === 'type')
-         <td data-title="Type"><a href="/show_script/{{ $item->id }}">{{ $item->type }}</a></td>
+        @if ($column === 'name')
+         <td data-title="Type"><a href="/show_script/{{ $item->id }}">{{ $item->name }}</a></td>
         @elseif($column === 'created_at' || $column === 'updated_at')
          <td data-title="{{ $column }}">
           <div class="table__time">

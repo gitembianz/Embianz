@@ -27,13 +27,9 @@ class ShowSpec extends Component
   {
     $this->dispatchBrowserEvent('show-delete-modal');
   }
-  public function getSpecQueryProperty()
-  {
-    return Specs::find($this->itemId);
-  }
   public function getSpecProperty()
   {
-    return $this->specQuery;
+    return Specs::find($this->itemId);
   }
   public function deleteSingleRecord()
   {
