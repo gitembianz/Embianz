@@ -5,6 +5,9 @@
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
  <title>{{ $title }}</title>
+ @if (app()->has('global_script_head-top'))
+  {!! app('global_script_head-top') !!}
+ @endif
  <meta name="description" content="{{ $description }}">
 
  {{-- DormiSoft Favicon --}}
@@ -18,7 +21,6 @@
  <link rel="stylesheet" href="/dist/css/loading-screen.css">
  <link rel="stylesheet" href="/dist/css/store.css">
  {{-- <script rel="preload" src="script/store/head.js" as="script"></script> --}}
- @livewireStyles
 
  {{-- ----------------------------------------------------------- --}}
  <meta property="og:image" content="images/store/logo-banner.webp" />
@@ -37,14 +39,12 @@
  <meta property="twitter:title" content="{{ $title }}" />
  <meta property="twitter:description" content="{{ $description }}" />
  {{-- ----------------------------------------------------------- --}}
- @if (app()->has('global_script_head-top'))
-  {!! app('global_script_head-top') !!}
- @endif
+
 
  @if (app()->has('global_script_head-bottom'))
   {!! app('global_script_head-bottom') !!}
  @endif
-
+ @livewireStyles
 </head>
 
 <body id="body">

@@ -47,7 +47,7 @@ class GlobalVariablesServiceProvider extends ServiceProvider
         $globalScripts = Cache::get('global_scripts', function () {
             $scripts = CustomScript::select(['id', 'name', 'type', 'content', 'active'])->where('active', true)->get()->groupBy('type');
             return $scripts->map(function ($group) {
-                return $group->pluck('content')->implode('<br>');
+                return $group->pluck('content')->implode(PHP_EOL);
             });
         });
 
