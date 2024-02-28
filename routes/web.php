@@ -68,6 +68,7 @@
     )->middleware('auth', 'verified')->name('dashboard');
 
     //general routes
+    route::get('/show_script/{id}/', [AdminController::class, 'show_script'])->name('show_script');
     route::get('/show_account/{id}/', [AdminController::class, 'show_account'])->name('show_account');
     route::get('/accounts', [AdminController::class, 'accounts'])->name('accounts');
     route::get('/orders', [AdminController::class, 'orders']);

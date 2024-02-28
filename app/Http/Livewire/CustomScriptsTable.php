@@ -110,7 +110,7 @@ class CustomScriptsTable extends Component
     }
     public function deleteSingleRecord()
     {
-        $id = $this->catidbeingremoved;
+        $id = $this->idbeingremoved;
         $category = CustomScript::findOrFail($id);
         $category->delete();
         $this->checked = array_diff($this->checked, [$id]);
@@ -123,11 +123,11 @@ class CustomScriptsTable extends Component
     public function confirmItemRemoval($id)
     {
         $this->idbeingremoved = $id;
-        $this->dispatchBrowserEvent('show-delete-modal');
+        $this->dispatchBrowserEvent('show-delete-modal-script');
     }
     public function confirmItemsRemoval()
     {
-        $this->dispatchBrowserEvent('show-delete-modal-multiple');
+        $this->dispatchBrowserEvent('show-delete-modal-multiple-script');
     }
     public function isChecked($id)
     {

@@ -35,7 +35,11 @@
   {{-- Item Form --}}
   <div class="item__form">
    <div class="item__form-input">
-    <select name="type">
+    <input type="text" name="name" required value="{{ old('name') }}">
+    <label>Name</label>
+   </div>
+   <div class="item__form-input">
+    <select name="type" value="{{ old('type') }}">
      <option selected value="head-top">head-top</option>
      <option value="head-bottom">head-bottom</option>
      <option value="body-top">body-top</option>
@@ -43,15 +47,15 @@
     </select>
     <label>Script position</label>
    </div>
-   <div style="display: flex; align-items: center;justify-content: flex-start;gap: 10px">
-    <input type="checkbox" name="active" {{ old('active') ? 'checked' : '' }}>
-    <span>Active</span>
-   </div>
+
    <div class="item__form-input item__form-textarea">
     <textarea name="content">{{ old('content') }}</textarea>
     <label>Content</label>
    </div>
-
+   <div style="display: flex; align-items: center;justify-content: flex-start;gap: 10px">
+    <input type="checkbox" name="active" {{ old('active') ? 'checked' : '' }}>
+    <span>Active</span>
+   </div>
    <input class="item__form-btn  item__form-long" type="submit" value="Add New" name="submit">
   </div>
  </form>

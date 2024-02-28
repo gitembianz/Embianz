@@ -9,6 +9,7 @@ class CustomScript extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'name',
         'type',
         'content',
         'active'
@@ -18,6 +19,7 @@ class CustomScript extends Model
         return empty($search) ? static::query()
             : static::query()->where('id', 'like', '%' . $search . '%')
             ->orWhere('type', 'like', '%' . $search . '%')
+            ->orWhere('name', 'like', '%' . $search . '%')
             ->orWhere('content', 'like', '%' . $search . '%');
     }
 }
