@@ -19,6 +19,8 @@ class GlobalVariablesServiceProvider extends ServiceProvider
         //
     }
 
+
+
     /**
      * Bootstrap services.
      */
@@ -27,7 +29,7 @@ class GlobalVariablesServiceProvider extends ServiceProvider
         $this->loadGlobalVariables();
         $this->loadGlobalStatuses();
         $this->loadGlobalPayments();
-        $this->loadGlobalCustomScripts();
+        // $this->loadGlobalCustomScripts();
     }
     private function loadGlobalVariables()
     {
@@ -45,7 +47,7 @@ class GlobalVariablesServiceProvider extends ServiceProvider
         $globalScripts = Cache::get('global_scripts', function () {
             $scripts = CustomScript::select(['id', 'name', 'type', 'content', 'active'])->where('active', true)->get()->groupBy('type');
             return $scripts->map(function ($group) {
-                return $group->pluck('content')->implode('');
+                return $group->pluck('content')->implode('<br>');
             });
         });
 
