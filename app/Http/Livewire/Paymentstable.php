@@ -5,6 +5,8 @@ namespace App\Http\Livewire;
 use App\Models\Payment;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\Schema;
+
 
 class Paymentstable extends Component
 {
@@ -17,7 +19,8 @@ class Paymentstable extends Component
     public $selectPage = false;
     public $selectAll = false;
     public $removedid = null;
-    public $columns = ['Id', 'Active', 'Created At'];
+    public $tableName;
+    public $columns;
     public $selectedColumns = [];
     public $editeindex = null;
     public $isactive = [];
@@ -32,13 +35,15 @@ class Paymentstable extends Component
     {
         $this->loadAmount += 10;
     }
-    public function mount()
+    public function mount($tableName)
     {
+        $this->tableName = $tableName;
+        $this->columns = Schema::getColumnListing($this->tableName);
         $this->selectedColumns = $this->columns;
     }
     public function showColumn($column)
     {
-        if ($column === 'Name') {
+        if ($column === 'name') {
             return true;
         }
         return in_array($column, $this->selectedColumns);
@@ -77,12 +82,8 @@ class Paymentstable extends Component
     }
     public function getPaymentsProperty()
     {
-        return $this->paymentsQuery->limit($this->loadAmount)->get();
-    }
-    public function getPaymentsQueryProperty()
-    {
         return Payment::search($this->search)
-            ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc');
+            ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->limit($this->loadAmount)->get();
     }
     public function deleteRecords()
     {

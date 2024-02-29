@@ -174,6 +174,7 @@ class StoreCart extends Component
       if ($voucher) {
         if ($voucher && $voucher->percent !== null) {
           $discountAmount = ($voucher->percent / 100) * $this->cart->sum_amount;
+
           $this->cart->update([
             'final_amount' => ($this->cart->sum_amount + app('global_delivery_price') - $discountAmount),
             'voucher_id' => $voucher->id,
@@ -181,13 +182,23 @@ class StoreCart extends Component
             'updated_at' => now(),
           ]);
         } else {
-          $this->message = null;
-          $this->cart->update([
-            'final_amount' => ($this->cart->sum_amount + app('global_delivery_price') - $voucher->value),
-            'voucher_id' => $voucher->id,
-            'voucher_value' => $voucher->value,
-            'updated_at' => now(),
-          ]);
+          if ($voucher->value > $this->cart->sum_amount) {
+            $this->message = null;
+            $this->cart->update([
+              'final_amount' =>  app('global_delivery_price'),
+              'voucher_id' => $voucher->id,
+              'voucher_value' => $voucher->value,
+              'updated_at' => now(),
+            ]);
+          } else {
+            $this->message = null;
+            $this->cart->update([
+              'final_amount' => ($this->cart->sum_amount + app('global_delivery_price') - $voucher->value),
+              'voucher_id' => $voucher->id,
+              'voucher_value' => $voucher->value,
+              'updated_at' => now(),
+            ]);
+          }
         }
       } else {
         $this->message = "Voucher-ul nu a fost gasit!";
