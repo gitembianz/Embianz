@@ -16,26 +16,23 @@ class StatusSeeder extends Seeder
 
         DB::table('statuses')->insert([
             ['name' => 'new', 'type' => 'cart', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['name' => 'checkout', 'type' => 'cart', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['name' => 'checkoutdetails', 'type' => 'cart', 'created_at' => $currentTime, 'updated_at' => $currentTime],
-            ['name' => 'checkoutpayment', 'type' => 'cart', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['name' => 'closed', 'type' => 'cart', 'created_at' => $currentTime, 'updated_at' => $currentTime],
-            // Add more status values for carts with timestamps
         ]);
 
         DB::table('statuses')->insert([
-            ['name' => 'new', 'type' => 'order', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['name' => 'check_payment', 'type' => 'order', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['name' => 'processing', 'type' => 'order', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['name' => 'delivered', 'type' => 'order', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['name' => 'cancelled', 'type' => 'order', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['name' => 'hold', 'type' => 'order', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['name' => 'closed', 'type' => 'order', 'created_at' => $currentTime, 'updated_at' => $currentTime],
-            // Add more status values for orders with timestamps
         ]);
 
         DB::table('statuses')->insert([
             ['name' => 'active', 'type' => 'voucher', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['name' => 'closed', 'type' => 'voucher', 'created_at' => $currentTime, 'updated_at' => $currentTime],
-            // Add more status values for vouchers with timestamps
         ]);
     }
 }

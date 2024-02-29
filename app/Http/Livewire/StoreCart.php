@@ -240,7 +240,7 @@ class StoreCart extends Component
 
     if ($validateQuantity) {
       Cart::where('id', $this->cart->id)->update([
-        'status_id' => app('global_cart_checkoutdetails'),
+        'status_id' => app('global_cart_checkout'),
       ]);
       return redirect()->route('order');
     }
