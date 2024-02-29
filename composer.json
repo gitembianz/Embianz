@@ -19,7 +19,8 @@
     "livewire/livewire": "^2.12",
     "maatwebsite/excel": "^3.1",
     "phpoffice/phpspreadsheet": "1.21",
-    "psr/log": "^3.0"
+    "psr/log": "^3.0",
+    "stripe/stripe-php": "^13.12"
   },
   "require-dev": {
     "barryvdh/laravel-debugbar": "^3.8",

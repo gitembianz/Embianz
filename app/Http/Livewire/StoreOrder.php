@@ -19,6 +19,7 @@ class StoreOrder extends Component
   public $errorterms = false;
   public $session_id;
   public $cash;
+  public $card;
   public $ordin;
   public $orderNumber;
   // individual declaration
@@ -75,6 +76,7 @@ class StoreOrder extends Component
   public $juridic_shipping_zipcode;
 
   public $rtc = true;
+  public $crd = false;
   public $invoice = false;
   public $validatequantity = true;
   public $payment;
@@ -430,11 +432,19 @@ class StoreOrder extends Component
     if ($item == 'rtc') {
       $this->payment = $this->cash;
       $this->rtc = true;
+      $this->crd = true;
+      $this->invoice = false;
+    }
+    if ($item == 'crd') {
+      $this->payment = $this->card;
+      $this->crd = true;
+      $this->rtc = false;
       $this->invoice = false;
     }
     if ($item == 'invoice') {
       $this->payment = $this->ordin;
       $this->rtc = false;
+      $this->crd = false;
       $this->invoice = true;
     }
   }
@@ -443,6 +453,7 @@ class StoreOrder extends Component
   {
     $this->session_id = $this->getSessionId();
     $this->cash = app('global_cash');
+    $this->card = app('global_card_stripe');
     $this->ordin = app('global_ordin');
     $this->payment = $this->cash;
     if ($this->cartItems->isEmpty() || !$this->cart) {
