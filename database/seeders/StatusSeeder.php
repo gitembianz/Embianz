@@ -18,6 +18,7 @@ class StatusSeeder extends Seeder
             ['name' => 'new', 'type' => 'cart', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['name' => 'checkout', 'type' => 'cart', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['name' => 'checkoutdetails', 'type' => 'cart', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['name' => 'check_payment', 'type' => 'cart', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['name' => 'closed', 'type' => 'cart', 'created_at' => $currentTime, 'updated_at' => $currentTime],
         ]);
 
