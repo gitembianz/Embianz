@@ -22,9 +22,9 @@ class Storesettingsform extends Component
   {
     $this->resetErrorBag();
     $this->validate([
-      'description' => 'required|string|min:20',
-      'parameter' => 'required|string|min:5',
-      'value' => 'required|string'
+      'description' => 'required',
+      'parameter' => 'required',
+      'value' => 'required'
     ]);
     $values = array(
       "parameter" => $this->parameter,
