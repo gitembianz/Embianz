@@ -474,10 +474,6 @@ class StoreOrder extends Component
   }
 
 
-
-
-
-
   public function confirm()
   {
     if (!$this->terms) {
