@@ -201,7 +201,7 @@ class StoreOrder extends Component
         $this->juridic_shipping_zipcode = $this->juridic_billing_zipcode;
       }
       $this->cart->update([
-        'status_id' => app('global_cart_checkoutpayment')
+        'status_id' => app('global_cart_checkoutdetails')
       ]);
       $this->dispatchBrowserEvent('next_step');
     }
@@ -450,7 +450,7 @@ class StoreOrder extends Component
     }
     if ($this->step == 2) {
       $this->cart->update([
-        'status_id' => app('global_cart_checkoutpayment')
+        'status_id' => app('global_cart_checkoutdetails')
       ]);
       $this->validatequantity = true;
     }
@@ -482,7 +482,7 @@ class StoreOrder extends Component
       return;
     }
 
-    if ($this->cartitems && ($this->cart->status_id == app('global_cart_checkoutpayment'))) {
+    if ($this->cartitems && ($this->cart->status_id == app('global_cart_checkoutdetails'))) {
       if ($this->cart->voucher) {
         if (($this->cart->voucher->first()->status_id == app('global_voucher_closed')) || ($this->cart->voucher->first()->start_date > now()) || ($this->cart->voucher->first()->end_date < now())) {
           $this->dispatchBrowserEvent('alert__modal');
@@ -641,7 +641,7 @@ class StoreOrder extends Component
         'delivery_price' => app('global_delivery_price'),
         'voucher_value' => $this->cart->voucher_value ?? 0,
         'currency_id' => $this->cart->currency_id,
-        'status_id' =>  app('global_order_new'),
+        'status_id' =>  app('global_order_processing'),
         'payment_id' => $this->payment['id'],
         'voucher_id' =>  $this->cart->voucher_id
       ]);
