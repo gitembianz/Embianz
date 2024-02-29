@@ -19,6 +19,7 @@ class StoreOrder extends Component
   public $errorterms = false;
   public $session_id;
   public $cash;
+  public $card;
   public $ordin;
   public $orderNumber;
   // individual declaration
@@ -75,6 +76,7 @@ class StoreOrder extends Component
   public $juridic_shipping_zipcode;
 
   public $rtc = true;
+  public $crd = false;
   public $invoice = false;
   public $validatequantity = true;
   public $payment;
@@ -430,11 +432,19 @@ class StoreOrder extends Component
     if ($item == 'rtc') {
       $this->payment = $this->cash;
       $this->rtc = true;
+      $this->crd = true;
+      $this->invoice = false;
+    }
+    if ($item == 'crd') {
+      $this->payment = $this->card;
+      $this->crd = true;
+      $this->rtc = false;
       $this->invoice = false;
     }
     if ($item == 'invoice') {
       $this->payment = $this->ordin;
       $this->rtc = false;
+      $this->crd = false;
       $this->invoice = true;
     }
   }
@@ -443,6 +453,7 @@ class StoreOrder extends Component
   {
     $this->session_id = $this->getSessionId();
     $this->cash = app('global_cash');
+    $this->card = app('global_card_stripe');
     $this->ordin = app('global_ordin');
     $this->payment = $this->cash;
     if ($this->cartItems->isEmpty() || !$this->cart) {
@@ -629,22 +640,40 @@ class StoreOrder extends Component
         $cartNumber++;
         $uniqueName = $baseName . '_' . str_pad($cartNumber, 2, '0', STR_PAD_LEFT);
       }
+      if ($this->payment['type'] != 'card') {
 
-      $order = Order::create([
-        'name' => $uniqueName,
-        'session_id' => $this->session_id,
-        'account_id' => $account->id,
-        'cart_id' => $this->cart->id,
-        'quantity_amount' => $this->cart->quantity_amount,
-        'sum_amount' => $this->cart->sum_amount,
-        'final_amount' => ($this->cart->sum_amount + app('global_delivery_price') - $this->cart->voucher_value),
-        'delivery_price' => app('global_delivery_price'),
-        'voucher_value' => $this->cart->voucher_value ?? 0,
-        'currency_id' => $this->cart->currency_id,
-        'status_id' =>  app('global_order_processing'),
-        'payment_id' => $this->payment['id'],
-        'voucher_id' =>  $this->cart->voucher_id
-      ]);
+        $order = Order::create([
+          'name' => $uniqueName,
+          'session_id' => $this->session_id,
+          'account_id' => $account->id,
+          'cart_id' => $this->cart->id,
+          'quantity_amount' => $this->cart->quantity_amount,
+          'sum_amount' => $this->cart->sum_amount,
+          'final_amount' => ($this->cart->sum_amount + app('global_delivery_price') - $this->cart->voucher_value),
+          'delivery_price' => app('global_delivery_price'),
+          'voucher_value' => $this->cart->voucher_value ?? 0,
+          'currency_id' => $this->cart->currency_id,
+          'status_id' =>  app('global_order_processing'),
+          'payment_id' => $this->payment['id'],
+          'voucher_id' =>  $this->cart->voucher_id
+        ]);
+      } else {
+        $order = Order::create([
+          'name' => $uniqueName,
+          'session_id' => $this->session_id,
+          'account_id' => $account->id,
+          'cart_id' => $this->cart->id,
+          'quantity_amount' => $this->cart->quantity_amount,
+          'sum_amount' => $this->cart->sum_amount,
+          'final_amount' => ($this->cart->sum_amount + app('global_delivery_price') - $this->cart->voucher_value),
+          'delivery_price' => app('global_delivery_price'),
+          'voucher_value' => $this->cart->voucher_value ?? 0,
+          'currency_id' => $this->cart->currency_id,
+          'status_id' =>  app('global_order_check_payment'),
+          'payment_id' => $this->payment['id'],
+          'voucher_id' =>  $this->cart->voucher_id
+        ]);
+      }
 
       $this->orderNumber = app('global_order_prefix') . now()->format('Ymd') . str_pad($order->id, 3, '0', STR_PAD_LEFT);
       $order->update([
@@ -668,12 +697,21 @@ class StoreOrder extends Component
           'status_id' => app('global_voucher_closed')
         ]);
       }
-      $this->cart->update([
-        'order_id' => $order->id,
-        'status_id' => app('global_cart_closed')
-      ]);
-      $this->step++;
-      $this->emit('orderprocess');
+      if ($this->payment['type'] != 'card') {
+
+        $this->cart->update([
+          'order_id' => $order->id,
+          'status_id' => app('global_cart_closed')
+        ]);
+
+        $this->step++;
+        $this->emit('orderprocess');
+      } else {
+        $this->cart->update([
+          'order_id' => $order->id,
+          'status_id' => app('global_check_payment')
+        ]);
+      }
     }
   }
 }

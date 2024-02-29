@@ -58,7 +58,7 @@ class GlobalVariablesServiceProvider extends ServiceProvider
     private function loadGlobalPayments()
     {
         $globalPayments = Cache::get('global_payments', function () {
-            $payments = Payment::all(['id', 'active', 'name', 'description'])->keyBy('id')->toArray();
+            $payments = Payment::all(['id', 'active', 'type', 'name', 'description'])->keyBy('id')->toArray();
             return $payments;
         });
 

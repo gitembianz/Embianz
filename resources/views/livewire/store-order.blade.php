@@ -1661,10 +1661,6 @@
      <div class="section__header">
       <h2 class="section__title">Metoda de plata</h2>
      </div>
-     @php
-      $cash = app('global_cash');
-      $ordin = app('global_ordin');
-     @endphp
      @if ($cash['active'] != 0)
       <div class="payment">
        <label class="payment__wrapper" for="rtc" wire:click="togglepayment('rtc')">
@@ -1674,6 +1670,17 @@
        <div class="payment__text @if ($rtc) active @endif">
         <h3>Veți plăti când comanda va fi livrată.</h3>
         <span>Limita maxima este de 1000 RON</span>
+       </div>
+      </div>
+     @endif
+     @if ($card['active'] != 0)
+      <div class="payment">
+       <label class="payment__wrapper" for="crd" wire:click="togglepayment('crd')">
+        <input class="payment__checkbox" type="checkbox" wire:model.defer="crd" id="crd">
+        <span>{{ $card['description'] }}</span>
+       </label>
+       <div class="payment__text @if ($crd) active @endif">
+        <h3>Veți plăti online cu cardul la finalizarea comenzii.</h3>
        </div>
       </div>
      @endif
