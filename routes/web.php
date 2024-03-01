@@ -140,8 +140,12 @@
   route::get('/terms', [StoreController::class, 'terms'])->name('terms');
 
 
+  //custom loghin rutes
+  Route::get('/embadmin-login', [Laravel\Fortify\Http\Controllers\AuthenticatedSessionController::class, 'create'])
+    ->middleware(['guest'])
+    ->name('login');
 
-
-
-
-  //Clear Cache
+  //custom Registration
+  Route::get('/embadmin-register', [Laravel\Fortify\Http\Controllers\RegisteredUserController::class, 'create'])
+    ->middleware(['guest'])
+    ->name('register');
