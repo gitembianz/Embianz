@@ -22,7 +22,7 @@ class ShowOrder extends Component
     }
     public function getOrderProperty()
     {
-        return $this->orderQuery->first();
+        return $this->orderQuery;
     }
     public function getOrderQueryProperty()
     {
