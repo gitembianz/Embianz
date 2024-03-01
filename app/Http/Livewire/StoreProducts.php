@@ -64,6 +64,12 @@ class StoreProducts extends Component
       ->with(['spec' => function ($query) {
         $query->select('id', 'name');
       }]);
+    $query->whereHas(
+      'product',
+      function ($query) {
+        $query->where('active', true);
+      }
+    );
 
     if ($this->category) {
       $query->whereHas('product.product_categories', function ($query) {
