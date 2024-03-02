@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('description');
+            $table->string('type')->nullable();
+            $table->string('description')->nullable();
             $table->boolean('active');
             $table->timestamps();
         });
