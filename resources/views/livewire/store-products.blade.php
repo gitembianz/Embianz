@@ -243,7 +243,7 @@
 		<div class="filter__content" id="sortContent">
 			<div class="filter__top">
 				<div class="filter__text--long">
-					Ordoneaza după
+					Ordonează după:
 				</div>
 				<button class="filter__reset" id="sortClose" href="#">
 					<svg>

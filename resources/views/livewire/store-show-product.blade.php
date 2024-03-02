@@ -86,20 +86,20 @@
 		<!---------------------------------------------------------->
 		<!---------------------- Slider Cards ---------------------->
 		<section id="relatedSlider" class="related__slider container">
-			<div class="related__navigation">
-				<button class="related__btn prev" aria-label="Previous related slider">
-					<svg>
-						<line x1="19" y1="12" x2="5" y2="12"></line>
-						<polyline points="12 19 5 12 12 5"></polyline>
-					</svg>
-				</button>
-				<button class="related__btn next" aria-label="Next related slider">
-					<svg>
-						<line x1="5" y1="12" x2="19" y2="12"></line>
-						<polyline points="12 5 19 12 12 19"></polyline>
-					</svg>
-				</button>
-			</div>
+			{{-- <div class="related__navigation"> --}}
+			<button class="related__btn prev" aria-label="Previous related slider">
+				<svg>
+					<line x1="19" y1="12" x2="5" y2="12"></line>
+					<polyline points="12 19 5 12 12 5"></polyline>
+				</svg>
+			</button>
+			<button class="related__btn next" aria-label="Next related slider">
+				<svg>
+					<line x1="5" y1="12" x2="19" y2="12"></line>
+					<polyline points="12 5 19 12 12 19"></polyline>
+				</svg>
+			</button>
+			{{-- </div> --}}
 			<div class="related__wrapper">
 				@foreach ($product->related_product as $product)
 					<div class="card" role="listitem">
