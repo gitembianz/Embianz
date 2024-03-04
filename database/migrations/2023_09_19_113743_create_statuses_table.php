@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('statuses', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('type'); // Add a 'type' column to differentiate between cart and order statuses
+            $table->string('type');
             $table->timestamps();
         });
     }
