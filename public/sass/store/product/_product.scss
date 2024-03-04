@@ -58,9 +58,10 @@
 .product__title {
   font-size: $inputSize;
   font-weight: $boldWeight;
-  text-transform: uppercase;
+  // text-transform: uppercase;
   color: $lightBlack;
   margin: 0;
+  margin-top: 10px;
 }
 
 .product__discount {
