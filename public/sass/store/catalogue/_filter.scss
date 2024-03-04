@@ -406,7 +406,7 @@
   // background: $primary;
   // color: $lightBlack;
   text-decoration: none;
-  // text-transform: uppercase;
+  text-transform: uppercase;
   border-radius: 7px;
   z-index: 5;
 }
@@ -418,7 +418,7 @@
   gap: 10px;
   display: flex;
   align-items: center;
-  text-transform: uppercase;
+  // text-transform: uppercase;
   border-radius: 7px;
   background-color: $primary;
   transition: all 0.3s ease-in-out;
@@ -449,7 +449,7 @@
 
   & > h4 {
     text-transform: uppercase;
-    font-size: $lightBlack;
+    font-size: $textSize;
     font-weight: $lightWeight;
     color: $lightBlack;
   }
@@ -512,10 +512,10 @@
   }
 
   & > h4 {
-    font-size: $lightBlack;
+    font-size: $textSize;
     color: $lightBlack;
     font-weight: $lightWeight;
-    text-transform: capitalize;
+    text-transform: none;
   }
 
   $transition-delay: 0.15s;

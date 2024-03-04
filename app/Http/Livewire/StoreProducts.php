@@ -19,7 +19,7 @@ class StoreProducts extends Component
   public $quantity;
   public $session_id;
   public $specification;
-  public $orderBy = 'name_az';
+  public $orderBy = 'best_selling';
   public $category;
   public $category_details;
   public $specfilter = false;

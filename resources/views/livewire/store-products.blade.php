@@ -256,6 +256,7 @@
    </div>
    <div class="filter__list">
 
+
     <input class="filter__input" wire:model="orderBy" type="radio" name="sort" value="best_selling"
      id="sort">
     <label class="filter__link sort__item" for="sort">

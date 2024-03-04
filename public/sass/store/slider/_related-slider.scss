@@ -43,6 +43,10 @@
   height: 40px;
   border-radius: 50%;
   border: none;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
 
   & > svg {
     stroke: $primary;
@@ -51,6 +55,14 @@
   &.disabled {
     opacity: 0.5;
     cursor: not-allowed;
+  }
+
+  &.next {
+    right: 0;
+  }
+
+  &.prev {
+    left: 0;
   }
 }
 
