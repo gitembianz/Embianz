@@ -515,7 +515,7 @@
     font-size: $textSize;
     color: $lightBlack;
     font-weight: $lightWeight;
-    // text-transform: capitalize;
+    text-transform: none;
   }
 
   $transition-delay: 0.15s;
