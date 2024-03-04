@@ -26,10 +26,10 @@ class GlobalVariablesServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // $this->loadGlobalVariables();
-        // $this->loadGlobalStatuses();
-        // $this->loadGlobalPayments();
-        // $this->loadGlobalCustomScripts();
+        $this->loadGlobalVariables();
+        $this->loadGlobalStatuses();
+        $this->loadGlobalPayments();
+        $this->loadGlobalCustomScripts();
     }
     private function loadGlobalVariables()
     {

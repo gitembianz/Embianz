@@ -48,7 +48,7 @@ class StoreShowProduct extends Component
         'related_product' => function ($query) {
           $query->select('parrent_id', 'product_id', 'id')->with([
             'product' => function ($query) {
-              $query->select('id', 'name', 'seo_id', 'quantity')->with([
+              $query->select('id', 'name', 'seo_id', 'short_description', 'quantity')->with([
                 'media' => function ($query) {
                   $query->select('path', 'name')->where('type', 'main');
                 },
