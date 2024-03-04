@@ -59,8 +59,8 @@ class StoreProducts extends Component
   // start filter-spec function
   public function getFilterValuesProperty()
   {
-    $query = Product_Spec::select('value', 'spec_id', 'sequence')
-      ->groupBy('spec_id', 'value', 'sequence')->orderby('sequence')
+    $query = Product_Spec::select('value', 'spec_id')
+      ->groupBy('spec_id', 'value')
       ->with(['spec' => function ($query) {
         $query->select('id', 'name');
       }]);
