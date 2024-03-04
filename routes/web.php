@@ -94,6 +94,7 @@
       Artisan::call('event:clear');
       Artisan::call('queue:clear');
       Artisan::call('optimize:clear');
+      Artisan::call('logs:clear');
       Artisan::call('migrate');
       Cache::forget('global_variables');
       Cache::forget('global_statuses');

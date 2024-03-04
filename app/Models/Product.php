@@ -70,7 +70,8 @@ class Product extends Model
     return empty($search) ? static::query()
       : static::query()->where('id', 'like', '%' . $search . '%')
       ->orWhere('name', 'like', '%' . $search . '%')
-      ->orWhere('short_description', 'like', '%' . $search . '%');
+      ->orWhere('ean', 'like', '%' . $search . '%')
+      ->orWhere('sku', 'like', '%' . $search . '%');
   }
   public static function name($search)
   {
