@@ -92,7 +92,7 @@ function searchBar() {
     document.body.style.overflow = "hidden";
     setTimeout(() => {
       input.focus();
-    }, 500);
+    }, 400);
   });
 
   closeBtn.addEventListener("click", function () {
