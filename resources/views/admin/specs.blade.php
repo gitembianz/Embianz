@@ -4,16 +4,16 @@
 {{-- Page content start --}}
 <section class="content">
 
-    {{-- Tabel by Livewire start --}}
-    @livewire('specstable')
-    {{-- <livewire:specstable /> --}}
-    {{-- Tabel by Livewire end --}}
+ {{-- Tabel by Livewire start --}}
+ @livewire('specstable', ['tableName' => 'specs'])
+ {{-- <livewire:specstable /> --}}
+ {{-- Tabel by Livewire end --}}
 
-    <a href="#" class="top-up-btn" id="topUp">
-        <svg>
-            <polyline points="18 15 12 9 6 15"></polyline>
-        </svg>
-    </a>
+ <a href="#" class="top-up-btn" id="topUp">
+  <svg>
+   <polyline points="18 15 12 9 6 15"></polyline>
+  </svg>
+ </a>
 </section>
 {{-- page content end --}}
 <x-dashboardright />

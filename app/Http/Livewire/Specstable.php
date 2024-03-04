@@ -6,6 +6,8 @@ use App\Models\Specs;
 use App\Models\Product_Spec;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\Schema;
+
 
 class Specstable extends Component
 {
@@ -18,8 +20,9 @@ class Specstable extends Component
   public $selectPage = false;
   public $selectAll = false;
   public $specidbeingremoved = null;
-  public $columns = ['Id', 'Unit', 'Group', 'Created At'];
+  public $columns = [];
   public $selectedColumns = [];
+  public $tableName;
 
   public function render()
   {
@@ -31,13 +34,15 @@ class Specstable extends Component
   {
     $this->loadAmount += 10;
   }
-  public function mount()
+  public function mount($tableName)
   {
+    $this->tableName = $tableName;
+    $this->columns = Schema::getColumnListing($this->tableName);
     $this->selectedColumns = $this->columns;
   }
   public function showColumn($column)
   {
-    if ($column === 'Name') {
+    if ($column === 'name') {
       return true;
     }
     return in_array($column, $this->selectedColumns);

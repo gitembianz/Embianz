@@ -50,10 +50,10 @@ class StoreProducts extends Component
 
   public function mount()
   {
+    $this->session_id = $this->getSessionId();
     $this->loadAmount = app('global_limit_load');
     $this->quantity = app('global_low_stock');
     $this->specification = Specs::get();
-    $this->session_id = $this->getSessionId();
   }
 
   // start filter-spec function
@@ -62,8 +62,14 @@ class StoreProducts extends Component
     $query = Product_Spec::select('value', 'spec_id')
       ->groupBy('spec_id', 'value')
       ->with(['spec' => function ($query) {
-        $query->select('id', 'name');
+        $query->select('id', 'name', 'sequence');
       }]);
+    $query->whereHas(
+      'spec',
+      function ($query) {
+        $query->where('mark_as_filter', true);
+      }
+    );
     $query->whereHas(
       'product',
       function ($query) {

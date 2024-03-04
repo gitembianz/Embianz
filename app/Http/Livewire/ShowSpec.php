@@ -53,7 +53,9 @@ class ShowSpec extends Component
     $this->record = [
       'name' => $this->spec->name,
       'um' => $this->spec->um,
-      // Add other properties as needed
+      'sequence' => $this->spec->sequence,
+      'mark_as_filter' => $this->spec->mark_as_filter == 1 ? true : false
+
     ];
     $this->edititem = true;
   }
@@ -79,12 +81,27 @@ class ShowSpec extends Component
           return;
         }
       }
+      if (array_key_exists('mark_as_filter', $rec)) {
+        $new->mark_as_filter = $rec['mark_as_filter'];
+      }
       if (array_key_exists('um', $rec)) {
         if (!empty($rec['um'])) {
           $new->um = $rec['um'];
         } else {
           session()->flash('notification', [
             'message' => 'Please provide a value!',
+            'type' => 'warning',
+            'title' => 'Missing Values'
+          ]);
+          return;
+        }
+      }
+      if (array_key_exists('sequence', $rec)) {
+        if (!empty($rec['sequence'])) {
+          $new->sequence = $rec['sequence'];
+        } else {
+          session()->flash('notification', [
+            'message' => 'Please provide a sequence!',
             'type' => 'warning',
             'title' => 'Missing Values'
           ]);
