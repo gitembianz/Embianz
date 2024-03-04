@@ -7,6 +7,7 @@ use App\Models\Payment;
 use App\Models\Status;
 use App\Models\Store_Settings;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
 class GlobalVariablesServiceProvider extends ServiceProvider
@@ -33,58 +34,70 @@ class GlobalVariablesServiceProvider extends ServiceProvider
     }
     private function loadGlobalVariables()
     {
-        $globalVariables = Cache::get('global_variables', function () {
-            $storeSettings = Store_Settings::all()->pluck('value', 'parameter')->toArray();
-            return $storeSettings;
-        });
+        if (Schema::hasTable('store__settings')) {
 
-        foreach ($globalVariables as $key => $value) {
-            $this->app->instance('global_' . $key, $value);
+            $globalVariables = Cache::get('global_variables', function () {
+                $storeSettings = Store_Settings::all()->pluck('value', 'parameter')->toArray();
+                return $storeSettings;
+            });
+
+            foreach ($globalVariables as $key => $value) {
+                $this->app->instance('global_' . $key, $value);
+            }
         }
     }
     private function loadGlobalCustomScripts()
     {
-        $globalScripts = Cache::get('global_scripts', function () {
-            $scripts = CustomScript::select(['id', 'name', 'type', 'content', 'active'])->where('active', true)->get()->groupBy('type');
-            return $scripts->map(function ($group) {
-                return $group->pluck('content')->implode(PHP_EOL);
-            });
-        });
+        if (Schema::hasTable('custom_scripts')) {
 
-        foreach ($globalScripts as $type => $content) {
-            $this->app->instance('global_script_' . $type, $content);
+            $globalScripts = Cache::get('global_scripts', function () {
+                $scripts = CustomScript::select(['id', 'name', 'type', 'content', 'active'])->where('active', true)->get()->groupBy('type');
+                return $scripts->map(function ($group) {
+                    return $group->pluck('content')->implode(PHP_EOL);
+                });
+            });
+
+            foreach ($globalScripts as $type => $content) {
+                $this->app->instance('global_script_' . $type, $content);
+            }
         }
     }
     private function loadGlobalPayments()
     {
-        $globalPayments = Cache::get('global_payments', function () {
-            $payments = Payment::all(['id', 'active', 'type', 'name', 'description'])->keyBy('id')->toArray();
-            return $payments;
-        });
+        if (Schema::hasTable('payments')) {
 
-        foreach ($globalPayments as $payment) {
-            $this->app->instance('global_' . $payment['name'], $payment);
+            $globalPayments = Cache::get('global_payments', function () {
+                $payments = Payment::all(['id', 'active', 'type', 'name', 'description'])->keyBy('id')->toArray();
+                return $payments;
+            });
+
+            foreach ($globalPayments as $payment) {
+                $this->app->instance('global_' . $payment['name'], $payment);
+            }
         }
     }
     private function loadGlobalStatuses()
     {
-        $globalStatuses = Cache::get('global_statuses', function () {
-            $statuses = Status::whereIn('type', ['cart', 'order', 'voucher'])->get();
-            $statusesByType = $statuses->groupBy('type');
+        if (Schema::hasTable('statuses')) {
 
-            $globalStatuses = [];
+            $globalStatuses = Cache::get('global_statuses', function () {
+                $statuses = Status::whereIn('type', ['cart', 'order', 'voucher'])->get();
+                $statusesByType = $statuses->groupBy('type');
 
-            foreach ($statusesByType as $type => $typeStatuses) {
-                foreach ($typeStatuses as $status) {
-                    $globalStatuses[$type . '_' . $status->name] = $status->id;
+                $globalStatuses = [];
+
+                foreach ($statusesByType as $type => $typeStatuses) {
+                    foreach ($typeStatuses as $status) {
+                        $globalStatuses[$type . '_' . $status->name] = $status->id;
+                    }
                 }
+
+                return $globalStatuses;
+            });
+
+            foreach ($globalStatuses as $key => $value) {
+                $this->app->instance('global_' . $key, $value);
             }
-
-            return $globalStatuses;
-        });
-
-        foreach ($globalStatuses as $key => $value) {
-            $this->app->instance('global_' . $key, $value);
         }
     }
 }
