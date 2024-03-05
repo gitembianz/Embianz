@@ -1,4 +1,4 @@
-<x-store-head :canonical="'storeproducts' . ($can ? '/' . $can : '')" :description="'All Products'" :title="'Produse | '" />
+<x-store-head :canonical="'storeproducts' . ($can ? '/' . $can : '')" :title='($data->seo_title ?? "Produse") . " | "' :description='$data->meta_description ?? $data->name ?? ""' />
 
 <x-store-header />
 <main>

@@ -29,6 +29,7 @@ class Category extends Model
     'name',
     'parrent',
     'long_description',
+    'meta_description',
     'short_description',
     'sequence',
     'start_date',

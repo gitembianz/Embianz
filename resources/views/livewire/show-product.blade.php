@@ -138,6 +138,7 @@
        <label>Quantity</label>
       </div>
      @endif
+     <div style="display: flex; gap:20px">
      @if ($editproduct === null)
       <div style="display: flex; align-items: center;justify-content: flex-start;gap: 10px">
        @if ($product->active)
@@ -161,6 +162,30 @@
        <span>Active</span>
       </div>
      @endif
+      @if ($editproduct === null)
+      <div style="display: flex; align-items: center;justify-content: flex-start;gap: 10px">
+       @if ($product->is_new)
+        <div class="simple__checkbox">
+         <svg>
+          <polyline points="20 6 9 17 4 12"></polyline>
+         </svg>
+        </div>
+       @else
+        <div class="simple__checkbox--disabled">
+         <svg>
+          <polyline points="20 6 9 17 4 12"></polyline>
+         </svg>
+        </div>
+       @endif
+       {{ _('Is New') }}
+      </div>
+     @else
+      <div style="display: flex; align-items: center;justify-content: flex-start;gap: 10px">
+       <input type="checkbox" wire:model.defer="prod.is_new">
+       <span>Is New</span>
+      </div>
+     @endif
+     </div>
      @if ($editproduct === null)
       <div class="item__form-input-close">
        <div>{{ $product->popularity }}</div>
@@ -173,14 +198,25 @@
       </div>
      @endif
      @if ($editproduct === null)
-      <div class="item__form-input-close item__form-long">
+      <div class="item__form-input-close">
        <div>{{ $product->short_description }}</div>
        <label>Short Description</label>
       </div>
      @else
-      <div class="item__form-input item__form-long">
+      <div class="item__form-input">
        <input type="text" wire:model.defer="prod.short_description" required>
        <label>Short Description</label>
+      </div>
+     @endif
+     @if ($editproduct === null)
+      <div class="item__form-input-close">
+       <div>{{ $product->meta_description }}</div>
+       <label>Meta Description</label>
+      </div>
+     @else
+      <div class="item__form-input">
+       <input type="text" wire:model.defer="prod.meta_description" required>
+       <label>Meta Description</label>
       </div>
      @endif
      @if ($editproduct === null)
@@ -189,7 +225,7 @@
        <label>Long Description</label>
       </div>
      @else
-      <div class="item__form-input-close item__form-textarea">
+      <div class="item__form-input item__form-textarea">
        <textarea id="editor" wire:model="prod.long_description" required></textarea>
        <label>Long Description</label>
       </div>

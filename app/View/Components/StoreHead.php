@@ -2,8 +2,6 @@
 
 namespace App\View\Components;
 
-use Closure;
-use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
 class StoreHead extends Component
@@ -19,7 +17,7 @@ class StoreHead extends Component
     {
         $this->title = $title . app('global_site_name');
         $this->description = empty($description)
-            ? "Noren.ro is a website dedicated to providing eco-friendly products for a sustainable lifestyle. Shop our wide range of environmentally-friendly products including reusable items, zero-waste essentials, and more."
+            ? ""
             : $description;
         $this->canonical = $canonical;
     }

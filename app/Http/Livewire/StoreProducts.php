@@ -48,12 +48,17 @@ class StoreProducts extends Component
     }
   }
 
-  public function mount()
+  public function mount($category = null)
   {
     $this->session_id = $this->getSessionId();
     $this->loadAmount = app('global_limit_load');
     $this->quantity = app('global_low_stock');
     $this->specification = Specs::get();
+    if ($category) {
+      $decodedCategory = json_decode(htmlspecialchars_decode($category), true);
+
+      $this->category = $decodedCategory['id'];
+    }
   }
 
   // start filter-spec function

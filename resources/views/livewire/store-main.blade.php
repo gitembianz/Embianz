@@ -57,6 +57,9 @@
 
 		<!-------------------- End Slider Images ------------------->
 		<!---------------------------------------------------------->
+		<!---------------------------------------------------------->
+		<!---------------------- Slider Cards ---------------------->
+		@if ($popproducts->isNotEmpty())
 		<!------------------- Section Description ------------------>
 		<section>
 			<div class="section__header container">
@@ -68,14 +71,12 @@
 			</div>
 		</section>
 		<!----------------- End Section Description ---------------->
-		<!---------------------------------------------------------->
-		<!---------------------- Slider Cards ---------------------->
-		@if ($popproducts->isNotEmpty())
+		
 			<section>
-				<div class="card-slider container">
-					<div class="card-slider__wrapper" role="list">
+				<div class="card-slider container new-slider">
+					<div class="card-slider__wrapper new-slider__wrapper" role="list">
 						@foreach ($popproducts as $product)
-							<div class="card-slider__slide card" role="listitem">
+							<div class="card-slider__slide new-slider__slide card" role="listitem">
 								<a draggable="false" href="{{ route("product", ["product" => $product->seo_id !== null && $product->seo_id !== "" ? $product->seo_id : $product->id]) }}">
 									@if ($product->media->first() != null)
 										<img class="card-image" src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}" alt="{{ $product->media->first()->name }} {{ $product->name }}">
@@ -159,12 +160,126 @@
 							</div>
 						@endforeach
 					</div>
-					<button class="card-slider__button prev" aria-label="Previous card slider button">
+					<button class="card-slider__button new-slider__button prev" aria-label="Previous card slider button">
 						<svg>
 							<polyline points="15 18 9 12 15 6"></polyline>
 						</svg>
 					</button>
-					<button class="card-slider__button next" aria-label="Next card slider button">
+					<button class="card-slider__button new-slider__button next" aria-label="Next card slider button">
+						<svg>
+							<polyline points="9 18 15 12 9 6"></polyline>
+						</svg>
+					</button>
+				</div>
+			</section>
+		@endif
+
+		@if ($newproducts->isNotEmpty())
+		<!------------------- Section Description ------------------>
+		<section>
+			<div class="section__header container">
+				<h1 class="section__title">Descoperă produsele nou aparute!</h1>
+				<p class="section__text">
+					Explorează colecția noastră de produse și găsește accesoriile perfecte pentru a-ți completa stilul.
+				</p>
+			</div>
+		</section>
+		<!----------------- End Section Description ---------------->
+		
+			<section>
+				<div class="card-slider container popular-slider">
+					<div class="card-slider__wrapper popular-slider__wrapper" role="list">
+						@foreach ($newproducts as $product)
+							<div class="card-slider__slide popular-slider__slide card" role="listitem">
+								<a draggable="false" href="{{ route("product", ["product" => $product->seo_id !== null && $product->seo_id !== "" ? $product->seo_id : $product->id]) }}">
+									@if ($product->media->first() != null)
+										<img class="card-image" src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}" alt="{{ $product->media->first()->name }} {{ $product->name }}">
+									@else
+										<img class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
+									@endif
+								</a>
+								@livewire("product-wishlist-button", ["productId" => $product->id, "class" => "card__action", "is_in_wishlist" => $product->wishlists->isNotEmpty()], key($product->id))
+								<?php
+								$price = null;
+								$discount = false;
+								
+								if ($product->product_prices->count() != 0) {
+								    $price = number_format($product->product_prices->first()->value, 2, ",", ".");
+								    $discount = $product->product_prices->first()->discount != 0 ? true : false;
+								}
+								?>
+
+								@if ($price)
+									@if ($product->quantity < $quantity && $product->quantity > 0)
+										<p class="card-status out">
+											Stock limitat!!
+										</p>
+										@if ($discount)
+											<p class="card-status save-secondary">
+												-{{ $product->product_prices->first()->discount }}%
+											</p>
+										@endif
+									@elseif($product->quantity == 0)
+										<p class="card-status save">
+											Produs indisponibil!
+										</p>
+									@else
+										@if ($discount)
+											<p class="card-status save">
+												-{{ $product->product_prices->first()->discount }}%
+											</p>
+										@endif
+									@endif
+									{{-- tagul de discount --}}
+								@else
+									<p class="card-status save">
+										În curând!
+									</p>
+								@endif
+								<div class="card-info">
+									<div class="card-text">
+										<span>{{ $product->short_description }}</span>
+									</div>
+									<div class="card-text">
+										<h2>{{ $product->name }}</h2>
+										<p class="card-price">
+											@if ($discount)
+												<span class="card-price discount">
+													@if ($product->product_prices->first())
+														{{ $price }}
+														{{ $product->product_prices->first()->pricelist->currency->name }}
+													@endif
+												</span>
+												<span class="card-price oldprice">
+													{{ $product->product_prices->first()->rrp_value }}
+													{{ $product->product_prices->first()->pricelist->currency->name }}
+												</span>
+											@else
+												<span>
+													@if ($product->product_prices->first())
+														{{ $price }}
+														{{ $product->product_prices->first()->pricelist->currency->name }}
+													@endif
+												</span>
+											@endif
+
+										</p>
+									</div>
+									@if ($price)
+										@livewire("add-to-cart-button", ["product" => $product], key($product->id))
+									@else
+										<button class="card-button-disabled" aria-label="Disabled add to cart button">Indisponibil</button>
+									@endif
+								</div>
+							</div>
+						@endforeach
+					</div>
+					<button class="popular-slider__button card-slider__button prev" aria-label="Previous card slider button">
+						<svg>
+							<polyline points="15 18 9 12 15 6"></polyline>
+						</svg>
+					</button>
+					<button class="popular-slider__button card-slider__button next" aria-label="Next card slider button">
 						<svg>
 							<polyline points="9 18 15 12 9 6"></polyline>
 						</svg>

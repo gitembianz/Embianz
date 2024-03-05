@@ -53,8 +53,10 @@ class Product extends Model
     'sku',
     'ean',
     'active',
+    'is_new',
     'short_description',
     'long_description',
+    'meta_description',
     'quantity',
     'start_date',
     'end_date',
@@ -71,6 +73,7 @@ class Product extends Model
       : static::query()->where('id', 'like', '%' . $search . '%')
       ->orWhere('name', 'like', '%' . $search . '%')
       ->orWhere('ean', 'like', '%' . $search . '%')
+      ->orWhere('meta_description', 'like', '%' . $search . '%')
       ->orWhere('sku', 'like', '%' . $search . '%');
   }
   public static function name($search)
