@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\Subscribers;
+use GuzzleHttp\Client;
 use Illuminate\Database\QueryException;
 
 class StoreFooter extends Component
@@ -36,7 +37,24 @@ class StoreFooter extends Component
         'email' => 'required|email',
       ]);
 
-      Subscribers::create($validatedData);
+      $sucscriber = Subscribers::create($validatedData);
+
+      $client = new Client();
+      $client->post('https://webto.salesforce.com/servlet/servlet.WebToLead', [
+        'headers' => [
+          'Accept' => 'application/json',
+        ],
+        'query' => [
+          'oid' => '00D09000008XPQu',
+          '00N9N000000PrL5' => 'www.noren.ro',
+          'lead_source' => 'Web',
+          'email' => $sucscriber->email,
+        ],
+        'curl' => [
+          CURLOPT_SSL_VERIFYPEER => false,
+        ],
+      ]);
+
       $this->reset();
       $this->cookieConsent = $this->checkCookieConsent();
       $this->dispatchBrowserEvent('newsletterToggle');
