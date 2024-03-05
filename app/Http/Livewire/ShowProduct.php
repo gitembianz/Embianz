@@ -7,6 +7,7 @@ use Livewire\Component;
 use App\Models\Wishlist;
 use App\Models\Cart_Item;
 use App\Models\Product_Spec;
+use App\Models\Related_Products;
 use App\Models\PricelistEntries;
 use App\Models\Products_categories;
 use Illuminate\Support\Facades\Auth;
@@ -158,6 +159,12 @@ class ShowProduct extends Component
         $cart->save();
         $cartitem->delete();
         $this->emit('cartUpdated');
+      }
+    }
+    $relproducts = Related_Products::where('product_id', $id)->orwhere('parrent_id', $id)->get();
+    if ($relproducts != NULL) {
+      foreach ($relproducts as $item) {
+        $item->delete();
       }
     }
     $productswishlist = Wishlist::where('product_id', $id)->get();
