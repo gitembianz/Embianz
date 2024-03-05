@@ -19,7 +19,7 @@
 					@if ($product->media->count() != 0)
 						@foreach ($product->media->where("type", "full") as $media)
 							<div class="product-slider__slide">
-								<img src="/{{ $media->path }}{{ $media->name }}" alt="{{ $media->name }}{{ $product->name }}" data-img-src="/{{ $product->media->where("type", "original")->where("sequence", $media->sequence)->first()->path }}{{ $product->media->where("type", "original")->where("sequence", $media->sequence)->first()->name }}">
+								<img src="/{{ $media->path }}{{ $media->name }}" alt="{{ $media->name }}{{ $product->name }}" data-name-alt="{{ $media->name }}{{ $product->name }}" data-img-src="/{{ $product->media->where("type", "original")->where("sequence", $media->sequence)->first()->path }}{{ $product->media->where("type", "original")->where("sequence", $media->sequence)->first()->name }}">
 							</div>
 						@endforeach
 					@else
