@@ -195,6 +195,7 @@ function sliderProduct(sliderId, modalId) {
           const newImgElement = document.createElement("img");
 
           newImgElement.src = dataSrcValue;
+          newImgElement.alt = dataSrcValue;
           modalContent.innerHTML = ""; // Golește conținutul modalului înainte de a adăuga imaginea
           modalContent.appendChild(newImgElement); // Adaugă imaginea în conținutul modalului
 
