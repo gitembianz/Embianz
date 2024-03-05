@@ -148,3 +148,6 @@
   route::get('/about', [StoreController::class, 'about'])->name('about');
   route::get('/confirm', [StoreController::class, 'confirm'])->name('confirm');
   route::get('/terms', [StoreController::class, 'terms'])->name('terms');
+
+  Route::get('/success', [StoreController::class, 'success'])->name('payment.success');
+  Route::get('/cancel', [StoreController::class, 'cancel'])->name('payment.cancel');

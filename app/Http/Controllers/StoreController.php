@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Store;
 use App\Models\Product;
 use App\Models\Category;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreStoreRequest;
 use App\Http\Requests\UpdateStoreRequest;
+use App\Models\Order;
 
 class StoreController extends Controller
 {
@@ -87,9 +90,31 @@ class StoreController extends Controller
   /**
    * Show the form for creating a new resource.
    */
-  public function create()
+  public function success(Request $request)
   {
-    //
+    \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+    $sessionId = $request->get('session_id');
+
+    try {
+      $session = \Stripe\Checkout\Session::retrieve($sessionId);
+      if (!$session) {
+        throw new NotFoundHttpException;
+      }
+      $customer = \Stripe\Customer::retrieve($session->customer);
+
+      $order = Order::where('session_id', $session->id)->first();
+      if (!$order) {
+        throw new NotFoundHttpException();
+      }
+      if ($order->status === 'unpaid') {
+        $order->status = 'paid';
+        $order->save();
+      }
+
+      return view('store.payment-success', compact('customer'));
+    } catch (\Exception $e) {
+      throw new NotFoundHttpException();
+    }
   }
 
   /**
