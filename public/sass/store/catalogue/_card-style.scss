@@ -10,6 +10,7 @@
   height: 100%;
   box-shadow: $boxShadow;
   gap: 0px;
+  overflow: hidden;
 
   @media (min-width: map-get($grid-breakpoints, md)) {
     gap: 15px;
