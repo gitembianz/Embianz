@@ -90,9 +90,11 @@ function searchBar() {
 
   searchBtn.addEventListener("click", function () {
     document.body.style.overflow = "hidden";
-    setTimeout(() => {
+
+    new Promise(resolve => setTimeout(resolve, 100))
+    .then(() => {
       input.focus();
-    }, 600);
+    });
   });
 
   closeBtn.addEventListener("click", function () {
