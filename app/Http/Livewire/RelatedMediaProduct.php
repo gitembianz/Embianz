@@ -200,17 +200,32 @@ class RelatedMediaProduct extends Component
       $fileContent = file_get_contents($this->file_link[$i]);
       // Get image information
       $imageInfo = getimagesizefromstring($fileContent);
-      //extension
-      $fileExtension = image_type_to_extension($imageInfo[2], false);
-      $name = $this->file_name[$i] . '.' . $fileExtension;
-      if (file_exists($path . $name)) {
-        $this->j = 1;
-        while (file_exists($path . $this->file_name[$i] . '(' . $this->j . ').' . $fileExtension)) {
-          $this->j++;
+      if (app()->has('global_auto_webp') &&  app('global_auto_webp') == 'true') {
+        $image = Image::make($fileContent);
+        $webpContent = $image->encode('webp')->__toString();
+        $fileExtension = 'webp';
+        $name = $this->file_name[$i] . '.' . $fileExtension;
+        if (file_exists($path . $name)) {
+          $this->j = 1;
+          while (file_exists($path . $this->file_name[$i] . '(' . $this->j . ').' . $fileExtension)) {
+            $this->j++;
+          }
+          $name = $this->file_name[$i] . '(' . $this->j . ').' . $fileExtension;
         }
-        $name = $this->file_name[$i] . '(' . $this->j . ').' . $fileExtension;
+        Storage::disk('public_upload')->put($path . $name, $webpContent);
+      } else {
+        $fileExtension = image_type_to_extension($imageInfo[2], false);
+        $name = $this->file_name[$i] . '.' . $fileExtension;
+        if (file_exists($path . $name)) {
+          $this->j = 1;
+          while (file_exists($path . $this->file_name[$i] . '(' . $this->j . ').' . $fileExtension)) {
+            $this->j++;
+          }
+          $name = $this->file_name[$i] . '(' . $this->j . ').' . $fileExtension;
+        }
+        Storage::disk('public_upload')->put($path . $name, $fileContent);
       }
-      Storage::disk('public_upload')->put($path . $name, $fileContent);
+
       $media = new Media();
       $media->name = $name;
       $media->extension = $fileExtension;
@@ -336,7 +351,11 @@ class RelatedMediaProduct extends Component
     $this->i = 0;
     foreach ($this->medias as $file) {
       $media = new Media();
-      $type = $file->getClientOriginalExtension();
+      if (app()->has('global_auto_webp') &&  app('global_auto_webp') == 'true') {
+        $type = 'webp';
+      } else {
+        $type = $file->getClientOriginalExtension();
+      }
       $image = Image::make($file);
       $width = $image->width();
       $height = $image->height();
