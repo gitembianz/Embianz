@@ -10,6 +10,7 @@ use App\Models\Product_Spec;
 use Livewire\WithPagination;
 use App\Models\PricelistEntries;
 use App\Models\Products_categories;
+use App\Models\Related_Products;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Schema;
 
@@ -111,6 +112,13 @@ class Productstable extends Component
           $productspec->delete();
         }
       }
+      $relproducts = Related_Products::where('product_id', $id)->orwhere('parrent_id', $id)->get();
+      if ($relproducts != NULL) {
+        foreach ($relproducts as $item) {
+          $item->delete();
+        }
+      }
+      //de comentat pe viitor
       $productcarts = Cart_Item::where('product_id', $id)->get();
       if ($productcarts != NULL) {
         foreach ($productcarts as $cartitem) {

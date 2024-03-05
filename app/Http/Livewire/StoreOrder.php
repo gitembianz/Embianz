@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use Stripe\Stripe;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Account;
@@ -10,6 +11,7 @@ use App\Models\Voucher;
 use Livewire\Component;
 use App\Models\Cart_Item;
 use App\Models\Order_Item;
+use Stripe\Checkout\Session;
 
 class StoreOrder extends Component
 {
@@ -810,6 +812,7 @@ class StoreOrder extends Component
           'session_id' => $this->session_id,
           'account_id' => $accid,
           'cart_id' => $this->cart->id,
+
           'quantity_amount' => $this->cart->quantity_amount,
           'sum_amount' => $this->cart->sum_amount,
           'final_amount' => ($this->cart->sum_amount + app('global_delivery_price') - $this->cart->voucher_value),
@@ -828,8 +831,10 @@ class StoreOrder extends Component
       ]);
 
       foreach ($this->cartitems as $item) {
-        $item->product->quantity -= $item->quantity;
-        $item->product->save();
+        if ($this->payment['type'] != 'card') {
+          $item->product->quantity -= $item->quantity;
+          $item->product->save();
+        }
 
         Order_Item::create([
           'order_id' => $order->id,
@@ -856,8 +861,30 @@ class StoreOrder extends Component
       } else {
         $this->cart->update([
           'order_id' => $order->id,
-          'status_id' => app('global_check_payment')
+          'status_id' => app('global_cart_check_payment')
         ]);
+
+        Stripe::setApiKey(app('global_stripe_key'));
+
+        $session = Session::create([
+          'line_items' => [
+            [
+              'price_data' => [
+                'currency' => $order->currency->name,
+                'product_data' => [
+                  'name' => $order->order_number,
+                ],
+                'unit_amount' => $order->final_amount * 100,
+              ],
+              'quantity' => 1,
+            ],
+          ],
+          'mode' => 'payment',
+          'customer_email' => $account->email,
+          'success_url' => route('payment.success', [], true) . "?session_id={CHECKOUT_SESSION_ID}",
+          'cancel_url' => route('payment.cancel', [], true),
+        ]);
+        return redirect()->to($session->url);
       }
     }
   }
