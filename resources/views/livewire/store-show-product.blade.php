@@ -15,6 +15,7 @@
   <div class="product-slider">
    <div class="product-slider__center">
 
+
     <div class="product-slider__wrapper">
      @if ($product->media->count() != 0)
       @foreach ($product->media->where('type', 'full') as $media)
@@ -30,7 +31,6 @@
       </div>
      @endif
     </div>
-
     <div class="product-slider__navigation">
      <button class="product-slider__prev" aria-label="Previous slide">
       <svg>
