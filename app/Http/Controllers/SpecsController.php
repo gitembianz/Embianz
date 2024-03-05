@@ -39,7 +39,9 @@ class SpecsController extends Controller
 
     $spec->name = $request->name;
     $spec->um = $request->um;
+    $spec->sequence = $request->sequence;
     $spec->createdby = Auth::user()->name;
+    $spec->mark_as_filter = $request->has('mark_as_filter');
     $spec->lastmodifiedby = Auth::user()->name;
     $spec->save();
     return redirect()->back()->with([

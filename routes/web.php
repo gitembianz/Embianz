@@ -95,6 +95,10 @@
       Artisan::call('queue:clear');
       Artisan::call('optimize:clear');
       Artisan::call('migrate');
+      Cache::forget('global_variables');
+      Cache::forget('global_statuses');
+      Cache::forget('global_payments');
+      Cache::forget('global_scripts');
       echo "App is optimized and updated";
     });
 
@@ -112,11 +116,17 @@
       Cache::forget('global_variables');
       Cache::forget('global_statuses');
       Cache::forget('global_payments');
+      Cache::forget('global_scripts');
+
       echo 'Cache cleared for global variables';
     });
 
     route::get('/update', function () {
       Artisan::call('migrate:fresh --seed');
+      Cache::forget('global_variables');
+      Cache::forget('global_statuses');
+      Cache::forget('global_payments');
+      Cache::forget('global_scripts');
       echo "New fresh app";
     });
     route::get('/corectsequence', [AdminController::class, 'correctMediaSequence']);
