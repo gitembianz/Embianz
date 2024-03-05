@@ -63,9 +63,13 @@
     <input type="checkbox" name="visible" value="{{ old('visible') }}">
     <span>Displayed on Store Tab?</span>
    </div>
-   <div class="item__form-input item__form-long">
+   <div class="item__form-input">
     <input type="text" name="short_description" value="{{ old('short_description') }}">
     <label>Short Description</label>
+   </div>
+   <div class="item__form-input">
+    <input type="text" name="meta_description" value="{{ old('meta_description') }}">
+    <label>Meta Description</label>
    </div>
    <div class="item__form-input item__form-textarea">
     <textarea name="long_description">{{ old('long_description') }}</textarea>

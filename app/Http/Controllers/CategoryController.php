@@ -50,6 +50,7 @@ class CategoryController extends Controller
     $data->name = $request->category;
     $data->long_description = $request->long_description;
     $data->short_description = $request->short_description;
+    $data->meta_description = $request->meta_description;
     $data->sequence = $request->sequence;
     $data->start_date = $request->start_date;
     $data->end_date = $request->end_date;
