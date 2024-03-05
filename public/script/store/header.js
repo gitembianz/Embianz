@@ -89,11 +89,14 @@ function searchBar() {
   const modalClose = document.getElementById("modalClose");
 
   searchBtn.addEventListener("click", function () {
-    document.body.style.overflow = "hidden";
-    setTimeout(() => {
+    new Promise(resolve => {
+      document.body.style.overflow = "hidden";
+      resolve();
+    }).then(() => {
       input.focus();
-    }, 400);
+    });
   });
+
 
   closeBtn.addEventListener("click", function () {
     document.body.style.overflow = "auto";
@@ -102,6 +105,14 @@ function searchBar() {
     document.body.style.overflow = "auto";
   });
 }
+
+// new Promise(resolve => {
+//   document.body.style.overflow = "hidden";
+//     resolve();
+//   }).then(() => {
+//     var searchInput = document.getElementById("search-input");
+//     searchInput.focus();
+//   });
 //<--------------------------- End SearchBar --------------------------->
 //<--------------------------------------------------------------------->
 //<------------------------ Start Functions IOS ------------------------>

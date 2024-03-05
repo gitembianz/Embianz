@@ -8,7 +8,7 @@
 		</svg>
 		<input id="searchInput" wire:model="search" type="text" placeholder="Cauta...">
 		</div>
-		<button class="search__close" type="button" id="searchClose" wire:click.prevent="close" aria-label="Close general searchbar">
+		<button class="search__close" type="button" id="searchClose" wire:click.prevent="close" aria-labautofoel="Close general searchbar">
 		<svg>
 		<line x1="18" y1="6" x2="6" y2="18"></line>
 		<line x1="6" y1="6" x2="18" y2="18"></line>
