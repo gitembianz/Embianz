@@ -6,7 +6,7 @@
 		<circle cx="11" cy="11" r="8"></circle>
 		<line x1="21" y1="21" x2="16.65" y2="16.65"></line>
 		</svg>
-		<input id="searchInput" wire:model.debounce.300ms="search" type="text" placeholder="Cauta...">
+		<input id="searchInput" wire:model.debounce.300ms="search" type="text" placeholder="Cauta..." autofocus>
 		</div>
 		<button class="search__close" type="button" id="searchClose" wire:click.prevent="close" aria-label="Close general searchbar">
 		<svg>

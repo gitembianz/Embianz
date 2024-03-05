@@ -192,10 +192,11 @@ function sliderProduct(sliderId, modalId) {
         const imgElement = slide.querySelector("img");
         if (imgElement) {
           const dataSrcValue = imgElement.getAttribute("data-img-src");
+          const dataAltValue = imgElement.getAttribute("data-name-alte");
           const newImgElement = document.createElement("img");
 
           newImgElement.src = dataSrcValue;
-          newImgElement.alt = dataSrcValue;
+          newImgElement.alt = dataAltValue;
           modalContent.innerHTML = ""; // Golește conținutul modalului înainte de a adăuga imaginea
           modalContent.appendChild(newImgElement); // Adaugă imaginea în conținutul modalului
 
