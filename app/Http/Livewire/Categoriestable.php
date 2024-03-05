@@ -39,8 +39,6 @@ class Categoriestable extends Component
   {
     $this->tableName = $tableName;
     $this->columns = Schema::getColumnListing($this->tableName);
-
-    // Exclude 'long_description' and 'short_description' columns
     $excludedColumns = ['long_description', 'short_description'];
     $this->selectedColumns = array_diff($this->columns, $excludedColumns);
     $this->columns = array_diff($this->columns, $excludedColumns);
