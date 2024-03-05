@@ -1,4 +1,4 @@
-<x-store-head :canonical="'cookie'" :title="' Cookie | '" />
+<x-store-head :canonical="'cookie'" :title="' Cookie | '" :description="'Cookie'"/>
 <x-store-header />
 <main>
   <!---------------------------------------------------------->

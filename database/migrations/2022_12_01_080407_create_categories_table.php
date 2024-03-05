@@ -22,6 +22,7 @@ return new class extends Migration
       );
       $table->longText('long_description')->nullable();
       $table->string('short_description')->nullable();
+      $table->string('meta_description')->nullable();
       $table->string('sequence')->nullable();
       $table->integer('slider_sequence')->nullable()->default(
         '0'

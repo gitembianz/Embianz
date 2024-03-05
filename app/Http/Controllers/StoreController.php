@@ -71,7 +71,7 @@ class StoreController extends Controller
         $category = Category::where('seo_id', $categorySlug)->first();
       }
       if ($category) {
-        $data = $category->id;
+        $data = $category;
       }
     }
 

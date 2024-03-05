@@ -52,12 +52,36 @@ class StoreMain extends Component
       ->get();
   }
 
+  public function getNewProductsProperty()
+  {
+    return Product::with([
+      'media' => function ($query) {
+        $query->select('path', 'name')->where('type', 'main');
+      },
+      'product_prices' => function ($query) {
+        $query->select('product_id', 'value', 'discount', 'rrp_value', 'pricelist_id')
+          ->with(['pricelist' => function ($query) {
+            $query->select('id', 'currency_id')->with('currency:id,name');
+          }]);
+      },
+      'wishlists' => function ($query) {
+        $query->select('id', 'product_id')->where('session_id', $this->session_id);
+      }
+    ])
+      ->select('id', 'name', 'seo_id', 'quantity', 'short_description', 'popularity')
+      ->where('active', true)
+      ->where('is_new', true)
+      ->limit(app('global_limit_slideritems'))
+      ->get();
+  }
 
 
   public function render()
   {
     return view('livewire.store-main', [
       'popproducts' => $this->popproducts,
+      'newproducts' => $this->newproducts,
+
       'slideritems' => $this->slideritems,
 
     ]);

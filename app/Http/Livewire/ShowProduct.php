@@ -35,10 +35,12 @@ class ShowProduct extends Component
     $this->prod = [
       'product_name' => $this->product->name,
       'active' => $this->product->active == 1 ? true : false,
+      'is_new' => $this->product->is_new == 1 ? true : false,
       'start_date' => $this->product->start_date,
       'end_date' => $this->product->end_date,
       'popularity' => $this->product->popularity,
       'short_description' => $this->product->short_description,
+      'meta_description' => $this->product->meta_description,
       'long_description' => $this->product->long_description,
       'seo_title' => $this->product->seo_title,
       'quantity' => $this->product->quantity,
@@ -88,6 +90,9 @@ class ShowProduct extends Component
       if (array_key_exists('active', $product_new)) {
         $new->active = $product_new['active'];
       }
+      if (array_key_exists('is_new', $product_new)) {
+        $new->is_new = $product_new['is_new'];
+      }
       if (array_key_exists('end_date', $product_new)) {
         $new->end_date = $product_new['end_date'];
       }
@@ -96,6 +101,9 @@ class ShowProduct extends Component
       }
       if (array_key_exists('short_description', $product_new)) {
         $new->short_description = $product_new['short_description'];
+      }
+      if (array_key_exists('meta_description', $product_new)) {
+        $new->meta_description = $product_new['meta_description'];
       }
       if (array_key_exists('popularity', $product_new)) {
         $new->popularity = $product_new['popularity'];
