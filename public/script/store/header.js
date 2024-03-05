@@ -88,18 +88,12 @@ function searchBar() {
   const input = document.getElementById("searchInput");
   const modalClose = document.getElementById("modalClose");
 
-  // searchBtn.addEventListener("click", function () {
-  //   document.body.style.overflow = "hidden";
-
-  //   new Promise(resolve => setTimeout(resolve, 100))
-  //   .then(() => {
-  //     input.focus();
-  //   });
-  // });
-  searchBtn.onclick = function() {
+  searchBtn.addEventListener("click", function () {
     document.body.style.overflow = "hidden";
-    input.focus();
-  }
+    setTimeout(() => {
+      input.focus();
+    }, 600);
+  });
 
   closeBtn.addEventListener("click", function () {
     document.body.style.overflow = "auto";
