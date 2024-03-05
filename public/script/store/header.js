@@ -89,10 +89,19 @@ function searchBar() {
   const modalClose = document.getElementById("modalClose");
 
   searchBtn.addEventListener("click", function () {
+    // document.body.style.overflow = "hidden";
+    // setTimeout(() => {
+    //   input.focus();
+    // }, 500);
+
+    new Promise(resolve => {
     document.body.style.overflow = "hidden";
-    setTimeout(() => {
-      input.focus();
-    }, 500);
+      resolve();
+    }).then(() => {
+      var searchInput = document.getElementById("search-input");
+      searchInput.focus();
+    });
+
   });
 
   closeBtn.addEventListener("click", function () {
