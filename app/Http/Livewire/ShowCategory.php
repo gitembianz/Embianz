@@ -138,7 +138,7 @@ class ShowCategory extends Component
         $productcat->delete();
       }
     }
-    $subcategories = Subcategory::where('parrent_id', $id)->get();
+    $subcategories = Subcategory::where('parrent_id', $id)->orwhere('category_id', $id)->get();
     if ($subcategories != NULL) {
       foreach ($subcategories as $sub) {
         $sub->delete();
