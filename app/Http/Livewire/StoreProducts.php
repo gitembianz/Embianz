@@ -201,11 +201,11 @@ class StoreProducts extends Component
         $query->where('quantity', '>', 0)->orderBy('quantity', 'desc');
         break;
       case 'price_as':
-        $query->join('pricelist_entries', 'products.id', '=', 'pricelist_entries.product_id')
+        $query->join('pricelist_entries', 'products.id', 'pricelist_entries.product_id')
           ->orderByRaw('CAST(value AS DECIMAL(10, 2)) asc');
         break;
       case 'price_ds':
-        $query->join('pricelist_entries', 'products.id', '=', 'pricelist_entries.product_id')
+        $query->join('pricelist_entries', 'products.id', 'pricelist_entries.product_id')
           ->orderByRaw('CAST(value AS DECIMAL(10, 2)) desc');
         break;
     }
