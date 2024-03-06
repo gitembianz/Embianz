@@ -89,6 +89,10 @@
     font-size: $spanSize;
     font-weight: $lightWeight;
   }
+  @media (max-width: map-get($grid-breakpoints, md)) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 
 .card-info > .card-button {
