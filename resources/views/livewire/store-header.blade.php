@@ -52,7 +52,7 @@
 										@if ($subcategory->category->subcategory->count() != 0)
 											<div class="dropdown__item--list">
 												@foreach ($subcategory->category->subcategory as $subsubCategory)
-													<a href="{{ route("products", ["categorySlug" => $subsubCategory->category->seo_id !== null && $subsubCategory->category->seo_id !== "" ? $subsubCategory->category->seo_id : $subsubCategory->category->id]) }}">
+													<a class="dropdown__item--link" href="{{ route("products", ["categorySlug" => $subsubCategory->category->seo_id !== null && $subsubCategory->category->seo_id !== "" ? $subsubCategory->category->seo_id : $subsubCategory->category->id]) }}">
 														{{ $subsubCategory->category->name }}
 													</a>
 												@endforeach
