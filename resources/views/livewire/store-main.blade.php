@@ -76,7 +76,7 @@
 				<div class="card-slider container new-slider">
 					<div class="card-slider__wrapper new-slider__wrapper" role="list">
 						@foreach ($popproducts as $product)
-							<div class="card-slider__slide new-slider__slide card product" style="overflow: unset !important" role="listitem">
+							<div class="card-slider__slide new-slider__slide card" role="listitem">
 								<a draggable="false" href="{{ route("product", ["product" => $product->seo_id !== null && $product->seo_id !== "" ? $product->seo_id : $product->id]) }}">
 									@if ($product->media->first() != null)
 										<img class="card-image" src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}" alt="{{ $product->media->first()->name }} {{ $product->name }}">
@@ -190,7 +190,7 @@
 				<div class="card-slider container popular-slider">
 					<div class="card-slider__wrapper popular-slider__wrapper" role="list">
 						@foreach ($newproducts as $product)
-							<div class="card-slider__slide popular-slider__slide card" style="overflow: unset !important" role="listitem">
+							<div class="card-slider__slide popular-slider__slide card" role="listitem">
 								<a draggable="false" href="{{ route("product", ["product" => $product->seo_id !== null && $product->seo_id !== "" ? $product->seo_id : $product->id]) }}">
 									@if ($product->media->first() != null)
 										<img class="card-image" src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}" alt="{{ $product->media->first()->name }} {{ $product->name }}">
