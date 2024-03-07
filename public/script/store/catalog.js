@@ -133,21 +133,19 @@ function applySort(selector) {
 //   const numberCart = shopping_cart.querySelector(".header__count");
 //   const target_parent = button.closest(".product"); // Obținem cel mai apropiat părinte cu clasa "product"
 
-//   if (!target_parent) {
-//     console.error("Nu s-a găsit părintele 'product'.");
-//     return;
-//   }
 //   setTimeout(() => {
 
-//     // button.addEventListener('click', () => {
-//       button.classList.remove('out')
-//       button.classList.add('in')
+//     button.classList.remove('out')
+//     button.classList.add('in')
 
-//       setTimeout(() => {
-//         button.classList.add('out')
-//       }, 650)
-//     // })
+//     setTimeout(() => {
+//       button.classList.add('out')
+//     }, 650)
 
+//       if (!target_parent) {
+//         console.error("Nu s-a găsit părintele 'product'.");
+//         return;
+//       }
 //     shopping_cart.classList.add("active");
 
 //     // Creăm o imagine separată
@@ -186,7 +184,7 @@ function applySort(selector) {
 //     if (numberCart) {
 //       numberCart.style.scale = 1.5;
 //     }
-//   }, 00)
+//   }, 400)
 // }
 
 //<-------------------------- End Add to Cart -------------------------->
