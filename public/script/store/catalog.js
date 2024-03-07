@@ -186,7 +186,7 @@ function flyToCart(button) {
     if (numberCart) {
       numberCart.style.scale = 1.5;
     }
-  }, 300)
+  }, 500)
 }
 
 //<-------------------------- End Add to Cart -------------------------->
