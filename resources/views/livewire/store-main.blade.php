@@ -60,23 +60,23 @@
 		<!---------------------------------------------------------->
 		<!---------------------- Slider Cards ---------------------->
 		@if ($popproducts->isNotEmpty())
-		<!------------------- Section Description ------------------>
-		<section>
-			<div class="section__header container">
-				<h1 class="section__title">Descoperă produsele noastre populare!</h1>
-				<p class="section__text">
-					Explorează colecția noastră de produse și găsește accesoriile perfecte pentru a-ți completa stilul.
-					<a href="{{ url("/storeproducts") }}">Vezi produsele!</a>
-				</p>
-			</div>
-		</section>
-		<!----------------- End Section Description ---------------->
-		
+			<!------------------- Section Description ------------------>
+			<section>
+				<div class="section__header container">
+					<h1 class="section__title">Descoperă produsele noastre populare!</h1>
+					<p class="section__text">
+						Explorează colecția noastră de produse și găsește accesoriile perfecte pentru a-ți completa stilul.
+						<a href="{{ url("/storeproducts") }}">Vezi produsele!</a>
+					</p>
+				</div>
+			</section>
+			<!----------------- End Section Description ---------------->
+
 			<section>
 				<div class="card-slider container new-slider">
 					<div class="card-slider__wrapper new-slider__wrapper" role="list">
 						@foreach ($popproducts as $product)
-							<div class="card-slider__slide new-slider__slide card" role="listitem">
+							<div class="card-slider__slide new-slider__slide card product" role="listitem">
 								<a draggable="false" href="{{ route("product", ["product" => $product->seo_id !== null && $product->seo_id !== "" ? $product->seo_id : $product->id]) }}">
 									@if ($product->media->first() != null)
 										<img class="card-image" src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}" alt="{{ $product->media->first()->name }} {{ $product->name }}">
@@ -175,17 +175,17 @@
 		@endif
 
 		@if ($newproducts->isNotEmpty())
-		<!------------------- Section Description ------------------>
-		<section>
-			<div class="section__header container">
-				<h1 class="section__title">Descoperă produsele nou aparute!</h1>
-				<p class="section__text">
-					Explorează colecția noastră de produse și găsește accesoriile perfecte pentru a-ți completa stilul.
-				</p>
-			</div>
-		</section>
-		<!----------------- End Section Description ---------------->
-		
+			<!------------------- Section Description ------------------>
+			<section>
+				<div class="section__header container">
+					<h1 class="section__title">Descoperă produsele nou aparute!</h1>
+					<p class="section__text">
+						Explorează colecția noastră de produse și găsește accesoriile perfecte pentru a-ți completa stilul.
+					</p>
+				</div>
+			</section>
+			<!----------------- End Section Description ---------------->
+
 			<section>
 				<div class="card-slider container popular-slider">
 					<div class="card-slider__wrapper popular-slider__wrapper" role="list">
