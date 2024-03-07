@@ -99,59 +99,6 @@
   }
 }
 
-.card-info > .card-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 40px;
-  background: transparent;
-  border: 2px solid $lightBlack;
-  text-transform: uppercase;
-  font-size: $textSize;
-  // letter-spacing: 0.7px;
-  font-weight: $lightWeight;
-  color: $lightBlack;
-
-  transition: all 0.3s ease-in-out;
-
-  & > button {
-    height: 100%;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: transparent;
-    text-transform: uppercase;
-    border: none;
-    border-radius: 0;
-    font-size: $textSize;
-    letter-spacing: 0.7px;
-    font-weight: $lightWeight;
-    color: $lightBlack;
-    outline: none;
-    transition: all 0.3s ease-in-out;
-
-    @media (hover: hover) {
-      &:hover {
-        background: $lightBlack;
-        color: $primary;
-      }
-    }
-
-    @media (hover: none) {
-      &:active {
-        background: $lightBlack;
-        color: $primary;
-      }
-    }
-  }
-
-  &:active {
-    transform: scale(0.9);
-  }
-}
-
 .card-button-disabled {
   display: flex;
   align-items: center;
@@ -240,3 +187,203 @@
 }
 
 //<-------------------------- End Card -------------------------->
+//<----------------------ADD TO CART BUTTON---------------------->
+.card__button--wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 40px;
+}
+
+.card__button {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $lightBlack;
+  text-transform: uppercase;
+  text-wrap: nowrap;
+  border: none;
+  border-radius: 0;
+  font-size: $textSize;
+  letter-spacing: 0.7px;
+  font-weight: $lightWeight;
+  color: $lightBlack;
+  outline: none;
+  transition: all 0.3s ease-in-out;
+  overflow: hidden;
+
+  @media (hover: hover) {
+    &:hover {
+      background: $lightBlack;
+      color: $primary;
+    }
+  }
+
+  @media (hover: none) {
+    &:active {
+      background: $lightBlack;
+      color: $primary;
+    }
+  }
+
+	&.in {
+		& > .card__button--text {
+			animation: textIn 550ms ease-in-out forwards;
+		}
+		& > .card__button--cart {
+			animation: cartIn 650ms ease-in-out forwards;
+		}
+		& > .card__button--gift {
+			animation: giftIn 650ms ease-in-out forwards;
+		}
+		&::after {
+			animation: roadIn 550ms ease-in-out forwards;
+		}
+	}
+	&.out {
+		& > .card__button--text {
+			animation: textOut 550ms ease-in-out forwards;
+		}
+		& > .card__button--cart {
+			animation: cartOut 650ms ease-in-out forwards;
+		}
+		& > .card__button--gift {
+			animation: giftOut 650ms ease-in-out forwards;
+		}
+		&::after {
+			animation: roadOut 550ms ease-in-out forwards;
+		}
+	}
+
+	&::after {
+		content: '';
+		left: 50%;
+		bottom: -5px;
+		position: absolute;
+		width: 90%;
+		height: 2px;
+		transform: translateX(-50%);
+		background: #fafafa;
+		opacity: 1;
+	}
+}
+.card__button--cart {
+	position: absolute;
+	bottom: 5px;
+	left: -150%;
+	transform: translateX(-50%);
+  & >svg{
+    stroke: $background;
+  }
+}
+.card__button--gift {
+	position: absolute;
+	bottom: 100px;
+	left: 49%;
+	scale: 0.5;
+	transform: translateX(-50%);
+  & >svg{
+    stroke: $background;
+  }
+}
+.card__button--text {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	color: #fafafa;
+	font-size: 14px;
+	font-weight: 500;
+	text-transform: uppercase;
+}
+@keyframes textIn {
+	0% {
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+	}
+	100% {
+		top: 150%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+	}
+}
+@keyframes textOut {
+	0% {
+		top: 150%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+	}
+	100% {
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+	}
+}
+@keyframes cartIn {
+	0% {
+		bottom: 5px;
+		left: -150%;
+		transform: translateX(-50%);
+	}
+	100% {
+		bottom: 5px;
+		left: 50%;
+		transform: translateX(-50%);
+	}
+}
+@keyframes cartOut {
+	0% {
+		bottom: 5px;
+		left: 50%;
+		transform: translateX(-50%);
+	}
+	100% {
+		bottom: 5px;
+		left: 150%;
+		transform: translateX(-50%);
+	}
+}
+@keyframes roadIn {
+	0% {
+		bottom: -5px;
+	}
+	100% {
+		bottom: 5px;
+	}
+}
+@keyframes roadOut {
+	0% {
+		bottom: 5px;
+	}
+	100% {
+		bottom: -5px;
+	}
+}
+@keyframes giftIn {
+	0% {
+		bottom: 100px;
+	}
+	100% {
+		bottom: 8px;
+	}
+}
+@keyframes giftOut {
+	0% {
+		bottom: 5px;
+		left: 49%;
+		transform: translateX(-50%);
+	}
+	100% {
+		bottom: 5px;
+		left: 150%;
+		transform: translateX(-50%);
+	}
+}
+
+
+//<--------------------END ADD TO CART BUTTON-------------------->
