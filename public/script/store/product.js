@@ -202,6 +202,16 @@ function sliderProduct(sliderId, modalId) {
 
           modal.classList.add("active"); // Deschide modalul
           body.style.overflow = "hidden"; // Blochează scroll-ul paginii
+
+          function handleKeyPress(event) {
+            if (event.keyCode === 27) {
+              modal.classList.remove("active"); // Deschide modalul
+              body.style.overflow = "auto"; // Blochează scroll-ul paginii
+            }
+          }
+
+          document.addEventListener('keydown', handleKeyPress);
+
         } else {
           console.error(
             "Elementul <img> nu a fost găsit în cadrul slide-ului.",
