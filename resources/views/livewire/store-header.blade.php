@@ -171,10 +171,11 @@
 											<a class="submenu__button--link" href="{{ route("products", ["categorySlug" => $subcategory->category->seo_id !== null && $subcategory->category->seo_id !== "" ? $subcategory->category->seo_id : $subcategory->category->id]) }}">
 												@if ($subcategory->category->media->first() != null)
 													<img src="/{{ $subcategory->category->media->first()->path }}{{ $subcategory->category->media->first()->name }}" alt="{{ $subcategory->category->media->first()->name }}{{ $subcategory->category->name }}">
+													<h4>{{ $subcategory->category->name }}</h4>
 												@else
+													<h4 style="margin-left: 7px">{{ $subcategory->category->name }}</h4>
 													{{-- <img src="/images/store/default/default70.webp" alt="something wrong"> --}}
 												@endif
-												<h4>{{ $subcategory->category->name }}</h4>
 											</a>
 											@if ($subcategory->category->subcategory->count() != 0)
 												<button class="submenu__open" href="#">
