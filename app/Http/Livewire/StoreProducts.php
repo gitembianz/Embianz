@@ -149,16 +149,18 @@ class StoreProducts extends Component
   // products function
   public function getProductsProperty()
   {
-    $query = Product::name($this->search)->where('active', true)->with([
-      'product_prices',
-      'product_prices.pricelist.currency',
-      'media' => function ($query) {
-        $query->select('path', 'name')->where('type', 'main');
-      },
-      'wishlists' => function ($query) {
-        $query->select('id', 'product_id')->where('session_id', $this->session_id);
-      }
-    ]);
+    $query = Product::name($this->search)
+      ->where('active', true)
+      ->with([
+        'product_prices',
+        'product_prices.pricelist.currency',
+        'media' => function ($query) {
+          $query->select('path', 'name')->where('type', 'main');
+        },
+        'wishlists' => function ($query) {
+          $query->select('id', 'product_id')->where('session_id', $this->session_id);
+        },
+      ]);
     if ($this->category) {
       $this->category_details = Category::find($this->category, ['name', 'long_description']);
       $query->whereHas('product_categories.category', function ($query) {
@@ -201,20 +203,15 @@ class StoreProducts extends Component
         $query->where('quantity', '>', 0)->orderBy('quantity', 'desc');
         break;
       case 'price_as':
-        $query->with(['product_prices' => function ($priceQuery) {
-          $priceQuery->orderByRaw('CAST(value AS DECIMAL(10, 2)) asc');
-        }]);
+        $query->orderByRaw("(SELECT CAST(value AS DECIMAL(10, 2)) FROM pricelist_entries WHERE product_id = products.id) asc");
         break;
-      case 'price_as':
-        $query->with(['product_prices' => function ($priceQuery) {
-          $priceQuery->orderByRaw('CAST(value AS DECIMAL(10, 2)) desc');
-        }]);
+
+      case 'price_ds':
+        $query->orderByRaw("(SELECT CAST(value AS DECIMAL(10, 2)) FROM pricelist_entries WHERE product_id = products.id) desc");
         break;
     }
-    // Get the count and paginate in a single query
     $products = $query->paginate($this->loadAmount);
 
-    // Set the total count to the property
     $this->productCount = $products->total();
 
     return $products;
