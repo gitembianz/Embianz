@@ -1,12 +1,13 @@
 //<---------------------------- Banner Styles ---------------------------->
 .banner {
-  width: 100%;
+  width: 100vw;
   padding: 5px 0;
   background: $accentBackground;
   transform-origin: top;
   transition: transform 0.3s;
   position: fixed;
   top: 0;
+  left: 0;
   z-index: 400;
 }
 
