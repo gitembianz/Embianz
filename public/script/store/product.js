@@ -89,7 +89,11 @@ function sliderProduct(sliderId, modalId) {
       thumbnail.classList.toggle("active", index === currentIndex);
       if (index === currentIndex) {
         thumbnail.focus(); // Focalizăm punctul de paginare activ
-        thumbnail.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
+        // thumbnail.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
+        pagination.scrollTo({
+          left: thumbnail.offsetLeft - (pagination.offsetWidth - thumbnail.offsetWidth) / 2,
+          behavior: "smooth"
+        });
       }
     });
     if (currentIndex === 0) {
@@ -132,8 +136,8 @@ function sliderProduct(sliderId, modalId) {
         currentIndex = index;
         updateTransform(wrapper);
         updatePagination();
-        thumbnail.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
-      });
+        // thumbnail.scrollTo({ left: scrollLeft, behavior: "smooth", block: "nearest", inline: "center" });
+    });
 
       pagination.appendChild(thumbnail);
     } else {
