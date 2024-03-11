@@ -210,10 +210,8 @@ class StoreProducts extends Component
         $query->orderByRaw("(SELECT CAST(value AS DECIMAL(10, 2)) FROM pricelist_entries WHERE product_id = products.id) desc");
         break;
     }
-    // Get the count and paginate in a single query
     $products = $query->paginate($this->loadAmount);
 
-    // Set the total count to the property
     $this->productCount = $products->total();
 
     return $products;
