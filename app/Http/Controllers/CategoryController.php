@@ -39,7 +39,10 @@ class CategoryController extends Controller
     $messages = [
       'end_date.after_or_equal' => 'Data de încheiere a categoriei trebuie să fie în viitor și după data de început.',
     ];
-    $this->validate($request, $rules, $messages);
+    if ($request->end_date) {
+
+      $this->validate($request, $rules, $messages);
+    }
 
     if ($request->seo_id != null) {
       $seo_id = $this->generateUniqueSeoId($request->seo_id);
