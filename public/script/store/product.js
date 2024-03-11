@@ -360,26 +360,33 @@ function relatedSlider() {
 //<------------------------- End Related-Slider ------------------------>
 //<--------------------------------------------------------------------->
 function flyToCart(button) {
+  let isAnimating = false;
+
+    if (isAnimating) {
+      console.log("Animația este deja în desfășurare.");
+      return;
+    }
+    setTimeout(() => {
+      animation();
+    }, 650);
+
+  function animation(){
+    isAnimating = true;
+
+    button.classList.remove('out');
+    button.classList.add('in');
+
+    setTimeout(() => {
+      button.classList.add('out');
+      isAnimating = false;
+    }, 650);
+  }
+
   const shopping_cart = document.getElementById("basketOpen");
   const numberCart = shopping_cart.querySelector(".header__count");
   const target_parent = button.closest(".product"); // Obținem cel mai apropiat părinte cu clasa "product"
 
   setTimeout(() => {
-    if (button.classList.contains('in') || button.classList.contains('out')) {
-      console.log("Animația este deja în desfășurare.");
-      return
-    } else {
-      animation();
-    }
-
-function animation(){
-  button.classList.remove('out')
-  button.classList.add('in')
-
-  setTimeout(() => {
-    button.classList.add('out')
-  }, 650)
-}
 
       if (!target_parent) {
         console.error("Nu s-a găsit părintele 'product'.");
