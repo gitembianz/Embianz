@@ -144,27 +144,23 @@ function slider(sliderID) {
 //<--------------------------------------------------------------------->
 //<---------------------------- Add to Cart ---------------------------->
 function flyToCart(button) {
-  let isAnimating = false;
+  let clickCount = 0;
 
-    if (isAnimating) {
-      console.log("Animația este deja în desfășurare.");
-      return;
+  function startAnimation() {
+    let originalDelay = 400;
+
+    for (let i = 0; i < clickCount; i++) {
+      setTimeout(() => {
+        button.classList.add('in');
+      }, originalDelay + (i * 200));
     }
-    setTimeout(() => {
-      animation();
-    }, 650);
-
-  function animation(){
-    isAnimating = true;
-
-    button.classList.remove('out');
-    button.classList.add('in');
-
-    setTimeout(() => {
-      button.classList.add('out');
-      isAnimating = false;
-    }, 650);
   }
+
+  function handleButtonClick() {
+    clickCount++; // Incrementăm numărul de clicuri la fiecare clic pe buton
+    startAnimation(); // Apelăm funcția startAnimation pentru a programa animațiile
+  }
+  handleButtonClick()
 
   const shopping_cart = document.getElementById("basketOpen");
   const numberCart = shopping_cart.querySelector(".header__count");

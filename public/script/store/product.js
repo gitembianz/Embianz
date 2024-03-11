@@ -89,7 +89,7 @@ function sliderProduct(sliderId, modalId) {
       thumbnail.classList.toggle("active", index === currentIndex);
       if (index === currentIndex) {
         thumbnail.focus(); // Focalizăm punctul de paginare activ
-        thumbnail.scrollIntoView({ behavior: "smooth",block: "nearest", inline: "center" });
+        thumbnail.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
       }
     });
     if (currentIndex === 0) {
@@ -132,6 +132,7 @@ function sliderProduct(sliderId, modalId) {
         currentIndex = index;
         updateTransform(wrapper);
         updatePagination();
+        thumbnail.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
       });
 
       pagination.appendChild(thumbnail);
@@ -360,31 +361,27 @@ function relatedSlider() {
 //<------------------------- End Related-Slider ------------------------>
 //<--------------------------------------------------------------------->
 function flyToCart(button) {
-  let isAnimating = false;
-
-    if (isAnimating) {
-      console.log("Animația este deja în desfășurare.");
-      return;
-    }
-    setTimeout(() => {
-      animation();
-    }, 650);
-
-  function animation(){
-    isAnimating = true;
-
-    button.classList.remove('out');
-    button.classList.add('in');
-
-    setTimeout(() => {
-      button.classList.add('out');
-      isAnimating = false;
-    }, 650);
-  }
-
   const shopping_cart = document.getElementById("basketOpen");
   const numberCart = shopping_cart.querySelector(".header__count");
   const target_parent = button.closest(".product"); // Obținem cel mai apropiat părinte cu clasa "product"
+
+  let clickCount = 0;
+
+    function startAnimation() {
+      let originalDelay = 400;
+
+      for (let i = 0; i < clickCount; i++) {
+        setTimeout(() => {
+          button.classList.add('in');
+        }, originalDelay + (i * 200));
+      }
+    }
+
+    function handleButtonClick() {
+      clickCount++; // Incrementăm numărul de clicuri la fiecare clic pe buton
+      startAnimation(); // Apelăm funcția startAnimation pentru a programa animațiile
+    }
+    handleButtonClick()
 
   setTimeout(() => {
 
