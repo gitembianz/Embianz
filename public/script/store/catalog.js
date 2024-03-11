@@ -153,19 +153,21 @@ function flyToCart(button) {
   const numberCart = shopping_cart.querySelector(".header__count");
   const target_parent = button.closest(".product"); // Obținem cel mai apropiat părinte cu clasa "product"
 
+
   setTimeout(() => {
+    // Verifică dacă butonul este deja în animație
+    if (button.classList.contains('in') || button.classList.contains('out')) {
+      console.log("Animația este deja în desfășurare.");
+      return
+    } else {
+      animation();
+    }
 
-    button.classList.remove('out')
-    button.classList.add('in')
+    if (!target_parent) {
+      console.error("Nu s-a găsit părintele 'product'.");
+      return;
+    }
 
-    setTimeout(() => {
-      button.classList.add('out')
-    }, 650)
-
-      if (!target_parent) {
-        console.error("Nu s-a găsit părintele 'product'.");
-        return;
-      }
     shopping_cart.classList.add("active");
 
     // Creăm o imagine separată
@@ -204,6 +206,16 @@ function flyToCart(button) {
     if (numberCart) {
       numberCart.style.scale = 1.5;
     }
+
+    function animation(){
+      button.classList.remove('out');
+      button.classList.add('in');
+
+      setTimeout(() => {
+        button.classList.add('out');
+      }, 650);
+    }
+
   }, 400)
 }
 

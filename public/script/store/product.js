@@ -365,13 +365,21 @@ function flyToCart(button) {
   const target_parent = button.closest(".product"); // Obținem cel mai apropiat părinte cu clasa "product"
 
   setTimeout(() => {
+    if (button.classList.contains('in') || button.classList.contains('out')) {
+      console.log("Animația este deja în desfășurare.");
+      return
+    } else {
+      animation();
+    }
 
-    button.classList.remove('out')
-    button.classList.add('in')
+function animation(){
+  button.classList.remove('out')
+  button.classList.add('in')
 
-    setTimeout(() => {
-      button.classList.add('out')
-    }, 650)
+  setTimeout(() => {
+    button.classList.add('out')
+  }, 650)
+}
 
       if (!target_parent) {
         console.error("Nu s-a găsit părintele 'product'.");
