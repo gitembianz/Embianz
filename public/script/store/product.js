@@ -89,7 +89,7 @@ function sliderProduct(sliderId, modalId) {
       thumbnail.classList.toggle("active", index === currentIndex);
       if (index === currentIndex) {
         thumbnail.focus(); // Focalizăm punctul de paginare activ
-        thumbnail.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        thumbnail.scrollIntoView({ behavior: "smooth",block: "nearest", inline: "center" });
       }
     });
     if (currentIndex === 0) {
