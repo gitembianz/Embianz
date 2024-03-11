@@ -72,8 +72,11 @@ function addWishList(button) {
     wish.style.scale = 1;
   }, 1500);
 }
+
 //<----------------------- End Add On WishList ------------------------->
 //<--------------------------------------------------------------------->
+
+
 //<------------------------- Start Functions PC ------------------------>
 window.addEventListener("scroll", hiddenOnScroll);
 window.addEventListener("resize", hiddenOnScroll);

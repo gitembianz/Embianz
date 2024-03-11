@@ -60,18 +60,18 @@
 		<!---------------------------------------------------------->
 		<!---------------------- Slider Cards ---------------------->
 		@if ($popproducts->isNotEmpty())
-		<!------------------- Section Description ------------------>
-		<section>
-			<div class="section__header container">
-				<h1 class="section__title">Descoperă produsele noastre populare!</h1>
-				<p class="section__text">
-					Explorează colecția noastră de produse și găsește accesoriile perfecte pentru a-ți completa stilul.
-					<a href="{{ url("/storeproducts") }}">Vezi produsele!</a>
-				</p>
-			</div>
-		</section>
-		<!----------------- End Section Description ---------------->
-		
+			<!------------------- Section Description ------------------>
+			<section>
+				<div class="section__header container">
+					<h1 class="section__title">Descoperă produsele noastre populare!</h1>
+					<p class="section__text">
+						Explorează colecția noastră de produse și găsește accesoriile perfecte pentru a-ți completa stilul.
+						<a href="{{ url("/storeproducts") }}">Vezi produsele!</a>
+					</p>
+				</div>
+			</section>
+			<!----------------- End Section Description ---------------->
+
 			<section>
 				<div class="card-slider container new-slider">
 					<div class="card-slider__wrapper new-slider__wrapper" role="list">
@@ -175,17 +175,17 @@
 		@endif
 
 		@if ($newproducts->isNotEmpty())
-		<!------------------- Section Description ------------------>
-		<section>
-			<div class="section__header container">
-				<h1 class="section__title">Descoperă produsele nou aparute!</h1>
-				<p class="section__text">
-					Explorează colecția noastră de produse și găsește accesoriile perfecte pentru a-ți completa stilul.
-				</p>
-			</div>
-		</section>
-		<!----------------- End Section Description ---------------->
-		
+			<!------------------- Section Description ------------------>
+			<section>
+				<div class="section__header container">
+					<h1 class="section__title">Descoperă produsele nou aparute!</h1>
+					<p class="section__text">
+						Explorează colecția noastră de produse și găsește accesoriile perfecte pentru a-ți completa stilul.
+					</p>
+				</div>
+			</section>
+			<!----------------- End Section Description ---------------->
+
 			<section>
 				<div class="card-slider container popular-slider">
 					<div class="card-slider__wrapper popular-slider__wrapper" role="list">
