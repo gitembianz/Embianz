@@ -85,8 +85,28 @@ function filterLive(idOpen, idClose, idList, idContent) {
         body.style.overflow = "auto";
       }
     });
+    function handleKey(event) {
+      if (event.keyCode === 27) {
+        list.classList.remove("active");
+        body.style.overflow = "auto";
+      }
+    }
+
+    document.addEventListener('keydown', handleKey);
   }
 }
+
+function closeWithEsc(id){
+  document.addEventListener('keydown', handleKey);
+  function handleKey(event) {
+    if (event.keyCode === 27) {
+      document.getElementById(id).classList.remove("active");
+      body.style.overflow = "auto";
+    }
+  }
+}
+closeWithEsc("filterList");
+closeWithEsc("sortList");
 
 //<-------------------------- End FilterLive --------------------------->
 //<--------------------------------------------------------------------->
