@@ -144,25 +144,32 @@ function slider(sliderID) {
 //<--------------------------------------------------------------------->
 //<---------------------------- Add to Cart ---------------------------->
 function flyToCart(button) {
+  let isAnimating = false;
+
+    if (isAnimating) {
+      console.log("Animația este deja în desfășurare.");
+      return;
+    }
+    setTimeout(() => {
+      animation();
+    }, 650);
+
+  function animation(){
+    isAnimating = true;
+
+    button.classList.remove('out');
+    button.classList.add('in');
+
+    setTimeout(() => {
+      button.classList.add('out');
+      isAnimating = false;
+    }, 650);
+  }
+
   const shopping_cart = document.getElementById("basketOpen");
   const numberCart = shopping_cart.querySelector(".header__count");
   numberCart.style.scale = 1.5;
-  setTimeout(() => {
-    if (button.classList.contains('in') || button.classList.contains('out')) {
-      console.log("Animația este deja în desfășurare.");
-      return
-    } else {
-      animation();
-    }
-  }, 400)
-  function animation(){
-    button.classList.remove('out')
-    button.classList.add('in')
 
-    setTimeout(() => {
-      button.classList.add('out')
-    }, 650)
-  }
   setTimeout(() => {
     numberCart.style.scale = 1;
   }, 1500);

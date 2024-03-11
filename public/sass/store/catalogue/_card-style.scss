@@ -229,6 +229,9 @@
       color: $primary;
     }
   }
+  &:active {
+    transform: scale(0.8);
+  }
 
 	&.in {
 		& > .card__button--text {
