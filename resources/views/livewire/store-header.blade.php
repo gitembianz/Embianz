@@ -154,7 +154,7 @@
 									@if ($category->media->first())
 										<img class="cart__list--img" src="/{{ $category->media->first()->path }}{{ $category->media->first()->name }}" alt="{{ $category->media->first()->name }}{{ $category->name }}">
 									@else
-										<img class="heart__list--img" src="/images/store/default/default70.webp" alt="something wrong">
+										{{-- <img class="heart__list--img" src="/images/store/default/default70.webp" alt="something wrong"> --}}
 									@endif
 									<h4>{{ $category->name }}</h4>
 								</a>
@@ -172,7 +172,7 @@
 												@if ($subcategory->category->media->first() != null)
 													<img src="/{{ $subcategory->category->media->first()->path }}{{ $subcategory->category->media->first()->name }}" alt="{{ $subcategory->category->media->first()->name }}{{ $subcategory->category->name }}">
 												@else
-													<img src="/images/store/default/default70.webp" alt="something wrong">
+													{{-- <img src="/images/store/default/default70.webp" alt="something wrong"> --}}
 												@endif
 												<h4>{{ $subcategory->category->name }}</h4>
 											</a>
@@ -191,7 +191,7 @@
 														@if ($subsubCategory->category->media->first() != null)
 															<img src="/{{ $subsubCategory->category->media->first()->path }}{{ $subsubCategory->category->media->first()->name }}" alt="{{ $subsubCategory->category->media->first()->name }}{{ $subsubCategory->category->name }}">
 														@else
-															<img src="/images/store/default/default70.webp" alt="something wrong">
+															{{-- <img src="/images/store/default/default70.webp" alt="something wrong"> --}}
 														@endif
 														<h4>{{ $subsubCategory->category->name }}</h4>
 													</a>
@@ -207,7 +207,7 @@
 							@if ($category->media->first() != null)
 								<img src="/{{ $category->media->first()->path }}{{ $category->media->first()->name }}" alt="{{ $category->media->first()->name }} {{ $category->name }}">
 							@else
-								<img src="/images/store/default/default70.webp" alt="something wrong">
+								{{-- <img src="/images/store/default/default70.webp" alt="something wrong"> --}}
 							@endif
 							<h4> {{ $category->name }}</h4>
 						</a>
