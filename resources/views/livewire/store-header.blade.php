@@ -153,10 +153,11 @@
 								<a class="dropmenu__button--link" href="{{ route("products", ["categorySlug" => $category->seo_id !== null && $category->seo_id !== "" ? $category->seo_id : $category->id]) }}">
 									@if ($category->media->first())
 										<img class="cart__list--img" src="/{{ $category->media->first()->path }}{{ $category->media->first()->name }}" alt="{{ $category->media->first()->name }}{{ $category->name }}">
+										<h4>{{ $category->name }}</h4>
 									@else
+										<h4 style="margin-left: 7px">{{ $category->name }}</h4>
 										{{-- <img class="heart__list--img" src="/images/store/default/default70.webp" alt="something wrong"> --}}
 									@endif
-									<h4>{{ $category->name }}</h4>
 								</a>
 								<button class="dropmenu__open" href="#">
 									<svg>
@@ -173,9 +174,9 @@
 													<img src="/{{ $subcategory->category->media->first()->path }}{{ $subcategory->category->media->first()->name }}" alt="{{ $subcategory->category->media->first()->name }}{{ $subcategory->category->name }}">
 													<h4>{{ $subcategory->category->name }}</h4>
 												@else
-													<h4 style="margin-left: 7px">{{ $subcategory->category->name }}</h4>
 													{{-- <img src="/images/store/default/default70.webp" alt="something wrong"> --}}
 												@endif
+												<h4>{{ $subcategory->category->name }}</h4>
 											</a>
 											@if ($subcategory->category->subcategory->count() != 0)
 												<button class="submenu__open" href="#">
