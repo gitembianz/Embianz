@@ -13,4 +13,8 @@ class Subcategory extends Model
   {
     return $this->belongsTo(Category::class, 'category_id');
   }
+  public function category_parrent()
+  {
+    return $this->belongsTo(Category::class, 'parrent_id');
+  }
 }
