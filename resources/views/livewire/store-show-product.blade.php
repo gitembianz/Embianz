@@ -50,14 +50,24 @@
 		<!-------------------- Modal Product ------------------>
 		<div class="product-modal">
 			<div class="product-modal__content"></div>
-			<span class="product-modal__close">
+			<button class="product-modal__close">
 				<svg>
 					<polyline points="4 14 10 14 10 20"></polyline>
 					<polyline points="20 10 14 10 14 4"></polyline>
 					<line x1="14" y1="10" x2="21" y2="3"></line>
 					<line x1="3" y1="21" x2="10" y2="14"></line>
 				</svg>
-			</span>
+			</button>
+			<button class="product-modal__prev">
+				<svg>
+					<polyline points="15 18 9 12 15 6"></polyline>
+				</svg>
+			</button>
+			<button class="product-modal__next">
+				<svg>
+					<polyline points="9 18 15 12 9 6"></polyline>
+				</svg>
+			</button>
 		</div>
 		<!------------------ End Modal Product ---------------->
 		<!------------------------------------------------------>

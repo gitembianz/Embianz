@@ -9,6 +9,8 @@ function sliderProduct(sliderId, modalId) {
   const nextButton = slider.querySelector(sliderId + "__next");
   const modal = document.querySelector(modalId);
   const modalContent = modal.querySelector(modalId + "__content");
+  const modalPrev = modal.querySelector(modalId + "__prev");
+  const modalNext = modal.querySelector(modalId + "__next");
   const closeButton = modal.querySelector(modalId + "__close");
   const body = document.querySelector("body");
 
@@ -26,11 +28,13 @@ function sliderProduct(sliderId, modalId) {
     !nextButton ||
     !modal ||
     !modalContent ||
+    !modalPrev ||
+    !modalNext ||
     !closeButton ||
     !body
   ) {
     console.log(
-      "Elementele necesare pentru slider product sau modal nu au fost găsite.",
+      "Elementele necesare pentru slider product sau modal nu au fost găsite."
     );
     return;
   }
@@ -42,28 +46,21 @@ function sliderProduct(sliderId, modalId) {
       if (newIndex >= slides.length) {
         newIndex = slides.length - 1;
         nextButton.classList.add("disabled");
+        modalNext.classList.add("disabled");
       }
       prevButton.classList.remove("disabled");
+      modalPrev.classList.remove("disabled");
     } else {
       newIndex = currentIndex - 1;
       if (newIndex < 0) {
         newIndex = 0;
         prevButton.classList.add("disabled");
+        modalPrev.classList.add("disabled");
       }
       nextButton.classList.remove("disabled");
+      modalNext.classList.remove("disabled");
     }
     currentIndex = newIndex;
-
-    if (currentIndex === slides.length - 1) {
-      nextButton.classList.add("disabled");
-    } else {
-      nextButton.classList.remove("disabled");
-    }
-    if (currentIndex === 0) {
-      prevButton.classList.add("disabled");
-    } else {
-      prevButton.classList.remove("disabled");
-    }
 
     updatePagination();
     updateTransform(wrapper);
@@ -82,31 +79,48 @@ function sliderProduct(sliderId, modalId) {
     navigation("prev");
   });
   prevButton.classList.add("disabled");
+  modalPrev.classList.add("disabled");
+
+  modalNext.addEventListener("click", () => {
+    navigation("next");
+    updateModalImage();
+  });
+
+  modalPrev.addEventListener("click", () => {
+    navigation("prev");
+    updateModalImage();
+  });
 
   function updatePagination() {
+    // Actualizarea butoanelor pentru slider
+    if (currentIndex === 0) {
+      prevButton.classList.add("disabled");
+      modalPrev.classList.add("disabled");
+    } else {
+      prevButton.classList.remove("disabled");
+      modalPrev.classList.remove("disabled");
+    }
+
+    if (currentIndex === slides.length - 1) {
+      nextButton.classList.add("disabled");
+      modalNext.classList.add("disabled");
+    } else {
+      nextButton.classList.remove("disabled");
+      modalNext.classList.remove("disabled");
+    }
+
+    // Actualizarea punctelor de paginare
     const thumbnails = Array.from(pagination.children);
     thumbnails.forEach((thumbnail, index) => {
       thumbnail.classList.toggle("active", index === currentIndex);
       if (index === currentIndex) {
-        thumbnail.focus(); // Focalizăm punctul de paginare activ
-        // thumbnail.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
+        thumbnail.focus();
         pagination.scrollTo({
           left: thumbnail.offsetLeft - (pagination.offsetWidth - thumbnail.offsetWidth) / 2,
           behavior: "smooth"
         });
       }
     });
-    if (currentIndex === 0) {
-      prevButton.classList.add("disabled");
-    } else {
-      prevButton.classList.remove("disabled");
-    }
-
-    if (currentIndex === slides.length - 1) {
-      nextButton.classList.add("disabled");
-    } else {
-      nextButton.classList.remove("disabled");
-    }
   }
 
   function updateTransform(element) {
@@ -115,7 +129,7 @@ function sliderProduct(sliderId, modalId) {
 
   function createThumb(slide, index) {
     const existingThumbnail = pagination.querySelector(
-      `.thumbnail[data-index="${index}"]`,
+      `.thumbnail[data-index="${index}"]`
     );
 
     if (existingThumbnail) {
@@ -136,8 +150,7 @@ function sliderProduct(sliderId, modalId) {
         currentIndex = index;
         updateTransform(wrapper);
         updatePagination();
-        // thumbnail.scrollTo({ left: scrollLeft, behavior: "smooth", block: "nearest", inline: "center" });
-    });
+      });
 
       pagination.appendChild(thumbnail);
     } else {
@@ -215,11 +228,10 @@ function sliderProduct(sliderId, modalId) {
             }
           }
 
-          document.addEventListener('keydown', handleKeyPress);
-
+          document.addEventListener("keydown", handleKeyPress);
         } else {
           console.error(
-            "Elementul <img> nu a fost găsit în cadrul slide-ului.",
+            "Elementul <img> nu a fost găsit în cadrul slide-ului."
           );
         }
       }
@@ -273,7 +285,29 @@ function sliderProduct(sliderId, modalId) {
   }
 
   window.addEventListener("load", () => updatePagination());
+
+  function updateModalImage() {
+    // Actualizarea imaginii din modal
+    const imgElement = slides[currentIndex].querySelector("img");
+    if (imgElement) {
+      const dataSrcValue = imgElement.getAttribute("data-img-src");
+      const dataAltValue = imgElement.getAttribute("data-name-alte");
+      const newImgElement = document.createElement("img");
+
+      newImgElement.src = dataSrcValue;
+      newImgElement.alt = dataAltValue;
+      modalContent.innerHTML = "";
+      modalContent.appendChild(newImgElement);
+    } else {
+      console.error(
+        "Elementul <img> nu a fost găsit în cadrul slide-ului."
+      );
+    }
+  }
 }
+
+
+
 //<----------------------- End Modal Product --------------------------->
 //<--------------------------------------------------------------------->
 //<--------------------------- Related-Slider -------------------------->

@@ -221,8 +221,40 @@
   align-items: center;
   justify-content: center;
   border-radius: 50%;
+  border: none;
 
   & > svg {
     stroke: $primary;
   }
+}
+
+.product-modal__prev,
+  .product-modal__next{
+  display: flex;
+  position: absolute;
+  top: 50%;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  background-color: $lightBlack;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transform: translateY(-50%);
+  border: none;
+
+  & > svg {
+    stroke: $primary;
+  }
+
+  &.disabled {
+    opacity: 0.5;
+  }
+}
+
+.product-modal__prev{
+  left: 20px;
+}
+.product-modal__next{
+  right: 20px;
 }
