@@ -5,6 +5,8 @@ function sliderProduct(sliderId, modalId) {
   const wrapper = slider.querySelector(sliderId + "__wrapper");
   const slides = slider.querySelectorAll(sliderId + "__slide");
   const pagination = slider.querySelector(sliderId + "__pagination");
+  const paginationLeft = slider.querySelector(sliderId + "__pagination--prev");
+  const paginationRight = slider.querySelector(sliderId + "__pagination--next");
   const prevButton = slider.querySelector(sliderId + "__prev");
   const nextButton = slider.querySelector(sliderId + "__next");
   const modal = document.querySelector(modalId);
@@ -24,6 +26,8 @@ function sliderProduct(sliderId, modalId) {
     !wrapper ||
     !slides ||
     !pagination ||
+    !paginationLeft ||
+    !paginationRight ||
     !prevButton ||
     !nextButton ||
     !modal ||
@@ -90,6 +94,41 @@ function sliderProduct(sliderId, modalId) {
     navigation("prev");
     updateModalImage();
   });
+
+  paginationLeft.addEventListener("click", () => {
+    pagination.scrollTo({
+      left: pagination.scrollLeft - 100,
+      behavior: "smooth"
+    });
+    updatePaginationButtons();
+  });
+
+  paginationRight.addEventListener("click", () => {
+    pagination.scrollTo({
+      left: pagination.scrollLeft + 100,
+      behavior: "smooth"
+    });
+    updatePaginationButtons();
+  });
+
+  pagination.addEventListener("scroll", () => {
+    updatePaginationButtons();
+  });
+
+  function updatePaginationButtons() {
+    if (pagination.scrollLeft === 0) {
+      paginationLeft.classList.add("disabled");
+      paginationRight.classList.remove("disabled");
+    } else if (pagination.scrollLeft >= (pagination.scrollWidth - pagination.clientWidth)) {
+      paginationLeft.classList.remove("disabled");
+      paginationRight.classList.add("disabled");
+    } else {
+      paginationLeft.classList.remove("disabled");
+      paginationRight.classList.remove("disabled");
+    }
+  }
+
+  updatePaginationButtons();
 
   function updatePagination() {
     // Actualizarea butoanelor pentru slider
