@@ -48,11 +48,9 @@
   align-items: center;
   gap: 20px;
   border-radius: 10px;
-  margin-top: 10px;
-
   overflow-x: auto;
   padding-bottom: 10px;
-  scrollbar-width: auto;
+  scrollbar-width: thin;
   scrollbar-color: $lightBlack transparent;
   cursor: pointer;
 
@@ -78,6 +76,7 @@
     justify-content: center;
     width: 100%;
     gap: 0;
+    margin: 0;
   }
 
   & > img,
@@ -229,7 +228,7 @@
 }
 
 .product-modal__prev,
-  .product-modal__next{
+.product-modal__next{
   display: flex;
   position: absolute;
   top: 50%;
@@ -257,4 +256,40 @@
 }
 .product-modal__next{
   right: 20px;
+}
+
+.product-slider__pagination--button{
+    display: flex;
+    cursor: pointer;
+    width: auto;
+    height: calc(100% - 20px);
+    background-color: #333;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    border: none;
+    z-index: 52;
+
+    @media (max-width: map-get($grid-breakpoints, md)) {
+      display: none;
+    }
+
+  & > svg {
+    stroke: $primary;
+  }
+
+  &.disabled {
+    opacity: 0.5;
+  }
+}
+
+
+.product-slider__pagination--navigation{
+  display: grid;
+  justify-content: space-between;
+  align-items: start;
+  gap: 10px;
+  grid-template-columns: 25px 1fr 25px;
+  margin-top: 10px;
+  justify-items: center;
 }
