@@ -64,14 +64,14 @@ class StoreHeader extends Component
         'subcategory' => function ($query) {
           $query->select('parrent_id', 'category_id')->with([
             'category' => function ($query) {
-              $query->select('id', 'name', 'seo_id')->where('store_tab', 1)->where('active', 1)->with([
+              $query->select('id', 'name', 'seo_id', 'sequence')->where('store_tab', 1)->where('active', 1)->with([
                 'media' => function ($query) {
                   $query->select('path', 'name')->where('type', 'min');
                 },
                 'subcategory' => function ($query) {
                   $query->select('parrent_id', 'category_id')->with([
                     'category' => function ($query) {
-                      $query->select('id', 'name', 'seo_id')->where('store_tab', 1)->where('active', 1)->with([
+                      $query->select('id', 'name', 'seo_id', 'sequence')->where('store_tab', 1)->where('active', 1)->with([
                         'media' => function ($query) {
                           $query->select('path', 'name')->where('type', 'min');
                         }
