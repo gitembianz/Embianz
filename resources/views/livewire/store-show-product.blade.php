@@ -95,7 +95,7 @@
 	</section>
 	<!---------------------------------------------------------->
 	<!------------------- Section Description ------------------>
-	@if ($product->related_product()->count() > 0)
+	@if ($product->related_product->filter(fn($item) => !is_null($item['product']))->isNotEmpty())
 		<section>
 			<div class="section__header container">
 				<h1 class="section__title">Descoperă și alte opțiuni similare</h1>
