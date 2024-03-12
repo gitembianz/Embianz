@@ -14,6 +14,7 @@ function sliderProduct(sliderId, modalId) {
   const modalPrev = modal.querySelector(modalId + "__prev");
   const modalNext = modal.querySelector(modalId + "__next");
   const closeButton = modal.querySelector(modalId + "__close");
+  const modalCount = modal.querySelector(modalId + "__count");
   const body = document.querySelector("body");
 
   let currentIndex = 0;
@@ -34,6 +35,7 @@ function sliderProduct(sliderId, modalId) {
     !modalContent ||
     !modalPrev ||
     !modalNext ||
+    !modalCount ||
     !closeButton ||
     !body
   ) {
@@ -68,6 +70,7 @@ function sliderProduct(sliderId, modalId) {
 
     updatePagination();
     updateTransform(wrapper);
+    modalCount.textContent = `${currentIndex + 1} / ${slides.length}`;
   }
 
   closeButton.addEventListener("click", () => {
@@ -189,6 +192,7 @@ function sliderProduct(sliderId, modalId) {
         currentIndex = index;
         updateTransform(wrapper);
         updatePagination();
+        modalCount.textContent = `${currentIndex + 1} / ${slides.length}`;
       });
 
       pagination.appendChild(thumbnail);
@@ -325,6 +329,7 @@ function sliderProduct(sliderId, modalId) {
 
   window.addEventListener("load", () => updatePagination());
 
+  modalCount.textContent = `${currentIndex + 1} / ${slides.length}`;
   function updateModalImage() {
     // Actualizarea imaginii din modal
     const imgElement = slides[currentIndex].querySelector("img");
@@ -337,6 +342,8 @@ function sliderProduct(sliderId, modalId) {
       newImgElement.alt = dataAltValue;
       modalContent.innerHTML = "";
       modalContent.appendChild(newImgElement);
+
+      modalCount.textContent = `${currentIndex + 1} / ${slides.length}`;
     } else {
       console.error(
         "Elementul <img> nu a fost găsit în cadrul slide-ului."
