@@ -14,7 +14,27 @@
   </a>
   <!-------------------If Category is appear------------------>
   @if ($category)
-   <a class="breadcrumbs__link">{{ $category_details->name }}</a>
+   @if ($category->parrent->count() != 0)
+    @if ($category->parrent->first()->category_parrent->parrent->count() != 0)
+     <a class="breadcrumbs__link"
+      href="{{ route('products', ['categorySlug' => $category->parrent->first()->category_parrent->parrent->first()->category_parrent->seo_id !== null && $category->parrent->first()->category_parrent->parrent->first()->category_parrent->seo_id !== '' ? $category->parrent->first()->category_parrent->parrent->first()->category_parrent->seo_id : $category->parrent->first()->category_parrent->parrent->first()->category_parrent->id]) }}">
+      {{ $category->parrent->first()->category_parrent->parrent->first()->category_parrent->name }}
+     </a>
+    @endif
+    <a class="breadcrumbs__link"
+     href="{{ route('products', ['categorySlug' => $category->parrent->first()->category_parrent->seo_id !== null && $category->parrent->first()->category_parrent->seo_id !== '' ? $category->parrent->first()->category_parrent->seo_id : $category->parrent->first()->category_parrent->id]) }}">
+     {{ $category->parrent->first()->category_parrent->name }}
+    </a>
+    <a class="breadcrumbs__link"
+     href="{{ route('products', ['categorySlug' => $category->seo_id !== null && $category->seo_id !== '' ? $category->seo_id : $category->id]) }}">
+     {{ $category->name }}
+    </a>
+   @else
+    <a class="breadcrumbs__link"
+     href="{{ route('products', ['categorySlug' => $category->seo_id !== null && $category->seo_id !== '' ? $category->seo_id : $category->id]) }}">
+     {{ $category->name }}
+    </a>
+   @endif
   @endif
   <!-----------------End If Category is appear---------------->
  </div>
@@ -23,9 +43,9 @@
  <!----------------------Categorie + detalii--------------------->
  @if ($category)
   <section class="section__header container">
-   <h1 class="section__title">{{ $category_details->name }}</h1>
+   <h1 class="section__title">{{ $category->name }}</h1>
    <p class="section__text">
-    {!! $category_details->long_description !!}
+    {!! $category->long_description !!}
    </p>
   </section>
  @endif

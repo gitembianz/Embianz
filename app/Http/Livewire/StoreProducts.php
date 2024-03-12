@@ -56,10 +56,25 @@ class StoreProducts extends Component
     $this->specification = Specs::get();
     if ($category) {
       $decodedCategory = json_decode(htmlspecialchars_decode($category), true);
+      $this->category = Category::select('id', 'name', 'long_description')->with(['parrent' => function ($query) {
+        $query->select('parrent_id', 'category_id')->with([
+          'category_parrent' => function ($query) {
+            $query->select('id', 'name', 'seo_id')->where('store_tab', 1)->where('active', 1)->with([
 
-      $this->category = $decodedCategory['id'];
+              'parrent' => function ($query) {
+                $query->select('parrent_id', 'category_id')->with([
+                  'category_parrent' => function ($query) {
+                    $query->select('id', 'name', 'seo_id')->where('store_tab', 1);
+                  }
+                ]);
+              }
+            ]);
+          }
+        ]);
+      }])->find($decodedCategory['id']);
     }
   }
+
 
   // start filter-spec function
   public function getFilterValuesProperty()
@@ -84,7 +99,7 @@ class StoreProducts extends Component
 
     if ($this->category) {
       $query->whereHas('product.product_categories', function ($query) {
-        $query->where('category_id', $this->category);
+        $query->where('category_id', $this->category->id);
       });
     }
 
@@ -162,9 +177,8 @@ class StoreProducts extends Component
         },
       ]);
     if ($this->category) {
-      $this->category_details = Category::find($this->category, ['name', 'long_description']);
       $query->whereHas('product_categories.category', function ($query) {
-        $query->where('id', $this->category);
+        $query->where('id', $this->category->id);
       });
     }
     if ($this->specfilter && !empty($this->selectedSpecValues)) {
