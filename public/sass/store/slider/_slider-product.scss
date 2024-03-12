@@ -293,3 +293,14 @@
   margin-top: 10px;
   justify-items: center;
 }
+.product-modal__count{
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-size: $textSize;
+  font-weight: $lightWeight;
+  color: $background;
+  padding: 5px 12px;
+  border-radius: 20px;
+  background-color: $lightBlack;
+}

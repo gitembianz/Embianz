@@ -79,6 +79,7 @@
 					<polyline points="9 18 15 12 9 6"></polyline>
 				</svg>
 			</button>
+			<span class="product-modal__count"></span>
 		</div>
 		<!------------------ End Modal Product ---------------->
 		<!------------------------------------------------------>
