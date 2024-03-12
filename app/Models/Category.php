@@ -29,6 +29,34 @@ class Category extends Model
     return $this->morphToMany(Media::class, 'mediable', 'item_media');
   }
 
+  public function getCategoryBreadcrumbs()
+  {
+    $breadcrumbs = collect();
+
+    $currentCategory = $this;
+
+    while ($currentCategory) {
+      $breadcrumbs->prepend([
+        'name' => $currentCategory->name,
+        'slug' => $currentCategory->seo_id ?? $currentCategory->id,
+      ]);
+
+      if ($currentCategory->parrent->isNotEmpty()) {
+        $parrentCategory = $currentCategory->parrent->first()->category_parrent;
+
+        if (!$parrentCategory) {
+          break;
+        }
+
+        $currentCategory = $parrentCategory;
+      } else {
+        break;
+      }
+    }
+
+    return $breadcrumbs->toArray();
+  }
+
   protected $fillable = [
     'name',
     'parrent',
