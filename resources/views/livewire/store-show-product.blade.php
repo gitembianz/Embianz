@@ -1,6 +1,4 @@
 <div id="store-show-product">
-	{{-- <script rel="preload" src="/script/store/product.js" as="script"></script> --}}
-
 	<div class="breadcrumbs container">
 		<a class="breadcrumbs__link" href="{{ url("/") }}">
 			Acasa
@@ -8,6 +6,13 @@
 		<a class="breadcrumbs__link" href="{{ url("/storeproducts") }}">
 			Produse
 		</a>
+		@if ($product->product_categories->isNotEmpty())
+    @foreach ($product->getCategoryHierarchy() as $breadcrumb)
+        <a class="breadcrumbs__link" href="{{ route('products', ['categorySlug' => $breadcrumb['slug']]) }}">
+            {{ $breadcrumb['name'] }}
+        </a>
+    @endforeach
+@endif
 		<span class="breadcrumbs__link">{{ $product->name }}</span>
 	</div>
 	<section class="product container">
@@ -208,7 +213,6 @@
 		</section>
 	@endif
 
-	<script></script>
 	<!-------------------- End Slider Cards -------------------->
 	<!---------------------------------------------------------->
 	<!--------------------- support button --------------------->

@@ -48,6 +48,50 @@ class Product extends Model
     return $this->morphToMany(Media::class, 'mediable', 'item_media');
   }
 
+  public function getCategoryHierarchy()
+  {
+    $categories = $this->product_categories->pluck('category')->unique();
+
+    if ($categories->isEmpty()) {
+      return [];
+    }
+
+    $longestHierarchy = collect();
+
+    foreach ($categories as $category) {
+      $currentHierarchy = collect([
+        [
+          'name' => $category->name,
+          'slug' => $category->seo_id ?? $category->id,
+        ],
+      ]);
+
+      $currentCategory = $category;
+
+      while ($currentCategory->parrent->isNotEmpty()) {
+        $parrentCategory = $currentCategory->parrent->first()->category_parrent;
+
+        if (!$parrentCategory) {
+          break;
+        }
+
+        $currentHierarchy->push([
+          'name' => $parrentCategory->name,
+          'slug' => $parrentCategory->seo_id ?? $parrentCategory->id,
+        ]);
+
+        $currentCategory = $parrentCategory;
+      }
+
+      if ($currentHierarchy->count() > $longestHierarchy->count()) {
+        $longestHierarchy = $currentHierarchy;
+      }
+    }
+
+    return $longestHierarchy->reverse()->toArray();
+  }
+
+
   protected $fillable = [
     'name',
     'sku',
@@ -79,6 +123,6 @@ class Product extends Model
   public static function name($search)
   {
     return empty($search) ? static::query()
-      : static::query()->where('name', 'like', '%' . $search . '%');
+      : static::query()->where('name', 'like', '%' . $search . '%')->orWhere('ean', 'like', '%' . $search . '%')->orWhere('sku', 'like', '%' . $search . '%');
   }
 }

@@ -36,6 +36,10 @@ class StoreShowProduct extends Component
     $this->quantity = app('global_low_stock');
   }
 
+
+
+
+
   public function getProductProperty()
   {
     return Product::select('id', 'name')
