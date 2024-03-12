@@ -39,6 +39,12 @@ body {
     border-radius: 23px;
     border: 2px solid $background;
   }
+  &::-moz-scrollbar-button:decrement,
+  &::-moz-scrollbar-button:increment,
+  &::-webkit-scrollbar-button:decrement,
+  &::-webkit-scrollbar-button:increment {
+  width: 0px !important;
+  }
 }
 
 svg {
