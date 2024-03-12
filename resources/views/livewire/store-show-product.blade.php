@@ -41,9 +41,20 @@
 					</button>
 				</div>
 			</div>
-
-			<div class="product-slider__pagination"></div>
-
+			<div class="product-slider__pagination--navigation">
+				<button class="product-slider__pagination--button product-slider__pagination--prev">
+					<svg>
+						<polyline points="15 18 9 12 15 6"></polyline>
+					</svg>
+				</button>
+				<div class="product-slider__pagination">
+				</div>
+				<button class="product-slider__pagination--button product-slider__pagination--next">
+					<svg>
+						<polyline points="9 18 15 12 9 6"></polyline>
+					</svg>
+				</button>
+			</div>
 		</div>
 		<!------------------ End Slider Product ---------------->
 		<!------------------------------------------------------>
@@ -68,6 +79,7 @@
 					<polyline points="9 18 15 12 9 6"></polyline>
 				</svg>
 			</button>
+			<span class="product-modal__count"></span>
 		</div>
 		<!------------------ End Modal Product ---------------->
 		<!------------------------------------------------------>

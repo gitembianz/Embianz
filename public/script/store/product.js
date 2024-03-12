@@ -5,6 +5,8 @@ function sliderProduct(sliderId, modalId) {
   const wrapper = slider.querySelector(sliderId + "__wrapper");
   const slides = slider.querySelectorAll(sliderId + "__slide");
   const pagination = slider.querySelector(sliderId + "__pagination");
+  const paginationLeft = slider.querySelector(sliderId + "__pagination--prev");
+  const paginationRight = slider.querySelector(sliderId + "__pagination--next");
   const prevButton = slider.querySelector(sliderId + "__prev");
   const nextButton = slider.querySelector(sliderId + "__next");
   const modal = document.querySelector(modalId);
@@ -12,6 +14,7 @@ function sliderProduct(sliderId, modalId) {
   const modalPrev = modal.querySelector(modalId + "__prev");
   const modalNext = modal.querySelector(modalId + "__next");
   const closeButton = modal.querySelector(modalId + "__close");
+  const modalCount = modal.querySelector(modalId + "__count");
   const body = document.querySelector("body");
 
   let currentIndex = 0;
@@ -24,12 +27,15 @@ function sliderProduct(sliderId, modalId) {
     !wrapper ||
     !slides ||
     !pagination ||
+    !paginationLeft ||
+    !paginationRight ||
     !prevButton ||
     !nextButton ||
     !modal ||
     !modalContent ||
     !modalPrev ||
     !modalNext ||
+    !modalCount ||
     !closeButton ||
     !body
   ) {
@@ -64,6 +70,7 @@ function sliderProduct(sliderId, modalId) {
 
     updatePagination();
     updateTransform(wrapper);
+    modalCount.textContent = `${currentIndex + 1} / ${slides.length}`;
   }
 
   closeButton.addEventListener("click", () => {
@@ -90,6 +97,41 @@ function sliderProduct(sliderId, modalId) {
     navigation("prev");
     updateModalImage();
   });
+
+  paginationLeft.addEventListener("click", () => {
+    pagination.scrollTo({
+      left: pagination.scrollLeft - 100,
+      behavior: "smooth"
+    });
+    updatePaginationButtons();
+  });
+
+  paginationRight.addEventListener("click", () => {
+    pagination.scrollTo({
+      left: pagination.scrollLeft + 100,
+      behavior: "smooth"
+    });
+    updatePaginationButtons();
+  });
+
+  pagination.addEventListener("scroll", () => {
+    updatePaginationButtons();
+  });
+
+  function updatePaginationButtons() {
+    if (pagination.scrollLeft === 0) {
+      paginationLeft.classList.add("disabled");
+      paginationRight.classList.remove("disabled");
+    } else if (pagination.scrollLeft >= (pagination.scrollWidth - pagination.clientWidth)) {
+      paginationLeft.classList.remove("disabled");
+      paginationRight.classList.add("disabled");
+    } else {
+      paginationLeft.classList.remove("disabled");
+      paginationRight.classList.remove("disabled");
+    }
+  }
+
+  updatePaginationButtons();
 
   function updatePagination() {
     // Actualizarea butoanelor pentru slider
@@ -150,6 +192,7 @@ function sliderProduct(sliderId, modalId) {
         currentIndex = index;
         updateTransform(wrapper);
         updatePagination();
+        modalCount.textContent = `${currentIndex + 1} / ${slides.length}`;
       });
 
       pagination.appendChild(thumbnail);
@@ -286,6 +329,7 @@ function sliderProduct(sliderId, modalId) {
 
   window.addEventListener("load", () => updatePagination());
 
+  modalCount.textContent = `${currentIndex + 1} / ${slides.length}`;
   function updateModalImage() {
     // Actualizarea imaginii din modal
     const imgElement = slides[currentIndex].querySelector("img");
@@ -298,6 +342,8 @@ function sliderProduct(sliderId, modalId) {
       newImgElement.alt = dataAltValue;
       modalContent.innerHTML = "";
       modalContent.appendChild(newImgElement);
+
+      modalCount.textContent = `${currentIndex + 1} / ${slides.length}`;
     } else {
       console.error(
         "Elementul <img> nu a fost găsit în cadrul slide-ului."
