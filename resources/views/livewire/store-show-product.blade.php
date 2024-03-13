@@ -23,12 +23,12 @@
 			Produse
 		</a>
 		@if ($product->product_categories->isNotEmpty())
-    @foreach ($product->getCategoryHierarchy() as $breadcrumb)
-        <a class="breadcrumbs__link" href="{{ route('products', ['categorySlug' => $breadcrumb['slug']]) }}">
-            {{ $breadcrumb['name'] }}
-        </a>
-    @endforeach
-@endif
+			@foreach ($product->getCategoryHierarchy() as $breadcrumb)
+				<a class="breadcrumbs__link" href="{{ route("products", ["categorySlug" => $breadcrumb["slug"]]) }}">
+					{{ $breadcrumb["name"] }}
+				</a>
+			@endforeach
+		@endif
 		<span class="breadcrumbs__link">{{ $product->name }}</span>
 	</div>
 	<section class="product container">
@@ -40,12 +40,12 @@
 					@if ($product->media->count() != 0)
 						@foreach ($product->media->where("type", "full") as $media)
 							<div class="product-slider__slide">
-								<img src="/{{ $media->path }}{{ $media->name }}" alt="{{ $media->name }}{{ $product->name }}" data-img-src="/{{ $product->media->where("type", "original")->where("sequence", $media->sequence)->first()->path }}{{ $product->media->where("type", "original")->where("sequence", $media->sequence)->first()->name }}">
+								<img src="/{{ $media->path }}{{ $media->name }}" data-name-alt="{{ $media->name }}{{ $product->name }}" alt="{{ $media->name }}{{ $product->name }}" data-img-src="/{{ $product->media->where("type", "original")->where("sequence", $media->sequence)->first()->path }}{{ $product->media->where("type", "original")->where("sequence", $media->sequence)->first()->name }}">
 							</div>
 						@endforeach
 					@else
 						<div class="product-slider__slide">
-							<img src="/images/store/default/default.webp" data-img-src="/images/store/default/default.webp" alt="something wrong">
+							<img src="/images/store/default/default.webp" data-img-src="/images/store/default/default.webp" alt="something wrong" data-name-alt="something wrong">
 						</div>
 					@endif
 				</div>
@@ -111,7 +111,7 @@
 	</section>
 	<!---------------------------------------------------------->
 	<!------------------- Section Description ------------------>
-	@if ($product->related_product->filter(fn($item) => !is_null($item['product']))->isNotEmpty())
+	@if ($product->related_product->filter(fn($item) => !is_null($item["product"]))->isNotEmpty())
 		<section>
 			<div class="section__header container">
 				<h1 class="section__title">Descoperă și alte opțiuni similare</h1>

@@ -253,7 +253,7 @@ function sliderProduct(sliderId, modalId) {
         const imgElement = slide.querySelector("img");
         if (imgElement) {
           const dataSrcValue = imgElement.getAttribute("data-img-src");
-          const dataAltValue = imgElement.getAttribute("data-name-alte");
+          const dataAltValue = imgElement.getAttribute("data-name-alt");
           const newImgElement = document.createElement("img");
 
           newImgElement.src = dataSrcValue;
