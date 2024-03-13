@@ -50,7 +50,7 @@ const emailValidation = [
   },
   {
     validation: (value) =>
-      /^[a-zA-Z0-9._+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value),
+    /^[a-zA-Z0-9._+-ăâîșțĂÂÎȘȚ]+@[a-zA-Z0-9.-]+(\.[a-zA-Z]{2,})+$/.test(value),
     message: "Te rog introdu o adresă de email validă.",
   },
   {
