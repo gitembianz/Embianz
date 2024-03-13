@@ -1,20 +1,5 @@
 <div id="store-show-product">
-	 @if ($back)
-  <!------------------------------------------------------>
-  <!-------------------- Error Message ------------------->
-  <section>
-   <div class="checkout container">
-    <div class="section__header container">
-     <h1 class="section__title">Ups, a aparut o eroare!</h1>
-     <a class="section__text" href="{{ url('/') }}">
-      Va rugam sa va intoarceti la pagina initiala
-     </a>
-    </div>
-   </div>
-  </section>
-  <!------------------ End Error Message ----------------->
-  <!------------------------------------------------------>
- @else
+
 	<div class="breadcrumbs container">
 		<a class="breadcrumbs__link" href="{{ url("/") }}">
 			Acasa
@@ -236,5 +221,4 @@
 	<!------------------- End support button ------------------->
 	<!---------------------------------------------------------->
 	<script src="/script/store/product.js" async defer></script>
-@endif
 </div>
