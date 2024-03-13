@@ -12,6 +12,8 @@ class StoreShowProduct extends Component
   public $productId;
   public $quantity;
   public $session_id;
+  public $back = false;
+
 
   public function render()
   {
@@ -34,6 +36,9 @@ class StoreShowProduct extends Component
     $this->productId = $productId;
     $this->session_id = $this->getSessionId();
     $this->quantity = app('global_low_stock');
+    if (!$this->product->active) {
+      $this->back = true;
+    }
   }
 
 

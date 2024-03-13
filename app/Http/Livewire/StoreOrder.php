@@ -880,7 +880,7 @@ class StoreOrder extends Component
             ],
           ],
           'mode' => 'payment',
-          'customer_email' => $account->email,
+          'customer_email' => $order->account->email,
           'success_url' => route('payment.success', [], true) . "?session_id={CHECKOUT_SESSION_ID}",
           'cancel_url' => route('payment.cancel', [], true),
         ]);

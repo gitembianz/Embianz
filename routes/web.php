@@ -149,5 +149,5 @@
   route::get('/confirm', [StoreController::class, 'confirm'])->name('confirm');
   route::get('/terms', [StoreController::class, 'terms'])->name('terms');
 
-  Route::get('/success', [StoreController::class, 'success'])->name('payment.success');
-  Route::get('/cancel', [StoreController::class, 'cancel'])->name('payment.cancel');
+  Route::post('/success', [StoreController::class, 'success'])->name('payment.success');
+  Route::post('/cancel', [StoreController::class, 'cancel'])->name('payment.cancel');
