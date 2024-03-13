@@ -87,7 +87,7 @@ class StoreOrder extends Component
   public $payment;
   protected $listeners = [
     'nocard' => 'mount',
-    'cartUpdated' => 'mount',
+    'cartUpdated' => 'mount'
   ];
 
   private function getSessionId()
@@ -454,7 +454,30 @@ class StoreOrder extends Component
 
   public function mount()
   {
+
     $this->session_id = $this->getSessionId();
+    if (session()->has('paymentsucces')) {
+      if ($this->cart->voucher && $this->cart->voucher->single_use) {
+        Voucher::where('id', $this->cart->voucher_id)->update([
+          'status_id' => app('global_voucher_closed')
+        ]);
+      }
+      $this->cart->update([
+        'status_id' => app('global_cart_closed')
+      ]);
+      $order = Order::where('session_id', $this->session_id)->where('status_id', app('global_order_check_payment'))->first();
+      $order->status_id = app('global_order_processing');
+      $this->orderNumber = $order->order_number;
+      $order->save();
+      foreach ($order->orders as $item) {
+        $item->product->quantity -= $item->quantity;
+        $item->product->save();
+      }
+      $this->step = 3;
+      session()->flash('success');
+
+      session()->forget('paymentsucces');
+    }
 
     if ($this->cartItems->isEmpty() || !$this->cart) {
       $this->back = true;
@@ -881,9 +904,10 @@ class StoreOrder extends Component
           ],
           'mode' => 'payment',
           'customer_email' => $order->account->email,
-          'success_url' => route('payment.success', [], true) . "?session_id={CHECKOUT_SESSION_ID}",
-          'cancel_url' => route('payment.cancel', [], true),
+          'success_url' => route('payment_success', [], true) . "?session_id={$this->session_id}",
+          'cancel_url' => route('payment_cancel', [], true),
         ]);
+        $this->orderNumber = $order->order_number;
         return redirect()->to($session->url);
       }
     }
