@@ -302,27 +302,33 @@
 				let addToWishButton = card.querySelector('.favorite__btn');
 
 				addToCartButton.addEventListener('click', function() {
-					let cardName = card.querySelector('.card-title').innerText;
-					let cardPrice = card.querySelector('.card-price').innerText;
+					let cardName = card.querySelector('.card-title').innerText.trim();
+					let cardPrice = card.querySelector('.card-price').innerText.trim();
 
-					dataLayer.push({
-						'event': 'adaugareInCos',
-						'cardName': cardName,
-						'cardPrice': cardPrice
-					});
+					if (typeof dataLayer !== 'undefined' && cardName && cardPrice) {
+						dataLayer.push({
+							'event': 'adaugareInCos',
+							'cardName': cardName,
+							'cardPrice': cardPrice
+						});
+					}
 				});
-				addToWishButton.addEventListener('click', function() {
-					let cardName = card.querySelector('.card-title').innerText;
-					let cardPrice = card.querySelector('.card-price').innerText;
 
-					dataLayer.push({
-						'event': 'adaugareInFavorite',
-						'cardName': cardName,
-						'cardPrice': cardPrice
-					});
+				addToWishButton.addEventListener('click', function() {
+					let cardName = card.querySelector('.card-title').innerText.trim();
+					let cardPrice = card.querySelector('.card-price').innerText.trim();
+
+					if (typeof dataLayer !== 'undefined' && cardName && cardPrice) {
+						dataLayer.push({
+							'event': 'adaugareInFavorite',
+							'cardName': cardName,
+							'cardPrice': cardPrice
+						});
+					}
 				});
 			});
 		</script>
+
 		<!---------------------------------------------------------->
 		<!--------------------- support button --------------------->
 		<x-help-button />
