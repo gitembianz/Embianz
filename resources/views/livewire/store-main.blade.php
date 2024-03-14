@@ -127,7 +127,7 @@
 										<span>{{ $product->short_description }}</span>
 									</div>
 									<div class="card-text">
-										<h2>{{ $product->name }}</h2>
+										<h2 class="card-title">{{ $product->name }}</h2>
 										<p class="card-price">
 											@if ($discount)
 												<span class="card-price discount">
@@ -241,7 +241,7 @@
 										<span>{{ $product->short_description }}</span>
 									</div>
 									<div class="card-text">
-										<h2>{{ $product->name }}</h2>
+										<h2 class="card-title">{{ $product->name }}</h2>
 										<p class="card-price">
 											@if ($discount)
 												<span class="card-price discount">
@@ -293,7 +293,36 @@
 		<x-support />
 		<!-------------------- End Support Center ------------------>
 		<!---------------------------------------------------------->
+		<script>
+			// Sending the special Event for Each card to GTM
+			let cards = document.querySelectorAll('.card');
 
+			cards.forEach(function(card) {
+				let addToCartButton = card.querySelector('.card__button');
+				let addToWishButton = card.querySelector('.favorite__btn');
+
+				addToCartButton.addEventListener('click', function() {
+					let cardName = card.querySelector('.card-title').innerText;
+					let cardPrice = card.querySelector('.card-price').innerText;
+
+					dataLayer.push({
+						'event': 'adaugareInCos',
+						'cardName': cardName,
+						'cardPrice': cardPrice
+					});
+				});
+				addToWishButton.addEventListener('click', function() {
+					let cardName = card.querySelector('.card-title').innerText;
+					let cardPrice = card.querySelector('.card-price').innerText;
+
+					dataLayer.push({
+						'event': 'adaugareInFavorite',
+						'cardName': cardName,
+						'cardPrice': cardPrice
+					});
+				});
+			});
+		</script>
 		<!---------------------------------------------------------->
 		<!--------------------- support button --------------------->
 		<x-help-button />
