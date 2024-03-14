@@ -2048,6 +2048,11 @@
        <img src="/images/store/svg/noren-black.svg" alt="logo">
       </a>
      </div>
+      <script>
+    window.addEventListener('DOMContentLoaded', function() {
+        Livewire.emit('orderprocess');
+    });
+ </script>
     @endif
     <!------------------- End Step Final ------------------->
     <!------------------------------------------------------>
