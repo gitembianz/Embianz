@@ -196,8 +196,8 @@
 
 				dataLayer.push({
 					'event': 'adaugareInCos',
-					'numeCard': numeCard,
-					'pret': pret
+					'cardName': cardName,
+					'cardPrice': cardPrice
 				});
 			});
 		});
