@@ -488,8 +488,9 @@ class StoreOrder extends Component
     if ($this->is_account != null) {
       $account = Account::with('addresses', 'orders')->find($this->is_account) ?? null;
       if ($account == null) {
+        unset($_COOKIE['accountId']);
         $this->is_account = null;
-      }else{
+      } else {
 
         if ($account->type == 'individual') {
           $this->individual = true;
@@ -542,8 +543,6 @@ class StoreOrder extends Component
           $this->juridic_shipping_zipcode = $account->addresses->where('type', 'shipping')->first()->zipcode;
         }
       }
-
-
     }
     $this->cash = app('global_cash');
     $this->card = app('global_card_stripe');
