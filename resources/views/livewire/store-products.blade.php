@@ -146,7 +146,7 @@
 								<span>{{ $product->short_description }}</span>
 							</div>
 							<div class="card-text">
-								<h3>{{ $product->name }}</h3>
+								<h3 class="card-title">{{ $product->name }}</h3>
 								<p class="card-price">
 									@if ($discount)
 										<span class="card-price discount">
@@ -182,6 +182,26 @@
 			<x-lazy />
 		@endif
 	</section>
+
+	<script>
+		// Sending the special Event for Each card to GTM
+		let cards = document.querySelectorAll('.card');
+
+		cards.forEach(function(card) {
+			let addToCartButton = card.querySelector('.card__button');
+
+			addToCartButton.addEventListener('click', function() {
+				let cardName = card.querySelector('.card-title').innerText;
+				let cardPrice = card.querySelector('.card-price').innerText;
+
+				dataLayer.push({
+					'event': 'adaugareInCos',
+					'numeCard': numeCard,
+					'pret': pret
+				});
+			});
+		});
+	</script>
 
 	@if ($products->count() >= $loadAmount)
 		<section class="container">
