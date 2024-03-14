@@ -1745,6 +1745,7 @@
     <!------------------------------------------------------>
     <!--------------------- Step Middle -------------------->
     @if ($step == 2)
+    
      <div class="checkout__header">
       <button class="checkout__button" wire:click.prevent="previous()">
        <svg>
@@ -2002,6 +2003,13 @@
         conditiile</a></span>
 
      </label>
+    @if ($payment_cancel)
+         <script>
+    window.addEventListener('DOMContentLoaded', function() {
+        Livewire.emit('alert__modal');
+    });
+ </script>
+    @endif
     @endif
     {{-- script for terms error --}}
     <script>

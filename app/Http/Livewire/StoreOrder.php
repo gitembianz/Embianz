@@ -25,7 +25,7 @@ class StoreOrder extends Component
   public $card;
   public $ordin;
   public $orderNumber;
-  protected $debug = true;
+  public $payment_cancel = false;
 
   // individual declaration
   public $individual = true;
@@ -456,6 +456,13 @@ class StoreOrder extends Component
   {
 
     $this->session_id = $this->getSessionId();
+    if (session()->has('paymentcancel')) {
+      $this->payment_cancel = true;
+      $this->step = 2;
+      session()->forget('paymentcancel');
+    }
+
+
     if (session()->has('paymentsucces')) {
       if ($this->cart->voucher && $this->cart->voucher->single_use) {
         Voucher::where('id', $this->cart->voucher_id)->update([
@@ -909,7 +916,7 @@ class StoreOrder extends Component
           'mode' => 'payment',
           'customer_email' => $order->account->email,
           'success_url' => route('payment_success', [], true) . "?session_id={$this->session_id}",
-          'cancel_url' => route('payment_cancel', [], true),
+          'cancel_url' => route('payment_cancel', [], true) . "?session_id={$this->session_id}",
         ]);
         $this->orderNumber = $order->order_number;
         return redirect()->to($session->url);

@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 class StoreController extends Controller
 {
 
+  //Function for views
   public function index()
   {
     return view('store.home');
@@ -69,7 +70,6 @@ class StoreController extends Controller
 
     return view('store.products', compact('data', 'can'));
   }
-
   public function terms()
   {
     return view('store.terms');
@@ -78,12 +78,6 @@ class StoreController extends Controller
   {
     return view('store.wislist');
   }
-
-  public function success()
-  {
-    return redirect()->route('order')->with('paymentsucces', true);
-  }
-
   public function show($product = null)
   {
     if (is_numeric($product)) {
@@ -93,5 +87,16 @@ class StoreController extends Controller
       $data = Product::where('seo_id', $product)->first();
     }
     return view('store.product', ['data' => $data]);
+  }
+
+  // payment function
+
+  public function success()
+  {
+    return redirect()->route('order')->with('paymentsucces', true);
+  }
+  public function cancel()
+  {
+    return redirect()->route('order')->with('paymentcancel', true);
   }
 }
