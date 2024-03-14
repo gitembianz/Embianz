@@ -474,8 +474,6 @@ class StoreOrder extends Component
         $item->product->save();
       }
       $this->step = 3;
-      session()->flash('success');
-
       session()->forget('paymentsucces');
     }
 
