@@ -2,26 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Store;
 use App\Models\Product;
 use App\Models\Category;
-use Illuminate\Http\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreStoreRequest;
-use App\Http\Requests\UpdateStoreRequest;
-use App\Models\Order;
-use Stripe\Checkout\Session;
-use Stripe\Stripe;
-use Stripe\Customer;
-
-
 
 class StoreController extends Controller
 {
-  /**
-   * Display a listing of the resource.
-   */
+
   public function index()
   {
     return view('store.home');
@@ -92,25 +79,11 @@ class StoreController extends Controller
     return view('store.wislist');
   }
 
-  /**
-   * Show the form for creating a new resource.
-   */
   public function success()
   {
     return redirect()->route('order')->with('paymentsucces', true);
   }
 
-  /**
-   * Store a newly created resource in storage.
-   */
-  public function store(StoreStoreRequest $request)
-  {
-    //
-  }
-
-  /**
-   * Display the specified resource.
-   */
   public function show($product = null)
   {
     if (is_numeric($product)) {
@@ -119,31 +92,6 @@ class StoreController extends Controller
 
       $data = Product::where('seo_id', $product)->first();
     }
-    // $product variable will contain the product instance resolved by Laravel
     return view('store.product', ['data' => $data]);
-  }
-
-  /**
-   * Show the form for editing the specified resource.
-   */
-  public function edit(Store $store)
-  {
-    //
-  }
-
-  /**
-   * Update the specified resource in storage.
-   */
-  public function update(UpdateStoreRequest $request, Store $store)
-  {
-    //
-  }
-
-  /**
-   * Remove the specified resource from storage.
-   */
-  public function destroy(Store $store)
-  {
-    //
   }
 }
