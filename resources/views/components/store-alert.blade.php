@@ -26,8 +26,8 @@
   </svg>
   <div class="alertorder__text">
    <h3 class="alertorder__title">Ceva nu a mers bine!</h3>
-   <p class="alertorder__descr">Va rog sa revizuiti detaliile comenzii, deoarece ceva nu a mers bine, voucherul expirat
-    sau cantitatea produselor nu mai este valabila.</p>
+   <p class="alertorder__descr">Va rog sa revizuiti detaliile comenzii, deoarece ceva nu a mers bine, voucherul este expirat
+    sau cantitatea produselor nu mai este valabila, ori au aparut probleme la plata comenzii.</p>
   </div>
   <button class="alertorder__close">
    Inchide
