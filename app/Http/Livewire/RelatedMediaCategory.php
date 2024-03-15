@@ -65,8 +65,11 @@ class RelatedMediaCategory extends Component
   }
   public function external()
   {
-    $this->row = 1;
+    $this->row = 0;
     $this->externalmedia = true;
+    $this->file_name[$this->row] = null;
+    $this->file_sequences[$this->row] = null;
+    $this->file_link[$this->row] = null;
   }
   public function plus()
   {
@@ -79,10 +82,9 @@ class RelatedMediaCategory extends Component
     array_splice($this->file_name, $i, 1);
     $this->row--;
 
-    // Reindex the arrays
-    $this->file_sequences = array_values($this->file_sequences);
-    $this->file_link = array_values($this->file_link);
-    $this->file_name = array_values($this->file_name);
+    if ($this->row < 0) {
+      $this->externalmedia = false;
+    }
   }
   public function saveexternal()
   {
@@ -97,27 +99,56 @@ class RelatedMediaCategory extends Component
     }
     $path = $filespath . $this->category->id . "/";
 
-    for ($this->i = 1; $this->i <= $this->row; $this->i++) {
+    for ($this->i = 0; $this->i <= $this->row; $this->i++) {
       $this->resetErrorBag();
       $this->validate([
         'file_sequences.*' => 'required',
         'file_link.*' => 'required|url',
         'file_name.*' => 'required'
       ]);
+      $urlComponents = parse_url($this->file_link[$this->i]);
+
+      $urlWithoutParams = $urlComponents['scheme'] . '://' . $urlComponents['host'] . $urlComponents['path'];
+      $this->file_link[$this->i] = $urlWithoutParams;
+      $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp', 'svg'];
+      $fileExtension = strtolower(pathinfo($this->file_link[$this->i], PATHINFO_EXTENSION));
+
+      if (!in_array($fileExtension, $allowedExtensions)) {
+        continue;
+      }
       $fileContent = file_get_contents($this->file_link[$this->i]);
-      // Get image information
+      if ($fileContent == false) {
+        continue;
+      }
       $imageInfo = getimagesizefromstring($fileContent);
       //extension
-      $fileExtension = image_type_to_extension($imageInfo[2], false);
-      $name = $this->file_name[$this->i] . '.' . $fileExtension;
-      if (file_exists($path . $this->file_name[$this->i])) {
-        $this->j = 1;
-        while (file_exists($path . $this->file_name[$this->i] . '(' . $this->j . ').' . $fileExtension)) {
-          $this->j++;
+
+      if (app()->has('global_auto_webp') &&  app('global_auto_webp') == 'true') {
+        $image = Image::make($fileContent);
+        $webpContent = $image->encode('webp')->__toString();
+        $fileExtension = 'webp';
+        $name = $this->file_name[$this->i] . '.' . $fileExtension;
+        if (file_exists($path . $name)) {
+          $this->j = 1;
+          while (file_exists($path . $this->file_name[$this->i] . '(' . $this->j . ').' . $fileExtension)) {
+            $this->j++;
+          }
+          $name = $this->file_name[$this->i] . '(' . $this->j . ').' . $fileExtension;
         }
-        $name = $this->file_name[$this->i] . '(' . $this->j . ').' . $fileExtension;
+        Storage::disk('public_upload')->put($path . $name, $webpContent);
+      } else {
+        $fileExtension = image_type_to_extension($imageInfo[2], false);
+        $name = $this->file_name[$this->i] . '.' . $fileExtension;
+        if (file_exists($path . $name)) {
+          $this->j = 1;
+          while (file_exists($path . $this->file_name[$this->i] . '(' . $this->j . ').' . $fileExtension)) {
+            $this->j++;
+          }
+          $name = $this->file_name[$this->i] . '(' . $this->j . ').' . $fileExtension;
+        }
+        Storage::disk('public_upload')->put($path . $name, $fileContent);
       }
-      Storage::disk('public_upload')->put($path . $name, $fileContent);
+
       $filePath = $path . $name;
       $file = Storage::disk('public_upload')->get($filePath);
       if ($this->file_sequences[$this->i] == '1') {
@@ -296,7 +327,11 @@ class RelatedMediaCategory extends Component
     }
     $path = $filespath . $this->category->id . "/";
     foreach ($this->medias as $index => $file) {
-      $type = $file->getClientOriginalExtension();
+      if (app()->has('global_auto_webp') &&  app('global_auto_webp') == 'true') {
+        $type = 'webp';
+      } else {
+        $type = $file->getClientOriginalExtension();
+      }
       $filename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
       $name = $filename . '.' . $type;
       if (file_exists($path . $name)) {
