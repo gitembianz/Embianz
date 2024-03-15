@@ -128,8 +128,8 @@
 					</div>
 					<div class="details__content">
 						<div class="details__text">
-							<h3 id="detailsTotal">Total:</h3>
-							<span>
+							<h3>Total:</h3>
+							<span id="detailsTotal">
 
 								{{ number_format($cart->final_amount, 2, ",", ".") }} {{ $currency }}
 
