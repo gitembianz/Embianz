@@ -914,7 +914,7 @@ class StoreOrder extends Component
             '00N9N000000QGVo' => $order->status->name,
             '00N9N000000QGVt' => $order->currency->name,
             '00N9N000000QGVy' => $order->payment->type,
-            '00N9N000000QGW3' => $order->voucher->code,
+            '00N9N000000QGW3' => $order->voucher->code ?? "",
             '00N9N000000QGW8' => $order->voucher_value,
             '00N9N000000QGWD' => $order->account_id,
             '00N9N000000QGWI' => $order->delivery_price,
