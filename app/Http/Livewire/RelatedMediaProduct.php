@@ -203,8 +203,12 @@ class RelatedMediaProduct extends Component
         'file_link.*' => 'required|url',
         'file_name.*' => 'required'
       ]);
+      $urlComponents = parse_url($this->file_link[$i]);
+
+      $urlWithoutParams = $urlComponents['scheme'] . '://' . $urlComponents['host'] . $urlComponents['path'];
+      $this->file_link[$this->i] = $urlWithoutParams;
       $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp', 'svg'];
-      $fileExtension = strtolower(pathinfo($this->file_link[$this->i], PATHINFO_EXTENSION));
+      $fileExtension = strtolower(pathinfo($this->file_link[$i], PATHINFO_EXTENSION));
 
       if (!in_array($fileExtension, $allowedExtensions)) {
         continue;
