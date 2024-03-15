@@ -214,11 +214,7 @@
 				let productPrice = parseFloat(product.querySelector('.basket__price').innerText.replace('RON', '').trim()); // Extrage pretul produsului și converteste-l la float
 				let productQuantity = parseInt(product.querySelector('.product__quantity').innerText); // Extrage cantitatea produsului și converteste-l la int
 
-				productsList.push({
-					name: productName,
-					quantity: productQuantity,
-					price: productPrice
-				});
+				productsList.push(productName + ' --- ' + productQuantity + 'buc --- ' + productPrice);
 			});
 
 			// Adaugă informațiile în dataLayer
