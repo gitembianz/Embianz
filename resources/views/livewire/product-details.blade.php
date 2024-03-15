@@ -28,7 +28,7 @@
 		])
 	</div>
 	<div class="product__price">
-		<span>Pret</span>
+		<span class="product__price--title">Pret</span>
 		@if ($discount && $price)
 			@if ($price)
 				<div class="product__price--discount">
@@ -138,4 +138,30 @@
 	</div>
 	<!------------------ End Tab (Details) ----------------->
 	<!------------------------------------------------------>
+	<script>
+		let addToCartButton = document.querySelector('.card__button');
+		let addToWishButton = document.querySelector('.favorite__btn');
+		let cardName = document.querySelector('.product__title').innerText.trim();
+		let cardPrice = document.querySelector('.product__price--title').innerText.trim();
+
+		addToCartButton.addEventListener('click', function() {
+			if (typeof dataLayer !== 'undefined' && cardName && cardPrice) {
+				dataLayer.push({
+					'event': 'adaugareInCos',
+					'cardName': cardName,
+					'cardPrice': cardPrice
+				});
+			}
+		});
+
+		addToWishButton.addEventListener('click', function() {
+			if (typeof dataLayer !== 'undefined' && cardName && cardPrice) {
+				dataLayer.push({
+					'event': 'adaugareInFavorite',
+					'cardName': cardName,
+					'cardPrice': cardPrice
+				});
+			}
+		});
+	</script>
 </div>
