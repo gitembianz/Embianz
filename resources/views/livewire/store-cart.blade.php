@@ -65,7 +65,7 @@
 											<line x1="8" y1="12" x2="16" y2="12"></line>
 										</svg>
 									</button>
-									<span class="quantity__input">
+									<span class="quantity__input product__quantity">
 										{{ $cartItem->quantity }}
 									</span>
 									<button class="quantity__arrow" aria-label="Increase quantity" wire:click="increment({{ $cartItem->id }})">
@@ -128,7 +128,7 @@
 					</div>
 					<div class="details__content">
 						<div class="details__text">
-							<h3>Total:</h3>
+							<h3 id="detailsTotal">Total:</h3>
 							<span>
 
 								{{ number_format($cart->final_amount, 2, ",", ".") }} {{ $currency }}
@@ -147,7 +147,7 @@
 							</div>
 						@endif
 
-						<button class="details__button details__continue" wire:click="continue()" aria-label="Continue form">Continua</button>
+						<button id="detailsContinue" class="details__button details__continue" wire:click="continue()" aria-label="Continue form">Continua</button>
 					</div>
 
 				</div>
@@ -156,6 +156,54 @@
 			<!------------------------------------------------------>
 		</div>
 	</section>
+
+	<script>
+		// Verifica daca dataLayer este definit, altfel il initializeaza
+		window.dataLayer = window.dataLayer || [];
+
+		// Creeaza o functie care adauga informatiile despre produse in dataLayer
+		function addToDataLayer(products, total) {
+			window.dataLayer.push({
+				'event': 'addToCart',
+				'ecommerce': {
+					'currencyCode': 'RON', // Codul valutei
+					'add': { // Actiunea de adaugare a produselor in cos
+						'products': products, // Lista de produse adaugate
+						'total': total // Totalul comenzii
+					}
+				}
+			});
+		}
+
+		// Adauga un eveniment de click pentru butonul de continuare
+		document.getElementById('detailsContinue').addEventListener('click', function() {
+			let products = [];
+			let total = parseFloat(document.getElementById('detailsTotal').innerText.replace('RON', '').trim()); // Extrage totalul comenzii si converteste-l la float
+
+			// Itereaza prin fiecare produs din cos
+			document.querySelectorAll('.basket__product').forEach(function(product) {
+				let productName = product.querySelector('.basket__title').innerText;
+				let productPrice = parseFloat(product.querySelector('.basket__price').innerText.replace('RON', '').trim()); // Extrage pretul produsului si converteste-l la float
+				let productQuantity = parseInt(product.querySelector('.product__quantity').innerText); // Extrage cantitatea produsului si converteste-l la int
+
+				// Adauga informatiile despre produs in lista de produse
+				products.push({
+					'name': productName,
+					'price': productPrice,
+					'quantity': productQuantity
+				});
+			});
+
+			// Adauga lista de produse si totalul comenzii in dataLayer
+			addToDataLayer(products, total);
+
+			// Trimite un eveniment general pentru a continua la checkout
+			window.dataLayer.push({
+				'event': 'continueToCheckout'
+			});
+		});
+	</script>
+
 	<!---------------------------------------------------------->
 	<!--------------------- support button --------------------->
 	<x-help-button />
