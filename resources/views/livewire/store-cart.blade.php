@@ -157,7 +157,7 @@
 		</div>
 	</section>
 
-	<script>
+	{{-- <script>
 		// Verifica daca dataLayer este definit, altfel il initializeaza
 		window.dataLayer = window.dataLayer || [];
 
@@ -199,6 +199,34 @@
 
 			// Trimite un eveniment general pentru a continua la checkout
 			window.dataLayer.push({
+				'event': 'continueToCheckout'
+			});
+		});
+	</script> --}}
+	<script>
+		document.getElementById('detailsContinue').addEventListener('click', function() {
+			let productsList = [];
+			let products = document.querySelectorAll('.basket__product');
+			let total = parseFloat(document.getElementById('detailsTotal').innerText.replace('RON', '').trim()); // Extrage totalul comenzii și converteste-l la float
+
+			products.forEach(function(product) {
+				let productName = product.querySelector('.basket__title').innerText; // Extrage numele produsului
+				let productPrice = parseFloat(product.querySelector('.basket__price').innerText.replace('RON', '').trim()); // Extrage pretul produsului și converteste-l la float
+				let productQuantity = parseInt(product.querySelector('.product__quantity').innerText); // Extrage cantitatea produsului și converteste-l la int
+
+				productsList.push({
+					name: productName,
+					quantity: productQuantity,
+					price: productPrice
+				});
+			});
+
+			// Adaugă informațiile în dataLayer
+			window.dataLayer = window.dataLayer || [];
+			window.dataLayer.push({
+				'event': 'addToCart',
+				'products': productsList,
+				'total': total,
 				'event': 'continueToCheckout'
 			});
 		});
