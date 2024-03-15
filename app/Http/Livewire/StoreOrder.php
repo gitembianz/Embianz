@@ -12,6 +12,7 @@ use Livewire\Component;
 use App\Models\Cart_Item;
 use App\Models\Order_Item;
 use Stripe\Checkout\Session;
+use GuzzleHttp\Client;
 
 class StoreOrder extends Component
 {
@@ -892,6 +893,38 @@ class StoreOrder extends Component
 
         $this->step++;
         $this->emit('orderprocess');
+
+        //request to salesforce
+        $client = new Client();
+        $client->post('https://webto.salesforce.com/servlet/servlet.WebToCase', [
+          'headers' => [
+            'Accept' => 'application/json',
+          ],
+          'query' => [
+            'orgid' => '00D09000008XPQu',
+            'debug' => '1',
+            'debugEmail' => 'iosif.relia@eztemcorp.com',
+            'subject' => 'Noren.ro Order_id:' . $order->id,
+            '00N9N000000QGVe' => 'www.noren.ro',
+            'type' => 'Store Order',
+
+            //order
+            '00N9N000000QGVZ' => $order->id,
+            '00N9N000000QGVj' => $order->order_number,
+            '00N9N000000QGVo' => $order->status->name,
+            '00N9N000000QGVt' => $order->currency->name,
+            '00N9N000000QGVy' => $order->payment->type,
+            '00N9N000000QGW3' => $order->voucher->code,
+            '00N9N000000QGW8' => $order->voucher_value,
+            '00N9N000000QGWD' => $order->account_id,
+            '00N9N000000QGWI' => $order->delivery_price,
+            '00N9N000000QGWN' => $order->final_amount,
+
+          ],
+          'curl' => [
+            CURLOPT_SSL_VERIFYPEER => false,
+          ],
+        ]);
       } else {
         $this->cart->update([
           'order_id' => $order->id,
