@@ -106,7 +106,7 @@ class RelatedMediaCategory extends Component
         'file_link.*' => 'required|url',
         'file_name.*' => 'required'
       ]);
-      $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
+      $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp', 'svg'];
       $fileExtension = strtolower(pathinfo($this->file_link[$this->i], PATHINFO_EXTENSION));
 
       if (!in_array($fileExtension, $allowedExtensions)) {
