@@ -147,7 +147,7 @@
 							</div>
 						@endif
 
-						<button class="details__button" wire:click="continue()" aria-label="Continue form">Continua</button>
+						<button class="details__button details__continue" wire:click="continue()" aria-label="Continue form">Continua</button>
 					</div>
 
 				</div>
