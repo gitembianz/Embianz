@@ -196,7 +196,7 @@ class RelatedMediaProduct extends Component
     }
     $path = $filespath . $this->product->id . "/";
 
-    for ($i = 1; $i <= $this->row; $i++) {
+    for ($i = 0; $i <= $this->row; $i++) {
       $this->resetErrorBag();
       $this->validate([
         'file_sequences.*' => 'required',
