@@ -65,8 +65,11 @@ class RelatedMediaCategory extends Component
   }
   public function external()
   {
-    $this->row = 1;
+    $this->row = 0;
     $this->externalmedia = true;
+    $this->file_name[$this->row] = null;
+    $this->file_sequences[$this->row] = null;
+    $this->file_link[$this->row] = null;
   }
   public function plus()
   {
@@ -79,10 +82,9 @@ class RelatedMediaCategory extends Component
     array_splice($this->file_name, $i, 1);
     $this->row--;
 
-    // Reindex the arrays
-    $this->file_sequences = array_values($this->file_sequences);
-    $this->file_link = array_values($this->file_link);
-    $this->file_name = array_values($this->file_name);
+    if ($this->row < 0) {
+      $this->externalmedia = false;
+    }
   }
   public function saveexternal()
   {
@@ -104,8 +106,16 @@ class RelatedMediaCategory extends Component
         'file_link.*' => 'required|url',
         'file_name.*' => 'required'
       ]);
+      $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
+      $fileExtension = strtolower(pathinfo($this->file_link[$this->i], PATHINFO_EXTENSION));
+
+      if (!in_array($fileExtension, $allowedExtensions)) {
+        continue;
+      }
       $fileContent = file_get_contents($this->file_link[$this->i]);
-      // Get image information
+      if ($fileContent == false) {
+        continue;
+      }
       $imageInfo = getimagesizefromstring($fileContent);
       //extension
       $fileExtension = image_type_to_extension($imageInfo[2], false);

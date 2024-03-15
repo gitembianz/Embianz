@@ -165,8 +165,8 @@
 									</table>
 									<table class="table" style="margin-top: 1.5rem">
 										<tbody>
-											@for ($i = 1; $i <= $row; $i++)
-												<tr wire:key="{{ $i }}">
+											@for ($i = 0; $i <= $row; $i++)
+												<tr>
 													<td class="wid-2">
 														<input required placeholder="Media name" type="text" class="table__edit" wire:model="file_name.{{ $i }}">
 													</td>
@@ -190,6 +190,7 @@
 																		</line>
 																	</svg>
 																</button>
+															@endif
 																<button type="button" class="save" wire:click="clear({{ $i }})">
 																	<svg>
 																		<line x1="18" y1="6" x2="6" y2="18">
@@ -198,17 +199,6 @@
 																		</line>
 																	</svg>
 																</button>
-															@endif
-															@if ($i != $row)
-																<button type="button" class="save" wire:click="clear({{ $i }})">
-																	<svg>
-																		<line x1="18" y1="6" x2="6" y2="18">
-																		</line>
-																		<line x1="6" y1="6" x2="18" y2="18">
-																		</line>
-																	</svg>
-																</button>
-															@endif
 														</div>
 													</td>
 												</tr>
