@@ -19,7 +19,7 @@
 				@foreach ($cartItems as $cartItem)
 					<li class="leftbar__item">
 						<a class="leftbar__link" href="{{ route("product", ["product" => $cartItem->product->seo_id !== null && $cartItem->product->seo_id !== "" ? $cartItem->product->seo_id : $cartItem->product->id]) }}">
-							<span>
+							<span class="leftbar__link--quantity">
 								{{ $cartItem->quantity }} x
 							</span>
 							@if ($cartItem->product->media->first())
@@ -29,8 +29,8 @@
 							@endif
 
 							<div class="leftbar__link--text">
-								<h4>{{ $cartItem->product->name }}</h4>
-								<span>
+								<h4 class="leftbar__link--title">{{ $cartItem->product->name }}</h4>
+								<span class="leftbar__link--price">
 									@php
 										$price = number_format($cartItem->product->product_prices->first()->value, 2, ",", ".");
 										$total = $total + $cartItem->quantity * $cartItem->product->product_prices->first()->value;
@@ -55,9 +55,9 @@
 			</ul>
 
 			<div class="leftbar__total">
-				<h5 class="leftbar__total--text">Total: <span>{{ number_format($total, 2, ",", ".") }}
+				<h5 class="leftbar__total--text">Total: <span id="leftbarTotalPrice">{{ number_format($total, 2, ",", ".") }}
 						{{ $currency }}</span></h5>
-				<a class="leftbar__button leftbar__button--long" wire:click.prevent="continue">Finalizare Comanda</a>
+				<a class="leftbar__button leftbar__button--long" id="headerContinue" wire:click.prevent="continue">Finalizare Comanda</a>
 			</div>
 		@endif
 	</div>
