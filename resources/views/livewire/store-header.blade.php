@@ -39,9 +39,9 @@
 								</svg>
 							</a>
 							<div class="dropdown__list">
-								@foreach ($category->subcategory->sortBy(function($subcategory) {
-    return $subcategory->category->sequence;
-}) as $subcategory)
+								@foreach ($category->subcategory->sortBy(function ($subcategory) {
+								return $subcategory->category->sequence;
+				}) as $subcategory)
 									<div class="dropdown__item">
 										<a class="dropdown__item--button" href="{{ route("products", ["categorySlug" => $subcategory->category->seo_id !== null && $subcategory->category->seo_id !== "" ? $subcategory->category->seo_id : $subcategory->category->id]) }}">
 											{{ $subcategory->category->name }}
@@ -53,9 +53,9 @@
 										</a>
 										@if ($subcategory->category->subcategory->count() != 0)
 											<div class="dropdown__item--list">
-												@foreach ($subcategory->category->subcategory->sortBy(function($subsubCategory) {
-    return $subsubCategory->category->sequence;
-}) as $subsubCategory)
+												@foreach ($subcategory->category->subcategory->sortBy(function ($subsubCategory) {
+								return $subsubCategory->category->sequence;
+				}) as $subsubCategory)
 													<a class="dropdown__item--link" href="{{ route("products", ["categorySlug" => $subsubCategory->category->seo_id !== null && $subsubCategory->category->seo_id !== "" ? $subsubCategory->category->seo_id : $subsubCategory->category->id]) }}">
 														{{ $subsubCategory->category->name }}
 													</a>
@@ -130,6 +130,31 @@
 	@else
 		@livewire("cart-products-list", ["cartId" => 0])
 	@endif
+
+	<script>
+		document.getElementById('headerContinue').addEventListener('click', function() {
+			let productsList = [];
+			let products = document.querySelectorAll('.leftbar__item');
+			let total = parseFloat(document.getElementById('leftbarTotalPrice').innerText.replace('RON', '').trim()); // Extrage totalul comenzii și converteste-l la float
+
+			products.forEach(function(product) {
+				let productName = product.querySelector('.leftbar__link--title').innerText; // Extrage numele produsului
+				let productPrice = parseFloat(product.querySelector('.leftbar__link--price').innerText.replace('RON', '').trim()); // Extrage pretul produsului și converteste-l la float
+				let productQuantity = parseInt(product.querySelector('.leftbar__link--quantity').innerText); // Extrage cantitatea produsului și converteste-l la int
+
+				productsList.push(productName + ' --- ' + productQuantity + 'buc --- ' + productPrice);
+			});
+
+			// Adaugă informațiile în dataLayer
+			window.dataLayer = window.dataLayer || [];
+			window.dataLayer.push({
+				'event': 'addToCart',
+				'products': productsList,
+				'total': total,
+				'event': 'continueToCheckout'
+			});
+		});
+	</script>
 
 	<!-------------------END-Basket (Leftbar)------------------->
 	<!---------------------------------------------------------->
