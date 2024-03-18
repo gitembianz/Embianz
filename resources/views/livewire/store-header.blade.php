@@ -131,31 +131,6 @@
 		@livewire("cart-products-list", ["cartId" => 0])
 	@endif
 
-	<script>
-		document.getElementById('headerContinue').addEventListener('click', function() {
-			let productsList = [];
-			let products = document.querySelectorAll('.leftbar__item');
-			let total = parseFloat(document.getElementById('leftbarTotalPrice').innerText.replace('RON', '').trim()); // Extrage totalul comenzii și converteste-l la float
-
-			products.forEach(function(product) {
-				let productName = product.querySelector('.leftbar__link--title').innerText; // Extrage numele produsului
-				let productPrice = parseFloat(product.querySelector('.leftbar__link--price').innerText.replace('RON', '').trim()); // Extrage pretul produsului și converteste-l la float
-				let productQuantity = parseInt(product.querySelector('.leftbar__link--quantity').innerText); // Extrage cantitatea produsului și converteste-l la int
-
-				productsList.push(productName + ' --- ' + productQuantity + 'buc --- ' + productPrice);
-			});
-
-			// Adaugă informațiile în dataLayer
-			window.dataLayer = window.dataLayer || [];
-			window.dataLayer.push({
-				'event': 'addToCart',
-				'products': productsList,
-				'total': total,
-				'event': 'continueToCheckout'
-			});
-		});
-	</script>
-
 	<!-------------------END-Basket (Leftbar)------------------->
 	<!---------------------------------------------------------->
 	<!----------------------Wish (Leftbar)---------------------->
