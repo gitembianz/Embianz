@@ -17,7 +17,7 @@ const firstNameValidation = [
     message: "Numele nu poate conține spații consecutive.",
   },
   {
-    validation: (value) => /^[a-zA-Z\s]*$/.test(value),
+    validation: (value) => /^[a-zA-ZăâîșțĂÂÎȘȚ\s]*$/.test(value),
     message: "Numele poate conține doar litere și spații",
   },
 ];
@@ -39,7 +39,7 @@ const lastNameValidation = [
     message: "Numărul de caractere introduse pentru prenume este prea mare.",
   },
   {
-    validation: (value) => /^[a-zA-Z\s]*$/.test(value),
+    validation: (value) => /^[a-zA-ZăâîșțĂÂÎȘȚ\s]*$/.test(value),
     message: "Prenumele poate conține doar litere și spații",
   },
 ];
@@ -50,7 +50,7 @@ const emailValidation = [
   },
   {
     validation: (value) =>
-    /^[a-zA-Z0-9._+-ăâîșțĂÂÎȘȚ]+@[a-zA-Z0-9.-]+(\.[a-zA-Z]{2,})+$/.test(value),
+    /^[a-zA-Z0-9._+-]+@[a-zA-Z0-9.-]+(\.[a-zA-Z]{2,})+$/.test(value),
     message: "Te rog introdu o adresă de email validă.",
   },
   {
@@ -100,7 +100,7 @@ const addressValidations = [
     message: "Adresa este prea scurtă. Te rog introdu o adresă mai lungă.",
   },
   {
-    validation: (value) => /^[a-zA-Z0-9/., _'\-`]*$/.test(value),
+    validation: (value) => /^[a-zA-Z0-9ăâîșțĂÂÎȘȚ/., _'\-`]*$/.test(value),
     message: "Adresa poate conține doar litere, cifre și simbolurile: ( ), , .",
   },
   {

@@ -39,9 +39,9 @@
 								</svg>
 							</a>
 							<div class="dropdown__list">
-								@foreach ($category->subcategory->sortBy(function($subcategory) {
-    return $subcategory->category->sequence;
-}) as $subcategory)
+								@foreach ($category->subcategory->sortBy(function ($subcategory) {
+								return $subcategory->category->sequence;
+				}) as $subcategory)
 									<div class="dropdown__item">
 										<a class="dropdown__item--button" href="{{ route("products", ["categorySlug" => $subcategory->category->seo_id !== null && $subcategory->category->seo_id !== "" ? $subcategory->category->seo_id : $subcategory->category->id]) }}">
 											{{ $subcategory->category->name }}
@@ -53,9 +53,9 @@
 										</a>
 										@if ($subcategory->category->subcategory->count() != 0)
 											<div class="dropdown__item--list">
-												@foreach ($subcategory->category->subcategory->sortBy(function($subsubCategory) {
-    return $subsubCategory->category->sequence;
-}) as $subsubCategory)
+												@foreach ($subcategory->category->subcategory->sortBy(function ($subsubCategory) {
+								return $subsubCategory->category->sequence;
+				}) as $subsubCategory)
 													<a class="dropdown__item--link" href="{{ route("products", ["categorySlug" => $subsubCategory->category->seo_id !== null && $subsubCategory->category->seo_id !== "" ? $subsubCategory->category->seo_id : $subsubCategory->category->id]) }}">
 														{{ $subsubCategory->category->name }}
 													</a>
