@@ -1976,7 +1976,7 @@
 						dataLayer.push({
 							'event': 'checkoutStep',
 							'step': 2,
-							'option': 'Detalii de livrare'
+							'option': 'Plasare Comanda'
 						});
 					</script>
 				@endif
