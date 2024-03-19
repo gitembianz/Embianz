@@ -424,7 +424,7 @@ class StoreOrder extends Component
     if ($item == 'rtc') {
       $this->payment = $this->cash;
       $this->rtc = true;
-      $this->crd = true;
+      $this->crd = false;
       $this->invoice = false;
     }
     if ($item == 'crd') {
@@ -482,6 +482,8 @@ class StoreOrder extends Component
         $order_lines[] = $order_line;
       }
       $client = new Client();
+      $order_lines_string = json_encode($order_lines);
+
       $client->post('https://webto.salesforce.com/servlet/servlet.WebToCase', [
         'headers' => [
           'Accept' => 'application/json',
@@ -492,14 +494,14 @@ class StoreOrder extends Component
           'debugEmail' => 'iosif.relia@eztemcorp.com',
           'subject' => 'Noren.ro Order_id:' . $order->id,
           '00N9N000000QGVe' => 'www.noren.ro',
-          'type' => 'Store Order',
+          'type' => 'Store Order Master',
 
           //order
           '00N9N000000QGVZ' => $order->id,
           '00N9N000000QGVj' => $order->order_number,
           '00N9N000000QGVo' => $order->status->name,
           '00N9N000000QGVt' => $order->currency->name,
-          '00N9N000000QGVy' => $order->payment->type,
+          '00N9N000000QGVy' => $order->payment->name,
           '00N9N000000QGW3' => $order->voucher->code ?? "",
           '00N9N000000QGW8' => $order->voucher_value,
           '00N9N000000QGWD' => $order->account_id,
@@ -507,7 +509,7 @@ class StoreOrder extends Component
           '00N9N000000QGWN' => $order->final_amount,
 
           //orderlines
-          '00N9N000000QGYi' => $order_lines,
+          '00N9N000000QGYi' => $order_lines_string,
 
           //account
           '00N9N000000QGWS' => $order->account->id,
@@ -696,6 +698,10 @@ class StoreOrder extends Component
             'updated_at' => now(),
           ]);
           Address::where('account_id', $this->is_account)->where('type', 'billing')->update([
+            'first_name' => $this->individual_billing_first,
+            'last_name' => $this->individual_billing_last,
+            'phone' => $this->individual_billing_phone,
+            'email' => $this->individual_billing_email,
             'address1' => $this->individual_billing_address1,
             'address2' => $this->individual_billing_address2,
             'country' => $this->individual_billing_country,
@@ -731,6 +737,10 @@ class StoreOrder extends Component
 
           Address::create([
             'account_id' => $account->id,
+            'first_name' => $this->individual_billing_first,
+            'last_name' => $this->individual_billing_last,
+            'phone' => $this->individual_billing_phone,
+            'email' => $this->individual_billing_email,
             'address1' => $this->individual_billing_address1,
             'address2' => $this->individual_billing_address2,
             'type' => 'billing',
@@ -790,6 +800,10 @@ class StoreOrder extends Component
             'updated_at' => now(),
           ]);
           Address::where('account_id', $this->is_account)->where('type', 'billing')->update([
+            'first_name' => $this->juridic_billing_first,
+            'last_name' => $this->juridic_billing_last,
+            'phone' => $this->juridic_billing_phone,
+            'email' => $this->juridic_billing_email,
             'address1' => $this->juridic_billing_address1,
             'address2' => $this->juridic_billing_address2,
             'country' => $this->juridic_billing_country,
@@ -831,6 +845,10 @@ class StoreOrder extends Component
 
           Address::create([
             'account_id' => $account->id,
+            'first_name' => $this->juridic_billing_first,
+            'last_name' => $this->juridic_billing_last,
+            'phone' => $this->juridic_billing_phone,
+            'email' => $this->juridic_billing_email,
             'address1' => $this->juridic_billing_address1,
             'address2' => $this->juridic_billing_address2,
             'type' => 'billing',
@@ -967,6 +985,7 @@ class StoreOrder extends Component
           $order_lines[] = $order_line;
         }
         $client = new Client();
+        $order_lines_string = json_encode($order_lines);
         $client->post('https://webto.salesforce.com/servlet/servlet.WebToCase', [
           'headers' => [
             'Accept' => 'application/json',
@@ -977,7 +996,7 @@ class StoreOrder extends Component
             'debugEmail' => 'iosif.relia@eztemcorp.com',
             'subject' => 'Noren.ro Order_id:' . $order->id,
             '00N9N000000QGVe' => 'www.noren.ro',
-            'type' => 'Store Order',
+            'type' => 'Store Order Master',
 
             //order
             '00N9N000000QGVZ' => $order->id,
@@ -992,7 +1011,7 @@ class StoreOrder extends Component
             '00N9N000000QGWN' => $order->final_amount,
 
             //orderlines
-            '00N9N000000QGYi' => $order_lines,
+            '00N9N000000QGYi' => $order_lines_string,
 
             //account
             '00N9N000000QGWS' => $order->account->id,
