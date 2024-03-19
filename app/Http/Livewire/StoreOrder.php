@@ -482,6 +482,80 @@ class StoreOrder extends Component
         $item->product->save();
       }
       $this->step = 3;
+      //request to salesforce
+      $order_lines = [];
+      foreach ($order->orders as $sub_order) {
+        $order_line = [
+          '00N9N000000QGYY' => $sub_order->order_id,
+          '00N9N000000QGYT' => $sub_order->id,
+          '00N9N000000QGYd' => $sub_order->product_id,
+          '00N9N000000QGYi' => $sub_order->quantity
+        ];
+        $order_lines[] = $order_line;
+      }
+      $client = new Client();
+      $client->post('https://webto.salesforce.com/servlet/servlet.WebToCase', [
+        'headers' => [
+          'Accept' => 'application/json',
+        ],
+        'query' => [
+          'orgid' => '00D09000008XPQu',
+          'debug' => '1',
+          'debugEmail' => 'iosif.relia@eztemcorp.com',
+          'subject' => 'Noren.ro Order_id:' . $order->id,
+          '00N9N000000QGVe' => 'www.noren.ro',
+          'type' => 'Store Order',
+
+          //order
+          '00N9N000000QGVZ' => $order->id,
+          '00N9N000000QGVj' => $order->order_number,
+          '00N9N000000QGVo' => $order->status->name,
+          '00N9N000000QGVt' => $order->currency->name,
+          '00N9N000000QGVy' => $order->payment->type,
+          '00N9N000000QGW3' => $order->voucher->code ?? "",
+          '00N9N000000QGW8' => $order->voucher_value,
+          '00N9N000000QGWD' => $order->account_id,
+          '00N9N000000QGWI' => $order->delivery_price,
+          '00N9N000000QGWN' => $order->final_amount,
+
+          //orderlines
+          '00N9N000000QGYi' => $order_lines,
+
+          //account
+          '00N9N000000QGWS' => $order->account->id,
+          '00N9N000000QGYx' => $order->account->type,
+          '00N9N000000QGWX' => $order->account->company_name ?? "",
+          '00N9N000000QGWc' => $order->account->registration_code ?? "",
+          '00N9N000000QGWh' => $order->account->registration_number ?? "",
+          '00N9N000000QGWr' => $order->account->bank_name ?? "",
+          '00N9N000000QGWw' => $order->account->account ?? "",
+          //billing adress
+          '00N9N000000QGX1' => $order->account->addresses->where('type', 'billing')->first()->address1,
+          '00N9N000000QGX6' => $order->account->addresses->where('type', 'billing')->first()->address2,
+          '00N9N000000QGXB' => $order->account->addresses->where('type', 'billing')->first()->country,
+          '00N9N000000QGXG' => $order->account->addresses->where('type', 'billing')->first()->county,
+          '00N9N000000QGXL' => $order->account->addresses->where('type', 'billing')->first()->city,
+          '00N9N000000QGXQ' => $order->account->addresses->where('type', 'billing')->first()->zipcode,
+          '00N9N000000QGXV' => $order->account->addresses->where('type', 'billing')->first()->first_name ?? "",
+          '00N9N000000QGXa' => $order->account->addresses->where('type', 'billing')->first()->last_name ?? "",
+          '00N9N000000QGXf' => $order->account->addresses->where('type', 'billing')->first()->phone ?? "",
+          '00N9N000000QGXk' => $order->account->addresses->where('type', 'billing')->first()->email ?? "",
+          //shipping adress
+          '00N9N000000QGXp' => $order->account->addresses->where('type', 'shipping')->first()->address1,
+          '00N9N000000QGXu' => $order->account->addresses->where('type', 'shipping')->first()->address2,
+          '00N9N000000QGXz' => $order->account->addresses->where('type', 'shipping')->first()->country,
+          '00N9N000000QGWi' => $order->account->addresses->where('type', 'shipping')->first()->county,
+          '00N9N000000QGY4' => $order->account->addresses->where('type', 'shipping')->first()->city,
+          '00N9N000000QGWE' => $order->account->addresses->where('type', 'shipping')->first()->zipcode,
+          '00N9N000000QGY9' => $order->account->addresses->where('type', 'shipping')->first()->first_name ?? "",
+          '00N9N000000QGYE' => $order->account->addresses->where('type', 'shipping')->first()->last_name ?? "",
+          '00N9N000000QGYJ' => $order->account->addresses->where('type', 'shipping')->first()->phone ?? "",
+          '00N9N000000QGYO' => $order->account->addresses->where('type', 'shipping')->first()->email ?? "",
+        ],
+        'curl' => [
+          CURLOPT_SSL_VERIFYPEER => false,
+        ],
+      ]);
       session()->forget('paymentsucces');
     }
 
@@ -893,8 +967,17 @@ class StoreOrder extends Component
 
         $this->step++;
         $this->emit('orderprocess');
-
         //request to salesforce
+        $order_lines = [];
+        foreach ($order->orders as $sub_order) {
+          $order_line = [
+            '00N9N000000QGYY' => $sub_order->order_id,
+            '00N9N000000QGYT' => $sub_order->id,
+            '00N9N000000QGYd' => $sub_order->product_id,
+            '00N9N000000QGYi' => $sub_order->quantity
+          ];
+          $order_lines[] = $order_line;
+        }
         $client = new Client();
         $client->post('https://webto.salesforce.com/servlet/servlet.WebToCase', [
           'headers' => [
@@ -920,6 +1003,39 @@ class StoreOrder extends Component
             '00N9N000000QGWI' => $order->delivery_price,
             '00N9N000000QGWN' => $order->final_amount,
 
+            //orderlines
+            '00N9N000000QGYi' => $order_lines,
+
+            //account
+            '00N9N000000QGWS' => $order->account->id,
+            '00N9N000000QGYx' => $order->account->type,
+            '00N9N000000QGWX' => $order->account->company_name ?? "",
+            '00N9N000000QGWc' => $order->account->registration_code ?? "",
+            '00N9N000000QGWh' => $order->account->registration_number ?? "",
+            '00N9N000000QGWr' => $order->account->bank_name ?? "",
+            '00N9N000000QGWw' => $order->account->account ?? "",
+            //billing adress
+            '00N9N000000QGX1' => $order->account->addresses->where('type', 'billing')->first()->address1,
+            '00N9N000000QGX6' => $order->account->addresses->where('type', 'billing')->first()->address2,
+            '00N9N000000QGXB' => $order->account->addresses->where('type', 'billing')->first()->country,
+            '00N9N000000QGXG' => $order->account->addresses->where('type', 'billing')->first()->county,
+            '00N9N000000QGXL' => $order->account->addresses->where('type', 'billing')->first()->city,
+            '00N9N000000QGXQ' => $order->account->addresses->where('type', 'billing')->first()->zipcode,
+            '00N9N000000QGXV' => $order->account->addresses->where('type', 'billing')->first()->first_name ?? "",
+            '00N9N000000QGXa' => $order->account->addresses->where('type', 'billing')->first()->last_name ?? "",
+            '00N9N000000QGXf' => $order->account->addresses->where('type', 'billing')->first()->phone ?? "",
+            '00N9N000000QGXk' => $order->account->addresses->where('type', 'billing')->first()->email ?? "",
+            //shipping adress
+            '00N9N000000QGXp' => $order->account->addresses->where('type', 'shipping')->first()->address1,
+            '00N9N000000QGXu' => $order->account->addresses->where('type', 'shipping')->first()->address2,
+            '00N9N000000QGXz' => $order->account->addresses->where('type', 'shipping')->first()->country,
+            '00N9N000000QGWi' => $order->account->addresses->where('type', 'shipping')->first()->county,
+            '00N9N000000QGY4' => $order->account->addresses->where('type', 'shipping')->first()->city,
+            '00N9N000000QGWE' => $order->account->addresses->where('type', 'shipping')->first()->zipcode,
+            '00N9N000000QGY9' => $order->account->addresses->where('type', 'shipping')->first()->first_name ?? "",
+            '00N9N000000QGYE' => $order->account->addresses->where('type', 'shipping')->first()->last_name ?? "",
+            '00N9N000000QGYJ' => $order->account->addresses->where('type', 'shipping')->first()->phone ?? "",
+            '00N9N000000QGYO' => $order->account->addresses->where('type', 'shipping')->first()->email ?? "",
           ],
           'curl' => [
             CURLOPT_SSL_VERIFYPEER => false,
