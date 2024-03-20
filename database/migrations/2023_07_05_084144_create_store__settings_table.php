@@ -14,7 +14,7 @@ return new class extends Migration
     Schema::create('store__settings', function (Blueprint $table) {
       $table->id();
       $table->string('parameter');
-      $table->string('value');
+      $table->longText('value');
       $table->longText('description')->nullable();
       $table->string('createdby')->nullable();
       $table->string('lastmodifiedby')->nullable();

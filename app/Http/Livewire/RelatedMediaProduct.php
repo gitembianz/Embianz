@@ -206,7 +206,7 @@ class RelatedMediaProduct extends Component
       $urlComponents = parse_url($this->file_link[$i]);
 
       $urlWithoutParams = $urlComponents['scheme'] . '://' . $urlComponents['host'] . $urlComponents['path'];
-      $this->file_link[$this->i] = $urlWithoutParams;
+      $this->file_link[$i] = $urlWithoutParams;
       $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp', 'svg'];
       $fileExtension = strtolower(pathinfo($this->file_link[$i], PATHINFO_EXTENSION));
 
