@@ -483,7 +483,7 @@ class StoreOrder extends Component
       }
       $client = new Client();
       $order_lines_string = json_encode($order_lines);
-      $hashed = bcrypt($order->order_number . ";" . $order->account->email);
+      $hashed = base64_encode($order->order_number . ";" . $order->account->email);
 
       $client->post('https://webto.salesforce.com/servlet/servlet.WebToCase', [
         'headers' => [
@@ -990,7 +990,7 @@ class StoreOrder extends Component
         }
         $client = new Client();
         $order_lines_string = json_encode($order_lines);
-        $hashed = bcrypt($order->order_number . ";" . $order->account->email);
+        $hashed = base64_encode($order->order_number . ";" . $order->account->email);
         $client->post('https://webto.salesforce.com/servlet/servlet.WebToCase', [
           'headers' => [
             'Accept' => 'application/json',
