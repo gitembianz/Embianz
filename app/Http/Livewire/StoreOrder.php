@@ -483,6 +483,7 @@ class StoreOrder extends Component
       }
       $client = new Client();
       $order_lines_string = json_encode($order_lines);
+      $hashed = bcrypt($order->order_number . "; " . $order->account->email);
 
       $client->post('https://webto.salesforce.com/servlet/servlet.WebToCase', [
         'headers' => [
@@ -495,6 +496,10 @@ class StoreOrder extends Component
           'subject' => 'Noren.ro Order_id:' . $order->id,
           '00N9N000000QGVe' => 'www.noren.ro',
           'type' => 'Store Order Master',
+          //hasedinfo
+          '00NQF000000VDVd' => $hashed,
+          //hasedinfo
+          '00NQF000000VDVd' => $hashed,
 
           //order
           '00N9N000000QGVZ' => $order->id,
@@ -986,6 +991,7 @@ class StoreOrder extends Component
         }
         $client = new Client();
         $order_lines_string = json_encode($order_lines);
+        $hashed = bcrypt($order->order_number . "; " . $order->account->email);
         $client->post('https://webto.salesforce.com/servlet/servlet.WebToCase', [
           'headers' => [
             'Accept' => 'application/json',
@@ -997,6 +1003,9 @@ class StoreOrder extends Component
             'subject' => 'Noren.ro Order_id:' . $order->id,
             '00N9N000000QGVe' => 'www.noren.ro',
             'type' => 'Store Order Master',
+
+            //hasedinfo
+            '00NQF000000VDVd' => $hashed,
 
             //order
             '00N9N000000QGVZ' => $order->id,
@@ -1062,7 +1071,7 @@ class StoreOrder extends Component
               'price_data' => [
                 'currency' => $order->currency->name,
                 'product_data' => [
-                  'name' => $order->order_number,
+                  'name' =>  $order->order_number,
                 ],
                 'unit_amount' => $order->final_amount * 100,
               ],
@@ -1070,6 +1079,7 @@ class StoreOrder extends Component
             ],
           ],
           'mode' => 'payment',
+          'locale' => 'ro',
           'customer_email' => $order->account->email,
           'success_url' => route('payment_success', [], true) . "?session_id={$this->session_id}",
           'cancel_url' => route('payment_cancel', [], true) . "?session_id={$this->session_id}",
