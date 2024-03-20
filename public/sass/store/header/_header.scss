@@ -8,7 +8,7 @@ header {
   position: fixed;
   top: 0;
   left: 0;
-  padding-top: 26px;
+  // padding-top: 26px;
 }
 
 .header__container {
@@ -50,7 +50,7 @@ header {
   border-radius: 50%;
   position: relative;
 
-  & > svg {
+  &>svg {
     stroke: $lightBlack;
   }
 }
