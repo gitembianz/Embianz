@@ -483,7 +483,7 @@ class StoreOrder extends Component
       }
       $client = new Client();
       $order_lines_string = json_encode($order_lines);
-      $hashed = bcrypt($order->order_number . "; " . $order->account->email);
+      $hashed = bcrypt($order->order_number . ";" . $order->account->email);
 
       $client->post('https://webto.salesforce.com/servlet/servlet.WebToCase', [
         'headers' => [
@@ -498,8 +498,7 @@ class StoreOrder extends Component
           'type' => 'Store Order Master',
           //hasedinfo
           '00NQF000000VDVd' => $hashed,
-          //hasedinfo
-          '00NQF000000VDVd' => $hashed,
+
 
           //order
           '00N9N000000QGVZ' => $order->id,
@@ -991,7 +990,7 @@ class StoreOrder extends Component
         }
         $client = new Client();
         $order_lines_string = json_encode($order_lines);
-        $hashed = bcrypt($order->order_number . "; " . $order->account->email);
+        $hashed = bcrypt($order->order_number . ";" . $order->account->email);
         $client->post('https://webto.salesforce.com/servlet/servlet.WebToCase', [
           'headers' => [
             'Accept' => 'application/json',
