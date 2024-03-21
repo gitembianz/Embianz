@@ -153,15 +153,10 @@ function flyToCart(button) {
 
   numberCart.style.scale = 1.5;
 
-  // button.addEventListener('click', e => {
-    setTimeout(() => {
       if (!button.classList.contains('in')) {
         button.classList.add('in');
         setTimeout(() => button.classList.remove('in'), 1500);
       }
-      e.preventDefault();
-    // }, 650);
-  });
 
   setTimeout(() => {
     numberCart.style.scale = 1;
