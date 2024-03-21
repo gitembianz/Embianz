@@ -150,7 +150,7 @@ class StoreProducts extends Component
   public function getProductsProperty()
   {
     $query = Product::name($this->search)
-      ->where('active', true)
+
       ->with([
         'product_prices',
         'product_prices.pricelist.currency',

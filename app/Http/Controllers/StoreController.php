@@ -86,6 +86,9 @@ class StoreController extends Controller
 
       $data = Product::where('seo_id', $product)->first();
     }
+    if ($data->active == false) {
+      return redirect()->route('home');
+    }
     return view('store.product', ['data' => $data]);
   }
 
