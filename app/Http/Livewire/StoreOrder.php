@@ -12,6 +12,7 @@ use Livewire\Component;
 use App\Models\Cart_Item;
 use App\Models\Order_Item;
 use Stripe\Checkout\Session;
+use GuzzleHttp\Client;
 
 class StoreOrder extends Component
 {
@@ -223,15 +224,14 @@ class StoreOrder extends Component
           'required',
           'min:2',
           'max:20',
-          'regex:/^[^\s]+(\s+[^\s]+)*$/',
-          'regex:/^[a-zA-Z\s]*$/'
+          'regex:/^[\p{L}\s]+$/u',
         ],
         'individual_billing_last' => [
           'required',
           'min:2',
           'max:20',
-          'regex:/^[^\s]+(\s+[^\s]+)*$/',
-          'regex:/^[a-zA-Z\s]*$/'
+          'regex:/^[\p{L}\s]+$/u',
+
         ],
         'individual_billing_phone' => 'required|regex:/^\+?\d{1,4}?\s?\(?\d{1,4}\)?[-.\s]?\d{1,10}[-.\s]?\d{1,10}$/',
         'individual_billing_email' => 'required|email',
@@ -239,21 +239,21 @@ class StoreOrder extends Component
           'required',
           'min:1',
           'max:100',
-          'regex:/^[a-zA-Z0-9\/., _\'`-]+$/',
+          'regex:/^[\p{L}\d\s.]+$/u',
         ],
         'individual_billing_county' =>
         [
           'required',
           'min:1',
           'max:100',
-          'regex:/^[a-zA-Z0-9\/., _\'`-]+$/',
+          'regex:/^[\p{L}\s]+$/u',
         ],
         'individual_billing_city' =>
         [
           'required',
           'min:1',
           'max:100',
-          'regex:/^[a-zA-Z0-9\/., _\'`-]+$/',
+          'regex:/^[\p{L}\s]+$/u',
         ],
         'individual_billing_zipcode' =>
         [
@@ -270,15 +270,13 @@ class StoreOrder extends Component
             'required',
             'min:2',
             'max:20',
-            'regex:/^[^\s]+(\s+[^\s]+)*$/',
-            'regex:/^[a-zA-Z\s]*$/'
+            'regex:/^[\p{L}\s]+$/u',
           ],
           'individual_shipping_last' => [
             'required',
             'min:2',
             'max:20',
-            'regex:/^[^\s]+(\s+[^\s]+)*$/',
-            'regex:/^[a-zA-Z\s]*$/'
+            'regex:/^[\p{L}\s]+$/u',
           ],
           'individual_billing_phone' => 'required|regex:/^\+?\d{1,4}?\s?\(?\d{1,4}\)?[-.\s]?\d{1,10}[-.\s]?\d{1,10}$/',
           'individual_shipping_email' => 'required|email',
@@ -287,21 +285,21 @@ class StoreOrder extends Component
             'required',
             'min:1',
             'max:100',
-            'regex:/^[a-zA-Z0-9\/., _\'`-]+$/',
+            'regex:/^[\p{L}\d\s.]+$/u',
           ],
           'individual_shipping_county' =>
           [
             'required',
             'min:1',
             'max:100',
-            'regex:/^[a-zA-Z0-9\/., _\'`-]+$/',
+            'regex:/^[\p{L}\s]+$/u',
           ],
           'individual_shipping_city' =>
           [
             'required',
             'min:1',
             'max:100',
-            'regex:/^[a-zA-Z0-9\/., _\'`-]+$/',
+            'regex:/^[\p{L}\s]+$/u',
           ],
           'individual_shipping_zipcode' =>
           [
@@ -322,27 +320,23 @@ class StoreOrder extends Component
           'required',
           'min:2',
           'max:20',
-          'regex:/^[^\s]+(\s+[^\s]+)*$/',
-          'regex:/^[a-zA-Z\s]*$/'
+          'regex:/^[\p{L}\s]+$/u',
         ],
         'juridic_billing_last' => [
           'required',
           'min:2',
           'max:20',
-          'regex:/^[^\s]+(\s+[^\s]+)*$/',
-          'regex:/^[a-zA-Z\s]*$/'
+          'regex:/^[\p{L}\s]+$/u',
         ],
         'juridic_billing_phone' => 'required|regex:/^\+?\d{1,4}?\s?\(?\d{1,4}\)?[-.\s]?\d{1,10}$/',
         'juridic_billing_email' => 'required|email',
         'juridic_billing_company_name' => [
           'required',
-          'regex:/^[a-zA-Z0-9]*$/',
-          'regex:/^[^\s]+(\s+[^\s]+)*$/'
+          'regex:/^[\p{L}\s]+$/u',
         ],
         'juridic_billing_registration_code' => [
           'required',
-          'regex:/^[a-zA-Z0-9]*$/',
-          'regex:/^[^\s]+(\s+[^\s]+)*$/'
+          'regex:/^[\p{L}\s]+$/u',
         ],
         'juridic_billing_registration_number' => [
           'required',
@@ -353,21 +347,21 @@ class StoreOrder extends Component
           'required',
           'min:1',
           'max:100',
-          'regex:/^[a-zA-Z0-9\/., _\'`-]+$/',
+          'regex:/^[\p{L}\d\s.]+$/u',
         ],
         'juridic_billing_county' =>
         [
           'required',
           'min:1',
           'max:100',
-          'regex:/^[a-zA-Z0-9\/., _\'`-]+$/',
+          'regex:/^[\p{L}\s]+$/u',
         ],
         'juridic_billing_city' =>
         [
           'required',
           'min:1',
           'max:100',
-          'regex:/^[a-zA-Z0-9\/., _\'`-]+$/',
+          'regex:/^[\p{L}\s]+$/u',
         ],
         'juridic_billing_zipcode' =>
         [
@@ -383,15 +377,13 @@ class StoreOrder extends Component
             'required',
             'min:2',
             'max:20',
-            'regex:/^[^\s]+(\s+[^\s]+)*$/',
-            'regex:/^[a-zA-Z\s]*$/'
+            'regex:/^[\p{L}\s]+$/u',
           ],
           'juridic_shipping_last' => [
             'required',
             'min:2',
             'max:20',
-            'regex:/^[^\s]+(\s+[^\s]+)*$/',
-            'regex:/^[a-zA-Z\s]*$/'
+            'regex:/^[\p{L}\s]+$/u',
           ],
           'juridic_shipping_phone' => 'required|regex:/^\+?\d{1,4}?\s?\(?\d{1,4}\)?[-.\s]?\d{1,10}$/',
           'juridic_shipping_email' => 'required|email',
@@ -399,22 +391,19 @@ class StoreOrder extends Component
             'required',
             'min:1',
             'max:100',
-            'regex:/^[^\s]+(\s+[^\s]+)*$/',
-            'regex:/^[a-zA-Z0-9\/., _\'`-]*$/'
+            'regex:/^[\p{L}\d\s.]+$/u',
           ],
           'juridic_shipping_county' => [
             'required',
             'min:1',
             'max:100',
-            'regex:/^[^\s]+(\s+[^\s]+)*$/',
-            'regex:/^[a-zA-Z0-9\/., _\'`-]*$/'
+            'regex:/^[\p{L}\s]+$/u',
           ],
           'juridic_shipping_city' => [
             'required',
             'min:1',
             'max:100',
-            'regex:/^[^\s]+(\s+[^\s]+)*$/',
-            'regex:/^[a-zA-Z0-9\/., _\'`-]*$/'
+            'regex:/^[\p{L}\s]+$/u',
           ],
           'juridic_shipping_zipcode' => [
             'required',
@@ -435,7 +424,7 @@ class StoreOrder extends Component
     if ($item == 'rtc') {
       $this->payment = $this->cash;
       $this->rtc = true;
-      $this->crd = true;
+      $this->crd = false;
       $this->invoice = false;
     }
     if ($item == 'crd') {
@@ -481,6 +470,86 @@ class StoreOrder extends Component
         $item->product->save();
       }
       $this->step = 3;
+      //request to salesforce
+      $order_lines = [];
+      foreach ($order->orders as $sub_order) {
+        $order_line = [
+          '00N9N000000QGYY' => $sub_order->order_id,
+          '00N9N000000QGYT' => $sub_order->id,
+          '00N9N000000QGYd' => $sub_order->product_id,
+          '00N9N000000QGYi' => $sub_order->quantity
+        ];
+        $order_lines[] = $order_line;
+      }
+      $client = new Client();
+      $order_lines_string = json_encode($order_lines);
+      $hashed = base64_encode($order->order_number . ";" . $order->account->email);
+
+      $client->post('https://webto.salesforce.com/servlet/servlet.WebToCase', [
+        'headers' => [
+          'Accept' => 'application/json',
+        ],
+        'query' => [
+          'orgid' => '00D09000008XPQu',
+          'debug' => '1',
+          'debugEmail' => 'iosif.relia@eztemcorp.com',
+          'subject' => 'Noren.ro Order_id:' . $order->id,
+          '00N9N000000QGVe' => 'www.noren.ro',
+          'type' => 'Store Order Master',
+          //hasedinfo
+          '00NQF000000VDVd' => $hashed,
+
+
+          //order
+          '00N9N000000QGVZ' => $order->id,
+          '00N9N000000QGVj' => $order->order_number,
+          '00N9N000000QGVo' => $order->status->name,
+          '00N9N000000QGVt' => $order->currency->name,
+          '00N9N000000QGVy' => $order->payment->name,
+          '00N9N000000QGW3' => $order->voucher->code ?? "",
+          '00N9N000000QGW8' => $order->voucher_value,
+          '00N9N000000QGWD' => $order->account_id,
+          '00N9N000000QGWI' => $order->delivery_price,
+          '00N9N000000QGWN' => $order->final_amount,
+
+          //orderlines
+          '00N9N000000QGYi' => $order_lines_string,
+
+          //account
+          '00N9N000000QGWS' => $order->account->id,
+          '00N9N000000QGYx' => $order->account->type,
+          '00N9N000000QGWX' => $order->account->company_name ?? "",
+          '00N9N000000QGWc' => $order->account->registration_code ?? "",
+          '00N9N000000QGWh' => $order->account->registration_number ?? "",
+          '00N9N000000QGWr' => $order->account->bank_name ?? "",
+          '00N9N000000QGWw' => $order->account->account ?? "",
+          //billing adress
+          '00N9N000000QGX1' => $order->account->addresses->where('type', 'billing')->first()->address1,
+          '00N9N000000QGX6' => $order->account->addresses->where('type', 'billing')->first()->address2,
+          '00N9N000000QGXB' => $order->account->addresses->where('type', 'billing')->first()->country,
+          '00N9N000000QGXG' => $order->account->addresses->where('type', 'billing')->first()->county,
+          '00N9N000000QGXL' => $order->account->addresses->where('type', 'billing')->first()->city,
+          '00N9N000000QGXQ' => $order->account->addresses->where('type', 'billing')->first()->zipcode,
+          '00N9N000000QGXV' => $order->account->addresses->where('type', 'billing')->first()->first_name ?? "",
+          '00N9N000000QGXa' => $order->account->addresses->where('type', 'billing')->first()->last_name ?? "",
+          '00N9N000000QGXf' => $order->account->addresses->where('type', 'billing')->first()->phone ?? "",
+          '00N9N000000QGXk' => $order->account->addresses->where('type', 'billing')->first()->email ?? "",
+          //shipping adress
+          '00N9N000000QGXp' => $order->account->addresses->where('type', 'shipping')->first()->address1,
+          '00N9N000000QGXu' => $order->account->addresses->where('type', 'shipping')->first()->address2,
+          '00N9N000000QGXz' => $order->account->addresses->where('type', 'shipping')->first()->country,
+          '00N9N000000QGWi' => $order->account->addresses->where('type', 'shipping')->first()->county,
+          '00N9N000000QGY4' => $order->account->addresses->where('type', 'shipping')->first()->city,
+          '00N9N000000QGWE' => $order->account->addresses->where('type', 'shipping')->first()->zipcode,
+          '00N9N000000QGY9' => $order->account->addresses->where('type', 'shipping')->first()->first_name ?? "",
+          '00N9N000000QGYE' => $order->account->addresses->where('type', 'shipping')->first()->last_name ?? "",
+          '00N9N000000QGYJ' => $order->account->addresses->where('type', 'shipping')->first()->phone ?? "",
+          '00N9N000000QGYO' => $order->account->addresses->where('type', 'shipping')->first()->email ?? "",
+        ],
+        'curl' => [
+          CURLOPT_SSL_VERIFYPEER => false,
+        ],
+      ]);
       session()->forget('paymentsucces');
     }
 
@@ -633,6 +702,10 @@ class StoreOrder extends Component
             'updated_at' => now(),
           ]);
           Address::where('account_id', $this->is_account)->where('type', 'billing')->update([
+            'first_name' => $this->individual_billing_first,
+            'last_name' => $this->individual_billing_last,
+            'phone' => $this->individual_billing_phone,
+            'email' => $this->individual_billing_email,
             'address1' => $this->individual_billing_address1,
             'address2' => $this->individual_billing_address2,
             'country' => $this->individual_billing_country,
@@ -668,6 +741,10 @@ class StoreOrder extends Component
 
           Address::create([
             'account_id' => $account->id,
+            'first_name' => $this->individual_billing_first,
+            'last_name' => $this->individual_billing_last,
+            'phone' => $this->individual_billing_phone,
+            'email' => $this->individual_billing_email,
             'address1' => $this->individual_billing_address1,
             'address2' => $this->individual_billing_address2,
             'type' => 'billing',
@@ -727,6 +804,10 @@ class StoreOrder extends Component
             'updated_at' => now(),
           ]);
           Address::where('account_id', $this->is_account)->where('type', 'billing')->update([
+            'first_name' => $this->juridic_billing_first,
+            'last_name' => $this->juridic_billing_last,
+            'phone' => $this->juridic_billing_phone,
+            'email' => $this->juridic_billing_email,
             'address1' => $this->juridic_billing_address1,
             'address2' => $this->juridic_billing_address2,
             'country' => $this->juridic_billing_country,
@@ -768,6 +849,10 @@ class StoreOrder extends Component
 
           Address::create([
             'account_id' => $account->id,
+            'first_name' => $this->juridic_billing_first,
+            'last_name' => $this->juridic_billing_last,
+            'phone' => $this->juridic_billing_phone,
+            'email' => $this->juridic_billing_email,
             'address1' => $this->juridic_billing_address1,
             'address2' => $this->juridic_billing_address2,
             'type' => 'billing',
@@ -892,6 +977,85 @@ class StoreOrder extends Component
 
         $this->step++;
         $this->emit('orderprocess');
+        //request to salesforce
+        $order_lines = [];
+        foreach ($order->orders as $sub_order) {
+          $order_line = [
+            '00N9N000000QGYY' => $sub_order->order_id,
+            '00N9N000000QGYT' => $sub_order->id,
+            '00N9N000000QGYd' => $sub_order->product_id,
+            '00N9N000000QGYi' => $sub_order->quantity
+          ];
+          $order_lines[] = $order_line;
+        }
+        $client = new Client();
+        $order_lines_string = json_encode($order_lines);
+        $hashed = base64_encode($order->order_number . ";" . $order->account->email);
+        $client->post('https://webto.salesforce.com/servlet/servlet.WebToCase', [
+          'headers' => [
+            'Accept' => 'application/json',
+          ],
+          'query' => [
+            'orgid' => '00D09000008XPQu',
+            'debug' => '1',
+            'debugEmail' => 'iosif.relia@eztemcorp.com',
+            'subject' => 'Noren.ro Order_id:' . $order->id,
+            '00N9N000000QGVe' => 'www.noren.ro',
+            'type' => 'Store Order Master',
+
+            //hasedinfo
+            '00NQF000000VDVd' => $hashed,
+
+            //order
+            '00N9N000000QGVZ' => $order->id,
+            '00N9N000000QGVj' => $order->order_number,
+            '00N9N000000QGVo' => $order->status->name,
+            '00N9N000000QGVt' => $order->currency->name,
+            '00N9N000000QGVy' => $order->payment->type,
+            '00N9N000000QGW3' => $order->voucher->code ?? "",
+            '00N9N000000QGW8' => $order->voucher_value,
+            '00N9N000000QGWD' => $order->account_id,
+            '00N9N000000QGWI' => $order->delivery_price,
+            '00N9N000000QGWN' => $order->final_amount,
+
+            //orderlines
+            '00N9N000000QGYi' => $order_lines_string,
+
+            //account
+            '00N9N000000QGWS' => $order->account->id,
+            '00N9N000000QGYx' => $order->account->type,
+            '00N9N000000QGWX' => $order->account->company_name ?? "",
+            '00N9N000000QGWc' => $order->account->registration_code ?? "",
+            '00N9N000000QGWh' => $order->account->registration_number ?? "",
+            '00N9N000000QGWr' => $order->account->bank_name ?? "",
+            '00N9N000000QGWw' => $order->account->account ?? "",
+            //billing adress
+            '00N9N000000QGX1' => $order->account->addresses->where('type', 'billing')->first()->address1,
+            '00N9N000000QGX6' => $order->account->addresses->where('type', 'billing')->first()->address2,
+            '00N9N000000QGXB' => $order->account->addresses->where('type', 'billing')->first()->country,
+            '00N9N000000QGXG' => $order->account->addresses->where('type', 'billing')->first()->county,
+            '00N9N000000QGXL' => $order->account->addresses->where('type', 'billing')->first()->city,
+            '00N9N000000QGXQ' => $order->account->addresses->where('type', 'billing')->first()->zipcode,
+            '00N9N000000QGXV' => $order->account->addresses->where('type', 'billing')->first()->first_name ?? "",
+            '00N9N000000QGXa' => $order->account->addresses->where('type', 'billing')->first()->last_name ?? "",
+            '00N9N000000QGXf' => $order->account->addresses->where('type', 'billing')->first()->phone ?? "",
+            '00N9N000000QGXk' => $order->account->addresses->where('type', 'billing')->first()->email ?? "",
+            //shipping adress
+            '00N9N000000QGXp' => $order->account->addresses->where('type', 'shipping')->first()->address1,
+            '00N9N000000QGXu' => $order->account->addresses->where('type', 'shipping')->first()->address2,
+            '00N9N000000QGXz' => $order->account->addresses->where('type', 'shipping')->first()->country,
+            '00N9N000000QGWi' => $order->account->addresses->where('type', 'shipping')->first()->county,
+            '00N9N000000QGY4' => $order->account->addresses->where('type', 'shipping')->first()->city,
+            '00N9N000000QGWE' => $order->account->addresses->where('type', 'shipping')->first()->zipcode,
+            '00N9N000000QGY9' => $order->account->addresses->where('type', 'shipping')->first()->first_name ?? "",
+            '00N9N000000QGYE' => $order->account->addresses->where('type', 'shipping')->first()->last_name ?? "",
+            '00N9N000000QGYJ' => $order->account->addresses->where('type', 'shipping')->first()->phone ?? "",
+            '00N9N000000QGYO' => $order->account->addresses->where('type', 'shipping')->first()->email ?? "",
+          ],
+          'curl' => [
+            CURLOPT_SSL_VERIFYPEER => false,
+          ],
+        ]);
       } else {
         $this->cart->update([
           'order_id' => $order->id,
@@ -906,7 +1070,7 @@ class StoreOrder extends Component
               'price_data' => [
                 'currency' => $order->currency->name,
                 'product_data' => [
-                  'name' => $order->order_number,
+                  'name' =>  $order->order_number,
                 ],
                 'unit_amount' => $order->final_amount * 100,
               ],
@@ -914,6 +1078,7 @@ class StoreOrder extends Component
             ],
           ],
           'mode' => 'payment',
+          'locale' => 'ro',
           'customer_email' => $order->account->email,
           'success_url' => route('payment_success', [], true) . "?session_id={$this->session_id}",
           'cancel_url' => route('payment_cancel', [], true) . "?session_id={$this->session_id}",

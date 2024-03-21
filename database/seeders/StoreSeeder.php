@@ -26,6 +26,18 @@ class StoreSeeder extends Seeder
             ['parameter' => 'order_prefix', 'value' => 'NRN', 'description' => 'Order prefix', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'stripe_key', 'value' => 'sk_test_51Op9rnBQZaJ5Yyz4MobMR7Ckodq5SsmNtEb5c4ktwtA7pasOXxm7tbcWlPKv3oKeDspQfPeplyPY6qVRrJdxobTN00DP0ZWmNQ', 'description' => 'Stripe Payment key', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'auto_webp', 'value' => 'true', 'description' => 'Salvare automata a imaginilor in webp (valaore- true-false)', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'header_top_text', 'value' => '', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'confirm_order_text', 'value' => 'Comanda a fost plasata cu succes!
+Vă mulțumim pentru plata efectuată!  Am primit-o și în prezent procesăm comanda dumneavoastră. Echipa noastră lucrează cu dedicație pentru a pregăti produsul dumneavoastră pentru expediere. 
+
+Odată ce comanda dumneavoastră este în drum spre dumneavoastră, vă vom trimite un e-mail de confirmare cu informații despre urmărire. Acest lucru vă va permite să urmăriți coletul și să știți când să vă așteptați la sosirea sa. 
+
+Dacă aveți întrebări sau aveți nevoie de asistență, vă rugăm să nu ezitați să contactați echipa noastră de suport pentru clienți. Suntem aici pentru a vă ajuta și pentru a vă asigura satisfacția. 
+
+Apreciem afacerea dumneavoastră și sperăm că achiziția dumneavoastră vă aduce fericire. Vă mulțumim că ați ales produsele noastre și așteptăm cu nerăbdare să vă mai servim în viitor. 
+Cu cele mai bune urări!', 'description' => 'Default confrim text', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+
+
         ]);
     }
 }
