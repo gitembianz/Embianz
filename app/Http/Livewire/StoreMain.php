@@ -47,6 +47,8 @@ class StoreMain extends Component
     ])
       ->select('id', 'name', 'seo_id', 'quantity', 'short_description', 'popularity')
       ->where('active', true)
+      ->where('start_date', '<=',  now()->format('Y-m-d'))
+      ->where('end_date', '>=',  now()->format('Y-m-d'))
       ->orderBy('popularity', 'desc')
       ->limit(app('global_limit_slideritems'))
       ->get();
@@ -70,6 +72,8 @@ class StoreMain extends Component
     ])
       ->select('id', 'name', 'seo_id', 'quantity', 'short_description', 'popularity')
       ->where('active', true)
+      ->where('start_date', '<=',  now()->format('Y-m-d'))
+      ->where('end_date', '>=',  now()->format('Y-m-d'))
       ->where('is_new', true)
       ->limit(app('global_limit_slideritems'))
       ->get();
