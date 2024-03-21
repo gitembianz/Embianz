@@ -1,4 +1,4 @@
-<div wire:ignore="$refresh">
+<div>
 	{{-- <script rel="preload" src="script/store/header.js" as="script"></script> --}}
 	<x-store-alert />
 	<!-- This is the Header;
