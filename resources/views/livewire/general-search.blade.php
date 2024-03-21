@@ -19,7 +19,7 @@
 		<ul class="search__list">
 		@if (count($objects) > 0 || count($cats) > 0)
 		@if (count($objects) > 0)
-		@foreach ($objects->where('active', true) as $product)
+		@foreach ($objects as $product)
 		<li class="search__item">
 		<a class="search__link" href="{{ route("product", ["product" => $product->seo_id !== null && $product->seo_id !== "" ? $product->seo_id : $product->id]) }}">
 		@if ($product->media->first() != null)

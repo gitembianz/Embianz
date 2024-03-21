@@ -123,6 +123,6 @@ class Product extends Model
   public static function name($search)
   {
     return empty($search) ? static::query()
-      : static::query()->where('name', 'like', '%' . $search . '%')->orWhere('ean', 'like', '%' . $search . '%')->orWhere('sku', 'like', '%' . $search . '%');
+      : static::query()->where('active', true)->where('name', 'like', '%' . $search . '%')->orWhere('ean', 'like', '%' . $search . '%')->orWhere('sku', 'like', '%' . $search . '%');
   }
 }

@@ -43,9 +43,8 @@ class GeneralSearch extends Component
     public function getObjectsProperty()
     {
         if ($this->search != "") {
-
             return Product::name($this->search)
-                ->select('id', 'name', 'seo_id', 'short_description', 'active')
+                ->select('id', 'name', 'seo_id', 'short_description')
                 ->with([
                     'media' => function ($query) {
                         $query->select('path', 'name')->where('type', 'min');
@@ -64,6 +63,7 @@ class GeneralSearch extends Component
             return collect();
         }
     }
+
 
     public function getCatsProperty()
     {
