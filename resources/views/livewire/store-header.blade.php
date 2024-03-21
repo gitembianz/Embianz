@@ -7,15 +7,15 @@
 				Similarly, its JavaScript functionality is implemented in the "header.js" file. -->
 	<!---------------------------------------------------------->
 	<!--------------------Banner(Header Top)-------------------->
-	<div class="banner">
-		@if (app()->has("global_header_top_text") && app("global_header_top_text") != "")
+	@if (app()->has("global_header_top_text") && app("global_header_top_text") != "")
+		<div class="banner">
 			<div class="banner__container container">
 				<p>
 					{!! app("global_header_top_text") !!}
 				</p>
 			</div>
-		@endif
-	</div>
+		</div>
+	@endif
 	<!------------------END-Banner(Header Top)------------------>
 	<!---------------------------------------------------------->
 	<!--------------------------Header-------------------------->
