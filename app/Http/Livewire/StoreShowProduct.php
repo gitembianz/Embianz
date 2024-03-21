@@ -51,20 +51,21 @@ class StoreShowProduct extends Component
         'related_product' => function ($query) {
           $query->select('parrent_id', 'product_id', 'id')->with([
             'product' => function ($query) {
-              $query->select('id', 'name', 'seo_id', 'short_description', 'quantity')->where('active', 1)->with([
-                'media' => function ($query) {
-                  $query->select('path', 'name')->where('type', 'main');
-                },
-                'product_prices' => function ($query) {
-                  $query->select('product_id', 'value', 'pricelist_id', 'discount', 'rrp_value')
-                    ->with(['pricelist' => function ($query) {
-                      $query->select('id', 'currency_id')->with('currency:id,name');
-                    }]);
-                },
-                'wishlists' => function ($query) {
-                  $query->select('id', 'product_id')->where('session_id', $this->session_id);
-                }
-              ]);
+              $query->select('id', 'name', 'seo_id', 'short_description', 'quantity')->where('active', 1)->where('start_date', '<=',  now()->format('Y-m-d'))
+                ->where('end_date', '>=',  now()->format('Y-m-d'))->with([
+                  'media' => function ($query) {
+                    $query->select('path', 'name')->where('type', 'main');
+                  },
+                  'product_prices' => function ($query) {
+                    $query->select('product_id', 'value', 'pricelist_id', 'discount', 'rrp_value')
+                      ->with(['pricelist' => function ($query) {
+                        $query->select('id', 'currency_id')->with('currency:id,name');
+                      }]);
+                  },
+                  'wishlists' => function ($query) {
+                    $query->select('id', 'product_id')->where('session_id', $this->session_id);
+                  }
+                ]);
             }
           ]);
         }

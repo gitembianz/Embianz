@@ -151,6 +151,8 @@ class StoreProducts extends Component
   {
     $query = Product::name($this->search)
       ->where('active', true)
+      ->where('start_date', '<=',  now()->format('Y-m-d'))
+      ->where('end_date', '>=',  now()->format('Y-m-d'))
       ->with([
         'product_prices',
         'product_prices.pricelist.currency',

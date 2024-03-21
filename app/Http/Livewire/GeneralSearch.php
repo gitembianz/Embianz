@@ -46,6 +46,8 @@ class GeneralSearch extends Component
             return Product::name($this->search)
                 ->select('id', 'name', 'seo_id', 'short_description')
                 ->where('active', true)
+                ->where('start_date', '<=',  now()->format('Y-m-d'))
+                ->where('end_date', '>=',  now()->format('Y-m-d'))
                 ->with([
                     'media' => function ($query) {
                         $query->select('path', 'name')->where('type', 'min');
@@ -71,6 +73,8 @@ class GeneralSearch extends Component
             return Category::search_by_name($this->search)
                 ->select('id', 'name', 'seo_id')
                 ->where('active', true)
+                ->where('start_date', '<=',  now()->format('Y-m-d'))
+                ->where('end_date', '>=',  now()->format('Y-m-d'))
                 ->with([
                     'media' => function ($query) {
                         $query->select('path', 'name')->where('type', 'min');

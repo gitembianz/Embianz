@@ -56,7 +56,8 @@ class StoreHeader extends Component
 
   public function getCategoriesProperty()
   {
-    return Category::select('id', 'name', 'seo_id')
+    return Category::select('id', 'name', 'seo_id')->where('start_date', '<=',  now()->format('Y-m-d'))
+      ->where('end_date', '>=',  now()->format('Y-m-d'))
       ->with([
         'media' => function ($query) {
           $query->select('path', 'name')->where('type', 'min');
@@ -64,22 +65,24 @@ class StoreHeader extends Component
         'subcategory' => function ($query) {
           $query->select('parrent_id', 'category_id')->with([
             'category' => function ($query) {
-              $query->select('id', 'name', 'seo_id', 'sequence')->where('store_tab', 1)->where('active', 1)->with([
-                'media' => function ($query) {
-                  $query->select('path', 'name')->where('type', 'min');
-                },
-                'subcategory' => function ($query) {
-                  $query->select('parrent_id', 'category_id')->with([
-                    'category' => function ($query) {
-                      $query->select('id', 'name', 'seo_id', 'sequence')->where('store_tab', 1)->where('active', 1)->with([
-                        'media' => function ($query) {
-                          $query->select('path', 'name')->where('type', 'min');
-                        }
-                      ]);
-                    }
-                  ]);
-                }
-              ]);
+              $query->select('id', 'name', 'seo_id', 'sequence')->where('store_tab', 1)->where('active', 1)->where('start_date', '<=',  now()->format('Y-m-d'))
+                ->where('end_date', '>=',  now()->format('Y-m-d'))->with([
+                  'media' => function ($query) {
+                    $query->select('path', 'name')->where('type', 'min');
+                  },
+                  'subcategory' => function ($query) {
+                    $query->select('parrent_id', 'category_id')->with([
+                      'category' => function ($query) {
+                        $query->select('id', 'name', 'seo_id', 'sequence')->where('store_tab', 1)->where('active', 1)->where('start_date', '<=',  now()->format('Y-m-d'))
+                          ->where('end_date', '>=',  now()->format('Y-m-d'))->with([
+                            'media' => function ($query) {
+                              $query->select('path', 'name')->where('type', 'min');
+                            }
+                          ]);
+                      }
+                    ]);
+                  }
+                ]);
             }
           ]);
         }
