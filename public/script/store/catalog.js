@@ -153,70 +153,59 @@ function applySort(selector) {
 function flyToCart(button) {
   const shopping_cart = document.getElementById("basketOpen");
   const numberCart = shopping_cart.querySelector(".header__count");
+  const target_parent = button.closest(".product"); // Obținem cel mai apropiat părinte cu clasa "product"
 
-  if(!numberCart) {
+  if(!button.classList.contains('in')) {
+      button.classList.add('in');
+      setTimeout(() => button.classList.remove('in'), 1500);
+  }
+
+  if (!target_parent) {
+    console.error("Nu s-a găsit părintele 'product'.");
     return;
   }
 
-  const target_parent = button.closest(".product"); // Obținem cel mai apropiat părinte cu clasa "product"
 
+  // Creăm o imagine separată
+  shopping_cart.classList.add("active");
+  let img = target_parent.querySelector("img");
+  let flying_img = img.cloneNode();
+  flying_img.classList.add("flying-img");
+  target_parent.appendChild(flying_img);
 
-  // button.addEventListener('click', e => {
-    if(!button.classList.contains('in')) {
-      button.classList.add('in');
-      setTimeout(() => button.classList.remove('in'), 1500);
-    }
+  // Obținem poziția imaginii care va zbura
+  const flying_img_pos = flying_img.getBoundingClientRect();
+  const shopping_cart_pos = shopping_cart.getBoundingClientRect();
 
-    // e.preventDefault();
-  // });
+  let data = {
+    left:
+      shopping_cart_pos.left -
+      (shopping_cart_pos.width / 2 +
+        flying_img_pos.left +
+        flying_img_pos.width / 2),
+    top: shopping_cart_pos.bottom - flying_img_pos.bottom + 30,
+  };
 
+  flying_img.style.cssText = `
+      --left : ${data.left.toFixed(2)}px;
+      --top : ${data.top.toFixed(2)}px;
+      z-index: 400;
+  `;
 
   setTimeout(() => {
-    if (!target_parent) {
-      console.error("Nu s-a găsit părintele 'product'.");
-      return;
-    }
+    target_parent.removeChild(flying_img);
+    shopping_cart.classList.remove("active");
+  }, 1500);
 
-    shopping_cart.classList.add("active");
-
-    // Creăm o imagine separată
-    let img = target_parent.querySelector("img");
-    let flying_img = img.cloneNode();
-    flying_img.classList.add("flying-img");
-    target_parent.appendChild(flying_img);
-
-    // Obținem poziția imaginii care va zbura
-    const flying_img_pos = flying_img.getBoundingClientRect();
-    const shopping_cart_pos = shopping_cart.getBoundingClientRect();
-
-    let data = {
-      left:
-        shopping_cart_pos.left -
-        (shopping_cart_pos.width / 2 +
-          flying_img_pos.left +
-          flying_img_pos.width / 2),
-      top: shopping_cart_pos.bottom - flying_img_pos.bottom + 30,
-    };
-
-    flying_img.style.cssText = `
-        --left : ${data.left.toFixed(2)}px;
-        --top : ${data.top.toFixed(2)}px;
-        z-index: 400;
-    `;
-
-    setTimeout(() => {
-      target_parent.removeChild(flying_img);
-      shopping_cart.classList.remove("active");
-      if (numberCart) {
-        numberCart.style.scale = 1;
-      }
-    }, 1500);
-
-    if (numberCart) {
+  // Number Cart upscale
+  if(!numberCart) {
+    return;
+  } else {
       numberCart.style.scale = 1.5;
-    }
-
-  }, 650)
+      setTimeout(() => {
+          numberCart.style.scale = 1;
+      }, 1500);
+  }
 }
 
 
