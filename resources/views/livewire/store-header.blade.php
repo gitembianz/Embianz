@@ -1,4 +1,4 @@
-<div>
+<div wire:ignore="$refresh">
 	{{-- <script rel="preload" src="script/store/header.js" as="script"></script> --}}
 	<x-store-alert />
 	<!-- This is the Header;
@@ -9,7 +9,7 @@
 	<!--------------------Banner(Header Top)-------------------->
 	<div class="banner">
 		@if (app()->has("global_header_top_text") && app("global_header_top_text") != "")
-			<div class="banner__container container" wire:ignore="$refresh">
+			<div class="banner__container container">
 				<p>
 					{!! app("global_header_top_text") !!}
 				</p>
