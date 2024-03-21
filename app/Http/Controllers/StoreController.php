@@ -86,7 +86,7 @@ class StoreController extends Controller
 
       $data = Product::where('seo_id', $product)->first();
     }
-    if ($data->active == false) {
+    if ($data->active == false || $data->start_date >= now()->format('Y-m-d') || $data->end_date <= now()->format('Y-m-d')) {
       abort(404);
     }
     return view('store.product', ['data' => $data]);
