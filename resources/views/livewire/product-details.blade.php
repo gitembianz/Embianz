@@ -78,7 +78,7 @@
 		<span>Cantitatea maxima a produsului este {{ $limit }}</span>
 	@endif
 	@if ($price && $product->quantity != 0)
-		<button wire:click="addToCart({{ $product->id }})" class="card__button" style="width: 100%;height: 40px;" onclick="flyToCart(this)" aria-label="Add to cart button">
+		<button class="card__button" style="width: 100%;height: 40px;" onclick="flyToCart(this)" aria-label="Add to cart button" wire:click="addToCart({{ $product->id }})" wire:ignore="$refresh">
 			<div class="card__button--cart">
 				<svg>
 					<circle cx="9" cy="21" r="1"></circle>
