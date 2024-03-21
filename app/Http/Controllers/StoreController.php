@@ -6,6 +6,7 @@ use App\Models\Order;
 use App\Models\Product;
 use App\Models\Category;
 use App\Http\Controllers\Controller;
+use App\Models\Status;
 
 class StoreController extends Controller
 {
@@ -55,7 +56,7 @@ class StoreController extends Controller
   public function myorder($order_number = null)
   {
     // Retrieve the order details using the order_number
-    $order = Order::where('order_number', $order_number)->first();
+    $order = Order::where('order_number', base64_decode($order_number))->first();
 
     // Check if order exists
     if ($order) {
