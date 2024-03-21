@@ -455,16 +455,16 @@ function flyToCart(button) {
   const target_parent = button.closest(".product"); // Obținem cel mai apropiat părinte cu clasa "product"
 
   button.addEventListener('click', e => {
-    setTimeout(() => {
+    // setTimeout(() => {
       if(!button.classList.contains('in')) {
           button.classList.add('in');
-          setTimeout(() => button.classList.remove('in'), 2000);
+          setTimeout(() => button.classList.remove('in'), 1500);
       }
       e.preventDefault();
-    }, 650);
+    // }, 650);
   });
 
-  setTimeout(() => {
+  // setTimeout(() => {
     if (!target_parent) {
       console.error("Nu s-a găsit părintele 'product'.");
       return;
@@ -509,7 +509,7 @@ function flyToCart(button) {
       numberCart.style.scale = 1.5;
     }
 
-  }, 650)
+  // }, 650)
 }
 //<-------------------------- Start Functions -------------------------->
 sliderProduct(".product-slider", ".product-modal");

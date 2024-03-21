@@ -1,6 +1,6 @@
 <div class="card__button--wrapper">
 	@if ($product->quantity != 0)
-		<button class="card__button" wire:click="addToCart({{ $product->id }})" onclick="flyToCart(this)">
+		<button wire:click="addToCart({{ $product->id }})" wire:ignore="$refresh" class="card__button" onclick="flyToCart(this)">
 			<div class="card__button--cart">
 				<svg>
 					<circle cx="9" cy="21" r="1"></circle>
