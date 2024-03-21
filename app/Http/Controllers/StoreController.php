@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\Category;
 use App\Http\Controllers\Controller;
@@ -49,6 +50,21 @@ class StoreController extends Controller
   public function contact()
   {
     return view('store.contact');
+  }
+
+  public function myorder($order_number = null)
+  {
+    // Retrieve the order details using the order_number
+    $order = Order::where('order_number', $order_number)->first();
+
+    // Check if order exists
+    if ($order) {
+      // Return a view with order details
+      return view('store.myorder', compact('order'));
+    } else {
+      // Handle case where order is not found
+      return abort(404);
+    }
   }
   public function products($categorySlug = null)
   {

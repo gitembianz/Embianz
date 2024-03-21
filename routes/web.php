@@ -139,6 +139,11 @@
   route::get('/wishlist', [StoreController::class, 'wislist'])->name('wislist');
   route::get('/complete', [StoreController::class, 'complete'])->name('complete');
   route::get('/order', [StoreController::class, 'order'])->name('order');
+  Route::get('myorder/{order_number?}', [StoreController::class, 'myorder'])
+    ->name('my_order')
+    ->middleware('check.order');
+
+
   route::get('/product/{product}', [StoreController::class, 'show'])->name('product');
   route::get('/storeproducts/{categorySlug?}', [StoreController::class, 'products'])->name('products');
   route::get('/faq', [StoreController::class, 'faq'])->name('faq');
