@@ -45,8 +45,7 @@ class GeneralSearch extends Component
         if ($this->search != "") {
 
             return Product::name($this->search)
-                ->select('id', 'name', 'seo_id', 'short_description')
-                ->where('active', true)
+                ->select('id', 'name', 'seo_id', 'short_description', 'active')
                 ->with([
                     'media' => function ($query) {
                         $query->select('path', 'name')->where('type', 'min');

@@ -81,10 +81,10 @@
 	<!---------------------------------------------------------->
 	<!-------------------------Catalogue------------------------>
 	<section class="catalogue container">
-		@if ($products->isEmpty())
+		@if ($products->where('active', true)->isEmpty())
 			<p>Nu au fost produse gasite</p>
 		@else
-			@foreach ($products as $index => $product)
+			@foreach ($products->where('active', true) as $index => $product)
 				<div class="product">
 					<div @if ($loop->last) id="last_record" @endif class="card" role="listitem">
 						<a href="{{ route("product", ["product" => $product->seo_id !== null && $product->seo_id !== "" ? $product->seo_id : $product->id]) }}">
