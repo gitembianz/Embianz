@@ -163,7 +163,7 @@ function flyToCart(button) {
     for (let i = 0; i < clickCount; i++) {
       setTimeout(() => {
         button.classList.add('in');
-      }, originalDelay + (i * 200));
+      }, originalDelay + (i * 400));
     }
   }
 

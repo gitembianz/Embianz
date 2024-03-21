@@ -147,12 +147,12 @@ function flyToCart(button) {
   let clickCount = 0;
 
   function startAnimation() {
-    let originalDelay = 400;
+    let originalDelay = 600;
 
     for (let i = 0; i < clickCount; i++) {
       setTimeout(() => {
         button.classList.add('in');
-      }, originalDelay + (i * 200));
+      }, originalDelay + (i * 400));
     }
   }
 
