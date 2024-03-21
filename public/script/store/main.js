@@ -144,24 +144,6 @@ function slider(sliderID) {
 //<--------------------------------------------------------------------->
 //<---------------------------- Add to Cart ---------------------------->
 function flyToCart(button) {
-  let clickCount = 0;
-
-  function startAnimation() {
-    let originalDelay = 600;
-
-    for (let i = 0; i < clickCount; i++) {
-      setTimeout(() => {
-        button.classList.add('in');
-      }, originalDelay + (i * 400));
-    }
-  }
-
-  function handleButtonClick() {
-    clickCount++; // Incrementăm numărul de clicuri la fiecare clic pe buton
-    startAnimation(); // Apelăm funcția startAnimation pentru a programa animațiile
-  }
-  handleButtonClick()
-
   const shopping_cart = document.getElementById("basketOpen");
   const numberCart = shopping_cart.querySelector(".header__count");
   numberCart.style.scale = 1.5;

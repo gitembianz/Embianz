@@ -85,3 +85,17 @@ modal(".modal");
 // document.addEventListener("DOMContentLoaded", function () {
 // });
 //<----------------------- End Start Functions PC ---------------------->
+
+document.querySelectorAll('.card__button').forEach(button => button.addEventListener('click', e => {
+  setTimeout(() => {
+    if(!button.classList.contains('in')) {
+
+        button.classList.add('in');
+
+        setTimeout(() => button.classList.remove('in'), 2000);
+
+    }
+    e.preventDefault();
+
+  }, 600);
+}));
