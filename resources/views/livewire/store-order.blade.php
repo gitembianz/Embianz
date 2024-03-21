@@ -1957,7 +1957,6 @@
 						<!------------ End Checkout List of Forms ------------>
 						<!---------------------------------------------------->
 					</div>
-					@if ($step != 3)
 						
 					<label id="termsbutton" class="checkout__terms @if ($errorterms && $terms == false) error @endif">
 						<input type="checkbox" wire:model="terms" name="terms">
@@ -1965,7 +1964,6 @@
 								conditiile</a></span>
 
 					</label>
-					@endif
 					@if ($payment_cancel)
 						<script>
 							window.addEventListener('DOMContentLoaded', function() {
@@ -2010,6 +2008,7 @@
 				<!--------------------- Step Final --------------------->
 				@if ($step == 3)
 					<div class="section__header">
+						
 						@if (app()->has("global_order_default_text_confirmation") && app("global_order_default_text_confirmation") != "")
 		
 							{!! app("global_order_default_text_confirmation") !!}
@@ -2017,6 +2016,236 @@
 							<h2>Comanda a fost plasata cu succes!</h2>
 				
 						@endif
+						
+					</div>
+					<div class="total__container">
+						<h2>Comanda {{ $new_order->order_number }}</h2>
+						<!---------------------------------------------------->
+						<!-------------- Checkout List of Forms -------------->
+						@if ($individual)
+							<div class="look__form">
+								<!---------------------------------------------------->
+								<!------------- Checkout Header Name --------------->
+								<h3>
+									Informatii de facturare &check;
+								</h3>
+								<!----------- End Checkout Header Name ------------->
+								<!---------------------------------------------------->
+								<!------------- Checkout List of Items --------------->
+								<span class="total__message">Nume si Prenume:
+									<strong>{{ $new_order->account->addresses->where('type', 'billing')->first()->first_name }}</strong>
+									<strong>{{ $new_order->account->addresses->where('type', 'billing')->first()->last_name }}</strong></span>
+								<!---------------------------------------------------->
+								<span class="total__message">Telefon:
+									<strong>{{ $new_order->account->addresses->where('type', 'billing')->first()->phone }}</strong></span>
+								<!---------------------------------------------------->
+								<span class="total__message">Email:
+									<strong>{{ $new_order->account->addresses->where('type', 'billing')->first()->email }}</strong></span>
+								<!---------------------------------------------------->
+								<span class="total__message">Adresa:
+									<strong>{{ $new_order->account->addresses->where('type', 'billing')->first()->address1 }}</strong>
+									<strong>{{ $new_order->account->addresses->where('type', 'billing')->first()->address2 }}</strong></span>
+								<!---------------------------------------------------->
+								<span class="total__message">Tara:
+									<strong>{{ $new_order->account->addresses->where('type', 'billing')->first()->country }}</strong></span>
+								<!---------------------------------------------------->
+								<span class="total__message">Judet:
+									<strong>{{ $new_order->account->addresses->where('type', 'billing')->first()->county }}</strong></span>
+								<!---------------------------------------------------->
+								<span class="total__message">Localitate (oras, comună sau sat):
+									<strong>{{ $new_order->account->addresses->where('type', 'billing')->first()->city }}</strong></span>
+								<!---------------------------------------------------->
+								<span class="total__message">Cod Postal:
+									<strong>{{ $new_order->account->addresses->where('type', 'billing')->first()->zipcode }}</strong></span>
+								<!----------- End Checkout List of Items ------------->
+								<!---------------------------------------------------->
+								<!---------------------------------------------------->
+								<!------------- Checkout Header Name --------------->
+								<h3>
+									Informatii de livrare &check;
+								</h3>
+								<!----------- End Checkout Header Name ------------->
+								<!---------------------------------------------------->
+								<!------------- Checkout List of Items --------------->
+								<span class="total__message">Nume si Prenume:
+									<strong>{{ $new_order->account->addresses->where('type', 'shipping')->first()->first_name }}</strong>
+									<strong>{{ $new_order->account->addresses->where('type', 'shipping')->first()->last_name }}</strong></span>
+								<!---------------------------------------------------->
+								<span class="total__message">Telefon:
+									<strong>{{ $new_order->account->addresses->where('type', 'shipping')->first()->phone }}</strong></span>
+								<!---------------------------------------------------->
+								<span class="total__message">Email:
+									<strong>{{ $new_order->account->addresses->where('type', 'shipping')->first()->email }}</strong></span>
+								<!---------------------------------------------------->
+								<span class="total__message">Adresa:
+									<strong>{{ $new_order->account->addresses->where('type', 'shipping')->first()->address1 }}</strong>
+									<strong>{{ $new_order->account->addresses->where('type', 'shipping')->first()->address2 }}</strong></span>
+								<!---------------------------------------------------->
+								<span class="total__message">Tara:
+									<strong>{{ $new_order->account->addresses->where('type', 'shipping')->first()->country }}</strong></span>
+								<!---------------------------------------------------->
+								<span class="total__message">Judet:
+									<strong>{{ $new_order->account->addresses->where('type', 'shipping')->first()->county }}</strong></span>
+								<!---------------------------------------------------->
+								<span class="total__message">Localitate (oras, comună sau sat):
+									<strong>{{ $new_order->account->addresses->where('type', 'shipping')->first()->city }}</strong></span>
+								<!---------------------------------------------------->
+								<span class="total__message">Cod Postal:
+									<strong>{{ $new_order->account->addresses->where('type', 'shipping')->first()->zipcode }}</strong></span>
+								<!----------- End Checkout List of Items ------------->
+								<!---------------------------------------------------->
+							</div>
+						@endif
+						<!---------------------------------------------------->
+						@if ($juridic)
+							<div class="checkout__form">
+								<!---------------------------------------------------->
+								<!------------- Checkout Header Name --------------->
+								<h3>
+									Informatii de facturare &check;
+								</h3>
+								<!----------- End Checkout Header Name ------------->
+								<!---------------------------------------------------->
+								<!------------- Checkout List of Items --------------->
+								<span class="total__message">Nume si Prenume:
+									<strong>{{ $new_order->account->addresses->where('type', 'billing')->first()->first_name }}</strong>
+									<strong>{{ $new_order->account->addresses->where('type', 'billing')->first()->last_name }}</strong></span>
+								<!---------------------------------------------------->
+								<span class="total__message">Telefon:
+									<strong>{{ $new_order->account->addresses->where('type', 'billing')->first()->phone }}</strong></span>
+								<!---------------------------------------------------->
+								<span class="total__message">Email:
+									<strong>{{ $new_order->account->addresses->where('type', 'billing')->first()->email }}</strong></span>
+								<!---------------------------------------------------->
+								<span class="total__message">Companie:
+									<strong>{{ $new_order->account->company_name }}</strong></span>
+								<!---------------------------------------------------->
+								<span class="total__message">Cod de înregistrare:
+									<strong>{{ $new_order->account->registration_code }}</strong></span>
+								<!---------------------------------------------------->
+								<span class="total__message">Număr de înregistrare:
+									<strong>{{ $new_order->account->registration_number }}</strong></span>
+								<!---------------------------------------------------->
+								<span class="total__message">Denumirea Bancii:
+									<strong>{{ $new_order->account->bank_name }}</strong></span>
+								<!---------------------------------------------------->
+								<span class="total__message">COnt IBAN:
+									<strong>{{ $new_order->account->account }}</strong></span>
+								<!---------------------------------------------------->
+								<span class="total__message">Adresa:
+									<strong>{{ $new_order->account->addresses->where('type', 'billing')->first()->address1 }}</strong>
+									<strong>{{ $new_order->account->addresses->where('type', 'billing')->first()->address2 }}</strong></span>
+								<!---------------------------------------------------->
+								<span class="total__message">Tara:
+									<strong>{{ $new_order->account->addresses->where('type', 'billing')->first()->country }}</strong></span>
+								<!---------------------------------------------------->
+								<span class="total__message">Judet:
+									<strong>{{ $new_order->account->addresses->where('type', 'billing')->first()->county }}</strong></span>
+								<!---------------------------------------------------->
+								<span class="total__message">Localitate (oras, comună sau sat):
+									<strong>{{ $new_order->account->addresses->where('type', 'billing')->first()->city }}</strong></span>
+								<!---------------------------------------------------->
+								<span class="total__message">Cod Postal:
+									<strong>{{ $new_order->account->addresses->where('type', 'billing')->first()->zipcode }}</strong></span>
+								<!----------- End Checkout List of Items ------------->
+								<!---------------------------------------------------->
+								<!---------------------------------------------------->
+								<!------------- Checkout Header Name --------------->
+								<h3>
+									Informatii de livrare &check;
+								</h3>
+								<!----------- End Checkout Header Name ------------->
+								<!---------------------------------------------------->
+								<!------------- Checkout List of Items --------------->
+								<span class="total__message">Nume si Prenume:
+									<strong>{{ $new_order->account->addresses->where('type', 'shipping')->first()->first_name }}</strong>
+									<strong>{{ $new_order->account->addresses->where('type', 'shipping')->first()->last_name }}</strong></span>
+								<!---------------------------------------------------->
+								<span class="total__message">Telefon:
+									<strong>{{ $new_order->account->addresses->where('type', 'shipping')->first()->phone }}</strong></span>
+								<!---------------------------------------------------->
+								<span class="total__message">Email:
+									<strong>{{ $new_order->account->addresses->where('type', 'shipping')->first()->email }}</strong></span>
+								<!---------------------------------------------------->
+								<span class="total__message">Adresa:
+									<strong>{{ $$new_order->account->addresses->where('type', 'shipping')->first()->address1 }}</strong>
+									<strong>{{ $new_order->account->addresses->where('type', 'shipping')->first()->address2 }}</strong></span>
+								<!---------------------------------------------------->
+								<span class="total__message">Tara:
+									<strong>{{ $new_order->account->addresses->where('type', 'shipping')->first()->country }}</strong></span>
+								<!---------------------------------------------------->
+								<span class="total__message">Judet:
+									<strong>{{ $new_order->account->addresses->where('type', 'shipping')->first()->county }}</strong></span>
+								<!---------------------------------------------------->
+								<span class="total__message">Localitate (oras, comună sau sat):
+									<strong>{{ $new_order->account->addresses->where('type', 'shipping')->first()->city }}</strong></span>
+								<!---------------------------------------------------->
+								<span class="total__message">Cod Postal:
+									<strong>{{ $new_order->account->addresses->where('type', 'shipping')->first()->zipcode }}</strong></span>
+								<!----------- End Checkout List of Items ------------->
+								<!---------------------------------------------------->
+							</div>
+							<!---------------------------------------------------->
+						@endif
+						<!---------------------------------------------------->
+						<div class="total__info">
+								@foreach ($new_order->orders as $cartItem)
+									<div class="total__product">
+										<span class="total__quantity">
+											{{ $cartItem->quantity }} x
+										</span>
+										@if ($cartItem->product->media->where('type', 'min')->first())
+											<img class="cart__list--img" src="/{{ $cartItem->product->media->where('type', 'min')->first()->path }}{{ $cartItem->product->media->where('type', 'min')->first()->name }}" alt="{{ $cartItem->product->media->where('type', 'min')->first()->name }} {{ $cartItem->product->name }}">
+										@else
+											<img class="cart__list--img" src="/images/store/default/default70.webp" alt="something wrong">
+										@endif
+										<a href="{{ route("product", ["product" => $cartItem->product->seo_id !== null && $cartItem->product->seo_id !== "" ? $cartItem->product->seo_id : $cartItem->product->id]) }}" target="_blank" class="total__name">{{ $cartItem->product->name }}</a>
+										<span class="total__price">
+
+											{{-- {{ $cartItem->product->price }} --}}
+											<?php $currency = $new_order->currency->name; ?>
+											{{ number_format($cartItem->quantity * $cartItem->price, 2, ",", ".") }}
+											{{ $currency }}
+										</span>
+
+									</div>
+								@endforeach
+
+								<div class="total__item">
+									<span>Modalitate de plata</span>
+									<span>{{ $payment["description"] }}</span>
+								</div>
+								<div class="total__item">
+									<span>Delivery Price:</span>
+									<span>
+										@if (app("global_delivery_price") == 0)
+											Gratuit
+										@else
+											{{ number_format(app("global_delivery_price"), 2, ",", ".") }}
+											{{ $currency }}
+										@endif
+									</span>
+								</div>
+								@if ($new_order->voucher && $new_order->voucher_value > 0)
+									<div class="total__item">
+										<span>Voucher:</span>
+										<span>
+											-{{ number_format($new_order->voucher_value, 2, ",", ".") }}
+											{{ $currency }}
+
+										</span>
+									</div>
+								@endif
+								<div class="total__item">
+									<span>Total</span>
+
+									<span>{{ number_format($new_order->final_amount, 2, ",", ".") }}
+										{{ $currency }}
+									</span>
+								</div>
+						</div>
+						<!------------ End Checkout List of Forms ------------>
+						<!---------------------------------------------------->
 					</div>
 					<script>
 						window.addEventListener('DOMContentLoaded', function() {
