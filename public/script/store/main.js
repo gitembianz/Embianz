@@ -147,20 +147,18 @@ function flyToCart(button) {
   const shopping_cart = document.getElementById("basketOpen");
   const numberCart = shopping_cart.querySelector(".header__count");
 
-  if (!numberCart) {
-    return;
+  if (!button.classList.contains('in')) {
+    button.classList.add('in');
+    setTimeout(() => button.classList.remove('in'), 1500);
   }
-
-  numberCart.style.scale = 1.5;
-
-      if (!button.classList.contains('in')) {
-        button.classList.add('in');
-        setTimeout(() => button.classList.remove('in'), 1500);
-      }
-
-  setTimeout(() => {
-    numberCart.style.scale = 1;
-  }, 1000);
+  if(!numberCart){
+    return
+  } else {
+    numberCart.style.scale = 1.5;
+    setTimeout(() => {
+      numberCart.style.scale = 1;
+    }, 1000);
+  }
 }
 
 //<-------------------------- End Add to Cart -------------------------->
