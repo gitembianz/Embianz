@@ -1,4 +1,13 @@
 //<---------------------------- Header Styles ---------------------------->
+div {
+  .banner {
+    // Stiluri pentru banner
+    & + header {
+      padding-top: 26px;
+    }
+  }
+}
+
 header {
   width: 100vw;
   z-index: 300;
