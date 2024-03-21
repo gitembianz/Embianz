@@ -45,6 +45,7 @@ class GeneralSearch extends Component
         if ($this->search != "") {
             return Product::name($this->search)
                 ->select('id', 'name', 'seo_id', 'short_description')
+                ->where('active', true)
                 ->with([
                     'media' => function ($query) {
                         $query->select('path', 'name')->where('type', 'min');
@@ -56,7 +57,6 @@ class GeneralSearch extends Component
                             }]);
                     }
                 ])
-                ->orderBy('popularity', 'desc')
                 ->limit(app('global_limit_searchitems'))
                 ->get();
         } else {
