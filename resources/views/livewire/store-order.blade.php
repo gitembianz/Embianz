@@ -2025,7 +2025,7 @@
 					</script>
 					<script>
 						dataLayer.push({
-							'event': 'checkoutStep',=ă
+							'event': 'checkoutStep',
 							'step': 3,
 							'option': 'Confirmare comandă'
 						});

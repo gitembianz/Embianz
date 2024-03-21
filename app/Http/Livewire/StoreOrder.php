@@ -975,7 +975,7 @@ class StoreOrder extends Component
           'status_id' => app('global_cart_closed')
         ]);
 
-        $this->step++;
+        $this->step = 3;
         $this->emit('orderprocess');
         //request to salesforce
         $order_lines = [];
