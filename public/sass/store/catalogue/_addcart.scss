@@ -19,6 +19,18 @@
   mix-blend-mode: multiply;
 }
 
+.card__button--link{
+  background: transparent;
+  border: none;
+  color: transparent;
+  width: 0%;
+  height: 0%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 20;
+}
+
 @keyframes fly_to_cart {
   0% {
     left: 100px;

@@ -153,29 +153,25 @@ function applySort(selector) {
 function flyToCart(button) {
   const shopping_cart = document.getElementById("basketOpen");
   const numberCart = shopping_cart.querySelector(".header__count");
+
+  if(!numberCart) {
+    return;
+  }
+
   const target_parent = button.closest(".product"); // Obținem cel mai apropiat părinte cu clasa "product"
 
-  let clickCount = 0;
 
-  function startAnimation() {
-    let originalDelay = 400;
-
-    for (let i = 0; i < clickCount; i++) {
-      setTimeout(() => {
-        button.classList.add('in');
-      }, originalDelay + (i * 200));
+  button.addEventListener('click', e => {
+    if(!button.classList.contains('in')) {
+      button.classList.add('in');
+      setTimeout(() => button.classList.remove('in'), 1500);
     }
-  }
 
-  function handleButtonClick() {
-    clickCount++; // Incrementăm numărul de clicuri la fiecare clic pe buton
-    startAnimation(); // Apelăm funcția startAnimation pentru a programa animațiile
-  }
-  handleButtonClick()
+    e.preventDefault();
+  });
 
 
   setTimeout(() => {
-
     if (!target_parent) {
       console.error("Nu s-a găsit părintele 'product'.");
       return;
@@ -220,8 +216,9 @@ function flyToCart(button) {
       numberCart.style.scale = 1.5;
     }
 
-  }, 400)
+  }, 650)
 }
+
 
 //<-------------------------- End Add to Cart -------------------------->
 //<--------------------------------------------------------------------->
