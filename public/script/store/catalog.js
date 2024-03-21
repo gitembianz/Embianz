@@ -161,14 +161,14 @@ function flyToCart(button) {
   const target_parent = button.closest(".product"); // Obținem cel mai apropiat părinte cu clasa "product"
 
 
-  button.addEventListener('click', e => {
+  // button.addEventListener('click', e => {
     if(!button.classList.contains('in')) {
       button.classList.add('in');
       setTimeout(() => button.classList.remove('in'), 1500);
     }
 
-    e.preventDefault();
-  });
+    // e.preventDefault();
+  // });
 
 
   setTimeout(() => {
