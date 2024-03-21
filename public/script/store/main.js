@@ -146,27 +146,28 @@ function slider(sliderID) {
 function flyToCart(button) {
   const shopping_cart = document.getElementById("basketOpen");
   const numberCart = shopping_cart.querySelector(".header__count");
-  numberCart.style.scale = 1.5;
 
+  if (!numberCart) {
+    return;
+  }
+
+  numberCart.style.scale = 1.5;
 
   button.addEventListener('click', e => {
     setTimeout(() => {
-      if(!button.classList.contains('in')) {
-
-          button.classList.add('in');
-
-          setTimeout(() => button.classList.remove('in'), 2000);
-
+      if (!button.classList.contains('in')) {
+        button.classList.add('in');
+        setTimeout(() => button.classList.remove('in'), 2000);
       }
       e.preventDefault();
-
-    }, 600);
+    }, 650);
   });
 
   setTimeout(() => {
     numberCart.style.scale = 1;
   }, 1500);
 }
+
 //<-------------------------- End Add to Cart -------------------------->
 //<--------------------------------------------------------------------->
 //<------------------------ Start Functions IOS ------------------------>

@@ -153,20 +153,21 @@ function applySort(selector) {
 function flyToCart(button) {
   const shopping_cart = document.getElementById("basketOpen");
   const numberCart = shopping_cart.querySelector(".header__count");
+
+  if(!numberCart) {
+    return;
+  }
+
   const target_parent = button.closest(".product"); // Obținem cel mai apropiat părinte cu clasa "product"
 
   button.addEventListener('click', e => {
     setTimeout(() => {
       if(!button.classList.contains('in')) {
-
           button.classList.add('in');
-
           setTimeout(() => button.classList.remove('in'), 2000);
-
       }
       e.preventDefault();
-
-    }, 600);
+    }, 650);
   });
 
   setTimeout(() => {
@@ -214,8 +215,9 @@ function flyToCart(button) {
       numberCart.style.scale = 1.5;
     }
 
-  }, 450)
+  }, 650)
 }
+
 
 //<-------------------------- End Add to Cart -------------------------->
 //<--------------------------------------------------------------------->
