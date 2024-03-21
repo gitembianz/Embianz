@@ -19,7 +19,7 @@ class CheckOrderMiddleware
             $order = Order::where('order_number', $decodedOrderNumber)->first();
 
             if ($order) {
-                return redirect()->route('my_order', ['order_number' => $decodedOrderNumber]);
+                return redirect()->route('my_order', ['order_number' => $queryParameters['id']]);
             }
         }
 
