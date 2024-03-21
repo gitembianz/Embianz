@@ -1957,12 +1957,15 @@
 						<!------------ End Checkout List of Forms ------------>
 						<!---------------------------------------------------->
 					</div>
+					@if ($step != 3)
+						
 					<label id="termsbutton" class="checkout__terms @if ($errorterms && $terms == false) error @endif">
 						<input type="checkbox" wire:model="terms" name="terms">
 						<span>Sunt de acord cu <a href="{{ url("/terms") }}" target="_blank">termenii si
 								conditiile</a></span>
 
 					</label>
+					@endif
 					@if ($payment_cancel)
 						<script>
 							window.addEventListener('DOMContentLoaded', function() {
@@ -2007,14 +2010,13 @@
 				<!--------------------- Step Final --------------------->
 				@if ($step == 3)
 					<div class="section__header">
-						@if (app()->has("order_default_text_confirmation") && app("order_default_text_confirmation") != "")
+						@if (app()->has("global_order_default_text_confirmation") && app("global_order_default_text_confirmation") != "")
 		
-					{!! app("order_default_text_confirmation") !!}
-					@else
-					<h2>Comanda a fost plasata cu succes!</h2>
+							{!! app("global_order_default_text_confirmation") !!}
+						@else
+							<h2>Comanda a fost plasata cu succes!</h2>
 				
-	@endif
-						
+						@endif
 					</div>
 					<script>
 						window.addEventListener('DOMContentLoaded', function() {

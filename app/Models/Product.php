@@ -114,15 +114,26 @@ class Product extends Model
   public static function search($search)
   {
     return empty($search) ? static::query()
-      : static::query()->where('id', 'like', '%' . $search . '%')
-      ->orWhere('name', 'like', '%' . $search . '%')
-      ->orWhere('ean', 'like', '%' . $search . '%')
-      ->orWhere('meta_description', 'like', '%' . $search . '%')
-      ->orWhere('sku', 'like', '%' . $search . '%');
+      : static::query()
+      ->where('active', true)
+      ->where(function ($query) use ($search) {
+        $query->where('id', 'like', '%' . $search . '%')
+          ->orWhere('name', 'like', '%' . $search . '%')
+          ->orWhere('ean', 'like', '%' . $search . '%')
+          ->orWhere('meta_description', 'like', '%' . $search . '%')
+          ->orWhere('sku', 'like', '%' . $search . '%');
+      });
   }
+
   public static function name($search)
   {
     return empty($search) ? static::query()
-      : static::query()->where('active', true)->where('name', 'like', '%' . $search . '%')->orWhere('ean', 'like', '%' . $search . '%')->orWhere('sku', 'like', '%' . $search . '%');
+      : static::query()
+      ->where('active', true)
+      ->where(function ($query) use ($search) {
+        $query->where('name', 'like', '%' . $search . '%')
+          ->orWhere('ean', 'like', '%' . $search . '%')
+          ->orWhere('sku', 'like', '%' . $search . '%');
+      });
   }
 }
