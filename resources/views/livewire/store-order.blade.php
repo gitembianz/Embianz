@@ -2007,23 +2007,14 @@
 				<!--------------------- Step Final --------------------->
 				@if ($step == 3)
 					<div class="section__header">
-						<h2 class="section__title">Comanda cu numarul {{ $orderNumber }} a fost plasata!</h2>
-						<p class="section__text">Vă mulțumim pentru plata efectuată! 🎉 Am primit-o și în prezent
-							procesăm comanda dumneavoastră. Echipa noastră lucrează cu dedicație pentru a pregăti
-							produsul dumneavoastră pentru expediere. 📦🔧</p>
-						<p class="section__text">Odată ce comanda dumneavoastră este în drum spre dumneavoastră, vă
-							vom
-							trimite un e-mail de confirmare cu informații despre urmărire. Acest lucru vă va permite să
-							urmăriți coletul și să știți când să vă așteptați la sosirea sa. 📩🚚</p>
-						<p class="section__text">Dacă aveți întrebări sau aveți nevoie de asistență, vă rugăm să nu
-							ezitați să contactați echipa noastră de suport pentru clienți. Suntem aici pentru a vă ajuta
-							și pentru a vă asigura satisfacția. 💁‍♀️💬</p>
-						<p class="section__text">Apreciem afacerea dumneavoastră și sperăm că achiziția dumneavoastră
-							vă aduce fericire. Vă mulțumim că ați ales produsele noastre și așteptăm cu nerăbdare să vă
-							mai servim în viitor. 🙏😊<br>Cu cele mai bune urări,</p>
-						<a href="{{ url("/") }}" class="logo" aria-label="go to home page">
-							<img src="/images/store/svg/noren-black.svg" alt="logo">
-						</a>
+						@if (app()->has("order_default_text_confirmation") && app("order_default_text_confirmation") != "")
+		
+					{!! app("order_default_text_confirmation") !!}
+					@else
+					<h2>Comanda a fost plasata cu succes!</h2>
+				
+	@endif
+						
 					</div>
 					<script>
 						window.addEventListener('DOMContentLoaded', function() {
@@ -2032,7 +2023,7 @@
 					</script>
 					<script>
 						dataLayer.push({
-							'event': 'checkoutStep',
+							'event': 'checkoutStep',=ă
 							'step': 3,
 							'option': 'Confirmare comandă'
 						});
