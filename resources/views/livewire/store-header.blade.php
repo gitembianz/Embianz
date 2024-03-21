@@ -9,7 +9,7 @@
 	<!--------------------Banner(Header Top)-------------------->
 	<div class="banner">
 		@if (app()->has("global_header_top_text") && app("global_header_top_text") != "")
-			<div class="banner__container container">
+			<div class="banner__container container" wire:ignore="$refresh">
 				<p>
 					{!! app("global_header_top_text") !!}
 				</p>
