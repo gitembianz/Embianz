@@ -449,23 +449,19 @@ function flyToCart(button) {
   const numberCart = shopping_cart.querySelector(".header__count");
   const target_parent = button.closest(".product"); // Obținem cel mai apropiat părinte cu clasa "product"
 
-  let clickCount = 0;
+  button.addEventListener('click', e => {
+    setTimeout(() => {
+      if(!button.classList.contains('in')) {
 
-    function startAnimation() {
-      let originalDelay = 400;
-
-      for (let i = 0; i < clickCount; i++) {
-        setTimeout(() => {
           button.classList.add('in');
-        }, originalDelay + (i * 200));
-      }
-    }
 
-    function handleButtonClick() {
-      clickCount++; // Incrementăm numărul de clicuri la fiecare clic pe buton
-      startAnimation(); // Apelăm funcția startAnimation pentru a programa animațiile
-    }
-    handleButtonClick()
+          setTimeout(() => button.classList.remove('in'), 2000);
+
+      }
+      e.preventDefault();
+
+    }, 600);
+  });
 
   setTimeout(() => {
 

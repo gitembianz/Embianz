@@ -148,6 +148,21 @@ function flyToCart(button) {
   const numberCart = shopping_cart.querySelector(".header__count");
   numberCart.style.scale = 1.5;
 
+
+  button.addEventListener('click', e => {
+    setTimeout(() => {
+      if(!button.classList.contains('in')) {
+
+          button.classList.add('in');
+
+          setTimeout(() => button.classList.remove('in'), 2000);
+
+      }
+      e.preventDefault();
+
+    }, 600);
+  });
+
   setTimeout(() => {
     numberCart.style.scale = 1;
   }, 1500);
