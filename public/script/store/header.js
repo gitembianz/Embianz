@@ -6,6 +6,20 @@ function scrollEvent() {
   const main = document.querySelector("main");
   const body = document.body;
 
+if(!banner) {
+  const headerHeight = header.offsetHeight;
+  // const bannerHeight = banner.offsetHeight;
+
+  if (window.pageYOffset > 200) {
+    // banner.style.transform = `translate3d(0px, -${bannerHeight}px, 0px)`;
+    main.style.paddingTop = `${headerHeight}px`;
+    header.style.paddingTop = 0;
+  } else {
+    // banner.style.transform = `translate3d(0px, 0px, 0px)`;
+    main.style.paddingTop = `${headerHeight}px`;
+    // header.style.paddingTop = `${headerHeight}px`;
+  }
+} else {
   const headerHeight = header.offsetHeight;
   const bannerHeight = banner.offsetHeight;
 
@@ -18,6 +32,7 @@ function scrollEvent() {
     main.style.paddingTop = `${60 + bannerHeight}px`;
     header.style.paddingTop = `${bannerHeight}px`;
   }
+}
 }
 
 //<-------------------------- End ScrollEvent -------------------------->
