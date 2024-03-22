@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\Category;
 use App\Http\Controllers\Controller;
+use App\Models\Status;
 
 class StoreController extends Controller
 {
@@ -50,6 +52,21 @@ class StoreController extends Controller
   {
     return view('store.contact');
   }
+
+  public function myorder($order_number = null)
+  {
+    // Retrieve the order details using the order_number
+    $order = Order::where('order_number', base64_decode($order_number))->first();
+
+    // Check if order exists
+    if ($order) {
+      // Return a view with order details
+      return view('store.myorder', compact('order'));
+    } else {
+      // Handle case where order is not found
+      return abort(404);
+    }
+  }
   public function products($categorySlug = null)
   {
     $data = null;
@@ -85,6 +102,9 @@ class StoreController extends Controller
     } else {
 
       $data = Product::where('seo_id', $product)->first();
+    }
+    if (($data->active == false)) {
+      abort(404);
     }
     return view('store.product', ['data' => $data]);
   }

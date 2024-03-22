@@ -27,6 +27,7 @@ class StoreOrder extends Component
   public $ordin;
   public $orderNumber;
   public $payment_cancel = false;
+  public $new_order;
 
   // individual declaration
   public $individual = true;
@@ -465,6 +466,7 @@ class StoreOrder extends Component
       $order->status_id = app('global_order_processing');
       $this->orderNumber = $order->order_number;
       $order->save();
+      $this->new_order = $order;
       foreach ($order->orders as $item) {
         $item->product->quantity -= $item->quantity;
         $item->product->save();
@@ -975,7 +977,9 @@ class StoreOrder extends Component
           'status_id' => app('global_cart_closed')
         ]);
 
-        $this->step++;
+        $this->step = 3;
+        $this->new_order = $order;
+
         $this->emit('orderprocess');
         //request to salesforce
         $order_lines = [];
@@ -990,7 +994,7 @@ class StoreOrder extends Component
         }
         $client = new Client();
         $order_lines_string = json_encode($order_lines);
-        $hashed = base64_encode($order->order_number . ";" . $order->account->email);
+        $hashed = base64_encode($order->order_number);
         $client->post('https://webto.salesforce.com/servlet/servlet.WebToCase', [
           'headers' => [
             'Accept' => 'application/json',
