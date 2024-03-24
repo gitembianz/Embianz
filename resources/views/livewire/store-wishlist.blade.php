@@ -16,7 +16,7 @@
    <!------------------------------------------------------>
    <!------------------- Basket Products ------------------>
    @if ($wishlistitems->isEmpty())
-    <span class="basket__empty">Niciun produs favorit adaugat</span>
+    <span class="basket__empty">Nu sunt produse adăugate în lista de favorite</span>
    @else
     @foreach ($wishlistitems as $product)
      <div class="basket__product">

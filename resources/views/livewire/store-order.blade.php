@@ -6,9 +6,9 @@
 		<section>
 			<div class="checkout container">
 				<div class="section__header container">
-					<h1 class="section__title">Ups, a aparut o eroare!</h1>
+					<h1 class="section__title">A apărut o eroare!</h1>
 					<a class="section__text" href="{{ url("/") }}">
-						Va rugam sa va intoarceti la pagina initiala
+						Te rugam să te întorci la pagina principală
 					</a>
 				</div>
 			</div>
@@ -26,9 +26,9 @@
 				<!------------------------------------------------------>
 				<!-------------------- Step Numbers -------------------->
 				<div class="step__container">
-					<div class="step active" data-step="Inregistrare Date">1</div>
+					<div class="step active" data-step="Înregistrare Date">1</div>
 					<span class="step__line @if ($step == 1) half @else full @endif"></span>
-					<div class="step @if ($step > 1 || $step == 3) active @endif" data-step="Plasare comanda">2
+					<div class="step @if ($step > 1 || $step == 3) active @endif" data-step="Plasare Comandă">2
 					</div>
 					<span class="step__line @if ($step == 2) half @elseif($step == 3) full @endif"></span>
 					<div class="step @if ($step == 3) active @endif" data-step="Confirmare">3
@@ -44,9 +44,9 @@
 					</div>
 					<div class="checkout__header">
 						<div class="checkout__navigation">
-							<button class="checkout__button @if ($individual) active @endif" wire:click="showindividual()">Persoana fizica</button>
+							<button class="checkout__button @if ($individual) active @endif" wire:click="showindividual()">Persoană Fizică</button>
 							<button class="checkout__button @if ($juridic) active @endif" wire:click="showjuridic()">
-								Persoana Juridica</button>
+								Persoană Juridica</button>
 						</div>
 						<div class="checkout__navigation">
 							<button class="checkout__button" wire:click="resetForm">
@@ -410,7 +410,7 @@
 							</select>
 							<!---------------------------------------------------->
 							{{-- <div class="checkout__item">
-                                <input type="text" wire:model="individual_billing_county" placeholder="Judet">
+                                <input type="text" wire:model="individual_billing_county" placeholder="Județ">
                             </div> --}}
 							<div class="checkout__item checkout__item--required" id="individualShippingCounty">
 								<input type="text" wire:model="individual_billing_county" name="individualShippingCounty" placeholder="Localitate (oraș, comună sau sat)" autocomplete="county" required>
@@ -420,7 +420,7 @@
 							<!---------------------------------------------------->
 							{{-- <div class="checkout__item">
                                 <input type="text" wire:model="individual_billing_city"
-                                    placeholder="Localitate (oras, comună sau sat)">
+                                    placeholder="Localitate (oraș, comună sau sat)">
                                 <span>
 
                                 </span>
@@ -458,7 +458,7 @@
 						<!---------------- Checkout Checkbox ----------------->
 						<label class="checkout__checkbox">
 							<input type="checkbox" wire:model="individual_identic">
-							<span>Adresa de livrare este identică cu adresa de facturare</span>
+							<span>Detaliile pentru facturare și livrare sunt identice</span>
 						</label>
 						<!-------------- End Checkout Checkbox --------------->
 						<!---------------------------------------------------->
@@ -1255,7 +1255,7 @@
 						<!---------------- Checkout Checkbox ----------------->
 						<label class="checkout__checkbox">
 							<input type="checkbox" wire:model="juridic_identic">
-							<span>Adresa de livrare este identică cu adresa de facturare</span>
+							<span>Detaliile pentru facturare și livrare sunt identice</span>
 						</label>
 						<!-------------- End Checkout Checkbox --------------->
 						<!---------------------------------------------------->
@@ -1614,7 +1614,7 @@
 						<!---------------------------------------------------->
 					</div>
 					<div class="section__header">
-						<h2 class="section__title">Metoda de plata</h2>
+						<h2 class="section__title">Metoda de plată</h2>
 					</div>
 					@if ($cash["active"] != 0)
 						<div class="payment">
@@ -1623,7 +1623,7 @@
 								<span>{{ $cash["description"] }}</span>
 							</label>
 							<div class="payment__text @if ($rtc) active @endif">
-								<h3>Veți plăti când comanda va fi livrată.</h3>
+								<h3>Vei plăti când comanda va fi livrată.</h3>
 								<span>Limita maxima este de 1000 RON</span>
 							</div>
 						</div>
@@ -1635,7 +1635,7 @@
 								<span>{{ $card["description"] }}</span>
 							</label>
 							<div class="payment__text @if ($crd) active @endif">
-								<h3>Veți plăti online cu cardul la finalizarea comenzii.</h3>
+								<h3>Vei plăti online cu cardul la finalizarea comenzii.</h3>
 							</div>
 						</div>
 					@endif
@@ -1649,7 +1649,7 @@
 								<div class="payment__text @if ($invoice) active @endif">
 									<h3>
 										Metoda de plată utilizată de entitățile legale. După plasarea comenzii,
-										veți primi prin e-mail factura proformă cu toate detaliile de plată.
+										vei primi prin e-mail factura proformă cu toate detaliile de plată.
 									</h3>
 								</div>
 
@@ -1740,7 +1740,7 @@
 								<!----------- End Checkout Header Name ------------->
 								<!---------------------------------------------------->
 								<!------------- Checkout List of Items --------------->
-								<span class="total__message">Nume si Prenume:
+								<span class="total__message">Nume și Prenume:
 									<strong>{{ $individual_billing_first }}</strong>
 									<strong>{{ $individual_billing_last }}</strong></span>
 								<!---------------------------------------------------->
@@ -1754,16 +1754,16 @@
 									<strong>{{ $individual_billing_address1 }}</strong>
 									<strong>{{ $individual_billing_address2 }}</strong></span>
 								<!---------------------------------------------------->
-								<span class="total__message">Tara:
+								<span class="total__message">Țara:
 									<strong>{{ $individual_billing_country }}</strong></span>
 								<!---------------------------------------------------->
-								<span class="total__message">Judet:
+								<span class="total__message">Județ:
 									<strong>{{ $individual_billing_county }}</strong></span>
 								<!---------------------------------------------------->
-								<span class="total__message">Localitate (oras, comună sau sat):
+								<span class="total__message">Localitate (oraș, comună sau sat):
 									<strong>{{ $individual_billing_city }}</strong></span>
 								<!---------------------------------------------------->
-								<span class="total__message">Cod Postal:
+								<span class="total__message">Cod Poștal:
 									<strong>{{ $individual_billing_zipcode }}</strong></span>
 								<!----------- End Checkout List of Items ------------->
 								<!---------------------------------------------------->
@@ -1775,7 +1775,7 @@
 								<!----------- End Checkout Header Name ------------->
 								<!---------------------------------------------------->
 								<!------------- Checkout List of Items --------------->
-								<span class="total__message">Nume si Prenume:
+								<span class="total__message">Nume și Prenume:
 									<strong>{{ $individual_shipping_first }}</strong>
 									<strong>{{ $individual_shipping_last }}</strong></span>
 								<!---------------------------------------------------->
@@ -1789,16 +1789,16 @@
 									<strong>{{ $individual_shipping_address1 }}</strong>
 									<strong>{{ $individual_shipping_address2 }}</strong></span>
 								<!---------------------------------------------------->
-								<span class="total__message">Tara:
+								<span class="total__message">Țara:
 									<strong>{{ $individual_shipping_country }}</strong></span>
 								<!---------------------------------------------------->
-								<span class="total__message">Judet:
+								<span class="total__message">Județ:
 									<strong>{{ $individual_shipping_county }}</strong></span>
 								<!---------------------------------------------------->
-								<span class="total__message">Localitate (oras, comună sau sat):
+								<span class="total__message">Localitate (oraș, comună sau sat):
 									<strong>{{ $individual_shipping_city }}</strong></span>
 								<!---------------------------------------------------->
-								<span class="total__message">Cod Postal:
+								<span class="total__message">Cod Poștal:
 									<strong>{{ $individual_shipping_zipcode }}</strong></span>
 								<!----------- End Checkout List of Items ------------->
 								<!---------------------------------------------------->
@@ -1815,7 +1815,7 @@
 								<!----------- End Checkout Header Name ------------->
 								<!---------------------------------------------------->
 								<!------------- Checkout List of Items --------------->
-								<span class="total__message">Nume si Prenume:
+								<span class="total__message">Nume și Prenume:
 									<strong>{{ $juridic_billing_first }}</strong>
 									<strong>{{ $juridic_billing_last }}</strong></span>
 								<!---------------------------------------------------->
@@ -1844,16 +1844,16 @@
 									<strong>{{ $juridic_billing_address1 }}</strong>
 									<strong>{{ $juridic_billing_address2 }}</strong></span>
 								<!---------------------------------------------------->
-								<span class="total__message">Tara:
+								<span class="total__message">Țara:
 									<strong>{{ $juridic_billing_country }}</strong></span>
 								<!---------------------------------------------------->
-								<span class="total__message">Judet:
+								<span class="total__message">Județ:
 									<strong>{{ $juridic_billing_county }}</strong></span>
 								<!---------------------------------------------------->
-								<span class="total__message">Localitate (oras, comună sau sat):
+								<span class="total__message">Localitate (oraș, comună sau sat):
 									<strong>{{ $juridic_billing_city }}</strong></span>
 								<!---------------------------------------------------->
-								<span class="total__message">Cod Postal:
+								<span class="total__message">Cod Poștal:
 									<strong>{{ $juridic_billing_zipcode }}</strong></span>
 								<!----------- End Checkout List of Items ------------->
 								<!---------------------------------------------------->
@@ -1865,7 +1865,7 @@
 								<!----------- End Checkout Header Name ------------->
 								<!---------------------------------------------------->
 								<!------------- Checkout List of Items --------------->
-								<span class="total__message">Nume si Prenume:
+								<span class="total__message">Nume și Prenume:
 									<strong>{{ $juridic_shipping_first }}</strong>
 									<strong>{{ $juridic_shipping_last }}</strong></span>
 								<!---------------------------------------------------->
@@ -1879,16 +1879,16 @@
 									<strong>{{ $juridic_shipping_address1 }}</strong>
 									<strong>{{ $juridic_shipping_address2 }}</strong></span>
 								<!---------------------------------------------------->
-								<span class="total__message">Tara:
+								<span class="total__message">Țara:
 									<strong>{{ $juridic_shipping_country }}</strong></span>
 								<!---------------------------------------------------->
-								<span class="total__message">Judet:
+								<span class="total__message">Județ:
 									<strong>{{ $juridic_shipping_county }}</strong></span>
 								<!---------------------------------------------------->
-								<span class="total__message">Localitate (oras, comună sau sat):
+								<span class="total__message">Localitate (oraș, comună sau sat):
 									<strong>{{ $juridic_shipping_city }}</strong></span>
 								<!---------------------------------------------------->
-								<span class="total__message">Cod Postal:
+								<span class="total__message">Cod Poștal:
 									<strong>{{ $juridic_shipping_zipcode }}</strong></span>
 								<!----------- End Checkout List of Items ------------->
 								<!---------------------------------------------------->
@@ -1921,11 +1921,11 @@
 								@endforeach
 
 								<div class="total__item">
-									<span>Modalitate de plata</span>
+									<span>Modalitate de plată</span>
 									<span>{{ $payment["description"] }}</span>
 								</div>
 								<div class="total__item">
-									<span>Delivery Price:</span>
+									<span>Cost livrare</span>
 									<span>
 										@if (app("global_delivery_price") == 0)
 											Gratuit
@@ -1960,8 +1960,8 @@
 						
 					<label id="termsbutton" class="checkout__terms @if ($errorterms && $terms == false) error @endif">
 						<input type="checkbox" wire:model="terms" name="terms">
-						<span>Sunt de acord cu <a href="{{ url("/terms") }}" target="_blank">termenii si
-								conditiile</a></span>
+						<span>Sunt de acord cu <a href="{{ url("/terms") }}" target="_blank">Termenii și
+								condițiile</a></span>
 
 					</label>
 					@if ($payment_cancel)
@@ -1977,7 +1977,7 @@
 						dataLayer.push({
 							'event': 'checkoutStep',
 							'step': 2,
-							'option': 'Plasare Comanda'
+							'option': 'Plasare Comandă'
 						});
 					</script>
 				@endif
@@ -2032,7 +2032,7 @@
 								<!----------- End Checkout Header Name ------------->
 								<!---------------------------------------------------->
 								<!------------- Checkout List of Items --------------->
-								<span class="total__message">Nume si Prenume:
+								<span class="total__message">Nume și Prenume:
 									<strong>{{ $new_order->account->addresses->where('type', 'billing')->first()->first_name }}</strong>
 									<strong>{{ $new_order->account->addresses->where('type', 'billing')->first()->last_name }}</strong></span>
 								<!---------------------------------------------------->
@@ -2046,16 +2046,16 @@
 									<strong>{{ $new_order->account->addresses->where('type', 'billing')->first()->address1 }}</strong>
 									<strong>{{ $new_order->account->addresses->where('type', 'billing')->first()->address2 }}</strong></span>
 								<!---------------------------------------------------->
-								<span class="total__message">Tara:
+								<span class="total__message">Țara:
 									<strong>{{ $new_order->account->addresses->where('type', 'billing')->first()->country }}</strong></span>
 								<!---------------------------------------------------->
-								<span class="total__message">Judet:
+								<span class="total__message">Județ:
 									<strong>{{ $new_order->account->addresses->where('type', 'billing')->first()->county }}</strong></span>
 								<!---------------------------------------------------->
-								<span class="total__message">Localitate (oras, comună sau sat):
+								<span class="total__message">Localitate (oraș, comună sau sat):
 									<strong>{{ $new_order->account->addresses->where('type', 'billing')->first()->city }}</strong></span>
 								<!---------------------------------------------------->
-								<span class="total__message">Cod Postal:
+								<span class="total__message">Cod Poștal:
 									<strong>{{ $new_order->account->addresses->where('type', 'billing')->first()->zipcode }}</strong></span>
 								<!----------- End Checkout List of Items ------------->
 								<!---------------------------------------------------->
@@ -2067,7 +2067,7 @@
 								<!----------- End Checkout Header Name ------------->
 								<!---------------------------------------------------->
 								<!------------- Checkout List of Items --------------->
-								<span class="total__message">Nume si Prenume:
+								<span class="total__message">Nume și Prenume:
 									<strong>{{ $new_order->account->addresses->where('type', 'shipping')->first()->first_name }}</strong>
 									<strong>{{ $new_order->account->addresses->where('type', 'shipping')->first()->last_name }}</strong></span>
 								<!---------------------------------------------------->
@@ -2081,16 +2081,16 @@
 									<strong>{{ $new_order->account->addresses->where('type', 'shipping')->first()->address1 }}</strong>
 									<strong>{{ $new_order->account->addresses->where('type', 'shipping')->first()->address2 }}</strong></span>
 								<!---------------------------------------------------->
-								<span class="total__message">Tara:
+								<span class="total__message">Țara:
 									<strong>{{ $new_order->account->addresses->where('type', 'shipping')->first()->country }}</strong></span>
 								<!---------------------------------------------------->
-								<span class="total__message">Judet:
+								<span class="total__message">Județ:
 									<strong>{{ $new_order->account->addresses->where('type', 'shipping')->first()->county }}</strong></span>
 								<!---------------------------------------------------->
-								<span class="total__message">Localitate (oras, comună sau sat):
+								<span class="total__message">Localitate (oraș, comună sau sat):
 									<strong>{{ $new_order->account->addresses->where('type', 'shipping')->first()->city }}</strong></span>
 								<!---------------------------------------------------->
-								<span class="total__message">Cod Postal:
+								<span class="total__message">Cod Poștal:
 									<strong>{{ $new_order->account->addresses->where('type', 'shipping')->first()->zipcode }}</strong></span>
 								<!----------- End Checkout List of Items ------------->
 								<!---------------------------------------------------->
@@ -2107,7 +2107,7 @@
 								<!----------- End Checkout Header Name ------------->
 								<!---------------------------------------------------->
 								<!------------- Checkout List of Items --------------->
-								<span class="total__message">Nume si Prenume:
+								<span class="total__message">Nume și Prenume:
 									<strong>{{ $new_order->account->addresses->where('type', 'billing')->first()->first_name }}</strong>
 									<strong>{{ $new_order->account->addresses->where('type', 'billing')->first()->last_name }}</strong></span>
 								<!---------------------------------------------------->
@@ -2136,16 +2136,16 @@
 									<strong>{{ $new_order->account->addresses->where('type', 'billing')->first()->address1 }}</strong>
 									<strong>{{ $new_order->account->addresses->where('type', 'billing')->first()->address2 }}</strong></span>
 								<!---------------------------------------------------->
-								<span class="total__message">Tara:
+								<span class="total__message">Țara:
 									<strong>{{ $new_order->account->addresses->where('type', 'billing')->first()->country }}</strong></span>
 								<!---------------------------------------------------->
-								<span class="total__message">Judet:
+								<span class="total__message">Județ:
 									<strong>{{ $new_order->account->addresses->where('type', 'billing')->first()->county }}</strong></span>
 								<!---------------------------------------------------->
-								<span class="total__message">Localitate (oras, comună sau sat):
+								<span class="total__message">Localitate (oraș, comună sau sat):
 									<strong>{{ $new_order->account->addresses->where('type', 'billing')->first()->city }}</strong></span>
 								<!---------------------------------------------------->
-								<span class="total__message">Cod Postal:
+								<span class="total__message">Cod Poștal:
 									<strong>{{ $new_order->account->addresses->where('type', 'billing')->first()->zipcode }}</strong></span>
 								<!----------- End Checkout List of Items ------------->
 								<!---------------------------------------------------->
@@ -2157,7 +2157,7 @@
 								<!----------- End Checkout Header Name ------------->
 								<!---------------------------------------------------->
 								<!------------- Checkout List of Items --------------->
-								<span class="total__message">Nume si Prenume:
+								<span class="total__message">Nume și Prenume:
 									<strong>{{ $new_order->account->addresses->where('type', 'shipping')->first()->first_name }}</strong>
 									<strong>{{ $new_order->account->addresses->where('type', 'shipping')->first()->last_name }}</strong></span>
 								<!---------------------------------------------------->
@@ -2171,16 +2171,16 @@
 									<strong>{{ $$new_order->account->addresses->where('type', 'shipping')->first()->address1 }}</strong>
 									<strong>{{ $new_order->account->addresses->where('type', 'shipping')->first()->address2 }}</strong></span>
 								<!---------------------------------------------------->
-								<span class="total__message">Tara:
+								<span class="total__message">Țara:
 									<strong>{{ $new_order->account->addresses->where('type', 'shipping')->first()->country }}</strong></span>
 								<!---------------------------------------------------->
-								<span class="total__message">Judet:
+								<span class="total__message">Județ:
 									<strong>{{ $new_order->account->addresses->where('type', 'shipping')->first()->county }}</strong></span>
 								<!---------------------------------------------------->
-								<span class="total__message">Localitate (oras, comună sau sat):
+								<span class="total__message">Localitate (oraș, comună sau sat):
 									<strong>{{ $new_order->account->addresses->where('type', 'shipping')->first()->city }}</strong></span>
 								<!---------------------------------------------------->
-								<span class="total__message">Cod Postal:
+								<span class="total__message">Cod Poștal:
 									<strong>{{ $new_order->account->addresses->where('type', 'shipping')->first()->zipcode }}</strong></span>
 								<!----------- End Checkout List of Items ------------->
 								<!---------------------------------------------------->
@@ -2212,11 +2212,11 @@
 								@endforeach
 
 								<div class="total__item">
-									<span>Modalitate de plata</span>
+									<span>Modalitate de plată</span>
 									<span>{{ $payment["description"] }}</span>
 								</div>
 								<div class="total__item">
-									<span>Delivery Price:</span>
+									<span>Cost livrare</span>
 									<span>
 										@if (app("global_delivery_price") == 0)
 											Gratuit

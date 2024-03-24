@@ -66,7 +66,7 @@
 					<h1 class="section__title">Descoperă produsele noastre populare!</h1>
 					<p class="section__text">
 						Explorează colecția noastră de produse și găsește accesoriile perfecte pentru a-ți completa stilul.
-						<a href="{{ url("/storeproducts") }}">Vezi produsele!</a>
+						<a href="{{ url("/storeproducts") }}">Vezi toate produsele!</a>
 					</p>
 				</div>
 			</section>
@@ -178,9 +178,9 @@
 			<!------------------- Section Description ------------------>
 			<section>
 				<div class="section__header container">
-					<h1 class="section__title">Descoperă produsele nou aparute!</h1>
+					<h1 class="section__title">Produse adăugate recent</h1>
 					<p class="section__text">
-						Explorează colecția noastră de produse și găsește accesoriile perfecte pentru a-ți completa stilul.
+						Adăugăm constant noi produse pentru a-ți oferi ce este mai bun.
 					</p>
 				</div>
 			</section>

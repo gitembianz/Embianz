@@ -17,7 +17,7 @@
 					<path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path>
 				</svg>
 			</div>
-			<span class="card__button--text"> Adauga in cos </span>
+			<span class="card__button--text"> Adaugă în coș </span>
 		</button>
 	@else
 		<button class="card-button-disabled" aria-label="Disabled Add to cart button">Indisponibil</button>

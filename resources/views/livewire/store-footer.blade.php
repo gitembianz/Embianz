@@ -105,12 +105,12 @@
 			<!--------------------------------------------------------->
 			<!------------------------Subscribe------------------------>
 			<div class="footer__middle">
-				<h2>Aboneaza-te la newsletter-ul nostru</h2>
+				<h2>Abonează-te la newsletter-ul nostru</h2>
 				<div class="footer__checkbox">
 					<input type="checkbox" wire:model="ischecked" id="subscribeCheckbox" name="subscribe__checkbox">
 					<label for="subscribeCheckbox">
-						Sunt de acord cu <a href="{{ url("/terms") }}">Termeni si
-							conditiile</a> abonarii la newsletter privind stocarea si prelucrarea datelor cu caracter
+						Sunt de acord cu <a href="{{ url("/terms") }}">Termenii și
+							condițiile</a> abonării la newsletter privind stocarea și prelucrarea datelor cu caracter
 						personal.</label>
 				</div>
 				<form class="subscribe" wire:submit.prevent="store">
