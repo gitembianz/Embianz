@@ -294,7 +294,7 @@
 
 				<input class="filter__input" wire:model="orderBy" type="radio" name="sort" value="best_selling" id="sort">
 				<label class="filter__link sort__item" for="sort">
-					<h4>Cele mai vândute</h4>
+					<h4>Cele mai populare</h4>
 				</label>
 
 				<input class="filter__input" wire:model="orderBy" type="radio" name="sort1" value="price_as" id="sort1">
