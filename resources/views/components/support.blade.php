@@ -9,7 +9,7 @@
 				<div class="suport__item">
 					<div>
 						<img src="/images/store/svg/headset.svg" alt="headset">
-						<h3 class="support__title">24/7 Suport Disponibil</h3>
+						<h3 class="support__title">Live Chat</h3>
 					</div>
 					<span class="support__subtitle">Operatorii noștri sunt gata să-ți răspundă la orice întrebare și să te asiste în găsirea soluțiilor potrivite nevoilor tale. </span>
 				</div>

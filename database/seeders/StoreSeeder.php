@@ -28,7 +28,7 @@ class StoreSeeder extends Seeder
             ['parameter' => 'auto_webp', 'value' => 'true', 'description' => 'Salvare automata a imaginilor in webp (valaore- true-false)', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'header_top_text', 'value' => '', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'confirm_order_text', 'value' => 'Comanda a fost plasata cu succes!
-Mulțumim pentru plata efectuată!  Am primit-o și în prezent îți procesăm comanda. Echipa noastră lucrează cu dedicație pentru a pregăti produsul pentru livrare. 
+Îți mulțumim pentru plata efectuată!  Am primit-o și în prezent îți procesăm comanda. Echipa noastră lucrează cu dedicație pentru a pregăti produsul pentru livrare. 
 
 Odată ce comanda este în drum spre tine, îți vom trimite un e-mail de confirmare.
 
