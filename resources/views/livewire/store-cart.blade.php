@@ -5,7 +5,7 @@
 		<!------------------------------------------------------>
 		<!------------------- Basket Section ------------------->
 		<div class="section__header container">
-			<h1 class="section__title">Cosul de cumparaturi!</h1>
+			<h1 class="section__title">Coșul de cumpăraturi</h1>
 			<p class="section__text">
 				Vezi produsele mai jos
 			</p>
@@ -21,7 +21,7 @@
 			<!------------------- Basket Products ------------------>
 			<div class="basket">
 				@if ($cartItems->isEmpty())
-					<span class="basket__empty">Cosul de cumparaturi este gol</span>
+					<span class="basket__empty">Coșul de cumpărături nu conține produse</span>
 				@else
 					@foreach ($cartItems as $cartItem)
 						<div class="basket__product">
