@@ -43,7 +43,7 @@
 				<polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
 			</svg>
 		</button>
-		<input class="controls__search" type="text" wire:model="search" placeholder="Caută produsul în această categorie...">
+		<input class="controls__search" type="text" wire:model="search" placeholder="Caută în listă...">
 		<button class="controls__button" id="sortOpen" aria-label="Open sort button">
 			<svg>
 				<line x1="21" y1="10" x2="7" y2="10"></line>
