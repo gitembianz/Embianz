@@ -329,20 +329,25 @@ class StoreOrder extends Component
           'max:20',
           'regex:/^[\p{L}\s]+$/u',
         ],
-        'juridic_billing_phone' => 'required|regex:/^\+?\d{1,4}?\s?\(?\d{1,4}\)?[-.\s]?\d{1,10}$/',
+        'juridic_billing_phone' => 'required|regex:/^\+?\d{1,4}?\s?\(?\d{1,4}\)?[-.\s]?\d{1,10}[-.\s]?\d{1,10}$/',
         'juridic_billing_email' => 'required|email',
         'juridic_billing_company_name' => [
           'required',
-          'regex:/^[\p{L}\s]+$/u',
+          'min:1',
+          'max:100',
+          'regex:/^[a-zA-Z0-9\/., _\'`-]+$/'
         ],
         'juridic_billing_registration_code' => [
           'required',
-          'regex:/^[\p{L}\s]+$/u',
+          'min:1',
+          'max:100',
+          'regex:/^[a-zA-Z0-9\/., _\'`-]+$/'
         ],
         'juridic_billing_registration_number' => [
           'required',
-          'regex:/^[0-9]*$/',
-          'regex:/^[^\s]+(\s+[^\s]+)*$/'
+          'min:1',
+          'max:100',
+          'regex:/^[a-zA-Z0-9\/., _\'`-]+$/'
         ],
         'juridic_billing_address1' => [
           'required',
@@ -355,14 +360,14 @@ class StoreOrder extends Component
           'required',
           'min:1',
           'max:100',
-          'regex:/^[\p{L}\s]+$/u',
+          'regex:/^[\p{L}\d\s.]+$/u',
         ],
         'juridic_billing_city' =>
         [
           'required',
           'min:1',
           'max:100',
-          'regex:/^[\p{L}\s]+$/u',
+          'regex:/^[\p{L}\d\s.]+$/u',
         ],
         'juridic_billing_zipcode' =>
         [
@@ -370,7 +375,7 @@ class StoreOrder extends Component
           'min:1',
           'max:100',
           'regex:/^[a-zA-Z0-9\/., _\'`-]+$/',
-        ],
+        ]
       ];
       if (!$this->juridic_identic) {
         $shippingRules = [
@@ -386,7 +391,7 @@ class StoreOrder extends Component
             'max:20',
             'regex:/^[\p{L}\s]+$/u',
           ],
-          'juridic_shipping_phone' => 'required|regex:/^\+?\d{1,4}?\s?\(?\d{1,4}\)?[-.\s]?\d{1,10}$/',
+          'juridic_shipping_phone' => 'required|regex:/^\+?\d{1,4}?\s?\(?\d{1,4}\)?[-.\s]?\d{1,10}[-.\s]?\d{1,10}$/',
           'juridic_shipping_email' => 'required|email',
           'juridic_shipping_address1' => [
             'required',
@@ -398,20 +403,19 @@ class StoreOrder extends Component
             'required',
             'min:1',
             'max:100',
-            'regex:/^[\p{L}\s]+$/u',
+            'regex:/^[\p{L}\d\s.]+$/u',
           ],
           'juridic_shipping_city' => [
             'required',
             'min:1',
             'max:100',
-            'regex:/^[\p{L}\s]+$/u',
+            'regex:/^[\p{L}\d\s.]+$/u',
           ],
           'juridic_shipping_zipcode' => [
             'required',
             'min:1',
             'max:100',
-            'regex:/^[^\s]+(\s+[^\s]+)*$/',
-            'regex:/^[a-zA-Z0-9\/., _\'`-]*$/'
+            'regex:/^[a-zA-Z0-9\/., _\'`-]+$/',
           ],
         ];
         $rules = array_merge($rules, $shippingRules);
