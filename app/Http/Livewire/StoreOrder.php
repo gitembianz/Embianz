@@ -576,6 +576,8 @@ class StoreOrder extends Component
 
         if ($account->type == 'individual') {
           $this->individual = true;
+          $this->juridic = false;
+
           $this->individual_billing_first = $account->first_name;
           $this->individual_billing_last = $account->last_name;
           $this->individual_billing_phone = $account->phone;
@@ -598,6 +600,8 @@ class StoreOrder extends Component
           $this->individual_shipping_zipcode = $account->addresses->where('type', 'shipping')->first()->zipcode;
         } else {
           $this->juridic = true;
+          $this->individual = false;
+
           $this->juridic_billing_first = $account->first_name;
           $this->juridic_billing_last = $account->last_name;
           $this->juridic_billing_phone = $account->phone;
