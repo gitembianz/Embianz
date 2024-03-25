@@ -5,7 +5,7 @@
 	<!------------------------Breadcrumbs----------------------->
 	<div class="breadcrumbs container">
 		<a class="breadcrumbs__link" href="{{ url("/") }}">
-			Acasa
+			Acasă
 		</a>
 		<a class="breadcrumbs__link" href="{{ url("/terms") }}">
 			Termeni si conditii

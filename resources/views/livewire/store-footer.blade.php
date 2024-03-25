@@ -134,7 +134,7 @@
 				</div>
 				<div class="footer__list">
 					<h3 class="footer__title">Informații</h3>
-					<a class="footer__link" href="{{ url("/terms") }}">Termeni si conditii</a>
+					<a class="footer__link" href="{{ url("/terms") }}">Termeni și Condiții</a>
 					<a class="footer__link" href="{{ url("/contact") }}">Contactează-ne</a>
 					<a class="footer__link" href="{{ url("/about") }}">Despre Noi</a>
 				</div>
