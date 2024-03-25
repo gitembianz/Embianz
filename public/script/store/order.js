@@ -146,13 +146,13 @@ const registerNumber = [
     message: "Te rugăm completează numărul de înregistrare",
   },
   {
-    validation: (value) => /^[0-9]*$/.test(value),
-    message: "Numărul de înregistrare poate conține doar cifre",
+    validation: (value) => /^[A-Za-z0-9/]*$/.test(value),
+    message: "Numărul de înregistrare poate conține doar litere, cifre și caracterul '/'",
   },
   {
     validation: (value) => !/\s{3,}/.test(value),
     message: "Numărul de înregistrare nu poate conține spații consecutive.",
-  },
+  }
 ];
 
 function applyValidations(elementId, validations, autoValidate) {
