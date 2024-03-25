@@ -2,7 +2,7 @@
 const firstNameValidation = [
   {
     validation: (value) => value.trim() !== "",
-    message: "Numele nu poate fi gol",
+    message: "Te rugăm completează numele",
   },
   {
     validation: (value) => value.length >= 2,
@@ -24,7 +24,7 @@ const firstNameValidation = [
 const lastNameValidation = [
   {
     validation: (value) => value.trim() !== "",
-    message: "Prenumele nu poate fi gol",
+    message: "Te rugăm completează prenumele",
   },
   {
     validation: (value) => value.length >= 2,
@@ -46,7 +46,7 @@ const lastNameValidation = [
 const emailValidation = [
   {
     validation: (value) => value.trim() !== "",
-    message: "Emailul nu poate fi gol",
+    message: "Te rugăm completează adresa de email",
   },
   {
     validation: (value) =>
@@ -55,7 +55,7 @@ const emailValidation = [
   },
   {
     validation: (value) => !/\s{2,}/.test(value),
-    message: "Emailul nu poate conține spații consecutive.",
+    message: "Adresa de e-mail nu poate conține spații consecutive.",
   },
   {
     validation: (value) => value.length >= 6,
@@ -65,13 +65,13 @@ const emailValidation = [
   {
     validation: (value) => value.length <= 255,
     message:
-      "Adresa de email este prea lungă. Te rog introdu o adresă de email mai scurtă.",
+      "Adresa de email este prea lungă. Te rugăm introdu o adresă de email mai scurtă.",
   },
 ];
 const phoneValidation = [
   {
     validation: (value) => value.trim() !== "",
-    message: "Numărul de telefon nu poate fi gol",
+    message: "Te rugăm completează numărul de telefon",
   },
   {
     validation: (value) => /^[\d\-().+\s]+$/.test(value),
@@ -93,7 +93,7 @@ const phoneValidation = [
 const addressValidations = [
   {
     validation: (value) => value.trim() !== "",
-    message: "Adresa nu poate fi goală",
+    message: "Te rugăm completează adresa",
   },
   {
     validation: (value) => value.length >= 1,
@@ -115,7 +115,7 @@ const addressValidations = [
 const companyName = [
   {
     validation: (value) => value.trim() !== "",
-    message: "Numele companiei nu poate fi gol",
+    message: "Te rugăm completează numele companiei",
   },
   {
     validation: (value) => /^[a-zA-Z0-9/., _'\-`]*$/.test(value),
@@ -129,7 +129,7 @@ const companyName = [
 const registerCode = [
   {
     validation: (value) => value.trim() !== "",
-    message: "Codul de înregistrare nu poate fi gol",
+    message: "Te rugăm completează codul de înregistrare",
   },
   {
     validation: (value) => /^[a-zA-Z0-9]*$/.test(value),
@@ -143,7 +143,7 @@ const registerCode = [
 const registerNumber = [
   {
     validation: (value) => value.trim() !== "",
-    message: "Numărul de înregistrare nu poate fi gol",
+    message: "Te rugăm completează numărul de înregistrare",
   },
   {
     validation: (value) => /^[0-9]*$/.test(value),

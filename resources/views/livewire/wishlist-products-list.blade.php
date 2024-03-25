@@ -12,7 +12,7 @@
 		</div>
 
 		@if ($items->isEmpty())
-			<span class="leftbar__empty">Niciun produs favorit</span>
+			<span class="leftbar__empty">Nu sunt produse adăugate în lista de favorite</span>
 		@else
 			<ul class="leftbar__list">
 				@foreach ($items as $item)

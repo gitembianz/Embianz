@@ -17,7 +17,7 @@
       Mulțumim pentru completarea formularului.
     </h1>
     <p class="section__text">
-      Veți fi redirecționat la pagina principală în 5 secunde...
+      Vei fi redirecționat la pagina principală în 5 secunde...
     </p>
     <div class="loadingio-spinner-dual-ball-8eksdpgpyip">
       <div class="ldio-sl0v29xbypi">

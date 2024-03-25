@@ -43,7 +43,7 @@
 				<polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
 			</svg>
 		</button>
-		<input class="controls__search" type="text" wire:model="search" placeholder="Cauta produsul aici...">
+		<input class="controls__search" type="text" wire:model="search" placeholder="Caută produsul în această categorie...">
 		<button class="controls__button" id="sortOpen" aria-label="Open sort button">
 			<svg>
 				<line x1="21" y1="10" x2="7" y2="10"></line>
@@ -294,27 +294,27 @@
 
 				<input class="filter__input" wire:model="orderBy" type="radio" name="sort" value="best_selling" id="sort">
 				<label class="filter__link sort__item" for="sort">
-					<h4>Cele mai vandute</h4>
+					<h4>Cele mai populare</h4>
 				</label>
 
 				<input class="filter__input" wire:model="orderBy" type="radio" name="sort1" value="price_as" id="sort1">
 				<label class="filter__link sort__item" for="sort1">
-					<h4>Pret crescator</h4>
+					<h4>Preț crescător</h4>
 				</label>
 
 				<input class="filter__input" wire:model="orderBy" type="radio" name="sort2" value="price_ds" id="sort2">
 				<label class="filter__link sort__item" for="sort2">
-					<h4>Pret descrescator</h4>
+					<h4>Preț descrescător</h4>
 				</label>
 
 				<input class="filter__input" wire:model="orderBy" type="radio" name="sort3" value="quantity" id="sort3">
 				<label class="filter__link sort__item" for="sort3">
-					<h4>Disponibilitate (stock descrescator)</h4>
+					<h4>Disponibilitate (stoc descrescator)</h4>
 				</label>
 
 				<input class="filter__input" wire:model="orderBy" type="radio" name="sort8" value="quantity_as" id="sort8">
 				<label class="filter__link sort__item" for="sort8">
-					<h4>Disponibilitate (stock crescator)</h4>
+					<h4>Disponibilitate (stoc crescator)</h4>
 				</label>
 
 				<input class="filter__input" wire:model="orderBy" type="radio" name="sort4" value="name_az" id="sort4">
@@ -329,12 +329,12 @@
 
 				<input class="filter__input" wire:model="orderBy" type="radio" name="sort6" value="date_old_new" id="sort6">
 				<label class="filter__link sort__item" for="sort6">
-					<h4>Data, de la vechi la nou</h4>
+					<h4>Dată, de la vechi la nou</h4>
 				</label>
 
 				<input class="filter__input" wire:model="orderBy" type="radio" name="sort7" value="date_new_old" id="sort7">
 				<label class="filter__link sort__item" for="sort7">
-					<h4>Data, de la nou la vechi</h4>
+					<h4>Dată, de la nou la vechi</h4>
 				</label>
 			</div>
 		</div>
