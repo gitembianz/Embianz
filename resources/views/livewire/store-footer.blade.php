@@ -5,11 +5,10 @@
 			<div class="container cookie__container">
 				<div class="cookie__description">
 					<span>
-						This website utilizes cookies to enhance your browsing experience and provide you with the best
-						possible service on our platform. See Cookies Policy
+            Acest site web utilizează cookie-uri pentru a îmbunătăți experiența dvs. de navigare și pentru a vă oferi cel mai bun serviciu posibil pe platforma noastră.
 					</span>
 					<a href="{{ url("/cookie") }}">
-						See Cookies Policy
+						Vedeți Politica de Cookies
 					</a>
 				</div>
 				<div id="cookieForm">
@@ -18,40 +17,38 @@
 							<label>
 								<input type="checkbox" name="essential" disabled checked>
 								<span>
-									Essential Cookies (Required)
+                  Cookie-uri Esențiale (Necesare)
 								</span>
 								<p>
-									These are essential cookies that ensure the proper functioning of the website and
-									the
-									preservation of your preferences (e.g., language, region).
+                Acestea sunt cookie-uri esențiale care asigură funcționarea corectă a site-ului web și păstrarea preferințelor dvs. (de ex., limbă, regiune).
 								</p>
 							</label>
 							<label>
 								<input type="checkbox" name="analytics">
 								<span>
-									Analytical Cookies
+                 Cookie-uri Analitice
 								</span>
 								<p>
-									These cookies encompass performance cookies and visitor analysis cookies.
+                  Aceste cookie-uri includ cookie-uri de performanță și cookie-uri de analiză a vizitatorilor.
 								</p>
 							</label>
 							<label>
 								<input type="checkbox" name="marketing">
 								<span>
-									Marketing Cookies
+                   Cookie-uri de Marketing
 								</span>
 								<p>
-									These cookies are used for marketing purposes.
+                Aceste cookie-uri sunt utilizate în scopuri de marketing.
 								</p>
 							</label>
 						</div>
 					</div>
 					<div class="cookie-btns">
 						<button wire:click="acceptCookie" class="cookie__button cookie__button--accept">
-							Accept
+							Acceptă
 						</button>
 						<button wire:click="advancecookie" id="advanced-settings" class="cookie__button" type="button">
-							Advanced
+              Avansat
 						</button>
 					</div>
 				</div>
