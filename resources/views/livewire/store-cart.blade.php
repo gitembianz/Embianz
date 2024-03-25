@@ -39,7 +39,7 @@
 											{{ number_format($cartItem->price, 2, ",", ".") }}
 											{{ $currency }}
 										@else
-											pret indisponibil
+											Preț indisponibil
 										@endif
 									</span>
 								</div>

@@ -28,7 +28,7 @@
 		])
 	</div>
 	<div class="product__price">
-		<span class="product__price--title">Pret</span>
+		<span class="product__price--title">Preț</span>
 		@if ($discount && $price)
 			@if ($price)
 				<div class="product__price--discount">
@@ -42,13 +42,13 @@
 				{{ $price }}
 				{{ $currency }}
 			@else
-				Pret Indisponibil
+				Preț Indisponibil
 			@endif
 		@endif
 	</div>
 	@if ($price)
 		<span class="product__tva">
-			Pretul include taxa TVA de
+			Prețul include taxa TVA de
 			{{ number_format($product->product_prices->first()->tva_percent, 2, ",", ".") }}%
 		</span>
 		<div class="quantity">
@@ -115,7 +115,7 @@
 			<table class="tab__table">
 				<thead>
 					<tr>
-						<th>Specificatii </th>
+						<th>Specificații </th>
 						<th>Descriere</th>
 					</tr>
 				</thead>
@@ -129,7 +129,7 @@
 						@endforeach
 					@else
 						<tr>
-							<td colspan="2">Nu exista specificatii pentru acest product</td>
+							<td colspan="2">Nu exista specificații pentru acest product</td>
 						</tr>
 					@endif
 				</tbody>
