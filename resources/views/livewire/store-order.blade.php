@@ -1803,10 +1803,8 @@
 								<!----------- End Checkout List of Items ------------->
 								<!---------------------------------------------------->
 							</div>
-						@endif
-						<!---------------------------------------------------->
-						@if ($juridic)
-							<div class="checkout__form">
+						@else
+							<div class="look__form">
 								<!---------------------------------------------------->
 								<!------------- Checkout Header Name --------------->
 								<h3>
@@ -2096,7 +2094,7 @@
 						@endif
 						<!---------------------------------------------------->
 						@if ($juridic)
-							<div class="checkout__form">
+							<div class="look__form">
 								<!---------------------------------------------------->
 								<!------------- Checkout Header Name --------------->
 								<h3>
@@ -2166,7 +2164,7 @@
 									<strong>{{ $new_order->account->addresses->where("type", "shipping")->first()->email }}</strong></span>
 								<!---------------------------------------------------->
 								<span class="total__message">Adresa:
-									<strong>{{ $$new_order->account->addresses->where("type", "shipping")->first()->address1 }}</strong>
+									<strong>{{ $new_order->account->addresses->where("type", "shipping")->first()->address1 }}</strong>
 									<strong>{{ $new_order->account->addresses->where("type", "shipping")->first()->address2 }}</strong></span>
 								<!---------------------------------------------------->
 								<span class="total__message">Țara:
