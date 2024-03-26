@@ -261,11 +261,15 @@
 						</div>
 						<div class="dropfilter__list">
 							@foreach ($values->sortBy("sequence") as $value)
-								<label class="dropfilter__link" for="{{ $value->id }}{{ $value->value }}">
-									<input type="checkbox" wire:model="selectedSpecValues.{{ $value->spec_id }}.{{ $value->value }}" wire:change="applyFilter" id="{{ $value->id }}{{ $value->value }}">
-									<h4>{{ $value->value }}</h4>
-								</label>
-							@endforeach
+    @php
+        $key = str_replace('.', '_', $value->value); // Replace dots with underscores in the key
+    @endphp
+    <label class="dropfilter__link" for="{{ $value->id }}{{ $value->value }}">
+        <input type="checkbox" wire:model="selectedSpecValues.{{ $value->spec_id }}.{{ $key }}" wire:change="applyFilter" id="{{ $value->id }}{{ $value->value }}">
+        <h4>{{ $value->value }}</h4>
+    </label>
+@endforeach
+
 						</div>
 					</div>
 				@endforeach

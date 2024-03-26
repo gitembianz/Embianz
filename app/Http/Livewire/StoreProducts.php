@@ -111,6 +111,8 @@ class StoreProducts extends Component
     foreach ($this->specification as $spec) {
       foreach ($this->selectedKeys as $key) {
         foreach ($spec->product_spec as $value) {
+          $key = str_replace('_', '.', $key);
+
           if ($value->value == $key) {
             $this->selectedSpecNames[$key] = $spec->name;
           }
@@ -174,7 +176,8 @@ class StoreProducts extends Component
           foreach ($values as $value => $isSelected) {
             if ($isSelected) {
               $specSubQuery->orWhereHas('product_specs', function ($query) use ($value) {
-                $query->where('value', $value);
+                $key = str_replace('_', '.', $value);
+                $query->where('value', $key);
               });
             }
           }
