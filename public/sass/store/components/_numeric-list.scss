@@ -1,129 +1,69 @@
-.numeric {
+
+.contract {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 15px
+}
+
+.contract__container {
   counter-reset: category-counter;
-  list-style-type: none;
+  list-style-type: none
 }
-
-.numeric > li {
-  counter-increment: category-counter;
-  margin-bottom: 20px;
-  position: relative;
-
-  & > h2 {
-    margin: 0;
-    font-size: 20px;
-    margin-bottom: 10px;
-    margin-left: 30px;
-    line-height: 150%;
-  }
-
-  & > p {
-    line-height: 150%;
-
-    & > a {
-      text-decoration: underline;
-      color: $lightBlack;
-      font-weight: $lightWeight;
-    }
-  }
-
-  & > a {
+.contract__link {
     text-decoration: underline;
     color: $lightBlack;
+    font-size: $textSize;
     font-weight: $lightWeight;
   }
+
+.contract__title {
+  width: 100%;
+  font-size: 1.5rem;
+  color: #333;
+  line-height: 150%;
+  text-align: center;
+  font-weight: 700;
+  margin-bottom: 10px
 }
 
-.numeric > li::before {
-  content: counter(category-counter) ". ";
-  font-weight: $boldWeight;
-  position: absolute;
-  left: 0px;
-  top: 4.5px;
+.contract__descr {
+  width: 100%;
+  font-size: $textSize;
+  color: #333;
+  line-height: 150%;
+  font-weight: 500
 }
 
-.sub-numeric {
-  counter-reset: sub-category-counter;
-  list-style-type: none;
-  padding-left: 70px;
+.contract__descr>a {
+  color: #333;
+  text-decoration: underline;
+  font-weight: 600
 }
 
-.sub-numeric > li {
-  counter-increment: sub-category-counter;
-  margin-bottom: 20px;
+.contract__subtitle {
+  width: 100%;
+  font-size: 1rem;
+  color: #333;
+  font-weight: 700;
+  line-height: 150%;
+  border-bottom: 2px solid #333;
+  margin-bottom: 5px;
   position: relative;
-
-  & > h2 {
-    margin: 0;
-    font-size: 20px;
-    margin-bottom: 20px;
-    line-height: 150%;
-  }
-
-  & > p {
-    line-height: 150%;
-
-    & > a {
-      text-decoration: underline;
-      color: $lightBlack;
-      font-weight: $lightWeight;
-    }
-  }
-
-  & > a {
-    text-decoration: underline;
-    color: $lightBlack;
-    font-weight: $lightWeight;
-  }
+  padding-left: 35px;
+  counter-increment: category-counter
 }
 
-.sub-numeric > li::before {
-  content: counter(category-counter) "." counter(sub-category-counter) " ";
-  font-weight: normal;
+.contract__subtitle:after {
+  content: counter(category-counter) " - ";
   position: absolute;
-  left: -40px;
-  top: 4.5px;
-}
-
-.sub-sub-numeric {
-  counter-reset: sub-sub-category-counter;
-  list-style-type: none;
-  padding-left: 70px;
-}
-
-.sub-sub-numeric > li {
-  counter-increment: sub-sub-category-counter;
-  margin-bottom: 20px;
-  position: relative;
-
-  & > h2 {
-    margin: 0;
-    font-size: 20px;
-    margin-bottom: 10px;
-    line-height: 150%;
-  }
-
-  & > p {
-    line-height: 150%;
-
-    & > a {
-      text-decoration: underline;
-      color: $lightBlack;
-      font-weight: $lightWeight;
-    }
-  }
-
-  & > a {
-    text-decoration: underline;
-    color: $lightBlack;
-    font-weight: $lightWeight;
-  }
-}
-
-.sub-sub-numeric > li::before {
-  content: counter(category-counter) "." counter(sub-category-counter) "."
-    counter(sub-sub-category-counter) " ";
-  font-weight: normal;
-  position: absolute;
-  left: -70px;
-  top: 4.5px;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1rem;
+  color: #333;
+  font-weight: 700;
+  line-height: 150%
 }
