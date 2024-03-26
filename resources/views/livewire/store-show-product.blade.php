@@ -4,9 +4,12 @@
 		<a class="breadcrumbs__link" href="{{ url("/") }}">
 			Acasă
 		</a>
+		@if (app()->has("global_show_on_breadcrumbs") && app('global_show_on_breadcrumbs') == 'true')
+			
 		<a class="breadcrumbs__link" href="{{ url("/storeproducts") }}">
-			Produse
+			Toate produsele
 		</a>
+		@endif
 		@if ($product->product_categories->isNotEmpty())
 			@foreach ($product->getCategoryHierarchy() as $breadcrumb)
 				<a class="breadcrumbs__link" href="{{ route("products", ["categorySlug" => $breadcrumb["slug"]]) }}">
