@@ -71,7 +71,6 @@ class StoreController extends Controller
   {
     $data = null;
     $can = null;
-
     if ($categorySlug) {
       if (is_numeric($categorySlug)) {
         $category = Category::find($categorySlug);
@@ -82,6 +81,8 @@ class StoreController extends Controller
       }
       if ($category) {
         $data = $category;
+      } else {
+        return abort(404);
       }
     }
 

@@ -17,7 +17,7 @@ class StoreHead extends Component
     {
         $this->title = $title . app('global_site_name');
         $this->description = empty($description)
-            ? ""
+            ? "Toate Produsele"
             : $description;
         $this->canonical = $canonical;
     }
