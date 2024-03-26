@@ -130,6 +130,7 @@ class StoreProducts extends Component
   }
   public function removeSpec($key)
   {
+    $key = str_replace('.', '_', $key);
 
     foreach ($this->selectedSpecValues as &$subarray) {
       if (isset($subarray[$key])) {
@@ -140,6 +141,7 @@ class StoreProducts extends Component
         break;
       }
     }
+    $key = str_replace('_', '.', $key);
     unset($this->selectedSpecNames[$key]);
     $allKeys = array_keys(array_merge(...$this->selectedSpecValues));
     $this->selectedKeys = $allKeys;
