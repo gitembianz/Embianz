@@ -361,7 +361,7 @@
             <a class="contract__link" href="https://www.youronlinechoices.com/ro/">youronlinechoices.com/ro</a>
         </p>
     </div>
-</section>
+  </section>
 	<!----------------------End Cookie List--------------------->
 	<!---------------------------------------------------------->
 </main>
