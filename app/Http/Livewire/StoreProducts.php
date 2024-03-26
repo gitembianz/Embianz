@@ -57,6 +57,8 @@ class StoreProducts extends Component
     if ($category) {
       $decodedCategory = json_decode(htmlspecialchars_decode($category), true);
       $this->category = Category::select('id', 'name', 'long_description')->find($decodedCategory['id']);
+    } else {
+      $this->category = Category::select('id', 'name', 'long_description')->find(app('global_default_category'));
     }
   }
 

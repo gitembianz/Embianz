@@ -60,10 +60,12 @@ class Category extends Model
   protected $fillable = [
     'name',
     'parrent',
+    'active',
     'long_description',
     'meta_description',
     'short_description',
     'sequence',
+    'slider_sequence',
     'start_date',
     'end_date',
     'createdby',
