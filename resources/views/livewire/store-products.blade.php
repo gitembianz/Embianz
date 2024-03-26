@@ -9,11 +9,14 @@
 		<a class="breadcrumbs__link" href="{{ url("/") }}">
 			Acasă
 		</a>
+		@if (app()->has("global_show_on_breadcrumbs") && app('global_show_on_breadcrumbs') == 'true')
+			
 		<a class="breadcrumbs__link" href="{{ url("/storeproducts") }}">
-			Produse
+			Toate produsele
 		</a>
+		@endif
 		<!-------------------If Category is appear------------------>
-		@if ($category)
+		@if ($category && $category->id != app('global_default_category'))
 			@foreach ($category->getCategoryBreadcrumbs() as $breadcrumb)
 				<a class="breadcrumbs__link" href="{{ route("products", ["categorySlug" => $breadcrumb["slug"]]) }}">
 					{{ $breadcrumb["name"] }}

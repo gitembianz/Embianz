@@ -30,6 +30,11 @@
 			<!------------------------------------------------------>
 			<!---------------------NavMenu bar---------------------->
 			<div class="navbar__list">
+	@if (app()->has("global_show_on_header") && app("global_show_on_header") == "true")
+	<a class="navbar__link" href="{{ route("products", ["categorySlug" => app('global_default_category')]) }}">
+							Toate Produsele
+						</a>
+@endif
 				@foreach ($categories as $category)
 					@if ($category->subcategory->count() != 0)
 						<div class="dropdown">
