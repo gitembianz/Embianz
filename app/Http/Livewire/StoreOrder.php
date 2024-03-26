@@ -28,6 +28,7 @@ class StoreOrder extends Component
   public $orderNumber;
   public $payment_cancel = false;
   public $new_order;
+  public $modification = false;
 
   // individual declaration
   public $individual = true;
@@ -89,7 +90,8 @@ class StoreOrder extends Component
   public $payment;
   protected $listeners = [
     'nocard' => 'mount',
-    'cartUpdated' => 'mount'
+    'cartUpdated' => 'mount',
+    'isdisabled' => 'checkIsDisabled'
   ];
 
   private function getSessionId()
@@ -101,6 +103,11 @@ class StoreOrder extends Component
       setcookie('sessionId', $sessionId, time() + 30 * 24 * 60 * 60, '/', null, false, true);
       return $sessionId;
     }
+  }
+
+  public function checkIsDisabled()
+  {
+    $this->modification = true;
   }
 
   public function getCartProperty()
@@ -122,7 +129,7 @@ class StoreOrder extends Component
         ->where('cart_id', $this->cart->id)
         ->with([
           'product' => function ($query) {
-            $query->select('id', 'name', 'seo_id', 'quantity')->with([
+            $query->select('id', 'name', 'seo_id', 'quantity', 'active', 'start_date', 'end_date')->with([
               'media' => function ($query) {
                 $query->select('path', 'name')->where('type', 'min');
               },
@@ -448,7 +455,7 @@ class StoreOrder extends Component
 
   public function mount()
   {
-
+    $this->modification = false;
     $this->session_id = $this->getSessionId();
     if (session()->has('paymentcancel')) {
       $this->payment_cancel = true;
@@ -687,6 +694,12 @@ class StoreOrder extends Component
       foreach ($this->cartitems as $item) {
         if ($item->quantity > $item->product->quantity) {
           $this->validatequantity = false;
+          $this->dispatchBrowserEvent('alert__modal');
+          return;
+        }
+      }
+      foreach ($this->cartitems as $item) {
+        if (($item->product->active != true) || ($item->product->start_date > now()->format('Y-m-d')) || ($item->product->end_date < now()->format('Y-m-d'))) {
           $this->dispatchBrowserEvent('alert__modal');
           return;
         }
@@ -989,6 +1002,7 @@ class StoreOrder extends Component
         $this->new_order = $order;
 
         $this->emit('orderprocess');
+
         //request to salesforce
         $order_lines = [];
         foreach ($order->orders as $sub_order) {

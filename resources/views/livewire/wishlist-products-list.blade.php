@@ -14,8 +14,17 @@
 		@if ($items->isEmpty())
 			<span class="leftbar__empty">Nu sunt produse adăugate în lista de favorite</span>
 		@else
+		<?php  
+				$disables =[];
+				?>
 			<ul class="leftbar__list">
-				@foreach ($items as $item)
+				@foreach ($items as $index => $item)
+					<?php 
+				$disabled[$index] = false;
+				if (($item->product->active != true) || ($item->product->start_date > now()->format('Y-m-d')) || ($item->product->end_date < now()->format('Y-m-d'))){
+					$disabled[$index] = true;
+
+				} ?>
 					<li class="leftbar__item">
 
 						<a class="leftbar__link wishlist__link" href="{{ route("product", ["product" => $item->product->seo_id !== null && $item->product->seo_id !== "" ? $item->product->seo_id : $item->product->id]) }}">
@@ -34,6 +43,17 @@
 								<line x1="6" y1="6" x2="18" y2="18"></line>
 							</svg>
 						</button>
+						@if ($disabled[$index])
+						<div class="item__product--disabled">
+						  <span>Produs Indisponibil</span>
+						  <button class="leftbar__delete" type="button" wire:click="removeFromWishlist({{ $item->product->id }})">
+							<svg>
+							  <line x1="18" y1="6" x2="6" y2="18"></line>
+							  <line x1="6" y1="6" x2="18" y2="18"></line>
+							</svg>
+						  </button>
+						</div>
+						@endif
 					</li>
 				@endforeach
 			</ul>
