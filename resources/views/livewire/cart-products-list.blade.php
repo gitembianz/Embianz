@@ -50,6 +50,15 @@
 								<line x1="6" y1="6" x2="18" y2="18"></line>
 							</svg>
 						</button>
+            <div class="leftbar__item--disabled">
+              <span>Produs Indisponibil</span>
+              <button class="leftbar__delete" type="button" wire:click="removeFromCart({{ $cartItem->product->id }})">
+                <svg>
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
 					</li>
 				@endforeach
 			</ul>
@@ -57,7 +66,8 @@
 			<div class="leftbar__total">
 				<h5 class="leftbar__total--text">Total: <span id="leftbarTotalPrice">{{ number_format($total, 2, ",", ".") }}
 						{{ $currency }}</span></h5>
-				<a class="leftbar__button leftbar__button--long" id="headerContinue" wire:click.prevent="continue">Finalizare Comandă</a>
+				<a class="leftbar__button leftbar__button--long leftbar__button--disabled" id="headerContinue" wire:click.prevent="continue">Finalizare Comandă</a>
+        <span class="leftbar__total--disabled">Aveti un produs indisponibil</span>
 			</div>
 
 			<script>
