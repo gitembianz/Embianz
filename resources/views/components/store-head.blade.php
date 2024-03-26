@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ro">
 
 <head>
  <meta charset="UTF-8">
@@ -11,7 +11,7 @@
  <meta name="description" content="{{ $description }}">
 
  {{-- DormiSoft Favicon --}}
- <link rel="icon" type="image/x-icon" href="/images/store/svg/dormisoft_favicon.svg">
+ {{-- <link rel="icon" type="image/x-icon" href="/images/store/svg/dormisoft_favicon.svg"> --}}
  {{-- Noren Favicon --}}
  <link rel="icon" type="image/x-icon" href="/images/store/svg/noren_favicon.svg">
 
@@ -23,19 +23,19 @@
  {{-- <script rel="preload" src="script/store/head.js" as="script"></script> --}}
 
  {{-- ----------------------------------------------------------- --}}
- <meta property="og:image" content="images/store/logo-banner.webp" />
- <meta property="twitter:image" content="images/store/logo-banner.webp" />
  {{-- ----------------------------------------------------------- --}}
- {{-- <meta property="og:url" content="{{ $canonical }}" /> --}}
- {{-- <meta property="twitter:url" content="{{ $canonical }}" /> --}}
  {{-- ----------------------------------------------------------- --}}
- <meta property="og:type" content="website" />
- <meta property="twitter:card" content="{{ $description }}" />
  {{-- ----------------------------------------------------------- --}}
  <!-- Open Graph / Facebook -->
+ <meta property="og:url" content="{{ $canonical }}" />
+ <meta property="og:type" content="website" />
+ <meta property="og:image" content="images/store/logo-banner.webp" />
  <meta property="og:title" content="{{ $title }}" />
  <meta property="og:description" content="{{ $description }}" />
  <!-- Twitter -->
+ <meta property="twitter:url" content="{{ $canonical }}" />
+ <meta property="twitter:card" content="summary_large_image" />
+ <meta property="twitter:image" content="images/store/logo-banner.webp" />
  <meta property="twitter:title" content="{{ $title }}" />
  <meta property="twitter:description" content="{{ $description }}" />
  {{-- ----------------------------------------------------------- --}}
