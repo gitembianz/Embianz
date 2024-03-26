@@ -88,7 +88,7 @@
 								<?php
 								$price = null;
 								$discount = false;
-								
+
 								if ($product->product_prices->count() != 0) {
 								    $price = number_format($product->product_prices->first()->value, 2, ",", ".");
 								    $discount = $product->product_prices->first()->discount != 0 ? true : false;
@@ -178,7 +178,7 @@
 			<!------------------- Section Description ------------------>
 			<section>
 				<div class="section__header container">
-					<h1 class="section__title">Produse adăugate recent</h1>
+					<h2 class="section__title">Produse adăugate recent</h1>
 					<p class="section__text">
 						Adăugăm constant noi produse pentru a-ți oferi ce este mai bun.
 					</p>
@@ -202,7 +202,7 @@
 								<?php
 								$price = null;
 								$discount = false;
-								
+
 								if ($product->product_prices->count() != 0) {
 								    $price = number_format($product->product_prices->first()->value, 2, ",", ".");
 								    $discount = $product->product_prices->first()->discount != 0 ? true : false;
