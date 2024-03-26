@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use App\Models\Products_categories;
 
 
 
@@ -81,6 +82,12 @@ class ProductController extends Controller
       'last_modified_by' => Auth::user()->name,
       'seo_id' => $seo_id
     ]);
+
+    $defaultcategory = new  Products_categories();
+    $defaultcategory->product_id = $newproduct->id;
+    $defaultcategory->category_id = app('global_default_category');
+    $defaultcategory->save();
+
 
     return redirect()->back()->with([
       'notification' => [
