@@ -103,10 +103,14 @@ class StoreProducts extends Component
   public function applyFilter()
   {
     $this->selectedSpecNames = [];
-    $filteredValues = array_filter($this->selectedSpecValues, function ($values) {
-      return in_array(true, $values);
-    });
+
+    $filteredValues = array_map(function ($values) {
+      return array_filter($values, function ($value) {
+        return $value === true;
+      });
+    }, $this->selectedSpecValues);
     $allKeys = array_keys(array_merge(...array_values($filteredValues)));
+
     $this->selectedKeys = $allKeys;
     foreach ($this->specification as $spec) {
       foreach ($this->selectedKeys as $key) {
