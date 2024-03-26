@@ -46,7 +46,7 @@ class WishlistProductsList extends Component
             ->where('session_id', $this->session_id)
             ->with([
                 'product' => function ($query) {
-                    $query->select('id', 'name', 'seo_id')->with(['media' => function ($query) {
+                    $query->select('id', 'name', 'seo_id', 'active', 'start_date', 'end_date')->with(['media' => function ($query) {
                         $query->select('name', 'path')->where('type', 'min');
                     }]);
                 }

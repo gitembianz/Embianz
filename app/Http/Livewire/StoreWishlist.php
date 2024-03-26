@@ -46,8 +46,7 @@ class StoreWishlist extends Component
   public function getWishlistItemsProperty()
   {
     $wishlist = Wishlist::where('session_id', $this->session_id)->pluck('product_id')->toArray();
-    return Product::whereIn('id', $wishlist)->select('id', 'name', 'seo_id', 'short_description')
-      ->where('active', true)
+    return Product::whereIn('id', $wishlist)->select('id', 'name', 'seo_id', 'active', 'start_date', 'end_date')
       ->with([
         'media' => function ($query) {
           $query->select('path', 'name')->where('type', 'min');

@@ -57,7 +57,7 @@ class StoreCart extends Component
         ->where('cart_id', $this->cart->id)
         ->with([
           'product' => function ($query) {
-            $query->select('id', 'name', 'seo_id')->with([
+            $query->select('id', 'name', 'seo_id', 'active', 'start_date', 'end_date')->with([
               'media' => function ($query) {
                 $query->select('path', 'name')->where('type', 'min');
               },
@@ -226,6 +226,16 @@ class StoreCart extends Component
 
   public function continue()
   {
+
+    if ($this->cartItems->isNotEmpty()) {
+      foreach ($this->cartItems as $item) {
+        if (($item->product->active != true) || ($item->product->start_date > now()->format('Y-m-d')) || ($item->product->end_date < now()->format('Y-m-d'))) {
+          $this->emit('cartUpdated');
+          return;
+        }
+      }
+    }
+
     $validateQuantity = true;
 
     if ($this->cartItems->isNotEmpty()) {

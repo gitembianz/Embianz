@@ -18,7 +18,16 @@
    @if ($wishlistitems->isEmpty())
     <span class="basket__empty">Nu sunt produse adăugate în lista de favorite</span>
    @else
-    @foreach ($wishlistitems as $product)
+   <?php  
+				$disables =[];
+				?>
+    @foreach ($wishlistitems as $index => $product)
+    	<?php 
+				$disabled[$index] = false;
+				if (($product->active != true) || ($product->start_date > now()->format('Y-m-d')) || ($product->end_date < now()->format('Y-m-d'))){
+					$disabled[$index] = true;
+
+				} ?>
      <div class="basket__product">
       <div class="basket__top">
        @if ($product->media->first() != null)
@@ -58,6 +67,17 @@
         </button>
        @endif
       </div>
+      @if ($disabled[$index])
+						<div class="item__product--disabled">
+						  <span>Produs Indisponibil</span>
+						  <button class="leftbar__delete" type="button" wire:click="removeFromWishlist({{ $product->id }})">
+							<svg>
+							  <line x1="18" y1="6" x2="6" y2="18"></line>
+							  <line x1="6" y1="6" x2="18" y2="18"></line>
+							</svg>
+						  </button>
+						</div>
+						@endif
 
      </div>
     @endforeach

@@ -23,7 +23,20 @@
 				@if ($cartItems->isEmpty())
 					<span class="basket__empty">Coșul de cumpărături nu conține produse</span>
 				@else
-					@foreach ($cartItems as $cartItem)
+				<?php  
+				$disables =[];
+				$isdisabled = false;
+				?>
+					@foreach ($cartItems as $index => $cartItem)
+					<?php 
+				$disabled[$index] = false;
+				if (($cartItem->product->active != true) || ($cartItem->product->start_date > now()->format('Y-m-d')) || ($cartItem->product->end_date < now()->format('Y-m-d'))){
+					$disabled[$index] = true;
+				$isdisabled = true;
+
+				}
+				
+				?>
 						<div class="basket__product">
 							<div class="basket__top">
 								@if ($cartItem->product->media->first())
@@ -84,6 +97,17 @@
 									{{ $currency }}
 								</span>
 							</div>
+							@if ($disabled[$index])
+						<div class="item__product--disabled">
+						  <span>Produs Indisponibil</span>
+						  <button class="leftbar__delete" type="button" wire:click="removeFromCart({{ $cartItem->product->id }})">
+							<svg>
+							  <line x1="18" y1="6" x2="6" y2="18"></line>
+							  <line x1="6" y1="6" x2="18" y2="18"></line>
+							</svg>
+						  </button>
+						</div>
+						@endif
 						</div>
 					@endforeach
 				@endif
@@ -146,8 +170,16 @@
 								</button>
 							</div>
 						@endif
-
+						@if ($isdisabled)
+						<a class="leftbar__button leftbar__button--long item__button--disabled">Continua</a>
+						
+						<span class="item__text--disabled" id="detailsContinue">Ai cel puțin un produs indisponibil adaugat in coș!</span>
+						@else
 						<button id="detailsContinue" class="details__button details__continue" wire:click="continue()" aria-label="Continue form">Continua</button>
+
+
+						@endif
+
 					</div>
 
 				</div>
@@ -157,52 +189,6 @@
 		</div>
 	</section>
 
-	{{-- <script>
-		// Verifica daca dataLayer este definit, altfel il initializeaza
-		window.dataLayer = window.dataLayer || [];
-
-		// Creeaza o functie care adauga informatiile despre produse in dataLayer
-		function addToDataLayer(products, total) {
-			window.dataLayer.push({
-				'event': 'addToCart',
-				'ecommerce': {
-					'currencyCode': 'RON', // Codul valutei
-					'add': { // Actiunea de adaugare a produselor in cos
-						'products': products, // Lista de produse adaugate
-						'total': total // Totalul comenzii
-					}
-				}
-			});
-		}
-
-		// Adauga un eveniment de click pentru butonul de continuare
-		document.getElementById('detailsContinue').addEventListener('click', function() {
-			let products = [];
-			let total = parseFloat(document.getElementById('detailsTotal').innerText.replace('RON', '').trim()); // Extrage totalul comenzii si converteste-l la float
-
-			// Itereaza prin fiecare produs din cos
-			document.querySelectorAll('.basket__product').forEach(function(product) {
-				let productName = product.querySelector('.basket__title').innerText;
-				let productPrice = parseFloat(product.querySelector('.basket__price').innerText.replace('RON', '').trim()); // Extrage pretul produsului si converteste-l la float
-				let productQuantity = parseInt(product.querySelector('.product__quantity').innerText); // Extrage cantitatea produsului si converteste-l la int
-
-				// Adauga informatiile despre produs in lista de produse
-				products.push({
-					'name': productName,
-					'price': productPrice,
-					'quantity': productQuantity
-				});
-			});
-
-			// Adauga lista de produse si totalul comenzii in dataLayer
-			addToDataLayer(products, total);
-
-			// Trimite un eveniment general pentru a continua la checkout
-			window.dataLayer.push({
-				'event': 'continueToCheckout'
-			});
-		});
-	</script> --}}
 	<script>
 		document.getElementById('detailsContinue').addEventListener('click', function() {
 			let productsList = [];

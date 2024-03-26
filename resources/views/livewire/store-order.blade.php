@@ -1709,7 +1709,9 @@
 				<!------------------------------------------------------>
 				<!--------------------- Step Middle -------------------->
 				@if ($step == 2)
-
+<?php  
+				$disables =[];
+				?>
 					<div class="checkout__header">
 						<button class="checkout__button" wire:click.prevent="previous()">
 							<svg>
@@ -1717,12 +1719,21 @@
 								<polyline points="12 19 5 12 12 5"></polyline>
 							</svg>Pasul anterior
 						</button>
+						@if ($modification)
+						<button class="checkout__button checkout__button--confirm item__button--disabled">
+							Confirmă <svg>
+								<polyline points="9 11 12 14 22 4"></polyline>
+								<path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+							</svg>
+						</button>
+						@else
 						<button class="checkout__button checkout__button--confirm" wire:click.prevent="confirm()">
 							Confirmă <svg>
 								<polyline points="9 11 12 14 22 4"></polyline>
 								<path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
 							</svg>
 						</button>
+						@endif
 					</div>
 					<div class="section__header">
 						<h2 class="section__title">Verificați detaliile dumneavoastră.</h2>
@@ -1896,7 +1907,15 @@
 						<!---------------------------------------------------->
 						<div class="total__info">
 							@if (!$cartItems->isEmpty())
-								@foreach ($cartItems as $cartItem)
+							
+								@foreach ($cartItems as $index => $cartItem)
+								<?php 
+								$disabled[$index] = false;
+								if (($cartItem->product->active != true) || ($cartItem->product->start_date > now()->format('Y-m-d')) || ($cartItem->product->end_date < now()->format('Y-m-d'))){
+									$disabled[$index] = true;
+ 									$this->emit('isdisabled');
+								}
+								?>
 									<div class="total__product">
 										<span class="total__quantity">
 											{{ $cartItem->quantity }} x
@@ -1914,7 +1933,11 @@
 											{{ number_format($cartItem->quantity * $cartItem->price, 2, ",", ".") }}
 											{{ $currency }}
 										</span>
-
+						@if ($disabled[$index])
+						<div class="item__product--disabled">
+						  <span>Produs Indisponibil</span>
+						</div>
+						@endif
 									</div>
 								@endforeach
 
@@ -1950,6 +1973,11 @@
 										{{ $currency }}
 									</span>
 								</div>
+								@if ($modification)
+									
+								<span class="item__text--disabled">Ai cel puțin un produs indisponibil adaugat in coș!</span>
+								@endif
+
 							@endif
 						</div>
 						<!------------ End Checkout List of Forms ------------>
@@ -2268,13 +2296,21 @@
 							</svg>
 							Pasul Anterior
 						</button>
-						<button class="checkout__button checkout__button--confirm" wire:click.prevent="confirm()" aria-label="confirm button">
-							Confirmă
-							<svg>
+						@if ($modification)
+						<button class="checkout__button checkout__button--confirm item__button--disabled">
+							Confirmă <svg>
 								<polyline points="9 11 12 14 22 4"></polyline>
 								<path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
 							</svg>
 						</button>
+						@else
+						<button class="checkout__button checkout__button--confirm" wire:click.prevent="confirm()">
+							Confirmă <svg>
+								<polyline points="9 11 12 14 22 4"></polyline>
+								<path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+							</svg>
+						</button>
+						@endif
 					@elseif ($step == 1)
 						<button class="checkout__link checkout__button--confirm" @if ($individual && $individual_identic) onclick="validateIndividual(this)" @elseif ($individual && !$individual_identic) onclick="validateIndividualIdentic(this)" @elseif($juridic && $juridic_identic) onclick="validateJuridic(this)" @else onclick="validateJuridicIdentic(this)" @endif wire:click.prevent="next()" aria-label="go to next step"
 							style="margin: 0 auto;">
