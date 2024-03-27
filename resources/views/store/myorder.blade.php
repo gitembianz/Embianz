@@ -144,7 +144,7 @@
 
 							<div class="total__item">
 								<span>Modalitate de plată</span>
-								<span>{{ $order->payment->name }}</span>
+								<span>{{ $order->payment->description }}</span>
 							</div>
 							<div class="total__item">
 								<span>Cost livrare</span>
