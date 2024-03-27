@@ -19,6 +19,9 @@ class DatabaseSeeder extends Seeder
         // Seed database with currencies
         $this->call(CurrencySeeder::class);
 
+        // Seed database with category
+        $this->call(CategorySeeder::class);
+
         // // Seed database with payments
         $this->call(PaymentSeeder::class);
 

@@ -16,7 +16,20 @@
 		@else
 			<?php $total = 0; ?>
 			<ul class="leftbar__list">
-				@foreach ($cartItems as $cartItem)
+				<?php  
+				$isdisabled = false;
+				$disables =[];
+				?>
+				@foreach ($cartItems as $index => $cartItem)
+				<?php 
+				$disabled[$index] = false;
+				if (($cartItem->product->active != true) || ($cartItem->product->start_date > now()->format('Y-m-d')) || ($cartItem->product->end_date < now()->format('Y-m-d'))){
+					$disabled[$index] = true;
+				$isdisabled = true;
+
+				}
+				
+				?>
 					<li class="leftbar__item">
 						<a class="leftbar__link" href="{{ route("product", ["product" => $cartItem->product->seo_id !== null && $cartItem->product->seo_id !== "" ? $cartItem->product->seo_id : $cartItem->product->id]) }}">
 							<span class="leftbar__link--quantity">
@@ -50,15 +63,17 @@
 								<line x1="6" y1="6" x2="18" y2="18"></line>
 							</svg>
 						</button>
-            <div class="leftbar__item--disabled">
-              <span>Produs Indisponibil</span>
-              <button class="leftbar__delete" type="button" wire:click="removeFromCart({{ $cartItem->product->id }})">
-                <svg>
-                  <line x1="18" y1="6" x2="6" y2="18"></line>
-                  <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-              </button>
-            </div>
+						@if ($disabled[$index])
+						<div class="item__product--disabled">
+						  <span>Produs Indisponibil</span>
+						  <button class="leftbar__delete" type="button" wire:click="removeFromCart({{ $cartItem->product->id }})">
+							<svg>
+							  <line x1="18" y1="6" x2="6" y2="18"></line>
+							  <line x1="6" y1="6" x2="18" y2="18"></line>
+							</svg>
+						  </button>
+						</div>
+						@endif
 					</li>
 				@endforeach
 			</ul>
@@ -66,8 +81,14 @@
 			<div class="leftbar__total">
 				<h5 class="leftbar__total--text">Total: <span id="leftbarTotalPrice">{{ number_format($total, 2, ",", ".") }}
 						{{ $currency }}</span></h5>
-				<a class="leftbar__button leftbar__button--long leftbar__button--disabled" id="headerContinue" wire:click.prevent="continue">Finalizare Comandă</a>
-        <span class="leftbar__total--disabled">Aveti un produs indisponibil</span>
+						@if ($isdisabled)
+						<a class="leftbar__button leftbar__button--long item__button--disabled">Finalizare Comandă</a>
+						
+						<span class="item__text--disabled" id="headerContinue">Ai cel puțin un produs indisponibil adaugat in coș!</span>
+						@else
+						<a class="leftbar__button leftbar__button--long" id="headerContinue" wire:click.prevent="continue">Finalizare Comandă</a>
+
+						@endif
 			</div>
 
 			<script>
