@@ -50,6 +50,7 @@ class StoreProducts extends Component
 
   public function mount($category = null)
   {
+
     $this->session_id = $this->getSessionId();
     $this->loadAmount = app('global_limit_load');
     $this->quantity = app('global_low_stock');
@@ -58,7 +59,14 @@ class StoreProducts extends Component
       $decodedCategory = json_decode(htmlspecialchars_decode($category), true);
       $this->category = Category::select('id', 'name', 'long_description')->find($decodedCategory['id']);
     } else {
-      $this->category = Category::select('id', 'name', 'long_description')->find(app('global_default_category'));
+      if (app()->has('global_default_category')) {
+        $this->category = Category::select('id', 'name', 'long_description')->find(app('global_default_category'));
+      }
+    }
+    $filteredValues = session()->get('filtered_values');
+    if ($filteredValues) {
+      $this->selectedSpecValues = $filteredValues;
+      $this->applyFilter();
     }
   }
 
@@ -101,6 +109,7 @@ class StoreProducts extends Component
     $this->selectedSpecNames = [];
     $this->selectedKeys = [];
     $this->specfilter = false;
+    session()->forget('filtered_values');
   }
   public function applyFilter()
   {
@@ -129,6 +138,7 @@ class StoreProducts extends Component
     if (isset($this->selectedKeys)) {
       $this->specfilter = true;
     }
+    session()->put('filtered_values', $this->selectedSpecValues);
   }
   public function removeSpec($key)
   {
@@ -154,6 +164,7 @@ class StoreProducts extends Component
     $this->selectedSpecNames = [];
     $this->selectedKeys = [];
     $this->specfilter = false;
+    session()->forget('filtered_values');
   }
 
   // products function
@@ -231,6 +242,6 @@ class StoreProducts extends Component
 
   public function loadMore()
   {
-    $this->loadAmount += 16;
+    $this->loadAmount += app('global_limit_load');
   }
 }
