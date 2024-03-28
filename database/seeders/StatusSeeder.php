@@ -28,7 +28,6 @@ class StatusSeeder extends Seeder
             ['name' => 'delivered', 'type' => 'order', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['name' => 'cancelled', 'type' => 'order', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['name' => 'hold', 'type' => 'order', 'created_at' => $currentTime, 'updated_at' => $currentTime],
-            ['name' => 'closed', 'type' => 'order', 'created_at' => $currentTime, 'updated_at' => $currentTime],
         ]);
 
         DB::table('statuses')->insert([
