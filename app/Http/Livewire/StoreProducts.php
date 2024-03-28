@@ -52,7 +52,6 @@ class StoreProducts extends Component
   {
 
     $this->session_id = $this->getSessionId();
-    $this->loadAmount = app('global_limit_load');
     $this->quantity = app('global_low_stock');
     $this->specification = Specs::get();
     if ($category) {
@@ -63,10 +62,16 @@ class StoreProducts extends Component
         $this->category = Category::select('id', 'name', 'long_description')->find(app('global_default_category'));
       }
     }
-    $filteredValues = session()->get('filtered_values');
-    if ($filteredValues) {
-      $this->selectedSpecValues = $filteredValues;
+    $filteredValues = session()->get('filtered_values', []);
+    if (isset($filteredValues['category_id']) && $filteredValues['category_id'] == $this->category->id) {
+      $this->selectedSpecValues = $filteredValues['selectedSpecValues'];
       $this->applyFilter();
+      if (isset($filteredValues['loadAmount'])) {
+        $this->loadAmount = $filteredValues['loadAmount'];
+      }
+    } else {
+      session()->forget('filtered_values');
+      $this->loadAmount = app('global_limit_load');
     }
   }
 
@@ -138,7 +143,10 @@ class StoreProducts extends Component
     if (isset($this->selectedKeys)) {
       $this->specfilter = true;
     }
-    session()->put('filtered_values', $this->selectedSpecValues);
+    session()->put('filtered_values', [
+      'category_id' => $this->category->id,
+      'selectedSpecValues' => $this->selectedSpecValues
+    ]);
   }
   public function removeSpec($key)
   {
@@ -156,6 +164,10 @@ class StoreProducts extends Component
     $key = str_replace('_', '.', $key);
     unset($this->selectedSpecNames[$key]);
     $allKeys = array_keys(array_merge(...$this->selectedSpecValues));
+    session()->put('filtered_values', [
+      'category_id' => $this->category->id,
+      'selectedSpecValues' => $this->selectedSpecValues
+    ]);
     $this->selectedKeys = $allKeys;
   }
   public function clearall()
@@ -243,5 +255,12 @@ class StoreProducts extends Component
   public function loadMore()
   {
     $this->loadAmount += app('global_limit_load');
+    $filteredValues = session()->get('filtered_values', []);
+
+    // Add the loadAmount to the existing filtered values
+    $filteredValues['loadAmount'] = $this->loadAmount;
+
+    // Save updated filtered values back to session
+    session()->put('filtered_values', $filteredValues);
   }
 }
