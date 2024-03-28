@@ -47,7 +47,17 @@
       color: $lightBlack;
     }
   }
+  &.canceled {
+    background: $darkRed;
+    color: $secondary;
+    border: 3px solid $darkRed;
+
+    &::after {
+      color: $darkRed;
+    }
+  }
 }
+
 
 .step__line {
   width: 100%;
