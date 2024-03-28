@@ -247,7 +247,7 @@ class StoreOrder extends Component
           'required',
           'min:1',
           'max:100',
-          'regex:/^[\p{L}\d\s.]+$/u',
+          'regex:/^[\p{L}\d\s.,]+$/u',
         ],
         'individual_billing_county' =>
         [
@@ -293,7 +293,7 @@ class StoreOrder extends Component
             'required',
             'min:1',
             'max:100',
-            'regex:/^[\p{L}\d\s.]+$/u',
+            'regex:/^[\p{L}\d\s.,]+$/u',
           ],
           'individual_shipping_county' =>
           [
@@ -360,7 +360,7 @@ class StoreOrder extends Component
           'required',
           'min:1',
           'max:100',
-          'regex:/^[\p{L}\d\s.]+$/u',
+          'regex:/^[\p{L}\d\s.,]+$/u',
         ],
         'juridic_billing_county' =>
         [
@@ -404,7 +404,7 @@ class StoreOrder extends Component
             'required',
             'min:1',
             'max:100',
-            'regex:/^[\p{L}\d\s.]+$/u',
+            'regex:/^[\p{L}\d\s.,]+$/u',
           ],
           'juridic_shipping_county' => [
             'required',

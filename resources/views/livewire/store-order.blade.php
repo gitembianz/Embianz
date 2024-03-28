@@ -82,31 +82,22 @@
 							<!------------- Checkout List of Items --------------->
 
 							<div class="checkout__item checkout__item--required" id="individualShippingFirstName">
-								<input type="text" wire:model="individual_billing_first" name="individualShippingFirstName" placeholder="Nume" autocomplete="given-name" required>
+								<input type="text" wire:model="individual_billing_first" name="individualShippingFirstName" placeholder="Prenume" autocomplete="family-name" required>
 								<span>
-									@error("individual_billing_first")
-										{{ $message }}
-									@enderror
 								</span>
-								<label for="individualShippingFirstName">Nume</label>
+								<label for="individualShippingFirstName">Prenume</label>
 							</div>
 							<!---------------------------------------------------->
 							<div class="checkout__item checkout__item--required" id="individualShippingLastName">
-								<input type="text" wire:model="individual_billing_last" name="individualShippingLastName" placeholder="Prenume" autocomplete="family-name" required>
+								<input type="text" wire:model="individual_billing_last" name="individualShippingLastName" placeholder="Nume" autocomplete="given-name" required>
 								<span>
-									@error("individual_billing_last")
-										{{ $message }}
-									@enderror
 								</span>
-								<label for="individualShippingLastName">Prenume</label>
+								<label for="individualShippingLastName">Nume</label>
 							</div>
 							<!---------------------------------------------------->
 							<div class="checkout__item checkout__item--required" id="individualShippingPhone">
 								<input type="tel" wire:model="individual_billing_phone" name="individualShippingPhone" placeholder="Telefon" autocomplete="tel" pattern="[0-9]*" inputmode="numeric" required>
 								<span>
-									@error("individual_billing_phone")
-										{{ $message }}
-									@enderror
 								</span>
 								<label for="individualShippingPhone">Telefon</label>
 							</div>
@@ -114,9 +105,6 @@
 							<div class="checkout__item checkout__item--required" id="individualShippingEmail">
 								<input type="email" wire:model="individual_billing_email" name="individualShippingEmail" placeholder="Email" autocomplete="email" required>
 								<span>
-									@error("individual_billing_email")
-										{{ $message }}
-									@enderror
 								</span>
 								<label for="individualShippingEmail">Email</label>
 							</div>
@@ -139,17 +127,10 @@
 							<div class="checkout__item checkout__item--required" id="individualShippingAddress">
 								<input type="text" wire:model="individual_billing_address1" name="individualShippingAddress" placeholder="Adresa 1" autocomplete="street-address" required>
 								<span>
-									@error("individual_billing_address1")
-										{{ $message }}
-									@enderror
 								</span>
 								<label for="individualShippingAddress">Adresa 1</label>
 							</div>
-							{{-- <!---------------------------------------------------->
-                            <div class="checkout__item">
-                                <input type="text" wire:model="individual_billing_address2"
-                                    placeholder="Address 2 (optional)">
-                            </div> --}}
+							
 							<div class="checkout__item" id="individualShippingAddress2">
 								<input type="text" wire:model="individual_billing_address2" name="individualShippingAddress2" placeholder="Adresa 2 (opțional)" autocomplete="address-level2">
 								<span></span>
@@ -409,45 +390,24 @@
 								<option value="Zimbabwe">Zimbabwe</option>
 							</select>
 							<!---------------------------------------------------->
-							{{-- <div class="checkout__item">
-                                <input type="text" wire:model="individual_billing_county" placeholder="Județ">
-                            </div> --}}
+							
 							<div class="checkout__item checkout__item--required" id="individualShippingCounty">
 								<input type="text" wire:model="individual_billing_county" name="individualShippingCounty" placeholder="Localitate (oraș, comună sau sat)" autocomplete="county" required>
 								<span></span>
-								<label for="individualShippingCounty">Localitate (oraș, comună sau sat)</label>
+								<label for="individualShippingCounty">Județ</label>
 							</div>
 							<!---------------------------------------------------->
-							{{-- <div class="checkout__item">
-                                <input type="text" wire:model="individual_billing_city"
-                                    placeholder="Localitate (oraș, comună sau sat)">
-                                <span>
-
-                                </span>
-                            </div> --}}
+			
 							<div class="checkout__item checkout__item--required" id="individualShippingCity">
-								<input type="text" wire:model="individual_billing_city" name="individualShippingCity" placeholder="Oraș" autocomplete="city" required>
+								<input type="text" wire:model="individual_billing_city" name="individualShippingCity" placeholder="Județ" autocomplete="county" required>
 								<span>
-									@error("individual_billing_city")
-										{{ $message }}
-									@enderror
 								</span>
-								<label for="individualShippingCity">Oraș</label>
+								<label for="individualShippingCity">Localitate (oraș, comună sau sat)</label>
 							</div>
 							<!---------------------------------------------------->
-							{{-- <div class="checkout__item">
-                                <input type="text" placeholder="Post Code" wire:model="individual_billing_zipcode"
-                                    placeholder="Cod Postal">
-                                <span>
-
-                                </span>
-                            </div> --}}
 							<div class="checkout__item checkout__item--required" id="individualShippingPostal">
 								<input type="text" wire:model="individual_billing_zipcode" name="individualShippingPostal" placeholder="Cod Poștal" autocomplete="postal-code" required>
 								<span>
-									@error("individual_billing_zipcode")
-										{{ $message }}
-									@enderror
 								</span>
 								<label for="individualShippingPostal">Cod Poștal</label>
 							</div>
@@ -474,51 +434,35 @@
 							<!----------- End Checkout Header Name ------------->
 							<!---------------------------------------------------->
 							<!------------- Checkout List of Items --------------->
-							{{-- <div class="checkout__item">
-                                <input type="text" wire:model="individual_shipping_first" placeholder="Nume">
-                                <span>
-
-                                </span>
-                            </div> --}}
+				
 							<div wire:ignore class="checkout__item checkout__item--required" id="individualBillingFirstName">
 								<input type="text" wire:model="individual_shipping_first" name="individualBillingFirstName" placeholder="Nume" autocomplete="given-name" required>
 								<span>
-									@error("individual_shipping_first")
-										{{ $message }}
-									@enderror
 								</span>
-								<label for="individualBillingFirstName">Nume</label>
+								<label for="individualBillingFirstName">Prenume</label>
 							</div>
 							<!---------------------------------------------------->
 							<div wire:ignore class="checkout__item checkout__item--required" id="individualBillingLastName">
 								<input type="text" wire:model="individual_shipping_last" name="individualBillingLastName" placeholder="Prenume" autocomplete="family-name" required>
 								<span>
-									@error("individual_shipping_last")
-										{{ $message }}
-									@enderror
 								</span>
-								<label for="individualBillingLastName">Prenume</label>
-							</div>
-							<!---------------------------------------------------->
-							<div wire:ignore class="checkout__item checkout__item--required" id="individualBillingEmail">
-								<input type="email" wire:model="individual_shipping_phone" name="individualBillingEmail" placeholder="Email" autocomplete="email" required>
-								<span>
-									@error("individual_shipping_email")
-										{{ $message }}
-									@enderror
-								</span>
-								<label for="individualBillingEmail">Email</label>
+								<label for="individualBillingLastName">Nume</label>
 							</div>
 							<!---------------------------------------------------->
 							<div wire:ignore class="checkout__item checkout__item--required" id="individualBillingPhone">
-								<input type="tel" wire:model="individual_shipping_email" name="individualBillingPhone" placeholder="Telefon" autocomplete="tel" pattern="[0-9]*" inputmode="numeric" required>
+								<input type="tel" wire:model="individual_shipping_phone" name="individualBillingPhone" placeholder="Telefon" autocomplete="tel" pattern="[0-9]*" inputmode="numeric" required>
 								<span>
-									@error("individual_shipping_phone")
-										{{ $message }}
-									@enderror
 								</span>
 								<label for="individualBillingPhone">Telefon</label>
 							</div>
+							<!---------------------------------------------------->
+							<div wire:ignore class="checkout__item checkout__item--required" id="individualBillingEmail">
+								<input type="email" wire:model="individual_shipping_email" name="individualBillingEmail" placeholder="Email" autocomplete="email" required>
+								<span>
+								</span>
+								<label for="individualBillingEmail">Email</label>
+							</div>
+							
 							<!----------- End Checkout List of Items ------------->
 							<!---------------------------------------------------->
 						</div>
@@ -538,9 +482,6 @@
 							<div wire:ignore class="checkout__item checkout__item--required" id="individualBillingAddress">
 								<input type="text" wire:model="individual_shipping_address1" name="individualBillingAddress" placeholder="Adresa 1" autocomplete="street-address" required>
 								<span>
-									@error("individual_shipping_address1")
-										{{ $message }}
-									@enderror
 								</span>
 								<label for="individualBillingAddress">Adresa 1</label>
 							</div>
@@ -804,28 +745,22 @@
 							</select>
 							<!---------------------------------------------------->
 							<div wire:ignore class="checkout__item checkout__item--required" id="individualBillingCounty">
-								<input type="text" wire:model="individual_shipping_county" name="individualBillingCounty" placeholder="Localitate (oraș, comună sau sat)" autocomplete="county" required>
+								<input type="text" wire:model="individual_shipping_county" name="individualBillingCounty" placeholder="Județ" autocomplete="county" required>
 								<span></span>
-								<label for="individualBillingCounty">Localitate (oraș, comună sau sat)</label>
+								<label for="individualBillingCounty">Județ</label>
 							</div>
 							<!---------------------------------------------------->
 
 							<div wire:ignore class="checkout__item checkout__item--required" id="individualBillingCity">
-								<input type="text" wire:model="individual_shipping_city" name="individualBillingCity" placeholder="Oraș" autocomplete="city" required>
+								<input type="text" wire:model="individual_shipping_city" name="individualBillingCity" placeholder="Localitate (oraș, comună sau sat)" autocomplete="city" required>
 								<span>
-									@error("individual_shipping_city")
-										{{ $message }}
-									@enderror
 								</span>
-								<label for="individualBillingCity">Oraș</label>
+								<label for="individualBillingCity">Localitate (oraș, comună sau sat)</label>
 							</div>
 							<!---------------------------------------------------->
 							<div wire:ignore class="checkout__item checkout__item--required" id="individualBillingPostal">
 								<input type="text" wire:model="individual_shipping_zipcode" name="individualBillingPostal" placeholder="Cod Poștal" autocomplete="postal-code" required>
 								<span>
-									@error("individual_shipping_zipcode")
-										{{ $message }}
-									@enderror
 								</span>
 								<label for="individualBillingPostal">Cod Poștal</label>
 							</div>
@@ -851,31 +786,22 @@
 							<!---------------------------------------------------->
 							<!------------- Checkout List of Items --------------->
 							<div class="checkout__item checkout__item--required" id="juridicShippingFirstName">
-								<input type="text" wire:model="juridic_billing_first" name="juridicShippingFirstName" placeholder="Nume" autocomplete="given-name" required>
+								<input type="text" wire:model="juridic_billing_first" name="juridicShippingFirstName" placeholder="Prenume" autocomplete="given-name" required>
 								<span>
-									@error("juridic_billing_first")
-										{{ $message }}
-									@enderror
 								</span>
-								<label for="juridicShippingFirstName">Nume</label>
+								<label for="juridicShippingFirstName">Prenume</label>
 							</div>
 							<!---------------------------------------------------->
 							<div class="checkout__item checkout__item--required" id="juridicShippingLastName">
-								<input type="text" wire:model="juridic_billing_last" name="juridicShippingLastName" placeholder="Prenume" autocomplete="family-name" required>
+								<input type="text" wire:model="juridic_billing_last" name="juridicShippingLastName" placeholder="Nume" autocomplete="family-name" required>
 								<span>
-									@error("juridic_billing_last")
-										{{ $message }}
-									@enderror
 								</span>
-								<label for="juridicShippingLastName">Prenume</label>
+								<label for="juridicShippingLastName">Nume</label>
 							</div>
 							<!---------------------------------------------------->
 							<div class="checkout__item checkout__item--required" id="juridicShippingPhone">
 								<input type="tel" wire:model="juridic_billing_phone" name="juridicShippingPhone" placeholder="Telefon" autocomplete="tel" pattern="[0-9]*" inputmode="numeric" required>
 								<span>
-									@error("juridic_billing_phone")
-										{{ $message }}
-									@enderror
 								</span>
 								<label for="juridicShippingPhone">Telefon</label>
 							</div>
@@ -883,9 +809,6 @@
 							<div class="checkout__item checkout__item--required" id="juridicShippingEmail">
 								<input type="email" wire:model="juridic_billing_email" name="juridicShippingEmail" placeholder="Email" autocomplete="email" required>
 								<span>
-									@error("juridic_billing_email")
-										{{ $message }}
-									@enderror
 								</span>
 								<label for="juridicShippingEmail">Email</label>
 							</div>
@@ -893,9 +816,6 @@
 							<div class="checkout__item checkout__item--required" id="companyName">
 								<input type="text" wire:model="juridic_billing_company_name" name="companyName" placeholder="Numele Companiei" autocomplete="organization" required>
 								<span>
-									@error("juridic_billing_company_name")
-										{{ $message }}
-									@enderror
 								</span>
 								<label for="companyName">Numele Companiei</label>
 							</div>
@@ -903,9 +823,6 @@
 							<div class="checkout__item checkout__item--required" id="registerCode">
 								<input type="text" wire:model="juridic_billing_registration_code" name="registerCode" placeholder="Cod de înregistrare" autocomplete="organization-code" required>
 								<span>
-									@error("juridic_billing_registration_code")
-										{{ $message }}
-									@enderror
 								</span>
 								<label for="registerCode">Cod de înregistrare</label>
 							</div>
@@ -913,9 +830,6 @@
 							<div class="checkout__item checkout__item--required" id="registerNumber">
 								<input type="text" wire:model="juridic_billing_registration_number" name="registerNumber" placeholder="Număr de înregistrare" autocomplete="organization-number" required>
 								<span>
-									@error("juridic_billing_registration_number")
-										{{ $message }}
-									@enderror
 								</span>
 								<label for="registerNumber">Număr de înregistrare</label>
 							</div>
@@ -923,9 +837,6 @@
 							<div class="checkout__item" id="bankName">
 								<input type="text" wire:model="juridic_billing_bank" name="bankName" placeholder="Numele Băncii" autocomplete="bank-name">
 								<span>
-									@error("juridic_billing_bank")
-										{{ $message }}
-									@enderror
 								</span>
 								<label for="bankName">Numele Băncii</label>
 							</div>
@@ -933,9 +844,6 @@
 							<div class="checkout__item" id="IBAN">
 								<input type="text" wire:model="juridic_billing_account" name="IBAN" placeholder="IBAN" autocomplete="IBAN">
 								<span>
-									@error("juridic_billing_account")
-										{{ $message }}
-									@enderror
 								</span>
 								<label for="IBAN">IBAN</label>
 							</div>
@@ -958,9 +866,6 @@
 							<div class="checkout__item checkout__item--required" id="juridicShippingAddress">
 								<input type="text" wire:model="juridic_billing_address1" name="juridicShippingAddress" placeholder="Adresa 1" autocomplete="street-address" required>
 								<span>
-									@error("juridic_billing_address1")
-										{{ $message }}
-									@enderror
 								</span>
 								<label for="juridicShippingAddress">Adresa 1</label>
 							</div>
@@ -1224,27 +1129,21 @@
 							</select>
 							<!---------------------------------------------------->
 							<div class="checkout__item checkout__item--required" id="juridicShippingCounty">
-								<input type="text" wire:model="juridic_billing_county" name="juridicShippingCounty" placeholder="Localitate (oraș, comună sau sat)" autocomplete="county" required>
+								<input type="text" wire:model="juridic_billing_county" name="juridicShippingCounty" placeholder="Județ" autocomplete="county" required>
 								<span></span>
-								<label for="juridicShippingCounty">Localitate (oraș, comună sau sat)</label>
+								<label for="juridicShippingCounty">Județ</label>
 							</div>
 							<!---------------------------------------------------->
 							<div class="checkout__item checkout__item--required" id="juridicShippingCity">
-								<input type="text" wire:model="juridic_billing_city" name="juridicShippingCity" placeholder="Oraș" autocomplete="city" required>
+								<input type="text" wire:model="juridic_billing_city" name="juridicShippingCity" placeholder="Localitate (oraș, comună sau sat)" autocomplete="city" required>
 								<span>
-									@error("juridic_billing_city")
-										{{ $message }}
-									@enderror
 								</span>
-								<label for="juridicShippingCity">Oraș</label>
+								<label for="juridicShippingCity">Localitate (oraș, comună sau sat)</label>
 							</div>
 							<!---------------------------------------------------->
 							<div class="checkout__item checkout__item--required" id="juridicShippingPostal">
 								<input type="text" wire:model="juridic_billing_zipcode" name="juridicShippingPostal" placeholder="Cod Poștal" autocomplete="postal-code" required>
 								<span>
-									@error("juridic_billing_zipcode")
-										{{ $message }}
-									@enderror
 								</span>
 								<label for="juridicShippingPostal">Cod Poștal</label>
 							</div>
@@ -1272,31 +1171,22 @@
 							<!---------------------------------------------------->
 							<!------------- Checkout List of Items --------------->
 							<div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingFirstName">
-								<input type="text" wire:model="juridic_shipping_first" name="juridicBillingFirstName" placeholder="Nume" autocomplete="given-name" required>
+								<input type="text" wire:model="juridic_shipping_first" name="juridicBillingFirstName" placeholder="Prenume" autocomplete="given-name" required>
 								<span>
-									@error("juridic_shipping_first")
-										{{ $message }}
-									@enderror
 								</span>
-								<label for="juridicBillingFirstName">Nume</label>
+								<label for="juridicBillingFirstName">Prenume</label>
 							</div>
 							<!---------------------------------------------------->
 							<div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingLastName">
-								<input type="text" wire:model="juridic_shipping_last" name="juridicBillingLastName" placeholder="Prenume" autocomplete="family-name" required>
+								<input type="text" wire:model="juridic_shipping_last" name="juridicBillingLastName" placeholder="Nume" autocomplete="family-name" required>
 								<span>
-									@error("juridic_shipping_last")
-										{{ $message }}
-									@enderror
 								</span>
-								<label for="juridicBillingLastName">Prenume</label>
+								<label for="juridicBillingLastName">Nume</label>
 							</div>
 							<!---------------------------------------------------->
 							<div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingPhone">
 								<input type="tel" wire:model="juridic_shipping_phone" name="juridicBillingPhone" placeholder="Telefon" autocomplete="tel" pattern="[0-9]*" inputmode="numeric" required>
 								<span>
-									@error("juridic_shipping_phone")
-										{{ $message }}
-									@enderror
 								</span>
 								<label for="juridicBillingPhone">Telefon</label>
 							</div>
@@ -1304,9 +1194,6 @@
 							<div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingEmail">
 								<input type="email" wire:model="juridic_shipping_email" name="juridicBillingEmail" placeholder="Email" autocomplete="email" required>
 								<span>
-									@error("juridic_shipping_email")
-										{{ $message }}
-									@enderror
 								</span>
 								<label for="juridicBillingEmail">Email</label>
 							</div>
@@ -1338,7 +1225,7 @@
 								<label for="juridicBillingAddress2">Adresa 2 (Opțional)</label>
 							</div>
 							<!---------------------------------------------------->
-							<select wire:ignore wire:model="juridic_shipping_country" class="select" aria-label="select a country">
+							<select wire:model="juridic_shipping_country" class="select" aria-label="select a country">
 								<option value="Afghanistan">Afghanistan</option>
 								<option value="Åland Islands">Åland Islands</option>
 								<option value="Albania">Albania</option>
@@ -1591,15 +1478,15 @@
 							</select>
 							<!---------------------------------------------------->
 							<div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingCounty">
-								<input type="text" wire:model="juridic_shipping_county" name="juridicBillingCounty" placeholder="Localitate (oraș, comună sau sat)" autocomplete="county" required>
+								<input type="text" wire:model="juridic_shipping_county" name="juridicBillingCounty" placeholder="Județ" autocomplete="county" required>
 								<span></span>
-								<label for="juridicBillingCounty">Localitate (oraș, comună sau sat)</label>
+								<label for="juridicBillingCounty">Județ</label>
 							</div>
 							<!---------------------------------------------------->
 							<div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingCity">
-								<input type="text" wire:model="juridic_shipping_city" name="juridicBillingCity" placeholder="Oraș" autocomplete="city" required>
+								<input type="text" wire:model="juridic_shipping_city" name="juridicBillingCity" placeholder="Localitate (oraș, comună sau sat)" autocomplete="city" required>
 								<span></span>
-								<label for="juridicBillingCity">Oraș</label>
+								<label for="juridicBillingCity">Localitate (oraș, comună sau sat)</label>
 							</div>
 							<!---------------------------------------------------->
 							<div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingPostal">
@@ -1709,7 +1596,7 @@
 				<!------------------------------------------------------>
 				<!--------------------- Step Middle -------------------->
 				@if ($step == 2)
-<?php  
+				<?php  
 				$disables =[];
 				?>
 					<div class="checkout__header">
@@ -2033,6 +1920,11 @@
 				<!------------------------------------------------------>
 				<!--------------------- Step Final --------------------->
 				@if ($step == 3)
+				 <section class="section__header container">
+        <h1 class="section__title">
+          Comanda {{ $new_order->order_number }}
+        </h1>
+      </section>
 					<div class="section__header">
 
 						@if (app()->has("global_order_default_text_confirmation") && app("global_order_default_text_confirmation") != "")
@@ -2043,7 +1935,7 @@
 
 					</div>
 					<div class="total__container">
-						<h2>Comanda {{ $new_order->order_number }}</h2>
+						{{-- <h2>Comanda {{ $new_order->order_number }}</h2> --}}
 						<!---------------------------------------------------->
 						<!-------------- Checkout List of Forms -------------->
 						@if ($individual)
