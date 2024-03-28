@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Status;
 use Livewire\Component;
@@ -44,6 +43,26 @@ class ShowOrder extends Component
             'status_id' => $this->order->status_id,
         ];
         $this->edititem = true;
+    }
+    public function saveitem()
+    {
+        $new_status = $this->record ?? NULL;
+        if (!is_null($new_status)) {
+            $order = Order::find($this->orderId);
+            if (array_key_exists('status_id', $new_status)) {
+                $order->status_id = $new_status['status_id'];
+                $order->updated_at = now();
+                $order->save();
+                $this->emit('itemSaved');
+                session()->flash('notification', [
+                    'message' => 'Record edited successfully!',
+                    'type' => 'success',
+                    'title' => 'Success'
+                ]);
+            }
+        }
+        $this->record = [];
+        $this->edititem = null;
     }
     public function confirmItemRemoval()
     {
