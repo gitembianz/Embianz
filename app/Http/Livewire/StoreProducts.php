@@ -64,8 +64,10 @@ class StoreProducts extends Component
     }
     $filteredValues = session()->get('filtered_values', []);
     if (isset($filteredValues['category_id']) && $filteredValues['category_id'] == $this->category->id) {
-      $this->selectedSpecValues = $filteredValues['selectedSpecValues'];
-      $this->applyFilter();
+      if (isset($filteredValues['selectedSpecValues'])) {
+        $this->selectedSpecValues = $filteredValues['selectedSpecValues'];
+        $this->applyFilter();
+      }
       if (isset($filteredValues['loadAmount'])) {
         $this->loadAmount = $filteredValues['loadAmount'];
       }
@@ -255,12 +257,9 @@ class StoreProducts extends Component
   public function loadMore()
   {
     $this->loadAmount += app('global_limit_load');
-    $filteredValues = session()->get('filtered_values', []);
-
-    // Add the loadAmount to the existing filtered values
-    $filteredValues['loadAmount'] = $this->loadAmount;
-
-    // Save updated filtered values back to session
-    session()->put('filtered_values', $filteredValues);
+    session()->put('filtered_values', [
+      'category_id' => $this->category->id,
+      'loadAmount' =>  $this->loadAmount
+    ]);
   }
 }
