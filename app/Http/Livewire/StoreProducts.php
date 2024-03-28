@@ -50,15 +50,30 @@ class StoreProducts extends Component
 
   public function mount($category = null)
   {
+
     $this->session_id = $this->getSessionId();
-    $this->loadAmount = app('global_limit_load');
     $this->quantity = app('global_low_stock');
     $this->specification = Specs::get();
     if ($category) {
       $decodedCategory = json_decode(htmlspecialchars_decode($category), true);
       $this->category = Category::select('id', 'name', 'long_description')->find($decodedCategory['id']);
     } else {
-      $this->category = Category::select('id', 'name', 'long_description')->find(app('global_default_category'));
+      if (app()->has('global_default_category')) {
+        $this->category = Category::select('id', 'name', 'long_description')->find(app('global_default_category'));
+      }
+    }
+    $filteredValues = session()->get('filtered_values', []);
+    if (isset($filteredValues['category_id']) && $filteredValues['category_id'] == $this->category->id) {
+      if (isset($filteredValues['selectedSpecValues'])) {
+        $this->selectedSpecValues = $filteredValues['selectedSpecValues'];
+        $this->applyFilter();
+      }
+      if (isset($filteredValues['loadAmount'])) {
+        $this->loadAmount = $filteredValues['loadAmount'];
+      }
+    } else {
+      session()->forget('filtered_values');
+      $this->loadAmount = app('global_limit_load');
     }
   }
 
@@ -101,6 +116,7 @@ class StoreProducts extends Component
     $this->selectedSpecNames = [];
     $this->selectedKeys = [];
     $this->specfilter = false;
+    session()->forget('filtered_values');
   }
   public function applyFilter()
   {
@@ -129,6 +145,10 @@ class StoreProducts extends Component
     if (isset($this->selectedKeys)) {
       $this->specfilter = true;
     }
+    session()->put('filtered_values', [
+      'category_id' => $this->category->id,
+      'selectedSpecValues' => $this->selectedSpecValues
+    ]);
   }
   public function removeSpec($key)
   {
@@ -146,6 +166,10 @@ class StoreProducts extends Component
     $key = str_replace('_', '.', $key);
     unset($this->selectedSpecNames[$key]);
     $allKeys = array_keys(array_merge(...$this->selectedSpecValues));
+    session()->put('filtered_values', [
+      'category_id' => $this->category->id,
+      'selectedSpecValues' => $this->selectedSpecValues
+    ]);
     $this->selectedKeys = $allKeys;
   }
   public function clearall()
@@ -154,6 +178,7 @@ class StoreProducts extends Component
     $this->selectedSpecNames = [];
     $this->selectedKeys = [];
     $this->specfilter = false;
+    session()->forget('filtered_values');
   }
 
   // products function
@@ -231,6 +256,10 @@ class StoreProducts extends Component
 
   public function loadMore()
   {
-    $this->loadAmount += 16;
+    $this->loadAmount += app('global_limit_load');
+    session()->put('filtered_values', [
+      'category_id' => $this->category->id,
+      'loadAmount' =>  $this->loadAmount
+    ]);
   }
 }
