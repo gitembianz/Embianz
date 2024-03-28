@@ -12,13 +12,13 @@
 				<!-------------------- Step Numbers -------------------->
 				<div class="step__container">
           <div class="step active" data-step="In asteptare">1</div>
-					<span class="step__line @if ($order->status_id == app('global_order_check_payment')) half @else full @endif"></span>
-          <div class="step @if ($order->status_id == app('global_order_processing')) active @endif" data-step="In procesare">2</div>
+					<span class="step__line @if ($order->status_id == app('global_order_check_payment') || $order->status_id == app('global_order_hold')) half @else full @endif"></span>
+          <div class="step @if ($order->status_id == app('global_order_processing') || $order->status_id == app('global_order_cancelled') || $order->status_id == app('global_order_delivered')) active @endif" data-step="In procesare">2</div>
 					<span class="step__line @if ($order->status_id == app('global_order_processing')) half @elseif ($order->status_id == app('global_order_delivered') || $order->status_id == app('global_order_cancelled')) full @endif "></span>
           @if ($order->status_id == app('global_order_cancelled'))
-          <div class="step @if ($order->status_id == app('global_order_cancelled')) active @endif" data-step="Anulata">3</div>
+          <div class="step canceled @if ($order->status_id == app('global_order_cancelled')) active @endif" data-step="Anulata">3</div>
           @else
-          <div class="step @if ($order->status_id == app('global_order_delivered')) active @endif" data-step="Livrata">3</div>
+          <div class="step  @if ($order->status_id == app('global_order_delivered')) active @endif" data-step="Livrata">3</div>
           @endif
 				</div>
 				<div class="total__container">
