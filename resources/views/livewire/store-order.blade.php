@@ -2129,7 +2129,7 @@
 
 							<div class="total__item">
 								<span>Modalitate de plată</span>
-								<span>{{ $payment["description"] }}</span>
+								<span>{{ $new_order->payment->description  }}</span>
 							</div>
 							<div class="total__item">
 								<span>Cost livrare</span>
