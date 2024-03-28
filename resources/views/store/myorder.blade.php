@@ -2,28 +2,27 @@
 <x-store-header />
 <main>
     <section>
+      <section class="section__header container">
+        <h1 class="section__title">
+          Comanda {{ $order->order_number }}
+        </h1>
+      </section>
 			<div class="checkout container">
 				<!------------------------------------------------------>
 				<!-------------------- Step Numbers -------------------->
 				<div class="step__container">
-                       <div class="step @if ($order->status_id == app('global_order_cancelled'))
-						active
-					   @endif" data-step="Anulata">1</div>
-						<span class="step__line"></span> 
-                       <div class="step @if ($order->status_id == app('global_order_check_payment') || $order->status_id == app('global_order_hold'))
-						active
-					   @endif" data-step="In asteptare">2</div>
-						<span class="step__line"></span> 
-                       <div class="step @if ($order->status_id == app('global_order_processing'))
-						active
-					   @endif" data-step="In procesare">3</div>
-						<span class="step__line"></span> 
-                       <div class="step @if ($order->status_id == app('global_order_delivered'))
-						active
-					   @endif" data-step="Livrata">4</div>
+          <div class="step active" data-step="In asteptare">1</div>
+					<span class="step__line @if ($order->status_id == app('global_order_check_payment')) half @else full @endif"></span>
+          <div class="step @if ($order->status_id == app('global_order_processing')) active @endif" data-step="In procesare">2</div>
+					<span class="step__line @if ($order->status_id == app('global_order_processing')) half @elseif ($order->status_id == app('global_order_delivered') || $order->status_id == app('global_order_cancelled')) full @endif "></span>
+          @if ($order->status_id == app('global_order_cancelled'))
+          <div class="step @if ($order->status_id == app('global_order_cancelled')) active @endif" data-step="Anulata">3</div>
+          @else
+          <div class="step @if ($order->status_id == app('global_order_delivered')) active @endif" data-step="Livrata">3</div>
+          @endif
 				</div>
 				<div class="total__container">
-						<h2>Comanda {{ $order->order_number }}</h2>
+
 						<!---------------------------------------------------->
 						<!-------------- Checkout List of Forms -------------->
 						<!---------------------------------------------------->
@@ -47,7 +46,7 @@
 									<strong>{{ $order->account->addresses->where("type", "billing")->first()->email }}</strong></span>
 								<!---------------------------------------------------->
 								@if ($order->account->type == 'juridic')
-									
+
 								<span class="total__message">Companie:
 									<strong>{{ $order->account->company_name }}</strong></span>
 								<!---------------------------------------------------->
