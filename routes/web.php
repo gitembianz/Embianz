@@ -84,7 +84,7 @@
 
     route::get('/addstoresettings', [AdminController::class, 'addstoresetting'])->name('addstoresetting');
 
-    //specific routes 
+    //specific routes
     route::get('/cleareverything', function () {
       Artisan::call('cache:clear');
       Artisan::call('clear-compiled');
@@ -155,6 +155,8 @@
   route::get('/confirm', [StoreController::class, 'confirm'])->name('confirm');
   route::get('/terms', [StoreController::class, 'terms'])->name('terms');
   route::get('/search', [StoreController::class, 'search'])->name('search');
+  route::get('/404', [StoreController::class, 'notfoundpage'])->name('notfoundpage');
+  route::get('/redirect', [StoreController::class, 'redirect'])->name('redirect');
 
   Route::get('/success', [StoreController::class, 'success'])->name('payment_success');
   Route::post('/cancel', [StoreController::class, 'cancel'])->name('payment_cancel');
