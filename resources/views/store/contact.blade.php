@@ -1,6 +1,26 @@
 <x-store-head :canonical="'contact'" :title="' Contactează-ne | '" :description="'Contactează-ne'"/>
 <x-store-header />
 <main>
+  <script type="text/javascript">
+    var onloadCallback = function() {
+      grecaptcha.render('html_element', {
+        'sitekey': '6LdlrpkpAAAAAMIgwDHss_aQtKVPiC2eDlpAx1MW',
+        'callback': verifyCallback,
+        'theme': 'light' // Poți seta tema aici
+      });
+    };
+
+    var verifyCallback = function(response) {
+      if (response) {
+        // reCAPTCHA a fost completat cu succes, schimbă tipul butonului la "submit"
+        document.getElementById('submit_button').type = 'submit';
+      } else {
+        // reCAPTCHA nu a fost completat, schimbă tipul butonului la "button"
+        document.getElementById('submit_button').type = 'button';
+        alert("Vă rugăm să completați reCAPTCHA-ul.");
+      }
+    };
+  </script>
 	<!---------------------------------------------------------->
 	<!------------------------Breadcrumbs----------------------->
 	<section>
@@ -29,7 +49,7 @@
 		<form class="contact__form" action="https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8" method="POST">
 			<input type=hidden name="oid" value="00D09000008XPQu">
 			{{-- <input type=hidden name="retURL" value="{{ "/confirm" }}"> --}}
-			<input type=hidden name="retURL" value="{{ url("/confirm") }}">
+			<input type=hidden name="retURL" value="{{ url("/redirect") }}">
 			<select id="00N9N000000PrL5" name="00N9N000000PrL5" title="Exact Source" hidden>
 				<option value="www.eztemcorp.com">noren.ro</option>
 			</select>
@@ -66,7 +86,12 @@
 				</span>
 				<textarea name="description" rows="30" required placeholder="Spune-ne mai multe. Incepe sa scrii aici..."></textarea>
 			</div>
-			<button class="contact__button" type="submit" name="submit" aria-label="send message">
+
+      <div class="g-recaptcha" data-sitekey="6LfwYJkpAAAAAINvUbZhqEPmiXVLH7kWqXCDlY8k"></div>
+			<div id="html_element"></div>
+
+
+			<button class="contact__button g-recaptcha" id="submit_button" type="submit" name="submit" aria-label="send message">
 				Trimite
 				<svg>
 					<line x1="22" y1="2" x2="11" y2="13"></line>
@@ -76,6 +101,7 @@
 		</form>
 		{{-- <img class="contact__img" src="/images/store/contact-form.webp" alt="contact form image"> --}}
 	</section>
+  <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
 	<!---------------------End Contact Form--------------------->
 	<!---------------------------------------------------------->
 </main>
