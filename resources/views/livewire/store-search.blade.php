@@ -22,10 +22,10 @@
     <h1 class="section__title">Rezultatele cautarii:</h1>
     <div>
       <button class="tab__button tab__button--long @if ($showproducts) active @endif" wire:click="toggle('products')">
-        Produse ({{ $products->count() }})
+        Produse ({{ $products->total() }})
       </button>
       <button class="tab__button tab__button--long @if ($showcategories) active @endif" wire:click="toggle('categories')">
-        Categorii ({{ $categories->count() }})
+        Categorii ({{ $categories->total() }})
       </button>
     </div>
     </section>
@@ -164,6 +164,7 @@
 					</div>
 				</div>
 			@endforeach
+			<x-lazy />
 		@endif
 	</section>
     @endif

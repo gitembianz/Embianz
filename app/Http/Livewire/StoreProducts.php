@@ -249,7 +249,6 @@ class StoreProducts extends Component
     }
     $products = $query->paginate($this->loadAmount);
 
-    $this->productCount = $products->total();
 
     return $products;
   }
