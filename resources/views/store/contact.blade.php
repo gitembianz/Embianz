@@ -4,9 +4,9 @@
   <script type="text/javascript">
     var onloadCallback = function() {
       grecaptcha.render('html_element', {
-        'sitekey': '6LdlrpkpAAAAAMIgwDHss_aQtKVPiC2eDlpAx1MW',
+        'sitekey': '6LchwKgpAAAAAML77tNGuCi7R5k5eQrqszG5DMZ4',
         'callback': verifyCallback,
-        'theme': 'light' // Poți seta tema aici
+        'theme': 'dark' // Poți seta tema aici
       });
     };
 
