@@ -85,6 +85,10 @@ class Category extends Model
   public static function search_by_name($search)
   {
     return empty($search) ? static::query()
-      : static::query()->where('name', 'like', '%' . $search . '%');
+      : static::query()
+      ->where(function ($query) use ($search) {
+        $query->where('name', 'like', '%' . $search . '%')
+          ->orWhere('short_description', 'like', '%' . $search . '%');
+      });
   }
 }
