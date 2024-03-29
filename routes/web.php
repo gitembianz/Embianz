@@ -139,9 +139,10 @@
   route::get('/wishlist', [StoreController::class, 'wislist'])->name('wislist');
   route::get('/complete', [StoreController::class, 'complete'])->name('complete');
   route::get('/order', [StoreController::class, 'order'])->name('order');
-  Route::get('myorder/{order_number?}', [StoreController::class, 'myorder'])
-    ->name('my_order')
-    ->middleware('check.order');
+
+  // Route::get('myorder/{order_number?}', [StoreController::class, 'myorder'])
+  //   ->name('my_order')
+  //   ->middleware('check.order');
 
 
   route::get('/product/{product}', [StoreController::class, 'show'])->name('product');
@@ -153,6 +154,7 @@
   route::get('/about', [StoreController::class, 'about'])->name('about');
   route::get('/confirm', [StoreController::class, 'confirm'])->name('confirm');
   route::get('/terms', [StoreController::class, 'terms'])->name('terms');
+  route::get('/search', [StoreController::class, 'search'])->name('search');
 
   Route::get('/success', [StoreController::class, 'success'])->name('payment_success');
   Route::post('/cancel', [StoreController::class, 'cancel'])->name('payment_cancel');
