@@ -10,6 +10,24 @@
   padding-top: 10px;
   padding-bottom: 10px;
   transition: all 0.3s ease-in-out;
+
+  &--search {
+    flex-direction: column;
+    gap: 5px;
+
+    &>input{
+min-height: 40px;
+max-height: 40px;
+    }
+
+    &>div{
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+  }
 }
 
 .controls__button {

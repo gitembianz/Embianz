@@ -87,7 +87,7 @@ class StoreSearch extends Component
     {
         if ($this->search != "") {
             return Category::search_by_name($this->search)
-                ->select('id', 'name', 'seo_id')
+                ->select('id', 'name', 'seo_id', 'short_description', 'long_description')
                 ->where('active', true)
                 ->where('start_date', '<=',  now()->format('Y-m-d'))
                 ->where('end_date', '>=',  now()->format('Y-m-d'))
