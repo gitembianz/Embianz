@@ -8,7 +8,7 @@
           <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
         </svg>
       </button>
-		<input id="searchInput" wire:model="search" type="text" placeholder="Caută produse sau categorii...">
+		<input id="searchInput" wire:model="search" maxlength="100" type="text" placeholder="Caută produse sau categorii...">
 		</div>
 		<button class="search__close" type="button" id="searchClose" wire:click.prevent="close" aria-labautofoel="Close general searchbar">
 		<svg>

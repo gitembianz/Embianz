@@ -14,12 +14,12 @@
 		@if ($items->isEmpty())
 			<span class="leftbar__empty">Nu sunt produse adăugate în lista de favorite</span>
 		@else
-		<?php  
+		<?php
 				$disables =[];
 				?>
 			<ul class="leftbar__list">
 				@foreach ($items as $index => $item)
-					<?php 
+					<?php
 				$disabled[$index] = false;
 				if (($item->product->active != true) || ($item->product->start_date > now()->format('Y-m-d')) || ($item->product->end_date < now()->format('Y-m-d'))){
 					$disabled[$index] = true;
@@ -27,16 +27,27 @@
 				} ?>
 					<li class="leftbar__item">
 
-						<a class="leftbar__link wishlist__link" href="{{ route("product", ["product" => $item->product->seo_id !== null && $item->product->seo_id !== "" ? $item->product->seo_id : $item->product->id]) }}">
+						<a class="leftbar__link" href="{{ route("product", ["product" => $item->product->seo_id !== null && $item->product->seo_id !== "" ? $item->product->seo_id : $item->product->id]) }}">
 							@if ($item->product->media->first())
 								<img class="cart__list--img" src="/{{ $item->product->media->first()->path }}{{ $item->product->media->first()->name }}" alt="{{ $item->product->media->first()->name }} {{ $item->product->name }}">
 							@else
 								<img class="heart__list--img" src="/images/store/default/default70.webp" alt="something wrong">
 							@endif
-							<div class="leftbar__link--text">
-								<h4>{{ $item->product->name }}</h4>
-							</div>
+
+              <div class="leftbar__link--text">
+                <h4 class="leftbar__link--title">{{ $item->product->name }}</h4>
+                <span class="leftbar__link--price">
+                  120 test
+                </span>
+            </div>
 						</a>
+            <button class="leftbar__delete" aria-label="add to cart">
+              <svg>
+                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <path d="M16 10a4 4 0 0 1-8 0"></path>
+               </svg>
+						</button>
 						<button class="leftbar__delete" wire:click="removeFromWishlist({{ $item->product->id }})" aria-label="delete from wishlist">
 							<svg>
 								<line x1="18" y1="6" x2="6" y2="18"></line>
@@ -55,6 +66,7 @@
 						</div>
 						@endif
 					</li>
+
 				@endforeach
 			</ul>
 		@endif
