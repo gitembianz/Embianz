@@ -120,6 +120,7 @@ class Product extends Model
           ->orWhere('name', 'like', '%' . $search . '%')
           ->orWhere('ean', 'like', '%' . $search . '%')
           ->orWhere('meta_description', 'like', '%' . $search . '%')
+          ->orWhere('short_description', 'like', '%' . $search . '%')
           ->orWhere('sku', 'like', '%' . $search . '%');
       });
   }
@@ -131,6 +132,7 @@ class Product extends Model
       ->where(function ($query) use ($search) {
         $query->where('name', 'like', '%' . $search . '%')
           ->orWhere('ean', 'like', '%' . $search . '%')
+          ->orWhere('short_description', 'like', '%' . $search . '%')
           ->orWhere('sku', 'like', '%' . $search . '%');
       });
   }
