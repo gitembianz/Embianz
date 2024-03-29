@@ -42,6 +42,11 @@
   }
 }
 
+.tab__button--long {
+  width: 100%;
+  text-transform: none;
+}
+
 .tab__content {
   display: none;
   background-color: $primary;

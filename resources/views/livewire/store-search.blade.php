@@ -10,53 +10,29 @@
 			Acasă
 		</a>
 		@if (app()->has("global_show_on_breadcrumbs") && app('global_show_on_breadcrumbs') == 'true')
-			
+
 		<a class="breadcrumbs__link" href="{{ url("/search") }}">
 			Cautare
 		</a>
 		@endif
-		<!-------------------If Category is appear------------------>
-
-		<!-----------------End If Category is appear---------------->
 	</div>
-	<!----------------------End Breadcrumbs--------------------->
 	<!---------------------------------------------------------->
-	<!----------------------Categorie + detalii--------------------->
-{{-- 
-		<section class="section__header container">
-			<h1 class="section__title">Cauta:</h1>
-			<p class="section__text">
-				Description
-			</p>
-		</section> --}}
-
-	<!----------------------End Categorie + detalii--------------------->
-
-	<!---------------------------------------------------------->
-	<!---------------------------Filter------------------------->
-	<section class="controls container">
-
-		<input class="controls__search" type="text" wire:model="search" placeholder="Caută produse sau categorii...">
-
-	</section>
-	<!-------------------------End c----------------------->
-	<!---------------------------------------------------------->
-	<!----------------------Categorie + detalii--------------------->
-	<!---------------------------- Tags-------------------------->
-<button wire:click="toggle('products')">
-products
-</button>
-<button wire:click="toggle('categories')">
-Categories
-</button>
-	<!--------------------------End  Tags------------------------>
-	<!---------------------------------------------------------->
-	<!-------------------------Catalogue------------------------>
-
+  <section class="controls container controls--search">
+    <input class="controls__search" type="text" wire:model="search" placeholder="Caută produse sau categorii...">
+    <h1 class="section__title">Rezultatele cautarii:</h1>
+    <div>
+      <button class="tab__button tab__button--long @if ($showproducts) active @endif" wire:click="toggle('products')">
+        Produse ({{ $products->count() }})
+      </button>
+      <button class="tab__button tab__button--long @if ($showcategories) active @endif" wire:click="toggle('categories')">
+        Categorii ({{ $categories->count() }})
+      </button>
+    </div>
+    </section>
     @if ($showproducts)
 	<section class="catalogue container">
 		@if ($products->isEmpty())
-			<p>Nu au fost produse gasite</p>
+			<p>Nu au fost găsite produse</p>
 		@else
 			@foreach ($products as $index => $product)
 				<div class="product">
@@ -158,13 +134,13 @@ Categories
     @endif
 
     @if ($showcategories)
-        <section class="catalogue container">
+        <section class="catalogue container catalogue--categories">
 		@if ($categories->isEmpty())
-			<p>Nu au fost produse categorii</p>
+			<p>Nu au fost găsite categorii</p>
 		@else
 			@foreach ($categories as $index => $category)
 				<div class="product">
-					<div class="card" role="listitem">
+					<div class="card card--category" role="listitem">
 						<a href="{{ route("products", ["categorySlug" => $category->seo_id !== null && $category->seo_id !== "" ? $category->seo_id : $category->id]) }}">
 							@if ($category->media->first() != null)
 								<img class="card-image" src="/{{ $category->media->first()->path }}{{ $category->media->first()->name }}" alt="{{ $category->media->first()->name }} {{ $category->name }}">
@@ -172,23 +148,12 @@ Categories
 								<img class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
 							@endif
 						</a>
-					
-
-					
-
 						<div class="card-info">
-							
 							<div class="card-text">
-								<h3 class="card-title">{{ $category->name }}</h3>
-								
+								<h3 class="card-title">{{ $category->name }}</h2>
 							</div>
-<div class="card__button--wrapper">
+              {!! $category->long_description !!}
 
-								<a href="{{ route("products", ["categorySlug" => $category->seo_id !== null && $category->seo_id !== "" ? $category->seo_id : $category->id]) }}" class="card__button">
-			
-			<span class="card__button--text"> Vizualizează categoria </span>
-                                </a>
-</div>
 						</div>
 					</div>
 				</div>

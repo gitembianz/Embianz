@@ -344,12 +344,83 @@ function sliderProduct(sliderId, modalId) {
       modalContent.appendChild(newImgElement);
 
       modalCount.textContent = `${currentIndex + 1} / ${slides.length}`;
+
+
+
     } else {
       console.error(
         "Elementul <img> nu a fost găsit în cadrul slide-ului."
       );
     }
   }
+
+  modalContent.addEventListener("mousedown", (event) => {
+    mouseStartX = event.clientX;
+  });
+
+  modalContent.addEventListener("mousemove", (event) => {
+    if (mouseStartX) {
+      const dragDistance = event.clientX - mouseStartX;
+
+      if (Math.abs(dragDistance) > 50 && !isScrolling()) {
+        event.preventDefault();
+        isDragging = true;
+      }
+    }
+  });
+
+  modalContent.addEventListener("mouseup", (event) => {
+    if (isDragging) {
+      const mouseEndX = event.clientX;
+      const dragDistance = mouseEndX - mouseStartX;
+
+      if (dragDistance > 50 && currentIndex > 0) {
+        navigation("prev");
+        updateModalImage();
+      } else if (dragDistance < -50 && currentIndex < slides.length - 1) {
+        navigation("next");
+        updateModalImage();
+      }
+
+      mouseStartX = 0;
+      isDragging = false;
+    }
+  });
+
+  // Funcție pentru gesturi de touch pe modalContent
+  modalContent.addEventListener("touchstart", (event) => {
+    touchStartX = event.touches[0].clientX;
+  });
+
+  modalContent.addEventListener("touchmove", (event) => {
+    if (touchStartX) {
+      const swipeDistance = event.changedTouches[0].clientX - touchStartX;
+
+      if (Math.abs(swipeDistance) > 50 && !isScrolling()) {
+        event.preventDefault();
+        isDragging = true;
+      }
+    }
+  });
+
+  modalContent.addEventListener("touchend", (event) => {
+    if (isDragging) {
+      const touchEndX = event.changedTouches[0].clientX;
+      const swipeDistance = touchEndX - touchStartX;
+
+      if (swipeDistance > 50 && currentIndex > 0) {
+        navigation("prev");
+        updateModalImage();
+      } else if (swipeDistance < -50 && currentIndex < slides.length - 1) {
+        navigation("next");
+        updateModalImage();
+      }
+
+      touchStartX = 0;
+      isDragging = false;
+    }
+  });
+
 }
 
 
