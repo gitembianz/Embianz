@@ -16,6 +16,10 @@ class StoreController extends Controller
   {
     return view('store.home');
   }
+  public function search()
+  {
+    return view('store.search');
+  }
   public function cart()
   {
     return view('store.cart');
