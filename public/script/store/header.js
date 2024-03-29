@@ -110,6 +110,7 @@ function searchBar() {
   const closeBtn = document.getElementById("searchClose");
   const input = document.getElementById("searchInput");
   const modalClose = document.getElementById("modalClose");
+  const searching = document.getElementById("searching");
 
   searchBtn.addEventListener("click", function () {
     new Promise(resolve => {
@@ -134,7 +135,16 @@ function searchBar() {
     }
   }
 
-  document.addEventListener('keydown', handleKeyPress);
+
+  input.addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+       window.location.href = "/search";
+    }
+  });
+  searching.addEventListener("click", function () {
+    window.location.href = "/search";
+  });
 }
 
 //<--------------------------- End SearchBar --------------------------->

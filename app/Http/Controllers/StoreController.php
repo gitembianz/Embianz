@@ -16,6 +16,14 @@ class StoreController extends Controller
   {
     return view('store.home');
   }
+  public function notfoundpage()
+  {
+    return view('store.404');
+  }
+  public function redirect()
+  {
+    return view('store.redirect');
+  }
   public function search()
   {
     return view('store.search');
