@@ -154,8 +154,8 @@
   route::get('/about', [StoreController::class, 'about'])->name('about');
   route::get('/confirm', [StoreController::class, 'confirm'])->name('confirm');
   route::get('/terms', [StoreController::class, 'terms'])->name('terms');
-  route::get('/search', [StoreController::class, 'search'])->name('search');
-  route::get('/404', [StoreController::class, 'notfoundpage'])->name('notfoundpage');
+  route::get('/search/{slug?}', [StoreController::class, 'search'])->name('search');
+  route::get('/404', [StoreController::class, 'notfoundpage'])->name('404');
   route::get('/redirect', [StoreController::class, 'redirect'])->name('redirect');
 
   Route::get('/success', [StoreController::class, 'success'])->name('payment_success');
