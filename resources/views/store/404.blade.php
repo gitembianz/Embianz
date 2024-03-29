@@ -1,4 +1,4 @@
-<x-store-head :canonical='"404"' :title='"Page not Found"' :description="'Error, page not found'"/>
+<x-store-head :canonical='"404 | "' :title='"Page not Found | "' :description="'Error, page not found  | '"/>
 <x-store-header />
 <main>
 
