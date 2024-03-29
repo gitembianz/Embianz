@@ -6,33 +6,33 @@ function scrollEvent() {
   const main = document.querySelector("main");
   const body = document.body;
 
-if(!banner) {
-  const headerHeight = header.offsetHeight;
-  // const bannerHeight = banner.offsetHeight;
+  if (!banner) {
+    const headerHeight = header.offsetHeight;
+    // const bannerHeight = banner.offsetHeight;
 
-  if (window.pageYOffset > 200) {
-    // banner.style.transform = `translate3d(0px, -${bannerHeight}px, 0px)`;
-    main.style.paddingTop = `${headerHeight}px`;
-    header.style.paddingTop = 0;
+    if (window.pageYOffset > 200) {
+      // banner.style.transform = `translate3d(0px, -${bannerHeight}px, 0px)`;
+      main.style.paddingTop = `${headerHeight}px`;
+      header.style.paddingTop = 0;
+    } else {
+      // banner.style.transform = `translate3d(0px, 0px, 0px)`;
+      main.style.paddingTop = `${headerHeight}px`;
+      // header.style.paddingTop = `${headerHeight}px`;
+    }
   } else {
-    // banner.style.transform = `translate3d(0px, 0px, 0px)`;
-    main.style.paddingTop = `${headerHeight}px`;
-    // header.style.paddingTop = `${headerHeight}px`;
-  }
-} else {
-  const headerHeight = header.offsetHeight;
-  const bannerHeight = banner.offsetHeight;
+    const headerHeight = header.offsetHeight;
+    const bannerHeight = banner.offsetHeight;
 
-  if (window.pageYOffset > 200) {
-    banner.style.transform = `translate3d(0px, -${bannerHeight}px, 0px)`;
-    main.style.paddingTop = `${headerHeight}px`;
-    header.style.paddingTop = 0;
-  } else {
-    banner.style.transform = `translate3d(0px, 0px, 0px)`;
-    main.style.paddingTop = `${60 + bannerHeight}px`;
-    header.style.paddingTop = `${bannerHeight}px`;
+    if (window.pageYOffset > 200) {
+      banner.style.transform = `translate3d(0px, -${bannerHeight}px, 0px)`;
+      main.style.paddingTop = `${headerHeight}px`;
+      header.style.paddingTop = 0;
+    } else {
+      banner.style.transform = `translate3d(0px, 0px, 0px)`;
+      main.style.paddingTop = `${60 + bannerHeight}px`;
+      header.style.paddingTop = `${bannerHeight}px`;
+    }
   }
-}
 }
 
 //<-------------------------- End ScrollEvent -------------------------->
@@ -136,14 +136,14 @@ function searchBar() {
   }
 
 
-  input.addEventListener("keypress", function(event) {
+  input.addEventListener("keypress", function (event) {
     if (event.key === "Enter") {
       event.preventDefault();
-       window.location.href = "/search";
+      window.location.href = "/search/" + input.value;
     }
   });
   searching.addEventListener("click", function () {
-    window.location.href = "/search";
+    window.location.href = "/search/" + input.value;
   });
 }
 

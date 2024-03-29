@@ -5,10 +5,16 @@ namespace App\Http\Livewire;
 use App\Models\Product;
 use Livewire\Component;
 use App\Models\Category;
+use Livewire\WithPagination;
+
 
 class StoreSearch extends Component
 {
-    public $search = "";
+    use WithPagination;
+
+    public $search;
+    public $loadAmount;
+
     public $showproducts = true;
     public $showcategories = false;
     public $session_id;
@@ -22,13 +28,41 @@ class StoreSearch extends Component
             'categories' => $this->categories
         ]);
     }
-    public function mount()
+    public function mount($data = null)
     {
+        if ($data != null) {
+            $this->search = $data;
+            $search_from_session = session()->get('search_values', []);
+            if (isset($search_from_session['value']) && $search_from_session['value'] != $data) {
+                session()->put('search_values', [
+                    'value' => $data,
+                    'loadAmount' => app('global_limit_load')
+                ]);
+                $this->loadAmount = app('global_limit_load');
+            } else {
+                if (isset($search_from_session['loadAmount'])) {
+                    $this->loadAmount = $search_from_session['loadAmount'];
+                } else {
+                    $this->loadAmount = app('global_limit_load');
+                }
+            }
+        } else {
+            session()->forget('search_values');
+
+            $this->search = "";
+        }
         $this->session_id = $this->getSessionId();
         $this->quantity = app('global_low_stock');
     }
 
-
+    public function loadMore()
+    {
+        $this->loadAmount += app('global_limit_load');
+        session()->put('search_values', [
+            'value' => $this->search,
+            'loadAmount' =>  $this->loadAmount
+        ]);
+    }
 
 
     private function getSessionId()
@@ -75,8 +109,7 @@ class StoreSearch extends Component
                     'wishlists' => function ($query) {
                         $query->select('id', 'product_id')->where('session_id', $this->session_id);
                     },
-                ])
-                ->get();
+                ])->paginate($this->loadAmount);
         } else {
             return collect();
         }
