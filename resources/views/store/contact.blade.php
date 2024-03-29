@@ -4,7 +4,7 @@
   <script type="text/javascript">
     var onloadCallback = function() {
       grecaptcha.render('html_element', {
-        'sitekey': '6LdlrpkpAAAAAMIgwDHss_aQtKVPiC2eDlpAx1MW',
+        'sitekey': '6LchwKgpAAAAAML77tNGuCi7R5k5eQrqszG5DMZ4',
         'callback': verifyCallback,
         'theme': 'light' // Poți seta tema aici
       });
@@ -46,40 +46,48 @@
 	<!---------------------------------------------------------->
 	<!-----------------------Contact Form----------------------->
 	<section class="contact container">
-		<form class="contact__form" action="https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8" method="POST">
-			<input type=hidden name="oid" value="00D09000008XPQu">
-			{{-- <input type=hidden name="retURL" value="{{ "/confirm" }}"> --}}
-			<input type=hidden name="retURL" value="{{ url("/redirect") }}">
-			<select id="00N9N000000PrL5" name="00N9N000000PrL5" title="Exact Source" hidden>
-				<option value="www.eztemcorp.com">noren.ro</option>
-			</select>
-			<select id="lead_source" name="lead_source" hidden>
-				<option value="Web">Web</option>
-			</select>
+		<form class="contact__form" action="https://webto.salesforce.com/servlet/servlet.WebToCase?encoding=UTF-8&orgId=00D09000008XPQu" method="POST">
+      <input type=hidden name="retURL" value="{{ URL("/redirect") }}">
+      <input type=hidden name='captcha_settings' value='{"keyname":"norenro","fallback":"true","orgId":"00D09000008XPQu","ts":""}'>
+      <input type=hidden name="orgid" value="00D09000008XPQu">
+      <input  id="00N9N000000QGVe" value="www.noren.ro" name="00N9N000000QGVe" type="hidden" />
+      <input  id="type" type="hidden" name="type" value="Store Case" />
+
+      <!--  ----------------------------------------------------------------------  -->
+      <!--  NOTE: These fields are optional debugging elements. Please uncomment    -->
+      <!--  these lines if you wish to test in debug mode.                          -->
+      <!--  <input type="hidden" name="debug" value=1>                              -->
+      <!--  <input type="hidden" name="debugEmail" value="">                        -->
+      <!--  ----------------------------------------------------------------------  -->
+
 			<div class="contact__label">
-				<label for="last_name">
+				<label for="name">
 					<span class="red__label">*</span> Nume
 				</label>
-				<input id="last_name" maxlength="80" name="last_name" type="text" placeholder="Nume" required>
+				<input id="name" maxlength="80" name="name" type="text" placeholder="Nume" required>
 			</div>
+
 			<div class="contact__label">
 				<label for="company">
 					Companie
 				</label>
 				<input id="company" maxlength="80" name="company" type="text" placeholder="Companie">
 			</div>
+
 			<div class="contact__label">
 				<label for="email">
 					<span class="red__label">*</span> Email
 				</label>
 				<input type="email" id="email" name="email" autocomplete="email" required placeholder="E-mail" maxlength="80">
 			</div>
+
 			<div class="contact__label">
 				<label for="nr_order">
 					Numarul Comenzii
 				</label>
-				<input type="text" id="nr_order" name="nr_order" placeholder="Numarul Comenzii" maxlength="80">
+				<input type="text"  id="00N9N000000QGVj" maxlength="255" name="00N9N000000QGVj" placeholder="Numarul Comenzii">
 			</div>
+
 			<div class="contact__label">
 				<span for="description" id="description">
 					<span class="red__label">*</span> Mesaj
@@ -98,8 +106,10 @@
 					<polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
 				</svg>
 			</button>
+
+
 		</form>
-		{{-- <img class="contact__img" src="/images/store/contact-form.webp" alt="contact form image"> --}}
+
 	</section>
   <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
 	<!---------------------End Contact Form--------------------->
