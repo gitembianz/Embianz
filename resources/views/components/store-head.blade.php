@@ -29,13 +29,13 @@
  <!-- Open Graph / Facebook -->
  <meta property="og:url" content="{{ $canonical }}" />
  <meta property="og:type" content="website" />
- <meta property="og:image" content="images/store/logo-banner.webp" />
+ <meta property="og:image" content="{{ $image }}" />
  <meta property="og:title" content="{{ $title }}" />
  <meta property="og:description" content="{{ $description }}" />
  <!-- Twitter -->
  <meta property="twitter:url" content="{{ $canonical }}" />
  <meta property="twitter:card" content="summary_large_image" />
- <meta property="twitter:image" content="images/store/logo-banner.webp" />
+ <meta property="twitter:image" content="{{ $image }}" />
  <meta property="twitter:title" content="{{ $title }}" />
  <meta property="twitter:description" content="{{ $description }}" />
  {{-- ----------------------------------------------------------- --}}
