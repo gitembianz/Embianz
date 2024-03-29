@@ -205,6 +205,9 @@
     object-position: center;
     aspect-ratio: 1 / 1;
     mix-blend-mode: multiply;
+    user-select: none;
+    -webkit-user-drag: none;
+    cursor: grab;
   }
 }
 
