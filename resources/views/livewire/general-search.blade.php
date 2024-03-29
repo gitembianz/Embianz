@@ -2,10 +2,12 @@
 		<div class="search__container container" id="searchContent">
 		<div class="search__top">
 		<div class="search__input">
-		<svg>
-		<circle cx="11" cy="11" r="8"></circle>
-		<line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-		</svg>
+      <button class="search__button" id="searching">
+        <svg>
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </button>
 		<input id="searchInput" wire:model="search" type="text" placeholder="Caută produse sau categorii...">
 		</div>
 		<button class="search__close" type="button" id="searchClose" wire:click.prevent="close" aria-labautofoel="Close general searchbar">
