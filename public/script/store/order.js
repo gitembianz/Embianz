@@ -100,10 +100,6 @@ const addressValidations = [
     message: "Adresa este prea scurtă. Te rog introdu o adresă mai lungă.",
   },
   {
-    validation: (value) => /^[a-zA-Z0-9ăâîșțĂÂÎȘȚ/., _'\-`]*$/.test(value),
-    message: "Adresa poate conține doar litere, cifre și simbolurile: ( ), , .",
-  },
-  {
     validation: (value) => !/\s{3,}/.test(value),
     message: "Adresa nu poate conține spații consecutive.",
   },

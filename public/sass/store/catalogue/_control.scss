@@ -13,11 +13,11 @@
 
   &--search {
     flex-direction: column;
-    gap: 5px;
+    gap: 10px;
 
     &>input{
-min-height: 40px;
-max-height: 40px;
+      min-height: 40px;
+      max-height: 40px;
     }
 
     &>div{
@@ -25,7 +25,7 @@ max-height: 40px;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 5px;
+      gap: 10px;
     }
   }
 }

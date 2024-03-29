@@ -10,7 +10,7 @@
 			Acasă
 		</a>
 		@if (app()->has("global_show_on_breadcrumbs") && app('global_show_on_breadcrumbs') == 'true')
-			
+
 		<a class="breadcrumbs__link" href="{{ url("/storeproducts") }}">
 			Toate produsele
 		</a>
@@ -46,7 +46,7 @@
 				<polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
 			</svg>
 		</button>
-		<input class="controls__search" type="text" wire:model="search" placeholder="Caută în listă...">
+		<input class="controls__search" maxlength="100" type="text" wire:model="search" placeholder="Caută în listă...">
 		<button class="controls__button" id="sortOpen" aria-label="Open sort button">
 			<svg>
 				<line x1="21" y1="10" x2="7" y2="10"></line>
