@@ -24,9 +24,14 @@ class StoreController extends Controller
   {
     return view('store.redirect');
   }
-  public function search()
+  public function search($slug = null)
   {
-    return view('store.search');
+    if ($slug != null) {
+      $data = $slug;
+    } else {
+      $data = null;
+    }
+    return view('store.search', compact('data'));
   }
   public function cart()
   {
@@ -67,16 +72,12 @@ class StoreController extends Controller
 
   public function myorder($order_number = null)
   {
-    // Retrieve the order details using the order_number
     $order = Order::where('order_number', base64_decode($order_number))->first();
 
-    // Check if order exists
     if ($order) {
-      // Return a view with order details
       return view('store.myorder', compact('order'));
     } else {
-      // Handle case where order is not found
-      return abort(404);
+      return view('store.404');
     }
   }
   public function products($categorySlug = null)
@@ -94,7 +95,7 @@ class StoreController extends Controller
       if ($category) {
         $data = $category;
       } else {
-        return abort(404);
+        return view('store.404');
       }
     }
 
@@ -117,7 +118,7 @@ class StoreController extends Controller
       $data = Product::where('seo_id', $product)->first();
     }
     if (($data->active == false)) {
-      abort(404);
+      return view('store.404');
     }
     return view('store.product', ['data' => $data]);
   }

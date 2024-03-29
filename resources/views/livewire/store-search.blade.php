@@ -129,8 +129,14 @@
 					</div>
 				</div>
 			@endforeach
+			<x-lazy />
 		@endif
 	</section>
+	@if ($products->count() >= $loadAmount)
+		<section class="container">
+			<button class="filter__apply" wire:click="loadMore" wire:loading.remove>Vezi mai mult!</button>
+		</section>
+	@endif
     @endif
 
     @if ($showcategories)
