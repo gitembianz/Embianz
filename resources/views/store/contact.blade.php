@@ -6,7 +6,7 @@
       grecaptcha.render('html_element', {
         'sitekey': '6LchwKgpAAAAAML77tNGuCi7R5k5eQrqszG5DMZ4',
         'callback': verifyCallback,
-        'theme': 'dark' // Poți seta tema aici
+        'theme': 'light' // Poți seta tema aici
       });
     };
 
