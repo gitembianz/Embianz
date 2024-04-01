@@ -20,12 +20,11 @@
 		<!----------------------- Checkout --------------------->
 
 		<!------------------------------------------------------>
-		<input id="step__container_bulins" type="hidden">
 		<section>
 			<div class="checkout container">
 				<!------------------------------------------------------>
 				<!-------------------- Step Numbers -------------------->
-				<div class="step__container">
+				<div class="step__container" id="gohere">
 					<div class="step active" data-step="Înregistrare Date">1</div>
 					<span class="step__line @if ($step == 1) half @else full @endif"></span>
 					<div class="step @if ($step > 1 || $step == 3) active @endif" data-step="Plasare Comandă">2
@@ -1902,14 +1901,8 @@
 							element.scrollIntoView();
 						}
 					});
-					window.addEventListener('next_step', event => {
-						var element = document.getElementById('step__container_bulins');
-						if (element) {
-							element.scrollIntoView();
-						}
-					});
-					window.addEventListener('final_step', event => {
-						var element = document.getElementById('step__container_bulins');
+					window.addEventListener('goup', event => {
+						var element = document.getElementById('gohere');
 						if (element) {
 							element.scrollIntoView();
 						}

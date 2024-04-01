@@ -219,7 +219,7 @@ class StoreOrder extends Component
       $this->cart->update([
         'status_id' => app('global_cart_checkoutdetails')
       ]);
-      $this->dispatchBrowserEvent('next_step');
+      $this->dispatchBrowserEvent('goup');
     }
   }
 
@@ -1082,6 +1082,7 @@ class StoreOrder extends Component
             CURLOPT_SSL_VERIFYPEER => false,
           ],
         ]);
+        $this->dispatchBrowserEvent('goup');
       } else {
         $this->cart->update([
           'order_id' => $order->id,
