@@ -44,7 +44,7 @@
 									@if ($price)
 										{{ $price }} {{ $currency }}
 									@else
-										indisponibil
+										Indisponibil
 									@endif
 								</span>
 							</div>
@@ -76,10 +76,18 @@
 						@endif
 					</li>
 @if ($message === $index)
-	<p>Produsul a fost adaugat in cos!</p>
+	<p class="leftbar__message" style="animation: delete 0.5s ease-in 4s forwards;">Produsul a fost adăugat în coș!</p>
+  <script>
+    let text = document.querySelector(".leftbar__message");
+
+    setTimeout(() => {
+      text.parentNode.removeChild(text);
+    }, 4500);
+  </script>
 @endif
 				@endforeach
 			</ul>
 		@endif
 	</div>
 </div>
+
