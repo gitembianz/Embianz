@@ -129,7 +129,7 @@ class StoreSearch extends Component
                         $query->select('path', 'name')->where('type', 'min');
                     }
                 ])
-                ->get();
+                ->paginate($this->loadAmount);
         } else {
             return collect();
         }

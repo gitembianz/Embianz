@@ -222,7 +222,7 @@
 		});
 	</script>
 
-	@if ($products->count() >= $loadAmount)
+	@if ($products->total() >= $loadAmount)
 		<section class="container">
 			<button class="filter__apply" wire:click="loadMore" wire:loading.remove>Vezi mai mult!</button>
 		</section>
@@ -249,7 +249,7 @@
 				</button>
 			</div>
 			<button class="filter__top filter__top--button" wire:click="$set('showspecfilter', false)">
-				Afișează rezultate: <span>{{ $productCount }}</span>
+				Afișează rezultate: <span>{{ $products->total() }}</span>
 			</button>
 			<div wire:ignore class="filter__list">
 				@foreach ($filtervalues->sortBy("spec.sequence")->groupBy("spec_id") as $values)

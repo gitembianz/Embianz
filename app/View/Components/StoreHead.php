@@ -9,17 +9,21 @@ class StoreHead extends Component
     public $title;
     public $description;
     public $canonical;
+    public $image;
 
     /**
      * Create a new component instance.
      */
-    public function __construct($title = "", $description = "", $canonical = "")
+    public function __construct($title = "", $description = "", $canonical = "", $image = "")
     {
         $this->title = $title . app('global_site_name');
         $this->description = empty($description)
             ? "Toate Produsele"
             : $description;
         $this->canonical = $canonical;
+        $this->image  = empty($image)
+            ? "images/store/logo-banner.webp"
+            : $image;
     }
 
     public function render()
