@@ -23,11 +23,6 @@
   justify-content: space-between;
   flex-direction: column;
   gap: 15px;
-
-  & > .basket__product > .basket__top {
-    padding-bottom: unset;
-    border: none;
-  }
 }
 
 .basket {
@@ -70,83 +65,6 @@
   }
 }
 
-.basket__product {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  background: $primary;
-  column-gap: 25px;
-  padding: 10px;
-  border-radius: 7px;
-  width: 100%;
-  position: relative;
-
-  & > .quantity {
-    padding: 0;
-    border: none;
-
-    @media (max-width: map-get($grid-breakpoints, xl)) {
-      width: 100%;
-      grid-column: 1/3;
-    }
-  }
-
-  @media (max-width: map-get($grid-breakpoints, xl)) {
-    column-gap: 10px;
-    row-gap: 5px;
-  }
-}
-
-.basket__top {
-  grid-column: 1/3;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-bottom: 10px;
-  border-bottom: 1px solid $lightBlack;
-  gap: 10px;
-
-  & > div {
-    width: 100%;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    flex: 1;
-    flex-direction: column;
-  }
-
-  & > img {
-    width: 50px;
-    height: 50px;
-    aspect-ratio: 1/1;
-    object-fit: contain;
-    object-position: center;
-    border-radius: 5px;
-    mix-blend-mode: multiply;
-  }
-
-  & > .basket__action {
-    width: auto;
-    display: block;
-    flex: 0;
-  }
-}
-
-.basket__price {
-  font-size: $textSize;
-  font-weight: $lightWeight;
-  color: $darkGray;
-  text-transform: uppercase;
-}
-
-.basket__title {
-  font-size: $textSize;
-  font-weight: $lightWeight;
-  color: $lightBlack;
-  margin: 0;
-  text-decoration: none;
-  text-transform: uppercase;
-}
-
 .basket__delete {
   align-items: center;
   justify-content: center;
@@ -170,106 +88,6 @@
     }
   }
 }
-
-// .basket__wish {
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   width: 33px;
-//   height: 33px;
-//   background: transparent;
-//   border: none;
-//   border-radius: 50px;
-
-//   & > svg {
-//     fill: #a9a9a9;
-//   }
-
-//   &:hover {
-//     & > svg {
-//       fill: $darkRed;
-//     }
-//   }
-
-//   &.active {
-//     & > svg {
-//       fill: $darkRed;
-//     }
-//   }
-// }
-
-// .basket__delete--hidden {
-//   grid-column: 1/3;
-//   width: 100%;
-//   border-radius: 5px;
-//   display: flex;
-//   align-items: center;
-//   justify-content: space-between;
-//   padding: 0 10px;
-//   gap: 15px;
-//   height: 40px;
-//   background: lighten(#d2042d, 45%);
-//   font-size: $textSize;
-//   border: none;
-//   transition: all 0.3s ease-in-out;
-//   color: $lightBlack;
-//   font-weight: $lightWeight;
-//   display: none;
-
-//   &:hover {
-//     background: $darkRed;
-//     color: $secondary;
-
-//     & > svg {
-//       stroke: $secondary;
-//     }
-//   }
-// }
-
-// .basket__delete--long {
-//   @media (max-width: map-get($grid-breakpoints, xl)) {
-//     grid-column: 1/3;
-//   }
-// }
-
-// .basket__add--hidden {
-//   grid-column: 1/3;
-//   width: 100%;
-//   border-radius: 5px;
-//   display: flex;
-//   align-items: center;
-//   justify-content: space-between;
-//   gap: 15px;
-//   height: 40px;
-//   padding: 0 10px;
-//   background: darken($secondary, 10%);
-//   font-size: $textSize;
-//   border: none;
-//   transition: all 0.3s ease-in-out;
-//   color: $lightBlack;
-//   font-weight: $lightWeight;
-
-//   @media (min-width: map-get($grid-breakpoints, xl)) {
-//     display: none;
-//   }
-
-//   @media (max-width: map-get($grid-breakpoints, xl)) {
-//     display: none;
-//   }
-
-//   @media (max-width: map-get($grid-breakpoints, sm)) {
-//     grid-column: 1/3;
-//   }
-
-//   &:hover {
-//     background: $lightBlack;
-//     color: $secondary;
-
-//     & > svg {
-//       stroke: $secondary;
-//     }
-//   }
-// }
 
 .basket__subtotal {
   display: flex;
@@ -297,4 +115,97 @@
   font-size: $textSize;
   font-weight: $lightWeight;
   color: $lightBlack;
+}
+
+.basket__item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  width: 100%;
+  grid-column: 1/3;
+  padding-bottom: 10px;
+  border-bottom: 1px solid $lightBlack;
+  text-decoration: none;
+  flex-shrink: 1;
+
+  & > img {
+    width: 50px;
+    height: 50px;
+    aspect-ratio: 1/1;
+    object-fit: contain;
+    object-position: center;
+    border-radius: 5px;
+    mix-blend-mode: multiply;
+  }
+
+  &:last-child {
+    padding-bottom: 0;
+    border-bottom: 0px solid $lightBlack;
+  }
+}
+.basket__link {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  width: 100%;
+  flex: 1;
+  text-decoration: none;
+}
+.basket__text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 5px;
+  width: 100%;
+  text-decoration: none;
+
+  &>h3 {
+    font-size: $textSize;
+    font-weight: $boldWeight;
+    color: $lightBlack;
+    margin: 0;
+    text-decoration: none;
+  }
+  &>span {
+    font-size: $spanSize;
+    font-weight: $lightWeight;
+    color: $darkGray;
+    margin: 0;
+    text-decoration: none;
+  }
+}
+
+// Addon for Basket Item
+.basket__split {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 5px;
+  background: #fafafa;
+  border-radius: 5px;
+
+  &>.basket__item{
+    border-radius: 0;
+
+    &>.quantity{
+      padding-bottom: 0;
+      border: none;
+    }
+  }
+  &>.basket__item:last-child{
+    gap: 20px;
+  }
+
+  @media (max-width: map-get($grid-breakpoints, sm)) {
+
+    &>.basket__item:last-child{
+      gap: 10px;
+      flex-direction: column;
+    }
+  }
 }

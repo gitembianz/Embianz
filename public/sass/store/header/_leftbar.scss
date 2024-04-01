@@ -211,6 +211,7 @@
   border-radius: 5px;
   transition: all 0.3s ease-in-out;
   background: $primary;
+  gap: 5px;
 
   &:hover {
     background: $secondary;
@@ -339,7 +340,7 @@
 
 .leftbar__total {
   width: 100%;
-  min-height: 90px;
+  min-height: 190px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -355,6 +356,9 @@
   color: $lightBlack;
   width: 100%;
   text-align: end;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
   &>span {
     font-size: $textSize;
