@@ -369,3 +369,26 @@
 }
 
 //<-------------------------- End Leftbar Styles -------------------------->
+
+
+// Deleting animation{
+
+@keyframes delete {
+  0% {
+    opacity: 1;
+    transform: translateX(0%);
+  }
+  80% {
+    opacity: 0;
+    transform: translateX(150%);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(150%);
+    height: 0px;
+  }
+}
+
+// animation: delete 0.5s ease-in 2s forwards;
+
+
