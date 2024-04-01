@@ -490,7 +490,8 @@ class StoreOrder extends Component
           '00N9N000000QGYY' => $sub_order->order_id,
           '00N9N000000QGYT' => $sub_order->id,
           '00N9N000000QGYd' => $sub_order->product_id,
-          '00N9N000000QGYi' => $sub_order->quantity
+          '00N9N000000QGZC' => $sub_order->quantity,
+          '00NQF000000Yzc9' => $sub_order->price
         ];
         $order_lines[] = $order_line;
       }
@@ -521,7 +522,6 @@ class StoreOrder extends Component
           '00N9N000000QGVy' => $order->payment->name,
           '00N9N000000QGW3' => $order->voucher->code ?? "",
           '00N9N000000QGW8' => $order->voucher_value,
-          '00N9N000000QGWD' => $order->account_id,
           '00N9N000000QGWI' => $order->delivery_price,
           '00N9N000000QGWN' => $order->final_amount,
 
@@ -1010,7 +1010,8 @@ class StoreOrder extends Component
             '00N9N000000QGYY' => $sub_order->order_id,
             '00N9N000000QGYT' => $sub_order->id,
             '00N9N000000QGYd' => $sub_order->product_id,
-            '00N9N000000QGYi' => $sub_order->quantity
+            '00N9N000000QGZC' => $sub_order->quantity,
+            '00NQF000000Yzc9' => $sub_order->price
           ];
           $order_lines[] = $order_line;
         }
@@ -1040,7 +1041,6 @@ class StoreOrder extends Component
             '00N9N000000QGVy' => $order->payment->type,
             '00N9N000000QGW3' => $order->voucher->code ?? "",
             '00N9N000000QGW8' => $order->voucher_value,
-            '00N9N000000QGWD' => $order->account_id,
             '00N9N000000QGWI' => $order->delivery_price,
             '00N9N000000QGWN' => $order->final_amount,
 
