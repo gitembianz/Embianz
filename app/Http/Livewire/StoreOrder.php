@@ -688,7 +688,7 @@ class StoreOrder extends Component
             'voucher_value' => 0,
             'updated_at' => now(),
           ]);
-          dd('aici');
+          dd('aici', $this->cart->voucher, $this->cart->voucher->first()->status_id, $this->cart->voucher->first()->start_date, $this->cart->voucher->first()->end_date);
           return;
         }
       }
