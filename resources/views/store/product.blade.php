@@ -1,4 +1,4 @@
-<x-store-head :image="$data->media->where('type', 'original')->first()->path . $data->media->where('type', 'original')->first()->name" :canonical="'product/' . ($data->seo_id ?? $data->id)" :title='($data->seo_title ?? "") . " | "' :description='$data->meta_description ?? $data->name' />
+<x-store-head :image="optional($data->media->where('type', 'original')->first())->path . optional($data->media->where('type', 'original')->first())->name"  :canonical="'product/' . ($data->seo_id ?? $data->id)" :title='($data->seo_title ?? "") . " | "' :description='$data->meta_description ?? $data->name' />
 
 <x-store-header />
 <main>
