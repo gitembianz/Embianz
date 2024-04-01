@@ -49,7 +49,7 @@
 								</span>
 							</div>
 						</a>
-            <button class="leftbar__delete" wire:click="addToCart({{ $item->product->id }}, {{ $index }})" aria-label="add to cart">
+            <button class="leftbar__delete" style="border: none" wire:click="addToCart({{ $item->product->id }}, {{ $index }})" aria-label="add to cart">
 
               <svg>
                 <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
@@ -76,7 +76,7 @@
 						@endif
 					</li>
 @if ($message === $index)
-	<p>productl a fost adaugat in cos!</p>
+	<p>Produsul a fost adaugat in cos!</p>
 @endif
 				@endforeach
 			</ul>
