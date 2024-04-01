@@ -76,6 +76,7 @@ class StoreMain extends Component
       ->where('start_date', '<=',  now()->format('Y-m-d'))
       ->where('end_date', '>=',  now()->format('Y-m-d'))
       ->where('is_new', true)
+      ->orderBy('popularity', 'desc')
       ->limit(app('global_limit_slideritems'))
       ->get();
   }

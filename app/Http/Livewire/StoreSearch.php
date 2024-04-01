@@ -109,7 +109,9 @@ class StoreSearch extends Component
                     'wishlists' => function ($query) {
                         $query->select('id', 'product_id')->where('session_id', $this->session_id);
                     },
-                ])->paginate($this->loadAmount);
+                ])
+                ->orderBy('popularity', 'desc')
+                ->paginate($this->loadAmount);
         } else {
             return collect();
         }
