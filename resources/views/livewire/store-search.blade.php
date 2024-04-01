@@ -22,10 +22,20 @@
     <h1 class="section__title">Rezultatele căutării:</h1>
     <div>
       <button class="tab__button tab__button--long @if ($showproducts) active @endif" wire:click="toggle('products')">
-        Produse ({{ $products->total() }})
+        Produse (@if ($products->isNotEmpty())
+			
+		{{ $products->total() }}
+		@else
+		0
+		@endif)
       </button>
       <button class="tab__button tab__button--long @if ($showcategories) active @endif" wire:click="toggle('categories')">
-        Categorii ({{ $categories->total() }})
+        Categorii (@if ($categories->isNotEmpty())
+			
+		{{ $categories->total() }}
+		@else
+		0
+		@endif)
       </button>
     </div>
     </section>
