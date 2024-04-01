@@ -76,9 +76,6 @@
 						@endif
 					</li>
 @if ($message === $index)
-<<<<<<< HEAD
-	<p>Produsul a fost adaugat in cos!</p>
-=======
 	<p class="leftbar__message" style="animation: delete 0.5s ease-in 4s forwards;">Produsul a fost adăugat în coș!</p>
   <script>
     let text = document.querySelector(".leftbar__message");
@@ -87,7 +84,6 @@
       text.parentNode.removeChild(text);
     }, 4500);
   </script>
->>>>>>> 39adefdf (Animation for Leftbar Instant Message its added)
 @endif
 				@endforeach
 			</ul>
