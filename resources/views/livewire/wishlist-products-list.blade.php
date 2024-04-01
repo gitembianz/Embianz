@@ -75,16 +75,16 @@
 						</div>
 						@endif
 					</li>
-@if ($message === $index)
-	<p class="leftbar__message" style="animation: delete 0.5s ease-in 4s forwards;">Produsul a fost adăugat în coș!</p>
-  <script>
-    let text = document.querySelector(".leftbar__message");
+            @if ($message === $index)
+              <p class="leftbar__message" style="animation: delete 0.5s ease-in 4s forwards;">Produsul a fost adăugat în coș!</p>
+              <script>
+                let text = document.querySelector(".leftbar__message");
 
-    setTimeout(() => {
-      text.parentNode.removeChild(text);
-    }, 4500);
-  </script>
-@endif
+                setTimeout(() => {
+                  text.parentNode.removeChild(text);
+                }, 4500);
+              </script>
+            @endif
 				@endforeach
 			</ul>
 		@endif
