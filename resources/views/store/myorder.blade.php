@@ -30,7 +30,7 @@
 								<!---------------------------------------------------->
 								<!------------- Checkout Header Name --------------->
 								<h3>
-									Informatii de facturare &check;
+									Informații de facturare &check;
 								</h3>
 								<!----------- End Checkout Header Name ------------->
 								<!---------------------------------------------------->
@@ -83,7 +83,7 @@
 								<!---------------------------------------------------->
 								<!------------- Checkout Header Name --------------->
 								<h3>
-									Informatii de livrare &check;
+									Informații de livrare &check;
 								</h3>
 								<!----------- End Checkout Header Name ------------->
 								<!---------------------------------------------------->

@@ -130,7 +130,7 @@
 								</span>
 								<label for="individualShippingAddress">Adresa 1</label>
 							</div>
-							
+
 							<div class="checkout__item" id="individualShippingAddress2">
 								<input type="text" wire:model="individual_billing_address2" name="individualShippingAddress2" placeholder="Adresa 2 (opțional)" autocomplete="address-level2">
 								<span></span>
@@ -390,14 +390,14 @@
 								<option value="Zimbabwe">Zimbabwe</option>
 							</select>
 							<!---------------------------------------------------->
-							
+
 							<div class="checkout__item checkout__item--required" id="individualShippingCounty">
 								<input type="text" wire:model="individual_billing_county" name="individualShippingCounty" placeholder="Localitate (oraș, comună sau sat)" autocomplete="county" required>
 								<span></span>
 								<label for="individualShippingCounty">Județ</label>
 							</div>
 							<!---------------------------------------------------->
-			
+
 							<div class="checkout__item checkout__item--required" id="individualShippingCity">
 								<input type="text" wire:model="individual_billing_city" name="individualShippingCity" placeholder="Județ" autocomplete="county" required>
 								<span>
@@ -434,7 +434,7 @@
 							<!----------- End Checkout Header Name ------------->
 							<!---------------------------------------------------->
 							<!------------- Checkout List of Items --------------->
-				
+
 							<div wire:ignore class="checkout__item checkout__item--required" id="individualBillingFirstName">
 								<input type="text" wire:model="individual_shipping_first" name="individualBillingFirstName" placeholder="Nume" autocomplete="given-name" required>
 								<span>
@@ -462,7 +462,7 @@
 								</span>
 								<label for="individualBillingEmail">Email</label>
 							</div>
-							
+
 							<!----------- End Checkout List of Items ------------->
 							<!---------------------------------------------------->
 						</div>
@@ -1596,7 +1596,7 @@
 				<!------------------------------------------------------>
 				<!--------------------- Step Middle -------------------->
 				@if ($step == 2)
-				<?php  
+				<?php
 				$disables =[];
 				?>
 					<div class="checkout__header">
@@ -1623,7 +1623,7 @@
 						@endif
 					</div>
 					<div class="section__header">
-						<h2 class="section__title">Verificați detaliile dumneavoastră.</h2>
+						<h2 class="section__title">Verifică detaliile comenzii.</h2>
 					</div>
 					<div class="total__container">
 						<!---------------------------------------------------->
@@ -1633,7 +1633,7 @@
 								<!---------------------------------------------------->
 								<!------------- Checkout Header Name --------------->
 								<h3>
-									Informatii de facturare &check;
+									Informații de facturare&check;
 								</h3>
 								<!----------- End Checkout Header Name ------------->
 								<!---------------------------------------------------->
@@ -1668,7 +1668,7 @@
 								<!---------------------------------------------------->
 								<!------------- Checkout Header Name --------------->
 								<h3>
-									Informatii de livrare &check;
+									Informații de livrare &check;
 								</h3>
 								<!----------- End Checkout Header Name ------------->
 								<!---------------------------------------------------->
@@ -1706,7 +1706,7 @@
 								<!---------------------------------------------------->
 								<!------------- Checkout Header Name --------------->
 								<h3>
-									Informatii de facturare &check;
+									Informații de facturare&check;
 								</h3>
 								<!----------- End Checkout Header Name ------------->
 								<!---------------------------------------------------->
@@ -1756,7 +1756,7 @@
 								<!---------------------------------------------------->
 								<!------------- Checkout Header Name --------------->
 								<h3>
-									Informatii de livrare &check;
+									Informații de livrare &check;
 								</h3>
 								<!----------- End Checkout Header Name ------------->
 								<!---------------------------------------------------->
@@ -1794,9 +1794,9 @@
 						<!---------------------------------------------------->
 						<div class="total__info">
 							@if (!$cartItems->isEmpty())
-							
+
 								@foreach ($cartItems as $index => $cartItem)
-								<?php 
+								<?php
 								$disabled[$index] = false;
 								if (($cartItem->product->active != true) || ($cartItem->product->start_date > now()->format('Y-m-d')) || ($cartItem->product->end_date < now()->format('Y-m-d'))){
 									$disabled[$index] = true;
@@ -1861,7 +1861,7 @@
 									</span>
 								</div>
 								@if ($modification)
-									
+
 								<span class="item__text--disabled">Ai cel puțin un produs indisponibil adaugat in coș!</span>
 								@endif
 
@@ -1943,7 +1943,7 @@
 								<!---------------------------------------------------->
 								<!------------- Checkout Header Name --------------->
 								<h3>
-									Informatii de facturare &check;
+									Informații de facturare&check;
 								</h3>
 								<!----------- End Checkout Header Name ------------->
 								<!---------------------------------------------------->
@@ -1978,7 +1978,7 @@
 								<!---------------------------------------------------->
 								<!------------- Checkout Header Name --------------->
 								<h3>
-									Informatii de livrare &check;
+									Informații de livrare &check;
 								</h3>
 								<!----------- End Checkout Header Name ------------->
 								<!---------------------------------------------------->
@@ -2018,7 +2018,7 @@
 								<!---------------------------------------------------->
 								<!------------- Checkout Header Name --------------->
 								<h3>
-									Informatii de facturare &check;
+									Informații de facturare&check;
 								</h3>
 								<!----------- End Checkout Header Name ------------->
 								<!---------------------------------------------------->
@@ -2068,7 +2068,7 @@
 								<!---------------------------------------------------->
 								<!------------- Checkout Header Name --------------->
 								<h3>
-									Informatii de livrare &check;
+									Informații de livrare &check;
 								</h3>
 								<!----------- End Checkout Header Name ------------->
 								<!---------------------------------------------------->
