@@ -20,11 +20,11 @@
 		<!----------------------- Checkout --------------------->
 
 		<!------------------------------------------------------>
-		<section>
+		<section id="gohere">
 			<div class="checkout container">
 				<!------------------------------------------------------>
 				<!-------------------- Step Numbers -------------------->
-				<div class="step__container" id="gohere">
+				<div class="step__container">
 					<div class="step active" data-step="Înregistrare Date">1</div>
 					<span class="step__line @if ($step == 1) half @else full @endif"></span>
 					<div class="step @if ($step > 1 || $step == 3) active @endif" data-step="Plasare Comandă">2
