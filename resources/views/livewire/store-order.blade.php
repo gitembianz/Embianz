@@ -20,8 +20,7 @@
 		<!----------------------- Checkout --------------------->
 
 		<!------------------------------------------------------>
-		<input id="step__container_bulins" type="hidden">
-		<section>
+		<section id="gohere">
 			<div class="checkout container">
 				<!------------------------------------------------------>
 				<!-------------------- Step Numbers -------------------->
@@ -1902,14 +1901,8 @@
 							element.scrollIntoView();
 						}
 					});
-					window.addEventListener('next_step', event => {
-						var element = document.getElementById('step__container_bulins');
-						if (element) {
-							element.scrollIntoView();
-						}
-					});
-					window.addEventListener('final_step', event => {
-						var element = document.getElementById('step__container_bulins');
+					window.addEventListener('goup', event => {
+						var element = document.getElementById('gohere');
 						if (element) {
 							element.scrollIntoView();
 						}
