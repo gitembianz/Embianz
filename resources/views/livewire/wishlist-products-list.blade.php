@@ -41,7 +41,7 @@
                 </span>
             </div>
 						</a>
-            <button class="leftbar__delete" aria-label="add to cart">
+            <button class="leftbar__delete" style="border: none" aria-label="add to cart">
               <svg>
                 <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
                 <line x1="3" y1="6" x2="21" y2="6"></line>
