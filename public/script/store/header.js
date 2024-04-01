@@ -136,15 +136,15 @@ function searchBar() {
   }
 
 
-  // input.addEventListener("keypress", function (event) {
-  //   if (event.key === "Enter") {
-  //     event.preventDefault();
-  //     window.location.href = "/search/" + input.value;
-  //   }
-  // });
-  // searching.addEventListener("click", function () {
-  //   window.location.href = "/search/" + input.value;
-  // });
+  input.addEventListener("keypress", function (event) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      window.location.href = "/search/" + input.value;
+    }
+  });
+  searching.addEventListener("click", function () {
+    window.location.href = "/search/" + input.value;
+  });
 }
 
 //<--------------------------- End SearchBar --------------------------->
