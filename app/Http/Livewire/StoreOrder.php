@@ -116,7 +116,7 @@ class StoreOrder extends Component
       ->where('session_id', $this->session_id)
       ->where('status_id', '!=', app('global_cart_closed'))
       ->with(['voucher' => function ($query) {
-        $query->select('code', 'id', 'percent', 'value', 'start_date', 'end_date');
+        $query->select('code', 'id', 'percent', 'single_use', 'value', 'start_date', 'end_date');
       }])
       ->latest()
       ->first() ?? null;
