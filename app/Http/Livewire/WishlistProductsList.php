@@ -37,6 +37,7 @@ class WishlistProductsList extends Component
     public function wishshow()
     {
         $this->showwis = true;
+        $this->message = null;
     }
 
     public function mount()
