@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Cart;
 use App\Models\Product;
+use App\Models\Voucher;
 use Livewire\Component;
 use App\Models\Cart_Item;
 use Illuminate\Support\Facades\DB;
@@ -13,6 +14,8 @@ class CartProductsList extends Component
 {
     public $showcart = false;
     public $cartId;
+    public $voucher;
+    public $message = null;
     protected $listeners = [
         'showcart' => 'cartshow',
         'orderprocess' => 'orderprocess',
@@ -22,9 +25,20 @@ class CartProductsList extends Component
     public function render()
     {
         return view('livewire.cart-products-list', [
+            'cart' => $this->cart,
             'cartItems' => $this->cartItems,
             'currency' => $this->cartItems->isNotEmpty() ? $this->cartItems->first()->product->product_prices->first()->pricelist->currency->name : '',
         ]);
+    }
+    public function getCartProperty()
+    {
+        return Cart::select('id', 'quantity_amount', 'sum_amount', 'voucher_id', 'final_amount', 'voucher_value')
+            ->where('id', $this->cartId)
+            ->with(['voucher' => function ($query) {
+                $query->select('code', 'id', 'percent', 'value');
+            }])
+            ->latest()
+            ->first() ?? null;
     }
     public function getCartItemsProperty()
     {
@@ -48,6 +62,67 @@ class CartProductsList extends Component
                 ])->get();
         } else {
             return collect();
+        }
+    }
+    public function removevoucher()
+    {
+        $this->cart->update([
+            'final_amount' => ($this->cart->sum_amount + app('global_delivery_price')),
+            'voucher_id' => null,
+            'voucher_value' => 0,
+            'updated_at' => now(),
+            'status_id' => app('global_cart_new')
+        ]);
+        $this->message = null;
+        $this->voucher = "";
+        $this->emit('cartUpdated');
+    }
+    public function checkvoucher()
+    {
+        if ($this->cart) {
+            $voucher = Voucher::where('code', $this->voucher)
+                ->where('status_id', app('global_voucher_active'))
+                ->where('start_date', '<',  now())
+                ->where('end_date', '>',  now())
+                ->first();
+            if ($voucher) {
+                if ($voucher && $voucher->percent !== null) {
+                    $discountAmount = ($voucher->percent / 100) * $this->cart->sum_amount;
+
+                    $this->cart->update([
+                        'final_amount' => ($this->cart->sum_amount + app('global_delivery_price') - $discountAmount),
+                        'voucher_id' => $voucher->id,
+                        'voucher_value' => $discountAmount,
+                        'updated_at' => now(),
+                    ]);
+                } else {
+                    if ($voucher->value > $this->cart->sum_amount) {
+                        $this->message = null;
+                        $this->cart->update([
+                            'final_amount' =>  app('global_delivery_price'),
+                            'voucher_id' => $voucher->id,
+                            'voucher_value' => $voucher->value,
+                            'updated_at' => now(),
+                        ]);
+                    } else {
+                        $this->message = null;
+                        $this->cart->update([
+                            'final_amount' => ($this->cart->sum_amount + app('global_delivery_price') - $voucher->value),
+                            'voucher_id' => $voucher->id,
+                            'voucher_value' => $voucher->value,
+                            'updated_at' => now(),
+                        ]);
+                    }
+                }
+            } else {
+                $this->message = "Voucher-ul nu a fost gasit!";
+                $this->voucher = "";
+            }
+            $this->emit('cartUpdated');
+        } else {
+            $this->message = null;
+            $this->emit('newcart');
+            return;
         }
     }
     public function orderprocess()
