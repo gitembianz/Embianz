@@ -59,6 +59,7 @@ class GeneralSearch extends Component
                             }]);
                     }
                 ])
+                ->orderBy('popularity', 'desc')
                 ->limit(app('global_limit_searchitems'))
                 ->get();
         } else {

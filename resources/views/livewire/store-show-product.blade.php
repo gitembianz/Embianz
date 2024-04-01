@@ -131,7 +131,7 @@
 			</button>
 			{{-- </div> --}}
 			<div class="related__wrapper">
-				@foreach ($product->related_product as $product)
+				@foreach ($product->related_product->sortByDesc("product.popularity") as $product)
 				@if (($product->product) && ($product->product->active == true) && ($product->product->end_date >=  now()->format('Y-m-d')) && ($product->product->start_date <=  now()->format('Y-m-d')))
 					
 				<div class="card" role="listitem">
