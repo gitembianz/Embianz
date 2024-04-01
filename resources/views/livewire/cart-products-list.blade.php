@@ -46,7 +46,6 @@
 								<span class="leftbar__link--price">
 									@php
 										$price = number_format($cartItem->product->product_prices->first()->value, 2, ",", ".");
-										$total = $total + $cartItem->quantity * $cartItem->product->product_prices->first()->value;
 									@endphp
 									@if ($price)
 										{{ $price }} {{ $currency }}
@@ -81,29 +80,52 @@
         <h5 class="leftbar__total--text">
           Produse:
           <span id="leftbarTotalPrice">
-            1024 test
+            {{ number_format($cart->sum_amount, 2, ",", ".") }}
+						{{ $currency }}
           </span>
         </h5>
           <h5 class="leftbar__total--text">
             Livrare:
             <span id="leftbarTotalPrice">
-              20 test
+              @if (app("global_delivery_price") == 0)
+									Gratuit
+								@else
+									{{ number_format(app("global_delivery_price"), 2, ",", ".") }} {{ $currency }}
+								@endif
             </span>
           </h5>
+		  @if ($cart->voucher_id != null)
+								<h5 class="leftbar__total--text">Voucher:
+								<span class="voucher__choice">
+									-{{ number_format($cart->voucher_value, 2, ",", ".") }} {{ $currency }}
+									<button wire:click="removevoucher" class="details__delete" aria-label="Remove voucher">
+										<svg>
+											<polyline points="3 6 5 6 21 6"></polyline>
+											<path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+											</path>
+										</svg>
+									</button>
+								</span>
+								</h5>
+						@endif
 				<h5 class="leftbar__total--text">
           Total:
           <span id="leftbarTotalPrice">
-            {{ number_format($total, 2, ",", ".") }}
+            {{ number_format($cart->final_amount, 2, ",", ".") }}
 						{{ $currency }}
           </span>
         </h5>
-        <p class="voucher__error" style="color: black !important">Voucher-ul nu a fost gasit!</p>
-        <div class="voucher">
-          <input type="text" name="voucher" maxlength="100" placeholder="Ai un voucher sau card cadou?">
-          <button type="submit">
-            Aplica
-          </button>
-        </div>
+@if ($message)
+							<p class="voucher__error" style="color: black !important">{{ $message }}</p>
+						@endif        
+		@if ($cart->voucher_id == null)
+							<div class="voucher">
+								<input type="text" wire:model="voucher" maxlength="100" name="voucher" placeholder="Ai un voucher sau card cadou?">
+								<button type="submit" wire:click="checkvoucher">
+									Aplica
+								</button>
+							</div>
+						@endif
 
         @if ($isdisabled)
           <a class="leftbar__button leftbar__button--long item__button--disabled">Finalizare Comandă</a>

@@ -131,6 +131,8 @@ class Paymentstable extends Component
         $item = Payment::find($id);
         $this->isactive = [
             $index . '.active' => $item->active == 1 ? true : false,
+            $index . '.description' => $item->description
+
         ];
     }
     public function cancel()
@@ -142,9 +144,16 @@ class Paymentstable extends Component
     {
         $new = $this->isactive[$index] ?? NULL;
 
-        if (!is_null($new) && array_key_exists('active', $new)) {
+        if (!is_null($new)) {
             $item = Payment::find($id);
-            $item->active = $new['active'] ? 1 : 0; // Convert true to 1 and false to 0
+            if (array_key_exists('active', $new)) {
+
+                $item->active = $new['active'] ? 1 : 0; // Convert true to 1 and false to 0
+            }
+            if (array_key_exists('description', $new)) {
+
+                $item->description = $new['description'];
+            }
             $item->save();
 
             session()->flash('notification', [

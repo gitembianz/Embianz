@@ -156,6 +156,14 @@
           <input type="checkbox" class="table__edit" wire:model.defer="isactive.{{ $index }}.active">
          @endif
         </td>
+        @elseif($column === 'description')
+        <td data-title="{{ $column }}">
+         @if ($editeindex !== $index)
+          {{ $item->description }}
+         @else
+          <input type="text" class="table__edit" wire:model.defer="isactive.{{ $index }}.description">
+         @endif
+        </td>
        @else
         <td data-title="{{ $column }}">{{ $item->$column }}</td>
        @endif
