@@ -35,13 +35,21 @@
 							@endif
 
               <div class="leftbar__link--text">
-                <h4 class="leftbar__link--title">{{ $item->product->name }}</h4>
-                <span class="leftbar__link--price">
-                  120 test
-                </span>
-            </div>
+								<h4 class="leftbar__link--title">{{ $item->product->name }}</h4>
+								<span class="leftbar__link--price">
+									@php
+									$currency = $item->product->product_prices->first()->pricelist->currency->name;
+										$price = number_format($item->product->product_prices->first()->value, 2, ",", ".");
+									@endphp
+									@if ($price)
+										{{ $price }} {{ $currency }}
+									@else
+										indisponibil
+									@endif
+								</span>
+							</div>
 						</a>
-            <button class="leftbar__delete" aria-label="add to cart">
+            <button class="leftbar__delete" wire:click="addToCart({{ $item->product->id }}, {{ $index }})" aria-label="add to cart">
               <svg>
                 <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
                 <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -66,7 +74,9 @@
 						</div>
 						@endif
 					</li>
-
+@if ($message === $index)
+	<p>productl a fost adaugat in cos!</p>
+@endif
 				@endforeach
 			</ul>
 		@endif
