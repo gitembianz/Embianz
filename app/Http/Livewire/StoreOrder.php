@@ -688,6 +688,7 @@ class StoreOrder extends Component
             'voucher_value' => 0,
             'updated_at' => now(),
           ]);
+          dd('aici');
           return;
         }
       }
