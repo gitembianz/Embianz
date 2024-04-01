@@ -20,7 +20,7 @@
 		<!----------------------- Checkout --------------------->
 
 		<!------------------------------------------------------>
-		<section id="gohere">
+		<section>
 			<div class="checkout container">
 				<!------------------------------------------------------>
 				<!-------------------- Step Numbers -------------------->
@@ -1902,10 +1902,11 @@
 						}
 					});
 					window.addEventListener('goup', event => {
-						var element = document.getElementById('gohere');
-						if (element) {
-							element.scrollIntoView();
-						}
+						window.scroll({
+  top: 0,
+  left: 0,
+  behavior: 'smooth'
+});
 					});
 				</script>
 				{{-- end script for terms error --}}
