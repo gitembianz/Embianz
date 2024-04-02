@@ -60,7 +60,7 @@
       <!--  ----------------------------------------------------------------------  -->
       <!--  NOTE: These fields are optional debugging elements. Please uncomment    -->
       <!--  these lines if you wish to test in debug mode.                          -->
-        {{-- <input type="hidden" name="debug" value=1> --}}
+        <input type="hidden" name="debug" value=1>
         <input type="hidden" name="debugEmail" value="mihail.tanase@eztemcorp.com">
       <!--  ----------------------------------------------------------------------  -->
 
@@ -119,7 +119,7 @@
 
       <div style="grid-column: 1/3" class="checkout__item checkout__item--required" id="message">
         {{-- <input type="text" maxlength="100" id="00N9N000000QGVj" maxlength="255" name="00N9N000000QGVj" placeholder="Numarul Comenzii" autocomplete="nr_order" > --}}
-        <textarea style="height: auto; padding: 10px 20px;" name="description" rows="30" required placeholder="Spune-ne mai multe. Incepe sa scrii aici..."></textarea>
+        <textarea style="height: auto; padding: 10px 20px;" name="description" rows="30" maxlength="5000" required placeholder="Spune-ne mai multe. Incepe sa scrii aici..."></textarea>
         <label for="00N9N000000QGVj">Mesaj</label>
         <span></span>
       </div>
