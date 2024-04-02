@@ -88,7 +88,7 @@
       </div>
 
       <div style="grid-column: 1/3" class="checkout__item checkout__item--required" id="message">
-        <textarea style="height: auto; padding: 10px 20px;" name="description" rows="30" maxlength="5000" required placeholder="Spune-ne mai multe. Incepe sa scrii aici..."></textarea>
+        <textarea style="height: auto; padding: 10px 20px;" name="description" rows="15" maxlength="5000" required placeholder="Spune-ne mai multe. Incepe sa scrii aici..."></textarea>
         <label for="00N9N000000QGVj">Mesaj</label>
         <span></span>
       </div>

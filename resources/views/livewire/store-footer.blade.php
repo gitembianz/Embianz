@@ -140,8 +140,7 @@
 			<!--------------------------------------------------------->
 			<!------------------------Copyright------------------------>
 			<span class="footer__copyright">
-				Embianz©. All rights reserved. This material may not be reproduced, displayed,
-				modified, or distributed without the express written permission of Eztem-Corp.
+        Copyright ©️ 2024 <a href="{{ url("/") }}">NOREN</a>   |   Powered by <a href="https://eztemcorp.com">Eztem Corp</a>
 			</span>
 			<!----------------------END-Copyright---------------------->
 			<!--------------------------------------------------------->

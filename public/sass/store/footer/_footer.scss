@@ -172,6 +172,14 @@
   color: $secondary;
   font-size: $textSize;
   text-align: center;
+
+  &>a{
+    font-weight: $lightWeight;
+    line-height: $lineHeight;
+    color: $secondary;
+    font-size: $textSize;
+    text-decoration: underline;
+  }
 }
 
 //<----------------------------- End Copyright -------------------------->
