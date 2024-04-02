@@ -20,7 +20,6 @@
 		<!----------------------- Checkout --------------------->
 
 		<!------------------------------------------------------>
-		<input id="step__container_bulins" type="hidden">
 		<section>
 			<div class="checkout container">
 				<!------------------------------------------------------>
@@ -1902,17 +1901,12 @@
 							element.scrollIntoView();
 						}
 					});
-					window.addEventListener('next_step', event => {
-						var element = document.getElementById('step__container_bulins');
-						if (element) {
-							element.scrollIntoView();
-						}
-					});
-					window.addEventListener('final_step', event => {
-						var element = document.getElementById('step__container_bulins');
-						if (element) {
-							element.scrollIntoView();
-						}
+					window.addEventListener('goup', event => {
+						window.scroll({
+  top: 0,
+  left: 0,
+  behavior: 'smooth'
+});
 					});
 				</script>
 				{{-- end script for terms error --}}

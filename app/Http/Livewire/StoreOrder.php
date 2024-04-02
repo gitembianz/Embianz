@@ -116,7 +116,7 @@ class StoreOrder extends Component
       ->where('session_id', $this->session_id)
       ->where('status_id', '!=', app('global_cart_closed'))
       ->with(['voucher' => function ($query) {
-        $query->select('code', 'id', 'percent', 'value');
+        $query->select('code', 'id', 'percent', 'single_use', 'value', 'start_date', 'end_date');
       }])
       ->latest()
       ->first() ?? null;
@@ -219,7 +219,7 @@ class StoreOrder extends Component
       $this->cart->update([
         'status_id' => app('global_cart_checkoutdetails')
       ]);
-      $this->dispatchBrowserEvent('next_step');
+      $this->dispatchBrowserEvent('goup');
     }
   }
 
@@ -680,7 +680,7 @@ class StoreOrder extends Component
 
     if ($this->cartitems && ($this->cart->status_id == app('global_cart_checkoutdetails'))) {
       if ($this->cart->voucher) {
-        if (($this->cart->voucher->first()->status_id == app('global_voucher_closed')) || ($this->cart->voucher->first()->start_date > now()->format('Y-m-d')) || ($this->cart->voucher->first()->end_date < now()->format('Y-m-d'))) {
+        if (($this->cart->voucher->status_id == app('global_voucher_closed')) || ($this->cart->voucher->start_date > now()->format('Y-m-d')) || ($this->cart->voucher->end_date < now()->format('Y-m-d'))) {
           $this->dispatchBrowserEvent('alert__modal');
           $this->cart->update([
             'final_amount' => ($this->cart->sum_amount + app('global_delivery_price')),
@@ -1082,6 +1082,7 @@ class StoreOrder extends Component
             CURLOPT_SSL_VERIFYPEER => false,
           ],
         ]);
+        $this->dispatchBrowserEvent('goup');
       } else {
         $this->cart->update([
           'order_id' => $order->id,
