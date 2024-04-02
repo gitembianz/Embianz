@@ -52,81 +52,49 @@
 	<section class="contact container">
 		<form class="checkout__form active" action="https://webto.salesforce.com/servlet/servlet.WebToCase?encoding=UTF-8&orgId=00D09000008XPQu" method="POST">
       <input type=hidden name="retURL" value="{{ URL("/redirect") }}">
-      <input type=hidden name='captcha_settings' value='{"keyname":"norenro","fallback":"true","orgId":"00D09000008XPQu","ts":""}'>
+      {{-- <input type=hidden name='captcha_settings' value='{"keyname":"norenro","fallback":"true","orgId":"00D09000008XPQu","ts":""}'> --}}
       <input type=hidden name="orgid" value="00D09000008XPQu">
       <input  id="00N9N000000QGVe" value="www.noren.ro" name="00N9N000000QGVe" type="hidden" />
       <input  id="type" type="hidden" name="type" value="Store Case" />
-
+      <input type="hidden" name="subject" id="subject" value="subject">
       <!--  ----------------------------------------------------------------------  -->
       <!--  NOTE: These fields are optional debugging elements. Please uncomment    -->
       <!--  these lines if you wish to test in debug mode.                          -->
         {{-- <input type="hidden" name="debug" value=1> --}}
-        <input type="hidden" name="debugEmail" value="mihail.tanase@eztemcorp.com">
+        {{-- <input type="hidden" name="debugEmail" value="stanislav.cortac@eztemcorp.com"> --}}
       <!--  ----------------------------------------------------------------------  -->
-
-			{{-- <div class="contact__label">
-				<label for="name">
-					<span class="red__label">*</span> Nume
-				</label>
-				<input id="name" maxlength="80" name="name" type="text" placeholder="Nume" required>
-			</div> --}}
       <div class="checkout__item checkout__item--required" id="name">
         <input type="text" maxlength="100" name="name" placeholder="name" autocomplete="firstname" required>
-        <label for="name">Numele</label>
+        <label for="name">Nume</label>
         <span></span>
       </div>
-      <div class="checkout__item checkout__item--required" id="company">
-        <input type="text" maxlength="100" name="company" placeholder="company" autocomplete="company" required>
-        <label for="company">Companie</label>
+
+      <div class="checkout__item" id="company">
+        <input type="text" maxlength="100" name="company" placeholder="company" autocomplete="company">
+        <label for="company">Numele Companiei</label>
         <span></span>
       </div>
-			{{-- <div class="contact__label">
-				<label for="company">
-					Companie
-				</label>
-				<input id="company" maxlength="80" name="company" type="text" placeholder="Companie">
-			</div> --}}
+
       <div class="checkout__item checkout__item--required" id="email">
         <input type="text" maxlength="100" name="email" placeholder="email" autocomplete="email" required>
         <label for="email">Email</label>
         <span></span>
       </div>
-			{{-- <div class="contact__label">
-				<label for="email">
-					<span class="red__label">*</span> Email
-				</label>
-				<input type="email" id="email" name="email" autocomplete="email" required placeholder="E-mail" maxlength="80">
-			</div> --}}
+
       <div class="checkout__item">
         <input type="text" maxlength="100" id="00N9N000000QGVj" maxlength="255" name="00N9N000000QGVj" placeholder="Numarul Comenzii" autocomplete="nr_order" >
-        <label for="00N9N000000QGVj">Numarul Comenzii</label>
+        <label for="00N9N000000QGVj">Numărul Comenzii</label>
         <span></span>
       </div>
 
-			{{-- <div class="contact__label">
-				<label for="nr_order">
-					Numarul Comenzii
-				</label>
-				<input type="text"  id="00N9N000000QGVj" maxlength="255" name="00N9N000000QGVj" placeholder="Numarul Comenzii">
-			</div> --}}
-
-			{{-- <div class="contact__label">
-				<span for="description" id="description">
-					<span class="red__label">*</span> Mesaj
-				</span>
-				<textarea name="description" rows="30" required placeholder="Spune-ne mai multe. Incepe sa scrii aici..."></textarea>
-			</div> --}}
-
       <div style="grid-column: 1/3" class="checkout__item checkout__item--required" id="message">
-        {{-- <input type="text" maxlength="100" id="00N9N000000QGVj" maxlength="255" name="00N9N000000QGVj" placeholder="Numarul Comenzii" autocomplete="nr_order" > --}}
-        <textarea style="height: auto; padding: 10px 20px;" name="description" rows="30" required placeholder="Spune-ne mai multe. Incepe sa scrii aici..."></textarea>
+        <textarea style="height: auto; padding: 10px 20px;" name="description" rows="15" maxlength="5000" required placeholder="Spune-ne mai multe. Incepe sa scrii aici..."></textarea>
         <label for="00N9N000000QGVj">Mesaj</label>
         <span></span>
       </div>
 
       <div class="g-recaptcha" style="grid-column: 1/3" data-sitekey="6LfwYJkpAAAAAINvUbZhqEPmiXVLH7kWqXCDlY8k"></div>
 			<div id="html_element" style="grid-column: 1/3"></div>
-
 
 			<button style="grid-column: 1/3" class="contact__button g-recaptcha" disabled id="submit_button" type="submit" name="submit" aria-label="send message">
 				Trimite
@@ -141,7 +109,7 @@
   <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
   <script src="/script/store/contact.js"></script>
   <script>
-    applyValidations("name", nameValidation, true);
+    applyValidations("name", nameValidation, false);
     applyValidations("email", emailValidation, false);
     applyValidations("company", companyValidation, false);
     applyValidations("message", messageValidation, false);
