@@ -161,3 +161,12 @@ window.addEventListener("scroll", scrollEvent);
 window.addEventListener("resize", scrollEvent);
 //<---------------------- End Start Functions IOS ---------------------->
 //<--------------------------------------------------------------------->
+function deleteMessage() {
+  let wishList = document.querySelector(".leftbar__list");
+  let wishItem = wishList.querySelector(".leftbar__message");
+  console.log(wishList);
+  console.log(wishItem);
+  setTimeout(() => {
+    wishList.removeChild(wishItem);
+  }, 2500);
+}
