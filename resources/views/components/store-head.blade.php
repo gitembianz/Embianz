@@ -12,7 +12,7 @@
 
  {{-- DormiSoft Favicon --}}
  {{-- <link rel="icon" type="image/x-icon" href="/images/store/svg/dormisoft_favicon.svg"> --}}
- {{-- Noren Favicon --}}
+ {{-- noren Favicon --}}
  <link rel="icon" type="image/x-icon" href="/images/store/svg/noren_favicon.svg">
 
  <link rel="canonical" href="{{ url('/' . $canonical) }}">
