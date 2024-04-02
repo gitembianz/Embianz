@@ -69,8 +69,8 @@
         <span></span>
       </div>
 
-      <div class="checkout__item checkout__item--required" id="company">
-        <input type="text" maxlength="100" name="company" placeholder="company" autocomplete="company" required>
+      <div class="checkout__item" id="company">
+        <input type="text" maxlength="100" name="company" placeholder="company" autocomplete="company">
         <label for="company">Numele Companiei</label>
         <span></span>
       </div>
