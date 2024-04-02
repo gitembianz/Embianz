@@ -52,7 +52,7 @@
 	<section class="contact container">
 		<form class="checkout__form active" action="https://webto.salesforce.com/servlet/servlet.WebToCase?encoding=UTF-8&orgId=00D09000008XPQu" method="POST">
       <input type=hidden name="retURL" value="{{ URL("/redirect") }}">
-      <input type=hidden name='captcha_settings' value='{"keyname":"norenro","fallback":"true","orgId":"00D09000008XPQu","ts":""}'>
+      {{-- <input type=hidden name='captcha_settings' value='{"keyname":"norenro","fallback":"true","orgId":"00D09000008XPQu","ts":""}'> --}}
       <input type=hidden name="orgid" value="00D09000008XPQu">
       <input  id="00N9N000000QGVe" value="www.noren.ro" name="00N9N000000QGVe" type="hidden" />
       <input  id="type" type="hidden" name="type" value="Store Case" />
@@ -60,8 +60,8 @@
       <!--  ----------------------------------------------------------------------  -->
       <!--  NOTE: These fields are optional debugging elements. Please uncomment    -->
       <!--  these lines if you wish to test in debug mode.                          -->
-        <input type="hidden" name="debug" value=1>
-        <input type="hidden" name="debugEmail" value="mihail.tanase@eztemcorp.com">
+        {{-- <input type="hidden" name="debug" value=1> --}}
+        {{-- <input type="hidden" name="debugEmail" value="stanislav.cortac@eztemcorp.com"> --}}
       <!--  ----------------------------------------------------------------------  -->
       <div class="checkout__item checkout__item--required" id="name">
         <input type="text" maxlength="100" name="name" placeholder="name" autocomplete="firstname" required>
