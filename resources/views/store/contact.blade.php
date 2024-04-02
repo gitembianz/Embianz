@@ -1,7 +1,7 @@
 <x-store-head :canonical="'contact'" :title="' Contactează-ne | '" :description="'Contactează-ne'"/>
 <x-store-header />
 <main>
-  <script type="text/javascript">
+  {{-- <script type="text/javascript">
     var onloadCallback = function() {
       grecaptcha.render('html_element', {
         'sitekey': '6LchwKgpAAAAAML77tNGuCi7R5k5eQrqszG5DMZ4',
@@ -24,7 +24,7 @@
         alert("Vă rugăm să completați reCAPTCHA-ul.");
       }
     };
-  </script>
+  </script> --}}
 	<!---------------------------------------------------------->
 	<!------------------------Breadcrumbs----------------------->
 	<section>
@@ -93,8 +93,8 @@
         <span></span>
       </div>
 
-      <div class="g-recaptcha" style="grid-column: 1/3" data-sitekey="6LfwYJkpAAAAAINvUbZhqEPmiXVLH7kWqXCDlY8k"></div>
-			<div id="html_element" style="grid-column: 1/3"></div>
+      {{-- <div class="g-recaptcha" style="grid-column: 1/3" data-sitekey="6LfwYJkpAAAAAINvUbZhqEPmiXVLH7kWqXCDlY8k"></div> --}}
+			{{-- <div id="html_element" style="grid-column: 1/3"></div> --}}
 
 			<button style="grid-column: 1/3" class="contact__button g-recaptcha" disabled id="submit_button" type="submit" name="submit" aria-label="send message">
 				Trimite
@@ -106,7 +106,7 @@
 		</form>
 
 	</section>
-  <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
+  {{-- <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script> --}}
   <script src="/script/store/contact.js"></script>
   <script>
     applyValidations("name", nameValidation, false);
