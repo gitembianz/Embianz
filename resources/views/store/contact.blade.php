@@ -63,26 +63,26 @@
         {{-- <input type="hidden" name="debug" value=1> --}}
         {{-- <input type="hidden" name="debugEmail" value="stanislav.cortac@eztemcorp.com"> --}}
       <!--  ----------------------------------------------------------------------  -->
-      <div class="checkout__item checkout__item--required" id="name">
-        <input type="text" maxlength="100" name="name" placeholder="name" autocomplete="firstname" required>
+      <div class="checkout__item checkout__item--required" id="nameParent">
+        <input type="text" maxlength="100" name="name" placeholder="name"id="name" autocomplete="given-name" required>
         <label for="name">Nume</label>
         <span></span>
       </div>
 
-      <div class="checkout__item" id="company">
-        <input type="text" maxlength="100" name="company" placeholder="company" autocomplete="company">
+      <div class="checkout__item" id="companyParent">
+        <input type="text" maxlength="100" name="company" id="company" placeholder="company" autocomplete="company">
         <label for="company">Numele Companiei</label>
         <span></span>
       </div>
 
-      <div class="checkout__item checkout__item--required" id="email">
-        <input type="text" maxlength="100" name="email" placeholder="email" autocomplete="email" required>
+      <div class="checkout__item checkout__item--required" id="emailParent">
+        <input type="text" maxlength="100" name="email" id="email" placeholder="email" autocomplete="email" required>
         <label for="email">Email</label>
         <span></span>
       </div>
 
       <div class="checkout__item">
-        <input type="text" maxlength="100" id="00N9N000000QGVj" maxlength="255" name="00N9N000000QGVj" placeholder="Numarul Comenzii" autocomplete="nr_order" >
+        <input type="text" maxlength="100" id="00N9N000000QGVj" maxlength="255" name="00N9N000000QGVj" placeholder="Numarul Comenzii" autocomplete="off" >
         <label for="00N9N000000QGVj">Numărul Comenzii</label>
         <span></span>
       </div>
@@ -109,9 +109,9 @@
   <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
   <script src="/script/store/contact.js"></script>
   <script>
-    applyValidations("name", nameValidation, false);
-    applyValidations("email", emailValidation, false);
-    applyValidations("company", companyValidation, false);
+    applyValidations("nameParent", nameValidation, false);
+    applyValidations("emailParent", emailValidation, false);
+    applyValidations("companyParent", companyValidation, false);
     applyValidations("message", messageValidation, false);
   </script>
 	<!---------------------End Contact Form--------------------->
