@@ -38,8 +38,9 @@
       transform: translateX(0%);
     }
   }
+
   &.mod {
-    & > .leftbar__modal {
+    &>.leftbar__modal {
       transform: translateX(0%);
     }
   }
@@ -104,7 +105,7 @@
   transform: translateX(100%);
   transition: all 0.3s ease-in-out;
   padding: 15px;
-  // padding-right: 20px;
+  padding-right: 20px;
   background-color: rgba($color: $background, $alpha: .9);
   z-index: 1;
 
@@ -116,6 +117,7 @@
     width: 30%;
   }
 }
+
 .leftbar__modal--text {
   color: $lightBlack;
   font-size: $textSize;
@@ -124,6 +126,7 @@
   text-align: center;
   width: 100%;
 }
+
 .leftbar__modal--bundle {
   display: flex;
   align-items: center;
@@ -131,6 +134,7 @@
   width: 100%;
   gap: 15px;
 }
+
 .leftbar__modal--btn {
   width: 100%;
   height: 40px;
@@ -420,7 +424,7 @@
 
 .leftbar__total {
   width: 100%;
-  min-height: 190px;
+  min-height: 220px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -459,14 +463,17 @@
     transform: translateX(-100%);
     // height: auto;
   }
+
   15% {
     opacity: 1;
     transform: translateX(0%);
   }
+
   85% {
     opacity: 1;
     transform: translateX(0%);
   }
+
   100% {
     opacity: 0;
     transform: translateX(100%);
@@ -476,7 +483,7 @@
 
 // animation: delete 0.5s ease-in 2s forwards;
 
-.leftbar__message{
+.leftbar__message {
   font-size: $textSize;
   color: $lightBlack;
   font-weight: $lightWeight;

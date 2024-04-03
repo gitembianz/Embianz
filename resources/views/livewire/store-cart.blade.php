@@ -166,13 +166,17 @@
 								</button>
 							</div>
 						@endif
-            <div class="voucher__question">
-              <div class="voucher__question--text">Dorești să activezi voucher-ul "XYZ"?</div>
-              <div class="voucher__question--bundle">
-                <button class="voucher__question--btn">Da</button>
-                <button class="voucher__question--btn">Nu</button>
-              </div>
-            </div>
+						@if ($aplicabble_voucher)
+						<div class="voucher__question">
+						  <div class="voucher__question--text">Dorești să activezi voucher-ul "{{ $voucher }}"?</div>
+						  <div class="voucher__question--bundle">
+							<button class="voucher__question--btn" wire:click="confirm_aplicabble">Da</button>
+							<button class="voucher__question--btn" wire:click="cancel_aplicabble">Nu</button>
+						  </div>
+						</div>
+						@endif
+						@if (!$aplicabble_voucher)
+							
 						@if ($isdisabled)
 						<a class="leftbar__button leftbar__button--long item__button--disabled">Continua</a>
 
@@ -181,6 +185,7 @@
 						<button id="detailsContinue" class="details__button details__continue" wire:click="continue()" aria-label="Continue form">Continua</button>
 
 
+						@endif
 						@endif
 
 					</div>

@@ -17,6 +17,8 @@ class StoreCart extends Component
   public $voucher;
   public $message = null;
   public $session_id;
+  public $aplicabble_voucher = false;
+
 
   protected $listeners = [
     'cartUpdated' => 'mount',
@@ -163,13 +165,26 @@ class StoreCart extends Component
     }
   }
 
+  public function removevoucher()
+  {
+    $this->cart->update([
+      'final_amount' => ($this->cart->sum_amount + app('global_delivery_price')),
+      'voucher_id' => null,
+      'voucher_value' => 0,
+      'updated_at' => now(),
+      'status_id' => app('global_cart_new')
+    ]);
+    $this->message = null;
+    $this->voucher = "";
+    $this->emit('cartUpdated');
+  }
   public function checkvoucher()
   {
     if ($this->cart) {
       $voucher = Voucher::where('code', $this->voucher)
         ->where('status_id', app('global_voucher_active'))
-        ->where('start_date', '<',  now())
-        ->where('end_date', '>',  now())
+        ->where('start_date', '<=',  now()->format('Y-m-d'))
+        ->where('end_date', '>=',  now()->format('Y-m-d'))
         ->first();
       if ($voucher) {
         if ($voucher && $voucher->percent !== null) {
@@ -201,9 +216,13 @@ class StoreCart extends Component
           }
         }
       } else {
-        $this->message = "Voucher-ul nu a fost gasit!";
+        $this->message = "Voucher-ul '" . $this->voucher .  "' nu a fost gasit!";
         $this->voucher = "";
+        return false;
       }
+      $this->emit('cartUpdated');
+      $this->voucher = "";
+      return true;
     } else {
       $this->message = null;
       $this->emit('newcart');
@@ -211,22 +230,28 @@ class StoreCart extends Component
     }
   }
 
-  public function removevoucher()
+  public function cancel_aplicabble()
   {
-    $this->cart->update([
-      'final_amount' => ($this->cart->sum_amount + app('global_delivery_price')),
-      'voucher_id' => null,
-      'voucher_value' => 0,
-      'updated_at' => now(),
-      'status_id' => app('global_cart_new')
-    ]);
-    $this->message = null;
     $this->voucher = "";
+    $this->continue();
+  }
+  public function confirm_aplicabble()
+  {
+    if ($this->checkvoucher()) {
+      $this->continue();
+    } else {
+      $this->aplicabble_voucher = false;
+      return;
+    }
   }
 
   public function continue()
   {
 
+    if ($this->voucher != "") {
+      $this->aplicabble_voucher = true;
+      return;
+    }
     if ($this->cartItems->isNotEmpty()) {
       foreach ($this->cartItems as $item) {
         if (($item->product->active != true) || ($item->product->start_date > now()->format('Y-m-d')) || ($item->product->end_date < now()->format('Y-m-d'))) {
