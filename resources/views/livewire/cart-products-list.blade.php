@@ -116,7 +116,7 @@
           </span>
         </h5>
 @if ($message)
-							<p class="voucher__error" style="color: black !important">{{ $message }}</p>
+							<p class="voucher__error" >{{ $message }}</p>
 						@endif        
 		@if ($cart->voucher_id == null)
 							<div class="voucher">

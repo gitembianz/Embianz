@@ -51,15 +51,15 @@
         border-radius: 0;
       }
 
-      & > .details__content:first-child {
+      &>.details__content:first-child {
         display: none;
       }
 
-      & > .details__content > .voucher {
+      &>.details__content>.voucher {
         display: none;
       }
 
-      & > .voucher__error {
+      &>.voucher__error {
         display: none;
       }
     }
@@ -109,14 +109,14 @@
   padding-bottom: 10px;
   border-bottom: 1px solid $lightBlack;
 
-  & > h3 {
+  &>h3 {
     font-size: $textSize;
     font-weight: $lightWeight;
     color: $lightBlack;
     margin: 0;
   }
 
-  & > span {
+  &>span {
     font-size: $textSize;
     font-weight: $lightWeight;
     color: $lightBlack;
@@ -129,7 +129,7 @@
   height: 40px;
   position: relative;
 
-  & > input {
+  &>input {
     width: 100%;
     border-radius: 5px;
     height: 100%;
@@ -146,7 +146,7 @@
     }
   }
 
-  & > button {
+  &>button {
     position: absolute;
     top: 50%;
     right: 5px;
@@ -167,9 +167,10 @@
 }
 
 .voucher__error {
-  font-size: $lightBlack;
+  font-size: $textSize;
   line-height: $lineHeight;
-  color: $background;
+  font-weight: $lightWeight;
+  color: $darkRed;
   width: 100%;
   text-align: center;
 }
@@ -213,7 +214,7 @@
   background: $secondary;
   transition: all 0.3s ease-in-out;
 
-  & > svg {
+  &>svg {
     stroke: $lightBlack;
     transform: scale(0.7);
   }
@@ -222,7 +223,7 @@
     background: $lightBlack;
     border: 1px solid $secondary;
 
-    & > svg {
+    &>svg {
       stroke: $secondary;
     }
   }
