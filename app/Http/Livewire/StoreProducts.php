@@ -59,11 +59,11 @@ class StoreProducts extends Component
       $this->category = Category::select('id', 'name', 'long_description')->find($decodedCategory['id']);
     } else {
       if (app()->has('global_default_category')) {
-        $this->category = Category::select('id', 'name', 'long_description')->find(app('global_default_category'));
+        $this->category = Category::select('id', 'name', 'long_description')->find(app('global_default_category')) ?? null;
       }
     }
     $filteredValues = session()->get('filtered_values', []);
-    if (isset($filteredValues['category_id']) && $filteredValues['category_id'] == $this->category->id) {
+    if (isset($filteredValues['category_id']) && $this->category != null && $filteredValues['category_id'] == $this->category->id) {
       if (isset($filteredValues['selectedSpecValues'])) {
         $this->selectedSpecValues = $filteredValues['selectedSpecValues'];
         $this->applyFilter();
@@ -99,7 +99,7 @@ class StoreProducts extends Component
       }
     );
 
-    if ($this->category) {
+    if ($this->category != null) {
       $query->whereHas('product.product_categories', function ($query) {
         $query->where('category_id', $this->category->id);
       });
@@ -198,7 +198,7 @@ class StoreProducts extends Component
           $query->select('id', 'product_id')->where('session_id', $this->session_id);
         },
       ]);
-    if ($this->category) {
+    if ($this->category != null) {
       $query->whereHas('product_categories.category', function ($query) {
         $query->where('id', $this->category->id);
       });
@@ -256,9 +256,15 @@ class StoreProducts extends Component
   public function loadMore()
   {
     $this->loadAmount += app('global_limit_load');
-    session()->put('filtered_values', [
-      'category_id' => $this->category->id,
-      'loadAmount' =>  $this->loadAmount
-    ]);
+    if ($this->category != null) {
+      session()->put('filtered_values', [
+        'category_id' => $this->category->id,
+        'loadAmount' =>  $this->loadAmount
+      ]);
+    } else {
+      session()->put('filtered_values', [
+        'loadAmount' =>  $this->loadAmount
+      ]);
+    }
   }
 }
