@@ -16,7 +16,7 @@
 		</a>
 		@endif
 		<!-------------------If Category is appear------------------>
-		@if ($category && $category->id != app('global_default_category'))
+		@if ($category != null && $category->id != app('global_default_category'))
 			@foreach ($category->getCategoryBreadcrumbs() as $breadcrumb)
 				<a class="breadcrumbs__link" href="{{ route("products", ["categorySlug" => $breadcrumb["slug"]]) }}">
 					{{ $breadcrumb["name"] }}
@@ -194,31 +194,37 @@
 			let addToCartButton = card.querySelector('.card__button');
 			let addToWishButton = card.querySelector('.favorite__btn');
 
-			addToCartButton.addEventListener('click', function() {
-				let cardName = card.querySelector('.card-title').innerText.trim();
-				let cardPrice = card.querySelector('.card-price').innerText.trim();
+			if(!addToCartButton || !addToWishButton){
+				return;
+			} else {
 
-				if (typeof dataLayer !== 'undefined' && cardName && cardPrice) {
-					dataLayer.push({
-						'event': 'adaugareInCos',
-						'cardName': cardName,
-						'cardPrice': cardPrice
-					});
-				}
-			});
+				addToCartButton.addEventListener('click', function() {
+					let cardName = card.querySelector('.card-title').innerText.trim();
+					let cardPrice = card.querySelector('.card-price').innerText.trim();
+	
+					if (typeof dataLayer !== 'undefined' && cardName && cardPrice) {
+						dataLayer.push({
+							'event': 'adaugareInCos',
+							'cardName': cardName,
+							'cardPrice': cardPrice
+						});
+					}
+				});
+	
+				addToWishButton.addEventListener('click', function() {
+					let cardName = card.querySelector('.card-title').innerText.trim();
+					let cardPrice = card.querySelector('.card-price').innerText.trim();
+	
+					if (typeof dataLayer !== 'undefined' && cardName && cardPrice) {
+						dataLayer.push({
+							'event': 'adaugareInFavorite',
+							'cardName': cardName,
+							'cardPrice': cardPrice
+						});
+					}
+				});
+			}
 
-			addToWishButton.addEventListener('click', function() {
-				let cardName = card.querySelector('.card-title').innerText.trim();
-				let cardPrice = card.querySelector('.card-price').innerText.trim();
-
-				if (typeof dataLayer !== 'undefined' && cardName && cardPrice) {
-					dataLayer.push({
-						'event': 'adaugareInFavorite',
-						'cardName': cardName,
-						'cardPrice': cardPrice
-					});
-				}
-			});
 		});
 	</script>
 
