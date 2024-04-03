@@ -49,14 +49,16 @@
 								</span>
 							</div>
 						</a>
-            <button class="leftbar__delete" style="border: none" wire:click="addToCart({{ $item->product->id }}, {{ $index }})" aria-label="add to cart">
+						@if ($item->product->quantity > 0 && $item->product->product_prices->first() !== null)
+						<button class="leftbar__delete" style="border: none" wire:click="addToCart({{ $item->product->id }}, {{ $index }})" aria-label="add to cart">
+							<svg>
+							  <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+							  <line x1="3" y1="6" x2="21" y2="6"></line>
+							  <path d="M16 10a4 4 0 0 1-8 0"></path>
+							 </svg>
+									  </button>
+						@endif
 
-              <svg>
-                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-                <line x1="3" y1="6" x2="21" y2="6"></line>
-                <path d="M16 10a4 4 0 0 1-8 0"></path>
-               </svg>
-						</button>
 						<button class="leftbar__delete" wire:click="removeFromWishlist({{ $item->product->id }})" aria-label="delete from wishlist">
 							<svg>
 								<line x1="18" y1="6" x2="6" y2="18"></line>
@@ -76,7 +78,12 @@
 						@endif
 					</li>
             @if ($message === $index)
-              <p  class="leftbar__message">Produsul a fost adăugat în coș!</p>
+              <p class="leftbar__message">Produsul a fost adăugat în coș!</p>
+			  <script>
+  setTimeout(function() {
+    @this.removemessage();
+  }, 2500);
+</script>
             @endif
 				@endforeach
 

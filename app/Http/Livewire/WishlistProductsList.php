@@ -15,12 +15,18 @@ class WishlistProductsList extends Component
     public $message = null;
 
     protected $listeners = [
-        'showwis' => 'wishshow'
+        'showwis' => 'wishshow',
+        'remove_message' => 'removemessage'
     ];
 
     public function render()
     {
         return view('livewire.wishlist-products-list', ['items' => $this->items]);
+    }
+
+    public function removemessage()
+    {
+        $this->message = null;
     }
 
     private function getSessionId()
@@ -52,7 +58,7 @@ class WishlistProductsList extends Component
             ->where('session_id', $this->session_id)
             ->with([
                 'product' => function ($query) {
-                    $query->select('id', 'name', 'seo_id', 'active', 'start_date', 'end_date')->with([
+                    $query->select('id', 'name', 'seo_id', 'active', 'start_date', 'end_date', 'quantity')->with([
                         'media' => function ($query) {
                             $query->select('path', 'name')->where('type', 'min');
                         },
