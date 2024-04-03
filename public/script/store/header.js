@@ -69,6 +69,7 @@ function leftbar(idOpen, idClose, idList, idContent) {
   const list = document.getElementById(idList);
   const content = document.getElementById(idContent);
   const body = document.querySelector("body");
+  const contentModal = document.querySelector(".leftbar__modal");
 
   if (!buttonOpen || !buttonClose || !list || !content) {
     // console.log("leftbar error");
@@ -86,7 +87,8 @@ function leftbar(idOpen, idClose, idList, idContent) {
     list.addEventListener("click", (event) => {
       if (
         !content.contains(event.target) &&
-        !buttonOpen.contains(event.target)
+        !buttonOpen.contains(event.target) &&
+        !contentModal.contains(event.target)
       ) {
         list.classList.remove("active");
         body.style.overflow = "auto";
