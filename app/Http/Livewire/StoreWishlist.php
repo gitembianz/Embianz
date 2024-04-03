@@ -11,7 +11,7 @@ use App\Models\Cart_Item;
 
 class StoreWishlist extends Component
 {
-  protected $listeners = ['wishlistUpdated' => 'mount'];
+  protected $listeners = ['wishlistProductRemoved' => 'mount'];
   public $session_id;
 
 
