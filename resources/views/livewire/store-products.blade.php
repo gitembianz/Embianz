@@ -186,48 +186,6 @@
 		@endif
 	</section>
 
-	<script>
-		// Sending the special Event for Each card to GTM
-		let cards = document.querySelectorAll('.card');
-
-		cards.forEach(function(card) {
-			let addToCartButton = card.querySelector('.card__button');
-			let addToWishButton = card.querySelector('.favorite__btn');
-
-			if(!addToCartButton || !addToWishButton){
-				return;
-			} else {
-
-				addToCartButton.addEventListener('click', function() {
-					let cardName = card.querySelector('.card-title').innerText.trim();
-					let cardPrice = card.querySelector('.card-price').innerText.trim();
-	
-					if (typeof dataLayer !== 'undefined' && cardName && cardPrice) {
-						dataLayer.push({
-							'event': 'adaugareInCos',
-							'cardName': cardName,
-							'cardPrice': cardPrice
-						});
-					}
-				});
-	
-				addToWishButton.addEventListener('click', function() {
-					let cardName = card.querySelector('.card-title').innerText.trim();
-					let cardPrice = card.querySelector('.card-price').innerText.trim();
-	
-					if (typeof dataLayer !== 'undefined' && cardName && cardPrice) {
-						dataLayer.push({
-							'event': 'adaugareInFavorite',
-							'cardName': cardName,
-							'cardPrice': cardPrice
-						});
-					}
-				});
-			}
-
-		});
-	</script>
-
 	@if ($products->total() >= $loadAmount)
 		<section class="container">
 			<button class="filter__apply" wire:click="loadMore" wire:loading.remove>Vezi mai mult!</button>
