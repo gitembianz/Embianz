@@ -38,6 +38,11 @@
       transform: translateX(0%);
     }
   }
+  &.mod {
+    & > .leftbar__modal {
+      transform: translateX(0%);
+    }
+  }
 }
 
 .leftbar__hidden--close {
@@ -82,6 +87,78 @@
 
   @media (min-width: map-get($grid-breakpoints, xl)) {
     width: 30%;
+  }
+}
+
+.leftbar__modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  width: 50%;
+  height: 100%;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transform: translateX(100%);
+  transition: all 0.3s ease-in-out;
+  padding: 15px;
+  // padding-right: 20px;
+  background-color: rgba($color: $background, $alpha: .9);
+  z-index: 1;
+
+  @media (max-width: map-get($grid-breakpoints, sm)) {
+    width: 100%;
+  }
+
+  @media (min-width: map-get($grid-breakpoints, xl)) {
+    width: 30%;
+  }
+}
+.leftbar__modal--text {
+  color: $lightBlack;
+  font-size: $textSize;
+  font-weight: $lightWeight;
+  line-height: $lineHeight;
+  text-align: center;
+  width: 100%;
+}
+.leftbar__modal--bundle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 15px;
+}
+.leftbar__modal--btn {
+  width: 100%;
+  height: 40px;
+  border: 1px solid $lightBlack;
+  text-decoration: none;
+  text-transform: uppercase;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease-in-out;
+  font-weight: $lightWeight;
+  background-color: transparent;
+  color: $lightBlack;
+  flex: 1;
+  font-size: $textSize;
+
+  &:hover {
+    background: $lightBlack;
+    color: $background;
+
+    &>svg {
+      stroke: $background;
+    }
+  }
+
+  &>svg {
+    stroke: $lightBlack;
   }
 }
 

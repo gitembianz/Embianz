@@ -175,6 +175,62 @@
   text-align: center;
 }
 
+.voucher__question {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  width: 100%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.voucher__question--text {
+  color: $lightBlack;
+  font-size: $textSize;
+  font-weight: $lightWeight;
+  line-height: $lineHeight;
+  text-align: center;
+  width: 100%;
+}
+.voucher__question--bundle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 15px;
+}
+.voucher__question--btn {
+  width: 100%;
+  height: 40px;
+  border: 1.5px solid $lightBlack;
+  text-decoration: none;
+  text-transform: uppercase;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease-in-out;
+  font-weight: $lightWeight;
+  background-color: transparent;
+  color: $lightBlack;
+  flex: 1;
+  font-size: $textSize;
+
+  &:hover {
+    background: $lightBlack;
+    color: $background;
+
+    &>svg {
+      stroke: $background;
+    }
+  }
+
+  &>svg {
+    stroke: $lightBlack;
+  }
+}
+
 .details__button {
   width: 100%;
   border-radius: 5px;
@@ -184,7 +240,7 @@
   height: 40px;
   background: transparent;
   font-size: $textSize;
-  border: 2px solid $lightBlack;
+  border: 1.5px solid $lightBlack;
   transition: all 0.3s ease-in-out;
   text-transform: uppercase;
   color: $lightBlack;

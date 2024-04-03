@@ -115,9 +115,9 @@
 						{{ $currency }}
           </span>
         </h5>
-@if ($message)
+    @if ($message)
 							<p class="voucher__error" >{{ $message }}</p>
-						@endif        
+						@endif
 		@if ($cart->voucher_id == null)
 							<div class="voucher">
 								<input type="text" wire:model="voucher" maxlength="100" name="voucher" placeholder="Ai un voucher sau card cadou?">
@@ -161,4 +161,11 @@
 			</script>
 		@endif
 	</div>
+  <div class="leftbar__modal">
+    <div class="leftbar__modal--text">Dorești să activezi voucher-ul "XYZ"?</div>
+    <div class="leftbar__modal--bundle">
+      <button class="leftbar__modal--btn">Da</button>
+      <button class="leftbar__modal--btn">Nu</button>
+    </div>
+  </div>
 </div>
