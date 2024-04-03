@@ -63,25 +63,8 @@ function hiddenOnScroll() {
 }
 //<------------- End Hidden On Scroll(breadcrumb & Control) ------------>
 //<--------------------------------------------------------------------->
-//<------------------------- Add On WishList --------------------------->
-function addWishList(button) {
-  const wish = document.getElementById("wishlistCount");
-  wish.style.scale = 1.5;
-
-  setTimeout(() => {
-    wish.style.scale = 1;
-  }, 1500);
-}
-
-//<----------------------- End Add On WishList ------------------------->
-//<--------------------------------------------------------------------->
-
-
 //<------------------------- Start Functions PC ------------------------>
 window.addEventListener("scroll", hiddenOnScroll);
 window.addEventListener("resize", hiddenOnScroll);
 modal(".modal");
-
-// document.addEventListener("DOMContentLoaded", function () {
-// });
 //<----------------------- End Start Functions PC ---------------------->

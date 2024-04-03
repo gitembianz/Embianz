@@ -148,12 +148,26 @@ function applySort(selector) {
 //<------------------------ End Apply Asortiment ----------------------->
 //<--------------------------------------------------------------------->
 //<---------------------------- Add to Cart ---------------------------->
+// Sending the special Event for Each card to GTM
 
 
 function flyToCart(button) {
   const shopping_cart = document.getElementById("basketOpen");
   const numberCart = shopping_cart.querySelector(".header__count");
   const target_parent = button.closest(".product"); // Obținem cel mai apropiat părinte cu clasa "product"
+// GTM
+    const cardName = target_parent.querySelector(".card-title").innerText.trim(); // Obținem numele cardName
+    const cardPrice = target_parent.querySelector(".card-price").innerText.trim(); // Obținem pretul cardPrice
+
+    if (typeof dataLayer !== 'undefined') {
+      dataLayer.push({
+        'event': 'adaugareInCos',
+        'cardName': cardName,
+        'cardPrice': cardPrice
+      });
+    } else {
+      // console.log('dataLayer is not defined');
+    }
 
   if(!button.classList.contains('in')) {
       button.classList.add('in');
@@ -207,7 +221,32 @@ function flyToCart(button) {
       }, 1500);
   }
 }
+function addWishList(button) {
+  const wish = document.getElementById("wishlistCount");
 
+  const target_parent = button.closest(".card");
+  const cardName = target_parent.querySelector(".card-title").innerText.trim(); // Obținem numele cardName
+  const cardPrice = target_parent.querySelector(".card-price").innerText.trim(); // Obținem pretul cardPrice
+
+  if (typeof dataLayer !== 'undefined') {
+    dataLayer.push({
+      'event': 'adaugareInFavorite',
+      'cardName': cardName,
+      'cardPrice': cardPrice
+    });
+  } else {
+    // console.log('dataLayer is not defined');
+  }
+  if(!wish) {
+    return;
+  } else {
+    wish.style.scale = 1.5;
+
+    setTimeout(() => {
+      wish.style.scale = 1;
+    }, 1500);
+  }
+}
 
 //<-------------------------- End Add to Cart -------------------------->
 //<--------------------------------------------------------------------->
