@@ -19,7 +19,7 @@
 			Despre noi
 		</h1>
 		<p class="section__text">
-			Magazinul online "noren" se distinge prin angajamentul său de a oferi o gamă variată de produse de înaltă calitate. 
+			Fondat în 2024, magazinul online "noren" se distinge prin angajamentul său de a oferi o gamă variată de produse de înaltă calitate. 
 			Creat cu pasiune, este mai mult decât un magazin online, este o experiență captivantă pentru vizitatorii noștri. 
 			Fecare articol este selectat cu grijă pentru a asigura esența și autenticitatea brand-ului nostru. 
 		</p>
