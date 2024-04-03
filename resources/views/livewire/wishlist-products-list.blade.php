@@ -82,7 +82,7 @@
 			  <script>
   setTimeout(function() {
     @this.removemessage();
-  }, 2000); // 2000 milliseconds = 2 seconds
+  }, 2500);
 </script>
             @endif
 				@endforeach
