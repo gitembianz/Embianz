@@ -531,7 +531,9 @@ function flyToCart(button) {
   }
 
   const cardName = target_parent.querySelector(".product__title").innerText.trim(); // Obținem numele cardName
-  const cardPrice = target_parent.querySelector(".product__price--title").innerText.trim(); // Obținem pretul cardPrice
+  const cardPrice = target_parent.querySelector(".product__price").innerText.trim(); // Obținem pretul cardPrice
+  // console.log(cardName);
+  // console.log(cardPrice);
 
   if (typeof dataLayer !== 'undefined') {
     dataLayer.push({
@@ -540,7 +542,7 @@ function flyToCart(button) {
       'cardPrice': cardPrice
     });
   } else {
-    console.log('dataLayer is not defined');
+    // console.log('dataLayer is not defined');
   }
 
 
@@ -548,7 +550,7 @@ function flyToCart(button) {
   shopping_cart.classList.add("active");
   let img = target_parent.querySelector("img");
   let flying_img = img.cloneNode();
-  flying_img.classList.add("flying-img");
+  flying_img.classList.add("flying-img-product");
   target_parent.appendChild(flying_img);
 
   // Obținem poziția imaginii care va zbura
@@ -600,7 +602,7 @@ function addWishList(button) {
       'cardPrice': cardPrice
     });
   } else {
-    console.log('dataLayer is not defined');
+    // console.log('dataLayer is not defined');
   }
 
   if(!wish) {
