@@ -155,7 +155,7 @@
 			<p>Nu au fost găsite categorii</p>
 		@else
 			@foreach ($categories as $index => $category)
-				<div class="product">
+				<div @if ($loop->last) id="last_record" @endif class="product">
 					<a class="card card--category" role="listitem" href="{{ route("products", ["categorySlug" => $category->seo_id !== null && $category->seo_id !== "" ? $category->seo_id : $category->id]) }}">
 						<div>
 							@if ($category->media->first() != null)
