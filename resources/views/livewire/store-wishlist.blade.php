@@ -59,7 +59,7 @@
           </path>
           </svg>
         </button>
-          @if ($product->product_prices->first() !== null)
+          @if ($product->product_prices->first() !== null && $product->quantity > 1)
             <button class="basket__delete" wire:click="addToCart({{ $product->id }})" aria-label="add to cart">
               <svg>
                 <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
