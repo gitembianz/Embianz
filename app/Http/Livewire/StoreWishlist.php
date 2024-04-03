@@ -13,6 +13,8 @@ class StoreWishlist extends Component
 {
   protected $listeners = ['wishlistProductRemoved' => 'mount'];
   public $session_id;
+  public $message = null;
+
 
 
   public function render()
@@ -31,6 +33,10 @@ class StoreWishlist extends Component
       setcookie('sessionId', $sessionId, time() + 30 * 24 * 60 * 60, '/', null, false, true);
       return $sessionId;
     }
+  }
+  public function removemessage()
+  {
+    $this->message = null;
   }
   public function mount()
   {
@@ -60,7 +66,7 @@ class StoreWishlist extends Component
       ])->get();
   }
 
-  public function addToCart($productId)
+  public function addToCart($productId, $index)
   {
     $cart = Cart::where('session_id', $this->session_id)
       ->where('status_id', '!=', app('global_cart_closed'))
@@ -131,5 +137,6 @@ class StoreWishlist extends Component
     }
     $cart->save();
     $this->emit('cartUpdated');
+    $this->message = $index;
   }
 }
