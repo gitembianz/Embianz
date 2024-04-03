@@ -62,13 +62,19 @@ class StoreWishlist extends Component
 
   public function addToCart($productId)
   {
-    $cart = Cart::where('session_id', $this->session_id)->where('status_id', '!=', app('global_cart_closed'))->latest()->first();
+    $cart = Cart::where('session_id', $this->session_id)
+      ->where('status_id', '!=', app('global_cart_closed'))
+      ->with('voucher')
+      ->latest()
+      ->first();
+
     $product = Product::with(['product_prices' => function ($query) {
       $query->select('product_id', 'value', 'pricelist_id')
         ->with(['pricelist' => function ($query) {
           $query->select('id', 'currency_id')->with('currency:id,name');
         }]);
     }])->find($productId);
+
     if (!$cart) {
       $baseName = class_basename(Cart::class);
       $cartNumber = 1;
@@ -80,14 +86,17 @@ class StoreWishlist extends Component
       $cart = Cart::create([
         'session_id' => $this->session_id,
         'name' => $uniqueName,
-        'quantity_amount' => 0,
-        'sum_amount' => 0,
+        'delivery_price' => app('global_delivery_price'),
         'status_id' => app('global_cart_new'),
         'currency_id' => $product->product_prices->first()->pricelist->currency_id,
       ]);
       $this->emit('newcart');
     }
-    $cartItem = Cart_Item::where('cart_id', $cart->id)->where('product_id', $productId)->first();
+
+    $cartItem = Cart_Item::where('cart_id', $cart->id)
+      ->where('product_id', $productId)
+      ->first();
+
     if (!$cartItem) {
       $cartItem = Cart_Item::create([
         'cart_id' => $cart->id,
@@ -97,12 +106,27 @@ class StoreWishlist extends Component
       ]);
       $cart->increment('quantity_amount');
       $cart->sum_amount += $product->product_prices->first()->value;
+      if ($cart->voucher && $cart->voucher->percent !== null) {
+        $cart->voucher_value = ($cart->voucher->percent / 100) * $cart->sum_amount;
+      } elseif ($cart->voucher && $cart->voucher->value !== null) {
+        $cart->voucher_value = $cart->voucher->value;
+      }
+      $cart->final_amount = $cart->sum_amount + $cart->delivery_price;
+      $cart->final_amount -= $cart->voucher_value;
     } else {
       if ($cartItem->quantity < $product->quantity) {
-
         $cartItem->increment('quantity');
         $cart->increment('quantity_amount');
+        $cart->delivery_price = app('global_delivery_price');
         $cart->sum_amount += $product->product_prices->first()->value;
+        if ($cart->voucher && $cart->voucher->percent !== null) {
+          $cart->voucher_value = ($cart->voucher->percent / 100) * $cart->sum_amount;
+        } elseif ($cart->voucher && $cart->voucher->value !== null) {
+          $cart->voucher_value = $cart->voucher->value;
+        }
+        $cart->final_amount = $cart->sum_amount + app('global_delivery_price');
+        $cart->final_amount -= $cart->voucher_value;
+        $cart->status_id = app('global_cart_new');
       }
     }
     $cart->save();
