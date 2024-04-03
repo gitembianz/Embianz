@@ -530,12 +530,27 @@ function flyToCart(button) {
     return;
   }
 
+  const cardName = target_parent.querySelector(".product__title").innerText.trim(); // Obținem numele cardName
+  const cardPrice = target_parent.querySelector(".product__price").innerText.trim(); // Obținem pretul cardPrice
+  // console.log(cardName);
+  // console.log(cardPrice);
+
+  if (typeof dataLayer !== 'undefined') {
+    dataLayer.push({
+      'event': 'adaugareInCos',
+      'cardName': cardName,
+      'cardPrice': cardPrice
+    });
+  } else {
+    // console.log('dataLayer is not defined');
+  }
+
 
   // Creăm o imagine separată
   shopping_cart.classList.add("active");
   let img = target_parent.querySelector("img");
   let flying_img = img.cloneNode();
-  flying_img.classList.add("flying-img");
+  flying_img.classList.add("flying-img-product");
   target_parent.appendChild(flying_img);
 
   // Obținem poziția imaginii care va zbura
@@ -570,6 +585,34 @@ function flyToCart(button) {
       setTimeout(() => {
           numberCart.style.scale = 1;
       }, 1500);
+  }
+}
+
+function addWishList(button) {
+  const wish = document.getElementById("wishlistCount");
+
+  const target_parent = button.closest(".product");
+  const cardName = target_parent.querySelector(".product__title").innerText.trim(); // Obținem numele cardName
+  const cardPrice = target_parent.querySelector(".product__price--title").innerText.trim(); // Obținem pretul cardPrice
+
+  if (typeof dataLayer !== 'undefined') {
+    dataLayer.push({
+      'event': 'adaugareInFavorite',
+      'cardName': cardName,
+      'cardPrice': cardPrice
+    });
+  } else {
+    // console.log('dataLayer is not defined');
+  }
+
+  if(!wish) {
+    return;
+  } else {
+    wish.style.scale = 1.5;
+
+    setTimeout(() => {
+      wish.style.scale = 1;
+    }, 1500);
   }
 }
 //<-------------------------- Start Functions -------------------------->

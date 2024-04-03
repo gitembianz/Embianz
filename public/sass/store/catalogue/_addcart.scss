@@ -19,6 +19,21 @@
   mix-blend-mode: multiply;
 }
 
+.flying-img-product {
+  position: absolute;
+  animation: fly_to_cart-product 1.5s ease-in-out;
+  width: 150px;
+  height: 150px;
+  aspect-ratio: 1/1;
+  object-fit: contain;
+  border-radius: 50%;
+  user-select: none;
+  cursor: pointer;
+  background: none;
+  background-color: $background;
+  mix-blend-mode: multiply;
+}
+
 .card__button--link{
   background: transparent;
   border: none;
@@ -34,12 +49,25 @@
 @keyframes fly_to_cart {
   0% {
     left: 100px;
-    top: 230px;
+    top: 200px;
   }
 
   100% {
     left: calc(var(--left) + 100px + 30px);
-    top: calc(var(--top) + 230px + 30px);
+    top: calc(var(--top) + 200px + 30px);
+    transform: scale(0.2);
+  }
+}
+
+@keyframes fly_to_cart-product {
+  0% {
+    left: 100px;
+    top: 430px;
+  }
+
+  100% {
+    left: calc(var(--left) + 100px + 30px);
+    top: calc(var(--top) + 430px + 30px);
     transform: scale(0.2);
   }
 }

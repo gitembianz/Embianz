@@ -293,7 +293,7 @@
 		<x-support />
 		<!-------------------- End Support Center ------------------>
 		<!---------------------------------------------------------->
-		<script>
+		{{-- <script>
 			// Sending the special Event for Each card to GTM
 			let cards = document.querySelectorAll('.card');
 
@@ -327,7 +327,7 @@
 					}
 				});
 			});
-		</script>
+		</script> --}}
 
 		<!---------------------------------------------------------->
 		<!--------------------- support button --------------------->

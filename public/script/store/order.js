@@ -151,7 +151,7 @@ const registerNumber = [
   }
 ];
 
-function applyValidations(elementId, validations, autoValidate) {
+function applyValidations(elementIdParent, validations, autoValidate) {
   const element = document.getElementById(elementId);
   const input = element.querySelector("input");
   const span = element.querySelector("span");
@@ -187,65 +187,65 @@ function applyValidations(elementId, validations, autoValidate) {
 }
 
 function validateIndividual() {
-  applyValidations("individualShippingPostal", addressValidations, true);
-  applyValidations("individualShippingCity", addressValidations, true);
-  applyValidations("individualShippingCounty", addressValidations, true);
-  applyValidations("individualShippingAddress", addressValidations, true);
-  applyValidations("individualShippingPhone", phoneValidation, true);
-  applyValidations("individualShippingEmail", emailValidation, true);
-  applyValidations("individualShippingLastName", lastNameValidation, true);
-  applyValidations("individualShippingFirstName", firstNameValidation, true);
+  applyValidations("individualShippingPostalParent", addressValidations, true);
+  applyValidations("individualShippingCityParent", addressValidations, true);
+  applyValidations("individualShippingCountyParent", addressValidations, true);
+  applyValidations("individualShippingAddressParent", addressValidations, true);
+  applyValidations("individualShippingPhoneParent", phoneValidation, true);
+  applyValidations("individualShippingEmailParent", emailValidation, true);
+  applyValidations("individualShippingLastNameParent", lastNameValidation, true);
+  applyValidations("individualShippingFirstNameParent", firstNameValidation, true);
 }
 
 function validateIndividualIdentic() {
-  applyValidations("individualBillingPostal", addressValidations, true);
-  applyValidations("individualBillingCity", addressValidations, true);
-  applyValidations("individualBillingCounty", addressValidations, true);
-  applyValidations("individualBillingAddress", addressValidations, true);
-  applyValidations("individualBillingPhone", phoneValidation, true);
-  applyValidations("individualBillingEmail", emailValidation, true);
-  applyValidations("individualBillingLastName", lastNameValidation, true);
-  applyValidations("individualBillingFirstName", firstNameValidation, true);
-  applyValidations("individualShippingPostal", addressValidations, true);
-  applyValidations("individualShippingCity", addressValidations, true);
-  applyValidations("individualShippingCounty", addressValidations, true);
-  applyValidations("individualShippingAddress", addressValidations, true);
-  applyValidations("individualShippingPhone", phoneValidation, true);
-  applyValidations("individualShippingEmail", emailValidation, true);
-  applyValidations("individualShippingLastName", lastNameValidation, true);
-  applyValidations("individualShippingFirstName", firstNameValidation, true);
+  applyValidations("individualBillingPostalParent", addressValidations, true);
+  applyValidations("individualBillingCityParent", addressValidations, true);
+  applyValidations("individualBillingCountyParent", addressValidations, true);
+  applyValidations("individualBillingAddressParent", addressValidations, true);
+  applyValidations("individualBillingPhoneParent", phoneValidation, true);
+  applyValidations("individualBillingEmailParent", emailValidation, true);
+  applyValidations("individualBillingLastNameParent", lastNameValidation, true);
+  applyValidations("individualBillingFirstNameParent", firstNameValidation, true);
+  applyValidations("individualShippingPostalParent", addressValidations, true);
+  applyValidations("individualShippingCityParent", addressValidations, true);
+  applyValidations("individualShippingCountyParent", addressValidations, true);
+  applyValidations("individualShippingAddressParent", addressValidations, true);
+  applyValidations("individualShippingPhoneParent", phoneValidation, true);
+  applyValidations("individualShippingEmailParent", emailValidation, true);
+  applyValidations("individualShippingLastNameParent", lastNameValidation, true);
+  applyValidations("individualShippingFirstNameParent", firstNameValidation, true);
 }
 function validateJuridic() {
-  applyValidations("registerCode", registerCode, true);
-  applyValidations("registerNumber", registerNumber, true);
-  applyValidations("companyName", companyName, true);
-  applyValidations("juridicShippingPostal", addressValidations, true);
-  applyValidations("juridicShippingCity", addressValidations, true);
-  applyValidations("juridicShippingCounty", addressValidations, true);
-  applyValidations("juridicShippingAddress", addressValidations, true);
-  applyValidations("juridicShippingPhone", phoneValidation, true);
-  applyValidations("juridicShippingEmail", emailValidation, true);
-  applyValidations("juridicShippingLastName", lastNameValidation, true);
-  applyValidations("juridicShippingFirstName", firstNameValidation, true);
+  applyValidations("registerCodeParent", registerCode, true);
+  applyValidations("registerNumberParent", registerNumber, true);
+  applyValidations("companyNameParent", companyName, true);
+  applyValidations("juridicShippingPostalParent", addressValidations, true);
+  applyValidations("juridicShippingCityParent", addressValidations, true);
+  applyValidations("juridicShippingCountyParent", addressValidations, true);
+  applyValidations("juridicShippingAddressParent", addressValidations, true);
+  applyValidations("juridicShippingPhoneParent", phoneValidation, true);
+  applyValidations("juridicShippingEmailParent", emailValidation, true);
+  applyValidations("juridicShippingLastNameParent", lastNameValidation, true);
+  applyValidations("juridicShippingFirstNameParent", firstNameValidation, true);
 }
 function validateJuridicIdentic() {
-  applyValidations("juridicBillingPostal", addressValidations, true);
-  applyValidations("juridicBillingCity", addressValidations, true);
-  applyValidations("juridicBillingCounty", addressValidations, true);
-  applyValidations("juridicBillingAddress", addressValidations, true);
-  applyValidations("juridicBillingPhone", phoneValidation, true);
-  applyValidations("juridicBillingEmail", emailValidation, true);
-  applyValidations("juridicBillingLastName", lastNameValidation, true);
-  applyValidations("juridicBillingFirstName", firstNameValidation, true);
-  applyValidations("registerCode", registerCode, true);
-  applyValidations("registerNumber", registerNumber, true);
-  applyValidations("companyName", companyName, true);
-  applyValidations("juridicShippingPostal", addressValidations, true);
-  applyValidations("juridicShippingCity", addressValidations, true);
-  applyValidations("juridicShippingCounty", addressValidations, true);
-  applyValidations("juridicShippingAddress", addressValidations, true);
-  applyValidations("juridicShippingPhone", phoneValidation, true);
-  applyValidations("juridicShippingEmail", emailValidation, true);
-  applyValidations("juridicShippingLastName", lastNameValidation, true);
-  applyValidations("juridicShippingFirstName", firstNameValidation, true);
+  applyValidations("juridicBillingPostalParent", addressValidations, true);
+  applyValidations("juridicBillingCityParent", addressValidations, true);
+  applyValidations("juridicBillingCountyParent", addressValidations, true);
+  applyValidations("juridicBillingAddressParent", addressValidations, true);
+  applyValidations("juridicBillingPhoneParent", phoneValidation, true);
+  applyValidations("juridicBillingEmailParent", emailValidation, true);
+  applyValidations("juridicBillingLastNameParent", lastNameValidation, true);
+  applyValidations("juridicBillingFirstNameParent", firstNameValidation, true);
+  applyValidations("registerCodeParent", registerCode, true);
+  applyValidations("registerNumberParent", registerNumber, true);
+  applyValidations("companyNameParent", companyName, true);
+  applyValidations("juridicShippingPostalParent", addressValidations, true);
+  applyValidations("juridicShippingCityParent", addressValidations, true);
+  applyValidations("juridicShippingCountyParent", addressValidations, true);
+  applyValidations("juridicShippingAddressParent", addressValidations, true);
+  applyValidations("juridicShippingPhoneParent", phoneValidation, true);
+  applyValidations("juridicShippingEmailParent", emailValidation, true);
+  applyValidations("juridicShippingLastNameParent", lastNameValidation, true);
+  applyValidations("juridicShippingFirstNameParent", firstNameValidation, true);
 }

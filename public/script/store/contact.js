@@ -54,10 +54,6 @@ const companyValidation = [
     message: "Te rugăm completează numele companiei",
   },
   {
-    validation: (value) => /^[a-zA-Z0-9/., _'\-`]*$/.test(value),
-    message: "Numele companiei poate conține doar litere și cifre",
-  },
-  {
     validation: (value) => !/\s{3,}/.test(value),
     message: "Numele companiei nu poate conține spații consecutive.",
   },
@@ -68,10 +64,6 @@ const messageValidation = [
     validation: (value) => value.trim() !== "",
     message: "Te rugăm completează mesajul",
   },
-  // {
-  //   validation: (value) => /^[a-zA-Z0-9/., _'\-`]*$/.test(value),
-  //   message: "Numele companiei poate conține doar litere și cifre",
-  // },
   {
     validation: (value) => !/\s{3,}/.test(value),
     message: "Mesajul nu poate conține spații consecutive.",
@@ -116,8 +108,8 @@ function applyValidations(elementId, validations, autoValidate) {
 
 
 function validateIndividual() {
-  applyValidations("name", nameValidation, true);
-  applyValidations("email", emailValidation, true);
-  applyValidations("company", companyValidation, true);
+  applyValidations("nameParent", nameValidation, true);
+  applyValidations("emailParent", emailValidation, true);
+  applyValidations("companyParent", companyValidation, true);
   applyValidations("message", messageValidation, true);
 }

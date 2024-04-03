@@ -138,7 +138,7 @@
 	</div>
 	<!------------------ End Tab (Details) ----------------->
 	<!------------------------------------------------------>
-	<script>
+	{{-- <script>
 		let addToCartButton = document.querySelector('.card__button');
 		let addToWishButton = document.querySelector('.favorite__btn');
 		let cardName = document.querySelector('.product__title').innerText.trim();
@@ -163,5 +163,5 @@
 				});
 			}
 		});
-	</script>
+	</script> --}}
 </div>

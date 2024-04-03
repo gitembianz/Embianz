@@ -80,29 +80,29 @@
 							<!---------------------------------------------------->
 							<!------------- Checkout List of Items --------------->
 
-							<div class="checkout__item checkout__item--required" id="individualShippingFirstName">
-								<input type="text" wire:model="individual_billing_first" name="individualShippingFirstName" placeholder="Prenume" autocomplete="family-name" required>
+							<div class="checkout__item checkout__item--required" id="individualShippingFirstNameParent">
+								<input type="text" wire:model="individual_billing_first" name="individualShippingFirstName" placeholder="Prenume" autocomplete="family-name" required id="individualShippingFirstName">
 								<span>
 								</span>
 								<label for="individualShippingFirstName">Prenume</label>
 							</div>
 							<!---------------------------------------------------->
-							<div class="checkout__item checkout__item--required" id="individualShippingLastName">
-								<input type="text" wire:model="individual_billing_last" name="individualShippingLastName" placeholder="Nume" autocomplete="given-name" required>
+							<div class="checkout__item checkout__item--required" id="individualShippingLastNameParent">
+								<input type="text" wire:model="individual_billing_last" name="individualShippingLastName" placeholder="Nume" autocomplete="given-name" required id="individualShippingLastName">
 								<span>
 								</span>
 								<label for="individualShippingLastName">Nume</label>
 							</div>
 							<!---------------------------------------------------->
-							<div class="checkout__item checkout__item--required" id="individualShippingPhone">
-								<input type="tel" wire:model="individual_billing_phone" name="individualShippingPhone" placeholder="Telefon" autocomplete="tel" pattern="[0-9]*" inputmode="numeric" required>
+							<div class="checkout__item checkout__item--required" id="individualShippingPhoneParent">
+								<input type="tel" wire:model="individual_billing_phone" name="individualShippingPhone" placeholder="Telefon" autocomplete="tel" pattern="[0-9]*" inputmode="numeric" required id="individualShippingPhone">
 								<span>
 								</span>
 								<label for="individualShippingPhone">Telefon</label>
 							</div>
 							<!---------------------------------------------------->
-							<div class="checkout__item checkout__item--required" id="individualShippingEmail">
-								<input type="email" wire:model="individual_billing_email" name="individualShippingEmail" placeholder="Email" autocomplete="email" required>
+							<div class="checkout__item checkout__item--required" id="individualShippingEmailParent">
+								<input type="email" wire:model="individual_billing_email" name="individualShippingEmail" placeholder="Email" autocomplete="email" required id="individualShippingEmail">
 								<span>
 								</span>
 								<label for="individualShippingEmail">Email</label>
@@ -123,21 +123,21 @@
 							<!----------- End Checkout Header Name ------------->
 							<!---------------------------------------------------->
 							<!------------- Checkout List of Items --------------->
-							<div class="checkout__item checkout__item--required" id="individualShippingAddress">
-								<input type="text" wire:model="individual_billing_address1" name="individualShippingAddress" placeholder="Adresa 1" autocomplete="street-address" required>
+							<div class="checkout__item checkout__item--required" id="individualShippingAddressParent">
+								<input type="text" wire:model="individual_billing_address1" name="individualShippingAddress" placeholder="Adresa 1" autocomplete="street-address" required id="individualShippingAddress">
 								<span>
 								</span>
 								<label for="individualShippingAddress">Adresa 1</label>
 							</div>
 
-							<div class="checkout__item" id="individualShippingAddress2">
-								<input type="text" wire:model="individual_billing_address2" name="individualShippingAddress2" placeholder="Adresa 2 (opțional)" autocomplete="address-level2">
+							<div class="checkout__item" id="individualShippingAddress2Parent">
+								<input type="text" wire:model="individual_billing_address2" name="individualShippingAddress2" placeholder="Adresa 2 (opțional)" autocomplete="address-level2" id="individualShippingAddress2">
 								<span></span>
 								<label for="individualShippingAddress2">Adresa 2 (opțional)</label>
 							</div>
 							<!------------------------------------------------------------------->
 
-							<select wire:model="individual_billing_country" class="select" aria-label="select a country">
+							<select wire:model="individual_billing_country" class="select" id="individual_billing_country" aria-label="select a country">
 								<option value="Afghanistan">Afghanistan</option>
 								<option value="Åland Islands">Åland Islands</option>
 								<option value="Albania">Albania</option>
@@ -390,22 +390,22 @@
 							</select>
 							<!---------------------------------------------------->
 
-							<div class="checkout__item checkout__item--required" id="individualShippingCounty">
-								<input type="text" wire:model="individual_billing_county" name="individualShippingCounty" placeholder="Localitate (oraș, comună sau sat)" autocomplete="county" required>
+							<div class="checkout__item checkout__item--required" id="individualShippingCountyParent">
+								<input type="text" wire:model="individual_billing_county" name="individualShippingCounty" placeholder="Localitate (oraș, comună sau sat)" autocomplete="county" required id="individualShippingCounty">
 								<span></span>
 								<label for="individualShippingCounty">Județ</label>
 							</div>
 							<!---------------------------------------------------->
 
-							<div class="checkout__item checkout__item--required" id="individualShippingCity">
-								<input type="text" wire:model="individual_billing_city" name="individualShippingCity" placeholder="Județ" autocomplete="county" required>
+							<div class="checkout__item checkout__item--required" id="individualShippingCityParent">
+								<input type="text" wire:model="individual_billing_city" name="individualShippingCity" placeholder="Județ" autocomplete="county" required id="individualShippingCity">
 								<span>
 								</span>
 								<label for="individualShippingCity">Localitate (oraș, comună sau sat)</label>
 							</div>
 							<!---------------------------------------------------->
-							<div class="checkout__item checkout__item--required" id="individualShippingPostal">
-								<input type="text" wire:model="individual_billing_zipcode" name="individualShippingPostal" placeholder="Cod Poștal" autocomplete="postal-code" required>
+							<div class="checkout__item checkout__item--required" id="individualShippingPostalParent">
+								<input type="text" wire:model="individual_billing_zipcode" name="individualShippingPostal" placeholder="Cod Poștal" autocomplete="postal-code" required id="individualShippingPostal">
 								<span>
 								</span>
 								<label for="individualShippingPostal">Cod Poștal</label>
@@ -416,7 +416,7 @@
 						<!---------------------------------------------------->
 						<!---------------- Checkout Checkbox ----------------->
 						<label class="checkout__checkbox">
-							<input type="checkbox" wire:model="individual_identic">
+							<input type="checkbox" wire:model="individual_identic" id="individual_identic" name="individual_identic">
 							<span>Detaliile pentru facturare și livrare sunt identice</span>
 						</label>
 						<!-------------- End Checkout Checkbox --------------->
@@ -434,29 +434,29 @@
 							<!---------------------------------------------------->
 							<!------------- Checkout List of Items --------------->
 
-							<div wire:ignore class="checkout__item checkout__item--required" id="individualBillingFirstName">
-								<input type="text" wire:model="individual_shipping_first" name="individualBillingFirstName" placeholder="Nume" autocomplete="given-name" required>
+							<div wire:ignore class="checkout__item checkout__item--required" id="individualBillingFirstNameParent">
+								<input type="text" wire:model="individual_shipping_first" name="individualBillingFirstName" placeholder="Nume" autocomplete="given-name" required id="individualBillingFirstName">
 								<span>
 								</span>
 								<label for="individualBillingFirstName">Prenume</label>
 							</div>
 							<!---------------------------------------------------->
-							<div wire:ignore class="checkout__item checkout__item--required" id="individualBillingLastName">
-								<input type="text" wire:model="individual_shipping_last" name="individualBillingLastName" placeholder="Prenume" autocomplete="family-name" required>
+							<div wire:ignore class="checkout__item checkout__item--required" id="individualBillingLastNameParent">
+								<input type="text" wire:model="individual_shipping_last" name="individualBillingLastName" placeholder="Prenume" autocomplete="family-name" required id="individualBillingLastName">
 								<span>
 								</span>
 								<label for="individualBillingLastName">Nume</label>
 							</div>
 							<!---------------------------------------------------->
-							<div wire:ignore class="checkout__item checkout__item--required" id="individualBillingPhone">
-								<input type="tel" wire:model="individual_shipping_phone" name="individualBillingPhone" placeholder="Telefon" autocomplete="tel" pattern="[0-9]*" inputmode="numeric" required>
+							<div wire:ignore class="checkout__item checkout__item--required" id="individualBillingPhoneParent">
+								<input type="tel" wire:model="individual_shipping_phone" name="individualBillingPhone" placeholder="Telefon" autocomplete="tel" pattern="[0-9]*" inputmode="numeric" required id="individualBillingPhone">
 								<span>
 								</span>
 								<label for="individualBillingPhone">Telefon</label>
 							</div>
 							<!---------------------------------------------------->
-							<div wire:ignore class="checkout__item checkout__item--required" id="individualBillingEmail">
-								<input type="email" wire:model="individual_shipping_email" name="individualBillingEmail" placeholder="Email" autocomplete="email" required>
+							<div wire:ignore class="checkout__item checkout__item--required" id="individualBillingEmailParent">
+								<input type="email" wire:model="individual_shipping_email" name="individualBillingEmail" placeholder="Email" autocomplete="email" required id="individualBillingEmail">
 								<span>
 								</span>
 								<label for="individualBillingEmail">Email</label>
@@ -478,20 +478,20 @@
 							<!----------- End Checkout Header Name ------------->
 							<!---------------------------------------------------->
 							<!------------- Checkout List of Items --------------->
-							<div wire:ignore class="checkout__item checkout__item--required" id="individualBillingAddress">
-								<input type="text" wire:model="individual_shipping_address1" name="individualBillingAddress" placeholder="Adresa 1" autocomplete="street-address" required>
+							<div wire:ignore class="checkout__item checkout__item--required" id="individualBillingAddressParent">
+								<input type="text" wire:model="individual_shipping_address1" name="individualBillingAddress" placeholder="Adresa 1" autocomplete="street-address" required id="individualBillingAddress">
 								<span>
 								</span>
 								<label for="individualBillingAddress">Adresa 1</label>
 							</div>
 							<!---------------------------------------------------->
-							<div wire:ignore class="checkout__item" id="individualBillingAddress2">
-								<input type="text" wire:model="individual_shipping_address2" name="individualBillingAddress2" placeholder="Adresa 2 (optional)" autocomplete="address-level2">
+							<div wire:ignore class="checkout__item" id="individualBillingAddress2Parent">
+								<input type="text" wire:model="individual_shipping_address2" name="individualBillingAddress2" placeholder="Adresa 2 (optional)" autocomplete="address-level2" id="individualBillingAddress2">
 								<span></span>
 								<label for="individualBillingAddress2">Adresa 2 (opțional)</label>
 							</div>
 							<!---------------------------------------------------->
-							<select wire:ignore wire:model="individual_shipping_country" class="select" aria-label="select a country">
+							<select wire:ignore wire:model="individual_shipping_country" class="select" id="individual_shipping_country" aria-label="select a country">
 								<option value="Afghanistan">Afghanistan</option>
 								<option value="Åland Islands">Åland Islands</option>
 								<option value="Albania">Albania</option>
@@ -743,22 +743,22 @@
 								<option value="Zimbabwe">Zimbabwe</option>
 							</select>
 							<!---------------------------------------------------->
-							<div wire:ignore class="checkout__item checkout__item--required" id="individualBillingCounty">
-								<input type="text" wire:model="individual_shipping_county" name="individualBillingCounty" placeholder="Județ" autocomplete="county" required>
+							<div wire:ignore class="checkout__item checkout__item--required" id="individualBillingCountyParent">
+								<input type="text" wire:model="individual_shipping_county" name="individualBillingCounty" placeholder="Județ" autocomplete="county" required id="individualBillingCounty">
 								<span></span>
 								<label for="individualBillingCounty">Județ</label>
 							</div>
 							<!---------------------------------------------------->
 
-							<div wire:ignore class="checkout__item checkout__item--required" id="individualBillingCity">
-								<input type="text" wire:model="individual_shipping_city" name="individualBillingCity" placeholder="Localitate (oraș, comună sau sat)" autocomplete="city" required>
+							<div wire:ignore class="checkout__item checkout__item--required" id="individualBillingCityParent">
+								<input type="text" wire:model="individual_shipping_city" name="individualBillingCity" placeholder="Localitate (oraș, comună sau sat)" autocomplete="off" required id="individualBillingCity">
 								<span>
 								</span>
 								<label for="individualBillingCity">Localitate (oraș, comună sau sat)</label>
 							</div>
 							<!---------------------------------------------------->
-							<div wire:ignore class="checkout__item checkout__item--required" id="individualBillingPostal">
-								<input type="text" wire:model="individual_shipping_zipcode" name="individualBillingPostal" placeholder="Cod Poștal" autocomplete="postal-code" required>
+							<div wire:ignore class="checkout__item checkout__item--required" id="individualBillingPostalParent">
+								<input type="text" wire:model="individual_shipping_zipcode" name="individualBillingPostal" placeholder="Cod Poștal" autocomplete="postal-code" required id="individualBillingPostal">
 								<span>
 								</span>
 								<label for="individualBillingPostal">Cod Poștal</label>
@@ -784,64 +784,64 @@
 							<!----------- End Checkout Header Name ------------->
 							<!---------------------------------------------------->
 							<!------------- Checkout List of Items --------------->
-							<div class="checkout__item checkout__item--required" id="juridicShippingFirstName">
-								<input type="text" wire:model="juridic_billing_first" name="juridicShippingFirstName" placeholder="Prenume" autocomplete="given-name" required>
+							<div class="checkout__item checkout__item--required" id="juridicShippingFirstNameParent">
+								<input type="text" wire:model="juridic_billing_first" name="juridicShippingFirstName" placeholder="Prenume" autocomplete="given-name" required id="juridicShippingFirstName">
 								<span>
 								</span>
 								<label for="juridicShippingFirstName">Prenume</label>
 							</div>
 							<!---------------------------------------------------->
-							<div class="checkout__item checkout__item--required" id="juridicShippingLastName">
-								<input type="text" wire:model="juridic_billing_last" name="juridicShippingLastName" placeholder="Nume" autocomplete="family-name" required>
+							<div class="checkout__item checkout__item--required" id="juridicShippingLastNameParent">
+								<input type="text" wire:model="juridic_billing_last" name="juridicShippingLastName" placeholder="Nume" autocomplete="family-name" required id="juridicShippingLastName">
 								<span>
 								</span>
 								<label for="juridicShippingLastName">Nume</label>
 							</div>
 							<!---------------------------------------------------->
-							<div class="checkout__item checkout__item--required" id="juridicShippingPhone">
-								<input type="tel" wire:model="juridic_billing_phone" name="juridicShippingPhone" placeholder="Telefon" autocomplete="tel" pattern="[0-9]*" inputmode="numeric" required>
+							<div class="checkout__item checkout__item--required" id="juridicShippingPhoneParent">
+								<input type="tel" wire:model="juridic_billing_phone" name="juridicShippingPhone" placeholder="Telefon" autocomplete="tel" pattern="[0-9]*" inputmode="numeric" required id="juridicShippingPhone">
 								<span>
 								</span>
 								<label for="juridicShippingPhone">Telefon</label>
 							</div>
 							<!---------------------------------------------------->
-							<div class="checkout__item checkout__item--required" id="juridicShippingEmail">
-								<input type="email" wire:model="juridic_billing_email" name="juridicShippingEmail" placeholder="Email" autocomplete="email" required>
+							<div class="checkout__item checkout__item--required" id="juridicShippingEmailParent">
+								<input type="email" wire:model="juridic_billing_email" name="juridicShippingEmail" placeholder="Email" autocomplete="email" required id="juridicShippingEmail">
 								<span>
 								</span>
 								<label for="juridicShippingEmail">Email</label>
 							</div>
 							<!---------------------------------------------------->
-							<div class="checkout__item checkout__item--required" id="companyName">
-								<input type="text" wire:model="juridic_billing_company_name" name="companyName" placeholder="Numele Companiei" autocomplete="organization" required>
+							<div class="checkout__item checkout__item--required" id="companyNameParent">
+								<input type="text" wire:model="juridic_billing_company_name" name="companyName" placeholder="Numele Companiei" autocomplete="organization" required id="companyName">
 								<span>
 								</span>
 								<label for="companyName">Numele Companiei</label>
 							</div>
 							<!---------------------------------------------------->
-							<div class="checkout__item checkout__item--required" id="registerCode">
-								<input type="text" wire:model="juridic_billing_registration_code" name="registerCode" placeholder="Cod de înregistrare" autocomplete="organization-code" required>
+							<div class="checkout__item checkout__item--required" id="registerCodeParent">
+								<input type="text" wire:model="juridic_billing_registration_code" name="registerCode" placeholder="Cod de înregistrare" autocomplete="off" required id="registerCode">
 								<span>
 								</span>
 								<label for="registerCode">Cod de înregistrare</label>
 							</div>
 							<!---------------------------------------------------->
-							<div class="checkout__item checkout__item--required" id="registerNumber">
-								<input type="text" wire:model="juridic_billing_registration_number" name="registerNumber" placeholder="Număr de înregistrare" autocomplete="organization-number" required>
+							<div class="checkout__item checkout__item--required" id="registerNumberParent">
+								<input type="text" wire:model="juridic_billing_registration_number" name="registerNumber" placeholder="Număr de înregistrare" autocomplete="organization-number" required id="registerNumber">
 								<span>
 								</span>
 								<label for="registerNumber">Număr de înregistrare</label>
 							</div>
 							<!---------------------------------------------------->
-							<div class="checkout__item" id="bankName">
-								<input type="text" wire:model="juridic_billing_bank" name="bankName" placeholder="Numele Băncii" autocomplete="bank-name">
+							<div class="checkout__item" id="bankNameParent">
+								<input type="text" wire:model="juridic_billing_bank" name="bankName" placeholder="Numele Băncii" autocomplete="off" id="bankName">
 								<span>
 								</span>
 								<label for="bankName">Numele Băncii</label>
 							</div>
 							<!---------------------------------------------------->
-							<div class="checkout__item" id="IBAN">
-								<input type="text" wire:model="juridic_billing_account" name="IBAN" placeholder="IBAN" autocomplete="IBAN">
+							<div class="checkout__item" id="IBANParent">
+								<input type="text" wire:model="juridic_billing_account" name="IBAN" placeholder="IBAN" autocomplete="IBAN" id="IBAN">
 								<span>
 								</span>
 								<label for="IBAN">IBAN</label>
@@ -862,20 +862,20 @@
 							<!----------- End Checkout Header Name ------------->
 							<!---------------------------------------------------->
 							<!------------- Checkout List of Items --------------->
-							<div class="checkout__item checkout__item--required" id="juridicShippingAddress">
-								<input type="text" wire:model="juridic_billing_address1" name="juridicShippingAddress" placeholder="Adresa 1" autocomplete="street-address" required>
+							<div class="checkout__item checkout__item--required" id="juridicShippingAddressParent">
+								<input type="text" wire:model="juridic_billing_address1" name="juridicShippingAddress" placeholder="Adresa 1" autocomplete="street-address" required id="juridicShippingAddress">
 								<span>
 								</span>
 								<label for="juridicShippingAddress">Adresa 1</label>
 							</div>
 							<!---------------------------------------------------->
-							<div class="checkout__item" id="juridicShippingAddress2">
-								<input type="text" wire:model="juridic_billing_address2" name="juridicShippingAddress2" placeholder="Adresa 2 (optional)" autocomplete="address-level2">
+							<div class="checkout__item" id="juridicShippingAddress2Parent">
+								<input type="text" wire:model="juridic_billing_address2" name="juridicShippingAddress2" placeholder="Adresa 2 (optional)" autocomplete="address-level2" id="juridicShippingAddress2">
 								<span></span>
 								<label for="juridicShippingAddress2">Adresa 2 (optional)</label>
 							</div>
 							<!---------------------------------------------------->
-							<select wire:model="juridic_billing_country" class="select" aria-label="select a country">
+							<select wire:model="juridic_billing_country" class="select" id="juridic_billing_country" aria-label="select a country">
 								<option value="Afghanistan">Afghanistan</option>
 								<option value="Åland Islands">Åland Islands</option>
 								<option value="Albania">Albania</option>
@@ -1127,21 +1127,21 @@
 								<option value="Zimbabwe">Zimbabwe</option>
 							</select>
 							<!---------------------------------------------------->
-							<div class="checkout__item checkout__item--required" id="juridicShippingCounty">
-								<input type="text" wire:model="juridic_billing_county" name="juridicShippingCounty" placeholder="Județ" autocomplete="county" required>
+							<div class="checkout__item checkout__item--required" id="juridicShippingCountyParent">
+								<input type="text" wire:model="juridic_billing_county" name="juridicShippingCounty" placeholder="Județ" autocomplete="county" required id="juridicShippingCounty">
 								<span></span>
 								<label for="juridicShippingCounty">Județ</label>
 							</div>
 							<!---------------------------------------------------->
-							<div class="checkout__item checkout__item--required" id="juridicShippingCity">
-								<input type="text" wire:model="juridic_billing_city" name="juridicShippingCity" placeholder="Localitate (oraș, comună sau sat)" autocomplete="city" required>
+							<div class="checkout__item checkout__item--required" id="juridicShippingCityParent">
+								<input type="text" wire:model="juridic_billing_city" name="juridicShippingCity" placeholder="Localitate (oraș, comună sau sat)" autocomplete="off" required id="juridicShippingCity">
 								<span>
 								</span>
 								<label for="juridicShippingCity">Localitate (oraș, comună sau sat)</label>
 							</div>
 							<!---------------------------------------------------->
-							<div class="checkout__item checkout__item--required" id="juridicShippingPostal">
-								<input type="text" wire:model="juridic_billing_zipcode" name="juridicShippingPostal" placeholder="Cod Poștal" autocomplete="postal-code" required>
+							<div class="checkout__item checkout__item--required" id="juridicShippingPostalParent">
+								<input type="text" wire:model="juridic_billing_zipcode" name="juridicShippingPostal" placeholder="Cod Poștal" autocomplete="postal-code" required id="juridicShippingPostal">
 								<span>
 								</span>
 								<label for="juridicShippingPostal">Cod Poștal</label>
@@ -1152,7 +1152,7 @@
 						<!---------------------------------------------------->
 						<!---------------- Checkout Checkbox ----------------->
 						<label class="checkout__checkbox">
-							<input type="checkbox" wire:model="juridic_identic">
+							<input type="checkbox" wire:model="juridic_identic" id="juridic_identic" name="juridic_identic">
 							<span>Detaliile pentru facturare și livrare sunt identice</span>
 						</label>
 						<!-------------- End Checkout Checkbox --------------->
@@ -1169,29 +1169,29 @@
 							<!----------- End Checkout Header Name ------------->
 							<!---------------------------------------------------->
 							<!------------- Checkout List of Items --------------->
-							<div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingFirstName">
-								<input type="text" wire:model="juridic_shipping_first" name="juridicBillingFirstName" placeholder="Prenume" autocomplete="given-name" required>
+							<div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingFirstNameParent">
+								<input type="text" wire:model="juridic_shipping_first" name="juridicBillingFirstName" placeholder="Prenume" autocomplete="given-name" required id="juridicBillingFirstName">
 								<span>
 								</span>
 								<label for="juridicBillingFirstName">Prenume</label>
 							</div>
 							<!---------------------------------------------------->
-							<div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingLastName">
-								<input type="text" wire:model="juridic_shipping_last" name="juridicBillingLastName" placeholder="Nume" autocomplete="family-name" required>
+							<div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingLastNameParent">
+								<input type="text" wire:model="juridic_shipping_last" name="juridicBillingLastName" placeholder="Nume" autocomplete="family-name" required id="juridicBillingLastName">
 								<span>
 								</span>
 								<label for="juridicBillingLastName">Nume</label>
 							</div>
 							<!---------------------------------------------------->
-							<div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingPhone">
-								<input type="tel" wire:model="juridic_shipping_phone" name="juridicBillingPhone" placeholder="Telefon" autocomplete="tel" pattern="[0-9]*" inputmode="numeric" required>
+							<div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingPhoneParent">
+								<input type="tel" wire:model="juridic_shipping_phone" name="juridicBillingPhone" placeholder="Telefon" autocomplete="tel" pattern="[0-9]*" inputmode="numeric" required id="juridicBillingPhone">
 								<span>
 								</span>
 								<label for="juridicBillingPhone">Telefon</label>
 							</div>
 							<!---------------------------------------------------->
-							<div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingEmail">
-								<input type="email" wire:model="juridic_shipping_email" name="juridicBillingEmail" placeholder="Email" autocomplete="email" required>
+							<div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingEmailParent">
+								<input type="email" wire:model="juridic_shipping_email" name="juridicBillingEmail" placeholder="Email" autocomplete="email" required id="juridicBillingEmail">
 								<span>
 								</span>
 								<label for="juridicBillingEmail">Email</label>
@@ -1212,19 +1212,19 @@
 							<!----------- End Checkout Header Name ------------->
 							<!---------------------------------------------------->
 							<!------------- Checkout List of Items --------------->
-							<div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingAddress">
-								<input type="text" wire:model="juridic_shipping_address1" name="juridicBillingAddress" placeholder="Adresa 1" autocomplete="street-address" required>
+							<div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingAddressParent">
+								<input type="text" wire:model="juridic_shipping_address1" name="juridicBillingAddress" placeholder="Adresa 1" autocomplete="street-address" required id="juridicBillingAddress">
 								<span></span>
 								<label for="juridicBillingAddress">Adresa</label>
 							</div>
 							<!---------------------------------------------------->
-							<div wire:ignore class="checkout__item" id="juridicBillingAddress2">
-								<input type="text" wire:model="juridic_shipping_address2" name="juridicBillingAddress2" placeholder="Adresa 2 (Opțional)" autocomplete="address-level2">
+							<div wire:ignore class="checkout__item" id="juridicBillingAddress2Parent">
+								<input type="text" wire:model="juridic_shipping_address2" name="juridicBillingAddress2" placeholder="Adresa 2 (Opțional)" autocomplete="address-level2" id="juridicBillingAddress2">
 								<span></span>
 								<label for="juridicBillingAddress2">Adresa 2 (Opțional)</label>
 							</div>
 							<!---------------------------------------------------->
-							<select wire:model="juridic_shipping_country" class="select" aria-label="select a country">
+							<select wire:model="juridic_shipping_country" class="select" id="juridic_shipping_country" aria-label="select a country">
 								<option value="Afghanistan">Afghanistan</option>
 								<option value="Åland Islands">Åland Islands</option>
 								<option value="Albania">Albania</option>
@@ -1476,20 +1476,20 @@
 								<option value="Zimbabwe">Zimbabwe</option>
 							</select>
 							<!---------------------------------------------------->
-							<div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingCounty">
-								<input type="text" wire:model="juridic_shipping_county" name="juridicBillingCounty" placeholder="Județ" autocomplete="county" required>
+							<div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingCountyParent">
+								<input type="text" wire:model="juridic_shipping_county" name="juridicBillingCounty" placeholder="Județ" autocomplete="county" required id="juridicBillingCounty">
 								<span></span>
 								<label for="juridicBillingCounty">Județ</label>
 							</div>
 							<!---------------------------------------------------->
-							<div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingCity">
-								<input type="text" wire:model="juridic_shipping_city" name="juridicBillingCity" placeholder="Localitate (oraș, comună sau sat)" autocomplete="city" required>
+							<div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingCityParent">
+								<input type="text" wire:model="juridic_shipping_city" name="juridicBillingCity" placeholder="Localitate (oraș, comună sau sat)" autocomplete="off" required id="juridicBillingCity">
 								<span></span>
 								<label for="juridicBillingCity">Localitate (oraș, comună sau sat)</label>
 							</div>
 							<!---------------------------------------------------->
-							<div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingPostal">
-								<input type="text" wire:model="juridic_shipping_zipcode" name="juridicBillingPostal" placeholder="Cod Poștal" autocomplete="postal-code" required>
+							<div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingPostalParent">
+								<input type="text" wire:model="juridic_shipping_zipcode" name="juridicBillingPostal" placeholder="Cod Poștal" autocomplete="postal-code" required id="juridicBillingPostal">
 								<span></span>
 								<label for="juridicBillingPostal">Cod Poștal</label>
 							</div>
@@ -1544,42 +1544,42 @@
 					@endif
 					<script src="/script/store/order.js"></script>
 					<script>
-						applyValidations("individualShippingFirstName", firstNameValidation, false);
-						applyValidations("individualShippingLastName", lastNameValidation, false);
-						applyValidations("individualShippingEmail", emailValidation, false);
-						applyValidations("individualShippingPhone", phoneValidation, false);
-						applyValidations("individualShippingAddress", addressValidations, false);
-						applyValidations("individualShippingCounty", addressValidations, false);
-						applyValidations("individualShippingCity", addressValidations, false);
-						applyValidations("individualShippingPostal", addressValidations, false);
-						applyValidations("individualBillingFirstName", firstNameValidation, false);
-						applyValidations("individualBillingLastName", lastNameValidation, false);
-						applyValidations("individualBillingEmail", emailValidation, false);
-						applyValidations("individualBillingPhone", phoneValidation, false);
-						applyValidations("individualBillingAddress", addressValidations, false);
-						applyValidations("individualBillingCounty", addressValidations, false);
-						applyValidations("individualBillingCity", addressValidations, false);
-						applyValidations("individualBillingPostal", addressValidations, false);
+						applyValidations("individualShippingFirstNameParent", firstNameValidation, false);
+						applyValidations("individualShippingLastNameParent", lastNameValidation, false);
+						applyValidations("individualShippingEmailParent", emailValidation, false);
+						applyValidations("individualShippingPhoneParent", phoneValidation, false);
+						applyValidations("individualShippingAddressParent", addressValidations, false);
+						applyValidations("individualShippingCountyParent", addressValidations, false);
+						applyValidations("individualShippingCityParent", addressValidations, false);
+						applyValidations("individualShippingPostalParent", addressValidations, false);
+						applyValidations("individualBillingFirstNameParent", firstNameValidation, false);
+						applyValidations("individualBillingLastNameParent", lastNameValidation, false);
+						applyValidations("individualBillingEmailParent", emailValidation, false);
+						applyValidations("individualBillingPhoneParent", phoneValidation, false);
+						applyValidations("individualBillingAddressParent", addressValidations, false);
+						applyValidations("individualBillingCountyParent", addressValidations, false);
+						applyValidations("individualBillingCityParent", addressValidations, false);
+						applyValidations("individualBillingPostalParent", addressValidations, false);
 						// ----------------------------------------------------------------------------
-						applyValidations("juridicShippingFirstName", firstNameValidation, false);
-						applyValidations("juridicShippingLastName", lastNameValidation, false);
-						applyValidations("juridicShippingEmail", emailValidation, false);
-						applyValidations("juridicShippingPhone", phoneValidation, false);
-						applyValidations("juridicShippingAddress", addressValidations, false);
-						applyValidations("juridicShippingCounty", addressValidations, false);
-						applyValidations("juridicShippingCity", addressValidations, false);
-						applyValidations("juridicShippingPostal", addressValidations, false);
-						applyValidations("companyName", companyName, false);
-						applyValidations("registerNumber", registerNumber, false);
-						applyValidations("registerCode", registerCode, false);
-						applyValidations("juridicBillingFirstName", firstNameValidation, false);
-						applyValidations("juridicBillingLastName", lastNameValidation, false);
-						applyValidations("juridicBillingEmail", emailValidation, false);
-						applyValidations("juridicBillingPhone", phoneValidation, false);
-						applyValidations("juridicBillingAddress", addressValidations, false);
-						applyValidations("juridicBillingCounty", addressValidations, false);
-						applyValidations("juridicBillingCity", addressValidations, false);
-						applyValidations("juridicBillingPostal", addressValidations, false);
+						applyValidations("juridicShippingFirstNameParent", firstNameValidation, false);
+						applyValidations("juridicShippingLastNameParent", lastNameValidation, false);
+						applyValidations("juridicShippingEmailParent", emailValidation, false);
+						applyValidations("juridicShippingPhoneParent", phoneValidation, false);
+						applyValidations("juridicShippingAddressParent", addressValidations, false);
+						applyValidations("juridicShippingCountyParent", addressValidations, false);
+						applyValidations("juridicShippingCityParent", addressValidations, false);
+						applyValidations("juridicShippingPostalParent", addressValidations, false);
+						applyValidations("companyNameParent", companyName, false);
+						applyValidations("registerNumberParent", registerNumber, false);
+						applyValidations("registerCodeParent", registerCode, false);
+						applyValidations("juridicBillingFirstNameParent", firstNameValidation, false);
+						applyValidations("juridicBillingLastNameParent", lastNameValidation, false);
+						applyValidations("juridicBillingEmailParent", emailValidation, false);
+						applyValidations("juridicBillingPhoneParent", phoneValidation, false);
+						applyValidations("juridicBillingAddressParent", addressValidations, false);
+						applyValidations("juridicBillingCountyParent", addressValidations, false);
+						applyValidations("juridicBillingCityParent", addressValidations, false);
+						applyValidations("juridicBillingPostalParent", addressValidations, false);
 					</script>
 
 					<script>

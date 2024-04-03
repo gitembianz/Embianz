@@ -140,7 +140,7 @@
 			<!--------------------------------------------------------->
 			<!------------------------Copyright------------------------>
 			<span class="footer__copyright">
-        Copyright ©️ 2024 <a href="{{ url("/") }}">NOREN</a>   |   Powered by <a href="https://eztemcorp.com">Eztem Corp</a>
+        Copyright ©️ 2024 <a href="{{ url("/") }}">noren</a>   |   Powered by <a href="https://eztemcorp.com">Eztem Corp</a>
 			</span>
 			<!----------------------END-Copyright---------------------->
 			<!--------------------------------------------------------->

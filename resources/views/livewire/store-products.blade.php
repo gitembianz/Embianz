@@ -46,7 +46,7 @@
 				<polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
 			</svg>
 		</button>
-		<input class="controls__search" maxlength="100" type="text" wire:model="search" placeholder="Caută în listă...">
+		<input class="controls__search" maxlength="100" type="text" name="search" id="search" wire:model="search" autocomplete="off" placeholder="Caută în listă...">
 		<button class="controls__button" id="sortOpen" aria-label="Open sort button">
 			<svg>
 				<line x1="21" y1="10" x2="7" y2="10"></line>
@@ -185,48 +185,6 @@
 			<x-lazy />
 		@endif
 	</section>
-
-	<script>
-		// Sending the special Event for Each card to GTM
-		let cards = document.querySelectorAll('.card');
-
-		cards.forEach(function(card) {
-			let addToCartButton = card.querySelector('.card__button');
-			let addToWishButton = card.querySelector('.favorite__btn');
-
-			if(!addToCartButton || !addToWishButton){
-				return;
-			} else {
-
-				addToCartButton.addEventListener('click', function() {
-					let cardName = card.querySelector('.card-title').innerText.trim();
-					let cardPrice = card.querySelector('.card-price').innerText.trim();
-	
-					if (typeof dataLayer !== 'undefined' && cardName && cardPrice) {
-						dataLayer.push({
-							'event': 'adaugareInCos',
-							'cardName': cardName,
-							'cardPrice': cardPrice
-						});
-					}
-				});
-	
-				addToWishButton.addEventListener('click', function() {
-					let cardName = card.querySelector('.card-title').innerText.trim();
-					let cardPrice = card.querySelector('.card-price').innerText.trim();
-	
-					if (typeof dataLayer !== 'undefined' && cardName && cardPrice) {
-						dataLayer.push({
-							'event': 'adaugareInFavorite',
-							'cardName': cardName,
-							'cardPrice': cardPrice
-						});
-					}
-				});
-			}
-
-		});
-	</script>
 
 	@if ($products->total() >= $loadAmount)
 		<section class="container">

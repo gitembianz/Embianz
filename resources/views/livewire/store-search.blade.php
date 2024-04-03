@@ -18,12 +18,12 @@
 	</div>
 	<!---------------------------------------------------------->
   <section class="controls container controls--search">
-    <input class="controls__search" type="text" maxlength="100" wire:model="search" placeholder="Caută produse sau categorii...">
+    <input class="controls__search" type="text" maxlength="100" autocomplete="off" name="search" id="search" wire:model="search" placeholder="Caută produse sau categorii...">
     <h1 class="section__title">Rezultatele căutării:</h1>
     <div>
       <button class="tab__button tab__button--long @if ($showproducts) active @endif" wire:click="toggle('products')">
         Produse (@if ($products->isNotEmpty())
-			
+
 		{{ $products->total() }}
 		@else
 		0
@@ -31,7 +31,7 @@
       </button>
       <button class="tab__button tab__button--long @if ($showcategories) active @endif" wire:click="toggle('categories')">
         Categorii (@if ($categories->isNotEmpty())
-			
+
 		{{ $categories->total() }}
 		@else
 		0
