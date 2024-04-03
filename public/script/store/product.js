@@ -540,7 +540,7 @@ function flyToCart(button) {
       'cardPrice': cardPrice
     });
   } else {
-    // console.log('dataLayer is not defined');
+    console.log('dataLayer is not defined');
   }
 
 
@@ -600,7 +600,7 @@ function addWishList(button) {
       'cardPrice': cardPrice
     });
   } else {
-    // console.log('dataLayer is not defined');
+    console.log('dataLayer is not defined');
   }
 
   if(!wish) {
