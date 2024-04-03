@@ -52,7 +52,7 @@
         </a>
         {{-- ---------------------- --}}
            @if ($product->product_prices->first() !== null && $product->quantity > 1)
-            <button class="basket__delete" wire:click="addToCart({{ $product->id }})" aria-label="add to cart">
+            <button class="basket__delete" wire:click="addToCart({{ $product->id }}, {{ $index }})" aria-label="add to cart">
               <svg>
                 <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
               <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -82,6 +82,14 @@
           @endif
         {{-- ---------------------- --}}
       </div>
+      @if ($message === $index)
+              <p class="leftbar__message">Produsul a fost adăugat în coș!</p>
+			  <script>
+  setTimeout(function() {
+    @this.removemessage();
+  }, 2500);
+</script>
+            @endif
     @endforeach
    @endif
    <!----------------- End Basket Products ---------------->

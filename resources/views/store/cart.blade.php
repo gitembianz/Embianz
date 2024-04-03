@@ -1,4 +1,4 @@
-<x-store-head :canonical='"cart"' :title='"Cos de cumparaturi | "' :description="'Cos de cumparaturi'"/>
+<x-store-head :canonical='"cart"' :title='"Coș de cumpărături | "' :description="'Cos de cumparaturi'"/>
 <x-store-header />
 <main>
 	@livewire("store-cart")
