@@ -51,15 +51,7 @@
           </div>
         </a>
         {{-- ---------------------- --}}
-        <button class="basket__delete" wire:click="removeFromWishlist({{ $product->id }})"
-          aria-label="Remove from wishlist">
-          <svg>
-          <polyline points="3 6 5 6 21 6"></polyline>
-          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-          </path>
-          </svg>
-        </button>
-          @if ($product->product_prices->first() !== null && $product->quantity > 1)
+           @if ($product->product_prices->first() !== null && $product->quantity > 1)
             <button class="basket__delete" wire:click="addToCart({{ $product->id }})" aria-label="add to cart">
               <svg>
                 <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
@@ -68,6 +60,15 @@
               </svg>
             </button>
           @endif
+        <button class="basket__delete" wire:click="removeFromWishlist({{ $product->id }})"
+          aria-label="Remove from wishlist">
+          <svg>
+          <polyline points="3 6 5 6 21 6"></polyline>
+          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+          </path>
+          </svg>
+        </button>
+       
           @if ($disabled[$index])
             <div class="item__product--disabled">
               <span>Produs Indisponibil</span>
