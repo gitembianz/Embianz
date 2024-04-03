@@ -14,7 +14,8 @@ class CartProductsList extends Component
 {
     public $showcart = false;
     public $cartId;
-    public $voucher;
+    public $voucher = "";
+    public $aplicabble_voucher = false;
     public $message = null;
     protected $listeners = [
         'showcart' => 'cartshow',
@@ -82,8 +83,8 @@ class CartProductsList extends Component
         if ($this->cart) {
             $voucher = Voucher::where('code', $this->voucher)
                 ->where('status_id', app('global_voucher_active'))
-                ->where('start_date', '<',  now())
-                ->where('end_date', '>',  now())
+                ->where('start_date', '<=',  now()->format('Y-m-d'))
+                ->where('end_date', '>=',  now()->format('Y-m-d'))
                 ->first();
             if ($voucher) {
                 if ($voucher && $voucher->percent !== null) {
@@ -115,10 +116,13 @@ class CartProductsList extends Component
                     }
                 }
             } else {
-                $this->message = "Voucher-ul nu a fost gasit!";
+                $this->message = "Voucher-ul '" . $this->voucher .  "' nu a fost gasit!";
                 $this->voucher = "";
+                return false;
             }
             $this->emit('cartUpdated');
+            $this->voucher = "";
+            return true;
         } else {
             $this->message = null;
             $this->emit('newcart');
@@ -180,9 +184,28 @@ class CartProductsList extends Component
         }
     }
 
+    public function cancel_aplicabble()
+    {
+        $this->voucher = "";
+        $this->continue();
+    }
+    public function confirm_aplicabble()
+    {
+        if ($this->checkvoucher()) {
+            $this->continue();
+        } else {
+            $this->aplicabble_voucher = false;
+            return;
+        }
+    }
+
 
     public function continue()
     {
+        if ($this->voucher != "") {
+            $this->aplicabble_voucher = true;
+            return;
+        }
         if ($this->cartItems->isNotEmpty()) {
             foreach ($this->cartItems as $item) {
                 if (($item->product->active != true) || ($item->product->start_date > now()->format('Y-m-d')) || ($item->product->end_date < now()->format('Y-m-d'))) {

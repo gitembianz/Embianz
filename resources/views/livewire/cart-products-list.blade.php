@@ -1,4 +1,6 @@
-<div class="leftbar @if ($showcart) active @endif" id="basketList">
+<div class="leftbar @if ($showcart) active @if ($aplicabble_voucher)
+	mod
+@endif @endif" id="basketList">
 	<button class="leftbar__hidden--close" wire:click="$set('showcart', false)"></button>
 	<div class="leftbar__content" id="basketContent">
 		<div class="leftbar__top">
@@ -162,10 +164,10 @@
 		@endif
 	</div>
   <div class="leftbar__modal">
-    <div class="leftbar__modal--text">Dorești să activezi voucher-ul "XYZ"?</div>
+    <div class="leftbar__modal--text">Vrei să activezi voucher-ul "{{ $voucher }}"?</div>
     <div class="leftbar__modal--bundle">
-      <button class="leftbar__modal--btn">Da</button>
-      <button class="leftbar__modal--btn">Nu</button>
+      <button class="leftbar__modal--btn" wire:click="confirm_aplicabble">Da</button>
+      <button class="leftbar__modal--btn" wire:click="cancel_aplicabble">Nu</button>
     </div>
   </div>
 </div>
