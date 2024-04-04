@@ -19,17 +19,42 @@
 				<?php
 				$isdisabled = false;
 				$disables = [];
+				$nonquantity = [];
 				?>
 				@foreach ($cartItems as $index => $cartItem)
 					<?php
 					$disabled[$index] = false;
+				$nonquantity[$index] = false;
+
 					if ($cartItem->product->active != true || $cartItem->product->start_date > now()->format("Y-m-d") || $cartItem->product->end_date < now()->format("Y-m-d")) {
 					    $disabled[$index] = true;
+					    $isdisabled = true;
+					}
+					if ($cartItem->product->quantity < $cartItem->quantity) {
+					    $nonquantity[$index] = true;
 					    $isdisabled = true;
 					}
 					
 					?>
 					<li class="leftbar__item">
+						@if ($nonquantity[$index])
+						<div class="leftbar__link" href="{{ route("product", ["product" => $cartItem->product->seo_id !== null && $cartItem->product->seo_id !== "" ? $cartItem->product->seo_id : $cartItem->product->id]) }}">
+							<span class="leftbar__link--quantity">
+								{{ $cartItem->quantity }} x
+							</span>
+							@if ($cartItem->product->media->first())
+								<img class="cart__list--img" src="/{{ $cartItem->product->media->first()->path }}{{ $cartItem->product->media->first()->name }}" alt="{{ $cartItem->product->media->first()->name }}{{ $cartItem->product->name }}">
+							@else
+								<img class="cart__list--img" src="/images/store/default/default70.webp" alt="something wrong">
+							@endif
+							<div class="leftbar__link--text">
+								<h4 class="leftbar__link--title">{{ $cartItem->product->name }}</h4>
+								<span class="item__product--error">Stoc disponibil pentru acest produs: {{ $cartItem->product->quantity }}</span>
+								<a class="item__product--link" href="{{ url("/cart") }}">Modifică cantitatea</a>
+							</div>
+						</div>
+						@else
+
 						<a class="leftbar__link" href="{{ route("product", ["product" => $cartItem->product->seo_id !== null && $cartItem->product->seo_id !== "" ? $cartItem->product->seo_id : $cartItem->product->id]) }}">
 							<span class="leftbar__link--quantity">
 								{{ $cartItem->quantity }} x
@@ -53,21 +78,8 @@
 								</span>
 							</div>
 						</a>
-						{{-- <div class="leftbar__link" href="{{ route("product", ["product" => $cartItem->product->seo_id !== null && $cartItem->product->seo_id !== "" ? $cartItem->product->seo_id : $cartItem->product->id]) }}">
-							<span class="leftbar__link--quantity">
-								{{ $cartItem->quantity }} x
-							</span>
-							@if ($cartItem->product->media->first())
-								<img class="cart__list--img" src="/{{ $cartItem->product->media->first()->path }}{{ $cartItem->product->media->first()->name }}" alt="{{ $cartItem->product->media->first()->name }}{{ $cartItem->product->name }}">
-							@else
-								<img class="cart__list--img" src="/images/store/default/default70.webp" alt="something wrong">
-							@endif
-							<div class="leftbar__link--text">
-								<h4 class="leftbar__link--title">{{ $cartItem->product->name }}</h4>
-								<span class="item__product--error">Stoc disponibil pentru acest produs: 20</span>
-								<a class="item__product--link" href="#">Modifică cantitatea</a>
-							</div>
-						</div> --}}
+						@endif
+						
 						<button class="leftbar__delete" type="button" wire:click="removeFromCart({{ $cartItem->product->id }})">
 							<svg>
 								<polyline points="3 6 5 6 21 6"></polyline>
@@ -141,7 +153,7 @@
 
 				@if ($isdisabled)
 					<a class="leftbar__button leftbar__button--long item__button--disabled">Finalizare Comandă</a>
-					<span class="item__text--disabled" id="headerContinue">Ai cel puțin un produs indisponibil adaugat in coș!</span>
+					<span class="item__text--disabled" id="headerContinue">Cantitatea anumitor produse nu mai este disponibilă, sau ai cel puțin un produs indisponibil adaugat in coș!</span>
 				@else
 					<a class="leftbar__button leftbar__button--long" id="headerContinue" wire:click.prevent="continue">Finalizare Comandă</a>
 				@endif

@@ -26,7 +26,7 @@
   </svg>
   <div class="alertorder__text">
    <h3 class="alertorder__title">Ceva nu a mers bine!</h3>
-   <p class="alertorder__descr">Va rog sa revizuiti detaliile comenzii, deoarece cantitatea produselor nu mai este valabila, sau voucherul este expirat ori au aparut probleme la plata comenzii.</p>
+   <p class="alertorder__descr"></p>
   </div>
   <button class="alertorder__close">
    Inchide
@@ -37,6 +37,7 @@
    const alertorder = document.querySelector(".alertorder");
    const body = document.querySelector("body");
    const close = document.querySelector(".alertorder__close");
+   document.querySelector(".alertorder__descr").innerText = event.detail.message;
    alertorder.classList.remove("out");
    alertorder.classList.add("active");
    body.style.overflow = "hidden";

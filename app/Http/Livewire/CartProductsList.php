@@ -48,7 +48,7 @@ class CartProductsList extends Component
                 ->where('cart_id', $this->cartId)
                 ->with([
                     'product' => function ($query) {
-                        $query->select('id', 'name', 'seo_id', 'active', 'start_date', 'end_date')->with([
+                        $query->select('id', 'name', 'seo_id', 'active', 'start_date', 'end_date', 'quantity')->with([
                             'media' => function ($query) {
                                 $query->select('path', 'name')->where('type', 'min');
                             },
@@ -218,9 +218,14 @@ class CartProductsList extends Component
 
         if ($this->cartItems->isNotEmpty()) {
             foreach ($this->cartItems as $item) {
-                if ($item->quantity < $item->product->quantity) {
+                if ($item->quantity > $item->product->quantity) {
                     $validateQuantity = false;
-                    $this->dispatchBrowserEvent('alert__modal');
+                    if (app()->has('global_order_error_quantity')) {
+                        $message = app('global_order_error_quantity');
+                    } else {
+                        $message = "Vă rog verificați detaliile comenzii!";
+                    }
+                    $this->dispatchBrowserEvent('alert__modal', ['message' => $message]);
                     return;
                 }
             }

@@ -23,15 +23,23 @@
 				@if ($cartItems->isEmpty())
 					<span class="basket__empty">Coșul de cumpărături nu conține produse</span>
 				@else
-				<?php $disables =[]; $isdisabled = false; ?>
+				
+				<?php $disables =[]; $nonquantity = [];  $isdisabled = false; ?>
 					@foreach ($cartItems as $index => $cartItem)
 					<?php
 				$disabled[$index] = false;
+				$nonquantity[$index] = false;
+
 				if (($cartItem->product->active != true) || ($cartItem->product->start_date > now()->format('Y-m-d')) || ($cartItem->product->end_date < now()->format('Y-m-d'))){
 					$disabled[$index] = true;
 				$isdisabled = true;
 
 				}
+
+				if ($cartItem->product->quantity < $cartItem->quantity) {
+					    $nonquantity[$index] = true;
+					    $isdisabled = true;
+					}
 
 				?>
 						<div class="basket__split">
@@ -52,6 +60,10 @@
                         Preț indisponibil
                       @endif
                     </span>
+                @if ($nonquantity[$index])
+
+								<span class="item__product--error">Stoc disponibil pentru acest produs: {{ $cartItem->product->quantity }}</span>
+@endif
                   </div>
                   @livewire("product-wishlist-button", ["productId" => $cartItem->product->id, "class" => "basket__action", "is_in_wishlist" => $cartItem->product->wishlists->isNotEmpty()], key($cartItem->product->id))
                   <button class="basket__delete" aria-label="Remove from cart button" wire:click="removeFromCart({{ $cartItem->product->id }})">
@@ -76,7 +88,7 @@
                       <span class="quantity__input product__quantity">
                         {{ $cartItem->quantity }}
                       </span>
-                      <button class="quantity__arrow" aria-label="Increase quantity" wire:click="increment({{ $cartItem->id }})">
+                      <button class="quantity__arrow @if ($cartItem->quantity >= $cartItem->product->quantity) disabled @endif" aria-label="Increase quantity" wire:click="increment({{ $cartItem->id }})">
                         <svg>
                           <circle cx="12" cy="12" r="10"></circle>
                           <line x1="12" y1="8" x2="12" y2="16"></line>
@@ -180,7 +192,7 @@
 						@if ($isdisabled)
 						<a class="leftbar__button leftbar__button--long item__button--disabled">Continua</a>
 
-						<span class="item__text--disabled" id="detailsContinue">Ai cel puțin un produs indisponibil adaugat in coș!</span>
+						<span class="item__text--disabled" id="detailsContinue">Cantitatea anumitor produse nu mai este disponibilă, sau ai cel puțin un produs indisponibil adaugat in coș!</span>
 						@else
 						<button id="detailsContinue" class="details__button details__continue" wire:click="continue()" aria-label="Continue form">Continua</button>
 

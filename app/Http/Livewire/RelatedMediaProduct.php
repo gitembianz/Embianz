@@ -92,16 +92,16 @@ class RelatedMediaProduct extends Component
         $media_for_prod->sequence = $media_new['sequence'];
       }
       if (array_key_exists('name', $media_new)) {
-        $newName = $media_new['name'] . '.' . $media_for_prod->type;
+        $newName = $media_new['name'] . '.' . $media_for_prod->extension;
         $oldName = $media_for_prod->name;
         if ($newName !== $oldName) {
           $path = $media_for_prod->path;
           if (file_exists($path . $newName)) {
             $i = 1;
-            while (file_exists($path . $media_new['name'] . '(' . $i . ').' . $media_for_prod->type)) {
+            while (file_exists($path . $media_new['name'] . '(' . $i . ').' . $media_for_prod->extension)) {
               $i++;
             }
-            $newName = $media_new['name'] . '(' . $i . ').' . $media_for_prod->type;
+            $newName = $media_new['name'] . '(' . $i . ').' . $media_for_prod->extension;
           }
           $oldFilePath = $path . $oldName;
           $newFilePath = $path . $newName;

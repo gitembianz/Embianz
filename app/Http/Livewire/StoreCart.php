@@ -59,7 +59,7 @@ class StoreCart extends Component
         ->where('cart_id', $this->cart->id)
         ->with([
           'product' => function ($query) {
-            $query->select('id', 'name', 'seo_id', 'active', 'start_date', 'end_date')->with([
+            $query->select('id', 'name', 'seo_id', 'active', 'start_date', 'end_date', 'quantity')->with([
               'media' => function ($query) {
                 $query->select('path', 'name')->where('type', 'min');
               },
@@ -119,7 +119,7 @@ class StoreCart extends Component
   {
     if ($this->cart && $this->cartItems->isNotEmpty()) {
       $cartitem_to_increment = $this->cartItems->where('id', $id)->first();
-      if ($cartitem_to_increment->quantity < $cartitem_to_increment->product->first()->quantity) {
+      if ($cartitem_to_increment->quantity < $cartitem_to_increment->product->quantity) {
         $cartitem_to_increment->increment('quantity');
         $this->cart->increment('quantity_amount');
         $this->cart->delivery_price = app('global_delivery_price');
@@ -265,7 +265,7 @@ class StoreCart extends Component
 
     if ($this->cartItems->isNotEmpty()) {
       foreach ($this->cartItems as $item) {
-        if ($item->quantity < $item->product->quantity) {
+        if ($item->quantity > $item->product->quantity) {
           $validateQuantity = false;
           $this->dispatchBrowserEvent('alert__modal');
           return;
