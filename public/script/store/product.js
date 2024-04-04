@@ -316,6 +316,11 @@ function sliderProduct(sliderId, modalId) {
       if (touchStartX) {
         const swipeDistance = event.changedTouches[0].clientX - touchStartX;
 
+        // Verifică dacă utilizatorul face un gest de zoom
+        if (event.scale && event.scale !== 1) {
+          return; // Ignoră acțiunea dacă utilizatorul face zoom
+        }
+
         if (Math.abs(swipeDistance) > 10 && !isScrolling()) {
           isSwiping = true;
           event.preventDefault();
@@ -353,8 +358,6 @@ function sliderProduct(sliderId, modalId) {
       modalContent.appendChild(newImgElement);
 
       modalCount.textContent = `${currentIndex + 1} / ${slides.length}`;
-
-
 
     } else {
       console.error(
@@ -404,6 +407,11 @@ function sliderProduct(sliderId, modalId) {
   modalContent.addEventListener("touchmove", (event) => {
     if (touchStartX) {
       const swipeDistance = event.changedTouches[0].clientX - touchStartX;
+
+      // Verifică dacă utilizatorul face un gest de zoom
+      if (event.scale && event.scale !== 1) {
+        return; // Ignoră acțiunea dacă utilizatorul face zoom
+      }
 
       if (Math.abs(swipeDistance) > 50 && !isScrolling()) {
         event.preventDefault();
