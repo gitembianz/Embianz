@@ -123,7 +123,7 @@ class StoreController extends Controller
 
       $data = Product::where('seo_id', $product)->first();
     }
-    if (($data->active == false)) {
+    if (($data->active != true) || ($data->start_date > now()->format('Y-m-d')) || ($data->end_date < now()->format('Y-m-d'))) {
       return view('store.404');
     }
     return view('store.product', ['data' => $data]);
