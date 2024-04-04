@@ -138,9 +138,9 @@ class WishlistProductsList extends Component
                 }
                 $cart->final_amount = $cart->sum_amount + app('global_delivery_price');
                 $cart->final_amount -= $cart->voucher_value;
-                $cart->status_id = app('global_cart_new');
             }
         }
+        $cart->status_id = app('global_cart_new');
         $cart->save();
         $this->emit('cartUpdated');
         $this->message = $index;

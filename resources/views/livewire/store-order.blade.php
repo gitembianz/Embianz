@@ -1881,7 +1881,7 @@
 					@if ($payment_cancel)
 						<script>
 							window.addEventListener('DOMContentLoaded', function() {
-								Livewire.emit('alert__modal');
+								Livewire.emit('alert__modal', ['message' => 'A aparut o eroare la plata!']);
 							});
 						</script>
 					@endif
