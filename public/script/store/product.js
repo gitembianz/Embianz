@@ -21,6 +21,7 @@ function sliderProduct(sliderId, modalId) {
   let touchStartX = 0;
   let isDragging = false;
   let startX = 0;
+  let mouseStartX = 0;
 
   if (
     !slider ||
