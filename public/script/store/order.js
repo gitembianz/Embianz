@@ -151,7 +151,7 @@ const registerNumber = [
   }
 ];
 
-function applyValidations(elementIdParent, validations, autoValidate) {
+function applyValidations(elementId, validations, autoValidate) {
   const element = document.getElementById(elementId);
   const input = element.querySelector("input");
   const span = element.querySelector("span");
