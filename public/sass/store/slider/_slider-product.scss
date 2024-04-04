@@ -197,6 +197,10 @@
   background-color: $background;
   text-align: center;
   // border-radius: 7px;
+  touch-action: pan-x !important;
+  user-select: none;
+  -webkit-user-drag: none;
+  cursor: grab;
 
   & > img {
     width: 100%;
@@ -208,6 +212,7 @@
     user-select: none;
     -webkit-user-drag: none;
     cursor: grab;
+    touch-action: pan-x !important;
   }
 }
 
