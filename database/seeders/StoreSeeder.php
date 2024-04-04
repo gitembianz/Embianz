@@ -16,8 +16,8 @@ class StoreSeeder extends Seeder
 
         DB::table('store__settings')->insert([
             ['parameter' => 'delivery_price', 'value' => '20', 'description' => 'Delivery Price', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
-            ['parameter' => 'limit_category', 'value' => '5', 'description' => 'Limit Category', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
-            ['parameter' => 'site_name', 'value' => 'Noren', 'description' => 'Site Name', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'limit_category', 'value' => '6', 'description' => 'Limit Category', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'site_name', 'value' => 'noren.ro', 'description' => 'Site Name', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'default_country', 'value' => 'Romania', 'description' => 'Default shipping country', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'low_stock', 'value' => '10', 'description' => 'Low Stock for display tags on product', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'limit_load', 'value' => '16', 'description' => 'Limit Load products', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
@@ -27,27 +27,15 @@ class StoreSeeder extends Seeder
             ['parameter' => 'stripe_key', 'value' => 'sk_test_51Op9rnBQZaJ5Yyz4MobMR7Ckodq5SsmNtEb5c4ktwtA7pasOXxm7tbcWlPKv3oKeDspQfPeplyPY6qVRrJdxobTN00DP0ZWmNQ', 'description' => 'Stripe Payment key', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'auto_webp', 'value' => 'true', 'description' => 'Salvare automata a imaginilor in webp (valaore- true-false)', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'header_top_text', 'value' => '', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'order_default_text_confirmation', 'value' => 'Comanda a fost plasata cu succes!', 'description' => 'Default confrim text', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'default_category', 'value' => '1', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'show_on_breadcrumbs', 'value' => 'true', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
-            ['parameter' => 'show_on_header', 'value' => 'true', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'show_on_header', 'value' => 'false', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'order_error_quantity', 'value' => 'Stocul disponibil pentru unul sau mai multe produse a fost modificat!', 'description' => 'Mesaj eroare order product quantity', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'order_error_voucher', 'value' => 'Voucher-ul selectat nu mai este disponibil!', 'description' => 'Eroare la voucher', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'order_error_active', 'value' => 'Unul sau mai multe produse din coș nu mai este disponibil!', 'description' => 'order error la disponibilitate', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'order_error_cart', 'value' => 'Coșul de cumpărături a fost modificat!', 'description' => 'eroare cart', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'cash_limit', 'value' => '0', 'description' => 'Limita plata cash', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
-
-            ['parameter' => 'confirm_order_text', 'value' => 'Comanda a fost plasata cu succes!
-Îți mulțumim pentru plata efectuată!  Am primit-o și în prezent îți procesăm comanda. Echipa noastră lucrează cu dedicație pentru a pregăti produsul pentru livrare. 
-
-Odată ce comanda este în drum spre tine, îți vom trimite un e-mail de confirmare.
-
-Dacă ai întrebări sau ai nevoie de asistență, te rugăm să nu ezitezi să contactezi echipa noastră de suport pentru clienți. Suntem aici pentru a te ajuta și pentru a-ți asigura satisfacția. 
-
-Sperăm că achiziția ta îți va aduce fericire. Îți mulțumim că ai ales produsele noastre și așteptăm cu nerăbdare să te mai servim în viitor. 
-Cu cele mai bune urări!', 'description' => 'Default confrim text', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
-
-
-
         ]);
     }
 }
