@@ -83,8 +83,8 @@ class StoreOrder extends Component
   public $juridic_shipping_city;
   public $juridic_shipping_zipcode;
 
-  public $rtc = true;
-  public $crd = false;
+  public $rtc = false;
+  public $crd = true;
   public $invoice = false;
   public $validatequantity = true;
   public $payment;
@@ -640,7 +640,7 @@ class StoreOrder extends Component
     $this->cash = app('global_cash');
     $this->card = app('global_card_stripe');
     $this->ordin = app('global_ordin');
-    $this->payment = $this->cash;
+    $this->payment = $this->card;
 
     if ($this->step == 2) {
       $this->cart->update([

@@ -381,7 +381,7 @@
 								<option value="Venezuela">Venezuela</option>
 								<option value="Vietnam">Vietnam</option>
 								<option value="Virgin Islands, British">Virgin Islands, British</option>
-								<option value="Virgin Islands, U.S"">Virgin Islands, U.S"</option>
+								<option value="Virgin Islands, U.S">Virgin Islands, U.S"</option>
 								<option value="Wallis and Futuna">Wallis and Futuna</option>
 								<option value="Western Sahara">Western Sahara</option>
 								<option value="Yemen">Yemen</option>
@@ -735,7 +735,7 @@
 								<option value="Venezuela">Venezuela</option>
 								<option value="Vietnam">Vietnam</option>
 								<option value="Virgin Islands, British">Virgin Islands, British</option>
-								<option value="Virgin Islands, U.S"">Virgin Islands, U.S"</option>
+								<option value="Virgin Islands, U.S">Virgin Islands, U.S"</option>
 								<option value="Wallis and Futuna">Wallis and Futuna</option>
 								<option value="Western Sahara">Western Sahara</option>
 								<option value="Yemen">Yemen</option>
@@ -1119,7 +1119,7 @@
 								<option value="Venezuela">Venezuela</option>
 								<option value="Vietnam">Vietnam</option>
 								<option value="Virgin Islands, British">Virgin Islands, British</option>
-								<option value="Virgin Islands, U.S"">Virgin Islands, U.S"</option>
+								<option value="Virgin Islands, U.S">Virgin Islands, U.S"</option>
 								<option value="Wallis and Futuna">Wallis and Futuna</option>
 								<option value="Western Sahara">Western Sahara</option>
 								<option value="Yemen">Yemen</option>
@@ -1200,7 +1200,7 @@
 							<!---------------------------------------------------->
 						</div>
 						<!---------------------------------------------------->
-						<div class="checkout__form @if (!$juridic_identic && $juridic) active @endif"">
+						<div class="checkout__form @if (!$juridic_identic && $juridic) active @endif">
 							<!---------------------------------------------------->
 							<!------------- Checkout Header Name --------------->
 							<div class="checkout__top">
@@ -1468,7 +1468,7 @@
 								<option value="Venezuela">Venezuela</option>
 								<option value="Vietnam">Vietnam</option>
 								<option value="Virgin Islands, British">Virgin Islands, British</option>
-								<option value="Virgin Islands, U.S"">Virgin Islands, U.S"</option>
+								<option value="Virgin Islands, U.S">Virgin Islands, U.S"</option>
 								<option value="Wallis and Futuna">Wallis and Futuna</option>
 								<option value="Western Sahara">Western Sahara</option>
 								<option value="Yemen">Yemen</option>
@@ -1502,18 +1502,6 @@
 					<div class="section__header">
 						<h2 class="section__title">Metoda de plată</h2>
 					</div>
-					@if ($cash["active"] != 0)
-						<div class="payment">
-							<label class="payment__wrapper" for="rtc" wire:click="togglepayment('rtc')">
-								<input class="payment__checkbox" type="checkbox" wire:model.defer="rtc" id="rtc">
-								<span>{{ $cash["description"] }}</span>
-							</label>
-							<div class="payment__text @if ($rtc) active @endif">
-								<h3>Vei plăti când comanda va fi livrată.</h3>
-								<span>Limita maxima este de 1000 RON</span>
-							</div>
-						</div>
-					@endif
 					@if ($card["active"] != 0)
 						<div class="payment">
 							<label class="payment__wrapper" for="crd" wire:click="togglepayment('crd')">
@@ -1525,6 +1513,21 @@
 							</div>
 						</div>
 					@endif
+					@if ($cash["active"] != 0)
+						<div class="payment">
+							<label class="payment__wrapper" for="rtc" wire:click="togglepayment('rtc')">
+								<input class="payment__checkbox" type="checkbox" wire:model.defer="rtc" id="rtc">
+								<span>{{ $cash["description"] }}</span>
+							</label>
+							<div class="payment__text @if ($rtc) active @endif">
+								<h3>Vei plăti când comanda va fi livrată.</h3>
+								@if (app()->has('global_cash_limit') && app('global_cash_limit') != 0)
+								<span>Limita maxima este de {{ app('global_cash_limit') }} RON</span>
+								@endif
+							</div>
+						</div>
+					@endif
+					
 					@if ($ordin["active"] != 0)
 						@if ($juridic)
 							<div class="payment">
