@@ -223,7 +223,7 @@
 	</section>
 	{{-- Garanție și retur --}}
 	<section class="container faq__container">
-		<h2 class="section__title">Garanție și retur</h2>
+		<h2 class="section__title">Garanție și Retur</h2>
 		<div class="faq__accordions">
 			<div class="accordion">
 				<button class="accordion-button">
