@@ -1795,14 +1795,19 @@
 						<!---------------------------------------------------->
 						<div class="total__info">
 							@if (!$cartItems->isEmpty())
-
 								@foreach ($cartItems as $index => $cartItem)
 								<?php
 								$disabled[$index] = false;
+								$nonquantity[$index] = false;
 								if (($cartItem->product->active != true) || ($cartItem->product->start_date > now()->format('Y-m-d')) || ($cartItem->product->end_date < now()->format('Y-m-d'))){
 									$disabled[$index] = true;
  									$this->emit('isdisabled');
 								}
+								if ($cartItem->product->quantity < $cartItem->quantity) {
+					    $nonquantity[$index] = true;
+					     									$this->emit('isdisabled');
+
+					}
 								?>
 									<div class="total__product">
 										<span class="total__quantity">
@@ -1813,19 +1818,30 @@
 										@else
 											<img class="cart__list--img" src="/images/store/default/default70.webp" alt="something wrong">
 										@endif
-										<a href="{{ route("product", ["product" => $cartItem->product->seo_id !== null && $cartItem->product->seo_id !== "" ? $cartItem->product->seo_id : $cartItem->product->id]) }}" target="_blank" class="total__name">{{ $cartItem->product->name }}</a>
-										<span class="total__price">
+								@if ($nonquantity[$index])
 
-											{{-- {{ $cartItem->product->price }} --}}
-											<?php $currency = $cartItem->product->product_prices->first()->pricelist->currency->name; ?>
-											{{ number_format($cartItem->quantity * $cartItem->price, 2, ",", ".") }}
-											{{ $currency }}
-										</span>
-						@if ($disabled[$index])
-						<div class="item__product--disabled">
-						  <span>Produs Indisponibil</span>
-						</div>
-						@endif
+								<div class="leftbar__link--text">
+									<a href="{{ route("product", ["product" => $cartItem->product->seo_id !== null && $cartItem->product->seo_id !== "" ? $cartItem->product->seo_id : $cartItem->product->id]) }}" target="_blank" class="total__name">{{ $cartItem->product->name }}
+									</a>
+								<span class="item__product--error">Stoc disponibil pentru acest produs: {{ $cartItem->product->quantity }}</span>
+						
+						<a class="item__product--link" href="{{ url("/cart") }}">Modifică cantitatea</a>
+								</div>
+								@else
+<a href="{{ route("product", ["product" => $cartItem->product->seo_id !== null && $cartItem->product->seo_id !== "" ? $cartItem->product->seo_id : $cartItem->product->id]) }}" target="_blank" class="total__name">{{ $cartItem->product->name }}
+									</a>
+								<span class="total__price">
+									<?php $currency = $cartItem->product->product_prices->first()->pricelist->currency->name; ?>
+									{{ number_format($cartItem->quantity * $cartItem->price, 2, ",", ".") }}
+									{{ $currency }}
+								</span>
+								@endif
+
+								@if ($disabled[$index])
+								<div class="item__product--disabled">
+						 		 <span>Produs Indisponibil</span>
+								</div>
+								@endif
 									</div>
 								@endforeach
 
@@ -1863,7 +1879,7 @@
 								</div>
 								@if ($modification)
 
-								<span class="item__text--disabled">Ai cel puțin un produs indisponibil adaugat in coș!</span>
+								<span class="item__text--disabled">Cantitatea anumitor produse nu mai este disponibilă, sau ai cel puțin un produs indisponibil adaugat in coș!</span>
 								@endif
 
 							@endif

@@ -10,3 +10,4 @@ public/.DS_Store
 bootstrap
 vendor
 .env
+.htpasswd
