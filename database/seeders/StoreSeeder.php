@@ -34,6 +34,7 @@ class StoreSeeder extends Seeder
             ['parameter' => 'order_error_voucher', 'value' => 'Voucher-ul selectat nu mai este disponibil!', 'description' => 'Eroare la voucher', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'order_error_active', 'value' => 'Unul sau mai multe produse din coș nu mai este disponibil!', 'description' => 'order error la disponibilitate', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'order_error_cart', 'value' => 'Coșul de cumpărături a fost modificat!', 'description' => 'eroare cart', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'cash_limit', 'value' => '0', 'description' => 'Limita plata cash', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
 
             ['parameter' => 'confirm_order_text', 'value' => 'Comanda a fost plasata cu succes!
 Îți mulțumim pentru plata efectuată!  Am primit-o și în prezent îți procesăm comanda. Echipa noastră lucrează cu dedicație pentru a pregăti produsul pentru livrare. 
