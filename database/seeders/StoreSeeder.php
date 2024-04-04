@@ -30,6 +30,11 @@ class StoreSeeder extends Seeder
             ['parameter' => 'default_category', 'value' => '1', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'show_on_breadcrumbs', 'value' => 'true', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'show_on_header', 'value' => 'true', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'order_error_quantity', 'value' => 'Stocul disponibil pentru unul sau mai multe produse a fost modificat!', 'description' => 'Mesaj eroare order product quantity', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'order_error_voucher', 'value' => 'Voucher-ul selectat nu mai este disponibil!', 'description' => 'Eroare la voucher', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'order_error_active', 'value' => 'Unul sau mai multe produse din coș nu mai este disponibil!', 'description' => 'order error la disponibilitate', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'order_error_cart', 'value' => 'Coșul de cumpărături a fost modificat!', 'description' => 'eroare cart', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+
             ['parameter' => 'confirm_order_text', 'value' => 'Comanda a fost plasata cu succes!
 Îți mulțumim pentru plata efectuată!  Am primit-o și în prezent îți procesăm comanda. Echipa noastră lucrează cu dedicație pentru a pregăti produsul pentru livrare. 
 
@@ -39,6 +44,7 @@ Dacă ai întrebări sau ai nevoie de asistență, te rugăm să nu ezitezi să 
 
 Sperăm că achiziția ta îți va aduce fericire. Îți mulțumim că ai ales produsele noastre și așteptăm cu nerăbdare să te mai servim în viitor. 
 Cu cele mai bune urări!', 'description' => 'Default confrim text', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+
 
 
         ]);

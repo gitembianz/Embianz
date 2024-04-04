@@ -681,7 +681,13 @@ class StoreOrder extends Component
     if ($this->cartitems && ($this->cart->status_id == app('global_cart_checkoutdetails'))) {
       if ($this->cart->voucher) {
         if (($this->cart->voucher->status_id == app('global_voucher_closed')) || ($this->cart->voucher->start_date > now()->format('Y-m-d')) || ($this->cart->voucher->end_date < now()->format('Y-m-d'))) {
-          $this->dispatchBrowserEvent('alert__modal');
+
+          if (app()->has('global_order_error_voucher')) {
+            $message = app('global_order_error_voucher');
+          } else {
+            $message = "Vă rog verificați detaliile comenzii!";
+          }
+          $this->dispatchBrowserEvent('alert__modal', ['message' => $message]);
           $this->cart->update([
             'final_amount' => ($this->cart->sum_amount + app('global_delivery_price')),
             'voucher_id' => null,
@@ -694,20 +700,35 @@ class StoreOrder extends Component
       foreach ($this->cartitems as $item) {
         if ($item->quantity > $item->product->quantity) {
           $this->validatequantity = false;
-          $this->dispatchBrowserEvent('alert__modal');
+          if (app()->has('global_order_error_quantity')) {
+            $message = app('global_order_error_quantity');
+          } else {
+            $message = "Vă rog verificați detaliile comenzii!";
+          }
+          $this->dispatchBrowserEvent('alert__modal', ['message' => $message]);
           return;
         }
       }
       foreach ($this->cartitems as $item) {
         if (($item->product->active != true) || ($item->product->start_date > now()->format('Y-m-d')) || ($item->product->end_date < now()->format('Y-m-d'))) {
-          $this->dispatchBrowserEvent('alert__modal');
+          if (app()->has('global_order_error_active')) {
+            $message = app('global_order_error_active');
+          } else {
+            $message = "Vă rog verificați detaliile comenzii!";
+          }
+          $this->dispatchBrowserEvent('alert__modal', ['message' => $message]);
           return;
         }
       }
     } else {
       $this->emit('cartUpdated');
       $this->validatequantity = false;
-      $this->dispatchBrowserEvent('alert__modal');
+      if (app()->has('global_order_error_cart')) {
+        $message = app('global_order_error_cart');
+      } else {
+        $message = "Vă rog verificați detaliile comenzii!";
+      }
+      $this->dispatchBrowserEvent('alert__modal', ['message' => $message]);
       return;
     }
     if ($this->validatequantity) {
