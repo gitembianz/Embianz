@@ -5,7 +5,7 @@
 			Acasă
 		</a>
 		@if (app()->has("global_show_on_breadcrumbs") && app('global_show_on_breadcrumbs') == 'true')
-			
+
 		<a class="breadcrumbs__link" href="{{ url("/storeproducts") }}">
 			Toate produsele
 		</a>
@@ -51,14 +51,14 @@
 				</div>
 			</div>
 			<div class="product-slider__pagination--navigation">
-				<button class="product-slider__pagination--button product-slider__pagination--prev">
+				<button class="product-slider__pagination--button product-slider__pagination--prev disabled">
 					<svg>
 						<polyline points="15 18 9 12 15 6"></polyline>
 					</svg>
 				</button>
 				<div class="product-slider__pagination">
 				</div>
-				<button class="product-slider__pagination--button product-slider__pagination--next">
+				<button class="product-slider__pagination--button product-slider__pagination--next disabled">
 					<svg>
 						<polyline points="9 18 15 12 9 6"></polyline>
 					</svg>
@@ -133,7 +133,7 @@
 			<div class="related__wrapper">
 				@foreach ($product->related_product->sortByDesc("product.popularity") as $product)
 				@if (($product->product) && ($product->product->active == true) && ($product->product->end_date >=  now()->format('Y-m-d')) && ($product->product->start_date <=  now()->format('Y-m-d')))
-					
+
 				<div class="card" role="listitem">
 					<a href="{{ route("product", $product->product->seo_id) }}">
 						@if ($product->product->media->first() != null)

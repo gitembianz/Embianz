@@ -119,19 +119,27 @@ function sliderProduct(sliderId, modalId) {
   });
 
   function updatePaginationButtons() {
-    if (pagination.scrollLeft === 0) {
-      paginationLeft.classList.add("disabled");
-      paginationRight.classList.remove("disabled");
-    } else if (pagination.scrollLeft >= (pagination.scrollWidth - pagination.clientWidth)) {
-      paginationLeft.classList.remove("disabled");
-      paginationRight.classList.add("disabled");
+    if (pagination.scrollWidth > pagination.clientWidth) {
+      if (pagination.scrollLeft === 0) {
+        paginationLeft.classList.add("disabled");
+        paginationRight.classList.remove("disabled");
+      } else if (pagination.scrollLeft + pagination.clientWidth >= pagination.scrollWidth) {
+        paginationLeft.classList.remove("disabled");
+        paginationRight.classList.add("disabled");
+      } else {
+        paginationLeft.classList.remove("disabled");
+        paginationRight.classList.remove("disabled");
+      }
     } else {
-      paginationLeft.classList.remove("disabled");
-      paginationRight.classList.remove("disabled");
+      paginationLeft.classList.add("disabled");
+      paginationRight.classList.add("disabled");
     }
   }
 
-  updatePaginationButtons();
+
+  setTimeout(() => {
+    updatePaginationButtons();
+  }, 500)
 
   function updatePagination() {
     // Actualizarea butoanelor pentru slider
@@ -328,6 +336,7 @@ function sliderProduct(sliderId, modalId) {
   }
 
   window.addEventListener("load", () => updatePagination());
+
 
   modalCount.textContent = `${currentIndex + 1} / ${slides.length}`;
   function updateModalImage() {
