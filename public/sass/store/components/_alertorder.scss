@@ -13,7 +13,7 @@ $alertorderShadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
     justify-content: center;
     transition: all 0.3s ease-in-out;
     transform: scale(0);
-    z-index: 500;
+    z-index: 1500;
 
     &.active {
         transform: scaleY(0.1) scaleX(0);
