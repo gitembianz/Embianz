@@ -24,7 +24,10 @@
   background-color: $primary;
   cursor: pointer;
   border: none;
-  font-size: 1rem;
+  font-size: $inputSize;
+  font-weight: $boldWeight;
+  color: $lightBlack;
+  line-height: $lineHeight;
   border-radius: 5px;
   outline: none;
   padding-right: 30px;
@@ -70,4 +73,11 @@
     padding-top 0.3s ease-in-out,
     padding-bottom 0.3s ease-in-out;
   padding: 0 10px;
+
+  &>p{
+    font-size: $textSize;
+    font-weight: $lightWeight;
+    color: $lightBlack;
+    line-height: $lineHeight;
+  }
 }
