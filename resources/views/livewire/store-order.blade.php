@@ -1583,11 +1583,13 @@
 					</script>
 
 					<script>
-						dataLayer.push({
-							'event': 'checkoutStep',
-							'step': 1,
-							'option': 'Detalii Comanda'
-						});
+            if (typeof dataLayer !== 'undefined') {
+              dataLayer.push({
+                'event': 'checkoutStep',
+                'step': 1,
+                'option': 'Detalii Comanda'
+              });
+            };
 					</script>
 
 				@endif
@@ -1886,11 +1888,13 @@
 
 					<!-- DataLayer Script pentru Step 2 -->
 					<script>
+            if (typeof dataLayer !== 'undefined') {
 						dataLayer.push({
 							'event': 'checkoutStep',
 							'step': 2,
 							'option': 'Plasare Comandă'
 						});
+            };
 					</script>
 				@endif
 				{{-- script for terms error --}}
@@ -2163,11 +2167,13 @@
 						});
 					</script>
 					<script>
-						dataLayer.push({
-							'event': 'checkoutStep',
-							'step': 3,
-							'option': 'Confirmare comandă'
-						});
+            if (typeof dataLayer !== 'undefined') {
+              dataLayer.push({
+                'event': 'checkoutStep',
+                'step': 3,
+                'option': 'Confirmare comandă'
+              });
+            };
 					</script>
 				@endif
 				<!------------------- End Step Final ------------------->
