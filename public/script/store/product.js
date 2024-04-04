@@ -21,6 +21,7 @@ function sliderProduct(sliderId, modalId) {
   let touchStartX = 0;
   let isDragging = false;
   let startX = 0;
+  let mouseStartX = 0;
 
   if (
     !slider ||
@@ -228,7 +229,7 @@ function sliderProduct(sliderId, modalId) {
       if (isDragging) {
         const swipeDistance = event.clientX - startX;
 
-        if (Math.abs(swipeDistance) > 250 && !isScrolling()) {
+        if (Math.abs(swipeDistance) > 50 && !isScrolling()) {
           const indexChange = swipeDistance > 0 ? -1 : 1;
           const newIndex = currentIndex + indexChange;
 
@@ -316,6 +317,11 @@ function sliderProduct(sliderId, modalId) {
       if (touchStartX) {
         const swipeDistance = event.changedTouches[0].clientX - touchStartX;
 
+        // Verifică dacă utilizatorul face un gest de zoom
+        if (event.scale && event.scale !== 1) {
+          return; // Ignoră acțiunea dacă utilizatorul face zoom
+        }
+
         if (Math.abs(swipeDistance) > 10 && !isScrolling()) {
           isSwiping = true;
           event.preventDefault();
@@ -353,8 +359,6 @@ function sliderProduct(sliderId, modalId) {
       modalContent.appendChild(newImgElement);
 
       modalCount.textContent = `${currentIndex + 1} / ${slides.length}`;
-
-
 
     } else {
       console.error(
@@ -404,6 +408,11 @@ function sliderProduct(sliderId, modalId) {
   modalContent.addEventListener("touchmove", (event) => {
     if (touchStartX) {
       const swipeDistance = event.changedTouches[0].clientX - touchStartX;
+
+      // Verifică dacă utilizatorul face un gest de zoom
+      if (event.scale && event.scale !== 1) {
+        return; // Ignoră acțiunea dacă utilizatorul face zoom
+      }
 
       if (Math.abs(swipeDistance) > 50 && !isScrolling()) {
         event.preventDefault();
