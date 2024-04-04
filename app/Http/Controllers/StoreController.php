@@ -87,10 +87,16 @@ class StoreController extends Controller
     if ($categorySlug) {
       if (is_numeric($categorySlug)) {
         $category = Category::find($categorySlug);
+        if (($category->active != true) || ($category->start_date > now()->format('Y-m-d')) || ($category->end_date < now()->format('Y-m-d'))) {
+          return view('store.404');
+        }
         $can = $category->id;
       } else {
         $can = $categorySlug;
         $category = Category::where('seo_id', $categorySlug)->first();
+        if (($category->active != true) || ($category->start_date > now()->format('Y-m-d')) || ($category->end_date < now()->format('Y-m-d'))) {
+          return view('store.404');
+        }
       }
       if ($category) {
         $data = $category;
