@@ -1,6 +1,4 @@
-<div class="leftbar @if ($showcart) active @if ($aplicabble_voucher)
-	mod
-@endif @endif" id="basketList">
+<div class="leftbar @if ($showcart) active @if ($aplicabble_voucher) mod @endif @endif" id="basketList">
 	<button class="leftbar__hidden--close" wire:click="$set('showcart', false)"></button>
 	<div class="leftbar__content" id="basketContent">
 		<div class="leftbar__top">
@@ -20,18 +18,17 @@
 			<ul class="leftbar__list">
 				<?php
 				$isdisabled = false;
-				$disables =[];
+				$disables = [];
 				?>
 				@foreach ($cartItems as $index => $cartItem)
-				<?php
-				$disabled[$index] = false;
-				if (($cartItem->product->active != true) || ($cartItem->product->start_date > now()->format('Y-m-d')) || ($cartItem->product->end_date < now()->format('Y-m-d'))){
-					$disabled[$index] = true;
-				$isdisabled = true;
-
-				}
-
-				?>
+					<?php
+					$disabled[$index] = false;
+					if ($cartItem->product->active != true || $cartItem->product->start_date > now()->format("Y-m-d") || $cartItem->product->end_date < now()->format("Y-m-d")) {
+					    $disabled[$index] = true;
+					    $isdisabled = true;
+					}
+					
+					?>
 					<li class="leftbar__item">
 						<a class="leftbar__link" href="{{ route("product", ["product" => $cartItem->product->seo_id !== null && $cartItem->product->seo_id !== "" ? $cartItem->product->seo_id : $cartItem->product->id]) }}">
 							<span class="leftbar__link--quantity">
@@ -42,7 +39,6 @@
 							@else
 								<img class="cart__list--img" src="/images/store/default/default70.webp" alt="something wrong">
 							@endif
-
 							<div class="leftbar__link--text">
 								<h4 class="leftbar__link--title">{{ $cartItem->product->name }}</h4>
 								<span class="leftbar__link--price">
@@ -57,83 +53,98 @@
 								</span>
 							</div>
 						</a>
+						{{-- <div class="leftbar__link" href="{{ route("product", ["product" => $cartItem->product->seo_id !== null && $cartItem->product->seo_id !== "" ? $cartItem->product->seo_id : $cartItem->product->id]) }}">
+							<span class="leftbar__link--quantity">
+								{{ $cartItem->quantity }} x
+							</span>
+							@if ($cartItem->product->media->first())
+								<img class="cart__list--img" src="/{{ $cartItem->product->media->first()->path }}{{ $cartItem->product->media->first()->name }}" alt="{{ $cartItem->product->media->first()->name }}{{ $cartItem->product->name }}">
+							@else
+								<img class="cart__list--img" src="/images/store/default/default70.webp" alt="something wrong">
+							@endif
+							<div class="leftbar__link--text">
+								<h4 class="leftbar__link--title">{{ $cartItem->product->name }}</h4>
+								<span class="item__product--error">Stoc disponibil pentru acest produs: 20</span>
+								<a class="item__product--link" href="#">Modifică cantitatea</a>
+							</div>
+						</div> --}}
 						<button class="leftbar__delete" type="button" wire:click="removeFromCart({{ $cartItem->product->id }})">
-              <svg><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+							<svg>
+								<polyline points="3 6 5 6 21 6"></polyline>
+								<path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+							</svg>
 						</button>
-            <div class="item__product--modify">
-              <div class="item__product__text--modify">
-                <span>Stoc disponibil pentru acest produs: 20</span>
-                <a href="#">Modifică cantitatea</a>
-              </div>
-              <button class="leftbar__delete" type="button" wire:click="removeFromCart({{ $cartItem->product->id }})">
-                <svg><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
-              </button>
-            </div>
 						@if ($disabled[$index])
-            <div class="item__product--disabled">
-              <span>Produs Indisponibil</span>
-              <button class="leftbar__delete" type="button" wire:click="removeFromCart({{ $cartItem->product->id }})">
-                <svg><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-              </button>
-            </div>
+							<div class="item__product--disabled">
+								<span>Produs Indisponibil</span>
+								<button class="leftbar__delete" type="button" wire:click="removeFromCart({{ $cartItem->product->id }})">
+									<svg>
+										<polyline points="3 6 5 6 21 6"></polyline>
+										<path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+									</svg>
+								</button>
+							</div>
 						@endif
 					</li>
 				@endforeach
 			</ul>
 
 			<div class="leftbar__total">
-        <h5 class="leftbar__total--text">
-          Produse:
-          <span id="leftbarTotalPrice">
-            {{ number_format($cart->sum_amount, 2, ",", ".") }}
-						{{ $currency }}
-          </span>
-        </h5>
-          <h5 class="leftbar__total--text">
-            Livrare:
-            <span id="leftbarTotalPrice">
-              @if (app("global_delivery_price") == 0)
-									Gratuit
-								@else
-									{{ number_format(app("global_delivery_price"), 2, ",", ".") }} {{ $currency }}
-								@endif
-            </span>
-          </h5>
-		  @if ($cart->voucher_id != null)
-								<h5 class="leftbar__total--text">Voucher:
-								<span class="voucher__choice">
-									-{{ number_format($cart->voucher_value, 2, ",", ".") }} {{ $currency }}
-									<button wire:click="removevoucher" class="details__delete" aria-label="Remove voucher">
-                    <svg><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-									</button>
-								</span>
-								</h5>
-						@endif
 				<h5 class="leftbar__total--text">
-          Total:
-          <span id="leftbarTotalPrice">
-            {{ number_format($cart->final_amount, 2, ",", ".") }}
+					Produse:
+					<span id="leftbarTotalPrice">
+						{{ number_format($cart->sum_amount, 2, ",", ".") }}
 						{{ $currency }}
-          </span>
-        </h5>
-    @if ($message)
-							<p class="voucher__error" >{{ $message }}</p>
+					</span>
+				</h5>
+				<h5 class="leftbar__total--text">
+					Livrare:
+					<span id="leftbarTotalPrice">
+						@if (app("global_delivery_price") == 0)
+							Gratuit
+						@else
+							{{ number_format(app("global_delivery_price"), 2, ",", ".") }} {{ $currency }}
 						@endif
-		@if ($cart->voucher_id == null)
-							<div class="voucher">
-								<input type="text" wire:model="voucher" maxlength="100" name="voucher" placeholder="Ai un voucher sau card cadou?">
-								<button type="submit" wire:click="checkvoucher">
-									Aplica
-								</button>
-							</div>
-						@endif
+					</span>
+				</h5>
+				@if ($cart->voucher_id != null)
+					<h5 class="leftbar__total--text">Voucher:
+						<span class="voucher__choice">
+							-{{ number_format($cart->voucher_value, 2, ",", ".") }} {{ $currency }}
+							<button wire:click="removevoucher" class="details__delete" aria-label="Remove voucher">
+								<svg>
+									<polyline points="3 6 5 6 21 6"></polyline>
+									<path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+								</svg>
+							</button>
+						</span>
+					</h5>
+				@endif
+				<h5 class="leftbar__total--text">
+					Total:
+					<span id="leftbarTotalPrice">
+						{{ number_format($cart->final_amount, 2, ",", ".") }}
+						{{ $currency }}
+					</span>
+				</h5>
+				@if ($message)
+					<p class="voucher__error">{{ $message }}</p>
+				@endif
+				@if ($cart->voucher_id == null)
+					<div class="voucher">
+						<input type="text" wire:model="voucher" maxlength="100" name="voucher" placeholder="Ai un voucher sau card cadou?">
+						<button type="submit" wire:click="checkvoucher">
+							Aplica
+						</button>
+					</div>
+				@endif
 
-        @if ($isdisabled)
-          <a class="leftbar__button leftbar__button--long item__button--disabled">Finalizare Comandă</a>
-          <span class="item__text--disabled" id="headerContinue">Ai cel puțin un produs indisponibil adaugat in coș!</span>
-        @else
-          <a class="leftbar__button leftbar__button--long" id="headerContinue" wire:click.prevent="continue">Finalizare Comandă</a>
-        @endif
+				@if ($isdisabled)
+					<a class="leftbar__button leftbar__button--long item__button--disabled">Finalizare Comandă</a>
+					<span class="item__text--disabled" id="headerContinue">Ai cel puțin un produs indisponibil adaugat in coș!</span>
+				@else
+					<a class="leftbar__button leftbar__button--long" id="headerContinue" wire:click.prevent="continue">Finalizare Comandă</a>
+				@endif
 			</div>
 
 			<script>
@@ -162,11 +173,11 @@
 			</script>
 		@endif
 	</div>
-  <div class="leftbar__modal">
-    <div class="leftbar__modal--text">Vrei să activezi voucher-ul "{{ $voucher }}"?</div>
-    <div class="leftbar__modal--bundle">
-      <button class="leftbar__modal--btn" wire:click="confirm_aplicabble">Da</button>
-      <button class="leftbar__modal--btn" wire:click="cancel_aplicabble">Nu</button>
-    </div>
-  </div>
+	<div class="leftbar__modal">
+		<div class="leftbar__modal--text">Vrei să activezi voucher-ul "{{ $voucher }}"?</div>
+		<div class="leftbar__modal--bundle">
+			<button class="leftbar__modal--btn" wire:click="confirm_aplicabble">Da</button>
+			<button class="leftbar__modal--btn" wire:click="cancel_aplicabble">Nu</button>
+		</div>
+	</div>
 </div>
