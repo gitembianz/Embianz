@@ -58,21 +58,24 @@
 							</div>
 						</a>
 						<button class="leftbar__delete" type="button" wire:click="removeFromCart({{ $cartItem->product->id }})">
-							<svg>
-								<line x1="18" y1="6" x2="6" y2="18"></line>
-								<line x1="6" y1="6" x2="18" y2="18"></line>
-							</svg>
+              <svg><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
 						</button>
-						@if ($disabled[$index])
-              <div class="item__product--disabled">
-                <span>Produs Indisponibil</span>
-                <button class="leftbar__delete" type="button" wire:click="removeFromCart({{ $cartItem->product->id }})">
-                  <svg>
-                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                  </svg>
-                </button>
+            <div class="item__product--modify">
+              <div class="item__product__text--modify">
+                <span>Stoc disponibil pentru acest produs: 20</span>
+                <a href="#">Modifică cantitatea</a>
               </div>
+              <button class="leftbar__delete" type="button" wire:click="removeFromCart({{ $cartItem->product->id }})">
+                <svg><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
+              </button>
+            </div>
+						@if ($disabled[$index])
+            <div class="item__product--disabled">
+              <span>Produs Indisponibil</span>
+              <button class="leftbar__delete" type="button" wire:click="removeFromCart({{ $cartItem->product->id }})">
+                <svg><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+              </button>
+            </div>
 						@endif
 					</li>
 				@endforeach
@@ -101,11 +104,7 @@
 								<span class="voucher__choice">
 									-{{ number_format($cart->voucher_value, 2, ",", ".") }} {{ $currency }}
 									<button wire:click="removevoucher" class="details__delete" aria-label="Remove voucher">
-										<svg>
-											<polyline points="3 6 5 6 21 6"></polyline>
-											<path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-											</path>
-										</svg>
+                    <svg><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
 									</button>
 								</span>
 								</h5>
