@@ -192,4 +192,10 @@
 			<button class="leftbar__modal--btn" wire:click="cancel_aplicabble">Nu</button>
 		</div>
 	</div>
+  <div class="leftbar__problem">
+		<div class="leftbar__modal--text">De la ultima ta vizita unul sau mai multe produse din coșul tău de cumpărături a fost actualizat. Te rugam să verifici coșul înainte de a plasa comanda.</div>
+		<div class="leftbar__modal--bundle">
+			<button class="leftbar__modal--btn" wire:click="confirm_aplicabble">Am înțeles</button>
+		</div>
+	</div>
 </div>

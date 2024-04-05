@@ -44,6 +44,11 @@
       transform: translateX(0%);
     }
   }
+  &.problem{
+   &> .leftbar__problem{
+    transform: translateX(0%);
+   }
+  }
 }
 
 .leftbar__hidden--close {
@@ -91,7 +96,8 @@
   }
 }
 
-.leftbar__modal {
+.leftbar__modal
+.leftbar__problem {
   display: flex;
   flex-direction: column;
   align-items: center;
