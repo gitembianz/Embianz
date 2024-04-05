@@ -33,7 +33,7 @@ class CartProductsList extends Component
     }
     public function getCartProperty()
     {
-        return Cart::select('id', 'quantity_amount', 'sum_amount', 'voucher_id', 'final_amount', 'voucher_value')
+        return Cart::select('id', 'quantity_amount', 'delivery_price', 'sum_amount', 'voucher_id', 'final_amount', 'voucher_value')
             ->where('id', $this->cartId)
             ->with(['voucher' => function ($query) {
                 $query->select('code', 'id', 'percent', 'value');

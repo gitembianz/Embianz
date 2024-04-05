@@ -112,10 +112,10 @@
 				<h5 class="leftbar__total--text">
 					Livrare:
 					<span id="leftbarTotalPrice">
-						@if (app("global_delivery_price") == 0)
+						@if ($cart->delivery_price == 0)
 							Gratuit
 						@else
-							{{ number_format(app("global_delivery_price"), 2, ",", ".") }} {{ $currency }}
+							{{ $cart->delivery_price }} {{ $currency }}
 						@endif
 					</span>
 				</h5>
