@@ -27,6 +27,9 @@ return new class extends Migration
       $table->unsignedBigInteger('voucher_id')->index()->nullable();
       $table->foreign('voucher_id')->references('id')->on('vouchers');
       $table->decimal('voucher_value', 10, 2)->default(0);
+      $table->boolean('seen_by_customer')->nullable()->default(
+        false
+      );
       $table->timestamps();
     });
   }
