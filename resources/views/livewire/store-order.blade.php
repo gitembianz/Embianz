@@ -2145,11 +2145,10 @@
 							<div class="total__item">
 								<span>Cost livrare</span>
 								<span>
-									@if (app("global_delivery_price") == 0)
+									@if ($new_order->delivery_price == 0)
 										Gratuit
 									@else
-										{{ number_format(app("global_delivery_price"), 2, ",", ".") }}
-										{{ $currency }}
+										{{ $new_order->delivery_price }} {{ $currency }}
 									@endif
 								</span>
 							</div>
