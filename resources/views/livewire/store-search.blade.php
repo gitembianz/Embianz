@@ -142,11 +142,7 @@
 			<x-lazy />
 		@endif
 	</section>
-	@if ($products->count() >= $loadAmount)
-		<section class="container">
-			<button class="filter__apply" wire:click="loadMore" wire:loading.remove>Vezi mai mult!</button>
-		</section>
-	@endif
+	
     @endif
 
     @if ($showcategories)
@@ -177,6 +173,11 @@
 		@endif
 	</section>
     @endif
+	@if ($products->count() > $loadAmount || $categories->count() > $loadAmount)
+		<section class="container">
+			<button class="filter__apply" wire:click="loadMore" wire:loading.remove>Vezi mai mult!</button>
+		</section>
+	@endif
 
 	{{-- <script>
 		// Sending the special Event for Each card to GTM
