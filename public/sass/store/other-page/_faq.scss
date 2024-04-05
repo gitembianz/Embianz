@@ -2,11 +2,19 @@
   display: grid;
   gap: 25px;
 
-  @media (min-width: map-get($grid-breakpoints, md)) {
+  @media (min-width: map-get($grid-breakpoints, lg)) {
     grid-template-columns: 1fr 1fr;
   }
+}
 
-  @media (min-width: map-get($grid-breakpoints, xl)) {
-    grid-template-columns: 1fr 1fr 1fr;
+.faq__container{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 20px;
+
+  &>.section__title {
+    text-align: start;
+    border-bottom: 2px solid $lightBlack;
   }
 }

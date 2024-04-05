@@ -34,7 +34,7 @@
 					    $nonquantity[$index] = true;
 					    $isdisabled = true;
 					}
-					
+
 					?>
 					<li class="leftbar__item">
 						@if ($nonquantity[$index])
@@ -79,7 +79,7 @@
 							</div>
 						</a>
 						@endif
-						
+
 						<button class="leftbar__delete" style="border: none" type="button" wire:click="removeFromCart({{ $cartItem->product->id }})">
 							<svg>
 								<polyline points="3 6 5 6 21 6"></polyline>
@@ -146,7 +146,7 @@
 					<div class="voucher">
 						<input type="text" wire:model="voucher" maxlength="100" name="voucher" placeholder="Ai un voucher sau card cadou?">
 						<button type="submit" wire:click="checkvoucher">
-							Aplica
+							Aplică
 						</button>
 					</div>
 				@endif

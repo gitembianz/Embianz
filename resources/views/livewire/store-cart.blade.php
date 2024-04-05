@@ -23,7 +23,7 @@
 				@if ($cartItems->isEmpty())
 					<span class="basket__empty">Coșul de cumpărături nu conține produse</span>
 				@else
-				
+
 				<?php $disables =[]; $nonquantity = [];  $isdisabled = false; ?>
 					@foreach ($cartItems as $index => $cartItem)
 					<?php
@@ -126,7 +126,7 @@
 			@if (!$cartItems->isEmpty())
 				<div class="details">
 					<div class="details__content">
-						<h2 class="details__title">Detalii comanda</h2>
+						<h2 class="details__title">Detalii comandă</h2>
 						<div class="details__text">
 							<h3>Produse:</h3>
 							<span> {{ number_format($cart->sum_amount, 2, ",", ".") }}
@@ -174,7 +174,7 @@
 							<div class="voucher">
 								<input type="text" wire:model="voucher" maxlength="100" name="voucher" placeholder="Ai un voucher sau card cadou?">
 								<button type="submit" wire:click="checkvoucher">
-									Aplica
+									Aplică
 								</button>
 							</div>
 						@endif
@@ -188,13 +188,13 @@
 						</div>
 						@endif
 						@if (!$aplicabble_voucher)
-							
+
 						@if ($isdisabled)
-						<a class="leftbar__button leftbar__button--long item__button--disabled">Continua</a>
+						<a class="leftbar__button leftbar__button--long item__button--disabled">Continuă</a>
 
 						<span class="item__text--disabled" id="detailsContinue">Cantitatea anumitor produse nu mai este disponibilă, sau ai cel puțin un produs indisponibil adaugat in coș!</span>
 						@else
-						<button id="detailsContinue" class="details__button details__continue" wire:click="continue()" aria-label="Continue form">Continua</button>
+						<button id="detailsContinue" class="details__button details__continue" wire:click="continue()" aria-label="Continue form">Continuă</button>
 
 
 						@endif
