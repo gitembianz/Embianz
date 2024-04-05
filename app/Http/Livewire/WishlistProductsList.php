@@ -125,6 +125,7 @@ class WishlistProductsList extends Component
             }
             $cart->final_amount = $cart->sum_amount + $cart->delivery_price;
             $cart->final_amount -= $cart->voucher_value;
+            $this->message = $index;
         } else {
             if ($cartItem->quantity < $product->quantity) {
                 $cartItem->increment('quantity');
@@ -138,12 +139,12 @@ class WishlistProductsList extends Component
                 }
                 $cart->final_amount = $cart->sum_amount + app('global_delivery_price');
                 $cart->final_amount -= $cart->voucher_value;
+                $this->message = $index;
             }
         }
         $cart->status_id = app('global_cart_new');
         $cart->save();
         $this->emit('cartUpdated');
-        $this->message = $index;
     }
 
     public function removeFromWishlist($productId)
