@@ -125,19 +125,19 @@ input[type="submit"] {
 }
 
 
-    .item__product--error {
-      color: $darkRed !important;
-      font-weight:  $lightWeight !important;
-      font-size: $spanSize !important;
-      text-transform: unset !important;
-    }
-    .item__product--link{
-      color: $lightBlack !important;
-      font-size: $spanSize !important;
-      font-weight: $lightWeight !important;
-      text-decoration: underline !important;
-      text-transform: unset !important;
-    }
+.item__product--error {
+  color: $darkRed !important;
+  font-weight:  $lightWeight !important;
+  font-size: $spanSize !important;
+  text-transform: unset !important;
+}
+.item__product--link{
+  color: $lightBlack !important;
+  font-size: $spanSize !important;
+  font-weight: $lightWeight !important;
+  text-decoration: underline !important;
+  text-transform: unset !important;
+}
 
 
 label {
