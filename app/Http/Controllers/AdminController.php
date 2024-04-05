@@ -142,7 +142,7 @@ class AdminController extends Controller
   {
     // Validation rules
     $rules = [
-      'start_date' => 'required|date|after_or_equal:today',
+      'start_date' => 'required|date',
       'end_date' => 'required|date|after_or_equal:start_date',
       'percent' => [
         'nullable',

@@ -135,10 +135,10 @@
 						<div class="details__text">
 							<h3>Livrare:</h3>
 							<span>
-								@if (app("global_delivery_price") == 0)
+								@if ($cart->delivery_price == 0)
 									Gratuit
 								@else
-									{{ number_format(app("global_delivery_price"), 2, ",", ".") }} {{ $currency }}
+									{{ $cart->delivery_price}} {{ $currency }}
 								@endif
 							</span>
 						</div>
