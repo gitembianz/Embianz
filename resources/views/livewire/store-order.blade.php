@@ -1855,11 +1855,10 @@
 								<div class="total__item">
 									<span>Cost livrare</span>
 									<span>
-										@if (app("global_delivery_price") == 0)
+										@if ($cart->delivery_price == 0)
 											Gratuit
 										@else
-											{{ number_format(app("global_delivery_price"), 2, ",", ".") }}
-											{{ $currency }}
+											{{ $cart->delivery_price }} {{ $currency }}
 										@endif
 									</span>
 								</div>
@@ -1867,24 +1866,19 @@
 									<div class="total__item">
 										<span>Voucher:</span>
 										<span>
-											-{{ number_format($cart->voucher_value, 2, ",", ".") }}
-											{{ $currency }}
-
+											-{{ number_format($cart->voucher_value, 2, ",", ".") }} {{ $currency }}
 										</span>
 									</div>
 								@endif
 								<div class="total__item">
 									<span>Total</span>
-
-									<span>{{ number_format($cart->final_amount, 2, ",", ".") }}
-										{{ $currency }}
+									<span>{{ number_format($cart->final_amount, 2, ",", ".") }} {{ $currency }}
 									</span>
 								</div>
 								@if ($modification)
 
 								<span class="item__text--disabled">Cantitatea anumitor produse nu mai este disponibilă, sau ai cel puțin un produs indisponibil adaugat in coș!</span>
 								@endif
-
 							@endif
 						</div>
 						<!------------ End Checkout List of Forms ------------>

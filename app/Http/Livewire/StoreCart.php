@@ -42,7 +42,7 @@ class StoreCart extends Component
 
   public function getCartProperty()
   {
-    return Cart::select('id', 'quantity_amount', 'sum_amount', 'voucher_id', 'final_amount', 'voucher_value')
+    return Cart::select('id', 'quantity_amount', 'delivery_price', 'sum_amount', 'voucher_id', 'final_amount', 'voucher_value')
       ->where('session_id', $this->session_id)
       ->where('status_id', '!=', app('global_cart_closed'))
       ->with(['voucher' => function ($query) {
