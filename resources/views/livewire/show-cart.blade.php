@@ -76,7 +76,7 @@
 						<label>Cart Sum amount </label>
 					</div>
 					<div class="item__form-input-close">
-						<div>{{ $cart->currency->first()->name }}</div>
+						<div>{{ $cart->currency->name }}</div>
 						<label>Cart Currency </label>
 					</div>
 					@if ($edititem === null)

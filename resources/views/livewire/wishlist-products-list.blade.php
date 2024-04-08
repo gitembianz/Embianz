@@ -38,7 +38,7 @@
 								<h4 class="leftbar__link--title">{{ $item->product->name }}</h4>
 								<span class="leftbar__link--price">
 									@php
-									$currency = $item->product->product_prices->first()->pricelist->currency->name;
+									$currency = $item->product->product_prices->first()->pricelist->currency->simbol;
 										$price = number_format($item->product->product_prices->first()->value, 2, ",", ".");
 									@endphp
 									@if ($price)

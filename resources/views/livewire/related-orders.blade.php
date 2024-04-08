@@ -288,7 +288,7 @@
 											@endif
 											@if ($this->showColumn("Currency"))
 												<td data-title="Currency">
-													{{ $order->currency->first()->name }}
+													{{ $order->currency->->name }}
 												</td>
 											@endif
 											@if ($this->showColumn("Status"))
