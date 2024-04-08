@@ -124,7 +124,7 @@
     </a>
    </li>
    <li class="dropdown">
-    <a class="sidebar__item @if ($active == 'store_settings' || $active == 'payment' || $active == 'scripts') active @endif dropdown-button" href="#"
+    <a class="sidebar__item @if ($active == 'store_settings' || $active == 'payment' || $active == 'scripts' || $active == 'currency') active @endif dropdown-button" href="#"
      style="z-index: 99999;">
      <button class="sidebar__icon">
       <svg>
@@ -148,6 +148,15 @@
       </button>
       <span>Store</span>
      </a>
+      <a class="sidebar__subitem @if ($active == 'currency') active @endif" href="{{ route('currencies') }}">
+      <button class="sidebar__icon">
+       <svg>
+        <line x1="12" y1="1" x2="12" y2="23"></line>
+        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+       </svg> 
+      </button>
+      <span>Currency</span>
+     </a>
      <a class="sidebar__subitem @if ($active == 'scripts') active @endif" href="{{ route('customscripts') }}">
       <button class="sidebar__icon">
        <svg>
@@ -159,10 +168,11 @@
      </a>
      <a class="sidebar__subitem @if ($active == 'payment') active @endif" href="{{ route('payments') }}">
       <button class="sidebar__icon">
-       <svg>
-        <line x1="12" y1="1" x2="12" y2="23"></line>
-        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-       </svg>
+        <svg>
+    <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+    <line x1="1" y1="10" x2="23" y2="10"></line>
+</svg>
+       {{-- --}}
       </button>
       <span>Payment</span>
      </a>
