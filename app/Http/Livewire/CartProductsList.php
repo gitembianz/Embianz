@@ -158,7 +158,7 @@ class CartProductsList extends Component
     {
         $this->cartId = $cartId;
 
-        if ($this->cart->seen_by_customer) {
+        if ($this->cart && $this->cart->seen_by_customer) {
             $this->cartmodified = true;
         }
     }
