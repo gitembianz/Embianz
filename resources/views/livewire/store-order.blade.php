@@ -2189,7 +2189,7 @@
 					</script>
           <script>
             const finalAmount = document.getElementById("final__amount").innerText;
-            // console.log(finalAmount)
+            console.log(finalAmount)
 
             if(typeof dataLayer !== 'undefined') {
               dataLayer.push({
