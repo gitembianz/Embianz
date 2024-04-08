@@ -89,6 +89,10 @@ class AdminController extends Controller
   {
     return view('admin.payment');
   }
+  public function currencies()
+  {
+    return view('admin.currency');
+  }
 
   public function create_voucher()
   {
