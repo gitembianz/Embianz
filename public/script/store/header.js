@@ -84,16 +84,16 @@ function leftbar(idOpen, idClose, idList, idContent) {
       list.classList.remove("active");
       body.style.overflow = "auto";
     });
-    list.addEventListener("click", (event) => {
-      if (
-        !content.contains(event.target) &&
-        !buttonOpen.contains(event.target) &&
-        !contentModal.contains(event.target)
-      ) {
-        list.classList.remove("active");
-        body.style.overflow = "auto";
-      }
-    });
+    // list.addEventListener("click", (event) => {
+    //   if (
+    //     !content.contains(event.target) &&
+    //     !buttonOpen.contains(event.target) &&
+    //     !contentModal.contains(event.target)
+    //   ) {
+    //     list.classList.remove("active");
+    //     body.style.overflow = "auto";
+    //   }
+    // });
     function handleKeyPress(event) {
       if (event.keyCode === 27) {
         list.classList.remove("active");

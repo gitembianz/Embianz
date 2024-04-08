@@ -123,7 +123,18 @@ class StoreCart extends Component
         $cartitem_to_increment->increment('quantity');
         $this->cart->increment('quantity_amount');
         $this->cart->delivery_price = app('global_delivery_price');
-        $this->cart->sum_amount += $cartitem_to_increment->product->product_prices->first()->value;
+        if ($cartitem_to_increment->price != $cartitem_to_increment->product->product_prices->first()->value) {
+          $cartitem_to_increment->price = $cartitem_to_increment->product->product_prices->first()->value;
+          $cartitem_to_increment->save();
+          $sum_amount = 0;
+          foreach ($this->cart->carts as $item) {
+            $sum_amount = $sum_amount + $item->price * $item->quantity;
+          }
+          $this->cart->sum_amount = $sum_amount;
+          $this->cart->seen_by_customer = true;
+        } else {
+          $this->cart->sum_amount += $cartitem_to_increment->product->product_prices->first()->value;
+        }
         if ($this->cart->voucher && $this->cart->voucher->percent !== null) {
           $this->cart->voucher_value = ($this->cart->voucher->percent / 100) * $this->cart->sum_amount;
         }

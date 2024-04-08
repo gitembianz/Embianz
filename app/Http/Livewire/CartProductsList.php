@@ -17,6 +17,8 @@ class CartProductsList extends Component
     public $voucher = "";
     public $aplicabble_voucher = false;
     public $message = null;
+    public $cartmodified = false;
+
     protected $listeners = [
         'showcart' => 'cartshow',
         'orderprocess' => 'orderprocess',
@@ -33,11 +35,14 @@ class CartProductsList extends Component
     }
     public function getCartProperty()
     {
-        return Cart::select('id', 'quantity_amount', 'delivery_price', 'sum_amount', 'voucher_id', 'final_amount', 'voucher_value')
+        return Cart::select('id', 'quantity_amount', 'delivery_price', 'seen_by_customer', 'sum_amount', 'voucher_id', 'final_amount', 'voucher_value')
             ->where('id', $this->cartId)
-            ->with(['voucher' => function ($query) {
-                $query->select('code', 'id', 'percent', 'value');
-            }])
+            ->with([
+                'voucher' => function ($query) {
+                    $query->select('code', 'id', 'percent', 'value');
+                },
+                'carts'
+            ])
             ->latest()
             ->first() ?? null;
     }
@@ -134,9 +139,54 @@ class CartProductsList extends Component
         $this->mount(null);
     }
 
+    public function updatingShowcart()
+    {
+        $this->message = null;
+        $this->voucher = "";
+    }
+
+    public function seen()
+    {
+        $this->cart->seen_by_customer = false;
+        $this->cart->save();
+        $this->cartmodified = false;
+
+        return;
+    }
+
     public function mount($cartId)
     {
         $this->cartId = $cartId;
+
+        if ($this->cart->seen_by_customer) {
+            $this->cartmodified = true;
+        }
+    }
+
+    public function pricechanged()
+    {
+        foreach ($this->cart->carts as $item) {
+            if ($item->price != $item->product->product_prices->first()->value) {
+                $item->price = $item->product->product_prices->first()->value;
+                $item->save();
+                $sum_amount = 0;
+                foreach ($this->cart->carts as $element) {
+                    $sum_amount = $sum_amount + $element->price * $element->quantity;
+                }
+                $this->cart->sum_amount = $sum_amount;
+                if ($this->cart->voucher && $this->cart->voucher->percent !== null) {
+                    $this->cart->voucher_value = ($this->cart->voucher->percent / 100) * $this->cart->sum_amount;
+                } elseif ($this->cart->voucher && $this->cart->voucher->value !== null) {
+                    $this->cart->voucher_value = $this->cart->voucher->value;
+                }
+                $this->cart->final_amount = $this->cart->sum_amount + app('global_delivery_price');
+                $this->cart->final_amount -= $this->cart->voucher_value;
+                $this->cart->seen_by_customer = true;
+                $this->cart->save();
+                $this->cartmodified = true;
+                return;
+            }
+        }
     }
 
     public function cartshow()
