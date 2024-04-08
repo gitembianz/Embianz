@@ -176,6 +176,7 @@
   flex-direction: column;
   align-items: flex-end;
   justify-content: center;
+  text-transform: none !important;
 
   &.discount {
     font-size: $textSize;
