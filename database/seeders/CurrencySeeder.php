@@ -25,7 +25,7 @@ class CurrencySeeder extends Seeder
       ],
       [
         'name' => 'EUR',
-        'simbol' => 'euro',
+        'simbol' => '€',
         'createdby' => 'admin',
         'lastmodifiedby' => 'admin',
         'created_at' => $currentTime,
@@ -49,16 +49,13 @@ class CurrencySeeder extends Seeder
       ],
       [
         'name' => 'GBP',
-        'simbol' => ' lire',
+        'simbol' => '£',
         'createdby' => 'admin',
         'lastmodifiedby' => 'admin',
         'created_at' => $currentTime,
         'updated_at' => $currentTime,
       ],
-      // Add more currencies as needed with timestamps
     ];
-
-    // Insert the records into the "currencies" table
     DB::table('currencies')->insert($currencies);
   }
 }
