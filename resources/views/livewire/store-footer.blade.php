@@ -125,7 +125,7 @@
 					<a class="footer__link" href="{{ url("/cookie") }}">Politica de Cookies</a>
 					<a class="footer__link" href="{{ url("/faq") }}">Întrebări Frecvente</a>
 					<a class="footer__link" href="{{ url("/privacy") }}">Politica de confidențialitate</a>
-					<a class="footer__link" href="{{ url("/") }}">Hartă Site</a>
+					<a class="footer__link" href="{{ url("/sitemap.xml") }}">Hartă Site</a>
 					<a class="footer__link" target="blank" href="https://anpc.ro/">ANPC</a>
 
 				</div>
