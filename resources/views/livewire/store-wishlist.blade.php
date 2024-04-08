@@ -43,7 +43,7 @@
             <span>
               @if ($product->product_prices->first() !== null)
               {{ $product->product_prices->first()->value }}
-              {{ $product->product_prices->first()->pricelist->currency->name }}
+              {{ $product->product_prices->first()->pricelist->currency->simbol }}
               @else
               price unavailable
               @endif

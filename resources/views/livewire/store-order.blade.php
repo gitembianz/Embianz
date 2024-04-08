@@ -1522,7 +1522,7 @@
 							<div class="payment__text @if ($rtc) active @endif">
 								<h3>Vei plăti când comanda va fi livrată.</h3>
 								@if (app()->has('global_cash_limit') && app('global_cash_limit') != 0)
-								<span>Limita maxima este de {{ app('global_cash_limit') }} RON</span>
+								<span>Limita maxima este de {{ app('global_cash_limit') }}</span>
 								@endif
 							</div>
 						</div>
@@ -1834,7 +1834,7 @@
 <a href="{{ route("product", ["product" => $cartItem->product->seo_id !== null && $cartItem->product->seo_id !== "" ? $cartItem->product->seo_id : $cartItem->product->id]) }}" target="_blank" class="total__name">{{ $cartItem->product->name }}
 									</a>
 								<span class="total__price">
-									<?php $currency = $cartItem->product->product_prices->first()->pricelist->currency->name; ?>
+									<?php $currency = $cartItem->product->product_prices->first()->pricelist->currency->simbol; ?>
 									{{ number_format($cartItem->quantity * $cartItem->price, 2, ",", ".") }}
 									{{ $currency }}
 								</span>
@@ -2130,7 +2130,7 @@
 									<span class="total__price">
 
 										{{-- {{ $cartItem->product->price }} --}}
-										<?php $currency = $new_order->currency->name; ?>
+										<?php $currency = $new_order->currency->simbol; ?>
 										{{ number_format($cartItem->quantity * $cartItem->price, 2, ",", ".") }}
 										{{ $currency }}
 									</span>

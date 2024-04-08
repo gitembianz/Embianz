@@ -41,7 +41,7 @@
 		<span>
 		@php
 			$price = number_format($product->product_prices->first()->value, 2, ",", ".");
-			$currency = $product->product_prices->first()->pricelist->currency->name;
+			$currency = $product->product_prices->first()->pricelist->currency->simbol;
 		@endphp
 		@if ($price)
 		{{ $price }} {{ $currency }}

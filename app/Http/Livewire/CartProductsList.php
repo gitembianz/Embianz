@@ -30,7 +30,7 @@ class CartProductsList extends Component
         return view('livewire.cart-products-list', [
             'cart' => $this->cart,
             'cartItems' => $this->cartItems,
-            'currency' => $this->cartItems->isNotEmpty() ? $this->cartItems->first()->product->product_prices->first()->pricelist->currency->name : '',
+            'currency' => $this->cartItems->isNotEmpty() ? $this->cartItems->first()->product->product_prices->first()->pricelist->currency->simbol : '',
         ]);
     }
     public function getCartProperty()
@@ -60,7 +60,7 @@ class CartProductsList extends Component
                             'product_prices' => function ($query) {
                                 $query->select('product_id', 'value', 'pricelist_id')
                                     ->with(['pricelist' => function ($query) {
-                                        $query->select('id', 'currency_id')->with('currency:id,name');
+                                        $query->select('id', 'currency_id')->with('currency:id,name,simbol');
                                     }]);
                             }
                         ]);
@@ -158,7 +158,7 @@ class CartProductsList extends Component
     {
         $this->cartId = $cartId;
 
-        if ($this->cart->seen_by_customer) {
+        if ($this->cart && $this->cart->seen_by_customer) {
             $this->cartmodified = true;
         }
     }
