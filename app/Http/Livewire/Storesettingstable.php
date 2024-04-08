@@ -7,6 +7,7 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\File;
 
 
 
@@ -163,6 +164,7 @@ class Storesettingstable extends Component
     $update = $this->settings[$index] ?? NULL;
     if (!is_null($update)) {
       $item = Store_Settings::find($id);
+
       if (array_key_exists('value', $update)) {
         $item->value = $update['value'];
       }
@@ -170,7 +172,23 @@ class Storesettingstable extends Component
         $item->description = $update['description'];
       }
       $item->save();
-      // Correct cache key construction
+      if ($item->parameter == 'app_debug') {
+        if ($item->value == 'true') {
+          $envPath = base_path('.env');
+          $content = File::get($envPath);
+
+          $content = preg_replace('/^APP_DEBUG=.*/m', "APP_DEBUG=true", $content);
+
+          File::put($envPath, $content);
+        } else {
+          $envPath = base_path('.env');
+          $content = File::get($envPath);
+
+          $content = preg_replace('/^APP_DEBUG=.*/m', "APP_DEBUG=false", $content);
+
+          File::put($envPath, $content);
+        }
+      }
       Cache::forget('global_variables');
       session()->flash('notification', [
         'message' => 'Record edited successfully!',
