@@ -29,6 +29,7 @@
 
   route::middleware(['auth', 'usertype'])->group(function () {
 
+    route::get('/forcelogout', [AdminController::class, 'forceLogoutAndForgetUser']);
 
     //Category routes
     route::get('/category', [CategoryController::class, 'category'])->name('category');

@@ -10,7 +10,9 @@ use App\Http\Controllers\Controller;
 use App\Models\CustomScript;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
-
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Redirect;
 
 
 
@@ -57,6 +59,13 @@ class AdminController extends Controller
     return true;
   }
   //admin function
+
+  function forceLogoutAndForgetUser()
+  {
+    Auth::logout();
+    Session::forget('user');
+    return Redirect::to('/');
+  }
 
   public function storesettings()
   {
