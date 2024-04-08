@@ -1,4 +1,7 @@
-<div class="leftbar @if ($showcart) active @if ($aplicabble_voucher) mod @endif @endif" id="basketList">
+<div class="leftbar
+    @if ($showcart) active @else @endif
+    @if ($cartmodified) problem @endif
+    @if ($aplicabble_voucher) mod @endif" id="basketList">
 	<button class="leftbar__hidden--close" wire:click="$set('showcart', false)"></button>
 	<div class="leftbar__content" id="basketContent">
 		<div class="leftbar__top">
@@ -15,9 +18,10 @@
 			<span class="leftbar__empty">Coșul de cumpărături nu conține produse</span>
 		@else
 			<?php $total = 0; ?>
-			<ul class="leftbar__list">
+			<ul wire:ignore="$refresh" class="leftbar__list">
 				<?php
 				$isdisabled = false;
+				$pricemodified = false;
 				$disables = [];
 				$nonquantity = [];
 				?>
@@ -34,8 +38,10 @@
 					    $nonquantity[$index] = true;
 					    $isdisabled = true;
 					}
-
 					?>
+					<script>
+						@this.pricechanged();
+					</script>
 					<li class="leftbar__item">
 						@if ($nonquantity[$index])
 						<div class="leftbar__link" href="{{ route("product", ["product" => $cartItem->product->seo_id !== null && $cartItem->product->seo_id !== "" ? $cartItem->product->seo_id : $cartItem->product->id]) }}">
@@ -195,7 +201,7 @@
   <div class="leftbar__problem">
 		<div class="leftbar__modal--text">De la ultima ta vizita unul sau mai multe produse din coșul tău de cumpărături a fost actualizat. Te rugam să verifici coșul înainte de a plasa comanda.</div>
 		<div class="leftbar__modal--bundle">
-			<button class="leftbar__modal--btn" wire:click="confirm_aplicabble">Am înțeles</button>
+			<button class="leftbar__modal--btn" wire:click="seen">Am înțeles</button>
 		</div>
 	</div>
 </div>

@@ -131,7 +131,18 @@ class WishlistProductsList extends Component
                 $cartItem->increment('quantity');
                 $cart->increment('quantity_amount');
                 $cart->delivery_price = app('global_delivery_price');
-                $cart->sum_amount += $product->product_prices->first()->value;
+                if ($cartItem->price != $product->product_prices->first()->value) {
+                    $cartItem->price = $product->product_prices->first()->value;
+                    $cartItem->save();
+                    $sum_amount = 0;
+                    foreach ($cart->carts as $item) {
+                        $sum_amount = $sum_amount + $item->price * $item->quantity;
+                    }
+                    $cart->sum_amount = $sum_amount;
+                    $cart->seen_by_customer = true;
+                } else {
+                    $cart->sum_amount += $product->product_prices->first()->value;
+                }
                 if ($cart->voucher && $cart->voucher->percent !== null) {
                     $cart->voucher_value = ($cart->voucher->percent / 100) * $cart->sum_amount;
                 } elseif ($cart->voucher && $cart->voucher->value !== null) {
