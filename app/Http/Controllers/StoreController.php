@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Category;
 use App\Http\Controllers\Controller;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class StoreController extends Controller
 {
@@ -26,21 +27,21 @@ class StoreController extends Controller
     if ($categorySlug) {
       if (is_numeric($categorySlug)) {
         $category = Category::find($categorySlug);
-        if (($category->active != true) || ($category->start_date > now()->format('Y-m-d')) || ($category->end_date < now()->format('Y-m-d'))) {
-          return view('store.404');
+        if (($category == null) || ($category->active != true) || ($category->start_date > now()->format('Y-m-d')) || ($category->end_date < now()->format('Y-m-d'))) {
+          throw new NotFoundHttpException();
         }
         $can = $category->id;
       } else {
         $can = $categorySlug;
         $category = Category::where('seo_id', $categorySlug)->first();
-        if (($category->active != true) || ($category->start_date > now()->format('Y-m-d')) || ($category->end_date < now()->format('Y-m-d'))) {
-          return view('store.404');
+        if (($category == null) || ($category->active != true) || ($category->start_date > now()->format('Y-m-d')) || ($category->end_date < now()->format('Y-m-d'))) {
+          throw new NotFoundHttpException();
         }
       }
       if ($category) {
         $data = $category;
       } else {
-        return view('store.404');
+        throw new NotFoundHttpException();
       }
     }
 
@@ -55,8 +56,8 @@ class StoreController extends Controller
 
       $data = Product::where('seo_id', $product)->first();
     }
-    if (($data->active != true) || ($data->start_date > now()->format('Y-m-d')) || ($data->end_date < now()->format('Y-m-d'))) {
-      return view('store.404');
+    if (($data == null) || ($data->active != true) || ($data->start_date > now()->format('Y-m-d')) || ($data->end_date < now()->format('Y-m-d'))) {
+      throw new NotFoundHttpException();
     }
     return view('store.product', ['data' => $data]);
   }
