@@ -12,6 +12,8 @@
   use App\Http\Controllers\StoreController;
   use App\Http\Controllers\TodolistController;
   use Illuminate\Support\Facades\Cache;
+  use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
+  use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 
   /*
@@ -163,3 +165,10 @@
 
   Route::get('/success', [StoreController::class, 'success'])->name('payment_success');
   Route::post('/cancel', [StoreController::class, 'cancel'])->name('payment_cancel');
+
+  //Custom login routes
+  Route::get('/login', function () {
+    throw new NotFoundHttpException();
+  });
+  Route::get('/embadmin/login', [AuthenticatedSessionController::class, 'create'])->name('login');
+  Route::post('/embadmin/login', [AuthenticatedSessionController::class, 'store']);
