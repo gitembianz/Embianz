@@ -13,7 +13,7 @@ class StoreMain extends Component
 
   public function getSliderItemsProperty()
   {
-    return Category::select('id', 'slider_sequence')->where('slider_sequence', '!=', '0')->where('start_date', '<=',  now()->format('Y-m-d'))
+    return Category::select('id', 'slider_sequence', 'seo_id')->where('slider_sequence', '!=', '0')->where('start_date', '<=',  now()->format('Y-m-d'))
       ->where('end_date', '>=',  now()->format('Y-m-d'))->with(['media' => function ($query) {
         $query->select('path', 'name', 'sequence')->where('type', 'original');
       }])->orderby('sequence')->get();
