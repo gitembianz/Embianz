@@ -142,7 +142,9 @@
 
   //Functionality page routes
   route::get('/product/{product}', [StoreController::class, 'show'])->name('product');
-  route::get('/storeproducts/{categorySlug?}', [StoreController::class, 'products'])->name('products');
+  Route::get('/storeproducts/{categorySlug?}', [StoreController::class, 'products'])
+    ->name('products')
+    ->middleware('categorycheck');
   route::get('/search/{slug?}', [StoreController::class, 'search'])->name('search');
 
   //payments routes
