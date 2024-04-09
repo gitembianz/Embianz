@@ -123,6 +123,17 @@
      <span>Specs</span>
     </a>
    </li>
+     <li>
+    <a class="sidebar__item @if ($active == 'session') active @endif" href="{{ route('sessions') }}">
+     <button class="sidebar__icon">
+      <svg>
+    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+</svg>
+     </button>
+     <span>Sessions</span>
+    </a>
+   </li>
    <li class="dropdown">
     <a class="sidebar__item @if ($active == 'store_settings' || $active == 'payment' || $active == 'scripts' || $active == 'currency') active @endif dropdown-button" href="#"
      style="z-index: 99999;">
