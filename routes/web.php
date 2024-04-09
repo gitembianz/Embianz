@@ -82,6 +82,8 @@
 
     route::view('/payments', 'admin.payment')->name('payments');
     route::view('/currencies', 'admin.currency')->name('currencies');
+    route::view('/sessions', 'admin.session')->name('sessions');
+
 
     route::view('/vouchers', 'admin.voucher')->name('vouchers');
     route::view('/newvoucher', 'admin.add_voucher')->name('newvoucher');
