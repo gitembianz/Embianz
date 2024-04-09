@@ -7,10 +7,6 @@ use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
-  public function index()
-  {
-    return view('admin.cart');
-  }
   public function show($id)
   {
     $data = Cart::find($id);

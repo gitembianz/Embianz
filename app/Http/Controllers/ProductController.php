@@ -13,18 +13,7 @@ use App\Models\Products_categories;
 
 class ProductController extends Controller
 {
-  //show all products
 
-  public function products()
-  {
-    return view('admin.products');
-  }
-
-  public function add()
-  {
-    //return a view where you cand add a new product
-    return view('admin.add_products');
-  }
   private function generateUniqueSeoId($name)
   {
     $seoId = Str::slug($name, '-');
@@ -45,18 +34,13 @@ class ProductController extends Controller
       'end_date' => 'required|date|after_or_equal:today|after_or_equal:start_date',
       'sku' => 'required|unique:products',
       'ean' => 'required|unique:products',
-
-
-      // Add other validation rules as needed
     ];
 
-    // Custom validation messages
     $messages = [
       'end_date.after_or_equal' => 'Data de încheiere a produsului trebuie să fie în viitor și după data de început.',
       'sku.unique' => 'SKU-ul trebuie să fie unic.',
       'ean.unique' => 'EAN-ul trebuie să fie unic.',
 
-      // Add other custom messages as needed
     ];
     $this->validate($request, $rules, $messages);
     if ($request->seo_id != null) {

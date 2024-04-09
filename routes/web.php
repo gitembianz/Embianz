@@ -12,6 +12,8 @@
   use App\Http\Controllers\StoreController;
   use App\Http\Controllers\TodolistController;
   use Illuminate\Support\Facades\Cache;
+  use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
+  use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 
   /*
@@ -30,16 +32,18 @@
   route::middleware(['auth', 'usertype'])->group(function () {
 
     route::get('/forcelogout', [AdminController::class, 'forceLogoutAndForgetUser']);
+    route::get('/embadmin', [HomeController::class, 'redirect'])->middleware('auth', 'verified')->name('dashboard');
+    route::get('/corectsequence', [AdminController::class, 'correctMediaSequence']);
 
     //Category routes
-    route::get('/category', [CategoryController::class, 'category'])->name('category');
+    route::view('/category', 'admin.category')->name('category');
+    route::view('/new_categories', 'admin.add_category')->name('newcategory');
     route::post('/add_category', [CategoryController::class, 'add_category']);
     route::get('/show_category/{id}/', [CategoryController::class, 'show'])->name('show_category');
-    route::get('/new_categories', [CategoryController::class, 'new'])->name('newcategory');
 
     //Products routes
-    route::get('/products', [ProductController::class, 'products']);
-    route::get('/add_product', [ProductController::class, 'add'])->name('add_product');
+    route::view('/products', 'admin.products');
+    route::view('/add_product', 'admin.add_products')->name('add_product');
     route::post('/new_products', [ProductController::class, 'new'])->name('new_products');
     route::get('/show_product/{id}/', [ProductController::class, 'show'])->name('show_product');
 
@@ -48,44 +52,43 @@
     route::delete('/{todolist:id}', [TodolistController::class, 'destroy'])->name('destroy');
 
     //carts route
-    route::get('/carts', [CartController::class, 'index'])->name('carts');
+    route::view('/carts', 'admin.cart')->name('carts');
     route::get('/show_cart/{id}/', [CartController::class, 'show'])->name('show_cart');
 
     //specs route
-    route::get('/specs', [SpecsController::class, 'index'])->name('specs');
-    route::get('/newspec', [SpecsController::class, 'create'])->name('newspec');
+    route::view('/specs', 'admin.specs')->name('specs');
+    route::view('/newspec', 'admin.add_spec')->name('newspec');
     route::post('/add_spec', [SpecsController::class, 'store']);
     route::get('/show_spec/{id}/', [SpecsController::class, 'show'])->name('show_spec');
 
     //pricelist route
-    route::get('/pricelists', [PriceListController::class, 'index'])->name('pricelists');
+    route::view('/pricelists', 'admin.pricelists')->name('pricelists');
     route::get('/newpricelist', [PriceListController::class, 'create'])->name('newpricelist');
     route::post('/add_pricelist', [PriceListController::class, 'store']);
     route::get('/show_pricelist/{id}/', [PriceListController::class, 'show'])->name('show_pricelis');
 
-    route::get(
-      '/embadmin',
-      [HomeController::class, 'redirect']
-    )->middleware('auth', 'verified')->name('dashboard');
 
     //general routes
     route::get('/show_script/{id}/', [AdminController::class, 'show_script'])->name('show_script');
-    route::get('/show_account/{id}/', [AdminController::class, 'show_account'])->name('show_account');
-    route::get('/accounts', [AdminController::class, 'accounts'])->name('accounts');
-    route::get('/orders', [AdminController::class, 'orders']);
-    route::get('/show_order/{id}/', [AdminController::class, 'show_order'])->name('show_order');
-    route::get('/payments', [AdminController::class, 'payments'])->name('payments');
-    route::get('/currencies', [AdminController::class, 'currencies'])->name('currencies');
-
-    route::get('/vouchers', [AdminController::class, 'vouchers'])->name('vouchers');
-    route::get('/newvoucher', [AdminController::class, 'create_voucher'])->name('newvoucher');
-    route::post('/add_voucher', [AdminController::class, 'store_voucher']);
-    route::get('/storesettings', [AdminController::class, 'storesettings'])->name('storesettings');
-    route::get('/customscripts', [AdminController::class, 'customscripts'])->name('customscripts');
-    route::get('/new_script', [AdminController::class, 'create_script'])->name('newscript');
     route::post('/add_script', [AdminController::class, 'store_script']);
+    route::view('/new_script', 'admin.add_script')->name('newscript');
+    route::view('/customscripts', 'admin.customscripts')->name('customscripts');
 
-    route::get('/addstoresettings', [AdminController::class, 'addstoresetting'])->name('addstoresetting');
+    route::get('/show_account/{id}/', [AdminController::class, 'show_account'])->name('show_account');
+    route::view('/accounts', 'admin.accounts')->name('accounts');
+
+    route::view('/orders', 'admin.order');
+    route::get('/show_order/{id}/', [AdminController::class, 'show_order'])->name('show_order');
+
+    route::view('/payments', 'admin.payment')->name('payments');
+    route::view('/currencies', 'admin.currency')->name('currencies');
+
+    route::view('/vouchers', 'admin.voucher')->name('vouchers');
+    route::view('/newvoucher', 'admin.add_voucher')->name('newvoucher');
+    route::post('/add_voucher', [AdminController::class, 'store_voucher']);
+
+    route::view('/storesettings', 'admin.store_settings')->name('storesettings');
+    route::view('/addstoresettings', 'admin.add_storesetting')->name('addstoresetting');
 
     //specific routes
     route::get('/cleareverything', function () {
@@ -98,10 +101,6 @@
       Artisan::call('queue:clear');
       Artisan::call('optimize:clear');
       Artisan::call('migrate');
-      Cache::forget('global_variables');
-      Cache::forget('global_statuses');
-      Cache::forget('global_payments');
-      Cache::forget('global_scripts');
       echo "App is optimized and updated";
     });
 
@@ -120,46 +119,54 @@
       Cache::forget('global_statuses');
       Cache::forget('global_payments');
       Cache::forget('global_scripts');
-
       echo 'Cache cleared for global variables';
     });
-
-    route::get('/update', function () {
-      Artisan::call('migrate:fresh --seed');
-      Cache::forget('global_variables');
-      Cache::forget('global_statuses');
-      Cache::forget('global_payments');
-      Cache::forget('global_scripts');
-      echo "New fresh app";
-    });
-    route::get('/corectsequence', [AdminController::class, 'correctMediaSequence']);
   });
 
-
   // Storefront
-  route::get('/', [StoreController::class, 'index'])->name('home');
-  route::get('/cart', [StoreController::class, 'cart'])->name('cart');
-  route::get('/wishlist', [StoreController::class, 'wislist'])->name('wislist');
-  route::get('/complete', [StoreController::class, 'complete'])->name('complete');
-  route::get('/order', [StoreController::class, 'order'])->name('order');
 
+  //simple page routes
+  route::view('/', 'store.home')->name('home');
+  route::view('/cart', 'store.cart')->name('cart');
+  route::view('/wishlist', 'store.wislist')->name('wislist');
+  route::view('/order', 'store.order')->name('order');
+  route::view('/faq', 'store.faq')->name('faq');
+  route::view('/cookie', 'store.cookie')->name('cookie');
+  route::view('/privacy', 'store.privacy')->name('privacy');
+  route::view('/contact', 'store.contact')->name('contact');
+  route::view('/about', 'store.about')->name('about');
+  route::view('/confirm', 'store.confirm')->name('confirm');
+  route::view('/terms', 'store.terms')->name('terms');
+  route::view('/redirect', 'store.redirect')->name('redirect');
+  Route::view('/404', 'store.404')->name('404');
+
+  //Functionality page routes
+  route::get('/product/{product}', [StoreController::class, 'show'])->name('product');
+  route::get('/storeproducts/{categorySlug?}', [StoreController::class, 'products'])->name('products');
+  route::get('/search/{slug?}', [StoreController::class, 'search'])->name('search');
+
+  //payments routes
+  Route::get('/success', [StoreController::class, 'success'])->name('payment_success');
+  Route::post('/cancel', [StoreController::class, 'cancel'])->name('payment_cancel');
+
+
+  //Custom login routes
+  Route::get('/login', function () {
+    throw new NotFoundHttpException();
+  });
+  Route::get('/embadmin/login', [AuthenticatedSessionController::class, 'create'])->name('login');
+  Route::post('/embadmin/login', [AuthenticatedSessionController::class, 'store']);
+
+  //Comments routes
   // Route::get('myorder/{order_number?}', [StoreController::class, 'myorder'])
   //   ->name('my_order')
   //   ->middleware('check.order');
 
-
-  route::get('/product/{product}', [StoreController::class, 'show'])->name('product');
-  route::get('/storeproducts/{categorySlug?}', [StoreController::class, 'products'])->name('products');
-  route::get('/faq', [StoreController::class, 'faq'])->name('faq');
-  route::get('/cookie', [StoreController::class, 'cookie'])->name('cookie');
-  route::get('/privacy', [StoreController::class, 'privacy'])->name('privacy');
-  route::get('/contact', [StoreController::class, 'contact'])->name('contact');
-  route::get('/about', [StoreController::class, 'about'])->name('about');
-  route::get('/confirm', [StoreController::class, 'confirm'])->name('confirm');
-  route::get('/terms', [StoreController::class, 'terms'])->name('terms');
-  route::get('/search/{slug?}', [StoreController::class, 'search'])->name('search');
-  route::get('/404', [StoreController::class, 'notfoundpage'])->name('404');
-  route::get('/redirect', [StoreController::class, 'redirect'])->name('redirect');
-
-  Route::get('/success', [StoreController::class, 'success'])->name('payment_success');
-  Route::post('/cancel', [StoreController::class, 'cancel'])->name('payment_cancel');
+   // route::get('/update', function () {
+    //   Artisan::call('migrate:fresh --seed');
+    //   Cache::forget('global_variables');
+    //   Cache::forget('global_statuses');
+    //   Cache::forget('global_payments');
+    //   Cache::forget('global_scripts');
+    //   echo "New fresh app";
+    // });

@@ -13,10 +13,7 @@ use Illuminate\Support\Str;
 class CategoryController extends Controller
 {
 
-  public function category()
-  {
-    return view('admin.category');
-  }
+
   private function generateUniqueSeoId($name)
   {
     $seoId = Str::slug($name, '-');
@@ -73,10 +70,6 @@ class CategoryController extends Controller
     ]);
   }
 
-  public function new()
-  {
-    return view('admin.add_category');
-  }
 
   public function show($id)
   {
