@@ -58,7 +58,6 @@ class AdminController extends Controller
     }
     return true;
   }
-  //admin function
 
   function forceLogoutAndForgetUser()
   {
@@ -67,19 +66,6 @@ class AdminController extends Controller
     return Redirect::to('/');
   }
 
-  public function storesettings()
-  {
-    return view('admin.store_settings');
-  }
-  public function customscripts()
-  {
-    return view('admin.customscripts');
-  }
-
-  public function accounts()
-  {
-    return view('admin.accounts');
-  }
   public function show_account($id)
   {
     $data = Account::find($id);
@@ -89,28 +75,6 @@ class AdminController extends Controller
   {
     $data = CustomScript::find($id);
     return view('admin.show_script', compact('data'));
-  }
-  public function vouchers()
-  {
-    return view('admin.voucher');
-  }
-  public function payments()
-  {
-    return view('admin.payment');
-  }
-  public function currencies()
-  {
-    return view('admin.currency');
-  }
-
-  public function create_voucher()
-  {
-    return view('admin.add_voucher');
-  }
-
-  public function create_script()
-  {
-    return view('admin.add_script');
   }
 
   public function store_script(Request $request)
@@ -153,7 +117,6 @@ class AdminController extends Controller
 
   public function store_voucher(Request $request)
   {
-    // Validation rules
     $rules = [
       'start_date' => 'required|date',
       'end_date' => 'required|date|after_or_equal:start_date',
@@ -167,23 +130,18 @@ class AdminController extends Controller
         'gt:0'
       ]
     ];
-    // Custom validation messages
     $messages = [
-      'start_date.after_or_equal' => 'The start date must be in the future or present.',
+      'start_date' => 'The start is required.',
       'end_date.after_or_equal' => 'The end date must be in the future and after the start date.',
       'percent' => 'The percent must be between 1-100',
       'value' => 'The value must be bigger than 0'
-
     ];
     $rules['percent_or_value'] = 'required_without_all:percent,value';
-
     $this->validate(
       $request,
       $rules,
       $messages
     );
-
-    // If neither percent nor value is provided, redirect back with an error
     if ($request->filled('percent') && $request->filled('value')) {
       return redirect()->back()->withInput()->with([
         'notification' => [
@@ -213,17 +171,6 @@ class AdminController extends Controller
     ]);
   }
 
-
-
-  public function addstoresetting()
-  {
-    return view('admin.add_storesetting');
-  }
-
-  public function orders()
-  {
-    return view('admin.order');
-  }
   public function show_order($id)
   {
     $data = Order::find($id);

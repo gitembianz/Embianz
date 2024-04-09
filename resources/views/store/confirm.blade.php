@@ -17,7 +17,7 @@
 			Mulțumim pentru completarea formularului.
 		</h1>
 		<p class="section__text">
-			Vei fi redirecționat la pagina principală în 5 secunde...
+			Vei fi redirecționat la pagina principală în câteva secunde...
 		</p>
 		<div class="loadingio-spinner-dual-ball-8eksdpgpyip">
 			<div class="ldio-sl0v29xbypi">
@@ -33,7 +33,7 @@
 		setTimeout(function() {
 			window.location.href =
 				"/";
-		}, 5000);
+		}, 3000);
 	</script>
 	<!---------------------------------------------------------->
 </main>
