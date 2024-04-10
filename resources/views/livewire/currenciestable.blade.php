@@ -112,12 +112,12 @@
           <input type="text" class="table__edit" wire:model.defer="details.{{ $index }}.name">
          @endif
         </td>
-         @elseif($column === 'simbol')
+         @elseif($column === 'symbol')
         <td data-title="{{ $column }}">
          @if ($editeindex !== $index)
-          {{ $item->simbol }}
+          {{ $item->symbol }}
          @else
-          <input type="text" class="table__edit" wire:model.defer="details.{{ $index }}.simbol">
+          <input type="text" class="table__edit" wire:model.defer="details.{{ $index }}.symbol">
          @endif
         </td>
        @else

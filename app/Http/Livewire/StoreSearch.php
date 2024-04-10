@@ -103,7 +103,7 @@ class StoreSearch extends Component
                     'product_prices' => function ($query) {
                         $query->select('product_id', 'value', 'pricelist_id')
                             ->with(['pricelist' => function ($query) {
-                                $query->select('id', 'currency_id')->with('currency:id,name,simbol');
+                                $query->select('id', 'currency_id')->with('currency:id,name,symbol');
                             }]);
                     },
                     'wishlists' => function ($query) {

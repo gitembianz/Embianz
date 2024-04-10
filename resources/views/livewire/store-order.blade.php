@@ -1834,7 +1834,7 @@
 <a href="{{ route("product", ["product" => $cartItem->product->seo_id !== null && $cartItem->product->seo_id !== "" ? $cartItem->product->seo_id : $cartItem->product->id]) }}" target="_blank" class="total__name">{{ $cartItem->product->name }}
 									</a>
 								<span class="total__price">
-									<?php $currency = $cartItem->product->product_prices->first()->pricelist->currency->simbol; ?>
+									<?php $currency = $cartItem->product->product_prices->first()->pricelist->currency->symbol; ?>
 									{{ number_format($cartItem->quantity * $cartItem->price, 2, ",", ".") }}
 									{{ $currency }}
 								</span>
@@ -2130,7 +2130,7 @@
 									<span class="total__price">
 
 										{{-- {{ $cartItem->product->price }} --}}
-										<?php $currency = $new_order->currency->simbol; ?>
+										<?php $currency = $new_order->currency->symbol; ?>
 										{{ number_format($cartItem->quantity * $cartItem->price, 2, ",", ".") }}
 										{{ $currency }}
 									</span>

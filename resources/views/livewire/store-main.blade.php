@@ -133,18 +133,18 @@
 												<span class="card-price discount">
 													@if ($product->product_prices->first())
 														{{ $price }}
-														{{ $product->product_prices->first()->pricelist->currency->simbol }}
+														{{ $product->product_prices->first()->pricelist->currency->symbol }}
 													@endif
 												</span>
 												<span class="card-price oldprice">
 													{{ $product->product_prices->first()->rrp_value }}
-													{{ $product->product_prices->first()->pricelist->currency->simbol }}
+													{{ $product->product_prices->first()->pricelist->currency->symbol }}
 												</span>
 											@else
 												<span>
 													@if ($product->product_prices->first())
 														{{ $price }}
-														{{ $product->product_prices->first()->pricelist->currency->simbol }}
+														{{ $product->product_prices->first()->pricelist->currency->symbol }}
 													@endif
 												</span>
 											@endif
@@ -247,18 +247,18 @@
 												<span class="card-price discount">
 													@if ($product->product_prices->first())
 														{{ $price }}
-														{{ $product->product_prices->first()->pricelist->currency->simbol }}
+														{{ $product->product_prices->first()->pricelist->currency->symbol }}
 													@endif
 												</span>
 												<span class="card-price oldprice">
 													{{ $product->product_prices->first()->rrp_value }}
-													{{ $product->product_prices->first()->pricelist->currency->simbol }}
+													{{ $product->product_prices->first()->pricelist->currency->symbol }}
 												</span>
 											@else
 												<span>
 													@if ($product->product_prices->first())
 														{{ $price }}
-														{{ $product->product_prices->first()->pricelist->currency->simbol }}
+														{{ $product->product_prices->first()->pricelist->currency->symbol }}
 													@endif
 												</span>
 											@endif

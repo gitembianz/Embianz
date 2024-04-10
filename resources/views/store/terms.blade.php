@@ -106,7 +106,7 @@
         <p class="contract__descr">
             Întreg continutul <a href="{{ url("/") }}" target="_blank">www.noren.ro</a>, incluzand dar nelimitandu-se la
             logo-uri, reprezentari stilizate,
-            simboluri comerciale, imagini statice, imagini dinamice, text si/sau continut multimedia prezentate pe
+            symboluri comerciale, imagini statice, imagini dinamice, text si/sau continut multimedia prezentate pe
             site, sunt proprietatea exclusiva a Moldaso Line S.R.L acestuia fiindu-i rezervate toate drepturile
             obtinute in acest sens in mod direct sau indirect (prin licente de utilizare si/sau publicare).
         </p>

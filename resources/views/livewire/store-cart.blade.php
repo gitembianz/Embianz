@@ -52,7 +52,7 @@
                   <div class="basket__text">
                     <h3>{{ $cartItem->product->name }}</h3>
                     <span>
-                      <?php $currency = $cartItem->product->product_prices->first()->pricelist->currency->simbol; ?>
+                      <?php $currency = $cartItem->product->product_prices->first()->pricelist->currency->symbol; ?>
                       @if ($currency !== null)
                         {{ number_format($cartItem->price, 2, ",", ".") }}
                         {{ $currency }}
