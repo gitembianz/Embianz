@@ -4,7 +4,7 @@
 	<?php if ($product->product_prices->count() != 0) {
 	    $price = number_format($product->product_prices->first()->value, 2, ",", ".");
 	    $discount = $product->product_prices->first()->discount != 0 ? true : false;
-	    $currency = $product->product_prices->first()->pricelist->currency->simbol;
+	    $currency = $product->product_prices->first()->pricelist->currency->symbol;
 	} else {
 	    $price = null;
 	    $discount = false;

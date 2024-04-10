@@ -189,7 +189,7 @@
 									<span class="card-price discount">
 										@if ($product->product->product_prices->first())
 											{{ $price }}
-											{{ $product->product->product_prices->first()->pricelist->currency->simbol }}
+											{{ $product->product->product_prices->first()->pricelist->currency->symbol }}
 										@endif
 									</span>
 									<span class="card-price oldprice">
@@ -200,7 +200,7 @@
 									<span>
 										@if ($product->product->product_prices->first())
 											{{ $price }}
-											{{ $product->product->product_prices->first()->pricelist->currency->simbol }}
+											{{ $product->product->product_prices->first()->pricelist->currency->symbol }}
 										@endif
 									</span>
 								@endif

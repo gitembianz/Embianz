@@ -93,7 +93,7 @@ class Currenciestable extends Component
         $item = Currency::find($id);
         $this->details = [
             $index . '.name' => $item->name,
-            $index . '.simbol' => $item->simbol
+            $index . '.symbol' => $item->symbol
         ];
     }
     public function cancel()
@@ -111,9 +111,9 @@ class Currenciestable extends Component
 
                 $item->name = $new['name'];
             }
-            if (array_key_exists('simbol', $new)) {
+            if (array_key_exists('symbol', $new)) {
 
-                $item->simbol = $new['simbol'];
+                $item->symbol = $new['symbol'];
             }
             $item->save();
 

@@ -83,6 +83,8 @@
     route::view('/payments', 'admin.payment')->name('payments');
     route::view('/currencies', 'admin.currency')->name('currencies');
     route::view('/sessions', 'admin.session')->name('sessions');
+    route::view('/wishlists', 'admin.wishlists')->name('wishlists');
+
 
 
     route::view('/vouchers', 'admin.voucher')->name('vouchers');
