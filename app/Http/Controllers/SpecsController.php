@@ -22,10 +22,10 @@ class SpecsController extends Controller
     $spec->save();
     return redirect()->back()->with([
       'notification' => [
-        'message' => 'Record added successfully! Click here  <a href="/show_spec/' . $spec->id . '">' . $spec->name . '</a>',
+        'message' => 'Record added successfully! Click here <a href="' . route("show_spec", ["id" => $spec->id]) . '">' . $spec->name . '</a>',
         'type' => 'success',
         'title' => 'Success'
-      ],
+      ]
     ]);
   }
 

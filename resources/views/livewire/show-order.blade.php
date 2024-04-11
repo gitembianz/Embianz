@@ -4,7 +4,7 @@
 	<div class="item__header">
 		<h1 class="item__header-title" id="title">Order: {{ $order->name }}</h1>
 		<div class="item__header-buttons">
-			<a class="item__header-btn" href="{{ url("orders") }}" data-tooltip-left="Back to all orders">
+			<a class="item__header-btn" href="{{ route("orders") }}" data-tooltip-left="Back to all orders">
 				<svg>
 					<polyline points="11 17 6 12 11 7"></polyline>
 					<polyline points="18 17 13 12 18 7"></polyline>
@@ -69,12 +69,12 @@
 					</div>
 					<div class="item__form-input-close">
 						<div>
-							<a href="/show_account/{{ $order->account_id }}">{{ $order->account->name }}</a>
+							<a href="{{ route("show_account", ['id'=> $order->account_id ])}}">{{ $order->account->name }}</a>
 						</div>
 						<label>Account </label>
 					</div>
 					<div class="item__form-input-close">
-						<div><a href="/show_cart/{{ $order->cart->id }}">{{ $order->cart->name }}</a></div>
+						<div><a href="{{ route("show_cart", ['id'=> $order->cart_id ])}}">{{ $order->cart->name }}</a></div>
 						<label>Cart </label>
 					</div>
 					<div class="item__form-input-close">

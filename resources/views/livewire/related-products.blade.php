@@ -194,7 +194,7 @@
              @endif
              @if ($this->showColumnadd('Name'))
               <td data-title="Name">
-               <a href="/show_product/{{ $product->id }}">
+               <a href="{{ route("show_product", ['id'=> $product->id ])}}">
                 {{ $product->name }}
                </a>
               </td>
@@ -441,7 +441,7 @@
            @endif
            @if ($this->showColumn('Name'))
             <td data-title="Name">
-             <a href="/show_product/{{ $relatedproduct->product_id }}">
+             <a href="{{ route("show_product", ['id'=> $relatedproduct->product_id ])}}">
               {{ $relatedproduct->product->name }}
              </a>
             </td>

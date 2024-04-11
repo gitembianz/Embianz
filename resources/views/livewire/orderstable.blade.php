@@ -152,17 +152,17 @@
 										</div>
 									</td>
 								@elseif($column === "name")
-									<td data-title="Name"><a href="/show_order/{{ $order->id }}">{{ $order->name }}</a></td>
+									<td data-title="Name"><a href="{{ route("show_order", ['id'=> $order->id ])}}">{{ $order->name }}</a></td>
 								@elseif ($column === "account_id")
 									<td data-title="{{ $column }}">
 										@if ($order->account_id)
-											<a href="/show_account/{{ $order->account_id }}">{{ $order->account->name }}</a>
+											<a href="{{ route("show_account", ['id'=> $order->account_id ])}}">{{ $order->account->name }}</a>
 										@endif
 									</td>
 								@elseif ($column === "cart_id")
 									<td data-title="{{ $column }}">
 										@if ($order->cart_id)
-											<a href="/show_cart/{{ $order->cart_id }}">{{ $order->cart->name }}</a>
+											<a href="{{ route("show_cart", ['id'=> $order->cart_id ])}}">{{ $order->cart->name }}</a>
 										@endif
 									</td>
 								@elseif ($column === "currency_id")

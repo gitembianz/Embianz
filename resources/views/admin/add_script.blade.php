@@ -4,7 +4,7 @@
 <x-alert />
 {{-- Page content start --}}
 <section class="content">
- <form action="{{ url('/add_script') }}" method="POST">
+ <form action="{{ route('add_script') }}" method="POST">
   @csrf
   {{-- Item Header --}}
   <div class="item__header">

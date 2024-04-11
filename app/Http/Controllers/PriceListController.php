@@ -31,10 +31,10 @@ class PriceListController extends Controller
     $item->save();
     return redirect()->back()->with([
       'notification' => [
-        'message' => 'Record added successfully! Click here  <a href="/show_pricelist/' . $item->id . '">' . $item->name . '</a>',
+        'message' => 'Record added successfully! Click here <a href="' . route("show_pricelist", ["id" => $item->id]) . '">' . $item->name . '</a>',
         'type' => 'success',
         'title' => 'Success'
-      ],
+      ]
     ]);
   }
 

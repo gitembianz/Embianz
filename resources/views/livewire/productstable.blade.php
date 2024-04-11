@@ -155,7 +155,7 @@
        </td>
        @foreach ($selectedColumns as $column)
         @if ($column === 'name')
-         <td data-title="Name"><a href="/show_product/{{ $product->id }}">{{ $product->name }}</a></td>
+         <td data-title="Name"><a href="{{ route("show_product", ['id'=> $product->id ])}}">{{ $product->name }}</a></td>
         @elseif($column === 'created_at' || $column === 'updated_at')
          <td data-title="{{ $column }}">
           <div class="table__time">
