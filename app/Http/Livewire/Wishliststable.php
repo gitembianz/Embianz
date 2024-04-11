@@ -22,6 +22,7 @@ class Wishliststable extends Component
     public $orderBy = 'id';
     public $orderAsc = true;
     public $selectAll = false;
+    public $removedid;
 
     public function render()
     {
@@ -42,7 +43,7 @@ class Wishliststable extends Component
     public function updatedSelectPage($value)
     {
         if ($value) {
-            $this->checked = $this->wishlists->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+            $this->checked = $this->wishlists->pluck('session_id')->map(fn ($item) => (string) $item)->toArray();
         } else {
             $this->checked = [];
         }
@@ -69,7 +70,7 @@ class Wishliststable extends Component
     public function selectAll()
     {
         $this->selectAll = true;
-        $this->checked = $this->wishlists->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+        $this->checked = $this->wishlists->pluck('session_id')->map(fn ($item) => (string) $item)->toArray();
     }
     public function isChecked($id)
     {
@@ -77,9 +78,55 @@ class Wishliststable extends Component
     }
     public function getWishlistsProperty()
     {
-        return Wishlist::select('session_id', DB::raw('GROUP_CONCAT(product_id) as product_ids'), DB::raw('COUNT(*) as count'))
+        return Wishlist::select(
+            'session_id',
+            DB::raw('GROUP_CONCAT(product_id) as product_ids'),
+            DB::raw('COUNT(*) as count'),
+            DB::raw('MAX(updated_at) as latest_updated_at'),
+            DB::raw('MIN(created_at) as earliest_created_at')
+        )
             ->groupBy('session_id')
             ->limit($this->loadAmount)
             ->get();
+    }
+    public function loadMore()
+    {
+        $this->loadAmount += 10;
+    }
+    public function remove($id)
+    {
+        $this->removedid = $id;
+        $this->dispatchBrowserEvent('show-delete-modal-wishlist');
+    }
+    public function deleteSingleRecord()
+    {
+        $items = Wishlist::where('session_id', $this->removedid)->get();
+        foreach ($items as $item) {
+            $item->delete();
+        }
+        $this->checked = array_diff($this->checked, [$this->removedid]);
+        session()->flash('notification', [
+            'message' => 'Record deleted successfully!',
+            'type' => 'success',
+            'title' => 'Success'
+        ]);
+    }
+    public function confirmItemsRemovalmultiple()
+    {
+        $this->dispatchBrowserEvent('show-delete-modal-multiple-wishlist');
+    }
+    public function deleteRecords()
+    {
+        $items = Wishlist::whereIn('session_id', $this->checked)->get();
+        foreach ($items as $item) {
+            Wishlist::where('session_id', $item->session_id)->delete();
+        }
+        $this->selectPage = false;
+        $this->checked = [];
+        session()->flash('notification', [
+            'message' => 'Records deleted successfully!',
+            'type' => 'success',
+            'title' => 'Success'
+        ]);
     }
 }
