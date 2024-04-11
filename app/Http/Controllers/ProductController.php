@@ -67,18 +67,20 @@ class ProductController extends Controller
       'seo_id' => $seo_id
     ]);
 
-    $defaultcategory = new  Products_categories();
-    $defaultcategory->product_id = $newproduct->id;
-    $defaultcategory->category_id = app('global_default_category');
-    $defaultcategory->save();
+    if (app('global_default_category') != 0) {
+      $defaultcategory = new Products_categories();
+      $defaultcategory->product_id = $newproduct->id;
+      $defaultcategory->category_id = app('global_default_category');
+      $defaultcategory->save();
+    }
 
 
     return redirect()->back()->with([
       'notification' => [
-        'message' => 'Record added successfully! Click here  <a href="/show_product/' . $newproduct->id . '">' . $newproduct->name . '</a>',
+        'message' => 'Record added successfully! Click here <a href="' . route("show_product", ["id" => $newproduct->id]) . '">' . $newproduct->name . '</a>',
         'type' => 'success',
         'title' => 'Success'
-      ],
+      ]
     ]);
   }
 

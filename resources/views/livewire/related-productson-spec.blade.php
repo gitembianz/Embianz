@@ -372,7 +372,7 @@
 										@if ($this->showColumn("Name"))
 											<td data-title="Name">
 												@if ($editedrow !== $index)
-													<a href="/show_product/{{ $prod->product->id }}'">
+													<a href="{{ route("show_product", ['id'=> $prod->product->id ])}}">
 														{{ $prod->product->name }}
 													</a>
 												@else

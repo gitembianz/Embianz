@@ -39,7 +39,7 @@ class Categoriestable extends Component
   {
     $this->tableName = $tableName;
     $this->columns = Schema::getColumnListing($this->tableName);
-    $excludedColumns = ['long_description', 'short_description'];
+    $excludedColumns = ['long_description', 'short_description', 'meta_description'];
     $this->selectedColumns = array_diff($this->columns, $excludedColumns);
     $this->columns = array_diff($this->columns, $excludedColumns);
   }

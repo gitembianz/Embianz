@@ -394,7 +394,7 @@
 											@if ($this->showColumn("Name"))
 												<td data-title="Name">
 													@if ($editedrow !== $index)
-														<a href="/show_pricelist/{{ $prices->pricelist->id }}">
+														<a href="{{ route("show_pricelist", ['id'=> $prices->pricelist->id ])}}">
 															{{ $prices->pricelist->name }}
 														</a>
 													@else

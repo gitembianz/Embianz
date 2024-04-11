@@ -81,7 +81,7 @@
      </g>
     </svg>
    </a>
-   <a class="panel__header--button" href="{{ route('newspec') }}">
+   <a class="panel__header--button" href="{{ route('new_spec') }}">
     <svg>
      <line x1="12" y1="5" x2="12" y2="19"></line>
      <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -140,7 +140,7 @@
       </td>
       @foreach ($selectedColumns as $column)
        @if ($column === 'name')
-        <td data-title="Name"><a href="/show_spec/{{ $item->id }}">{{ $item->name }}</a></td>
+        <td data-title="Name"><a href="{{ route("show_spec", ['id'=> $item->id ])}}">{{ $item->name }}</a></td>
        @elseif($column === 'created_at' || $column === 'updated_at')
         <td data-title="{{ $column }}">
          <div class="table__time">

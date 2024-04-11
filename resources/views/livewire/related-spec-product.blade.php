@@ -413,7 +413,7 @@
           @if ($this->showColumn('Name'))
            <td data-title="Name">
             @if ($editedrow !== $index)
-             <a href="/show_spec/{{ $spec->spec_id }}">
+             <a href="{{ route("show_spec", ['id'=> $spec->spec->id ])}}">
               {{ $spec->spec->name }}
              </a>
             @else

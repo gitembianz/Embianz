@@ -187,7 +187,7 @@
 											@endif
 											@if ($this->showColumn("Product"))
 												<td data-title="Product">
-													<a href="/show_product/{{ $product->product->id }}'">{{ $product->product->name }}</a>
+													<a href="{{ route("show_product", ['id'=> $product->product->id ])}}">{{ $product->product->name }}</a>
 												</td>
 											@endif
 											@if ($this->showColumn("Price"))

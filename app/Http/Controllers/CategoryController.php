@@ -63,7 +63,7 @@ class CategoryController extends Controller
     $data->save();
     return redirect()->back()->with([
       'notification' => [
-        'message' => 'Record added successfully! Click here  <a href="/show_category/' . $data->id . '">' . $data->name . '</a>',
+        'message' => 'Record added successfully! Click here <a href="' . route("show_category", ["id" => $data->id]) . '">' . $data->name . '</a>',
         'type' => 'success',
         'title' => 'Success'
       ]

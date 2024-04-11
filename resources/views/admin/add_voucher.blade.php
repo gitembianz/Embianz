@@ -6,7 +6,7 @@
 {{-- Page content start --}}
 
 <section class="content">
- <form action="{{ url('/add_voucher') }}" method="POST">
+ <form action="{{ route('add_voucher') }}" method="POST">
   @csrf
   {{-- Item Header --}}
   <div class="item__header">
