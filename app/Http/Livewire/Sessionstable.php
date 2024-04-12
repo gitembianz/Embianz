@@ -62,6 +62,10 @@ class Sessionstable extends Component
 
         $this->orderBy = $columnName;
     }
+    public function loadMore()
+    {
+        $this->loadAmount += 10;
+    }
     public function swapSortDirection()
     {
         return $this->orderAsc === '1' ? '0' : '1';
