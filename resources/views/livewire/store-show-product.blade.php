@@ -51,14 +51,14 @@
 				</div>
 			</div>
 			<div class="product-slider__pagination--navigation">
-				<button class="product-slider__pagination--button product-slider__pagination--prev disabled">
+				<button class="product-slider__pagination--button product-slider__pagination--prev disabled" aria-label="Previous">
 					<svg>
 						<polyline points="15 18 9 12 15 6"></polyline>
 					</svg>
 				</button>
 				<div class="product-slider__pagination">
 				</div>
-				<button class="product-slider__pagination--button product-slider__pagination--next disabled">
+				<button class="product-slider__pagination--button product-slider__pagination--next disabled" aria-label="Next">
 					<svg>
 						<polyline points="9 18 15 12 9 6"></polyline>
 					</svg>
@@ -213,7 +213,7 @@
 						@if ($price)
 							@livewire("add-to-cart-button", ["product" => $product->product], key($product->product->id))
 						@else
-							<a class="card-button-disabled" onclick="handleClick()">Indisponibil</a>
+							<a class="card-button-disabled" onclick="handleClick()" aria-label="Indisponibil">Indisponibil</a>
 						@endif
 					</div>
 				</div>
