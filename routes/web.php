@@ -132,7 +132,7 @@
   // Storefront
 
   //simple page routes
-  Route::middleware('cache.headers:public;max_age=31536000;etag')->group(
+  Route::middleware('cache.headers:max_age=31536000')->group(
     function () {
 
       route::view('/', 'store.home')->name('home');
