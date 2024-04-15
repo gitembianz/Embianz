@@ -2,7 +2,7 @@
 		<div class="search__container container" id="searchContent">
 		<div class="search__top">
 		<div class="search__input">
-      <button class="search__button" id="searching">
+      <button class="search__button" id="searching" aria-label="go to search page">
         <svg>
           <circle cx="11" cy="11" r="8"></circle>
           <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
@@ -10,7 +10,7 @@
       </button>
 		<input id="searchInput" name="search" wire:model="search" maxlength="100" type="text" autocomplete="off" placeholder="Caută produse sau categorii...">
 		</div>
-		<button class="search__close" type="button" id="searchClose" wire:click.prevent="close" aria-labautofoel="Close general searchbar">
+		<button class="search__close" type="button" id="searchClose" wire:click.prevent="close" aria-label="close search component">
 		<svg>
 		<line x1="18" y1="6" x2="6" y2="18"></line>
 		<line x1="6" y1="6" x2="18" y2="18"></line>

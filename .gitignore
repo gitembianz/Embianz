@@ -11,4 +11,4 @@ bootstrap
 vendor
 .env
 .htpasswd
-
+.DS_Store

@@ -89,13 +89,14 @@
 	<!--------------------------End  Tags------------------------>
 	<!---------------------------------------------------------->
 	<!-------------------------Catalogue------------------------>
+  <h2></h2>
 	<section class="catalogue container">
 		@if ($products->isEmpty())
 			<p>Nu au fost produse gasite</p>
 		@else
 			@foreach ($products as $index => $product)
 				<div class="product">
-					<div @if ($loop->last) id="last_record" @endif class="card" role="listitem">
+					<div @if ($loop->last) id="last_record" @endif class="card" >
 						<a href="{{ route("product", ["product" => $product->seo_id !== null && $product->seo_id !== "" ? $product->seo_id : $product->id]) }}">
 							@if ($product->media->first() != null)
 								<img class="card-image" src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}" alt="{{ $product->media->first()->name }} {{ $product->name }}">

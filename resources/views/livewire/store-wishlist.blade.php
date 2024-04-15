@@ -4,6 +4,7 @@
   <!------------------- Basket Section ------------------->
   <div class="section__header container">
    <h1 class="section__title">Produse favorite</h1>
+   <h2></h2>
    <p class="section__text">
     Vezi produsele alese mai jos
    </p>
@@ -68,7 +69,7 @@
           </path>
           </svg>
         </button>
-       
+
           @if ($disabled[$index])
             <div class="item__product--disabled">
               <span>Produs Indisponibil</span>

@@ -74,9 +74,9 @@
 
 			<section>
 				<div class="card-slider container new-slider">
-					<div class="card-slider__wrapper new-slider__wrapper" role="list">
+					<div class="card-slider__wrapper new-slider__wrapper" >
 						@foreach ($popproducts as $product)
-							<div class="card-slider__slide new-slider__slide card" role="listitem">
+							<div class="card-slider__slide new-slider__slide card">
 								<a draggable="false" href="{{ route("product", ["product" => $product->seo_id !== null && $product->seo_id !== "" ? $product->seo_id : $product->id]) }}">
 									@if ($product->media->first() != null)
 										<img class="card-image" src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}" alt="{{ $product->media->first()->name }} {{ $product->name }}">
@@ -188,9 +188,9 @@
 
 			<section>
 				<div class="card-slider container popular-slider">
-					<div class="card-slider__wrapper popular-slider__wrapper" role="list">
+					<div class="card-slider__wrapper popular-slider__wrapper" >
 						@foreach ($newproducts as $product)
-							<div class="card-slider__slide popular-slider__slide card" role="listitem">
+							<div class="card-slider__slide popular-slider__slide card" >
 								<a draggable="false" href="{{ route("product", ["product" => $product->seo_id !== null && $product->seo_id !== "" ? $product->seo_id : $product->id]) }}">
 									@if ($product->media->first() != null)
 										<img class="card-image" src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}" alt="{{ $product->media->first()->name }} {{ $product->name }}">
@@ -292,43 +292,6 @@
 		<!---------------------- Support Center -------------------->
 		<x-support />
 		<!-------------------- End Support Center ------------------>
-		<!---------------------------------------------------------->
-		{{-- <script>
-			// Sending the special Event for Each card to GTM
-			let cards = document.querySelectorAll('.card');
-
-			cards.forEach(function(card) {
-				let addToCartButton = card.querySelector('.card__button');
-				let addToWishButton = card.querySelector('.favorite__btn');
-
-				addToCartButton.addEventListener('click', function() {
-					let cardName = card.querySelector('.card-title').innerText.trim();
-					let cardPrice = card.querySelector('.card-price').innerText.trim();
-
-					if (typeof dataLayer !== 'undefined' && cardName && cardPrice) {
-						dataLayer.push({
-							'event': 'adaugareInCos',
-							'cardName': cardName,
-							'cardPrice': cardPrice
-						});
-					}
-				});
-
-				addToWishButton.addEventListener('click', function() {
-					let cardName = card.querySelector('.card-title').innerText.trim();
-					let cardPrice = card.querySelector('.card-price').innerText.trim();
-
-					if (typeof dataLayer !== 'undefined' && cardName && cardPrice) {
-						dataLayer.push({
-							'event': 'adaugareInFavorite',
-							'cardName': cardName,
-							'cardPrice': cardPrice
-						});
-					}
-				});
-			});
-		</script> --}}
-
 		<!---------------------------------------------------------->
 		<!--------------------- support button --------------------->
 		<x-help-button />

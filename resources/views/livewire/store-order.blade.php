@@ -1527,7 +1527,7 @@
 							</div>
 						</div>
 					@endif
-					
+
 					@if ($ordin["active"] != 0)
 						@if ($juridic)
 							<div class="payment">
@@ -1827,7 +1827,7 @@
 									<a href="{{ route("product", ["product" => $cartItem->product->seo_id !== null && $cartItem->product->seo_id !== "" ? $cartItem->product->seo_id : $cartItem->product->id]) }}" target="_blank" class="total__name">{{ $cartItem->product->name }}
 									</a>
 								<span class="item__product--error">Stoc disponibil pentru acest produs: {{ $cartItem->product->quantity }}</span>
-						
+
 						<a class="item__product--link" href="{{ url("/cart") }}">Modifică cantitatea</a>
 								</div>
 								@else
@@ -2165,7 +2165,7 @@
 							<div class="total__item">
 								<span>Total</span>
 
-								<span>{{ number_format($new_order->final_amount, 2, ",", ".") }}
+								<span id="final__amount">{{ number_format($new_order->final_amount, 2, ",", ".") }}
 									{{ $currency }}
 								</span>
 							</div>
@@ -2187,6 +2187,17 @@
               });
             };
 					</script>
+          <script>
+            const finalAmount = document.getElementById("final__amount").innerText;
+            // console.log(finalAmount)
+
+            if(typeof dataLayer !== 'undefined') {
+              dataLayer.push({
+                'event': 'finalAmount',
+                'amount': finalAmount
+              })
+            }
+          </script>
 				@endif
 				<!------------------- End Step Final ------------------->
 				<!------------------------------------------------------>
