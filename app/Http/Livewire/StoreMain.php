@@ -13,10 +13,10 @@ class StoreMain extends Component
 
   public function getSliderItemsProperty()
   {
-    return Category::select('id', 'slider_sequence')->where('slider_sequence', '!=', '0')->where('start_date', '<=',  now()->format('Y-m-d'))
+    return Category::select('id', 'slider_sequence', 'seo_id')->where('slider_sequence', '!=', '0')->where('start_date', '<=',  now()->format('Y-m-d'))
       ->where('end_date', '>=',  now()->format('Y-m-d'))->with(['media' => function ($query) {
         $query->select('path', 'name', 'sequence')->where('type', 'original');
-      }])->orderby('sequence')->get();
+      }])->orderby('slider_sequence')->get();
   }
 
   private function getSessionId()
@@ -39,7 +39,7 @@ class StoreMain extends Component
       'product_prices' => function ($query) {
         $query->select('product_id', 'value', 'discount', 'rrp_value', 'pricelist_id')
           ->with(['pricelist' => function ($query) {
-            $query->select('id', 'currency_id')->with('currency:id,name,simbol');
+            $query->select('id', 'currency_id')->with('currency:id,name,symbol');
           }]);
       },
       'wishlists' => function ($query) {
@@ -64,7 +64,7 @@ class StoreMain extends Component
       'product_prices' => function ($query) {
         $query->select('product_id', 'value', 'discount', 'rrp_value', 'pricelist_id')
           ->with(['pricelist' => function ($query) {
-            $query->select('id', 'currency_id')->with('currency:id,name,simbol');
+            $query->select('id', 'currency_id')->with('currency:id,name,symbol');
           }]);
       },
       'wishlists' => function ($query) {

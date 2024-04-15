@@ -1,5 +1,17 @@
 <script>
  //script form modals
+ window.addEventListener('show-delete-modal-sessions', event => {
+  document.getElementById('confirmationmodalsessions').style.display = 'flex';
+ });
+ window.addEventListener('show-delete-modal-multiple-sessions', event => {
+  document.getElementById('confirmationmodalmultiplesessions').style.display = 'flex';
+ });
+ window.addEventListener('show-delete-modal-wishlist', event => {
+  document.getElementById('confirmationmodalwislists').style.display = 'flex';
+ });
+ window.addEventListener('show-delete-modal-multiple-wishlist', event => {
+  document.getElementById('confirmationmodalmultiplewishlists').style.display = 'flex';
+ });
  window.addEventListener('show-delete-modal', event => {
   document.getElementById('confirmationmodal').style.display = 'flex';
  });

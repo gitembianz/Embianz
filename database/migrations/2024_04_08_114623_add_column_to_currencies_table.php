@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('currencies', function (Blueprint $table) {
-            $table->string('simbol')->after('name')->nullable();
+            $table->string('symbol')->after('name')->nullable();
         });
     }
 

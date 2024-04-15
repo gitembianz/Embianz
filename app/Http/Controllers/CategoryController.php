@@ -13,10 +13,7 @@ use Illuminate\Support\Str;
 class CategoryController extends Controller
 {
 
-  public function category()
-  {
-    return view('admin.category');
-  }
+
   private function generateUniqueSeoId($name)
   {
     $seoId = Str::slug($name, '-');
@@ -66,17 +63,13 @@ class CategoryController extends Controller
     $data->save();
     return redirect()->back()->with([
       'notification' => [
-        'message' => 'Record added successfully! Click here  <a href="/show_category/' . $data->id . '">' . $data->name . '</a>',
+        'message' => 'Record added successfully! Click here <a href="' . route("show_category", ["id" => $data->id]) . '">' . $data->name . '</a>',
         'type' => 'success',
         'title' => 'Success'
       ]
     ]);
   }
 
-  public function new()
-  {
-    return view('admin.add_category');
-  }
 
   public function show($id)
   {

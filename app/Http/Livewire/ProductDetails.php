@@ -39,7 +39,7 @@ class ProductDetails extends Component
                 'product_prices' => function ($query) {
                     $query->select('product_id', 'value', 'tva_percent', 'pricelist_id', 'discount', 'rrp_value')
                         ->with(['pricelist' => function ($query) {
-                            $query->select('id', 'currency_id')->with('currency:id,name,simbol');
+                            $query->select('id', 'currency_id')->with('currency:id,name,symbol');
                         }]);
                 },
                 'wishlists' => function ($query) {

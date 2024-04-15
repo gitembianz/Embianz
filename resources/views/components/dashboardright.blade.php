@@ -45,7 +45,7 @@
 			</div>
 			<div class="card_todo bg-white br-xs">
 				<div class="card_todo_body p-1">
-					<form action="{{ route("store") }}" method="post" autocomplete="off">
+					<form action="{{ route("new_todo") }}" method="post" autocomplete="off">
 						@csrf
 						<div class="input-grups">
 							<input type="text" name="content" class="input_style p-1 br-xs" placeholder="Add a new task">
@@ -66,7 +66,7 @@
 							<ul class="list-group">
 								@foreach ($todolists as $todolist)
 									<li class="list-task-item talign-c">
-										<form class="formtodo" action="{{ route("destroy", $todolist->id) }}" method="post">
+										<form class="formtodo" action="{{ route("delete_todo", $todolist->id) }}" method="post">
 											<span class="text-black bg-white fw-500 talign-l pl-2" style="display: inline-block; width: 200px; word-wrap: break-word;">{{ $todolist->content }} </span>
 											@csrf
 											@method("delete")

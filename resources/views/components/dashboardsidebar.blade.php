@@ -22,7 +22,7 @@
     </a>
    </li>
    <li>
-    <a class="sidebar__item @if ($active == 'category') active @endif" href="{{ url('category') }}">
+    <a class="sidebar__item @if ($active == 'category') active @endif" href="{{ route('category') }}">
      <button class="sidebar__icon">
       <svg>
        <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
@@ -34,7 +34,7 @@
     </a>
    </li>
    <li>
-    <a class="sidebar__item @if ($active == 'product') active @endif" href="{{ url('products') }}">
+    <a class="sidebar__item @if ($active == 'product') active @endif" href="{{ route('all_products') }}">
      <button class="sidebar__icon">
       <svg>
        <line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line>
@@ -86,7 +86,7 @@
     </a>
    </li>
    <li>
-    <a class="sidebar__item @if ($active == 'order') active @endif" href="{{ url('/orders') }}">
+    <a class="sidebar__item @if ($active == 'order') active @endif" href="{{ route('orders') }}">
      <button class="sidebar__icon">
       <svg>
        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
@@ -110,7 +110,7 @@
     </a>
    </li>
    <li>
-    <a class="sidebar__item @if ($active == 'spec') active @endif" href="{{ url('specs') }}">
+    <a class="sidebar__item @if ($active == 'spec') active @endif" href="{{ route('specs') }}">
      <button class="sidebar__icon">
       <svg>
        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
@@ -121,6 +121,27 @@
       </svg>
      </button>
      <span>Specs</span>
+    </a>
+   </li>
+    <li>
+    <a class="sidebar__item @if ($active == 'wishlist') active @endif" href="{{ route('wishlists') }}">
+     <button class="sidebar__icon">
+      <svg>
+    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+</svg>
+     </button>
+     <span>Wishlists</span>
+    </a>
+   </li>
+     <li>
+    <a class="sidebar__item @if ($active == 'session') active @endif" href="{{ route('sessions') }}">
+     <button class="sidebar__icon">
+      <svg>
+    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+</svg>
+     </button>
+     <span>Sessions</span>
     </a>
    </li>
    <li class="dropdown">

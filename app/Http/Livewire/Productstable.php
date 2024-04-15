@@ -43,7 +43,7 @@ class Productstable extends Component
     $this->columns = Schema::getColumnListing($this->tableName);
 
     // Exclude 'long_description' and 'short_description' columns
-    $excludedColumns = ['long_description', 'short_description'];
+    $excludedColumns = ['long_description', 'short_description', 'meta_description'];
     $this->selectedColumns = array_diff($this->columns, $excludedColumns);
     $this->columns = array_diff($this->columns, $excludedColumns);
   }

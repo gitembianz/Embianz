@@ -151,7 +151,7 @@
 							</td>
 							@foreach ($selectedColumns as $column)
 								@if ($column === "name")
-									<td data-title="Name"><a href="/show_account/{{ $account->id }}">{{ $account->name }}</a>
+									<td data-title="Name"><a href="{{ route("show_account", ['id'=> $account->id ])}}">{{ $account->name }}</a>
 									</td>
 								@elseif($column === "created_at" || $column === "updated_at")
 									<td data-title="{{ $column }}">

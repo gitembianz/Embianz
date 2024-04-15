@@ -17,7 +17,7 @@ class CurrencySeeder extends Seeder
     $currencies = [
       [
         'name' => 'RON',
-        'simbol' => 'lei',
+        'symbol' => 'lei',
         'createdby' => 'admin',
         'lastmodifiedby' => 'admin',
         'created_at' => $currentTime,
@@ -25,7 +25,7 @@ class CurrencySeeder extends Seeder
       ],
       [
         'name' => 'EUR',
-        'simbol' => '€',
+        'symbol' => '€',
         'createdby' => 'admin',
         'lastmodifiedby' => 'admin',
         'created_at' => $currentTime,
@@ -33,7 +33,7 @@ class CurrencySeeder extends Seeder
       ],
       [
         'name' => 'USD',
-        'simbol' => '$',
+        'symbol' => '$',
         'createdby' => 'admin',
         'lastmodifiedby' => 'admin',
         'created_at' => $currentTime,
@@ -41,7 +41,7 @@ class CurrencySeeder extends Seeder
       ],
       [
         'name' => 'MDL',
-        'simbol' => 'lei',
+        'symbol' => 'lei',
         'createdby' => 'admin',
         'lastmodifiedby' => 'admin',
         'created_at' => $currentTime,
@@ -49,7 +49,7 @@ class CurrencySeeder extends Seeder
       ],
       [
         'name' => 'GBP',
-        'simbol' => '£',
+        'symbol' => '£',
         'createdby' => 'admin',
         'lastmodifiedby' => 'admin',
         'created_at' => $currentTime,

@@ -259,7 +259,7 @@
 											@endif
 											@if ($this->showColumn("Name"))
 												<td data-title="Name">
-													<a href="/show_order/{{ $order->id }}">
+													<a href="{{ route("show_order", ['id'=> $order->id ])}}">
 														{{ $order->name }}
 													</a>
 												</td>
@@ -271,7 +271,7 @@
 											@endif
 											@if ($this->showColumn("Cart"))
 												<td data-title="Cart">
-													<a href="/show_cart/{{ $order->cart_id }}">
+													<a href="{{ route("show_cart", ['id'=> $order->cart_id ])}}">
 														{{ $order->cart->name }}
 													</a>
 												</td>
@@ -288,7 +288,7 @@
 											@endif
 											@if ($this->showColumn("Currency"))
 												<td data-title="Currency">
-													{{ $order->currency->->name }}
+													{{ $order->currency->name }}
 												</td>
 											@endif
 											@if ($this->showColumn("Status"))

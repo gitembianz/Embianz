@@ -1,15 +1,16 @@
 <div>
  <x-alert />
+ <x-loading />
  {{-- delete single record --}}
- <div class="modal" id="confirmationmodal">
+ <div class="modal" id="confirmationmodalsessions">
   <div class="modal-content">
    <h1 class="modal-content-title">
     {{ __('Are you sure to delete this record?') }}
    </h1>
    <input wire:click.prevent="deleteSingleRecord()" class="modal-content-btn submit" type="button" value="Confirm">
    <input class="modal-content-btn delete" type="button"
-    onclick="document.getElementById('confirmationmodal').style.display='none'" value="Cancel">
-   <span class="modal-content-btn delete" onclick="document.getElementById('confirmationmodal').style.display='none'">
+    onclick="document.getElementById('confirmationmodalsessions').style.display='none'" value="Cancel">
+   <span class="modal-content-btn delete" onclick="document.getElementById('confirmationmodalsessions').style.display='none'">
     <svg>
      <line x1="18" y1="6" x2="6" y2="18"></line>
      <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -18,16 +19,16 @@
   </div>
  </div>
  {{-- delete myltiple records --}}
- <div class="modal" id="confirmationmodalmultiple">
+ <div class="modal" id="confirmationmodalmultiplesessions">
   <div class="modal-content">
    <h1 class="modal-content-title">
     {{ __('Are you sure to delete those records?') }}
    </h1>
    <input wire:click.prevent="deleteRecords()" class="modal-content-btn submit" type="button" value="Confirm">
    <input class="modal-content-btn delete" type="button"
-    onclick="document.getElementById('confirmationmodalmultiple').style.display='none'" value="Cancel">
+    onclick="document.getElementById('confirmationmodalmultiplesessions').style.display='none'" value="Cancel">
    <span class="modal-content-btn delete"
-    onclick="document.getElementById('confirmationmodalmultiple').style.display='none'">
+    onclick="document.getElementById('confirmationmodalmultiplesessions').style.display='none'">
     <svg>
      <line x1="18" y1="6" x2="6" y2="18"></line>
      <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -38,7 +39,7 @@
  {{-- Header of the table --}}
  <div class="panel__header">
   <h1 class="panel__header--title">
-   {{ __('Specifications') }}
+   {{ __('Sessions') }}
   </h1>
   <input class="panel__header--input" type="text" wire:model.debounce.300ms="search" placeholder="Search...">
   <div class="panel__header--bundle">
@@ -60,7 +61,7 @@
    </div>
    <div class="dropdown none" @if ($checked) style="display: unset" @endif>
     <button class="dropdown-button none" @if ($checked) style="display: flex" @endif>With
-     With checked({{ count($checked) }})</button>
+     checked({{ count($checked) }})</button>
     @if ($checked)
      <div class="dropdown-list">
       <button class="dropdown-item delete" style="width: 150px" type="button"
@@ -81,12 +82,6 @@
      </g>
     </svg>
    </a>
-   <a class="panel__header--button" href="{{ route('new_spec') }}">
-    <svg>
-     <line x1="12" y1="5" x2="12" y2="19"></line>
-     <line x1="5" y1="12" x2="19" y2="12"></line>
-    </svg>
-   </a>
   </div>
   @if ($selectPage && $selectAll)
    <div class="panel__header--checked">
@@ -103,73 +98,70 @@
   @endif
  </div>
  {{-- Table --}}
- <table class="table">
-  <thead>
-   <tr>
-    <th>
-     <input type="checkbox" wire:model="selectPage">
-    </th>
-    @foreach ($selectedColumns as $column)
-     @if ($this->showColumn($column))
-      <th wire:click="sortBy('{{ $column }}')">
-       <button class="table__header--btn"
-        @if ($orderBy === $column && $orderAsc === '1') data-symbol="up"
-                @else data-symbol="down" @endif>
-        {{ $column }}
-        <svg>
-         <line x1="12" y1="5" x2="12" y2="19"></line>
-         <polyline points="19 12 12 19 5 12"></polyline>
-        </svg>
-       </button>
-      </th>
-     @endif
-    @endforeach
-    <th></th>
-   </tr>
-  </thead>
-  <tbody>
-   @if ($specs->isEmpty())
-    <tr>
-     <td class="table__empty" colspan="{{ count($selectedColumns) + 3 }}">No record found.</td>
-    </tr>
-   @else
-    @foreach ($specs as $item)
-     <tr class="@if ($this->isChecked($item->id)) table__row--selected @endif">
-      <td data-title="Check">
-       <input type="checkbox" value="{{ $item->id }}" wire:model="checked">
-      </td>
-      @foreach ($selectedColumns as $column)
-       @if ($column === 'name')
-        <td data-title="Name"><a href="{{ route("show_spec", ['id'=> $item->id ])}}">{{ $item->name }}</a></td>
-       @elseif($column === 'created_at' || $column === 'updated_at')
-        <td data-title="{{ $column }}">
-         <div class="table__time">
-          <svg>
-           <circle cx="12" cy="12" r="10"></circle>
-           <polyline points="12 6 12 12 16 14"></polyline>
-          </svg>
-          {{ $item->$column }}
-         </div>
-        </td>
+ <div>
+
+     <table class="table">
+      <thead>
+       <tr>
+        <th>
+         <input type="checkbox" wire:model="selectPage">
+        </th>
+        @foreach ($selectedColumns as $column)
+        @if ($column == 'payload')
+              <?php continue; ?>
+         @elseif ($this->showColumn($column))
+          <th wire:click="sortBy('{{ $column }}')">
+           <button class="table__header--btn"
+            @if ($orderBy === $column && $orderAsc === '1') data-symbol="up"
+                    @else data-symbol="down" @endif>
+            {{ $column }}
+            <svg>
+             <line x1="12" y1="5" x2="12" y2="19"></line>
+             <polyline points="19 12 12 19 5 12"></polyline>
+            </svg>
+           </button>
+          </th>
+         @endif
+        @endforeach
+        <th></th>
+       </tr>
+      </thead>
+      <tbody>
+       @if ($sessions->isEmpty())
+        <tr>
+         <td class="table__empty" colspan="{{ count($selectedColumns) + 3 }}">No record found.</td>
+        </tr>
        @else
-        <td data-title="{{ $column }}">{{ $item->$column }}</td>
+        @foreach ($sessions as $index => $item)
+         <tr @if ($loop->last) id="last_record" @endif
+          class="@if ($this->isChecked($item->id)) table__row--selected @endif">
+          <td data-title="Check">
+           <input type="checkbox" value="{{ $item->id }}" wire:model="checked">
+          </td>
+          @foreach ($selectedColumns as $column)
+          @if ($column == 'payload')
+              <?php continue; ?>
+          @endif
+          <td data-title="{{ $column }}">{{ $item->$column }}</td>
+          @endforeach
+          <td data-title="Action" class="table__buttons">
+           <div class="table__buttons">
+             <button class="delete" wire:click="remove('{{ $item->id }}')">
+              <svg>
+               <polyline points="3 6 5 6 21 6"></polyline>
+               <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+               </path>
+              </svg>
+             </button>
+           </div>
+          </td>
+         </tr>
+        @endforeach
        @endif
-      @endforeach
-      <td data-title="Action" class="table__buttons">
-       <button class="delete" wire:click.prevent="confirmItemRemoval({{ $item->id }})">
-        <svg>
-         <polyline points="3 6 5 6 21 6"></polyline>
-         <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-         </path>
-        </svg>
-       </button>
-      </td>
-     </tr>
-    @endforeach
-   @endif
-  </tbody>
- </table>
- @if ($loadAmount <= count($specs))
+      </tbody>
+     </table>
+ </div>
+ @if ($loadAmount <= count($sessions))
   <div class="table__load-more" wire:click="loadMore">
    Load more
   </div>
