@@ -193,8 +193,12 @@ class Storesettingstable extends Component
         if (preg_match('/^[-+]?([0-9]|1[0-2])$/', $item->value)) {
           $envPath = base_path('.env');
           $content = File::get($envPath);
-          $content = preg_replace('/^APP_TIMEZONE=.*/m', "APP_TIMEZONE=ETC/GMT" . $item->value, $content);
-
+          if (strpos($item->value, '-') !== false) {
+            $adjustedValue = str_replace('-', '+', $item->value);
+          } elseif (strpos($item->value, '+') !== false) {
+            $adjustedValue = str_replace('+', '-', $item->value);
+          }
+          $content = preg_replace('/^APP_TIMEZONE=.*/m', "APP_TIMEZONE=Etc/GMT" . $adjustedValue, $content);
           File::put($envPath, $content);
         }
       }
