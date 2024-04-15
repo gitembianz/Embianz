@@ -217,7 +217,9 @@
      @if ($this->showColumn('Value'))
       <td data-title="Value">
        @if ($indexstoresettings !== $index)
-        {{ $store->value }}
+        {{ $store->value }}@if ($store->parameter == 'time_zone')
+    (time is: {{ now() }}) - Please refresh to update after the edit
+@endif
        @else
         <input type="text" class="table__edit" wire:model.defer="settings.{{ $index }}.value">
        @endif

@@ -189,6 +189,15 @@ class Storesettingstable extends Component
           File::put($envPath, $content);
         }
       }
+      if ($item->parameter == 'time_zone') {
+        if (preg_match('/^[-+]?([0-9]|1[0-2])$/', $item->value)) {
+          $envPath = base_path('.env');
+          $content = File::get($envPath);
+          $content = preg_replace('/^APP_TIMEZONE=.*/m', "APP_TIMEZONE=ETC/GMT" . $item->value, $content);
+
+          File::put($envPath, $content);
+        }
+      }
       Cache::forget('global_variables');
       session()->flash('notification', [
         'message' => 'Record edited successfully!',
