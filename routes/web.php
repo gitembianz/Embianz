@@ -98,6 +98,7 @@
       //specific routes
       route::get('/cleareverything', function () {
         Artisan::call('cache:clear');
+        Artisan::call('route:cache');
         Artisan::call('clear-compiled');
         Artisan::call('view:clear');
         Artisan::call('config:cache');
