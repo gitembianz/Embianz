@@ -56,10 +56,10 @@ class StoreProducts extends Component
     $this->specification = Specs::get();
     if ($category) {
       $decodedCategory = json_decode(htmlspecialchars_decode($category), true);
-      $this->category = Category::select('id', 'name', 'long_description')->find($decodedCategory['id']);
+      $this->category = Category::select('id', 'name', 'long_description', 'seo_id')->find($decodedCategory['id']);
     } else {
       if (app()->has('global_default_category')) {
-        $this->category = Category::select('id', 'name', 'long_description')->find(app('global_default_category')) ?? null;
+        $this->category = Category::select('id', 'name', 'long_description', 'seo_id')->find(app('global_default_category')) ?? null;
       }
     }
     $filteredValues = session()->get('filtered_values', []);
