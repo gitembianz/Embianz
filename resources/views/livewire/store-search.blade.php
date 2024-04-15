@@ -19,7 +19,7 @@
 	<!---------------------------------------------------------->
   <section class="controls container controls--search">
     <input class="controls__search" type="text" maxlength="100" autocomplete="off" name="search" id="search" wire:model="search" placeholder="Caută produse sau categorii...">
-    <h1 class="section__title">Rezultatele căutării:</h1>
+    <h2 class="section__title">Rezultatele căutării:</h2>
     <div>
       <button class="tab__button tab__button--long @if ($showproducts) active @endif" wire:click="toggle('products')">
         Produse (@if ($products->isNotEmpty())
@@ -46,7 +46,7 @@
 		@else
 			@foreach ($products as $index => $product)
 				<div class="product">
-					<div @if ($loop->last) id="last_record" @endif class="card" role="listitem">
+					<div @if ($loop->last) id="last_record" @endif class="card" >
 						<a href="{{ route("product", ["product" => $product->seo_id !== null && $product->seo_id !== "" ? $product->seo_id : $product->id]) }}">
 							@if ($product->media->first() != null)
 								<img class="card-image" src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}" alt="{{ $product->media->first()->name }} {{ $product->name }}">
@@ -142,7 +142,7 @@
 			<x-lazy />
 		@endif
 	</section>
-	
+
     @endif
 
     @if ($showcategories)

@@ -97,12 +97,13 @@
 		<!--------------------- End Product details -------------------->
 		<!------------------------------------------------------>
 	</section>
+  <h2></h2>
 	<!---------------------------------------------------------->
 	<!------------------- Section Description ------------------>
 	@if ($product->related_product->filter(fn($item) => !is_null($item["product"]))->isNotEmpty())
 		<section>
 			<div class="section__header container">
-				<h1 class="section__title">Descoperă și alte opțiuni similare</h1>
+				<h2 class="section__title">Descoperă și alte opțiuni similare</h2>
 				<p class="section__text">
 					În căutarea perfectă? Explorează și alte propuneri care te-ar putea interesa.
 					Descoperă produse similare, perfecte pentru gusturile tale și nevoile tale. În continuare, vei găsi
@@ -134,7 +135,7 @@
 				@foreach ($product->related_product->sortByDesc("product.popularity") as $product)
 				@if (($product->product) && ($product->product->active == true) && ($product->product->end_date >=  now()->format('Y-m-d')) && ($product->product->start_date <=  now()->format('Y-m-d')))
 
-				<div class="card" role="listitem">
+				<div class="card" >
 					<a href="{{ route("product", $product->product->seo_id) }}">
 						@if ($product->product->media->first() != null)
 							<img class="card-image" src="/{{ $product->product->media->first()->path }}{{ $product->product->media->first()->name }}" alt="{{ $product->product->media->first()->name }} {{ $product->product->name }}">
