@@ -16,9 +16,9 @@
  <link rel="icon" type="image/x-icon" href="/images/store/svg/noren_favicon.svg">
 
  <link rel="canonical" href="{{ url('/' . $canonical) }}">
- <link rel="preload" href="/dist/css/loading-screen.css" as="style">
+ {{-- <link rel="preload" href="/dist/css/loading-screen.css" as="style"> --}}
  <link rel="preload" href="/dist/css/store.css" as="style">
- <link rel="stylesheet" href="/dist/css/loading-screen.css">
+ {{-- <link rel="stylesheet" href="/dist/css/loading-screen.css"> --}}
  <link rel="stylesheet" href="/dist/css/store.css">
  {{-- <script rel="preload" src="script/store/head.js" as="script"></script> --}}
 
@@ -52,8 +52,8 @@
   {!! app('global_script_body-top') !!}
  @endif
  <!---------------------- Loading Logo ---------------------->
- <div class="loading-logo" id="loadingLogo">
+ {{-- <div class="loading-logo" id="loadingLogo">
   <img rel="preload" as="image" src="/images/store/svg/noren-black.svg" alt="logo-black">
  </div>
- <script src="/script/store/head.js"></script>
+ <script src="/script/store/head.js"></script> --}}
  <!-------------------- End Loading Logo -------------------->
