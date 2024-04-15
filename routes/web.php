@@ -132,28 +132,30 @@
   // Storefront
 
   //simple page routes
+  Route::middleware('cache.headers:max_age=31536000')->group(
+    function () {
+      route::view('/', 'store.home')->name('home');
+      route::view('/cart', 'store.cart')->name('cart');
+      route::view('/wishlist', 'store.wislist')->name('wislist');
+      route::view('/order', 'store.order')->name('order');
+      route::view('/faq', 'store.faq')->name('faq');
+      route::view('/cookie', 'store.cookie')->name('cookie');
+      route::view('/privacy', 'store.privacy')->name('privacy');
+      route::view('/contact', 'store.contact')->name('contact');
+      route::view('/about', 'store.about')->name('about');
+      route::view('/confirm', 'store.confirm')->name('confirm');
+      route::view('/terms', 'store.terms')->name('terms');
+      route::view('/redirect', 'store.redirect')->name('redirect');
+      Route::view('/404', 'store.404')->name('404');
 
-  route::view('/', 'store.home')->name('home');
-  route::view('/cart', 'store.cart')->name('cart');
-  route::view('/wishlist', 'store.wislist')->name('wislist');
-  route::view('/order', 'store.order')->name('order');
-  route::view('/faq', 'store.faq')->name('faq');
-  route::view('/cookie', 'store.cookie')->name('cookie');
-  route::view('/privacy', 'store.privacy')->name('privacy');
-  route::view('/contact', 'store.contact')->name('contact');
-  route::view('/about', 'store.about')->name('about');
-  route::view('/confirm', 'store.confirm')->name('confirm');
-  route::view('/terms', 'store.terms')->name('terms');
-  route::view('/redirect', 'store.redirect')->name('redirect');
-  Route::view('/404', 'store.404')->name('404');
-
-  //Functionality page routes
-  route::get('/product/{product}', [StoreController::class, 'show'])->name('product');
-  Route::get('/storeproducts/{categorySlug?}', [StoreController::class, 'products'])
-    ->name('products')
-    ->middleware('categorycheck');
-  route::get('/search/{slug?}', [StoreController::class, 'search'])->name('search');
-
+      //Functionality page routes
+      route::get('/product/{product}', [StoreController::class, 'show'])->name('product');
+      Route::get('/storeproducts/{categorySlug?}', [StoreController::class, 'products'])
+        ->name('products')
+        ->middleware('categorycheck');
+      route::get('/search/{slug?}', [StoreController::class, 'search'])->name('search');
+    }
+  );
   //payments routes
   Route::get('/success', [StoreController::class, 'success'])->name('payment_success');
   Route::post('/cancel', [StoreController::class, 'cancel'])->name('payment_cancel');
