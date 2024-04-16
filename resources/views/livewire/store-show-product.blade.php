@@ -136,7 +136,7 @@
 				@if (($product->product) && ($product->product->active == true) && ($product->product->end_date >=  now()->format('Y-m-d')) && ($product->product->start_date <=  now()->format('Y-m-d')))
 
 
-				<div class="card" role="listitem">
+				<div class="card">
 					<a href="{{ route("product", ["product" => $product->product->seo_id !== null && $product->product->seo_id !== "" ? $product->product->seo_id : $product->product->id]) }}">
 
 						@if ($product->product->media->first() != null)
