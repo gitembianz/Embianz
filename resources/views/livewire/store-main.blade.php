@@ -12,35 +12,36 @@
               @if ($item->media != null)
                 {{-- Default (Desktop) --}}
                 @if ($item->media->where("sequence", 2)->first() != null)
-                  <source media="(min-width: 992px)" sizes="(min-width: 992px) 50vw" srcset="/{{ $item->media->where("sequence", 2)->first()->path }}{{ $item->media->where("sequence", 2)->first()->name }}">
+                  <source media="(min-width: 992px)" sizes="(min-width: 992px) 50vw" srcset="/{{ $item->media->where("sequence", 2)->first()->path }}{{ $item->media->where("sequence", 2)->first()->name }}" loading="eager" fetchpriority="high" height="{{ $item->media->where("sequence", 2)->first()->height }}" width="{{ $item->media->where("sequence", 2)->first()->width }}">
                 @else
-                  <img loading="lazy" src="/images/store/default/default.webp" alt="something wrong">
+                  <img src="/images/store/default/default.webp" alt="something wrong">
                 @endif
                 {{-- Tablet Picture --}}
                 @if ($item->media->where("sequence", 3)->first() != null)
-                  <source media="(min-width: 576px)" sizes="(min-width: 576px) 80vw" srcset="/{{ $item->media->where("sequence", 3)->first()->path }}{{ $item->media->where("sequence", 3)->first()->name }}">
+                  <source media="(min-width: 576px)" sizes="(min-width: 576px) 80vw" srcset="/{{ $item->media->where("sequence", 3)->first()->path }}{{ $item->media->where("sequence", 3)->first()->name }}" loading="eager" fetchpriority="high" height="{{ $item->media->where("sequence", 3)->first()->height }}" width="{{ $item->media->where("sequence", 3)->first()->width }}">
                 @elseif ($item->media->where("sequence", 2)->first() != null)
-                  <source media="(min-width: 576px)" sizes="(min-width: 576px) 80vw" srcset="/{{ $item->media->where("sequence", 2)->first()->path }}{{ $item->media->where("sequence", 2)->first()->name }}">
+                  <source media="(min-width: 576px)" sizes="(min-width: 576px) 80vw" srcset="/{{ $item->media->where("sequence", 2)->first()->path }}{{ $item->media->where("sequence", 2)->first()->name }}" loading="eager" fetchpriority="high" height="{{ $item->media->where("sequence", 2)->first()->height }}" width="{{ $item->media->where("sequence", 2)->first()->width }}">
                 @else
-                  <img loading="lazy"  src="/images/store/default/default.webp" alt="something wrong">
+                  <img src="/images/store/default/default.webp" alt="something wrong">
                 @endif
                 {{-- Mobile Picture --}}
                 @if ($item->media->where("sequence", 4)->first() != null)
-                  <img loading="lazy" sizes="100vw" alt="{{ $item->media->where("sequence", 4)->first()->name }} {{ $item->name }}" src="/{{ $item->media->where("sequence", 4)->first()->path }}{{ $item->media->where("sequence", 4)->first()->name }}">
+                  <img sizes="100vw" alt="{{ $item->media->where("sequence", 4)->first()->name }} {{ $item->name }}" src="/{{ $item->media->where("sequence", 4)->first()->path }}{{ $item->media->where("sequence", 4)->first()->name }}" loading="eager" fetchpriority="high" height="{{ $item->media->where("sequence", 4)->first()->height }}" width="{{ $item->media->where("sequence", 4)->first()->width }}">
                 @elseif ($item->media->where("sequence", 3)->first() != null)
-                  <img loading="lazy" sizes="100vw" alt="{{ $item->media->where("sequence", 3)->first()->name }} {{ $item->name }}" src="/{{ $item->media->where("sequence", 3)->first()->path }}{{ $item->media->where("sequence", 3)->first()->name }}">
+                  <img sizes="100vw" alt="{{ $item->media->where("sequence", 3)->first()->name }} {{ $item->name }}" src="/{{ $item->media->where("sequence", 3)->first()->path }}{{ $item->media->where("sequence", 3)->first()->name }}" loading="eager" fetchpriority="high" height="{{ $item->media->where("sequence", 3)->first()->height }}" width="{{ $item->media->where("sequence", 3)->first()->width }}">
                 @elseif ($item->media->where("sequence", 2)->first() != null)
-                  <img loading="lazy" sizes="100vw" alt="{{ $item->media->where("sequence", 2)->first()->name }} {{ $item->name }}" src="/{{ $item->media->where("sequence", 2)->first()->path }}{{ $item->media->where("sequence", 2)->first()->name }}">
+                  <img sizes="100vw" alt="{{ $item->media->where("sequence", 2)->first()->name }} {{ $item->name }}" src="/{{ $item->media->where("sequence", 2)->first()->path }}{{ $item->media->where("sequence", 2)->first()->name }}" loading="eager" fetchpriority="high" height="{{ $item->media->where("sequence", 2)->first()->height }}" width="{{ $item->media->where("sequence", 2)->first()->width }}">
                 @else
-                  <img loading="lazy" src="/images/store/default/default.webp" alt="something wrong">
+                  <img src="/images/store/default/default.webp" alt="something wrong">
                 @endif
               @else
-                <img loading="lazy" src="/images/store/default/default.webp" alt="something wrong">
+                <img src="/images/store/default/default.webp" alt="something wrong">
               @endif
             </picture>
           </a>
           {{-- End Modelul de schimb de imagini pe slider la rezolutie --}}
         @endforeach
+
 
 
 
