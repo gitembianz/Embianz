@@ -133,7 +133,7 @@
 
   //simple page routes
 
-  route::view('/', 'store.home')->name('home');
+  route::view('/', 'store.home')->name('home')->middleware('cache-control');
   route::view('/cart', 'store.cart')->name('cart');
   route::view('/wishlist', 'store.wislist')->name('wislist');
   route::view('/order', 'store.order')->name('order');
