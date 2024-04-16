@@ -16,11 +16,8 @@
  <link rel="icon" type="image/x-icon" href="/images/store/svg/noren_favicon.svg">
 
  <link rel="canonical" href="{{ url('/' . $canonical) }}">
- {{-- <link rel="preload" href="/dist/css/loading-screen.css" as="style"> --}}
  <link rel="preload" href="/dist/css/store.css" as="style">
- {{-- <link rel="stylesheet" href="/dist/css/loading-screen.css"> --}}
  <link rel="stylesheet" href="/dist/css/store.css">
- {{-- <script rel="preload" src="script/store/head.js" as="script"></script> --}}
 
  {{-- ----------------------------------------------------------- --}}
  {{-- ----------------------------------------------------------- --}}
@@ -39,7 +36,28 @@
  <meta property="twitter:title" content="{{ $title }}" />
  <meta property="twitter:description" content="{{ $description }}" />
  {{-- ----------------------------------------------------------- --}}
-
+ <link rel="preload" href="/images/store/svg/noren-black.svg" as="image">
+ <link rel="preload" href="/images/store/default/default300.webp" as="image">
+ <link rel="preload" href="/images/store/svg/headset.svg" as="image">
+ <link rel="preload" href="/images/store/svg/truck.svg" as="image">
+ <link rel="preload" href="/images/store/brands/dhl.webp" as="image">
+ <link rel="preload" href="/images/store/brands/Fan.webp" as="image">
+ <link rel="preload" href="/images/store/svg/shield.svg" as="image">
+ <link rel="preload" href="/images/store/brands/visa.webp" as="image">
+ <link rel="preload" href="/images/store/brands/mastercard.webp" as="image">
+ <link rel="preload" href="/images/store/svg/chat.svg" as="image">
+ <link rel="preload" href="/images/store/svg/thankyou.svg" as="image">
+ <link rel="preload" href="/images/store/svg/noren-white.svg" as="image">
+ <link rel="preload" href="/fonts/Montserrat/Montserrat-Thin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/Montserrat/Montserrat-ExtraLight.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/Montserrat/Montserrat-Light.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/Montserrat/Montserrat-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/Montserrat/Montserrat-Medium.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/Montserrat/Montserrat-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/Montserrat/Montserrat-Bold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/Montserrat/Montserrat-ExtraBold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/Montserrat/Montserrat-Black.woff2" as="font" type="font/woff2" crossorigin>
+  <!-- CSS -->
 
  @if (app()->has('global_script_head-bottom'))
   {!! app('global_script_head-bottom') !!}
@@ -51,9 +69,3 @@
  @if (app()->has('global_script_body-top'))
   {!! app('global_script_body-top') !!}
  @endif
- <!---------------------- Loading Logo ---------------------->
- {{-- <div class="loading-logo" id="loadingLogo">
-  <img rel="preload" as="image" src="/images/store/svg/noren-black.svg" alt="logo-black">
- </div>
- <script src="/script/store/head.js"></script> --}}
- <!-------------------- End Loading Logo -------------------->
