@@ -12,25 +12,25 @@
 								@if ($item->media != null)
 									{{-- Default (Desktop) --}}
 									@if ($item->media->where("sequence", 2)->first() != null)
-										<source media="(min-width: 992px)" srcset="/{{ $item->media->where("sequence", 2)->first()->path }}{{ $item->media->where("sequence", 2)->first()->name }}">
+										<source media="(min-width: 992px)" sizes="(min-width: 992px) 50vw" srcset="/{{ $item->media->where("sequence", 2)->first()->path }}{{ $item->media->where("sequence", 2)->first()->name }}">
 									@else
 										<img src="/images/store/default/default.webp" alt="something wrong">
 									@endif
 									{{-- Tablet Picture --}}
 									@if ($item->media->where("sequence", 3)->first() != null)
-										<source media="(min-width: 576px)" srcset="/{{ $item->media->where("sequence", 3)->first()->path }}{{ $item->media->where("sequence", 3)->first()->name }}">
+										<source media="(min-width: 576px)" sizes="(min-width: 576px) 80vw" srcset="/{{ $item->media->where("sequence", 3)->first()->path }}{{ $item->media->where("sequence", 3)->first()->name }}">
 									@elseif ($item->media->where("sequence", 2)->first() != null)
-										<source media="(min-width: 576px)" srcset="/{{ $item->media->where("sequence", 2)->first()->path }}{{ $item->media->where("sequence", 2)->first()->name }}">
+										<source media="(min-width: 576px)" sizes="(min-width: 576px) 80vw" srcset="/{{ $item->media->where("sequence", 2)->first()->path }}{{ $item->media->where("sequence", 2)->first()->name }}">
 									@else
-										<img src="/images/store/default/default.webp" alt="something wrong">
+										<img  src="/images/store/default/default.webp" alt="something wrong">
 									@endif
 									{{-- Mobile Picture --}}
 									@if ($item->media->where("sequence", 4)->first() != null)
-										<img alt="{{ $item->media->where("sequence", 4)->first()->name }} {{ $item->name }}" src="/{{ $item->media->where("sequence", 4)->first()->path }}{{ $item->media->where("sequence", 4)->first()->name }}">
+										<img sizes="100vw" alt="{{ $item->media->where("sequence", 4)->first()->name }} {{ $item->name }}" src="/{{ $item->media->where("sequence", 4)->first()->path }}{{ $item->media->where("sequence", 4)->first()->name }}">
 									@elseif ($item->media->where("sequence", 3)->first() != null)
-										<img alt="{{ $item->media->where("sequence", 3)->first()->name }} {{ $item->name }}" src="/{{ $item->media->where("sequence", 3)->first()->path }}{{ $item->media->where("sequence", 3)->first()->name }}">
+										<img sizes="100vw" alt="{{ $item->media->where("sequence", 3)->first()->name }} {{ $item->name }}" src="/{{ $item->media->where("sequence", 3)->first()->path }}{{ $item->media->where("sequence", 3)->first()->name }}">
 									@elseif ($item->media->where("sequence", 2)->first() != null)
-										<img alt="{{ $item->media->where("sequence", 2)->first()->name }} {{ $item->name }}" src="/{{ $item->media->where("sequence", 2)->first()->path }}{{ $item->media->where("sequence", 2)->first()->name }}">
+										<img sizes="100vw" alt="{{ $item->media->where("sequence", 2)->first()->name }} {{ $item->name }}" src="/{{ $item->media->where("sequence", 2)->first()->path }}{{ $item->media->where("sequence", 2)->first()->name }}">
 									@else
 										<img src="/images/store/default/default.webp" alt="something wrong">
 									@endif
