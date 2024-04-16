@@ -6,37 +6,45 @@
 			<div class="main-slider">
 				<div class="main-slider__wrapper">
           @foreach ($slideritems as $item)
-            <a class="main-slider__slide" href="{{ route("products", ["categorySlug" => $item->seo_id ?: $item->id]) }}" draggable="false">
-                <picture>
-                    @php
-                        $desktop = $item->media->where("sequence", 2)->first();
-                        $tablet = $item->media->where("sequence", 3)->first();
-                        $mobile = $item->media->where("sequence", 4)->first();
-                    @endphp
+          <a class="main-slider__slide" href="{{ route("products", ["categorySlug" => $item->seo_id ?: $item->id]) }}" draggable="false">
+              <picture>
+                  @php
+                      $desktop = $item->media->where("sequence", 2)->first();
+                      $tablet = $item->media->where("sequence", 3)->first();
+                      $mobile = $item->media->where("sequence", 4)->first();
+                  @endphp
 
-                    {{-- Desktop Picture --}}
-                    @if ($desktop)
-                        <source media="(min-width: 992px)" sizes="(min-width: 992px) 50vw"
-                                srcset="/{{ $desktop->path }}{{ $desktop->name }}">
-                    @endif
+                  {{-- Desktop Picture --}}
+                  @if ($desktop)
+                      <source media="(min-width: 992px)"
+                              sizes="(min-width: 992px) 50vw"
+                              srcset="/{{ $desktop->path }}{{ $desktop->name }} 992w, /{{ $desktop->path }}{{ $desktop->name }} 1984w"
+                              type="image/webp">
+                  @endif
 
-                    {{-- Tablet Picture --}}
-                    @if ($tablet)
-                        <source media="(min-width: 576px)" sizes="(min-width: 576px) 80vw"
-                                srcset="/{{ $tablet->path }}{{ $tablet->name }}">
-                    @elseif ($desktop)
-                        <source media="(min-width: 576px)" sizes="(min-width: 576px) 80vw"
-                                srcset="/{{ $desktop->path }}{{ $desktop->name }}">
-                    @endif
+                  {{-- Tablet Picture --}}
+                  @if ($tablet)
+                      <source media="(min-width: 576px)"
+                              sizes="(min-width: 576px) 80vw"
+                              srcset="/{{ $tablet->path }}{{ $tablet->name }} 576w, /{{ $tablet->path }}{{ $tablet->name }} 1152w"
+                              type="image/webp">
+                  @elseif ($desktop)
+                      <source media="(min-width: 576px)"
+                              sizes="(min-width: 576px) 80vw"
+                              srcset="/{{ $desktop->path }}{{ $desktop->name }} 576w, /{{ $desktop->path }}{{ $desktop->name }} 1152w"
+                              type="image/webp">
+                  @endif
 
-                    {{-- Mobile Picture --}}
-                    <img loading="lazy"
-                        src="/{{ $mobile ? $mobile->path . $mobile->name : ($tablet ? $tablet->path . $tablet->name : ($desktop ? $desktop->path . $desktop->name : 'images/store/default/default.webp')) }}"
-                        sizes="100vw"
-                        alt="{{ $mobile ? $mobile->name : ($tablet ? $tablet->name : ($desktop ? $desktop->name : 'something wrong')) }}">
-                </picture>
-            </a>
-           @endforeach
+                  {{-- Mobile Picture --}}
+                  <img loading="lazy"
+                       src="/{{ $mobile ? $mobile->path . $mobile->name . '.webp' : ($tablet ? $tablet->path . $tablet->name . '.webp' : ($desktop ? $desktop->path . $desktop->name . '.webp' : 'images/store/default/default.webp')) }}"
+                       sizes="100vw"
+                       alt="{{ $mobile ? $mobile->name : ($tablet ? $tablet->name : ($desktop ? $desktop->name : 'something wrong')) }}"
+                       preload="auto">
+              </picture>
+          </a>
+      @endforeach
+
 
 
 
