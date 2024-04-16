@@ -49,9 +49,9 @@
 								{{ $cartItem->quantity }} x
 							</span>
 							@if ($cartItem->product->media->first())
-								<img class="cart__list--img" src="/{{ $cartItem->product->media->first()->path }}{{ $cartItem->product->media->first()->name }}" alt="{{ $cartItem->product->media->first()->name }}{{ $cartItem->product->name }}">
+								<img loading="lazy" class="cart__list--img" src="/{{ $cartItem->product->media->first()->path }}{{ $cartItem->product->media->first()->name }}" alt="{{ $cartItem->product->media->first()->name }}{{ $cartItem->product->name }}">
 							@else
-								<img class="cart__list--img" src="/images/store/default/default70.webp" alt="something wrong">
+								<img loading="lazy" class="cart__list--img" src="/images/store/default/default70.webp" alt="something wrong">
 							@endif
 							<div class="leftbar__link--text">
 								<h4 class="leftbar__link--title">{{ $cartItem->product->name }}</h4>
@@ -66,9 +66,9 @@
 								{{ $cartItem->quantity }} x
 							</span>
 							@if ($cartItem->product->media->first())
-								<img class="cart__list--img" src="/{{ $cartItem->product->media->first()->path }}{{ $cartItem->product->media->first()->name }}" alt="{{ $cartItem->product->media->first()->name }}{{ $cartItem->product->name }}">
+								<img loading="lazy" class="cart__list--img" src="/{{ $cartItem->product->media->first()->path }}{{ $cartItem->product->media->first()->name }}" alt="{{ $cartItem->product->media->first()->name }}{{ $cartItem->product->name }}">
 							@else
-								<img class="cart__list--img" src="/images/store/default/default70.webp" alt="something wrong">
+								<img loading="lazy" class="cart__list--img" src="/images/store/default/default70.webp" alt="something wrong">
 							@endif
 							<div class="leftbar__link--text">
 								<h4 class="leftbar__link--title">{{ $cartItem->product->name }}</h4>

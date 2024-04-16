@@ -29,9 +29,9 @@
 
 						<a class="leftbar__link" href="{{ route("product", ["product" => $item->product->seo_id !== null && $item->product->seo_id !== "" ? $item->product->seo_id : $item->product->id]) }}">
 							@if ($item->product->media->first())
-								<img class="cart__list--img" src="/{{ $item->product->media->first()->path }}{{ $item->product->media->first()->name }}" alt="{{ $item->product->media->first()->name }} {{ $item->product->name }}">
+								<img loading="lazy" class="cart__list--img" src="/{{ $item->product->media->first()->path }}{{ $item->product->media->first()->name }}" alt="{{ $item->product->media->first()->name }} {{ $item->product->name }}">
 							@else
-								<img class="heart__list--img" src="/images/store/default/default70.webp" alt="something wrong">
+								<img loading="lazy" class="heart__list--img" src="/images/store/default/default70.webp" alt="something wrong">
 							@endif
 
               <div class="leftbar__link--text">
