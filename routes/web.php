@@ -132,6 +132,7 @@
   // Storefront
 
   //simple page routes
+
   route::view('/', 'store.home')->name('home');
   route::view('/cart', 'store.cart')->name('cart');
   route::view('/wishlist', 'store.wislist')->name('wislist');
@@ -152,7 +153,6 @@
     ->name('products')
     ->middleware('categorycheck');
   route::get('/search/{slug?}', [StoreController::class, 'search'])->name('search');
-
   //payments routes
   Route::get('/success', [StoreController::class, 'success'])->name('payment_success');
   Route::post('/cancel', [StoreController::class, 'cancel'])->name('payment_cancel');

@@ -17,7 +17,7 @@
 				</a>
 			@endforeach
 		@endif
-		<span class="breadcrumbs__link">{{ $product->name }}</span>
+		<a href="{{ route("product", ["product" => $product->seo_id !== null && $product->seo_id !== "" ? $product->seo_id : $product->id]) }}" class="breadcrumbs__link">{{ $product->name }}</a>
 	</div>
 	<section class="product container">
 		<!-------------------- Slider Product ------------------>
@@ -135,8 +135,10 @@
 				@foreach ($product->related_product->sortByDesc("product.popularity") as $product)
 				@if (($product->product) && ($product->product->active == true) && ($product->product->end_date >=  now()->format('Y-m-d')) && ($product->product->start_date <=  now()->format('Y-m-d')))
 
-				<div class="card" >
-					<a href="{{ route("product", $product->product->seo_id) }}">
+
+				<div class="card" role="listitem">
+					<a href="{{ route("product", ["product" => $product->product->seo_id !== null && $product->product->seo_id !== "" ? $product->product->seo_id : $product->product->id]) }}">
+
 						@if ($product->product->media->first() != null)
 							<img class="card-image" src="/{{ $product->product->media->first()->path }}{{ $product->product->media->first()->name }}" alt="{{ $product->product->media->first()->name }} {{ $product->product->name }}">
 						@else

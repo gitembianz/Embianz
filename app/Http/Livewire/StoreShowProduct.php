@@ -41,7 +41,7 @@ class StoreShowProduct extends Component
 
   public function getProductProperty()
   {
-    return Product::select('id', 'name')
+    return Product::select('id', 'name', 'seo_id')
       ->with([
         'media' => function ($query) {
           $query->select('name', 'path', 'type', 'sequence')

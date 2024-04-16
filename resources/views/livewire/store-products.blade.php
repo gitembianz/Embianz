@@ -18,9 +18,15 @@
 		<!-------------------If Category is appear------------------>
 		@if ($category != null && $category->id != app('global_default_category'))
 			@foreach ($category->getCategoryBreadcrumbs() as $breadcrumb)
-				<a class="breadcrumbs__link" href="{{ route("products", ["categorySlug" => $breadcrumb["slug"]]) }}">
-					{{ $breadcrumb["name"] }}
-				</a>
+			@if ($breadcrumb["name"] === $category->name)
+				<a class="breadcrumbs__link" href="{{ route("products", ["categorySlug" => $category->seo_id !== null && $category->seo_id !== "" ? $category->seo_id : $category->id]) }}">
+				{{ $category->name }}
+			</a>
+			@else
+			<a class="breadcrumbs__link" href="{{ route("products", ["categorySlug" => $breadcrumb["slug"]]) }}">
+				{{ $breadcrumb["name"] }}
+			</a>
+			@endif
 			@endforeach
 		@endif
 		<!-----------------End If Category is appear---------------->
