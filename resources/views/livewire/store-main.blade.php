@@ -5,42 +5,41 @@
 		@if (!$slideritems->isEmpty())
 			<div class="main-slider">
 				<div class="main-slider__wrapper">
-					@foreach ($slideritems as $item)
-						{{-- -- Modelul de schimb de imagini pe slider la rezolutie -- --}}
-						<a class="main-slider__slide" href="{{ route("products", ["categorySlug" => $item->seo_id !== null && $item->seo_id !== "" ? $item->seo_id : $item->id]) }}" draggable="false">
-							<picture>
-								@if ($item->media != null)
-									{{-- Default (Desktop) --}}
-									@if ($item->media->where("sequence", 2)->first() != null)
-										<source media="(min-width: 992px)" sizes="(min-width: 992px) 50vw" srcset="/{{ $item->media->where("sequence", 2)->first()->path }}{{ $item->media->where("sequence", 2)->first()->name }}">
-									@else
-										<img loading="lazy" src="/images/store/default/default.webp" alt="something wrong">
-									@endif
-									{{-- Tablet Picture --}}
-									@if ($item->media->where("sequence", 3)->first() != null)
-										<source media="(min-width: 576px)" sizes="(min-width: 576px) 80vw" srcset="/{{ $item->media->where("sequence", 3)->first()->path }}{{ $item->media->where("sequence", 3)->first()->name }}">
-									@elseif ($item->media->where("sequence", 2)->first() != null)
-										<source media="(min-width: 576px)" sizes="(min-width: 576px) 80vw" srcset="/{{ $item->media->where("sequence", 2)->first()->path }}{{ $item->media->where("sequence", 2)->first()->name }}">
-									@else
-										<img loading="lazy"  src="/images/store/default/default.webp" alt="something wrong">
-									@endif
-									{{-- Mobile Picture --}}
-									@if ($item->media->where("sequence", 4)->first() != null)
-										<img loading="lazy" sizes="100vw" alt="{{ $item->media->where("sequence", 4)->first()->name }} {{ $item->name }}" src="/{{ $item->media->where("sequence", 4)->first()->path }}{{ $item->media->where("sequence", 4)->first()->name }}">
-									@elseif ($item->media->where("sequence", 3)->first() != null)
-										<img loading="lazy" sizes="100vw" alt="{{ $item->media->where("sequence", 3)->first()->name }} {{ $item->name }}" src="/{{ $item->media->where("sequence", 3)->first()->path }}{{ $item->media->where("sequence", 3)->first()->name }}">
-									@elseif ($item->media->where("sequence", 2)->first() != null)
-										<img loading="lazy" sizes="100vw" alt="{{ $item->media->where("sequence", 2)->first()->name }} {{ $item->name }}" src="/{{ $item->media->where("sequence", 2)->first()->path }}{{ $item->media->where("sequence", 2)->first()->name }}">
-									@else
-										<img loading="lazy" src="/images/store/default/default.webp" alt="something wrong">
-									@endif
-								@else
-									<img loading="lazy" src="/images/store/default/default.webp" alt="something wrong">
-								@endif
-							</picture>
-						</a>
-						{{-- End Modelul de schimb de imagini pe slider la rezolutie --}}
-					@endforeach
+          @foreach ($slideritems as $item)
+            <a class="main-slider__slide" href="{{ route("products", ["categorySlug" => $item->seo_id ?: $item->id]) }}" draggable="false">
+                <picture>
+                    @php
+                        $desktop = $item->media->where("sequence", 2)->first();
+                        $tablet = $item->media->where("sequence", 3)->first();
+                        $mobile = $item->media->where("sequence", 4)->first();
+                    @endphp
+
+                    {{-- Desktop Picture --}}
+                    @if ($desktop)
+                        <source media="(min-width: 992px)" sizes="(min-width: 992px) 50vw"
+                                srcset="/{{ $desktop->path }}{{ $desktop->name }}">
+                    @endif
+
+                    {{-- Tablet Picture --}}
+                    @if ($tablet)
+                        <source media="(min-width: 576px)" sizes="(min-width: 576px) 80vw"
+                                srcset="/{{ $tablet->path }}{{ $tablet->name }}">
+                    @elseif ($desktop)
+                        <source media="(min-width: 576px)" sizes="(min-width: 576px) 80vw"
+                                srcset="/{{ $desktop->path }}{{ $desktop->name }}">
+                    @endif
+
+                    {{-- Mobile Picture --}}
+                    <img loading="lazy"
+                        src="/{{ $mobile ? $mobile->path . $mobile->name : ($tablet ? $tablet->path . $tablet->name : ($desktop ? $desktop->path . $desktop->name : 'images/store/default/default.webp')) }}"
+                        sizes="100vw"
+                        alt="{{ $mobile ? $mobile->name : ($tablet ? $tablet->name : ($desktop ? $desktop->name : 'something wrong')) }}">
+                </picture>
+            </a>
+           @endforeach
+
+
+
 				</div>
 				<button class="main-slider__button prev" aria-label="Previous main slider">
 					<svg>
