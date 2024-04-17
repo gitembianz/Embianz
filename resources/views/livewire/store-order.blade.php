@@ -2179,17 +2179,24 @@
 						});
 					</script>
 					<script>
-            if (typeof dataLayer !== 'undefined') {
+            const finalAmountElement = document.getElementById("final__amount").innerText;
+
+            // presupunând că valoarea și valuta sunt separate printr-un spațiu
+            const [value, currency] = finalAmountElement.split(' ');
+
+            // console.log(value, currency);
+
+            if(typeof dataLayer !== 'undefined') {
               dataLayer.push({
-                'event': 'checkoutStep',
-                'step': 3,
-                'option': 'Confirmare comandă'
+                'event': 'finalAmount',
+                'amount': value,
+                'currency': currency
               });
-            };
+            }
 					</script>
           <script>
             const finalAmount = document.getElementById("final__amount").innerText;
-            // console.log(finalAmount)
+            console.log(finalAmount)
 
             if(typeof dataLayer !== 'undefined') {
               dataLayer.push({
