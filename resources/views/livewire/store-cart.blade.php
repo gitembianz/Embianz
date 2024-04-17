@@ -46,9 +46,9 @@
 						<div class="basket__split">
                 <a class="basket__item" href="{{ route("product", ["product" => $cartItem->product->seo_id !== null && $cartItem->product->seo_id !== "" ? $cartItem->product->seo_id : $cartItem->product->id]) }}">
                   @if ($cartItem->product->media->first())
-                    <img class="cart__list--img" src="/{{ $cartItem->product->media->first()->path }}{{ $cartItem->product->media->first()->name }}" alt="{{ $cartItem->product->media->first()->name }} {{ $cartItem->product->name }}">
+                    <img loading="lazy" class="cart__list--img" src="/{{ $cartItem->product->media->first()->path }}{{ $cartItem->product->media->first()->name }}" alt="{{ $cartItem->product->media->first()->name }} {{ $cartItem->product->name }}">
                   @else
-                    <img class="cart__list--img" src="/images/store/default/default70.webp" alt="something wrong">
+                    <img loading="lazy" class="cart__list--img" src="/images/store/default/default70.webp" alt="something wrong">
                   @endif
                   <div class="basket__text">
                     <h3>{{ $cartItem->product->name }}</h3>

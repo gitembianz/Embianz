@@ -5,42 +5,49 @@
 		@if (!$slideritems->isEmpty())
 			<div class="main-slider">
 				<div class="main-slider__wrapper">
-					@foreach ($slideritems as $item)
-						{{-- -- Modelul de schimb de imagini pe slider la rezolutie -- --}}
-						<a class="main-slider__slide" href="{{ route("products", ["categorySlug" => $item->seo_id !== null && $item->seo_id !== "" ? $item->seo_id : $item->id]) }}" draggable="false">
-							<picture>
-								@if ($item->media != null)
-									{{-- Default (Desktop) --}}
-									@if ($item->media->where("sequence", 2)->first() != null)
-										<source media="(min-width: 992px)" srcset="/{{ $item->media->where("sequence", 2)->first()->path }}{{ $item->media->where("sequence", 2)->first()->name }}">
-									@else
-										<img src="/images/store/default/default.webp" alt="something wrong">
-									@endif
-									{{-- Tablet Picture --}}
-									@if ($item->media->where("sequence", 3)->first() != null)
-										<source media="(min-width: 576px)" srcset="/{{ $item->media->where("sequence", 3)->first()->path }}{{ $item->media->where("sequence", 3)->first()->name }}">
-									@elseif ($item->media->where("sequence", 2)->first() != null)
-										<source media="(min-width: 576px)" srcset="/{{ $item->media->where("sequence", 2)->first()->path }}{{ $item->media->where("sequence", 2)->first()->name }}">
-									@else
-										<img src="/images/store/default/default.webp" alt="something wrong">
-									@endif
-									{{-- Mobile Picture --}}
-									@if ($item->media->where("sequence", 4)->first() != null)
-										<img alt="{{ $item->media->where("sequence", 4)->first()->name }} {{ $item->name }}" src="/{{ $item->media->where("sequence", 4)->first()->path }}{{ $item->media->where("sequence", 4)->first()->name }}">
-									@elseif ($item->media->where("sequence", 3)->first() != null)
-										<img alt="{{ $item->media->where("sequence", 3)->first()->name }} {{ $item->name }}" src="/{{ $item->media->where("sequence", 3)->first()->path }}{{ $item->media->where("sequence", 3)->first()->name }}">
-									@elseif ($item->media->where("sequence", 2)->first() != null)
-										<img alt="{{ $item->media->where("sequence", 2)->first()->name }} {{ $item->name }}" src="/{{ $item->media->where("sequence", 2)->first()->path }}{{ $item->media->where("sequence", 2)->first()->name }}">
-									@else
-										<img src="/images/store/default/default.webp" alt="something wrong">
-									@endif
-								@else
-									<img src="/images/store/default/default.webp" alt="something wrong">
-								@endif
-							</picture>
-						</a>
-						{{-- End Modelul de schimb de imagini pe slider la rezolutie --}}
-					@endforeach
+          @foreach ($slideritems as $item)
+          {{-- -- Modelul de schimb de imagini pe slider la rezolutie -- --}}
+          <a class="main-slider__slide" href="{{ route("products", ["categorySlug" => $item->seo_id !== null && $item->seo_id !== "" ? $item->seo_id : $item->id]) }}" draggable="false">
+            <picture>
+              @if ($item->media != null)
+                {{-- Default (Desktop) --}}
+                @if ($item->media->where("sequence", 2)->first() != null)
+                  <source media="(min-width: 992px)" sizes="(min-width: 992px) 50vw" srcset="/{{ $item->media->where("sequence", 2)->first()->path }}{{ $item->media->where("sequence", 2)->first()->name }}" loading="eager" fetchpriority="high" height="{{ $item->media->where("sequence", 2)->first()->height }}" width="{{ $item->media->where("sequence", 2)->first()->width }}">
+                @else
+                  <img src="/images/store/default/default.webp" alt="something wrong">
+                @endif
+                {{-- Tablet Picture --}}
+                @if ($item->media->where("sequence", 3)->first() != null)
+                  <source media="(min-width: 576px)" sizes="(min-width: 576px) 80vw" srcset="/{{ $item->media->where("sequence", 3)->first()->path }}{{ $item->media->where("sequence", 3)->first()->name }}" loading="eager" fetchpriority="high" height="{{ $item->media->where("sequence", 3)->first()->height }}" width="{{ $item->media->where("sequence", 3)->first()->width }}">
+                @elseif ($item->media->where("sequence", 2)->first() != null)
+                  <source media="(min-width: 576px)" sizes="(min-width: 576px) 80vw" srcset="/{{ $item->media->where("sequence", 2)->first()->path }}{{ $item->media->where("sequence", 2)->first()->name }}" loading="eager" fetchpriority="high" height="{{ $item->media->where("sequence", 2)->first()->height }}" width="{{ $item->media->where("sequence", 2)->first()->width }}">
+                @else
+                  <img src="/images/store/default/default.webp" alt="something wrong">
+                @endif
+                {{-- Mobile Picture --}}
+                @if ($item->media->where("sequence", 4)->first() != null)
+                  <img sizes="100vw" alt="{{ $item->media->where("sequence", 4)->first()->name }} {{ $item->name }}" src="/{{ $item->media->where("sequence", 4)->first()->path }}{{ $item->media->where("sequence", 4)->first()->name }}" loading="eager" fetchpriority="high" height="{{ $item->media->where("sequence", 4)->first()->height }}" width="{{ $item->media->where("sequence", 4)->first()->width }}">
+                @elseif ($item->media->where("sequence", 3)->first() != null)
+                  <img sizes="100vw" alt="{{ $item->media->where("sequence", 3)->first()->name }} {{ $item->name }}" src="/{{ $item->media->where("sequence", 3)->first()->path }}{{ $item->media->where("sequence", 3)->first()->name }}" loading="eager" fetchpriority="high" height="{{ $item->media->where("sequence", 3)->first()->height }}" width="{{ $item->media->where("sequence", 3)->first()->width }}">
+                @elseif ($item->media->where("sequence", 2)->first() != null)
+                  <img sizes="100vw" alt="{{ $item->media->where("sequence", 2)->first()->name }} {{ $item->name }}" src="/{{ $item->media->where("sequence", 2)->first()->path }}{{ $item->media->where("sequence", 2)->first()->name }}" loading="eager" fetchpriority="high" height="{{ $item->media->where("sequence", 2)->first()->height }}" width="{{ $item->media->where("sequence", 2)->first()->width }}">
+                @else
+                  <img src="/images/store/default/default.webp" alt="something wrong">
+                @endif
+              @else
+                <img src="/images/store/default/default.webp" alt="something wrong">
+              @endif
+            </picture>
+          </a>
+          {{-- End Modelul de schimb de imagini pe slider la rezolutie --}}
+        @endforeach
+
+
+
+
+
+
+
 				</div>
 				<button class="main-slider__button prev" aria-label="Previous main slider">
 					<svg>
@@ -79,9 +86,9 @@
 							<div class="card-slider__slide new-slider__slide card">
 								<a draggable="false" href="{{ route("product", ["product" => $product->seo_id !== null && $product->seo_id !== "" ? $product->seo_id : $product->id]) }}">
 									@if ($product->media->first() != null)
-										<img class="card-image" src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}" alt="{{ $product->media->first()->name }} {{ $product->name }}">
+										<img loading="lazy" class="card-image" src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}" alt="{{ $product->media->first()->name }} {{ $product->name }}">
 									@else
-										<img class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
+										<img loading="lazy" class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
 									@endif
 								</a>
 								@livewire("product-wishlist-button", ["productId" => $product->id, "class" => "card__action", "is_in_wishlist" => $product->wishlists->isNotEmpty()], key($product->id))
@@ -193,9 +200,9 @@
 							<div class="card-slider__slide popular-slider__slide card" >
 								<a draggable="false" href="{{ route("product", ["product" => $product->seo_id !== null && $product->seo_id !== "" ? $product->seo_id : $product->id]) }}">
 									@if ($product->media->first() != null)
-										<img class="card-image" src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}" alt="{{ $product->media->first()->name }} {{ $product->name }}">
+										<img loading="lazy" class="card-image" src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}" alt="{{ $product->media->first()->name }} {{ $product->name }}">
 									@else
-										<img class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
+										<img loading="lazy" class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
 									@endif
 								</a>
 								@livewire("product-wishlist-button", ["productId" => $product->id, "class" => "card__action", "is_in_wishlist" => $product->wishlists->isNotEmpty()], key($product->id))

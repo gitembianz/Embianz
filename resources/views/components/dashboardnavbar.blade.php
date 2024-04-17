@@ -2,13 +2,13 @@
 	<div class="header">
 		<!-- Logo -->
 		<a href="{{ route("dashboard") }}" class="header__logo">
-			<img src="/images/dashboard/navbar/logo.png" alt="logo">
+			<img loading="lazy" src="/images/dashboard/navbar/logo.png" alt="logo">
 		</a>
 
 		<!-- Header Buttons on mobile -->
 		<div class="header__buttons">
 			<button class="sidebar__btn">
-				<img src="/images/dashboard/navbar/mini-logo.png" alt="logo">
+				<img loading="lazy" src="/images/dashboard/navbar/mini-logo.png" alt="logo">
 			</button>
 			<button class="search__icon" id="openSearch">
 				<svg>

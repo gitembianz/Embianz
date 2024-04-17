@@ -28,12 +28,12 @@
 					@if ($product->media->count() != 0)
 						@foreach ($product->media->where("type", "full") as $media)
 							<div class="product-slider__slide">
-								<img src="/{{ $media->path }}{{ $media->name }}" data-name-alt="{{ $media->name }}{{ $product->name }}" alt="{{ $media->name }}{{ $product->name }}" data-img-src="/{{ $product->media->where("type", "original")->where("sequence", $media->sequence)->first()->path }}{{ $product->media->where("type", "original")->where("sequence", $media->sequence)->first()->name }}">
+								<img loading="lazy" src="/{{ $media->path }}{{ $media->name }}" data-name-alt="{{ $media->name }}{{ $product->name }}" alt="{{ $media->name }}{{ $product->name }}" data-img-src="/{{ $product->media->where("type", "original")->where("sequence", $media->sequence)->first()->path }}{{ $product->media->where("type", "original")->where("sequence", $media->sequence)->first()->name }}">
 							</div>
 						@endforeach
 					@else
 						<div class="product-slider__slide">
-							<img src="/images/store/default/default.webp" data-img-src="/images/store/default/default.webp" alt="something wrong" data-name-alt="something wrong">
+							<img loading="lazy" src="/images/store/default/default.webp" data-img-src="/images/store/default/default.webp" alt="something wrong" data-name-alt="something wrong">
 						</div>
 					@endif
 				</div>
@@ -140,9 +140,9 @@
 					<a href="{{ route("product", ["product" => $product->product->seo_id !== null && $product->product->seo_id !== "" ? $product->product->seo_id : $product->product->id]) }}">
 
 						@if ($product->product->media->first() != null)
-							<img class="card-image" src="/{{ $product->product->media->first()->path }}{{ $product->product->media->first()->name }}" alt="{{ $product->product->media->first()->name }} {{ $product->product->name }}">
+							<img loading="lazy" class="card-image" src="/{{ $product->product->media->first()->path }}{{ $product->product->media->first()->name }}" alt="{{ $product->product->media->first()->name }} {{ $product->product->name }}">
 						@else
-							<img class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
+							<img loading="lazy" class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
 						@endif
 					</a>
 					@livewire("product-wishlist-button", ["productId" => $product->product->id, "class" => "card__action", "is_in_wishlist" => $product->product->wishlists->isNotEmpty()], key($product->product->id))
