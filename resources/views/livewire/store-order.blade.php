@@ -2182,7 +2182,9 @@
             const finalAmountElement = document.getElementById("final__amount").innerText;
 
             // presupunând că valoarea și valuta sunt separate printr-un spațiu
-            const [value, currency] = finalAmountElement.split(' ');
+            let [value, currency] = finalAmountElement.split(' ');
+
+            currency = "RON";
 
             // console.log(value, currency);
 
@@ -2194,17 +2196,6 @@
               });
             }
 					</script>
-          <script>
-            const finalAmount = document.getElementById("final__amount").innerText;
-            console.log(finalAmount)
-
-            if(typeof dataLayer !== 'undefined') {
-              dataLayer.push({
-                'event': 'finalAmount',
-                'amount': finalAmount
-              })
-            }
-          </script>
 				@endif
 				<!------------------- End Step Final ------------------->
 				<!------------------------------------------------------>
