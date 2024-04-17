@@ -2184,7 +2184,7 @@
             // presupunând că valoarea și valuta sunt separate printr-un spațiu
             const [value, currency] = finalAmountElement.split(' ');
 
-            console.log(value, currency);
+            // console.log(value, currency);
 
             if(typeof dataLayer !== 'undefined') {
               dataLayer.push({
