@@ -2179,25 +2179,23 @@
 						});
 					</script>
 					<script>
-            if (typeof dataLayer !== 'undefined') {
-              dataLayer.push({
-                'event': 'checkoutStep',
-                'step': 3,
-                'option': 'Confirmare comandă'
-              });
-            };
-					</script>
-          <script>
-            const finalAmount = document.getElementById("final__amount").innerText;
-            // console.log(finalAmount)
+            const finalAmountElement = document.getElementById("final__amount").innerText;
+
+            // presupunând că valoarea și valuta sunt separate printr-un spațiu
+            let [value, currency] = finalAmountElement.split(' ');
+
+            currency = "RON";
+
+            // console.log(value, currency);
 
             if(typeof dataLayer !== 'undefined') {
               dataLayer.push({
                 'event': 'finalAmount',
-                'amount': finalAmount
-              })
+                'amount': value,
+                'currency': currency
+              });
             }
-          </script>
+					</script>
 				@endif
 				<!------------------- End Step Final ------------------->
 				<!------------------------------------------------------>
