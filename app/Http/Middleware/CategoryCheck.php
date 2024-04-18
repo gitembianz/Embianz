@@ -25,9 +25,22 @@ class CategoryCheck
                     return redirect()->route('products', ['categorySlug' => $category->seo_id]);
                 }
             } else {
+
                 throw new NotFoundHttpException();
             }
         }
+        if ($categorySlug == null) {
+
+            $category = Category::find(app('global_default_category'));
+            if ($category != null) {
+                if ($category->seo_id) {
+                    return redirect()->route('products', ['categorySlug' => $category->seo_id]);
+                }
+            } else {
+                throw new NotFoundHttpException();
+            }
+        }
+
         return $next($request);
     }
 }
