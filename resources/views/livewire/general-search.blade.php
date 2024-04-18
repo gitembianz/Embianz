@@ -25,9 +25,9 @@
 		<li class="search__item">
 		<a class="search__link" href="{{ route("product", ["product" => $product->seo_id !== null && $product->seo_id !== "" ? $product->seo_id : $product->id]) }}">
 		@if ($product->media->first() != null)
-		<img src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}" alt="{{ $product->media->first()->name }} {{ $product->name }}">
+		<img loading="lazy" src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}" alt="{{ $product->media->first()->name }} {{ $product->name }}">
 	@else
-		<img src="/images/store/default/default70.webp" alt="something wrong">
+		<img loading="lazy" src="/images/store/default/default70.webp" alt="something wrong">
 		@endif
 
 		<div class="search__link--text">
@@ -60,9 +60,9 @@
 		<li class="search__item">
 		<a class="search__link" href="{{ route("products", ["categorySlug" => $category->seo_id !== null && $category->seo_id !== "" ? $category->seo_id : $category->id]) }}">
 		@if ($category->media->first() != null)
-		<img src="/{{ $category->media->first()->path }}{{ $category->media->first()->name }}" alt="{{ $category->media->first()->name }} {{ $category->name }}">
+		<img loading="lazy" src="/{{ $category->media->first()->path }}{{ $category->media->first()->name }}" alt="{{ $category->media->first()->name }} {{ $category->name }}">
 	@else
-		<img src="/images/store/default/default70.webp" alt="something wrong">
+		<img loading="lazy" src="/images/store/default/default70.webp" alt="something wrong">
 		@endif
 
 		<div class="search__link--text">

@@ -24,7 +24,7 @@
 			<!-------------------------Logo------------------------->
 
 			<a class="logo" href="{{ url("/") }}">
-				<img src="/images/store/svg/noren-black.svg" alt="Embianz Logo">
+				<img loading="lazy" src="/images/store/svg/noren-black.svg" alt="Embianz Logo">
 			</a>
 			<!-----------------------END-Logo----------------------->
 			<!------------------------------------------------------>
@@ -98,7 +98,7 @@
 					</svg>
 				</button>
 				<a class="logo__hidden" href="{{ url("/") }}">
-					<img src="/images/store/svg/noren-black.svg" alt="Site Logo">
+					<img loading="lazy" src="/images/store/svg/noren-black.svg" alt="Site Logo">
 				</a>
 				{{-- wislist button --}}
 				<button class="header__btn" wire:click="$emit('showwis')" id="wishOpen" aria-label="Open wishlist button">
@@ -162,11 +162,11 @@
 							<div class="dropmenu__button">
 								<a class="dropmenu__button--link" href="{{ route("products", ["categorySlug" => $category->seo_id !== null && $category->seo_id !== "" ? $category->seo_id : $category->id]) }}">
 									@if ($category->media->first())
-										<img class="cart__list--img" src="/{{ $category->media->first()->path }}{{ $category->media->first()->name }}" alt="{{ $category->media->first()->name }}{{ $category->name }}">
+										<img loading="lazy" class="cart__list--img" src="/{{ $category->media->first()->path }}{{ $category->media->first()->name }}" alt="{{ $category->media->first()->name }}{{ $category->name }}">
 										<h4>{{ $category->name }}</h4>
 									@else
 										<h4 style="margin-left: 7px">{{ $category->name }}</h4>
-										{{-- <img class="heart__list--img" src="/images/store/default/default70.webp" alt="something wrong"> --}}
+										{{-- <img loading="lazy" class="heart__list--img" src="/images/store/default/default70.webp" alt="something wrong"> --}}
 									@endif
 								</a>
 								<button class="dropmenu__open" href="#">
@@ -181,10 +181,10 @@
 										<div class="submenu__button">
 											<a class="submenu__button--link" href="{{ route("products", ["categorySlug" => $subcategory->category->seo_id !== null && $subcategory->category->seo_id !== "" ? $subcategory->category->seo_id : $subcategory->category->id]) }}">
 												@if ($subcategory->category->media->first() != null)
-													<img src="/{{ $subcategory->category->media->first()->path }}{{ $subcategory->category->media->first()->name }}" alt="{{ $subcategory->category->media->first()->name }}{{ $subcategory->category->name }}">
+													<img loading="lazy" src="/{{ $subcategory->category->media->first()->path }}{{ $subcategory->category->media->first()->name }}" alt="{{ $subcategory->category->media->first()->name }}{{ $subcategory->category->name }}">
 													{{-- <h4>{{ $subcategory->category->name }}</h4> --}}
 												@else
-													{{-- <img src="/images/store/default/default70.webp" alt="something wrong"> --}}
+													{{-- <img loading="lazy" src="/images/store/default/default70.webp" alt="something wrong"> --}}
 												@endif
 												<h4>{{ $subcategory->category->name }}</h4>
 											</a>
@@ -201,9 +201,9 @@
 												@foreach ($subcategory->category->subcategory as $subsubCategory)
 													<a class="submenu__link" href="{{ route("products", ["categorySlug" => $subsubCategory->category->seo_id !== null && $subsubCategory->category->seo_id !== "" ? $subsubCategory->category->seo_id : $subsubCategory->category->id]) }}">
 														@if ($subsubCategory->category->media->first() != null)
-															<img src="/{{ $subsubCategory->category->media->first()->path }}{{ $subsubCategory->category->media->first()->name }}" alt="{{ $subsubCategory->category->media->first()->name }}{{ $subsubCategory->category->name }}">
+															<img loading="lazy" src="/{{ $subsubCategory->category->media->first()->path }}{{ $subsubCategory->category->media->first()->name }}" alt="{{ $subsubCategory->category->media->first()->name }}{{ $subsubCategory->category->name }}">
 														@else
-															{{-- <img src="/images/store/default/default70.webp" alt="something wrong"> --}}
+															{{-- <img loading="lazy" src="/images/store/default/default70.webp" alt="something wrong"> --}}
 														@endif
 														<h4>{{ $subsubCategory->category->name }}</h4>
 													</a>
@@ -217,9 +217,9 @@
 					@else
 						<a class="menu__link" href="{{ route("products", ["categorySlug" => $category->seo_id !== null && $category->seo_id !== "" ? $category->seo_id : $category->id]) }}">
 							@if ($category->media->first() != null)
-								<img src="/{{ $category->media->first()->path }}{{ $category->media->first()->name }}" alt="{{ $category->media->first()->name }} {{ $category->name }}">
+								<img loading="lazy" src="/{{ $category->media->first()->path }}{{ $category->media->first()->name }}" alt="{{ $category->media->first()->name }} {{ $category->name }}">
 							@else
-								{{-- <img src="/images/store/default/default70.webp" alt="something wrong"> --}}
+								{{-- <img loading="lazy" src="/images/store/default/default70.webp" alt="something wrong"> --}}
 							@endif
 							<h4> {{ $category->name }}</h4>
 						</a>

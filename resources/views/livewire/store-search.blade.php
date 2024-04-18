@@ -49,9 +49,9 @@
 					<div @if ($loop->last) id="last_record" @endif class="card" >
 						<a href="{{ route("product", ["product" => $product->seo_id !== null && $product->seo_id !== "" ? $product->seo_id : $product->id]) }}">
 							@if ($product->media->first() != null)
-								<img class="card-image" src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}" alt="{{ $product->media->first()->name }} {{ $product->name }}">
+								<img loading="lazy" class="card-image" src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}" alt="{{ $product->media->first()->name }} {{ $product->name }}">
 							@else
-								<img class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
+								<img loading="lazy" class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
 							@endif
 						</a>
 						<?php if ($product->product_prices->count() != 0) {
@@ -155,9 +155,9 @@
 					<a class="card card--category" role="listitem" href="{{ route("products", ["categorySlug" => $category->seo_id !== null && $category->seo_id !== "" ? $category->seo_id : $category->id]) }}">
 						<div>
 							@if ($category->media->first() != null)
-								<img class="card-image" src="/{{ $category->media->first()->path }}{{ $category->media->first()->name }}" alt="{{ $category->media->first()->name }} {{ $category->name }}">
+								<img loading="lazy" class="card-image" src="/{{ $category->media->first()->path }}{{ $category->media->first()->name }}" alt="{{ $category->media->first()->name }} {{ $category->name }}">
 							@else
-								<img class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
+								<img loading="lazy" class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
 							@endif
 						</div>
 						<div class="card-info">
