@@ -27,14 +27,14 @@ class StoreController extends Controller
     if ($categorySlug) {
       if (is_numeric($categorySlug)) {
         $category = Category::find($categorySlug);
-        if (($category == null) || ($category->active != true) || ($category->start_date > now()->format('Y-m-d')) || ($category->end_date < now()->format('Y-m-d'))) {
+        if (($category->id != app('global_default_category')) && (($category == null) || ($category->active != true) || ($category->start_date > now()->format('Y-m-d')) || ($category->end_date < now()->format('Y-m-d')))) {
           throw new NotFoundHttpException();
         }
         $can = $category->id;
       } else {
         $can = $categorySlug;
         $category = Category::where('seo_id', $categorySlug)->first();
-        if (($category == null) || ($category->active != true) || ($category->start_date > now()->format('Y-m-d')) || ($category->end_date < now()->format('Y-m-d'))) {
+        if (($category->id != app('global_default_category')) && (($category == null) || ($category->active != true) || ($category->start_date > now()->format('Y-m-d')) || ($category->end_date < now()->format('Y-m-d')))) {
           throw new NotFoundHttpException();
         }
       }
@@ -44,7 +44,15 @@ class StoreController extends Controller
         throw new NotFoundHttpException();
       }
     }
+    if ($categorySlug == null) {
 
+      $category = Category::find(app('global_default_category'));
+      if ($category) {
+        $data = $category;
+      } else {
+        throw new NotFoundHttpException();
+      }
+    }
     return view('store.products', compact('data', 'can'));
   }
 
