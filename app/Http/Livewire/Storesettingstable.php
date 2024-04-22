@@ -192,6 +192,16 @@ class Storesettingstable extends Component
           File::put($envPath, $content);
         }
       }
+      if ($item->parameter == 'robots_txt') {
+        if (array_key_exists('value', $update)) {
+          if ($item->value = !'') {
+            $filepath = public_path('robots.txt');
+            $content = str_replace('<br>', "\r\n", $update['value'], $content);
+            File::put($filepath, $content);
+            chmod($filepath, 0755);
+          }
+        }
+      }
       if ($item->parameter == 'time_zone') {
         if (preg_match('/^[-+]?([0-9]|1[0-2])$/', $item->value)) {
           $envPath = base_path('.env');
@@ -231,23 +241,29 @@ class Storesettingstable extends Component
   {
     $filePath = public_path('sitemap.xml');
 
-    // Check if the sitemap file already exists
-    if (file_exists($filePath)) {
-      // Load and return the existing sitemap
-      return simplexml_load_file($filePath);
+    if (file_exists($filePath) && filesize($filePath) > 0) {
+
+      $xml = simplexml_load_file($filePath);
+      if ($xml === false) {
+        $xml = $this->createNewSitemap($filePath);
+      }
+      return $xml;
     } else {
-      // Sitemap does not exist, so create a new XML string
-      $xmlString = '<?xml version="1.0" encoding="UTF-8"?>' . PHP_EOL .
-        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . PHP_EOL .
-        '</urlset>';
-
-      // Write the new XML string to a file
-      file_put_contents($filePath, $xmlString);
-
-      // Return a new SimpleXMLElement object based on the created string
-      return simplexml_load_string($xmlString);
+      return $this->createNewSitemap($filePath);
     }
   }
+
+  private function createNewSitemap($filePath)
+  {
+    $xmlString = '<?xml version="1.0" encoding="UTF-8"?>' . PHP_EOL .
+      '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . PHP_EOL .
+      '</urlset>';
+
+    file_put_contents($filePath, $xmlString);
+
+    return simplexml_load_string($xmlString);
+  }
+
 
   public function sitemap()
   {
@@ -314,6 +330,8 @@ class Storesettingstable extends Component
 
 
     $xml->asXML($filePath);
+    chmod($filePath, 0755);
+
     session()->flash('notification', [
       'message' => 'Sitemap generated successfully!',
       'type' => 'success',
