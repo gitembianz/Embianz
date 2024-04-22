@@ -94,7 +94,14 @@
      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
      <polyline points="17 8 12 3 7 8"></polyline>
      <line x1="12" y1="3" x2="12" y2="15"></line>
-    </svg> Actualizeaza website
+    </svg> <span style="margin-left: 10px">Actualizeaza website</span>
+   </a>
+   <a class="panel__header--button" wire:click="sitemap">
+    <svg>
+     <circle cx="12" cy="12" r="10"></circle>
+     <line x1="2" y1="12" x2="22" y2="12"></line>
+     <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+    </svg> <span style="margin-left: 10px">Genereaza sitemap.xml</span>
    </a>
   </div>
   @if ($selectPage && $selectAll)
@@ -218,8 +225,8 @@
       <td data-title="Value">
        @if ($indexstoresettings !== $index)
         {{ $store->value }}@if ($store->parameter == 'time_zone')
-    (time is: {{ now() }}) - Please refresh to update after the edit
-@endif
+         (time is: {{ now() }}) - Please refresh to update after the edit
+        @endif
        @else
         <input type="text" class="table__edit" wire:model.defer="settings.{{ $index }}.value">
        @endif
