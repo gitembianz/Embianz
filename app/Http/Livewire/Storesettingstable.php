@@ -231,13 +231,22 @@ class Storesettingstable extends Component
   {
     $filePath = public_path('sitemap.xml');
 
-    $xmlString = '<?xml version="1.0" encoding="UTF-8"?>' . PHP_EOL .
-      '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . PHP_EOL .
-      '</urlset>';
+    // Check if the sitemap file already exists
+    if (file_exists($filePath)) {
+      // Load and return the existing sitemap
+      return simplexml_load_file($filePath);
+    } else {
+      // Sitemap does not exist, so create a new XML string
+      $xmlString = '<?xml version="1.0" encoding="UTF-8"?>' . PHP_EOL .
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . PHP_EOL .
+        '</urlset>';
 
-    file_put_contents($filePath, $xmlString);
+      // Write the new XML string to a file
+      file_put_contents($filePath, $xmlString);
 
-    return simplexml_load_string($xmlString);
+      // Return a new SimpleXMLElement object based on the created string
+      return simplexml_load_string($xmlString);
+    }
   }
 
   public function sitemap()
