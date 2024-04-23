@@ -82,26 +82,28 @@
        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
      </g>
     </svg>
+    <span style="margin-left: 10px">Refresh</span>
    </a>
    <a class="panel__header--button" href="{{ route('add_storesetting') }}">
     <svg>
      <line x1="12" y1="5" x2="12" y2="19"></line>
      <line x1="5" y1="12" x2="19" y2="12"></line>
     </svg>
+    <span style="margin-left: 10px">Add new store setting</span>
    </a>
    <a class="panel__header--button" wire:click="actualizeaza">
     <svg>
      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
      <polyline points="17 8 12 3 7 8"></polyline>
      <line x1="12" y1="3" x2="12" y2="15"></line>
-    </svg> <span style="margin-left: 10px">Actualizeaza website</span>
+    </svg> <span style="margin-left: 10px">Update website</span>
    </a>
    <a class="panel__header--button" wire:click="sitemap">
     <svg>
      <circle cx="12" cy="12" r="10"></circle>
      <line x1="2" y1="12" x2="22" y2="12"></line>
      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-    </svg> <span style="margin-left: 10px">Genereaza sitemap.xml</span>
+    </svg> <span style="margin-left: 10px">Generate sitemap.xml</span>
    </a>
   </div>
   @if ($selectPage && $selectAll)
