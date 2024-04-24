@@ -11,17 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('currencies', function (Blueprint $table) {
-            $table->string('symbol')->after('name')->nullable();
+        Schema::table('sessions', function (Blueprint $table) {
+            $table->timestamp('created_at')->nullable()->default(now());
         });
     }
 
-    /**
+    /**p
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::table('currencies', function (Blueprint $table) {
+        Schema::table('sessions', function (Blueprint $table) {
             //
         });
     }
