@@ -1,6 +1,6 @@
 {
-    "name": "noren",
-    "short_name": "noren",
+    "name": "Noren",
+    "short_name": "Noren",
     "icons": [
         {
             "src": "/images/store/svg/android-chrome-192x192.png",
@@ -13,7 +13,7 @@
             "type": "image/png"
         }
     ],
-    "theme_color": "#fafafa",
-    "background_color": "#fafafa",
+    "theme_color": "#ffffff",
+    "background_color": "#ffffff",
     "display": "standalone"
 }
