@@ -5,7 +5,8 @@ public/dist/.DS_Store
 storage/app/livewire-tmp
 public/dist/css/main.css.map
 public/dist/css/loading-screen.css.map
-
+public/sitemap.xml
+public/robots.txt
 public/.DS_Store
 bootstrap
 vendor

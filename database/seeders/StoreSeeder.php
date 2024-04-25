@@ -40,7 +40,10 @@ class StoreSeeder extends Seeder
             ['parameter' => 'mainpage_metadescription', 'value' => '', 'description' => 'Meta descriere prima pagina', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'mainpage_metatitle', 'value' => '', 'description' => 'Titlu prima pagina', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'send_to_salesforce', 'value' => 'false', 'description' => 'Trimitere request salesforce', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
-
+            ['parameter' => 'site_url', 'value' => 'www.noren.ro', 'description' => 'URL-ul siteului', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'facebook_url', 'value' => 'https://www.facebook.com/norenRomania', 'description' => 'link facebook', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'instagram_url', 'value' => 'https://www.instagram.com/norenromania/', 'description' => 'link instagram', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'robots_txt', 'value' => 'User-agent: * <br> Disallow: /embadmin <br> Sitemap: https://embianz.com/sitemap.xml ', 'description' => 'Content for robots.txt (keep in mind to use <br> for a new line)', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
         ]);
     }
 }

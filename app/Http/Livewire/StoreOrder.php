@@ -504,9 +504,14 @@ class StoreOrder extends Component
             'orgid' => '00D09000008XPQu',
             'debug' => '1',
             'debugEmail' => 'iosif.relia@eztemcorp.com',
-            'subject' => 'Noren.ro Order_id:' . $order->id,
-            '00N9N000000QGVe' => 'www.noren.ro',
+            'subject' => app()->has('global_site_name') && app('global_site_name') != "" ?
+              app('global_site_name') . ' Order_id:' . $order->id :
+              'Order_id:' . $order->id,
+            '00N9N000000QGVe' => app()->has('global_site_url') && app('global_site_url') != "" ?
+              app('global_site_url') : 'Verifica site url-ul proiectului',
+
             'type' => 'Store Order Master',
+
             //hasedinfo
             '00NQF000000VDVd' => $hashed,
 
@@ -1046,8 +1051,11 @@ class StoreOrder extends Component
               'orgid' => '00D09000008XPQu',
               'debug' => '1',
               'debugEmail' => 'iosif.relia@eztemcorp.com',
-              'subject' => 'Noren.ro Order_id:' . $order->id,
-              '00N9N000000QGVe' => 'www.noren.ro',
+              'subject' => app()->has('global_site_name') && app('global_site_name') != "" ?
+                app('global_site_name') . ' Order_id:' . $order->id :
+                'Order_id:' . $order->id,
+              '00N9N000000QGVe' => app()->has('global_site_url') && app('global_site_url') != "" ?
+                app('global_site_url') : 'Verifica site url-ul proiectului',
               'type' => 'Store Order Master',
 
               //hasedinfo

@@ -2,12 +2,15 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Store_Settings;
+use App\Models\Category;
+use App\Models\Product;
 use Livewire\Component;
 use Livewire\WithPagination;
+use App\Models\Store_Settings;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Carbon;
 
 
 
@@ -189,6 +192,16 @@ class Storesettingstable extends Component
           File::put($envPath, $content);
         }
       }
+      if ($item->parameter == 'robots_txt') {
+        if (array_key_exists('value', $update)) {
+          if ($item->value = !'') {
+            $filepath = public_path('robots.txt');
+            $content = str_replace('<br>', "\r\n", $update['value'], $content);
+            File::put($filepath, $content);
+            chmod($filepath, 0755);
+          }
+        }
+      }
       if ($item->parameter == 'time_zone') {
         if (preg_match('/^[-+]?([0-9]|1[0-2])$/', $item->value)) {
           $envPath = base_path('.env');
@@ -223,4 +236,95 @@ class Storesettingstable extends Component
     $this->indexstoresettings = null;
     $this->settings = [];
   }
+
+  public function initializeSitemap()
+  {
+    $filePath = public_path('sitemap.xml');
+
+    return $this->createNewSitemap($filePath);
+  }
+
+  private function createNewSitemap($filePath)
+  {
+    $xmlString = '<?xml version="1.0" encoding="UTF-8"?>' . PHP_EOL .
+'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . PHP_EOL .
+    '</urlset>';
+file_put_contents($filePath, $xmlString);
+return simplexml_load_string($xmlString);
 }
+
+
+public function sitemap()
+{
+$filePath = public_path('sitemap.xml');
+$xml = $this->initializeSitemap();
+
+//homepage
+$url = $xml->addChild('url');
+$url->addChild('loc', url('/'));
+$url->addChild('lastmod', now()->toDateString());
+$url->addChild('priority', '1.0');
+
+//static pages
+$pages = [
+'/faq' => '0.5',
+'/cookies' => '0.5',
+'/privacy' => '0.5',
+'/contact' => '0.5',
+'/about' => '0.5',
+'/terms' => '0.5'
+];
+
+foreach ($pages as $page => $priority) {
+$url = $xml->addChild('url');
+$url->addChild('loc', url($page));
+$url->addChild('lastmod', now()->toDateString());
+$url->addChild('priority', $priority);
+}
+// Fetch and add active products
+$products = Product::where('active', true)
+->where('start_date', '<=', Carbon::now())->where('end_date', '>=', Carbon::now())
+    ->get();
+
+    foreach ($products as $product) {
+    $url = $xml->addChild('url');
+    $productUrl = route('product', ['product' => $product->seo_id ?? $product->id]);
+    $url->addChild('loc', htmlspecialchars($productUrl));
+    $url->addChild('lastmod', $product->updated_at);
+    $url->addChild('priority', '0.8');
+    }
+
+    if (app()->has('global_default_category') && app('global_default_category') != "") {
+    $default_category = Category::find(app('global_default_category'));
+    if ($default_category != null) {
+    $url = $xml->addChild('url');
+    $default_categoryUrl = route('products', ['categorySlug' => $default_category->seo_id ??
+    $default_category->id]);
+    $url->addChild('loc', htmlspecialchars($default_categoryUrl));
+    $url->addChild('lastmod', $default_category->updated_at);
+    $url->addChild('priority', '0.9');
+    }
+    $categories = Category::where('active', true)
+    ->where('start_date', '<=', Carbon::now())->where('end_date', '>=', Carbon::now())
+        ->where('id', '!=', $default_category->id)->get();
+        }
+
+        foreach ($categories as $category) {
+        $url = $xml->addChild('url');
+        $categoryUrl = route('products', ['categorySlug' => $category->seo_id ?? $category->id]);
+        $url->addChild('loc', htmlspecialchars($categoryUrl));
+        $url->addChild('lastmod', $category->updated_at);
+        $url->addChild('priority', '0.9');
+        }
+
+
+        $xml->asXML($filePath);
+        chmod($filePath, 0755);
+
+        session()->flash('notification', [
+        'message' => 'Sitemap generated successfully!',
+        'type' => 'success',
+        'title' => 'Success'
+        ]);
+        }
+        }
