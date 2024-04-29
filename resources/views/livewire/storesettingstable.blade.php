@@ -98,6 +98,14 @@
      <line x1="12" y1="3" x2="12" y2="15"></line>
     </svg> <span style="margin-left: 10px">Update website</span>
    </a>
+   <a class="panel__header--button" wire:click="addSettingsIfNotExist">
+    <svg>
+     <polyline points="17 1 21 5 17 9"></polyline>
+     <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
+     <polyline points="7 23 3 19 7 15"></polyline>
+     <path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
+    </svg> <span style="margin-left: 10px">Update Parameters</span>
+   </a>
    <a class="panel__header--button" wire:click="sitemap">
     <svg>
      <circle cx="12" cy="12" r="10"></circle>
