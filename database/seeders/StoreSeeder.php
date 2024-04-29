@@ -7,14 +7,10 @@ use Illuminate\Support\Facades\DB;
 
 class StoreSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
+    public static function settings()
     {
         $currentTime = now();
-
-        DB::table('store__settings')->insert([
+        return [
             ['parameter' => 'delivery_price', 'value' => '20', 'description' => 'Delivery Price', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'limit_category', 'value' => '6', 'description' => 'Limit Category', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'site_name', 'value' => 'noren.ro', 'description' => 'Site Name', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
@@ -36,6 +32,7 @@ class StoreSeeder extends Seeder
             ['parameter' => 'order_error_active', 'value' => 'Unul sau mai multe produse din coș nu mai este disponibil!', 'description' => 'order error la disponibilitate', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'order_error_cart', 'value' => 'Coșul de cumpărături a fost modificat!', 'description' => 'eroare cart', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'cash_limit', 'value' => '0', 'description' => 'Limita plata cash', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'app_debug', 'value' => 'false', 'description' => 'Appdebug', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'time_zone', 'value' => '+0', 'description' => 'Time zone +0,1 or -0,1, current is +3', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'mainpage_metadescription', 'value' => '', 'description' => 'Meta descriere prima pagina', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'mainpage_metatitle', 'value' => '', 'description' => 'Titlu prima pagina', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
@@ -44,6 +41,11 @@ class StoreSeeder extends Seeder
             ['parameter' => 'facebook_url', 'value' => 'https://www.facebook.com/norenRomania', 'description' => 'link facebook', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'instagram_url', 'value' => 'https://www.instagram.com/norenromania/', 'description' => 'link instagram', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'robots_txt', 'value' => 'User-agent: * <br> Disallow: /embadmin <br> Sitemap: https://embianz.com/sitemap.xml ', 'description' => 'Content for robots.txt (keep in mind to use <br> for a new line)', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
-        ]);
+        ];
+    }
+
+    public function run(): void
+    {
+        DB::table('store__settings')->insert(self::settings());
     }
 }
