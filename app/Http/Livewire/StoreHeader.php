@@ -56,42 +56,57 @@ class StoreHeader extends Component
 
   public function getCategoriesProperty()
   {
-    return Category::select('id', 'name', 'seo_id')->where('start_date', '<=',  now()->format('Y-m-d'))
-      ->where('end_date', '>=',  now()->format('Y-m-d'))
+    return Category::select('id', 'name', 'seo_id', 'sequence')
       ->with([
         'media' => function ($query) {
-          $query->select('path', 'name')->where('type', 'min');
+          $query->where('type', 'min')->select('media_id', 'path', 'name');
         },
         'subcategory' => function ($query) {
-          $query->select('parrent_id', 'category_id')->with([
+          $query->whereHas('category', function ($query) {
+            $this->applyCategoryConditions($query);
+          })->with([
             'category' => function ($query) {
-              $query->select('id', 'name', 'seo_id', 'sequence')->where('store_tab', 1)->where('active', 1)->where('start_date', '<=',  now()->format('Y-m-d'))
-                ->where('end_date', '>=',  now()->format('Y-m-d'))->with([
-                  'media' => function ($query) {
-                    $query->select('path', 'name')->where('type', 'min');
-                  },
-                  'subcategory' => function ($query) {
-                    $query->select('parrent_id', 'category_id')->with([
-                      'category' => function ($query) {
-                        $query->select('id', 'name', 'seo_id', 'sequence')->where('store_tab', 1)->where('active', 1)->where('start_date', '<=',  now()->format('Y-m-d'))
-                          ->where('end_date', '>=',  now()->format('Y-m-d'))->with([
-                            'media' => function ($query) {
-                              $query->select('path', 'name')->where('type', 'min');
-                            }
-                          ]);
-                      }
-                    ]);
-                  }
-                ]);
+              $query->select('id', 'name', 'seo_id', 'sequence');
+              $this->applyCategoryConditions($query);
+              $query->with([
+                'media' => function ($query) {
+                  $query->where('type', 'min')->select('media_id', 'path', 'name');
+                },
+                'subcategory' => function ($query) {
+                  $query->whereHas('category', function ($query) {
+                    $this->applyCategoryConditions($query);
+                  })->with([
+                    'category' => function ($query) {
+                      $query->select('id', 'name', 'seo_id', 'sequence');
+                      $this->applyCategoryConditions($query);
+                      $query->with([
+                        'media' => function ($query) {
+                          $query->where('type', 'min')->select('media_id', 'path', 'name');
+                        }
+                      ]);
+                    }
+                  ]);
+                }
+              ]);
             }
           ]);
         }
       ])
       ->where('active', 1)
-      ->where('store_tab', '1')
-      ->where('has_parrent', '0')
-      ->limit(app('global_limit_category'))
+      ->where('store_tab', 1)
+      ->where('has_parrent', 0)
+      ->where('start_date', '<=', now()->format('Y-m-d'))
+      ->where('end_date', '>=', now()->format('Y-m-d'))
       ->orderBy('sequence')
       ->get();
+  }
+
+  protected function applyCategoryConditions($query)
+  {
+    $query->where('active', 1)
+      ->where('store_tab', 1)
+      ->where('start_date', '<=', now()->format('Y-m-d'))
+      ->where('end_date', '>=', now()->format('Y-m-d'))
+      ->orderBy('sequence');
   }
 }
