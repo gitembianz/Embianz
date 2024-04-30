@@ -98,6 +98,7 @@ class StoreHeader extends Component
       ->where('start_date', '<=', now()->format('Y-m-d'))
       ->where('end_date', '>=', now()->format('Y-m-d'))
       ->orderBy('sequence')
+      ->limit(app('global_limit_category'))
       ->get();
   }
 
