@@ -52,7 +52,7 @@
 	<section class="contact container">
 		<form class="checkout__form active" action="https://webto.salesforce.com/servlet/servlet.WebToCase?encoding=UTF-8&orgId=00D09000008XPQu" method="POST">
       <input type=hidden name="retURL" value="{{ URL("/redirect") }}">
-      {{-- <input type=hidden name='captcha_settings' value='{"keyname":"norenro","fallback":"true","orgId":"00D09000008XPQu","ts":""}'> --}}
+      <input type=hidden name='captcha_settings' value='{"keyname":"norenro","fallback":"true","orgId":"00D09000008XPQu","ts":""}'>
       <input type=hidden name="orgid" value="00D09000008XPQu">
       <input  id="00N9N000000QGVe" value="www.noren.ro" name="00N9N000000QGVe" type="hidden" />
       <input  id="type" type="hidden" name="type" value="Store Case" />
@@ -95,6 +95,11 @@
 
       <div class="g-recaptcha" style="grid-column: 1/3" data-sitekey="6LfwYJkpAAAAAINvUbZhqEPmiXVLH7kWqXCDlY8k"></div>
 			<div id="html_element" style="grid-column: 1/3"></div>
+      <script>
+
+        function timestamp() { var response = document.getElementById("g-recaptcha-response"); if (response == null || response.value.trim() == "") {var elems = JSON.parse(document.getElementsByName("captcha_settings")[0].value);elems["ts"] = JSON.stringify(new Date().getTime());document.getElementsByName("captcha_settings")[0].value = JSON.stringify(elems); } } setInterval(timestamp, 500);
+
+        </script>
 
 			<button style="grid-column: 1/3" class="contact__button g-recaptcha" disabled id="submit_button" type="submit" name="submit" aria-label="send message">
 				Trimite
@@ -106,7 +111,7 @@
 		</form>
 
 	</section>
-  <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
+  {{-- <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script> --}}
   <script src="/script/store/contact.js"></script>
   <script>
     applyValidations("nameParent", nameValidation, false);
