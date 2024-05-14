@@ -13,8 +13,8 @@ class Orderstable extends Component
     use WithPagination;
     public $loadAmount = 20;
     public $search = '';
-    public $orderBy = 'id';
-    public $orderAsc = true;
+    public $orderBy = 'created_at';
+    public $orderAsc = false;
     public $checked = [];
     public $selectPage = false;
     public $selectAll = false;
