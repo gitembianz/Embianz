@@ -140,7 +140,7 @@
       </td>
       @foreach ($selectedColumns as $column)
        @if ($column === 'name')
-        <td data-title="Name"><a href="{{ route("show_spec", ['id'=> $item->id ])}}">{{ $item->name }}</a></td>
+        <td data-title="Name"><a href="{{ route('show_spec', ['id' => $item->id]) }}">{{ $item->name }}</a></td>
        @elseif($column === 'created_at' || $column === 'updated_at')
         <td data-title="{{ $column }}">
          <div class="table__time">
@@ -169,6 +169,20 @@
    @endif
   </tbody>
  </table>
+ <script>
+  document.addEventListener('livewire:load', function() {
+   let observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+     if (entry.isIntersecting) {
+      @this.call('loadMore');
+     }
+    });
+   });
+
+   observer.observe(document.getElementById('last_record'));
+  });
+ </script>
+
  @if ($loadAmount <= count($specs))
   <div class="table__load-more" wire:click="loadMore">
    Load more
