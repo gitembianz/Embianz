@@ -17,7 +17,7 @@ const firstNameValidation = [
     message: "Numele nu poate conține spații consecutive.",
   },
   {
-    validation: (value) => /^[a-zA-ZăâîșțĂÂÎȘȚ\s]*$/.test(value),
+    validation: (value) => /^[a-zA-ZăâîșțĂÂÎȘȚ\s-]*$/.test(value),
     message: "Numele poate conține doar litere și spații",
   },
 ];
@@ -39,7 +39,7 @@ const lastNameValidation = [
     message: "Numărul de caractere introduse pentru prenume este prea mare.",
   },
   {
-    validation: (value) => /^[a-zA-ZăâîșțĂÂÎȘȚ\s]*$/.test(value),
+    validation: (value) => /^[a-zA-ZăâîșțĂÂÎȘȚ\s-]*$/.test(value),
     message: "Prenumele poate conține doar litere și spații",
   },
 ];
