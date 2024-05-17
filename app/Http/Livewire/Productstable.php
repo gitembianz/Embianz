@@ -29,7 +29,6 @@ class Productstable extends Component
   public $selectedColumns = [];
   public $col = false;
   public $all = false;
-  public $tableName;
 
   public function render()
   {
@@ -39,13 +38,8 @@ class Productstable extends Component
   }
   public function mount($tableName)
   {
-    $this->tableName = $tableName;
-    $this->columns = Schema::getColumnListing($this->tableName);
-
-    // Exclude 'long_description' and 'short_description' columns
-    $excludedColumns = ['long_description', 'short_description', 'meta_description'];
-    $this->selectedColumns = array_diff($this->columns, $excludedColumns);
-    $this->columns = array_diff($this->columns, $excludedColumns);
+    $this->columns = Schema::getColumnListing($tableName);
+    $this->selectedColumns = $this->columns;
   }
   public function showColumn($column)
   {
