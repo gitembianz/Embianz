@@ -38,12 +38,7 @@ class Vouchertable extends Component
   public function mount($tableName)
   {
     $this->columns = Schema::getColumnListing($tableName);
-
-    if (session()->has('selectedColumns')) {
-      $this->selectedColumns = session('selectedColumns');
-    } else {
-      $this->selectedColumns = $this->columns;
-    }
+    $this->selectedColumns = $this->columns;
   }
   public function getVouchersProperty()
   {

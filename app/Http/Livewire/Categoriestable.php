@@ -24,7 +24,6 @@ class Categoriestable extends Component
   public $selectedColumns = [];
   public $col = false;
   public $all = false;
-  public $tableName;
   public $columns;
 
   public function render()
@@ -37,17 +36,10 @@ class Categoriestable extends Component
   }
   public function mount($tableName)
   {
-    $this->tableName = $tableName;
-    $this->columns = Schema::getColumnListing($this->tableName);
-    $excludedColumns = ['long_description', 'short_description', 'meta_description'];
-    $this->selectedColumns = array_diff($this->columns, $excludedColumns);
-    $this->columns = array_diff($this->columns, $excludedColumns);
+    $this->columns = Schema::getColumnListing($tableName);
+    $this->selectedColumns = $this->columns;
   }
 
-  public function updatedSelectedColumns()
-  {
-    session(['selectedColumns' => $this->selectedColumns]);
-  }
   public function showColumn($column)
   {
     return in_array($column, $this->selectedColumns);
