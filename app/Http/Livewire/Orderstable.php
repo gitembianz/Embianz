@@ -34,12 +34,7 @@ class Orderstable extends Component
     {
         $this->tableName = $tableName;
         $this->columns = Schema::getColumnListing($this->tableName);
-
-        if (session()->has('selectedColumns')) {
-            $this->selectedColumns = session('selectedColumns');
-        } else {
-            $this->selectedColumns = $this->columns;
-        }
+        $this->selectedColumns = $this->columns;
     }
     public function getOrdersProperty()
     {
