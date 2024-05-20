@@ -24,7 +24,7 @@ class RelatedPricelist extends Component
   public $productId;
   public $col = false;
   public $all = false;
-  public $columns = ['Id', 'Currency', 'Value', 'TVA', 'Created At'];
+  public $columns = ['Id', 'Currency', 'Value', 'Discount', 'RRPValue', 'TVA', 'Created At'];
   public $selectedColumns = [];
   public $priceidbeingremoved = null;
   public $addrelatedprice = false;
@@ -66,7 +66,7 @@ class RelatedPricelist extends Component
     $this->priceAndValues[] = [
       'allow' => false,
       'itemselected' => null,
-      'price' => ['idrel' => null, 'value' => null, 'tva' => 19],
+      'price' => ['idrel' => null, 'value' => null, 'tva' => 19, 'discount' => 0],
     ];
   }
   public function load()
@@ -162,6 +162,7 @@ class RelatedPricelist extends Component
   {
     $this->dispatchBrowserEvent('show-delete-modal-multiple');
   }
+
   public function edititem($id, $iditem, $index)
   {
     $this->itemselected = PriceList::find($iditem);
@@ -170,8 +171,11 @@ class RelatedPricelist extends Component
     $this->editedrow = $index;
     $this->pricelist = [
       $index . '.name' => $this->itemselected,
-      $index . '.value' => $val->value,
+      $index . '.value' => $val->rrp_value,
       $index . '.tva' => $val->tva_percent,
+      $index . '.discount' => $val->discount,
+
+      // de adaugat discout si 
     ];
   }
   public function canceledit()
@@ -199,16 +203,17 @@ class RelatedPricelist extends Component
 
     $val = $this->pricelist[$index] ?? NULL;
     if (!is_null($val)) {
+      if (array_key_exists('discount', $val)) {
+        $new->discount = $val["discount"];
+      }
       if (array_key_exists('value', $val)) {
-        // Replace commas with dots for consistent decimal representation
         $newValue = str_replace(',', '.', $val["value"]);
-        // Convert the string to a float
         $floatValue = floatval($newValue);
-        // Format the float to have two decimal places
         $formattedValue = number_format($floatValue, 2, '.', '');
 
-        $new->value = $formattedValue;
+        $new->rrp_value = $formattedValue;
       }
+      $new->value = $new->rrp_value - (0.01 * $new->rrp_value * $new->discount);
       $new->save();
       $this->allow = false;
       $this->priceid = null;
@@ -260,7 +265,7 @@ class RelatedPricelist extends Component
   {
     if (empty($this->priceAndValues)) {
       session()->flash('notification', [
-        'message' => 'No specifications to update.',
+        'message' => 'No pricelist to update.',
         'type' => 'warning',
         'title' => 'No Data'
       ]);
@@ -363,7 +368,7 @@ class RelatedPricelist extends Component
     $this->priceAndValues[] = [
       'allow' => false,
       'itemselected' => null,
-      'price' => ['name' => null, 'value' => null, 'tva' => 19],
+      'price' => ['name' => null, 'value' => null, 'tva' => 19, 'discount' => 0],
     ];
   }
   public function clear($index)
@@ -380,7 +385,7 @@ class RelatedPricelist extends Component
           [
             'allow' => false,
             'itemselected' => null,
-            'price' => ['name' => null, 'value' => null, 'tva' => 19],
+            'price' => ['name' => null, 'value' => null, 'tva' => 19, 'discount' => 0],
           ]
         ];
       $this->row = 1;
@@ -393,7 +398,11 @@ class RelatedPricelist extends Component
         $new = new PricelistEntries();
         $new->product_id = $this->item->id;
         $new->pricelist_id = $priceAndValue['price']['idrel'];
-        $new->value = $priceAndValue['price']['value'];
+        $new->rrp_value = $priceAndValue['price']['value'];
+        $new->discount = $priceAndValue['price']['discount'];
+
+        $new->value = $priceAndValue['price']['value'] - (0.01 * $priceAndValue['price']['discount'] * $priceAndValue['price']['value']);
+
         $new->tva_percent = $priceAndValue['price']['tva'];
         $new->save();
       } else {
