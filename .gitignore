@@ -13,3 +13,4 @@ vendor
 .env
 .htpasswd
 .DS_Store
+.github/workflows/
