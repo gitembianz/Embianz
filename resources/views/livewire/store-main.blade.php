@@ -163,6 +163,11 @@
 									@else
 										<button class="card-button-disabled" aria-label="Disabled add to cart button">Indisponibil</button>
 									@endif
+                  <div style="display: none" class="dlv">
+                    <span class="dlv_name">{{ $product->name }}</span>
+                    <span class="dlv_price">{{ $price }}</span>
+                    <span class="dlv_currency">{{ $product->product_prices->first()->pricelist->currency->name }}</span>
+                  </div>
 								</div>
 							</div>
 						@endforeach
@@ -269,7 +274,6 @@
 													@endif
 												</span>
 											@endif
-
 										</p>
 									</div>
 									@if ($price)
@@ -277,6 +281,11 @@
 									@else
 										<button class="card-button-disabled" aria-label="Disabled add to cart button">Indisponibil</button>
 									@endif
+                  <div style="display: none" class="dlv">
+                    <span class="dlv_name">{{ $product->name }}</span>
+                    <span class="dlv_price">{{ $price }}</span>
+                    <span class="dlv_currency">{{ $product->product_prices->first()->pricelist->currency->name }}</span>
+                  </div>
 								</div>
 							</div>
 						@endforeach

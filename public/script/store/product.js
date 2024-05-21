@@ -548,20 +548,41 @@ function flyToCart(button) {
     return;
   }
 
-  const cardName = target_parent.querySelector(".product__title").innerText.trim(); // Obținem numele cardName
-  const cardPrice = target_parent.querySelector(".product__price").innerText.trim(); // Obținem pretul cardPrice
-  // console.log(cardName);
-  // console.log(cardPrice);
+  function add_to_cart(product) {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ ecommerce: null });
+      window.dataLayer.push({
+          event: "add_to_cart",
+          ecommerce: {
+              currency: product.currency,
+              value: product.price * product.quantity,
+              items: [
+                  {
+                      item_name: product.name,
+                      price: product.price,
+                      quantity: product.quantity
+                  }
+              ]
+          }
+      });
 
-  if (typeof dataLayer !== 'undefined') {
-    dataLayer.push({
-      'event': 'adaugareInCos',
-      'cardName': cardName,
-      'cardPrice': cardPrice
-    });
-  } else {
-    // console.log('dataLayer is not defined');
+      // console.log('Product added to cart:', product);
   }
+  // Variables
+  const dlv = target_parent.querySelector(".dlv");
+  const dlv_name = dlv.querySelector(".dlv_name").innerText.trim();
+  const dlv_price = parseFloat(dlv.querySelector(".dlv_price").innerText.trim().replace(',', '.'));
+  const dlv_currency = dlv.querySelector(".dlv_currency").innerText.trim();
+  const dlv_quantity = 1;
+  // Product
+  const product = {
+    name: dlv_name,
+    price: dlv_price,
+    quantity: dlv_quantity,
+    currency: dlv_currency
+  };
+  // Function call
+  add_to_cart(product);
 
 
   // Creăm o imagine separată
@@ -610,18 +631,42 @@ function addWishList(button) {
   const wish = document.getElementById("wishlistCount");
 
   const target_parent = button.closest(".product");
-  const cardName = target_parent.querySelector(".product__title").innerText.trim(); // Obținem numele cardName
-  const cardPrice = target_parent.querySelector(".product__price--title").innerText.trim(); // Obținem pretul cardPrice
 
-  if (typeof dataLayer !== 'undefined') {
-    dataLayer.push({
-      'event': 'adaugareInFavorite',
-      'cardName': cardName,
-      'cardPrice': cardPrice
-    });
-  } else {
-    // console.log('dataLayer is not defined');
+  function add_to_wishlist(product) {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ ecommerce: null });
+      window.dataLayer.push({
+          event: "add_to_wishlist",
+          ecommerce: {
+              currency: product.currency,
+              value: product.price * product.quantity,
+              items: [
+                  {
+                      item_name: product.name,
+                      price: product.price,
+                      quantity: product.quantity
+                  }
+              ]
+          }
+      });
+
+      console.log('Product added to wishlist:', product);
   }
+  // Variables
+  const dlv = target_parent.querySelector(".dlv");
+  const dlv_name = dlv.querySelector(".dlv_name").innerText.trim();
+  const dlv_price = parseFloat(dlv.querySelector(".dlv_price").innerText.trim().replace(',', '.'));
+  const dlv_currency = dlv.querySelector(".dlv_currency").innerText.trim();
+  const dlv_quantity = 1;
+  // Product
+  const product = {
+    name: dlv_name,
+    price: dlv_price,
+    quantity: dlv_quantity,
+    currency: dlv_currency
+  };
+  // Function call
+  add_to_wishlist(product);
 
   if(!wish) {
     return;
