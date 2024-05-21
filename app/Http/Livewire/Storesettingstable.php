@@ -264,7 +264,7 @@ $xml = $this->initializeSitemap();
 //homepage
 $url = $xml->addChild('url');
 $url->addChild('loc', url('/'));
-$url->addChild('lastmod', now()->toDateString());
+$url->addChild('lastmod', now()->toAtomString());
 $url->addChild('priority', '1.0');
 
 //static pages
@@ -280,7 +280,7 @@ $pages = [
 foreach ($pages as $page => $priority) {
 $url = $xml->addChild('url');
 $url->addChild('loc', url($page));
-$url->addChild('lastmod', now()->toDateString());
+$url->addChild('lastmod', now()->toAtomString());
 $url->addChild('priority', $priority);
 }
 // Fetch and add active products
@@ -292,7 +292,7 @@ $products = Product::where('active', true)
     $url = $xml->addChild('url');
     $productUrl = route('product', ['product' => $product->seo_id ?? $product->id]);
     $url->addChild('loc', htmlspecialchars($productUrl));
-    $url->addChild('lastmod', $product->updated_at);
+    $url->addChild('lastmod', now()->toAtomString());
     $url->addChild('priority', '0.8');
     }
 
@@ -303,7 +303,7 @@ $products = Product::where('active', true)
     $default_categoryUrl = route('products', ['categorySlug' => $default_category->seo_id ??
     $default_category->id]);
     $url->addChild('loc', htmlspecialchars($default_categoryUrl));
-    $url->addChild('lastmod', $default_category->updated_at);
+    $url->addChild('lastmod', now()->toAtomString());
     $url->addChild('priority', '0.9');
     }
     $categories = Category::where('active', true)
@@ -315,7 +315,7 @@ $products = Product::where('active', true)
         $url = $xml->addChild('url');
         $categoryUrl = route('products', ['categorySlug' => $category->seo_id ?? $category->id]);
         $url->addChild('loc', htmlspecialchars($categoryUrl));
-        $url->addChild('lastmod', $category->updated_at);
+        $url->addChild('lastmod', now()->toAtomString());
         $url->addChild('priority', '0.9');
         }
 
