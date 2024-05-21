@@ -100,6 +100,12 @@
 	@else
 		<button class="card-button-disabled" aria-label="Disabled Add to cart button">Indisponibil</button>
 	@endif
+
+  <div style="display: none" class="dlv">
+    <span class="dlv_name">{{ $product->name }}</span>
+    <span class="dlv_price">{{ $price }}</span>
+    <span class="dlv_currency">{{ $product->product_prices->first()->pricelist->currency->name }}</span>
+  </div>
 	<!---------------- End Product (Details) --------------->
 	<!------------------------------------------------------>
 	<!-------------------- Tab (Details) ------------------->
@@ -138,30 +144,4 @@
 	</div>
 	<!------------------ End Tab (Details) ----------------->
 	<!------------------------------------------------------>
-	{{-- <script>
-		let addToCartButton = document.querySelector('.card__button');
-		let addToWishButton = document.querySelector('.favorite__btn');
-		let cardName = document.querySelector('.product__title').innerText.trim();
-		let cardPrice = document.querySelector('.product__price--title').innerText.trim();
-
-		addToCartButton.addEventListener('click', function() {
-			if (typeof dataLayer !== 'undefined' && cardName && cardPrice) {
-				dataLayer.push({
-					'event': 'adaugareInCos',
-					'cardName': cardName,
-					'cardPrice': cardPrice
-				});
-			}
-		});
-
-		addToWishButton.addEventListener('click', function() {
-			if (typeof dataLayer !== 'undefined' && cardName && cardPrice) {
-				dataLayer.push({
-					'event': 'adaugareInFavorite',
-					'cardName': cardName,
-					'cardPrice': cardPrice
-				});
-			}
-		});
-	</script> --}}
 </div>

@@ -148,18 +148,46 @@ function flyToCart(button) {
   const numberCart = shopping_cart.querySelector(".header__count");
 
   const target_parent = button.closest(".card");
-  const cardName = target_parent.querySelector(".card-title").innerText.trim(); // Obținem numele cardName
-  const cardPrice = target_parent.querySelector(".card-price").innerText.trim(); // Obținem pretul cardPrice
+  // const cardName = target_parent.querySelector(".card-title").innerText.trim(); // Obținem numele cardName
+  // const cardPrice = target_parent.querySelector(".card-price").innerText.trim(); // Obținem pretul cardPrice
 
-  if (typeof dataLayer !== 'undefined') {
-    dataLayer.push({
-      'event': 'adaugareInCos',
-      'cardName': cardName,
-      'cardPrice': cardPrice
-    });
-  } else {
-    console.log('dataLayer is not defined');
+
+  function add_to_cart(product) {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ ecommerce: null });
+      window.dataLayer.push({
+          event: "add_to_cart",
+          ecommerce: {
+              currency: product.currency,
+              value: product.price * product.quantity,
+              items: [
+                  {
+                      item_name: product.name,
+                      price: product.price,
+                      quantity: product.quantity
+                  }
+              ]
+          }
+      });
+
+      console.log('Product added to cart:', product);
   }
+  // Variables
+  const dlv = target_parent.querySelector(".dlv");
+  const dlv_name = dlv.querySelector(".dlv_name").innerText.trim();
+  const dlv_price = parseFloat(dlv.querySelector(".dlv_price").innerText.trim().replace(',', '.'));
+  const dlv_currency = dlv.querySelector(".dlv_currency").innerText.trim();
+  const dlv_quantity = 1;
+  // Product
+  const product = {
+    name: dlv_name,
+    price: dlv_price,
+    quantity: dlv_quantity,
+    currency: dlv_currency
+  };
+  // Function call
+  add_to_cart(product);
+
 
   if (!button.classList.contains('in')) {
     button.classList.add('in');
@@ -178,18 +206,56 @@ function addWishList(button) {
   const wish = document.getElementById("wishlistCount");
 
   const target_parent = button.closest(".card");
-  const cardName = target_parent.querySelector(".card-title").innerText.trim(); // Obținem numele cardName
-  const cardPrice = target_parent.querySelector(".card-price").innerText.trim(); // Obținem pretul cardPrice
 
-  if (typeof dataLayer !== 'undefined') {
-    dataLayer.push({
-      'event': 'adaugareInFavorite',
-      'cardName': cardName,
-      'cardPrice': cardPrice
-    });
-  } else {
-    console.log('dataLayer is not defined');
+  function add_to_wishlist(product) {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ ecommerce: null });
+      window.dataLayer.push({
+          event: "add_to_wishlist",
+          ecommerce: {
+              currency: product.currency,
+              value: product.price * product.quantity,
+              items: [
+                  {
+                      item_name: product.name,
+                      price: product.price,
+                      quantity: product.quantity
+                  }
+              ]
+          }
+      });
+
+      console.log('Product added to wishlist:', product);
   }
+  // Variables
+  const dlv = target_parent.querySelector(".dlv");
+  const dlv_name = dlv.querySelector(".dlv_name").innerText.trim();
+  const dlv_price = parseFloat(dlv.querySelector(".dlv_price").innerText.trim().replace(',', '.'));
+  const dlv_currency = dlv.querySelector(".dlv_currency").innerText.trim();
+  const dlv_quantity = 1;
+  // Product
+  const product = {
+    name: dlv_name,
+    price: dlv_price,
+    quantity: dlv_quantity,
+    currency: dlv_currency
+  };
+  // Function call
+  add_to_wishlist(product);
+
+  // const cardName = target_parent.querySelector(".card-title").innerText.trim(); // Obținem numele cardName
+  // const cardPrice = target_parent.querySelector(".card-price").innerText.trim(); // Obținem pretul cardPrice
+
+  // if (typeof dataLayer !== 'undefined') {
+  //   dataLayer.push({
+  //     'event': 'adaugareInFavorite',
+  //     'cardName': cardName,
+  //     'cardPrice': cardPrice
+  //   });
+  //   console.log(dataLayer);
+  // } else {
+  //   console.log('dataLayer is not defined');
+  // }
 
   if(!wish) {
     return;
