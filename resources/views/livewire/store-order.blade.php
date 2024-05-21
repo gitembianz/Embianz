@@ -1601,28 +1601,28 @@
 <script>
 function begin_checkout() {
     // Variables
-    const dlv = document.querySelector('.dlv');
+    var dlv = document.querySelector('.dlv');
     // Check if dlv element exists
     if (!dlv) {
         console.error('Elementul cu clasa .dlv nu a fost găsit.');
         return;
     }
     // Get all Values
-    const currency = dlv.querySelector('.dlv_currency').innerText.trim();
-    const value = parseFloat(dlv.querySelector('.dlv_value').innerText.trim().replace(',', '.'));
-    const coupon = dlv.querySelector('.dlv_coupon').innerText.trim() || undefined;
-    const items = [];
+    var currency = dlv.querySelector('.dlv_currency').innerText.trim();
+    var value = parseFloat(dlv.querySelector('.dlv_value').innerText.trim().replace(',', '.'));
+    var coupon = dlv.querySelector('.dlv_coupon').innerText.trim() || undefined;
+    var items = [];
     // Get all items
-    const dlv_items = dlv.querySelectorAll('.dlv_item');
+    var dlv_items = dlv.querySelectorAll('.dlv_item');
     // Loop through each item
     dlv_items.forEach(dlv_item => {
-        const item_id = dlv_item.querySelector('.dlv_item-id').innerText.trim();
-        const item_name = dlv_item.querySelector('.dlv_item-name').innerText.trim();
-        const item_price = parseFloat(dlv_item.querySelector('.dlv_item-price').innerText.trim().replace(',', '.'));
-        const item_quantity = parseInt(dlv_item.querySelector('.dlv_item-quantity').innerText.trim(), 10);
+        var item_id = dlv_item.querySelector('.dlv_item-id').innerText.trim();
+        var item_name = dlv_item.querySelector('.dlv_item-name').innerText.trim();
+        var item_price = parseFloat(dlv_item.querySelector('.dlv_item-price').innerText.trim().replace(',', '.'));
+        var item_quantity = parseInt(dlv_item.querySelector('.dlv_item-quantity').innerText.trim(), 10);
 
         // Create item object
-        const item = {
+        var item = {
             item_id: item_id,
             item_name: item_name,
             price: item_price,
@@ -1634,7 +1634,7 @@ function begin_checkout() {
         });
 
     // Create the data object
-    const dlvData = {
+    var dlvData = {
         currency: currency,
         value: value,
         coupon: coupon,
@@ -1647,7 +1647,7 @@ function begin_checkout() {
 // begin_checkout();
 
 // Apelul funcției begin_checkout pentru a extrage datele
-const dlvData = begin_checkout();
+var dlvData = begin_checkout();
 
 // Trimiterea datelor la Google Analytics folosind dataLayer.push
 dataLayer.push({ ecommerce: null });
@@ -1981,29 +1981,29 @@ dataLayer.push({
           <script>
             function add_payment_info() {
                 // Variables
-                const dlv = document.querySelector('.dlv');
+                var dlv = document.querySelector('.dlv');
                 // Check if dlv element exists
                 if (!dlv) {
                     console.error('Elementul cu clasa .dlv nu a fost găsit.');
                     return;
                 }
                 // Get all Values
-                const currency = dlv.querySelector('.dlv_currency').innerText.trim();
-                const value = parseFloat(dlv.querySelector('.dlv_value').innerText.trim().replace(',', '.'));
-                const coupon = dlv.querySelector('.dlv_coupon').innerText.trim() || undefined;
-                const payment = dlv.querySelector('.dlv_payment').innerText.trim();
-                const items = [];
+                var currency = dlv.querySelector('.dlv_currency').innerText.trim();
+                var value = parseFloat(dlv.querySelector('.dlv_value').innerText.trim().replace(',', '.'));
+                var coupon = dlv.querySelector('.dlv_coupon').innerText.trim() || undefined;
+                var payment = dlv.querySelector('.dlv_payment').innerText.trim();
+                var items = [];
                 // Get all items
-                const dlv_items = dlv.querySelectorAll('.dlv_item');
+                var dlv_items = dlv.querySelectorAll('.dlv_item');
                 // Loop through each item
                 dlv_items.forEach(dlv_item => {
-                    const item_id = dlv_item.querySelector('.dlv_item-id').innerText.trim();
-                    const item_name = dlv_item.querySelector('.dlv_item-name').innerText.trim();
-                    const item_price = parseFloat(dlv_item.querySelector('.dlv_item-price').innerText.trim().replace(',', '.'));
-                    const item_quantity = parseInt(dlv_item.querySelector('.dlv_item-quantity').innerText.trim(), 10);
+                    var item_id = dlv_item.querySelector('.dlv_item-id').innerText.trim();
+                    var item_name = dlv_item.querySelector('.dlv_item-name').innerText.trim();
+                    var item_price = parseFloat(dlv_item.querySelector('.dlv_item-price').innerText.trim().replace(',', '.'));
+                    var item_quantity = parseInt(dlv_item.querySelector('.dlv_item-quantity').innerText.trim(), 10);
 
                     // Create item object
-                    const item = {
+                    var item = {
                         item_id: item_id,
                         item_name: item_name,
                         price: item_price,
@@ -2015,7 +2015,7 @@ dataLayer.push({
                     });
 
                 // Create the data object
-                const dlvData = {
+                var dlvData = {
                     currency: currency,
                     value: value,
                     coupon: coupon,
@@ -2029,7 +2029,7 @@ dataLayer.push({
             // add_payment_info();
 
             // Apelul funcției add_payment_info pentru a extrage datele
-            const dlvData = add_payment_info();
+            var dlvData = add_payment_info();
 
             // Trimiterea datelor la Google Analytics folosind dataLayer.push
             dataLayer.push({ ecommerce: null });
@@ -2057,28 +2057,28 @@ dataLayer.push({
                     {{-- <script>
                       function add_shipping_info() {
                           // Variables
-                          const dlv = document.querySelector('.dlv');
+                          var dlv = document.querySelector('.dlv');
                           // Check if dlv element exists
                           if (!dlv) {
                               console.error('Elementul cu clasa .dlv nu a fost găsit.');
                               return;
                           }
                           // Get all Values
-                          const currency = dlv.querySelector('.dlv_currency').innerText.trim();
-                          const value = parseFloat(dlv.querySelector('.dlv_value').innerText.trim().replace(',', '.'));
-                          const coupon = dlv.querySelector('.dlv_coupon').innerText.trim() || undefined;
-                          const items = [];
+                          var currency = dlv.querySelector('.dlv_currency').innerText.trim();
+                          var value = parseFloat(dlv.querySelector('.dlv_value').innerText.trim().replace(',', '.'));
+                          var coupon = dlv.querySelector('.dlv_coupon').innerText.trim() || undefined;
+                          var items = [];
                           // Get all items
-                          const dlv_items = dlv.querySelectorAll('.dlv_item');
+                          var dlv_items = dlv.querySelectorAll('.dlv_item');
                           // Loop through each item
                           dlv_items.forEach(dlv_item => {
-                              const item_id = dlv_item.querySelector('.dlv_item-id').innerText.trim();
-                              const item_name = dlv_item.querySelector('.dlv_item-name').innerText.trim();
-                              const item_price = parseFloat(dlv_item.querySelector('.dlv_item-price').innerText.trim().replace(',', '.'));
-                              const item_quantity = parseInt(dlv_item.querySelector('.dlv_item-quantity').innerText.trim(), 10);
+                              var item_id = dlv_item.querySelector('.dlv_item-id').innerText.trim();
+                              var item_name = dlv_item.querySelector('.dlv_item-name').innerText.trim();
+                              var item_price = parseFloat(dlv_item.querySelector('.dlv_item-price').innerText.trim().replace(',', '.'));
+                              var item_quantity = parseInt(dlv_item.querySelector('.dlv_item-quantity').innerText.trim(), 10);
 
                               // Create item object
-                              const item = {
+                              var item = {
                                   item_id: item_id,
                                   item_name: item_name,
                                   price: item_price,
@@ -2090,7 +2090,7 @@ dataLayer.push({
                               });
 
                           // Create the data object
-                          const dlvData = {
+                          var dlvData = {
                               currency: currency,
                               value: value,
                               coupon: coupon,
@@ -2103,7 +2103,7 @@ dataLayer.push({
                       // add_shipping_info();
 
                       // Apelul funcției add_shipping_info pentru a extrage datele
-                      const dlvData = add_shipping_info();
+                      var dlvData = add_shipping_info();
 
                       // Trimiterea datelor la Google Analytics folosind dataLayer.push
                       dataLayer.push({
@@ -2410,33 +2410,33 @@ dataLayer.push({
           <script>
           function purchase() {
               // Variables
-              const dlv = document.querySelector('.dlv');
+              var dlv = document.querySelector('.dlv');
               // Check if dlv element exists
               if (!dlv) {
                   console.error('Elementul cu clasa .dlv nu a fost găsit.');
                   return;
               }
               // Get all Values
-              const currency = dlv.querySelector('.dlv_currency').innerText.trim();
-              const value = parseFloat(dlv.querySelector('.dlv_value').innerText.trim().replace(',', '.'));
-              const coupon = dlv.querySelector('.dlv_coupon').innerText.trim() || undefined;
+              var currency = dlv.querySelector('.dlv_currency').innerText.trim();
+              var value = parseFloat(dlv.querySelector('.dlv_value').innerText.trim().replace(',', '.'));
+              var coupon = dlv.querySelector('.dlv_coupon').innerText.trim() || undefined;
 
-              const transaction_id = dlv.querySelector('.dlv_transaction').innerText.trim();
+              var transaction_id = dlv.querySelector('.dlv_transaction').innerText.trim();
               // const tax = parseFloat(dlv.querySelector('.dlv_tax').innerText.trim().replace(',', '.'));
-              const shipping = parseFloat(dlv.querySelector('.dlv_shipping').innerText.trim().replace(',', '.'));
+              var shipping = parseFloat(dlv.querySelector('.dlv_shipping').innerText.trim().replace(',', '.'));
 
-              const items = [];
+              var items = [];
               // Get all items
-              const dlv_items = dlv.querySelectorAll('.dlv_item');
+              var dlv_items = dlv.querySelectorAll('.dlv_item');
               // Loop through each item
               dlv_items.forEach(dlv_item => {
-                  const item_id = dlv_item.querySelector('.dlv_item-id').innerText.trim();
-                  const item_name = dlv_item.querySelector('.dlv_item-name').innerText.trim();
-                  const item_price = parseFloat(dlv_item.querySelector('.dlv_item-price').innerText.trim().replace(',', '.'));
-                  const item_quantity = parseInt(dlv_item.querySelector('.dlv_item-quantity').innerText.trim(), 10);
+                  var item_id = dlv_item.querySelector('.dlv_item-id').innerText.trim();
+                  var item_name = dlv_item.querySelector('.dlv_item-name').innerText.trim();
+                  var item_price = parseFloat(dlv_item.querySelector('.dlv_item-price').innerText.trim().replace(',', '.'));
+                  var item_quantity = parseInt(dlv_item.querySelector('.dlv_item-quantity').innerText.trim(), 10);
 
                   // Create item object
-                  const item = {
+                  var item = {
                       item_id: item_id,
                       item_name: item_name,
                       price: item_price,
@@ -2448,7 +2448,7 @@ dataLayer.push({
                   });
 
               // Create the data object
-              const dlvData = {
+              var dlvData = {
                   currency: currency,
                   value: value,
                   coupon: coupon,
@@ -2464,7 +2464,7 @@ dataLayer.push({
           // purchase();
 
           // Apelul funcției purchase pentru a extrage datele
-          const dlvData = purchase();
+          var dlvData = purchase();
 
           // Trimiterea datelor la Google Analytics folosind dataLayer.push
           dataLayer.push({ ecommerce: null });
