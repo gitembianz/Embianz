@@ -35,7 +35,7 @@
          <th class="wid-3"><button class="table__header--btn">Pricelist</button></th>
          <th class="wid-1"><button class="table__header--btn">Value</button></th>
          <th class="wid-1"><button class="table__header--btn">Discount %</button></th>
-         <th class="wid-1"><button class="table__header--btn">TVA %</button></th>
+         <th class="wid-1"><button class="table__header--btn">VAT %</button></th>
          <th class="wid-1"></th>
         </tr>
        </thead>
@@ -101,8 +101,8 @@
 
           <td class="wid-1" data-title="TVA">
            <input type="text" required class="table__drop--input"
-            wire:model.defer="priceAndValues.{{ $index }}.price.tva"
-            value="{{ old('priceAndValues.' . $index . '.price.tva', 19) }}">
+            wire:model.defer="priceAndValues.{{ $index }}.price.vat"
+            value="{{ old('priceAndValues.' . $index . '.price.vat', 19) }}">
           </td>
 
           <td class="wid-1" data-title="Action">
@@ -176,9 +176,10 @@
       <table class="table table-top">
        <thead>
         <tr>
-         <th class="wid-2"><button class="table__header--btn">Product</button></th>
-         <th class="wid-2"><button class="table__header--btn">Pricelist</button></th>
+         <th class="wid-4"><button class="table__header--btn">Product</button></th>
+         <th class="wid-4"><button class="table__header--btn">Pricelist</button></th>
          <th class="wid-1"><button class="table__header--btn">Value</button></th>
+         <th class="wid-1"><button class="table__header--btn">Discount</button></th>
         </tr>
        </thead>
       </table>
@@ -186,10 +187,10 @@
        <tbody>
         @foreach ($priceAndValues as $index => $priceAndValue)
          <tr wire:key="price-row-{{ $index }}">
-          <td class="wid-2" data-title="Name">
+          <td class="wid-4" data-title="Name">
            {{ $item->name }}
           </td>
-          <td class="wid-2" data-title="Pricelist">
+          <td class="wid-4" data-title="Pricelist">
            @if ($priceAndValue['allow'])
             <div class="table__drop" style="position: relative">
              <input class="table__drop--input" wire:model.debounce.300ms="searchadd" placeholder="Search..."
@@ -235,6 +236,10 @@
           <td class="wid-1" data-title="Value">
            <input type="text" required class="table__drop--input"
             wire:model.defer="priceAndValues.{{ $index }}.price.value">
+          </td>
+          <td class="wid-1" data-title="Value">
+           <input type="number" required class="table__drop--input"
+            wire:model.defer="priceAndValues.{{ $index }}.price.discount">
           </td>
          </tr>
         @endforeach
@@ -340,9 +345,9 @@
            <button class="dropdown-item delete" type="button" wire:click="confirmRemovalmultiple()">
             Delete
            </button>
-           {{-- <button class="dropdown-item submit" type="button" wire:click="editSelected">
+           <button class="dropdown-item submit" type="button" wire:click="editSelected">
             Edit
-           </button> --}}
+           </button>
           </div>
          @endif
         </div>
@@ -411,7 +416,7 @@
          @if ($this->showColumn('TVA'))
           <th>
            <button class="table__header--btn">
-            TVA
+            VAT
            </button>
           </th>
          @endif
@@ -503,7 +508,7 @@
               {{ $prices->discount }}%
              @else
               <input type="number" required class="table__edit"
-               wire:model="pricelist.{{ $index }}.discount">
+               wire:model.defer="pricelist.{{ $index }}.discount">
              @endif
             </td>
            @endif
@@ -512,13 +517,19 @@
              @if ($editedrow !== $index)
               {{ $prices->rrp_value }}
              @else
-              <input type="text" required class="table__edit" wire:model="pricelist.{{ $index }}.value">
+              <input type="text" required class="table__edit"
+               wire:model.defer="pricelist.{{ $index }}.value">
              @endif
             </td>
            @endif
            @if ($this->showColumn('TVA'))
             <td>
-             {{ $prices->tva_percent }}
+             @if ($editedrow !== $index)
+              {{ $prices->vat }}
+             @else
+              <input type="number" required class="table__edit"
+               wire:model.defer="pricelist.{{ $index }}.vat">
+             @endif
             </td>
            @endif
            @if ($this->showColumn('Created At'))

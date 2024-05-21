@@ -172,12 +172,11 @@ class RelatedPricelist extends Component
     $this->pricelist = [
       $index . '.name' => $this->itemselected,
       $index . '.value' => $val->rrp_value,
-      $index . '.tva' => $val->tva_percent,
+      $index . '.vat' => $val->vat,
       $index . '.discount' => $val->discount,
-
-      // de adaugat discout si 
     ];
   }
+
   public function canceledit()
   {
     $this->editedrow = null;
@@ -203,6 +202,9 @@ class RelatedPricelist extends Component
 
     $val = $this->pricelist[$index] ?? NULL;
     if (!is_null($val)) {
+      if (array_key_exists('vat', $val)) {
+        $new->vat = $val["vat"];
+      }
       if (array_key_exists('discount', $val)) {
         $new->discount = $val["discount"];
       }
@@ -247,6 +249,8 @@ class RelatedPricelist extends Component
     $this->showrelatedprice = true;
     $this->addrelatedprice = true;
   }
+
+  // fct de edit multiple
   public function editSelected()
   {
     $this->itemstoedit = $this->checked;
@@ -257,7 +261,9 @@ class RelatedPricelist extends Component
       $this->priceAndValues[$index]['price']['id'] = $test->id;
       $this->priceAndValues[$index]['price']['idrel'] = $test->pricelist->id;
       $this->priceAndValues[$index]['price']['value'] = $test->value;
-      $this->priceAndValues[$index]['price']['tva'] = $test->tva_percent;
+      $this->priceAndValues[$index]['price']['discount'] = $test->discount;
+
+      $this->priceAndValues[$index]['price']['tva'] = $test->vat;
       $this->priceAndValues[$index]['allow'] = false;
     }
   }
@@ -275,7 +281,7 @@ class RelatedPricelist extends Component
       if (!empty($priceAndValue['price']['value'])) {
         $item = PricelistEntries::find($priceAndValue['price']['id']);
         if ($item) {
-          $item->tva_percent = $priceAndValue['price']['tva'];
+          $item->vat = $priceAndValue['price']['tva'];
           $item->pricelist_id = $priceAndValue['price']['idrel'];
           $item->value = $priceAndValue['price']['value'];
           $item->save();
@@ -385,7 +391,7 @@ class RelatedPricelist extends Component
           [
             'allow' => false,
             'itemselected' => null,
-            'price' => ['name' => null, 'value' => null, 'tva' => 19, 'discount' => 0],
+            'price' => ['name' => null, 'value' => null, 'vat' => 19, 'discount' => 0],
           ]
         ];
       $this->row = 1;
@@ -403,7 +409,7 @@ class RelatedPricelist extends Component
 
         $new->value = $priceAndValue['price']['value'] - (0.01 * $priceAndValue['price']['discount'] * $priceAndValue['price']['value']);
 
-        $new->tva_percent = $priceAndValue['price']['tva'];
+        $new->vat = $priceAndValue['price']['vat'];
         $new->save();
       } else {
         session()->flash('notification', [
