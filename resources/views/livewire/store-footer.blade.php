@@ -1,62 +1,104 @@
 <div>
 
- @if (!$cookieConsent)
-  <section id="cookie-banner" wire:loading.remove class="hidden">
-   <div class="container cookie__container">
-    <div class="cookie__description">
-     <span>
-      Acest site web utilizează cookie-uri pentru a îmbunătăți experiența dvs. de navigare și pentru a vă oferi cel mai
-      bun serviciu posibil pe platforma noastră.
-     </span>
-     <a href="{{ url('/cookie') }}">
-      Vedeți Politica de Cookies
-     </a>
+<section id="cookie-banner">
+    <div class="container cookie__container">
+        <div class="cookie__description">
+            <span>
+                Acest site web utilizează cookie-uri pentru a îmbunătăți experiența dvs. de navigare și pentru a vă oferi cel mai bun serviciu posibil pe platforma noastră.
+            </span>
+            <a href="{{ url('/cookie') }}">
+                Vedeți Politica de Cookies
+            </a>
+        </div>
+        <div id="cookieForm">
+            <div class="cookie__form">
+                <div class="cookie__form--container">
+                    <label>
+                        <input type="checkbox" id="essential-cookies" name="essential" disabled checked>
+                        <span>
+                            Cookie-uri Esențiale (Necesare)
+                        </span>
+                        <p>
+                            Acestea sunt cookie-uri esențiale care asigură funcționarea corectă a site-ului web și păstrarea preferințelor dvs. (de ex., limbă, regiune).
+                        </p>
+                    </label>
+                    <label>
+                        <input type="checkbox" id="analytics-cookies" name="analytics" checked>
+                        <span>
+                            Cookie-uri Analitice
+                        </span>
+                        <p>
+                            Aceste cookie-uri includ cookie-uri de performanță și cookie-uri de analiză a vizitatorilor.
+                        </p>
+                    </label>
+                    <label>
+                        <input type="checkbox" id="marketing-cookies" name="marketing" checked>
+                        <span>
+                            Cookie-uri de Marketing
+                        </span>
+                        <p>
+                            Aceste cookie-uri sunt utilizate în scopuri de marketing.
+                        </p>
+                    </label>
+                </div>
+            </div>
+            <div class="cookie-btns">
+                <button id="accept-cookies" class="cookie__button cookie__button--accept">
+                    Acceptă
+                </button>
+                <button id="advanced-settings" class="cookie__button" type="button">
+                    Avansat
+                </button>
+            </div>
+        </div>
     </div>
-    <div id="cookieForm">
-     <div class="cookie__form @if ($advance) show @endif">
-      <div class="cookie__form--container">
-       <label>
-        <input type="checkbox" name="essential" disabled checked>
-        <span>
-         Cookie-uri Esențiale (Necesare)
-        </span>
-        <p>
-         Acestea sunt cookie-uri esențiale care asigură funcționarea corectă a site-ului web și păstrarea preferințelor
-         dvs. (de ex., limbă, regiune).
-        </p>
-       </label>
-       <label>
-        <input type="checkbox" name="analytics">
-        <span>
-         Cookie-uri Analitice
-        </span>
-        <p>
-         Aceste cookie-uri includ cookie-uri de performanță și cookie-uri de analiză a vizitatorilor.
-        </p>
-       </label>
-       <label>
-        <input type="checkbox" name="marketing">
-        <span>
-         Cookie-uri de Marketing
-        </span>
-        <p>
-         Aceste cookie-uri sunt utilizate în scopuri de marketing.
-        </p>
-       </label>
-      </div>
-     </div>
-     <div class="cookie-btns">
-      <button wire:click="acceptCookie" class="cookie__button cookie__button--accept">
-       Acceptă
-      </button>
-      <button wire:click="advancecookie" id="advanced-settings" class="cookie__button" type="button">
-       Avansat
-      </button>
-     </div>
-    </div>
-   </div>
-  </section>
- @endif
+</section>
+
+{{-- <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var cookieBanner = document.getElementById('cookie-banner');
+    var acceptButton = document.getElementById('accept-cookies');
+    var advancedSettingsButton = document.getElementById('advanced-settings');
+    var analyticsCheckbox = document.getElementById('analytics-cookies');
+    var marketingCheckbox = document.getElementById('marketing-cookies');
+
+    if (localStorage.getItem('cookieBannerDisplayed') === 'true') {
+      cookieBanner.style.display = 'none';
+    } else {
+      cookieBanner.style.display = 'block';
+    }
+
+    function updateConsent() {
+        var analyticsStorageChecked = analyticsCheckbox.checked ? 'granted' : 'denied';
+        var adStorageChecked = marketingCheckbox.checked ? 'granted' : 'denied';
+
+        var consentMode = {
+            'ad_storage': adStorageChecked,
+            'analytics_storage': analyticsStorageChecked,
+        };
+
+        gtag('consent', 'update', consentMode);
+        localStorage.setItem('consent', JSON.stringify(consentMode));
+    }
+
+    function acceptCookies() {
+        analyticsCheckbox.checked = true;
+        marketingCheckbox.checked = true;
+        updateConsent();
+        cookieBanner.style.display = 'none';
+        localStorage.setItem('cookieBannerDisplayed', 'true');
+    }
+
+    function showAdvancedSettings() {
+        document.querySelector('.cookie__form').classList.toggle('show');
+    }
+
+    acceptButton.addEventListener('click', acceptCookies);
+    advancedSettingsButton.addEventListener('click', showAdvancedSettings);
+    analyticsCheckbox.addEventListener('change', updateConsent);
+    marketingCheckbox.addEventListener('change', updateConsent);
+  });
+</script> --}}
 
  <x-alert-newsletter />
 
