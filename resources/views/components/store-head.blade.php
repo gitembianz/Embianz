@@ -10,7 +10,7 @@
  @endif
  <meta name="description" content="{{ $description }}">
 
- <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
+ {{-- <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script> --}}
 
  {{-- DormiSoft Favicon --}}
  {{-- <link rel="icon" type="image/x-icon" href="/images/store/svg/dormisoft_favicon.svg"> --}}
