@@ -33,14 +33,14 @@
         <tr>
          <th class="wid-3"><button class="table__header--btn">Product</button></th>
          <th class="wid-3"><button class="table__header--btn">Pricelist</button></th>
-         <th class="wid-1"><button class="table__header--btn">Value</button></th>
+         <th class="wid-1"><button class="table__header--btn">Value without VAT</button></th>
          <th class="wid-1"><button class="table__header--btn">Discount %</button></th>
          <th class="wid-1"><button class="table__header--btn">VAT %</button></th>
          <th class="wid-1"></th>
         </tr>
        </thead>
       </table>
-      <table class="table" style="margin-top: 2rem">
+      <table class="table" style="margin-top: 1.5rem">
        <tbody>
         @foreach ($priceAndValues as $index => $priceAndValue)
          <tr wire:key="price-row-{{ $index }}">

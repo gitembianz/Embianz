@@ -204,10 +204,39 @@ class RelatedPricelist extends Component
     if (!is_null($val)) {
       if (array_key_exists('vat', $val)) {
 
+        if ($val["vat"] < 0) {
+          session()->flash('notification', [
+            'message' => 'Please provide a value biger than 0!',
+            'type' => 'warning',
+            'title' => 'VAT value'
+          ]);
+          $this->pricelist = [
+            $index . '.name' => $this->itemselected,
+            $index . '.value' => $new->value_no_vat,
+            $index . '.vat' => $val["vat"],
+            $index . '.discount' => $new->discount,
+          ];
+          return;
+        }
+
         $new->vat = $val["vat"];
       }
       if (array_key_exists('discount', $val)) {
         $new->discount = $val["discount"];
+        if ($val["discount"] < 0 || $val["discount"] >= 100) {
+          session()->flash('notification', [
+            'message' => 'Please provide a value biger than 0 and smaller that 100!',
+            'type' => 'warning',
+            'title' => 'Discount value'
+          ]);
+          $this->pricelist = [
+            $index . '.name' => $this->itemselected,
+            $index . '.value' => $new->value_no_vat,
+            $index . '.vat' => $new->vat,
+            $index . '.discount' => $val["discount"],
+          ];
+          return;
+        }
       }
       if (array_key_exists('value', $val)) {
         $newValue = str_replace(',', '.', $val["value"]);
