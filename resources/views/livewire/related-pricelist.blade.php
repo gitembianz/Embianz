@@ -395,7 +395,14 @@
          @if ($this->showColumn('Value'))
           <th>
            <button class="table__header--btn">
-            Final Value
+            Value
+           </button>
+          </th>
+         @endif
+         @if ($this->showColumn('Value without Discount'))
+          <th>
+           <button class="table__header--btn">
+            Value without Discount
            </button>
           </th>
          @endif
@@ -406,27 +413,30 @@
            </button>
           </th>
          @endif
-         @if ($this->showColumn('RRPValue'))
+         @if ($this->showColumn('Value without VAT'))
           <th>
            <button class="table__header--btn">
-            Older Value
+            Value without VAT
            </button>
           </th>
          @endif
-         @if ($this->showColumn('TVA'))
+         @if ($this->showColumn('VAT'))
           <th>
            <button class="table__header--btn">
-            VAT
+            VAT %
            </button>
           </th>
          @endif
-         @if ($this->showColumn('Created At'))
-          <th wire:click="sortBy('created_at')">
-           <button class="table__header--btn">
-            Created at
-           </button>
-          </th>
-         @endif
+         <th wire:click="sortBy('created_at')">
+          <button class="table__header--btn">
+           Created at
+          </button>
+         </th>
+         <th wire:click="sortBy('created_at')">
+          <button class="table__header--btn">
+           Updated at
+          </button>
+         </th>
          <th></th>
         </tr>
        </thead>
@@ -502,6 +512,11 @@
              {{ $prices->value }}
             </td>
            @endif
+           @if ($this->showColumn('Value without Discount'))
+            <td data-title="Value without Discount">
+             {{ $prices->value_no_discount }}
+            </td>
+           @endif
            @if ($this->showColumn('Discount'))
             <td>
              @if ($editedrow !== $index)
@@ -512,38 +527,32 @@
              @endif
             </td>
            @endif
-           @if ($this->showColumn('RRPValue'))
+           @if ($this->showColumn('Value without VAT'))
             <td>
              @if ($editedrow !== $index)
-              {{ $prices->rrp_value }}
+              {{ $prices->value_no_vat }}
              @else
               <input type="text" required class="table__edit"
                wire:model.defer="pricelist.{{ $index }}.value">
              @endif
             </td>
            @endif
-           @if ($this->showColumn('TVA'))
+           @if ($this->showColumn('VAT'))
             <td>
              @if ($editedrow !== $index)
-              {{ $prices->vat }}
+              {{ $prices->vat }}%
              @else
               <input type="number" required class="table__edit"
                wire:model.defer="pricelist.{{ $index }}.vat">
              @endif
             </td>
            @endif
-           @if ($this->showColumn('Created At'))
-            <td data-title="Created At">
-             <div class="table__time">
-              <svg>
-               <circle cx="12" cy="12" r="10">
-               </circle>
-               <polyline points="12 6 12 12 16 14"></polyline>
-              </svg>
-              {{ $prices->pricelist->created_at }}
-             </div>
-            </td>
-           @endif
+           <td data-title="Created At">
+            {{ $prices->created_at }}
+           </td>
+           <td data-title="Created At">
+            {{ $prices->updated_at }}
+           </td>
            <td data-title="Action">
             <div class="table__buttons">
              @if ($editedrow !== $index)

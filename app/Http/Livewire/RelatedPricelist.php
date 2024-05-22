@@ -24,7 +24,7 @@ class RelatedPricelist extends Component
   public $productId;
   public $col = false;
   public $all = false;
-  public $columns = ['Id', 'Currency', 'Value', 'Discount', 'RRPValue', 'TVA', 'Created At'];
+  public $columns = ['Id', 'Currency', 'Value', 'Discount', 'Value without VAT', 'Value without Discount', 'VAT'];
   public $selectedColumns = [];
   public $priceidbeingremoved = null;
   public $addrelatedprice = false;
@@ -66,7 +66,7 @@ class RelatedPricelist extends Component
     $this->priceAndValues[] = [
       'allow' => false,
       'itemselected' => null,
-      'price' => ['idrel' => null, 'value' => null, 'tva' => 19, 'discount' => 0],
+      'price' => ['idrel' => null, 'value' => null, 'vat' => 19, 'discount' => 0],
     ];
   }
   public function load()
@@ -171,7 +171,7 @@ class RelatedPricelist extends Component
     $this->editedrow = $index;
     $this->pricelist = [
       $index . '.name' => $this->itemselected,
-      $index . '.value' => $val->rrp_value,
+      $index . '.value' => $val->value_no_vat,
       $index . '.vat' => $val->vat,
       $index . '.discount' => $val->discount,
     ];
@@ -203,6 +203,7 @@ class RelatedPricelist extends Component
     $val = $this->pricelist[$index] ?? NULL;
     if (!is_null($val)) {
       if (array_key_exists('vat', $val)) {
+
         $new->vat = $val["vat"];
       }
       if (array_key_exists('discount', $val)) {
@@ -213,9 +214,10 @@ class RelatedPricelist extends Component
         $floatValue = floatval($newValue);
         $formattedValue = number_format($floatValue, 2, '.', '');
 
-        $new->rrp_value = $formattedValue;
+        $new->value_no_vat = $formattedValue;
       }
-      $new->value = $new->rrp_value - (0.01 * $new->rrp_value * $new->discount);
+      $new->value_no_discount = $new->value_no_vat + (0.01 * $new->vat * $new->value_no_vat);
+      $new->value = $new->value_no_discount - (0.01 * $new->value_no_discount * $new->discount);
       $new->save();
       $this->allow = false;
       $this->priceid = null;
@@ -400,16 +402,15 @@ class RelatedPricelist extends Component
   public function saveitems()
   {
     foreach ($this->priceAndValues as  $priceAndValue) {
-      if (isset($priceAndValue['price']['value'])) {
+      if (isset($priceAndValue['price']['value']) && isset($priceAndValue['price']['idrel'])) {
         $new = new PricelistEntries();
         $new->product_id = $this->item->id;
         $new->pricelist_id = $priceAndValue['price']['idrel'];
-        $new->rrp_value = $priceAndValue['price']['value'];
-        $new->discount = $priceAndValue['price']['discount'];
-
-        $new->value = $priceAndValue['price']['value'] - (0.01 * $priceAndValue['price']['discount'] * $priceAndValue['price']['value']);
-
         $new->vat = $priceAndValue['price']['vat'];
+        $new->discount = $priceAndValue['price']['discount'];
+        $new->value_no_vat = $priceAndValue['price']['value'];
+        $new->value_no_discount = $priceAndValue['price']['value'] + (0.01 * $priceAndValue['price']['vat'] * $priceAndValue['price']['value']);
+        $new->value = $priceAndValue['price']['value'] - (0.01 * $priceAndValue['price']['discount'] * $new->value_no_discount) + (0.01 * $priceAndValue['price']['vat'] * $priceAndValue['price']['value']);
         $new->save();
       } else {
         session()->flash('notification', [
@@ -425,7 +426,7 @@ class RelatedPricelist extends Component
       [
         'allow' => false,
         'itemselected' => null,
-        'price' => ['name' => null, 'value' => null],
+        'price' => ['name' => null, 'value' => null, 'vat' => 19, 'discount' => 0],
       ]
     ];
     $this->row = 1;

@@ -18,7 +18,7 @@ return new class extends Migration
       $table->unsignedBigInteger('pricelist_id')->index();
       $table->foreign('pricelist_id')->references('id')->on('price_lists');
       $table->decimal('value', 10, 2)->nullable();
-      $table->decimal('rrp_value', 10, 2)->nullable();
+      $table->decimal('value_no_vat', 10, 2)->nullable();
       $table->integer('discount')->default(
         '0'
       );
