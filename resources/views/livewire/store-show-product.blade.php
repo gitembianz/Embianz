@@ -136,7 +136,7 @@
 				@if (($product->product) && ($product->product->active == true) && ($product->product->end_date >=  now()->format('Y-m-d')) && ($product->product->start_date <=  now()->format('Y-m-d')))
 
 
-				<div class="card">
+				<div class="card product">
 					<a href="{{ route("product", ["product" => $product->product->seo_id !== null && $product->product->seo_id !== "" ? $product->product->seo_id : $product->product->id]) }}">
 
 						@if ($product->product->media->first() != null)
@@ -216,6 +216,11 @@
 							<a class="card-button-disabled" onclick="handleClick()" aria-label="Indisponibil">Indisponibil</a>
 						@endif
 					</div>
+          <div style="display: none" class="dlv">
+            <span class="dlv_name">{{ $product->product->name }}</span>
+            <span class="dlv_price">{{ $price }}</span>
+            <span class="dlv_currency">	{{ $product->product->product_prices->first()->pricelist->currency->name }}</span>
+          </div>
 				</div>
 				@endif
 				@endforeach

@@ -638,15 +638,12 @@ class StoreOrder extends Component
 
   public function render()
   {
-    if ($this->step == 2) {
       $data = [
         'cartItems' => $this->cartItems,
         'cart' => $this->cart
       ];
       return view('livewire.store-order', $data);
-    } else {
-      return view('livewire.store-order');
-    }
+
   }
 
 
