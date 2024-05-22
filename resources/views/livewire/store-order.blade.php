@@ -1641,7 +1641,7 @@ function begin_checkout() {
         items: items
     };
     // Show the object
-    console.log(dlvData);
+    // console.log(dlvData);
     return dlvData;
 };
 // begin_checkout();
@@ -2023,7 +2023,7 @@ dataLayer.push({
                     items: items
                 };
                 // Show the object
-                console.log(dlvData);
+                // console.log(dlvData);
                 return dlvData;
             };
             // add_payment_info();
@@ -2097,7 +2097,7 @@ dataLayer.push({
                               items: items
                           };
                           // Show the object
-                          console.log(dlvData);
+                          {{-- console.log(dlvData); --}}
                           return dlvData;
                       };
                       // add_shipping_info();
@@ -2458,7 +2458,7 @@ dataLayer.push({
                   items: items
               };
               // Show the object
-              console.log(dlvData);
+              // console.log(dlvData);
               return dlvData;
           };
           // purchase();

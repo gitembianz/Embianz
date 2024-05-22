@@ -170,7 +170,7 @@ function flyToCart(button) {
           }
       });
 
-      console.log('Product added to cart:', product);
+      // console.log('Product added to cart:', product);
   }
   // Variables
   const dlv = target_parent.querySelector(".dlv");
@@ -225,7 +225,7 @@ function addWishList(button) {
           }
       });
 
-      console.log('Product added to wishlist:', product);
+      // console.log('Product added to wishlist:', product);
   }
   // Variables
   const dlv = target_parent.querySelector(".dlv");
