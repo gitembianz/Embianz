@@ -1641,7 +1641,7 @@ function begin_checkout() {
         items: items
     };
     // Show the object
-    console.log(dlvData);
+    // console.log(dlvData);
     return dlvData;
 };
 // begin_checkout();
@@ -1969,14 +1969,14 @@ dataLayer.push({
             <span class="dlv_value">{{ $cart->final_amount }}</span>
             <span class="dlv_coupon">{{ optional($cart->voucher)->code }}</span>
             <span class="dlv_payment">{{ $payment['name'] }}</span>
-            @foreach ($cartItems as $cartItem)
-            <div class="dlv_item">
-              <span class="dlv_item-id">{{ $cartItem->product->id }}</span>
-              <span class="dlv_item-name">{{ $cartItem->product->name }}</span>
-              <span class="dlv_item-price">{{ $cartItem->price }}</span>
-              <span class="dlv_item-quantity">{{ $cartItem->quantity }}</span>
-            </div>
-            @endforeach
+              @foreach ($cartItems as $cartItem)
+              <div class="dlv_item">
+                <span class="dlv_item-id">{{ $cartItem->product->id }}</span>
+                <span class="dlv_item-name">{{ $cartItem->product->name }}</span>
+                <span class="dlv_item-price">{{ $cartItem->price }}</span>
+                <span class="dlv_item-quantity">{{ $cartItem->quantity }}</span>
+              </div>
+              @endforeach
           </div>
           <script>
             function add_payment_info() {
@@ -2023,7 +2023,7 @@ dataLayer.push({
                     items: items
                 };
                 // Show the object
-                console.log(dlvData);
+                // console.log(dlvData);
                 return dlvData;
             };
             // add_payment_info();
@@ -2054,7 +2054,7 @@ dataLayer.push({
                           }
                       });
           </script>
-                    {{-- <script>
+                    <script>
                       function add_shipping_info() {
                           // Variables
                           var dlv = document.querySelector('.dlv');
@@ -2097,7 +2097,7 @@ dataLayer.push({
                               items: items
                           };
                           // Show the object
-                          console.log(dlvData);
+
                           return dlvData;
                       };
                       // add_shipping_info();
@@ -2115,7 +2115,7 @@ dataLayer.push({
                               items: dlvData.items
                           }
                       });
-                    </script> --}}
+                    </script>
 				@endif
 				{{-- script for terms error --}}
 				<script>
@@ -2458,7 +2458,7 @@ dataLayer.push({
                   items: items
               };
               // Show the object
-              console.log(dlvData);
+              // console.log(dlvData);
               return dlvData;
           };
           // purchase();
@@ -2474,7 +2474,7 @@ dataLayer.push({
                   currency: dlvData.currency,
                   value: dlvData.value,
                   coupon: dlvData.coupon,
-                  transaction_id: dlvData.transaction,
+                  transaction_id: dlvData.transaction_id,
                   shipping: dlvData.shipping,
                   items: dlvData.items
               }

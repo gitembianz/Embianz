@@ -273,7 +273,7 @@
                 items: items
             };
             // Show the object
-            console.log(dlvData);
+            // console.log(dlvData);
             return dlvData;
         };
 
