@@ -58,7 +58,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request)
     {
-        if (Auth::check()) {
+        if (Auth::user()) {
             // User is already authenticated, redirect them to the intended route or a default route
             return redirect()->route('dashboard');
         }
