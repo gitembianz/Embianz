@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\DB;
 class CartProductsList extends Component
 {
     public $showcart = false;
-    public $cartId;
     public $voucher = "";
     public $aplicabble_voucher = false;
     public $message = null;
@@ -36,7 +35,7 @@ class CartProductsList extends Component
     public function getCartProperty()
     {
         return Cart::select('id', 'quantity_amount', 'delivery_price', 'seen_by_customer', 'sum_amount', 'voucher_id', 'final_amount', 'voucher_value')
-            ->where('id', $this->cartId)
+            ->where('session_id', $this->getSessionId())
             ->with([
                 'voucher' => function ($query) {
                     $query->select('code', 'id', 'percent', 'value');
@@ -46,11 +45,21 @@ class CartProductsList extends Component
             ->latest()
             ->first() ?? null;
     }
+    private function getSessionId()
+  {
+    if (array_key_exists('sessionId', $_COOKIE)) {
+      return $_COOKIE['sessionId'];
+    } else {
+      $sessionId = session()->getId();
+      setcookie('sessionId', $sessionId, time() + 30 * 24 * 60 * 60, '/', null, false, true);
+      return $sessionId;
+    }
+  }
     public function getCartItemsProperty()
     {
-        if ($this->cartId && $this->showcart) {
+        if ($this->cart && $this->showcart) {
             return Cart_Item::select('id', 'quantity', 'product_id')
-                ->where('cart_id', $this->cartId)
+                ->where('cart_id', $this->cart->id)
                 ->with([
                     'product' => function ($query) {
                         $query->select('id', 'name', 'seo_id', 'active', 'start_date', 'end_date', 'quantity')->with([
@@ -136,7 +145,7 @@ class CartProductsList extends Component
     }
     public function orderprocess()
     {
-        $this->mount(null);
+        $this->mount();
     }
 
     public function updatingShowcart()
@@ -154,9 +163,8 @@ class CartProductsList extends Component
         return;
     }
 
-    public function mount($cartId)
+    public function mount()
     {
-        $this->cartId = $cartId;
 
         if ($this->cart && $this->cart->seen_by_customer) {
             $this->cartmodified = true;
@@ -199,8 +207,8 @@ class CartProductsList extends Component
             $query->select('id', 'value', 'product_id');
         }])->findOrFail($productId);
 
-        if ($this->cartId) {
-            $cartItem = Cart_Item::where('cart_id', $this->cartId)
+        if ($this->cart) {
+            $cartItem = Cart_Item::where('cart_id', $this->cart->id)
                 ->where('product_id', $productId)
                 ->first();
 
@@ -208,7 +216,7 @@ class CartProductsList extends Component
 
                 $cart = Cart::with(['voucher' => function ($query) {
                     $query->select('code', 'id', 'percent', 'value');
-                }])->find($this->cartId);
+                }])->find($this->cart->id);
 
                 $amountToSubtract = $product->product_prices->first()->value * $cartItem->quantity;
 
@@ -219,7 +227,7 @@ class CartProductsList extends Component
                 } else {
                     $voucher_value = 0;
                 }
-                Cart::where('id', $this->cartId)->update([
+                Cart::where('id', $this->cart->id)->update([
                     'quantity_amount' => DB::raw("quantity_amount - $cartItem->quantity"),
                     'sum_amount' => DB::raw("sum_amount - $amountToSubtract"),
                     'final_amount' => DB::raw("CASE WHEN (quantity_amount) = 0 THEN 0 ELSE sum_amount + delivery_price - $voucher_value END"),
@@ -282,7 +290,7 @@ class CartProductsList extends Component
         }
 
         if ($validateQuantity) {
-            Cart::where('id', $this->cartId)->update([
+            Cart::where('id', $this->cart->id)->update([
                 'status_id' => app('global_cart_checkout'),
             ]);
             return redirect()->route('order');
