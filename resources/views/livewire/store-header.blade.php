@@ -131,11 +131,9 @@
 	<!---------------------------------------------------------->
 	<!---------------------Basket (Leftbar)--------------------->
 	<!-- In your Blade view -->
-	@if ($cart)
-		@livewire("cart-products-list", ["cartId" => $cart->id])
-	@else
-		@livewire("cart-products-list", ["cartId" => 0])
-	@endif
+
+		@livewire("cart-products-list")
+
 
 	<!-------------------END-Basket (Leftbar)------------------->
 	<!---------------------------------------------------------->
@@ -227,6 +225,7 @@
 				@endforeach
 			</div>
 		</div>
+    <button class="menu__hidden--close" id="menuHidden"></button>
 	</div>
 	<!--------------------END-Menu (Leftbar)-------------------->
 	<!---------------------------------------------------------->

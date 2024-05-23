@@ -63,13 +63,13 @@ function dropmenus(menuID, setActive = false) {
 //<---------------------- End DropMenu on leftbar ---------------------->
 //<--------------------------------------------------------------------->
 //<------------------------------ LeftBar ------------------------------>
-function leftbar(idOpen, idClose, idList, idContent) {
+function leftbar(idOpen, idClose, idList, idContent, hiddenId) {
   const buttonOpen = document.getElementById(idOpen);
   const buttonClose = document.getElementById(idClose);
   const list = document.getElementById(idList);
   const content = document.getElementById(idContent);
+  const contentModal = document.getElementById(hiddenId);
   const body = document.querySelector("body");
-  const contentModal = document.querySelector(".leftbar__modal");
 
   if (!buttonOpen || !buttonClose || !list || !content) {
     // console.log("leftbar error");
@@ -84,16 +84,11 @@ function leftbar(idOpen, idClose, idList, idContent) {
       list.classList.remove("active");
       body.style.overflow = "auto";
     });
-    // list.addEventListener("click", (event) => {
-    //   if (
-    //     !content.contains(event.target) &&
-    //     !buttonOpen.contains(event.target) &&
-    //     !contentModal.contains(event.target)
-    //   ) {
-    //     list.classList.remove("active");
-    //     body.style.overflow = "auto";
-    //   }
-    // });
+    contentModal.addEventListener("click", (event) => {
+        list.classList.remove("active");
+        body.style.overflow = "auto";
+    });
+
     function handleKeyPress(event) {
       if (event.keyCode === 27) {
         list.classList.remove("active");
@@ -153,9 +148,9 @@ function searchBar() {
 //<--------------------------------------------------------------------->
 //<------------------------ Start Functions IOS ------------------------>
 searchBar();
-leftbar("basketOpen", "basketClose", "basketList", "basketContent");
-leftbar("wishOpen", "wishClose", "wishList", "wishContent");
-leftbar("menuOpen", "menuClose", "menuList", "menuContent");
+leftbar("basketOpen", "basketClose", "basketList", "basketContent", "basketHidden");
+leftbar("wishOpen", "wishClose", "wishList", "wishContent", "wishHidden");
+leftbar("menuOpen", "menuClose", "menuList", "menuContent", "menuHidden");
 dropmenus(".dropmenu", false);
 dropmenus(".submenu", false);
 scrollEvent();

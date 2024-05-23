@@ -1,5 +1,5 @@
 <div class="leftbar @if ($showwis) active @endif" id="wishList">
-	<button class="leftbar__hidden--close" wire:click="$set('showwis', false)"></button>
+	<button class="leftbar__hidden--close" id="wishHidden" wire:click="$set('showwis', false)"></button>
 	<div class="leftbar__content" id="wishContent">
 		<div class="leftbar__top">
 			<a class="leftbar__button" href="/wishlist">Vizualizare produse favorite</a>
