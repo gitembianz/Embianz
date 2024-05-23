@@ -2,7 +2,7 @@
     @if ($showcart) active @else @endif
     @if ($cartmodified) problem @endif
     @if ($aplicabble_voucher) mod @endif" id="basketList">
-	<button class="leftbar__hidden--close" wire:click="$set('showcart', false)"></button>
+	<button class="leftbar__hidden--close"  wire:click="$set('showcart', false)" id="basketHidden"></button>
 	<div class="leftbar__content" id="basketContent">
 		<div class="leftbar__top">
 			<a class="leftbar__button" href="{{ url("/cart") }}">Vizualizare coș de cumpărături </a>

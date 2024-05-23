@@ -227,6 +227,7 @@
 				@endforeach
 			</div>
 		</div>
+    <button class="menu__hidden--close" id="menuHidden"></button>
 	</div>
 	<!--------------------END-Menu (Leftbar)-------------------->
 	<!---------------------------------------------------------->
