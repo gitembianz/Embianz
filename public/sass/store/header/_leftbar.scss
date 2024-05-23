@@ -70,6 +70,25 @@
   }
 }
 
+.menu__hidden--close {
+  width: 50%;
+  height: 100%;
+  position: absolute;
+  right: 0;
+  top: 0;
+  border: none;
+  font-size: $textSize;
+  opacity: 0;
+
+  @media (max-width: map-get($grid-breakpoints, sm)) {
+    width: 0;
+  }
+
+  @media (min-width: map-get($grid-breakpoints, xl)) {
+    width: 70%;
+  }
+}
+
 .leftbar__content {
   display: flex;
   flex-direction: column;

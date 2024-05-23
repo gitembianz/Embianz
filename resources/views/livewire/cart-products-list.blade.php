@@ -2,19 +2,20 @@
  class="leftbar
     @if ($showcart) active @else @endif
     @if ($cartmodified) problem @endif
-    @if ($aplicabble_voucher) mod @endif"
- id="basketList">
- <button class="leftbar__hidden--close" wire:click="$set('showcart', false)"></button>
- <div class="leftbar__content" id="basketContent">
-  <div class="leftbar__top">
-   <a class="leftbar__button" href="{{ url('/cart') }}">Vizualizare coș de cumpărături </a>
-   <button class="leftbar__close" id="basketClose" wire:click="$set('showcart', false)">
-    <svg>
-     <line x1="18" y1="6" x2="6" y2="18"></line>
-     <line x1="6" y1="6" x2="18" y2="18"></line>
-    </svg>
-   </button>
-  </div>
+
+    @if ($aplicabble_voucher) mod @endif" id="basketList">
+	<button class="leftbar__hidden--close"  wire:click="$set('showcart', false)" id="basketHidden"></button>
+	<div class="leftbar__content" id="basketContent">
+		<div class="leftbar__top">
+			<a class="leftbar__button" href="{{ url("/cart") }}">Vizualizare coș de cumpărături </a>
+			<button class="leftbar__close" id="basketClose" wire:click="$set('showcart', false)">
+				<svg>
+					<line x1="18" y1="6" x2="6" y2="18"></line>
+					<line x1="6" y1="6" x2="18" y2="18"></line>
+				</svg>
+			</button>
+		</div>
+
 
   @if ($cartItems->isEmpty())
    <span class="leftbar__empty">Coșul de cumpărături nu conține produse</span>
