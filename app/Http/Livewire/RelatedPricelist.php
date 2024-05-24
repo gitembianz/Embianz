@@ -291,10 +291,9 @@ class RelatedPricelist extends Component
       $this->priceAndValues[$index]['itemselected'] = $test->pricelist->name;
       $this->priceAndValues[$index]['price']['id'] = $test->id;
       $this->priceAndValues[$index]['price']['idrel'] = $test->pricelist->id;
-      $this->priceAndValues[$index]['price']['value'] = $test->value;
+      $this->priceAndValues[$index]['price']['value'] = $test->value_no_vat;
       $this->priceAndValues[$index]['price']['discount'] = $test->discount;
-
-      $this->priceAndValues[$index]['price']['tva'] = $test->vat;
+      $this->priceAndValues[$index]['price']['vat'] = $test->vat;
       $this->priceAndValues[$index]['allow'] = false;
     }
   }
@@ -308,14 +307,40 @@ class RelatedPricelist extends Component
       ]);
       return;
     }
-    foreach ($this->priceAndValues as  $priceAndValue) {
+
+
+    foreach ($this->priceAndValues as $index => $priceAndValue) {
       if (!empty($priceAndValue['price']['value'])) {
+
         $item = PricelistEntries::find($priceAndValue['price']['id']);
         if ($item) {
-          $item->vat = $priceAndValue['price']['tva'];
+          $item->value_no_vat = $priceAndValue['price']['value'];
           $item->pricelist_id = $priceAndValue['price']['idrel'];
-          $item->value = $priceAndValue['price']['value'];
+
+          if ($priceAndValue['price']['vat'] < 0) {
+            session()->flash('notification', [
+              'message' => 'Please provide a value bigger than 0!',
+              'type' => 'warning',
+              'title' => 'VAT value'
+            ]);
+            return;
+          }
+          $item->vat = $priceAndValue['price']['vat'];
+          if ($priceAndValue['price']['discount'] < 0 || $priceAndValue['price']['discount'] >= 100) {
+            session()->flash('notification', [
+              'message' => 'Please provide a value bigger than 0 and smaller than 100!',
+              'type' => 'warning',
+              'title' => 'Discount value'
+            ]);
+            return;
+          }
+          $item->discount = $priceAndValue['price']['discount'];
+          $item->value_no_discount = $item->value_no_vat + (0.01 * $item->vat * $item->value_no_vat);
+          $item->value = $item->value_no_discount - (0.01 * $item->value_no_discount * $item->discount);
+
           $item->save();
+          unset($this->priceAndValues[$index]);
+          $this->priceAndValues = array_values($this->priceAndValues);
         }
       } else {
         session()->flash('notification', [
@@ -327,11 +352,12 @@ class RelatedPricelist extends Component
       }
     }
 
+
     $this->priceAndValues = [
       [
         'allow' => false,
         'itemselected' => null,
-        'price' => ['name' => null, 'value' => null],
+        'price' => ['idrel' => null, 'value' => null, 'vat' => 19, 'discount' => 0],
       ]
     ];
     $this->row = 1;
@@ -346,6 +372,8 @@ class RelatedPricelist extends Component
     ]);
     $this->mount($this->item);
   }
+
+
   public function allow()
   {
     $this->allow = true;
@@ -370,7 +398,7 @@ class RelatedPricelist extends Component
       [
         'allow' => false,
         'itemselected' => null,
-        'spec' => ['name' => null, 'value' => null],
+        'price' => ['idrel' => null, 'value' => null, 'vat' => 19, 'discount' => 0],
       ]
     ];
     $this->row = 1;
@@ -405,7 +433,7 @@ class RelatedPricelist extends Component
     $this->priceAndValues[] = [
       'allow' => false,
       'itemselected' => null,
-      'price' => ['name' => null, 'value' => null, 'tva' => 19, 'discount' => 0],
+      'price' => ['name' => null, 'value' => null, 'vat' => 19, 'discount' => 0],
     ];
   }
   public function clear($index)
@@ -430,8 +458,10 @@ class RelatedPricelist extends Component
   }
   public function saveitems()
   {
-    foreach ($this->priceAndValues as  $priceAndValue) {
-      if (isset($priceAndValue['price']['value']) && isset($priceAndValue['price']['idrel'])) {
+    $indicesToRemove = [];
+
+    foreach ($this->priceAndValues as $index => $priceAndValue) {
+      if (isset($priceAndValue['price']['value']) && isset($priceAndValue['price']['idrel']) && $priceAndValue['price']['vat'] > 0 && ($priceAndValue['price']['discount'] > 0 && $priceAndValue['price']['discount'] < 100)) {
         $new = new PricelistEntries();
         $new->product_id = $this->item->id;
         $new->pricelist_id = $priceAndValue['price']['idrel'];
@@ -441,9 +471,12 @@ class RelatedPricelist extends Component
         $new->value_no_discount = $priceAndValue['price']['value'] + (0.01 * $priceAndValue['price']['vat'] * $priceAndValue['price']['value']);
         $new->value = $priceAndValue['price']['value'] - (0.01 * $priceAndValue['price']['discount'] * $new->value_no_discount) + (0.01 * $priceAndValue['price']['vat'] * $priceAndValue['price']['value']);
         $new->save();
+
+        // Track the index for removal
+        $indicesToRemove[] = $index;
       } else {
         session()->flash('notification', [
-          'message' => 'Please provide a value!',
+          'message' => 'Please provide all corect values for Value without VAT, VAT(bigger than 0) and Discount(bigger than 0 and smaller than 100)!',
           'type' => 'warning',
           'title' => 'Missing Values'
         ]);
@@ -467,6 +500,7 @@ class RelatedPricelist extends Component
     ]);
     $this->mount($this->item);
   }
+
   public function getAddpricesProperty()
   {
     $ids = $this->relatedprices->pluck('pricelist_id')->toArray();
