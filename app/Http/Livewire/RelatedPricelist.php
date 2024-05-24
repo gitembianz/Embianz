@@ -461,7 +461,7 @@ class RelatedPricelist extends Component
     $indicesToRemove = [];
 
     foreach ($this->priceAndValues as $index => $priceAndValue) {
-      if (isset($priceAndValue['price']['value']) && isset($priceAndValue['price']['idrel']) && $priceAndValue['price']['vat'] > 0 && ($priceAndValue['price']['discount'] > 0 && $priceAndValue['price']['discount'] < 100)) {
+      if (isset($priceAndValue['price']['value']) && isset($priceAndValue['price']['idrel'])) {
         $new = new PricelistEntries();
         $new->product_id = $this->item->id;
         $new->pricelist_id = $priceAndValue['price']['idrel'];
