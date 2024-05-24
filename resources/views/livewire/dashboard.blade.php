@@ -12,23 +12,43 @@
   Orders<span>({{ $orderCount }})</span>
  </a>
  <script>
+  let userInteracted = false;
+
+  function setUserInteracted() {
+   userInteracted = true;
+  }
+
+  document.addEventListener('click', setUserInteracted);
+  document.addEventListener('keydown', setUserInteracted);
+  document.addEventListener('touchstart', setUserInteracted);
+
   document.addEventListener('livewire:load', function() {
+   userInteracted = true;
    Livewire.on('cartCountUpdated', function(newCartCount) {
-    playSoundcart();
+    if (userInteracted) {
+     playSoundcart();
+    }
    });
-   Livewire.on('orderCountUpdated', function(newCartCount) {
-    playSoundorder();
+   Livewire.on('orderCountUpdated', function(newOrderCount) {
+    if (userInteracted) {
+     playSoundorder();
+    }
    });
   });
 
   function playSoundcart() {
    let audio = new Audio('/sounds/cart.mp3');
-   audio.play();
+   audio.play().catch(function(error) {
+    console.log('Error playing sound:', error);
+   });
   }
 
   function playSoundorder() {
    let audio = new Audio('/sounds/order.mp3');
-   audio.play();
+   audio.play().catch(function(error) {
+    console.log('Error playing sound:', error);
+   });
   }
  </script>
+
 </div>
