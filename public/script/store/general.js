@@ -1,1 +1,70 @@
-function modal(e){let l=document.querySelector(e),t=document.querySelector("body");if(l){l.querySelector(e+"__content");let o=l.querySelector(e+"__close");o.addEventListener("click",()=>{l.classList.remove("active"),t.style.overflow="auto"}),window.addEventListener("alert__modal",e=>{l.classList.add("active"),t.style.overflow="hidden"}),window.addEventListener("click",e=>{e.target===l&&(l.classList.remove("active"),t.style.overflow="auto")})}}let lastScrollTop=0;function hiddenOnScroll(){let e=document.querySelector(".breadcrumbs"),l=document.querySelector(".controls"),t=window.pageYOffset||document.documentElement.scrollTop;e&&(t>lastScrollTop?e.style.top="-60px":e.style.top="59px"),l&&(t>lastScrollTop?l.style.top="-90px":l.style.top="89px"),lastScrollTop=t<=0?0:t}window.addEventListener("scroll",hiddenOnScroll),window.addEventListener("resize",hiddenOnScroll),modal(".modal");
+//<--------------------------------------------------------------------->
+//<------------------------------- Modal ------------------------------->
+function modal(modalID) {
+  const modal = document.querySelector(modalID);
+  const body = document.querySelector("body");
+
+  if (!modal) {
+    // console.warn("Nu exista nici un modal pe aceasta pagina");
+    return;
+  } else {
+    const content = modal.querySelector(modalID + "__content");
+    const close = modal.querySelector(modalID + "__close");
+
+    close.addEventListener("click", () => {
+      modal.classList.remove("active");
+      body.style.overflow = "auto";
+    });
+
+    window.addEventListener("alert__modal", (event) => {
+      modal.classList.add("active");
+      body.style.overflow = "hidden";
+    });
+
+    window.addEventListener("click", (event) => {
+      if (event.target === modal) {
+        modal.classList.remove("active");
+        body.style.overflow = "auto";
+      }
+    });
+  }
+}
+//<----------------------------- End Modal ----------------------------->
+//<--------------- Hidden On Scroll(breadcrumb & Control) -------------->
+let lastScrollTop = 0;
+
+function hiddenOnScroll() {
+  const breadcrumbs = document.querySelector(".breadcrumbs");
+  const control = document.querySelector(".controls");
+  const currentScrollTop =
+    window.pageYOffset || document.documentElement.scrollTop;
+
+  if (breadcrumbs) {
+    if (currentScrollTop > lastScrollTop) {
+      // Scrolling down
+      breadcrumbs.style.top = "-60px";
+    } else {
+      // Scrolling up
+      breadcrumbs.style.top = "59px";
+    }
+  }
+
+  if (control) {
+    if (currentScrollTop > lastScrollTop) {
+      // Scrolling down
+      control.style.top = "-90px";
+    } else {
+      // Scrolling up
+      control.style.top = "89px";
+    }
+  }
+
+  lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop;
+}
+//<------------- End Hidden On Scroll(breadcrumb & Control) ------------>
+//<--------------------------------------------------------------------->
+//<------------------------- Start Functions PC ------------------------>
+window.addEventListener("scroll", hiddenOnScroll);
+window.addEventListener("resize", hiddenOnScroll);
+modal(".modal");
+//<----------------------- End Start Functions PC ---------------------->
