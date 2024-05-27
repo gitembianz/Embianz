@@ -21,5 +21,5 @@
 @endphp
 
 <x-store-header />
-<img src="/images/store/default/default.webp" alt="something wrong" style="width:50%">
+<img src="/images/store/default/default300.webp" alt="something wrong" style="width:50%">
 <x-store-footer />
