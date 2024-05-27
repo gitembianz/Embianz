@@ -40,7 +40,7 @@
    display: flex;
    align-items: center;
    justify-content: center;
-   background-color: #333333;
+   background-color: #20282d;
    border-radius: 7px;
    padding: 5px;
    gap: 5px;

@@ -47,7 +47,7 @@
           <td class="wid-3" data-title="Name">
            {{ $item->name }}
           </td>
-          <td class="wid-3" data-title="Specification">
+          <td class="wid-3" data-title="Pricelist">
            @if ($priceAndValue['allow'])
             <div class="table__drop" style="position: relative">
              <input class="table__drop--input" wire:model.debounce.300ms="searchadd" placeholder="Search..."
