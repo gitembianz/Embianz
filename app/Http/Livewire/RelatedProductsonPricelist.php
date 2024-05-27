@@ -24,7 +24,8 @@ class RelatedProductsonPricelist extends Component
   public $priceId;
   public $col = false;
   public $all = false;
-  public $columns = ['Id', 'Currency', 'Value', 'Created At'];
+  public $columns = ['Id', 'Currency', 'Value', 'Discount', 'Value without VAT', 'Value without Discount', 'VAT'];
+
   public $selectedColumns = [];
   public $idtodel = null;
   public $addrelatedproducts  = false;
@@ -66,7 +67,7 @@ class RelatedProductsonPricelist extends Component
     $this->prod[] = [
       'allow' => false,
       'itemselected' => null,
-      'product' => ['idrel' => null, 'value' => null],
+      'product' => ['idrel' => null, 'value' => null, 'vat' => 19, 'discount' => 0],
     ];
   }
   public function denny()
@@ -161,6 +162,7 @@ class RelatedProductsonPricelist extends Component
   {
     $this->dispatchBrowserEvent('show-delete-modal-multiple');
   }
+
   public function edititem($id, $iditem, $index)
   {
     $this->itemselected = Product::find($iditem)->name;
@@ -169,7 +171,9 @@ class RelatedProductsonPricelist extends Component
     $this->editedrow = $index;
     $this->product = [
       $index . '.name' => $this->itemselected,
-      $index . '.value' => $val->value,
+      $index . '.value' => $val->value_no_vat,
+      $index . '.vat' => $val->vat,
+      $index . '.discount' => $val->discount,
     ];
   }
   public function allow()
@@ -232,7 +236,7 @@ class RelatedProductsonPricelist extends Component
       [
         'allow' => false,
         'itemselected' => null,
-        'spec' => ['name' => null, 'value' => null],
+        'product' => ['idrel' => null, 'value' => null, 'vat' => 19, 'discount' => 0],
       ]
     ];
     $this->row = 1;
@@ -268,7 +272,7 @@ class RelatedProductsonPricelist extends Component
       [
         'allow' => false,
         'itemselected' => null,
-        'price' => ['name' => null, 'value' => null],
+        'product' => ['idrel' => null, 'value' => null, 'vat' => 19, 'discount' => 0],
       ]
     ];
     $this->row = 1;
@@ -290,7 +294,7 @@ class RelatedProductsonPricelist extends Component
     $this->prod[] = [
       'allow' => false,
       'itemselected' => null,
-      'product' => ['name' => null, 'value' => null],
+      'product' => ['idrel' => null, 'value' => null, 'vat' => 19, 'discount' => 0],
     ];
   }
   public function clear($index)
@@ -306,7 +310,7 @@ class RelatedProductsonPricelist extends Component
         [
           'allow' => false,
           'itemselected' => null,
-          'product' => ['name' => null, 'value' => null],
+          'product' => ['idrel' => null, 'value' => null, 'vat' => 19, 'discount' => 0],
         ]
       ];
       $this->row = 1;
@@ -363,7 +367,7 @@ class RelatedProductsonPricelist extends Component
       [
         'allow' => false,
         'itemselected' => null,
-        'product' => ['name' => null, 'value' => null],
+        'product' => ['idrel' => null, 'value' => null, 'vat' => 19, 'discount' => 0],
       ]
     ];
     $this->row = 1;
