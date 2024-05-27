@@ -21,5 +21,5 @@
 @endphp
 
 <x-store-header />
-@livewire('store-main')
-
+<img src="/images/store/default/default.webp" alt="something wrong">
+<x-store-footer />
