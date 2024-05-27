@@ -81,7 +81,7 @@
  <link rel="preload" href="/images/store/brands/visa.webp" as="image">
  <link rel="preload" href="/images/store/brands/mastercard.webp" as="image">
  <link rel="preload" href="/images/store/svg/chat.svg" as="image">
- <link rel="preload" href="/images/store/svg/thankyou.svg" as="image"> --}}
+ <link rel="preload" href="/images/store/svg/thankyou.svg" as="image"> 
  <link rel="preload" href="/images/store/svg/noren-white.svg" as="image">
  <link rel="preload" href="/fonts/Montserrat/Montserrat-Thin.woff2" as="font" type="font/woff2" crossorigin>
  <link rel="preload" href="/fonts/Montserrat/Montserrat-ExtraLight.woff2" as="font" type="font/woff2" crossorigin>
@@ -92,7 +92,7 @@
  <link rel="preload" href="/fonts/Montserrat/Montserrat-Bold.woff2" as="font" type="font/woff2" crossorigin>
  <link rel="preload" href="/fonts/Montserrat/Montserrat-ExtraBold.woff2" as="font" type="font/woff2"
   crossorigin>
- <link rel="preload" href="/fonts/Montserrat/Montserrat-Black.woff2" as="font" type="font/woff2" crossorigin>
+ <link rel="preload" href="/fonts/Montserrat/Montserrat-Black.woff2" as="font" type="font/woff2" crossorigin>--}}
  <!-- CSS -->
  {{-- <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script> --}}
 
