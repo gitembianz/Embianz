@@ -341,5 +341,5 @@
   <!------------------- End support button ------------------->
   <!---------------------------------------------------------->
  </main>
-
+<script src="/script/store/main.js" async defer></script>
 </div>
