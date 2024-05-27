@@ -22,5 +22,5 @@ function getDescription() {
 @endphp
 
 <x-store-header />
-
+@livewire('store-main')
 <x-store-footer />
