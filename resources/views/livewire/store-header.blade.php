@@ -24,7 +24,7 @@
    <!-------------------------Logo------------------------->
 
    <a class="logo" href="{{ url('/') }}">
-    <img loading="lazy" src="/images/store/svg/noren-black.svg" alt="Embianz Logo">
+    <img src="/images/store/svg/noren-black.svg" alt="Logo">
    </a>
    <!-----------------------END-Logo----------------------->
    <!------------------------------------------------------>

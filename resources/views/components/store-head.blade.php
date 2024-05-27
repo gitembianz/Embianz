@@ -69,6 +69,29 @@
  <meta property="twitter:title" content="{{ $title }}" />
  <meta property="twitter:description" content="{{ $description }}" />
  {{-- ----------------------------------------------------------- --}}
+ <link rel="preload" href="/images/store/svg/noren-black.svg" as="image">
+ <link rel="preload" href="/images/store/default/default300.webp" as="image">
+ {{-- <link rel="preload" href="/images/store/svg/headset.svg" as="image">
+ <link rel="preload" href="/images/store/svg/truck.svg" as="image">
+ <link rel="preload" href="/images/store/brands/dhl.webp" as="image">
+ <link rel="preload" href="/images/store/brands/Fan.webp" as="image">
+ <link rel="preload" href="/images/store/svg/shield.svg" as="image">
+ <link rel="preload" href="/images/store/brands/visa.webp" as="image">
+ <link rel="preload" href="/images/store/brands/mastercard.webp" as="image">
+ <link rel="preload" href="/images/store/svg/chat.svg" as="image">
+ <link rel="preload" href="/images/store/svg/thankyou.svg" as="image"> --}}
+ <link rel="preload" href="/images/store/svg/noren-white.svg" as="image">
+ <link rel="preload" href="/fonts/Montserrat/Montserrat-Thin.woff2" as="font" type="font/woff2" crossorigin>
+ <link rel="preload" href="/fonts/Montserrat/Montserrat-ExtraLight.woff2" as="font" type="font/woff2" crossorigin>
+ <link rel="preload" href="/fonts/Montserrat/Montserrat-Light.woff2" as="font" type="font/woff2" crossorigin>
+ <link rel="preload" href="/fonts/Montserrat/Montserrat-Regular.woff2" as="font" type="font/woff2" crossorigin>
+ <link rel="preload" href="/fonts/Montserrat/Montserrat-Medium.woff2" as="font" type="font/woff2" crossorigin>
+ <link rel="preload" href="/fonts/Montserrat/Montserrat-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
+ <link rel="preload" href="/fonts/Montserrat/Montserrat-Bold.woff2" as="font" type="font/woff2" crossorigin>
+ <link rel="preload" href="/fonts/Montserrat/Montserrat-ExtraBold.woff2" as="font" type="font/woff2"
+  crossorigin>
+ <link rel="preload" href="/fonts/Montserrat/Montserrat-Black.woff2" as="font" type="font/woff2" crossorigin>
+ <!-- CSS -->
  {{-- <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script> --}}
 
  @if (app()->has('global_script_head-bottom'))
