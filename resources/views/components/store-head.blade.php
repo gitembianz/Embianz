@@ -98,7 +98,7 @@
  @if (app()->has('global_script_head-bottom'))
   {!! app('global_script_head-bottom') !!}
  @endif
- @livewireStyles
+
 </head>
 
 <body id="body">

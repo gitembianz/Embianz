@@ -36,7 +36,7 @@
           <img loading="eager" src="/images/store/default/default.webp" alt="something wrong">
          @endif
          {{-- Mobile Picture --}}
-         @if ($item->media->where('sequence', 4)->first() != null)
+         if (@$item->media->where('sequence', 4)->first() != null)
           <img sizes="100vw" alt="{{ $item->media->where('sequence', 4)->first()->name }} {{ $item->name }}"
            src="/{{ $item->media->where('sequence', 4)->first()->path }}{{ $item->media->where('sequence', 4)->first()->name }}"
            loading="eager" fetchpriority="high" height="{{ $item->media->where('sequence', 4)->first()->height }}"
