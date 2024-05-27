@@ -22,4 +22,6 @@
 
 {{-- <x-store-header /> --}}
 @livewire('store-main')
-<x-store-footer />
+</body>
+
+</html>
