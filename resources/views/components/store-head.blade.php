@@ -9,7 +9,7 @@
   {!! app('global_script_head-top') !!}
  @endif
  <meta name="description" content="{{ $description }}">
- <link rel="preload" href="/images/store/default/default.webp" as="image">
+ <link rel="preload" href="/images/store/default/default300.webp" as="image">
 
 
  {{-- DormiSoft Favicon --}}
