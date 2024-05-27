@@ -34,7 +34,7 @@
  <link rel="canonical" href="{{ url('/' . $canonical) }}">
 
  <link rel="preload" href="/images/store/svg/noren-black.svg" as="image">
- <link rel="preload" href="/dist/css/store.css" as="style">
+ {{--<link rel="preload" href="/dist/css/store.css" as="style">
  <link rel="stylesheet" href="/dist/css/store.css">
 
  <link rel="preload" href="/fonts/Montserrat/Montserrat-Thin.woff2" as="font" type="font/woff2" crossorigin>
@@ -50,6 +50,7 @@
  <link rel="preload" href="/fonts/Montserrat/Montserrat-ExtraBold.woff2" as="font" type="font/woff2"
   crossorigin>
  <link rel="preload" href="/fonts/Montserrat/Montserrat-Black.woff2" as="font" type="font/woff2" crossorigin>
+}}--
  <!-- CSS -->
 
  {{-- ----------------------------------------------------------- --}}
