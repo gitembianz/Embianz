@@ -222,7 +222,6 @@ class RelatedPricelist extends Component
         $new->vat = $val["vat"];
       }
       if (array_key_exists('discount', $val)) {
-        $new->discount = $val["discount"];
         if ($val["discount"] < 0 || $val["discount"] >= 100) {
           session()->flash('notification', [
             'message' => 'Please provide a value biger than 0 and smaller that 100!',
@@ -236,6 +235,9 @@ class RelatedPricelist extends Component
             $index . '.discount' => $val["discount"],
           ];
           return;
+        } else {
+          $new->discount = $val["discount"];
+          $new->save();
         }
       }
       if (array_key_exists('value', $val)) {
@@ -458,9 +460,7 @@ class RelatedPricelist extends Component
   }
   public function saveitems()
   {
-    $indicesToRemove = [];
-
-    foreach ($this->priceAndValues as $index => $priceAndValue) {
+    foreach ($this->priceAndValues as  $priceAndValue) {
       if (isset($priceAndValue['price']['value']) && isset($priceAndValue['price']['idrel'])) {
         $new = new PricelistEntries();
         $new->product_id = $this->item->id;
@@ -471,9 +471,6 @@ class RelatedPricelist extends Component
         $new->value_no_discount = $priceAndValue['price']['value'] + (0.01 * $priceAndValue['price']['vat'] * $priceAndValue['price']['value']);
         $new->value = $priceAndValue['price']['value'] - (0.01 * $priceAndValue['price']['discount'] * $new->value_no_discount) + (0.01 * $priceAndValue['price']['vat'] * $priceAndValue['price']['value']);
         $new->save();
-
-        // Track the index for removal
-        $indicesToRemove[] = $index;
       } else {
         session()->flash('notification', [
           'message' => 'Please provide all corect values for Value without VAT, VAT(bigger than 0) and Discount(bigger than 0 and smaller than 100)!',
