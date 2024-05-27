@@ -20,6 +20,6 @@
  }
 @endphp
 
-<x-store-header />
+{{-- <x-store-header /> --}}
 @livewire('store-main')
 <x-store-footer />
