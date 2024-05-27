@@ -15,7 +15,7 @@ class StoreMain extends Component
   {
     return Category::select('id', 'slider_sequence', 'seo_id')->where('slider_sequence', '!=', '0')->where('start_date', '<=',  now()->format('Y-m-d'))
       ->where('end_date', '>=',  now()->format('Y-m-d'))->with(['media' => function ($query) {
-        $query->select('path', 'name', 'sequence', 'width' . 'height')->where('type', 'original');
+        $query->select('path', 'name', 'sequence', 'width', 'height')->where('type', 'original');
       }])->orderby('slider_sequence')->get();
   }
 
