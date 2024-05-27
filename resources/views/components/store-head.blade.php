@@ -68,21 +68,8 @@
  <meta property="twitter:title" content="{{ $title }}" />
  <meta property="twitter:description" content="{{ $description }}" />
  {{-- ----------------------------------------------------------- --}}
- <link rel="preload" href="/images/store/svg/noren-black.svg" as="image">
-
- <link rel="preload" href="/images/store/svg/headset.svg" as="image">
- <link rel="preload" href="/images/store/svg/truck.svg" as="image">
- <link rel="preload" href="/images/store/brands/dhl.webp" as="image">
- <link rel="preload" href="/images/store/brands/Fan.webp" as="image">
- <link rel="preload" href="/images/store/svg/shield.svg" as="image">
- <link rel="preload" href="/images/store/brands/visa.webp" as="image">
- <link rel="preload" href="/images/store/brands/mastercard.webp" as="image">
- <link rel="preload" href="/images/store/svg/chat.svg" as="image">
- <link rel="preload" href="/images/store/svg/thankyou.svg" as="image">
- <link rel="preload" href="/images/store/svg/noren-white.svg" as="image">
-
  {{-- <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script> --}}
- 
+
  @if (app()->has('global_script_head-bottom'))
   {!! app('global_script_head-bottom') !!}
  @endif
