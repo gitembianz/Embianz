@@ -190,7 +190,7 @@
           <span class="dlv_name">{{ $product->name }}</span>
           <span class="dlv_price">{{ $price }}</span>
           <span
-           class="dlv_currency">{{ optional(ptional(optional($product->product_prices->first())->pricelist)->currency)->name }}</span>
+           class="dlv_currency">{{ optional(optional(optional($product->product_prices->first())->pricelist)->currency)->name }}</span>
          </div>
         </div>
        </div>
