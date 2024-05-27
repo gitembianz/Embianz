@@ -19,7 +19,7 @@
            loading="eager" fetchpriority="high" height="{{ $item->media->where('sequence', 2)->first()->height }}"
            width="{{ $item->media->where('sequence', 2)->first()->width }}">
          @else
-          <img src="/images/store/default/default.webp" alt="something wrong">
+          <img loading="eager" fetchpriority="high" src="/images/store/default/default.webp" alt="something wrong">
          @endif
          {{-- Tablet Picture --}}
          @if ($item->media->where('sequence', 3)->first() != null)
@@ -33,7 +33,7 @@
            loading="eager" fetchpriority="high" height="{{ $item->media->where('sequence', 2)->first()->height }}"
            width="{{ $item->media->where('sequence', 2)->first()->width }}">
          @else
-          <img src="/images/store/default/default.webp" alt="something wrong">
+          <img loading="eager" fetchpriority="high" src="/images/store/default/default.webp" alt="something wrong">
          @endif
          {{-- Mobile Picture --}}
          @if ($item->media->where('sequence', 4)->first() != null)
@@ -52,10 +52,10 @@
            loading="eager" fetchpriority="high" height="{{ $item->media->where('sequence', 2)->first()->height }}"
            width="{{ $item->media->where('sequence', 2)->first()->width }}">
          @else
-          <img src="/images/store/default/default.webp" alt="something wrong">
+          <img loading="eager" fetchpriority="high" src="/images/store/default/default.webp" alt="something wrong">
          @endif
         @else
-         <img src="/images/store/default/default.webp" alt="something wrong">
+         <img loading="eager" fetchpriority="high" src="/images/store/default/default.webp" alt="something wrong">
         @endif
        </picture>
       </a>
