@@ -34,6 +34,21 @@
  <link rel="canonical" href="{{ url('/' . $canonical) }}">
  <link rel="preload" href="/dist/css/store.css" as="style">
  <link rel="stylesheet" href="/dist/css/store.css">
+ 
+ <link rel="preload" href="/fonts/Montserrat/Montserrat-Thin.woff2" as="font" type="font/woff2" crossorigin>
+ <link rel="preload" href="/fonts/Montserrat/Montserrat-ExtraLight.woff2" as="font" type="font/woff2"
+  crossorigin>
+ <link rel="preload" href="/fonts/Montserrat/Montserrat-Light.woff2" as="font" type="font/woff2" crossorigin>
+ <link rel="preload" href="/fonts/Montserrat/Montserrat-Regular.woff2" as="font" type="font/woff2"
+  crossorigin>
+ <link rel="preload" href="/fonts/Montserrat/Montserrat-Medium.woff2" as="font" type="font/woff2" crossorigin>
+ <link rel="preload" href="/fonts/Montserrat/Montserrat-SemiBold.woff2" as="font" type="font/woff2"
+  crossorigin>
+ <link rel="preload" href="/fonts/Montserrat/Montserrat-Bold.woff2" as="font" type="font/woff2" crossorigin>
+ <link rel="preload" href="/fonts/Montserrat/Montserrat-ExtraBold.woff2" as="font" type="font/woff2"
+  crossorigin>
+ <link rel="preload" href="/fonts/Montserrat/Montserrat-Black.woff2" as="font" type="font/woff2" crossorigin>
+ <!-- CSS -->
 
  {{-- ----------------------------------------------------------- --}}
  {{-- ----------------------------------------------------------- --}}
@@ -64,20 +79,7 @@
  <link rel="preload" href="/images/store/svg/chat.svg" as="image">
  <link rel="preload" href="/images/store/svg/thankyou.svg" as="image">
  <link rel="preload" href="/images/store/svg/noren-white.svg" as="image">
- <link rel="preload" href="/fonts/Montserrat/Montserrat-Thin.woff2" as="font" type="font/woff2" crossorigin>
- <link rel="preload" href="/fonts/Montserrat/Montserrat-ExtraLight.woff2" as="font" type="font/woff2"
-  crossorigin>
- <link rel="preload" href="/fonts/Montserrat/Montserrat-Light.woff2" as="font" type="font/woff2" crossorigin>
- <link rel="preload" href="/fonts/Montserrat/Montserrat-Regular.woff2" as="font" type="font/woff2"
-  crossorigin>
- <link rel="preload" href="/fonts/Montserrat/Montserrat-Medium.woff2" as="font" type="font/woff2" crossorigin>
- <link rel="preload" href="/fonts/Montserrat/Montserrat-SemiBold.woff2" as="font" type="font/woff2"
-  crossorigin>
- <link rel="preload" href="/fonts/Montserrat/Montserrat-Bold.woff2" as="font" type="font/woff2" crossorigin>
- <link rel="preload" href="/fonts/Montserrat/Montserrat-ExtraBold.woff2" as="font" type="font/woff2"
-  crossorigin>
- <link rel="preload" href="/fonts/Montserrat/Montserrat-Black.woff2" as="font" type="font/woff2" crossorigin>
- <!-- CSS -->
+
 
  @if (app()->has('global_script_head-bottom'))
   {!! app('global_script_head-bottom') !!}
