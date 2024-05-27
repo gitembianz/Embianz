@@ -14,46 +14,46 @@
         @if ($item->media->where('sequence', 2)->first() != null)
          <source media="(min-width: 992px)" sizes="(min-width: 992px) 50vw"
           srcset="/{{ $item->media->where('sequence', 2)->first()->path }}{{ $item->media->where('sequence', 2)->first()->name }}"
-          loading="eager" height="{{ $item->media->where('sequence', 2)->first()->height }}"
+          loading="lazy" height="{{ $item->media->where('sequence', 2)->first()->height }}"
           width="{{ $item->media->where('sequence', 2)->first()->width }}">
         @else
-         <img loading="eager" src="/images/store/default/default.webp" alt="something wrong">
+         <img loading="lazy" src="/images/store/default/default.webp" alt="something wrong">
         @endif
         {{-- Tablet Picture --}}
         @if ($item->media->where('sequence', 3)->first() != null)
          <source media="(min-width: 576px)" sizes="(min-width: 576px) 80vw"
           srcset="/{{ $item->media->where('sequence', 3)->first()->path }}{{ $item->media->where('sequence', 3)->first()->name }}"
-          loading="eager" height="{{ $item->media->where('sequence', 3)->first()->height }}"
+          loading="lazy" height="{{ $item->media->where('sequence', 3)->first()->height }}"
           width="{{ $item->media->where('sequence', 3)->first()->width }}">
         @elseif ($item->media->where('sequence', 2)->first() != null)
          <source media="(min-width: 576px)" sizes="(min-width: 576px) 80vw"
           srcset="/{{ $item->media->where('sequence', 2)->first()->path }}{{ $item->media->where('sequence', 2)->first()->name }}"
-          loading="eager" height="{{ $item->media->where('sequence', 2)->first()->height }}"
+          loading="lazy" height="{{ $item->media->where('sequence', 2)->first()->height }}"
           width="{{ $item->media->where('sequence', 2)->first()->width }}">
         @else
-         <img loading="eager" src="/images/store/default/default.webp" alt="something wrong">
+         <img loading="lazy" src="/images/store/default/default.webp" alt="something wrong">
         @endif
         {{-- Mobile Picture --}}
         @if ($item->media->where('sequence', 4)->first() != null)
          <img sizes="100vw" alt="{{ $item->media->where('sequence', 4)->first()->name }} {{ $item->name }}"
           src="/{{ $item->media->where('sequence', 4)->first()->path }}{{ $item->media->where('sequence', 4)->first()->name }}"
-          loading="eager" height="{{ $item->media->where('sequence', 4)->first()->height }}"
+          loading="lazy" height="{{ $item->media->where('sequence', 4)->first()->height }}"
           width="{{ $item->media->where('sequence', 4)->first()->width }}">
         @elseif ($item->media->where('sequence', 3)->first() != null)
          <img sizes="100vw" alt="{{ $item->media->where('sequence', 3)->first()->name }} {{ $item->name }}"
           src="/{{ $item->media->where('sequence', 3)->first()->path }}{{ $item->media->where('sequence', 3)->first()->name }}"
-          loading="eager" height="{{ $item->media->where('sequence', 3)->first()->height }}"
+          loading="lazy" height="{{ $item->media->where('sequence', 3)->first()->height }}"
           width="{{ $item->media->where('sequence', 3)->first()->width }}">
         @elseif ($item->media->where('sequence', 2)->first() != null)
          <img sizes="100vw" alt="{{ $item->media->where('sequence', 2)->first()->name }} {{ $item->name }}"
           src="/{{ $item->media->where('sequence', 2)->first()->path }}{{ $item->media->where('sequence', 2)->first()->name }}"
-          loading="eager" height="{{ $item->media->where('sequence', 2)->first()->height }}"
+          loading="lazy" height="{{ $item->media->where('sequence', 2)->first()->height }}"
           width="{{ $item->media->where('sequence', 2)->first()->width }}">
         @else
-         <img loading="eager" src="/images/store/default/default.webp" alt="something wrong">
+         <img loading="lazy" src="/images/store/default/default.webp" alt="something wrong">
         @endif
        @else
-        <img loading="eager" src="/images/store/default/default.webp" alt="something wrong">
+        <img loading="lazy" src="/images/store/default/default.webp" alt="something wrong">
        @endif
       </a>
      @endforeach
@@ -104,11 +104,11 @@
         <a draggable="false"
          href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">
          @if ($product->media->first() != null)
-          <img loading="eager" class="card-image"
+          <img loading="lazy" class="card-image"
            src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}"
            alt="{{ $product->media->first()->name }} {{ $product->name }}">
          @else
-          <img loading="eager" class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
+          <img loading="lazy" class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
          @endif
         </a>
         @livewire('product-wishlist-button', ['productId' => $product->id, 'class' => 'card__action', 'is_in_wishlist' => $product->wishlists->isNotEmpty()], key($product->id))
@@ -227,11 +227,11 @@
         <a draggable="false"
          href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">
          @if ($product->media->first() != null)
-          <img loading="eager" class="card-image"
+          <img loading="lazy" class="card-image"
            src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}"
            alt="{{ $product->media->first()->name }} {{ $product->name }}">
          @else
-          <img loading="eager" class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
+          <img loading="lazy" class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
          @endif
         </a>
         @livewire('product-wishlist-button', ['productId' => $product->id, 'class' => 'card__action', 'is_in_wishlist' => $product->wishlists->isNotEmpty()], key($product->id))
