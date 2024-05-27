@@ -23,4 +23,4 @@ function getDescription() {
 
 <x-store-header />
 
-
+<x-store-footer />
