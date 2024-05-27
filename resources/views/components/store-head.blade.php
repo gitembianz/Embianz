@@ -32,9 +32,10 @@
  {{-- favicon end --}}
 
  <link rel="canonical" href="{{ url('/' . $canonical) }}">
+ <link rel="preload" href="/images/store/default/default300.webp" as="image">
  <link rel="preload" href="/dist/css/store.css" as="style">
  <link rel="stylesheet" href="/dist/css/store.css">
- 
+
  <link rel="preload" href="/fonts/Montserrat/Montserrat-Thin.woff2" as="font" type="font/woff2" crossorigin>
  <link rel="preload" href="/fonts/Montserrat/Montserrat-ExtraLight.woff2" as="font" type="font/woff2"
   crossorigin>
@@ -68,7 +69,7 @@
  <meta property="twitter:description" content="{{ $description }}" />
  {{-- ----------------------------------------------------------- --}}
  <link rel="preload" href="/images/store/svg/noren-black.svg" as="image">
- <link rel="preload" href="/images/store/default/default300.webp" as="image">
+
  <link rel="preload" href="/images/store/svg/headset.svg" as="image">
  <link rel="preload" href="/images/store/svg/truck.svg" as="image">
  <link rel="preload" href="/images/store/brands/dhl.webp" as="image">
