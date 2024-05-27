@@ -10,7 +10,7 @@
  @endif
  <meta name="description" content="{{ $description }}">
 
- {{-- <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script> --}}
+
 
  {{-- DormiSoft Favicon --}}
  {{-- <link rel="icon" type="image/x-icon" href="/images/store/svg/dormisoft_favicon.svg"> --}}
@@ -81,7 +81,8 @@
  <link rel="preload" href="/images/store/svg/thankyou.svg" as="image">
  <link rel="preload" href="/images/store/svg/noren-white.svg" as="image">
 
-
+ {{-- <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script> --}}
+ 
  @if (app()->has('global_script_head-bottom'))
   {!! app('global_script_head-bottom') !!}
  @endif
