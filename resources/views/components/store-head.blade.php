@@ -34,7 +34,7 @@
  <link rel="canonical" href="{{ url('/' . $canonical) }}">
 
  <link rel="preload" href="/images/store/svg/noren-black.svg" as="image">
- <link rel="stylesheet" href="/dist/css/store.css">
+ <link rel="stylesheet" href="/dist/css/store.css" async>
  {{--<link rel="preload" href="/dist/css/store.css" as="style">
  
 
