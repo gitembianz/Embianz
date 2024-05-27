@@ -21,4 +21,5 @@
 @endphp
 
 <x-store-header />
+@livewire('store-main')
 
