@@ -9,7 +9,7 @@
   {!! app('global_script_head-top') !!}
  @endif
  <meta name="description" content="{{ $description }}">
-
+ <link rel="preload" href="/images/store/default/default.webp" as="image">
 
 
  {{-- DormiSoft Favicon --}}
@@ -25,7 +25,6 @@
  <link rel="manifest" href="/images/store/svg/site.webmanifest">
  <link rel="mask-icon" href="/images/store/svg/safari-pinned-tab.svg" color="#333333">
  <link rel="shortcut icon" href="/images/store/svg/favicon.ico">
- <link rel="preload" href="/images/store/default/default.webp" as="image">
  <meta name="msapplication-TileColor" content="#fafafa">
  <meta name="msapplication-config" content="/images/store/svg/browserconfig.xml">
  <meta name="theme-color" content="#fafafa">
