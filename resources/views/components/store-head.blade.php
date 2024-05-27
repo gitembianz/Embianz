@@ -33,7 +33,8 @@
  {{-- favicon end --}}
 
  <link rel="canonical" href="{{ url('/' . $canonical) }}">
- <link rel="preload" href="/images/store/default/default300.webp" as="image">
+
+ <link rel="preload" href="/images/store/svg/noren-black.svg" as="image">
  <link rel="preload" href="/dist/css/store.css" as="style">
  <link rel="stylesheet" href="/dist/css/store.css">
 
@@ -69,6 +70,7 @@
  <meta property="twitter:title" content="{{ $title }}" />
  <meta property="twitter:description" content="{{ $description }}" />
  {{-- ----------------------------------------------------------- --}}
+ <link rel="preload" href="/images/store/default/default300.webp" as="image">
  <link rel="preload" href="/images/store/svg/noren-black.svg" as="image">
  <link rel="preload" href="/images/store/default/default300.webp" as="image">
  {{-- <link rel="preload" href="/images/store/svg/headset.svg" as="image">
