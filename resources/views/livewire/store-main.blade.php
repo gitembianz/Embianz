@@ -6,7 +6,6 @@
    <div class="main-slider">
     <div class="main-slider__wrapper">
      @foreach ($slideritems as $item)
-      {{-- -- Modelul de schimb de imagini pe slider la rezolutie -- --}}
       <a class="main-slider__slide"
        href="{{ route('products', ['categorySlug' => $item->seo_id !== null && $item->seo_id !== '' ? $item->seo_id : $item->id]) }}"
        draggable="false">
@@ -33,7 +32,7 @@
            loading="eager" fetchpriority="high" height="{{ $item->media->where('sequence', 2)->first()->height }}"
            width="{{ $item->media->where('sequence', 2)->first()->width }}">
          @else
-          <img loading="eager" src="/images/store/default/default.webp" alt="something wrong">
+          <img loading="eager" src="/images/store/default/default640.webp" alt="something wrong">
          @endif
          {{-- Mobile Picture --}}
          @if ($item->media->where('sequence', 4)->first() != null)
@@ -52,22 +51,14 @@
            loading="eager" fetchpriority="high" height="{{ $item->media->where('sequence', 2)->first()->height }}"
            width="{{ $item->media->where('sequence', 2)->first()->width }}">
          @else
-          <img loading="eager" src="/images/store/default/default.webp" alt="something wrong">
+          <img loading="eager" src="/images/store/default/default300.webp" alt="something wrong">
          @endif
         @else
          <img loading="eager" src="/images/store/default/default.webp" alt="something wrong">
         @endif
        </picture>
       </a>
-      {{-- End Modelul de schimb de imagini pe slider la rezolutie --}}
      @endforeach
-
-
-
-
-
-
-
     </div>
     <button class="main-slider__button prev" aria-label="Previous main slider">
      <svg>
@@ -341,5 +332,5 @@
   <!------------------- End support button ------------------->
   <!---------------------------------------------------------->
  </main>
-<script src="/script/store/main.js" async defer></script>
+ <script src="/script/store/main.js" async defer></script>
 </div>
