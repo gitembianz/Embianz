@@ -3,7 +3,6 @@
 namespace App\Http\Livewire;
 
 use App\Models\Cart;
-use App\Models\Product;
 use App\Models\Voucher;
 use Livewire\Component;
 use App\Models\Cart_Item;
@@ -42,12 +41,17 @@ class StoreCart extends Component
 
   public function getCartProperty()
   {
-    return Cart::select('id', 'quantity_amount', 'delivery_price', 'sum_amount', 'voucher_id', 'final_amount', 'voucher_value')
+    return Cart::select('id', 'quantity_amount', 'delivery_price', 'currency_id', 'sum_amount', 'voucher_id', 'final_amount', 'voucher_value')
       ->where('session_id', $this->session_id)
       ->where('status_id', '!=', app('global_cart_closed'))
-      ->with(['voucher' => function ($query) {
-        $query->select('code', 'id', 'percent', 'value');
-      }])
+      ->with([
+        'voucher' => function ($query) {
+          $query->select('code', 'id', 'percent', 'value');
+        },
+        'currency' => function ($query) {
+          $query->select('id', 'symbol');
+        }
+      ])
       ->latest()
       ->first() ?? null;
   }
@@ -82,9 +86,6 @@ class StoreCart extends Component
 
   public function removeFromCart($productId)
   {
-    $product = Product::select('id')->with(['product_prices' => function ($query) {
-      $query->select('id', 'value', 'product_id');
-    }])->findOrFail($productId);
 
     if ($this->cart->id) {
       $cartItem = Cart_Item::where('cart_id', $this->cart->id)
@@ -92,7 +93,7 @@ class StoreCart extends Component
         ->first();
 
       if ($cartItem) {
-        $amountToSubtract = $product->product_prices->first()->value * $cartItem->quantity;
+        $amountToSubtract = $cartItem->price * $cartItem->quantity;
         if ($this->cart->voucher && $this->cart->voucher->percent !== null) {
           $voucher_value = ($this->cart->voucher->percent / 100) * ($this->cart->sum_amount - $amountToSubtract);
         } elseif ($this->cart->voucher && $this->cart->voucher->value !== null) {

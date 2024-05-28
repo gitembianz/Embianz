@@ -3,18 +3,19 @@
     @if ($showcart) active @else @endif
     @if ($cartmodified) problem @endif
 
-    @if ($aplicabble_voucher) mod @endif" id="basketList">
-	<button class="leftbar__hidden--close"  wire:click="$set('showcart', false)" id="basketHidden"></button>
-	<div class="leftbar__content" id="basketContent">
-		<div class="leftbar__top">
-			<a class="leftbar__button" href="{{ url("/cart") }}">Vizualizare coș de cumpărături </a>
-			<button class="leftbar__close" id="basketClose" wire:click="$set('showcart', false)">
-				<svg>
-					<line x1="18" y1="6" x2="6" y2="18"></line>
-					<line x1="6" y1="6" x2="18" y2="18"></line>
-				</svg>
-			</button>
-		</div>
+    @if ($aplicabble_voucher) mod @endif"
+ id="basketList">
+ <button class="leftbar__hidden--close" wire:click="$set('showcart', false)" id="basketHidden"></button>
+ <div class="leftbar__content" id="basketContent">
+  <div class="leftbar__top">
+   <a class="leftbar__button" href="{{ url('/cart') }}">Vizualizare coș de cumpărături </a>
+   <button class="leftbar__close" id="basketClose" wire:click="$set('showcart', false)">
+    <svg>
+     <line x1="18" y1="6" x2="6" y2="18"></line>
+     <line x1="6" y1="6" x2="18" y2="18"></line>
+    </svg>
+   </button>
+  </div>
 
 
   @if ($cartItems->isEmpty())
@@ -37,6 +38,11 @@
          $disabled[$index] = true;
          $isdisabled = true;
      }
+     if (!optional($cartItem->product->product_prices->first())->value) {
+         $disabled[$index] = true;
+         $isdisabled = true;
+     }
+     
      if ($cartItem->product->quantity < $cartItem->quantity) {
          $nonquantity[$index] = true;
          $isdisabled = true;
@@ -83,10 +89,14 @@
          <h4 class="leftbar__link--title">{{ $cartItem->product->name }}</h4>
          <span class="leftbar__link--price">
           @php
-           $price = number_format($cartItem->product->product_prices->first()->value, 2, ',', '.');
+           if (optional($cartItem->product->product_prices->first())->value) {
+               $price = number_format($cartItem->product->product_prices->first()->value, 2, ',', '.');
+           } else {
+               $price = null;
+           }
           @endphp
-          @if ($price)
-           {{ $price }} {{ $currency }}
+          @if ($price && $price != null)
+           {{ $price }} {{ $cartItem->product->product_prices->first()->pricelist->currency->symbol }}
           @else
            indisponibil
           @endif
@@ -122,7 +132,8 @@
      Produse:
      <span id="leftbarTotalPrice">
       {{ number_format($cart->sum_amount, 2, ',', '.') }}
-      {{ $currency }}
+      {{ $cart->currency->symbol }}
+
      </span>
     </h5>
     <h5 class="leftbar__total--text">
@@ -131,14 +142,14 @@
       @if ($cart->delivery_price == 0)
        Gratuit
       @else
-       {{ $cart->delivery_price }} {{ $currency }}
+       {{ $cart->delivery_price }} {{ $cart->currency->symbol }}
       @endif
      </span>
     </h5>
     @if ($cart->voucher_id != null)
      <h5 class="leftbar__total--text">Voucher:
       <span class="voucher__choice">
-       -{{ number_format($cart->voucher_value, 2, ',', '.') }} {{ $currency }}
+       -{{ number_format($cart->voucher_value, 2, ',', '.') }} {{ $cart->currency->symbol }}
        <button wire:click="removevoucher" class="details__delete" aria-label="Remove voucher">
         <svg>
          <polyline points="3 6 5 6 21 6"></polyline>
@@ -152,7 +163,7 @@
      Total:
      <span id="leftbarTotalPrice">
       {{ number_format($cart->final_amount, 2, ',', '.') }}
-      {{ $currency }}
+      {{ $cart->currency->symbol }}
      </span>
     </h5>
     @if ($message)
@@ -183,14 +194,14 @@
      let productsList = [];
      let products = document.querySelectorAll('.leftbar__item');
      let total = parseFloat(document.getElementById('leftbarTotalPrice').innerText.replace('RON', '')
-    .trim()); // Extrage totalul comenzii și converteste-l la float
+      .trim()); // Extrage totalul comenzii și converteste-l la float
 
      products.forEach(function(product) {
       let productName = product.querySelector('.leftbar__link--title').innerText; // Extrage numele produsului
       let productPrice = parseFloat(product.querySelector('.leftbar__link--price').innerText.replace('RON', '')
-     .trim()); // Extrage pretul produsului și converteste-l la float
+       .trim()); // Extrage pretul produsului și converteste-l la float
       let productQuantity = parseInt(product.querySelector('.leftbar__link--quantity')
-      .innerText); // Extrage cantitatea produsului și converteste-l la int
+       .innerText); // Extrage cantitatea produsului și converteste-l la int
 
       productsList.push(productName + ' --- ' + productQuantity + 'buc --- ' + productPrice);
      });

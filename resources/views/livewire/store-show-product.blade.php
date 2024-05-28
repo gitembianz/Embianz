@@ -228,20 +228,22 @@
        <div style="display: none" class="dlv">
         <span class="dlv_name">{{ $product->product->name }}</span>
         <span class="dlv_price">{{ $price }}</span>
-        <span class="dlv_currency"> {{ $product->product->product_prices->first()->pricelist->currency->name }}</span>
+        <span
+         class="dlv_currency">{{ optional(optional(optional($product->product->product_prices->first())->pricelist)->currency)->name }}</span>
        </div>
       </div>
-     @endif
-    @endforeach
    </div>
-  </section>
  @endif
+ @endforeach
+</div>
+</section>
+@endif
 
- <!-------------------- End Slider Cards -------------------->
- <!---------------------------------------------------------->
- <!--------------------- support button --------------------->
- <x-help-button />
- <!------------------- End support button ------------------->
- <!---------------------------------------------------------->
- <script src="/script/store/product.js" async defer></script>
+<!-------------------- End Slider Cards -------------------->
+<!---------------------------------------------------------->
+<!--------------------- support button --------------------->
+<x-help-button />
+<!------------------- End support button ------------------->
+<!---------------------------------------------------------->
+<script src="/script/store/product.js" async defer></script>
 </div>
