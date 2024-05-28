@@ -1,11 +1,5 @@
 <div>
- {{-- <script rel="preload" src="script/store/header.js" as="script"></script> --}}
  <x-store-alert />
- <!-- This is the Header;
-    the <header> tag encompasses the Logo and component-calling buttons located below,
-    such as the Searchbar, Shopping Basket, WishList, and Burger Menu. The styles for
-    Similarly, its JavaScript functionality is implemented in the "header.js" file. -->
- <!---------------------------------------------------------->
  <!--------------------Banner(Header Top)-------------------->
  @if (app()->has('global_header_top_text') && app('global_header_top_text') != '')
   <div class="banner">
@@ -23,7 +17,66 @@
   <div class="header__container container">
    <!-------------------------Logo------------------------->
 
-
+   <a class="logo" href="{{ url('/') }}">
+    <img loading="lazy" src="/images/store/svg/noren-black.svg" alt="Embianz Logo">
+   </a>
+   <!-----------------------END-Logo----------------------->
+   <!------------------------------------------------------>
+   <!---------------------NavMenu bar---------------------->
+   <div class="navbar__list">
+    @if (app()->has('global_show_on_header') && app('global_show_on_header') == 'true')
+     <a class="navbar__link" href="{{ route('products', ['categorySlug' => app('global_default_category')]) }}">
+      Toate Produsele
+     </a>
+    @endif
+    @foreach ($categories as $category)
+     @if ($category->subcategory->count() != 0)
+      <div class="dropdown">
+       <a class="dropdown__button"
+        href="{{ route('products', ['categorySlug' => $category->seo_id !== null && $category->seo_id !== '' ? $category->seo_id : $category->id]) }}">
+        {{ $category->name }}
+        <svg>
+         <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+       </a>
+       <div class="dropdown__list">
+        @foreach ($category->subcategory->sortBy(function ($subcategory) {
+        return $subcategory->category->sequence;
+    }) as $subcategory)
+         <div class="dropdown__item">
+          <a class="dropdown__item--button"
+           href="{{ route('products', ['categorySlug' => $subcategory->category->seo_id !== null && $subcategory->category->seo_id !== '' ? $subcategory->category->seo_id : $subcategory->category->id]) }}">
+           {{ $subcategory->category->name }}
+           @if ($subcategory->category->subcategory->count() != 0)
+            <svg>
+             <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+           @endif
+          </a>
+          @if ($subcategory->category->subcategory->count() != 0)
+           <div class="dropdown__item--list">
+            @foreach ($subcategory->category->subcategory->sortBy(function ($subsubCategory) {
+        return $subsubCategory->category->sequence;
+    }) as $subsubCategory)
+             <a class="dropdown__item--link"
+              href="{{ route('products', ['categorySlug' => $subsubCategory->category->seo_id !== null && $subsubCategory->category->seo_id !== '' ? $subsubCategory->category->seo_id : $subsubCategory->category->id]) }}">
+              {{ $subsubCategory->category->name }}
+             </a>
+            @endforeach
+           </div>
+          @endif
+         </div>
+        @endforeach
+       </div>
+      </div>
+     @else
+      <a class="navbar__link"
+       href="{{ route('products', ['categorySlug' => $category->seo_id !== null && $category->seo_id !== '' ? $category->seo_id : $category->id]) }}">
+       {{ $category->name }}
+      </a>
+     @endif
+    @endforeach
+   </div>
    <!---------------------NavMenu bar--------------------->
    <!------------------------------------------------------>
    <!---------------------Right-Buttons--------------------->
@@ -43,7 +96,7 @@
      </svg>
     </button>
     <a class="logo__hidden" href="{{ url('/') }}">
-     <img src="/images/store/svg/noren-black.svg" alt="Site Logo">
+     <img loading="lazy" src="/images/store/svg/noren-black.svg" alt="Site Logo">
     </a>
     {{-- wislist button --}}
     <button class="header__btn" wire:click="$emit('showwis')" id="wishOpen" aria-label="Open wishlist button">

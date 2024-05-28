@@ -6,7 +6,6 @@
    <div class="main-slider">
     <div class="main-slider__wrapper">
      @foreach ($slideritems as $item)
-      {{-- -- Modelul de schimb de imagini pe slider la rezolutie -- --}}
       <a class="main-slider__slide"
        href="{{ route('products', ['categorySlug' => $item->seo_id !== null && $item->seo_id !== '' ? $item->seo_id : $item->id]) }}"
        draggable="false">
@@ -33,6 +32,7 @@
            loading="eager" fetchpriority="high" height="{{ $item->media->where('sequence', 2)->first()->height }}"
            width="{{ $item->media->where('sequence', 2)->first()->width }}">
          @else
+
           <img src="/images/store/default/default300.webp" alt="something wrong">
          @endif
          {{-- Mobile Picture --}}
@@ -52,6 +52,7 @@
            loading="eager" fetchpriority="high" height="{{ $item->media->where('sequence', 2)->first()->height }}"
            width="{{ $item->media->where('sequence', 2)->first()->width }}">
          @else
+
           <img src="/images/store/default/default300.webp" alt="something wrong">
          @endif
         @else
@@ -59,15 +60,7 @@
         @endif
        </picture>
       </a>
-      {{-- End Modelul de schimb de imagini pe slider la rezolutie --}}
      @endforeach
-
-
-
-
-
-
-
     </div>
     <button class="main-slider__button prev" aria-label="Previous main slider">
      <svg>
