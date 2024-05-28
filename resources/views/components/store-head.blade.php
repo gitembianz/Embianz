@@ -9,7 +9,7 @@
   {!! app('global_script_head-top') !!}
  @endif
  <meta name="description" content="{{ $description }}">
-
+ <link rel="preload" href="/images/store/default/default300.webp" as="image">
 
 
  {{-- DormiSoft Favicon --}}
@@ -25,7 +25,6 @@
  <link rel="manifest" href="/images/store/svg/site.webmanifest">
  <link rel="mask-icon" href="/images/store/svg/safari-pinned-tab.svg" color="#333333">
  <link rel="shortcut icon" href="/images/store/svg/favicon.ico">
- <link rel="preload" href="/images/store/default/default.webp" as="image">
  <meta name="msapplication-TileColor" content="#fafafa">
  <meta name="msapplication-config" content="/images/store/svg/browserconfig.xml">
  <meta name="theme-color" content="#fafafa">
@@ -33,9 +32,11 @@
  {{-- favicon end --}}
 
  <link rel="canonical" href="{{ url('/' . $canonical) }}">
- <link rel="preload" href="/images/store/default/default300.webp" as="image">
- <link rel="preload" href="/dist/css/store.css" as="style">
+
+ <link rel="preload" href="/images/store/svg/noren-black.svg" as="image">
  <link rel="stylesheet" href="/dist/css/store.css">
+ {{--<link rel="preload" href="/dist/css/store.css" as="style">
+ 
 
  <link rel="preload" href="/fonts/Montserrat/Montserrat-Thin.woff2" as="font" type="font/woff2" crossorigin>
  <link rel="preload" href="/fonts/Montserrat/Montserrat-ExtraLight.woff2" as="font" type="font/woff2"
@@ -49,7 +50,7 @@
  <link rel="preload" href="/fonts/Montserrat/Montserrat-Bold.woff2" as="font" type="font/woff2" crossorigin>
  <link rel="preload" href="/fonts/Montserrat/Montserrat-ExtraBold.woff2" as="font" type="font/woff2"
   crossorigin>
- <link rel="preload" href="/fonts/Montserrat/Montserrat-Black.woff2" as="font" type="font/woff2" crossorigin>
+ <link rel="preload" href="/fonts/Montserrat/Montserrat-Black.woff2" as="font" type="font/woff2" crossorigin> --}}
  <!-- CSS -->
 
  {{-- ----------------------------------------------------------- --}}
@@ -69,6 +70,7 @@
  <meta property="twitter:title" content="{{ $title }}" />
  <meta property="twitter:description" content="{{ $description }}" />
  {{-- ----------------------------------------------------------- --}}
+ <link rel="preload" href="/images/store/default/default300.webp" as="image">
  <link rel="preload" href="/images/store/svg/noren-black.svg" as="image">
  <link rel="preload" href="/images/store/default/default300.webp" as="image">
  {{-- <link rel="preload" href="/images/store/svg/headset.svg" as="image">
@@ -79,7 +81,7 @@
  <link rel="preload" href="/images/store/brands/visa.webp" as="image">
  <link rel="preload" href="/images/store/brands/mastercard.webp" as="image">
  <link rel="preload" href="/images/store/svg/chat.svg" as="image">
- <link rel="preload" href="/images/store/svg/thankyou.svg" as="image"> --}}
+ <link rel="preload" href="/images/store/svg/thankyou.svg" as="image"> 
  <link rel="preload" href="/images/store/svg/noren-white.svg" as="image">
  <link rel="preload" href="/fonts/Montserrat/Montserrat-Thin.woff2" as="font" type="font/woff2" crossorigin>
  <link rel="preload" href="/fonts/Montserrat/Montserrat-ExtraLight.woff2" as="font" type="font/woff2" crossorigin>
@@ -90,7 +92,7 @@
  <link rel="preload" href="/fonts/Montserrat/Montserrat-Bold.woff2" as="font" type="font/woff2" crossorigin>
  <link rel="preload" href="/fonts/Montserrat/Montserrat-ExtraBold.woff2" as="font" type="font/woff2"
   crossorigin>
- <link rel="preload" href="/fonts/Montserrat/Montserrat-Black.woff2" as="font" type="font/woff2" crossorigin>
+ <link rel="preload" href="/fonts/Montserrat/Montserrat-Black.woff2" as="font" type="font/woff2" crossorigin>--}}
  <!-- CSS -->
  {{-- <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script> --}}
 

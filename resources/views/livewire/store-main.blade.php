@@ -18,7 +18,7 @@
            loading="eager" fetchpriority="high" height="{{ $item->media->where('sequence', 2)->first()->height }}"
            width="{{ $item->media->where('sequence', 2)->first()->width }}">
          @else
-          <img loading="eager" src="/images/store/default/default.webp" alt="something wrong">
+          <img src="/images/store/default/default300.webp" alt="something wrong">
          @endif
          {{-- Tablet Picture --}}
          @if ($item->media->where('sequence', 3)->first() != null)
@@ -32,7 +32,8 @@
            loading="eager" fetchpriority="high" height="{{ $item->media->where('sequence', 2)->first()->height }}"
            width="{{ $item->media->where('sequence', 2)->first()->width }}">
          @else
-          <img loading="eager" src="/images/store/default/default640.webp" alt="something wrong">
+
+          <img src="/images/store/default/default300.webp" alt="something wrong">
          @endif
          {{-- Mobile Picture --}}
          @if ($item->media->where('sequence', 4)->first() != null)
@@ -51,10 +52,11 @@
            loading="eager" fetchpriority="high" height="{{ $item->media->where('sequence', 2)->first()->height }}"
            width="{{ $item->media->where('sequence', 2)->first()->width }}">
          @else
-          <img loading="eager" src="/images/store/default/default300.webp" alt="something wrong">
+
+          <img src="/images/store/default/default300.webp" alt="something wrong">
          @endif
         @else
-         <img loading="eager" src="/images/store/default/default.webp" alt="something wrong">
+         <img src="/images/store/default/default.webp" alt="something wrong">
         @endif
        </picture>
       </a>
@@ -180,8 +182,7 @@
          <div style="display: none" class="dlv">
           <span class="dlv_name">{{ $product->name }}</span>
           <span class="dlv_price">{{ $price }}</span>
-          <span
-           class="dlv_currency">{{ optional(optional(optional($product->product_prices->first())->pricelist)->currency)->name }}</span>
+          <span class="dlv_currency">{{ $product->product_prices->first()->pricelist->currency->name }}</span>
          </div>
         </div>
        </div>
