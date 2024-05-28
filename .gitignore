@@ -2,4 +2,15 @@ public/media/
 node_modules
 public/dist/.DS_Store
 .DS_Store
-.gitignore
+storage/app/livewire-tmp
+public/dist/css/main.css.map
+public/dist/css/loading-screen.css.map
+public/sitemap.xml
+public/robots.txt
+public/.DS_Store
+bootstrap
+vendor
+.env
+.htpasswd
+.DS_Store
+.github/workflows/
