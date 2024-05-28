@@ -3,7 +3,6 @@
 namespace App\Http\Livewire;
 
 use App\Models\Cart;
-use App\Models\Product;
 use App\Models\Voucher;
 use Livewire\Component;
 use App\Models\Cart_Item;
@@ -17,48 +16,52 @@ class CartProductsList extends Component
     public $aplicabble_voucher = false;
     public $message = null;
     public $cartmodified = false;
+    public $session_id;
 
     protected $listeners = [
         'showcart' => 'cartshow',
         'orderprocess' => 'orderprocess',
         'newcartlist' => 'getCartItemsProperty',
-
+        'cartUpdated' => 'mount',
     ];
     public function render()
     {
         return view('livewire.cart-products-list', [
             'cart' => $this->cart,
             'cartItems' => $this->cartItems,
-            'currency' => $this->cartItems->isNotEmpty() ? $this->cartItems->first()->product->product_prices->first()->pricelist->currency->symbol : '',
         ]);
     }
     public function getCartProperty()
     {
-        return Cart::select('id', 'quantity_amount', 'delivery_price', 'seen_by_customer', 'sum_amount', 'voucher_id', 'final_amount', 'voucher_value')
-            ->where('session_id', $this->getSessionId())
+        return Cart::select('id', 'quantity_amount', 'delivery_price', 'sum_amount', 'voucher_id', 'final_amount', 'voucher_value', 'currency_id')
+            ->where('session_id', $this->session_id)
+            ->where('status_id', '!=', app('global_cart_closed'))
             ->with([
                 'voucher' => function ($query) {
                     $query->select('code', 'id', 'percent', 'value');
                 },
-                'carts'
+                'currency' => function ($query) {
+                    $query->select('id', 'symbol');
+                }
             ])
             ->latest()
             ->first() ?? null;
     }
     private function getSessionId()
-  {
-    if (array_key_exists('sessionId', $_COOKIE)) {
-      return $_COOKIE['sessionId'];
-    } else {
-      $sessionId = session()->getId();
-      setcookie('sessionId', $sessionId, time() + 30 * 24 * 60 * 60, '/', null, false, true);
-      return $sessionId;
+    {
+        if (array_key_exists('sessionId', $_COOKIE)) {
+            return $_COOKIE['sessionId'];
+        } else {
+            $sessionId = session()->getId();
+            setcookie('sessionId', $sessionId, time() + 30 * 24 * 60 * 60, '/', null, false, true);
+            return $sessionId;
+        }
     }
-  }
+
     public function getCartItemsProperty()
     {
-        if ($this->cart && $this->showcart) {
-            return Cart_Item::select('id', 'quantity', 'product_id')
+        if ($this->cart) {
+            return Cart_Item::select('id', 'quantity', 'price', 'product_id')
                 ->where('cart_id', $this->cart->id)
                 ->with([
                     'product' => function ($query) {
@@ -71,10 +74,11 @@ class CartProductsList extends Component
                                     ->with(['pricelist' => function ($query) {
                                         $query->select('id', 'currency_id')->with('currency:id,name,symbol');
                                     }]);
-                            }
+                            },
+
                         ]);
                     }
-                ])->get();
+                ])->get() ?? collect();
         } else {
             return collect();
         }
@@ -165,7 +169,7 @@ class CartProductsList extends Component
 
     public function mount()
     {
-
+        $this->session_id = $this->getSessionId();
         if ($this->cart && $this->cart->seen_by_customer) {
             $this->cartmodified = true;
         }
@@ -174,25 +178,30 @@ class CartProductsList extends Component
     public function pricechanged()
     {
         foreach ($this->cart->carts as $item) {
-            if ($item->price != $item->product->product_prices->first()->value) {
-                $item->price = $item->product->product_prices->first()->value;
-                $item->save();
-                $sum_amount = 0;
-                foreach ($this->cart->carts as $element) {
-                    $sum_amount = $sum_amount + $element->price * $element->quantity;
+            if (optional($item->product->product_prices->first())->value) {
+
+                if ($item->price != $item->product->product_prices->first()->value) {
+                    $item->price = $item->product->product_prices->first()->value;
+                    $item->save();
+                    $sum_amount = 0;
+                    foreach ($this->cart->carts as $element) {
+                        $sum_amount = $sum_amount + $element->price * $element->quantity;
+                    }
+                    $this->cart->sum_amount = $sum_amount;
+                    if ($this->cart->voucher && $this->cart->voucher->percent !== null) {
+                        $this->cart->voucher_value = ($this->cart->voucher->percent / 100) * $this->cart->sum_amount;
+                    } elseif ($this->cart->voucher && $this->cart->voucher->value !== null) {
+                        $this->cart->voucher_value = $this->cart->voucher->value;
+                    }
+                    $this->cart->final_amount = $this->cart->sum_amount + app('global_delivery_price');
+                    $this->cart->final_amount -= $this->cart->voucher_value;
+                    $this->cart->seen_by_customer = true;
+                    $this->cart->save();
+                    $this->cartmodified = true;
+                    return;
                 }
-                $this->cart->sum_amount = $sum_amount;
-                if ($this->cart->voucher && $this->cart->voucher->percent !== null) {
-                    $this->cart->voucher_value = ($this->cart->voucher->percent / 100) * $this->cart->sum_amount;
-                } elseif ($this->cart->voucher && $this->cart->voucher->value !== null) {
-                    $this->cart->voucher_value = $this->cart->voucher->value;
-                }
-                $this->cart->final_amount = $this->cart->sum_amount + app('global_delivery_price');
-                $this->cart->final_amount -= $this->cart->voucher_value;
-                $this->cart->seen_by_customer = true;
-                $this->cart->save();
-                $this->cartmodified = true;
-                return;
+            } else {
+                continue;
             }
         }
     }
@@ -203,27 +212,18 @@ class CartProductsList extends Component
     }
     public function removeFromCart($productId)
     {
-        $product = Product::select('id')->with(['product_prices' => function ($query) {
-            $query->select('id', 'value', 'product_id');
-        }])->findOrFail($productId);
 
-        if ($this->cart) {
+        if ($this->cart->id) {
             $cartItem = Cart_Item::where('cart_id', $this->cart->id)
                 ->where('product_id', $productId)
                 ->first();
 
             if ($cartItem) {
-
-                $cart = Cart::with(['voucher' => function ($query) {
-                    $query->select('code', 'id', 'percent', 'value');
-                }])->find($this->cart->id);
-
-                $amountToSubtract = $product->product_prices->first()->value * $cartItem->quantity;
-
-                if ($cart->voucher && $cart->voucher->percent !== null) {
-                    $voucher_value = ($cart->voucher->percent / 100) * ($cart->sum_amount - $amountToSubtract);
-                } elseif ($cart->voucher && $cart->voucher->value !== null) {
-                    $voucher_value = $cart->voucher->value;
+                $amountToSubtract = $cartItem->price * $cartItem->quantity;
+                if ($this->cart->voucher && $this->cart->voucher->percent !== null) {
+                    $voucher_value = ($this->cart->voucher->percent / 100) * ($this->cart->sum_amount - $amountToSubtract);
+                } elseif ($this->cart->voucher && $this->cart->voucher->value !== null) {
+                    $voucher_value = $this->cart->voucher->value;
                 } else {
                     $voucher_value = 0;
                 }
@@ -232,7 +232,7 @@ class CartProductsList extends Component
                     'sum_amount' => DB::raw("sum_amount - $amountToSubtract"),
                     'final_amount' => DB::raw("CASE WHEN (quantity_amount) = 0 THEN 0 ELSE sum_amount + delivery_price - $voucher_value END"),
                     'voucher_id' => DB::raw("CASE WHEN (quantity_amount) = 0 THEN NULL ELSE voucher_id END"),
-                    'voucher_value' => DB::raw("CASE WHEN (quantity_amount) = 0 THEN 0 ELSE $voucher_value  END"),
+                    'voucher_value' => DB::raw("CASE WHEN (quantity_amount) = 0 THEN 0 ELSE $voucher_value END"),
                     'updated_at' => now(),
                     'status_id' => app('global_cart_new')
                 ]);
@@ -241,6 +241,7 @@ class CartProductsList extends Component
             }
         }
     }
+
 
     public function cancel_aplicabble()
     {

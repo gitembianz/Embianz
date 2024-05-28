@@ -11,7 +11,7 @@
 
  <!-- Scripts -->
  <link rel="stylesheet" href="/dist/css/main.css">
- <script src="/script/calendar.js" defer></script>
+ {{-- <script src="/script/calendar.js" defer></script> --}}
  <style>
   .status {
    width: 100%;
@@ -40,7 +40,7 @@
    display: flex;
    align-items: center;
    justify-content: center;
-   background-color: #333333;
+   background-color: #20282d;
    border-radius: 7px;
    padding: 5px;
    gap: 5px;
