@@ -22,9 +22,7 @@
   @livewire('product-wishlist-button', [
       'productId' => $product->id,
       'class' => 'product__action',
-      'is_in_wishlist' => $product->wishlists->where('session_id', $this->session_id)->where('product_id', $product->id)->first()
-          ? true
-          : false,
+      'is_in_wishlist' => $this->is_in_wishlist,
   ])
  </div>
  <div class="product__price">

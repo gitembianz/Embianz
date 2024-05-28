@@ -16,6 +16,7 @@ class ProductDetails extends Component
     public $product;
     public $session_id;
     public $prodid;
+    public $is_in_wishlist;
 
     public function render()
     {
@@ -42,15 +43,14 @@ class ProductDetails extends Component
                             $query->select('id', 'currency_id')->with('currency:id,name,symbol');
                         }]);
                 },
-                'wishlists' => function ($query) {
-                    $query->select('id', 'product_id')->where('session_id', $this->session_id);
-                },
+                'wishlists',
                 'product_specs' => function ($query) {
                     $query->select('product_id', 'spec_id', 'value', 'id')->with('spec:id,name');
                 }
             ])->find($prodid);
         $this->quantity = 1;
         $this->session_id = $this->getSessionId();
+        $this->is_in_wishlist = $this->product->wishlists->where('session_id', $this->session_id)->first() ? true : false;
     }
 
     public function switchTab($index)
