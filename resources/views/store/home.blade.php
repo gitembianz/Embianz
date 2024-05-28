@@ -1,6 +1,6 @@
-<x-store-head />
+<x-store-head :title="getTitle()" :description="getDescription()" />
 
-{{-- @php
+@php
  function getTitle()
  {
      try {
@@ -18,7 +18,7 @@
          return '';
      }
  }
-@endphp --}}
+@endphp
 
 <x-store-header />
 @livewire('store-main')
