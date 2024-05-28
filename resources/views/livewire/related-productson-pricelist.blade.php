@@ -169,20 +169,23 @@
       <table class="table table-top">
        <thead>
         <tr>
-         <th><button class="table__header--btn">Pricelist</button></th>
-         <th><button class="table__header--btn">Product</button></th>
-         <th><button class="table__header--btn">Value</button></th>
+         <th class="wid-4"><button class="table__header--btn">Pricelist</button></th>
+         <th class="wid-3"><button class="table__header--btn">Product</button></th>
+         <th class="wid-1"><button class="table__header--btn">Value without VAT</button></th>
+         <th class="wid-1"><button class="table__header--btn">Discount %</button></th>
+         <th class="wid-1"><button class="table__header--btn">VAT %</button></th>
+
         </tr>
        </thead>
       </table>
-      <table class="table" style="margin-top: 2rem">
+      <table class="table" style="margin-top: 1.5rem">
        <tbody>
         @foreach ($prod as $index => $pro)
          <tr wire:key="spec-row-{{ $index }}">
-          <td data-title="Name">
+          <td class="wid-4" data-title="Name">
            {{ $item->name }}
           </td>
-          <td data-title="Product">
+          <td class="wid-3" data-title="Product">
            @if ($pro['allow'])
             <div class="table__drop" style="position: relative">
              <input class="table__drop--input" wire:model.debounce.300ms="searchadd" placeholder="Search..."
@@ -225,9 +228,17 @@
            @endif
            <input type="hidden" wire:model.defer="prod.{{ $index }}.product.name">
           </td>
-          <td data-title="Value">
+          <td class="wid-1" data-title="Value without VAT">
            <input type="text" required class="table__drop--input"
             wire:model.defer="prod.{{ $index }}.product.value">
+          </td>
+          <td class="wid-1" data-title="Discount %">
+           <input type="number" required class="table__drop--input"
+            wire:model.defer="prod.{{ $index }}.product.discount">
+          </td>
+          <td class="wid-1" data-title="VAT %">
+           <input type="number" required class="table__drop--input"
+            wire:model.defer="prod.{{ $index }}.product.vat">
           </td>
          </tr>
         @endforeach

@@ -391,12 +391,37 @@ class RelatedProductsonPricelist extends Component
   public function confirmmultiple()
   {
 
-    foreach ($this->prod as  $pro) {
+    foreach ($this->prod as $index => $pro) {
       if (isset($pro['product']['value'])) {
         $item = PricelistEntries::find($pro['product']['id']);
         $item->product_id = $pro['product']['idrel'];
-        $item->value = $pro['product']['value'];
+        $item->value_no_vat = $pro['product']['value'];
+
+        if ($pro['product']['vat'] < 0) {
+          session()->flash('notification', [
+            'message' => 'Please provide a value bigger than 0!',
+            'type' => 'warning',
+            'title' => 'VAT value'
+          ]);
+          return;
+        }
+        $item->vat = $pro['product']['vat'];
+
+        if ($pro['product']['discount'] < 0 || $pro['product']['discount'] >= 100) {
+          session()->flash('notification', [
+            'message' => 'Please provide a value bigger than 0 and smaller than 100!',
+            'type' => 'warning',
+            'title' => 'Discount value'
+          ]);
+          return;
+        }
+        $item->discount = $pro['product']['discount'];
+        $item->value_no_discount = $item->value_no_vat + (0.01 * $item->vat * $item->value_no_vat);
+        $item->value = $item->value_no_discount - (0.01 * $item->value_no_discount * $item->discount);
+
         $item->save();
+        unset($this->prod[$index]);
+        $this->prod = array_values($this->prod);
       } else {
         session()->flash('notification', [
           'message' => 'Please provide a value!',
