@@ -6,6 +6,7 @@
    <div class="main-slider">
     <div class="main-slider__wrapper">
      @foreach ($slideritems as $item)
+      {{-- -- Modelul de schimb de imagini pe slider la rezolutie -- --}}
       <a class="main-slider__slide"
        href="{{ route('products', ['categorySlug' => $item->seo_id !== null && $item->seo_id !== '' ? $item->seo_id : $item->id]) }}"
        draggable="false">
@@ -18,7 +19,7 @@
            loading="eager" fetchpriority="high" height="{{ $item->media->where('sequence', 2)->first()->height }}"
            width="{{ $item->media->where('sequence', 2)->first()->width }}">
          @else
-          <img src="/images/store/default/default300.webp" alt="something wrong">
+          <img src="/images/store/default/default.webp" alt="something wrong">
          @endif
          {{-- Tablet Picture --}}
          @if ($item->media->where('sequence', 3)->first() != null)
@@ -32,8 +33,7 @@
            loading="eager" fetchpriority="high" height="{{ $item->media->where('sequence', 2)->first()->height }}"
            width="{{ $item->media->where('sequence', 2)->first()->width }}">
          @else
-
-          <img src="/images/store/default/default300.webp" alt="something wrong">
+          <img src="/images/store/default/default640.webp" alt="something wrong">
          @endif
          {{-- Mobile Picture --}}
          @if ($item->media->where('sequence', 4)->first() != null)
@@ -52,15 +52,22 @@
            loading="eager" fetchpriority="high" height="{{ $item->media->where('sequence', 2)->first()->height }}"
            width="{{ $item->media->where('sequence', 2)->first()->width }}">
          @else
-
           <img src="/images/store/default/default300.webp" alt="something wrong">
          @endif
         @else
-         <img src="/images/store/default/default.webp" alt="something wrong">
+         <img src="/images/store/default/default300.webp" alt="something wrong">
         @endif
        </picture>
       </a>
+      {{-- End Modelul de schimb de imagini pe slider la rezolutie --}}
      @endforeach
+
+
+
+
+
+
+
     </div>
     <button class="main-slider__button prev" aria-label="Previous main slider">
      <svg>
@@ -182,7 +189,8 @@
          <div style="display: none" class="dlv">
           <span class="dlv_name">{{ $product->name }}</span>
           <span class="dlv_price">{{ $price }}</span>
-          <span class="dlv_currency">{{ $product->product_prices->first()->pricelist->currency->name }}</span>
+          <span
+           class="dlv_currency">{{ optional(optional(optional($product->product_prices->first())->pricelist)->currency)->name }}</span>
          </div>
         </div>
        </div>
@@ -303,7 +311,8 @@
          <div style="display: none" class="dlv">
           <span class="dlv_name">{{ $product->name }}</span>
           <span class="dlv_price">{{ $price }}</span>
-          <span class="dlv_currency">{{ $product->product_prices->first()->pricelist->currency->name }}</span>
+          <span
+           class="dlv_currency">{{ optional(optional(optional($product->product_prices->first())->pricelist)->currency)->name }}</span>
          </div>
         </div>
        </div>

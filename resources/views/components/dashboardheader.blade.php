@@ -11,7 +11,7 @@
 
  <!-- Scripts -->
  <link rel="stylesheet" href="/dist/css/main.css">
- <script src="/script/calendar.js" defer></script>
+ {{-- <script src="/script/calendar.js" defer></script> --}}
  <style>
   .status {
    width: 100%;
