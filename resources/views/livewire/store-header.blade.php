@@ -1,5 +1,11 @@
 <div>
+ {{-- <script rel="preload" src="script/store/header.js" as="script"></script> --}}
  <x-store-alert />
+ <!-- This is the Header;
+    the <header> tag encompasses the Logo and component-calling buttons located below,
+    such as the Searchbar, Shopping Basket, WishList, and Burger Menu. The styles for
+    Similarly, its JavaScript functionality is implemented in the "header.js" file. -->
+ <!---------------------------------------------------------->
  <!--------------------Banner(Header Top)-------------------->
  @if (app()->has('global_header_top_text') && app('global_header_top_text') != '')
   <div class="banner">
