@@ -133,7 +133,7 @@
   </thead>
   <tbody>
    @foreach ($labels as $index => $label)
-    <tr class="@if ($this->isChecked($label->id)) table__row--selected @endif">
+    <tr>
 
      @if ($this->showColumn('Id'))
       <td data-title="ID">{{ $label->id }}</td>
