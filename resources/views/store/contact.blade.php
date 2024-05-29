@@ -2,7 +2,7 @@
 <x-store-header />
 
 <main>
-  <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
+  <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" defer></script>
   <script type="text/javascript">
     var onloadCallback = function() {
       grecaptcha.render('html_element', {
@@ -113,7 +113,7 @@
 		</form>
 
 	</section>
-  {{-- <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script> --}}
+  {{-- <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" defer></script> --}}
   <script src="/script/store/contact.js"></script>
   <script>
     applyValidations("nameParent", nameValidation, false);

@@ -1,6 +1,6 @@
 <div class="newsletter">
 	<div class="newsletter__content">
-		<img loading="lazy" class="newsletter__img" src="/images/store/svg/thankyou.svg" alt="thank you">
+		<img loading="eager" class="newsletter__img" src="/images/store/svg/thankyou.svg" alt="thank you">
 		<div class="newsletter__text">
 			<h3 class="newsletter__title">Bun venit în Comunitatea Noastră!</h3>
 			<p class="newsletter__descr">Mulțumim mult că te-ai abonat la newsletter-ul nostru! Apreciem interesul tău și suntem
