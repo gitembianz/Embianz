@@ -13,5 +13,8 @@
         "postcss": "^8.4.14",
         "prettier": "3.2.5",
         "sass": "^1.56.1"
+    },
+    "dependencies": {
+        "@builder.io/partytown": "^0.10.2"
     }
 }

@@ -25,32 +25,32 @@
       <?php
       $disabled[$index] = false;
       $nonquantity[$index] = false;
-      
+
       if ($cartItem->product->active != true || $cartItem->product->start_date > now()->format('Y-m-d') || $cartItem->product->end_date < now()->format('Y-m-d')) {
           $disabled[$index] = true;
           $isdisabled = true;
       }
-      
+
       if (!optional($cartItem->product->product_prices->first())->value) {
           $disabled[$index] = true;
           $isdisabled = true;
       }
-      
+
       if ($cartItem->product->quantity < $cartItem->quantity) {
           $nonquantity[$index] = true;
           $isdisabled = true;
       }
-      
+
       ?>
       <div class="basket__split">
        <a class="basket__item"
         href="{{ route('product', ['product' => $cartItem->product->seo_id !== null && $cartItem->product->seo_id !== '' ? $cartItem->product->seo_id : $cartItem->product->id]) }}">
         @if ($cartItem->product->media->first())
-         <img loading="lazy" class="cart__list--img"
+         <img loading="eager" class="cart__list--img"
           src="/{{ $cartItem->product->media->first()->path }}{{ $cartItem->product->media->first()->name }}"
           alt="{{ $cartItem->product->media->first()->name }} {{ $cartItem->product->name }}">
         @else
-         <img loading="lazy" class="cart__list--img" src="/images/store/default/default70.webp" alt="something wrong">
+         <img loading="eager" class="cart__list--img" src="/images/store/default/default70.webp" alt="something wrong">
         @endif
         <div class="basket__text">
          <h3>{{ $cartItem->product->name }}</h3>
@@ -295,5 +295,5 @@
  <x-help-button />
  <!------------------- End support button ------------------->
  <!---------------------------------------------------------->
- <script src="/script/store/checkout.js" async defer></script>
+ <script src="/script/store/checkout.js" defer></script>
 </div>

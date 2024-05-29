@@ -107,18 +107,18 @@
         <a draggable="false"
          href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">
          @if ($product->media->first() != null)
-          <img loading="lazy" class="card-image"
+          <img loading="eager" class="card-image"
            src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}"
            alt="{{ $product->media->first()->name }} {{ $product->name }}">
          @else
-          <img loading="lazy" class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
+          <img loading="eager" class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
          @endif
         </a>
         @livewire('product-wishlist-button', ['productId' => $product->id, 'class' => 'card__action', 'is_in_wishlist' => $product->wishlists->isNotEmpty()], key($product->id))
         <?php
         $price = null;
         $discount = false;
-        
+
         if ($product->product_prices->count() != 0) {
             $price = number_format($product->product_prices->first()->value, 2, ',', '.');
             $discount = $product->product_prices->first()->discount != 0 ? true : false;
@@ -230,18 +230,18 @@
         <a draggable="false"
          href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">
          @if ($product->media->first() != null)
-          <img loading="lazy" class="card-image"
+          <img loading="eager" class="card-image"
            src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}"
            alt="{{ $product->media->first()->name }} {{ $product->name }}">
          @else
-          <img loading="lazy" class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
+          <img loading="eager" class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
          @endif
         </a>
         @livewire('product-wishlist-button', ['productId' => $product->id, 'class' => 'card__action', 'is_in_wishlist' => $product->wishlists->isNotEmpty()], key($product->id))
         <?php
         $price = null;
         $discount = false;
-        
+
         if ($product->product_prices->count() != 0) {
             $price = number_format($product->product_prices->first()->value, 2, ',', '.');
             $discount = $product->product_prices->first()->discount != 0 ? true : false;
@@ -342,5 +342,5 @@
   <!------------------- End support button ------------------->
   <!---------------------------------------------------------->
  </main>
- <script src="/script/store/main.js" async defer></script>
+ <script src="/script/store/main.js" defer></script>
 </div>

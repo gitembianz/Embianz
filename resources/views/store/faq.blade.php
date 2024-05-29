@@ -376,6 +376,6 @@
 	</section>
 	<!----------------------End Accordions---------------------->
 	<!---------------------------------------------------------->
-	<script src="/script/store/faq.js" async defer></script>
+	<script src="/script/store/faq.js" defer></script>
 </main>
 <x-store-footer />

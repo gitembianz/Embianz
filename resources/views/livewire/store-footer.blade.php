@@ -112,7 +112,7 @@
    <!---------------------Logo and Social--------------------->
    <div class="footer__top">
     <a class="logo" href="{{ url('/') }}">
-     <img loading="lazy" src="/images/store/svg/noren-white.svg" alt="logo">
+     <img loading="eager" src="/images/store/svg/noren-white.svg" alt="logo">
     </a>
     <div class="social__list">
      @if (app()->has('global_instagram_url') && app('global_instagram_url') != '')
