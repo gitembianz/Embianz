@@ -1,8 +1,10 @@
 <div>
  <x-alert />
+
+ {{-- Header of the table --}}
  <div class="panel__header">
   <h1 class="panel__header--title">
-   {{ __('Store settings') }}
+   {{ __('Labels') }}
   </h1>
   <input class="panel__header--input" type="text" wire:model.debounce.300ms="search" placeholder="Search...">
   <div class="panel__header--bundle">
@@ -34,34 +36,13 @@
     </svg>
     <span style="margin-left: 10px">Refresh</span>
    </a>
-   <a class="panel__header--button" href="{{ route('add_storesetting') }}">
-    <svg>
-     <line x1="12" y1="5" x2="12" y2="19"></line>
-     <line x1="5" y1="12" x2="19" y2="12"></line>
-    </svg>
-    <span style="margin-left: 10px">Add new store setting</span>
-   </a>
-   <a class="panel__header--button" wire:click="actualizeaza">
-    <svg>
-     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-     <polyline points="17 8 12 3 7 8"></polyline>
-     <line x1="12" y1="3" x2="12" y2="15"></line>
-    </svg> <span style="margin-left: 10px">Update website</span>
-   </a>
-   <a class="panel__header--button" wire:click="addSettingsIfNotExist">
+   <a class="panel__header--button" wire:click="addLabelsIfNotExist">
     <svg>
      <polyline points="17 1 21 5 17 9"></polyline>
      <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
      <polyline points="7 23 3 19 7 15"></polyline>
      <path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
-    </svg> <span style="margin-left: 10px">Update Parameters</span>
-   </a>
-   <a class="panel__header--button" wire:click="sitemap">
-    <svg>
-     <circle cx="12" cy="12" r="10"></circle>
-     <line x1="2" y1="12" x2="22" y2="12"></line>
-     <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-    </svg> <span style="margin-left: 10px">Generate sitemap.xml</span>
+    </svg> <span style="margin-left: 10px">Update Labels</span>
    </a>
   </div>
  </div>
@@ -69,7 +50,6 @@
  <table class="table">
   <thead>
    <tr>
-
     @if ($this->showColumn('Id'))
      <th wire:click="sortBy('id')">
       <button class="table__header--btn"
@@ -152,22 +132,21 @@
    </tr>
   </thead>
   <tbody>
-   @foreach ($storesettings as $index => $store)
-    <tr class="@if ($this->isChecked($store->id)) table__row--selected @endif">
-
+   @foreach ($labels as $index => $label)
+    <tr class="@if ($this->isChecked($label->id)) table__row--selected @endif">
 
      @if ($this->showColumn('Id'))
-      <td data-title="ID">{{ $store->id }}</td>
+      <td data-title="ID">{{ $label->id }}</td>
      @endif
      @if ($this->showColumn('Parameter'))
       <td data-title="Parameter">
-       {{ $store->parameter }}
+       {{ $label->parameter }}
       </td>
      @endif
      @if ($this->showColumn('Value'))
       <td data-title="Value">
-       @if ($indexstoresettings !== $index)
-        {{ $store->value }}@if ($store->parameter == 'time_zone')
+       @if ($rowindex !== $index)
+        {{ $label->value }}@if ($label->parameter == 'time_zone')
          (time is: {{ now() }}) - Please refresh to update after the edit
         @endif
        @else
@@ -177,8 +156,8 @@
      @endif
      @if ($this->showColumn('Description'))
       <td data-title="Description">
-       @if ($indexstoresettings !== $index)
-        {{ $store->description }}
+       @if ($rowindex !== $index)
+        {{ $label->description }}
        @else
         <textarea class="table__edit" wire:model.defer="settings.{{ $index }}.description"></textarea>
        @endif
@@ -187,7 +166,7 @@
      @if ($this->showColumn('Created At'))
       <td data-title="Created At">
        <div class="table__time">
-        {{ $store->created_at }}
+        {{ $label->created_at }}
         <svg>
          <circle cx="12" cy="12" r="10"></circle>
          <polyline points="12 6 12 12 16 14"></polyline>
@@ -198,7 +177,7 @@
      @if ($this->showColumn('Updated At'))
       <td data-title="Updated At">
        <div class="table__time">
-        {{ $store->updated_at }}
+        {{ $label->updated_at }}
         <svg>
          <circle cx="12" cy="12" r="10"></circle>
          <polyline points="12 6 12 12 16 14"></polyline>
@@ -207,22 +186,15 @@
       </td>
      @endif
      <td data-title="Action" class="table__buttons">
-      @if ($indexstoresettings !== $index)
-       <button class="edit" wire:click.prevent="edititem({{ $index }}, {{ $store->id }})">
+      @if ($rowindex !== $index)
+       <button class="edit" wire:click.prevent="edititem({{ $index }}, {{ $label->id }})">
         <svg>
          <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
          </path>
         </svg>
        </button>
-       {{-- <button class="delete" wire:click.prevent="confirmItemRemoval({{ $store->id }})">
-        <svg>
-         <polyline points="3 6 5 6 21 6"></polyline>
-         <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-         </path>
-        </svg>
-       </button> --}}
       @else
-       <button class="edit" wire:click.prevent="saveitem({{ $index }} , {{ $store->id }})">
+       <button class="edit" wire:click.prevent="saveitem({{ $index }} , {{ $label->id }})">
         <svg>
          <polyline points="20 6 9 17 4 12"></polyline>
         </svg>
@@ -252,7 +224,7 @@
    observer.observe(document.getElementById('last_record'));
   });
  </script>
- @if ($loadAmount <= count($storesettings))
+ @if ($loadAmount <= count($labels))
   <div class="table__load-more" wire:click="loadMore">
    Load more
   </div>

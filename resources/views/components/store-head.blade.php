@@ -31,6 +31,10 @@
  <meta name="msapplication-config" content="/images/store/svg/browserconfig.xml">
  <meta name="theme-color" content="#fafafa">
 
+ {{-- dinamical image playload --}}
+ @if ($preload != '')
+  <link rel="preload" href="{{ $preload }}" as="image">
+ @endif
  {{-- favicon end --}}
 
  <link rel="canonical" href="{{ url('/' . $canonical) }}">
@@ -49,6 +53,7 @@
  <meta property="twitter:image" content="{{ url('/' . $image) }}" />
  <meta property="twitter:title" content="{{ $title }}" />
  <meta property="twitter:description" content="{{ $description }}" />
+
 
  @if (app()->has('global_script_head-bottom'))
   {!! app('global_script_head-bottom') !!}
