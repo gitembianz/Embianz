@@ -8,10 +8,11 @@ use App\Models\Products_categories;
 use App\Models\Subcategory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
+
 
 class ShowCategory extends Component
 {
-
   public $categoryId;
   public $editcategory = null;
   public $cat;
@@ -29,19 +30,25 @@ class ShowCategory extends Component
   {
     return $this->categoryQuery;
   }
+  public function getCategoryQueryProperty()
+  {
+    return Category::find($this->categoryId);
+  }
   public function editcategory()
   {
     $this->cat = [
       'name' => $this->category->name,
-      'active' => $this->category->active,
-      'visible' => $this->category->store_tab,
+      'active' => $this->category->active == 1 ? true : false,
+      'visible' => $this->category->store_tab == 1 ? true : false,
       'start_date' => $this->category->start_date,
       'end_date' => $this->category->end_date,
       'sequence' => $this->category->sequence,
       'short_description' => $this->category->short_description,
+      'meta_description' => $this->category->meta_description,
       'long_description' => $this->category->long_description,
       'seo_title' => $this->category->seo_title,
-      // Add other properties as needed
+      'seo_id' => $this->category->seo_id,
+      'slider_sequence' => $this->category->slider_sequence,
     ];
     $this->editcategory = true;
   }
@@ -49,6 +56,19 @@ class ShowCategory extends Component
   {
     $this->editcategory = null;
     $this->cat = [];
+  }
+  private function generateUniqueSeoId($name)
+  {
+    $seoId = Str::slug($name, '-');
+    $baseSeoId = $seoId;
+    $counter = 1;
+    while (
+      Category::where('seo_id', $seoId)->orWhere('seo_id', $seoId . '-' . $counter)->exists()
+    ) {
+      $seoId = $baseSeoId . '-' . $counter;
+      $counter++;
+    }
+    return $seoId;
   }
   public function savecategory()
   {
@@ -58,11 +78,21 @@ class ShowCategory extends Component
       if (array_key_exists('name', $category_new)) {
         $new->name = $category_new['name'];
       }
-      if (array_key_exists('active', $category_new)) {
-        $new->active = $category_new['active'];
+      if (array_key_exists('seo_id', $category_new)) {
+        if ($category_new['seo_id'] == "") {
+          $new->seo_id = null;
+        } elseif ($new->seo_id != $category_new['seo_id']) {
+          $new->seo_id = $this->generateUniqueSeoId($category_new['seo_id']);
+        }
       }
       if (array_key_exists('visible', $category_new)) {
         $new->store_tab = $category_new['visible'];
+      }
+      if (array_key_exists('slider_sequence', $category_new)) {
+        $new->slider_sequence = $category_new['slider_sequence'];
+      }
+      if (array_key_exists('active', $category_new)) {
+        $new->active = $category_new['active'];
       }
       if (array_key_exists('start_date', $category_new)) {
         $new->start_date = $category_new['start_date'];
@@ -75,6 +105,9 @@ class ShowCategory extends Component
       }
       if (array_key_exists('short_description', $category_new)) {
         $new->short_description = $category_new['short_description'];
+      }
+      if (array_key_exists('meta_description', $category_new)) {
+        $new->meta_description = $category_new['meta_description'];
       }
       if (array_key_exists('long_description', $category_new)) {
         $new->long_description = $category_new['long_description'];
@@ -95,10 +128,6 @@ class ShowCategory extends Component
     $this->cat = [];
     $this->editcategory = null;
   }
-  public function getCategoryQueryProperty()
-  {
-    return Category::find($this->categoryId);
-  }
   public function deleteSingleRecord()
   {
     $id = $this->categoryId;
@@ -109,7 +138,7 @@ class ShowCategory extends Component
         $productcat->delete();
       }
     }
-    $subcategories = Subcategory::where('parrent_id', $id)->get();
+    $subcategories = Subcategory::where('parrent_id', $id)->orwhere('category_id', $id)->get();
     if ($subcategories != NULL) {
       foreach ($subcategories as $sub) {
         $sub->delete();

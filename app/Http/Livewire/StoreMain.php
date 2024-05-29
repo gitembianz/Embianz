@@ -2,42 +2,99 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Category;
 use App\Models\Product;
-use App\Models\Store_Settings;
 use Livewire\Component;
+use App\Models\Category;
 
 class StoreMain extends Component
 {
-  public $limit = 10;
-  public $slider;
-  public $category;
+  public $quantity;
+  public $session_id;
 
-  public function mount()
+  public function getSliderItemsProperty()
   {
-    $sliderCategory = Store_Settings::where('parameter', 'slider_category')->first();
+    return Category::select('id', 'slider_sequence', 'seo_id')->where('slider_sequence', '!=', '0')->where('start_date', '<=',  now()->format('Y-m-d'))
+      ->where('end_date', '>=',  now()->format('Y-m-d'))->with(['media' => function ($query) {
+        $query->select('path', 'name', 'sequence', 'width', 'height')->where('type', 'original');
+      }])->orderby('slider_sequence')->get();
+  }
 
-    if ($sliderCategory) {
-      $categoryId = $sliderCategory->value;
-      $this->category = Category::find($categoryId);
+  private function getSessionId()
+  {
+    if (array_key_exists('sessionId', $_COOKIE)) {
+      return $_COOKIE['sessionId'];
     } else {
-      $this->category = null;
+      $sessionId = session()->getId();
+      setcookie('sessionId', $sessionId, time() + 30 * 24 * 60 * 60, '/', null, false, true);
+      return $sessionId;
     }
   }
+
+  public function getPopProductsProperty()
+  {
+    return Product::with([
+      'media' => function ($query) {
+        $query->select('path', 'name')->where('type', 'main');
+      },
+      'product_prices' => function ($query) {
+        $query->select('product_id', 'value', 'discount', 'value_no_discount', 'pricelist_id')
+          ->with(['pricelist' => function ($query) {
+            $query->select('id', 'currency_id')->with('currency:id,name,symbol');
+          }]);
+      },
+      'wishlists' => function ($query) {
+        $query->select('id', 'product_id')->where('session_id', $this->session_id);
+      }
+    ])
+      ->select('id', 'name', 'seo_id', 'quantity', 'short_description', 'popularity')
+      ->where('active', true)
+      ->where('start_date', '<=',  now()->format('Y-m-d'))
+      ->where('end_date', '>=',  now()->format('Y-m-d'))
+      ->orderBy('popularity', 'desc')
+      ->limit(app('global_limit_slideritems'))
+      ->get();
+  }
+
+  public function getNewProductsProperty()
+  {
+    return Product::with([
+      'media' => function ($query) {
+        $query->select('path', 'name')->where('type', 'main');
+      },
+      'product_prices' => function ($query) {
+        $query->select('product_id', 'value', 'discount', 'value_no_discount', 'pricelist_id')
+          ->with(['pricelist' => function ($query) {
+            $query->select('id', 'currency_id')->with('currency:id,name,symbol');
+          }]);
+      },
+      'wishlists' => function ($query) {
+        $query->select('id', 'product_id')->where('session_id', $this->session_id);
+      }
+    ])
+      ->select('id', 'name', 'seo_id', 'quantity', 'short_description', 'popularity')
+      ->where('active', true)
+      ->where('start_date', '<=',  now()->format('Y-m-d'))
+      ->where('end_date', '>=',  now()->format('Y-m-d'))
+      ->where('is_new', true)
+      ->orderBy('popularity', 'desc')
+      ->limit(app('global_limit_slideritems'))
+      ->get();
+  }
+
 
   public function render()
   {
     return view('livewire.store-main', [
       'popproducts' => $this->popproducts,
-      'category' => $this->category
+      'newproducts' => $this->newproducts,
+
+      'slideritems' => $this->slideritems,
+
     ]);
   }
-  public function getPopProductsProperty()
+  public function mount()
   {
-    return $this->popproductsQuery->limit($this->limit)->get();
-  }
-  public function getPopProductsQueryProperty()
-  {
-    return Product::orderBy('popularity', 'desc')->with('media')->with('product_prices');
+    $this->session_id = $this->getSessionId();
+    $this->quantity = app('global_low_stock');
   }
 }

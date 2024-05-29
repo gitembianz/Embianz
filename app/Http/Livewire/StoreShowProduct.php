@@ -2,150 +2,73 @@
 
 namespace App\Http\Livewire;
 
+
 use App\Models\Product;
 use Livewire\Component;
-use App\Models\Wishlist;
-use Illuminate\Support\Facades\Session;
+
 
 class StoreShowProduct extends Component
 {
-  public $record;
   public $productId;
-  public $activeTab = 0;
   public $quantity;
-  public $limit = null;
-  public $maxlimit = null;
-  public $mainpath = null;
-  public $path = null;
-  public $relatedphotos = [];
-  public $mainimages;
-  public $mainMedia;
   public $session_id;
-  public $wishlist = [];
+  public $back = false;
 
-  protected $listeners = ['wishlistUpdated' => 'mount'];
 
   public function render()
   {
     return view('livewire.store-show-product', [
-      'product' => $this->record
-
+      'product' => $this->product
     ]);
   }
-
-  public function switchTab($index)
+  private function getSessionId()
   {
-    $this->activeTab = $index;
-  }
-  public function updateCounterValue()
-  {
-    $this->quantity = $this->quantity;
-  }
-
-  public function selectpath($id)
-  {
-    $this->path = '1';
-    $this->mainpath = $id;
-  }
-
-  public function addToWishlist($productId)
-  {
-    if (!in_array($productId, $this->wishlist)) {
-      $this->wishlist[] = $productId;
-      $this->saveToSession();
-
-      Wishlist::updateOrCreate(
-        ['session_id' => $this->session_id, 'product_id' => $productId]
-      );
-      $this->emit('wishlistUpdated');
-    }
-  }
-
-  public function removeFromWishlist($productId)
-  {
-    $this->wishlist = array_diff($this->wishlist, [$productId]);
-    $this->saveToSession();
-
-    Wishlist::where('session_id', $this->session_id)
-      ->where('product_id', $productId)
-      ->delete();
-    $this->emit('wishlistUpdated');
-  }
-
-  private function saveToSession()
-  {
-    session(['wishlist' => $this->wishlist]);
-  }
-  public function toggleWishlist($productId)
-  {
-    if (in_array($productId, $this->wishlist)) {
-      $this->removeFromWishlist($productId);
+    if (array_key_exists('sessionId', $_COOKIE)) {
+      return $_COOKIE['sessionId'];
     } else {
-      $this->addToWishlist($productId);
+      $sessionId = session()->getId();
+      setcookie('sessionId', $sessionId, time() + 30 * 24 * 60 * 60, '/', null, false, true);
+      return $sessionId;
     }
   }
-
-
-  public function incrementCounter()
+  public function mount($productId)
   {
-    if ($this->quantity >= $this->limit) {
-      $this->maxlimit = true;
-      $this->quantity = $this->limit;
-    } else {
-      $this->quantity++;
-    }
+    $this->productId = $productId;
+    $this->session_id = $this->getSessionId();
+    $this->quantity = app('global_low_stock');
   }
-  public  function decrementCounter()
-  {
-
-    if ($this->quantity > 1) {
-      if ($this->quantity == $this->limit) {
-        $this->maxlimit = false;
-      }
-      $this->quantity--;
-    }
-  }
-  public function modal($id)
-  {
-    dd($id);
-  }
-  public function mount()
-  {
-    $this->record = Product::findOrFail($this->productId);
-    $this->limit = $this->record->quantity;
-    $this->session_id = Session::getId();
-    $this->quantity = 1;
-
-    $this->mainMedia = $this->record->media->firstWhere('location.location', 'main');
-    if ($this->mainMedia) {
-      if (!$this->path) {
-        $this->mainpath = $this->mainMedia->external
-          ? $this->mainMedia->path
-          : "/{$this->mainMedia->path}{$this->mainMedia->name}";
-      }
-    }
-
-    $this->mainimages = $this->record->media
-      ->where('location.location', '!=', 'search')
-      ->sortBy('location_id')
-      ->values();
-
-    $this->relatedphotos = $this->mainimages->map(function ($image) {
-      return $image->external
-        ? $image->path
-        : "/{$image->path}{$image->name}";
-    });
-  }
-
-
 
 
   public function getProductProperty()
   {
-    return $this->productQuery;
-  }
-  public function getProductQueryProperty()
-  {
-    return Product::find($this->productId);
+    return Product::select('id', 'name', 'seo_id')
+      ->with([
+        'media' => function ($query) {
+          $query->select('name', 'path', 'type', 'sequence')
+            ->whereIn('type', ['full', 'original'])
+            ->orderBy('sequence');
+        },
+        'related_product' => function ($query) {
+          $query->select('parrent_id', 'product_id', 'id')->with([
+            'product' => function ($query) {
+              $query->where('active', 1)->where('start_date', '<=',  now()->format('Y-m-d'))
+                ->where('end_date', '>=',  now()->format('Y-m-d'))->select('id', 'name', 'popularity', 'seo_id', 'short_description', 'quantity', 'active', 'end_date', 'start_date')->with([
+                  'media' => function ($query) {
+                    $query->select('path', 'name')->where('type', 'main');
+                  },
+                  'product_prices' => function ($query) {
+                    $query->select('product_id', 'value', 'pricelist_id', 'discount', 'value_no_vat')
+                      ->with(['pricelist' => function ($query) {
+                        $query->select('id', 'currency_id')->with('currency:id,name,symbol');
+                      }]);
+                  },
+                  'wishlists' => function ($query) {
+                    $query->select('id', 'product_id')->where('session_id', $this->session_id);
+                  }
+                ]);
+            }
+          ]);
+        }
+      ])->where('id', $this->productId)->first();
   }
 }

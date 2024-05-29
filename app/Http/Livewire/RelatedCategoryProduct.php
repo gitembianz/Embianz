@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire;
 
-use App\Exports\CategoriesExport;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Products_categories;
@@ -14,7 +13,6 @@ class RelatedCategoryProduct extends Component
 
   use WithPagination;
   public $showTable = false;
-  public $productId;
 
   //related variables
   public $perPage = 10;
@@ -32,7 +30,6 @@ class RelatedCategoryProduct extends Component
   public $selectedColumns = [];
   public $product;
 
-
   //add variables
   public $searchadd = '';
   public $orderByadd = 'id';
@@ -48,7 +45,6 @@ class RelatedCategoryProduct extends Component
   public $totalRecords;
   public $loadAmount = 10;
 
-  //add new functionss
   public function toggleTable()
   {
     $this->showrelatedcat = true;
@@ -116,7 +112,6 @@ class RelatedCategoryProduct extends Component
       return $unrelatedCatsQuery->limit($this->loadAmount)->get();
     }
   }
-
   public function confirmItemlink($itemtid)
   {
     $this->catidbeinglink = $itemtid;
@@ -126,7 +121,7 @@ class RelatedCategoryProduct extends Component
   {
     $id = $this->catidbeinglink;
     $item = new  Products_categories();
-    $item->product_id = $this->productId;
+    $item->product_id = $this->product->id;
     $item->category_id = $id;
     $item->save();
     $this->checkedadd = array_diff($this->checkedadd, [$id]);
@@ -145,11 +140,12 @@ class RelatedCategoryProduct extends Component
     $items = Category::whereKey($this->checkedadd)->get();
     foreach ($items as $item) {
       $itemadd = new Products_categories();
-      $itemadd->product_id = $this->productId;
+      $itemadd->product_id = $this->product->id;
       $itemadd->category_id = $item->id;
       $itemadd->save();
     }
     $this->checkedadd = [];
+    $this->selectPageadd = false;
     session()->flash('notification', [
       'message' => 'Records related successfully!',
       'type' => 'success',
@@ -215,8 +211,8 @@ class RelatedCategoryProduct extends Component
   }
   public function getRelatedcatsQueryProperty()
   {
-    return Products_categories::where('product_id', $this->productId)
-      ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->with('category');
+    return Products_categories::where('product_id', $this->product->id)
+      ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc');
   }
   public function ItemRemoval($id)
   {
@@ -254,23 +250,9 @@ class RelatedCategoryProduct extends Component
       'title' => 'Success'
     ]);
   }
-  public function exportSelected()
+  public function mount(Product $product)
   {
-    $export = new CategoriesExport($this->checked);
-    $this->checked = [];
-    $this->selectPage = false;
-    session()->flash('notification', [
-      'message' => 'Report download successfully!',
-      'type' => 'success',
-      'title' => 'Success'
-    ]);
-    return $export->download('categories.xlsx');
-  }
-  //render function
-  public function mount($productId)
-  {
-    $this->productId = $productId;
-    $this->product = Product::find($productId);
+    $this->product = $product;
     $this->selectedColumns = $this->columns;
     $this->selectedColumnsadd = $this->columnsadd;
   }

@@ -6,7 +6,6 @@ use Livewire\Component;
 use App\Models\Category;
 use App\Models\Subcategory;
 use Livewire\WithPagination;
-use App\Exports\CategoriesExport;
 use App\Models\Products_categories;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Schema;
@@ -22,52 +21,27 @@ class Categoriestable extends Component
   public $selectPage = false;
   public $selectAll = false;
   public $catidbeingremoved = null;
-  // public $columns = ['Id', 'Short Description', 'Sequence', 'Created At'];
   public $selectedColumns = [];
   public $col = false;
   public $all = false;
-
-  public $tableName;
   public $columns;
-
-
 
   public function render()
   {
-    $categories = $this->categories;
-
     if ($this->all) {
       $this->selectedColumns = $this->columns;
     }
 
-    return view('livewire.categoriestable', compact('categories'));
+    return view('livewire.categoriestable', ['categories' => $this->categories]);
   }
-
-
   public function mount($tableName)
   {
-    $this->tableName = $tableName;
-    $this->columns = Schema::getColumnListing($this->tableName);
-
-    if (session()->has('selectedColumns')) {
-      $this->selectedColumns = session('selectedColumns');
-    } else {
-      $this->selectedColumns = $this->columns;
-    }
+    $this->columns = Schema::getColumnListing($tableName);
+    $this->selectedColumns = $this->columns;
   }
-
-
-  public function updatedSelectedColumns()
-  {
-    session(['selectedColumns' => $this->selectedColumns]);
-  }
-
 
   public function showColumn($column)
   {
-    if ($column === 'name') {
-      return true;
-    }
     return in_array($column, $this->selectedColumns);
   }
   public function updatedSelectPage($value)
@@ -127,7 +101,7 @@ class Categoriestable extends Component
           $pro->delete();
         }
       }
-      $subcategories = Subcategory::where('parrent_id', $id)->get();
+      $subcategories = Subcategory::where('parrent_id', $id)->orwhere('category_id', $id)->get();
       if ($subcategories != NULL) {
         foreach ($subcategories as $sub) {
           $sub->delete();
@@ -145,6 +119,7 @@ class Categoriestable extends Component
       $cattodel->delete();
     }
     $this->checked = [];
+    $this->selectPage = false;
     session()->flash('notification', [
       'message' => 'Records deleted successfully!',
       'type' => 'success',
@@ -198,17 +173,5 @@ class Categoriestable extends Component
   public function isChecked($id)
   {
     return in_array($id, $this->checked);
-  }
-  public function exportSelected()
-  {
-    $export = new CategoriesExport($this->checked);
-    $this->checked = [];
-    $this->selectPage = false;
-    session()->flash('notification', [
-      'message' => 'Report downloaded successfully!',
-      'type' => 'success',
-      'title' => 'Success'
-    ]);
-    return $export->download('categories.xlsx');
   }
 }

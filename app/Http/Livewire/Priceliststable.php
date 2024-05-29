@@ -3,10 +3,8 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
-use App\Models\Currency;
 use App\Models\PriceList;
 use Livewire\WithPagination;
-use App\Exports\PriceListExport;
 use App\Models\PricelistEntries;
 
 class Priceliststable extends Component
@@ -136,17 +134,5 @@ class Priceliststable extends Component
   public function isChecked($id)
   {
     return in_array($id, $this->checked);
-  }
-  public function exportSelected()
-  {
-    $export = new PriceListExport($this->checked);
-    $this->checked = [];
-    $this->selectPage = false;
-    session()->flash('notification', [
-      'message' => 'Report downloaded successfully!',
-      'type' => 'success',
-      'title' => 'Success'
-    ]);
-    return $export->download('pricelists.xlsx');
   }
 }

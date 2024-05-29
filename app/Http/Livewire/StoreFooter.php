@@ -3,44 +3,82 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
-use App\Models\Category;
 use App\Models\Subscribers;
+use GuzzleHttp\Client;
+use Illuminate\Database\QueryException;
 
 class StoreFooter extends Component
 {
 
-  public $email;
+  public $email = null;
   public $response = null;
-  public $limit = 5;
+  public $cookieConsent;
+  public $advance =  false;
+  public $ischecked = false;
+  public function mount()
+  {
+    $this->cookieConsent = $this->checkCookieConsent();
+  }
 
   public function render()
   {
-    return view('livewire.store-footer', [
-      'categories' => $this->categories
-    ]);
+    return view('livewire.store-footer');
   }
-
+  public function advancecookie()
+  {
+    $this->advance = !$this->advance;
+  }
   public function store()
   {
     $this->resetErrorBag();
-    $validatedData = $this->validate([
-      'email' => 'required|email'
-    ]);
-    Subscribers::create($validatedData);
-    $this->reset();
-    // $this->response = "Thank you for subscription!";
-    session()->flash('notification', [
-      'message' => 'Thank you for subscription!',
-      'type' => 'success',
-      'title' => 'Success'
-    ]);
+
+    try {
+      $validatedData = $this->validate([
+        'email' => 'required|email',
+      ]);
+
+      $sucscriber = Subscribers::create($validatedData);
+
+      $client = new Client();
+      $client->post('https://webto.salesforce.com/servlet/servlet.WebToLead', [
+        'headers' => [
+          'Accept' => 'application/json',
+        ],
+        'query' => [
+          'oid' => '00D09000008XPQu',
+          '00N9N000000PrL5' => 'www.noren.ro',
+          'lead_source' => 'Web',
+          'email' => $sucscriber->email,
+        ],
+        'curl' => [
+          CURLOPT_SSL_VERIFYPEER => false,
+        ],
+      ]);
+
+      $this->reset();
+      $this->cookieConsent = $this->checkCookieConsent();
+      $this->dispatchBrowserEvent('newsletterToggle');
+    } catch (QueryException $e) {
+      if ($e->errorInfo[1] === 1062) {
+        $this->reset();
+        $this->cookieConsent = $this->checkCookieConsent();
+        $this->dispatchBrowserEvent('newsletterToggle');
+      } else {
+      }
+    }
   }
-  public function getCategoriesProperty()
+
+  private function checkCookieConsent()
   {
-    return $this->categoriesQuery->limit($this->limit)->get()->pluck('name', 'id');
+    if (isset($_COOKIE['cookieConsent']) && $_COOKIE['cookieConsent'] == 'accepted') {
+      return true;
+    }
+    return false;
   }
-  public function getCategoriesQueryProperty()
+  public function acceptCookie()
   {
-    return Category::orderBy('sequence', 'asc');
+    $this->cookieConsent = true;
+    setcookie('cookieConsent', 'accepted', time() + (30 * 24 * 60 * 60), '/');
+    $this->emit('updateCookieConsent');
   }
 }

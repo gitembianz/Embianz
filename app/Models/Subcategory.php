@@ -9,7 +9,11 @@ class Subcategory extends Model
 {
   use HasFactory;
 
-  public function parrent()
+  public function category()
+  {
+    return $this->belongsTo(Category::class, 'category_id');
+  }
+  public function category_parrent()
   {
     return $this->belongsTo(Category::class, 'parrent_id');
   }

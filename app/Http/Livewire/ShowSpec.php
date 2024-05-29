@@ -4,17 +4,14 @@ namespace App\Http\Livewire;
 
 use App\Models\Specs;
 use Livewire\Component;
-use App\Models\SpecGroup;
 use App\Models\Product_Spec;
 use Illuminate\Support\Facades\Auth;
 
 class ShowSpec extends Component
 {
-
   public $itemId;
   public $edititem = null;
   public $record;
-  public $groups;
 
   public function render()
   {
@@ -30,13 +27,9 @@ class ShowSpec extends Component
   {
     $this->dispatchBrowserEvent('show-delete-modal');
   }
-  public function getSpecQueryProperty()
-  {
-    return Specs::find($this->itemId);
-  }
   public function getSpecProperty()
   {
-    return $this->specQuery;
+    return Specs::find($this->itemId);
   }
   public function deleteSingleRecord()
   {
@@ -60,11 +53,11 @@ class ShowSpec extends Component
     $this->record = [
       'name' => $this->spec->name,
       'um' => $this->spec->um,
-      'spec_group' => $this->spec->group->id,
-      // Add other properties as needed
+      'sequence' => $this->spec->sequence,
+      'mark_as_filter' => $this->spec->mark_as_filter == 1 ? true : false
+
     ];
     $this->edititem = true;
-    $this->groups = SpecGroup::pluck('name', 'id');
   }
   public function cancelitem()
   {
@@ -88,6 +81,9 @@ class ShowSpec extends Component
           return;
         }
       }
+      if (array_key_exists('mark_as_filter', $rec)) {
+        $new->mark_as_filter = $rec['mark_as_filter'];
+      }
       if (array_key_exists('um', $rec)) {
         if (!empty($rec['um'])) {
           $new->um = $rec['um'];
@@ -100,8 +96,17 @@ class ShowSpec extends Component
           return;
         }
       }
-      if (array_key_exists('spec_group', $rec)) {
-        $new->group_id = $rec['spec_group'];
+      if (array_key_exists('sequence', $rec)) {
+        if (!empty($rec['sequence'])) {
+          $new->sequence = $rec['sequence'];
+        } else {
+          session()->flash('notification', [
+            'message' => 'Please provide a sequence!',
+            'type' => 'warning',
+            'title' => 'Missing Values'
+          ]);
+          return;
+        }
       }
       $new->lastmodifiedby = Auth::user()->name;
       $new->updated_at = now();
