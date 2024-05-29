@@ -48,10 +48,6 @@
  <meta property="twitter:title" content="{{ $title }}" />
  <meta property="twitter:description" content="{{ $description }}" />
 
-  <script type="text/javascript" src="/~partytown/partytown.js"></script>
-  {{-- <script type="text/partytown">
-    for (let i = 0; i < 999; i++) console.log(i)
-  </script> --}}
  @if (app()->has('global_script_head-bottom'))
   {!! app('global_script_head-bottom') !!}
  @endif
