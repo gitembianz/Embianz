@@ -43,8 +43,8 @@
 
       ?>
       <div class="basket__split">
-       <a class="basket__item"
-        href="{{ route('product', ['product' => $cartItem->product->seo_id !== null && $cartItem->product->seo_id !== '' ? $cartItem->product->seo_id : $cartItem->product->id]) }}">
+       <div class="basket__item">
+         <a style="width: 100%; display: flex; flex: 1;" href="{{ route('product', ['product' => $cartItem->product->seo_id !== null && $cartItem->product->seo_id !== '' ? $cartItem->product->seo_id : $cartItem->product->id]) }}">
         @if ($cartItem->product->media->first())
          <img loading="eager" class="cart__list--img"
           src="/{{ $cartItem->product->media->first()->path }}{{ $cartItem->product->media->first()->name }}"
@@ -64,6 +64,7 @@
            {{ $cartItem->product->quantity }}</span>
          @endif
         </div>
+        </a>
         @livewire('product-wishlist-button', ['productId' => $cartItem->product->id, 'class' => 'basket__action', 'is_in_wishlist' => $cartItem->product->wishlists->isNotEmpty()], key($cartItem->product->id))
         <button class="basket__delete" aria-label="Remove from cart button"
          wire:click="removeFromCart({{ $cartItem->product->id }})" onclick="removeItem(this)">
@@ -73,7 +74,7 @@
           </path>
          </svg>
         </button>
-       </a>
+      </div>
        <div class="basket__item">
         <div class="quantity">
          <span>Cantitatea</span>
