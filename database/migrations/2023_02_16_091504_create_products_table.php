@@ -16,14 +16,21 @@ return new class extends Migration
     Schema::create('products', function (Blueprint $table) {
       $table->id();
       $table->string('name')->nullable();
+      $table->string('sku')->nullable()->unique();
+      $table->string('ean')->nullable()->unique();
       $table->boolean('active');
+      $table->boolean('is_new')->nullable()->default(
+        false
+      );
       $table->integer('popularity')->nullable();
-      $table->text('short_description')->nullable(); // using 'text' instead of 'string' to allow for longer descriptions
-      $table->text('long_description')->nullable(); // using 'text' instead of 'string' to allow for longer descriptions
-      $table->integer('quantity')->nullable(); // assuming this is a whole number
+      $table->longText('long_description')->nullable();
+      $table->string('short_description')->nullable();
+      $table->string('meta_description')->nullable();
+      $table->integer('quantity')->nullable();
       $table->date('start_date')->nullable();
       $table->date('end_date')->nullable();
       $table->string('seo_title')->nullable();
+      $table->string('seo_id')->unique()->nullable();
       $table->string('created_by')->nullable();
       $table->string('last_modified_by')->nullable();
       $table->timestamps();

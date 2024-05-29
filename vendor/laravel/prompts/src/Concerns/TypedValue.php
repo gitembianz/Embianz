@@ -19,7 +19,7 @@ trait TypedValue
     /**
      * Track the value as the user types.
      */
-    protected function trackTypedValue(string $default = '', bool $submit = true): void
+    protected function trackTypedValue(string $default = '', bool $submit = true, ?callable $ignore = null): void
     {
         $this->typedValue = $default;
 
@@ -27,13 +27,17 @@ trait TypedValue
             $this->cursorPosition = mb_strlen($this->typedValue);
         }
 
-        $this->on('key', function ($key) use ($submit) {
+        $this->on('key', function ($key) use ($submit, $ignore) {
             if ($key[0] === "\e" || in_array($key, [Key::CTRL_B, Key::CTRL_F, Key::CTRL_A, Key::CTRL_E])) {
+                if ($ignore !== null && $ignore($key)) {
+                    return;
+                }
+
                 match ($key) {
                     Key::LEFT, Key::LEFT_ARROW, Key::CTRL_B => $this->cursorPosition = max(0, $this->cursorPosition - 1),
                     Key::RIGHT, Key::RIGHT_ARROW, Key::CTRL_F => $this->cursorPosition = min(mb_strlen($this->typedValue), $this->cursorPosition + 1),
-                    Key::HOME, Key::CTRL_A => $this->cursorPosition = 0,
-                    Key::END, Key::CTRL_E => $this->cursorPosition = mb_strlen($this->typedValue),
+                    Key::oneOf([Key::HOME, Key::CTRL_A], $key) => $this->cursorPosition = 0,
+                    Key::oneOf([Key::END, Key::CTRL_E], $key) => $this->cursorPosition = mb_strlen($this->typedValue),
                     Key::DELETE => $this->typedValue = mb_substr($this->typedValue, 0, $this->cursorPosition).mb_substr($this->typedValue, $this->cursorPosition + 1),
                     default => null,
                 };
@@ -43,6 +47,10 @@ trait TypedValue
 
             // Keys may be buffered.
             foreach (mb_str_split($key) as $key) {
+                if ($ignore !== null && $ignore($key)) {
+                    return;
+                }
+
                 if ($key === Key::ENTER && $submit) {
                     $this->submit();
 

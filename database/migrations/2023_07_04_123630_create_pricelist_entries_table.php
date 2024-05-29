@@ -17,7 +17,12 @@ return new class extends Migration
       $table->foreign('product_id')->references('id')->on('products');
       $table->unsignedBigInteger('pricelist_id')->index();
       $table->foreign('pricelist_id')->references('id')->on('price_lists');
-      $table->string('value');
+      $table->decimal('value', 10, 2)->nullable();
+      $table->decimal('value_no_vat', 10, 2)->nullable();
+      $table->integer('discount')->default(
+        '0'
+      );
+      $table->decimal('tva_percent', 5, 2)->nullable();
       $table->timestamps();
     });
   }

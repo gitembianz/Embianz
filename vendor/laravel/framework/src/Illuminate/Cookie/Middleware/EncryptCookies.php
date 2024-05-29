@@ -102,8 +102,8 @@ class EncryptCookies
     protected function validateValue(string $key, $value)
     {
         return is_array($value)
-                    ? $this->validateArray($key, $value)
-                    : CookieValuePrefix::validate($key, $value, $this->encrypter->getKey());
+            ? $this->validateArray($key, $value)
+            : CookieValuePrefix::validate($key, $value, $this->encrypter->getKey());
     }
 
     /**
@@ -134,8 +134,8 @@ class EncryptCookies
     protected function decryptCookie($name, $cookie)
     {
         return is_array($cookie)
-                        ? $this->decryptArray($cookie)
-                        : $this->encrypter->decrypt($cookie, static::serialized($name));
+            ? $this->decryptArray($cookie)
+            : $this->encrypter->decrypt($cookie, static::serialized($name));
     }
 
     /**
@@ -177,7 +177,7 @@ class EncryptCookies
             $response->headers->setCookie($this->duplicate(
                 $cookie,
                 $this->encrypter->encrypt(
-                    CookieValuePrefix::create($cookie->getName(), $this->encrypter->getKey()).$cookie->getValue(),
+                    CookieValuePrefix::create($cookie->getName(), $this->encrypter->getKey()) . $cookie->getValue(),
                     static::serialized($cookie->getName())
                 )
             ));
@@ -195,11 +195,7 @@ class EncryptCookies
      */
     protected function duplicate(Cookie $cookie, $value)
     {
-        return new Cookie(
-            $cookie->getName(), $value, $cookie->getExpiresTime(),
-            $cookie->getPath(), $cookie->getDomain(), $cookie->isSecure(),
-            $cookie->isHttpOnly(), $cookie->isRaw(), $cookie->getSameSite()
-        );
+        return $cookie->withValue($value);
     }
 
     /**

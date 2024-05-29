@@ -106,7 +106,7 @@ class RelatedSubcategory extends Component
   }
   public function getCategoriesProperty()
   {
-    $relatedcatsIds = $this->relatedsubcats->pluck('category_id')->toArray();
+    $relatedcatsIds = $this->relatedsubcats->pluck('category_id')->merge([$this->category->id])->toArray();
     $unrelatedCatsQuery = Category::whereNotIn('id', $relatedcatsIds);
     if (!empty($this->searchadd)) {
       $unrelatedCatsQuery->where('name', 'like', '%' . $this->searchadd . '%');
@@ -118,7 +118,6 @@ class RelatedSubcategory extends Component
       return $unrelatedCatsQuery->limit($this->loadAmount)->get();
     }
   }
-
   public function confirmitemlink($id)
   {
     $this->catidbeinglink = $id;
@@ -128,9 +127,11 @@ class RelatedSubcategory extends Component
   {
     $category = Category::find($this->catidbeinglink);
     $rec = new  Subcategory();
-    $rec->category = $category->name;
+    $rec->name = $category->name;
     $rec->category_id = $category->id;
-    $rec->parrent_id = $this->categoryId;
+    $rec->parrent_id = $this->category->id;
+    $category->has_parrent = true;
+    $category->save();
     $rec->save();
     $this->checkedadd = array_diff($this->checkedadd, [$this->catidbeinglink]);
     session()->flash('notification', [
@@ -141,14 +142,15 @@ class RelatedSubcategory extends Component
   }
   public function linkRecords()
   {
-
     $categories = Category::whereKey($this->checkedadd)->get();
-
     foreach ($categories as $category) {
+      $cat = Category::find($category->id);
       $add = new Subcategory();
-      $add->category = $category->name;
+      $add->name = $category->name;
       $add->category_id = $category->id;
-      $add->parrent_id = $this->categoryId;
+      $add->parrent_id = $this->category->id;
+      $cat->has_parrent = true;
+      $cat->save();
       $add->save();
     }
 
@@ -225,8 +227,8 @@ class RelatedSubcategory extends Component
   }
   public function getRelatedsubcatsQueryProperty()
   {
-    return Subcategory::where('parrent_id', $this->categoryId)
-      ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->with('parrent');
+    return Subcategory::where('parrent_id', $this->category->id)
+      ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->with('category');
   }
   public function confirmItemRemoval($productid)
   {
@@ -235,10 +237,16 @@ class RelatedSubcategory extends Component
   }
   public function deleteSingleRecord()
   {
-    $id = $this->subcatidbeingremoved;
-    $record = Subcategory::findOrFail($id);
+    $record = Subcategory::findOrFail($this->subcatidbeingremoved);
+    $still_has_parrents = Subcategory::where('category_id', $record->category_id)->count();
+    if ($still_has_parrents == 1) {
+      $cat = Category::findOrFail($record->category_id);
+      $cat->has_parrent = false;
+      $cat->save();
+    }
     $record->delete();
-    $this->checked = array_diff($this->checked, [$id]);
+
+    $this->checked = array_diff($this->checked, [$this->subcatidbeingremoved]);
     session()->flash('notification', [
       'message' => 'Record deleted successfully!',
       'type' => 'success',
@@ -247,17 +255,18 @@ class RelatedSubcategory extends Component
   }
   public function deleteRecords()
   {
-
     $records = Subcategory::whereKey($this->checked)->get();
-
     foreach ($records as $record) {
-      $id = $record->id;
-      $recordtodel = Subcategory::find($id);
+      $recordtodel = Subcategory::find($record->id);
+      $still_has_parrents = Subcategory::where('category_id', $recordtodel->category_id)->count();
+      if ($still_has_parrents == 1) {
+        $cat = Category::findOrFail($recordtodel->category_id);
+        $cat->has_parrent = false;
+        $cat->save();
+      }
       $recordtodel->delete();
     }
-
     $this->checked = [];
-
     session()->flash('notification', [
       'message' => 'Records deleted successfully!',
       'type' => 'success',
@@ -269,12 +278,12 @@ class RelatedSubcategory extends Component
   {
     $this->dispatchBrowserEvent('show-delete-modal-multiple');
   }
-
   public function render()
   {
-    $relatedsubcats = $this->relatedsubcats->filter(function ($subcat) {
-      return strpos(strtolower($subcat->category), strtolower($this->search)) !== false;
-    });
+    $relatedsubcats = $this->relatedsubcats
+      ->filter(function ($subcat) {
+        return strpos(strtolower($subcat->category->name), strtolower($this->search)) !== false;
+      });
 
 
     if ($this->showTable === true) {
@@ -288,10 +297,9 @@ class RelatedSubcategory extends Component
       ]);
     }
   }
-  public function mount($categoryId)
+  public function mount(Category $category)
   {
-    $this->categoryId = $categoryId;
-    $this->category = Category::find($categoryId);
+    $this->category = $category;
     $this->selectedColumns = $this->columns;
     $this->selectedColumnsadd = $this->columnsadd;
   }

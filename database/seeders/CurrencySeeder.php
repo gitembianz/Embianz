@@ -12,36 +12,50 @@ class CurrencySeeder extends Seeder
    */
   public function run()
   {
+    $currentTime = now();
+
     $currencies = [
       [
         'name' => 'RON',
+        'symbol' => 'lei',
         'createdby' => 'admin',
         'lastmodifiedby' => 'admin',
+        'created_at' => $currentTime,
+        'updated_at' => $currentTime,
       ],
       [
         'name' => 'EUR',
+        'symbol' => '€',
         'createdby' => 'admin',
         'lastmodifiedby' => 'admin',
+        'created_at' => $currentTime,
+        'updated_at' => $currentTime,
       ],
       [
         'name' => 'USD',
+        'symbol' => '$',
         'createdby' => 'admin',
         'lastmodifiedby' => 'admin',
+        'created_at' => $currentTime,
+        'updated_at' => $currentTime,
       ],
       [
         'name' => 'MDL',
+        'symbol' => 'lei',
         'createdby' => 'admin',
         'lastmodifiedby' => 'admin',
+        'created_at' => $currentTime,
+        'updated_at' => $currentTime,
       ],
       [
         'name' => 'GBP',
+        'symbol' => '£',
         'createdby' => 'admin',
         'lastmodifiedby' => 'admin',
+        'created_at' => $currentTime,
+        'updated_at' => $currentTime,
       ],
-      // Add more currencies as needed
     ];
-
-    // Insert the records into the "currencies" table
     DB::table('currencies')->insert($currencies);
   }
 }

@@ -14,6 +14,7 @@ class Specs extends Model
   protected $fillable = [
     'name',
     'um',
+    'sequence', 'mark_as_filter'
   ];
   public static function search($search)
   {
@@ -21,15 +22,12 @@ class Specs extends Model
       : static::query()->where('id', 'like', '%' . $search . '%')
       ->orWhere('name', 'like', '%' . $search . '%')
       ->orWhere('um', 'like', '%' . $search . '%')
+      ->orWhere('sequence', 'like', '%' . $search . '%')
       ->orWhere('created_at', 'like', '%' . $search . '%');
   }
 
   public function product_spec()
   {
     return $this->hasMany(Product_Spec::class, 'spec_id');
-  }
-  public function group()
-  {
-    return $this->belongsTo(SpecGroup::class, 'group_id');
   }
 }

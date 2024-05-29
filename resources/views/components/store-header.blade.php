@@ -1,3 +1,1 @@
-<header class="show">
-    @livewire('store-header')
-</header>
+@livewire("store-header")

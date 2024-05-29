@@ -1,124 +1,346 @@
 <div>
-    <div class="home__container" id="homeContainer">
-        <div id="home__slide" role="list">
-            @if ($category)
-                @foreach ($category->product_categories as $product)
-                    <div class="home__item home__this"
-                        style="background-image:
-                  @if (count($product->product->media) > 0) @foreach ($product->product->media as $media)
-                  @if ($media->location->location == 'main')
-                    @if ($media->external)
-                      url({{ $media->path }}" alt="{{ $media->path }})
-                    @else
-                      url(/{{ $media->path }}{{ $media->name }}) @endif
-                  @endif
-                  <?php break; ?>
-                @endforeach
-@else
-url(/images/store/default/default.svg)
-              @endif "
-                        role="listitem">
-                        <div class="home__content">
-                            <div class="container home__content--flex">
-                                <h2>{{ $product->product->name }}</h2>
-                                <p>
-                                    {{ $product->product->short_description }}
-                                </p>
-                                <a href="{{ route('product', ['id' => $product->product->id]) }}" aria-label="See more">
-                                    <button>See more</button>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
-            @endif
-        </div>
-        <div class="home__buttons">
-            <button id="home__prev" aria-label="Previous slide">
-                <svg>
-                    <polyline points="15 18 9 12 15 6"></polyline>
-                </svg>
-            </button>
-            <button id="home__next" aria-label="Next slide">
-                <svg>
-                    <polyline points="9 18 15 12 9 6"></polyline>
-                </svg>
-            </button>
-        </div>
+ <main>
+  <!---------------------------------------------------------->
+  <!---------------------- Slider Images --------------------->
+  @if (!$slideritems->isEmpty())
+   <div class="main-slider">
+    <div class="main-slider__wrapper">
+     @foreach ($slideritems as $item)
+      {{-- -- Modelul de schimb de imagini pe slider la rezolutie -- --}}
+      <a class="main-slider__slide"
+       href="{{ route('products', ['categorySlug' => $item->seo_id !== null && $item->seo_id !== '' ? $item->seo_id : $item->id]) }}"
+       draggable="false">
+       <picture>
+        @if ($item->media != null)
+         {{-- Default (Desktop) --}}
+         @if ($item->media->where('sequence', 2)->first() != null)
+          <source media="(min-width: 992px)" sizes="(min-width: 992px) 50vw"
+           srcset="/{{ $item->media->where('sequence', 2)->first()->path }}{{ $item->media->where('sequence', 2)->first()->name }}"
+           loading="eager" fetchpriority="high" height="{{ $item->media->where('sequence', 2)->first()->height }}"
+           width="{{ $item->media->where('sequence', 2)->first()->width }}">
+         @else
+          <img src="/images/store/default/default.webp" alt="something wrong">
+         @endif
+         {{-- Tablet Picture --}}
+         @if ($item->media->where('sequence', 3)->first() != null)
+          <source media="(min-width: 576px)" sizes="(min-width: 576px) 80vw"
+           srcset="/{{ $item->media->where('sequence', 3)->first()->path }}{{ $item->media->where('sequence', 3)->first()->name }}"
+           loading="eager" fetchpriority="high" height="{{ $item->media->where('sequence', 3)->first()->height }}"
+           width="{{ $item->media->where('sequence', 3)->first()->width }}">
+         @elseif ($item->media->where('sequence', 2)->first() != null)
+          <source media="(min-width: 576px)" sizes="(min-width: 576px) 80vw"
+           srcset="/{{ $item->media->where('sequence', 2)->first()->path }}{{ $item->media->where('sequence', 2)->first()->name }}"
+           loading="eager" fetchpriority="high" height="{{ $item->media->where('sequence', 2)->first()->height }}"
+           width="{{ $item->media->where('sequence', 2)->first()->width }}">
+         @else
+          <img src="/images/store/default/default640.webp" alt="something wrong">
+         @endif
+         {{-- Mobile Picture --}}
+         @if ($item->media->where('sequence', 4)->first() != null)
+          <img sizes="100vw" alt="{{ $item->media->where('sequence', 4)->first()->name }} {{ $item->name }}"
+           src="/{{ $item->media->where('sequence', 4)->first()->path }}{{ $item->media->where('sequence', 4)->first()->name }}"
+           loading="eager" fetchpriority="high" height="{{ $item->media->where('sequence', 4)->first()->height }}"
+           width="{{ $item->media->where('sequence', 4)->first()->width }}">
+         @elseif ($item->media->where('sequence', 3)->first() != null)
+          <img sizes="100vw" alt="{{ $item->media->where('sequence', 3)->first()->name }} {{ $item->name }}"
+           src="/{{ $item->media->where('sequence', 3)->first()->path }}{{ $item->media->where('sequence', 3)->first()->name }}"
+           loading="eager" fetchpriority="high" height="{{ $item->media->where('sequence', 3)->first()->height }}"
+           width="{{ $item->media->where('sequence', 3)->first()->width }}">
+         @elseif ($item->media->where('sequence', 2)->first() != null)
+          <img sizes="100vw" alt="{{ $item->media->where('sequence', 2)->first()->name }} {{ $item->name }}"
+           src="/{{ $item->media->where('sequence', 2)->first()->path }}{{ $item->media->where('sequence', 2)->first()->name }}"
+           loading="eager" fetchpriority="high" height="{{ $item->media->where('sequence', 2)->first()->height }}"
+           width="{{ $item->media->where('sequence', 2)->first()->width }}">
+         @else
+          <img src="/images/store/default/default300.webp" alt="something wrong">
+         @endif
+        @else
+         <img src="/images/store/default/default300.webp" alt="something wrong">
+        @endif
+       </picture>
+      </a>
+      {{-- End Modelul de schimb de imagini pe slider la rezolutie --}}
+     @endforeach
+
+
+
+
+
+
+
     </div>
-    <div class="container cards">
-        <h2 class="section__title">Top products this month</h2>
-        <div class="card-wrapper">
-            <button id="cardLeft" class="card-button" aria-label="Previous product">
-                <svg>
-                    <polyline points="15 18 9 12 15 6"></polyline>
-                </svg>
-            </button>
-            <ul class="card-carousel" role="list">
-                @foreach ($popproducts as $product)
-                    <li class="card" role="listitem">
-                        <a href="/product/{{ $product->id }}">
-                            @if (count($product->media) > 0)
-                                @foreach ($product->media as $media)
-                                    @if ($media->location->location == 'main')
-                                        @if ($media->external)
-                                            <img src="{{ $media->path }}" draggable="false" alt="{{ $media->path }}">
-                                        @else
-                                            <img src="/{{ $media->path }}{{ $media->name }}" draggable="false"
-                                                alt="{{ $media->path }}">
-                                        @endif
-                                        <?php break; ?>
-                                    @endif
-                                @endforeach
-                            @else
-                                <img src="/images/store/default/default.svg" draggable="false" alt="something wrong">
-                            @endif
-                            <h2>{{ $product->name }}</h2>
-                            <p>{{ $product->short_description }}</p>
-                            <span>Eco-friendly, BPA-free, Reusable</span>
-                            <p>
-                                @if ($product->product_prices->first())
-                                    {{ $product->product_prices->first()->pricelist->currency->name }}
-                                    {{ $product->product_prices->first()->value }}
-                                @else
-                                    {{ __('no price') }}
-                                @endif
-                            </p>
-                            {{-- <p class="price"><span>$24.99</span>$19.99</p> --}}
-                            <div class="card__fire">
-                                <img src="/images/store/fire.svg" alt="fire">
-                            </div>
-                        </a>
-                    </li>
-                @endforeach
-            </ul>
-            <button id="cardRight" class="card-button" aria-label="Next product">
-                <svg>
-                    <polyline points="9 18 15 12 9 6"></polyline>
-                </svg>
-            </button>
-        </div>
+    <button class="main-slider__button prev" aria-label="Previous main slider">
+     <svg>
+      <polyline points="15 18 9 12 15 6"></polyline>
+     </svg>
+    </button>
+    <button class="main-slider__button next" aria-label="Next main slider">
+     <svg>
+      <polyline points="9 18 15 12 9 6"></polyline>
+     </svg>
+    </button>
+   </div>
+  @endif
+
+  <!-------------------- End Slider Images ------------------->
+  <!---------------------------------------------------------->
+  <!---------------------------------------------------------->
+  <!---------------------- Slider Cards ---------------------->
+  @if ($popproducts->isNotEmpty())
+   <!------------------- Section Description ------------------>
+   <section>
+    <div class="section__header container">
+     <h1 class="section__title">Descoperă produsele noastre populare!</h1>
+     <p class="section__text">
+      Explorează colecția noastră de produse și găsește accesoriile perfecte pentru a-ți completa stilul.
+      <a href="{{ url('/storeproducts') }}">Vezi toate produsele!</a>
+     </p>
     </div>
-    <div class="home__discover" style="background-image: url(images/store/discover-background.webp)">
-        <div class="container home__discover--flex">
-            <div class="home__discover--text">
-                <h1>Explore our products and find the perfect one for you.</h1>
-                <a href="/storeproducts">Discover our products</a>
-            </div>
-            <img src="images/store/discover-items.webp" alt="discover items">
+   </section>
+   <!----------------- End Section Description ---------------->
+
+   <section>
+    <div class="card-slider container new-slider">
+     <div class="card-slider__wrapper new-slider__wrapper">
+      @foreach ($popproducts as $product)
+       <div class="card-slider__slide new-slider__slide card">
+        <a draggable="false"
+         href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">
+         @if ($product->media->first() != null)
+          <img loading="lazy" class="card-image"
+           src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}"
+           alt="{{ $product->media->first()->name }} {{ $product->name }}">
+         @else
+          <img loading="lazy" class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
+         @endif
+        </a>
+        @livewire('product-wishlist-button', ['productId' => $product->id, 'class' => 'card__action', 'is_in_wishlist' => $product->wishlists->isNotEmpty()], key($product->id))
+        <?php
+        $price = null;
+        $discount = false;
+        
+        if ($product->product_prices->count() != 0) {
+            $price = number_format($product->product_prices->first()->value, 2, ',', '.');
+            $discount = $product->product_prices->first()->discount != 0 ? true : false;
+        }
+        ?>
+
+        @if ($price)
+         @if ($product->quantity < $quantity && $product->quantity > 0)
+          <p class="card-status out">
+           Stock limitat!!
+          </p>
+          @if ($discount)
+           <p class="card-status save-secondary">
+            -{{ $product->product_prices->first()->discount }}%
+           </p>
+          @endif
+         @elseif($product->quantity == 0)
+          <p class="card-status save">
+           Produs indisponibil!
+          </p>
+         @else
+          @if ($discount)
+           <p class="card-status save">
+            -{{ $product->product_prices->first()->discount }}%
+           </p>
+          @endif
+         @endif
+         {{-- tagul de discount --}}
+        @else
+         <p class="card-status save">
+          În curând!
+         </p>
+        @endif
+        <div class="card-info">
+         <div class="card-text">
+          <span>{{ $product->short_description }}</span>
+         </div>
+         <div class="card-text">
+          <h2 class="card-title">{{ $product->name }}</h2>
+          <p class="card-price">
+           @if ($discount)
+            <span class="card-price discount">
+             @if ($product->product_prices->first())
+              {{ $price }}
+              {{ $product->product_prices->first()->pricelist->currency->symbol }}
+             @endif
+            </span>
+            <span class="card-price oldprice">
+             {{ $product->product_prices->first()->value_no_discount }}
+             {{ $product->product_prices->first()->pricelist->currency->symbol }}
+            </span>
+           @else
+            <span>
+             @if ($product->product_prices->first())
+              {{ $price }}
+              {{ $product->product_prices->first()->pricelist->currency->symbol }}
+             @endif
+            </span>
+           @endif
+
+          </p>
+         </div>
+         @if ($price)
+          @livewire('add-to-cart-button', ['product' => $product], key($product->id))
+         @else
+          <button class="card-button-disabled" aria-label="Disabled add to cart button">Indisponibil</button>
+         @endif
+         <div style="display: none" class="dlv">
+          <span class="dlv_name">{{ $product->name }}</span>
+          <span class="dlv_price">{{ $price }}</span>
+          <span
+           class="dlv_currency">{{ optional(optional(optional($product->product_prices->first())->pricelist)->currency)->name }}</span>
+         </div>
         </div>
+       </div>
+      @endforeach
+     </div>
+     <button class="card-slider__button new-slider__button prev" aria-label="Previous card slider button">
+      <svg>
+       <polyline points="15 18 9 12 15 6"></polyline>
+      </svg>
+     </button>
+     <button class="card-slider__button new-slider__button next" aria-label="Next card slider button">
+      <svg>
+       <polyline points="9 18 15 12 9 6"></polyline>
+      </svg>
+     </button>
     </div>
+   </section>
+  @endif
+
+  @if ($newproducts->isNotEmpty())
+   <!------------------- Section Description ------------------>
+   <section>
+    <div class="section__header container">
+     <h2 class="section__title">Produse adăugate recent</h1>
+      <p class="section__text">
+       Adăugăm constant noi produse pentru a-ți oferi ce este mai bun.
+      </p>
+    </div>
+   </section>
+   <!----------------- End Section Description ---------------->
+
+   <section>
+    <div class="card-slider container popular-slider">
+     <div class="card-slider__wrapper popular-slider__wrapper">
+      @foreach ($newproducts as $product)
+       <div class="card-slider__slide popular-slider__slide card">
+        <a draggable="false"
+         href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">
+         @if ($product->media->first() != null)
+          <img loading="lazy" class="card-image"
+           src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}"
+           alt="{{ $product->media->first()->name }} {{ $product->name }}">
+         @else
+          <img loading="lazy" class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
+         @endif
+        </a>
+        @livewire('product-wishlist-button', ['productId' => $product->id, 'class' => 'card__action', 'is_in_wishlist' => $product->wishlists->isNotEmpty()], key($product->id))
+        <?php
+        $price = null;
+        $discount = false;
+        
+        if ($product->product_prices->count() != 0) {
+            $price = number_format($product->product_prices->first()->value, 2, ',', '.');
+            $discount = $product->product_prices->first()->discount != 0 ? true : false;
+        }
+        ?>
+
+        @if ($price)
+         @if ($product->quantity < $quantity && $product->quantity > 0)
+          <p class="card-status out">
+           Stock limitat!!
+          </p>
+          @if ($discount)
+           <p class="card-status save-secondary">
+            -{{ $product->product_prices->first()->discount }}%
+           </p>
+          @endif
+         @elseif($product->quantity == 0)
+          <p class="card-status save">
+           Produs indisponibil!
+          </p>
+         @else
+          @if ($discount)
+           <p class="card-status save">
+            -{{ $product->product_prices->first()->discount }}%
+           </p>
+          @endif
+         @endif
+         {{-- tagul de discount --}}
+        @else
+         <p class="card-status save">
+          În curând!
+         </p>
+        @endif
+        <div class="card-info">
+         <div class="card-text">
+          <span>{{ $product->short_description }}</span>
+         </div>
+         <div class="card-text">
+          <h2 class="card-title">{{ $product->name }}</h2>
+          <p class="card-price">
+           @if ($discount)
+            <span class="card-price discount">
+             @if ($product->product_prices->first())
+              {{ $price }}
+              {{ $product->product_prices->first()->pricelist->currency->symbol }}
+             @endif
+            </span>
+            <span class="card-price oldprice">
+             {{ $product->product_prices->first()->value_no_discount }}
+             {{ $product->product_prices->first()->pricelist->currency->symbol }}
+            </span>
+           @else
+            <span>
+             @if ($product->product_prices->first())
+              {{ $price }}
+              {{ $product->product_prices->first()->pricelist->currency->symbol }}
+             @endif
+            </span>
+           @endif
+          </p>
+         </div>
+         @if ($price)
+          @livewire('add-to-cart-button', ['product' => $product], key($product->id))
+         @else
+          <button class="card-button-disabled" aria-label="Disabled add to cart button">Indisponibil</button>
+         @endif
+         <div style="display: none" class="dlv">
+          <span class="dlv_name">{{ $product->name }}</span>
+          <span class="dlv_price">{{ $price }}</span>
+          <span
+           class="dlv_currency">{{ optional(optional(optional($product->product_prices->first())->pricelist)->currency)->name }}</span>
+         </div>
+        </div>
+       </div>
+      @endforeach
+     </div>
+     <button class="popular-slider__button card-slider__button prev" aria-label="Previous card slider button">
+      <svg>
+       <polyline points="15 18 9 12 15 6"></polyline>
+      </svg>
+     </button>
+     <button class="popular-slider__button card-slider__button next" aria-label="Next card slider button">
+      <svg>
+       <polyline points="9 18 15 12 9 6"></polyline>
+      </svg>
+     </button>
+    </div>
+   </section>
+  @endif
+  <!-------------------- End Slider Cards -------------------->
+  <!---------------------------------------------------------->
+  <!---------------------- Support Center -------------------->
+  <x-support />
+  <!-------------------- End Support Center ------------------>
+  <!---------------------------------------------------------->
+  <!--------------------- support button --------------------->
+  <x-help-button />
+  <!------------------- End support button ------------------->
+  <!---------------------------------------------------------->
+ </main>
+ <script src="/script/store/main.js" async defer></script>
 </div>
-{{--
-<div class="home__video">
-  <video autoplay loop muted playsinline defaultmuted preload="auto">
-      <source src="images/store/myVideo.mp4" type="video/mp4"> Your browser does not support HTML5 video.
-  </video>
-  <div class="home__video--text container">
-      <h1>Verdele este pasiunea noastră - Descoperă colecția noastră de sticle eco-friendly și fă o
-          alegere sustenabilă!</h1>
-      <span><q><i>20% din profitul nostru susține protecția mediului!</i></q></span>
-      <img src="images/store/white-logo.svg" alt="logo">
-  </div>
-</div>
---}}

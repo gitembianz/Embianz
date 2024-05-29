@@ -1,166 +1,248 @@
-<div>
-    <div class="product">
-        <div class="product__preview">
-            <div class="product__image">
-                @if ($product->media->count() > 0)
-                    <button class="product__image-prev">
-                        <svg>
-                            <polyline points="15 18 9 12 15 6"></polyline>
-                        </svg>
-                    </button>
-                @endif
+<div id="store-show-product">
 
-                @if ($mainpath)
-                    <img class="thumbnail-active" src="{{ $mainpath }}" alt="Product Image" id="openModal">
-                @else
-                    <img class="thumbnail-active" src="/images/store/default/product.png" alt="Product Image"
-                        id="openModal">
-                @endif
-                @if ($product->media->count() > 0)
-                    <button class="product__image-next">
-                        <svg>
-                            <polyline points="9 18 15 12 9 6"></polyline>
-                        </svg>
-                    </button>
-                @endif
-            </div>
-            @if ($product->media->count() > 0)
-                <div class="product__nails">
-                    @foreach ($relatedphotos as $index => $path)
-                        <img class="thumbnail" wire:click="selectpath('{{ $path }}')" src="{{ $path }}"
-                            alt="{{ $path }}"
-                            @if ($path == $mainpath) style="border: 2px solid" @endif>
-                    @endforeach
-                </div>
+ <div class="breadcrumbs container">
+  <a class="breadcrumbs__link" href="{{ url('/') }}">
+   Acasă
+  </a>
+  @if (app()->has('global_show_on_breadcrumbs') && app('global_show_on_breadcrumbs') == 'true')
+   <a class="breadcrumbs__link" href="{{ url('/storeproducts') }}">
+    Toate produsele
+   </a>
+  @endif
+  @if ($product->product_categories->isNotEmpty())
+   @foreach ($product->getCategoryHierarchy() as $breadcrumb)
+    <a class="breadcrumbs__link" href="{{ route('products', ['categorySlug' => $breadcrumb['slug']]) }}">
+     {{ $breadcrumb['name'] }}
+    </a>
+   @endforeach
+  @endif
+  <a
+   href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}"
+   class="breadcrumbs__link">{{ $product->name }}</a>
+ </div>
+ <section class="product container">
+  <!-------------------- Slider Product ------------------>
+  <div class="product-slider">
+   <div class="product-slider__center">
 
-                <div class="product__modal" id="modal">
-                    <div class="slideshow">
-                        <!-- Full-width images with number and caption text -->
+    <div class="product-slider__wrapper">
+     @if ($product->media->count() != 0)
+      @foreach ($product->media->where('type', 'full') as $media)
+       <div class="product-slider__slide">
+        <img loading="lazy" src="/{{ $media->path }}{{ $media->name }}"
+         data-name-alt="{{ $media->name }}{{ $product->name }}" alt="{{ $media->name }}{{ $product->name }}"
+         data-img-src="/{{ $product->media->where('type', 'original')->where('sequence', $media->sequence)->first()->path }}{{ $product->media->where('type', 'original')->where('sequence', $media->sequence)->first()->name }}">
+       </div>
+      @endforeach
+     @else
+      <div class="product-slider__slide">
+       <img loading="lazy" src="/images/store/default/default.webp" data-img-src="/images/store/default/default.webp"
+        alt="something wrong" data-name-alt="something wrong">
+      </div>
+     @endif
+    </div>
+    <div class="product-slider__navigation">
+     <button class="product-slider__prev" aria-label="Previous slide">
+      <svg>
+       <polyline points="15 18 9 12 15 6"></polyline>
+      </svg>
+     </button>
+     <button class="product-slider__next" aria-label="Next slide">
+      <svg>
+       <polyline points="9 18 15 12 9 6"></polyline>
+      </svg>
+     </button>
+    </div>
+   </div>
+   <div class="product-slider__pagination--navigation">
+    <button class="product-slider__pagination--button product-slider__pagination--prev disabled" aria-label="Previous">
+     <svg>
+      <polyline points="15 18 9 12 15 6"></polyline>
+     </svg>
+    </button>
+    <div class="product-slider__pagination">
+    </div>
+    <button class="product-slider__pagination--button product-slider__pagination--next disabled" aria-label="Next">
+     <svg>
+      <polyline points="9 18 15 12 9 6"></polyline>
+     </svg>
+    </button>
+   </div>
+  </div>
+  <!------------------ End Slider Product ---------------->
+  <!------------------------------------------------------>
+  <!-------------------- Modal Product ------------------>
+  <div class="product-modal">
+   <div class="product-modal__content"></div>
+   <button class="product-modal__close">
+    <svg>
+     <polyline points="4 14 10 14 10 20"></polyline>
+     <polyline points="20 10 14 10 14 4"></polyline>
+     <line x1="14" y1="10" x2="21" y2="3"></line>
+     <line x1="3" y1="21" x2="10" y2="14"></line>
+    </svg>
+   </button>
+   <button class="product-modal__prev">
+    <svg>
+     <polyline points="15 18 9 12 15 6"></polyline>
+    </svg>
+   </button>
+   <button class="product-modal__next">
+    <svg>
+     <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+   </button>
+   <span class="product-modal__count"></span>
+  </div>
+  <!------------------ End Modal Product ---------------->
+  <!------------------------------------------------------>
+  <!----------------------- Product details ---------------------->
+  @livewire('product-details', ['product' => $product])
+  <!--------------------- End Product details -------------------->
+  <!------------------------------------------------------>
+ </section>
+ <h2></h2>
+ <!---------------------------------------------------------->
+ <!------------------- Section Description ------------------>
+ @if ($product->related_product->filter(fn($item) => !is_null($item['product']))->isNotEmpty())
+  <section>
+   <div class="section__header container">
+    <h2 class="section__title">Descoperă și alte opțiuni similare</h2>
+    <p class="section__text">
+     În căutarea perfectă? Explorează și alte propuneri care te-ar putea interesa.
+     Descoperă produse similare, perfecte pentru gusturile tale și nevoile tale. În continuare, vei găsi
+     opțiuni care completează gama noastră și care îți pot satisface preferințele. Alege cu încredere
+     dintre
+     aceste alternative și găsește exact ceea ce cauți.
+    </p>
+   </div>
+  </section>
+  <!----------------- End Section Description ---------------->
+  <!---------------------------------------------------------->
+  <!---------------------- Slider Cards ---------------------->
+  <section id="relatedSlider" class="related__slider container">
+   {{-- <div class="related__navigation"> --}}
+   <button class="related__btn prev" aria-label="Previous related slider">
+    <svg>
+     <line x1="19" y1="12" x2="5" y2="12"></line>
+     <polyline points="12 19 5 12 12 5"></polyline>
+    </svg>
+   </button>
+   <button class="related__btn next" aria-label="Next related slider">
+    <svg>
+     <line x1="5" y1="12" x2="19" y2="12"></line>
+     <polyline points="12 5 19 12 12 19"></polyline>
+    </svg>
+   </button>
+   {{-- </div> --}}
+   <div class="related__wrapper">
+    @foreach ($product->related_product->sortByDesc('product.popularity') as $product)
+     @if (
+         $product->product &&
+             $product->product->active == true &&
+             $product->product->end_date >= now()->format('Y-m-d') &&
+             $product->product->start_date <= now()->format('Y-m-d'))
+      <div class="card product">
+       <a
+        href="{{ route('product', ['product' => $product->product->seo_id !== null && $product->product->seo_id !== '' ? $product->product->seo_id : $product->product->id]) }}">
 
-                        @foreach ($product->media as $media)
-                            <?php
-                            $mediaPath = $media->extrenal ? $media->path : "/{$media->path}{$media->name}";
-                            ?>
-                            <div class="slideshow--slides">
-                                <img src="{{ $mediaPath }}" alt="Thumbnail 1">
-                            </div>
-                        @endforeach
-                        <!-- Next and previous buttons -->
-                        @if ($product->media->count() > 0)
-                            <a class="prev" onclick="plusSlides(-1)">
-                                <svg>
-                                    <polyline points="15 18 9 12 15 6"></polyline>
-                                </svg>
-                            </a>
-                            <a class="next" onclick="plusSlides(1)">
-                                <svg>
-                                    <polyline points="9 18 15 12 9 6"></polyline>
-                                </svg>
-                            </a>
-                            <!-- Dots buttons -->
-                            <div class="dots" id="dots">
-                            </div>
-                        @endif
-                        <button id="closeModal">
-                            <svg>
-                                <line x1="18" y1="6" x2="6" y2="18"></line>
-                                <line x1="6" y1="6" x2="18" y2="18"></line>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-            @else
+        @if ($product->product->media->first() != null)
+         <img loading="lazy" class="card-image"
+          src="/{{ $product->product->media->first()->path }}{{ $product->product->media->first()->name }}"
+          alt="{{ $product->product->media->first()->name }} {{ $product->product->name }}">
+        @else
+         <img loading="lazy" class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
+        @endif
+       </a>
+       @livewire('product-wishlist-button', ['productId' => $product->product->id, 'class' => 'card__action', 'is_in_wishlist' => $product->product->wishlists->isNotEmpty()], key($product->product->id))
+       <?php if ($product->product->product_prices->count() != 0) {
+           $price = number_format($product->product->product_prices->first()->value, 2, ',', '.');
+           $discount = $product->product->product_prices->first()->discount != 0 ? true : false;
+       } else {
+           $price = null;
+           $discount = false;
+       }
+       ?>
+       @if ($price)
+        @if ($product->product->quantity < $quantity && $product->product->quantity > 0)
+         <p class="card-status out">
+          Stock limitat!!
+         </p>
+         @if ($discount)
+          <p class="card-status save-secondary">
+           -{{ $product->product->product_prices->first()->discount }}%
+          </p>
+         @endif
+        @elseif($product->product->quantity == 0)
+         <p class="card-status save">
+          Produs indisponibil!
+         </p>
+        @else
+         @if ($discount)
+          <p class="card-status save">
+           -{{ $product->product->product_prices->first()->discount }}%
+          </p>
+         @endif
+        @endif
+        {{-- tagul de discount --}}
+       @else
+        <p class="card-status save">
+         În curând!
+        </p>
+       @endif
+       <div class="card-info">
+        <div class="card-text">
+         <span>{{ $product->product->short_description }}</span>
+        </div>
+        <div class="card-text">
+         <h3>{{ $product->product->name }}</h3>
+         <p class="card-price">
+          @if ($discount)
+           <span class="card-price discount">
+            @if ($product->product->product_prices->first())
+             {{ $price }}
+             {{ $product->product->product_prices->first()->pricelist->currency->symbol }}
             @endif
-        </div>
-        <div class="product__info">
-            <h1>{{ $product->name }}</h1>
-            <p>{{ $product->short_description }}</p>
-            <div class="product__price">
-                <div class="product__count">
-                    <button id="countDecrease" wire:click="decrementCounter">
-                        <svg>
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                        </svg>
-                    </button>
-                    <input type="number" name="count" id="count" wire:model="quantity">
-                    <button id="countIncrease" wire:click="incrementCounter">
-                        <svg>
-                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                        </svg>
-                    </button>
+           </span>
+           <span class="card-price oldprice">
+            {{ $product->product->product_prices->first()->value_no_vat }}
+            {{ $product->product->product_prices->first()->pricelist->currency->name }}
+           </span>
+          @else
+           <span>
+            @if ($product->product->product_prices->first())
+             {{ $price }}
+             {{ $product->product->product_prices->first()->pricelist->currency->symbol }}
+            @endif
+           </span>
+          @endif
 
-                </div>
-                @if ($maxlimit)
-                    <label for="count">Quantity limit products reach / {{ $limit }}</label>
-                @endif
+         </p>
+        </div>
+        @if ($price)
+         @livewire('add-to-cart-button', ['product' => $product->product], key($product->product->id))
+        @else
+         <a class="card-button-disabled" onclick="handleClick()" aria-label="Indisponibil">Indisponibil</a>
+        @endif
+       </div>
+       <div style="display: none" class="dlv">
+        <span class="dlv_name">{{ $product->product->name }}</span>
+        <span class="dlv_price">{{ $price }}</span>
+        <span
+         class="dlv_currency">{{ optional(optional(optional($product->product->product_prices->first())->pricelist)->currency)->name }}</span>
+       </div>
+      </div>
+     @endif
+    @endforeach
+   </div>
+  </section>
+ @endif
 
-                <h3>
-                    @if ($product->product_prices->first() !== null)
-                        {{ $product->product_prices->first()->value }}
-                        {{ $product->product_prices->first()->pricelist->currency->name }}
-                    @else
-                        no price
-                    @endif
-                </h3>
-            </div>
-            <div class="product__buttons">
-                <button class="product__btn">Add to cart</button>
-                <button class="product__item--heart @if ($product->wishlists->where('session_id', $session_id)->isNotEmpty()) active @endif"
-                    aria-label="add to favorites" wire:click="toggleWishlist({{ $product->id }})">
-                    <svg>
-                        <path
-                            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
-                        </path>
-                    </svg>
-                </button>
-                {{-- <button class="product__btn">
-                    <svg>
-                        <path
-                            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
-                        </path>
-                    </svg>
-                </button> --}}
-            </div>
-        </div>
-    </div>
-    <div class="tab">
-        <div class="tab__header">
-            <button class="tab__header--btn @if ($activeTab === 0) active @endif"
-                wire:click="switchTab(0)">Description</button>
-            <button class="tab__header--btn @if ($activeTab === 1) active @endif"
-                wire:click="switchTab(1)">Details</button>
-        </div>
-        <div class="tab__content">
-            <div class="tab__pane @if ($activeTab === 0) active @endif">
-                <p>{{ $product->long_description }}</p>
-            </div>
-            <div class="tab__pane @if ($activeTab === 1) active @endif">
-                <div class="table__wrapper">
-                    <table class="table__info">
-                        <thead>
-                            <tr>
-                                <th>Specification </th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if ($product->product_specs->first() !== null)
-                                @foreach ($product->product_specs as $spec)
-                                    <tr>
-                                        <td>{{ $spec->spec->name }}</td>
-                                        <td>{{ $spec->value }}</td>
-                                    </tr>
-                                @endforeach
-                            @else
-                                <tr>
-                                    <td colspan="2">No Specs for this product</td>
-                                </tr>
-                            @endif
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
+ <!-------------------- End Slider Cards -------------------->
+ <!---------------------------------------------------------->
+ <!--------------------- support button --------------------->
+ <x-help-button />
+ <!------------------- End support button ------------------->
+ <!---------------------------------------------------------->
+ <script src="/script/store/product.js" async defer></script>
 </div>

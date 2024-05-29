@@ -69,7 +69,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => env('APP_TIMEZONE'),
 
     /*
     |--------------------------------------------------------------------------
@@ -121,9 +121,9 @@ return [
     |
     */
 
-    'key' => env('APP_KEY'),
 
     'cipher' => 'AES-256-CBC',
+    'key' => env('APP_KEY'),
 
     /*
     |--------------------------------------------------------------------------
@@ -186,7 +186,6 @@ return [
          * Package Service Providers...
          */
 
-         Maatwebsite\Excel\ExcelServiceProvider::class,
 
 
         /*
@@ -194,11 +193,12 @@ return [
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\FortifyServiceProvider::class,
         App\Providers\JetstreamServiceProvider::class,
+        App\Providers\GlobalVariablesServiceProvider::class,
+
 
     ],
 
@@ -215,7 +215,6 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
-        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 
     ])->toArray(),
 

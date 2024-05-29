@@ -1,6 +1,6 @@
 <x-dashboardheader />
 <x-dashboardnavbar />
-<x-dashboardsidebar />
+<x-dashboardsidebar :active="__('store_settings')" />
 
 <section class="content">
     <livewire:storesettingsform />

@@ -1,10 +1,7 @@
-<x-store-head />
+<x-store-head :canonical="'storeproducts' . ($can ? '/' . $can : '')" :title='($data->seo_title ?? "Produse") . " | "' :description='$data->meta_description ?? $data->name ?? ""' />
+
 <x-store-header />
 <main>
-    <section class="products container">
-        <livewire:store-products category="{{ $data }}" />
-        {{-- filter part --}}
-
-    </section>
+ <livewire:store-products category="{{ $data }}" />
 </main>
 <x-store-footer />

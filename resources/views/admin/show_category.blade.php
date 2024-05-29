@@ -6,7 +6,7 @@
 <section class="content">
 
     {{-- livewire tabs --}}
-    <livewire:show-category categoryId="{{ $data->id }}" />
+    @livewire('show-category', ['categoryId' => $data->id])
 
     {{-- end livewire tabs --}}
     <a href="#" class="top-up-btn" id="topUp">
