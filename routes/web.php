@@ -94,6 +94,7 @@
 
       route::view('/storesettings', 'admin.store_settings')->name('storesettings');
       route::view('/addstoresettings', 'admin.add_storesetting')->name('add_storesetting');
+      route::view('/labels', 'admin.labels')->name('labels');
 
       //specific routes
       route::get('/cleareverything', function () {
@@ -133,7 +134,7 @@
 
   //simple page routes
 
-  route::view('/', 'store.home')->name('home')->middleware('cache-control');
+  route::get('/', [HomeController::class, 'home'])->name('home')->middleware('cache-control');
   route::view('/cart', 'store.cart')->name('cart');
   route::view('/wishlist', 'store.wislist')->name('wislist');
   route::view('/order', 'store.order')->name('order');
