@@ -1,196 +1,348 @@
-<div class="products">
-    <div class="products__control">
-        {{-- <div class="filter"> --}}
-        {{-- Filter Button Left overs --}}
-        {{-- <button class="filter__open" id="filterOpen" wire:click="$toggle('property')">
-                Filters
-                <svg>
-                    <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
-                </svg>
-            </button> --}}
-        {{-- Filter Content --}}
-        {{-- <div class="filter__content @if ($property) show @endif">
-                @foreach ($specification as $index => $spec)
-                    <div class="filter__dropdown">
-                        <button class="filter__dropdown--btn">
-                            {{ $spec->name }}
-                            <svg>
-                                <polyline points="6 9 12 15 18 9"></polyline>
-                            </svg>
-                        </button>
-                        <div class="filter__dropdown--content">
-                            <ul class="filter__list">
-                                @foreach ($spec->product_spec as $innerIndex => $value)
-                                    <li class="filter__item">
-                                        <input type="checkbox"
-                                            wire:model="selectedSpecValues.{{ $index }}.{{ $innerIndex }}.{{ $value }}"
-                                            id="filter{{ $index }}_{{ $innerIndex }}">
-                                        <label
-                                            for="filter{{ $index }}_{{ $innerIndex }}">{{ $value->value }}</label>
-                                    </li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    </div>
-                @endforeach
-                {{-- <div class="filter__buttons">
-                    <button wire:click="applyFilter">Apply</button>r
-                    <button>Reset</button>
-                </div> --}}
-        {{-- </div> --}}
-        {{-- </div> --}}
-        <div class="filter__search">
-            <input type="text" wire:model="search" placeholder="Search...">
-            <button aria-label="search button">
-                <svg>
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                </svg>
-            </button>
-        </div>
-        <div class="filter__sort">
-            <button class="filter__sort--btn">Sort
-                <svg>
-                    <line x1="12" y1="20" x2="12" y2="10"></line>
-                    <line x1="18" y1="20" x2="18" y2="4"></line>
-                    <line x1="6" y1="20" x2="6" y2="16"></line>
-                </svg>
-            </button>
-            <div class="filter__sort--content">
-                <ul class="filter__sort--list">
-                    <li class="filter__sort--item">
-                        <input wire:model="orderBy" type="radio" name="sort" value="best_selling" id="sort2">
-                        <label for="sort2">Best selling</label>
-                    </li>
-                    <li class="filter__sort--item">
-                        <input wire:model="orderBy" type="radio" name="sort" value="name_az" id="sort3">
-                        <label for="sort3">Alphabetically, A-Z</label>
-                    </li>
-                    <li class="filter__sort--item">
-                        <input wire:model="orderBy" type="radio" name="sort" value="name_za" id="sort4">
-                        <label for="sort4">Alphabetically, Z-A</label>
-                    </li>
-                    <li class="filter__sort--item">
-                        <input wire:model="orderBy" type="radio" name="sort" value="date_old_new" id="sort7">
-                        <label for="sort7">Date, old to new</label>
-                    </li>
-                    <li class="filter__sort--item">
-                        <input wire:model="orderBy" type="radio" name="sort" value="date_new_old" id="sort8">
-                        <label for="sort8">Date, new to old</label>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    @if ($category)
-        <ul class="filter__applied">
-            <li>
-                <button class="filter__applied--item">
-                    Category: {{ $categoryname }}
-                    <svg wire:click="clearcategory()">
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                </button>
-            </li>
-            {{-- <li>
-            <button class="filter__applied--clear">
-                Load more...
-        </li> --}}
-            <li>
-                <button wire:click="clearcategory()" class="filter__applied--clear">
-                    Clear all
-                </button>
-            </li>
-        </ul>
+<div wire:scroll="loadMore">
+
+ <!-- Acesta este Store Products (Catalogol Magazinului), acesta
+    are sistemul de filtre, card-uri, si stilul Catalogului -->
+
+ <!---------------------------------------------------------->
+ <!------------------------Breadcrumbs----------------------->
+ <div class="breadcrumbs container">
+  <a class="breadcrumbs__link" href="{{ url('/') }}">
+   Acasă
+  </a>
+  @if (app()->has('global_show_on_breadcrumbs') && app('global_show_on_breadcrumbs') == 'true')
+   <a class="breadcrumbs__link" href="{{ url('/storeproducts') }}">
+    Toate produsele
+   </a>
+  @endif
+  <!-------------------If Category is appear------------------>
+  @if ($category != null && $category->id != app('global_default_category'))
+   @foreach ($category->getCategoryBreadcrumbs() as $breadcrumb)
+    @if ($breadcrumb['name'] === $category->name)
+     <a class="breadcrumbs__link"
+      href="{{ route('products', ['categorySlug' => $category->seo_id !== null && $category->seo_id !== '' ? $category->seo_id : $category->id]) }}">
+      {{ $category->name }}
+     </a>
+    @else
+     <a class="breadcrumbs__link" href="{{ route('products', ['categorySlug' => $breadcrumb['slug']]) }}">
+      {{ $breadcrumb['name'] }}
+     </a>
     @endif
-    <div class="product__catalog">
-        @if ($products->isEmpty())
-            <p>No products found</p>
-        @else
-            @foreach ($products as $product)
-                {{-- <a href="/product/{{ $product->id }}'"> --}}
-                <article class="product__item" @if ($loop->last) id="last_record" @endif>
+   @endforeach
+  @endif
+  <!-----------------End If Category is appear---------------->
+ </div>
+ <!----------------------End Breadcrumbs--------------------->
+ <!---------------------------------------------------------->
+ <!----------------------Categorie + detalii--------------------->
+ @if ($category)
+  <section class="section__header container">
+   <h1 class="section__title">{{ $category->name }}</h1>
+   <p class="section__text">
+    {!! $category->long_description !!}
+   </p>
+  </section>
+ @endif
+ <!----------------------End Categorie + detalii--------------------->
 
-                    <a href="/product/{{ $product->id }}">
-                        @if (count($product->media) > 0)
-                            @foreach ($product->media as $media)
-                                @if ($media->location->location == 'main')
-                                    @if ($media->external)
-                                        <img src="{{ $media->path }}" draggable="false" alt="{{ $media->path }}">
-                                    @else
-                                        <img src="/{{ $media->path }}{{ $media->name }}" draggable="false"
-                                            alt="{{ $media->path }}">
-                                    @endif
-                                    <?php break; ?>
-                                @endif
-                            @endforeach
-                        @else
-                            <img src="/images/store/default/default.svg" draggable="false" alt="something wrong">
-                        @endif
-                    </a>
-                    <div class="product__item--bundle">
-                        <h4>{{ $product->name }}</h4>
-                        {{-- <span>1000ml</span> --}}
-                        {{-- <p>{{ $product->short_description }}</p> --}}
-                        <div class="product__item--buttons">
-                            <div class="product__item--price">
-                                <span>
-                                    @php
-                                        $price = $product->product_prices->first();
-                                    @endphp
+ <!---------------------------------------------------------->
+ <!---------------------------Filter------------------------->
+ <section class="controls container">
+  <button class="controls__button" id="filterOpen" wire:click="$set('showspecfilter', true)"
+   aria-label="Open filter button">
+   <svg>
+    <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+   </svg>
+  </button>
+  <input class="controls__search" maxlength="100" type="text" name="search" id="search" wire:model="search"
+   autocomplete="off" placeholder="Caută în listă...">
+  <button class="controls__button" id="sortOpen" aria-label="Open sort button">
+   <svg>
+    <line x1="21" y1="10" x2="7" y2="10"></line>
+    <line x1="21" y1="6" x2="3" y2="6"></line>
+    <line x1="21" y1="14" x2="3" y2="14"></line>
+    <line x1="21" y1="18" x2="7" y2="18"></line>
+   </svg>
+  </button>
+ </section>
+ <!-------------------------End c----------------------->
+ <!---------------------------------------------------------->
+ <!----------------------Categorie + detalii--------------------->
+ <!---------------------------- Tags-------------------------->
+ @if (!empty($selectedSpecNames))
+  <section class="tag container">
+   @foreach ($selectedSpecNames as $key => $name)
+    <button class="tag__button" wire:click="removeSpec('{{ $key }}')">
+     {{ $name }}: {{ $key }}
+     <svg>
+      <line x1="18" y1="6" x2="6" y2="18"></line>
+      <line x1="6" y1="6" x2="18" y2="18"></line>
+     </svg>
+    </button>
+   @endforeach
+   <button class="tag__button" wire:click="clearall()" class="filter__applied--clear">
+    Elimină toate filtrele
+    <svg>
+     <line x1="18" y1="6" x2="6" y2="18"></line>
+     <line x1="6" y1="6" x2="18" y2="18"></line>
+    </svg>
+   </button>
+  </section>
+ @endif
+ <!--------------------------End  Tags------------------------>
+ <!---------------------------------------------------------->
+ <!-------------------------Catalogue------------------------>
+ <h2></h2>
+ <section class="catalogue container">
+  @if ($products->isEmpty())
+   <p>Nu au fost produse gasite</p>
+  @else
+   @foreach ($products as $index => $product)
+    <div class="product">
+     <div @if ($loop->last) id="last_record" @endif class="card">
+      <a
+       href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">
+       @if ($product->media->first() != null)
+        <img loading="lazy" class="card-image"
+         src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}"
+         alt="{{ $product->media->first()->name }} {{ $product->name }}">
+       @else
+        <img loading="lazy" class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
+       @endif
+      </a>
+      <?php if ($product->product_prices->count() != 0) {
+          $price = number_format($product->product_prices->first()->value, 2, ',', '.');
+          $discount = $product->product_prices->first()->discount != 0 ? true : false;
+      } else {
+          $price = null;
+          $discount = false;
+      }
+      ?>
 
-                                    @if ($price)
-                                        {{ $price->value }} {{ $price->pricelist->currency->first()->name }}
-                                    @else
-                                        unavailable
-                                    @endif
-                                </span>
-                            </div>
-                            @if ($price && $product->quantity != 0)
-                                <button wire:click="addToCart({{ $product->id }})" class="product__item--btn"
-                                    aria-label="product cart">
-                                    <svg>
-                                        <circle cx="9" cy="21" r="1"></circle>
-                                        <circle cx="20" cy="21" r="1"></circle>
-                                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6">
-                                        </path>
-                                    </svg>
-                                </button>
-                            @endif
-                        </div>
-                    </div>
-                    <div class="product__item--header">
-                        @if ($price)
-                            @if ($product->quantity < $quantity && $product->quantity > 0)
-                                <p class="product__item--stock">
-                                    Low stock!
-                                </p>
-                            @elseif($product->quantity == 0)
-                                <p class="product__item--stock">
-                                    Out of stock!
-                                </p>
-                            @else
-                                <p></p>
-                            @endif
-                        @else
-                            <p class="product__item--stock">
-                                Comming soon!
-                            </p>
-                        @endif
-                        <button class="product__item--heart @if ($product->wishlists->where('session_id', $session_id)->isNotEmpty()) active @endif"
-                            aria-label="add to favorites" wire:click="toggleWishlist({{ $product->id }})">
-                            <svg>
-                                <path
-                                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
-                                </path>
-                            </svg>
-                        </button>
-                    </div>
-                </article>
-                {{-- </a> --}}
-            @endforeach
+      @if ($price)
+       {{-- Out- negru // save - rosu --}}
+       @if ($product->quantity < $quantity && $product->quantity > 0)
+        <p class="card-status out">
+         Stock limitat!
+        </p>
+        @if ($discount)
+         <p class="card-status save-secondary">
+          -{{ $product->product_prices->first()->discount }}%
+         </p>
         @endif
+       @elseif($product->quantity == 0)
+        <p class="card-status save">
+         Produs indisponibil!
+        </p>
+       @else
+        @if ($discount)
+         <p class="card-status save">
+          -{{ $product->product_prices->first()->discount }}%
+         </p>
+        @endif
+       @endif
+       {{-- tagul de discount --}}
+      @else
+       <p class="card-status save">
+        În curând!
+       </p>
+      @endif
+      @livewire(
+          'product-wishlist-button',
+          [
+              'productId' => $product->id,
+              'class' => 'card__action',
+              'is_in_wishlist' => $product->wishlists->isNotEmpty(),
+          ],
+          key($product->id)
+      )
+
+      <div class="card-info">
+       <div class="card-text">
+        <span>{{ $product->short_description }}</span>
+       </div>
+       <div class="card-text">
+        <h3 class="card-title">{{ $product->name }}</h3>
+        <p class="card-price">
+         @if ($discount)
+          <span class="card-price discount">
+           @if ($product->product_prices->first())
+            {{ $price }}
+            {{ $product->product_prices->first()->pricelist->currency->symbol }}
+           @endif
+          </span>
+          <span class="card-price oldprice">
+           {{ $product->product_prices->first()->value_no_discount }}
+           {{ $product->product_prices->first()->pricelist->currency->symbol }}
+          </span>
+         @else
+          <span>
+           @if ($product->product_prices->first())
+            {{ $price }}
+            {{ $product->product_prices->first()->pricelist->currency->symbol }}
+           @endif
+          </span>
+         @endif
+        <div style="display: none">
+         <span class="dlv_name">{{ $product->name }}</span>
+         <span class="dlv_price">{{ $price }}</span>
+         <span
+          class="dlv_currency">{{ optional(optional(optional($product->product_prices->first())->pricelist)->currency)->name }}</span>
+        </div>
+        </p>
+       </div>
+       @if ($price)
+        @livewire('add-to-cart-button', ['product' => $product], key($product->id . $index))
+       @else
+        <button class="card-button-disabled" aria-disabled="disabled add to cart button">Indisponibil</button>
+       @endif
+      </div>
+     </div>
     </div>
-    <x-lazy />
+   @endforeach
+   <x-lazy />
+  @endif
+ </section>
+
+ @if ($products->total() >= $loadAmount)
+  <section class="container">
+   <button class="filter__apply" wire:click="loadMore" wire:loading.remove>Vezi mai mult!</button>
+  </section>
+ @endif
+ <!-----------------------End Catalogue---------------------->
+ <!---------------------------------------------------------->
+ <!---------------------------Filter------------------------->
+ <div class="filter @if ($showspecfilter) active @endif" id="filterList">
+  <div class="filter__content" id="filterContent">
+   <div class="filter__top">
+    <button class="filter__apply" id="resetFilter" wire:click="resetFilter">
+     Șterge Filtrele
+     <svg>
+      <polyline points="23 4 23 10 17 10"></polyline>
+      <polyline points="1 20 1 14 7 14"></polyline>
+      <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+     </svg>
+    </button>
+    <button class="filter__reset" wire:click="$set('showspecfilter', false)" id="filterClose" href="#">
+     <svg>
+      <line x1="18" y1="6" x2="6" y2="18"></line>
+      <line x1="6" y1="6" x2="18" y2="18"></line>
+     </svg>
+    </button>
+   </div>
+   <button class="filter__top filter__top--button" wire:click="$set('showspecfilter', false)">
+    Afișează rezultate: <span>{{ $products->total() }}</span>
+   </button>
+   <div wire:ignore class="filter__list">
+    @foreach ($filtervalues->sortBy('spec.sequence')->groupBy('spec_id') as $values)
+     <div class="dropfilter">
+      <div class="dropfilter__button">
+       <button class="dropfilter__open" href="#">
+        <h4>{{ $values->first()->spec->name }}</h4>
+        <svg>
+         <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+       </button>
+      </div>
+      <div class="dropfilter__list">
+       @foreach ($values->sortBy('sequence') as $value)
+        @php
+         $key = str_replace('.', '_', $value->value); // Replace dots with underscores in the key
+        @endphp
+        <label class="dropfilter__link" for="{{ $value->id }}{{ $value->value }}">
+         <input type="checkbox" wire:model="selectedSpecValues.{{ $value->spec_id }}.{{ $key }}"
+          wire:change="applyFilter" id="{{ $value->id }}{{ $value->value }}">
+         <h4>{{ $value->value }}</h4>
+        </label>
+       @endforeach
+
+      </div>
+     </div>
+    @endforeach
+    <!-------------------- Dropdown (filter) -------------------->
+   </div>
+  </div>
+  <button class="filter__close-modal" wire:click="$set('showspecfilter', false)"></button>
+ </div>
+ <!-------------------------End Filter----------------------->
+ <!---------------------------------------------------------->
+ <!-------------------------Asortiment----------------------->
+ <div class="filter" id="sortList">
+  <div class="filter__content" id="sortContent">
+   <div class="filter__top">
+    <div class="filter__text--long">
+     Ordonează după:
+    </div>
+    <button class="filter__reset" id="sortClose" href="#">
+     <svg>
+      <line x1="18" y1="6" x2="6" y2="18"></line>
+      <line x1="6" y1="6" x2="18" y2="18"></line>
+     </svg>
+    </button>
+   </div>
+   <div class="filter__list">
+
+    <input class="filter__input" wire:model="orderBy" type="radio" name="sort" value="best_selling"
+     id="sort">
+    <label class="filter__link sort__item" for="sort">
+     <h4>Cele mai populare</h4>
+    </label>
+
+    <input class="filter__input" wire:model="orderBy" type="radio" name="sort1" value="price_as"
+     id="sort1">
+    <label class="filter__link sort__item" for="sort1">
+     <h4>Preț crescător</h4>
+    </label>
+
+    <input class="filter__input" wire:model="orderBy" type="radio" name="sort2" value="price_ds"
+     id="sort2">
+    <label class="filter__link sort__item" for="sort2">
+     <h4>Preț descrescător</h4>
+    </label>
+
+    <input class="filter__input" wire:model="orderBy" type="radio" name="sort3" value="quantity"
+     id="sort3">
+    <label class="filter__link sort__item" for="sort3">
+     <h4>Disponibilitate (stoc descrescator)</h4>
+    </label>
+
+    <input class="filter__input" wire:model="orderBy" type="radio" name="sort8" value="quantity_as"
+     id="sort8">
+    <label class="filter__link sort__item" for="sort8">
+     <h4>Disponibilitate (stoc crescator)</h4>
+    </label>
+
+    <input class="filter__input" wire:model="orderBy" type="radio" name="sort4" value="name_az"
+     id="sort4">
+    <label class="filter__link sort__item" for="sort4">
+     <h4>Alfabetic, A-Z</h4>
+    </label>
+
+    <input class="filter__input" wire:model="orderBy" type="radio" name="sort5" value="name_za"
+     id="sort5">
+    <label class="filter__link sort__item" for="sort5">
+     <h4>Alfabetic, Z-A</h4>
+    </label>
+
+    <input class="filter__input" wire:model="orderBy" type="radio" name="sort6" value="date_old_new"
+     id="sort6">
+    <label class="filter__link sort__item" for="sort6">
+     <h4>Dată, de la vechi la nou</h4>
+    </label>
+
+    <input class="filter__input" wire:model="orderBy" type="radio" name="sort7" value="date_new_old"
+     id="sort7">
+    <label class="filter__link sort__item" for="sort7">
+     <h4>Dată, de la nou la vechi</h4>
+    </label>
+   </div>
+  </div>
+ </div>
+ <!-----------------------End Asortiment--------------------->
+ <!---------------------------------------------------------->
+ <!---------------------------------------------------------->
+ <!--------------------- support button --------------------->
+ <x-help-button />
+ <!------------------- End support button ------------------->
+ <!---------------------------------------------------------->
+ <script src="/script/store/catalog.js" async defer></script>
 </div>

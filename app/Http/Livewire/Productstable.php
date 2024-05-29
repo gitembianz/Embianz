@@ -4,12 +4,15 @@ namespace App\Http\Livewire;
 
 use App\Models\Product;
 use Livewire\Component;
+use App\Models\Wishlist;
+use App\Models\Cart_Item;
+use App\Models\Product_Spec;
 use Livewire\WithPagination;
-use App\Exports\ProductsExport;
 use App\Models\PricelistEntries;
 use App\Models\Products_categories;
-use App\Models\Product_Spec;
+use App\Models\Related_Products;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Schema;
 
 class Productstable extends Component
 {
@@ -22,7 +25,7 @@ class Productstable extends Component
   public $selectPage = false;
   public $selectAll = false;
   public $productidbeingremoved = null;
-  public $columns = ['Id', 'Description', 'Created At'];
+  public $columns;
   public $selectedColumns = [];
   public $col = false;
   public $all = false;
@@ -33,15 +36,13 @@ class Productstable extends Component
       'products' => $this->products
     ]);
   }
-  public function mount()
+  public function mount($tableName)
   {
+    $this->columns = Schema::getColumnListing($tableName);
     $this->selectedColumns = $this->columns;
   }
   public function showColumn($column)
   {
-    if ($column === 'Name') {
-      return true;
-    }
     return in_array($column, $this->selectedColumns);
   }
   public function updatedSelectPage($value)
@@ -105,6 +106,31 @@ class Productstable extends Component
           $productspec->delete();
         }
       }
+      $relproducts = Related_Products::where('product_id', $id)->orwhere('parrent_id', $id)->get();
+      if ($relproducts != NULL) {
+        foreach ($relproducts as $item) {
+          $item->delete();
+        }
+      }
+      //de comentat pe viitor
+      $productcarts = Cart_Item::where('product_id', $id)->get();
+      if ($productcarts != NULL) {
+        foreach ($productcarts as $cartitem) {
+          $cart = $cartitem->cart;
+          $cart->sum_amount -= $cartitem->price;
+          $cart->quantity_amount -= $cartitem->quantity;
+          $cart->save();
+          $cartitem->delete();
+          $this->emit('cartUpdated');
+        }
+      }
+      $productswishlist = Wishlist::where('product_id', $id)->get();
+      if ($productswishlist != NULL) {
+        foreach ($productswishlist as $productwis) {
+          $productwis->delete();
+          $this->emit('wishlistUpdated');
+        }
+      }
       $productpricelists = PricelistEntries::where('product_id', $id)->get();
       if ($productpricelists != NULL) {
         foreach ($productpricelists as $productpricelist) {
@@ -123,6 +149,7 @@ class Productstable extends Component
       $producttodel->delete();
     }
     $this->checked = [];
+    $this->selectPage = false;
     session()->flash('notification', [
       'message' => 'Records deleted successfully!',
       'type' => 'success',
@@ -137,6 +164,24 @@ class Productstable extends Component
     if ($productcats != NULL) {
       foreach ($productcats as $productcat) {
         $productcat->delete();
+      }
+    }
+    $productcarts = Cart_Item::where('product_id', $id)->get();
+    if ($productcarts != NULL) {
+      foreach ($productcarts as $cartitem) {
+        $cart = $cartitem->cart;
+        $cart->sum_amount -= $cartitem->price;
+        $cart->quantity_amount -= $cartitem->quantity;
+        $cart->save();
+        $cartitem->delete();
+        $this->emit('cartUpdated');
+      }
+    }
+    $productswishlist = Wishlist::where('product_id', $id)->get();
+    if ($productswishlist != NULL) {
+      foreach ($productswishlist as $productwis) {
+        $productwis->delete();
+        $this->emit('wishlistUpdated');
       }
     }
     $productspecs = Product_Spec::where('product_id', $id)->get();
@@ -180,17 +225,5 @@ class Productstable extends Component
   public function isChecked($id)
   {
     return in_array($id, $this->checked);
-  }
-  public function exportSelected()
-  {
-    $export = new ProductsExport($this->checked);
-    $this->checked = [];
-    $this->selectPage = false;
-    session()->flash('notification', [
-      'message' => 'Report download successfully!',
-      'type' => 'success',
-      'title' => 'Success'
-    ]);
-    return $export->download('products.xlsx');
   }
 }

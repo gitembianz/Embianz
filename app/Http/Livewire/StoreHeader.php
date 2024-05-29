@@ -3,158 +3,111 @@
 namespace App\Http\Livewire;
 
 use App\Models\Cart;
-use App\Models\Cart_Item;
-use App\Models\Product;
 use Livewire\Component;
 use App\Models\Category;
-use App\Models\Wishlist;
-use Illuminate\Support\Facades\Session;
 
 class StoreHeader extends Component
 {
-  public $limit = 5;
-  public $search = '';
-  public $active = false;
-  public $wishlistitems;
-  public $showwis = false;
-  public $showcart = false;
-  public $total;
+  public $session_id;
   protected $listeners = [
-    'wishlistUpdated' => 'mount',
-    'cartUpdated' => 'mount'
+    'newcart' => 'NewCart',
+    'orderprocess' => 'getCartProperty',
   ];
+
+  private function getSessionId()
+  {
+    if (array_key_exists('sessionId', $_COOKIE)) {
+      return $_COOKIE['sessionId'];
+    } else {
+      $sessionId = session()->getId();
+      setcookie('sessionId', $sessionId, time() + 30 * 24 * 60 * 60, '/', null, false, true);
+      return $sessionId;
+    }
+  }
 
   public function render()
   {
     $data = [
       'categories' => $this->categories,
-      'objects' => $this->objects,
-      'cats' => $this->cats,
-      'wishlistitems' => $this->wishlistItems,
-      'cartitems' => $this->cartItems,
+      'cart' => $this->cart,
+
     ];
-
     return view('livewire.store-header', $data);
-  }
-  public function close()
-  {
-    $this->active = false;
-    $this->search = '';
-  }
-  public function getWishlistItemsProperty()
-  {
-    $session_id = Session::getId();
-    $wishlist = Wishlist::where('session_id', $session_id)->pluck('product_id')->toArray();
-    return Product::whereIn('id', $wishlist)->get();
-  }
-  public function refreshWishlist()
-  {
-    // Update the wishlistitems property here
-    $this->wishlistitems = $this->getWishlistItemsProperty();
-  }
-
-  public function getCartItemsProperty()
-  {
-    $session_id = Session::getId();
-    $cart = Cart::where('session_id', $session_id)->first(); // Use first() instead of get()
-
-    if ($cart !== null) {
-      $cartItems = Cart_Item::where('cart_id', $cart->id)->pluck('product_id')->toArray();
-
-      if (!empty($cartItems)) {
-        return Product::whereIn('id', $cartItems)->get();
-      }
-    }
-
-    return collect(); // Return an empty collection if no cart items are found
-  }
-
-  public function wishlistshow()
-  {
-    if ($this->showwis === false) {
-      $this->showcart = false;
-      $this->showwis = true;
-    } else {
-      $this->showwis = false;
-    }
-  }
-  public function cartshow()
-  {
-    if ($this->showcart === false) {
-      $this->showwis = false;
-      $this->showcart = true;
-    } else {
-      $this->showcart = false;
-    }
-  }
-  public function reload()
-  {
-    // No need to add any code here, just an empty method
-  }
-
-  public function removeFromWishlist($productId)
-  {
-    $session_id = Session::getId();
-    Wishlist::where('session_id', $session_id)
-      ->where('product_id', $productId)
-      ->delete();
-    $this->emit('wishlistUpdated');
-  }
-  public function removeFromCart($productId)
-  {
-    $session_id = Session::getId();
-    $cart = Cart::where('session_id', $session_id)->first();
-
-    if ($cart !== null) {
-      $cart_item = Cart_Item::firstOrNew([
-        'cart_id' => $cart->id,
-        'product_id' => $productId,
-      ]);
-
-      if ($cart_item->exists) {
-        $cart->quantity_amount -= $cart_item->quantity;
-        $cart->save();
-        $cart_item->delete();
-
-        if ($cart->quantity_amount <= 0) {
-          $cart->delete();
-        }
-
-        $this->emit('cartUpdated');
-      }
-    }
   }
   public function mount()
   {
-    $session_id = Session::getId();
+    $this->session_id = $this->getSessionId();
+  }
 
-    // Use sum() method to calculate the total quantity
-    $this->total = Cart::where('session_id', $session_id)->sum('quantity_amount');
-    $this->wishlistitems = $this->getWishlistItemsProperty();
+  public function getCartProperty()
+  {
+    return Cart::select('id', 'quantity_amount')
+      ->where('session_id', $this->session_id)
+      ->where('status_id', '!=', app('global_cart_closed'))
+      ->latest()
+      ->first() ?? null;
+  }
+
+  public function NewCart()
+  {
+    $this->getCategoriesProperty();
+    $this->emit('newcartlist');
   }
 
   public function getCategoriesProperty()
   {
-    return $this->categoriesQuery->limit($this->limit)->get();
+    return Category::select('id', 'name', 'seo_id', 'sequence')
+      ->with([
+        'media' => function ($query) {
+          $query->where('type', 'min')->select('media_id', 'path', 'name');
+        },
+        'subcategory' => function ($query) {
+          $query->whereHas('category', function ($query) {
+            $this->applyCategoryConditions($query);
+          })->with([
+            'category' => function ($query) {
+              $query->select('id', 'name', 'seo_id', 'sequence');
+              $this->applyCategoryConditions($query);
+              $query->with([
+                'media' => function ($query) {
+                  $query->where('type', 'min')->select('media_id', 'path', 'name');
+                },
+                'subcategory' => function ($query) {
+                  $query->whereHas('category', function ($query) {
+                    $this->applyCategoryConditions($query);
+                  })->with([
+                    'category' => function ($query) {
+                      $query->select('id', 'name', 'seo_id', 'sequence');
+                      $this->applyCategoryConditions($query);
+                      $query->with([
+                        'media' => function ($query) {
+                          $query->where('type', 'min')->select('media_id', 'path', 'name');
+                        }
+                      ]);
+                    }
+                  ]);
+                }
+              ]);
+            }
+          ]);
+        }
+      ])
+      ->where('active', 1)
+      ->where('store_tab', 1)
+      ->where('has_parrent', 0)
+      ->where('start_date', '<=', now()->format('Y-m-d'))
+      ->where('end_date', '>=', now()->format('Y-m-d'))
+      ->orderBy('sequence')
+      ->limit(app('global_limit_category'))
+      ->get();
   }
-  public function getCategoriesQueryProperty()
+
+  protected function applyCategoryConditions($query)
   {
-    return Category::orderBy('sequence', 'asc')->orderBy('store_tab', 'desc')->with('subcategory');
-  }
-  public function getObjectsProperty()
-  {
-    return $this->objectsQuery->get();
-  }
-  public function getObjectsQueryProperty()
-  {
-    return Product::name($this->search)->with('product_prices')->with('media');
-  }
-  public function getCatsProperty()
-  {
-    return $this->catsQuery->get();
-  }
-  public function getCatsQueryProperty()
-  {
-    return Category::name($this->search)->with('media');
+    $query->where('active', 1)
+      ->where('store_tab', 1)
+      ->where('start_date', '<=', now()->format('Y-m-d'))
+      ->where('end_date', '>=', now()->format('Y-m-d'))
+      ->orderBy('sequence');
   }
 }

@@ -1,5 +1,5 @@
   .modal {
-    @include size(100%, 100vh);
+    @include size(100%, 100dvh);
     @include flexbox(none, row, center, center);
     @include position(fixed, 0, null, null, 0);
     background-color: rgba(0, 0, 0, 0.8);

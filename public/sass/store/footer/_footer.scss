@@ -1,140 +1,224 @@
-footer {
-  background-color: darken(#1a691a, 20%);
+//<---------------------------------------------------------------------->
+//<------------------------------- Footer ------------------------------->
+.footer {
+  background: $lightBlack;
 }
 
-.footer {
-  @include flexer(column, flex-start, center);
-  color: $background;
-  padding: 0;
+.footer__container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 20px;
+}
 
-  @include breakpoint(mobile) {
-    padding: 0 !important;
+//<----------------------------- End Footer ----------------------------->
+//<---------------------------------------------------------------------->
+//<------------------------------- Top Content -------------------------->
+.footer__top {
+  height: 40px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.social__list {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 15px;
+}
+
+.social__item {
+  width: 35px;
+  height: 35px;
+  border-radius: 6px;
+  background: $background;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease-in-out;
+
+  & > svg {
+    stroke: $lightBlack;
+    transform: scale(1.05);
   }
 
-  &__header {
-    @include flexer(row, space-between, center);
-    @include responsive-spacing(padding, .01);
-    width: 100%;
-
-    &>.logo {
-      color: $background;
-    }
-
-    ul {
-      flex-direction: row;
-    }
-
+  &:hover {
+    background: $secondary;
   }
+}
 
-  span {
-    @include responsive-spacing(padding, .01);
+//<----------------------------- End Top Content ------------------------>
+//<---------------------------------------------------------------------->
+//<------------------------------- Middle Content ----------------------->
+.footer__middle {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+
+  & > h2 {
     color: $background;
-    text-align: center;
+    font-size: $inputSize;
+    font-weight: $lightWeight;
+    line-height: $lineHeight;
   }
+}
 
-  &__list {
-    @include responsive-spacing(padding-top, .01);
-    @include responsive-spacing(padding-bottom, .01);
-    justify-content: space-between;
-  }
+.subscribe {
+  position: relative;
+  width: 100%;
 
-  &__middle {
-    @include flexer(column, space-between, flex-start);
-
+  & > input {
     width: 100%;
-    @include responsive-spacing(padding, .01);
-    border-top: 1.5px solid $background;
-    border-bottom: 1.5px solid $background;
-    @include responsive-spacing(gap, .1);
+    height: 40px;
+    border: none;
+    border-radius: 7px;
+    background: $background;
+    color: $lightBlack;
+    font-size: $inputSize;
+    padding: 5px 90px 5px 10px;
+    outline: none;
 
-    @include breakpoint(medium) {
-      @include flexer(row, space-between, flex-start, 10px);
-      padding: 0;
-      @include responsive-spacing(padding-top, .01);
-      @include responsive-spacing(padding-bottom, .01);
+    &::placeholder {
+      color: $darkGray;
     }
   }
+
+  & > button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 5px;
+    z-index: 2;
+    height: 35px;
+    background-color: $lightBlack;
+    color: $background;
+    text-transform: uppercase;
+    font-size: $textSize;
+    font-weight: $lightWeight;
+    padding: 0 10px;
+    border: none;
+    border-radius: 5px;
+
+    &:disabled {
+      background-color: $lightGray;
+      cursor: not-allowed;
+
+      &:hover {
+        background-color: $darkGray;
+      }
+    }
+
+    &:hover {
+      background-color: $darkBlack;
+    }
+  }
+
+  @media (min-width: map-get($grid-breakpoints, md)) {
+    width: 70%;
+  }
+}
+
+//<----------------------------- End Middle Content --------------------->
+//<---------------------------------------------------------------------->
+//<------------------------------- Bottom Content -=--------------------->
+.footer__bottom {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
 }
 
 .footer__list {
-  @include flexer(column, space-between, flex-start, 10px);
-  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  flex-wrap: wrap;
+  text-align: left;
+}
 
-  &--social {
-    @include box(40px);
-    @include flexer(row, center, center);
-    border-radius: 100%;
-    border: 1px solid $background;
-    background-color: $background;
+.footer__title {
+  color: $background;
+  line-height: $lineHeight;
+  font-weight: $lightWeight;
+  font-size: $inputSize;
+  margin-bottom: 5px;
+}
 
-    svg {
-      scale: .9;
-      stroke: $text;
+.footer__link {
+  color: $secondary;
+  line-height: $lineHeight;
+  font-weight: $lightWeight;
+  font-size: $textSize;
+  text-decoration: none;
+}
+
+//<----------------------------- End Bottom Content --------------------->
+//<---------------------------------------------------------------------->
+//<------------------------------- Copyright ----==---------------------->
+.footer__copyright {
+  width: 100%;
+  font-weight: $lightWeight;
+  line-height: $lineHeight;
+  color: $secondary;
+  font-size: $textSize;
+  text-align: center;
+
+  &>a{
+    font-weight: $lightWeight;
+    line-height: $lineHeight;
+    color: $secondary;
+    font-size: $textSize;
+    text-decoration: underline;
+  }
+}
+
+//<----------------------------- End Copyright -------------------------->
+//<---------------------------------------------------------------------->
+
+.footer__checkbox {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  @media (min-width: map-get($grid-breakpoints, md)) {
+    width: 70%;
+  }
+
+  & > input {
+    border-color: $background;
+    transform: scale(0.8);
+    min-width: 30px;
+
+    &:checked {
+      border-color: $background;
     }
   }
 
-  li {
+  & > label {
+    font-size: $textSize;
     color: $background;
-  }
+    font-weight: $lightWeight;
+    line-height: $lineHeight;
+    text-wrap: pretty;
 
-  &--item {
-    color: $background;
-  }
-}
-
-
-
-.footer__subscribe {
-  @include flexer(column, center, center, 15px);
-  @include responsive-spacing(padding, .01);
-  @include responsive-spacing(padding-bottom, .02);
-  width: 100%;
-
-  h2 {
-    font-weight: 400;
-  }
-
-  @include breakpoint(medium) {
-    padding: 0;
-    @include responsive-spacing(padding-top, .01);
-    @include responsive-spacing(padding-bottom, .04);
-  }
-
-
-  h2 {
-    color: $background;
-  }
-
-  p {
-    color: $background;
-  }
-}
-
-.footer__subscribe--form {
-  @include flexer(row, space-between, center);
-  width: 100%;
-  transition: $transition;
-
-  @include breakpoint(medium) {
-    max-width: 500px;
-  }
-
-  input {
-    background-color: transparent;
-    border: 1.5px solid $background;
-    @include responsive-spacing(padding, .0005);
-    outline: none;
-    @include box(100%, 40px);
-    border-radius: 10px 0 0 10px;
-    color: $background;
-    border-right: 0;
-    flex: 1;
-  }
-
-  button {
-    background-color: $background;
-    @include box(115px, 40px);
-    border: none;
-    border-radius: 0 10px 10px 0;
+    & > a {
+      color: $background;
+      text-decoration: underline;
+      font-size: $textSize;
+      font-weight: $lightWeight;
+      line-height: $lineHeight;
+    }
   }
 }

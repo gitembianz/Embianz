@@ -24,7 +24,8 @@ class RelatedProductsonPricelist extends Component
   public $priceId;
   public $col = false;
   public $all = false;
-  public $columns = ['Id', 'Currency', 'Value', 'Created At'];
+  public $columns = ['Id', 'Currency', 'Value', 'Discount', 'Value without VAT', 'Value without Discount', 'VAT'];
+
   public $selectedColumns = [];
   public $idtodel = null;
   public $addrelatedproducts  = false;
@@ -66,7 +67,7 @@ class RelatedProductsonPricelist extends Component
     $this->prod[] = [
       'allow' => false,
       'itemselected' => null,
-      'product' => ['idrel' => null, 'value' => null],
+      'product' => ['idrel' => null, 'value' => null, 'vat' => 19, 'discount' => 0],
     ];
   }
   public function denny()
@@ -161,6 +162,7 @@ class RelatedProductsonPricelist extends Component
   {
     $this->dispatchBrowserEvent('show-delete-modal-multiple');
   }
+
   public function edititem($id, $iditem, $index)
   {
     $this->itemselected = Product::find($iditem)->name;
@@ -169,7 +171,9 @@ class RelatedProductsonPricelist extends Component
     $this->editedrow = $index;
     $this->product = [
       $index . '.name' => $this->itemselected,
-      $index . '.value' => $val->value,
+      $index . '.value' => $val->value_no_vat,
+      $index . '.vat' => $val->vat,
+      $index . '.discount' => $val->discount,
     ];
   }
   public function allow()
@@ -181,26 +185,64 @@ class RelatedProductsonPricelist extends Component
   {
     $new = PricelistEntries::find($id);
     $new->product_id = $this->productid;
-    $val = $this->product;
-    if (isset($val["$index"]['value'])) {
-      if (!empty($val["$index"]['value'])) {
-        $new->value = $val["$index"]['value'];
-        $new->save();
-        $this->allow = false;
-        $this->productid = null;
-        $this->product = [];
-        $this->itemselected = null;
-        $this->editedrow = null;
-        $this->search = '';
-      } else {
+    $val = $this->product[$index] ?? NULL;
+    if (array_key_exists('vat', $val)) {
+
+      if ($val["vat"] < 0) {
         session()->flash('notification', [
-          'message' => 'Please provide a value!',
+          'message' => 'Please provide a value biger than 0!',
           'type' => 'warning',
-          'title' => 'Missing Values'
+          'title' => 'VAT value'
         ]);
+        $this->product = [
+          $index . '.name' => $this->itemselected,
+          $index . '.value' => $new->value_no_vat,
+          $index . '.vat' => $val["vat"],
+          $index . '.discount' => $new->discount,
+        ];
         return;
       }
+
+      $new->vat = $val["vat"];
+      $new->save();
     }
+    if (array_key_exists('discount', $val)) {
+      if ($val["discount"] < 0 || $val["discount"] >= 100) {
+        session()->flash('notification', [
+          'message' => 'Please provide a value biger than 0 and smaller that 100!',
+          'type' => 'warning',
+          'title' => 'Discount value'
+        ]);
+        $this->product = [
+          $index . '.name' => $this->itemselected,
+          $index . '.value' => $new->value_no_vat,
+          $index . '.vat' => $new->vat,
+          $index . '.discount' => $val["discount"],
+        ];
+        return;
+      } else {
+        $new->discount = $val["discount"];
+        $new->save();
+      }
+    }
+    if (array_key_exists('value', $val)) {
+      $newValue = str_replace(',', '.', $val["value"]);
+      $floatValue = floatval($newValue);
+      $formattedValue = number_format($floatValue, 2, '.', '');
+
+      $new->value_no_vat = $formattedValue;
+      $new->save();
+    }
+    $new->value_no_discount = $new->value_no_vat + (0.01 * $new->vat * $new->value_no_vat);
+    $new->value = $new->value_no_discount - (0.01 * $new->value_no_discount * $new->discount);
+    $new->save();
+    $this->allow = false;
+    $this->productid = null;
+    $this->product = [];
+    $this->itemselected = null;
+    $this->editedrow = null;
+    $this->search = '';
+
     session()->flash('notification', [
       'message' => 'Record edited successfully!',
       'type' => 'success',
@@ -232,7 +274,7 @@ class RelatedProductsonPricelist extends Component
       [
         'allow' => false,
         'itemselected' => null,
-        'spec' => ['name' => null, 'value' => null],
+        'product' => ['idrel' => null, 'value' => null, 'vat' => 19, 'discount' => 0],
       ]
     ];
     $this->row = 1;
@@ -252,11 +294,15 @@ class RelatedProductsonPricelist extends Component
         $new = new PricelistEntries();
         $new->product_id = $pro['product']['idrel'];
         $new->pricelist_id =  $this->priceId;
-        $new->value = $pro['product']['value'];
+        $new->vat = $pro['product']['vat'];
+        $new->discount = $pro['product']['discount'];
+        $new->value_no_vat = $pro['product']['value'];
+        $new->value_no_discount = $pro['product']['value'] + (0.01 * $pro['product']['vat'] * $pro['product']['value']);
+        $new->value = $pro['product']['value'] - (0.01 * $pro['product']['discount'] * $new->value_no_discount) + (0.01 * $pro['product']['vat'] * $pro['product']['value']);
         $new->save();
       } else {
         session()->flash('notification', [
-          'message' => 'Please provide a value!',
+          'message' => 'Please provide all corect values for Value without VAT, VAT(bigger than 0) and Discount(bigger than 0 and smaller than 100)!',
           'type' => 'warning',
           'title' => 'Missing Values'
         ]);
@@ -268,7 +314,7 @@ class RelatedProductsonPricelist extends Component
       [
         'allow' => false,
         'itemselected' => null,
-        'price' => ['name' => null, 'value' => null],
+        'product' => ['idrel' => null, 'value' => null, 'vat' => 19, 'discount' => 0],
       ]
     ];
     $this->row = 1;
@@ -290,10 +336,9 @@ class RelatedProductsonPricelist extends Component
     $this->prod[] = [
       'allow' => false,
       'itemselected' => null,
-      'product' => ['name' => null, 'value' => null],
+      'product' => ['idrel' => null, 'value' => null, 'vat' => 19, 'discount' => 0],
     ];
   }
-
   public function clear($index)
   {
     unset($this->prod[$index]);
@@ -307,7 +352,7 @@ class RelatedProductsonPricelist extends Component
         [
           'allow' => false,
           'itemselected' => null,
-          'product' => ['name' => null, 'value' => null],
+          'product' => ['idrel' => null, 'value' => null, 'vat' => 19, 'discount' => 0],
         ]
       ];
       $this->row = 1;
@@ -337,19 +382,46 @@ class RelatedProductsonPricelist extends Component
       $this->prod[$index]['itemselected'] = $test->product->name;
       $this->prod[$index]['product']['id'] = $test->id;
       $this->prod[$index]['product']['idrel'] = $test->product->id;
-      $this->prod[$index]['product']['value'] = $test->value;
+      $this->prod[$index]['product']['value'] = $test->value_no_vat;
+      $this->prod[$index]['product']['discount'] = $test->discount;
+      $this->prod[$index]['product']['vat'] = $test->vat;
       $this->prod[$index]['allow'] = false;
     }
   }
   public function confirmmultiple()
   {
 
-    foreach ($this->prod as  $pro) {
+    foreach ($this->prod as $index => $pro) {
       if (isset($pro['product']['value'])) {
         $item = PricelistEntries::find($pro['product']['id']);
         $item->product_id = $pro['product']['idrel'];
-        $item->value = $pro['product']['value'];
+        $item->value_no_vat = $pro['product']['value'];
+
+        if ($pro['product']['vat'] < 0) {
+          session()->flash('notification', [
+            'message' => 'Please provide a value bigger than 0!',
+            'type' => 'warning',
+            'title' => 'VAT value'
+          ]);
+          return;
+        }
+        $item->vat = $pro['product']['vat'];
+
+        if ($pro['product']['discount'] < 0 || $pro['product']['discount'] >= 100) {
+          session()->flash('notification', [
+            'message' => 'Please provide a value bigger than 0 and smaller than 100!',
+            'type' => 'warning',
+            'title' => 'Discount value'
+          ]);
+          return;
+        }
+        $item->discount = $pro['product']['discount'];
+        $item->value_no_discount = $item->value_no_vat + (0.01 * $item->vat * $item->value_no_vat);
+        $item->value = $item->value_no_discount - (0.01 * $item->value_no_discount * $item->discount);
+
         $item->save();
+        unset($this->prod[$index]);
+        $this->prod = array_values($this->prod);
       } else {
         session()->flash('notification', [
           'message' => 'Please provide a value!',
@@ -364,7 +436,7 @@ class RelatedProductsonPricelist extends Component
       [
         'allow' => false,
         'itemselected' => null,
-        'product' => ['name' => null, 'value' => null],
+        'product' => ['idrel' => null, 'value' => null, 'vat' => 19, 'discount' => 0],
       ]
     ];
     $this->row = 1;

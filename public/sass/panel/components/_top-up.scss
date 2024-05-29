@@ -2,8 +2,8 @@
   @include standart-Btn;
   // @include position(fixed, auto, 1rem, 1rem, auto);
   position: fixed;
-  right: calc(-2.5rem / 2);
-  bottom: calc(-2.5rem / 2);
+  right: calc(2.5rem / 2);
+  bottom: calc(2.5rem / 2);
   opacity: 0;
   pointer-events: none;
   border-radius: 100px;

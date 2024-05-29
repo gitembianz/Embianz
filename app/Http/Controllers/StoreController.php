@@ -2,103 +2,92 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Store;
 use App\Models\Product;
 use App\Models\Category;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreStoreRequest;
-use App\Http\Requests\UpdateStoreRequest;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class StoreController extends Controller
 {
-  /**
-   * Display a listing of the resource.
-   */
-  public function index()
+
+  public function search($slug = null)
   {
-    return view('store.home');
-  }
-  public function cart()
-  {
-    return view('store.cart');
-  }
-  public function order()
-  {
-    return view('store.order');
-  }
-  public function checking()
-  {
-    return view('store.checking');
-  }
-  public function complete()
-  {
-    return view('store.complete');
-  }
-  public function products($categoryId = null)
-  {
-    $category = Category::find($categoryId);
-    if ($category) {
-      $data = $category->id;
+    if ($slug != null) {
+      $data = $slug;
     } else {
-      $data = "";
+      $data = null;
     }
-    return view('store.products', compact('data'));
-  }
-  public function terms()
-  {
-    return view('store.terms');
-  }
-  public function wislist()
-  {
-    return view('store.wislist');
+    return view('store.search', compact('data'));
   }
 
-  /**
-   * Show the form for creating a new resource.
-   */
-  public function create()
+  public function products($categorySlug = null)
   {
-    //
+    $data = null;
+    $can = null;
+    if ($categorySlug) {
+      if (is_numeric($categorySlug)) {
+        $category = Category::find($categorySlug);
+        if (($category->id != app('global_default_category')) && (($category == null) || ($category->active != true) || ($category->start_date > now()->format('Y-m-d')) || ($category->end_date < now()->format('Y-m-d')))) {
+          throw new NotFoundHttpException();
+        }
+        $can = $category->id;
+      } else {
+        $can = $categorySlug;
+        $category = Category::where('seo_id', $categorySlug)->first();
+        if (($category->id != app('global_default_category')) && (($category == null) || ($category->active != true) || ($category->start_date > now()->format('Y-m-d')) || ($category->end_date < now()->format('Y-m-d')))) {
+          throw new NotFoundHttpException();
+        }
+      }
+      if ($category) {
+        $data = $category;
+      } else {
+        throw new NotFoundHttpException();
+      }
+    }
+    if ($categorySlug == null) {
+
+      $category = Category::find(app('global_default_category'));
+      if ($category) {
+        $data = $category;
+      } else {
+        throw new NotFoundHttpException();
+      }
+    }
+    return view('store.products', compact('data', 'can'));
   }
 
-  /**
-   * Store a newly created resource in storage.
-   */
-  public function store(StoreStoreRequest $request)
+  public function show($product = null)
   {
-    //
+    if (is_numeric($product)) {
+      $data = Product::find($product);
+    } else {
+
+      $data = Product::where('seo_id', $product)->first();
+    }
+    if (($data == null) || ($data->active != true) || ($data->start_date > now()->format('Y-m-d')) || ($data->end_date < now()->format('Y-m-d'))) {
+      throw new NotFoundHttpException();
+    }
+    return view('store.product', ['data' => $data]);
   }
 
-  /**
-   * Display the specified resource.
-   */
-  public function show($id)
+  // payment function
+  public function success()
   {
-    $data = Product::find($id);
-    return view('store.product', compact('data'));
+    return redirect()->route('order')->with('paymentsucces', true);
+  }
+  public function cancel()
+  {
+    return redirect()->route('order')->with('paymentcancel', true);
   }
 
-  /**
-   * Show the form for editing the specified resource.
-   */
-  public function edit(Store $store)
-  {
-    //
-  }
+  //  public function myorder($order_number = null)
+  // {
+  //   $order = Order::where('order_number', base64_decode($order_number))->first();
 
-  /**
-   * Update the specified resource in storage.
-   */
-  public function update(UpdateStoreRequest $request, Store $store)
-  {
-    //
-  }
-
-  /**
-   * Remove the specified resource from storage.
-   */
-  public function destroy(Store $store)
-  {
-    //
-  }
+  //   if ($order) {
+  //     return view('store.myorder', compact('order'));
+  //   } else {
+  //     return view('store.404');
+  //   }
+  // }
 }

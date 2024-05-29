@@ -20,10 +20,9 @@ class RelatedSpecProduct extends Component
   public $selectPage = false;
   public $selectAll = false;
   public $showrelatedspecs = false;
-  public $productId;
   public $col = false;
   public $all = false;
-  public $columns = ['Id', 'Unit', 'Value', 'Created At'];
+  public $columns = ['Id', 'Unit', 'Value', 'Sequence', 'Created At'];
   public $selectedColumns = [];
   public $specidbeingremoved = null;
   public $addrelatedspecs = false;
@@ -59,15 +58,14 @@ class RelatedSpecProduct extends Component
       'addspecs' => $this->addspecs,
     ]);
   }
-  public function mount($productId)
+  public function mount($product)
   {
-    $this->productId = $productId;
     $this->selectedColumns = $this->columns;
-    $this->item = Product::find($productId);
+    $this->item = $product;
     $this->specsAndValues[] = [
       'allow' => false,
       'itemselected' => null,
-      'spec' => ['idrel' => null, 'value' => null],
+      'spec' => ['idrel' => null, 'value' => null, 'sequence' => null],
     ];
   }
   public function load()
@@ -109,7 +107,7 @@ class RelatedSpecProduct extends Component
   }
   public function getRelatedspecsQueryProperty()
   {
-    return Product_Spec::where('product_id', $this->productId)
+    return Product_Spec::where('product_id', $this->item->id)
       ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->with('spec');
   }
   public function confirmRemoval($id)
@@ -159,6 +157,8 @@ class RelatedSpecProduct extends Component
     $this->specification = [
       $index . '.name' => $this->itemselected,
       $index . '.value' => $val->value,
+      $index . '.sequence' => $val->sequence,
+
     ];
   }
   public function canceledit()
@@ -184,28 +184,27 @@ class RelatedSpecProduct extends Component
       }
     }
     $val = $this->specification;
-    if (isset($val["$index"]['value'])) {
-      if ($val["$index"]['value'] != "") {
+    if (isset($val["$index"]['value']) || isset($val["$index"]['sequence'])) {
+      if (isset($val["$index"]['value']) && $val["$index"]['value'] != "") {
         $newspec->value = $val["$index"]['value'];
-        $newspec->save();
-        $this->allow = false;
-        $this->specid = null;
-        $this->specification = [];
-        $this->itemselected = null;
-        $this->editedrow = null;
-        $this->search = '';
-        session()->flash('notification', [
-          'message' => 'Record edited successfully!',
-          'type' => 'success',
-          'title' => 'Success'
-        ]);
-      } else {
-        session()->flash('notification', [
-          'message' => 'Please provide a value!',
-          'type' => 'warning',
-          'title' => 'Missing Values'
-        ]);
       }
+      if (isset($val["$index"]['sequence']) && $val["$index"]['sequence'] != "") {
+
+        $newspec->sequence = $val["$index"]['sequence'];
+      }
+
+      $newspec->save();
+      $this->allow = false;
+      $this->specid = null;
+      $this->specification = [];
+      $this->itemselected = null;
+      $this->editedrow = null;
+      $this->search = '';
+      session()->flash('notification', [
+        'message' => 'Record edited successfully!',
+        'type' => 'success',
+        'title' => 'Success'
+      ]);
     } else {
       $this->allow = false;
       $this->specid = null;
@@ -233,6 +232,8 @@ class RelatedSpecProduct extends Component
         $this->specsAndValues[$index]['spec']['id'] = $test->id;
         $this->specsAndValues[$index]['spec']['idrel'] = $test->spec->id;
         $this->specsAndValues[$index]['spec']['value'] = $test->value;
+        $this->specsAndValues[$index]['spec']['sequence'] = $test->sequence;
+
         $this->specsAndValues[$index]['allow'] = false;
       }
     }
@@ -250,11 +251,12 @@ class RelatedSpecProduct extends Component
     }
 
     foreach ($this->specsAndValues as  $specAndValue) {
-      if (!empty($specAndValue['spec']['value'])) {
+      if (!empty($specAndValue['spec']['value']) || !empty($specAndValue['spec']['sequence'])) {
         $spec = Product_Spec::find($specAndValue['spec']['id']);
         if ($spec) {
           $spec->spec_id = $specAndValue['spec']['idrel'];
           $spec->value = $specAndValue['spec']['value'];
+          $spec->sequence = $specAndValue['spec']['sequence'];
           $spec->save();
         }
       } else {
@@ -271,7 +273,7 @@ class RelatedSpecProduct extends Component
       [
         'allow' => false,
         'itemselected' => null,
-        'spec' => ['name' => null, 'value' => null],
+        'spec' => ['name' => null, 'value' => null, 'sequence' => null],
       ]
     ];
     $this->row = 1;
@@ -316,7 +318,7 @@ class RelatedSpecProduct extends Component
     $this->specsAndValues[] = [
       'allow' => false,
       'itemselected' => null,
-      'spec' => ['name' => null, 'value' => null],
+      'spec' => ['name' => null, 'value' => null, 'sequence' => null],
     ];
   }
   public function allowselect($index)
@@ -345,7 +347,7 @@ class RelatedSpecProduct extends Component
       [
         'allow' => false,
         'itemselected' => null,
-        'spec' => ['name' => null, 'value' => null],
+        'spec' => ['name' => null, 'value' => null, 'sequence' => null],
       ]
     ];
     $this->row = 1;
@@ -367,7 +369,7 @@ class RelatedSpecProduct extends Component
         [
           'allow' => false,
           'itemselected' => null,
-          'spec' => ['name' => null, 'value' => null],
+          'spec' => ['name' => null, 'value' => null, 'sequence' => null],
         ]
       ];
       $this->row = 1;
@@ -378,7 +380,7 @@ class RelatedSpecProduct extends Component
     $empty = false;
     foreach ($this->specsAndValues as  $specAndValue) {
       $val = $specAndValue['spec'];
-      if (array_key_exists('value', $val) && $specAndValue['spec']['value'] == null) {
+      if (array_key_exists('value', $val) && $specAndValue['spec']['value'] == null && array_key_exists('sequence', $val)) {
         $empty = true;
       }
     }
@@ -393,9 +395,11 @@ class RelatedSpecProduct extends Component
       foreach ($this->specsAndValues as  $specAndValue) {
         $val = $specAndValue['spec'];
         $newspec = new Product_Spec();
-        $newspec->product_id = $this->productId;
+        $newspec->product_id = $this->item->id;
         $newspec->spec_id = $specAndValue['spec']['idrel'];
         $newspec->value = $specAndValue['spec']['value'];
+        $newspec->sequence = $specAndValue['spec']['sequence'];
+
         $newspec->save();
       }
     }
@@ -405,7 +409,7 @@ class RelatedSpecProduct extends Component
       [
         'allow' => false,
         'itemselected' => null,
-        'spec' => ['name' => null, 'value' => null],
+        'spec' => ['name' => null, 'value' => null, 'sequence' => null],
       ]
     ];
     $this->row = 1;

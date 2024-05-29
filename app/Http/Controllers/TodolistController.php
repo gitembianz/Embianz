@@ -8,7 +8,8 @@ use Illuminate\Http\Request;
 class TodolistController extends Controller
 {
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $data = $request->validate([
             'content' => 'required'
         ]);
@@ -17,7 +18,8 @@ class TodolistController extends Controller
         return back();
     }
 
-    public function destroy(Todolist $todolist){
+    public function destroy(Todolist $todolist)
+    {
         $todolist->delete();
         return back();
     }
