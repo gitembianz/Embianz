@@ -17,6 +17,7 @@
  {{-- noren Favicon --}}
  {{-- <link rel="icon" type="image/x-icon" href="/images/store/svg/noren_favicon.svg"> --}}
  {{-- favicon --}}
+ <script type="text/javascript" src="/~partytown/partytown.js"></script>
 
  <link rel="apple-touch-icon" sizes="180x180" href="/images/store/svg/apple-touch-icon.png">
  <link rel="icon" type="image/png" sizes="48x48" href="/images/store/svg/favicon-48x48.png">
