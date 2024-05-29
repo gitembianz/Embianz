@@ -6,6 +6,7 @@ use App\Models\CustomScript;
 use App\Models\Payment;
 use App\Models\Status;
 use App\Models\Store_Settings;
+use App\Models\TextLabel;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
@@ -28,6 +29,7 @@ class GlobalVariablesServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->loadGlobalVariables();
+        $this->loadLabelVariables();
         $this->loadGlobalStatuses();
         $this->loadGlobalPayments();
         $this->loadGlobalCustomScripts();
@@ -43,6 +45,20 @@ class GlobalVariablesServiceProvider extends ServiceProvider
 
             foreach ($globalVariables as $key => $value) {
                 $this->app->instance('global_' . $key, $value);
+            }
+        }
+    }
+    private function loadLabelVariables()
+    {
+        if (Schema::hasTable('text_labels')) {
+
+            $labelVariables = Cache::get('label_variables', function () {
+                $labels = TextLabel::all()->pluck('value', 'parameter')->toArray();
+                return $labels;
+            });
+
+            foreach ($labelVariables as $key => $value) {
+                $this->app->instance('label_' . $key, $value);
             }
         }
     }

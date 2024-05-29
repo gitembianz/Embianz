@@ -29,6 +29,10 @@
  <meta name="msapplication-config" content="/images/store/svg/browserconfig.xml">
  <meta name="theme-color" content="#fafafa">
 
+ {{-- dinamical image playload --}}
+ @if ($preload != '')
+  <link rel="preload" href="{{ $preload }}" as="image">
+ @endif
  {{-- favicon end --}}
 
  <link rel="canonical" href="{{ url('/' . $canonical) }}">
@@ -53,7 +57,6 @@
  <meta property="twitter:description" content="{{ $description }}" />
  {{-- ----------------------------------------------------------- --}}
  <link rel="preload" href="/images/store/svg/noren-black.svg" as="image">
- <link rel="preload" href="/images/store/default/default300.webp" as="image">
  <link rel="preload" href="/images/store/svg/headset.svg" as="image">
  <link rel="preload" href="/images/store/svg/truck.svg" as="image">
  <link rel="preload" href="/images/store/brands/dhl.webp" as="image">

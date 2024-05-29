@@ -24,6 +24,7 @@ class StoreController extends Controller
   {
     $data = null;
     $can = null;
+    $preload = null;
     if ($categorySlug) {
       if (is_numeric($categorySlug)) {
         $category = Category::find($categorySlug);
@@ -53,7 +54,20 @@ class StoreController extends Controller
         throw new NotFoundHttpException();
       }
     }
-    return view('store.products', compact('data', 'can'));
+    $productCategory = $category->product_categories()->with([
+      'product' => function ($query) {
+        $query->with(['media' => function ($query) {
+          $query->where('type', 'main');
+        }])->orderBy('popularity', 'desc');
+      }
+    ])->first();
+    if ($productCategory != null) {
+
+      $preload = "/" . $productCategory->product->media()->where('type', 'main')->first()->path . $productCategory->product->media()->where('type', 'main')->first()->name;
+    } else {
+      $preload = '';
+    }
+    return view('store.products', compact('data', 'can', 'preload'));
   }
 
   public function show($product = null)
