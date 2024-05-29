@@ -133,7 +133,7 @@
 
   //simple page routes
 
-  route::view('/', 'store.home')->name('home')->middleware('cache-control');
+  route::view('/', 'store.home')->name('home')->middleware('cache.headers:public;max_age=2628000;etag');
   route::view('/cart', 'store.cart')->name('cart');
   route::view('/wishlist', 'store.wislist')->name('wislist');
   route::view('/order', 'store.order')->name('order');
