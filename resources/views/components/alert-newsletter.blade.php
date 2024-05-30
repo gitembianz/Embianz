@@ -2,13 +2,11 @@
 	<div class="newsletter__content">
 		<img loading="eager" class="newsletter__img" src="/images/store/svg/thankyou.svg" alt="thank you">
 		<div class="newsletter__text">
-			<h3 class="newsletter__title">Bun venit în Comunitatea Noastră!</h3>
-			<p class="newsletter__descr">Mulțumim mult că te-ai abonat la newsletter-ul nostru! Apreciem interesul tău și suntem
-				încântați să facem parte din călătoria ta online. Te vom ține la curent cu cele mai recente știri, oferte speciale
-				și actualizări. Dacă dorești să ne contactezi sau ai întrebări, nu ezita să ne scrii</p>
+			<h3 class="newsletter__title">@if (app()->has('label_newsletter_title')){!! app('label_newsletter_title') !!} @endif</h3>
+			<p class="newsletter__descr">@if (app()->has('label_newsletter_description')){!! app('label_newsletter_description') !!} @endif</p>
 		</div>
 		<button class="newsletter__close">
-			Inchide
+			@if (app()->has('newsletter_close_button')){!! app('newsletter_close_button') !!} @endif
 		</button>
 	</div>
 </div>
