@@ -1,5 +1,4 @@
 <div>
-
  <section id="cookie-banner">
   <div class="container cookie__container">
    <div class="cookie__description">
@@ -41,60 +40,12 @@
    </div>
   </div>
  </section>
-{{-- @if (app()->has('label_support_faq_title')){!! app('label_support_faq_title') !!} @endif --}}
- {{-- <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    var cookieBanner = document.getElementById('cookie-banner');
-    var acceptButton = document.getElementById('accept-cookies');
-    var advancedSettingsButton = document.getElementById('advanced-settings');
-    var analyticsCheckbox = document.getElementById('analytics-cookies');
-    var marketingCheckbox = document.getElementById('marketing-cookies');
-
-    if (localStorage.getItem('cookieBannerDisplayed') === 'true') {
-      cookieBanner.style.display = 'none';
-    } else {
-      cookieBanner.style.display = 'block';
-    }
-
-    function updateConsent() {
-        var analyticsStorageChecked = analyticsCheckbox.checked ? 'granted' : 'denied';
-        var adStorageChecked = marketingCheckbox.checked ? 'granted' : 'denied';
-
-        var consentMode = {
-            'ad_storage': adStorageChecked,
-            'analytics_storage': analyticsStorageChecked,
-        };
-
-        gtag('consent', 'update', consentMode);
-        localStorage.setItem('consent', JSON.stringify(consentMode));
-    }
-
-    function acceptCookies() {
-        analyticsCheckbox.checked = true;
-        marketingCheckbox.checked = true;
-        updateConsent();
-        cookieBanner.style.display = 'none';
-        localStorage.setItem('cookieBannerDisplayed', 'true');
-    }
-
-    function showAdvancedSettings() {
-        document.querySelector('.cookie__form').classList.toggle('show');
-    }
-
-    acceptButton.addEventListener('click', acceptCookies);
-    advancedSettingsButton.addEventListener('click', showAdvancedSettings);
-    analyticsCheckbox.addEventListener('change', updateConsent);
-    marketingCheckbox.addEventListener('change', updateConsent);
-  });
-</script> --}}
 
  <x-alert-newsletter />
 
- <!--------------------------------------------------------->
  <!--------------------------Footer------------------------->
  <footer class="footer">
   <div class="footer__container container">
-   <!--------------------------------------------------------->
    <!---------------------Logo and Social--------------------->
    <div class="footer__top">
     <a class="logo" href="{{ url('/') }}">
@@ -120,43 +71,22 @@
        </svg>
       </a>
      @endif
-     {{-- <a href="#" class="social__item">
-						<svg>
-							<path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z">
-							</path>
-						</svg>
-					</a>
-					<a href="#" class="social__item">
-						<svg>
-							<path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z">
-							</path>
-							<rect x="2" y="9" width="4" height="12"></rect>
-							<circle cx="4" cy="4" r="2"></circle>
-						</svg>
-					</a> --}}
     </div>
    </div>
-   <!-------------------END-Logo and Social------------------->
-   <!--------------------------------------------------------->
    <!------------------------Subscribe------------------------>
    <div class="footer__middle">
     <h2>@if (app()->has('label_newsletter_subscribe_title')){!! app('label_newsletter_subscribe_title') !!} @endif</h2>
     <div class="footer__checkbox">
      <input type="checkbox" wire:model="ischecked" id="subscribeCheckbox" name="subscribe__checkbox">
-     <label for="subscribeCheckbox">
-      Sunt de acord cu <a href="{{ url('/terms') }}">Termenii și
-       condițiile</a> abonării la newsletter privind stocarea și prelucrarea datelor cu caracter
-      personal.</label>
+     <label for="subscribeCheckbox">@if (app()->has('label_newsletter_subscribe_input')){!! app('label_newsletter_subscribe_input') !!} @endif</label>
     </div>
     <form class="subscribe" wire:submit.prevent="store">
      <input type="email" id="subscribeInput" wire:model="email" name="email" id="email"
-      placeholder="Introduceți adresa dvs. de email" aria-describedby="email-error" autocomplete="email">
-     <button type="submit" id="subscribeSend" @if (!$ischecked || !($email && filter_var($email, FILTER_VALIDATE_EMAIL))) disabled @endif>Trimite</button>
+      placeholder="@if (app()->has('label_newsletter_subscribe_placeholder')){!! app('label_newsletter_subscribe_placeholder') !!} @endif" aria-describedby="email-error" autocomplete="email">
+     <button type="submit" id="subscribeSend" @if (!$ischecked || !($email && filter_var($email, FILTER_VALIDATE_EMAIL))) disabled @endif>@if (app()->has('label_newsletter_subscribe_button')){!! app('label_newsletter_subscribe_button') !!} @endif</button>
 
     </form>
    </div>
-   <!----------------------END-Subscribe---------------------->
-   <!--------------------------------------------------------->
    <!-----------------------Quick Links----------------------->
    <div class="footer__bottom">
     <div class="footer__list">
@@ -175,17 +105,8 @@
      <a class="footer__link" href="{{ url('/about') }}">Despre Noi</a>
     </div>
    </div>
-   <!---------------------END-Quick Links--------------------->
-   <!--------------------------------------------------------->
    <!------------------------Copyright------------------------>
-   <span class="footer__copyright">
-    Copyright ©️ 2024 <a href="{{ url('/') }}">noren</a> | Powered by <a href="https://eztemcorp.com">Eztem
-     Corp</a>
-   </span>
-   <!----------------------END-Copyright---------------------->
-   <!--------------------------------------------------------->
+   <span class="footer__copyright">@if (app()->has('label_footer_copyright')){!! app('label_footer_copyright') !!} @endif</span>
   </div>
  </footer>
- <!------------------------END-Footer----------------------->
- <!--------------------------------------------------------->
 </div>
