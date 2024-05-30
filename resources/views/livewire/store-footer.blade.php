@@ -1,6 +1,6 @@
 <div>
 
- <section id="cookie-banner">
+ <section id="cookie-banner" style="display: none">
   <div class="container cookie__container">
    <div class="cookie__description">
     <span>
