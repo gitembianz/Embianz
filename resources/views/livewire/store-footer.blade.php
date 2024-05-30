@@ -3,12 +3,9 @@
  <section id="cookie-banner">
   <div class="container cookie__container">
    <div class="cookie__description">
-    <span>
-     Acest site web utilizează cookie-uri pentru a îmbunătăți experiența dvs. de navigare și pentru a vă oferi cel mai
-     bun serviciu posibil pe platforma noastră.
-    </span>
+    <span>@if (app()->has('label_cookie_description')){!! app('label_cookie_description') !!} @endif</span>
     <a href="{{ url('/cookie') }}">
-     Vedeți Politica de Cookies
+     @if (app()->has('label_cookie_policy')){!! app('label_cookie_policy') !!} @endif
     </a>
    </div>
    <div id="cookieForm">
@@ -17,45 +14,34 @@
       <label>
        <input type="checkbox" id="essential-cookies" name="essential" disabled checked>
        <span>
-        Cookie-uri Esențiale (Necesare)
+        @if (app()->has('label_cookie_esential_title')){!! app('label_cookie_esential_title') !!} @endif
        </span>
-       <p>
-        Acestea sunt cookie-uri esențiale care asigură funcționarea corectă a site-ului web și păstrarea preferințelor
-        dvs. (de ex., limbă, regiune).
-       </p>
+       <p>@if (app()->has('label_cookie_esential_description')){!! app('label_cookie_esential_description') !!} @endif</p>
       </label>
       <label>
        <input type="checkbox" id="analytics-cookies" name="analytics" checked>
-       <span>
-        Cookie-uri Analitice
-       </span>
-       <p>
-        Aceste cookie-uri includ cookie-uri de performanță și cookie-uri de analiză a vizitatorilor.
-       </p>
+       <span>@if (app()->has('label_cookie_analitics_title')){!! app('label_cookie_analitics_title') !!} @endif</span>
+       <p>@if (app()->has('label_cookie_analitics_description')){!! app('label_cookie_analitics_description') !!} @endif</p>
       </label>
       <label>
        <input type="checkbox" id="marketing-cookies" name="marketing" checked>
-       <span>
-        Cookie-uri de Marketing
-       </span>
-       <p>
-        Aceste cookie-uri sunt utilizate în scopuri de marketing.
-       </p>
+       <span>@if (app()->has('label_cookie_marketing_title')){!! app('label_cookie_marketing_title') !!} @endif</span>
+       <p>@if (app()->has('label_cookie_marketing_description')){!! app('label_cookie_marketing_description') !!} @endif</p>
       </label>
      </div>
     </div>
     <div class="cookie-btns">
      <button id="accept-cookies" class="cookie__button cookie__button--accept">
-      Acceptă
+      @if (app()->has('label_cookie_accept_button')){!! app('label_cookie_accept_button') !!} @endif
      </button>
      <button id="advanced-settings" class="cookie__button" type="button">
-      Avansat
+      @if (app()->has('label_cookie_advanced_button')){!! app('label_cookie_advanced_button') !!} @endif
      </button>
     </div>
    </div>
   </div>
  </section>
-
+{{-- @if (app()->has('label_support_faq_title')){!! app('label_support_faq_title') !!} @endif --}}
  {{-- <script>
   document.addEventListener('DOMContentLoaded', function() {
     var cookieBanner = document.getElementById('cookie-banner');
@@ -154,7 +140,7 @@
    <!--------------------------------------------------------->
    <!------------------------Subscribe------------------------>
    <div class="footer__middle">
-    <h2>Abonează-te la newsletter-ul nostru</h2>
+    <h2>@if (app()->has('label_newsletter_subscribe_title')){!! app('label_newsletter_subscribe_title') !!} @endif</h2>
     <div class="footer__checkbox">
      <input type="checkbox" wire:model="ischecked" id="subscribeCheckbox" name="subscribe__checkbox">
      <label for="subscribeCheckbox">
