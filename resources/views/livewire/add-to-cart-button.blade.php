@@ -1,5 +1,5 @@
 <div class="card__button--wrapper">
-	@if ($product->quantity != 0)
+	@if ($product->quantity != 0 && $product->product_prices->count() != null)
 		<button class="card__button" onclick="flyToCart(this)" wire:click="addToCart({{ $product->id }})" wire:ignore="$refresh">
 			<div class="card__button--cart">
 				<svg>
@@ -17,9 +17,9 @@
 					<path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path>
 				</svg>
 			</div>
-			<span class="card__button--text"> Adaugă în coș </span>
+			<span class="card__button--text">@if (app()->has('label_add_to_cart_button')){!! app('label_add_to_cart_button') !!} @endif</span>
 		</button>
 	@else
-		<button class="card-button-disabled" aria-label="Disabled Add to cart button">Indisponibil</button>
+		<button class="card-button-disabled" aria-label="Disabled Add to cart button">@if (app()->has('label_add_to_cart_button_indisponibil')){!! app('label_add_to_cart_button_indisponibil') !!} @endif</button>
 	@endif
 </div>
