@@ -1,5 +1,7 @@
 <div>
- <section id="cookie-banner">
+
+
+ <section id="cookie-banner" style="display: none">
   <div class="container cookie__container">
    <div class="cookie__description">
     <span>@if (app()->has('label_cookie_description')){!! app('label_cookie_description') !!} @endif</span>
