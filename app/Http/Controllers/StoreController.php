@@ -54,7 +54,11 @@ class StoreController extends Controller
         throw new NotFoundHttpException();
       }
     }
-    $productCategory = $category->product_categories()->with([
+    $productCategory = $category->product_categories()->whereHas('product', function ($query) {
+      $query->where('active', true)
+        ->where('start_date', '<=',  now()->format('Y-m-d'))
+        ->where('end_date', '>=',  now()->format('Y-m-d'));
+    })->with([
       'product' => function ($query) {
         $query->with(['media' => function ($query) {
           $query->where('type', 'main');
@@ -62,7 +66,6 @@ class StoreController extends Controller
       }
     ])->first();
     if ($productCategory != null) {
-
       $preload = "/" . $productCategory->product->media()->where('type', 'main')->first()->path . $productCategory->product->media()->where('type', 'main')->first()->name;
     } else {
       $preload = '';
