@@ -19,7 +19,7 @@
            loading="eager" fetchpriority="high" height="{{ $item->media->where('sequence', 2)->first()->height }}"
            width="{{ $item->media->where('sequence', 2)->first()->width }}">
          @else
-          <img src="/images/store/default/default.webp" alt="something wrong">
+          <source media="(min-width: 992px)" sizes="(min-width: 992px) 50vw" srcset="/images/store/default/default.webp" loading="eager" fetchpriority="high">
          @endif
          {{-- Tablet Picture --}}
          @if ($item->media->where('sequence', 3)->first() != null)
@@ -33,7 +33,7 @@
            loading="eager" fetchpriority="high" height="{{ $item->media->where('sequence', 2)->first()->height }}"
            width="{{ $item->media->where('sequence', 2)->first()->width }}">
          @else
-          <img src="/images/store/default/default640.webp" alt="something wrong">
+         <source media="(min-width: 576px)" sizes="(min-width: 576px) 80vw" srcset="/images/store/default/default640.webp" loading="eager" fetchpriority="high">
          @endif
          {{-- Mobile Picture --}}
          @if ($item->media->where('sequence', 4)->first() != null)
