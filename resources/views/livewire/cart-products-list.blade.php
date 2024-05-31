@@ -8,7 +8,7 @@
  <button class="leftbar__hidden--close" wire:click="$set('showcart', false)" id="basketHidden"></button>
  <div class="leftbar__content" id="basketContent">
   <div class="leftbar__top">
-   <a class="leftbar__button" href="{{ url('/cart') }}">Vizualizare coș de cumpărături </a>
+   <a id="price_change" class="leftbar__button" href="{{ url('/cart') }}">Vizualizare coș de cumpărături </a>
    <button class="leftbar__close" id="basketClose" wire:click="$set('showcart', false)">
     <svg>
      <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -48,9 +48,22 @@
          $isdisabled = true;
      }
      ?>
+     
      <script>
-      @this.pricechanged();
+      document.addEventListener('livewire:load', function() {
+    let observer = new IntersectionObserver((entries) => {
+     entries.forEach(entry => {
+      if (entry.isIntersecting) {
+       @this.call('pricechanged');
+      }
+     });
+    });
+
+    observer.observe(document.getElementById('price_change'));
+   });
      </script>
+
+
      <li class="leftbar__item">
       @if ($nonquantity[$index])
        <div class="leftbar__link"
