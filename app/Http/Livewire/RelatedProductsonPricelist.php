@@ -187,6 +187,9 @@ class RelatedProductsonPricelist extends Component
     $new->product_id = $this->productid;
     $val = $this->product[$index] ?? NULL;
     if (array_key_exists('vat', $val)) {
+      if ($val["vat"] === "") {
+        $val["vat"] = 0;
+      }
 
       if ($val["vat"] < 0) {
         session()->flash('notification', [
@@ -207,6 +210,9 @@ class RelatedProductsonPricelist extends Component
       $new->save();
     }
     if (array_key_exists('discount', $val)) {
+      if ($val["discount"] === "") {
+        $val["discount"] = 0;
+      }
       if ($val["discount"] < 0 || $val["discount"] >= 100) {
         session()->flash('notification', [
           'message' => 'Please provide a value biger than 0 and smaller that 100!',

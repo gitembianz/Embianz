@@ -203,7 +203,9 @@ class RelatedPricelist extends Component
     $val = $this->pricelist[$index] ?? NULL;
     if (!is_null($val)) {
       if (array_key_exists('vat', $val)) {
-
+        if ($val["vat"] === "") {
+          $val["vat"] = 0;
+        }
         if ($val["vat"] < 0) {
           session()->flash('notification', [
             'message' => 'Please provide a value biger than 0!',
@@ -222,6 +224,9 @@ class RelatedPricelist extends Component
         $new->vat = $val["vat"];
       }
       if (array_key_exists('discount', $val)) {
+        if ($val["discount"] === "") {
+          $val["discount"] = 0;
+        }
         if ($val["discount"] < 0 || $val["discount"] >= 100) {
           session()->flash('notification', [
             'message' => 'Please provide a value biger than 0 and smaller that 100!',
@@ -236,6 +241,7 @@ class RelatedPricelist extends Component
           ];
           return;
         } else {
+
           $new->discount = $val["discount"];
           $new->save();
         }
