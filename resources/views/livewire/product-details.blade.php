@@ -31,7 +31,7 @@
    @if ($price)
     <div class="product__price--discount">
      <span
-      class="product__price--oldprice">{{ $product->product_prices->first()->value_no_vat }}{{ $currency }}</span>
+      class="product__price--oldprice">{{ $product->product_prices->first()->value_no_discount }}{{ $currency }}</span>
      <span class="product__price--newprice">{{ $price }}
       {{ $currency }}</span>
     </div>
