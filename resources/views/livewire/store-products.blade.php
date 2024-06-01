@@ -1,17 +1,14 @@
 <div wire:scroll="loadMore">
 
- <!-- Acesta este Store Products (Catalogol Magazinului), acesta
-    are sistemul de filtre, card-uri, si stilul Catalogului -->
-
  <!---------------------------------------------------------->
  <!------------------------Breadcrumbs----------------------->
  <div class="breadcrumbs container">
   <a class="breadcrumbs__link" href="{{ url('/') }}">
-   Acasă
+   @if (app()->has('label_breadcrumbs_home_page')){!! app('label_breadcrumbs_home_page') !!} @endif
   </a>
   @if (app()->has('global_show_on_breadcrumbs') && app('global_show_on_breadcrumbs') == 'true')
    <a class="breadcrumbs__link" href="{{ url('/storeproducts') }}">
-    Toate produsele
+    @if (app()->has('label_breadcrumbs_allproducts')){!! app('label_breadcrumbs_allproducts') !!} @endif
    </a>
   @endif
   <!-------------------If Category is appear------------------>
@@ -54,7 +51,7 @@
    </svg>
   </button>
   <input class="controls__search" maxlength="100" type="text" name="search" id="search" wire:model="search"
-   autocomplete="off" placeholder="Caută în listă...">
+   autocomplete="off" placeholder="@if (app()->has('label_placeholder_search')){!! app('label_placeholder_search') !!} @endif">
   <button class="controls__button" id="sortOpen" aria-label="Open sort button">
    <svg>
     <line x1="21" y1="10" x2="7" y2="10"></line>
@@ -80,7 +77,7 @@
     </button>
    @endforeach
    <button class="tag__button" wire:click="clearall()" class="filter__applied--clear">
-    Elimină toate filtrele
+    @if (app()->has('label_remove_all_filters')){!! app('label_remove_all_filters') !!} @endif
     <svg>
      <line x1="18" y1="6" x2="6" y2="18"></line>
      <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -94,7 +91,7 @@
  <h2></h2>
  <section class="catalogue container">
   @if ($products->isEmpty())
-   <p>Nu au fost produse gasite</p>
+   <p>@if(app()->has('label_message_no_elements')){!! app('label_message_no_elements') !!} @endif</p>
   @else
    @foreach ($products as $index => $product)
     <div class="product">

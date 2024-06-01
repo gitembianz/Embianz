@@ -19,7 +19,7 @@
            loading="eager" fetchpriority="high" height="{{ $item->media->where('sequence', 2)->first()->height }}"
            width="{{ $item->media->where('sequence', 2)->first()->width }}">
          @else
-          <img src="/images/store/default/default.webp" alt="something wrong">
+          <source media="(min-width: 992px)" sizes="(min-width: 992px) 50vw" srcset="/images/store/default/default.webp" loading="eager" fetchpriority="high">
          @endif
          {{-- Tablet Picture --}}
          @if ($item->media->where('sequence', 3)->first() != null)
@@ -33,7 +33,7 @@
            loading="eager" fetchpriority="high" height="{{ $item->media->where('sequence', 2)->first()->height }}"
            width="{{ $item->media->where('sequence', 2)->first()->width }}">
          @else
-          <img src="/images/store/default/default640.webp" alt="something wrong">
+         <source media="(min-width: 576px)" sizes="(min-width: 576px) 80vw" srcset="/images/store/default/default640.webp" loading="eager" fetchpriority="high">
          @endif
          {{-- Mobile Picture --}}
          @if ($item->media->where('sequence', 4)->first() != null)
@@ -128,7 +128,7 @@
         @if ($price)
          @if ($product->quantity < $quantity && $product->quantity > 0)
           <p class="card-status out">
-           Stock limitat!!
+           @if (app()->has('label_product_status_stock')){!! app('label_product_status_stock') !!} @endif
           </p>
           @if ($discount)
            <p class="card-status save-secondary">
@@ -137,7 +137,7 @@
           @endif
          @elseif($product->quantity == 0)
           <p class="card-status save">
-           Produs indisponibil!
+           @if (app()->has('label_product_status_indisponible')){!! app('label_product_status_indisponible') !!} @endif
           </p>
          @else
           @if ($discount)
@@ -148,9 +148,9 @@
          @endif
          {{-- tagul de discount --}}
         @else
-         <p class="card-status save">
-          În curând!
-         </p>
+          <p class="card-status save">
+           @if (app()->has('label_product_status_coming_soon')){!! app('label_product_status_coming_soon') !!} @endif
+          </p>
         @endif
         <div class="card-info">
          <div class="card-text">
@@ -181,11 +181,7 @@
 
           </p>
          </div>
-         @if ($price)
           @livewire('add-to-cart-button', ['product' => $product], key($product->id))
-         @else
-          <button class="card-button-disabled" aria-label="Disabled add to cart button">Indisponibil</button>
-         @endif
          <div style="display: none" class="dlv">
           <span class="dlv_name">{{ $product->name }}</span>
           <span class="dlv_price">{{ $price }}</span>
@@ -251,7 +247,7 @@
         @if ($price)
          @if ($product->quantity < $quantity && $product->quantity > 0)
           <p class="card-status out">
-           Stock limitat!!
+           @if (app()->has('label_product_status_stock')){!! app('label_product_status_stock') !!} @endif
           </p>
           @if ($discount)
            <p class="card-status save-secondary">
@@ -260,7 +256,7 @@
           @endif
          @elseif($product->quantity == 0)
           <p class="card-status save">
-           Produs indisponibil!
+           @if (app()->has('label_product_status_indisponible')){!! app('label_product_status_indisponible') !!} @endif
           </p>
          @else
           @if ($discount)
@@ -272,8 +268,8 @@
          {{-- tagul de discount --}}
         @else
          <p class="card-status save">
-          În curând!
-         </p>
+           @if (app()->has('label_product_status_coming_soon')){!! app('label_product_status_coming_soon') !!} @endif
+          </p>
         @endif
         <div class="card-info">
          <div class="card-text">
@@ -303,11 +299,8 @@
            @endif
           </p>
          </div>
-         @if ($price)
           @livewire('add-to-cart-button', ['product' => $product], key($product->id))
-         @else
-          <button class="card-button-disabled" aria-label="Disabled add to cart button">Indisponibil</button>
-         @endif
+         
          <div style="display: none" class="dlv">
           <span class="dlv_name">{{ $product->name }}</span>
           <span class="dlv_price">{{ $price }}</span>

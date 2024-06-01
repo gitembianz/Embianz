@@ -165,17 +165,3 @@
   });
   Route::get('/embadmin/login', [AuthenticatedSessionController::class, 'create'])->name('login');
   Route::post('/embadmin/login', [AuthenticatedSessionController::class, 'store']);
-
-  //Comments routes
-  // Route::get('myorder/{order_number?}', [StoreController::class, 'myorder'])
-  //   ->name('my_order')
-  //   ->middleware('check.order');
-
-   // route::get('/update', function () {
-    //   Artisan::call('migrate:fresh --seed');
-    //   Cache::forget('global_variables');
-    //   Cache::forget('global_statuses');
-    //   Cache::forget('global_payments');
-    //   Cache::forget('global_scripts');
-    //   echo "New fresh app";
-    // });
