@@ -1,6 +1,5 @@
 <div wire:scroll="loadMore">
 
- <!---------------------------------------------------------->
  <!------------------------Breadcrumbs----------------------->
  <div class="breadcrumbs container">
   <a class="breadcrumbs__link" href="{{ url('/') }}">
@@ -26,10 +25,7 @@
     @endif
    @endforeach
   @endif
-  <!-----------------End If Category is appear---------------->
  </div>
- <!----------------------End Breadcrumbs--------------------->
- <!---------------------------------------------------------->
  <!----------------------Categorie + detalii--------------------->
  @if ($category)
   <section class="section__header container">
@@ -39,9 +35,7 @@
    </p>
   </section>
  @endif
- <!----------------------End Categorie + detalii--------------------->
 
- <!---------------------------------------------------------->
  <!---------------------------Filter------------------------->
  <section class="controls container">
   <button class="controls__button" id="filterOpen" wire:click="$set('showspecfilter', true)"
@@ -61,10 +55,7 @@
    </svg>
   </button>
  </section>
- <!-------------------------End c----------------------->
- <!---------------------------------------------------------->
- <!----------------------Categorie + detalii--------------------->
- <!---------------------------- Tags-------------------------->
+ <!---------------------------- Display filters-------------------------->
  @if (!empty($selectedSpecNames))
   <section class="tag container">
    @foreach ($selectedSpecNames as $key => $name)
@@ -85,8 +76,6 @@
    </button>
   </section>
  @endif
- <!--------------------------End  Tags------------------------>
- <!---------------------------------------------------------->
  <!-------------------------Catalogue------------------------>
  <h2></h2>
  <section class="catalogue container">
@@ -114,13 +103,12 @@
           $discount = false;
       }
       ?>
-
       @if ($price)
        {{-- Out- negru // save - rosu --}}
        @if ($product->quantity < $quantity && $product->quantity > 0)
         <p class="card-status out">
-         Stock limitat!
-        </p>
+           @if (app()->has('label_product_status_stock')){!! app('label_product_status_stock') !!} @endif
+          </p>
         @if ($discount)
          <p class="card-status save-secondary">
           -{{ $product->product_prices->first()->discount }}%
@@ -128,8 +116,8 @@
         @endif
        @elseif($product->quantity == 0)
         <p class="card-status save">
-         Produs indisponibil!
-        </p>
+           @if (app()->has('label_product_status_indisponible')){!! app('label_product_status_indisponible') !!} @endif
+          </p>
        @else
         @if ($discount)
          <p class="card-status save">
@@ -140,8 +128,8 @@
        {{-- tagul de discount --}}
       @else
        <p class="card-status save">
-        În curând!
-       </p>
+           @if (app()->has('label_product_status_coming_soon')){!! app('label_product_status_coming_soon') !!} @endif
+          </p>
       @endif
       @livewire(
           'product-wishlist-button',
@@ -187,11 +175,7 @@
         </div>
         </p>
        </div>
-       @if ($price)
         @livewire('add-to-cart-button', ['product' => $product], key($product->id . $index))
-       @else
-        <button class="card-button-disabled" aria-disabled="disabled add to cart button">Indisponibil</button>
-       @endif
       </div>
      </div>
     </div>
@@ -199,20 +183,18 @@
    <x-lazy />
   @endif
  </section>
-
+ <!-----------------------Load more---------------------->
  @if ($products->total() >= $loadAmount)
   <section class="container">
    <button class="filter__apply" wire:click="loadMore" wire:loading.remove>Vezi mai mult!</button>
   </section>
  @endif
- <!-----------------------End Catalogue---------------------->
- <!---------------------------------------------------------->
- <!---------------------------Filter------------------------->
+ <!---------------------------Filters------------------------->
  <div class="filter @if ($showspecfilter) active @endif" id="filterList">
   <div class="filter__content" id="filterContent">
    <div class="filter__top">
     <button class="filter__apply" id="resetFilter" wire:click="resetFilter">
-     Șterge Filtrele
+     @if (app()->has('label_remove_all_filters')){!! app('label_remove_all_filters') !!} @endif
      <svg>
       <polyline points="23 4 23 10 17 10"></polyline>
       <polyline points="1 20 1 14 7 14"></polyline>
@@ -227,7 +209,7 @@
     </button>
    </div>
    <button class="filter__top filter__top--button" wire:click="$set('showspecfilter', false)">
-    Afișează rezultate: <span>{{ $products->total() }}</span>
+    @if (app()->has('label_display_filters_results')){!! app('label_display_filters_results') !!} @endif <span>{{ $products->total() }}</span>
    </button>
    <div wire:ignore class="filter__list">
     @foreach ($filtervalues->sortBy('spec.sequence')->groupBy('spec_id') as $values)
@@ -243,7 +225,7 @@
       <div class="dropfilter__list">
        @foreach ($values->sortBy('sequence') as $value)
         @php
-         $key = str_replace('.', '_', $value->value); // Replace dots with underscores in the key
+         $key = str_replace('.', '_', $value->value); 
         @endphp
         <label class="dropfilter__link" for="{{ $value->id }}{{ $value->value }}">
          <input type="checkbox" wire:model="selectedSpecValues.{{ $value->spec_id }}.{{ $key }}"
@@ -251,23 +233,19 @@
          <h4>{{ $value->value }}</h4>
         </label>
        @endforeach
-
       </div>
      </div>
     @endforeach
-    <!-------------------- Dropdown (filter) -------------------->
    </div>
   </div>
   <button class="filter__close-modal" wire:click="$set('showspecfilter', false)"></button>
  </div>
- <!-------------------------End Filter----------------------->
- <!---------------------------------------------------------->
- <!-------------------------Asortiment----------------------->
+ <!-------------------------Sorting----------------------->
  <div class="filter" id="sortList">
   <div class="filter__content" id="sortContent">
    <div class="filter__top">
     <div class="filter__text--long">
-     Ordonează după:
+     @if (app()->has('label_sort_title')){!! app('label_sort_title') !!} @endif
     </div>
     <button class="filter__reset" id="sortClose" href="#">
      <svg>
@@ -281,65 +259,59 @@
     <input class="filter__input" wire:model="orderBy" type="radio" name="sort" value="best_selling"
      id="sort">
     <label class="filter__link sort__item" for="sort">
-     <h4>Cele mai populare</h4>
+     <h4>@if (app()->has('label_sort_popularity')){!! app('label_sort_popularity') !!} @endif</h4>
     </label>
 
     <input class="filter__input" wire:model="orderBy" type="radio" name="sort1" value="price_as"
      id="sort1">
     <label class="filter__link sort__item" for="sort1">
-     <h4>Preț crescător</h4>
+    <h4>@if (app()->has('label_sort_price_as')){!! app('label_sort_price_as') !!} @endif</h4>
     </label>
 
     <input class="filter__input" wire:model="orderBy" type="radio" name="sort2" value="price_ds"
      id="sort2">
     <label class="filter__link sort__item" for="sort2">
-     <h4>Preț descrescător</h4>
+    <h4>@if (app()->has('label_sort_price_ds')){!! app('label_sort_price_ds') !!} @endif</h4>
     </label>
 
     <input class="filter__input" wire:model="orderBy" type="radio" name="sort3" value="quantity"
      id="sort3">
     <label class="filter__link sort__item" for="sort3">
-     <h4>Disponibilitate (stoc descrescator)</h4>
+    <h4>@if (app()->has('label_sort_quantity_ds')){!! app('label_sort_quantity_ds') !!} @endif</h4>
     </label>
 
     <input class="filter__input" wire:model="orderBy" type="radio" name="sort8" value="quantity_as"
      id="sort8">
     <label class="filter__link sort__item" for="sort8">
-     <h4>Disponibilitate (stoc crescator)</h4>
+    <h4>@if (app()->has('label_sort_quantity_as')){!! app('label_sort_quantity_as') !!} @endif</h4>
     </label>
 
     <input class="filter__input" wire:model="orderBy" type="radio" name="sort4" value="name_az"
      id="sort4">
     <label class="filter__link sort__item" for="sort4">
-     <h4>Alfabetic, A-Z</h4>
+    <h4>@if (app()->has('label_sort_name_az')){!! app('label_sort_name_az') !!} @endif</h4>
     </label>
 
     <input class="filter__input" wire:model="orderBy" type="radio" name="sort5" value="name_za"
      id="sort5">
     <label class="filter__link sort__item" for="sort5">
-     <h4>Alfabetic, Z-A</h4>
+    <h4>@if (app()->has('label_sort_name_za')){!! app('label_sort_name_za') !!} @endif</h4>
     </label>
 
     <input class="filter__input" wire:model="orderBy" type="radio" name="sort6" value="date_old_new"
      id="sort6">
     <label class="filter__link sort__item" for="sort6">
-     <h4>Dată, de la vechi la nou</h4>
+    <h4>@if (app()->has('label_sort_date_ds')){!! app('label_sort_date_ds') !!} @endif</h4>
     </label>
 
     <input class="filter__input" wire:model="orderBy" type="radio" name="sort7" value="date_new_old"
      id="sort7">
     <label class="filter__link sort__item" for="sort7">
-     <h4>Dată, de la nou la vechi</h4>
+    <h4>@if (app()->has('label_sort_date_as')){!! app('label_sort_date_as') !!} @endif</h4>
     </label>
    </div>
   </div>
  </div>
- <!-----------------------End Asortiment--------------------->
- <!---------------------------------------------------------->
- <!---------------------------------------------------------->
- <!--------------------- support button --------------------->
  <x-help-button />
- <!------------------- End support button ------------------->
- <!---------------------------------------------------------->
  <script src="/script/store/catalog.js" defer></script>
 </div>
