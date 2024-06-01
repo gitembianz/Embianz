@@ -1,0 +1,16 @@
+on: push
+name: Deploy Dev to main dormisoft.md on push
+jobs:
+  web-deploy:
+    name: Deploy to Dev
+    runs-on: ubuntu-latest
+    steps:
+    - name: Get latest code
+      uses: actions/checkout@v3
+    
+    - name: 📂 Sync files
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      with:
+        server: dormisoft.md  
+        username: gituser@dormisoft.md
+        password: ${{ secrets.mainftpds}}
