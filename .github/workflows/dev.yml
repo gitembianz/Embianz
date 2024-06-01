@@ -1,5 +1,5 @@
 on: push
-name: Deploy Dev to dev.dormisoft.md on push
+name: Deploy Dev to dormisoft.md on push
 jobs:
   web-deploy:
     name: Deploy to Dev
