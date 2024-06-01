@@ -11,6 +11,6 @@ jobs:
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
       with:
-        server: dormisoft.md  
+        server: ftp.dormisoft.md  
         username: gituser@dormisoft.md
         password: ${{ secrets.mainftpds}}
