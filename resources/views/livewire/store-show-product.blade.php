@@ -205,7 +205,7 @@
             @endif
            </span>
            <span class="card-price oldprice">
-            {{ $product->product->product_prices->first()->value_no_vat }}
+            {{ $product->product->product_prices->first()->value_no_discount }}
             {{ $product->product->product_prices->first()->pricelist->currency->name }}
            </span>
           @else
