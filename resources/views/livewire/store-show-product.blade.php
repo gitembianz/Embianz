@@ -143,8 +143,7 @@
              $product->product->end_date >= now()->format('Y-m-d') &&
              $product->product->start_date <= now()->format('Y-m-d'))
       <div class="card product" style="width: 100%">
-       <a style="width: 100%"
-        href="{{ route('product', ['product' => $product->product->seo_id !== null && $product->product->seo_id !== '' ? $product->product->seo_id : $product->product->id]) }}">
+       <a style="width: 100%" href="{{ route('product', ['product' => $product->product->seo_id !== null && $product->product->seo_id !== '' ? $product->product->seo_id : $product->product->id]) }}">
 
         @if ($product->product->media->first() != null)
          <img loading="eager" class="card-image"
