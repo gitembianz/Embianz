@@ -135,7 +135,7 @@
     </svg>
    </button>
    {{-- </div> --}}
-   <div class="related__wrapper" style="touch-action: pan-x !important;">
+   <div class="related__wrapper">
     @foreach ($product->related_product->sortByDesc('product.popularity') as $product)
      @if (
          $product->product &&
