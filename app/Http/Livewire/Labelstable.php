@@ -119,7 +119,7 @@ class Labelstable extends Component
 
     public function addLabelsIfNotExist()
     {
-        $element = TextLabelSeeder::labels(); // Access element from the seeder directly
+        $element = TextLabelSeeder::labels();
         foreach ($element as $elem) {
             $exists = DB::table('text_labels')
                 ->where('parameter', $elem['parameter'])
