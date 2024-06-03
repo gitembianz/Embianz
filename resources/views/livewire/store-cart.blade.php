@@ -44,7 +44,7 @@
       ?>
       <div class="basket__split">
        <div class="basket__item">
-         <a style="width: 100%; display: flex; flex: 1;" href="{{ route('product', ['product' => $cartItem->product->seo_id !== null && $cartItem->product->seo_id !== '' ? $cartItem->product->seo_id : $cartItem->product->id]) }}">
+         <a style="width: 100%; display: flex; flex: 1;text-decoration: none" href="{{ route('product', ['product' => $cartItem->product->seo_id !== null && $cartItem->product->seo_id !== '' ? $cartItem->product->seo_id : $cartItem->product->id]) }}">
         @if ($cartItem->product->media->first())
          <img loading="eager" class="cart__list--img"
           src="/{{ $cartItem->product->media->first()->path }}{{ $cartItem->product->media->first()->name }}"
