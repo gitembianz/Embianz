@@ -1,0 +1,30 @@
+//<---------------------------- Color Palethe ---------------------------->
+//<-------------------------- End Color Palethe -------------------------->
+$text: #333333;
+// $background: #ffffff;
+// $primary: #4f4f4f;
+// $secondary: #fafafa;
+// $accent: #1a691a;
+$modal: rgba(
+  $color: #000000,
+  $alpha: 0.8,
+);
+//<---------------------------------Sizes--------------------------------->
+// Breakpoints widths
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1400px,
+);
+// Container widths
+$container-max-widths: (
+  sm: 540px,
+  md: 720px,
+  lg: 960px,
+  xl: 1140px,
+  xxl: 1320px,
+);
+//<-------------------------------End-Sizes------------------------------->

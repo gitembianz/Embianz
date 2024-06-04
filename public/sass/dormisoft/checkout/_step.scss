@@ -1,0 +1,84 @@
+.step__container {
+  width: 100%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  @media (max-width: map-get($grid-breakpoints, md)) {
+    margin-bottom: 0px;
+  }
+}
+
+.step {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid $lightGray;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $lightGray;
+  font-size: $inputSize;
+  font-weight: $lightWeight;
+  transition: all 0.3s ease-in-out;
+
+  &::after {
+    content: attr(data-step);
+    font-size: $textSize;
+    font-weight: $lightWeight;
+    color: #ccc;
+    position: absolute;
+    top: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 125px;
+    text-align: center;
+
+    @media (max-width: map-get($grid-breakpoints, md)) {
+      display: none;
+    }
+  }
+
+  &.active {
+    background: $lightBlack;
+    color: $secondary;
+    border: 3px solid $lightBlack;
+
+    &::after {
+      color: $lightBlack;
+    }
+  }
+  &.canceled {
+    background: $darkRed;
+    color: $secondary;
+    border: 3px solid $darkRed;
+
+    &::after {
+      color: $darkRed;
+    }
+  }
+}
+
+
+.step__line {
+  width: 100%;
+  flex: 1;
+  height: 2px;
+  background: darken($secondary, 10%);
+  transition: all 0.3s ease-in-out;
+
+  &.full {
+    background: $lightBlack;
+  }
+
+  &.half {
+    background: rgb(51, 51, 51);
+    background: linear-gradient(
+      90deg,
+      rgba(51, 51, 51, 1) 35%,
+      rgba(204, 204, 204, 1) 65%
+    );
+  }
+}
