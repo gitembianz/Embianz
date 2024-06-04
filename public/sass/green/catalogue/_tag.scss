@@ -1,0 +1,30 @@
+.tag {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.tag__button {
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: $textSize;
+  font-weight: $lightWeight;
+  border: none;
+  background: $text;
+  padding: 0 10px;
+  color: #fff;
+
+  &:hover {
+    // background: darken($color: $accent, $amount: 15%);
+  }
+
+  & > svg {
+    transform: scale(0.7);
+    stroke-width: 1.5px;
+    stroke: #fff;
+  }
+}
