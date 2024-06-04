@@ -24,7 +24,7 @@
    <!-------------------------Logo------------------------->
 
    <a class="logo" href="{{ url('/') }}">
-    <img loading="eager" src="/images/store/svg/noren-black.svg" alt="Embianz Logo">
+    <img loading="eager" src="/images/store/svg/logo-dark.svg" alt="Embianz Logo">
    </a>
    <!-----------------------END-Logo----------------------->
    <!------------------------------------------------------>
@@ -102,7 +102,7 @@
      </svg>
     </button>
     <a class="logo__hidden" href="{{ url('/') }}">
-     <img loading="eager" src="/images/store/svg/noren-black.svg" alt="Site Logo">
+     <img loading="eager" src="/images/store/svg/logo-dark.svg" alt="Site Logo">
     </a>
     {{-- wislist button --}}
     <button class="header__btn" wire:click="$emit('showwis')" id="wishOpen" aria-label="Open wishlist button">
