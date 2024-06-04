@@ -1,0 +1,131 @@
+.total__container {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 15px;
+
+  @media (min-width: map-get($grid-breakpoints, lg)) {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 20px;
+    align-items: start;
+    justify-items: center;
+  }
+}
+
+.total__message {
+  width: 100%;
+  text-align: left;
+  color: $lightBlack;
+  font-size: $textSize;
+  font-size: $lightWeight;
+  padding: 5px;
+
+  & > strong {
+    margin-left: 5px;
+  }
+}
+
+.total__info {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 10px;
+  border-radius: 7px;
+  background: $background;
+  align-items: center;
+  justify-content: flex-start;
+  grid-area: 1;
+
+  @media (min-width: map-get($grid-breakpoints, lg)) {
+    grid-area: unset;
+    grid-column: 2/3;
+    grid-row: 1/3;
+    height: 100%;
+  }
+  & > .total__product:last-child::after {
+    display: block;
+  }
+}
+
+.total__item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: transparent;
+  padding: 10px;
+  gap: 15px;
+  border-radius: 7px;
+
+  & > span {
+    font-size: $textSize;
+    font-size: $lightWeight;
+    color: $lightBlack;
+  }
+
+  & > span:last-child {
+    font-size: $lightWeight;
+  }
+}
+
+.total__product {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: $primary;
+  padding: 10px;
+  gap: 15px;
+  border-radius: 7px;
+  width: 100%;
+  position: relative;
+
+  & > img {
+    width: 50px;
+    height: 50px;
+    aspect-ratio: 1/1;
+    object-fit: contain;
+    object-position: center;
+    border-radius: 5px;
+    mix-blend-mode: multiply;
+  }
+
+  &::after {
+    content: "";
+    width: 100%;
+    height: 1px;
+    background: $lightBlack;
+    position: absolute;
+    left: 0;
+    bottom: -7.5px;
+    display: none;
+  }
+}
+
+.total__name {
+  width: 100%;
+  flex: 1;
+  text-align: left;
+  font-size: $textSize;
+  font-size: $lightWeight;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: $lightBlack;
+  margin: 0;
+}
+
+.total__price,
+.total__quantity {
+  font-size: $textSize;
+  font-size: $lightWeight;
+  text-transform: uppercase;
+  color: lighten($color: $lightBlack, $amount: 20%);
+  text-wrap: nowrap;
+  word-break: break-word;
+  white-space: nowrap;
+}
+
+.total__quantity {
+  width: 40px;
+}
