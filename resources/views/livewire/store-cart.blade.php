@@ -61,7 +61,7 @@
 
          </span>
          @if ($nonquantity[$index])
-          <span class="item__product--error">@if (app()->has('label_cart_page_quantity_error')){!! app('label_cart_page_quantity_error') !!} @endif
+          <span class="item__product--error">@if (app()->has('label_product_quantity_error')){!! app('label_product_quantity_error') !!} @endif
            {{ $cartItem->product->quantity }}</span>
          @endif
         </div>
@@ -78,7 +78,7 @@
       </div>
        <div class="basket__item">
         <div class="quantity">
-         <span>@if (app()->has('label_cart_page_quantity_tag')){!! app('label_cart_page_quantity_tag') !!} @endif</span>
+         <span>@if (app()->has('label_product_quantity_tag')){!! app('label_product_quantity_tag') !!} @endif</span>
          <div class="quantity__buttons">
           <button class="quantity__arrow @if ($cartItem->quantity == 1) disabled @endif"
            style="width: 48px; height: 48px" aria-label="Decrease quantity"

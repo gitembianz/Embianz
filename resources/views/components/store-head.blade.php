@@ -10,15 +10,6 @@
  @endif
  <meta name="description" content="{{ $description }}">
 
- {{-- <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" defer></script> --}}
-
- {{-- DormiSoft Favicon --}}
- {{-- <link rel="icon" type="image/x-icon" href="/images/store/svg/dormisoft_favicon.svg"> --}}
- {{-- noren Favicon --}}
- {{-- <link rel="icon" type="image/x-icon" href="/images/store/svg/noren_favicon.svg"> --}}
- {{-- favicon --}}
-
-
 
  <link rel="apple-touch-icon" sizes="180x180" href="/images/store/svg/apple-touch-icon.png">
  <link rel="icon" type="image/png" sizes="48x48" href="/images/store/svg/favicon-48x48.png">
@@ -39,9 +30,12 @@
 
 <link rel="canonical" href="{{ config('app.url') . '/'. $canonical }}">
 
- <link rel="preload" href="/dist/css/dormisoft.css" as="style">
- <link rel="stylesheet" href="/dist/css/dormisoft.css" async>
- {{-- ----------------------------------------------------------- --}}
+<?php
+  $theme = app()->has('global_theme') ? app('global_theme') : 'store';
+  $href = '/dist/css/' . $theme . '.css';
+?>
+    <link rel="preload" href="{{ $href }}" as="style">
+ <link rel="stylesheet" href="{{ $href }}" async>
  <!-- Open Graph / Facebook -->
  <meta property="og:url" content="{{ config('app.url') . '/'. $canonical }}" />
  <meta property="og:type" content="website" />
