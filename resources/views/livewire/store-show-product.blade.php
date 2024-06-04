@@ -2,11 +2,11 @@
 
  <div class="breadcrumbs container">
   <a class="breadcrumbs__link" href="{{ url('/') }}">
-   Acasă
+    @if (app()->has('label_breadcrumbs_home_page')){!! app('label_breadcrumbs_home_page') !!} @endif
   </a>
   @if (app()->has('global_show_on_breadcrumbs') && app('global_show_on_breadcrumbs') == 'true')
    <a class="breadcrumbs__link" href="{{ url('/storeproducts') }}">
-    Toate produsele
+    @if (app()->has('label_breadcrumbs_allproducts')){!! app('label_breadcrumbs_allproducts') !!} @endif
    </a>
   @endif
   @if ($product->product_categories->isNotEmpty())
@@ -164,9 +164,9 @@
        ?>
        @if ($price)
         @if ($product->product->quantity < $quantity && $product->product->quantity > 0)
-         <p class="card-status out">
-          Stock limitat!!
-         </p>
+          <p class="card-status out">
+           @if (app()->has('label_product_status_stock')){!! app('label_product_status_stock') !!} @endif
+          </p>
          @if ($discount)
           <p class="card-status save-secondary">
            -{{ $product->product->product_prices->first()->discount }}%
@@ -174,8 +174,8 @@
          @endif
         @elseif($product->product->quantity == 0)
          <p class="card-status save">
-          Produs indisponibil!
-         </p>
+           @if (app()->has('label_product_status_indisponible')){!! app('label_product_status_indisponible') !!} @endif
+          </p>
         @else
          @if ($discount)
           <p class="card-status save">
@@ -186,8 +186,8 @@
         {{-- tagul de discount --}}
        @else
         <p class="card-status save">
-         În curând!
-        </p>
+           @if (app()->has('label_product_status_coming_soon')){!! app('label_product_status_coming_soon') !!} @endif
+          </p>
        @endif
        <div class="card-info">
         <div class="card-text">
@@ -236,12 +236,6 @@
    </div>
   </section>
  @endif
-
- <!-------------------- End Slider Cards -------------------->
- <!---------------------------------------------------------->
- <!--------------------- support button --------------------->
  <x-help-button />
- <!------------------- End support button ------------------->
- <!---------------------------------------------------------->
  <script src="/script/store/product.js" defer></script>
 </div>
