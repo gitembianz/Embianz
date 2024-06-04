@@ -54,7 +54,7 @@ h2.section__title {
   width: 100%;
   font-size: $textSize;
   font-weight: $lightWeight;
-  color: lighten($color: $lightBlack, $amount: 25%);
+  color: $lightBlack;
   text-align: center;
   line-height: $lineHeight;
   text-wrap: balance;
@@ -69,7 +69,7 @@ h2.section__title {
     text-underline-offset: 3px;
     font-weight: $lightWeight;
     font-size: $textSize;
-    color: $lightBlack;
+    color: lighten($lightBlack, 25%);
     line-height: $lineHeight;
   }
 }

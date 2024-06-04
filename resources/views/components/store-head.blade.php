@@ -39,8 +39,8 @@
 
 <link rel="canonical" href="{{ config('app.url') . '/'. $canonical }}">
 
- <link rel="preload" href="/dist/css/noren.css" as="style">
- <link rel="stylesheet" href="/dist/css/noren.css" async>
+ <link rel="preload" href="/dist/css/dormisoft.css" as="style">
+ <link rel="stylesheet" href="/dist/css/dormisoft.css" async>
  {{-- ----------------------------------------------------------- --}}
  <!-- Open Graph / Facebook -->
  <meta property="og:url" content="{{ config('app.url') . '/'. $canonical }}" />
