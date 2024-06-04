@@ -156,7 +156,7 @@ main {
 .container {
   transition: all 0.3s ease-in-out;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 10px;
 }
 
 @include container(sm);
