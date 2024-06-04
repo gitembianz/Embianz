@@ -25,11 +25,11 @@
    </g>
   </svg>
   <div class="alertorder__text">
-   <h3 class="alertorder__title">Ceva nu a mers bine!</h3>
+   <h3 class="alertorder__title">@if (app()->has('label_alert_title')){!! app('label_alert_title') !!} @endif</h3>
    <p class="alertorder__descr"></p>
   </div>
   <button class="alertorder__close">
-   Inchide
+   @if (app()->has('label_alert_button_close')){!! app('label_alert_button_close') !!} @endif
   </button>
  </div>
  <script>

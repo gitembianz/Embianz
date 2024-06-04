@@ -38,7 +38,7 @@ class ProductDetails extends Component
         $this->product = $product->select('id', 'name', 'seo_id', 'long_description', 'quantity', 'short_description')
             ->with([
                 'product_prices' => function ($query) {
-                    $query->select('product_id', 'value', 'vat', 'pricelist_id', 'discount', 'value_no_vat')
+                    $query->select('product_id', 'value', 'vat', 'pricelist_id', 'discount', 'value_no_discount')
                         ->with(['pricelist' => function ($query) {
                             $query->select('id', 'currency_id')->with('currency:id,name,symbol');
                         }]);

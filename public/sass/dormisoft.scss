@@ -1,0 +1,75 @@
+//<-------------------------- General -------------------------->
+@import "dormisoft/general/colors";
+@import "dormisoft/general/normalize";
+@import "dormisoft/general/variable";
+@import "dormisoft/general/mixin";
+@import "dormisoft/general/fonts";
+@import "dormisoft/general/general";
+//<------------------------ End General ------------------------>
+//<------------------------------------------------------------->
+//<------------------------ Components ------------------------->
+@import "dormisoft/components/loading-screen";
+@import "dormisoft/components/cookie";
+@import "dormisoft/components/section";
+@import "dormisoft/components/breadcrumb";
+@import "dormisoft/components/alert";
+@import "dormisoft/components/quantity";
+@import "dormisoft/components/support";
+@import "dormisoft/components/help-button";
+@import "dormisoft/components/numeric-list";
+@import "dormisoft/components/accordion";
+@import "dormisoft/components/select";
+@import "dormisoft/components/spinner";
+@import "dormisoft/components/newsletter";
+@import "dormisoft/components/alertorder";
+//<---------------------- End Components ----------------------->
+//<------------------------------------------------------------->
+//<------------------------ Other Pages ------------------------>
+@import "dormisoft/other-page/faq";
+@import "dormisoft/other-page/contact";
+@import "dormisoft/other-page/about";
+@import "dormisoft/other-page/redirect";
+//<---------------------- End Other Pages ---------------------->
+//<------------------------------------------------------------->
+//<-------------------------- Header --------------------------->
+@import "dormisoft/header/banner";
+@import "dormisoft/header/header";
+@import "dormisoft/header/leftbar";
+@import "dormisoft/header/navbar";
+@import "dormisoft/header/menu";
+@import "dormisoft/header/searchbar";
+//<------------------------ End Header ------------------------->
+//<------------------------------------------------------------->
+//<------------------------- Catalogue ------------------------->
+@import "dormisoft/catalogue/card-style";
+@import "dormisoft/catalogue/addcart";
+@import "dormisoft/catalogue/catalogue";
+@import "dormisoft/catalogue/control";
+@import "dormisoft/catalogue/filter";
+@import "dormisoft/catalogue/tag";
+//<----------------------- End Catalogue ----------------------->
+//<------------------------------------------------------------->
+//<------------------------- Product --------------------------->
+@import "dormisoft/product/product";
+@import "dormisoft/product/tab";
+//<----------------------- End Product ------------------------->
+//<-------------- Cart, wish and checkout page ----------------->
+@import "dormisoft/checkout/basket";
+@import "dormisoft/checkout/detail";
+@import "dormisoft/checkout/form";
+@import "dormisoft/checkout/step";
+@import "dormisoft/checkout/payment";
+@import "dormisoft/checkout/total";
+//<------------ End Cart, wish and checkout page --------------->
+//<------------------------------------------------------------->
+//<-------------------------- Sliders -------------------------->
+@import "dormisoft/slider/slider-main";
+@import "dormisoft/slider/slider-card";
+@import "dormisoft/slider/slider-product";
+@import "dormisoft/slider/related-slider";
+//<------------------------ End Sliders ------------------------>
+//<------------------------------------------------------------->
+// <-------------------------- Footer -------------------------->
+@import "dormisoft/footer/footer";
+// <------------------------ End Footer ------------------------>
+//<------------------------------------------------------------->

@@ -123,29 +123,36 @@
      <span>Specs</span>
     </a>
    </li>
-    <li>
+   <li>
     <a class="sidebar__item @if ($active == 'wishlist') active @endif" href="{{ route('wishlists') }}">
      <button class="sidebar__icon">
       <svg>
-    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-</svg>
+       <path
+        d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+       </path>
+      </svg>
      </button>
      <span>Wishlists</span>
     </a>
    </li>
-     <li>
+   <li>
     <a class="sidebar__item @if ($active == 'session') active @endif" href="{{ route('sessions') }}">
      <button class="sidebar__icon">
       <svg>
-    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-</svg>
+       <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+       <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+      </svg>
      </button>
      <span>Sessions</span>
     </a>
    </li>
    <li class="dropdown">
-    <a class="sidebar__item @if ($active == 'store_settings' || $active == 'payment' || $active == 'scripts' || $active == 'currency') active @endif dropdown-button" href="#"
+    <a class="sidebar__item @if (
+        $active == 'store_settings' ||
+            $active == 'payment' ||
+            $active == 'scripts' ||
+            $active == 'currency' ||
+            $active == 'labels') active @endif dropdown-button" href="#"
      style="z-index: 99999;">
      <button class="sidebar__icon">
       <svg>
@@ -159,7 +166,17 @@
     </a>
     <div class="dropdown-list"
      style="width: 100%;margin-top: -10px;border-radius: 10px;padding: 20px 0 10px 20px;border: none;background: #35424b;">
-     <a class="sidebar__subitem @if ($active == 'store_settings') active @endif" href="{{ route('storesettings') }}">
+     <a class="sidebar__subitem @if ($active == 'labels') active @endif" href="{{ route('labels') }}">
+      <button class="sidebar__icon">
+       <svg>
+        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+       </svg>
+      </button>
+      <span>Labels</span>
+     </a>
+     <a class="sidebar__subitem @if ($active == 'store_settings') active @endif"
+      href="{{ route('storesettings') }}">
       <button class="sidebar__icon">
        <svg>
         <path
@@ -169,16 +186,17 @@
       </button>
       <span>Store</span>
      </a>
-      <a class="sidebar__subitem @if ($active == 'currency') active @endif" href="{{ route('currencies') }}">
+     <a class="sidebar__subitem @if ($active == 'currency') active @endif" href="{{ route('currencies') }}">
       <button class="sidebar__icon">
        <svg>
         <line x1="12" y1="1" x2="12" y2="23"></line>
         <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-       </svg> 
+       </svg>
       </button>
       <span>Currency</span>
      </a>
-     <a class="sidebar__subitem @if ($active == 'scripts') active @endif" href="{{ route('customscripts') }}">
+     <a class="sidebar__subitem @if ($active == 'scripts') active @endif"
+      href="{{ route('customscripts') }}">
       <button class="sidebar__icon">
        <svg>
         <polyline points="16 18 22 12 16 6"></polyline>
@@ -189,10 +207,10 @@
      </a>
      <a class="sidebar__subitem @if ($active == 'payment') active @endif" href="{{ route('payments') }}">
       <button class="sidebar__icon">
-        <svg>
-    <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
-    <line x1="1" y1="10" x2="23" y2="10"></line>
-</svg>
+       <svg>
+        <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+        <line x1="1" y1="10" x2="23" y2="10"></line>
+       </svg>
        {{-- --}}
       </button>
       <span>Payment</span>

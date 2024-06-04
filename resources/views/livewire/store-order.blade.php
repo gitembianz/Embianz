@@ -1,51 +1,39 @@
 <div>
 	<x-store-alert />
 	@if ($back)
-		<!------------------------------------------------------>
 		<!-------------------- Error Message ------------------->
 		<section>
 			<div class="checkout container">
 				<div class="section__header container">
-					<h1 class="section__title">A apărut o eroare!</h1>
+					<h1 class="section__title">@if (app()->has('label_order_error_title')){!! app('label_order_error_title') !!} @endif</h1>
 					<a class="section__text" href="{{ url("/") }}">
-						Te rugam să te întorci la pagina principală
+						@if (app()->has('label_order_error_description')){!! app('label_order_error_description') !!} @endif
 					</a>
 				</div>
 			</div>
 		</section>
-		<!------------------ End Error Message ----------------->
-		<!------------------------------------------------------>
 	@else
-		<!------------------------------------------------------>
-		<!----------------------- Checkout --------------------->
-
-		<!------------------------------------------------------>
 		<section>
 			<div class="checkout container">
-				<!------------------------------------------------------>
-				<!-------------------- Step Numbers -------------------->
+				<!-------------------- Steps-------------------->
 				<div class="step__container">
-					<div class="step active" data-step="Înregistrare Date">1</div>
+					<div class="step active" data-step="@if (app()->has('label_order_step_1')){!! app('label_order_step_1') !!} @endif">1</div>
 					<span class="step__line @if ($step == 1) half @else full @endif"></span>
-					<div class="step @if ($step > 1 || $step == 3) active @endif" data-step="Plasare Comandă">2
+					<div class="step @if ($step > 1 || $step == 3) active @endif" data-step="@if (app()->has('label_order_step_2')){!! app('label_order_step_2') !!} @endif">2
 					</div>
 					<span class="step__line @if ($step == 2) half @elseif($step == 3) full @endif"></span>
-					<div class="step @if ($step == 3) active @endif" data-step="Confirmare">3
+					<div class="step @if ($step == 3) active @endif" data-step="@if (app()->has('label_order_step_3')){!! app('label_order_step_3') !!} @endif">3
 					</div>
 				</div>
-				<!------------------ End Step Numbers ------------------>
-				<!------------------------------------------------------>
-
 				<!-------------------- Step First ---------------------->
 				@if ($step == 1)
 					<div class="section__header">
-						<h2 class="section__title">Detalii de livrare</h2>
+						<h2 class="section__title">@if (app()->has('label_order_1_title')){!! app('label_order_1_title') !!} @endif</h2>
 					</div>
 					<div class="checkout__header">
 						<div class="checkout__navigation">
-							<button class="checkout__button @if ($individual) active @endif" wire:click="showindividual()">Persoană Fizică</button>
-							<button class="checkout__button @if ($juridic) active @endif" wire:click="showjuridic()">
-								Persoană Juridica</button>
+							<button class="checkout__button @if ($individual) active @endif" wire:click="showindividual()">@if (app()->has('label_order_individual_tag')){!! app('label_order_individual_tag') !!} @endif</button>
+							<button class="checkout__button @if ($juridic) active @endif" wire:click="showjuridic()">@if (app()->has('label_order_juridic_tag')){!! app('label_order_juridic_tag') !!} @endif</button>
 						</div>
 						<div class="checkout__navigation">
 							<button class="checkout__button" wire:click="resetForm">
@@ -53,10 +41,10 @@
 									<polyline points="1 4 1 10 7 10"></polyline>
 									<path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
 								</svg>
-								Șterge Datele
+								@if (app()->has('label_order_form_clear')){!! app('label_order_form_clear') !!} @endif
 							</button>
 							<button class="checkout__button checkout__button--confirm" @if ($individual && $individual_identic) onclick="validateIndividual(this)" @elseif ($individual && !$individual_identic) onclick="validateIndividualIdentic(this)" @elseif($juridic && $juridic_identic) onclick="validateJuridic(this)" @else onclick="validateJuridicIdentic(this)" @endif wire:click.prevent="next()">
-								Pasul următor
+								@if (app()->has('label_order_next_step')){!! app('label_order_next_step') !!} @endif
 								<svg>
 									<line x1="5" y1="12" x2="19" y2="12"></line>
 									<polyline points="12 5 19 12 12 19"></polyline>
@@ -65,79 +53,53 @@
 						</div>
 					</div>
 					<div class="checkout__container @if ($individual) active @endif">
-						<!---------------------------------------------------->
-						<!-------------- Checkout List of Forms -------------->
 						<div wire:ignore class="checkout__form active">
-							<!---------------------------------------------------->
-							<!------------- Checkout Header Name --------------->
 							<div class="checkout__top">
 								<span>1</span>
-								<h3>
-									Contact de facturare &#9998;
-								</h3>
+								<h3>@if (app()->has('label_order_billing_info')){!! app('label_order_billing_info') !!} @endif</h3>
 							</div>
-							<!----------- End Checkout Header Name ------------->
-							<!---------------------------------------------------->
-							<!------------- Checkout List of Items --------------->
-
 							<div class="checkout__item checkout__item--required" id="individualShippingFirstNameParent">
-								<input type="text" wire:model="individual_billing_first" name="individualShippingFirstName" placeholder="Prenume" autocomplete="family-name" required id="individualShippingFirstName">
-								<span>
-								</span>
-								<label for="individualShippingFirstName">Prenume</label>
+								<input type="text" wire:model.defer="individual_billing_first" name="individualShippingFirstName" placeholder="@if (app()->has('label_order_firstname')){!! app('label_order_firstname') !!} @endif" autocomplete="given-name" required id="individualShippingFirstName">
+								<span></span>
+								<label for="individualShippingFirstName">@if (app()->has('label_order_firstname')){!! app('label_order_firstname') !!} @endif</label>
 							</div>
 							<!---------------------------------------------------->
 							<div class="checkout__item checkout__item--required" id="individualShippingLastNameParent">
-								<input type="text" wire:model="individual_billing_last" name="individualShippingLastName" placeholder="Nume" autocomplete="given-name" required id="individualShippingLastName">
-								<span>
-								</span>
-								<label for="individualShippingLastName">Nume</label>
+								<input type="text" wire:model.defer="individual_billing_last" name="individualShippingLastName" placeholder="@if (app()->has('label_order_lastname')){!! app('label_order_lastname') !!} @endif" autocomplete="family-name" required id="individualShippingLastName">
+								<span></span>
+								<label for="individualShippingLastName">@if (app()->has('label_order_lastname')){!! app('label_order_lastname') !!} @endif</label>
 							</div>
 							<!---------------------------------------------------->
 							<div class="checkout__item checkout__item--required" id="individualShippingPhoneParent">
-								<input type="tel" wire:model="individual_billing_phone" name="individualShippingPhone" placeholder="Telefon" autocomplete="tel" pattern="[0-9]*" inputmode="numeric" required id="individualShippingPhone">
-								<span>
-								</span>
-								<label for="individualShippingPhone">Telefon</label>
+								<input type="tel" wire:model.defer="individual_billing_phone" name="individualShippingPhone" placeholder="@if (app()->has('label_order_phone')){!! app('label_order_phone') !!} @endif" autocomplete="tel" pattern="[0-9]*" inputmode="numeric" required id="individualShippingPhone">
+								<span></span>
+								<label for="individualShippingPhone">@if (app()->has('label_order_phone')){!! app('label_order_phone') !!} @endif</label>
 							</div>
 							<!---------------------------------------------------->
 							<div class="checkout__item checkout__item--required" id="individualShippingEmailParent">
-								<input type="email" wire:model="individual_billing_email" name="individualShippingEmail" placeholder="Email" autocomplete="email" required id="individualShippingEmail">
-								<span>
-								</span>
-								<label for="individualShippingEmail">Email</label>
+								<input type="email" wire:model.defer="individual_billing_email" name="individualShippingEmail" placeholder="@if (app()->has('label_order_email')){!! app('label_order_email') !!} @endif" autocomplete="email" required id="individualShippingEmail">
+								<span></span>
+								<label for="individualShippingEmail">@if (app()->has('label_order_email')){!! app('label_order_email') !!} @endif</label>
 							</div>
-							<!----------- End Checkout List of Items ------------->
-							<!---------------------------------------------------->
 						</div>
-						<!---------------------------------------------------->
 						<div wire:ignore class="checkout__form active">
-							<!---------------------------------------------------->
-							<!------------- Checkout Header Name --------------->
 							<div class="checkout__top">
 								<span>2</span>
-								<h3>
-									Adresa de facturare &#9998;
-								</h3>
+								<h3>@if (app()->has('label_order_billing_address')){!! app('label_order_billing_address') !!} @endif</h3>
 							</div>
-							<!----------- End Checkout Header Name ------------->
-							<!---------------------------------------------------->
-							<!------------- Checkout List of Items --------------->
 							<div class="checkout__item checkout__item--required" id="individualShippingAddressParent">
-								<input type="text" wire:model="individual_billing_address1" name="individualShippingAddress" placeholder="Adresa 1" autocomplete="street-address" required id="individualShippingAddress">
-								<span>
-								</span>
-								<label for="individualShippingAddress">Adresa 1</label>
-							</div>
-
-							<div class="checkout__item" id="individualShippingAddress2Parent">
-								<input type="text" wire:model="individual_billing_address2" name="individualShippingAddress2" placeholder="Adresa 2 (opțional)" autocomplete="address-level2" id="individualShippingAddress2">
+								<input type="text" wire:model.defer="individual_billing_address1" name="individualShippingAddress" placeholder="@if (app()->has('label_order_address1')){!! app('label_order_address1') !!} @endif" autocomplete="street-address" required id="individualShippingAddress">
 								<span></span>
-								<label for="individualShippingAddress2">Adresa 2 (opțional)</label>
+								<label for="individualShippingAddress">@if (app()->has('label_order_address1')){!! app('label_order_address1') !!} @endif</label>
 							</div>
-							<!------------------------------------------------------------------->
-
-							<select wire:model="individual_billing_country" class="select" id="individual_billing_country" aria-label="select a country">
+							<!---------------------------------------------------->
+							<div class="checkout__item" id="individualShippingAddress2Parent">
+								<input type="text" wire:model.defer="individual_billing_address2" name="individualShippingAddress2" placeholder="@if (app()->has('label_order_address2')){!! app('label_order_address2') !!} @endif" autocomplete="address-level2" id="individualShippingAddress2">
+								<span></span>
+								<label for="individualShippingAddress2">@if (app()->has('label_order_address2')){!! app('label_order_address2') !!} @endif</label>
+							</div>
+							<!---------------------------------------------------->
+							<select wire:model.defer="individual_billing_country" class="select" id="individual_billing_country" aria-label="select a country">
 								<option value="Afghanistan">Afghanistan</option>
 								<option value="Åland Islands">Åland Islands</option>
 								<option value="Albania">Albania</option>
@@ -389,63 +351,43 @@
 								<option value="Zimbabwe">Zimbabwe</option>
 							</select>
 							<!---------------------------------------------------->
-
 							<div class="checkout__item checkout__item--required" id="individualShippingCountyParent">
-								<input type="text" wire:model="individual_billing_county" name="individualShippingCounty" placeholder="Localitate (oraș, comună sau sat)" autocomplete="county" required id="individualShippingCounty">
+								<input type="text" wire:model.defer="individual_billing_county" name="individualShippingCounty" placeholder="@if (app()->has('label_order_county')){!! app('label_order_county') !!} @endif" autocomplete="county" required id="individualShippingCounty">
 								<span></span>
-								<label for="individualShippingCounty">Județ</label>
+								<label for="individualShippingCounty">@if (app()->has('label_order_county')){!! app('label_order_county') !!} @endif</label>
 							</div>
 							<!---------------------------------------------------->
-
 							<div class="checkout__item checkout__item--required" id="individualShippingCityParent">
-								<input type="text" wire:model="individual_billing_city" name="individualShippingCity" placeholder="Județ" autocomplete="county" required id="individualShippingCity">
-								<span>
-								</span>
-								<label for="individualShippingCity">Localitate (oraș, comună sau sat)</label>
+								<input type="text" wire:model="individual_billing_city" name="individualShippingCity" placeholder="@if (app()->has('label_order_city')){!! app('label_order_city') !!} @endif" autocomplete="city" required id="individualShippingCity">
+								<span></span>
+								<label for="individualShippingCity">@if (app()->has('label_order_city')){!! app('label_order_city') !!} @endif</label>
 							</div>
 							<!---------------------------------------------------->
 							<div class="checkout__item checkout__item--required" id="individualShippingPostalParent">
-								<input type="text" wire:model="individual_billing_zipcode" name="individualShippingPostal" placeholder="Cod Poștal" autocomplete="postal-code" required id="individualShippingPostal">
-								<span>
-								</span>
-								<label for="individualShippingPostal">Cod Poștal</label>
+								<input type="text" wire:model="individual_billing_zipcode" name="individualShippingPostal" placeholder="@if (app()->has('label_order_zipcode')){!! app('label_order_zipcode') !!} @endif" autocomplete="postal-code" required id="individualShippingPostal">
+								<span></span>
+								<label for="individualShippingPostal">@if (app()->has('label_order_zipcode')){!! app('label_order_zipcode') !!} @endif</label>
 							</div>
-							<!----------- End Checkout List of Items ------------->
-							<!---------------------------------------------------->
 						</div>
-						<!---------------------------------------------------->
-						<!---------------- Checkout Checkbox ----------------->
 						<label class="checkout__checkbox">
 							<input type="checkbox" wire:model="individual_identic" id="individual_identic" name="individual_identic">
-							<span>Detaliile pentru facturare și livrare sunt identice</span>
+							<span>@if (app()->has('label_order_identic')){!! app('label_order_identic') !!} @endif</span>
 						</label>
-						<!-------------- End Checkout Checkbox --------------->
-						<!---------------------------------------------------->
 						<div class="checkout__form @if (!$individual_identic && $individual) active @endif">
-							<!---------------------------------------------------->
-							<!------------- Checkout Header Name --------------->
 							<div class="checkout__top">
 								<span>3</span>
-								<h3>
-									Contact de livrare &#9998;
-								</h3>
+								<h3>@if (app()->has('label_order_shipping_info')){!! app('label_order_shipping_info') !!} @endif</h3>
 							</div>
-							<!----------- End Checkout Header Name ------------->
-							<!---------------------------------------------------->
-							<!------------- Checkout List of Items --------------->
-
 							<div wire:ignore class="checkout__item checkout__item--required" id="individualBillingFirstNameParent">
-								<input type="text" wire:model="individual_shipping_first" name="individualBillingFirstName" placeholder="Nume" autocomplete="given-name" required id="individualBillingFirstName">
-								<span>
-								</span>
-								<label for="individualBillingFirstName">Prenume</label>
+								<input type="text" wire:model.defer="individual_shipping_first" name="individualBillingFirstName" placeholder="@if (app()->has('label_order_firstname')){!! app('label_order_firstname') !!} @endif" autocomplete="given-name" required id="individualBillingFirstName">
+								<span></span>
+								<label for="individualBillingFirstName">@if (app()->has('label_order_firstname')){!! app('label_order_firstname') !!} @endif</label>
 							</div>
 							<!---------------------------------------------------->
 							<div wire:ignore class="checkout__item checkout__item--required" id="individualBillingLastNameParent">
-								<input type="text" wire:model="individual_shipping_last" name="individualBillingLastName" placeholder="Prenume" autocomplete="family-name" required id="individualBillingLastName">
-								<span>
-								</span>
-								<label for="individualBillingLastName">Nume</label>
+								<input type="text" wire:model.defer="individual_shipping_last" name="individualBillingLastName" placeholder="@if (app()->has('label_order_lastname')){!! app('label_order_lastname') !!} @endif" autocomplete="family-name" required id="individualBillingLastName">
+								<span></span>
+								<label for="individualBillingLastName">@if (app()->has('label_order_lastname')){!! app('label_order_lastname') !!} @endif</label>
 							</div>
 							<!---------------------------------------------------->
 							<div wire:ignore class="checkout__item checkout__item--required" id="individualBillingPhoneParent">
@@ -788,7 +730,7 @@
 								<input type="text" wire:model="juridic_billing_first" name="juridicShippingFirstName" placeholder="Prenume" autocomplete="given-name" required id="juridicShippingFirstName">
 								<span>
 								</span>
-								<label for="juridicShippingFirstName">Prenume</label>
+								<label for="juridicShippingFirstName">@if (app()->has('label_order_firstname')){!! app('label_order_firstname') !!} @endif</label>
 							</div>
 							<!---------------------------------------------------->
 							<div class="checkout__item checkout__item--required" id="juridicShippingLastNameParent">
@@ -1153,7 +1095,7 @@
 						<!---------------- Checkout Checkbox ----------------->
 						<label class="checkout__checkbox">
 							<input type="checkbox" wire:model="juridic_identic" id="juridic_identic" name="juridic_identic">
-							<span>Detaliile pentru facturare și livrare sunt identice</span>
+							<span>@if (app()->has('label_order_identic')){!! app('label_order_identic') !!} @endif</span>
 						</label>
 						<!-------------- End Checkout Checkbox --------------->
 						<!---------------------------------------------------->
@@ -1173,7 +1115,7 @@
 								<input type="text" wire:model="juridic_shipping_first" name="juridicBillingFirstName" placeholder="Prenume" autocomplete="given-name" required id="juridicBillingFirstName">
 								<span>
 								</span>
-								<label for="juridicBillingFirstName">Prenume</label>
+								<label for="juridicBillingFirstName">@if (app()->has('label_order_firstname')){!! app('label_order_firstname') !!} @endif</label>
 							</div>
 							<!---------------------------------------------------->
 							<div wire:ignore class="checkout__item checkout__item--required" id="juridicBillingLastNameParent">
@@ -1668,7 +1610,7 @@ dataLayer.push({
 				<!--------------------- Step Middle -------------------->
 				@if ($step == 2)
 				<?php	$disables =[]; ?>
-					<div class="checkout__header">
+					<div class="checkout__header" style="flex-direction: row !important">
 						<button class="checkout__button" wire:click.prevent="previous()">
 							<svg>
 								<line x1="19" y1="12" x2="5" y2="12"></line>
@@ -1882,9 +1824,9 @@ dataLayer.push({
 											{{ $cartItem->quantity }} x
 										</span>
 										@if ($cartItem->product->media->first())
-											<img loading="lazy" class="cart__list--img" src="/{{ $cartItem->product->media->first()->path }}{{ $cartItem->product->media->first()->name }}" alt="{{ $cartItem->product->media->first()->name }} {{ $cartItem->product->name }}">
+											<img loading="eager" class="cart__list--img" src="/{{ $cartItem->product->media->first()->path }}{{ $cartItem->product->media->first()->name }}" alt="{{ $cartItem->product->media->first()->name }} {{ $cartItem->product->name }}">
 										@else
-											<img loading="lazy" class="cart__list--img" src="/images/store/default/default70.webp" alt="something wrong">
+											<img loading="eager" class="cart__list--img" src="/images/store/default/default70.webp" alt="something wrong">
 										@endif
 								@if ($nonquantity[$index])
 
@@ -2329,9 +2271,9 @@ dataLayer.push({
 										{{ $cartItem->quantity }} x
 									</span>
 									@if ($cartItem->product->media->where("type", "min")->first())
-										<img loading="lazy" class="cart__list--img" src="/{{ $cartItem->product->media->where("type", "min")->first()->path }}{{ $cartItem->product->media->where("type", "min")->first()->name }}" alt="{{ $cartItem->product->media->where("type", "min")->first()->name }} {{ $cartItem->product->name }}">
+										<img loading="eager" class="cart__list--img" src="/{{ $cartItem->product->media->where("type", "min")->first()->path }}{{ $cartItem->product->media->where("type", "min")->first()->name }}" alt="{{ $cartItem->product->media->where("type", "min")->first()->name }} {{ $cartItem->product->name }}">
 									@else
-										<img loading="lazy" class="cart__list--img" src="/images/store/default/default70.webp" alt="something wrong">
+										<img loading="eager" class="cart__list--img" src="/images/store/default/default70.webp" alt="something wrong">
 									@endif
 									<a href="{{ route("product", ["product" => $cartItem->product->seo_id !== null && $cartItem->product->seo_id !== "" ? $cartItem->product->seo_id : $cartItem->product->id]) }}" target="_blank" class="total__name">{{ $cartItem->product->name }}</a>
 									<span class="total__price">
@@ -2484,7 +2426,7 @@ dataLayer.push({
 				<!------------------- End Step Final ------------------->
 				<!------------------------------------------------------>
 				<!------------------- Checkout Links ------------------->
-				<div class="checkout__header">
+				<div class="checkout__header" style="flex-direction: row !important">
 					@if ($step == 2)
 						<button class="checkout__button" wire:click.prevent="previous()" aria-label="go to previous step">
 							<svg>
@@ -2511,7 +2453,7 @@ dataLayer.push({
 					@elseif ($step == 1)
 						<button class="checkout__link checkout__button--confirm" @if ($individual && $individual_identic) onclick="validateIndividual(this)" @elseif ($individual && !$individual_identic) onclick="validateIndividualIdentic(this)" @elseif($juridic && $juridic_identic) onclick="validateJuridic(this)" @else onclick="validateJuridicIdentic(this)" @endif wire:click.prevent="next()" aria-label="go to next step"
 							style="margin: 0 auto;">
-							Pasul următor
+							@if (app()->has('label_order_next_step')){!! app('label_order_next_step') !!} @endif
 							<svg>
 								<line x1="5" y1="12" x2="19" y2="12"></line>
 								<polyline points="12 5 19 12 12 19"></polyline>

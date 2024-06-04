@@ -1,0 +1,17 @@
+.select {
+  position: relative;
+  width: 100%;
+  height: 40px;
+  border: none;
+  border-bottom: 1px solid $lightBlack;
+  border-radius: 0;
+  color: $lightBlack;
+  font-size: $textSize;
+  font-weight: $lightWeight;
+  outline: none;
+  padding: 0 10px;
+  border-radius: 5px 5px 0 0;
+  background: darken($secondary, 3%);
+  transition: all 0.3s ease-in-out;
+  -webkit-appearance: none;
+}

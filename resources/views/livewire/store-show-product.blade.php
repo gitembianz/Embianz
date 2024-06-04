@@ -2,11 +2,11 @@
 
  <div class="breadcrumbs container">
   <a class="breadcrumbs__link" href="{{ url('/') }}">
-   Acasă
+    @if (app()->has('label_breadcrumbs_home_page')){!! app('label_breadcrumbs_home_page') !!} @endif
   </a>
   @if (app()->has('global_show_on_breadcrumbs') && app('global_show_on_breadcrumbs') == 'true')
    <a class="breadcrumbs__link" href="{{ url('/storeproducts') }}">
-    Toate produsele
+    @if (app()->has('label_breadcrumbs_allproducts')){!! app('label_breadcrumbs_allproducts') !!} @endif
    </a>
   @endif
   @if ($product->product_categories->isNotEmpty())
@@ -29,14 +29,14 @@
      @if ($product->media->count() != 0)
       @foreach ($product->media->where('type', 'full') as $media)
        <div class="product-slider__slide">
-        <img loading="lazy" src="/{{ $media->path }}{{ $media->name }}"
+        <img loading="eager" src="/{{ $media->path }}{{ $media->name }}"
          data-name-alt="{{ $media->name }}{{ $product->name }}" alt="{{ $media->name }}{{ $product->name }}"
          data-img-src="/{{ $product->media->where('type', 'original')->where('sequence', $media->sequence)->first()->path }}{{ $product->media->where('type', 'original')->where('sequence', $media->sequence)->first()->name }}">
        </div>
       @endforeach
      @else
       <div class="product-slider__slide">
-       <img loading="lazy" src="/images/store/default/default.webp" data-img-src="/images/store/default/default.webp"
+       <img loading="eager" src="/images/store/default/default.webp" data-img-src="/images/store/default/default.webp"
         alt="something wrong" data-name-alt="something wrong">
       </div>
      @endif
@@ -142,16 +142,15 @@
              $product->product->active == true &&
              $product->product->end_date >= now()->format('Y-m-d') &&
              $product->product->start_date <= now()->format('Y-m-d'))
-      <div class="card product">
-       <a
-        href="{{ route('product', ['product' => $product->product->seo_id !== null && $product->product->seo_id !== '' ? $product->product->seo_id : $product->product->id]) }}">
+      <div class="card product" style="width: 100%; pointer-events: none !important" >
+       <a style="width: 100%" href="{{ route('product', ['product' => $product->product->seo_id !== null && $product->product->seo_id !== '' ? $product->product->seo_id : $product->product->id]) }}">
 
         @if ($product->product->media->first() != null)
-         <img loading="lazy" class="card-image"
+         <img loading="eager" class="card-image"
           src="/{{ $product->product->media->first()->path }}{{ $product->product->media->first()->name }}"
           alt="{{ $product->product->media->first()->name }} {{ $product->product->name }}">
         @else
-         <img loading="lazy" class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
+         <img loading="eager" class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
         @endif
        </a>
        @livewire('product-wishlist-button', ['productId' => $product->product->id, 'class' => 'card__action', 'is_in_wishlist' => $product->product->wishlists->isNotEmpty()], key($product->product->id))
@@ -165,9 +164,9 @@
        ?>
        @if ($price)
         @if ($product->product->quantity < $quantity && $product->product->quantity > 0)
-         <p class="card-status out">
-          Stock limitat!!
-         </p>
+          <p class="card-status out">
+           @if (app()->has('label_product_status_stock')){!! app('label_product_status_stock') !!} @endif
+          </p>
          @if ($discount)
           <p class="card-status save-secondary">
            -{{ $product->product->product_prices->first()->discount }}%
@@ -175,8 +174,8 @@
          @endif
         @elseif($product->product->quantity == 0)
          <p class="card-status save">
-          Produs indisponibil!
-         </p>
+           @if (app()->has('label_product_status_indisponible')){!! app('label_product_status_indisponible') !!} @endif
+          </p>
         @else
          @if ($discount)
           <p class="card-status save">
@@ -187,8 +186,8 @@
         {{-- tagul de discount --}}
        @else
         <p class="card-status save">
-         În curând!
-        </p>
+           @if (app()->has('label_product_status_coming_soon')){!! app('label_product_status_coming_soon') !!} @endif
+          </p>
        @endif
        <div class="card-info">
         <div class="card-text">
@@ -205,7 +204,7 @@
             @endif
            </span>
            <span class="card-price oldprice">
-            {{ $product->product->product_prices->first()->value_no_vat }}
+            {{ $product->product->product_prices->first()->value_no_discount }}
             {{ $product->product->product_prices->first()->pricelist->currency->name }}
            </span>
           @else
@@ -237,12 +236,6 @@
    </div>
   </section>
  @endif
-
- <!-------------------- End Slider Cards -------------------->
- <!---------------------------------------------------------->
- <!--------------------- support button --------------------->
  <x-help-button />
- <!------------------- End support button ------------------->
- <!---------------------------------------------------------->
- <script src="/script/store/product.js" async defer></script>
+ <script src="/script/store/product.js" defer></script>
 </div>

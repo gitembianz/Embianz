@@ -1,48 +1,10 @@
 <div>
  <x-alert />
- <x-loading />
- {{-- modals --}}
- <div class="modal" id="confirmationmodal">
-  <div class="modal-content">
-   <h1 class="modal-content-title">
-    {{ __('Are you sure to delete this record?') }}
-   </h1>
-   <input wire:click.prevent="deleteSingleRecord()" class="modal-content-btn submit" type="button" value="Confirm">
-   <input class="modal-content-btn delete" type="button"
-    onclick="document.getElementById('confirmationmodal').style.display='none'" value="Cancel">
-
-   <span class="modal-content-btn delete" onclick="document.getElementById('confirmationmodal').style.display='none'">
-    <svg>
-     <line x1="18" y1="6" x2="6" y2="18"></line>
-     <line x1="6" y1="6" x2="18" y2="18"></line>
-    </svg>
-   </span>
-  </div>
- </div>
- <div class="modal" id="confirmationmodalmultiple">
-  <div class="modal-content">
-   <h1 class="modal-content-title">
-    {{ __('Are you sure to delete those records?') }}
-   </h1>
-   <input wire:click.prevent="deleteRecords()" class="modal-content-btn submit" type="button" value="Confirm">
-   <input class="modal-content-btn delete" type="button"
-    onclick="document.getElementById('confirmationmodalmultiple').style.display='none'" value="Cancel">
-   <span class="modal-content-btn delete"
-    onclick="document.getElementById('confirmationmodalmultiple').style.display='none'">
-    <svg>
-     <line x1="18" y1="6" x2="6" y2="18"></line>
-     <line x1="6" y1="6" x2="18" y2="18"></line>
-    </svg>
-   </span>
-  </div>
- </div>
- {{-- Header of the table --}}
  <div class="panel__header">
   <h1 class="panel__header--title">
    {{ __('Store settings') }}
   </h1>
-  <input class="panel__header--input" type="text" wire:model.debounce.300ms="search"
-   placeholder="Search your price field...">
+  <input class="panel__header--input" type="text" wire:model.debounce.300ms="search" placeholder="Search...">
   <div class="panel__header--bundle">
    <div class="dropdown">
     <button class="dropdown-button">Columns
@@ -59,18 +21,6 @@
       </div>
      @endforeach
     </div>
-   </div>
-   <div class="dropdown none" @if ($checked) style="display: unset" @endif>
-    <button class="dropdown-button none" @if ($checked) style="display: flex" @endif>
-     Checked {{ count($checked) }}</button>
-    @if ($checked)
-     <div class="dropdown-list">
-      <button class="dropdown-item delete" style="width: 150px" type="button"
-       wire:click="confirmItemsRemovalmultiple()">
-       Delete
-      </button>
-     </div>
-    @endif
    </div>
    <a class="panel__header--button" wire:click="$refresh">
     <svg>
@@ -114,27 +64,12 @@
     </svg> <span style="margin-left: 10px">Generate sitemap.xml</span>
    </a>
   </div>
-  @if ($selectPage && $selectAll)
-   <div class="panel__header--checked">
-    <p>
-     You selected <strong>{{ count($checked) }}</strong> items.
-    </p>
-   </div>
-  @elseif($selectPage)
-   <div class="panel__header--checked" wire:click="selectAll">
-    <p>
-     You selected {{ count($checked) }} items, select all?
-    </p>
-   </div>
-  @endif
  </div>
  {{-- Table --}}
  <table class="table">
   <thead>
    <tr>
-    <th>
-     <input type="checkbox" wire:model="selectPage">
-    </th>
+
     @if ($this->showColumn('Id'))
      <th wire:click="sortBy('id')">
       <button class="table__header--btn"
@@ -220,9 +155,7 @@
    @foreach ($storesettings as $index => $store)
     <tr class="@if ($this->isChecked($store->id)) table__row--selected @endif">
 
-     <td data-title="Check">
-      <input type="checkbox" value="{{ $store->id }}" wire:model="checked">
-     </td>
+
      @if ($this->showColumn('Id'))
       <td data-title="ID">{{ $store->id }}</td>
      @endif

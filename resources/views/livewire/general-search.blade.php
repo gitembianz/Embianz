@@ -8,7 +8,7 @@
           <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
         </svg>
       </button>
-		<input id="searchInput" name="search" wire:model="search" maxlength="100" type="text" autocomplete="off" placeholder="Caută produse sau categorii...">
+		<input id="searchInput" name="search" wire:model="search" maxlength="100" type="text" autocomplete="off" placeholder="@if (app()->has('label_placeholder_search')){!! app('label_placeholder_search') !!} @endif">
 		</div>
 		<button class="search__close" type="button" id="searchClose" wire:click.prevent="close" aria-label="close search component">
 		<svg>
@@ -25,9 +25,9 @@
 		<li class="search__item">
 		<a class="search__link" href="{{ route("product", ["product" => $product->seo_id !== null && $product->seo_id !== "" ? $product->seo_id : $product->id]) }}">
 		@if ($product->media->first() != null)
-		<img loading="lazy" src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}" alt="{{ $product->media->first()->name }} {{ $product->name }}">
+		<img loading="eager" src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}" alt="{{ $product->media->first()->name }} {{ $product->name }}">
 	@else
-		<img loading="lazy" src="/images/store/default/default70.webp" alt="something wrong">
+		<img loading="eager" src="/images/store/default/default70.webp" alt="something wrong">
 		@endif
 
 		<div class="search__link--text">
@@ -60,9 +60,9 @@
 		<li class="search__item">
 		<a class="search__link" href="{{ route("products", ["categorySlug" => $category->seo_id !== null && $category->seo_id !== "" ? $category->seo_id : $category->id]) }}">
 		@if ($category->media->first() != null)
-		<img loading="lazy" src="/{{ $category->media->first()->path }}{{ $category->media->first()->name }}" alt="{{ $category->media->first()->name }} {{ $category->name }}">
+		<img loading="eager" src="/{{ $category->media->first()->path }}{{ $category->media->first()->name }}" alt="{{ $category->media->first()->name }} {{ $category->name }}">
 	@else
-		<img loading="lazy" src="/images/store/default/default70.webp" alt="something wrong">
+		<img loading="eager" src="/images/store/default/default70.webp" alt="something wrong">
 		@endif
 
 		<div class="search__link--text">
@@ -75,7 +75,7 @@
 		@endforeach
 		@endif
 	@else
-		<span>{{ __("Niciun element gasit") }}</span>
+		<span>@if(app()->has('label_message_no_elements')){!! app('label_message_no_elements') !!} @endif</span>
 		@endif
 		</ul>
 		@endif

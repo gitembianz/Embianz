@@ -94,6 +94,7 @@
 
       route::view('/storesettings', 'admin.store_settings')->name('storesettings');
       route::view('/addstoresettings', 'admin.add_storesetting')->name('add_storesetting');
+      route::view('/labels', 'admin.labels')->name('labels');
 
       //specific routes
       route::get('/cleareverything', function () {
@@ -133,7 +134,7 @@
 
   //simple page routes
 
-  route::view('/', 'store.home')->name('home')->middleware('cache-control');
+  route::get('/', [HomeController::class, 'home'])->name('home')->middleware('cache-control');
   route::view('/cart', 'store.cart')->name('cart');
   route::view('/wishlist', 'store.wislist')->name('wislist');
   route::view('/order', 'store.order')->name('order');
@@ -164,17 +165,3 @@
   });
   Route::get('/embadmin/login', [AuthenticatedSessionController::class, 'create'])->name('login');
   Route::post('/embadmin/login', [AuthenticatedSessionController::class, 'store']);
-
-  //Comments routes
-  // Route::get('myorder/{order_number?}', [StoreController::class, 'myorder'])
-  //   ->name('my_order')
-  //   ->middleware('check.order');
-
-   // route::get('/update', function () {
-    //   Artisan::call('migrate:fresh --seed');
-    //   Cache::forget('global_variables');
-    //   Cache::forget('global_statuses');
-    //   Cache::forget('global_payments');
-    //   Cache::forget('global_scripts');
-    //   echo "New fresh app";
-    // });

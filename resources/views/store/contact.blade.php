@@ -2,7 +2,7 @@
 <x-store-header />
 
 <main>
-  <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
+  <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" defer></script>
   <script type="text/javascript">
     var onloadCallback = function() {
       grecaptcha.render('html_element', {
@@ -56,7 +56,7 @@
       <input type=hidden name="retURL" value="{{ URL("/redirect") }}">
       <input type=hidden name='captcha_settings' value='{"keyname":"norenro","fallback":"true","orgId":"00D09000008XPQu","ts":""}'>
       <input type=hidden name="orgid" value="00D09000008XPQu">
-      <input  id="00N9N000000QGVe" value="www.noren.ro" name="00N9N000000QGVe" type="hidden" />
+      <input  id="00N9N000000QGVe" value="{{ app('global_site_url') }}" name="00N9N000000QGVe" type="hidden" />
       <input  id="type" type="hidden" name="type" value="Store Case" />
       <input type="hidden" name="subject" id="subject" value="subject">
       <!--  ----------------------------------------------------------------------  -->
@@ -113,7 +113,7 @@
 		</form>
 
 	</section>
-  {{-- <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script> --}}
+  {{-- <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" defer></script> --}}
   <script src="/script/store/contact.js"></script>
   <script>
     applyValidations("nameParent", nameValidation, false);

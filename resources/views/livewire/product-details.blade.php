@@ -1,6 +1,4 @@
 <div class="product__container">
- <!------------------------------------------------------>
- <!------------------ Product (Details) ----------------->
  <?php if ($product->product_prices->count() != 0) {
      $price = number_format($product->product_prices->first()->value, 2, ',', '.');
      $discount = $product->product_prices->first()->discount != 0 ? true : false;
@@ -26,12 +24,12 @@
   ])
  </div>
  <div class="product__price">
-  <span class="product__price--title">Preț</span>
+  <span class="product__price--title">@if (app()->has('label_pdp_price_tag')){!! app('label_pdp_price_tag') !!} @endif</span>
   @if ($discount && $price)
    @if ($price)
     <div class="product__price--discount">
      <span
-      class="product__price--oldprice">{{ $product->product_prices->first()->value_no_vat }}{{ $currency }}</span>
+      class="product__price--oldprice">{{ $product->product_prices->first()->value_no_discount }}{{ $currency }}</span>
      <span class="product__price--newprice">{{ $price }}
       {{ $currency }}</span>
     </div>
@@ -41,17 +39,17 @@
     {{ $price }}
     {{ $currency }}
    @else
-    Preț Indisponibil
+    @if (app()->has('label_product_status_indisponible')){!! app('label_product_status_indisponible') !!} @endif
    @endif
   @endif
  </div>
  @if ($price)
   <span class="product__tva">
-   Prețul include taxa TVA de
+   @if (app()->has('label_pdp_vat')){!! app('label_pdp_vat') !!} @endif
    {{ number_format($product->product_prices->first()->vat, 2, ',', '.') }}%
   </span>
   <div class="quantity">
-   <span>Cantitate</span>
+   <span>@if (app()->has('label_product_quantity_tag')){!! app('label_product_quantity_tag') !!} @endif</span>
    <div class="quantity__buttons">
     <button class="quantity__arrow" wire:click="decrementCounter" aria-label="Decrement quantity">
      <svg>
@@ -74,7 +72,7 @@
   </div>
  @endif
  @if ($maxlimit)
-  <span>Cantitatea maxima a produsului este {{ $limit }}</span>
+  <span>@if (app()->has('label_product_quantity_error')){!! app('label_product_quantity_error') !!} @endif {{ $limit }}</span>
  @endif
  @if ($price && $product->quantity != 0)
   <button class="card__button" style="width: 100%;height: 40px;" onclick="flyToCart(this)"
@@ -95,10 +93,10 @@
      <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path>
     </svg>
    </div>
-   <span class="card__button--text"> Adaugă în coș </span>
+   <span class="card__button--text">@if (app()->has('label_add_to_cart_button')){!! app('label_add_to_cart_button') !!} @endif</span>
   </button>
  @else
-  <button class="card-button-disabled" aria-label="Disabled Add to cart button">Indisponibil</button>
+  <button class="card-button-disabled" aria-label="Disabled Add to cart button">@if (app()->has('label_add_to_cart_button_indisponibil')){!! app('label_add_to_cart_button_indisponibil') !!} @endif</button>
  @endif
 
  <div style="display: none" class="dlv">
@@ -106,15 +104,12 @@
   <span class="dlv_price">{{ $price }}</span>
   <span class="dlv_currency">{{ $product->product_prices->first()->pricelist->currency->name }}</span>
  </div>
- <!---------------- End Product (Details) --------------->
- <!------------------------------------------------------>
- <!-------------------- Tab (Details) ------------------->
  <div class="tab">
   <div class="tab__top">
    <button class="tab__button @if ($activeTab === 0) active @endif"
-    wire:click="switchTab(0)">Descriere</button>
+    wire:click="switchTab(0)">@if (app()->has('label_pdp_description_tag')){!! app('label_pdp_description_tag') !!} @endif</button>
    <button class="tab__button @if ($activeTab === 1) active @endif"
-    wire:click="switchTab(1)">Detalii</button>
+    wire:click="switchTab(1)">@if (app()->has('label_pdp_details_tag')){!! app('label_pdp_details_tag') !!} @endif</button>
   </div>
   <div class="tab__content @if ($activeTab === 0) active @endif">
    <p class="tab__info">{!! $product->long_description !!}</p>
@@ -123,8 +118,8 @@
    <table class="tab__table">
     <thead>
      <tr>
-      <th>Specificații </th>
-      <th>Descriere</th>
+      <th>@if (app()->has('label_pdp_specs_tag')){!! app('label_pdp_specs_tag') !!} @endif</th>
+      <th>@if (app()->has('label_pdp_description_tag')){!! app('label_pdp_description_tag') !!} @endif</th>
      </tr>
     </thead>
     <tbody>
@@ -137,13 +132,11 @@
       @endforeach
      @else
       <tr>
-       <td colspan="2">Nu exista specificații pentru acest product</td>
+       <td colspan="2">@if (app()->has('label_pdp_specs_error')){!! app('label_pdp_specs_error') !!} @endif</td>
       </tr>
      @endif
     </tbody>
    </table>
   </div>
  </div>
- <!------------------ End Tab (Details) ----------------->
- <!------------------------------------------------------>
 </div>

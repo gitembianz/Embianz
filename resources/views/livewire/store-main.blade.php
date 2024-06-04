@@ -19,7 +19,7 @@
            loading="eager" fetchpriority="high" height="{{ $item->media->where('sequence', 2)->first()->height }}"
            width="{{ $item->media->where('sequence', 2)->first()->width }}">
          @else
-          <img src="/images/store/default/default.webp" alt="something wrong">
+          <source media="(min-width: 992px)" sizes="(min-width: 992px) 50vw" srcset="/images/store/default/default.webp" loading="eager" fetchpriority="high">
          @endif
          {{-- Tablet Picture --}}
          @if ($item->media->where('sequence', 3)->first() != null)
@@ -33,7 +33,7 @@
            loading="eager" fetchpriority="high" height="{{ $item->media->where('sequence', 2)->first()->height }}"
            width="{{ $item->media->where('sequence', 2)->first()->width }}">
          @else
-          <img src="/images/store/default/default640.webp" alt="something wrong">
+         <source media="(min-width: 576px)" sizes="(min-width: 576px) 80vw" srcset="/images/store/default/default640.webp" loading="eager" fetchpriority="high">
          @endif
          {{-- Mobile Picture --}}
          @if ($item->media->where('sequence', 4)->first() != null)
@@ -107,18 +107,18 @@
         <a draggable="false"
          href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">
          @if ($product->media->first() != null)
-          <img loading="lazy" class="card-image"
+          <img loading="eager" class="card-image"
            src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}"
            alt="{{ $product->media->first()->name }} {{ $product->name }}">
          @else
-          <img loading="lazy" class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
+          <img loading="eager" class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
          @endif
         </a>
         @livewire('product-wishlist-button', ['productId' => $product->id, 'class' => 'card__action', 'is_in_wishlist' => $product->wishlists->isNotEmpty()], key($product->id))
         <?php
         $price = null;
         $discount = false;
-        
+
         if ($product->product_prices->count() != 0) {
             $price = number_format($product->product_prices->first()->value, 2, ',', '.');
             $discount = $product->product_prices->first()->discount != 0 ? true : false;
@@ -128,7 +128,7 @@
         @if ($price)
          @if ($product->quantity < $quantity && $product->quantity > 0)
           <p class="card-status out">
-           Stock limitat!!
+           @if (app()->has('label_product_status_stock')){!! app('label_product_status_stock') !!} @endif
           </p>
           @if ($discount)
            <p class="card-status save-secondary">
@@ -137,7 +137,7 @@
           @endif
          @elseif($product->quantity == 0)
           <p class="card-status save">
-           Produs indisponibil!
+           @if (app()->has('label_product_status_indisponible')){!! app('label_product_status_indisponible') !!} @endif
           </p>
          @else
           @if ($discount)
@@ -148,9 +148,9 @@
          @endif
          {{-- tagul de discount --}}
         @else
-         <p class="card-status save">
-          În curând!
-         </p>
+          <p class="card-status save">
+           @if (app()->has('label_product_status_coming_soon')){!! app('label_product_status_coming_soon') !!} @endif
+          </p>
         @endif
         <div class="card-info">
          <div class="card-text">
@@ -181,11 +181,7 @@
 
           </p>
          </div>
-         @if ($price)
           @livewire('add-to-cart-button', ['product' => $product], key($product->id))
-         @else
-          <button class="card-button-disabled" aria-label="Disabled add to cart button">Indisponibil</button>
-         @endif
          <div style="display: none" class="dlv">
           <span class="dlv_name">{{ $product->name }}</span>
           <span class="dlv_price">{{ $price }}</span>
@@ -230,18 +226,18 @@
         <a draggable="false"
          href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">
          @if ($product->media->first() != null)
-          <img loading="lazy" class="card-image"
+          <img loading="eager" class="card-image"
            src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}"
            alt="{{ $product->media->first()->name }} {{ $product->name }}">
          @else
-          <img loading="lazy" class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
+          <img loading="eager" class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
          @endif
         </a>
         @livewire('product-wishlist-button', ['productId' => $product->id, 'class' => 'card__action', 'is_in_wishlist' => $product->wishlists->isNotEmpty()], key($product->id))
         <?php
         $price = null;
         $discount = false;
-        
+
         if ($product->product_prices->count() != 0) {
             $price = number_format($product->product_prices->first()->value, 2, ',', '.');
             $discount = $product->product_prices->first()->discount != 0 ? true : false;
@@ -251,7 +247,7 @@
         @if ($price)
          @if ($product->quantity < $quantity && $product->quantity > 0)
           <p class="card-status out">
-           Stock limitat!!
+           @if (app()->has('label_product_status_stock')){!! app('label_product_status_stock') !!} @endif
           </p>
           @if ($discount)
            <p class="card-status save-secondary">
@@ -260,7 +256,7 @@
           @endif
          @elseif($product->quantity == 0)
           <p class="card-status save">
-           Produs indisponibil!
+           @if (app()->has('label_product_status_indisponible')){!! app('label_product_status_indisponible') !!} @endif
           </p>
          @else
           @if ($discount)
@@ -272,8 +268,8 @@
          {{-- tagul de discount --}}
         @else
          <p class="card-status save">
-          În curând!
-         </p>
+           @if (app()->has('label_product_status_coming_soon')){!! app('label_product_status_coming_soon') !!} @endif
+          </p>
         @endif
         <div class="card-info">
          <div class="card-text">
@@ -303,11 +299,8 @@
            @endif
           </p>
          </div>
-         @if ($price)
           @livewire('add-to-cart-button', ['product' => $product], key($product->id))
-         @else
-          <button class="card-button-disabled" aria-label="Disabled add to cart button">Indisponibil</button>
-         @endif
+         
          <div style="display: none" class="dlv">
           <span class="dlv_name">{{ $product->name }}</span>
           <span class="dlv_price">{{ $price }}</span>
@@ -342,5 +335,5 @@
   <!------------------- End support button ------------------->
   <!---------------------------------------------------------->
  </main>
- <script src="/script/store/main.js" async defer></script>
+ <script src="/script/store/main.js" defer></script>
 </div>

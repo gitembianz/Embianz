@@ -1,4 +1,4 @@
-<div class="status" wire:poll.30000ms>
+<div class="status" wire:poll.60000ms>
  <a href="{{ route('all_products') }}" class="status__item">
   Produse<span>({{ $activeProductsCount }})</span>
  </a>
@@ -36,8 +36,8 @@
    });
   });
 
+  var audio = new Audio('/sounds/cart.mp3');
   function playSoundcart() {
-   let audio = new Audio('/sounds/cart.mp3');
    audio.play().catch(function(error) {
     console.log('Error playing sound:', error);
    });

@@ -1,0 +1,69 @@
+
+.contract {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 15px
+}
+
+.contract__container {
+  counter-reset: category-counter;
+  list-style-type: none
+}
+.contract__link {
+    text-decoration: underline;
+    color: $lightBlack;
+    font-size: $textSize;
+    font-weight: $lightWeight;
+  }
+
+.contract__title {
+  width: 100%;
+  font-size: 1.5rem;
+  color: #333;
+  line-height: 150%;
+  text-align: center;
+  font-weight: 700;
+  margin-bottom: 10px
+}
+
+.contract__descr {
+  width: 100%;
+  font-size: $textSize;
+  color: #333;
+  line-height: 150%;
+  font-weight: 500
+}
+
+.contract__descr>a {
+  color: #333;
+  text-decoration: underline;
+  font-weight: 600
+}
+
+.contract__subtitle {
+  width: 100%;
+  font-size: 1rem;
+  color: #333;
+  font-weight: 700;
+  line-height: 150%;
+  border-bottom: 2px solid #333;
+  margin-bottom: 5px;
+  position: relative;
+  padding-left: 35px;
+  counter-increment: category-counter
+}
+
+.contract__subtitle:after {
+  content: counter(category-counter) " - ";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1rem;
+  color: #333;
+  font-weight: 700;
+  line-height: 150%
+}

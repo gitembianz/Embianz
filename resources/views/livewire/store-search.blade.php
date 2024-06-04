@@ -1,48 +1,40 @@
 <div wire:scroll="loadMore">
-
- <!-- Acesta este Store Products (Catalogol Magazinului), acesta
-    are sistemul de filtre, card-uri, si stilul Catalogului -->
-
- <!---------------------------------------------------------->
  <!------------------------Breadcrumbs----------------------->
  <div class="breadcrumbs container">
   <a class="breadcrumbs__link" href="{{ url('/') }}">
-   Acasă
+   @if (app()->has('label_breadcrumbs_home_page')){!! app('label_breadcrumbs_home_page') !!} @endif
   </a>
-  @if (app()->has('global_show_on_breadcrumbs') && app('global_show_on_breadcrumbs') == 'true')
-   <a class="breadcrumbs__link" href="{{ url('/search') }}">
-    Cautare
-   </a>
-  @endif
+  <a class="breadcrumbs__link" href="{{ url('/search') }}">
+   @if (app()->has('label_breadcrumbs_search')){!! app('label_breadcrumbs_search') !!} @endif
+  </a>
  </div>
  <!---------------------------------------------------------->
  <section class="controls container controls--search">
   <input class="controls__search" type="text" maxlength="100" autocomplete="off" name="search" id="search"
-   wire:model="search" placeholder="Caută produse sau categorii...">
-  <h2 class="section__title">Rezultatele căutării:</h2>
+   wire:model="search" placeholder="@if (app()->has('label_placeholder_search')){!! app('label_placeholder_search') !!} @endif">
+  <h2 class="section__title">@if (app()->has('label_search_title')){!! app('label_search_title') !!} @endif</h2>
   <div>
    <button class="tab__button tab__button--long @if ($showproducts) active @endif"
-    wire:click="toggle('products')">
-    Produse (@if ($products->isNotEmpty())
-     {{ $products->total() }}
+    wire:click="toggle('products')">@if (app()->has('label_search_product_element')){!! app('label_search_product_element') !!} @endif @if ($products->isNotEmpty())
+    ({{ $products->total() }}) 
     @else
-     0
-    @endif)
+     (0)
+    @endif
    </button>
    <button class="tab__button tab__button--long @if ($showcategories) active @endif"
     wire:click="toggle('categories')">
-    Categorii (@if ($categories->isNotEmpty())
-     {{ $categories->total() }}
+    @if (app()->has('label_search_category_element')){!! app('label_search_category_element') !!} @endif @if ($categories->isNotEmpty())
+     ({{ $categories->total() }})
     @else
-     0
-    @endif)
+     (0)
+    @endif
    </button>
   </div>
  </section>
  @if ($showproducts)
   <section class="catalogue container">
    @if ($products->isEmpty())
-    <p>Nu au fost găsite produse</p>
+     <p>@if(app()->has('label_message_no_elements')){!! app('label_message_no_elements') !!} @endif</p>
    @else
     @foreach ($products as $index => $product)
      <div class="product">
@@ -50,11 +42,11 @@
        <a
         href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">
         @if ($product->media->first() != null)
-         <img loading="lazy" class="card-image"
+         <img loading="eager" class="card-image"
           src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}"
           alt="{{ $product->media->first()->name }} {{ $product->name }}">
         @else
-         <img loading="lazy" class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
+         <img loading="eager" class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
         @endif
        </a>
        <?php if ($product->product_prices->count() != 0) {
@@ -70,17 +62,17 @@
         {{-- Out- negru // save - rosu --}}
         @if ($product->quantity < $quantity && $product->quantity > 0)
          <p class="card-status out">
-          Stock limitat!
-         </p>
+           @if (app()->has('label_product_status_stock')){!! app('label_product_status_stock') !!} @endif
+          </p>
          @if ($discount)
           <p class="card-status save-secondary">
            -{{ $product->product_prices->first()->discount }}%
           </p>
          @endif
         @elseif($product->quantity == 0)
-         <p class="card-status save">
-          Produs indisponibil!
-         </p>
+        <p class="card-status save">
+           @if (app()->has('label_product_status_indisponible')){!! app('label_product_status_indisponible') !!} @endif
+          </p>
         @else
          @if ($discount)
           <p class="card-status save">
@@ -88,11 +80,10 @@
           </p>
          @endif
         @endif
-        {{-- tagul de discount --}}
        @else
-        <p class="card-status save">
-         În curând!
-        </p>
+         <p class="card-status save">
+           @if (app()->has('label_product_status_coming_soon')){!! app('label_product_status_coming_soon') !!} @endif
+          </p>
        @endif
        @livewire(
            'product-wishlist-button',
@@ -130,14 +121,9 @@
             @endif
            </span>
           @endif
-
          </p>
         </div>
-        @if ($price)
          @livewire('add-to-cart-button', ['product' => $product], key($product->id . $index))
-        @else
-         <button class="card-button-disabled" aria-disabled="disabled add to cart button">Indisponibil</button>
-        @endif
        </div>
       </div>
      </div>
@@ -151,7 +137,7 @@
  @if ($showcategories)
   <section class="catalogue container catalogue--categories">
    @if ($categories->isEmpty())
-    <p>Nu au fost găsite categorii</p>
+     <p>@if(app()->has('label_message_no_elements')){!! app('label_message_no_elements') !!} @endif</p>
    @else
     @foreach ($categories as $index => $category)
      <div @if ($loop->last) id="last_record" @endif class="product">
@@ -159,11 +145,11 @@
        href="{{ route('products', ['categorySlug' => $category->seo_id !== null && $category->seo_id !== '' ? $category->seo_id : $category->id]) }}">
        <div>
         @if ($category->media->first() != null)
-         <img loading="lazy" class="card-image"
+         <img loading="eager" class="card-image"
           src="/{{ $category->media->first()->path }}{{ $category->media->first()->name }}"
           alt="{{ $category->media->first()->name }} {{ $category->name }}">
         @else
-         <img loading="lazy" class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
+         <img loading="eager" class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
         @endif
        </div>
        <div class="card-info">
@@ -185,53 +171,8 @@
   </section>
  @endif
 
- {{-- <script>
-		// Sending the special Event for Each card to GTM
-		let cards = document.querySelectorAll('.card');
-
-		cards.forEach(function(card) {
-			let addToCartButton = card.querySelector('.card__button');
-			let addToWishButton = card.querySelector('.favorite__btn');
-
-			addToCartButton.addEventListener('click', function() {
-				let cardName = card.querySelector('.card-title').innerText.trim();
-				let cardPrice = card.querySelector('.card-price').innerText.trim();
-
-				if (typeof dataLayer !== 'undefined' && cardName && cardPrice) {
-					dataLayer.push({
-						'event': 'adaugareInCos',
-						'cardName': cardName,
-						'cardPrice': cardPrice
-					});
-				}
-			});
-
-			addToWishButton.addEventListener('click', function() {
-				let cardName = card.querySelector('.card-title').innerText.trim();
-				let cardPrice = card.querySelector('.card-price').innerText.trim();
-
-				if (typeof dataLayer !== 'undefined' && cardName && cardPrice) {
-					dataLayer.push({
-						'event': 'adaugareInFavorite',
-						'cardName': cardName,
-						'cardPrice': cardPrice
-					});
-				}
-			});
-		});
-	</script> --}}
-
- {{-- @if ($categorys->count() >= $loadAmount)
-		<section class="container">
-			<button class="filter__apply" wire:click="loadMore" wire:loading.remove>Vezi mai mult!</button>
-		</section>
-	@endif --}}
- <!-----------------------End Catalogue---------------------->
-
- <!---------------------------------------------------------->
  <!--------------------- support button --------------------->
  <x-help-button />
- <!------------------- End support button ------------------->
  <!---------------------------------------------------------->
- <script src="/script/store/catalog.js" async defer></script>
+ <script src="/script/store/catalog.js" defer></script>
 </div>

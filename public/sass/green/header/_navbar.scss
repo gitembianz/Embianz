@@ -1,0 +1,215 @@
+//<---------------------------- Navbar Styles ---------------------------->
+.navbar__list {
+  list-style: none;
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+
+  @media (max-width: map-get($grid-breakpoints, xl)) {
+    display: none;
+  }
+}
+
+.dropdown__button,
+.navbar__link {
+  color: $lightBlack;
+  position: relative;
+  text-decoration: none;
+  font-size: $textSize;
+  font-weight: $lightWeight;
+  text-transform: capitalize;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  & > svg {
+    width: 35px;
+    stroke: $lightBlack;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2.5px;
+    border-radius: 2px;
+    background: $lightBlack;
+    transition: width 0.3s ease-in-out;
+  }
+
+  &:hover::after {
+    width: 100%;
+  }
+}
+
+.dropdown {
+  width: 100%;
+  height: 100%;
+  position: relative;
+
+  &:hover > .dropdown__list {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) scaleY(1);
+
+    & > .dropdown__item > .dropdown__item--button {
+      font-size: $textSize;
+    }
+  }
+}
+
+.dropdown__list {
+  position: absolute;
+  top: 100%;
+  background: $background;
+  z-index: 500;
+  left: 50%;
+  transform: translateX(-50%) scaleY(0);
+  transform-origin: top;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  padding: 10px 7px;
+  transition: all 0.3s ease-in-out;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.dropdown__item {
+  width: 100%;
+  height: 100%;
+  position: relative;
+
+  &:hover > .dropdown__item--list {
+    opacity: 1;
+    visibility: visible;
+    transform: scaleY(1);
+
+    & > a {
+      font-size: $textSize;
+    }
+  }
+}
+
+.dropdown__item--button {
+  width: 100%;
+  height: 40px;
+  padding: 7px 10px;
+  background: $background;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-wrap: nowrap;
+  text-decoration: none;
+  line-height: 150%;
+  font-weight: $lightWeight;
+  color: $lightBlack;
+  position: relative;
+  font-size: 0;
+  gap: 10px;
+  $transition-delay: 0.15s;
+  $transition-increment: 0.1s;
+
+  & > svg {
+    transform: scale(0.8);
+  }
+
+  @for $i from 1 through 10 {
+    &:nth-child(#{$i}) {
+      transition: all
+        0.3s
+        ease-in-out
+        ($transition-delay + $i * $transition-increment);
+    }
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0%;
+    height: 2px;
+    background: $lightBlack;
+    transition: all 0.3s ease-in-out;
+  }
+
+  &:hover::after {
+    width: 100%;
+  }
+}
+
+.dropdown__item--list {
+  position: absolute;
+  left: calc(100% + 7px);
+  top: -5px;
+  opacity: 0;
+  background: $background;
+  z-index: 500;
+  transform: scaleY(0);
+  transform-origin: left top;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  padding: 5px;
+  transition: all 0.3s ease-in-out;
+  visibility: hidden;
+
+  & > a {
+    width: 100%;
+    height: 100%;
+    padding: 7px 10px;
+    background: $background;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    text-wrap: nowrap;
+    text-decoration: none;
+    line-height: 150%;
+    font-weight: $lightWeight;
+    color: $lightBlack;
+    position: relative;
+    font-size: 0px;
+    $transition-delay: 0.15s;
+    $transition-increment: 0.1s;
+
+    @for $i from 1 through 10 {
+      &:nth-child(#{$i}) {
+        transition: all
+          0.3s
+          ease-in-out
+          ($transition-delay + $i * $transition-increment);
+      }
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0%;
+      height: 2px;
+      background: $lightBlack;
+      transition: all 0.3s ease-in-out;
+    }
+
+    &:hover::after {
+      width: 100%;
+    }
+  }
+}
+
+//<-------------------------- End Navbar Styles -------------------------->
