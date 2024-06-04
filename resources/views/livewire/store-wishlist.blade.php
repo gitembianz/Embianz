@@ -1,23 +1,16 @@
 <div>
  <section>
-  <!------------------------------------------------------>
-  <!------------------- Basket Section ------------------->
   <div class="section__header container">
-   <h1 class="section__title">Produse favorite</h1>
+   <h1 class="section__title">@if (app()->has('label_wishlist_page_title')){!! app('label_wishlist_page_title') !!} @endif</h1>
    <h2></h2>
-   <p class="section__text">
-    Vezi produsele alese mai jos
-   </p>
+   <p class="section__text">@if (app()->has('label_wishlist_page_description')){!! app('label_wishlist_page_description') !!} @endif</p>
   </div>
-  <!----------------- End Basket Section ----------------->
-  <!------------------------------------------------------>
  </section>
  <section>
   <div class="basket container">
-   <!------------------------------------------------------>
-   <!------------------- Basket Products ------------------>
+   <!------------------- Products ------------------>
    @if ($wishlistitems->isEmpty())
-    <span class="basket__empty">Nu sunt produse adăugate în lista de favorite</span>
+    <span class="basket__empty">@if (app()->has('label_wishlist_empty')){!! app('label_wishlist_empty') !!} @endif</span>
    @else
     <?php
     $disables = [];
@@ -47,12 +40,11 @@
           {{ $product->product_prices->first()->value }}
           {{ $product->product_prices->first()->pricelist->currency->symbol }}
          @else
-          Indisponibil
+          @if (app()->has('label_product_status_indisponible')){!! app('label_product_status_indisponible') !!} @endif
          @endif
         </span>
        </div>
       </a>
-      {{-- ---------------------- --}}
       @if ($product->product_prices->first() !== null && $product->quantity > 1)
        <button class="basket__delete" wire:click="addToCart({{ $product->id }}, {{ $index }})"
         aria-label="add to cart">
@@ -71,10 +63,9 @@
         </path>
        </svg>
       </button>
-
       @if ($disabled[$index])
        <div class="item__product--disabled">
-        <span>Produs Indisponibil</span>
+        <span>@if (app()->has('label_product_status_indisponible')){!! app('label_product_status_indisponible') !!} @endif</span>
         <button class="basket__delete" type="button" wire:click="removeFromWishlist({{ $product->id }})">
          <svg>
           <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -83,10 +74,9 @@
         </button>
        </div>
       @endif
-      {{-- ---------------------- --}}
      </div>
      @if ($message === $index)
-      <p class="leftbar__message">Produsul a fost adăugat în coș!</p>
+      <p class="leftbar__message">@if (app()->has('label_wishlist_add_to_cart')){!! app('label_wishlist_add_to_cart') !!} @endif</p>
       <script>
        setTimeout(function() {
         @this.removemessage();
@@ -95,13 +85,7 @@
      @endif
     @endforeach
    @endif
-   <!----------------- End Basket Products ---------------->
-   <!------------------------------------------------------>
   </div>
  </section>
- <!---------------------------------------------------------->
- <!--------------------- support button --------------------->
  <x-help-button />
- <!------------------- End support button ------------------->
- <!---------------------------------------------------------->
 </div>

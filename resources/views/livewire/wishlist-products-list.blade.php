@@ -2,7 +2,7 @@
  <button class="leftbar__hidden--close" id="wishHidden" wire:click="$set('showwis', false)"></button>
  <div class="leftbar__content" id="wishContent">
   <div class="leftbar__top">
-   <a class="leftbar__button" href="/wishlist">Vizualizare produse favorite</a>
+   <a class="leftbar__button" href="/wishlist">@if (app()->has('label_wishlist_title')){!! app('label_wishlist_title') !!} @endif</a>
    <button class="leftbar__close" wire:click="$set('showwis', false)" id="wishClose" href="#">
     <svg>
      <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -12,7 +12,7 @@
   </div>
 
   @if ($items->isEmpty())
-   <span class="leftbar__empty">Nu sunt produse adăugate în lista de favorite</span>
+   <span class="leftbar__empty">@if (app()->has('label_wishlist_empty')){!! app('label_wishlist_empty') !!} @endif</span>
   @else
    <?php
    $disables = [];
@@ -51,7 +51,7 @@
          @if ($price && $price != null)
           {{ $price }} {{ $currency }}
          @else
-          Indisponibil
+          @if (app()->has('label_product_status_indisponible')){!! app('label_product_status_indisponible') !!} @endif
          @endif
         </span>
        </div>
@@ -76,7 +76,7 @@
       </button>
       @if ($disabled[$index])
        <div class="item__product--disabled">
-        <span>Produs Indisponibil</span>
+        <span>@if (app()->has('label_product_status_indisponible')){!! app('label_product_status_indisponible') !!} @endif</span>
         <button class="leftbar__delete" type="button" wire:click="removeFromWishlist({{ $item->product->id }})">
          <svg>
           <polyline points="3 6 5 6 21 6"></polyline>
@@ -87,7 +87,7 @@
       @endif
      </li>
      @if ($message === $index)
-      <p class="leftbar__message">Produsul a fost adăugat în coș!</p>
+      <p class="leftbar__message">@if (app()->has('label_wishlist_add_to_cart')){!! app('label_wishlist_add_to_cart') !!} @endif</p>
       <script>
        setTimeout(function() {
         @this.removemessage();
@@ -95,7 +95,6 @@
       </script>
      @endif
     @endforeach
-
    </ul>
   @endif
  </div>
