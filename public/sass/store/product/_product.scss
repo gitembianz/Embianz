@@ -17,9 +17,12 @@
   align-items: center;
   justify-content: flex-start;
   gap: 15px;
-  width: 100%;
+  width: 50%;
   height: 100%;
   flex: 1;
+  @media (max-width: map-get($grid-breakpoints, md)) {
+    width: 100%;
+  }
 }
 
 .product__text {
@@ -45,6 +48,125 @@
     align-items: flex-end;
     justify-content: center;
     flex: 0;
+  }
+}
+.product__dropdown {
+  width: auto;
+  height: 100%;
+  position: relative;
+
+  & > button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 5px;
+    width: 100%;
+    height: 35px;
+    background: darken($background, 5%);
+    padding: 3px;
+    text-align: end;
+    font-size: 15px;
+    font-weight: $lightWeight;
+    color: $lightBlack;
+    border-radius: 6px;
+    text-decoration: none;
+    border: none;
+
+    & > img {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      aspect-ratio: 1 / 1;
+    }
+  }
+
+  &.active {
+    & > .product__dropdown--content {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0px);
+    }
+  }
+}
+
+.product__dropdown--content {
+  // display: none;
+  position: absolute;
+  top: calc(100% + 15px);
+  right: 0;
+  background: darken($background, 6%);
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  gap: 5px;
+  max-height: 300px;
+  min-width: 200px;
+  max-width: 300px;
+  padding: 10px;
+  z-index: 100;
+  border-radius: 5px;
+  box-shadow: 0px 0px 20px -10px rgba(3, 3, 3, 0.5);
+  transition: all 0.3s ease-in-out;
+
+  transform: translateY(-20px);
+  visibility: hidden;
+  opacity: 0;
+
+  &::after {
+    content: "";
+    position: absolute;
+    right: 10px;
+    top: -8px;
+    width: 15px;
+    height: 10px;
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+    background: darken($background, 6%);
+  }
+}
+.product__dropdown--list {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  gap: 5px;
+  scrollbar-color: $lightBlack darken($background, 6%);
+
+  & > a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 5px;
+    width: 100%;
+    height: 35px;
+    background: darken($background, 11%);
+    padding: 3px;
+    text-align: end;
+    font-size: 15px;
+    font-weight: $lightWeight;
+    color: $lightBlack;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;
+
+    &:hover {
+      background: darken($background, 20%);
+    }
+
+    &.active {
+      background-color: $lightBlack;
+      color: $accentText;
+    }
+
+    & > img {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      aspect-ratio: 1 / 1;
+    }
   }
 }
 
@@ -180,4 +302,94 @@
   &:active {
     transform: scale(0.9);
   }
+}
+
+// Slider
+.variant__slider {
+  width: 100%;
+  height: 35px;
+  padding: 0 calc(35px + 5px);
+  position: relative;
+}
+.variant__wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 5px;
+  overflow-y: hidden;
+  overflow-x: scroll;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+// Button Or Tags in Wrapper
+.variant__btn {
+  scroll-snap-align: center;
+  flex: 0 0 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 1;
+  gap: 5px;
+  background: darken($accentText, 10%);
+  border-radius: 3px;
+  padding: 6px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  color: $lightBlack;
+  word-break: break-word;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+
+  & > img {
+    width: calc(35px - 6px);
+    height: calc(35px - 6px);
+    border-radius: 50%;
+    aspect-ratio: 1 / 1;
+  }
+
+  &:hover {
+    background: darken($accentText, 20%);
+  }
+  &:active {
+    scale: 0.9;
+  }
+  &.active {
+    background: $lightBlack;
+    color: $accentText;
+  }
+}
+// Navigation
+.variant__navigation {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  border: none;
+  box-shadow: 0px 0px 15px -5px rgba(3, 3, 3, 0.5);
+  background: lighten($lightBlack, 10%);
+  color: accentText;
+  transition: all 0.3s ease;
+  cursor: pointer;
+
+  &:active {
+    scale: 0.9;
+    background: darken($lightBlack, 10%);
+  }
+  & > svg {
+    transform: scale(0.7);
+    stroke: $accentText;
+  }
+}
+.variant__left {
+  left: 0;
+}
+.variant__right {
+  right: 0;
 }
