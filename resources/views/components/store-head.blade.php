@@ -29,6 +29,7 @@
  {{-- favicon end --}}
 
 <link rel="canonical" href="{{ config('app.url') . '/'. $canonical }}">
+
 <?php
   $theme = app()->has('global_theme') ? app('global_theme') : 'store';
   $href = '/dist/css/' . $theme . '.css';

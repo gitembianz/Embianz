@@ -1,0 +1,60 @@
+// Quantity
+.quantity {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding-bottom: 10px;
+  border-bottom: 1px solid $lightBlack;
+
+  & > span {
+    color: $lightBlack;
+    font-size: $textSize;
+    font-weight: $lightWeight;
+    width: 100%;
+    flex: 1;
+  }
+}
+
+.quantity__input {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 24px;
+  width: 50px;
+  padding: 20px;
+  font-size: $textSize;
+  font-weight: 400;
+  color: $lightBlack;
+  background: transparent;
+  margin: 0;
+  border: none;
+  outline: none;
+  text-align: center;
+}
+
+.quantity__buttons {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  justify-content: center;
+}
+
+.quantity__arrow {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+// End Quantity
