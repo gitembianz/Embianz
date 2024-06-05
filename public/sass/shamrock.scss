@@ -1,0 +1,75 @@
+//<-------------------------- General -------------------------->
+@import "shamrock/general/colors";
+@import "shamrock/general/normalize";
+@import "shamrock/general/variable";
+@import "shamrock/general/mixin";
+@import "shamrock/general/fonts";
+@import "shamrock/general/general";
+//<------------------------ End General ------------------------>
+//<------------------------------------------------------------->
+//<------------------------ Components ------------------------->
+@import "shamrock/components/loading-screen";
+@import "shamrock/components/cookie";
+@import "shamrock/components/section";
+@import "shamrock/components/breadcrumb";
+@import "shamrock/components/alert";
+@import "shamrock/components/quantity";
+@import "shamrock/components/support";
+@import "shamrock/components/help-button";
+@import "shamrock/components/numeric-list";
+@import "shamrock/components/accordion";
+@import "shamrock/components/select";
+@import "shamrock/components/spinner";
+@import "shamrock/components/newsletter";
+@import "shamrock/components/alertorder";
+//<---------------------- End Components ----------------------->
+//<------------------------------------------------------------->
+//<------------------------ Other Pages ------------------------>
+@import "shamrock/other-page/faq";
+@import "shamrock/other-page/contact";
+@import "shamrock/other-page/about";
+@import "shamrock/other-page/redirect";
+//<---------------------- End Other Pages ---------------------->
+//<------------------------------------------------------------->
+//<-------------------------- Header --------------------------->
+@import "shamrock/header/banner";
+@import "shamrock/header/header";
+@import "shamrock/header/leftbar";
+@import "shamrock/header/navbar";
+@import "shamrock/header/menu";
+@import "shamrock/header/searchbar";
+//<------------------------ End Header ------------------------->
+//<------------------------------------------------------------->
+//<------------------------- Catalogue ------------------------->
+@import "shamrock/catalogue/card-style";
+@import "shamrock/catalogue/addcart";
+@import "shamrock/catalogue/catalogue";
+@import "shamrock/catalogue/control";
+@import "shamrock/catalogue/filter";
+@import "shamrock/catalogue/tag";
+//<----------------------- End Catalogue ----------------------->
+//<------------------------------------------------------------->
+//<------------------------- Product --------------------------->
+@import "shamrock/product/product";
+@import "shamrock/product/tab";
+//<----------------------- End Product ------------------------->
+//<-------------- Cart, wish and checkout page ----------------->
+@import "shamrock/checkout/basket";
+@import "shamrock/checkout/detail";
+@import "shamrock/checkout/form";
+@import "shamrock/checkout/step";
+@import "shamrock/checkout/payment";
+@import "shamrock/checkout/total";
+//<------------ End Cart, wish and checkout page --------------->
+//<------------------------------------------------------------->
+//<-------------------------- Sliders -------------------------->
+@import "shamrock/slider/slider-main";
+@import "shamrock/slider/slider-card";
+@import "shamrock/slider/slider-product";
+@import "shamrock/slider/related-slider";
+//<------------------------ End Sliders ------------------------>
+//<------------------------------------------------------------->
+// <-------------------------- Footer -------------------------->
+@import "shamrock/footer/footer";
+// <------------------------ End Footer ------------------------>
+//<------------------------------------------------------------->
