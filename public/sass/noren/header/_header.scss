@@ -59,7 +59,7 @@ header {
   border-radius: 50%;
   position: relative;
 
-  &>svg {
+  & > svg {
     stroke: $lightBlack;
   }
 }
@@ -73,8 +73,8 @@ header {
   font-size: $spanSize;
   width: 20px;
   height: 20px;
-  right: -7px;
-  top: 0px;
+  right: 0px;
+  top: 3px;
   display: flex;
   align-items: center;
   justify-content: center;
