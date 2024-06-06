@@ -43,6 +43,8 @@
    @endif
   @endif
  </div>
+
+
  @if ($price)
   <span class="product__tva">
    @if (app()->has('label_pdp_vat')){!! app('label_pdp_vat') !!} @endif
@@ -74,6 +76,90 @@
  @if ($maxlimit)
   <span>@if (app()->has('label_product_quantity_error')){!! app('label_product_quantity_error') !!} @endif {{ $limit }}</span>
  @endif
+ <span class="product__price--title" style="margin-right: auto">Variante</span>
+ <div class="product__price">
+   <div class="variant__slider" id="miniSlider">
+     <div class="variant__wrapper" id="miniWrapper">
+       <a class="variant__btn active" href="#"><img src="https://dummyimage.com/25" alt="Variant 1">Variant 1</a>
+       <a class="variant__btn" href="#"><img src="https://dummyimage.com/25" alt="Variant 2">Variant 2</a>
+       <a class="variant__btn" href="#"><img src="https://dummyimage.com/25" alt="Variant 3">Variant 3</a>
+       <a class="variant__btn" href="#"><img src="https://dummyimage.com/25" alt="Variant 4">Variant 4</a>
+       <a class="variant__btn" href="#"><img src="https://dummyimage.com/25" alt="Variant 5">Variant 5</a>
+       <a class="variant__btn" href="#"><img src="https://dummyimage.com/25" alt="Variant 6">Variant 6</a>
+       <a class="variant__btn" href="#"><img src="https://dummyimage.com/25" alt="Variant 7">Variant 7</a>
+       <a class="variant__btn" href="#"><img src="https://dummyimage.com/25" alt="Variant 8">Variant 8</a>
+       <a class="variant__btn" href="#"><img src="https://dummyimage.com/25" alt="Variant 9">Variant 9</a>
+     </div>
+     <button class="variant__navigation variant__left" id="miniNavLeft">
+       <svg><polyline points="15 18 9 12 15 6"></polyline></svg>
+     </button>
+     <button class="variant__navigation variant__right" id="miniNavRight">
+       <svg><polyline points="9 18 15 12 9 6"></polyline></svg>
+     </button>
+   </div>
+ </div>
+
+ {{-- Another version of variants --}}
+ {{-- <div class="product__price">
+  <span class="product__price--title">Marime</span>
+  <div class="product__dropdown" id="optionsDropdown0">
+    <button id="optionsButton0"><img src="https://dummyimage.com/35" alt="IMG">Marime 1
+      <svg><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </button>
+    <div class="product__dropdown--content">
+      <div class="product__dropdown--list">
+        <a class="active" href="link"><img src="https://dummyimage.com/35" alt="IMG">Marime 1</a>
+        <a href="link"><img src="https://dummyimage.com/35" alt="IMG">Marime 2</a>
+        <a href="link"><img src="https://dummyimage.com/35" alt="IMG">Marime 3</a>
+        <a href="link"><img src="https://dummyimage.com/35" alt="IMG">Marime 4</a>
+        <a href="link"><img src="https://dummyimage.com/35" alt="IMG">Marime 1</a>
+        <a href="link"><img src="https://dummyimage.com/35" alt="IMG">Marime 2</a>
+        <a href="link"><img src="https://dummyimage.com/35" alt="IMG">Marime 3</a>
+        <a href="link"><img src="https://dummyimage.com/35" alt="IMG">Marime 4</a>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="product__price">
+  <span class="product__price--title">Culoare</span>
+  <div class="product__dropdown" id="optionsDropdown1">
+    <button id="optionsButton1"><img src="https://dummyimage.com/35" alt="IMG">Culoare 1
+      <svg><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </button>
+    <div class="product__dropdown--content">
+      <div class="product__dropdown--list">
+        <a class="active" href="link"><img src="https://dummyimage.com/35" alt="IMG">Culoare 1</a>
+        <a href="link"><img src="https://dummyimage.com/35" alt="IMG">Culoare 2</a>
+        <a href="link"><img src="https://dummyimage.com/35" alt="IMG">Culoare 3</a>
+        <a href="link"><img src="https://dummyimage.com/35" alt="IMG">Culoare 4</a>
+        <a href="link"><img src="https://dummyimage.com/35" alt="IMG">Culoare 1</a>
+        <a href="link"><img src="https://dummyimage.com/35" alt="IMG">Culoare 2</a>
+        <a href="link"><img src="https://dummyimage.com/35" alt="IMG">Culoare 3</a>
+        <a href="link"><img src="https://dummyimage.com/35" alt="IMG">Culoare 4</a>
+      </div>
+    </div>
+  </div>
+</div>
+  <script>
+    function options(buttonId, dropdownId) {
+      const button = document.getElementById(buttonId);
+      const dropdown = document.getElementById(dropdownId);
+
+      button.addEventListener('click', () => {
+        // event.stopPropagation();
+        dropdown.classList.toggle('active');
+      });
+
+      document.addEventListener('click', (event) => {
+        if (!dropdown.contains(event.target) && !button.contains(event.target)) {
+          dropdown.classList.remove('active');
+        }
+      });
+    }
+    options('optionsButton0', 'optionsDropdown0');
+    options('optionsButton1', 'optionsDropdown1');
+  </script> --}}
+
  @if ($price && $product->quantity != 0)
   <button class="card__button" style="width: 100%;height: 40px;" onclick="flyToCart(this)"
    aria-label="Add to cart button" wire:click="addToCart({{ $product->id }})" wire:ignore="$refresh">
@@ -104,39 +190,5 @@
   <span class="dlv_price">{{ $price }}</span>
   <span class="dlv_currency">{{ $product->product_prices->first()->pricelist->currency->name }}</span>
  </div>
- <div class="tab">
-  <div class="tab__top">
-   <button class="tab__button @if ($activeTab === 0) active @endif"
-    wire:click="switchTab(0)">@if (app()->has('label_pdp_description_tag')){!! app('label_pdp_description_tag') !!} @endif</button>
-   <button class="tab__button @if ($activeTab === 1) active @endif"
-    wire:click="switchTab(1)">@if (app()->has('label_pdp_details_tag')){!! app('label_pdp_details_tag') !!} @endif</button>
-  </div>
-  <div class="tab__content @if ($activeTab === 0) active @endif">
-   <p class="tab__info">{!! $product->long_description !!}</p>
-  </div>
-  <div class="tab__content @if ($activeTab === 1) active @endif">
-   <table class="tab__table">
-    <thead>
-     <tr>
-      <th>@if (app()->has('label_pdp_specs_tag')){!! app('label_pdp_specs_tag') !!} @endif</th>
-      <th>@if (app()->has('label_pdp_description_tag')){!! app('label_pdp_description_tag') !!} @endif</th>
-     </tr>
-    </thead>
-    <tbody>
-     @if ($product->product_specs->first() !== null)
-      @foreach ($product->product_specs->sortBy('sequence') as $spec)
-       <tr>
-        <td>{{ $spec->spec->name }}</td>
-        <td>{{ $spec->value }}</td>
-       </tr>
-      @endforeach
-     @else
-      <tr>
-       <td colspan="2">@if (app()->has('label_pdp_specs_error')){!! app('label_pdp_specs_error') !!} @endif</td>
-      </tr>
-     @endif
-    </tbody>
-   </table>
-  </div>
- </div>
+
 </div>

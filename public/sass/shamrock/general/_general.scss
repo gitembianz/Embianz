@@ -76,12 +76,12 @@ input[type="submit"] {
   background: transparent;
   border: none;
 
-  &>svg {
+  & > svg {
     fill: $lightGray;
   }
 
   &.active {
-    &>svg {
+    & > svg {
       fill: $darkRed;
     }
   }
@@ -117,28 +117,26 @@ input[type="submit"] {
   gap: 5px;
   z-index: 10;
 
-  &>span {
+  & > span {
     color: $lightBlack;
     font-weight: 500;
     text-transform: capitalize;
   }
 }
 
-
 .item__product--error {
   color: $darkRed !important;
-  font-weight:  $lightWeight !important;
+  font-weight: $lightWeight !important;
   font-size: $spanSize !important;
   text-transform: unset !important;
 }
-.item__product--link{
+.item__product--link {
   color: $lightBlack !important;
   font-size: $spanSize !important;
   font-weight: $lightWeight !important;
   text-decoration: underline !important;
   text-transform: unset !important;
 }
-
 
 label {
   -webkit-appearance: button;
@@ -156,7 +154,7 @@ main {
 .container {
   transition: all 0.3s ease-in-out;
   margin: 0 auto;
-  padding: 0 10px;
+  padding: 0 20px;
 }
 
 @include container(sm);
@@ -218,7 +216,7 @@ input[type="checkbox"] {
     display: none;
   }
 
-  &>img {
+  & > img {
     width: auto;
     height: 100%;
     object-fit: contain;
@@ -235,7 +233,7 @@ input[type="checkbox"] {
     margin: 0 auto;
   }
 
-  &>img {
+  & > img {
     width: 100%;
     height: 50px;
     user-select: none;
