@@ -9,7 +9,6 @@ use Livewire\Component;
 class ProductDetails extends Component
 {
 
-    public $activeTab = 0;
     public $quantity;
     public $limit = null;
     public $maxlimit = null;
@@ -53,10 +52,7 @@ class ProductDetails extends Component
         $this->is_in_wishlist = $this->product->wishlists->where('session_id', $this->session_id)->first() ? true : false;
     }
 
-    public function switchTab($index)
-    {
-        $this->activeTab = $index;
-    }
+
 
     public function incrementCounter()
     {
