@@ -80,7 +80,7 @@
     <h2>@if (app()->has('label_newsletter_subscribe_title')){!! app('label_newsletter_subscribe_title') !!} @endif</h2>
     <div class="footer__checkbox">
      <input type="checkbox" wire:model="ischecked" id="subscribeCheckbox" name="subscribe__checkbox">
-     <label for="subscribeCheckbox">@if (app()->has('label_newsletter_subscribe_input')){!! app('label_newsletter_subscribe_input') !!} @endif</label>
+     <label for="subscribeCheckbox">@if (app()->has('label_terms_confirm')){!! app('label_terms_confirm') !!} @endif</label>
     </div>
     <form class="subscribe" wire:submit.prevent="store">
      <input type="email" id="subscribeInput" wire:model="email" name="email" id="email"
