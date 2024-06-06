@@ -163,7 +163,7 @@
      @if ($category->subcategory->count() != 0)
       <div class="dropmenu">
        <div class="dropmenu__button">
-        <span class="dropmenu__button--link dropmenu__open menu__link" ondblclick="location.href='{{ route('products', ['categorySlug' => $category->seo_id !== null && $category->seo_id !== '' ? $category->seo_id : $category->id]) }}'">
+        <span class="dropmenu__button--link dropmenu__open menu__link" onclick="DoubleTapRedirect('{{ route('products', ['categorySlug' => $category->seo_id !== null && $category->seo_id !== '' ? $category->seo_id : $category->id]) }}')">
          @if ($category->media->first())
           <img loading="eager" class="cart__list--img"
            src="/{{ $category->media->first()->path }}{{ $category->media->first()->name }}"

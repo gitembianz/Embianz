@@ -85,8 +85,8 @@ function leftbar(idOpen, idClose, idList, idContent, hiddenId) {
       body.style.overflow = "auto";
     });
     contentModal.addEventListener("click", (event) => {
-        list.classList.remove("active");
-        body.style.overflow = "auto";
+      list.classList.remove("active");
+      body.style.overflow = "auto";
     });
 
     function handleKeyPress(event) {
@@ -96,7 +96,7 @@ function leftbar(idOpen, idClose, idList, idContent, hiddenId) {
       }
     }
 
-    document.addEventListener('keydown', handleKeyPress);
+    document.addEventListener("keydown", handleKeyPress);
   }
 }
 //<---------------------------- End LeftBar ---------------------------->
@@ -110,14 +110,13 @@ function searchBar() {
   const searching = document.getElementById("searching");
 
   searchBtn.addEventListener("click", function () {
-    new Promise(resolve => {
+    new Promise((resolve) => {
       document.body.style.overflow = "hidden";
       resolve();
     }).then(() => {
       input.focus();
     });
   });
-
 
   closeBtn.addEventListener("click", function () {
     document.body.style.overflow = "auto";
@@ -132,7 +131,6 @@ function searchBar() {
     }
   }
 
-
   input.addEventListener("keypress", function (event) {
     if (event.key === "Enter") {
       event.preventDefault();
@@ -143,12 +141,31 @@ function searchBar() {
     window.location.href = "/search/" + input.value;
   });
 }
-
 //<--------------------------- End SearchBar --------------------------->
+//<--------------------------------------------------------------------->
+//<------------------------ Double Tap Redirect ------------------------>
+let lastTap = 0;
+
+function DoubleTapRedirect(link) {
+  const currentTime = new Date().getTime();
+  const tapLength = currentTime - lastTap;
+  lastTap = currentTime;
+
+  if (tapLength < 500 && tapLength > 0) {
+    window.location.href = link;
+  }
+}
+//<---------------------- End Double Tap Redirect ---------------------->
 //<--------------------------------------------------------------------->
 //<------------------------ Start Functions IOS ------------------------>
 searchBar();
-leftbar("basketOpen", "basketClose", "basketList", "basketContent", "basketHidden");
+leftbar(
+  "basketOpen",
+  "basketClose",
+  "basketList",
+  "basketContent",
+  "basketHidden",
+);
 leftbar("wishOpen", "wishClose", "wishList", "wishContent", "wishHidden");
 leftbar("menuOpen", "menuClose", "menuList", "menuContent", "menuHidden");
 dropmenus(".dropmenu", false);
