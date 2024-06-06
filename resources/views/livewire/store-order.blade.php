@@ -1,5 +1,68 @@
 <div>
 	<x-store-alert />
+	<div style="display: none">
+    <script>
+        window.labels = {
+
+		// name validation
+            name_require: @if (app()->bound('label_form_name_require')) "{{ app('label_form_name_require') }}" @else "" @endif,
+            name_min: @if (app()->bound('label_form_name_min')) "{{ app('label_form_name_min') }}" @else "" @endif,
+            name_max: @if (app()->bound('label_form_name_max')) "{{ app('label_form_name_max') }}" @else "" @endif,
+            name_space: @if (app()->bound('label_form_name_space')) "{{ app('label_form_name_space') }}" @else "" @endif,
+            name_special: @if (app()->bound('label_form_name_special')) "{{ app('label_form_name_special') }}" @else "" @endif,
+        // lastname validation
+			lastname_require: @if (app()->bound('label_form_lastname_require')) "{{ app('label_form_lastname_require') }}" @else "" @endif,
+            lastname_min: @if (app()->bound('label_form_lastname_min')) "{{ app('label_form_lastname_min') }}" @else "" @endif,
+            lastname_max: @if (app()->bound('label_form_lastname_max')) "{{ app('label_form_lastname_max') }}" @else "" @endif,
+            lastname_space: @if (app()->bound('label_form_lastname_space')) "{{ app('label_form_lastname_space') }}" @else "" @endif,
+            lastname_special: @if (app()->bound('label_form_lastname_special')) "{{ app('label_form_lastname_special') }}" @else "" @endif,
+		// email Validation
+			email_require: @if (app()->bound('label_form_email_require')) "{{ app('label_form_email_require') }}" @else "" @endif,
+            email_min: @if (app()->bound('label_form_email_min')) "{{ app('label_form_email_min') }}" @else "" @endif,
+            email_max: @if (app()->bound('label_form_email_max')) "{{ app('label_form_email_max') }}" @else "" @endif,
+            email_space: @if (app()->bound('label_form_email_space')) "{{ app('label_form_email_space') }}" @else "" @endif,
+            email_valid: @if (app()->bound('label_form_email_valid')) "{{ app('label_form_email_valid') }}" @else "" @endif,
+		// phone Validation
+			phone_require: @if (app()->bound('label_form_phone_require')) "{{ app('label_form_phone_require') }}" @else "" @endif,
+            phone_special: @if (app()->bound('label_form_phone_special')) "{{ app('label_form_phone_special') }}" @else "" @endif,
+            phone_dimension: @if (app()->bound('label_form_phone_dimension')) "{{ app('label_form_phone_dimension') }}" @else "" @endif,
+            phone_space: @if (app()->bound('label_form_phone_space')) "{{ app('label_form_phone_space') }}" @else "" @endif,
+		// address Validation
+			address_require: @if (app()->bound('label_form_address_require')) "{{ app('label_form_address_require') }}" @else "" @endif,
+            address_min: @if (app()->bound('label_form_address_min')) "{{ app('label_form_address_min') }}" @else "" @endif,
+            address_max: @if (app()->bound('label_form_address_max')) "{{ app('label_form_address_max') }}" @else "" @endif,
+            address_space: @if (app()->bound('label_form_address_space')) "{{ app('label_form_address_space') }}" @else "" @endif,
+		// county Validation
+			county_require: @if (app()->bound('label_form_county_require')) "{{ app('label_form_county_require') }}" @else "" @endif,
+            county_min: @if (app()->bound('label_form_county_min')) "{{ app('label_form_county_min') }}" @else "" @endif,
+            county_max: @if (app()->bound('label_form_county_max')) "{{ app('label_form_county_max') }}" @else "" @endif,
+            county_space: @if (app()->bound('label_form_county_space')) "{{ app('label_form_county_space') }}" @else "" @endif,
+		// city Validation
+			city_require: @if (app()->bound('label_form_city_require')) "{{ app('label_form_city_require') }}" @else "" @endif,
+            city_min: @if (app()->bound('label_form_city_min')) "{{ app('label_form_city_min') }}" @else "" @endif,
+            city_max: @if (app()->bound('label_form_city_max')) "{{ app('label_form_city_max') }}" @else "" @endif,
+            city_space: @if (app()->bound('label_form_city_space')) "{{ app('label_form_city_space') }}" @else "" @endif,
+		// zipcode Validation
+			zipcode_require: @if (app()->bound('label_form_zipcode_require')) "{{ app('label_form_zipcode_require') }}" @else "" @endif,
+            zipcode_min: @if (app()->bound('label_form_zipcode_min')) "{{ app('label_form_zipcode_min') }}" @else "" @endif,
+            zipcode_max: @if (app()->bound('label_form_zipcode_max')) "{{ app('label_form_zipcode_max') }}" @else "" @endif,
+            zipcode_space: @if (app()->bound('label_form_zipcode_space')) "{{ app('label_form_zipcode_space') }}" @else "" @endif,
+		// company Validation
+			company_require: @if (app()->bound('label_form_company_require')) "{{ app('label_form_company_require') }}" @else "" @endif,
+            company_space: @if (app()->bound('label_form_company_space')) "{{ app('label_form_company_space') }}" @else "" @endif,
+            company_special: @if (app()->bound('label_form_company_special')) "{{ app('label_form_company_special') }}" @else "" @endif,
+		// registercode Validation
+			code_require: @if (app()->bound('label_form_code_require')) "{{ app('label_form_code_require') }}" @else "" @endif,
+            code_space: @if (app()->bound('label_form_code_space')) "{{ app('label_form_code_space') }}" @else "" @endif,
+            code_special: @if (app()->bound('label_form_code_special')) "{{ app('label_form_code_special') }}" @else "" @endif,
+		// registernumber Validation
+			number_require: @if (app()->bound('label_form_number_require')) "{{ app('label_form_number_require') }}" @else "" @endif,
+            number_space: @if (app()->bound('label_form_number_space')) "{{ app('label_form_number_space') }}" @else "" @endif,
+            number_special: @if (app()->bound('label_form_number_special')) "{{ app('label_form_number_special') }}" @else "" @endif,
+		};
+    </script>
+</div>
+
 	@if ($back)
 		<!-------------------- Error Message ------------------->
 		<section>
@@ -1405,7 +1468,7 @@
 							</div>
 						@endif
 					@endif
-							<!---------------------------------------------------->
+							<!------------------------- Scrpt for Checkout --------------------------->
 					<script src="/script/store/order.js"></script>
 					<script>
 						applyValidations("individualShippingFirstNameParent", firstNameValidation, false);
@@ -1413,26 +1476,26 @@
 						applyValidations("individualShippingEmailParent", emailValidation, false);
 						applyValidations("individualShippingPhoneParent", phoneValidation, false);
 						applyValidations("individualShippingAddressParent", addressValidations, false);
-						applyValidations("individualShippingCountyParent", addressValidations, false);
-						applyValidations("individualShippingCityParent", addressValidations, false);
-						applyValidations("individualShippingPostalParent", addressValidations, false);
+						applyValidations("individualShippingCountyParent", countyValidations, false);
+						applyValidations("individualShippingCityParent", cityValidations, false);
+						applyValidations("individualShippingPostalParent", zipcodeValidations, false);
 						applyValidations("individualBillingFirstNameParent", firstNameValidation, false);
 						applyValidations("individualBillingLastNameParent", lastNameValidation, false);
 						applyValidations("individualBillingEmailParent", emailValidation, false);
 						applyValidations("individualBillingPhoneParent", phoneValidation, false);
 						applyValidations("individualBillingAddressParent", addressValidations, false);
-						applyValidations("individualBillingCountyParent", addressValidations, false);
-						applyValidations("individualBillingCityParent", addressValidations, false);
-						applyValidations("individualBillingPostalParent", addressValidations, false);
+						applyValidations("individualBillingCountyParent", countyValidations, false);
+						applyValidations("individualBillingCityParent", cityValidations, false);
+						applyValidations("individualBillingPostalParent", zipcodeValidations, false);
 						// ----------------------------------------------------------------------------
 						applyValidations("juridicShippingFirstNameParent", firstNameValidation, false);
 						applyValidations("juridicShippingLastNameParent", lastNameValidation, false);
 						applyValidations("juridicShippingEmailParent", emailValidation, false);
 						applyValidations("juridicShippingPhoneParent", phoneValidation, false);
 						applyValidations("juridicShippingAddressParent", addressValidations, false);
-						applyValidations("juridicShippingCountyParent", addressValidations, false);
-						applyValidations("juridicShippingCityParent", addressValidations, false);
-						applyValidations("juridicShippingPostalParent", addressValidations, false);
+						applyValidations("juridicShippingCountyParent", countyValidations, false);
+						applyValidations("juridicShippingCityParent", cityValidations, false);
+						applyValidations("juridicShippingPostalParent", zipcodeValidations, false);
 						applyValidations("companyNameParent", companyName, false);
 						applyValidations("registerNumberParent", registerNumber, false);
 						applyValidations("registerCodeParent", registerCode, false);
@@ -1441,9 +1504,9 @@
 						applyValidations("juridicBillingEmailParent", emailValidation, false);
 						applyValidations("juridicBillingPhoneParent", phoneValidation, false);
 						applyValidations("juridicBillingAddressParent", addressValidations, false);
-						applyValidations("juridicBillingCountyParent", addressValidations, false);
-						applyValidations("juridicBillingCityParent", addressValidations, false);
-						applyValidations("juridicBillingPostalParent", addressValidations, false);
+						applyValidations("juridicBillingCountyParent", countyValidations, false);
+						applyValidations("juridicBillingCityParent", cityValidations, false);
+						applyValidations("juridicBillingPostalParent", zipcodeValidations, false);
 					</script>
           <div class="dlv" style="display: none">
             <span class="dlv_currency">{{ $cart->currency->name }}</span>
@@ -2275,4 +2338,5 @@ dataLayer.push({
 		</section>
 	@endif
 	<x-help-button />
+	
 </div>
