@@ -13,6 +13,8 @@ class StoreShowProduct extends Component
   public $quantity;
   public $session_id;
   public $back = false;
+  public $activeTab = 0;
+
 
 
   public function render()
@@ -21,6 +23,10 @@ class StoreShowProduct extends Component
       'product' => $this->product
     ]);
   }
+  public function switchTab($index)
+    {
+        $this->activeTab = $index;
+    }
   private function getSessionId()
   {
     if (array_key_exists('sessionId', $_COOKIE)) {
@@ -41,7 +47,7 @@ class StoreShowProduct extends Component
 
   public function getProductProperty()
   {
-    return Product::select('id', 'name', 'seo_id')
+    return Product::select('id', 'name', 'seo_id', 'long_description',)
       ->with([
         'media' => function ($query) {
           $query->select('name', 'path', 'type', 'sequence')
