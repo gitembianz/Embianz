@@ -103,40 +103,59 @@
  </section>
 
  <section class="tab container">
-  <div class="tab__top">
-    <button class="tab__button @if ($activeTab === 0) active @endif"
-    wire:click="switchTab(0)">@if (app()->has('label_pdp_description_tag')){!! app('label_pdp_description_tag') !!} @endif</button>
-    <button class="tab__button @if ($activeTab === 1) active @endif"
-    wire:click="switchTab(1)">@if (app()->has('label_pdp_details_tag')){!! app('label_pdp_details_tag') !!} @endif</button>
-  </div>
-  <div class="tab__content @if ($activeTab === 0) active @endif">
-    <p class="tab__info">{!! $product->long_description !!}</p>
-  </div>
-  <div class="tab__content @if ($activeTab === 1) active @endif">
-    <table class="tab__table">
-    <thead>
-      <tr>
-      <th>@if (app()->has('label_pdp_specs_tag')){!! app('label_pdp_specs_tag') !!} @endif</th>
-      <th>@if (app()->has('label_pdp_description_tag')){!! app('label_pdp_description_tag') !!} @endif</th>
-      </tr>
-    </thead>
-    <tbody>
-      @if ($product->product_specs->first() !== null)
-      @foreach ($product->product_specs->sortBy('sequence') as $spec)
-        <tr>
-        <td>{{ $spec->spec->name }}</td>
-        <td>{{ $spec->value }}</td>
-        </tr>
-      @endforeach
-      @else
-      <tr>
-        <td colspan="2">@if (app()->has('label_pdp_specs_error')){!! app('label_pdp_specs_error') !!} @endif</td>
-      </tr>
-      @endif
-    </tbody>
-    </table>
-  </div>
+    <div class="tab__top">
+      <button class="tab__button active" onclick="switchTab(0)">
+        @if (app()->has('label_pdp_description_tag')){!! app('label_pdp_description_tag') !!} @endif
+      </button>
+      <button class="tab__button" onclick="switchTab(1)">
+        @if (app()->has('label_pdp_details_tag')){!! app('label_pdp_details_tag') !!} @endif
+      </button>
+    </div>
+    <div class="tab__content active">
+      <p class="tab__info">{!! $product->long_description !!}</p>
+    </div>
+    <div class="tab__content">
+      <table class="tab__table">
+        <thead>
+          <tr>
+            <th>@if (app()->has('label_pdp_specs_tag')){!! app('label_pdp_specs_tag') !!} @endif</th>
+            <th>@if (app()->has('label_pdp_description_tag')){!! app('label_pdp_description_tag') !!} @endif</th>
+          </tr>
+        </thead>
+        <tbody>
+          @if ($product->product_specs->first() !== null)
+            @foreach ($product->product_specs->sortBy('sequence') as $spec)
+              <tr>
+                <td>{{ $spec->spec->name }}</td>
+                <td>{{ $spec->value }}</td>
+              </tr>
+            @endforeach
+          @else
+            <tr>
+              <td colspan="2">@if (app()->has('label_pdp_specs_error')){!! app('label_pdp_specs_error') !!} @endif</td>
+            </tr>
+          @endif
+        </tbody>
+      </table>
+    </div>
   </section>
+
+  <script>
+    function switchTab(tabIndex) {
+      const tabs = document.querySelectorAll('.tab__content');
+      const buttons = document.querySelectorAll('.tab__button');
+      
+      tabs.forEach((tab, index) => {
+        if (index === tabIndex) {
+          tab.classList.add('active');
+          buttons[index].classList.add('active');
+        } else {
+          tab.classList.remove('active');
+          buttons[index].classList.remove('active');
+        }
+      });
+    }
+  </script>
  <h2></h2>
  <!---------------------------------------------------------->
  <!------------------- Section Description ------------------>
@@ -178,7 +197,7 @@
              $product->product->active == true &&
              $product->product->end_date >= now()->format('Y-m-d') &&
              $product->product->start_date <= now()->format('Y-m-d'))
-      <div class="card product" style="width: 100%; pointer-events: none !important" >
+      <div class="card product" style="width: 100%;" >
        <a style="width: 100%" href="{{ route('product', ['product' => $product->product->seo_id !== null && $product->product->seo_id !== '' ? $product->product->seo_id : $product->product->id]) }}">
 
         @if ($product->product->media->first() != null)
