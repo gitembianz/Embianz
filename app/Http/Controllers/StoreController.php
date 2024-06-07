@@ -65,8 +65,9 @@ class StoreController extends Controller
         }])->orderBy('popularity', 'desc');
       }
     ])->first();
+
     if ($productCategory != null) {
-      $preload = "/" . $productCategory->product->media()->where('type', 'main')->first()->path . $productCategory->product->media()->where('type', 'main')->first()->name;
+      $preload = "/" . $productCategory->product->media()->first()->path . $productCategory->product->media()->first()->name;
     } else {
       $preload = '';
     }
