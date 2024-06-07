@@ -1,5 +1,4 @@
-<div wire:scroll="loadMore">
-
+<div>
  <!------------------------Breadcrumbs----------------------->
  <div class="breadcrumbs container">
   <a class="breadcrumbs__link" href="{{ url('/') }}">

@@ -5,7 +5,7 @@
 			<h3 class="newsletter__title">@if (app()->has('label_newsletter_title')){!! app('label_newsletter_title') !!} @endif</h3>
 			<p class="newsletter__descr">@if (app()->has('label_newsletter_description')){!! app('label_newsletter_description') !!} @endif</p>
 		</div>
-		<button class="newsletter__close" name="newsletter__close_button">
+		<button class="newsletter__close" aria-label="Close Newsletter">
 			@if (app()->has('newsletter_close_button')){!! app('newsletter_close_button') !!} @endif
 		</button>
 	</div>
