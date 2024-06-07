@@ -42,10 +42,7 @@ class ProductDetails extends Component
                             $query->select('id', 'currency_id')->with('currency:id,name,symbol');
                         }]);
                 },
-                'wishlists',
-                'product_specs' => function ($query) {
-                    $query->select('product_id', 'spec_id', 'value', 'id')->with('spec:id,name');
-                }
+                'wishlists'
             ])->find($prodid);
         $this->quantity = 1;
         $this->session_id = $this->getSessionId();

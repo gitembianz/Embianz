@@ -13,9 +13,6 @@ class StoreShowProduct extends Component
   public $quantity;
   public $session_id;
   public $back = false;
-  public $activeTab = 0;
-
-
 
   public function render()
   {
@@ -23,10 +20,6 @@ class StoreShowProduct extends Component
       'product' => $this->product
     ]);
   }
-  public function switchTab($index)
-    {
-        $this->activeTab = $index;
-    }
   private function getSessionId()
   {
     if (array_key_exists('sessionId', $_COOKIE)) {
@@ -53,6 +46,9 @@ class StoreShowProduct extends Component
           $query->select('name', 'path', 'type', 'sequence')
             ->whereIn('type', ['full', 'original'])
             ->orderBy('sequence');
+        },
+        'product_specs' => function ($query) {
+          $query->select('product_id', 'spec_id', 'value', 'id')->with('spec:id,name');
         },
         'related_product' => function ($query) {
           $query->select('parrent_id', 'product_id', 'id')->with([
