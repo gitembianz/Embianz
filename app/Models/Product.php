@@ -59,6 +59,11 @@ class Product extends Model
     $longestHierarchy = collect();
 
     foreach ($categories as $category) {
+      if (app()->has('global_default_category')) {
+        if ($category->id == app('global_default_category')) {
+          continue;
+        }
+      }
       $currentHierarchy = collect([
         [
           'name' => $category->name,
