@@ -52,6 +52,9 @@ return [
         'file' => [
             'driver' => 'file',
             'path' => storage_path('framework/cache/data'),
+            'headers' => [
+                'Cache-Control' => 'public',
+            ],
         ],
 
         'memcached' => [
