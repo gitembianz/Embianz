@@ -29,7 +29,7 @@
 						<img loading="eager" src="/images/store/svg/shield.svg" alt="shield">
 						<h3 class="support__title">@if (app()->has('label_support_secure_title')){!! app('label_support_secure_title') !!} @endif</h3>
 					</div>
-					<span class="support__subtitle">@if (app()->has('label_support_delivery_description')){!! app('label_support_delivery_description') !!} @endif</span>
+					<span class="support__subtitle">@if (app()->has('label_support_secure_description')){!! app('label_support_secure_description') !!} @endif</span>
 					<div class="support__brand">
 						<img loading="eager" class="support__brand--item" src="/images/store/brands/visa.webp" alt="visa">
 						<img loading="eager" class="support__brand--item" src="/images/store/brands/mastercard.webp" alt="mastercard">
