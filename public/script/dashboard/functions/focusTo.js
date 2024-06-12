@@ -1,5 +1,5 @@
 export function focusTo(targetId) {
-  var targetElement = document.querySelector(targetId);
+  var targetElement = document.getElementById(targetId);
   if (targetElement) {
     targetElement.focus();
   }
