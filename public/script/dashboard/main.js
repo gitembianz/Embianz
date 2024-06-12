@@ -2,6 +2,7 @@
 import { aside } from "./components/aside.js";
 import { opener } from "./components/opener.js";
 
+
 /// Navigation (Header)
 aside('menu', 'menu__open', 'menu__close', 'menu__backdrop');
 aside('profile', 'profile__open', 'profile__close', 'profile__backdrop');
@@ -18,3 +19,6 @@ opener('visible__dropdown', 'visible__open', true);
 opener('optional__dropdown', 'optional__open', true);
 opener('sorting__dropdown', 'sorting__open', true);
 opener('checked__dropdown', 'checked__open', true);
+
+
+
