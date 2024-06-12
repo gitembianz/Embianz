@@ -51,14 +51,14 @@
 			<h3>Menu</h3>
 		</div>
 		<span class="aside--line"></span>
-		<a class="button button--long button--flexed button--primary " href="{{ route("dashboard") }}">
+		<a class="button button--fill button--flexed button--primary " href="{{ route("dashboard") }}">
       <svg>
         <path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l-2 0l9 -9l9 9l-2 0" />
         <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" /><path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
       </svg>
 			<span>Dashboard</span>
 		</a>
-		<a class="button button--long button--flexed button--primary " href="{{ route("category") }}">
+		<a class="button button--fill button--flexed button--primary " href="{{ route("category") }}">
 			<svg>
 				<path stroke="none" d="M0 0h24v24H0z" fill="none" />
 				<path d="M14 4h6v6h-6z" />
@@ -68,7 +68,7 @@
 			</svg>
 			<span>Categories</span>
 		</a>
-		<a class="button button--long button--flexed button--primary " href="{{ route("all_products") }}">
+		<a class="button button--fill button--flexed button--primary " href="{{ route("all_products") }}">
 			<svg>
 				<path stroke="none" d="M0 0h24v24H0z" fill="none" />
 				<path d="M3 21l18 0" />
@@ -79,7 +79,7 @@
 			</svg>
 			<span>Products</span>
 		</a>
-		<a class="button button--long button--flexed button--primary " href="{{ route("vouchers") }}">
+		<a class="button button--fill button--flexed button--primary " href="{{ route("vouchers") }}">
 			<svg>
 				<path stroke="none" d="M0 0h24v24H0z" fill="none" />
 				<path d="M3 5m0 3a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3z" />
@@ -88,7 +88,7 @@
 			</svg>
 			<span>Vouchers</span>
 		</a>
-		<a class="button button--long button--flexed button--primary " href="{{ route("accounts") }}">
+		<a class="button button--fill button--flexed button--primary " href="{{ route("accounts") }}">
 			<svg>
 				<path stroke="none" d="M0 0h24v24H0z" fill="none" />
 				<path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
@@ -98,7 +98,7 @@
 			</svg>
 			<span>Accounts</span>
 		</a>
-		<a class="button button--long button--flexed button--primary " href="{{ route("carts") }}">
+		<a class="button button--fill button--flexed button--primary " href="{{ route("carts") }}">
 			<svg>
 				<path stroke="none" d="M0 0h24v24H0z" fill="none" />
 				<path d="M6 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
@@ -108,7 +108,7 @@
 			</svg>
 			<span>Carts</span>
 		</a>
-		<a class="button button--long button--flexed button--primary " href="{{ route("orders") }}">
+		<a class="button button--fill button--flexed button--primary " href="{{ route("orders") }}">
 			<svg>
 				<path stroke="none" d="M0 0h24v24H0z" fill="none" />
 				<path d="M7 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
@@ -118,7 +118,7 @@
 			</svg>
 			<span>Orders</span>
 		</a>
-		<a class="button button--long button--flexed button--primary " href="{{ route("pricelists") }}">
+		<a class="button button--fill button--flexed button--primary " href="{{ route("pricelists") }}">
 			<svg>
 				<path stroke="none" d="M0 0h24v24H0z" fill="none" />
 				<path d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16l-3 -2l-2 2l-2 -2l-2 2l-2 -2l-3 2" />
@@ -126,7 +126,7 @@
 			</svg>
 			<span>Price List</span>
 		</a>
-		<a class="button button--long button--flexed button--primary " href="{{ route("specs") }}">
+		<a class="button button--fill button--flexed button--primary " href="{{ route("specs") }}">
 			<svg>
 				<path stroke="none" d="M0 0h24v24H0z" fill="none" />
 				<path d="M3 4m0 3a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v10a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3z" />
@@ -137,7 +137,7 @@
 			</svg>
 			<span>Specifications</span>
 		</a>
-		<a class="button button--long button--flexed button--primary " href="{{ route("wishlists") }}">
+		<a class="button button--fill button--flexed button--primary " href="{{ route("wishlists") }}">
 			<svg>
 				<path stroke="none" d="M0 0h24v24H0z" fill="none" />
 				<path d="M13 5h8" />
@@ -149,7 +149,7 @@
 			</svg>
 			<span>Wishlists</span>
 		</a>
-		<a class="button button--long button--flexed button--primary " href="{{ route("sessions") }}">
+		<a class="button button--fill button--flexed button--primary " href="{{ route("sessions") }}">
 			<svg>
 				<path stroke="none" d="M0 0h24v24H0z" fill="none" />
 				<path d="M10 5m0 2a2 2 0 0 1 2 -2h6a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-6a2 2 0 0 1 -2 -2z" />
@@ -158,7 +158,7 @@
 			</svg>
 			<span>Sessions</span>
 		</a>
-		<a class="button button--long button--flexed button--primary " href="{{ route("storesettings") }}">
+		<a class="button button--fill button--flexed button--primary " href="{{ route("storesettings") }}">
 			<svg>
 				<path stroke="none" d="M0 0h24v24H0z" fill="none" />
 				<path d="M3 4m0 3a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v2a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3z" />
@@ -175,7 +175,7 @@
 			</svg>
 			<span>Store settings</span>
 		</a>
-		<a class="button button--long button--flexed button--primary " href="{{ route("currencies") }}">
+		<a class="button button--fill button--flexed button--primary " href="{{ route("currencies") }}">
 			<svg>
 				<path stroke="none" d="M0 0h24v24H0z" fill="none" />
 				<path d="M9 14c0 1.657 2.686 3 6 3s6 -1.343 6 -3s-2.686 -3 -6 -3s-6 1.343 -6 3z" />
@@ -186,14 +186,14 @@
 			</svg>
 			<span>Currency</span>
 		</a>
-		<a class="button button--long button--flexed button--primary " href="{{ route("customscripts") }}">
+		<a class="button button--fill button--flexed button--primary " href="{{ route("customscripts") }}">
 			<svg>
 				<path stroke="none" d="M0 0h24v24H0z" fill="none" />
 				<path d="M17 20h-11a3 3 0 0 1 0 -6h11a3 3 0 0 0 0 6h1a3 3 0 0 0 3 -3v-11a2 2 0 0 0 -2 -2h-10a2 2 0 0 0 -2 2v8" />
 			</svg>
 			<span>Custom Script</span>
 		</a>
-		<a class="button button--long button--flexed button--primary " href="{{ route("payments") }}">
+		<a class="button button--fill button--flexed button--primary " href="{{ route("payments") }}">
 			<svg>
 				<path stroke="none" d="M0 0h24v24H0z" fill="none" />
 				<path d="M17 8v-3a1 1 0 0 0 -1 -1h-10a2 2 0 0 0 0 4h12a1 1 0 0 1 1 1v3m0 4v3a1 1 0 0 1 -1 1h-12a2 2 0 0 1 -2 -2v-12" />
@@ -201,7 +201,7 @@
 			</svg>
 			<span>Payment</span>
 		</a>
-    <a class="button button--long button--flexed button--primary " href="{{ route("labels") }}">
+    <a class="button button--fill button--flexed button--primary " href="{{ route("labels") }}">
       <svg>
         <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
         <line x1="7" y1="7" x2="7.01" y2="7"></line>
@@ -227,7 +227,7 @@
 		</div>
 
 		<span class="aside--line"></span>
-		<button class="button button--long button--flexed button--primary">
+		<button class="button button--fill button--flexed button--primary">
 			<svg>
 				<path stroke="none" d="M0 0h24v24H0z" fill="none" />
 				<path d="M14 4h6v6h-6z" />
@@ -279,7 +279,7 @@
 			<h3>Notifications</h3>
 		</div>
 		<span class="aside--line"></span>
-		<button class="button button--long button--flexed button--primary">
+		<button class="button button--fill button--flexed button--primary">
 			<svg>
 				<path stroke="none" d="M0 0h24v24H0z" fill="none" />
 				<path d="M14 4h6v6h-6z" />
