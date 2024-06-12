@@ -1,6 +1,7 @@
 .leftbar{
   width: 100%;
   max-width: calc($width + ($padding * 2));
+  min-width: calc($width + ($padding * 2));
   height: auto;
   display: inline-flex;
   flex-direction: column;
@@ -19,13 +20,10 @@
 
   &.active{
     max-width: $max-width;
+    min-width: $max-width;
 
     & > .button{
       width: 100%;
-
-      &>span{
-        transform: scale(1);
-      }
    }
   }
 
@@ -39,8 +37,12 @@
 
     &> span{
       position: absolute;
-      right: 5px;
-      transform: scale(0);
+      word-break: break-word;
+      white-space: nowrap;
+      left: 0;
+      margin-left: $width;
+      top: 50%;
+      transform: translateY(-50%);
       transition: $transition-fast;
     }
   }

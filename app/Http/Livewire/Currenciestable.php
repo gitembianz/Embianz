@@ -23,6 +23,17 @@ class Currenciestable extends Component
     public $selectAll = false;
     public $editeindex = null;
     public $details = [];
+    public $row =null;
+
+    public function expandRow($index){
+        if($this->row  === null){
+          $this->row = $index ;
+        }elseif ($this->row != $index){
+          $this->row = $index ;
+        }else{
+          $this->row = null ;
+        }
+    }
 
 
 
@@ -78,6 +89,7 @@ class Currenciestable extends Component
         $this->selectAll = true;
         $this->checked = $this->currenciesQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
     }
+
     public function getCurrenciesProperty()
     {
         return Currency::search($this->search)

@@ -108,6 +108,7 @@
       color: $white;
       text-decoration: none;
       line-height: $line-height;
+      word-break: break-all;
 
       & a{
         font-size: 14px;
@@ -138,6 +139,7 @@
     text-align: left;
     word-wrap: break-word;
     text-wrap: balance;
+    // word-break: break-all;
   }
 
   th {
