@@ -28,6 +28,17 @@ class CustomScriptsTable extends Component
     public $all = false;
     public $tableName;
     public $columns;
+    public $row =null;
+
+    public function expandRow($index){
+        if($this->row  === null){
+          $this->row = $index ;
+        }elseif ($this->row != $index){
+          $this->row = $index ;
+        }else{
+          $this->row = null ;
+        }
+    }
 
 
     public function render()
@@ -87,10 +98,14 @@ class CustomScriptsTable extends Component
     {
         $this->loadAmount += 10;
     }
+    public function getCustomscriptsQueryProperty(){
+      return CustomScript::search($this->search)
+            ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->limit($this->loadAmount);
+    }
     public function getCustomscriptsProperty()
     {
-        return CustomScript::search($this->search)
-            ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->limit($this->loadAmount)->get();
+return $this->customscriptsQuery->get();
+
     }
     public function deleteRecords()
     {

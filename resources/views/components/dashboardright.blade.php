@@ -1,4 +1,4 @@
-<div class="right">
+<!-- <div class="right">
 
 	<div class="right__content">
 
@@ -94,4 +94,4 @@
 		</div>
 
 	</div>
-</div>
+</div> -->

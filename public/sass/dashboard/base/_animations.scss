@@ -1,5 +1,4 @@
-// Animation
-// animation: loginValidationFail 0.5s ease-in-out;
+// Validation Failed
 @keyframes loginValidationFail {
   0% {
     transform: translateX(0);
@@ -15,5 +14,18 @@
   }
   100% {
     transform: translateX(0);
+  }
+}
+// animation: loginValidationFail 0.5s ease-in-out;
+
+
+
+// Rotation 360 grades
+@keyframes rotate {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
   }
 }

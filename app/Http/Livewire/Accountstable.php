@@ -25,6 +25,17 @@ class Accountstable extends Component
     public $all = false;
     public $tableName;
     public $columns;
+    public $row =null;
+
+    public function expandRow($index){
+        if($this->row  === null){
+          $this->row = $index ;
+        }elseif ($this->row != $index){
+          $this->row = $index ;
+        }else{
+          $this->row = null ;
+        }
+    }
 
     public function render()
     {

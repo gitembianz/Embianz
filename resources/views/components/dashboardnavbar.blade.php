@@ -1,97 +1,293 @@
 <header>
-	<div class="header">
-		<!-- Logo -->
-		<a href="{{ route("dashboard") }}" class="header__logo">
-			<img loading="eager" src="/images/dashboard/navbar/logo.png" alt="logo">
+	<!-- Navbar -->
+	<nav class="nav--header">
+		<button class="button button--secondary button--centered display--mobile" id="menu__open">
+			<svg>
+				<rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+				<line x1="3" y1="9" x2="21" y2="9"></line>
+				<line x1="9" y1="21" x2="9" y2="9"></line>
+			</svg>
+		</button>
+		<!-- Logo-->
+		<a href="{{ route("dashboard") }}" class="logo display--desktop">
+			<img src="/images/dashboard/navbar/logo.png" alt="logo">
 		</a>
+		<button class="button button--secondary button--centered" onclick="focusTo('#search__input')" id="search__open">
+			<svg>
+				<circle cx="11" cy="11" r="8"></circle>
+				<line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+			</svg>
+		</button>
+    <a href="{{ route("dashboard") }}" class="logo display--mobile">
+			<img src="/images/dashboard/navbar/mini-logo.png" alt="mini-logo">
+		</a>
+		<button class="button button--secondary button--centered" id="notify__open">
+			<svg>
+				<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+				<path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+			</svg>
+		</button>
+		<button class="button button--secondary button--centered" id="profile__open">
+			<svg>
+				<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+				<circle cx="12" cy="7" r="4"></circle>
+			</svg>
+		</button>
+	</nav>
+</header>
 
-		<!-- Header Buttons on mobile -->
-		<div class="header__buttons">
-			<button class="sidebar__btn">
-				<img loading="eager" src="/images/dashboard/navbar/mini-logo.png" alt="logo">
+<aside id="menu__container" class="display--mobile">
+	<div class="background background--left" id="menu__backdrop"></div>
+	<div class="aside aside--left" id="menu">
+		<div class="aside--controls">
+			<button class="button button--flexed button--primary" id="menu__close">
+				<svg>
+					<polyline points="4 14 10 14 10 20"></polyline>
+					<polyline points="20 10 14 10 14 4"></polyline>
+					<line x1="14" y1="10" x2="21" y2="3"></line>
+					<line x1="3" y1="21" x2="10" y2="14"></line>
+				</svg>
 			</button>
-			<button class="search__icon" id="openSearch">
+			<h3>Menu</h3>
+		</div>
+		<span class="aside--line"></span>
+		<a class="button button--long button--flexed button--primary " href="{{ route("dashboard") }}">
+      <svg>
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l-2 0l9 -9l9 9l-2 0" />
+        <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" /><path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+      </svg>
+			<span>Dashboard</span>
+		</a>
+		<a class="button button--long button--flexed button--primary " href="{{ route("category") }}">
+			<svg>
+				<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+				<path d="M14 4h6v6h-6z" />
+				<path d="M4 14h6v6h-6z" />
+				<path d="M17 17m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
+				<path d="M7 7m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
+			</svg>
+			<span>Categories</span>
+		</a>
+		<a class="button button--long button--flexed button--primary " href="{{ route("all_products") }}">
+			<svg>
+				<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+				<path d="M3 21l18 0" />
+				<path d="M3 7v1a3 3 0 0 0 6 0v-1m0 1a3 3 0 0 0 6 0v-1m0 1a3 3 0 0 0 6 0v-1h-18l2 -4h14l2 4" />
+				<path d="M5 21l0 -10.15" />
+				<path d="M19 21l0 -10.15" />
+				<path d="M9 21v-4a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v4" />
+			</svg>
+			<span>Products</span>
+		</a>
+		<a class="button button--long button--flexed button--primary " href="{{ route("vouchers") }}">
+			<svg>
+				<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+				<path d="M3 5m0 3a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3z" />
+				<path d="M7 16l3 -3l3 3" />
+				<path d="M8 13c-.789 0 -2 -.672 -2 -1.5s.711 -1.5 1.5 -1.5c1.128 -.02 2.077 1.17 2.5 3c.423 -1.83 1.372 -3.02 2.5 -3c.789 0 1.5 .672 1.5 1.5s-1.211 1.5 -2 1.5h-4z" />
+			</svg>
+			<span>Vouchers</span>
+		</a>
+		<a class="button button--long button--flexed button--primary " href="{{ route("accounts") }}">
+			<svg>
+				<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+				<path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
+				<path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+				<path d="M16 3.13a4 4 0 0 1 0 7.75" />
+				<path d="M21 21v-2a4 4 0 0 0 -3 -3.85" />
+			</svg>
+			<span>Accounts</span>
+		</a>
+		<a class="button button--long button--flexed button--primary " href="{{ route("carts") }}">
+			<svg>
+				<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+				<path d="M6 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+				<path d="M17 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+				<path d="M17 17h-11v-14h-2" />
+				<path d="M6 5l14 1l-1 7h-13" />
+			</svg>
+			<span>Carts</span>
+		</a>
+		<a class="button button--long button--flexed button--primary " href="{{ route("orders") }}">
+			<svg>
+				<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+				<path d="M7 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+				<path d="M17 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+				<path d="M5 17h-2v-4m-1 -8h11v12m-4 0h6m4 0h2v-6h-8m0 -5h5l3 5" />
+				<path d="M3 9l4 0" />
+			</svg>
+			<span>Orders</span>
+		</a>
+		<a class="button button--long button--flexed button--primary " href="{{ route("pricelists") }}">
+			<svg>
+				<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+				<path d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16l-3 -2l-2 2l-2 -2l-2 2l-2 -2l-3 2" />
+				<path d="M14 8h-2.5a1.5 1.5 0 0 0 0 3h1a1.5 1.5 0 0 1 0 3h-2.5m2 0v1.5m0 -9v1.5" />
+			</svg>
+			<span>Price List</span>
+		</a>
+		<a class="button button--long button--flexed button--primary " href="{{ route("specs") }}">
+			<svg>
+				<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+				<path d="M3 4m0 3a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v10a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3z" />
+				<path d="M9 10m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+				<path d="M15 8l2 0" />
+				<path d="M15 12l2 0" />
+				<path d="M7 16l10 0" />
+			</svg>
+			<span>Specifications</span>
+		</a>
+		<a class="button button--long button--flexed button--primary " href="{{ route("wishlists") }}">
+			<svg>
+				<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+				<path d="M13 5h8" />
+				<path d="M13 9h5" />
+				<path d="M13 15h8" />
+				<path d="M13 19h5" />
+				<path d="M3 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
+				<path d="M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
+			</svg>
+			<span>Wishlists</span>
+		</a>
+		<a class="button button--long button--flexed button--primary " href="{{ route("sessions") }}">
+			<svg>
+				<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+				<path d="M10 5m0 2a2 2 0 0 1 2 -2h6a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-6a2 2 0 0 1 -2 -2z" />
+				<path d="M7 7l0 10" />
+				<path d="M4 8l0 8" />
+			</svg>
+			<span>Sessions</span>
+		</a>
+		<a class="button button--long button--flexed button--primary " href="{{ route("storesettings") }}">
+			<svg>
+				<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+				<path d="M3 4m0 3a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v2a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3z" />
+				<path d="M12 20h-6a3 3 0 0 1 -3 -3v-2a3 3 0 0 1 3 -3h10.5" />
+				<path d="M18 18m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+				<path d="M18 14.5v1.5" />
+				<path d="M18 20v1.5" />
+				<path d="M21.032 16.25l-1.299 .75" />
+				<path d="M16.27 19l-1.3 .75" />
+				<path d="M14.97 16.25l1.3 .75" />
+				<path d="M19.733 19l1.3 .75" />
+				<path d="M7 8v.01" />
+				<path d="M7 16v.01" />
+			</svg>
+			<span>Store settings</span>
+		</a>
+		<a class="button button--long button--flexed button--primary " href="{{ route("currencies") }}">
+			<svg>
+				<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+				<path d="M9 14c0 1.657 2.686 3 6 3s6 -1.343 6 -3s-2.686 -3 -6 -3s-6 1.343 -6 3z" />
+				<path d="M9 14v4c0 1.656 2.686 3 6 3s6 -1.344 6 -3v-4" />
+				<path d="M3 6c0 1.072 1.144 2.062 3 2.598s4.144 .536 6 0c1.856 -.536 3 -1.526 3 -2.598c0 -1.072 -1.144 -2.062 -3 -2.598s-4.144 -.536 -6 0c-1.856 .536 -3 1.526 -3 2.598z" />
+				<path d="M3 6v10c0 .888 .772 1.45 2 2" />
+				<path d="M3 11c0 .888 .772 1.45 2 2" />
+			</svg>
+			<span>Currency</span>
+		</a>
+		<a class="button button--long button--flexed button--primary " href="{{ route("customscripts") }}">
+			<svg>
+				<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+				<path d="M17 20h-11a3 3 0 0 1 0 -6h11a3 3 0 0 0 0 6h1a3 3 0 0 0 3 -3v-11a2 2 0 0 0 -2 -2h-10a2 2 0 0 0 -2 2v8" />
+			</svg>
+			<span>Custom Script</span>
+		</a>
+		<a class="button button--long button--flexed button--primary " href="{{ route("payments") }}">
+			<svg>
+				<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+				<path d="M17 8v-3a1 1 0 0 0 -1 -1h-10a2 2 0 0 0 0 4h12a1 1 0 0 1 1 1v3m0 4v3a1 1 0 0 1 -1 1h-12a2 2 0 0 1 -2 -2v-12" />
+				<path d="M20 12v4h-4a2 2 0 0 1 0 -4h4" />
+			</svg>
+			<span>Payment</span>
+		</a>
+    <a class="button button--long button--flexed button--primary " href="{{ route("labels") }}">
+      <svg>
+        <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+        <line x1="7" y1="7" x2="7.01" y2="7"></line>
+      </svg>
+			<span>Labels</span>
+		</a>
+	</div>
+</aside>
+
+<aside>
+	<div class="background background--right" id="profile__backdrop"></div>
+	<div class="aside aside--right" id="profile">
+		<div class="aside--controls">
+			<button class="button button--flexed button--primary" id="profile__close">
+				<svg>
+					<polyline points="4 14 10 14 10 20"></polyline>
+					<polyline points="20 10 14 10 14 4"></polyline>
+					<line x1="14" y1="10" x2="21" y2="3"></line>
+					<line x1="3" y1="21" x2="10" y2="14"></line>
+				</svg>
+			</button>
+			<h3>Profile</h3>
+		</div>
+
+		<span class="aside--line"></span>
+		<button class="button button--long button--flexed button--primary">
+			<svg>
+				<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+				<path d="M14 4h6v6h-6z" />
+				<path d="M4 14h6v6h-6z" />
+				<path d="M17 17m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
+				<path d="M7 7m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
+			</svg>
+			<span>Profile</span>
+		</button>
+	</div>
+</aside>
+
+<aside>
+	<div class="background background--top" id="search__backdrop"></div>
+	<div class="aside aside--search" id="search">
+		<div class="search--controls">
+			<button class="button button--flexed button--centered  button--primary" id="search__close">
+				<svg>
+					<polyline points="4 14 10 14 10 20"></polyline>
+					<polyline points="20 10 14 10 14 4"></polyline>
+					<line x1="14" y1="10" x2="21" y2="3"></line>
+					<line x1="3" y1="21" x2="10" y2="14"></line>
+				</svg>
+			</button>
+			<input class="input input--long" type="text" placeholder="Search..." id="search__input">
+			<button class="button button--flexed button--centered button--primary">
 				<svg>
 					<circle cx="11" cy="11" r="8"></circle>
 					<line x1="21" y1="21" x2="16.65" y2="16.65"></line>
 				</svg>
 			</button>
-			<div class="search">
-				<button class="search__item" id="closeSearch">
-					<svg>
-						<circle cx="11" cy="11" r="8"></circle>
-						<line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-					</svg>
-				</button>
-				<input class="search__item" type="text">
-				<button class="search__item">
-					<svg>
-						<line x1="18" y1="6" x2="6" y2="18"></line>
-						<line x1="6" y1="6" x2="18" y2="18"></line>
-					</svg>
-				</button>
-			</div>
-			<div class="notify">
-				<button class="notify__btn">
-					<svg>
-						<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-						<path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-					</svg>
-					{{-- <span class="alert-count">3</span> --}}
-				</button>
-				<ul class="notify__list">
-					<h2 class="notify__title">Notification</h2>
-					{{-- <li><a class="notify__item alert-circle" href="#"><span>Lorem ipsum
-                                dolor</span><time>22.05.23<br>23:00</time></a></li>
-                    <li><a class="notify__item" href="#"><span>Lorem ipsum
-                                dolor</span><time>22.05.23<br>23:00</time></a></li> --}}
-				</ul>
-			</div>
-			<button class="right__open">
-				<svg>
-					<line x1="4" y1="21" x2="4" y2="14"></line>
-					<line x1="4" y1="10" x2="4" y2="3"></line>
-					<line x1="12" y1="21" x2="12" y2="12"></line>
-					<line x1="12" y1="8" x2="12" y2="3"></line>
-					<line x1="20" y1="21" x2="20" y2="16"></line>
-					<line x1="20" y1="12" x2="20" y2="3"></line>
-					<line x1="1" y1="14" x2="7" y2="14"></line>
-					<line x1="9" y1="8" x2="15" y2="8"></line>
-					<line x1="17" y1="16" x2="23" y2="16"></line>
-				</svg>
-			</button>
-			<button class="profile__icon" id="openProfile">
-				<svg>
-					<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-					<circle cx="12" cy="7" r="4"></circle>
-				</svg>
-			</button>
-			<div class="profile">
-				<button class="profile__item" id="closeProfile">
-					<svg>
-						<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-						<circle cx="12" cy="7" r="4"></circle>
-					</svg>
-				</button>
-				<div class="profile__item">
-					{{ $user }}
-				</div>
-				<a class="profile__item" href="{{ route('profile.show') }}">
-					<svg>
-						<circle cx="12" cy="12" r="3"></circle>
-						<path
-							d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
-						</path>
-					</svg>
-				</a>
-				<a class="profile__item" href="{{ route('forcelogout') }}">
-					<svg>
-						<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-						<polyline points="16 17 21 12 16 7"></polyline>
-						<line x1="21" y1="12" x2="9" y2="12"></line>
-					</svg>
-				</a>
-			</div>
 		</div>
+		<span class="aside--line"></span>
 	</div>
-</header>
+</aside>
+
+<aside>
+	<div class="background background--bottom" id="notify__backdrop"></div>
+	<div class="aside aside--bottom" id="notify">
+		<div class="aside--controls">
+			<button class="button button--flexed button--primary" id="notify__close">
+				<svg>
+					<polyline points="4 14 10 14 10 20"></polyline>
+					<polyline points="20 10 14 10 14 4"></polyline>
+					<line x1="14" y1="10" x2="21" y2="3"></line>
+					<line x1="3" y1="21" x2="10" y2="14"></line>
+				</svg>
+			</button>
+			<h3>Notifications</h3>
+		</div>
+		<span class="aside--line"></span>
+		<button class="button button--long button--flexed button--primary">
+			<svg>
+				<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+				<path d="M14 4h6v6h-6z" />
+				<path d="M4 14h6v6h-6z" />
+				<path d="M17 17m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
+				<path d="M7 7m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
+			</svg>
+			<span>Profile</span>
+		</button>
+	</div>
+</aside>

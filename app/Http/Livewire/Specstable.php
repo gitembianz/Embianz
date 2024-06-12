@@ -23,6 +23,17 @@ class Specstable extends Component
   public $columns = [];
   public $selectedColumns = [];
   public $tableName;
+  public $row =null;
+
+  public function expandRow($index){
+      if($this->row  === null){
+        $this->row = $index ;
+      }elseif ($this->row != $index){
+        $this->row = $index ;
+      }else{
+        $this->row = null ;
+      }
+  }
 
   public function render()
   {

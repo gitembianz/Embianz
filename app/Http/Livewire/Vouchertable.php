@@ -25,6 +25,17 @@ class Vouchertable extends Component
   public $editindex;
   public $voucher = [];
   public $statuses;
+  public $row =null;
+
+  public function expandRow($index){
+      if($this->row  === null){
+        $this->row = $index ;
+      }elseif ($this->row != $index){
+        $this->row = $index ;
+      }else{
+        $this->row = null ;
+      }
+  }
 
   protected $listeners = ['loadMore' => 'loadMore'];
 

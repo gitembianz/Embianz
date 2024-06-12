@@ -58,9 +58,14 @@
   //  min-width: $min-width;
 
    &:has(span){
+    width: unset;
     padding: 0 $padding;
     gap: 10px;
    }
+  }
+
+  &--fill {
+    width: 100%;
   }
 
   &--flexed {
@@ -139,7 +144,7 @@
     }
    }
   }
-/// Button Active
+  /// Button Active
   &--active {
     color: $primary;
     background-color: $secondary;
@@ -163,6 +168,33 @@
     @media (hover: none) {
      &:active {
       background-color: darken($secondary, 20%);
+      outline: none;
+     }
+    }
+   }
+
+   &--danger {
+    color: $secondary;
+    background-color: $danger;
+
+    @media (hover: hover) {
+     &:hover {
+      background-color: darken($danger, 5%);
+      outline: none;
+     }
+     &:active {
+      background-color: darken($danger, 20%);
+      outline: none;
+     }
+     &:focus-visible {
+      background-color: darken($danger, 20%);
+      outline: 2px solid darken($danger, 20%);
+      outline-offset: 2px;
+     }
+    }
+    @media (hover: none) {
+     &:active {
+      background-color: darken($danger, 20%);
       outline: none;
      }
     }
