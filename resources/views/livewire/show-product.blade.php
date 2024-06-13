@@ -120,10 +120,10 @@
       <div class="checkbox__details ">
         @if ($editproduct === null)
           @if ($product->active)
-            <input type="checkbox" id="active1" checked class="disabled" />
+            <input type="checkbox" id="active1" checked class="disabled" disabled />
             <label for="active1" class="disabled">Active</label>
           @else
-            <input type="checkbox" id="active2" class="disabled" />
+            <input type="checkbox" id="active2" class="disabled" disabled />
             <label for="active2" class="disabled">Active</label>
           @endif
         @else
@@ -134,10 +134,10 @@
       <div class="checkbox__details">
         @if ($editproduct === null)
           @if ($product->is_new)
-            <input type="checkbox" id="isNew1" checked class="disabled" />
+            <input type="checkbox" id="isNew1" checked class="disabled" disabled />
             <label for="isNew1" class="disabled">Is New</label>
           @else
-            <input type="checkbox" id="isNew2" class="disabled" />
+            <input type="checkbox" id="isNew2" class="disabled" disabled />
             <label for="isNew2" class="disabled">Is New</label>
           @endif
         @else
