@@ -1,6 +1,7 @@
 // Import Components
 import { aside } from "./components/aside.js";
 import { opener } from "./components/opener.js";
+import { tabs } from "./components/tabs.js";
 
 
 /// Navigation (Header)
@@ -20,5 +21,7 @@ opener('optional__dropdown', 'optional__open', true);
 opener('sorting__dropdown', 'sorting__open', true);
 opener('checked__dropdown', 'checked__open', true);
 
+/// Tabs (Show Table)
+tabs('detailsButton','relatedButton','detailsContent','relatedContent');
 
 

@@ -30,12 +30,14 @@
 @import"dashboard/layouts/sidebar";
 @import"dashboard/layouts/leftbar";
 @import"dashboard/layouts/table";
+@import"dashboard/layouts/tabs";
 
 
 /// Pages
 @import"dashboard/pages/home";
 @import"dashboard/pages/login";
-@import"dashboard/pages/table-view";
+@import"dashboard/pages/table-details";
+@import"dashboard/pages/table-related";
 
 
 /// Themes

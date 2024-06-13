@@ -10,7 +10,7 @@
         <link rel="icon" type="image/x-icon" href="/favicon.png">
 
         <!-- Scripts -->
-        {{-- <link rel="stylesheet" href="/dist/css/main.css"> --}}
+        <link rel="stylesheet" href="/dist/css/main.css">
         <link rel="stylesheet" href="/dist/css/dashboard.css">
         <style>
           .status {

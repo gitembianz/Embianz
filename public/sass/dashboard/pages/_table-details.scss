@@ -1,0 +1,16 @@
+.details__view {
+  grid-template-columns: repeat(2, 1fr);
+  align-content: flex-start;
+  gap: $margin;
+}
+
+.details__checkboxes{
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  gap: $gap;
+}
+
+.details__long {
+  grid-column: 1 / 3;
+}
