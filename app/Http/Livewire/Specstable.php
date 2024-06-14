@@ -19,10 +19,12 @@ class Specstable extends Component
   public $checked = [];
   public $selectPage = false;
   public $selectAll = false;
-  public $specidbeingremoved = null;
+  public $idbeingremoved = null;
   public $columns = [];
   public $selectedColumns = [];
   public $tableName;
+  public $single = false;
+  public $multiple = false;
   public $row =null;
 
   public function expandRow($index){
@@ -116,6 +118,7 @@ class Specstable extends Component
     }
     $this->selectPage = false;
     $this->checked = [];
+    $this->multiple = false;
     session()->flash('notification', [
       'message' => 'Records deleted successfully!',
       'type' => 'success',
@@ -124,7 +127,7 @@ class Specstable extends Component
   }
   public function deleteSingleRecord()
   {
-    $id = $this->specidbeingremoved;
+    $id = $this->idbeingremoved;
     $item = Specs::findOrFail($id);
     $relateds = Product_Spec::where('spec_id', $id)->get();
     if ($relateds != NULL) {
@@ -134,6 +137,7 @@ class Specstable extends Component
     }
     $item->delete();
     $this->checked = array_diff($this->checked, [$id]);
+    $this->single = false;
     session()->flash('notification', [
       'message' => 'Record deleted successfully!',
       'type' => 'success',
@@ -142,12 +146,16 @@ class Specstable extends Component
   }
   public function confirmItemRemoval($id)
   {
-    $this->specidbeingremoved = $id;
-    $this->dispatchBrowserEvent('show-delete-modal');
+    $this->idbeingremoved = $id;
+    $this->single = true;
   }
-  public function confirmItemsRemovalmultiple()
+  public function confirmItemsRemoval()
   {
-    $this->dispatchBrowserEvent('show-delete-modal-multiple');
+    $this->multiple = true;
+  }
+  public function cancel_delete(){
+    $this->multiple = false;
+    $this->single = false;
   }
   public function isChecked($id)
   {

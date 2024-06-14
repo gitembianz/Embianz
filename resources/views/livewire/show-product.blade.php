@@ -3,6 +3,23 @@
   <x-alert />
 
 
+  {{-- Delete Record --}}
+  <aside>
+    <div class="background background--center @if($delete) active @endif"></div>
+    <div class="aside aside--confirm @if($delete) active @endif">
+      <span>
+          Are you sure to delete this record?
+      </span>
+      <button class="button button--primary button--long" wire:click.prevent="deleteRecord()">
+        <span>Delete</span>
+      </button>
+      <button class="button button--danger button--long" wire:click.prevent="cancelItemRemoval()">
+        <span>Cancel</span>
+      </button>
+    </div>
+  </aside>
+
+
   {{-- Navigation --}}
   <nav class="nav--controls">
     <h1 class="table--name">Product: {{ $product->name }}</h1>
@@ -43,7 +60,7 @@
 
 
   {{-- Tabs Body (Details) --}}
-  <div class="tabs__content details__view active" id="detailsContent">
+  <div style="height: calc(100% - 107.5px);" class="tabs__content details__view active" id="detailsContent">
     {{-- Product Name --}}
     <div class="input__tabs">
       @if ($editproduct === null)
@@ -232,7 +249,7 @@
 
 
   {{-- Tabs Body (Related) --}}
-  <div class="tabs__content" id="relatedContent">
+  <div style="height: calc(100% - 107.5px);" class="tabs__content" id="relatedContent">
     @livewire('related-media-product', ['product' => $product])
     @livewire('related-category-product', ['product' => $product])
     @livewire('related-products', ['product' => $product])

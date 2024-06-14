@@ -19,6 +19,7 @@ class ShowProduct extends Component
 {
   public $productId;
   public $editproduct = null;
+  public $delete = false;
   public $prod;
 
   public function mount($productId)
@@ -29,6 +30,11 @@ class ShowProduct extends Component
   {
     $this->productId = $id;
     $this->dispatchBrowserEvent('show-delete-modal');
+    $this->delete = true;
+  }
+  public function cancelItemRemoval()
+  {
+      $this->delete = false;
   }
   public function editproduct()
   {
@@ -198,7 +204,8 @@ class ShowProduct extends Component
       File::deleteDirectory($filespath);
     }
     $product->delete();
-    return redirect()->route('products')->with('notification', [
+    $this->delete = false;
+    return redirect()->route('all_products')->with('notification', [
       'message' => 'Record deleted successfully!',
       'type' => 'success',
       'title' => 'Success'

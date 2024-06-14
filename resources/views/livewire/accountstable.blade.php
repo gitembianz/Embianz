@@ -4,7 +4,6 @@
 
 
   {{-- Delete Record OR Records --}}
-  {{--
   <aside>
     <div class="background background--center @if($single || $multiple) active @endif"></div>
     <div class="aside aside--confirm @if($single || $multiple) active @endif">
@@ -29,7 +28,6 @@
       </button>
     </div>
   </aside>
-  --}}
 
 
   {{-- Asides --}}

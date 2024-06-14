@@ -12,6 +12,7 @@ class ShowOrder extends Component
     public $orderId;
     public $record = [];
     public $edititem = null;
+    public $delete = false;
     public $statuses;
     public function render()
     {
@@ -66,7 +67,11 @@ class ShowOrder extends Component
     }
     public function confirmItemRemoval()
     {
-        $this->dispatchBrowserEvent('show-delete-modal');
+        $this->delete = true;
+    }
+    public function cancelItemRemoval()
+    {
+        $this->delete = false;
     }
     public function deleteRecord()
     {
@@ -79,6 +84,7 @@ class ShowOrder extends Component
             }
         }
         $item->delete();
+        $this->delete = false;
         return redirect()->route('orders')->with('notification', [
             'message' => 'Record deleted successfully!',
             'type' => 'success',
