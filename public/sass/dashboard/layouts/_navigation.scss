@@ -10,7 +10,7 @@ nav.nav--controls,
 nav.nav--tabs {
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   gap: $gap;
   margin-top: $margin;

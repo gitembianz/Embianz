@@ -4,20 +4,20 @@
 
 
   {{-- Delete Record --}}
-  <!-- <aside>
-    <div class="background background--center active"></div>
-    <div class="aside aside--confirm active">
+  <aside>
+    <div class="background background--center @if($delete) active @endif"></div>
+    <div class="aside aside--confirm @if($delete) active @endif">
       <span>
           Are you sure to delete this record?
       </span>
-      <button class="button button--primary button--long">
+      <button class="button button--primary button--long" wire:click.prevent="deleteRecord()">
         <span>Delete</span>
       </button>
-      <button class="button button--danger button--long">
+      <button class="button button--danger button--long" wire:click.prevent="cancelItemRemoval()">
         <span>Cancel</span>
       </button>
     </div>
-  </aside> -->
+  </aside>
 
 
   {{-- Navigation --}}
@@ -57,7 +57,7 @@
 
 
   {{-- Tabs Body (Details) --}}
-  <div class="tabs__content details__view active" id="detailsContent">
+  <div style="height: calc(100% - 107.5px);" class="tabs__content details__view active" id="detailsContent">
     {{-- Order Name --}}
     <div class="input__tabs">
       <span class="disabled">{{ $order->name }}</span>
@@ -77,10 +77,13 @@
     </div>
 
     {{-- Order Cart --}}
+    @if($order->cart_id)
     <div class="input__tabs">
       <a href="{{ route("show_cart", ['id'=> $order->cart_id ])}}">{{ $order->cart->name }}</a>
       <label for="category__name">Cart</label>
     </div>
+    @endif
+
 
     {{-- Order Cart --}}
     <div class="input__tabs">
@@ -153,7 +156,7 @@
 
 
   {{-- Tabs Body (Related) --}}
-  <div class="tabs__content" id="relatedContent">
+  <div style="height: calc(100% - 107.5px);" class="tabs__content" id="relatedContent">
     @livewire("related-order-items", ["order" => $order])
   </div>
 </div>

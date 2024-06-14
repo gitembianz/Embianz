@@ -15,17 +15,18 @@ class ShowCategory extends Component
 {
   public $categoryId;
   public $editcategory = null;
+  public $delete = false;
   public $cat;
 
   public function mount($categoryId)
   {
     $this->categoryId = $categoryId;
   }
-  public function confirmItemRemoval($id)
-  {
-    $this->categoryId = $id;
-    $this->dispatchBrowserEvent('show-delete-modal');
-  }
+  // public function confirmItemRemoval($id)
+  // {
+  //   $this->categoryId = $id;
+  //   $this->dispatchBrowserEvent('show-delete-modal');
+  // }
   public function getCategoryProperty()
   {
     return $this->categoryQuery;
@@ -128,7 +129,15 @@ class ShowCategory extends Component
     $this->cat = [];
     $this->editcategory = null;
   }
-  public function deleteSingleRecord()
+  public function confirmItemRemoval()
+  {
+      $this->delete = true;
+  }
+  public function cancelItemRemoval()
+  {
+      $this->delete = false;
+  }
+  public function deleteRecord()
   {
     $id = $this->categoryId;
     $category = Category::findOrFail($id);
@@ -154,6 +163,7 @@ class ShowCategory extends Component
       File::deleteDirectory($filespath);
     }
     $category->delete();
+    $this->delete = false;
     return redirect()->route('category')->with('notification', [
       'message' => 'Record deleted successfully!',
       'type' => 'success',

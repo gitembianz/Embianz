@@ -4,20 +4,20 @@
 
 
   {{-- Delete Record --}}
-  <!-- <aside>
-    <div class="background background--center active"></div>
-    <div class="aside aside--confirm active">
+  <aside>
+    <div class="background background--center @if($delete) active @endif"></div>
+    <div class="aside aside--confirm @if($delete) active @endif">
       <span>
           Are you sure to delete this record?
       </span>
-      <button class="button button--primary button--long">
+      <button class="button button--primary button--long" wire:click.prevent="deleteSingleRecord()">
         <span>Delete</span>
       </button>
-      <button class="button button--danger button--long">
+      <button class="button button--danger button--long" wire:click.prevent="cancelItemRemoval()">
         <span>Cancel</span>
       </button>
     </div>
-  </aside> -->
+  </aside>
 
 
   {{-- Navigation --}}
@@ -48,16 +48,8 @@
   </nav>
 
 
-  {{-- Tabs Header --}}
-  <nav class="nav--tabs">
-    <button class="button button--primary button--long button--active">
-      Details
-    </button>
-  </nav>
-
-
   {{-- Tabs Body (Details) --}}
-  <div class="tabs__content details__view active">
+  <div style="height: calc(100% - 70px);" class="tabs__content details__view active">
     {{-- Script Name --}}
     <div class="input__tabs">
       @if ($edititem === null)

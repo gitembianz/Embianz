@@ -4,20 +4,20 @@
 
 
   {{-- Delete Record --}}
-  <!-- <aside>
-    <div class="background background--center active"></div>
-    <div class="aside aside--confirm active">
+  <aside>
+    <div class="background background--center @if($delete) active @endif"></div>
+    <div class="aside aside--confirm @if($delete) active @endif">
       <span>
           Are you sure to delete this record?
       </span>
-      <button class="button button--primary button--long">
+      <button class="button button--primary button--long" wire:click.prevent="deleteSingleRecord()">
         <span>Delete</span>
       </button>
-      <button class="button button--danger button--long">
+      <button class="button button--danger button--long" wire:click.prevent="cancelItemRemoval()">
         <span>Cancel</span>
       </button>
     </div>
-  </aside> -->
+  </aside>
 
 
   {{-- Navigation --}}
@@ -60,7 +60,7 @@
 
 
   {{-- Tabs Body (Details) --}}
-  <div class="tabs__content details__view active" id="detailsContent">
+  <div style="height: calc(100% - 107.5px);" class="tabs__content details__view active" id="detailsContent">
 
     {{-- Spec Name --}}
     <div class="input__tabs">
@@ -144,7 +144,7 @@
 
 
   {{-- Tabs Body (Related) --}}
-  <div class="tabs__content" id="relatedContent">
+  <div style="height: calc(100% - 107.5px);" class="tabs__content" id="relatedContent">
     @livewire('related-productson-spec', ['specId' => $spec->id])
   </div>
 </div>

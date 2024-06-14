@@ -12,6 +12,7 @@ class ShowPricelist extends Component
 {
   public $itemId;
   public $edititem = null;
+  public $delete = false;
   public $record;
   public $currencies;
 
@@ -28,7 +29,11 @@ class ShowPricelist extends Component
   }
   public function confirmItemRemoval()
   {
-    $this->dispatchBrowserEvent('show-delete-modal');
+      $this->delete = true;
+  }
+  public function cancelItemRemoval()
+  {
+      $this->delete = false;
   }
   public function getPricelistQueryProperty()
   {
@@ -49,6 +54,7 @@ class ShowPricelist extends Component
       }
     }
     $record->delete();
+    $this->delete = false;
     return redirect()->route('pricelists')->with('notification', [
       'message' => 'Record deleted successfully!',
       'type' => 'success',

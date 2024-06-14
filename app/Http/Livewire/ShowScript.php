@@ -11,6 +11,7 @@ class ShowScript extends Component
 {
     public $itemId;
     public $record = [];
+    public $delete = false;
     public $edititem = null;
 
     public function render()
@@ -25,7 +26,12 @@ class ShowScript extends Component
     }
     public function confirmItemRemoval()
     {
+        $this->delete = true;
         $this->dispatchBrowserEvent('show-delete-modal');
+    }
+    public function cancelItemRemoval()
+    {
+        $this->delete = false;
     }
     public function getScriptProperty()
     {
@@ -34,7 +40,7 @@ class ShowScript extends Component
     public function deleteSingleRecord()
     {
         $this->script->delete();
-
+        $this->delete = false;
         return redirect()->route('customscripts')->with('notification', [
             'message' => 'Record deleted successfully!',
             'type' => 'success',
