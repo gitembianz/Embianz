@@ -230,9 +230,9 @@ class Productstable extends Component
     ]);
 
   }
-  public function confirmItemRemoval($productid)
+  public function confirmItemRemoval($id)
   {
-    $this->idbeingremoved = $productid;
+    $this->idbeingremoved = $id;
     $this->single = true;
   }
   public function confirmItemsRemoval()

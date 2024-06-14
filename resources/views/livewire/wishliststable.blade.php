@@ -4,7 +4,6 @@
 
 
   {{-- Delete Record OR Records --}}
-  {{--
   <aside>
     <div class="background background--center @if($single || $multiple) active @endif"></div>
     <div class="aside aside--confirm @if($single || $multiple) active @endif">
@@ -29,7 +28,6 @@
       </button>
     </div>
   </aside>
-  --}}
 
 
   {{-- Asides --}}
@@ -251,10 +249,10 @@
           $i = 0;
         @endphp
           @foreach ($wishlists as $nr => $item)
-            <tr @if ($loop->last) id="last_record" @endif class="expandable-row @if ($this->isChecked($item->id)) active @endif"  >
+            <tr @if ($loop->last) id="last_record" @endif class="expandable-row @if ($this->isChecked($item->session_id)) active @endif"  >
               <td style="border-left: none" data-title="Check">
                 <label class="checkbox checkbox--secondary inline">
-                  <input type="checkbox" value="{{ $item->id }}" wire:model="checked">
+                  <input type="checkbox" value="{{ $item->session_id }}" wire:model="checked">
                   <span></span>
                 </label>
               </td>
@@ -277,7 +275,7 @@
                 </td>
               @endforeach
               <td style="border-right: none">
-                <button wire:click.prevent="confirmItemRemoval({{ $item->id }})" class="button button--secondary button--sm">
+                <button wire:click.prevent="confirmItemRemoval({{ $item }})" class="button button--secondary button--sm">
                   <svg>
                     <polyline points="3 6 5 6 21 6"></polyline>
                     <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
