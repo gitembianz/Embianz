@@ -266,7 +266,7 @@
           $i = 0;
         @endphp
           @foreach ($customscripts as $nr => $item)
-            <tr @if ($loop->last) id="last_record" @endif class="expandable-row @if ($this->isChecked($item->id)) active @endif"  >
+            <tr @if ($loop->last) id="last_record" @endif class="expandable-row @if ($this->isChecked($item->id)) active @endif">
               <td style="border-left: none" data-title="Check">
                 <label class="checkbox checkbox--secondary inline">
                   <input type="checkbox" value="{{ $item->id }}" wire:model="checked">
@@ -276,7 +276,7 @@
               @foreach ($selectedColumns as $index => $column)
                 <td @if ($index > count($selectedColumns) - 6) class="hidden" @endif data-title="{{ $column }}" wire:click="expandRow({{ $nr }})">
                   @if ($column === "name")
-                    <a href="{{ route("show_account", ["id" => $item->id]) }}">{{ $item->name }}</a>
+                    <a href="{{ route("show_script", ["id" => $item->id]) }}">{{ $item->name }}</a>
                   @elseif ($column === "active" || $column === "store_tab" || $column === "has_parrent")
                     @if ($item->$column)
                       true

@@ -3,6 +3,23 @@
   <x-alert />
 
 
+  {{-- Delete Record --}}
+  <!-- <aside>
+    <div class="background background--center active"></div>
+    <div class="aside aside--confirm active">
+      <span>
+          Are you sure to delete this record?
+      </span>
+      <button class="button button--primary button--long">
+        <span>Delete</span>
+      </button>
+      <button class="button button--danger button--long">
+        <span>Cancel</span>
+      </button>
+    </div>
+  </aside> -->
+
+
   {{-- Navigation --}}
   <nav class="nav--controls">
     <h1 class="table--name">Product: {{ $product->name }}</h1>
