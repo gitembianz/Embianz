@@ -55,7 +55,7 @@
       @if ($edititem === null)
       <span class="disabled">{{ $script->name }}</span>
       @else
-      <input type="text" wire:model.defer="record.name" required>
+      <input type="text" placeholder=" " wire:model.defer="record.name" required>
       @endif
       <label>Name</label>
     </div>
@@ -102,7 +102,7 @@
       @if ($edititem === null)
         <span class="disabled">{{ $script->content }}</span>
       @else
-        <textarea wire:model.defer="record.content" required></textarea>
+        <textarea wire:model.defer="record.content" placeholder=" " required></textarea>
       @endif
       <label>Content</label>
     </div>

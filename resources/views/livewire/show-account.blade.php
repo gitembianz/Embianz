@@ -64,7 +64,7 @@
       @if ($edititem === null)
         <span class="disabled">{{ $account->name }}</span>
       @else
-        <input type="text" wire:model.defer="record.name" required>
+        <input type="text" placeholder=" " wire:model.defer="record.name" required>
       @endif
       <label>Name</label>
     </div>
@@ -74,7 +74,7 @@
       @if ($edititem === null)
         <span class="disabled">{{ $account->type }}</span>
       @else
-        <input type="text" wire:model.defer="record.type" required>
+        <input type="text" placeholder=" " wire:model.defer="record.type" required>
       @endif
       <label>Type: individual / juridic</label>
     </div>
@@ -84,7 +84,7 @@
       @if ($edititem === null)
         <span class="disabled">{{ $account->first_name }}</span>
       @else
-        <input type="text" wire:model.defer="record.first_name" required>
+        <input type="text" placeholder=" " wire:model.defer="record.first_name" required>
       @endif
       <label>First Name</label>
     </div>
@@ -94,7 +94,7 @@
       @if ($edititem === null)
         <span class="disabled">{{ $account->last_name }}</span>
       @else
-        <input type="text" wire:model.defer="record.last_name" required>
+        <input type="text" placeholder=" " wire:model.defer="record.last_name" required>
       @endif
       <label>Last Name</label>
     </div>
@@ -104,7 +104,7 @@
       @if ($edititem === null)
         <span class="disabled">{{ $account->phone }}</span>
       @else
-        <input type="tel" wire:model.defer="record.phone" required>
+        <input type="tel" placeholder=" " wire:model.defer="record.phone" required>
       @endif
       <label>Phone</label>
     </div>
@@ -114,7 +114,7 @@
       @if ($edititem === null)
         <span class="disabled">{{ $account->email }}</span>
       @else
-        <input type="email" wire:model.defer="record.email" required>
+        <input type="email" placeholder=" " wire:model.defer="record.email" required>
       @endif
       <label>Email</label>
     </div>
@@ -126,7 +126,7 @@
         @if ($edititem === null)
           <span class="disabled">{{ $account->company_name }}</span>
         @else
-          <input type="text" wire:model.defer="record.company_name" required>
+          <input type="text" placeholder=" " wire:model.defer="record.company_name" required>
         @endif
         <label>Company Name</label>
       </div>
@@ -136,7 +136,7 @@
         @if ($edititem === null)
           <span class="disabled">{{ $account->registration_code }}</span>
         @else
-          <input type="text" wire:model.defer="record.registration_code" required>
+          <input type="text" placeholder=" " wire:model.defer="record.registration_code" required>
         @endif
         <label>Registration Code</label>
       </div>
@@ -146,7 +146,7 @@
         @if ($edititem === null)
           <span class="disabled">{{ $account->registration_number }}</span>
         @else
-          <input type="text" wire:model.defer="record.registration_number" required>
+          <input type="text" placeholder=" " wire:model.defer="record.registration_number" required>
         @endif
         <label>Registration Number</label>
       </div>
@@ -156,7 +156,7 @@
         @if ($edititem === null)
           <span class="disabled">{{ $account->bank_name }}</span>
         @else
-          <input type="text" wire:model.defer="record.bank_name" required>
+          <input type="text" placeholder=" " wire:model.defer="record.bank_name" required>
         @endif
         <label>Bank Name</label>
       </div>
@@ -166,7 +166,7 @@
         @if ($edititem === null)
           <span class="disabled">{{ $account->account }}</span>
         @else
-          <input type="text" wire:model.defer="record.account" required>
+          <input type="text" placeholder=" " wire:model.defer="record.account" required>
         @endif
         <label>Bank Account</label>
       </div>

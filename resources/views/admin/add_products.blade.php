@@ -25,7 +25,7 @@
 
     {{-- Product Name --}}
     <div class="input__tabs">
-      <input type="text" name="product_name" required value="{{ old('product_name') }}">
+      <input type="text" name="product_name" placeholder=" " required value="{{ old('product_name') }}">
       <label>Name</label>
     </div>
 
@@ -45,67 +45,67 @@
 
     {{-- Product Start Date --}}
     <div class="input__tabs">
-      <input type="date" id="start_date" name="start_date" value="{{ old('start_date') }}">
+      <input type="date" id="start_date" placeholder=" " name="start_date" value="{{ old('start_date') }}">
       <label>Start Date</label>
     </div>
 
     {{-- Product End Date --}}
     <div class="input__tabs">
-      <input type="date" id="end_date" name="end_date" value="{{ old('end_date') }}">
+      <input type="date" id="end_date" placeholder=" " name="end_date" value="{{ old('end_date') }}">
       <label>End Date</label>
     </div>
 
     {{-- Product SKU --}}
     <div class="input__tabs">
-      <input type="text" name="sku" required value="{{ old('sku') }}">
+      <input type="text" name="sku" placeholder=" " required value="{{ old('sku') }}">
       <label>SKU</label>
     </div>
 
     {{-- Product EAN --}}
     <div class="input__tabs">
-      <input type="text" name="ean" required value="{{ old('ean') }}">
+      <input type="text" name="ean" placeholder=" " required value="{{ old('ean') }}">
       <label>EAN</label>
     </div>
 
     {{-- Product Quantity --}}
     <div class="input__tabs">
-      <input type="number" name="quantity" value="{{ old('quantity') }}">
+      <input type="number" name="quantity" placeholder=" " value="{{ old('quantity') }}">
       <label>Quantity</label>
     </div>
 
     {{-- Product Popularity --}}
     <div class="input__tabs">
-      <input type="number" min="0" name="popularity" required value="{{ old('popularity') }}">
+      <input type="number" min="0" placeholder=" " name="popularity" required value="{{ old('popularity') }}">
       <label>Popularity</label>
     </div>
 
     {{-- Product Short Description --}}
     <div class="input__tabs details__long">
-      <input type="text" name="short_description" value="{{ old('short_description') }}">
+      <input type="text" name="short_description" placeholder=" " value="{{ old('short_description') }}">
       <label>Short Description</label>
     </div>
 
     {{-- Product Meta Description --}}
     <div class="input__tabs details__long">
-      <input type="text" name="meta_description" value="{{ old('meta_description') }}">
+      <input type="text" name="meta_description" placeholder=" " value="{{ old('meta_description') }}">
       <label>Meta Description</label>
     </div>
 
     {{-- Product Long Description --}}
     <div class="textarea__tabs details__long">
-      <textarea name="long_description">{{ old('long_description') }}</textarea>
+      <textarea name="long_description" placeholder=" ">{{ old('long_description') }}</textarea>
       <label>Long Description</label>
     </div>
 
     {{-- Product SEO Title --}}
     <div class="input__tabs">
-      <input type="text" name="seo_title" value="{{ old('seo_title') }}">
+      <input type="text" name="seo_title" placeholder=" " value="{{ old('seo_title') }}">
       <label>SEO Title</label>
     </div>
 
     {{-- Product SEO Title --}}
     <div class="input__tabs">
-      <input type="text" name="seo_id" value="{{ old('seo_id') }}">
+      <input type="text" name="seo_id" placeholder=" " value="{{ old('seo_id') }}">
       <label>Friendly URL</label>
     </div>
 
