@@ -92,11 +92,11 @@
   /// Button Primary
   &--primary {
    color: $secondary;
-   background-color: $primary;
+   background-color: darken($primary, 5%);
 
    @media (hover: hover) {
     &:hover {
-     background-color: darken($primary, 5%);
+     background-color: darken($primary, 10%);
      outline: none;
     }
     &:active {
