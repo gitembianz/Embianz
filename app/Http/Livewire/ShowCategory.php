@@ -50,6 +50,8 @@ class ShowCategory extends Component
       'seo_title' => $this->category->seo_title,
       'seo_id' => $this->category->seo_id,
       'slider_sequence' => $this->category->slider_sequence,
+      'acc_items' => $this->category->accepted_items
+
     ];
     $this->editcategory = true;
   }
@@ -88,6 +90,9 @@ class ShowCategory extends Component
       }
       if (array_key_exists('visible', $category_new)) {
         $new->store_tab = $category_new['visible'];
+      }
+      if (array_key_exists('acc_items', $category_new)) {
+        $new->accepted_items = $category_new['acc_items'];
       }
       if (array_key_exists('slider_sequence', $category_new)) {
         $new->slider_sequence = $category_new['slider_sequence'];

@@ -52,7 +52,9 @@ class ShowProduct extends Component
       'quantity' => $this->product->quantity,
       'sku' => $this->product->sku,
       'ean' => $this->product->ean,
-      'seo_id' => $this->product->seo_id
+      'seo_id' => $this->product->seo_id,
+      'type' => $this->product->type
+
     ];
     $this->editproduct = true;
   }
@@ -89,6 +91,9 @@ class ShowProduct extends Component
         } elseif ($new->seo_id != $product_new['seo_id']) {
           $new->seo_id = $this->generateUniqueSeoId($product_new['seo_id']);
         }
+      }
+      if (array_key_exists('type', $product_new)) {
+        $new->type = $product_new['type'];
       }
       if (array_key_exists('start_date', $product_new)) {
         $new->start_date = $product_new['start_date'];

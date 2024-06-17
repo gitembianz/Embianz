@@ -24,7 +24,11 @@
   ])
  </div>
  <div class="product__price">
-  <span class="product__price--title">@if (app()->has('label_pdp_price_tag')){!! app('label_pdp_price_tag') !!} @endif</span>
+  <span class="product__price--title">
+   @if (app()->has('label_pdp_price_tag'))
+    {!! app('label_pdp_price_tag') !!}
+   @endif
+  </span>
   @if ($discount && $price)
    @if ($price)
     <div class="product__price--discount">
@@ -39,7 +43,9 @@
     {{ $price }}
     {{ $currency }}
    @else
-    @if (app()->has('label_product_status_indisponible')){!! app('label_product_status_indisponible') !!} @endif
+    @if (app()->has('label_product_status_indisponible'))
+     {!! app('label_product_status_indisponible') !!}
+    @endif
    @endif
   @endif
  </div>
@@ -47,11 +53,17 @@
 
  @if ($price)
   <span class="product__tva">
-   @if (app()->has('label_pdp_vat')){!! app('label_pdp_vat') !!} @endif
+   @if (app()->has('label_pdp_vat'))
+    {!! app('label_pdp_vat') !!}
+   @endif
    {{ number_format($product->product_prices->first()->vat, 2, ',', '.') }}%
   </span>
   <div class="quantity">
-   <span>@if (app()->has('label_product_quantity_tag')){!! app('label_product_quantity_tag') !!} @endif</span>
+   <span>
+    @if (app()->has('label_product_quantity_tag'))
+     {!! app('label_product_quantity_tag') !!}
+    @endif
+   </span>
    <div class="quantity__buttons">
     <button class="quantity__arrow" wire:click="decrementCounter" aria-label="Decrement quantity">
      <svg>
@@ -74,91 +86,87 @@
   </div>
  @endif
  @if ($maxlimit)
-  <span>@if (app()->has('label_product_quantity_error')){!! app('label_product_quantity_error') !!} @endif {{ $limit }}</span>
+  <span>
+   @if (app()->has('label_product_quantity_error'))
+    {!! app('label_product_quantity_error') !!}
+   @endif {{ $limit }}
+  </span>
  @endif
- <span class="product__price--title" style="margin-right: auto">Variante</span>
- <div class="product__price">
-   <div class="variant__slider" id="miniSlider">
-     <div class="variant__wrapper" id="miniWrapper">
-       <a class="variant__btn active" href="#"><img src="https://dummyimage.com/25" alt="Variant 1">Variant 1</a>
-       <a class="variant__btn" href="#"><img src="https://dummyimage.com/25" alt="Variant 2">Variant 2</a>
-       <a class="variant__btn" href="#"><img src="https://dummyimage.com/25" alt="Variant 3">Variant 3</a>
-       <a class="variant__btn" href="#"><img src="https://dummyimage.com/25" alt="Variant 4">Variant 4</a>
-       <a class="variant__btn" href="#"><img src="https://dummyimage.com/25" alt="Variant 5">Variant 5</a>
-       <a class="variant__btn" href="#"><img src="https://dummyimage.com/25" alt="Variant 6">Variant 6</a>
-       <a class="variant__btn" href="#"><img src="https://dummyimage.com/25" alt="Variant 7">Variant 7</a>
-       <a class="variant__btn" href="#"><img src="https://dummyimage.com/25" alt="Variant 8">Variant 8</a>
-       <a class="variant__btn" href="#"><img src="https://dummyimage.com/25" alt="Variant 9">Variant 9</a>
-     </div>
-     <button class="variant__navigation variant__left" id="miniNavLeft">
-       <svg><polyline points="15 18 9 12 15 6"></polyline></svg>
-     </button>
-     <button class="variant__navigation variant__right" id="miniNavRight">
-       <svg><polyline points="9 18 15 12 9 6"></polyline></svg>
-     </button>
-   </div>
- </div>
-
- {{-- Another version of variants --}}
- {{-- <div class="product__price">
-  <span class="product__price--title">Marime</span>
-  <div class="product__dropdown" id="optionsDropdown0">
-    <button id="optionsButton0"><img src="https://dummyimage.com/35" alt="IMG">Marime 1
-      <svg><polyline points="6 9 12 15 18 9"></polyline></svg>
-    </button>
-    <div class="product__dropdown--content">
-      <div class="product__dropdown--list">
-        <a class="active" href="link"><img src="https://dummyimage.com/35" alt="IMG">Marime 1</a>
-        <a href="link"><img src="https://dummyimage.com/35" alt="IMG">Marime 2</a>
-        <a href="link"><img src="https://dummyimage.com/35" alt="IMG">Marime 3</a>
-        <a href="link"><img src="https://dummyimage.com/35" alt="IMG">Marime 4</a>
-        <a href="link"><img src="https://dummyimage.com/35" alt="IMG">Marime 1</a>
-        <a href="link"><img src="https://dummyimage.com/35" alt="IMG">Marime 2</a>
-        <a href="link"><img src="https://dummyimage.com/35" alt="IMG">Marime 3</a>
-        <a href="link"><img src="https://dummyimage.com/35" alt="IMG">Marime 4</a>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="product__price">
-  <span class="product__price--title">Culoare</span>
-  <div class="product__dropdown" id="optionsDropdown1">
-    <button id="optionsButton1"><img src="https://dummyimage.com/35" alt="IMG">Culoare 1
-      <svg><polyline points="6 9 12 15 18 9"></polyline></svg>
-    </button>
-    <div class="product__dropdown--content">
-      <div class="product__dropdown--list">
-        <a class="active" href="link"><img src="https://dummyimage.com/35" alt="IMG">Culoare 1</a>
-        <a href="link"><img src="https://dummyimage.com/35" alt="IMG">Culoare 2</a>
-        <a href="link"><img src="https://dummyimage.com/35" alt="IMG">Culoare 3</a>
-        <a href="link"><img src="https://dummyimage.com/35" alt="IMG">Culoare 4</a>
-        <a href="link"><img src="https://dummyimage.com/35" alt="IMG">Culoare 1</a>
-        <a href="link"><img src="https://dummyimage.com/35" alt="IMG">Culoare 2</a>
-        <a href="link"><img src="https://dummyimage.com/35" alt="IMG">Culoare 3</a>
-        <a href="link"><img src="https://dummyimage.com/35" alt="IMG">Culoare 4</a>
-      </div>
-    </div>
-  </div>
-</div>
-  <script>
-    function options(buttonId, dropdownId) {
-      const button = document.getElementById(buttonId);
-      const dropdown = document.getElementById(dropdownId);
-
-      button.addEventListener('click', () => {
-        // event.stopPropagation();
-        dropdown.classList.toggle('active');
-      });
-
-      document.addEventListener('click', (event) => {
-        if (!dropdown.contains(event.target) && !button.contains(event.target)) {
-          dropdown.classList.remove('active');
+ @if ($product->type == 'variant')
+  @foreach ($variants as $variantId => $variantGroup)
+   @if (count($variantGroup) > 1)
+    <span class="product__price--title"
+     style="margin-right: auto">{{ $product->beeingvariants->where('variant_id', $variantId)->first()->reference->name }}</span>
+   @endif
+   <div class="product__price">
+    <div class="variant__slider mini-slider">
+     <div class="variant__wrapper mini-wrapper">
+      <a class="variant__btn active"
+       href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">
+       @if ($product->beeingvariants->where('variant_id', $variantId)->first()->displayed == 'image')
+        @if ($product->media->first() != null)
+         <img src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}"
+          alt="{{ $product->media->first()->name }}">
+        @else
+         <img src="/images/store/default/default70.webp" alt="something wrong">
+        @endif
+       @elseif ($product->beeingvariants->where('variant_id', $variantId)->first()->displayed == 'text')
+        {{ $product->beeingvariants->where('variant_id', $variantId)->first()->value }}
+       @else
+        @if ($product->media->first() != null)
+         <img src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}"
+          alt="{{ $product->media->first()->name }}">
+        @else
+         <img src="/images/store/default/default70.webp" alt="something wrong">
+        @endif
+        {{ $product->beeingvariants->where('variant_id', $variantId)->first()->value }}
+       @endif
+      </a>
+      @foreach ($variantGroup as $variant)
+       @php
+        if ($variant->id == $product->id) {
+            continue;
         }
-      });
-    }
-    options('optionsButton0', 'optionsDropdown0');
-    options('optionsButton1', 'optionsDropdown1');
-  </script> --}}
+       @endphp
+       <a class="variant__btn"
+        href="{{ route('product', ['product' => $variant->seo_id !== null && $variant->seo_id !== '' ? $variant->seo_id : $variant->id]) }}">
+        @if ($variant->beeingvariants->where('variant_id', $variantId)->first()->displayed == 'image')
+         @if ($variant->media->first() != null)
+          <img src="/{{ $variant->media->first()->path }}{{ $variant->media->first()->name }}"
+           alt="{{ $variant->media->first()->name }}">
+         @else
+          <img src="/images/store/default/default70.webp" alt="something wrong">
+         @endif
+        @elseif ($variant->beeingvariants->where('variant_id', $variantId)->first()->displayed == 'text')
+         {{ $variant->beeingvariants->where('variant_id', $variantId)->first()->value }}
+        @else
+         @if ($variant->media->first() != null)
+          <img src="/{{ $variant->media->first()->path }}{{ $variant->media->first()->name }}"
+           alt="{{ $variant->media->first()->name }}">
+         @else
+          <img src="/images/store/default/default70.webp" alt="something wrong">
+          {{ $variant->beeingvariants->where('variant_id', $variantId)->first()->value }}
+         @endif
+        @endif
+       </a>
+      @endforeach
+     </div>
+     <button class="variant__navigation variant__left mini-left">
+      <svg>
+       <polyline points="15 18 9 12 15 6"></polyline>
+      </svg>
+     </button>
+     <button class="variant__navigation variant__right mini-right">
+      <svg>
+       <polyline points="9 18 15 12 9 6"></polyline>
+      </svg>
+     </button>
+    </div>
+   </div>
+  @endforeach
+ @endif
+
+
 
  @if ($price && $product->quantity != 0)
   <button class="card__button" style="width: 100%;height: 40px;" onclick="flyToCart(this)"
@@ -179,16 +187,25 @@
      <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path>
     </svg>
    </div>
-   <span class="card__button--text">@if (app()->has('label_add_to_cart_button')){!! app('label_add_to_cart_button') !!} @endif</span>
+   <span class="card__button--text">
+    @if (app()->has('label_add_to_cart_button'))
+     {!! app('label_add_to_cart_button') !!}
+    @endif
+   </span>
   </button>
  @else
-  <button class="card-button-disabled" aria-label="Disabled Add to cart button">@if (app()->has('label_add_to_cart_button_indisponibil')){!! app('label_add_to_cart_button_indisponibil') !!} @endif</button>
+  <button class="card-button-disabled" aria-label="Disabled Add to cart button">
+   @if (app()->has('label_add_to_cart_button_indisponibil'))
+    {!! app('label_add_to_cart_button_indisponibil') !!}
+   @endif
+  </button>
  @endif
 
  <div style="display: none" class="dlv">
   <span class="dlv_name">{{ $product->name }}</span>
   <span class="dlv_price">{{ $price }}</span>
-  <span class="dlv_currency">{{ $product->product_prices->first()->pricelist->currency->name }}</span>
+  <span
+   class="dlv_currency">{{ optional(optional(optional($product->product_prices->first())->pricelist)->currency)->name }}</span>
  </div>
 
 </div>

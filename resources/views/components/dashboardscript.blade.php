@@ -15,6 +15,9 @@
  window.addEventListener('show-delete-modal', event => {
   document.getElementById('confirmationmodal').style.display = 'flex';
  });
+ window.addEventListener('show-delete-modal-variant', event => {
+  document.getElementById('confirmationmodalvariant').style.display = 'flex';
+ });
  window.addEventListener('show-delete-modal-multiple', event => {
   document.getElementById('confirmationmodalmultiple').style.display = 'flex';
  });
