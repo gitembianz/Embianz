@@ -1874,7 +1874,7 @@ dataLayer.push({
 
 					<label id="termsbutton" class="checkout__terms @if ($errorterms && $terms == false) error @endif">
 						<input type="checkbox" wire:model="terms" name="terms">
-						<span>@if (app()->has('label_terms_confirm')){!! app('label_terms_confirm') !!} @endif</span>
+						<span>@if (app()->has('label_terms_checkout')){!! app('label_terms_checkout') !!} @endif</span>
 					</label>
 
 					<!-- DataLayer Script pentru Step 2 -->
