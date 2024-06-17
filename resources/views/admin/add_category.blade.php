@@ -7,7 +7,7 @@
 
   {{-- Navigation --}}
   <nav class="nav--controls">
-    <h1 class="table--name">{{ __('Create Category') }}</h1>
+    <h1 class="table--name">{{ __('New category') }}</h1>
     {{-- Refresh Button --}}
     <a class="button button--secondary button--centered" tooltip="Back to Categories" tooltip-top href="{{ route('category') }}">
       <svg><polyline points="15 18 9 12 15 6"></polyline></svg>
@@ -27,7 +27,7 @@
     {{-- Category Name --}}
     <div class="input__tabs">
       <input type="text" name="category" placeholder=" " required value="{{ old('category') }}">
-      <label>Category Name</label>
+      <label>Name</label>
     </div>
 
     {{-- Category Active && Displayed on Store --}}
@@ -95,13 +95,8 @@
     {{-- Save Button --}}
     <input class="button button--fill button--secondary details__long" type="submit" value="Add New" name="submit">
   </section>
+
 </form>
 
 <x-dashboardscript />
 <x-dashboardfooter />
-
-
-
-
-
-

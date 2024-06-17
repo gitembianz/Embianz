@@ -7,7 +7,7 @@
 
   {{-- Navigation --}}
   <nav class="nav--controls">
-    <h1 class="table--name">Add new price list</h1>
+    <h1 class="table--name">New pricelist</h1>
     {{-- Refresh Button --}}
     <a class="button button--secondary button--centered" tooltip="Back to Price Lists" tooltip-top href="{{ route('pricelists') }}">
       <svg><polyline points="15 18 9 12 15 6"></polyline></svg>
@@ -54,8 +54,40 @@
   </section>
 </form>
 
+
+ {{-- Tabs Body (Details) --}}
+ <section style="height: calc(100% - 107.5px);" class="tabs__content details__view active">
+  @csrf
+
+  {{-- Price List Name --}}
+  <div class="input__tabs">
+   <input type="text" placeholder=" " name="name" required>
+   <label>Name</label>
+  </div>
+  {{-- Price List Currency --}}
+  <div class="input__tabs">
+   <select name="currency">
+    @foreach ($currencies as $currency)
+     <option value="{{ $currency->id }}">{{ $currency->name }}</option>
+    @endforeach
+   </select>
+   <label>Currency</label>
+  </div>
+
+  {{-- Price List Active && Displayed on Store --}}
+  <div class="details__checkboxes details__long">
+   {{-- Price List Active --}}
+   <div class="checkbox__details ">
+    <input type="checkbox" placeholder=" " id="active" name="active" />
+    <label for="active">Active</label>
+   </div>
+  </div>
+
+
+  {{-- Save Button --}}
+  <input class="button button--fill button--secondary details__long" type="submit" value="Add New" name="submit">
+ </section>
+</form>
+
 <x-dashboardscript />
 <x-dashboardfooter />
-
-
-

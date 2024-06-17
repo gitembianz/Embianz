@@ -6,7 +6,7 @@
 
   {{-- Navigation --}}
   <nav class="nav--controls">
-    <h1 class="table--name">New Product</h1>
+    <h1 class="table--name">New product</h1>
     {{-- Refresh Button --}}
     <a class="button button--secondary button--centered" tooltip="Back to Products" tooltip-top href="{{ route('all_products') }}">
       <svg><polyline points="15 18 9 12 15 6"></polyline></svg>
@@ -39,7 +39,7 @@
       {{-- Product Displayed on is_new --}}
       <div class="checkbox__details ">
         <input type="checkbox" id="is_new" name="is_new" value="{{ old('is_new') }}"/>
-        <label for="is_new">Displayed on Store Tab?</label>
+        <label for="is_new">Product is new?</label>
       </div>
     </div>
 
@@ -118,6 +118,7 @@
     @error('seo_id')<span class="error @error('seo_id') active @enderror">{{ $message }}</span>@enderror
 
   </section>
+
 </form>
 <x-dashboardscript />
 <x-dashboardfooter />

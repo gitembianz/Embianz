@@ -3,10 +3,11 @@
 <x-alert />
 <x-dashboardsidebar :active="__('spec')" />
 <form class="content" method="POST" action="{{ route('add_spec') }}">
+
   @csrf
   {{-- Navigation --}}
   <nav class="nav--controls">
-    <h1 class="table--name">Add new spec</h1>
+    <h1 class="table--name">New specification</h1>
     {{-- Refresh Button --}}
     <a class="button button--secondary button--centered" tooltip="Back to Specifications" tooltip-top href="{{ route('specs') }}">
       <svg><polyline points="15 18 9 12 15 6"></polyline></svg>
@@ -19,37 +20,38 @@
     </button>
   </nav>
 
-  {{-- Tabs Body (Details) --}}
-  <section style="height: calc(100% - 107.5px);"  class="tabs__content details__view active">
-    {{--  Name --}}
-    <div class="input__tabs">
-      <input type="text" placeholder=" " name="name" required>
-      <label>Name</label>
-    </div>
-    {{--  Active --}}
-    <div class="details__checkboxes">
-      {{--  Active --}}
-      <div class="checkbox__details ">
-        <input type="checkbox" id="mark_as_filter" name="mark_as_filter" value="{{ old('active') }}" />
-        <label for="mark_as_filter">mark_as_filter</label>
-      </div>
-    </div>
-    {{--  Unit --}}
-    <div class="input__tabs">
-      <input type="text" placeholder=" " name="um" required>
-      <label>Unit</label>
-    </div>
+
+ {{-- Tabs Body (Details) --}}
+ <section style="height: calc(100% - 107.5px);" class="tabs__content details__view active">
+  {{--  Name --}}
+  <div class="input__tabs">
+   <input type="text" placeholder=" " name="name" required>
+   <label>Name</label>
+  </div>
+  {{--  Unit --}}
+  <div class="input__tabs">
+   <input type="text" placeholder=" " name="um" required>
+   <label>Unit</label>
+  </div>
 
 
-    {{-- Spec Sequence --}}
-    <div class="input__tabs">
-    <input type="number" placeholder=" " name="sequence" required>
-    <label>Sequence</label>
-    </div>
+  {{-- Spec Sequence --}}
+  <div class="input__tabs">
+   <input type="number" placeholder=" " name="sequence" required>
+   <label>Sequence</label>
+  </div>
 
-    {{-- Save Button --}}
-    <input class="button button--fill button--secondary details__long" type="submit" value="Add New" name="submit">
-  </section>
+  {{--  Active --}}
+  <div class="details__checkboxes">
+   {{--  Active --}}
+   <div class="checkbox__details ">
+    <input type="checkbox" id="mark_as_filter" name="mark_as_filter" />
+    <label for="mark_as_filter">mark_as_filter</label>
+   </div>
+  </div>
+  {{-- Save Button --}}
+  <input class="button button--fill button--secondary details__long" type="submit" value="Add New" name="submit">
+ </section>
 </form>
 <x-dashboardscript />
 <x-dashboardfooter />
