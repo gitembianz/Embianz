@@ -1,4 +1,4 @@
-<div class="content">
+<section class="content">
   {{-- X-Components --}}
   <x-alert />
 
@@ -60,7 +60,7 @@
 
 
   {{-- Tabs Body (Details) --}}
-  <div style="height: calc(100% - 107.5px);" class="tabs__content details__view active" id="detailsContent">
+  <form style="height: calc(100% - 107.5px);" class="tabs__content details__view active" id="detailsContent">
     {{-- Product Name --}}
     <div class="input__tabs">
       @if ($editproduct === null)
@@ -71,6 +71,40 @@
       <label for="product__name">Name</label>
     </div>
 
+    {{-- Product Active && IsNew --}}
+    <div class="details__checkboxes">
+      {{-- Product Active --}}
+      <div class="checkbox__details ">
+        @if ($editproduct === null)
+          @if ($product->active)
+            <input type="checkbox" id="active1" checked class="disabled" disabled />
+            <label for="active1" class="disabled">Active</label>
+          @else
+            <input type="checkbox" id="active2" class="disabled" disabled />
+            <label for="active2" class="disabled">Active</label>
+          @endif
+        @else
+          <input type="checkbox" id="active3" wire:model.defer="prod.active" />
+          <label for="active3">Active</label>
+        @endif
+      </div>
+      <div class="checkbox__details">
+        @if ($editproduct === null)
+          @if ($product->is_new)
+            <input type="checkbox" id="isNew1" checked class="disabled" disabled />
+            <label for="isNew1" class="disabled">Is New</label>
+          @else
+            <input type="checkbox" id="isNew2" class="disabled" disabled />
+            <label for="isNew2" class="disabled">Is New</label>
+          @endif
+        @else
+          <input type="checkbox" id="isNew3" wire:model.defer="prod.is_new" />
+          <label for="isNew3">Is New</label>
+        @endif
+      </div>
+      {{-- Product IsNew --}}
+    </div>
+
     {{-- Product Quantity --}}
     <div class="input__tabs">
       @if ($editproduct === null)
@@ -79,6 +113,16 @@
         <input type="text" placeholder=" " name="product__name" wire:model.defer="prod.quantity" required>
       @endif
       <label for="product__name">Quantity</label>
+    </div>
+
+    {{-- Product Popularity --}}
+    <div class="input__tabs">
+      @if ($editproduct === null)
+        <span class="disabled">{{ $product->popularity }}</span>
+      @else
+        <input type="text" placeholder=" " name="product__name" wire:model.defer="prod.popularity" required>
+      @endif
+      <label for="product__name">Popularity</label>
     </div>
 
     {{-- Product SKU --}}
@@ -121,48 +165,14 @@
       <label for="product__name">End Date</label>
     </div>
 
-    {{-- Product Popularity --}}
-    <div class="input__tabs">
+    {{-- Product Meta Description --}}
+    <div class="input__tabs details__long">
       @if ($editproduct === null)
-        <span class="disabled">{{ $product->popularity }}</span>
+        <span class="disabled">{{ $product->meta_description }}</span>
       @else
-        <input type="text" placeholder=" " name="product__name" wire:model.defer="prod.popularity" required>
+        <input type="text" placeholder=" " name="product__name" wire:model.defer="prod.meta_description" required>
       @endif
-      <label for="product__name">Popularity</label>
-    </div>
-
-    {{-- Product Active && IsNew --}}
-    <div class="details__checkboxes">
-      {{-- Product Active --}}
-      <div class="checkbox__details ">
-        @if ($editproduct === null)
-          @if ($product->active)
-            <input type="checkbox" id="active1" checked class="disabled" disabled />
-            <label for="active1" class="disabled">Active</label>
-          @else
-            <input type="checkbox" id="active2" class="disabled" disabled />
-            <label for="active2" class="disabled">Active</label>
-          @endif
-        @else
-          <input type="checkbox" id="active3" wire:model.defer="prod.active" />
-          <label for="active3">Active</label>
-        @endif
-      </div>
-      <div class="checkbox__details">
-        @if ($editproduct === null)
-          @if ($product->is_new)
-            <input type="checkbox" id="isNew1" checked class="disabled" disabled />
-            <label for="isNew1" class="disabled">Is New</label>
-          @else
-            <input type="checkbox" id="isNew2" class="disabled" disabled />
-            <label for="isNew2" class="disabled">Is New</label>
-          @endif
-        @else
-          <input type="checkbox" id="isNew3" wire:model.defer="prod.is_new" />
-          <label for="isNew3">Is New</label>
-        @endif
-      </div>
-      {{-- Product IsNew --}}
+      <label for="product__name">Meta Description</label>
     </div>
 
     {{-- Product Short Description --}}
@@ -173,16 +183,6 @@
         <input type="text" placeholder=" " name="product__name" wire:model.defer="prod.short_description" required>
       @endif
       <label for="product__name">Short Description</label>
-    </div>
-
-    {{-- Product Meta Description --}}
-    <div class="input__tabs details__long">
-      @if ($editproduct === null)
-        <span class="disabled">{{ $product->meta_description }}</span>
-      @else
-        <input type="text" placeholder=" " name="product__name" wire:model.defer="prod.meta_description" required>
-      @endif
-      <label for="product__name">Meta Description</label>
     </div>
 
     {{-- Product Long Description --}}
@@ -245,7 +245,7 @@
         Save
       </button>
     @endif
-  </div>
+  </form>
 
 
   {{-- Tabs Body (Related) --}}
@@ -256,4 +256,4 @@
     @livewire('related-spec-product', ['product' => $product])
     @livewire('related-pricelist', ['product' => $product])
   </div>
-</div>
+</section>

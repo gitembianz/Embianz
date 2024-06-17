@@ -1,4 +1,4 @@
-<div class="content">
+<section class="content">
   {{-- X-Components --}}
   <x-alert />
 
@@ -49,7 +49,7 @@
 
 
   {{-- Tabs Body (Details) --}}
-  <div style="height: calc(100% - 70px);" class="tabs__content details__view active">
+  <form style="height: calc(100% - 70px);" class="tabs__content details__view active">
     {{-- Script Name --}}
     <div class="input__tabs">
       @if ($edititem === null)
@@ -60,8 +60,8 @@
       <label>Name</label>
     </div>
 
+    {{-- Script Type --}}
     <div class="details__checkboxes">
-      {{-- Script Type --}}
       <div class="input__tabs">
       @if ($edititem === null)
         <span class="disabled">{{ $script->type }}</span>
@@ -73,25 +73,26 @@
           <option value="body-bottom">body-bottom</option>
         </select>
         @endif
-        <label>Type</label>
+        <label>Code Position</label>
       </div>
+    </div>
+
+    {{-- Script Active --}}
+    <div class="details__checkboxes">
       {{-- Script Active --}}
-      <div class="details__checkboxes">
-        {{-- Script Active --}}
-        <div class="checkbox__details">
-          @if ($edititem === null)
-            @if ($script->active)
-              <input type="checkbox" id="active1" checked class="disabled" disabled />
-              <label for="active1" class="disabled">Active</label>
-            @else
-              <input type="checkbox" id="active2" class="disabled" disabled />
-              <label for="active2" class="disabled">Active</label>
-            @endif
+      <div class="checkbox__details">
+        @if ($edititem === null)
+          @if ($script->active)
+            <input type="checkbox" id="active1" checked class="disabled" disabled />
+            <label for="active1" class="disabled">Active</label>
           @else
-            <input type="checkbox" id="active3" wire:model.defer="record.active" />
-            <label for="active3">Active</label>
+            <input type="checkbox" id="active2" class="disabled" disabled />
+            <label for="active2" class="disabled">Active</label>
           @endif
-        </div>
+        @else
+          <input type="checkbox" id="active3" wire:model.defer="record.active" />
+          <label for="active3">Active</label>
+        @endif
       </div>
     </div>
 
@@ -124,5 +125,5 @@
         Save
       </button>
     @endif
-  </div>
-</div>
+  </form>
+</section>

@@ -29,3 +29,11 @@
     transform: translate(-50%, -50%) rotate(360deg);
   }
 }
+
+/// Error
+@keyframes show-error {
+  0% {transform: translate(calc(100% + $margin));}
+  15% {transform: translate(0);}
+  85% {transform: translate(0);}
+  100% {transform: translate(calc(100% + $margin));}
+}

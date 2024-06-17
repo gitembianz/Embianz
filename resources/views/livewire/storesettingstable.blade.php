@@ -1,4 +1,4 @@
-<div class="content">
+<section class="content">
   {{-- X-Components --}}
   <x-alert />
 
@@ -443,4 +443,4 @@
       </button>
     @endif
   </div>
-</div>
+</section>
