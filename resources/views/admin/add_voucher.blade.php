@@ -26,25 +26,25 @@
 
     {{-- Product Name --}}
     <div class="input__tabs">
-      <input type="text" name="name" required value="{{ old('name') }}">
+      <input type="text" name="name" placeholder=" " required value="{{ old('name') }}">
       <label>Name</label>
     </div>
 
     {{-- Product Code --}}
     <div class="input__tabs">
-      <input type="text" name="code" required value="{{ old('code') }}">
+      <input type="text" name="code" placeholder=" " required value="{{ old('code') }}">
       <label>code</label>
     </div>
 
     {{-- Product Percent --}}
     <div class="input__tabs">
-      <input type="number" name="percent" value="{{ old('percent') }}">
+      <input type="number" name="percent" placeholder=" " value="{{ old('percent') }}">
       <label>Percent %</label>
     </div>
 
     {{-- Product Value --}}
     <div class="input__tabs">
-      <input type="number" name="value" value="{{ old('value') }}">
+      <input type="number" name="value" placeholder=" " value="{{ old('value') }}">
       <label>Value</label>
     </div>
 
@@ -59,7 +59,7 @@
 
     {{-- Product Start Date --}}
     <div class="input__tabs">
-      <input type="date" id="start_date" name="start_date" value="{{ old('start_date') }}">
+      <input type="date" id="start_date"  name="start_date" value="{{ old('start_date') }}">
       <label>Start Date</label>
     </div>
 

@@ -25,7 +25,7 @@
 
     {{--  Name --}}
     <div class="input__tabs">
-      <input type="text" name="name" required value="{{ old('name') }}">
+      <input type="text" name="name" placeholder=" " required value="{{ old('name') }}">
       <label>Name</label>
     </div>
 
@@ -44,14 +44,14 @@
     <div class="details__checkboxes details__long">
       {{--  Active --}}
       <div class="checkbox__details ">
-        <input type="checkbox" id="active" name="active" value="{{ old('active') ? 'checked' : '' }}" />
+        <input type="checkbox" id="active" name="active" placeholder=" " value="{{ old('active') ? 'checked' : '' }}" />
         <label for="active">Active</label>
       </div>
     </div>
 
     {{-- Content --}}
     <div class="textarea__tabs details__long">
-      <textarea name="content">{{ old('content') }}</textarea>
+      <textarea name="content" placeholder=" ">{{ old('content') }}</textarea>
       <label>Content</label>
     </div>
 

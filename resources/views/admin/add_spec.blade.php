@@ -23,7 +23,7 @@
   <section style="height: calc(100% - 107.5px);"  class="tabs__content details__view active">
     {{--  Name --}}
     <div class="input__tabs">
-      <input type="text" name="name" required>
+      <input type="text" placeholder=" " name="name" required>
       <label>Name</label>
     </div>
     {{--  Active --}}
@@ -36,14 +36,14 @@
     </div>
     {{--  Unit --}}
     <div class="input__tabs">
-      <input type="text" name="um" required>
+      <input type="text" placeholder=" " name="um" required>
       <label>Unit</label>
     </div>
 
 
     {{-- Spec Sequence --}}
     <div class="input__tabs">
-    <input type="number" name="sequence" required>
+    <input type="number" placeholder=" " name="sequence" required>
     <label>Sequence</label>
     </div>
 

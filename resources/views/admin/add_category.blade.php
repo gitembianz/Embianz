@@ -26,7 +26,7 @@
 
     {{-- Category Name --}}
     <div class="input__tabs">
-      <input type="text" name="category" required value="{{ old('category') }}">
+      <input type="text" name="category" placeholder=" " required value="{{ old('category') }}">
       <label>Category Name</label>
     </div>
 
@@ -46,49 +46,49 @@
 
     {{-- Category Start Date --}}
     <div class="input__tabs">
-      <input type="date" id="start_date" name="start_date" value="{{ old('start_date') }}">
+      <input type="date" id="start_date" placeholder=" " name="start_date" value="{{ old('start_date') }}">
       <label>Start Date</label>
     </div>
 
     {{-- Category End Date --}}
     <div class="input__tabs">
-      <input type="date" id="end_date" name="end_date" value="{{ old('end_date') }}">
+      <input type="date" id="end_date" placeholder=" " name="end_date" value="{{ old('end_date') }}">
       <label>End Date</label>
     </div>
 
     {{-- Category Sequence --}}
     <div class="input__tabs">
-      <input type="number" min="0" name="sequence" required value="{{ old('sequence') }}">
+      <input type="number" min="0" name="sequence" placeholder=" " required value="{{ old('sequence') }}">
       <label>Sequence</label>
     </div>
 
     {{-- Category Meta Description --}}
     <div class="input__tabs">
-      <input type="text" name="meta_description" value="{{ old('meta_description') }}">
+      <input type="text" name="meta_description" placeholder=" " value="{{ old('meta_description') }}">
       <label>Meta Description</label>
     </div>
 
     {{-- Category Short Description --}}
     <div class="input__tabs details__long">
-      <input type="text" name="short_description" value="{{ old('short_description') }}">
+      <input type="text" name="short_description" placeholder=" " value="{{ old('short_description') }}">
       <label>Short Description</label>
     </div>
 
     {{-- Category Long Description --}}
     <div class="textarea__tabs details__long">
-      <textarea name="long_description">{{ old('long_description') }}</textarea>
+      <textarea name="long_description" placeholder=" ">{{ old('long_description') }}</textarea>
       <label>Long Description</label>
     </div>
 
     {{-- Category SEO Title --}}
     <div class="input__tabs">
-      <input type="text" name="seo_title" value="{{ old('seo_title') }}">
+      <input type="text" name="seo_title" placeholder=" " value="{{ old('seo_title') }}">
       <label>SEO Title</label>
     </div>
 
     {{-- Category Friendly URL --}}
     <div class="input__tabs">
-      <input type="text" name="seo_id" value="{{ old('seo_id') }}">
+      <input type="text" name="seo_id" placeholder=" " value="{{ old('seo_id') }}">
       <label>Friendly URL</label>
     </div>
 
