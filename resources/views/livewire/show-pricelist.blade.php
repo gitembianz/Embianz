@@ -66,7 +66,7 @@
       @if ($edititem === null)
         <span class="disabled">{{ $pricelist->name }}</span>
       @else
-        <input type="text" wire:model.defer="record.name">
+        <input type="text" placeholder=" " wire:model.defer="record.name">
       @endif
       <label> Name</label>
     </div>

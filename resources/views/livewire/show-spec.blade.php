@@ -67,7 +67,7 @@
       @if ($edititem === null)
         <span class="disabled">{{ $spec->name }}</span>
       @else
-        <input type="text" wire:model.defer="record.name">
+        <input type="text" placeholder=" " wire:model.defer="record.name">
       @endif
       <label>Name</label>
     </div>
@@ -95,7 +95,7 @@
       @if ($edititem === null)
         <span class="disabled">{{ $spec->um }}</span>
       @else
-        <input type="text" wire:model.defer="record.um">
+        <input type="text" placeholder=" " wire:model.defer="record.um">
       @endif
       <label>Unit</label>
     </div>
@@ -105,7 +105,7 @@
       @if ($edititem === null)
         <span class="disabled">{{ $spec->sequence }}</span>
       @else
-        <input type="number" wire:model.defer="record.sequence">
+        <input type="number" placeholder=" " wire:model.defer="record.sequence">
       @endif
       <label>Sequence</label>
     </div>

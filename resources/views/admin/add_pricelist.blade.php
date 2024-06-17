@@ -26,7 +26,7 @@
 
     {{-- Price List Name --}}
     <div class="input__tabs">
-      <input type="text" name="name" required >
+      <input type="text" placeholder=" " name="name" required >
       <label>Name</label>
     </div>
     {{-- Price List Currency --}}
@@ -43,7 +43,7 @@
     <div class="details__checkboxes details__long">
       {{-- Price List Active --}}
       <div class="checkbox__details ">
-        <input type="checkbox" id="active" name="active" value="{{ old('active') }}" />
+        <input type="checkbox" placeholder=" " id="active" name="active" value="{{ old('active') }}" />
         <label for="active">Active</label>
       </div>
     </div>
