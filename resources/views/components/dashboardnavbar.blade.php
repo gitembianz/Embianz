@@ -12,7 +12,7 @@
 		<a href="{{ route("dashboard") }}" class="logo display--desktop">
 			<img src="/images/dashboard/navbar/logo.png" alt="logo">
 		</a>
-		<button class="button button--secondary button--centered" tooltip="Open Searchbar" tooltip-right onclick="focusTo('search__input')" id="search__open">
+		<button class="button button--secondary button--centered" tooltip="Open Searchbar" tooltip-bottom onclick="focusTo('search__input')" id="search__open">
 			<svg>
 				<circle cx="11" cy="11" r="8"></circle>
 				<line x1="21" y1="21" x2="16.65" y2="16.65"></line>
