@@ -28,6 +28,19 @@ class CustomScriptsTable extends Component
     public $all = false;
     public $tableName;
     public $columns;
+    public $single = false;
+    public $multiple = false;
+    public $row =null;
+
+    public function expandRow($index){
+        if($this->row  === null){
+          $this->row = $index ;
+        }elseif ($this->row != $index){
+          $this->row = $index ;
+        }else{
+          $this->row = null ;
+        }
+    }
 
 
     public function render()
@@ -87,10 +100,14 @@ class CustomScriptsTable extends Component
     {
         $this->loadAmount += 10;
     }
+    public function getCustomscriptsQueryProperty(){
+      return CustomScript::search($this->search)
+            ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->limit($this->loadAmount);
+    }
     public function getCustomscriptsProperty()
     {
-        return CustomScript::search($this->search)
-            ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->limit($this->loadAmount)->get();
+return $this->customscriptsQuery->get();
+
     }
     public function deleteRecords()
     {
@@ -102,6 +119,7 @@ class CustomScriptsTable extends Component
         }
         $this->checked = [];
         $this->selectPage = false;
+        $this->multiple = false;
         session()->flash('notification', [
             'message' => 'Records deleted successfully!',
             'type' => 'success',
@@ -114,6 +132,7 @@ class CustomScriptsTable extends Component
         $category = CustomScript::findOrFail($id);
         $category->delete();
         $this->checked = array_diff($this->checked, [$id]);
+        $this->single = false;
         session()->flash('notification', [
             'message' => 'Record deleted successfully!',
             'type' => 'success',
@@ -122,12 +141,16 @@ class CustomScriptsTable extends Component
     }
     public function confirmItemRemoval($id)
     {
-        $this->idbeingremoved = $id;
-        $this->dispatchBrowserEvent('show-delete-modal-script');
+      $this->idbeingremoved = $id;
+      $this->single = true;
     }
     public function confirmItemsRemoval()
     {
-        $this->dispatchBrowserEvent('show-delete-modal-multiple-script');
+      $this->multiple = true;
+    }
+    public function cancel_delete(){
+      $this->multiple = false;
+      $this->single = false;
     }
     public function isChecked($id)
     {

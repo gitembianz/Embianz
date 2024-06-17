@@ -25,6 +25,7 @@
     color: $secondary;
     margin: 0;
     margin-top: $margin;
+    flex: 1;
 
     &::after{
       content: '';
@@ -108,6 +109,7 @@
       color: $white;
       text-decoration: none;
       line-height: $line-height;
+      // word-break: break-all;
 
       & a{
         font-size: 14px;
@@ -138,6 +140,7 @@
     text-align: left;
     word-wrap: break-word;
     text-wrap: balance;
+    // word-break: break-all;
   }
 
   th {
@@ -186,18 +189,23 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     background-color: $primary;
+    padding: $padding;
 
     @media (max-width: map-get($grid-breakpoints, md)) {
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr;
     }
 
     & p {
       font-size: 14px;
       font-weight: 500;
+      display: flex;
+      flex-direction: column;
 
       & bold {
-        font-size: 14px;
-        font-weight: 800;
+        font-size: 16px;
+        font-weight: 900;
+        margin-bottom: $margin;
+        border-bottom: 1px solid #fff;
       }
     }
   }

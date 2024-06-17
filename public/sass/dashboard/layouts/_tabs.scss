@@ -1,0 +1,14 @@
+.tabs__content{
+  width: 100%;
+  // height: calc(100% - 107.5px);
+  display: none;
+  overflow: auto;
+  // border-top: 2px solid $secondary;
+  border-bottom: 2px solid $secondary;
+  padding: $padding;
+  margin: $margin 0;
+
+  &.active{
+    display: grid;
+  }
+}

@@ -1,13 +1,5 @@
 
-// animation
-@keyframes rotate {
-  0% {
-    transform: translate(-50%, -50%) rotate(0deg);
-  }
-  100% {
-    transform: translate(-50%, -50%) rotate(360deg);
-  }
-}
+
 
 .gradient {
   --size: 400px;

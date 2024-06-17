@@ -10,6 +10,7 @@ class ShowAccount extends Component
 {
     public $accountId;
     public $record = [];
+    public $delete = false;
     public $edititem = null;
     protected $listeners = [
         'itemSaved' => 'mount'
@@ -229,7 +230,11 @@ class ShowAccount extends Component
     }
     public function confirmItemRemoval()
     {
-        $this->dispatchBrowserEvent('show-delete-modal');
+        $this->delete = true;
+    }
+    public function cancelItemRemoval()
+    {
+        $this->delete = false;
     }
     public function deleteRecord()
     {
@@ -242,6 +247,7 @@ class ShowAccount extends Component
             }
         }
         $item->delete();
+        $this->delete = false;
         return redirect()->route('accounts')->with('notification', [
             'message' => 'Record deleted successfully!',
             'type' => 'success',

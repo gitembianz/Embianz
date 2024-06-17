@@ -263,3 +263,102 @@
  background: $secondary;
  border-color: $secondary;
 }
+
+
+
+
+
+
+
+
+
+
+.checkbox__details {
+  /// settings
+  $boxSize: 35px;
+  $signSize: 17.5px;
+  $signThickness: 3px;
+  $boxGap: 5px;
+  $defaulColor: #cacaca;
+  $checkedColor: #cacaca;
+  $signColor: #333;
+
+  /// Calculation
+  $signW: calc($signSize / 2);
+  $signH: $signSize;
+  $calcGap: calc($boxSize + $boxGap);
+
+  /// Div settings
+  display: table;
+  cursor: pointer;
+
+  /// If is Inline Checkbox
+  &.inline {
+    display: inline-block;
+  }
+
+  /// Input Effect
+  input {
+    display: none;
+
+    &:checked + label:before {
+      background: $checkedColor;
+      border-color: $checkedColor;
+    }
+
+    &:checked + label:after {
+      opacity: 1;
+      transform: rotate(44deg) translate(-$signThickness);
+    }
+  }
+
+  // Checkbox
+  label {
+    height: $boxSize;
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding-left: $boxSize;
+    color: $white;
+    font-size: $font-size;
+    font-weight: $font-weight;
+
+    /// Checkbox Frame
+    &:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: block;
+      width: $boxSize;
+      height: $boxSize;
+      border-radius: 6px;
+      border: $signThickness solid $defaulColor;
+      background: transparent;
+      transition: all .3s ease;
+    }
+
+    /// Checkbox Sign
+    &:after {
+      content: '';
+      left: $signH;
+      top: $signW;
+      width: $signW;
+      height: $signH;
+      border: $signThickness solid $signColor;
+      border-top: 0;
+      border-left: 0;
+      transform: rotate(10deg) translate(-$signThickness);
+      position: absolute;
+      display: block;
+      opacity: 0;
+      transition: all .3s ease;
+    }
+    // If have some Text
+    &:not(:empty) {
+      padding-left: $calcGap;
+    }
+  }
+}
+
+
