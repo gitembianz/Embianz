@@ -133,13 +133,16 @@
     left: $padding;
     transform: translateY(calc(-50% - $labelHeight));
 
-
     /// Typography
     color: $primary;
     font-size: $font-size-sm;
     font-weight: $font-weight;
     line-height: $line-height;
 
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
 
     /// Unselect
     user-select: none;
@@ -147,7 +150,6 @@
     opacity: 0.8;
     transition: $transition;
   }
-
 
   /// Label effect
   &>input:hover ~ label,
@@ -187,7 +189,7 @@
   & > textarea, span {
     width: 100%;
     height: auto;
-    min-height: 150px;
+    min-height: 350px;
     resize: vertical;
 
     color: $primary;

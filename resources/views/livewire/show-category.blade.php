@@ -1,4 +1,4 @@
-<div class="content">
+<section class="content">
   {{-- X-Components --}}
   <x-alert />
 
@@ -60,7 +60,7 @@
 
 
   {{-- Tabs Body (Details) --}}
-  <div style="height: calc(100% - 107.5px);" class="tabs__content details__view active" id="detailsContent">
+  <form style="height: calc(100% - 107.5px);" class="tabs__content details__view active" id="detailsContent">
     {{-- Category Name --}}
     <div class="input__tabs">
       @if ($editcategory === null)
@@ -71,49 +71,6 @@
       <label for="category__name">Name</label>
     </div>
 
-    {{-- Category Start/End Date --}}
-    <div class="details__checkboxes">
-      {{-- Category Start Date --}}
-      <div class="input__tabs">
-        @if ($editcategory === null)
-          <span class="disabled">{{ $category->start_date }}</span>
-        @else
-          <input type="text" placeholder=" " name="category__name" wire:model.defer="cat.start_date" required>
-        @endif
-        <label for="category__name">Start Date</label>
-      </div>
-      {{-- Category End Date --}}
-      <div class="input__tabs">
-        @if ($editcategory === null)
-          <span class="disabled">{{ $category->end_date }}</span>
-        @else
-          <input type="text" placeholder=" " name="category__name" wire:model.defer="cat.end_date" required>
-        @endif
-        <label for="category__name">End Date</label>
-      </div>
-    </div>
-
-    {{-- Category Sequence && Slider Sequence --}}
-    <div class="details__checkboxes">
-      {{-- Category Slider Sequence --}}
-      <div class="input__tabs">
-        @if ($editcategory === null)
-          <span class="disabled">{{ $category->slider_sequence }}</span>
-        @else
-          <input type="number" placeholder=" " name="category__name" wire:model.defer="cat.slider_sequence" required>
-        @endif
-        <label for="category__name">slider Sequence</label>
-      </div>
-      {{-- Category Sequence --}}
-      <div class="input__tabs">
-        @if ($editcategory === null)
-          <span class="disabled">{{ $category->sequence }}</span>
-        @else
-          <input type="number" placeholder=" " name="category__name" wire:model.defer="cat.sequence" required>
-        @endif
-        <label for="category__name">Sequence</label>
-      </div>
-    </div>
     {{-- Category Active && Store Tab --}}
     <div class="details__checkboxes">
       {{-- Category Active --}}
@@ -148,15 +105,47 @@
       </div>
     </div>
 
-    {{-- Category Short Description --}}
-    <div class="input__tabs details__long">
+    {{-- Category Start Date --}}
+    <div class="input__tabs">
       @if ($editcategory === null)
-        <span class="disabled">{{ $category->short_description }}</span>
+        <span class="disabled">{{ $category->start_date }}</span>
       @else
-        <input type="text" placeholder=" " name="category__name" wire:model.defer="cat.short_description" required>
+        <input type="text" placeholder=" " name="category__name" wire:model.defer="cat.start_date" required>
       @endif
-      <label for="category__name">Short Description</label>
+      <label for="category__name">Start Date</label>
     </div>
+
+    {{-- Category End Date --}}
+    <div class="input__tabs">
+      @if ($editcategory === null)
+        <span class="disabled">{{ $category->end_date }}</span>
+      @else
+        <input type="text" placeholder=" " name="category__name" wire:model.defer="cat.end_date" required>
+      @endif
+      <label for="category__name">End Date</label>
+    </div>
+
+    {{-- Category Slider Sequence --}}
+    <div class="input__tabs">
+      @if ($editcategory === null)
+        <span class="disabled">{{ $category->slider_sequence }}</span>
+      @else
+        <input type="number" placeholder=" " name="category__name" wire:model.defer="cat.slider_sequence" required>
+      @endif
+      <label for="category__name">slider Sequence</label>
+    </div>
+
+    {{-- Category Sequence --}}
+    <div class="input__tabs">
+      @if ($editcategory === null)
+        <span class="disabled">{{ $category->sequence }}</span>
+      @else
+        <input type="number" placeholder=" " name="category__name" wire:model.defer="cat.sequence" required>
+      @endif
+      <label for="category__name">Sequence</label>
+    </div>
+
+
 
     {{-- Category Meta Description --}}
     <div class="input__tabs details__long">
@@ -166,6 +155,17 @@
         <input type="text" placeholder=" " name="category__name" wire:model.defer="cat.meta_description" required>
       @endif
       <label for="category__name">Meta Description</label>
+    </div>
+
+
+    {{-- Category Short Description --}}
+    <div class="input__tabs details__long">
+      @if ($editcategory === null)
+        <span class="disabled">{{ $category->short_description }}</span>
+      @else
+        <input type="text" placeholder=" " name="category__name" wire:model.defer="cat.short_description" required>
+      @endif
+      <label for="category__name">Short Description</label>
     </div>
 
     {{-- Category Long Description --}}
@@ -228,7 +228,7 @@
         Save
       </button>
     @endif
-  </div>
+  </form>
 
 
   {{-- Tabs Body (Related) --}}
@@ -237,4 +237,4 @@
     @livewire('related-product-category', ['category' => $category])
     @livewire('related-subcategory', ['category' => $category])
   </div>
-</div>
+</section>

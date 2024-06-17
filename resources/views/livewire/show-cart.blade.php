@@ -1,4 +1,4 @@
-<div class="content">
+<section class="content">
   {{-- X-Components --}}
   <x-alert />
 
@@ -57,18 +57,20 @@
 
 
   {{-- Tabs Body (Details) --}}
-  <div style="height: calc(100% - 107.5px);" class="tabs__content details__view active" id="detailsContent">
+  <form style="height: calc(100% - 107.5px);" class="tabs__content details__view active" id="detailsContent">
     {{-- Cart Name --}}
     <div class="input__tabs">
       <span class="disabled">{{ $cart->name }}</span>
       <label for="category__name">Name</label>
     </div>
 
-    {{-- Cart Quantity Amount --}}
-    <div class="input__tabs">
-      <span class="disabled">{{ $cart->quantity_amount }}</span>
-      <label for="category__name">Quantity Amount</label>
-    </div>
+    {{-- Related Order --}}
+    @if ($cart->order_id != null)
+      <div class="input__tabs">
+        <a href="{{ route("show_order", ['id'=> $cart->order_id ])}}">{{ $cart->order->name }}</a>
+        <label for="category__name">Related Order</label>
+      </div>
+    @endif
 
     {{-- Cart Session Id --}}
     <div class="input__tabs details__long">
@@ -77,7 +79,7 @@
     </div>
 
     {{-- Cart Sum Amount --}}
-    <div class="input__tabs details__long">
+    <div class="input__tabs">
       <span class="disabled">{{ $cart->sum_amount }}</span>
       <label for="category__name">Sum Amount</label>
     </div>
@@ -86,6 +88,12 @@
     <div class="input__tabs">
       <span class="disabled">{{ $cart->currency->name }}</span>
       <label for="category__name">Currency</label>
+    </div>
+
+    {{-- Cart Quantity Amount --}}
+    <div class="input__tabs">
+      <span class="disabled">{{ $cart->quantity_amount }}</span>
+      <label for="category__name">Quantity Amount</label>
     </div>
 
     {{-- Cart Status --}}
@@ -102,27 +110,16 @@
       <label for="category__name"> Status</label>
     </div>
 
-    {{-- Related Order --}}
-    @if ($cart->order_id != null)
-      <div class="input__tabs">
-        <a href="{{ route("show_order", ['id'=> $cart->order_id ])}}">{{ $cart->order->name }}</a>
-        <label for="category__name">Related Order</label>
-      </div>
-    @endif
+    {{-- Create date / time --}}
+    <div class="input__tabs">
+      <span class="disabled">{{ $cart->created_at }}</span>
+      <label>Create date / time</label>
+    </div>
 
-    {{-- Cart Updated/Date --}}
-    <div class="details__checkboxes">
-      {{-- Create date / time --}}
-      <div class="input__tabs">
-        <span class="disabled">{{ $cart->created_at }}</span>
-        <label>Create date / time</label>
-      </div>
-
-      {{-- Updated At --}}
-      <div class="input__tabs">
-        <span class="disabled">{{ $cart->updated_at }}</span>
-        <label>Updated At</label>
-      </div>
+    {{-- Updated At --}}
+    <div class="input__tabs">
+      <span class="disabled">{{ $cart->updated_at }}</span>
+      <label>Updated At</label>
     </div>
 
     {{-- Save Button --}}
@@ -131,11 +128,11 @@
         Save
       </button>
     @endif
-  </div>
+  </form>
 
 
   {{-- Tabs Body (Related) --}}
   <div style="height: calc(100% - 107.5px);" class="tabs__content" id="relatedContent">
     @livewire("related-cart-items", ["cart" => $cart])
   </div>
-</div>
+</section>

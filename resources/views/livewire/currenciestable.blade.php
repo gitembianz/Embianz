@@ -1,4 +1,4 @@
-<div class="content">
+<section class="content">
   {{-- X-Components --}}
   <x-alert />
 
@@ -282,4 +282,4 @@
       </tbody>
     </table>
   </div>
-</div>
+</section>
