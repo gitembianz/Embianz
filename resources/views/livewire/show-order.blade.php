@@ -1,4 +1,4 @@
-<div class="content">
+<section class="content">
   {{-- X-Components --}}
   <x-alert />
 
@@ -57,7 +57,7 @@
 
 
   {{-- Tabs Body (Details) --}}
-  <div style="height: calc(100% - 107.5px);" class="tabs__content details__view active" id="detailsContent">
+  <form style="height: calc(100% - 107.5px);" class="tabs__content details__view active" id="detailsContent">
     {{-- Order Name --}}
     <div class="input__tabs">
       <span class="disabled">{{ $order->name }}</span>
@@ -84,12 +84,6 @@
     </div>
     @endif
 
-
-    {{-- Order Cart --}}
-    <div class="input__tabs">
-      <span class="disabled">{{ $order->quantity_amount }}</span>
-      <label>Quantity amount </label>
-    </div>
 
     {{-- Order Quantity amount --}}
     <div class="input__tabs">
@@ -131,19 +125,16 @@
       <label>Payment Method </label>
     </div>
 
-    {{-- Order Updated/Date --}}
-    <div class="details__checkboxes">
-      {{-- Create date / time --}}
-      <div class="input__tabs">
-        <span class="disabled">{{ $order->created_at }}</span>
-        <label>Create date / time</label>
-      </div>
+    {{-- Create date / time --}}
+    <div class="input__tabs">
+      <span class="disabled">{{ $order->created_at }}</span>
+      <label>Create date / time</label>
+    </div>
 
-      {{-- Updated At --}}
-      <div class="input__tabs">
-        <span class="disabled">{{ $order->updated_at }}</span>
-        <label>Updated At</label>
-      </div>
+    {{-- Updated At --}}
+    <div class="input__tabs">
+      <span class="disabled">{{ $order->updated_at }}</span>
+      <label>Updated At</label>
     </div>
 
     {{-- Save Button --}}
@@ -152,11 +143,11 @@
         Save
       </button>
     @endif
-  </div>
+  </form>
 
 
   {{-- Tabs Body (Related) --}}
   <div style="height: calc(100% - 107.5px);" class="tabs__content" id="relatedContent">
     @livewire("related-order-items", ["order" => $order])
   </div>
-</div>
+</section>

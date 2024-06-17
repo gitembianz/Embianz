@@ -1,4 +1,4 @@
-<div class="content">
+<section class="content">
   {{-- X-Components --}}
   <x-alert />
 
@@ -57,7 +57,7 @@
 
 
   {{-- Tabs Body (Details) --}}
-  <div style="height: calc(100% - 107.5px);" class="tabs__content details__view active" id="detailsContent">
+  <form style="height: calc(100% - 107.5px);" class="tabs__content details__view active" id="detailsContent">
 
     {{-- Account Name --}}
     <div class="input__tabs">
@@ -190,7 +190,7 @@
         Save
       </button>
     @endif
-  </div>
+  </form>
 
 
   {{-- Tabs Body (Related) --}}
@@ -198,4 +198,4 @@
     @livewire("related-addresses", ["account" => $account], key("first" . $account->id))
     @livewire("related-orders", ["account" => $account], key($account->id))
   </div>
-</div>
+</section>

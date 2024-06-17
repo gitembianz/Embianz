@@ -1,4 +1,4 @@
-<div class="content">
+<section class="content">
   {{-- X-Components --}}
   <x-alert />
 
@@ -60,7 +60,7 @@
 
 
   {{-- Tabs Body (Details) --}}
-  <div style="height: calc(100% - 107.5px);" class="tabs__content details__view active" id="detailsContent">
+  <form style="height: calc(100% - 107.5px);" class="tabs__content details__view active" id="detailsContent">
 
     {{-- Spec Name --}}
     <div class="input__tabs">
@@ -70,6 +70,24 @@
         <input type="text" wire:model.defer="record.name">
       @endif
       <label>Name</label>
+    </div>
+
+    {{-- Spec Active --}}
+    <div class="details__checkboxes">
+      <div class="checkbox__details ">
+        @if ($edititem === null)
+          @if ($spec->mark_as_filter)
+            <input type="checkbox" id="active1" checked class="disabled" disabled />
+            <label for="active1" class="disabled">Mark as Filter</label>
+          @else
+            <input type="checkbox" id="active2" class="disabled" disabled />
+            <label for="active2" class="disabled">Mark as Filter</label>
+          @endif
+        @else
+          <input type="checkbox" id="active3" wire:model.defer="record.mark_as_filter" />
+          <label for="active3">Mark as Filter</label>
+        @endif
+      </div>
     </div>
 
     {{-- Spec Unit --}}
@@ -90,24 +108,6 @@
         <input type="number" wire:model.defer="record.sequence">
       @endif
       <label>Sequence</label>
-    </div>
-
-    {{-- Spec Active --}}
-    <div class="details__checkboxes">
-      <div class="checkbox__details ">
-        @if ($edititem === null)
-          @if ($spec->mark_as_filter)
-            <input type="checkbox" id="active1" checked class="disabled" disabled />
-            <label for="active1" class="disabled">Mark as Filter</label>
-          @else
-            <input type="checkbox" id="active2" class="disabled" disabled />
-            <label for="active2" class="disabled">Mark as Filter</label>
-          @endif
-        @else
-          <input type="checkbox" id="active3" wire:model.defer="record.mark_as_filter" />
-          <label for="active3">Mark as Filter</label>
-        @endif
-      </div>
     </div>
 
     {{-- Spec Create date / time --}}
@@ -140,11 +140,11 @@
         Save
       </button>
     @endif
-  </div>
+  </form>
 
 
   {{-- Tabs Body (Related) --}}
   <div style="height: calc(100% - 107.5px);" class="tabs__content" id="relatedContent">
     @livewire('related-productson-spec', ['specId' => $spec->id])
   </div>
-</div>
+</section>

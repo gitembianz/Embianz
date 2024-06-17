@@ -1,4 +1,4 @@
-<div class="content">
+<section class="content">
   {{-- X-Components --}}
   <x-alert />
 
@@ -60,7 +60,7 @@
 
 
   {{-- Tabs Body (Details) --}}
-  <div style="height: calc(100% - 107.5px);" class="tabs__content details__view active" id="detailsContent">
+  <form style="height: calc(100% - 107.5px);" class="tabs__content details__view active" id="detailsContent">
     {{-- Price List Name --}}
     <div class="input__tabs">
       @if ($edititem === null)
@@ -71,8 +71,22 @@
       <label> Name</label>
     </div>
 
+    {{-- Price List Currency --}}
+    <div class="input__tabs">
+      @if ($edititem === null)
+        <span class="disabled">{{ $pricelist->currency->name }}</span>
+      @else
+        <select wire:model.defer="record.currency">
+          @foreach ($currencies as $currency)
+            <option value="{{ $currency->id }}">{{ $currency->name }}</option>
+          @endforeach
+        </select>
+      @endif
+      <label>Currency</label>
+    </div>
+
     {{-- Price List Active --}}
-    <div class="details__checkboxes">
+    <div class="details__checkboxes details__long">
       {{-- Price List Active --}}
       <div class="checkbox__details ">
         @if ($edititem === null)
@@ -90,19 +104,7 @@
       </div>
     </div>
 
-    {{-- Price List Currency --}}
-    <div class="input__tabs">
-      @if ($edititem === null)
-        <span class="disabled">{{ $pricelist->currency->name }}</span>
-      @else
-        <select wire:model.defer="record.currency">
-          @foreach ($currencies as $currency)
-            <option value="{{ $currency->id }}">{{ $currency->name }}</option>
-          @endforeach
-        </select>
-      @endif
-      <label>Currency</label>
-    </div>
+
 
     {{-- Price List Create date / time --}}
     <div class="input__tabs">
@@ -134,11 +136,11 @@
         Save
       </button>
     @endif
-  </div>
+  </form>
 
 
   {{-- Tabs Body (Related) --}}
   <div style="height: calc(100% - 107.5px);" class="tabs__content" id="relatedContent">
     @livewire("related-productson-pricelist", ["priceId" => $pricelist->id])
   </div>
-</div>
+</section>

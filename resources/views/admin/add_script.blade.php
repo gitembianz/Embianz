@@ -1,66 +1,67 @@
 <x-dashboardheader />
 <x-dashboardnavbar />
-<x-dashboardsidebar :active="__('scripts')" />
 <x-alert />
-{{-- Page content start --}}
-<section class="content">
- <form action="{{ route('add_script') }}" method="POST">
-  @csrf
-  {{-- Item Header --}}
-  <div class="item__header">
-   <h1 class="item__header-title" id="title">{{ __('Add new custom code') }}</h1>
-   <div class="item__header-buttons">
-    <button class="item__header-btn" type="submit" data-tooltip-right="Add custom code">
-     <svg>
-      <line x1="12" y1="5" x2="12" y2="19"></line>
-      <line x1="5" y1="12" x2="19" y2="12"></line>
-     </svg>
-    </button>
-    <a class="item__header-btn" href="{{ route('customscripts') }}" data-tooltip-center="Back to all custom codes">
-     <svg>
-      <polyline points="11 17 6 12 11 7"></polyline>
-      <polyline points="18 17 13 12 18 7"></polyline>
-     </svg>
+<x-dashboardsidebar :active="__('scripts')" />
+<form class="content" method="POST" enctype="multipart/form-data" action="{{ route('add_script') }}">
+
+  {{-- Navigation --}}
+  <nav class="nav--controls">
+    <h1 class="table--name">Add new custom code</h1>
+    {{-- Refresh Button --}}
+    <a class="button button--secondary button--centered" href="{{ route('customscripts') }}">
+      <svg><polyline points="15 18 9 12 15 6"></polyline></svg>
     </a>
-    <button class="item__header-btn" id="resetform" type="reset" data-tooltip-right="Clear Form">
-     <svg>
-      <polyline points="1 4 1 10 7 10"></polyline>
-      <polyline points="23 20 23 14 17 14"></polyline>
-      <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path>
-     </svg>
+    <button class="button button--secondary button--centered" type="submit">
+      <svg><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" /><path d="M9 15l2 2l4 -4" /></svg>
     </button>
-   </div>
-  </div>
+    <button class="button button--secondary button--centered" type="reset">
+      <svg><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
+    </button>
+  </nav>
 
-  {{-- Item Form --}}
-  <div class="item__form">
-   <div class="item__form-input">
-    <input type="text" name="name" required value="{{ old('name') }}">
-    <label>Name</label>
-   </div>
-   <div class="item__form-input">
-    <select name="type" value="{{ old('type') }}">
-     <option selected value="head-top">head-top</option>
-     <option value="head-bottom">head-bottom</option>
-     <option value="body-top">body-top</option>
-     <option value="body-bottom">body-bottom</option>
-    </select>
-    <label>Code position</label>
-   </div>
+  {{-- Tabs Body (Details) --}}
+  <section style="height: calc(100% - 107.5px);"  class="tabs__content details__view active">
+    @csrf
 
-   <div class="item__form-input item__form-textarea">
-    <textarea name="content">{{ old('content') }}</textarea>
-    <label>Content</label>
-   </div>
-   <div style="display: flex; align-items: center;justify-content: flex-start;gap: 10px">
-    <input type="checkbox" name="active" {{ old('active') ? 'checked' : '' }}>
-    <span>Active</span>
-   </div>
-   <input class="item__form-btn  item__form-long" type="submit" value="Add New" name="submit">
-  </div>
- </form>
-</section>
-{{-- page content end --}}
-<x-dashboardright />
+    {{--  Name --}}
+    <div class="input__tabs">
+      <input type="text" name="name" required value="{{ old('name') }}">
+      <label>Name</label>
+    </div>
+
+    {{-- Code Position --}}
+      <div class="input__tabs">
+        <select name="type" value="{{ old('type') }}">
+          <option selected value="head-top">head-top</option>
+          <option value="head-bottom">head-bottom</option>
+          <option value="body-top">body-top</option>
+          <option value="body-bottom">body-bottom</option>
+        </select>
+        <label>Code position</label>
+      </div>
+
+    {{--  Active && Displayed on Store --}}
+    <div class="details__checkboxes details__long">
+      {{--  Active --}}
+      <div class="checkbox__details ">
+        <input type="checkbox" id="active" name="active" value="{{ old('active') ? 'checked' : '' }}" />
+        <label for="active">Active</label>
+      </div>
+    </div>
+
+    {{-- Content --}}
+    <div class="textarea__tabs details__long">
+      <textarea name="content">{{ old('content') }}</textarea>
+      <label>Content</label>
+    </div>
+
+    {{-- Save Button --}}
+    <input class="button button--fill button--secondary details__long" type="submit" value="Add New" name="submit">
+  </section>
+</form>
 <x-dashboardscript />
 <x-dashboardfooter />
+
+
+
+
