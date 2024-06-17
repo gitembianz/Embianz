@@ -21,6 +21,7 @@ class PriceListController extends Controller
     $item = new PriceList();
     $item->name = $request->name;
     $item->currency_id = $request->currency;
+    dd($request->active);
     if ($request->active) {
       $item->active = true;
     } else {
