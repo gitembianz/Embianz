@@ -85,7 +85,7 @@
     {{-- Search Input --}}
     <input class="input input--long" type="text" wire:model.debounce.300ms="search" placeholder="Search...">
     {{-- Refresh Button --}}
-    <button class="button button--secondary button--centered display--desktop" wire:click="$refresh">
+    <button class="button button--secondary button--centered display--desktop" tooltip="Refresh table" tooltip-top wire:click="$refresh">
       <svg>
         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
         <path d="M15 4.55a8 8 0 0 0 -6 14.9m0 -4.45v5h-5" />
@@ -99,7 +99,7 @@
     {{-- IF CHECKED --}}
     <div class="dropdown dropdown--right" @if (!$checked) style="display: none;" @endif  id="checked__dropdown">
       {{-- Dropdown Button --}}
-      <button class="button button--secondary button--centered button--long" id="checked__open">
+      <button class="button button--secondary button--centered button--long" tooltip="Actions with checked" tooltip-top id="checked__open">
         <span>With Checked({{ count($checked) }})</span>
       </button>
       {{-- Dropdown Content --}}
@@ -112,7 +112,7 @@
     {{-- Sorting Dropdown --}}
     <div class="dropdown dropdown--right display--desktop" id="sorting__dropdown">
       {{-- Dropdown Button --}}
-      <button class="button button--secondary button--centered" id="sorting__open">
+      <button class="button button--secondary button--centered" tooltip="Sort items in table" tooltip-left id="sorting__open">
         <svg><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 10v-5c0 -1.38 .62 -2 2 -2s2 .62 2 2v5m0 -3h-4" /><path d="M19 21h-4l4 -7h-4" /><path d="M4 15l3 3l3 -3" /><path d="M7 6v12" /></svg>
       </button>
       {{-- Dropdown Content --}}
@@ -130,7 +130,7 @@
     {{-- Visible Dropdown --}}
     <div class="dropdown dropdown--right display--desktop" id="visible__dropdown">
       {{-- Dropdown Button --}}
-      <button class="button button--secondary button--centered" id="visible__open" >
+      <button class="button button--secondary button--centered" tooltip="Show items in table" tooltip-left id="visible__open" >
         <svg>
           <path stroke="none" d="M0 0h24v24H0z" fill="none" />
           <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
@@ -152,7 +152,7 @@
     {{-- Optional Dropdown --}}
     <div class="dropdown dropdown--right display--mobile" id="optional__dropdown">
       {{-- Dropdown Button --}}
-      <button class="button button--secondary button--centered" id="optional__open">
+      <button class="button button--secondary button--centered" tooltip="Show more actions" tooltip-left id="optional__open">
         <svg>
           <path stroke="none" d="M0 0h24v24H0z" fill="none" />
           <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
@@ -163,7 +163,7 @@
       {{-- Dropdown Content --}}
       <div class="dropdown__content">
         <div class="dropdown__container">
-          <button class="button button--primary button--long button--flexed" wire:click="$refresh">
+          <button class="button button--primary button--fill button--flexed" wire:click="$refresh">
             <svg>
               <path stroke="none" d="M0 0h24v24H0z" fill="none" />
               <path d="M15 4.55a8 8 0 0 0 -6 14.9m0 -4.45v5h-5" />
@@ -175,11 +175,11 @@
             </svg>
             <span>Refresh table</span>
           </button>
-          <button class="button button--primary button--long button--flexed" id="sort__open">
+          <button class="button button--primary button--fill button--flexed" id="sort__open">
             <svg><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 10v-5c0 -1.38 .62 -2 2 -2s2 .62 2 2v5m0 -3h-4" /><path d="M19 21h-4l4 -7h-4" /><path d="M4 15l3 3l3 -3" /><path d="M7 6v12" /></svg>
             <span>Sorting data</span>
           </button>
-          <button class="button button--primary button--long button--flexed" id="visi__open">
+          <button class="button button--primary button--fill button--flexed" id="visi__open">
             <svg>
               <path stroke="none" d="M0 0h24v24H0z" fill="none" />
               <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />

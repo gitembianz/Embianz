@@ -59,7 +59,7 @@
     {{-- Search Input --}}
     <input class="input input--long" type="text" wire:model.debounce.300ms="search" placeholder="Search...">
     {{-- Refresh Button --}}
-    <button class="button button--secondary button--centered display--desktop" wire:click="$refresh">
+    <button class="button button--secondary button--centered display--desktop" tooltip="Refresh table" tooltip-top wire:click="$refresh">
       <svg>
         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
         <path d="M15 4.55a8 8 0 0 0 -6 14.9m0 -4.45v5h-5" />
@@ -71,7 +71,7 @@
       </svg>
     </button>
     {{-- Add store setting --}}
-    <a class="button button--secondary button--centered display--desktop" href="{{ route('add_storesetting') }}">
+    <a class="button button--secondary button--centered display--desktop" tooltip="Add new setting" tooltip-top href="{{ route('add_storesetting') }}">
       <svg>
         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
         <polyline points="14 2 14 8 20 8"></polyline>
@@ -80,14 +80,14 @@
       </svg>
     </a>
     {{-- Update Website --}}
-    <button class="button button--secondary button--centered display--desktop" wire:click="actualizeaza">
+    <button class="button button--secondary button--centered display--desktop" tooltip="Update Website" tooltip-top wire:click="actualizeaza">
       <svg>
         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
         <polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line>
       </svg>
     </button>
     {{-- Update Parameters --}}
-    <button class="button button--secondary button--centered display--desktop" wire:click="addSettingsIfNotExist">
+    <button class="button button--secondary button--centered display--desktop" tooltip="Update Parameters" tooltip-top wire:click="addSettingsIfNotExist">
       <svg>
         <polyline points="17 1 21 5 17 9"></polyline>
         <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
@@ -96,7 +96,7 @@
       </svg>
     </button>
     {{-- Generate Sitemap --}}
-    <button class="button button--secondary button--centered display--desktop" wire:click="sitemap">
+    <button class="button button--secondary button--centered display--desktop" tooltip="Generate Sitemap" tooltip-top wire:click="sitemap">
       <svg>
         <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
         <path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M5 12v-7a2 2 0 0 1 2 -2h7l5 5v4" />
@@ -107,7 +107,7 @@
     {{-- Sorting Dropdown --}}
     <div class="dropdown dropdown--right display--desktop" id="sorting__dropdown">
       {{-- Dropdown Button --}}
-      <button class="button button--secondary button--centered" id="sorting__open">
+      <button class="button button--secondary button--centered" tooltip="Sort items in table" tooltip-left id="sorting__open">
         <svg><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 10v-5c0 -1.38 .62 -2 2 -2s2 .62 2 2v5m0 -3h-4" /><path d="M19 21h-4l4 -7h-4" /><path d="M4 15l3 3l3 -3" /><path d="M7 6v12" /></svg>
       </button>
       {{-- Dropdown Content --}}
@@ -125,7 +125,7 @@
     {{-- Visible Dropdown --}}
     <div class="dropdown dropdown--right display--desktop" id="visible__dropdown">
       {{-- Dropdown Button --}}
-      <button class="button button--secondary button--centered" id="visible__open" >
+      <button class="button button--secondary button--centered" tooltip="Show items in table" tooltip-left id="visible__open" >
         <svg>
           <path stroke="none" d="M0 0h24v24H0z" fill="none" />
           <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
@@ -147,7 +147,7 @@
     {{-- Optional Dropdown --}}
     <div class="dropdown dropdown--right display--mobile" id="optional__dropdown">
       {{-- Dropdown Button --}}
-      <button class="button button--secondary button--centered" id="optional__open">
+      <button class="button button--secondary button--centered" tooltip="Show more actions" tooltip-left id="optional__open">
         <svg>
           <path stroke="none" d="M0 0h24v24H0z" fill="none" />
           <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
@@ -158,7 +158,7 @@
       {{-- Dropdown Content --}}
       <div class="dropdown__content">
         <div class="dropdown__container">
-          <button class="button button--primary button--long button--flexed" wire:click="$refresh">
+          <button class="button button--primary button--fill button--flexed" wire:click="$refresh">
             <svg>
               <path stroke="none" d="M0 0h24v24H0z" fill="none" />
               <path d="M15 4.55a8 8 0 0 0 -6 14.9m0 -4.45v5h-5" />
@@ -170,7 +170,7 @@
             </svg>
             <span>Refresh table</span>
           </button>
-          <a class="button button--primary button--long button--flexed" href="{{ route('add_storesetting') }}">
+          <a class="button button--primary button--fill button--flexed" href="{{ route('add_storesetting') }}">
             <svg>
               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
               <polyline points="14 2 14 8 20 8"></polyline>
@@ -179,14 +179,14 @@
             </svg>
             <span>Add store setting</span>
           </a>
-          <button class="button button--primary button--long button--flexed" wire:click="actualizeaza">
+          <button class="button button--primary button--fill button--flexed" wire:click="actualizeaza">
             <svg>
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
               <polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line>
             </svg>
             <span>Update Website</span>
           </button>
-          <button class="button button--primary button--long button--flexed" wire:click="addSettingsIfNotExist">
+          <button class="button button--primary button--fill button--flexed" wire:click="addSettingsIfNotExist">
             <svg>
               <polyline points="17 1 21 5 17 9"></polyline>
               <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
@@ -195,7 +195,7 @@
             </svg>
             <span>Update Parameters</span>
           </button>
-          <button class="button button--primary button--long button--flexed" wire:click="sitemap">
+          <button class="button button--primary button--fill button--flexed" wire:click="sitemap">
             <svg>
               <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
               <path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M5 12v-7a2 2 0 0 1 2 -2h7l5 5v4" />
@@ -204,11 +204,11 @@
             </svg>
             <span>Generate Sitemap</span>
           </button>
-          <button class="button button--primary button--long button--flexed" id="sort__open">
+          <button class="button button--primary button--fill button--flexed" id="sort__open">
             <svg><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 10v-5c0 -1.38 .62 -2 2 -2s2 .62 2 2v5m0 -3h-4" /><path d="M19 21h-4l4 -7h-4" /><path d="M4 15l3 3l3 -3" /><path d="M7 6v12" /></svg>
             <span>Sorting data</span>
           </button>
-          <button class="button button--primary button--long button--flexed" id="visi__open">
+          <button class="button button--primary button--fill button--flexed" id="visi__open">
             <svg>
               <path stroke="none" d="M0 0h24v24H0z" fill="none" />
               <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
