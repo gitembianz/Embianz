@@ -54,7 +54,7 @@
   <div class="details__checkboxes">
    {{--  Active --}}
    <div class="checkbox__details ">
-    <input type="checkbox" id="mark_as_filter" name="mark_as_filter" value="{{ old('active') }}" />
+    <input type="checkbox" id="mark_as_filter" name="mark_as_filter" />
     <label for="mark_as_filter">mark_as_filter</label>
    </div>
   </div>
