@@ -23,6 +23,21 @@ class Product extends Model
     return $this->hasMany(Related_Products::class, 'parrent_id');
   }
 
+  public function variants()
+  {
+    return $this->hasMany(ProductVariant::class, 'parrent_id');
+  }
+
+  public function parent()
+  {
+    return $this->belongsTo(Product::class, 'parent_id');
+  }
+
+  public function beeingvariants()
+  {
+    return $this->hasMany(ProductVariant::class, 'product_id');
+  }
+
   public function product_prices()
   {
     return $this->hasMany(PricelistEntries::class, 'product_id');
@@ -113,7 +128,8 @@ class Product extends Model
     'last_modified_by',
     'seo_title',
     'popularity',
-    'seo_id'
+    'seo_id',
+    'parent_id'
   ];
 
   public static function search($search)

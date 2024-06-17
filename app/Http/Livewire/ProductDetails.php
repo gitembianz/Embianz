@@ -19,7 +19,9 @@ class ProductDetails extends Component
 
     public function render()
     {
-        return view('livewire.product-details');
+        return view('livewire.product-details', [
+            'variants' => $this->variants
+        ]);
     }
     private function getSessionId()
     {
@@ -34,7 +36,7 @@ class ProductDetails extends Component
     public function mount($product)
     {
         $prodid = $this->product->id;
-        $this->product = $product->select('id', 'name', 'seo_id', 'long_description', 'quantity', 'short_description')
+        $this->product = $product->select('id', 'name', 'seo_id', 'long_description', 'quantity', 'short_description', 'type', 'parent_id')
             ->with([
                 'product_prices' => function ($query) {
                     $query->select('product_id', 'value', 'vat', 'pricelist_id', 'discount', 'value_no_discount')
@@ -42,12 +44,66 @@ class ProductDetails extends Component
                             $query->select('id', 'currency_id')->with('currency:id,name,symbol');
                         }]);
                 },
-                'wishlists'
-            ])->find($prodid);
+                'wishlists',
+                'parent' => function ($query) {
+                    $query->with(['variants' => function ($query) {
+                        $query->distinct('variant_id')->with(['product' => function ($query) {
+                            $query->select('id', 'seo_id')->with([
+                                'media' => function ($query) {
+                                    $query->select('path', 'name')->where('type', 'min');
+                                }
+                            ]);
+                        }]);
+                    }]);
+                },
+                'beeingvariants'
+            ])
+            ->findOrFail($prodid);
         $this->quantity = 1;
         $this->session_id = $this->getSessionId();
         $this->is_in_wishlist = $this->product->wishlists->where('session_id', $this->session_id)->first() ? true : false;
     }
+
+    public function getVariantsProperty()
+    {
+        if (!$this->product) {
+            return collect([]);
+        }
+
+        $parentProduct = $this->product->parent;
+        if (!$parentProduct) {
+            return collect([]);
+        }
+
+        $allVariants = $parentProduct->variants->map->product->unique();
+
+        $filterVariants = function ($variants, $currentProduct, $variantIdToExclude) {
+            return $variants->filter(function ($variant) use ($currentProduct, $variantIdToExclude) {
+                $sameAttributes = true;
+                foreach ($currentProduct->beeingvariants as $currentVariant) {
+                    if ($currentVariant->variant_id != $variantIdToExclude) {
+                        $matchingVariant = $variant->beeingvariants->firstWhere('variant_id', $currentVariant->variant_id);
+                        if (!$matchingVariant || $matchingVariant->value != $currentVariant->value) {
+                            $sameAttributes = false;
+                            break;
+                        }
+                    }
+                }
+                return $sameAttributes;
+            })->unique();
+        };
+
+        $variantIds = $this->product->beeingvariants->pluck('variant_id')->unique()->sort();
+
+        $variantsGroupedByVariantId = [];
+
+        foreach ($variantIds as $variantId) {
+            $variantsGroupedByVariantId[$variantId] = $filterVariants($allVariants, $this->product, $variantId);
+        }
+
+        return $variantsGroupedByVariantId;
+    }
+
 
 
 
