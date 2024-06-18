@@ -254,6 +254,7 @@
  {{-- Tabs Body (Related) --}}
  <div style="height: calc(100% - 107.5px);" class="tabs__content" id="relatedContent">
   @livewire('related-media-product', ['product' => $product])
+  @livewire('related-variants', ['product' => $product])
   @livewire('related-category-product', ['product' => $product])
   @livewire('related-products', ['product' => $product])
   @livewire('related-spec-product', ['product' => $product])
