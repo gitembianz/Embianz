@@ -128,7 +128,8 @@
             continue;
         }
        @endphp
-       <a class="variant__btn" href="{{ route('product', ['product' => $variant->seo_id !== null && $variant->seo_id !== '' ? $variant->seo_id : $variant->id]) }}">
+       <a class="variant__btn"
+        href="{{ route('product', ['product' => $variant->seo_id !== null && $variant->seo_id !== '' ? $variant->seo_id : $variant->id]) }}">
         @if ($variant->beeingvariants->where('variant_id', $variantId)->first()->displayed == 'image')
          @if ($variant->media->first() != null)
           <img src="/{{ $variant->media->first()->path }}{{ $variant->media->first()->name }}"
@@ -165,32 +166,6 @@
   @endforeach
  @endif
 
- <span class="product__price--title" style="margin-right: auto">Variante</span>
- <div class="product__price">
-  <div class="variant__slider" id="miniSlider">
-   <div class="variant__wrapper" id="miniWrapper">
-    <a class="variant__btn active" href="#"><img src="https://dummyimage.com/25" alt="Variant 1">Variant 1</a>
-    <a class="variant__btn" href="#"><img src="https://dummyimage.com/25" alt="Variant 2">Variant 2</a>
-    <a class="variant__btn" href="#"><img src="https://dummyimage.com/25" alt="Variant 3">Variant 3</a>
-    <a class="variant__btn" href="#"><img src="https://dummyimage.com/25" alt="Variant 4">Variant 4</a>
-    <a class="variant__btn" href="#"><img src="https://dummyimage.com/25" alt="Variant 5">Variant 5</a>
-    <a class="variant__btn" href="#"><img src="https://dummyimage.com/25" alt="Variant 6">Variant 6</a>
-    <a class="variant__btn" href="#"><img src="https://dummyimage.com/25" alt="Variant 7">Variant 7</a>
-    <a class="variant__btn" href="#"><img src="https://dummyimage.com/25" alt="Variant 8">Variant 8</a>
-    <a class="variant__btn" href="#"><img src="https://dummyimage.com/25" alt="Variant 9">Variant 9</a>
-   </div>
-   <button class="variant__navigation variant__left" id="miniNavLeft">
-    <svg>
-     <polyline points="15 18 9 12 15 6"></polyline>
-    </svg>
-   </button>
-   <button class="variant__navigation variant__right" id="miniNavRight">
-    <svg>
-     <polyline points="9 18 15 12 9 6"></polyline>
-    </svg>
-   </button>
-  </div>
- </div>
 
  @if ($price && $product->quantity != 0)
   <button class="card__button" style="width: 100%;height: 40px;" onclick="flyToCart(this)"
