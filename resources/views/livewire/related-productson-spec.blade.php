@@ -415,7 +415,7 @@
 												@if ($editedrow !== $index)
 													{{ $prod->value }}
 												@else
-													<input type="text" required class="table__edit" wire:model="product.{{ $index }}.value">
+													<input type="text" required class="input" wire:model="product.{{ $index }}.value">
 												@endif
 											</td>
 										@endif

@@ -306,7 +306,7 @@
 													@if ($editindex !== $index)
 														{{ $address->first_name }}
 													@else
-														<input type="text" required class="table__edit" wire:model.defer="adress.{{ $index }}.first_name">
+														<input type="text" required class="input" wire:model.defer="adress.{{ $index }}.first_name">
 													@endif
 												</td>
 											@endif
@@ -315,7 +315,7 @@
 													@if ($editindex !== $index)
 														{{ $address->last_name }}
 													@else
-														<input type="text" required class="table__edit" wire:model.defer="adress.{{ $index }}.last_name">
+														<input type="text" required class="input" wire:model.defer="adress.{{ $index }}.last_name">
 													@endif
 												</td>
 											@endif
@@ -324,7 +324,7 @@
 													@if ($editindex !== $index)
 														{{ $address->phone }}
 													@else
-														<input type="phone" required class="table__edit" wire:model.defer="adress.{{ $index }}.phone">
+														<input type="phone" required class="input" wire:model.defer="adress.{{ $index }}.phone">
 													@endif
 												</td>
 											@endif
@@ -333,7 +333,7 @@
 													@if ($editindex !== $index)
 														{{ $address->email }}
 													@else
-														<input type="email" required class="table__edit" wire:model.defer="adress.{{ $index }}.email">
+														<input type="email" required class="input" wire:model.defer="adress.{{ $index }}.email">
 													@endif
 												</td>
 											@endif
@@ -342,7 +342,7 @@
 													@if ($editindex !== $index)
 														{{ $address->address1 }}
 													@else
-														<input type="text" required class="table__edit" wire:model.defer="adress.{{ $index }}.address1">
+														<input type="text" required class="input" wire:model.defer="adress.{{ $index }}.address1">
 													@endif
 
 												</td>
@@ -352,7 +352,7 @@
 													@if ($editindex !== $index)
 														{{ $address->address2 }}
 													@else
-														<input type="text" required class="table__edit" wire:model.defer="adress.{{ $index }}.address2">
+														<input type="text" required class="input" wire:model.defer="adress.{{ $index }}.address2">
 													@endif
 												</td>
 											@endif
@@ -361,7 +361,7 @@
 													@if ($editindex !== $index)
 														{{ $address->country }}
 													@else
-														<input type="text" required class="table__edit" wire:model.defer="adress.{{ $index }}.country">
+														<input type="text" required class="input" wire:model.defer="adress.{{ $index }}.country">
 													@endif
 												</td>
 											@endif
@@ -370,7 +370,7 @@
 													@if ($editindex !== $index)
 														{{ $address->county }}
 													@else
-														<input type="text" required class="table__edit" wire:model.defer="adress.{{ $index }}.county">
+														<input type="text" required class="input" wire:model.defer="adress.{{ $index }}.county">
 													@endif
 												</td>
 											@endif
@@ -379,7 +379,7 @@
 													@if ($editindex !== $index)
 														{{ $address->city }}
 													@else
-														<input type="text" required class="table__edit" wire:model.defer="adress.{{ $index }}.city">
+														<input type="text" required class="input" wire:model.defer="adress.{{ $index }}.city">
 													@endif
 												</td>
 											@endif
@@ -388,7 +388,7 @@
 													@if ($editindex !== $index)
 														{{ $address->zipcode }}
 													@else
-														<input type="text" required class="table__edit" wire:model.defer="adress.{{ $index }}.zipcode">
+														<input type="text" required class="input" wire:model.defer="adress.{{ $index }}.zipcode">
 													@endif
 												</td>
 											@endif

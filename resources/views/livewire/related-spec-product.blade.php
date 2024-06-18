@@ -460,7 +460,7 @@
             @if ($editedrow !== $index)
              {{ $spec->value }}
             @else
-             <input type="text" required class="table__edit"
+             <input type="text" required class="input"
               wire:model="specification.{{ $index }}.value">
             @endif
            </td>
@@ -470,7 +470,7 @@
             @if ($editedrow !== $index)
              {{ $spec->sequence }}
             @else
-             <input type="number" required class="table__edit"
+             <input type="number" required class="input"
               wire:model="specification.{{ $index }}.sequence">
             @endif
            </td>

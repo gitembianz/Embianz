@@ -58,7 +58,7 @@
     {{-- Search Input --}}
     <input class="input input--long" type="text" wire:model.debounce.300ms="search" placeholder="Search...">
     {{-- Refresh Button --}}
-    <button class="button button--secondary button--centered display--desktop" wire:click="$refresh">
+    <button class="button button--secondary button--centered display--desktop" tooltip="Refresh table" tooltip-top wire:click="$refresh">
       <svg>
         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
         <path d="M15 4.55a8 8 0 0 0 -6 14.9m0 -4.45v5h-5" />
@@ -72,7 +72,7 @@
     {{-- Sorting Dropdown --}}
     <div class="dropdown dropdown--right display--desktop" id="sorting__dropdown">
       {{-- Dropdown Button --}}
-      <button class="button button--secondary button--centered" id="sorting__open">
+      <button class="button button--secondary button--centered" tooltip="Sort items in table" tooltip-left id="sorting__open">
         <svg><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 10v-5c0 -1.38 .62 -2 2 -2s2 .62 2 2v5m0 -3h-4" /><path d="M19 21h-4l4 -7h-4" /><path d="M4 15l3 3l3 -3" /><path d="M7 6v12" /></svg>
       </button>
       {{-- Dropdown Content --}}
@@ -90,7 +90,7 @@
     {{-- Visible Dropdown --}}
     <div class="dropdown dropdown--right display--desktop" id="visible__dropdown">
       {{-- Dropdown Button --}}
-      <button class="button button--secondary button--centered" id="visible__open" >
+      <button class="button button--secondary button--centered" tooltip="Show items in table" tooltip-left id="visible__open" >
         <svg>
           <path stroke="none" d="M0 0h24v24H0z" fill="none" />
           <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
@@ -112,7 +112,7 @@
     {{-- Optional Dropdown --}}
     <div class="dropdown dropdown--right display--mobile" id="optional__dropdown">
       {{-- Dropdown Button --}}
-      <button class="button button--secondary button--centered" id="optional__open">
+      <button class="button button--secondary button--centered" tooltip="Show more actions" tooltip-left id="optional__open">
         <svg>
           <path stroke="none" d="M0 0h24v24H0z" fill="none" />
           <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
@@ -193,7 +193,17 @@
                 <td  @if ($inde > count($selectedColumns) - 5) class="hidden" @endif wire:click="expandRow({{ $index }})">
                   @if ($column === 'active')
                     @if ($editeindex !== $index)
-                      {{ $item->active ? 'Active' : 'Inactive' }}
+                      @if ($item->active)
+                      <label class="checkbox checkbox--secondary inline disabled">
+                          <input type="checkbox" disabled checked>
+                          <span></span>
+                        </label>
+                      @else
+                        <label class="checkbox checkbox--secondary inline disabled">
+                          <input type="checkbox" disabled>
+                          <span></span>
+                        </label>
+                      @endif
                     @else
                     <label class="checkbox checkbox--secondary inline">
                       <input type="checkbox" wire:model.defer="isactive.{{ $index }}.active" />
@@ -204,7 +214,7 @@
                     @if ($editeindex !== $index)
                       {{ $item->description }}
                     @else
-                      <input type="text" class="table__edit" wire:model.defer="isactive.{{ $index }}.description">
+                      <input type="text" class="input" wire:model.defer="isactive.{{ $index }}.description">
                     @endif
                   @else
                     {{ $item->$column }}
@@ -268,7 +278,7 @@
                         @else
                           <p>
                             <bold>{{ $column }}:</bold>
-                            <input type="text" class="table__edit" wire:model.defer="isactive.{{ $index }}.description">
+                            <input type="text" class="input" wire:model.defer="isactive.{{ $index }}.description">
                           </p>
                         @endif
                       @else

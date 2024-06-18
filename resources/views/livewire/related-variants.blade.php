@@ -391,7 +391,7 @@
              @if ($editindex !== $index)
               {{ $variant->value }}
              @else
-              <input type="text" class="table__edit" wire:model.defer="var.{{ $index }}.value">
+              <input type="text" class="input" wire:model.defer="var.{{ $index }}.value">
              @endif
             </td>
            @endif
