@@ -256,7 +256,7 @@
                 (time is: {{ now() }}) - Please refresh to update after the edit
                 @endif
               @else
-                <input type="text" class="table__edit" wire:model.defer="element.{{ $index }}.value">
+                <input type="text" class="input" wire:model.defer="element.{{ $index }}.value">
               @endif
               </td>
             @endif
@@ -265,7 +265,7 @@
                 @if ($rowindex !== $index)
                   {{ $label->description }}
                 @else
-                  <textarea class="table__edit" wire:model.defer="element.{{ $index }}.description"></textarea>
+                  <textarea class="input" wire:model.defer="element.{{ $index }}.description"></textarea>
                 @endif
               </td>
             @endif
@@ -329,7 +329,7 @@
                   @else
                     <p>
                       <bold>Value:</bold>
-                      <input type="text" class="table__edit" wire:model.defer="element.{{ $index }}.value">
+                      <input type="text" class="input" wire:model.defer="element.{{ $index }}.value">
                     </p>
                   @endif
                 @endif
@@ -342,7 +342,7 @@
                     @else
                     <p>
                       <bold>Description:</bold>
-                      <textarea class="table__edit" wire:model.defer="element.{{ $index }}.description"></textarea>
+                      <textarea class="input" wire:model.defer="element.{{ $index }}.description"></textarea>
                     </p>
                     @endif
                 @endif

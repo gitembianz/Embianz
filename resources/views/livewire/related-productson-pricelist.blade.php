@@ -518,7 +518,7 @@
             @if ($editedrow !== $index)
              {{ $prod->discount }}%
             @else
-             <input type="number"class="table__edit" wire:model.defer="product.{{ $index }}.discount">
+             <input type="number"class="input" wire:model.defer="product.{{ $index }}.discount">
             @endif
            </td>
           @endif
@@ -527,7 +527,7 @@
             @if ($editedrow !== $index)
              {{ $prod->value_no_vat }}
             @else
-             <input type="text" required class="table__edit"
+             <input type="text" required class="input"
               wire:model.defer="product.{{ $index }}.value">
             @endif
            </td>
@@ -537,7 +537,7 @@
             @if ($editedrow !== $index)
              {{ $prod->vat }}%
             @else
-             <input type="number" required class="table__edit" wire:model.defer="product.{{ $index }}.vat">
+             <input type="number" required class="input" wire:model.defer="product.{{ $index }}.vat">
             @endif
            </td>
           @endif
