@@ -21,32 +21,66 @@
 
 
 
-  {{-- Navigation --}}
-  <nav class="nav--controls">
-    <h1 class="table--name">Product: {{ $product->name }}</h1>
-    {{-- Refresh Button --}}
-    <a class="button button--secondary button--centered" tooltip="Back to Products" tooltip-top href="{{ url('all_products') }}">
-      <svg><polyline points="15 18 9 12 15 6"></polyline></svg>
-    </a>
-    <a class="button button--secondary button--centered" tooltip="Create new Product" tooltip-top href="{{ url('add_product') }}">
-      <svg><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
-    </a>
-    @if ($editproduct === null)
-      <button class="button button--secondary button--centered" tooltip="Edit this Product" tooltip-left wire:click.prevent="editproduct()">
-        <svg><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" /><path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" /><path d="M16 5l3 3" /></svg>
-      </button>
-    @else
-      <button class="button button--secondary button--centered" tooltip="Save Edit" tooltip-left wire:click.prevent="saveproduct()">
-        <svg><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" /><path d="M9 15l2 2l4 -4" /></svg>
-      </button>
-      <button class="button button--secondary button--centered" tooltip="Cancel edit" tooltip-left wire:click.prevent="cancelproduct()">
-        <svg><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2" /><path d="M10 12l4 5" /><path d="M10 17l4 -5" /></svg>
-      </button>
-    @endif
-    <button class="button button--secondary button--centered" tooltip="Delete this Product" tooltip-left wire:click.prevent="confirmProductRemoval({{ $product->id }})">
-      <svg><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" /><path d="M9 14l6 0" /></svg>
-    </button>
-  </nav>
+ {{-- Navigation --}}
+ <nav class="nav--controls">
+  <h1 class="table--name">Product: {{ $product->name }}</h1>
+  {{-- Refresh Button --}}
+  <a class="button button--secondary button--centered" tooltip="Back to Products" tooltip-top
+   href="{{ url('all_products') }}">
+   <svg>
+    <polyline points="15 18 9 12 15 6"></polyline>
+   </svg>
+  </a>
+  <a class="button button--secondary button--centered" tooltip="Create new Product" tooltip-top
+   href="{{ url('add_product') }}">
+   <svg>
+    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+    <polyline points="14 2 14 8 20 8"></polyline>
+    <line x1="12" y1="18" x2="12" y2="12"></line>
+    <line x1="9" y1="15" x2="15" y2="15"></line>
+   </svg>
+  </a>
+  @if ($editproduct === null)
+   <button class="button button--secondary button--centered" tooltip="Edit this Product" tooltip-left
+    wire:click.prevent="editproduct()">
+    <svg>
+     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+     <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+     <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+     <path d="M16 5l3 3" />
+    </svg>
+   </button>
+  @else
+   <button class="button button--secondary button--centered" tooltip="Save Edit" tooltip-left
+    wire:click.prevent="saveproduct()">
+    <svg>
+     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+     <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+     <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />
+     <path d="M9 15l2 2l4 -4" />
+    </svg>
+   </button>
+   <button class="button button--secondary button--centered" tooltip="Cancel edit" tooltip-left
+    wire:click.prevent="cancelproduct()">
+    <svg>
+     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+     <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+     <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2" />
+     <path d="M10 12l4 5" />
+     <path d="M10 17l4 -5" />
+    </svg>
+   </button>
+  @endif
+  <button class="button button--secondary button--centered" tooltip="Delete this Product" tooltip-left
+   wire:click.prevent="confirmProductRemoval({{ $product->id }})">
+   <svg>
+    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+    <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+    <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />
+    <path d="M9 14l6 0" />
+   </svg>
+  </button>
+ </nav>
 
 
 
@@ -72,6 +106,8 @@
    @endif
    <label for="product__name">Name</label>
   </div>
+
+
 
   {{-- Product Active && IsNew --}}
   <div class="details__checkboxes">
@@ -105,6 +141,20 @@
     @endif
    </div>
    {{-- Product IsNew --}}
+  </div>
+
+  {{-- Product Type --}}
+  <div class="input__tabs">
+   @if ($editproduct === null)
+    <span class="disabled">{{ $product->type }}</span>
+   @else
+    <select wire:model.defer="prod.type">
+     <option value="parrent">parrent</option>
+     <option value="standard">standard</option>
+     <option value="variant">variant</option>
+    </select>
+   @endif
+   <label for="product__name">Type</label>
   </div>
 
   {{-- Product Quantity --}}
@@ -147,6 +197,16 @@
    <label for="product__name">EAN</label>
   </div>
 
+  {{-- Product Short Description --}}
+  <div class="input__tabs">
+   @if ($editproduct === null)
+    <span class="disabled">{{ $product->short_description }}</span>
+   @else
+    <input type="text" placeholder=" " name="product__name" wire:model.defer="prod.short_description" required>
+   @endif
+   <label for="product__name">Short Description</label>
+  </div>
+
   {{-- Product Start Date --}}
   <div class="input__tabs">
    @if ($editproduct === null)
@@ -177,15 +237,7 @@
    <label for="product__name">Meta Description</label>
   </div>
 
-  {{-- Product Short Description --}}
-  <div class="input__tabs details__long">
-   @if ($editproduct === null)
-    <span class="disabled">{{ $product->short_description }}</span>
-   @else
-    <input type="text" placeholder=" " name="product__name" wire:model.defer="prod.short_description" required>
-   @endif
-   <label for="product__name">Short Description</label>
-  </div>
+
 
   {{-- Product Long Description --}}
   <div class="textarea__tabs details__long">
