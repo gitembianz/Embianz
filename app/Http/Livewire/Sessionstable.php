@@ -12,7 +12,7 @@ class Sessionstable extends Component
     use WithPagination;
 
     public $tableName;
-    public $loadAmount = 10;
+    public $loadAmount = 20;
     public $columns;
     public $search = '';
     public $selectedColumns;
@@ -24,15 +24,16 @@ class Sessionstable extends Component
     public $idbeingremoved = null;
     public $single = false;
     public $multiple = false;
-    public $row =null;
+    public $row = null;
 
-    public function expandRow($index){
-        if($this->row  === null){
-          $this->row = $index ;
-        }elseif ($this->row != $index){
-          $this->row = $index ;
-        }else{
-          $this->row = null ;
+    public function expandRow($index)
+    {
+        if ($this->row  === null) {
+            $this->row = $index;
+        } elseif ($this->row != $index) {
+            $this->row = $index;
+        } else {
+            $this->row = null;
         }
     }
 
@@ -99,8 +100,7 @@ class Sessionstable extends Component
                         ->orWhere('last_activity', 'like', '%' . $this->search . '%');
                 })
                 ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')
-                ->limit($this->loadAmount)
-                ->get();
+                ->paginate($this->loadAmount);
         } else {
             return collect();
         }
@@ -137,15 +137,16 @@ class Sessionstable extends Component
     }
     public function confirmItemRemoval($id)
     {
-      $this->idbeingremoved = $id;
-      $this->single = true;
+        $this->idbeingremoved = $id;
+        $this->single = true;
     }
     public function confirmItemsRemoval()
     {
-      $this->multiple = true;
+        $this->multiple = true;
     }
-    public function cancel_delete(){
-      $this->multiple = false;
-      $this->single = false;
+    public function cancel_delete()
+    {
+        $this->multiple = false;
+        $this->single = false;
     }
 }

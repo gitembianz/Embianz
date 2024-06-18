@@ -25,18 +25,19 @@ class Categoriestable extends Component
   public $col = false;
   public $all = false;
   public $columns;
-  public $row =null;
+  public $row = null;
   public $single = false;
   public $multiple = false;
 
-  public function expandRow($index){
-      if($this->row  === null){
-        $this->row = $index ;
-      }elseif ($this->row != $index){
-        $this->row = $index ;
-      }else{
-        $this->row = null ;
-      }
+  public function expandRow($index)
+  {
+    if ($this->row  === null) {
+      $this->row = $index;
+    } elseif ($this->row != $index) {
+      $this->row = $index;
+    } else {
+      $this->row = null;
+    }
   }
 
   public function render()
@@ -91,7 +92,7 @@ class Categoriestable extends Component
   }
   public function getCategoriesProperty()
   {
-    return $this->categoriesQuery->limit($this->loadAmount)->get();
+    return $this->categoriesQuery->paginate($this->loadAmount);
   }
   public function loadMore()
   {
@@ -186,7 +187,8 @@ class Categoriestable extends Component
   {
     $this->multiple = true;
   }
-  public function cancel_delete(){
+  public function cancel_delete()
+  {
     $this->multiple = false;
     $this->single = false;
   }

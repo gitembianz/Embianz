@@ -77,7 +77,7 @@ class Priceliststable extends Component
   }
   public function getPricelistsProperty()
   {
-    return $this->pricelistsQuery->limit($this->loadAmount)->get();
+    return $this->pricelistsQuery->paginate($this->loadAmount);
   }
   public function getPricelistsQueryProperty()
   {
@@ -135,7 +135,8 @@ class Priceliststable extends Component
   {
     $this->multiple = true;
   }
-  public function cancel_delete(){
+  public function cancel_delete()
+  {
     $this->multiple = false;
     $this->single = false;
   }
