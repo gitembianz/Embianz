@@ -500,8 +500,4 @@
       </button>
     @endif
   </div>
-
-
-  {{-- Script for Accordions --}}
-
 </div>
