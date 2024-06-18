@@ -334,7 +334,7 @@
   justify-content: flex-start;
   flex-shrink: 1;
   gap: 5px;
-  background: darken($accentText, 10%);
+  // background: darken($accentText, 5%);
   border-radius: 3px;
   padding: 6px;
   text-decoration: none;
@@ -346,8 +346,8 @@
   transition: all 0.3s ease;
 
   & > img {
-    width: calc(35px - 6px);
-    height: calc(35px - 6px);
+    width: calc(35px - 3px);
+    height: calc(35px - 3px);
     border-radius: 50%;
     aspect-ratio: 1 / 1;
   }
@@ -359,8 +359,7 @@
     scale: 0.9;
   }
   &.active {
-    background: $lightBlack;
-    color: $accentText;
+    border: 1.5px solid $lightBlack;
   }
 }
 // Navigation
