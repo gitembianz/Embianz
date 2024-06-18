@@ -23,13 +23,26 @@ class RelatedAddresses extends Component
     public $accountId;
     public $col = false;
     public $all = false;
-    public $removedid = null;
+    public $idbeingremoved = null;
     public $columns = ['Id', 'First Name', 'Last Name', 'Phone', 'Email', 'Address', 'Optional Address', 'Country', 'County', 'City', 'Post Code', 'Type', 'Created At', 'Updated At'];
     public $selectedColumns = [];
     public $account;
     public $adress = [];
     public $editindex;
+    public $row =null;
+    public $single = false;
+    public $multiple = false;
 
+
+    public function expandRow($index){
+        if($this->row  === null){
+          $this->row = $index ;
+        }elseif ($this->row != $index){
+          $this->row = $index ;
+        }else{
+          $this->row = null ;
+        }
+    }
 
     //related subcatecory functions
     public function showColumn($column)
@@ -166,16 +179,13 @@ class RelatedAddresses extends Component
         return Address::search($this->search)->where('account_id', $this->accountId)
             ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc');
     }
-    public function confirmItemRemoval($id)
-    {
-        $this->removedid = $id;
-        $this->dispatchBrowserEvent('show-delete-modal');
-    }
+
     public function deleteSingleRecord()
     {
-        $record = Address::findOrFail($this->removedid);
+        $record = Address::findOrFail($this->idbeingremoved);
         $record->delete();
-        $this->checked = array_diff($this->checked, [$this->removedid]);
+        $this->checked = array_diff($this->checked, [$this->idbeingremoved]);
+        $this->single = false;
         session()->flash('notification', [
             'message' => 'Record deleted successfully!',
             'type' => 'success',
@@ -193,15 +203,25 @@ class RelatedAddresses extends Component
 
         $this->checked = [];
         $this->selectPage = false;
+        $this->multiple = false;
         session()->flash('notification', [
             'message' => 'Records deleted successfully!',
             'type' => 'success',
             'title' => 'Success'
         ]);
     }
+    public function confirmItemRemoval($id)
+    {
+      $this->idbeingremoved = $id;
+      $this->single = true;
+    }
     public function confirmItemsRemoval()
     {
-        $this->dispatchBrowserEvent('show-delete-modal-multiple');
+      $this->multiple = true;
+    }
+    public function cancel_delete(){
+      $this->multiple = false;
+      $this->single = false;
     }
     public function render()
     {

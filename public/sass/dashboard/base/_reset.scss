@@ -45,6 +45,7 @@ svg {
   stroke-linecap: round;
   stroke-linejoin: round;
   transform: scale(0.9);
+  transition: $transition-fast;
 }
 
 
