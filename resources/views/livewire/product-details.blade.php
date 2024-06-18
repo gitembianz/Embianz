@@ -128,8 +128,7 @@
             continue;
         }
        @endphp
-       <a class="variant__btn"
-        href="{{ route('product', ['product' => $variant->seo_id !== null && $variant->seo_id !== '' ? $variant->seo_id : $variant->id]) }}">
+       <a class="variant__btn" href="{{ route('product', ['product' => $variant->seo_id !== null && $variant->seo_id !== '' ? $variant->seo_id : $variant->id]) }}">
         @if ($variant->beeingvariants->where('variant_id', $variantId)->first()->displayed == 'image')
          @if ($variant->media->first() != null)
           <img src="/{{ $variant->media->first()->path }}{{ $variant->media->first()->name }}"
