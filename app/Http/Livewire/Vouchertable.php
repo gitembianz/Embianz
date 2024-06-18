@@ -25,28 +25,26 @@ class Vouchertable extends Component
   public $editindex;
   public $voucher = [];
   public $statuses;
-  public $row =null;
+  public $row = null;
   public $single = false;
   public $multiple = false;
-
-  public function expandRow($index){
-      if($this->row  === null){
-        $this->row = $index ;
-      }elseif ($this->row != $index){
-        $this->row = $index ;
-      }else{
-        $this->row = null ;
-      }
-  }
-
+  public $idbeingremoved = null;
   protected $listeners = ['loadMore' => 'loadMore'];
-
-  public $itemidbeingremoved = null;
 
   public function render()
   {
     $vouchers = $this->vouchers;
     return view('livewire.vouchertable', compact('vouchers'));
+  }
+  public function expandRow($index)
+  {
+    if ($this->row  === null) {
+      $this->row = $index;
+    } elseif ($this->row != $index) {
+      $this->row = $index;
+    } else {
+      $this->row = null;
+    }
   }
   public function mount($tableName)
   {
@@ -55,7 +53,7 @@ class Vouchertable extends Component
   }
   public function getVouchersProperty()
   {
-    return $this->vouchersQuery->limit($this->loadAmount)->get();
+    return $this->vouchersQuery->paginate($this->loadAmount);
   }
   public function getVouchersQueryProperty()
   {
@@ -63,9 +61,6 @@ class Vouchertable extends Component
   }
   public function showColumn($column)
   {
-    if ($column === 'name') {
-      return true;
-    }
     return in_array($column, $this->selectedColumns);
   }
   public function updatedSelectPage($value)
@@ -96,7 +91,6 @@ class Vouchertable extends Component
       $index . '.end_date' => $record->end_date,
     ];
   }
-
   public function saveitem($index, $id)
   {
     $record = $this->voucher[$index] ?? null;
@@ -144,9 +138,6 @@ class Vouchertable extends Component
     $this->editindex = null;
     $this->voucher = [];
   }
-
-
-
   public function canceledit()
   {
     $this->editindex = null;
@@ -202,7 +193,8 @@ class Vouchertable extends Component
   {
     $this->multiple = true;
   }
-  public function cancel_delete(){
+  public function cancel_delete()
+  {
     $this->multiple = false;
     $this->single = false;
   }

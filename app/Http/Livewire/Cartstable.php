@@ -26,24 +26,24 @@ class Cartstable extends Component
   public $col = false;
   public $all = false;
   public $idbeingremoved = null;
-  public $row =null;
+  public $row = null;
   public $single = false;
   public $multiple = false;
-
-  public function expandRow($index){
-      if($this->row  === null){
-        $this->row = $index ;
-      }elseif ($this->row != $index){
-        $this->row = $index ;
-      }else{
-        $this->row = null ;
-      }
-  }
 
   public function render()
   {
     $carts = $this->carts;
     return view('livewire.cartstable', compact('carts'));
+  }
+  public function expandRow($index)
+  {
+    if ($this->row  === null) {
+      $this->row = $index;
+    } elseif ($this->row != $index) {
+      $this->row = $index;
+    } else {
+      $this->row = null;
+    }
   }
   public function mount($tableName)
   {
@@ -53,7 +53,7 @@ class Cartstable extends Component
   }
   public function getCartsProperty()
   {
-    return $this->cartsQuery->limit($this->loadAmount)->get();
+    return $this->cartsQuery->paginate($this->loadAmount);
   }
   public function getCartsQueryProperty()
   {
@@ -142,7 +142,8 @@ class Cartstable extends Component
   {
     $this->multiple = true;
   }
-  public function cancel_delete(){
+  public function cancel_delete()
+  {
     $this->multiple = false;
     $this->single = false;
   }

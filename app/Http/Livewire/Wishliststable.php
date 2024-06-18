@@ -13,7 +13,7 @@ class Wishliststable extends Component
     use WithPagination;
 
     public $tableName;
-    public $loadAmount = 10;
+    public $loadAmount = 100;
     public $columns;
     public $search = '';
     public $selectedColumns;
@@ -25,15 +25,16 @@ class Wishliststable extends Component
     public $idbeingremoved = null;
     public $single = false;
     public $multiple = false;
-    public $row =null;
+    public $row = null;
 
-    public function expandRow($index){
-        if($this->row  === null){
-          $this->row = $index ;
-        }elseif ($this->row != $index){
-          $this->row = $index ;
-        }else{
-          $this->row = null ;
+    public function expandRow($index)
+    {
+        if ($this->row  === null) {
+            $this->row = $index;
+        } elseif ($this->row != $index) {
+            $this->row = $index;
+        } else {
+            $this->row = null;
         }
     }
 
@@ -99,8 +100,7 @@ class Wishliststable extends Component
             DB::raw('MIN(created_at) as earliest_created_at')
         )
             ->groupBy('session_id')
-            ->limit($this->loadAmount)
-            ->get();
+            ->paginate($this->loadAmount);
     }
     public function loadMore()
     {
@@ -114,7 +114,7 @@ class Wishliststable extends Component
             $item->delete();
         }
         $this->checked = array_diff($this->checked, [$this->idbeingremoved]);
-      $this->single = false;
+        $this->single = false;
 
         session()->flash('notification', [
             'message' => 'Record deleted successfully!',
@@ -124,16 +124,17 @@ class Wishliststable extends Component
     }
     public function confirmItemRemoval($id)
     {
-      $this->idbeingremoved = $id;
-      $this->single = true;
+        $this->idbeingremoved = $id;
+        $this->single = true;
     }
     public function confirmItemsRemoval()
     {
-      $this->multiple = true;
+        $this->multiple = true;
     }
-    public function cancel_delete(){
-      $this->multiple = false;
-      $this->single = false;
+    public function cancel_delete()
+    {
+        $this->multiple = false;
+        $this->single = false;
     }
     public function deleteRecords()
     {

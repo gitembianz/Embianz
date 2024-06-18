@@ -29,18 +29,19 @@ class Productstable extends Component
   public $selectedColumns = [];
   public $col = false;
   public $all = false;
-  public $row =null;
+  public $row = null;
   public $single = false;
   public $multiple = false;
 
-  public function expandRow($index){
-      if($this->row  === null){
-        $this->row = $index ;
-      }elseif ($this->row != $index){
-        $this->row = $index ;
-      }else{
-        $this->row = null ;
-      }
+  public function expandRow($index)
+  {
+    if ($this->row  === null) {
+      $this->row = $index;
+    } elseif ($this->row != $index) {
+      $this->row = $index;
+    } else {
+      $this->row = null;
+    }
   }
 
   public function render()
@@ -90,7 +91,7 @@ class Productstable extends Component
   }
   public function getProductsProperty()
   {
-    return $this->productsQuery->limit($this->loadAmount)->get();
+    return $this->productsQuery->paginate($this->loadAmount);
   }
   public function getProductsQueryProperty()
   {
@@ -169,7 +170,6 @@ class Productstable extends Component
       'type' => 'success',
       'title' => 'Success'
     ]);
-
   }
   public function deleteSingleRecord()
   {
@@ -228,7 +228,6 @@ class Productstable extends Component
       'type' => 'success',
       'title' => 'Success'
     ]);
-
   }
   public function confirmItemRemoval($id)
   {
@@ -239,7 +238,8 @@ class Productstable extends Component
   {
     $this->multiple = true;
   }
-  public function cancel_delete(){
+  public function cancel_delete()
+  {
     $this->multiple = false;
     $this->single = false;
   }

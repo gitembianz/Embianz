@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Schema;
 class Specstable extends Component
 {
   use WithPagination;
-  public $loadAmount = 10;
+  public $loadAmount = 20;
   public $search = '';
   public $orderBy = 'id';
   public $orderAsc = true;
@@ -25,16 +25,17 @@ class Specstable extends Component
   public $tableName;
   public $single = false;
   public $multiple = false;
-  public $row =null;
+  public $row = null;
 
-  public function expandRow($index){
-      if($this->row  === null){
-        $this->row = $index ;
-      }elseif ($this->row != $index){
-        $this->row = $index ;
-      }else{
-        $this->row = null ;
-      }
+  public function expandRow($index)
+  {
+    if ($this->row  === null) {
+      $this->row = $index;
+    } elseif ($this->row != $index) {
+      $this->row = $index;
+    } else {
+      $this->row = null;
+    }
   }
 
   public function render()
@@ -94,7 +95,7 @@ class Specstable extends Component
   }
   public function getSpecsProperty()
   {
-    return $this->specsQuery->limit($this->loadAmount)->get();
+    return $this->specsQuery->paginate($this->loadAmount);
   }
   public function getSpecsQueryProperty()
   {
@@ -153,7 +154,8 @@ class Specstable extends Component
   {
     $this->multiple = true;
   }
-  public function cancel_delete(){
+  public function cancel_delete()
+  {
     $this->multiple = false;
     $this->single = false;
   }
