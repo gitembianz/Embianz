@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\Store_Settings;
 use App\Models\Account;
 use App\Models\Voucher;
 use Illuminate\Http\Request;
@@ -75,6 +76,37 @@ class AdminController extends Controller
   {
     $data = CustomScript::find($id);
     return view('admin.show_script', compact('data'));
+  }
+
+  public function store_setting(Request $request)
+  {
+    if (!$request->filled('description') || !$request->filled('parameter') || !$request->filled('value')) {
+      return redirect()->back()->withInput()->with([
+        'notification' => [
+          'message' => 'Please fill all imputs!',
+          'type' => 'error',
+          'title' => 'Something went wrong'
+        ],
+      ]);
+    }
+    $values = array(
+      "parameter" => $request->parameter,
+      "value" => $request->value,
+      "description" => $request->description,
+      "createdby" => Auth::user()->name,
+      "lastmodifiedby" => Auth::user()->name,
+      "created_at" => now(),
+      "updated_at" => now()
+
+    );
+
+    Store_Settings::insert($values);
+    Cache::forget('global_variables');
+    return redirect()->back()->with('notification', [
+      'message' => 'Record added successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
   }
 
   public function store_script(Request $request)
