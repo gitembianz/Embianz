@@ -30,15 +30,16 @@ class CustomScriptsTable extends Component
     public $columns;
     public $single = false;
     public $multiple = false;
-    public $row =null;
+    public $row = null;
 
-    public function expandRow($index){
-        if($this->row  === null){
-          $this->row = $index ;
-        }elseif ($this->row != $index){
-          $this->row = $index ;
-        }else{
-          $this->row = null ;
+    public function expandRow($index)
+    {
+        if ($this->row  === null) {
+            $this->row = $index;
+        } elseif ($this->row != $index) {
+            $this->row = $index;
+        } else {
+            $this->row = null;
         }
     }
 
@@ -100,14 +101,14 @@ class CustomScriptsTable extends Component
     {
         $this->loadAmount += 10;
     }
-    public function getCustomscriptsQueryProperty(){
-      return CustomScript::search($this->search)
-            ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->limit($this->loadAmount);
+    public function getCustomscriptsQueryProperty()
+    {
+        return CustomScript::search($this->search)
+            ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc');
     }
     public function getCustomscriptsProperty()
     {
-return $this->customscriptsQuery->get();
-
+        return $this->customscriptsQuery->paginate($this->loadAmount);
     }
     public function deleteRecords()
     {
@@ -141,16 +142,17 @@ return $this->customscriptsQuery->get();
     }
     public function confirmItemRemoval($id)
     {
-      $this->idbeingremoved = $id;
-      $this->single = true;
+        $this->idbeingremoved = $id;
+        $this->single = true;
     }
     public function confirmItemsRemoval()
     {
-      $this->multiple = true;
+        $this->multiple = true;
     }
-    public function cancel_delete(){
-      $this->multiple = false;
-      $this->single = false;
+    public function cancel_delete()
+    {
+        $this->multiple = false;
+        $this->single = false;
     }
     public function isChecked($id)
     {

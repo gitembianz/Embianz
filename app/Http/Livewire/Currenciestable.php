@@ -23,15 +23,16 @@ class Currenciestable extends Component
     public $selectAll = false;
     public $editeindex = null;
     public $details = [];
-    public $row =null;
+    public $row = null;
 
-    public function expandRow($index){
-        if($this->row  === null){
-          $this->row = $index ;
-        }elseif ($this->row != $index){
-          $this->row = $index ;
-        }else{
-          $this->row = null ;
+    public function expandRow($index)
+    {
+        if ($this->row  === null) {
+            $this->row = $index;
+        } elseif ($this->row != $index) {
+            $this->row = $index;
+        } else {
+            $this->row = null;
         }
     }
 
@@ -93,7 +94,7 @@ class Currenciestable extends Component
     public function getCurrenciesProperty()
     {
         return Currency::search($this->search)
-            ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->limit($this->loadAmount)->get();
+            ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->paginate($this->loadAmount);
     }
     public function isChecked($id)
     {
