@@ -132,6 +132,17 @@
     }
   }
 
+  & input, select, textarea {
+    min-width: 150px;
+    width: 100%;
+    height: $height;
+    vertical-align: middle;
+    resize: none;
+    font-size: $font-size-sm;
+    line-height: unset;
+    padding: 0 $padding;
+  }
+
   & td,
   & th {
     border: none;

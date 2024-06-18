@@ -528,7 +528,7 @@
              @if ($editedrow !== $index)
               {{ $prices->discount }}%
              @else
-              <input type="number" required class="table__edit"
+              <input type="number" required class="input"
                wire:model.defer="pricelist.{{ $index }}.discount">
              @endif
             </td>
@@ -538,7 +538,7 @@
              @if ($editedrow !== $index)
               {{ $prices->value_no_vat }}
              @else
-              <input type="text" required class="table__edit"
+              <input type="text" required class="input"
                wire:model.defer="pricelist.{{ $index }}.value">
              @endif
             </td>
@@ -548,7 +548,7 @@
              @if ($editedrow !== $index)
               {{ $prices->vat }}%
              @else
-              <input type="number" required class="table__edit"
+              <input type="number" required class="input"
                wire:model.defer="pricelist.{{ $index }}.vat">
              @endif
             </td>

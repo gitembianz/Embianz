@@ -93,7 +93,7 @@
 													<td class="wid-2">{{ $media->getClientOriginalName() }}</td>
 													<td class="wid-1">{{ $media->getSize() }} KB</td>
 													<td class="wid-1">{{ $media->getClientOriginalExtension() }}</td>
-													<td class="wid-1"><input type="number" class="table__edit" placeholder="Media sequence" min="0" required wire:model="file_sequences.{{ $index }}"></td>
+													<td class="wid-1"><input type="number" class="input" placeholder="Media sequence" min="0" required wire:model="file_sequences.{{ $index }}"></td>
 													<td class="wid-1">
 														<div class="table__buttons">
 															<button class="edit" wire:click.prevent="removemedia({{ $index }})">
@@ -160,13 +160,13 @@
 											@for ($i = 0; $i <= $row; $i++)
 												<tr>
 													<td class="wid-3">
-														<input required type="text" placeholder="Media name" class="table__edit" wire:model="file_name.{{ $i }}">
+														<input required type="text" placeholder="Media name" class="input" wire:model="file_name.{{ $i }}">
 													</td>
 													<td class="wid-1">
-														<input required placeholder="Ex: 1,2,3.." required type="number" min="0" class="table__edit" wire:model="file_sequences.{{ $i }}">
+														<input required placeholder="Ex: 1,2,3.." required type="number" min="0" class="input" wire:model="file_sequences.{{ $i }}">
 													</td>
 													<td class="wid-4">
-														<input required placeholder="Media external link" type="url" class="table__edit" wire:model="file_link.{{ $i }}">
+														<input required placeholder="Media external link" type="url" class="input" wire:model="file_link.{{ $i }}">
 													</td>
 													<td class="wid-1">
 														<div class="table__buttons">
@@ -384,7 +384,7 @@
 												@if ($editedMediaIndex !== $index)
 													<div>{{ $file->name }}</div>
 												@else
-													<input type="text" class="table__edit" wire:model.defer="filess.{{ $index }}.name" value="{{ $file->name }}">
+													<input type="text" class="input" wire:model.defer="filess.{{ $index }}.name" value="{{ $file->name }}">
 												@endif
 											</td>
 										@endif
@@ -393,7 +393,7 @@
 												@if ($editedMediaIndex !== $index)
 													<div>{{ $file->sequence }}</div>
 												@else
-													<input type="number" min="0" required class="table__edit" wire:model.defer="filess.{{ $index }}.sequence">
+													<input type="number" min="0" required class="input" wire:model.defer="filess.{{ $index }}.sequence">
 												@endif
 											</td>
 										@endif

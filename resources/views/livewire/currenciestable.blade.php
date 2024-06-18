@@ -196,13 +196,13 @@
                     @if ($editeindex !== $index)
                       {{ $item->name }}
                     @else
-                      <input type="text" class="table__edit" wire:model.defer="details.{{ $index }}.name">
+                      <input type="text" class="input" wire:model.defer="details.{{ $index }}.name">
                     @endif
                   @elseif($column === 'symbol')
                     @if ($editeindex !== $index)
                       {{ $item->symbol }}
                     @else
-                      <input type="text" class="table__edit" wire:model.defer="details.{{ $index }}.symbol">
+                      <input type="text" class="input" wire:model.defer="details.{{ $index }}.symbol">
                     @endif
                   @else
                     {{ $item->$column }}
@@ -248,7 +248,7 @@
                         @else
                           <p>
                             <bold>{{ $column }}:</bold>
-                            <input type="text" class="table__edit" wire:model.defer="details.{{ $index }}.name">
+                            <input type="text" class="input" wire:model.defer="details.{{ $index }}.name">
                           </p>
                         @endif
                       @elseif($column === 'symbol')
@@ -260,7 +260,7 @@
                         @else
                           <p>
                             <bold>{{ $column }}:</bold>
-                            <input type="text" class="table__edit" wire:model.defer="details.{{ $index }}.symbol">
+                            <input type="text" class="input" wire:model.defer="details.{{ $index }}.symbol">
                           </p>
                         @endif
                       @else

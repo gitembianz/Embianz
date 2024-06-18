@@ -95,10 +95,10 @@
 													<td class="wid-1">{{ $media->getSize() }} KB</td>
 													<td class="wid-1">{{ $media->getClientOriginalExtension() }}</td>
 													<td class="wid-1">
-														<input type="number" class="table__edit" placeholder="Media sequence ex: 1,2..." min="0" required wire:model.defer="file_sequences.{{ $index }}">
+														<input type="number" class="input" placeholder="Media sequence ex: 1,2..." min="0" required wire:model.defer="file_sequences.{{ $index }}">
 													</td>
 													<td class="wid-1">
-														<input type="checkbox" class="table__edit" wire:model.defer="file_resize.{{ $index }}">
+														<input type="checkbox" class="input" wire:model.defer="file_resize.{{ $index }}">
 													</td>
 													<td class="wid-1">
 														<div class="table__buttons">
@@ -168,16 +168,16 @@
 											@for ($i = 0; $i <= $row; $i++)
 												<tr>
 													<td class="wid-2">
-														<input required placeholder="Media name" type="text" class="table__edit" wire:model="file_name.{{ $i }}">
+														<input required placeholder="Media name" type="text" class="input" wire:model="file_name.{{ $i }}">
 													</td>
 													<td class="wid-1">
-														<input placeholder="Ex: 1,2,3.." required type="number" min="0" class="table__edit" wire:model="file_sequences.{{ $i }}">
+														<input placeholder="Ex: 1,2,3.." required type="number" min="0" class="input" wire:model="file_sequences.{{ $i }}">
 													</td>
 													<td class="wid-5">
-														<input placeholder="Media external link" required type="url" class="table__edit" wire:model="file_link.{{ $i }}">
+														<input placeholder="Media external link" required type="url" class="input" wire:model="file_link.{{ $i }}">
 													</td>
 													<td class="wid-1">
-														<input type="checkbox" class="table__edit" wire:model.defer="file_resize.{{ $i }}">
+														<input type="checkbox" class="input" wire:model.defer="file_resize.{{ $i }}">
 													</td>
 													<td class="wid-1">
 														<div class="table__buttons">
@@ -374,7 +374,7 @@
 													@if ($editedMediaIndex !== $index)
 														{{ $file->name }}
 													@else
-														<input type="text" class="table__edit" wire:model.defer="filess.{{ $index }}.name" value="{{ $file->name }}">
+														<input type="text" class="input" wire:model.defer="filess.{{ $index }}.name" value="{{ $file->name }}">
 													@endif
 												</td>
 											@endif
@@ -383,7 +383,7 @@
 													@if ($editedMediaIndex !== $index)
 														{{ $file->sequence }}
 													@else
-														<input type="number" min="0" required class="table__edit" wire:model.defer="filess.{{ $index }}.sequence" value="{{ $file->sequence }}">
+														<input type="number" min="0" required class="input" wire:model.defer="filess.{{ $index }}.sequence" value="{{ $file->sequence }}">
 													@endif
 												</td>
 											@endif
