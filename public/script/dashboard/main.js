@@ -23,5 +23,3 @@ opener('checked__dropdown', 'checked__open', true);
 
 /// Tabs (Show Table)
 tabs('detailsButton','relatedButton','detailsContent','relatedContent');
-
-

@@ -1,461 +1,507 @@
-<div>
-	<x-alert />
-	<x-loading />
-	<div class="accordion">
-		<div class="accordion__btn-flex">
-			<button class="accordion__btn" wire:click.prevent="@if ($showrelatedadd === false) $set('showrelatedadd', true) @else $set('showrelatedadd', false) @endif">
-				{{ __("Addresses ") }}({{ $account->addresses()->count() }})
-			</button>
-			<button class="accordion__upload">
-				<svg>
+<div class="accordion @if ($showrelatedadd) active @endif" id="accordion__addresses">
+  {{-- Delete Record OR Records --}}
+  <aside>
+    <div class="background background--center @if($single || $multiple) active @endif"></div>
+    <div class="aside aside--confirm @if($single || $multiple) active @endif">
+      <span>
+        @if($single)
+        Are you sure to delete this record?
+        @else
+        Are you sure to delete those records?
+        @endif
+      </span>
+      @if($single)
+      <button class="button button--primary button--long" wire:click="deleteSingleRecord">
+        <span>Delete</span>
+      </button>
+      @else
+      <button class="button button--primary button--long" wire:click="deleteRecords()">
+        <span>Delete</span>
+      </button>
+      @endif
+      <button class="button button--danger button--long" wire:click="cancel_delete()">
+        <span>Cancel</span>
+      </button>
+    </div>
+  </aside>
+
+
+  {{-- Accordion Header --}}
+  <div class="accordion__header">
+    <button class="button button--flexed button--fill button--primary @if ($showrelatedadd) button--secondary active @endif" wire:click.prevent="@if ($showrelatedadd === false) $set('showrelatedadd', true) @else $set('showrelatedadd', false) @endif">
+      {{ __("Addresses ") }}({{ $account->addresses()->count() }})
+      <svg><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </button>
+    <!-- <button class="button button--secondary">
+        <svg>
 					<line x1="12" y1="5" x2="12" y2="19"></line>
 					<line x1="5" y1="12" x2="19" y2="12"></line>
 				</svg>
-			</button>
-		</div>
-		@if ($showrelatedadd)
-			<div class="accordion__content">
-				@if ($account->addresses()->count() > 0)
-					<div class="panel__header">
-						<input class="panel__header--input" type="text" wire:model.debounce.300ms="search" placeholder="Search..." style="grid-column: 1/4">
-						<div class="panel__header--bundle">
-							<div class="dropdown">
-								<button wire:click.prevent="@if ($col === false) $set('col', true) @else $set('col', false) @endif" class="dropdown-button">
-									Columns
-								</button>
-								@if ($col)
-									<div class="dropdown-list" style="display: flex;">
-										@foreach ($columns as $column)
-											<div class="dropdown-item">
-												<input type="checkbox" wire:model="selectedColumns" value="{{ $column }}" {{ in_array($column, $selectedColumns) ? "checked" : "" }}>
-												<label>{{ $column }}</label>
-											</div>
-										@endforeach
-									</div>
-								@endif
-							</div>
-							<div class="dropdown none" @if ($checked) style="display: unset; z-index: 5;" @endif>
-								<button wire:click.prevent="@if ($all === false) $set('all', true); $set('col', false) @else $set('all', false) @endif" class="dropdown-button none" @if ($checked) style="display: flex" @endif>
-									With Checked({{ count($checked) }})
-								</button>
-								@if ($checked && $all)
-									<div class="dropdown-list" style="display: flex;">
-										<button class="dropdown-item delete" type="button" wire:click="confirmItemsRemoval()">
-											Delete
-										</button>
-									</div>
-								@endif
-							</div>
-						</div>
-						@if ($selectPage && $selectAll)
-							<div class="panel__header--checked">
-								<p>
-									You selected <strong>{{ count($checked) }}</strong> items.
-								</p>
-							</div>
-						@elseif($selectPage)
-							<div class="panel__header--checked" wire:click="selectAll">
-								<p>
-									You selected {{ count($checked) }} items, select all?
-								</p>
-							</div>
-						@endif
-					</div>
-					{{-- modals --}}
-					{{-- delete single record --}}
-					<div class="modal" id="confirmationmodal">
-						<div class="modal-content">
-							<h1 class="modal-content-title">
-								{{ __("Are you sure to delete this record?") }}
-							</h1>
-							<input wire:click.prevent="deleteSingleRecord()" class="modal-content-btn submit" type="button" value="Confirm">
-							<input class="modal-content-btn delete" type="button" onclick="document.getElementById('confirmationmodal').style.display='none'" value="Cancel">
-							<span class="modal-content-btn delete" onclick="document.getElementById('confirmationmodal').style.display='none'">
-								<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24" fill="none" stroke="#BBFCDE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-									<line x1="18" y1="6" x2="6" y2="18">
-									</line>
-									<line x1="6" y1="6" x2="18" y2="18">
-									</line>
-								</svg>
-							</span>
-						</div>
-					</div>
-					{{-- delete myltiple records --}}
-					<div class="modal" id="confirmationmodalmultiple">
-						<div class="modal-content">
-							<h1 class="modal-content-title">
-								{{ __("Are you sure to delete those records?") }}
-							</h1>
-							<input wire:click.prevent="deleteRecords()" class="modal-content-btn submit" type="button" value="Confirm">
-							<input class="modal-content-btn delete" type="button" onclick="document.getElementById('confirmationmodalmultiple').style.display='none'" value="Cancel">
-							<span class="modal-content-btn delete" onclick="document.getElementById('confirmationmodalmultiple').style.display='none'">
-								<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24" fill="none" stroke="#BBFCDE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    </button> -->
+  </div>
 
-									<line x1="18" y1="6" x2="6" y2="18">
-									</line>
-									<line x1="6" y1="6" x2="18" y2="18">
-									</line>
-								</svg>
-							</span>
-						</div>
-					</div>
-					{{-- end modals --}}
-					<table class="table">
-						<thead>
-							<tr>
-								<th>
-									<input type="checkbox" wire:model="selectPage">
-								</th>
-								@if ($this->showColumn("Id"))
-									<th wire:click="sortBy('id')">
-										<button class="table__header--btn" @if ($orderBy === "id" && $orderAsc === "1") data-symbol="up"
-                                                @else data-symbol="down" @endif>
-											ID
-											<svg>
-												<line x1="12" y1="5" x2="12" y2="19">
-												</line>
-												<polyline points="19 12 12 19 5 12"></polyline>
-											</svg>
-										</button>
-									</th>
-								@endif
-								@if ($this->showColumn("Type"))
-									<th wire:click="sortBy('type')">
-										<button class="table__header--btn" @if ($orderBy === "type" && $orderAsc === "1") data-symbol="up"
-                                                @else data-symbol="down" @endif>
-											Type
-											<svg>
-												<line x1="12" y1="5" x2="12" y2="19">
-												</line>
-												<polyline points="19 12 12 19 5 12"></polyline>
-											</svg>
-										</button>
-									</th>
-								@endif
-								@if ($this->showColumn("First Name"))
-									<th wire:click="sortBy('first_name')">
-										<button class="table__header--btn" @if ($orderBy === "first_name" && $orderAsc === "1") data-symbol="up"
-                                                @else data-symbol="down" @endif>
-											First Name
-											<svg>
-												<line x1="12" y1="5" x2="12" y2="19">
-												</line>
-												<polyline points="19 12 12 19 5 12"></polyline>
-											</svg>
-										</button>
-									</th>
-								@endif
-								@if ($this->showColumn("Last Name"))
-									<th wire:click="sortBy('last_name')">
-										<button class="table__header--btn" @if ($orderBy === "last_name" && $orderAsc === "1") data-symbol="up"
-                                                @else data-symbol="down" @endif>
-											Last Name
-											<svg>
-												<line x1="12" y1="5" x2="12" y2="19">
-												</line>
-												<polyline points="19 12 12 19 5 12"></polyline>
-											</svg>
-										</button>
-									</th>
-								@endif
-								@if ($this->showColumn("Phone"))
-									<th wire:click="sortBy('phone')">
-										<button class="table__header--btn" @if ($orderBy === "phone" && $orderAsc === "1") data-symbol="up"
-                                                @else data-symbol="down" @endif>
-											Phone
-											<svg>
-												<line x1="12" y1="5" x2="12" y2="19">
-												</line>
-												<polyline points="19 12 12 19 5 12"></polyline>
-											</svg>
-										</button>
-									</th>
-								@endif
-								@if ($this->showColumn("Email"))
-									<th wire:click="sortBy('email')">
-										<button class="table__header--btn" @if ($orderBy === "email" && $orderAsc === "1") data-symbol="up"
-                                                @else data-symbol="down" @endif>
-											Email
-											<svg>
-												<line x1="12" y1="5" x2="12" y2="19">
-												</line>
-												<polyline points="19 12 12 19 5 12"></polyline>
-											</svg>
-										</button>
-									</th>
-								@endif
-								@if ($this->showColumn("Address"))
-									<th wire:click="sortBy('address1')">
-										<button class="table__header--btn" @if ($orderBy === "address1" && $orderAsc === "1") data-symbol="up"
-                                                @else data-symbol="down" @endif>
-											Address
-											<svg>
-												<line x1="12" y1="5" x2="12" y2="19">
-												</line>
-												<polyline points="19 12 12 19 5 12"></polyline>
-											</svg>
-										</button>
-									</th>
-								@endif
-								@if ($this->showColumn("Optional Address"))
-									<th wire:click="sortBy('address2')">
-										<button class="table__header--btn" @if ($orderBy === "address2" && $orderAsc === "1") data-symbol="up"
-                                                @else data-symbol="down" @endif>
-											Optional Address
-											<svg>
-												<line x1="12" y1="5" x2="12" y2="19">
-												</line>
-												<polyline points="19 12 12 19 5 12"></polyline>
-											</svg>
-										</button>
-									</th>
-								@endif
-								@if ($this->showColumn("Country"))
-									<th wire:click="sortBy('country')">
-										<button class="table__header--btn" @if ($orderBy === "country" && $orderAsc === "1") data-symbol="up"
-                                                @else data-symbol="down" @endif>
-											Country
-											<svg>
-												<line x1="12" y1="5" x2="12" y2="19">
-												</line>
-												<polyline points="19 12 12 19 5 12"></polyline>
-											</svg>
-										</button>
-									</th>
-								@endif
-								@if ($this->showColumn("County"))
-									<th wire:click="sortBy('county')">
-										<button class="table__header--btn" @if ($orderBy === "county" && $orderAsc === "1") data-symbol="up"
-                                                @else data-symbol="down" @endif>
-											County
-											<svg>
-												<line x1="12" y1="5" x2="12" y2="19">
-												</line>
-												<polyline points="19 12 12 19 5 12"></polyline>
-											</svg>
-										</button>
-									</th>
-								@endif
-								@if ($this->showColumn("City"))
-									<th wire:click="sortBy('city')">
-										<button class="table__header--btn" @if ($orderBy === "city" && $orderAsc === "1") data-symbol="up"
-                                                @else data-symbol="down" @endif>
-											City
-											<svg>
-												<line x1="12" y1="5" x2="12" y2="19">
-												</line>
-												<polyline points="19 12 12 19 5 12"></polyline>
-											</svg>
-										</button>
-									</th>
-								@endif
-								@if ($this->showColumn("Post Code"))
-									<th wire:click="sortBy('zipcode')">
-										<button class="table__header--btn" @if ($orderBy === "zipcode" && $orderAsc === "1") data-symbol="up"
-                                                @else data-symbol="down" @endif>
-											Post Code
-											<svg>
-												<line x1="12" y1="5" x2="12" y2="19">
-												</line>
-												<polyline points="19 12 12 19 5 12"></polyline>
-											</svg>
-										</button>
-									</th>
-								@endif
-								@if ($this->showColumn("Created At"))
-									<th wire:click="sortBy('created_at')">
-										<button class="table__header--btn" @if ($orderBy === "created_at" && $orderAsc === "1") data-symbol="up"
-                                                @else data-symbol="down" @endif>
-											Created at
-											<svg>
-												<line x1="12" y1="5" x2="12" y2="19">
-												</line>
-												<polyline points="19 12 12 19 5 12"></polyline>
-											</svg>
-										</button>
-									</th>
-								@endif
-								<th></th>
-							</tr>
-						</thead>
-						<tbody>
-							@if ($addresses->isEmpty())
-								<tr>
-									<td class="table__empty" colspan="{{ count($columns) + 3 }}">No record
-										found.</td>
-								</tr>
-							@else
-								@foreach ($addresses as $index => $address)
-									@if ($index < $perPage)
-										<tr @if ($loop->last) id="last_record" @endif class="@if ($this->isChecked($address->id)) table__row--selected @endif">
-											<td data-title="Check">
-												<input type="checkbox" value="{{ $address->id }}" wire:model="checked">
-											</td>
-											@if ($this->showColumn("Id"))
-												<td data-title="ID">
-													{{ $address->id }}
-												</td>
-											@endif
-											@if ($this->showColumn("Type"))
-												<td data-title="Type">
-													{{ $address->type }}
-												</td>
-											@endif
-											@if ($this->showColumn("First Name"))
-												<td data-title="First Name">
-													@if ($editindex !== $index)
-														{{ $address->first_name }}
-													@else
-														<input type="text" required class="input" wire:model.defer="adress.{{ $index }}.first_name">
-													@endif
-												</td>
-											@endif
-											@if ($this->showColumn("Last Name"))
-												<td data-title="Last Name">
-													@if ($editindex !== $index)
-														{{ $address->last_name }}
-													@else
-														<input type="text" required class="input" wire:model.defer="adress.{{ $index }}.last_name">
-													@endif
-												</td>
-											@endif
-											@if ($this->showColumn("Phone"))
-												<td data-title="Phone">
-													@if ($editindex !== $index)
-														{{ $address->phone }}
-													@else
-														<input type="phone" required class="input" wire:model.defer="adress.{{ $index }}.phone">
-													@endif
-												</td>
-											@endif
-											@if ($this->showColumn("Email"))
-												<td data-title="Email">
-													@if ($editindex !== $index)
-														{{ $address->email }}
-													@else
-														<input type="email" required class="input" wire:model.defer="adress.{{ $index }}.email">
-													@endif
-												</td>
-											@endif
-											@if ($this->showColumn("Address"))
-												<td data-title="Address">
-													@if ($editindex !== $index)
-														{{ $address->address1 }}
-													@else
-														<input type="text" required class="input" wire:model.defer="adress.{{ $index }}.address1">
-													@endif
 
-												</td>
-											@endif
-											@if ($this->showColumn("Optional Address"))
-												<td data-title="Optional Address">
-													@if ($editindex !== $index)
-														{{ $address->address2 }}
-													@else
-														<input type="text" required class="input" wire:model.defer="adress.{{ $index }}.address2">
-													@endif
-												</td>
-											@endif
-											@if ($this->showColumn("Country"))
-												<td data-title="Country">
-													@if ($editindex !== $index)
-														{{ $address->country }}
-													@else
-														<input type="text" required class="input" wire:model.defer="adress.{{ $index }}.country">
-													@endif
-												</td>
-											@endif
-											@if ($this->showColumn("County"))
-												<td data-title="County">
-													@if ($editindex !== $index)
-														{{ $address->county }}
-													@else
-														<input type="text" required class="input" wire:model.defer="adress.{{ $index }}.county">
-													@endif
-												</td>
-											@endif
-											@if ($this->showColumn("City"))
-												<td data-title="City">
-													@if ($editindex !== $index)
-														{{ $address->city }}
-													@else
-														<input type="text" required class="input" wire:model.defer="adress.{{ $index }}.city">
-													@endif
-												</td>
-											@endif
-											@if ($this->showColumn("Post Code"))
-												<td data-title="Post Code">
-													@if ($editindex !== $index)
-														{{ $address->zipcode }}
-													@else
-														<input type="text" required class="input" wire:model.defer="adress.{{ $index }}.zipcode">
-													@endif
-												</td>
-											@endif
-											@if ($this->showColumn("Created At"))
-												<td data-title="Created At">
-													<div class="table__time">
-														<svg>
-															<circle cx="12" cy="12" r="10">
-															</circle>
-															<polyline points="12 6 12 12 16 14"></polyline>
-														</svg>
-														{{ $address->created_at }}
-													</div>
-												</td>
-											@endif
-											<td data-title="Action">
-												<div class="table__buttons">
-													@if ($editindex !== $index)
-														<button class="edit" wire:click.prevent="edititem({{ $index }}, {{ $address->id }})">
-															<svg>
-																<path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
-																</path>
-															</svg>
-														</button>
-														<button class="delete" wire:click.prevent="confirmItemRemoval({{ $address->id }})">
-															<svg>
-																<polyline points="3 6 5 6 21 6"></polyline>
-																<path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-																</path>
-															</svg>
-														</button>
-													@else
-														<button class="edit" wire:click.prevent="saveitem({{ $index }} , {{ $address->id }})">
-															<svg>
-																<polyline points="20 6 9 17 4 12"></polyline>
-															</svg>
-														</button>
-														<button class="save" wire:click.prevent="canceledit()">
-															<svg>
-																<line x1="18" y1="6" x2="6" y2="18">
-																</line>
-																<line x1="6" y1="6" x2="18" y2="18">
-																</line>
-															</svg>
-														</button>
-													@endif
-												</div>
-											</td>
-										</tr>
-									@else
-										<?php
-										break;
-										?>
-									@endif
-								@endforeach
-							@endif
-						</tbody>
-					</table>
-					@if (count($addresses) >= 10)
-						<div class="table__load-more" wire:click="load">
-							Load more
-						</div>
-					@endif
-				@else
-					<p class="mt-2">No records related</p>
-				@endif
-			</div>
-		@endif
-	</div>
+  {{-- Accordion Body --}}
+  <div class="accordion__body">
+    {{-- Navigation --}}
+    <nav class="nav--controls">
+      {{-- Search Input --}}
+      <input class="input input--long" type="text" wire:model.debounce.300ms="search" placeholder="Search...">
+      {{-- IF CHECKED --}}
+      <div class="dropdown dropdown--right" @if (!$checked) style="display:none;" @endif id="checked__dropdown">
+        {{-- Dropdown Button --}}
+        <button class="button button--secondary button--centered button--long" tooltip="Actions with checked" tooltip-top id="checked__open">
+          <span>With Checked({{ count($checked) }})</span>
+        </button>
+        {{-- Dropdown Content --}}
+        <div class="dropdown__content">
+          <button class="button button--primary button--long" wire:click="confirmItemsRemoval()">
+            Delete
+          </button>
+        </div>
+      </div>
+      {{-- Visible Dropdown --}}
+      <div class="dropdown dropdown--right" id="visible__dropdown">
+        {{-- Dropdown Button --}}
+        <button class="button button--secondary button--centered" tooltip="Show items in table" tooltip-left id="visible__open" >
+          <svg>
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+            <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
+          </svg>
+        </button>
+        {{-- Dropdown Content --}}
+        <div class="dropdown__content">
+          <div class="dropdown__container">
+            @foreach ($columns as $column)
+              <label class="switch switch--primary inline">
+                <input type="checkbox" wire:model="selectedColumns" value="{{ $column }}" {{ in_array($column, $selectedColumns) ? "checked" : "" }}/>
+                <span>{{ $column}}</span>
+              </label>
+            @endforeach
+          </div>
+        </div>
+      </div>
+    </nav>
+
+
+    {{-- Table --}}
+    <table class="expandable-table">
+      <thead>
+        <tr>
+          <th style="border-right: none; border-left: none;">
+            <label class="checkbox checkbox--secondary inline">
+              <input type="checkbox" wire:model="selectPage" />
+              <span></span>
+            </label>
+          </th>
+          @if ($this->showColumn('Id'))
+            <th>
+              <button wire:click="sortBy('id')" class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
+                ID
+                <svg><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </button>
+            </th>
+          @endif
+          @if ($this->showColumn('Type'))
+            <th>
+              <button wire:click="sortBy('type')" class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
+                Type
+                <svg><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </button>
+            </th>
+          @endif
+          @if ($this->showColumn('First Name'))
+            <th>
+              <button wire:click="sortBy('first_name')" class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
+                First Name
+                <svg><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </button>
+            </th>
+          @endif
+          @if ($this->showColumn('Last Name'))
+            <th>
+              <button wire:click="sortBy('last_name')" class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
+                Last Name
+                <svg><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </button>
+            </th>
+          @endif
+
+          @if ($this->showColumn('Phone'))
+            <th class="hidden">
+              <button wire:click="sortBy('phone')" class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
+                Phone
+                <svg><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </button>
+            </th>
+          @endif
+          @if ($this->showColumn('Email'))
+            <th class="hidden">
+              <button wire:click="sortBy('email')" class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
+                Email
+                <svg><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </button>
+            </th>
+          @endif
+          @if ($this->showColumn('Address'))
+            <th class="hidden">
+              <button wire:click="sortBy('address1')" class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
+                Address
+                <svg><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </button>
+            </th>
+          @endif
+          @if ($this->showColumn('Optional Address'))
+            <th class="hidden">
+              <button wire:click="sortBy('address2')" class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
+                Optional Address
+                <svg><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </button>
+            </th>
+          @endif
+          @if ($this->showColumn('Country'))
+            <th class="hidden">
+              <button wire:click="sortBy('country')" class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
+                Country
+                <svg><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </button>
+            </th>
+          @endif
+          @if ($this->showColumn('County'))
+            <th class="hidden">
+              <button wire:click="sortBy('county')" class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
+                County
+                <svg><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </button>
+            </th>
+          @endif
+          @if ($this->showColumn('City'))
+            <th class="hidden">
+              <button wire:click="sortBy('city')" class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
+                City
+                <svg><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </button>
+            </th>
+          @endif
+          @if ($this->showColumn('Post Code'))
+            <th class="hidden">
+              <button wire:click="sortBy('zipcode')" class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
+                Post Code
+                <svg><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </button>
+            </th>
+          @endif
+          @if ($this->showColumn('Created At'))
+            <th class="hidden">
+              <button wire:click="sortBy('created_at')" class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
+                Created At
+                <svg><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </button>
+            </th>
+          @endif
+          <th style="border-left: none; border-right: none;">
+            <div style="display: flex;">
+              <button class="button button--secondary button--sm" style="opacity: 0">
+                <svg>
+                  <polyline points="3 6 5 6 21 6"></polyline>
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                </svg>
+              </button>
+              <button class="button button--secondary button--sm" style="opacity: 0">
+                <svg>
+                  <polyline points="3 6 5 6 21 6"></polyline>
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                </svg>
+              </button>
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        @php
+          $i = 0;
+        @endphp
+        @if ($addresses->isEmpty())
+          <tr>
+            <td class="table--empty" colspan="{{ count($columns) + 2 }}">No record found.</td>
+          </tr>
+        @else
+          @foreach ($addresses as $index => $address)
+            <tr class="expandable-row">
+              <td style="border-left: none" data-title="Check">
+                <label class="checkbox checkbox--secondary inline">
+                  <input type="checkbox" value="{{ $address->id }}" wire:model="checked">
+                  <span></span>
+                </label>
+              </td>
+              @if ($this->showColumn("Id"))
+                <td wire:click="expandRow({{ $index }})">
+                  {{ $address->id }}
+                </td>
+              @endif
+              @if ($this->showColumn("Type"))
+                <td wire:click="expandRow({{ $index }})">
+                  {{ $address->type }}
+                </td>
+              @endif
+              @if ($this->showColumn("First Name"))
+                <td wire:click="expandRow({{ $index }})">
+                  @if ($editindex !== $index)
+                    {{ $address->first_name }}
+                  @else
+                    <input type="text" required class="input" wire:model.defer="adress.{{ $index }}.first_name">
+                  @endif
+                </td>
+              @endif
+              @if ($this->showColumn("Last Name"))
+                <td wire:click="expandRow({{ $index }})">
+                  @if ($editindex !== $index)
+                    {{ $address->last_name }}
+                  @else
+                    <input type="text" required class="input" wire:model.defer="adress.{{ $index }}.last_name">
+                  @endif
+                </td>
+              @endif
+              @if ($this->showColumn("Phone"))
+                <td wire:click="expandRow({{ $index }})" class="hidden">
+                  @if ($editindex !== $index)
+                    {{ $address->phone }}
+                  @else
+                    <input type="phone" required class="input" wire:model.defer="adress.{{ $index }}.phone">
+                  @endif
+                </td>
+              @endif
+              @if ($this->showColumn("Email"))
+                <td wire:click="expandRow({{ $index }})" class="hidden">
+                  @if ($editindex !== $index)
+                    {{ $address->email }}
+                  @else
+                    <input type="email" required class="input" wire:model.defer="adress.{{ $index }}.email">
+                  @endif
+                </td>
+              @endif
+              @if ($this->showColumn("Address"))
+                <td wire:click="expandRow({{ $index }})" class="hidden">
+                  @if ($editindex !== $index)
+                    {{ $address->address1 }}
+                  @else
+                    <input type="text" required class="input" wire:model.defer="adress.{{ $index }}.address1">
+                  @endif
+                </td>
+              @endif
+              @if ($this->showColumn("Optional Address"))
+                <td wire:click="expandRow({{ $index }})" class="hidden">
+                  @if ($editindex !== $index)
+                    {{ $address->address2 }}
+                  @else
+                    <input type="text" required class="input" wire:model.defer="adress.{{ $index }}.address2">
+                  @endif
+                </td>
+              @endif
+              @if ($this->showColumn("Country"))
+                <td wire:click="expandRow({{ $index }})" class="hidden">
+                  @if ($editindex !== $index)
+                    {{ $address->country }}
+                  @else
+                    <input type="text" required class="input" wire:model.defer="adress.{{ $index }}.country">
+                  @endif
+                </td>
+              @endif
+              @if ($this->showColumn("County"))
+                <td wire:click="expandRow({{ $index }})" class="hidden">
+                  @if ($editindex !== $index)
+                    {{ $address->county }}
+                  @else
+                    <input type="text" required class="input" wire:model.defer="adress.{{ $index }}.county">
+                  @endif
+                </td>
+              @endif
+              @if ($this->showColumn("City"))
+                <td wire:click="expandRow({{ $index }})" class="hidden">
+                  @if ($editindex !== $index)
+                    {{ $address->city }}
+                  @else
+                    <input type="text" required class="input" wire:model.defer="adress.{{ $index }}.city">
+                  @endif
+                </td>
+              @endif
+              @if ($this->showColumn("Post Code"))
+                <td wire:click="expandRow({{ $index }})" class="hidden">
+                  @if ($editindex !== $index)
+                    {{ $address->zipcode }}
+                  @else
+                    <input type="text" required class="input" wire:model.defer="adress.{{ $index }}.zipcode">
+                  @endif
+                </td>
+              @endif
+              @if ($this->showColumn("Created At"))
+                <td wire:click="expandRow({{ $index }})" class="hidden">
+                    {{ $address->created_at }}
+                </td>
+              @endif
+              <td>
+                @if ($editindex !== $index)
+                  <div style="display: flex;">
+                    <button class="button button--secondary button--sm" wire:click.prevent="edititem({{ $index }}, {{ $address->id }})">
+                      <svg>
+                      <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
+                      </path>
+                      </svg>
+                    </button>
+                    <button wire:click.prevent="confirmItemRemoval({{ $address->id }})" class="button button--secondary button--sm">
+                      <svg>
+                        <polyline points="3 6 5 6 21 6"></polyline>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                      </svg>
+                    </button>
+                  </div>
+                @else
+                  <div style="display: flex;">
+                    <button class="button button--secondary button--sm" wire:click.prevent="saveitem({{ $index }} , {{ $address->id }})">
+                      <svg>
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                      </svg>
+                    </button>
+                    <button class="button button--secondary button--sm" wire:click.prevent="cancelitem()">
+                      <svg>
+                      <line x1="18" y1="6" x2="6" y2="18"></line>
+                      <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                    </button>
+                  </div>
+                @endif
+              </td>
+            </tr>
+            <tr class="details-row  @if ($row === $i) active @endif">
+              <td colspan="{{ count($columns) + 2 }}">
+                <div class="details">
+                  @if ($this->showColumn("Id"))
+                    <p>
+                      <bold>Id:</bold>{{ $address->id }}
+                    </p>
+                  @endif
+                  @if ($this->showColumn("Type"))
+                    <p>
+                      <bold>Type:</bold>{{ $address->type }}
+                    </p>
+                  @endif
+                  @if ($this->showColumn("First Name"))
+                    <p>
+                      @if ($editindex !== $index)
+                        <bold>First Name:</bold>{{ $address->first_name }}
+                      @else
+                        <bold>First Name:</bold><input type="text" required class="input" wire:model.defer="adress.{{ $index }}.first_name">
+                      @endif
+                    </p>
+                  @endif
+                  @if ($this->showColumn("Last Name"))
+                    <p>
+                      @if ($editindex !== $index)
+                        <bold>Last Name:</bold>{{ $address->last_name }}
+                      @else
+                        <bold>Last Name:</bold><input type="text" required class="input" wire:model.defer="adress.{{ $index }}.last_name">
+                      @endif
+                    </p>
+                  @endif
+                  @if ($this->showColumn("Phone"))
+                    <p>
+                      @if ($editindex !== $index)
+                        <bold>Phone:</bold>{{ $address->phone }}
+                      @else
+                        <bold>Phone:</bold><input type="phone" required class="input" wire:model.defer="adress.{{ $index }}.phone">
+                      @endif
+                    </p>
+                  @endif
+                  @if ($this->showColumn("Email"))
+                    <p>
+                      @if ($editindex !== $index)
+                        <bold>Email:</bold>{{ $address->email }}
+                      @else
+                        <bold>Email:</bold><input type="email" required class="input" wire:model.defer="adress.{{ $index }}.email">
+                      @endif
+                    </p>
+                  @endif
+                  @if ($this->showColumn("Address"))
+                    <p>
+                      @if ($editindex !== $index)
+                        <bold>Address:</bold>{{ $address->address1 }}
+                      @else
+                        <bold>Address:</bold><input type="text" required class="input" wire:model.defer="adress.{{ $index }}.address1">
+                      @endif
+                    </p>
+                  @endif
+                  @if ($this->showColumn("Optional Address"))
+                    <p>
+                      @if ($editindex !== $index)
+                        <bold>Optional Address:</bold>{{ $address->address2 }}
+                      @else
+                        <bold>Optional Address:</bold><input type="text" required class="input" wire:model.defer="adress.{{ $index }}.address2">
+                      @endif
+                    </p>
+                  @endif
+                  @if ($this->showColumn("Country"))
+                    <p>
+                      @if ($editindex !== $index)
+                        <bold>Country:</bold>{{ $address->country }}
+                      @else
+                        <bold>Country:</bold><input type="text" required class="input" wire:model.defer="adress.{{ $index }}.country">
+                      @endif
+                    </p>
+                  @endif
+                  @if ($this->showColumn("County"))
+                    <p>
+                      @if ($editindex !== $index)
+                        <bold>County:</bold>{{ $address->county }}
+                      @else
+                        <bold>County:</bold><input type="text" required class="input" wire:model.defer="adress.{{ $index }}.county">
+                      @endif
+                    </p>
+                  @endif
+                  @if ($this->showColumn("City"))
+                    <p>
+                      @if ($editindex !== $index)
+                        <bold>City:</bold>{{ $address->city }}
+                      @else
+                        <bold>City:</bold><input type="text" required class="input" wire:model.defer="adress.{{ $index }}.city">
+                      @endif
+                    </p>
+                  @endif
+                  @if ($this->showColumn("Post Code"))
+                    <p>
+                      @if ($editindex !== $index)
+                        <bold>Post Code:</bold>{{ $address->zipcode }}
+                      @else
+                        <bold>Post Code:</bold><input type="text" required class="input" wire:model.defer="adress.{{ $index }}.zipcode">
+                      @endif
+                    </p>
+                  @endif
+                  @if ($this->showColumn("Created At"))
+                    <p>
+                      <bold>Created At:</bold>{{ $address->created_at }}
+                    </p>
+                  @endif
+                </div>
+              </td>
+            </tr>
+            @php
+              $i++;
+            @endphp
+          @endforeach
+        @endif
+      </tbody>
+    </table>
+
+
+    {{-- Load More Manual --}}
+    @if (count($addresses) >= 10)
+      <button class="button button--secondary button--fill" style="margin-top: 10px;" wire:click="load">
+        Load more
+      </button>
+    @endif
+  </div>
+
+
+  {{-- Script for Accordions --}}
+
 </div>
