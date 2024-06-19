@@ -1,0 +1,10 @@
+.related__view {
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: $margin;
+}
+
+.related__view.active {
+  display: flex !important;
+}

@@ -48,9 +48,9 @@
       {{-- Search Input --}}
       <input class="input input--long" type="text" wire:model.debounce.300ms="search" placeholder="Search...">
       {{-- IF CHECKED --}}
-      <div class="dropdown dropdown--right" @if (!$checked) style="display:none;" @endif id="checked__dropdown">
+      <div class="dropdown dropdown--right" @if (!$checked) style="display:none;" @endif id="checkadresses__dropdown">
         {{-- Dropdown Button --}}
-        <button class="button button--secondary button--centered button--long" tooltip="Actions with checked" tooltip-top id="checked__open">
+        <button class="button button--secondary button--centered button--long" tooltip="Actions with checked" tooltip-top id="checkadresses__open">
           <span>With Checked({{ count($checked) }})</span>
         </button>
         {{-- Dropdown Content --}}
@@ -83,6 +83,18 @@
         </div>
       </div>
     </nav>
+
+
+    {{-- Select All? --}}
+    @if ($selectPage && $selectAll)
+      <button class="button button--fill button--primary">
+      You selected {{ count($checked) }} items.
+      </button>
+    @elseif($selectPage)
+      <button class="button button--fill button--secondary" wire:click="selectAll">
+      You selected {{ count($checked) }} items, select all?
+      </button>
+    @endif
 
 
     {{-- Table --}}
@@ -228,7 +240,7 @@
           </tr>
         @else
           @foreach ($addresses as $index => $address)
-            <tr class="expandable-row">
+            <tr @if ($loop->last) id="last_record" @endif class="expandable-row @if ($this->isChecked($address->id)) active @endif">
               <td style="border-left: none" data-title="Check">
                 <label class="checkbox checkbox--secondary inline">
                   <input type="checkbox" value="{{ $address->id }}" wire:model="checked">
