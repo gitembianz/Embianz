@@ -194,10 +194,8 @@
 
 
   {{-- Tabs Body (Related) --}}
-  <div style="height: calc(100% - 107.5px);" class="tabs__content" id="relatedContent">
+  <div style="height: calc(100% - 107.5px);" class="tabs__content related__view" id="relatedContent">
     @livewire("related-addresses", ["account" => $account], key("first" . $account->id))
-    {{--
-      @livewire("related-orders", ["account" => $account], key($account->id))
-      --}}
+    @livewire("related-orders", ["account" => $account], key($account->id))
   </div>
 </section>

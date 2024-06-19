@@ -4,6 +4,10 @@
   gap: $margin;
 }
 
+.details__view.active {
+  display: grid !important;
+}
+
 .details__checkboxes{
   display: flex;
   align-items: flex-end;
