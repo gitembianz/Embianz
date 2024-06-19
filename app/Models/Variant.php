@@ -10,10 +10,18 @@ class Variant extends Model
     use HasFactory;
     protected $fillable = [
         'id',
-        'name'
+        'name',
+        'sequence'
     ];
     public function reference()
     {
         return $this->hasMany(ProductVariant::class, 'variant_id');
+    }
+    public static function search($search)
+    {
+        return empty($search) ? static::query()
+            : static::query()->where('id', 'like', '%' . $search . '%')
+            ->orWhere('name', 'like', '%' . $search . '%')
+            ->orWhere('sequence', 'like', '%' . $search . '%');
     }
 }

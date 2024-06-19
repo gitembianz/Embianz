@@ -97,6 +97,12 @@
       route::post('/add_setting', [AdminController::class, 'store_setting'])->name('add_setting');
 
       route::view('/labels', 'admin.labels')->name('labels');
+      route::view('/variants', 'admin.variants')->name('variants');
+      route::view('/newvariant', 'admin.add_variant')->name('newvariant');
+      route::post('/add_variant', [AdminController::class, 'store_variant'])->name('add_variant');
+
+
+
 
       //specific routes
       route::get('/cleareverything', function () {

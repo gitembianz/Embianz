@@ -9,6 +9,7 @@ use App\Models\Voucher;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\CustomScript;
+use App\Models\Variant;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Auth;
@@ -108,6 +109,33 @@ class AdminController extends Controller
       'title' => 'Success'
     ]);
   }
+
+  public function store_variant(Request $request)
+  {
+    if (!$request->filled('name') || !$request->filled('sequence')) {
+      return redirect()->back()->withInput()->with([
+        'notification' => [
+          'message' => 'Please fill all imputs!',
+          'type' => 'error',
+          'title' => 'Something went wrong'
+        ],
+      ]);
+    }
+    $values = array(
+      "name" => $request->name,
+      "sequence" => $request->sequence,
+      "created_at" => now(),
+      "updated_at" => now()
+    );
+
+    Variant::insert($values);
+    return redirect()->back()->with('notification', [
+      'message' => 'Record added successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
+  }
+
 
   public function store_script(Request $request)
   {
