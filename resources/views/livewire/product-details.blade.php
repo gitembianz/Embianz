@@ -143,6 +143,7 @@
          @if ($variant->media->first() != null)
           <img src="/{{ $variant->media->first()->path }}{{ $variant->media->first()->name }}"
            alt="{{ $variant->media->first()->name }}">
+          {{ $variant->beeingvariants->where('variant_id', $variantId)->first()->value }}
          @else
           <img src="/images/store/default/default70.webp" alt="something wrong">
           {{ $variant->beeingvariants->where('variant_id', $variantId)->first()->value }}

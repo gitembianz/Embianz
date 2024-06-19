@@ -11,11 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('variants', function (Blueprint $table) {
-            $table->id();
-            $table->string('name')->nullable();
-            $table->string('sequence')->nullable();
-            $table->timestamps();
+        Schema::table('variants', function (Blueprint $table) {
+            $table->string('sequence')->nullable()->after('name');
         });
     }
 
@@ -24,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('variants');
+        Schema::table('variants', function (Blueprint $table) {
+            //
+        });
     }
 };
