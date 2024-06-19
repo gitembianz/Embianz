@@ -21,5 +21,10 @@ opener('optional__dropdown', 'optional__open', true);
 opener('sorting__dropdown', 'sorting__open', true);
 opener('checked__dropdown', 'checked__open', true);
 
+// Related
+opener('checkadresses__dropdown', 'checkadresses__open', true);
+opener('checkorder__dropdown', 'checkorder__open', true);
+opener('checkcartitems__dropdown', 'checkcartitems__open', true);
+
 /// Tabs (Show Table)
 tabs('detailsButton','relatedButton','detailsContent','relatedContent');
