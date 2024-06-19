@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('product_variants', function (Blueprint $table) {
-            $table->boolean('default_variant')->nullable()->default(
+            $table->boolean('default_variant')->after('value')->nullable()->default(
                 false
             );
         });
