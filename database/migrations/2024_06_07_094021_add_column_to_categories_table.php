@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('categories', function (Blueprint $table) {
             $table->string('accepted_items')->after('name')->nullable()->default(
-                'standards'
+                'default'
             );
         });
     }
