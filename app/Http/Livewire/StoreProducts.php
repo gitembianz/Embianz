@@ -56,7 +56,7 @@ class StoreProducts extends Component
     $this->specification = Specs::get();
     if ($category) {
       $decodedCategory = json_decode(htmlspecialchars_decode($category), true);
-      $this->category = Category::select('id', 'name', 'long_description', 'seo_id')->find($decodedCategory['id']);
+      $this->category = Category::select('id', 'name', 'long_description', 'seo_id', 'accepted_items')->find($decodedCategory['id']);
     } else {
       if (app()->has('global_default_category')) {
         $this->category = Category::select('id', 'name', 'long_description', 'seo_id')->find(app('global_default_category')) ?? null;
@@ -202,6 +202,11 @@ class StoreProducts extends Component
       $query->whereHas('product_categories.category', function ($query) {
         $query->where('id', $this->category->id);
       });
+      if ($this->category->accepted_items == 'default') {
+        $query->where('type', '!=', 'parrent');
+      } else {
+        $query->where('type', 'parrent');
+      }
     }
     if ($this->specfilter && !empty($this->selectedSpecValues)) {
       foreach ($this->selectedSpecValues as $values) {
