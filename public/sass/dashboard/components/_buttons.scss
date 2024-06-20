@@ -24,7 +24,7 @@
   & a {
     font-size: $font-size-sm;
     font-weight: $font-weight;
-    line-height: $line-height;
+    // line-height: $line-height;
     letter-spacing: $letter-spacing;
     text-decoration: none;
   }
@@ -81,6 +81,12 @@
 
   &--sm{
     transform: scale(0.8);
+  }
+  &--xs{
+    min-height: calc($height - $margin) !important;
+    height: calc($height - $margin) !important;
+    font-size: $font-size !important;
+    font-weight: $font-weight !important;
   }
 
   &--centered{
