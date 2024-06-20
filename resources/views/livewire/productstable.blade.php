@@ -309,6 +309,12 @@
          wire:click="expandRow({{ $nr }})">
          @if ($column === 'name')
           <a href="{{ route('show_product', ['id' => $product->id]) }}">{{ $product->name }}</a>
+         @elseif ($column === 'parent_id')
+          @if ($product->$column)
+           <a href="{{ route('show_product', ['id' => $product->$column]) }}">{{ $product->parent->name }}</a>
+          @else
+           {{ $product->$column }}
+          @endif
          @elseif ($column === 'active' || $column === 'store_tab' || $column === 'has_parrent' || $column === 'is_new')
           @if ($product->$column)
            <label class="checkbox checkbox--secondary inline disabled">

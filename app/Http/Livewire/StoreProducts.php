@@ -95,7 +95,9 @@ class StoreProducts extends Component
     $query->whereHas(
       'product',
       function ($query) {
-        $query->where('active', true);
+        $query->where('active', true)
+          ->where('start_date', '<=',  now()->format('Y-m-d'))
+          ->where('end_date', '>=',  now()->format('Y-m-d'));
       }
     );
 
@@ -190,6 +192,9 @@ class StoreProducts extends Component
       ->where('end_date', '>=',  now()->format('Y-m-d'))
       ->with([
         'product_prices',
+        'variants' => function ($query) {
+          $query->with('product');
+        },
         'product_prices.pricelist.currency',
         'media' => function ($query) {
           $query->select('path', 'name')->where('type', 'main');
@@ -205,7 +210,7 @@ class StoreProducts extends Component
       if ($this->category->accepted_items == 'default') {
         $query->where('type', '!=', 'parrent');
       } else {
-        $query->where('type', 'parrent');
+        $query->where('type', '!=', 'variant');
       }
     }
     if ($this->specfilter && !empty($this->selectedSpecValues)) {
