@@ -92,10 +92,10 @@
       text-align: center;
 
       &:first-child{
-        width: 0%;
+        width: 0% !important;
       }
       &:last-child{
-        width: 0%;
+        width: 0% !important;
       }
     }
   }
@@ -120,10 +120,10 @@
       }
 
       &:first-child{
-        width: 0%;
+        width: 0% !important;
       }
       &:last-child{
-        width: 0%;
+        width: 0% !important;
       }
     }
 
@@ -132,7 +132,7 @@
     }
   }
 
-  & input, select, textarea {
+  & input:not(.input__searchable), select, textarea  {
     min-width: 150px;
     width: 100%;
     height: $height;
@@ -141,6 +141,10 @@
     font-size: $font-size-sm;
     line-height: unset;
     padding: 0 $padding;
+  }
+
+  & > .dropdown__content{
+    z-index: 500;
   }
 
   & td,
@@ -161,6 +165,7 @@
   td{
     border-top: 1px solid $secondary;
     border-right: 1px solid $secondary;
+    width: auto;
   }
 
   .expandable-row {
@@ -198,13 +203,9 @@
   .details {
     gap: 5px;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr;
     background-color: $primary;
     padding: $padding;
-
-    @media (max-width: map-get($grid-breakpoints, md)) {
-      grid-template-columns: 1fr;
-    }
 
     & p {
       font-size: 14px;

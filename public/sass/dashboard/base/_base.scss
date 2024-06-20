@@ -41,15 +41,23 @@
   display: inline-block;
 
   img{
-    width: 100%;
+    width: auto;
     height: 100%;
   }
 }
 .logo.display--desktop{
   margin-right: auto;
+
+  & > img {
+    aspect-ratio: 26 / 5;
+  }
 }
 .logo.display--mobile{
   margin: 0 auto;
+
+  & > img {
+    aspect-ratio: 1 / 1;
+  }
 }
 
 

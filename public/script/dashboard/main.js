@@ -25,6 +25,8 @@ opener('checked__dropdown', 'checked__open', true);
 opener('checkadresses__dropdown', 'checkadresses__open', true);
 opener('checkorder__dropdown', 'checkorder__open', true);
 opener('checkcartitems__dropdown', 'checkcartitems__open', true);
+opener('checkProductsonSpec__dropdown', 'checkProductsonSpec__open', true);
+opener('test__dropdown', 'test__open', true);
 
 /// Tabs (Show Table)
 tabs('detailsButton','relatedButton','detailsContent','relatedContent');
