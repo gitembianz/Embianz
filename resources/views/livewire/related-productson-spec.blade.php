@@ -484,7 +484,7 @@
   {{-- Accordion Header --}}
     <div class="accordion__header">
       <button class="button button--flexed button--fill button--primary @if ($showrelatedprods) button--secondary active @endif" wire:click.prevent="@if ($showrelatedprods === false) $set('showrelatedprods', true) @else $set('showrelatedprods', false) @endif">
-        {{ __("Products ") }}({{ count($relatedprods) }})
+        {{ __("Products ") }}({{ $relatedprods->total() }})
         <svg><polyline points="6 9 12 15 18 9"></polyline></svg>
       </button>
       <button class="button button--secondary" wire:click.prevent="addrelated()">
@@ -636,12 +636,12 @@
           @else
             @foreach ($relatedprods as $index => $prod)
               <tr @if ($loop->last) id="last_record" @endif class="expandable-row @if ($this->isChecked($prod->id)) active @endif">
-                <td style="border-left: none" data-title="Check">
-                  <label class="checkbox checkbox--secondary inline">
-                    <input type="checkbox" value="{{ $prod->id }}" wire:model="checked">
-                    <span></span>
-                  </label>
-                </td>
+      <td style="border-left: none" data-title="Check">
+        <label class="checkbox checkbox--secondary inline">
+          <input type="checkbox" value="{{ $prod->id }}" wire:model="checked">
+          <span></span>
+        </label>
+      </td>
 
                 @if ($this->showColumn("Id"))
                   <td wire:click="expandRow({{ $index }})">{{ $prod->id }}</td>

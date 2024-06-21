@@ -2,10 +2,10 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Product;
-use App\Models\Product_Spec;
 use App\Models\Specs;
+use App\Models\Product;
 use Livewire\Component;
+use App\Models\Product_Spec;
 use Livewire\WithPagination;
 
 class RelatedProductsonSpec extends Component
@@ -13,7 +13,7 @@ class RelatedProductsonSpec extends Component
 
   use WithPagination;
   //related delclaration
-  public $perPage = 10;
+  public $loadAmount = 15;
   public $search = '';
   public $orderBy = 'id';
   public $orderAsc = true;
@@ -51,31 +51,34 @@ class RelatedProductsonSpec extends Component
   public $single = false;
   public $multiple = false;
 
-  public function expandRow($index){
-      if($this->rind  === null){
-        $this->rind = $index ;
-      }elseif ($this->rind != $index){
-        $this->rind = $index ;
-      }else{
-        $this->rind = null ;
-      }
-  }
-  public function expandRow2($index){
-    if($this->rind2  === null){
-      $this->rind2 = $index ;
-    }elseif ($this->rind2 != $index){
-      $this->rind2 = $index ;
-    }else{
-      $this->rind2 = null ;
+  public function expandRow($index)
+  {
+    if ($this->rind  === null) {
+      $this->rind = $index;
+    } elseif ($this->rind != $index) {
+      $this->rind = $index;
+    } else {
+      $this->rind = null;
     }
   }
-  public function expandRow3($index){
-    if($this->rind3  === null){
-      $this->rind3 = $index ;
-    }elseif ($this->rind3 != $index){
-      $this->rind3 = $index ;
-    }else{
-      $this->rind3 = null ;
+  public function expandRow2($index)
+  {
+    if ($this->rind2  === null) {
+      $this->rind2 = $index;
+    } elseif ($this->rind2 != $index) {
+      $this->rind2 = $index;
+    } else {
+      $this->rind2 = null;
+    }
+  }
+  public function expandRow3($index)
+  {
+    if ($this->rind3  === null) {
+      $this->rind3 = $index;
+    } elseif ($this->rind3 != $index) {
+      $this->rind3 = $index;
+    } else {
+      $this->rind3 = null;
     }
   }
 
@@ -87,7 +90,7 @@ class RelatedProductsonSpec extends Component
         $query->whereHas('product', function ($subQuery) {
           $subQuery->where('name', 'LIKE', '%' . $this->search . '%');
         });
-      })->get();
+      })->paginate($this->loadAmount);
     if ($this->addrelatedproducts === true || $this->editmultiple  || $this->allow === true) {
       return view('livewire.related-productson-spec', [
         'relatedprods' => $relatedprods,
@@ -101,6 +104,7 @@ class RelatedProductsonSpec extends Component
   }
   public function mount($specId)
   {
+    $this->checked = [];
     $this->specId = $specId;
     $this->selectedColumns = $this->columns;
     $this->item = Specs::find($specId);
@@ -121,7 +125,7 @@ class RelatedProductsonSpec extends Component
   public function updatedSelectPage($value)
   {
     if ($value) {
-      $this->checked = $this->relatedprods->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+      $this->checked = $this->relatedprods->pluck('id')->toArray();
     } else {
       $this->checked = [];
     }
@@ -130,13 +134,19 @@ class RelatedProductsonSpec extends Component
   {
     return $this->orderAsc === '1' ? '0' : '1';
   }
+  // public function updatedChecked()
+  // {
+  //   $this->selectPage = false;
+  // }
+
   public function updatedChecked()
   {
-    $this->selectPage = false;
+    // Debugging line
   }
-  public function isChecked($id)
+
+  public function isChecked($prodId)
   {
-    return in_array($id, $this->checked);
+    return in_array($prodId, $this->checked);
   }
   public function sortBy($columnName)
   {
@@ -163,7 +173,7 @@ class RelatedProductsonSpec extends Component
   public function getRelatedprodsQueryProperty()
   {
     return Product_Spec::where('spec_id', $this->specId)
-      ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->with('product');
+      ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->with('product', 'spec');
   }
 
   public function deleteSingleRecord()
@@ -205,7 +215,8 @@ class RelatedProductsonSpec extends Component
   {
     $this->multiple = true;
   }
-  public function cancel_delete(){
+  public function cancel_delete()
+  {
     $this->multiple = false;
     $this->single = false;
   }
@@ -229,7 +240,6 @@ class RelatedProductsonSpec extends Component
     if (isset($val["$index"]['value'])) {
       if (!empty($val["$index"]['value'])) {
         $prod->value = $val["$index"]['value'];
-
       } else {
         session()->flash('notification', [
           'message' => 'Please provide a value!',
@@ -240,12 +250,12 @@ class RelatedProductsonSpec extends Component
       }
     }
     $prod->save();
-        $this->allow = false;
-        $this->productid = null;
-        $this->product = [];
-        $this->itemselected = null;
-        $this->editedrow = null;
-        $this->search = '';
+    $this->allow = false;
+    $this->productid = null;
+    $this->product = [];
+    $this->itemselected = null;
+    $this->editedrow = null;
+    $this->search = '';
     session()->flash('notification', [
       'message' => 'Record edited successfully!',
       'type' => 'success',
@@ -354,7 +364,7 @@ class RelatedProductsonSpec extends Component
   }
   public function load()
   {
-    $this->perPage += 10;
+    $this->loadAmount += 10;
   }
   public function allowselect($index)
   {
