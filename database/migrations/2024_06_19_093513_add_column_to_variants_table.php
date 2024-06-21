@@ -11,10 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('categories', function (Blueprint $table) {
-            $table->string('accepted_items')->after('name')->nullable()->default(
-                'default'
-            );
+        Schema::table('variants', function (Blueprint $table) {
+            $table->string('sequence')->nullable()->after('name');
         });
     }
 
@@ -23,7 +21,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('categories', function (Blueprint $table) {
+        Schema::table('variants', function (Blueprint $table) {
             //
         });
     }

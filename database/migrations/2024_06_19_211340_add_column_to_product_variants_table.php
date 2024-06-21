@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('categories', function (Blueprint $table) {
-            $table->string('accepted_items')->after('name')->nullable()->default(
-                'default'
+        Schema::table('product_variants', function (Blueprint $table) {
+            $table->boolean('default_variant')->after('value')->nullable()->default(
+                false
             );
         });
     }
@@ -23,7 +23,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('categories', function (Blueprint $table) {
+        Schema::table('product_variants', function (Blueprint $table) {
             //
         });
     }

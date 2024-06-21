@@ -67,7 +67,7 @@ class StoreController extends Controller
     ])->first();
 
     if ($productCategory != null) {
-      $preload = "/" . $productCategory->product->media()->first()->path . $productCategory->product->media()->first()->name;
+      $preload = "/" . optional($productCategory->product->media()->first())->path . optional($productCategory->product->media()->first())->name;
     } else {
       $preload = '';
     }

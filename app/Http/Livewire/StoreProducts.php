@@ -56,7 +56,7 @@ class StoreProducts extends Component
     $this->specification = Specs::get();
     if ($category) {
       $decodedCategory = json_decode(htmlspecialchars_decode($category), true);
-      $this->category = Category::select('id', 'name', 'long_description', 'seo_id')->find($decodedCategory['id']);
+      $this->category = Category::select('id', 'name', 'long_description', 'seo_id', 'accepted_items')->find($decodedCategory['id']);
     } else {
       if (app()->has('global_default_category')) {
         $this->category = Category::select('id', 'name', 'long_description', 'seo_id')->find(app('global_default_category')) ?? null;
@@ -95,7 +95,9 @@ class StoreProducts extends Component
     $query->whereHas(
       'product',
       function ($query) {
-        $query->where('active', true);
+        $query->where('active', true)
+          ->where('start_date', '<=',  now()->format('Y-m-d'))
+          ->where('end_date', '>=',  now()->format('Y-m-d'));
       }
     );
 
@@ -190,6 +192,9 @@ class StoreProducts extends Component
       ->where('end_date', '>=',  now()->format('Y-m-d'))
       ->with([
         'product_prices',
+        'variants' => function ($query) {
+          $query->with('product');
+        },
         'product_prices.pricelist.currency',
         'media' => function ($query) {
           $query->select('path', 'name')->where('type', 'main');
@@ -202,6 +207,11 @@ class StoreProducts extends Component
       $query->whereHas('product_categories.category', function ($query) {
         $query->where('id', $this->category->id);
       });
+      if ($this->category->accepted_items == 'default') {
+        $query->where('type', '!=', 'parrent');
+      } else {
+        $query->where('type', '!=', 'variant');
+      }
     }
     if ($this->specfilter && !empty($this->selectedSpecValues)) {
       foreach ($this->selectedSpecValues as $values) {

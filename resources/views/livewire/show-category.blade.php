@@ -208,8 +208,8 @@
     <span class="disabled">{{ $category->accepted_items }}</span>
    @else
     <select wire:model.defer="cat.acc_items">
-     <option value="standards">standards</option>
-     <option value="parrents only">parrents only</option>
+     <option value="default">default</option>
+     <option value="parrents">parrents</option>
     </select>
    @endif
    <label for="category__name">Displayed items</label>

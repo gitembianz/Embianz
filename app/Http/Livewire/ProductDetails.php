@@ -93,7 +93,13 @@ class ProductDetails extends Component
             })->unique();
         };
 
-        $variantIds = $this->product->beeingvariants->pluck('variant_id')->unique()->sort();
+        $variantIds = $this->product->beeingvariants
+            ->sortBy(function ($beeingvariant) {
+                return $beeingvariant->reference->sequence;
+            })
+            ->pluck('variant_id')
+            ->unique()
+            ->values();
 
         $variantsGroupedByVariantId = [];
 

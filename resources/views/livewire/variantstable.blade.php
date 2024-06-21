@@ -10,8 +10,14 @@
    <span>
     @if ($single)
      Are you sure to delete this record?
+     @if ($count > 0)
+      {{ $count }} - ProductVariants use this variant!
+     @endif
     @else
      Are you sure to delete those records?
+     @if ($count > 0)
+      {{ $count }} - ProductVariants use this variant!
+     @endif
     @endif
    </span>
    @if ($single)
@@ -85,7 +91,7 @@
 
 
  {{-- Navigation --}}
- <h1 class="table--name">{{ __('Products') }} ({{ $products->total() }})</h1>
+ <h1 class="table--name">{{ __('Product variants') }} ({{ $variants->total() }})</h1>
  <nav class="nav--controls">
   {{-- Search Input --}}
   <input class="input input--long" type="text" wire:model.debounce.300ms="search" placeholder="Search...">
@@ -102,9 +108,9 @@
     <path d="M19.94 11l0 .01" />
    </svg>
   </button>
-  {{-- Add Product --}}
-  <a class="button button--secondary button--centered display--desktop" tooltip="Add new product" tooltip-top
-   href="{{ route('add_product') }}">
+  {{-- Add New Button --}}
+  <a class="button button--secondary button--centered display--desktop" tooltip="Add new variant" tooltip-top
+   href="{{ route('newvariant') }}">
    <svg>
     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
     <polyline points="14 2 14 8 20 8"></polyline>
@@ -207,14 +213,15 @@
       </svg>
       <span>Refresh table</span>
      </button>
-     <a class="button button--primary button--fill button--flexed" href="{{ route('add_product') }}">
+     {{-- Add New Button --}}
+     <a class="button button--primary button--fill button--flexed" href="{{ route('newvariant') }}">
       <svg>
        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
        <polyline points="14 2 14 8 20 8"></polyline>
        <line x1="12" y1="18" x2="12" y2="12"></line>
        <line x1="9" y1="15" x2="15" y2="15"></line>
       </svg>
-      <span>Add Product</span>
+      <span>Add Category</span>
      </a>
      <button class="button button--primary button--fill button--flexed" id="sort__open">
       <svg>
@@ -232,7 +239,7 @@
        <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
        <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
       </svg>
-      <span>Visible</span>
+      <span>Columns</span>
      </button>
     </div>
    </div>
@@ -240,7 +247,7 @@
  </nav>
 
 
- {{-- Select All --}}
+ {{-- Select All? --}}
  @if ($selectPage && $selectAll)
   <button class="button button--fill button--primary" style="margin-top: 10px;">
    You selected {{ count($checked) }} items.
@@ -265,7 +272,7 @@
      </th>
      @foreach ($selectedColumns as $index => $column)
       @if ($this->showColumn($column))
-       <th @if ($index > count($selectedColumns) - 18) class="hidden" @endif>
+       <th @if ($index > 1) class="hidden" @endif>
         <button wire:click="sortBy('{{ $column }}')"
          class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
          {{ $column }}
@@ -287,7 +294,7 @@
     </tr>
    </thead>
    <tbody>
-    @if ($products->isEmpty())
+    @if ($variants->isEmpty())
      <tr>
       <td class="table--empty" colspan="{{ count($selectedColumns) + 2 }}">No record found.</td>
      </tr>
@@ -295,59 +302,97 @@
      @php
       $i = 0;
      @endphp
-     @foreach ($products as $nr => $product)
+     @foreach ($variants as $nr => $variant)
       <tr @if ($loop->last) id="last_record" @endif
-       class="expandable-row @if ($this->isChecked($product->id)) active @endif">
+       class="expandable-row @if ($this->isChecked($variant->id)) active @endif">
        <td style="border-left: none" data-title="Check">
         <label class="checkbox checkbox--secondary inline">
-         <input type="checkbox" value="{{ $product->id }}" wire:model="checked">
+         <input type="checkbox" value="{{ $variant->id }}" wire:model="checked">
          <span></span>
         </label>
        </td>
        @foreach ($selectedColumns as $index => $column)
-        <td @if ($index > count($selectedColumns) - 18) class="hidden" @endif data-title="{{ $column }}"
-         wire:click="expandRow({{ $nr }})">
+        <td @if ($index > 1) class="hidden" @endif
+         wire:click.prevent="expandRow({{ $nr }})" data-title="{{ $column }}">
          @if ($column === 'name')
-          <a href="{{ route('show_product', ['id' => $product->id]) }}">{{ $product->name }}</a>
-         @elseif ($column === 'parent_id')
-          @if ($product->$column)
-           <a href="{{ route('show_product', ['id' => $product->$column]) }}">{{ $product->parent->name }}</a>
+          @if ($editindex !== $nr)
+           {{ $variant->$column }}
           @else
-           {{ $product->$column }}
+           <input type="text" class="input" wire:model.defer="variant.{{ $nr }}.{{ $column }}">
           @endif
-         @elseif ($column === 'active' || $column === 'store_tab' || $column === 'has_parrent' || $column === 'is_new')
-          @if ($product->$column)
-           <label class="checkbox checkbox--secondary inline disabled">
-            <input type="checkbox" disabled checked>
-            <span></span>
-           </label>
+         @elseif ($column === 'sequence')
+          @if ($editindex !== $nr)
+           {{ $variant->$column }}
           @else
-           <label class="checkbox checkbox--secondary inline disabled">
-            <input type="checkbox" disabled>
-            <span></span>
-           </label>
+           <input type="number" min="0" class="input"
+            wire:model.defer="variant.{{ $nr }}.{{ $column }}">
           @endif
          @else
-          {{ $product->$column }}
+          {{ $variant->$column }}
          @endif
+        </td>
        @endforeach
        <td style="border-right: none">
-        <button wire:click.prevent="confirmItemRemoval({{ $product->id }})"
-         class="button button--secondary button--sm">
-         <svg>
-          <polyline points="3 6 5 6 21 6"></polyline>
-          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-         </svg>
-        </button>
+        <div style="display:flex;">
+         @if ($editindex !== $nr)
+          <button class="button button--secondary button--sm"
+           wire:click.prevent="edititem({{ $nr }}, {{ $variant->id }})">
+           <svg>
+            <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
+            </path>
+           </svg>
+          </button>
+          <button class="button button--secondary button--sm"
+           wire:click.prevent="confirmItemRemoval({{ $variant->id }})">
+           <svg>
+            <polyline points="3 6 5 6 21 6"></polyline>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+            </path>
+           </svg>
+          </button>
+         @else
+          <button class="button button--secondary button--sm"
+           wire:click.prevent="saveitem({{ $nr }} , {{ $variant->id }})">
+           <svg>
+            <polyline points="20 6 9 17 4 12"></polyline>
+           </svg>
+          </button>
+          <button class="button button--secondary button--sm" wire:click.prevent="canceledit()">
+           <svg>
+            <line x1="18" y1="6" x2="6" y2="18">
+            </line>
+            <line x1="6" y1="6" x2="18" y2="18">
+            </line>
+           </svg>
+          </button>
+         @endif
+        </div>
        </td>
       </tr>
       <tr class="details-row  @if ($row === $i) active @endif">
-       <td colspan="17">
+       <td colspan="7">
         <div class="details">
          @foreach ($selectedColumns as $index => $column)
-          @if ($index >= count($selectedColumns) - 18)
+          @php
+           if ($index <= 1) {
+               continue;
+           }
+          @endphp
+          @if ($column === 'sequence')
+           @if ($editindex !== $nr)
+            <p>
+             <bold>{{ $column }}:</bold> {{ $variant->$column }}
+            </p>
+           @else
+            <p>
+             <bold>{{ $column }}:</bold>
+             <input type="number" min="0" class="input"
+              wire:model.defer="variant.{{ $nr }}.{{ $column }}">
+            </p>
+           @endif
+          @else
            <p>
-            <bold>{{ $column }}:</bold> {{ $product->$column }}
+            <bold>{{ $column }}:</bold> {{ $variant->$column }}
            </p>
           @endif
          @endforeach
@@ -380,7 +425,7 @@
 
 
   {{-- Load More Manual --}}
-  @if ($loadAmount <= count($products))
+  @if ($loadAmount <= $variants->total())
    <button class="button button--secondary button--fill" style="margin-top: 10px;" wire:click="loadMore">
     Load more
    </button>
