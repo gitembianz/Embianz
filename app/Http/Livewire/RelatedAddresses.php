@@ -33,7 +33,6 @@ class RelatedAddresses extends Component
     public $single = false;
     public $multiple = false;
 
-
     public function expandRow($index){
         if($this->row  === null){
           $this->row = $index ;
