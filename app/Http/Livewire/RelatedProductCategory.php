@@ -25,7 +25,7 @@ class RelatedProductCategory extends Component
   public $col = false;
   public $all = false;
   public $productidbeingremoved = null;
-  public $columns = ['Id', 'Short Description', 'Created At'];
+  public $columns = ['Id', 'Type', 'Short Description', 'Created At'];
   public $selectedColumns = [];
   public $category;
 
@@ -201,11 +201,20 @@ class RelatedProductCategory extends Component
   {
     $this->perPage += 10;
   }
-  public function getRelatedproductsProperty()
+  public function getRelatedProductsProperty()
   {
-    return Products_categories::where('category_id', $this->category->id)
-      ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc');
+    return Products_categories::select('products_categories.*')
+      ->join('products', 'products_categories.product_id', '=', 'products.id')
+      ->where('products_categories.category_id', $this->category->id)
+      ->where(function ($query) {
+        $query->where('products.name', 'LIKE', '%' . $this->search . '%')
+          ->orWhere('products.short_description', 'LIKE', '%' . $this->search . '%')
+          ->orWhere('products.type', 'LIKE', '%' . $this->search . '%');
+      })
+      ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')
+      ->get();
   }
+
   public function confirmItemRemoval($productid)
   {
     $this->productidbeingremoved = $productid;
@@ -250,22 +259,23 @@ class RelatedProductCategory extends Component
   }
   public function render()
   {
-    $relatedProducts = $this->relatedproducts
-      ->where(function ($query) {
-        $query->whereHas('product', function ($subQuery) {
-          $subQuery->where('name', 'LIKE', '%' . $this->search . '%')
-            ->orWhere('short_description', 'LIKE', '%' . $this->search . '%');
-        });
-      })->get();
+    // $relatedProducts = $this->relatedproducts
+    //   ->where(function ($query) {
+    //     $query->whereHas('product', function ($subQuery) {
+    //       $subQuery->where('name', 'LIKE', '%' . $this->search . '%')
+    //         ->orWhere('short_description', 'LIKE', '%' . $this->search . '%')
+    //         ->orWhere('type', 'LIKE', '%' . $this->search . '%');
+    //     });
+    //   })->get();
 
     if ($this->showTable === true) {
       return view('livewire.related-product-category', [
-        'relatedproducts' => $relatedProducts,
+        'relatedproducts' => $this->relatedproducts,
         'prodds' => $this->prodds,
       ]);
     } else {
       return view('livewire.related-product-category', [
-        'relatedproducts' => $relatedProducts,
+        'relatedproducts' => $this->relatedproducts,
       ]);
     }
   }
