@@ -169,6 +169,8 @@ class RelatedVariants extends Component
         $item = ProductVariant::findOrFail($id);
         $item->delete();
         $this->checked = array_diff($this->checked, [$id]);
+        $this->single = false;
+
         session()->flash('notification', [
             'message' => 'Record deleted successfully!',
             'type' => 'success',
@@ -187,6 +189,8 @@ class RelatedVariants extends Component
         $this->checked = [];
         $this->all = false;
         $this->selectPage = false;
+        $this->multiple = false;
+
         session()->flash('notification', [
             'message' => 'Records deleted successfully!',
             'type' => 'success',
