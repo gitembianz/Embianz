@@ -1,467 +1,776 @@
-<div>
- <x-alert />
- <div class="accordion">
-  <div class="accordion__btn-flex">
-   <button class="accordion__btn"
-    wire:click.prevent="@if ($showvariant === false) $set('showvariant', true) @else $set('showvariant', false) @endif">
-    {{ __('Product Variants ') }}({{ $item->variants->count() }})
-   </button>
-   <button wire:click.prevent="addrelated()" class="accordion__upload">
-    <svg>
-     <line x1="12" y1="5" x2="12" y2="19"></line>
-     <line x1="5" y1="12" x2="19" y2="12"></line>
-    </svg>
+<div class="accordion @if ($showvariant) active @endif">
+
+ {{-- ASIDES --}}
+ {{-- Delete Record || Delete Records --}}
+ <aside>
+  <div class="background background--center @if ($single || $multiple) active @endif"></div>
+  <div class="aside aside--confirm @if ($single || $multiple) active @endif">
+   <span>
+    @if ($single)
+     Are you sure to delete this record?
+    @else
+     Are you sure to delete those records?
+    @endif
+   </span>
+   @if ($single)
+    <button class="button button--primary button--long" wire:click="deleteSingleRecord">
+     <span>Delete</span>
+    </button>
+   @else
+    <button class="button button--primary button--long" wire:click="deleteRecords()">
+     <span>Delete</span>
+    </button>
+   @endif
+   <button class="button button--danger button--long" wire:click="cancel_delete()">
+    <span>Cancel</span>
    </button>
   </div>
+ </aside>
 
-  @if ($addvariant)
-   <div class="modal" id="modalelements" style="display: block">
-    <div class="modal-content modal--tabel">
-     <div class="panel__header">
-      <h1 class="panel__header--title">
-       {{ __('Add new variant') }}
-      </h1>
-      <input class="panel__header--input panel__header--checked" wire:click.prevent="saveitems()" type="button"
-       value="Save">
-     </div>
-     <div style="overflow-y: auto; position: relative; background: white; height: 100%;">
-      <table class="table table-top">
-       <thead>
-        <tr>
-         <th class="wid-2"><button class="table__header--btn">Parrent Product</button></th>
-         <th class="wid-2"><button class="table__header--btn">Variant</button></th>
-         <th class="wid-2"><button class="table__header--btn">Reference</button></th>
-         <th class="wid-1"><button class="table__header--btn">Value</button></th>
-         <th class="wid-2"><button class="table__header--btn">Dispalyed type</button></th>
 
-         <th class="wid-1"></th>
-        </tr>
-       </thead>
-      </table>
-      <table class="table" style="margin-top: 1.5rem">
-       <tbody>
-        @foreach ($variantAndValues as $index => $variantAndValue)
-         <tr wire:key="variant-row-{{ $index }}">
-          <td class="wid-2" data-title="Name">
-           {{ $item->name }}
-          </td>
-          <td class="wid-2" data-title="Pricelist">
+ {{-- Table Add Multiple --}}
+ <aside>
+  <div class="background background--center @if ($addvariant) active @endif"></div>
+  <div class="aside aside--table @if ($addvariant) active @endif">
+   {{-- Navigation --}}
+   <nav class="nav--controls">
+    <h1 class="table--name">
+     {{ __('Add variants') }}
+    </h1>
+    <button class="button button--secondary button--centered" wire:click.prevent="saveitems()">
+     <svg>
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" />
+      <path d="M12 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+      <path d="M14 4l0 4l-6 0l0 -4" />
+     </svg>
+    </button>
+    <button class="button button--danger button--centered" wire:click="closemodal">
+     <svg>
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M15 19v-2a2 2 0 0 1 2 -2h2" />
+      <path d="M15 5v2a2 2 0 0 0 2 2h2" />
+      <path d="M5 15h2a2 2 0 0 1 2 2v2" />
+      <path d="M5 9h2a2 2 0 0 0 2 -2v-2" />
+     </svg>
+    </button>
+   </nav>
+
+
+   {{-- Tabel --}}
+   <div class="table" style="height: calc(100% - 60px);">
+    <table class="expandable-table">
+     <thead>
+      <tr>
+       <th>
+        <button class="table--btn">
+         Parrent Product
+        </button>
+       </th>
+       <th>
+        <button class="table--btn">
+         Variant Product Name
+        </button>
+       </th>
+       <th class="hidden">
+        <button class="table--btn">
+         Variant Product
+        </button>
+       </th>
+       <th class="hidden">
+        <button class="table--btn">
+         Variant Reference
+        </button>
+       </th>
+       <th class="hidden">
+        <button class="table--btn">
+         Variant Value
+        </button>
+       </th>
+       <th class="hidden">
+        <button class="table--btn">
+         Is default Variant?
+        </button>
+       </th>
+       <th class="hidden">
+        <button class="table--btn">
+         Variant Dispalyed type
+        </button>
+       </th>
+       <th>
+        <div style="display: flex;">
+         <button class="button button--secondary button--sm" style="opacity: 0">
+          <svg>
+           <polyline points="3 6 5 6 21 6"></polyline>
+           <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+          </svg>
+         </button>
+         <button class="button button--secondary button--sm" style="opacity: 0">
+          <svg>
+           <polyline points="3 6 5 6 21 6"></polyline>
+           <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+          </svg>
+         </button>
+        </div>
+       </th>
+      </tr>
+     </thead>
+     <tbody>
+      @php
+       $k = 0;
+      @endphp
+      @foreach ($variantAndValues as $index => $variantAndValue)
+       <tr class="expandable-row">
+        <td wire:click="expandRow2({{ $index }})">
+         <div style="display: flex; align-items: center; justify-content: center;">
+          {{ $item->name }}
+          <button class="button button--secondary button--sm" style="opacity: 0">
+           <svg>
+            <polyline points="3 6 5 6 21 6"></polyline>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+           </svg>
+          </button>
+         </div>
+        </td>
+        <td wire:click="expandRow2({{ $index }})">
+         {{ $variantAndValue['itemselected'] }}
+        </td>
+        <td class="hidden">
+         @if ($variantAndValue['allow'])
+          <div class="searchable active">
+           {{-- Dropdown Header --}}
+           <input class="input__searchable" wire:model.debounce.300ms="searchadd" placeholder="Search..."
+            type="text">
+           <button class="button__searchable" wire:click.prevent="dennyselect({{ $index }})">
+            <svg>
+             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+             <path d="M10 10l-6 6v4h4l6 -6m1.99 -1.99l2.504 -2.504a2.828 2.828 0 1 0 -4 -4l-2.5 2.5" />
+             <path d="M13.5 6.5l4 4" />
+             <path class="button__searchable--line" d="M3 3l18 18" />
+            </svg>
+           </button>
+           {{-- Dropdown Content --}}
+           <div class="content__searchable">
+            <div class="list__searchable">
+             @if (count($addvariants) >= 1)
+              @foreach ($addvariants as $var)
+               <button class="item__searchable"
+                wire:click.prevent="selectitem({{ $index }}, {{ $var->id }}, '{{ $var->name }}')">
+                {{ $var->name }}
+               </button>
+              @endforeach
+             @else
+              <button class="item__searchable">{{ __('No record found') }}</button>
+             @endif
+            </div>
+           </div>
+          </div>
+         @else
+          <div class="searchable">
+           {{-- Dropdown Show Selected || Select now --}}
+           <button class="input__searchable">
+            @if ($variantAndValue['itemselected'])
+             {{ $variantAndValue['itemselected'] }}
+            @else
+             {{ __('Select a product') }}
+            @endif
+           </button>
+           <button class="button__searchable" wire:click.prevent="allowselect({{ $index }})">
+            <svg>
+             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+             <path d="M10 10l-6 6v4h4l6 -6m1.99 -1.99l2.504 -2.504a2.828 2.828 0 1 0 -4 -4l-2.5 2.5" />
+             <path d="M13.5 6.5l4 4" />
+             <path class="button__searchable--line" d="M3 3l18 18" />
+            </svg>
+           </button>
+          </div>
+         @endif
+         <input type="hidden" wire:model.defer="variantAndValues.{{ $index }}.variant.name">
+        </td>
+        <td class="hidden">
+         <select class="input button--fill button--xs"
+          wire:model.defer="variantAndValues.{{ $index }}.variant.reference">
+          @foreach ($references as $reference)
+           <option value="{{ $reference->id }}">{{ $reference->name }}</option>
+          @endforeach
+         </select>
+        </td>
+        <td class="hidden" style="width: auto;">
+         <input type="text" placeholder="Insert variant value" required class="input button--fill button--xs"
+          wire:model.defer="variantAndValues.{{ $index }}.variant.value">
+        </td>
+        <td class="hidden">
+         <input type="checkbox" class="input button--fill button--xs"
+          wire:model.defer="variantAndValues.{{ $index }}.variant.def">
+        </td>
+        <td class="hidden">
+         <select class="input button--fill button--xs"
+          wire:model.defer="variantAndValues.{{ $index }}.variant.display">
+          <option value="text">text</option>
+          <option value="image">image</option>
+          <option value="image & text">image & text</option>
+         </select>
+        </td>
+        <td>
+         <div style="display: flex;">
+          @if ($index == $row - 1)
+           <button class="button button--secondary button--sm" wire:click="plus">
+            <svg>
+             <line x1="12" y1="5" x2="12" y2="19">
+             </line>
+             <line x1="5" y1="12" x2="19" y2="12">
+             </line>
+            </svg>
+           </button>
+           <button class="button button--secondary button--sm" wire:click="clear({{ $index }})">
+            <svg>
+             <line x1="18" y1="6" x2="6" y2="18">
+             </line>
+             <line x1="6" y1="6" x2="18" y2="18">
+             </line>
+            </svg>
+           </button>
+          @endif
+          @if ($index != $row - 1)
+           <button class="button button--secondary button--sm" wire:click="clear({{ $index }})">
+            <svg>
+             <line x1="18" y1="6" x2="6" y2="18">
+             </line>
+             <line x1="6" y1="6" x2="18" y2="18">
+             </line>
+            </svg>
+           </button>
+          @endif
+         </div>
+        </td>
+       </tr>
+       <tr class="details-row  @if ($rind2 === $k) active @endif">
+        <td colspan="3">
+         <div class="details">
+          <p>
+           <bold>Variant Product Name</bold>
            @if ($variantAndValue['allow'])
-            <div class="table__drop" style="position: relative">
-             <input class="table__drop--input" wire:model.debounce.300ms="searchadd" placeholder="Search..."
+            <div class="searchable active">
+             {{-- Dropdown Header --}}
+             <input class="input__searchable" wire:model.debounce.300ms="searchadd" placeholder="Search..."
               type="text">
-             <ul class="table__drop--list">
-              @if (count($addvariants) >= 1)
-               @foreach ($addvariants as $var)
-                <li class="table__drop--item"
-                 wire:click.prevent="selectitem({{ $index }}, {{ $var->id }}, '{{ $var->name }}')">
-                 {{ $var->name }}
-                </li>
-               @endforeach
-              @else
-               <li class="table__drop--item">{{ __('No product-variants found') }}</li>
-              @endif
-             </ul>
-             <svg wire:click.prevent="denny({{ $index }})"
-              style="background: #35424b;position: absolute;top: 50%;transform: translateY(-50%);right: 10px;border-radius: 5px;padding: 5px;opacity: .7;stroke: white;"
-              width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round" class="feather feather-x">
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
-             </svg>
+             <button class="button__searchable" wire:click.prevent="dennyselect({{ $index }})">
+              <svg>
+               <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+               <path d="M10 10l-6 6v4h4l6 -6m1.99 -1.99l2.504 -2.504a2.828 2.828 0 1 0 -4 -4l-2.5 2.5" />
+               <path d="M13.5 6.5l4 4" />
+               <path class="button__searchable--line" d="M3 3l18 18" />
+              </svg>
+             </button>
+             {{-- Dropdown Content --}}
+             <div class="content__searchable">
+              <div class="list__searchable">
+               @if (count($addvariants) >= 1)
+                @foreach ($addvariants as $var)
+                 <button class="item__searchable"
+                  wire:click.prevent="selectitem({{ $index }}, {{ $var->id }}, '{{ $var->name }}')">
+                  {{ $var->name }}
+                 </button>
+                @endforeach
+               @else
+                <button class="item__searchable">{{ __('No record found') }}</button>
+               @endif
+              </div>
+             </div>
             </div>
            @else
-            <div style="position: relative" class="table__drop--input">
-             @if ($variantAndValue['itemselected'])
-              {{ $variantAndValue['itemselected'] }}
-             @else
-              {{ __('Select a item') }}
-             @endif
-             <svg wire:click.prevent="allowselect({{ $index }})"
-              style="background: #35424b;position: absolute;top: 50%;transform: translateY(-50%);right: 10px;border-radius: 5px;padding: 5px;opacity: .7;stroke: white;"
-              width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2">
-              <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
-              </path>
-             </svg>
+            <div class="searchable">
+             {{-- Dropdown Show Selected || Select now --}}
+             <button class="input__searchable">
+              @if ($variantAndValue['itemselected'])
+               {{ $variantAndValue['itemselected'] }}
+              @else
+               {{ __('Select a product') }}
+              @endif
+             </button>
+             <button class="button__searchable" wire:click.prevent="allowselect({{ $index }})">
+              <svg>
+               <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+               <path d="M10 10l-6 6v4h4l6 -6m1.99 -1.99l2.504 -2.504a2.828 2.828 0 1 0 -4 -4l-2.5 2.5" />
+               <path d="M13.5 6.5l4 4" />
+               <path class="button__searchable--line" d="M3 3l18 18" />
+              </svg>
+             </button>
             </div>
            @endif
            <input type="hidden" wire:model.defer="variantAndValues.{{ $index }}.variant.name">
-          </td>
 
-          <td class="wid-2" data-title="Reference">
-           <select class="table__drop--input"
+          </p>
+          <p>
+           <bold>Variant Reference</bold>
+           <select class="input button--fill button--xs"
             wire:model.defer="variantAndValues.{{ $index }}.variant.reference">
             @foreach ($references as $reference)
              <option value="{{ $reference->id }}">{{ $reference->name }}</option>
             @endforeach
            </select>
-           {{-- <input type="text"  class="table__drop--input"
-            wire:model.defer="variantAndValues.{{ $index }}.variant.reference"> --}}
-          </td>
-
-          <td class="wid-1" data-title="Value">
-           <input placeholder="Insert a value" type="text" class="table__drop--input"
+          </p>
+          <p>
+           <bold>Variant Value</bold>
+           <input type="text" placeholder="Insert variant value" required class="input button--fill button--xs"
             wire:model.defer="variantAndValues.{{ $index }}.variant.value">
-          </td>
-          <td class="wid-2" data-title="Dispalyed type">
-           <select class="table__drop--input"
+
+          </p>
+          <p>
+           <bold>Is defaut Variant?</bold>
+           <input type="checkbox" class="input button--fill button--xs"
+            wire:model.defer="variantAndValues.{{ $index }}.variant.def">
+          </p>
+          <p>
+           <bold>Variant Dispalyed type</bold>
+           <select class="input button--fill button--xs"
             wire:model.defer="variantAndValues.{{ $index }}.variant.display">
             <option value="text">text</option>
             <option value="image">image</option>
             <option value="image & text">image & text</option>
            </select>
-           {{-- <input type="text"  class="table__drop--input"
-            wire:model.defer="variantAndValues.{{ $index }}.variant.reference"> --}}
-          </td>
+          </p>
+         </div>
+        </td>
+       </tr>
+       @php
+        $k++;
+       @endphp
+      @endforeach
+     </tbody>
+    </table>
+   </div>
+  </div>
+ </aside>
 
-          {{-- <td class="wid-1" data-title="Price">
-           <input type="text" required class="table__drop--input"
-            wire:model.defer="variantAndValues.{{ $index }}.variant.value">
-          </td>
-          <td class="wid-1" data-title="Discount">
-           <input type="number" max="100" class="table__drop--input"
-            wire:model.defer="variantAndValues.{{ $index }}.variant.discount">
-          </td>
 
-          <td class="wid-1" data-title="TVA">
-           <input type="text" required class="table__drop--input"
-            wire:model.defer="variantAndValues.{{ $index }}.variant.vat"
-            value="{{ old('variantAndValues.' . $index . '.variant.vat', 19) }}">
-          </td> --}}
+ {{-- Accordion Header --}}
+ <div class="accordion__header">
+  <button
+   class="button button--flexed button--fill button--primary @if ($showvariant) button--secondary active @endif"
+   wire:click.prevent="@if ($showvariant === false) $set('showvariant', true) @else $set('showvariant', false) @endif">
+   {{ __('Products Variants ') }}({{ $item->variants->count() }})
+   <svg>
+    <polyline points="6 9 12 15 18 9"></polyline>
+   </svg>
+  </button>
+  <button class="button button--secondary" wire:click.prevent="addrelated()">
+   <svg>
+    <line x1="12" y1="5" x2="12" y2="19"></line>
+    <line x1="5" y1="12" x2="19" y2="12"></line>
+   </svg>
+  </button>
+ </div>
 
-          <td class="wid-1" data-title="Action">
-           <div class="table__buttons">
-            @if ($index == $row - 1)
-             <button type="button" class="edit" wire:click="plus">
-              <svg>
-               <line x1="12" y1="5" x2="12" y2="19">
-               </line>
-               <line x1="5" y1="12" x2="19" y2="12">
-               </line>
-              </svg>
-             </button>
-             <button type="button" class="save" wire:click="clear({{ $index }})">
-              <svg>
-               <line x1="18" y1="6" x2="6" y2="18">
-               </line>
-               <line x1="6" y1="6" x2="18" y2="18">
-               </line>
-              </svg>
-             </button>
-            @endif
-            @if ($index != $row - 1)
-             <button type="button" class="save" wire:click="clear({{ $index }})">
-              <svg>
-               <line x1="18" y1="6" x2="6" y2="18">
-               </line>
-               <line x1="6" y1="6" x2="18" y2="18">
-               </line>
-              </svg>
-             </button>
-            @endif
-           </div>
-          </td>
-         </tr>
-        @endforeach
-       </tbody>
-      </table>
+ {{-- Accordion Body --}}
+ <div class="accordion__body">
+  {{-- Navigation --}}
+  <nav class="nav--controls">
+   {{-- Search Input --}}
+   <input class="input input--long" type="text" wire:model.debounce.300ms="search" placeholder="Search...">
+   {{-- IF CHECKED --}}
+   <div class="dropdown dropdown--right" @if (!$checked) style="display:none;" @endif
+    id="checkProductsonSpec__dropdown">
+    {{-- Dropdown Button --}}
+    <button class="button button--secondary button--centered button--long" tooltip="Actions with checked" tooltip-top
+     id="checkProductsonSpec__open">
+     <span>With Checked({{ count($checked) }})</span>
+    </button>
+    {{-- Dropdown Content --}}
+    <div class="dropdown__content">
+     <div class="dropdown__container">
+      <button class="button button--primary button--long" wire:click="confirmItemsRemoval()">
+       Delete
+      </button>
      </div>
-     <span class="top-up-modal delete" wire:click="closemodal">
-      <svg>
-       <line x1="18" y1="6" x2="6" y2="18">
-       </line>
-       <line x1="6" y1="6" x2="18" y2="18">
-       </line>
-      </svg>
-     </span>
-     <a href="#top1" class="top-up-modal" id="topUp">
-      <svg>
-       <polyline points="18 15 12 9 6 15"></polyline>
-      </svg>
-     </a>
     </div>
    </div>
+   {{-- Visible Dropdown --}}
+   <div class="dropdown dropdown--right" id="visible__dropdown">
+    {{-- Dropdown Button --}}
+    <button class="button button--secondary button--centered" tooltip="Show items in table" tooltip-left
+     id="visible__open">
+     <svg>
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
+     </svg>
+    </button>
+    {{-- Dropdown Content --}}
+    <div class="dropdown__content">
+     <div class="dropdown__container">
+      @foreach ($columns as $column)
+       <label class="switch switch--primary inline">
+        <input type="checkbox" wire:model="selectedColumns" value="{{ $column }}"
+         {{ in_array($column, $selectedColumns) ? 'checked' : '' }} />
+        <span>{{ $column }}</span>
+       </label>
+      @endforeach
+     </div>
+    </div>
+   </div>
+  </nav>
+
+
+  {{-- Select All? --}}
+  @if ($selectPage && $selectAll)
+   <button class="button button--fill button--primary">
+    You selected {{ count($checked) }} items.
+   </button>
+  @elseif($selectPage)
+   <button class="button button--fill button--secondary" wire:click="selectAll">
+    You selected {{ count($checked) }} items, select all?
+   </button>
   @endif
 
 
-  {{-- end add  references --}}
-  @if ($showvariant)
-   <div class="accordion__content">
-    <div>
-     @if ($item->variants->count() > 0)
-      {{-- delete single record --}}
-      <div class="modal" id="confirmationmodalvariant">
-       <div class="modal-content">
-        <h1 class="modal-content-title">
-         {{ __('Are you sure to delete this record?') }}
-        </h1>
-        <input wire:click.prevent="deleteSingleRecord()" class="modal-content-btn submit" type="button"
-         value="Confirm" id="confirmLoad">
-        <input class="modal-content-btn delete" type="button"
-         onclick="document.getElementById('confirmationmodalvariant').style.display='none'" value="Cancel">
-        <span class="modal-content-btn delete"
-         onclick="document.getElementById('confirmationmodalvariant').style.display='none'">
-         <svg>
-          <line x1="18" y1="6" x2="6" y2="18">
-          </line>
-          <line x1="6" y1="6" x2="18" y2="18">
-          </line>
-         </svg>
-        </span>
-       </div>
+  {{-- Table --}}
+  <table class="expandable-table">
+   <thead>
+    <tr>
+     <th style="border-right: none; border-left: none;">
+      <label class="checkbox checkbox--secondary inline">
+       <input type="checkbox" wire:model="selectPage" />
+       <span></span>
+      </label>
+     </th>
+     @if ($this->showColumn('Id'))
+      <th>
+       <button class="table--btn">
+        ID
+        <svg>
+         <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+       </button>
+      </th>
+     @endif
+     @if ($this->showColumn('Parrent Name'))
+      <th>
+       <button class="table--btn">
+        Parrent Name
+        <svg>
+         <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+       </button>
+      </th>
+     @endif
+     @if ($this->showColumn('Variant Name'))
+      <th>
+       <button class="table--btn">
+        Variant Name
+        <svg>
+         <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+       </button>
+      </th>
+     @endif
+     @if ($this->showColumn('Reference'))
+      <th class="hidden">
+       <button class="table--btn">
+        Reference
+        <svg>
+         <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+       </button>
+      </th>
+     @endif
+     @if ($this->showColumn('Value'))
+      <th class="hidden">
+       <button class="table--btn">
+        Value
+        <svg>
+         <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+       </button>
+      </th>
+     @endif
+     @if ($this->showColumn('default variant'))
+      <th class="hidden">
+       <button class="table--btn">
+        Is default variant?
+        <svg>
+         <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+       </button>
+      </th>
+     @endif
+     @if ($this->showColumn('Dispalyed type'))
+      <th class="hidden">
+       <button class="table--btn">
+        Dispalyed type
+        <svg>
+         <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+       </button>
+      </th>
+     @endif
+     @if ($this->showColumn('Created At'))
+      <th class="hidden">
+       <button class="table--btn">
+        Created At
+        <svg>
+         <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+       </button>
+      </th>
+     @endif
+     @if ($this->showColumn('Updated At'))
+      <th class="hidden">
+       <button class="table--btn">
+        Updated At
+        <svg>
+         <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+       </button>
+      </th>
+     @endif
+     <th style="border-left: none; border-right: none;">
+      <div style="display: flex;">
+       <button class="button button--secondary button--sm" style="opacity: 0">
+        <svg>
+         <polyline points="3 6 5 6 21 6"></polyline>
+         <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+        </svg>
+       </button>
+       <button class="button button--secondary button--sm" style="opacity: 0">
+        <svg>
+         <polyline points="3 6 5 6 21 6"></polyline>
+         <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+        </svg>
+       </button>
       </div>
-      {{-- delete myltiple records --}}
-      <div class="modal" id="confirmationmodalmultiple">
-       <div class="modal-content">
-        <h1 class="modal-content-title">
-         {{ __('Are you sure to delete those records?') }}
-        </h1>
-        <input wire:click.prevent="deleteRecords()" class="modal-content-btn submit" type="button" value="Confirm"
-         id="confirmLoad">
-        <input class="modal-content-btn delete" type="button"
-         onclick="document.getElementById('confirmationmodalmultiple').style.display='none'" value="Cancel">
-        <span class="modal-content-btn delete"
-         onclick="document.getElementById('confirmationmodalmultiple').style.display='none'">
-         <svg>
-          <line x1="18" y1="6" x2="6" y2="18">
-          </line>
-          <line x1="6" y1="6" x2="18" y2="18">
-          </line>
-         </svg>
-        </span>
-       </div>
-      </div>
-      {{-- Header of the table --}}
-      <div class="panel__header">
-       <input class="panel__header--input" type="text" wire:model.debounce.300ms="search" placeholder="Search..."
-        style="grid-column: 1/4">
-       <div class="panel__header--bundle">
-        <div class="dropdown">
-         <button
-          wire:click.prevent="@if ($col === false) $set('col', true) @else $set('col', false) @endif"
-          class="dropdown-button">
-          Columns
-         </button>
-         @if ($col)
-          <div class="dropdown-list" style="display: flex;">
-           @foreach ($columns as $column)
-            <div class="dropdown-item">
-             <input type="checkbox" wire:model="selectedColumns" value="{{ $column }}"
-              {{ in_array($column, $selectedColumns) ? 'checked' : '' }}>
-             <label>{{ $column }}</label>
-            </div>
-           @endforeach
-          </div>
-         @endif
-        </div>
-        <div class="dropdown none" @if ($checked) style="display: unset; z-index: 5;" @endif>
-         <button
-          wire:click.prevent="@if ($all === false) $set('all', true); $set('col', false) @else $set('all', false) @endif"
-          class="dropdown-button none" @if ($checked) style="display: flex" @endif>
-          With Checked({{ count($checked) }})
-         </button>
-         @if ($checked && $all)
-          <div class="dropdown-list" style="display: flex;">
-           <button class="dropdown-item delete" type="button" wire:click="confirmRemovalmultiple()">
-            Delete
-           </button>
-          </div>
-         @endif
-        </div>
-       </div>
-       @if ($selectPage && $selectAll)
-        <div class="panel__header--checked">
-         <p>
-          You selected <strong>{{ count($checked) }}</strong> items.
-         </p>
-        </div>
-       @elseif($selectPage)
-        <div class="panel__header--checked" wire:click="selectAll">
-         <p>
-          You selected {{ count($checked) }} items, select all?
-         </p>
-        </div>
+     </th>
+    </tr>
+   </thead>
+   <tbody>
+    @php
+     $i = 0;
+    @endphp
+    @if ($variants->isEmpty())
+     <tr>
+      <td class="table--empty" colspan="{{ count($columns) + 2 }}">No record found.</td>
+     </tr>
+    @else
+     @foreach ($variants as $index => $variant)
+      <tr class="expandable-row @if ($this->isChecked($variant->id)) active @endif">
+       <td style="border-left: none" data-title="Check">
+        <label class="checkbox checkbox--secondary inline">
+         <input type="checkbox" value="{{ $variant->id }}" wire:model="checked">
+         <span></span>
+        </label>
+       </td>
+
+       @if ($this->showColumn('Id'))
+        <td wire:click="expandRow({{ $index }})">{{ $variant->id }}</td>
        @endif
-      </div>
-      {{-- Table --}}
-      <table class="table">
-       <thead>
-        <tr>
-         <th><input type="checkbox" wire:model="selectPage"></th>
-         @if ($this->showColumn('Id'))
-          <th wire:click="sortBy('id')">
-           <button class="table__header--btn">
-            ID
-           </button>
-          </th>
+       @if ($this->showColumn('Parrent Name'))
+        <td data-title="Name" wire:click="expandRow({{ $index }})">
+         <a href="{{ route('show_product', ['id' => $item->id]) }}">
+          {{ $item->name }}</a>
+        </td>
+       @endif
+       @if ($this->showColumn('Variant Name'))
+        <td data-title="Variante Name" wire:click="expandRow({{ $index }})">
+         <a href="{{ route('show_product', ['id' => $variant->product->id]) }}">
+          {{ $variant->product->name }}</a>
+        </td>
+       @endif
+       @if ($this->showColumn('Reference'))
+        <td class="hidden" wire:click="expandRow({{ $index }})">
+         @if ($editindex !== $index)
+          {{ $variant->reference->name }}
+         @else
+          <select class="input button--fill button--xs" wire:model.defer="var.{{ $index }}.ref">
+           @foreach ($references as $reference)
+            <option value="{{ $reference->id }}">{{ $reference->name }}</option>
+           @endforeach
+          </select>
          @endif
-         @if ($this->showColumn('Parrent Name'))
-          <th>
-           <button class="table__header--btn">
-            Parrent Name
-           </button>
-          </th>
+        </td>
+       @endif
+       @if ($this->showColumn('Value'))
+        <td class="hidden" wire:click="expandRow({{ $index }})">
+         @if ($editindex !== $index)
+          {{ $variant->value }}
+         @else
+          <div class="searchable">
+           <input class="input__searchable" type="text" required
+            wire:model.defer="var.{{ $index }}.value">
+          </div>
          @endif
-         @if ($this->showColumn('Variant Name'))
-          <th>
-           <button class="table__header--btn">
-            Variante Name
-           </button>
-          </th>
+        </td>
+       @endif
+       @if ($this->showColumn('default variant'))
+        <td class="hidden" wire:click="expandRow({{ $index }})">
+         @if ($editindex !== $index)
+          @if ($variant->default_variant == '1')
+           <label class="checkbox checkbox--secondary inline disabled">
+            <input type="checkbox" disabled checked>
+            <span></span>
+           </label>
+          @else
+           <label class="checkbox checkbox--secondary inline disabled">
+            <input type="checkbox" disabled>
+            <span></span>
+           </label>
+          @endif
+         @else
+          <input type="checkbox" wire:model.defer="var.{{ $index }}.def">
          @endif
+        </td>
+       @endif
+       @if ($this->showColumn('Dispalyed type'))
+        <td class="hidden" wire:click="expandRow({{ $index }})">
+         @if ($editindex !== $index)
+          {{ $variant->displayed }}
+         @else
+          <div class="searchable">
+           <select class="input button--fill button--xs" wire:model.defer="var.{{ $index }}.displayed">
+            <option value="text">text</option>
+            <option value="image">image</option>
+            <option value="image & text">image & text</option>
+           </select>
+          </div>
+         @endif
+        </td>
+       @endif
+       @if ($this->showColumn('Created At'))
+        <td class="hidden" wire:click="expandRow({{ $index }})">
+         {{ $variant->created_at }}
+        </td>
+       @endif
+       @if ($this->showColumn('Updated At'))
+        <td class="hidden" wire:click="expandRow({{ $index }})">
+         {{ $variant->updated_at }}
+        </td>
+       @endif
+       <td>
+        @if ($editindex !== $index)
+         <div style="display: flex;">
+          <button class="button button--secondary button--sm"
+           wire:click.prevent="edititem({{ $index }}, {{ $variant->id }})">
+           <svg>
+            <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
+            </path>
+           </svg>
+          </button>
+          <button class="button button--secondary button--sm"
+           wire:click.prevent="confirmItemRemoval({{ $variant->id }})">
+           <svg>
+            <polyline points="3 6 5 6 21 6"></polyline>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+           </svg>
+          </button>
+         </div>
+        @else
+         <div style="display: flex;">
+          <button class="button button--secondary button--sm"
+           wire:click.prevent="saveitem({{ $index }},{{ $variant->id }})">
+           <svg>
+            <polyline points="20 6 9 17 4 12"></polyline>
+           </svg>
+          </button>
+          <button class="button button--secondary button--sm" wire:click.prevent="canceledit()">
+           <svg>
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+           </svg>
+          </button>
+         </div>
+        @endif
+       </td>
+      </tr>
+      <tr class="details-row  @if ($rind === $i) active @endif">
+       <td colspan="{{ count($columns) + 2 }}">
+        <div class="details">
+
          @if ($this->showColumn('Reference'))
-          <th wire:click="sortBy('reference')">
-           <button class="table__header--btn">
-            Reference
-           </button>
-          </th>
+          <p>
+           <bold>Variant</bold>
+           @if ($editindex !== $index)
+            {{ $variant->reference->name }}
+           @else
+            <select class="input button--fill button--xs" wire:model.defer="var.{{ $index }}.ref">
+             @foreach ($references as $reference)
+              <option value="{{ $reference->id }}">{{ $reference->name }}</option>
+             @endforeach
+            </select>
+           @endif
+          </p>
          @endif
          @if ($this->showColumn('Value'))
-          <th>
-           <button class="table__header--btn">
-            Value
-           </button>
-          </th>
+          <p>
+           <bold>Value</bold>
+           @if ($editindex !== $index)
+            {{ $variant->value }}
+           @else
+            <input type="text" required class="input" wire:model.defer="var.{{ $index }}.value">
+           @endif
+          </p>
+         @endif
+         @if ($this->showColumn('default variant'))
+          <p>
+           <bold>Is default variant?</bold>
+           @if ($editindex !== $index)
+            @if ($variant->default_variant == '1')
+             <label class="checkbox checkbox--secondary inline disabled">
+              <input type="checkbox" disabled checked>
+              <span></span>
+             </label>
+            @else
+             <label class="checkbox checkbox--secondary inline disabled">
+              <input type="checkbox" disabled>
+              <span></span>
+             </label>
+            @endif
+           @else
+            <input type="checkbox" wire:model.defer="var.{{ $index }}.def">
+           @endif
+          </p>
          @endif
          @if ($this->showColumn('Dispalyed type'))
-          <th>
-           <button class="table__header--btn">
-            Dispalyed type
-           </button>
-          </th>
+          <p>
+           <bold>Dispalyed type</bold>
+           @if ($editindex !== $index)
+            {{ $variant->displayed }}
+           @else
+            <select class="input button--fill button--xs" wire:model.defer="var.{{ $index }}.displayed">
+             <option value="text">text</option>
+             <option value="image">image</option>
+             <option value="image & text">image & text</option>
+            </select>
+           @endif
+          </p>
          @endif
-         <th wire:click="sortBy('created_at')">
-          <button class="table__header--btn">
-           Created at
-          </button>
-         </th>
-         <th wire:click="sortBy('created_at')">
-          <button class="table__header--btn">
-           Updated at
-          </button>
-         </th>
-         <th></th>
-        </tr>
-       </thead>
-       <tbody>
-        @if ($variants->isEmpty())
-         <tr>
-          <td class="table__empty" colspan="{{ count($columns) + 3 }}">No record
-           found.</td>
-         </tr>
-        @else
-         @foreach ($variants as $index => $variant)
-          <tr class="@if ($this->isChecked($variant->id)) table__row--selected @endif">
-           <td data-title="Check">
-            <input type="checkbox" value="{{ $variant->id }}" wire:model="checked">
-           </td>
-           @if ($this->showColumn('Id'))
-            <td data-title="ID">
-             {{ $variant->id }}
-            </td>
-           @endif
-           @if ($this->showColumn('Parrent Name'))
-            <td data-title="Name">
-             <a href="{{ route('show_product', ['id' => $item->id]) }}">
-              {{ $item->name }}</a>
-            </td>
-           @endif
-           @if ($this->showColumn('Variant Name'))
-            <td data-title="Variante Name">
-             <a href="{{ route('show_product', ['id' => $variant->product->id]) }}">
-              {{ $variant->product->name }}</a>
-            </td>
-           @endif
-           @if ($this->showColumn('Reference'))
-            <td data-title="Reference">
-             @if ($editindex !== $index)
-              {{ $variant->reference->name }}
-             @else
-              <select class="table__drop--input" wire:model.defer="var.{{ $index }}.ref">
-               @foreach ($references as $reference)
-                <option value="{{ $reference->id }}">{{ $reference->name }}</option>
-               @endforeach
-              </select>
-             @endif
-            </td>
-           @endif
-           @if ($this->showColumn('Value'))
-            <td data-title="Value">
-             @if ($editindex !== $index)
-              {{ $variant->value }}
-             @else
-              <input type="text" class="input" wire:model.defer="var.{{ $index }}.value">
-             @endif
-            </td>
-           @endif
-           @if ($this->showColumn('Dispalyed type'))
-            <td data-title="Dispalyed type">
-             @if ($editindex !== $index)
-              {{ $variant->displayed }}
-             @else
-              <select class="table__drop--input" wire:model.defer="var.{{ $index }}.displayed">
-               <option value="text">text</option>
-               <option value="image">image</option>
-               <option value="image & text">image & text</option>
-              </select>
-             @endif
-            </td>
-           @endif
-           <td data-title="Created At">
-            {{ $variant->created_at }}
-           </td>
-           <td data-title="Created At">
-            {{ $variant->updated_at }}
-           </td>
-           <td data-title="Action">
-            <div class="table__buttons">
-             @if ($editindex !== $index)
-              <button class="edit" wire:click.prevent="edititem({{ $index }}, {{ $variant->id }})">
-               <svg>
-                <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
-                </path>
-               </svg>
-              </button>
-              <button class="delete" wire:click.prevent="confirmRemoval({{ $variant->id }})">
-               <svg>
-                <polyline points="3 6 5 6 21 6"></polyline>
-                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                </path>
-               </svg>
-              </button>
-             @else
-              <button class="edit" wire:click.prevent="saveitem({{ $index }} , {{ $variant->id }})">
-               <svg>
-                <polyline points="20 6 9 17 4 12"></polyline>
-               </svg>
-              </button>
-              <button class="save" wire:click.prevent="canceledit()">
-               <svg>
-                <line x1="18" y1="6" x2="6" y2="18">
-                </line>
-                <line x1="6" y1="6" x2="18" y2="18">
-                </line>
-               </svg>
-              </button>
-             @endif
-            </div>
-           </td>
-          </tr>
-         @endforeach
-        @endif
-       </tbody>
-      </table>
-      @if ($perPage <= count($variants))
-       <div class="table__load-more" wire:click="load">
-        Load more
-       </div>
-      @endif
-     @else
-      <p class="mt-2">No records </p>
-     @endif
-    </div>
-   </div>
+         @if ($this->showColumn('Created At'))
+          <p>
+           <bold>Created At</bold>
+           {{ $variant->created_at }}
+          </p>
+         @endif
+         @if ($this->showColumn('Updated At'))
+          <p>
+           <bold>Updated At</bold>
+           {{ $variant->updated_at }}
+          </p>
+         @endif
+        </div>
+       </td>
+      </tr>
+      @php
+       $i++;
+      @endphp
+     @endforeach
+    @endif
+   </tbody>
+  </table>
+
+  {{-- Load More Manual --}}
+  @if ($item->variants->count() >= 10 && $loadAmount < $item->variants->count())
+   <button class="button button--secondary button--fill" style="margin-top: 10px;" wire:click="load">
+    Load more
+   </button>
   @endif
  </div>
+
 </div>

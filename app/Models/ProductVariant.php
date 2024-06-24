@@ -13,7 +13,8 @@ class ProductVariant extends Model
         'product_id',
         'variant_id',
         'value',
-        'displayed'
+        'displayed',
+        'default_variant'
     ];
     public function product()
     {
