@@ -14,7 +14,7 @@ class RelatedVariants extends Component
     use WithPagination;
     public $item;
     //related delclaration
-    public $perPage = 10;
+    public $loadAmount = 15;
     public $search = '';
     public $orderBy = 'id';
     public $orderAsc = true;
@@ -25,7 +25,7 @@ class RelatedVariants extends Component
     public $productId;
     public $col = false;
     public $all = false;
-    public $columns = ['Id', 'Parrent Name', 'Variant Name', 'Reference', 'Value', 'Dispalyed type'];
+    public $columns = ['Id', 'Parrent Name', 'default variant', 'Variant Name', 'Reference', 'Value', 'Dispalyed type', 'Created At', 'Updated At'];
     public $selectedColumns = [];
     public $idbeingremoved = null;
     public $editindex;
@@ -37,6 +37,32 @@ class RelatedVariants extends Component
     public $variantAndValues = [];
     public $row = 1;
     public $confrmdelete = false;
+    public $single = false;
+    public $multiple = false;
+    public $rind2 = null;
+    public $rind = null;
+
+
+    public function expandRow2($index)
+    {
+        if ($this->rind2  === null) {
+            $this->rind2 = $index;
+        } elseif ($this->rind2 != $index) {
+            $this->rind2 = $index;
+        } else {
+            $this->rind2 = null;
+        }
+    }
+    public function expandRow($index)
+    {
+        if ($this->rind  === null) {
+            $this->rind = $index;
+        } elseif ($this->rind != $index) {
+            $this->rind = $index;
+        } else {
+            $this->rind = null;
+        }
+    }
 
     public function render()
     {
@@ -45,7 +71,7 @@ class RelatedVariants extends Component
                 $query->whereHas('product', function ($subQuery) {
                     $subQuery->where('name', 'LIKE', '%' . $this->search . '%');
                 });
-            })->get();
+            })->paginate($this->loadAmount);
         return view('livewire.related-variants', [
             'variants' => $variants,
             'addvariants' => $this->addvariants,
@@ -63,12 +89,12 @@ class RelatedVariants extends Component
         $this->variantAndValues[] = [
             'allow' => false,
             'itemselected' => null,
-            'variant' => ['idrel' => null, 'reference' => $this->references->first()->id, 'display' => 'text'],
+            'variant' => ['name' => null, 'reference' => $this->references->first()->id, 'display' => 'text', 'def' => false],
         ];
     }
     public function load()
     {
-        $this->perPage += 10;
+        $this->loadAmount += 10;
     }
 
     public function showColumn($column)
@@ -123,10 +149,19 @@ class RelatedVariants extends Component
         return ProductVariant::where('parrent_id', $this->item->id)
             ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->with('product');
     }
-    public function confirmRemoval($id)
+    public function confirmItemRemoval($id)
     {
         $this->idbeingremoved = $id;
-        $this->dispatchBrowserEvent('show-delete-modal-variant');
+        $this->single = true;
+    }
+    public function confirmItemsRemoval()
+    {
+        $this->multiple = true;
+    }
+    public function cancel_delete()
+    {
+        $this->multiple = false;
+        $this->single = false;
     }
     public function deleteSingleRecord()
     {
@@ -158,10 +193,6 @@ class RelatedVariants extends Component
             'title' => 'Success'
         ]);
     }
-    public function confirmRemovalmultiple()
-    {
-        $this->dispatchBrowserEvent('show-delete-modal-multiple');
-    }
 
 
     //function for add new variant
@@ -181,12 +212,11 @@ class RelatedVariants extends Component
 
     public function closemodal()
     {
-        $this->variantAndValues = [
-            [
-                'allow' => false,
-                'itemselected' => null,
-                'variant' => ['idrel' => null, 'reference' => $this->references->first()->id],
-            ]
+        $this->variantAndValues = [];
+        $this->variantAndValues[] = [
+            'allow' => false,
+            'itemselected' => null,
+            'variant' => ['name' => null, 'reference' => $this->references->first()->id, 'display' => 'text', 'def' => false],
         ];
         $this->row = 1;
         $this->checked = [];
@@ -201,7 +231,7 @@ class RelatedVariants extends Component
         $this->variantAndValues[$index]['allow'] = true;
         $this->searchadd = $this->variantAndValues[$index]['itemselected'];
     }
-    public function denny($index)
+    public function dennyselect($index)
     {
         $this->variantAndValues[$index]['allow'] = false;
         $this->searchadd = '';
@@ -219,7 +249,7 @@ class RelatedVariants extends Component
         $this->variantAndValues[] = [
             'allow' => false,
             'itemselected' => null,
-            'variant' => ['name' => null, 'reference' => $this->references->first()->id, 'display' => 'text'],
+            'variant' => ['name' => null, 'reference' => $this->references->first()->id, 'display' => 'text', 'def' => false],
         ];
     }
     public function clear($index)
@@ -231,14 +261,11 @@ class RelatedVariants extends Component
         $this->row--;
         if ($this->row < 1) {
             $this->addvariant = false;
-            $this->variantAndValues =
-                [
-                    [
-                        'allow' => false,
-                        'itemselected' => null,
-                        'variant' => ['name' => null, 'reference' => $this->references->first()->id],
-                    ]
-                ];
+            $this->variantAndValues[] = [
+                'allow' => false,
+                'itemselected' => null,
+                'variant' => ['name' => null, 'reference' => $this->references->first()->id, 'display' => 'text', 'def' => false],
+            ];
             $this->row = 1;
         }
     }
@@ -246,13 +273,20 @@ class RelatedVariants extends Component
     {
         foreach ($this->variantAndValues as  $array) {
             if (isset($array['variant']['value']) && isset($array['variant']['idrel'])) {
+                if ($array['variant']['def']) {
+                    ProductVariant::where('parrent_id', $this->item->id)
+                        ->where('default_variant', true)
+                        ->update(['default_variant' => false]);
+                }
                 ProductVariant::create([
                     'parrent_id' => $this->item->id,
                     'product_id' => $array['variant']['idrel'],
                     'variant_id' => $array['variant']['reference'],
                     'value' => $array['variant']['value'],
                     'displayed' => $array['variant']['display'],
+                    'default_variant' => $array['variant']['def'],
                 ]);
+
                 Product::where('id', $array['variant']['idrel'])->update([
                     'parent_id' => $this->item->id,
                 ]);
@@ -298,6 +332,7 @@ class RelatedVariants extends Component
             $index . '.ref' => $record->variant_id,
             $index . '.value' => $record->value,
             $index . '.displayed' => $record->displayed,
+            $index . '.def' => $record->default_variant,
         ];
     }
     public function canceledit()
@@ -310,6 +345,14 @@ class RelatedVariants extends Component
         $record = $this->var[$index] ?? null;
         if (!is_null($record)) {
             $new = ProductVariant::find($id);
+            if (array_key_exists('def', $record)) {
+                if ($record['def']) {
+                    ProductVariant::where('parrent_id', $this->item->id)
+                        ->where('default_variant', true)
+                        ->update(['default_variant' => false]);
+                    $new->default_variant = $record['def'];
+                }
+            }
             if (array_key_exists('ref', $record)) {
                 $new->variant_id = $record['ref'];
             }
