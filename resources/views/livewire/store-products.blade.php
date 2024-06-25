@@ -92,6 +92,19 @@
    </p>
   @else
    @foreach ($products as $index => $product)
+    @php
+     if ($product->type == 'parrent') {
+         if ($product->variants->count() == 0) {
+             continue;
+         } else {
+             if ($product->variants->where('default_variant', true)->first()) {
+                 $firstvar = $product->variants->where('default_variant', true)->first()->product;
+             } else {
+                 $firstvar = $product->variants->first()->product;
+             }
+         }
+     }
+    @endphp
     <div class="product">
      <div @if ($loop->last) id="last_record" @endif class="card">
       @if ($product->type != 'parrent')
@@ -107,25 +120,36 @@
        </a>
       @else
        <a
-        href="{{ route('product', ['product' => $product->variants->where('default_variant', true)->first()->product->seo_id !== null && $product->variants->where('default_variant', true)->first()->product->seo_id !== '' ? $product->variants->where('default_variant', true)->first()->product->seo_id : $product->variants->where('default_variant', true)->first()->product->id]) }}">
-        @if ($product->variants->where('default_variant', true)->first()->product->media->first() != null)
+        href="{{ route('product', ['product' => $firstvar->seo_id !== null && $firstvar->seo_id !== '' ? $firstvar->seo_id : $firstvar->id]) }}">
+        @if ($firstvar->media->first() != null)
          <img loading="eager" class="card-image"
-          src="/{{ $product->variants->where('default_variant', true)->first()->product->media->first()->path }}{{ $product->variants->where('default_variant', true)->first()->product->media->first()->name }}"
-          alt="{{ $product->variants->where('default_variant', true)->first()->product->media->first()->name }} {{ $product->variants->where('default_variant', true)->first()->product->name }}">
+          src="/{{ $firstvar->media->first()->path }}{{ $firstvar->media->first()->name }}"
+          alt="{{ $firstvar->media->first()->name }} {{ $firstvar->name }}">
         @else
          <img loading="eager" class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
         @endif
        </a>
       @endif
 
-      <?php if ($product->product_prices->count() != 0) {
-          $price = number_format($product->product_prices->first()->value, 2, ',', '.');
-          $discount = $product->product_prices->first()->discount != 0 ? true : false;
-      } else {
-          $price = null;
-          $discount = false;
-      }
-      ?>
+      @php
+       if ($product->type != 'parrent') {
+           if ($product->product_prices->count() != 0) {
+               $price = number_format($product->product_prices->first()->value, 2, ',', '.');
+               $discount = $product->product_prices->first()->discount != 0 ? true : false;
+           } else {
+               $price = null;
+               $discount = false;
+           }
+       } else {
+           if ($firstvar->product_prices->count() != 0) {
+               $price = number_format($firstvar->product_prices->first()->value, 2, ',', '.');
+               $discount = $firstvar->product_prices->first()->discount != 0 ? true : false;
+           } else {
+               $price = null;
+               $discount = false;
+           }
+       }
+      @endphp
       @if ($price)
        {{-- Out- negru // save - rosu --}}
        @if ($product->quantity < $quantity && $product->quantity > 0)
