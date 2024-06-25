@@ -603,7 +603,7 @@
        @if ($this->showColumn('default variant'))
         <td class="hidden" wire:click="expandRow({{ $index }})">
          @if ($editindex !== $index)
-          @if ($variant->default_variant == '1')
+          @if ($variant->default_variant)
            <label class="checkbox checkbox--secondary inline disabled">
             <input type="checkbox" disabled checked>
             <span></span>

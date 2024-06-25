@@ -336,7 +336,7 @@ class RelatedVariants extends Component
             $index . '.ref' => $record->variant_id,
             $index . '.value' => $record->value,
             $index . '.displayed' => $record->displayed,
-            $index . '.def' => $record->default_variant,
+            $index . '.def' => $record->default_variant == 1 ? true : false,
         ];
     }
     public function canceledit()
