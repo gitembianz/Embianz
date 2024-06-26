@@ -50,7 +50,6 @@ class StoreProducts extends Component
 
   public function mount($category = null)
   {
-
     $this->session_id = $this->getSessionId();
     $this->quantity = app('global_low_stock');
     $this->specification = Specs::get();
