@@ -2,7 +2,6 @@
  <?php if ($product->product_prices->count() != 0) {
      $price = number_format($product->product_prices->first()->value, 2, ',', '.');
      $discount = $product->product_prices->first()->discount != 0 ? true : false;
-     $currency = $product->product_prices->first()->pricelist->currency->symbol;
  } else {
      $price = null;
      $discount = false;
@@ -32,16 +31,23 @@
   @if ($discount && $price)
    @if ($price)
     <div class="product__price--discount">
-     <span
-      class="product__price--oldprice">{{ $product->product_prices->first()->value_no_discount }}{{ $currency }}</span>
+     <span class="product__price--oldprice">{{ $product->product_prices->first()->value_no_discount }}@if (app()->has('global_currency_primary_symbol'))
+       {!! app('global_currency_primary_symbol') !!}
+      @endif
+     </span>
      <span class="product__price--newprice">{{ $price }}
-      {{ $currency }}</span>
+      @if (app()->has('global_currency_primary_symbol'))
+       {!! app('global_currency_primary_symbol') !!}
+      @endif
+     </span>
     </div>
    @endif
   @else
    @if ($price)
     {{ $price }}
-    {{ $currency }}
+    @if (app()->has('global_currency_primary_symbol'))
+     {!! app('global_currency_primary_symbol') !!}
+    @endif
    @else
     @if (app()->has('label_product_status_indisponible'))
      {!! app('label_product_status_indisponible') !!}
@@ -204,8 +210,11 @@
  <div style="display: none" class="dlv">
   <span class="dlv_name">{{ $product->name }}</span>
   <span class="dlv_price">{{ $price }}</span>
-  <span
-   class="dlv_currency">{{ optional(optional(optional($product->product_prices->first())->pricelist)->currency)->name }}</span>
+  <span class="dlv_currency">
+   @if (app()->has('global_currency_primary_name'))
+    {!! app('global_currency_primary_name') !!}
+   @endif
+  </span>
  </div>
 
 </div>

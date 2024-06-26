@@ -205,26 +205,35 @@
           <span class="card-price discount">
            @if ($product->product_prices->first())
             {{ $price }}
-            {{ $product->product_prices->first()->pricelist->currency->symbol }}
+            @if (app()->has('global_currency_primary_symbol'))
+             {!! app('global_currency_primary_symbol') !!}
+            @endif
            @endif
           </span>
           <span class="card-price oldprice">
            {{ $product->product_prices->first()->value_no_discount }}
-           {{ $product->product_prices->first()->pricelist->currency->symbol }}
+           @if (app()->has('global_currency_primary_symbol'))
+            {!! app('global_currency_primary_symbol') !!}
+           @endif
           </span>
          @else
           <span>
            @if ($product->product_prices->first())
             {{ $price }}
-            {{ $product->product_prices->first()->pricelist->currency->symbol }}
+            @if (app()->has('global_currency_primary_symbol'))
+             {!! app('global_currency_primary_symbol') !!}
+            @endif
            @endif
           </span>
          @endif
         <div style="display: none">
          <span class="dlv_name">{{ $product->name }}</span>
          <span class="dlv_price">{{ $price }}</span>
-         <span
-          class="dlv_currency">{{ optional(optional(optional($product->product_prices->first())->pricelist)->currency)->name }}</span>
+         <span class="dlv_currency">
+          @if (app()->has('global_currency_primary_symbol'))
+           {!! app('global_currency_primary_symbol') !!}
+          @endif
+         </span>
         </div>
         </p>
        </div>

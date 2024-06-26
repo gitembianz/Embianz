@@ -2,39 +2,56 @@
  <!------------------------Breadcrumbs----------------------->
  <div class="breadcrumbs container">
   <a class="breadcrumbs__link" href="{{ url('/') }}">
-   @if (app()->has('label_breadcrumbs_home_page')){!! app('label_breadcrumbs_home_page') !!} @endif
+   @if (app()->has('label_breadcrumbs_home_page'))
+    {!! app('label_breadcrumbs_home_page') !!}
+   @endif
   </a>
   <a class="breadcrumbs__link" href="{{ url('/search') }}">
-   @if (app()->has('label_breadcrumbs_search')){!! app('label_breadcrumbs_search') !!} @endif
+   @if (app()->has('label_breadcrumbs_search'))
+    {!! app('label_breadcrumbs_search') !!}
+   @endif
   </a>
  </div>
  <!---------------------------------------------------------->
  <section class="controls container controls--search">
   <input class="controls__search" type="text" maxlength="100" autocomplete="off" name="search" id="search"
-   wire:model="search" placeholder="@if (app()->has('label_placeholder_search')){!! app('label_placeholder_search') !!} @endif">
-  <h2 class="section__title">@if (app()->has('label_search_title')){!! app('label_search_title') !!} @endif</h2>
+   wire:model="search" placeholder="@if (app()->has('label_placeholder_search')) {!! app('label_placeholder_search') !!} @endif">
+  <h2 class="section__title">
+   @if (app()->has('label_search_title'))
+    {!! app('label_search_title') !!}
+   @endif
+  </h2>
   <div>
    <button class="tab__button tab__button--long @if ($showproducts) active @endif"
-    wire:click="toggle('products')">@if (app()->has('label_search_product_element')){!! app('label_search_product_element') !!} @endif @if ($products->isNotEmpty())
-    ({{ $products->total() }}) 
-    @else
-     (0)
-    @endif
+    wire:click="toggle('products')">
+    @if (app()->has('label_search_product_element'))
+     {!! app('label_search_product_element') !!}
+     @endif @if ($products->isNotEmpty())
+      ({{ $products->total() }})
+     @else
+      (0)
+     @endif
    </button>
    <button class="tab__button tab__button--long @if ($showcategories) active @endif"
     wire:click="toggle('categories')">
-    @if (app()->has('label_search_category_element')){!! app('label_search_category_element') !!} @endif @if ($categories->isNotEmpty())
-     ({{ $categories->total() }})
-    @else
-     (0)
-    @endif
+    @if (app()->has('label_search_category_element'))
+     {!! app('label_search_category_element') !!}
+     @endif @if ($categories->isNotEmpty())
+      ({{ $categories->total() }})
+     @else
+      (0)
+     @endif
    </button>
   </div>
  </section>
  @if ($showproducts)
   <section class="catalogue container">
    @if ($products->isEmpty())
-     <p>@if(app()->has('label_message_no_elements')){!! app('label_message_no_elements') !!} @endif</p>
+    <p>
+     @if (app()->has('label_message_no_elements'))
+      {!! app('label_message_no_elements') !!}
+     @endif
+    </p>
    @else
     @foreach ($products as $index => $product)
      <div class="product">
@@ -62,17 +79,21 @@
         {{-- Out- negru // save - rosu --}}
         @if ($product->quantity < $quantity && $product->quantity > 0)
          <p class="card-status out">
-           @if (app()->has('label_product_status_stock')){!! app('label_product_status_stock') !!} @endif
-          </p>
+          @if (app()->has('label_product_status_stock'))
+           {!! app('label_product_status_stock') !!}
+          @endif
+         </p>
          @if ($discount)
           <p class="card-status save-secondary">
            -{{ $product->product_prices->first()->discount }}%
           </p>
          @endif
         @elseif($product->quantity == 0)
-        <p class="card-status save">
-           @if (app()->has('label_product_status_indisponible')){!! app('label_product_status_indisponible') !!} @endif
-          </p>
+         <p class="card-status save">
+          @if (app()->has('label_product_status_indisponible'))
+           {!! app('label_product_status_indisponible') !!}
+          @endif
+         </p>
         @else
          @if ($discount)
           <p class="card-status save">
@@ -81,9 +102,11 @@
          @endif
         @endif
        @else
-         <p class="card-status save">
-           @if (app()->has('label_product_status_coming_soon')){!! app('label_product_status_coming_soon') !!} @endif
-          </p>
+        <p class="card-status save">
+         @if (app()->has('label_product_status_coming_soon'))
+          {!! app('label_product_status_coming_soon') !!}
+         @endif
+        </p>
        @endif
        @livewire(
            'product-wishlist-button',
@@ -106,24 +129,30 @@
            <span class="card-price discount">
             @if ($product->product_prices->first())
              {{ $price }}
-             {{ $product->product_prices->first()->pricelist->currency->symbol }}
+             @if (app()->has('global_currency_primary_symbol'))
+              {!! app('global_currency_primary_symbol') !!}
+             @endif
             @endif
            </span>
            <span class="card-price oldprice">
-            {{ $product->product_prices->first()->value_no_vat }}
-            {{ $product->product_prices->first()->pricelist->currency->symbol }}
+            {{ $product->product_prices->first()->value_no_discount }}
+            @if (app()->has('global_currency_primary_symbol'))
+             {!! app('global_currency_primary_symbol') !!}
+            @endif
            </span>
           @else
            <span>
             @if ($product->product_prices->first())
              {{ $price }}
-             {{ $product->product_prices->first()->pricelist->currency->symbol }}
+             @if (app()->has('global_currency_primary_symbol'))
+              {!! app('global_currency_primary_symbol') !!}
+             @endif
             @endif
            </span>
           @endif
          </p>
         </div>
-         @livewire('add-to-cart-button', ['product' => $product], key($product->id . $index))
+        @livewire('add-to-cart-button', ['product' => $product], key($product->id . $index))
        </div>
       </div>
      </div>
@@ -137,7 +166,11 @@
  @if ($showcategories)
   <section class="catalogue container catalogue--categories">
    @if ($categories->isEmpty())
-     <p>@if(app()->has('label_message_no_elements')){!! app('label_message_no_elements') !!} @endif</p>
+    <p>
+     @if (app()->has('label_message_no_elements'))
+      {!! app('label_message_no_elements') !!}
+     @endif
+    </p>
    @else
     @foreach ($categories as $index => $category)
      <div @if ($loop->last) id="last_record" @endif class="product">
