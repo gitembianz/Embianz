@@ -37,10 +37,7 @@ class StoreMain extends Component
         $query->select('path', 'name')->where('type', 'main');
       },
       'product_prices' => function ($query) {
-        $query->select('product_id', 'value', 'discount', 'value_no_discount', 'pricelist_id')
-          ->with(['pricelist' => function ($query) {
-            $query->select('id', 'currency_id')->with('currency:id,name,symbol');
-          }]);
+        $query->select('product_id', 'value', 'discount', 'value_no_discount');
       },
       'wishlists' => function ($query) {
         $query->select('id', 'product_id')->where('session_id', $this->session_id);
@@ -62,10 +59,7 @@ class StoreMain extends Component
         $query->select('path', 'name')->where('type', 'main');
       },
       'product_prices' => function ($query) {
-        $query->select('product_id', 'value', 'discount', 'value_no_discount', 'pricelist_id')
-          ->with(['pricelist' => function ($query) {
-            $query->select('id', 'currency_id')->with('currency:id,name,symbol');
-          }]);
+        $query->select('product_id', 'value', 'discount', 'value_no_discount');
       },
       'wishlists' => function ($query) {
         $query->select('id', 'product_id')->where('session_id', $this->session_id);

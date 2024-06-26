@@ -53,10 +53,7 @@ class GeneralSearch extends Component
                         $query->select('path', 'name')->where('type', 'min');
                     },
                     'product_prices' => function ($query) {
-                        $query->select('product_id', 'value', 'pricelist_id')
-                            ->with(['pricelist' => function ($query) {
-                                $query->select('id', 'currency_id')->with('currency:id,name,symbol');
-                            }]);
+                        $query->select('product_id', 'value', 'pricelist_id');
                     }
                 ])
                 ->orderBy('popularity', 'desc')
