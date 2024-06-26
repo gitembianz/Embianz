@@ -122,11 +122,10 @@
        <a
         href="{{ route('product', ['product' => $firstvar->seo_id !== null && $firstvar->seo_id !== '' ? $firstvar->seo_id : $firstvar->id]) }}">
         @if ($firstvar->media->first() != null)
-         <img loading="eager" class="card-image"
-          src="/{{ $firstvar->media->first()->path }}{{ $firstvar->media->first()->name }}"
+         <img class="card-image" src="/{{ $firstvar->media->first()->path }}{{ $firstvar->media->first()->name }}"
           alt="{{ $firstvar->media->first()->name }} {{ $firstvar->name }}">
         @else
-         <img loading="eager" class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
+         <img class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
         @endif
        </a>
       @endif
