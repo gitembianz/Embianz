@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\CustomScript;
 use App\Models\Payment;
+use App\Models\PriceList;
 use App\Models\Status;
 use App\Models\Store_Settings;
 use App\Models\TextLabel;
@@ -33,6 +34,7 @@ class GlobalVariablesServiceProvider extends ServiceProvider
         $this->loadGlobalStatuses();
         $this->loadGlobalPayments();
         $this->loadGlobalCustomScripts();
+        $this->loadGlobalCurrencies();
     }
     private function loadGlobalVariables()
     {
@@ -113,6 +115,24 @@ class GlobalVariablesServiceProvider extends ServiceProvider
 
             foreach ($globalStatuses as $key => $value) {
                 $this->app->instance('global_' . $key, $value);
+            }
+        }
+    }
+    private function loadGlobalCurrencies()
+    {
+        if (Schema::hasTable('price_lists') && Schema::hasTable('currencies')) {
+
+            $globalCurrencies = Cache::get('global_currencies', function () {
+                return PriceList::join('currencies', 'price_lists.currency_id', '=', 'currencies.id')
+                    ->where('price_lists.active', true)
+                    ->get(['price_lists.name as price_list_name', 'currencies.name as currency_name', 'currencies.symbol as currency_symbol'])
+                    ->keyBy('price_list_name')
+                    ->toArray();
+            });
+
+            foreach ($globalCurrencies as $priceListName => $currency) {
+                $this->app->instance('global_currency_' . strtolower($priceListName) . '_name', $currency['currency_name']);
+                $this->app->instance('global_currency_' . strtolower($priceListName) . '_symbol', $currency['currency_symbol']);
             }
         }
     }
