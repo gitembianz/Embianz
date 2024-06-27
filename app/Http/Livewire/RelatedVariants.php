@@ -36,7 +36,6 @@ class RelatedVariants extends Component
     public $searchadd = '';
     public $variantAndValues = [];
     public $row = 1;
-    public $confrmdelete = false;
     public $single = false;
     public $multiple = false;
     public $rind2 = null;
@@ -84,7 +83,7 @@ class RelatedVariants extends Component
     {
         $this->selectedColumns = $this->columns;
         $this->item = $product;
-        $this->confrmdelete = false;
+        
 
         $this->variantAndValues[] = [
             'allow' => false,
@@ -176,7 +175,7 @@ class RelatedVariants extends Component
             'type' => 'success',
             'title' => 'Success'
         ]);
-        $this->confrmdelete = false;
+        
     }
     public function deleteRecords()
     {
