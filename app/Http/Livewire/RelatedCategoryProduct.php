@@ -23,8 +23,6 @@ class RelatedCategoryProduct extends Component
   public $selectPage = false;
   public $selectAll = false;
   public $showrelateitems = false;
-  public $col = false;
-  public $all = false;
   public $idbeingremoved = null;
   public $columns = ['Id', 'Product Name', 'Category Name', 'Category Description', 'Category displayed elements', 'Category is active?', 'Created At', 'Updated At'];
   public $selectedColumns = [];
