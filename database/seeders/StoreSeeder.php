@@ -37,8 +37,8 @@ class StoreSeeder extends Seeder
             ['parameter' => 'instagram_url', 'value' => 'https://www.instagram.com/norenromania/', 'description' => 'link instagram', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'robots_txt', 'value' => 'User-agent: * <br> Disallow: /embadmin <br> Sitemap: https://embianz.com/sitemap.xml ', 'description' => 'Content for robots.txt (keep in mind to use <br> for a new line)', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'theme', 'value' => 'noren', 'description' => 'Default store theme', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
-            ['parameter' => 'parent_add_to_cart', 'value' => 'false', 'description' => 'Add product variant to cart', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
-            ['parameter' => 'parent_price_from', 'value' => 'false', 'description' => 'Showing price from to product variant', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'variant_add_to_cart', 'value' => 'false', 'description' => 'Add product variant to cart', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'variant_price_from', 'value' => 'false', 'description' => 'Showing price from to product variant', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
 
         ];
     }
