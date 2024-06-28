@@ -95,7 +95,7 @@
     @php
      if ($product->type == 'parrent') {
          if ($product->variants->count() == 0) {
-             $element = $product;
+             continue;
          } else {
              if ($product->variants->where('default_variant', true)->first()) {
                  $element = $product->variants->where('default_variant', true)->first()->product;
