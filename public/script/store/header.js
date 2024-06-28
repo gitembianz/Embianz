@@ -134,13 +134,14 @@ function searchBar() {
   input.addEventListener("keypress", function (event) {
     if (event.key === "Enter") {
       event.preventDefault();
-      window.location.href = "/search/" + input.value;
+      window.location.href = "/search/" + encodeURIComponent(input.value);
     }
   });
   searching.addEventListener("click", function () {
-    window.location.href = "/search/" + input.value;
+    window.location.href = "/search/" + encodeURIComponent(input.value);
   });
 }
+
 //<--------------------------- End SearchBar --------------------------->
 //<--------------------------------------------------------------------->
 //<------------------------ Double Tap Redirect ------------------------>
