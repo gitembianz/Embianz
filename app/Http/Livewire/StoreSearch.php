@@ -31,7 +31,7 @@ class StoreSearch extends Component
     public function mount($data = null)
     {
         if ($data != null) {
-            $this->search = $data;
+            $this->search = urldecode($data);
             $search_from_session = session()->get('search_values', []);
             if (isset($search_from_session['value']) && $search_from_session['value'] != $data) {
                 session()->put('search_values', [
@@ -92,8 +92,9 @@ class StoreSearch extends Component
     {
         if ($this->search != "") {
             return Product::name($this->search)
-                ->select('id', 'name', 'seo_id', 'short_description', 'quantity')
+                ->select('id', 'name', 'seo_id', 'short_description', 'type', 'quantity')
                 ->where('active', true)
+                ->where('type', '!=', 'parrent')
                 ->where('start_date', '<=',  now()->format('Y-m-d'))
                 ->where('end_date', '>=',  now()->format('Y-m-d'))
                 ->with([

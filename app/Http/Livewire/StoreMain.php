@@ -43,8 +43,9 @@ class StoreMain extends Component
         $query->select('id', 'product_id')->where('session_id', $this->session_id);
       }
     ])
-      ->select('id', 'name', 'seo_id', 'quantity', 'short_description', 'popularity')
+      ->select('id', 'name', 'seo_id', 'quantity', 'type', 'short_description', 'popularity')
       ->where('active', true)
+      ->where('type', '!=', 'parrent')
       ->where('start_date', '<=',  now()->format('Y-m-d'))
       ->where('end_date', '>=',  now()->format('Y-m-d'))
       ->orderBy('popularity', 'desc')
@@ -67,6 +68,7 @@ class StoreMain extends Component
     ])
       ->select('id', 'name', 'seo_id', 'quantity', 'short_description', 'popularity')
       ->where('active', true)
+      ->where('type', '!=', 'parrent')
       ->where('start_date', '<=',  now()->format('Y-m-d'))
       ->where('end_date', '>=',  now()->format('Y-m-d'))
       ->where('is_new', true)
