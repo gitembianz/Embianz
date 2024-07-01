@@ -2,6 +2,7 @@
 import { aside } from "./components/aside.js";
 import { opener } from "./components/opener.js";
 import { tabs } from "./components/tabs.js";
+import { dropdown } from "./components/dropdown.js";
 
 
 /// Navigation (Header)
@@ -21,12 +22,8 @@ opener('optional__dropdown', 'optional__open', true);
 opener('sorting__dropdown', 'sorting__open', true);
 opener('checked__dropdown', 'checked__open', true);
 
-// Related
-opener('checkadresses__dropdown', 'checkadresses__open', true);
-opener('checkorder__dropdown', 'checkorder__open', true);
-opener('checkcartitems__dropdown', 'checkcartitems__open', true);
-opener('checkProductsonSpec__dropdown', 'checkProductsonSpec__open', true);
-opener('test__dropdown', 'test__open', true);
-
 /// Tabs (Show Table)
 tabs('detailsButton','relatedButton','detailsContent','relatedContent');
+
+// All Dropdowns
+dropdown();
