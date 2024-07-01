@@ -95,6 +95,7 @@ class StoreProducts extends Component
       'product',
       function ($query) {
         $query->where('active', true)
+          ->where('type', '!=', 'parrent')
           ->where('start_date', '<=',  now()->format('Y-m-d'))
           ->where('end_date', '>=',  now()->format('Y-m-d'));
       }
