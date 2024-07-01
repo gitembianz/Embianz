@@ -84,8 +84,8 @@ $transition__searchable: all 0.3s ease-in-out;
 	transition: $transition__searchable;
 	opacity: 0;
 	visibility: hidden;
-	transform: translateY($triangle__searchable + $padding__searchable);z
-  z-index: 100;
+	transform: translateY($triangle__searchable + $padding__searchable);
+  z-index: 500;
 
 	&::after {
 		position: absolute;
