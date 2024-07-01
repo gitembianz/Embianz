@@ -636,12 +636,12 @@
           @else
             @foreach ($relatedprods as $index => $prod)
               <tr @if ($loop->last) id="last_record" @endif class="expandable-row @if ($this->isChecked($prod->id)) active @endif">
-      <td style="border-left: none" data-title="Check">
-        <label class="checkbox checkbox--secondary inline">
-          <input type="checkbox" value="{{ $prod->id }}" wire:model="checked">
-          <span></span>
-        </label>
-      </td>
+        <td style="border-left: none" data-title="Check">
+          <label class="checkbox checkbox--secondary inline">
+            <input type="checkbox" value="{{ $prod->id }}" wire:model="checked">
+            <span></span>
+          </label>
+        </td>
 
                 @if ($this->showColumn("Id"))
                   <td wire:click="expandRow({{ $index }})">{{ $prod->id }}</td>
