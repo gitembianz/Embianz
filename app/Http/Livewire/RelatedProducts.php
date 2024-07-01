@@ -43,6 +43,20 @@ class RelatedProducts extends Component
     public $showTable = false;
     public $totalRecords;
     public $loadAmount = 20;
+    public $row = null;
+    public $single = false;
+    public $multiple = false;
+
+    public function expandRow($index)
+    {
+      if ($this->row  === null) {
+        $this->row = $index;
+      } elseif ($this->row != $index) {
+        $this->row = $index;
+      } else {
+        $this->row = null;
+      }
+    }
 
     // function for add categories
     public function toggleTable()
@@ -223,10 +237,19 @@ class RelatedProducts extends Component
         return Related_Products::where('parrent_id', $this->product->id)
             ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->with('product');
     }
-    public function confirmItemRemoval($productid)
+    public function confirmItemRemoval($id)
     {
-        $this->idbeingremoved = $productid;
-        $this->dispatchBrowserEvent('show-deleterelatedprod-modal');
+      $this->idbeingremoved = $id;
+      $this->single = true;
+    }
+    public function confirmItemsRemoval()
+    {
+      $this->multiple = true;
+    }
+    public function cancel_delete()
+    {
+      $this->multiple = false;
+      $this->single = false;
     }
     public function deleteSingleRecord()
     {
@@ -234,6 +257,7 @@ class RelatedProducts extends Component
         $record->delete();
 
         $this->checked = array_diff($this->checked, [$this->idbeingremoved]);
+        $this->single = false;
         session()->flash('notification', [
             'message' => 'Record deleted successfully!',
             'type' => 'success',
@@ -248,6 +272,7 @@ class RelatedProducts extends Component
             $recordtodel->delete();
         }
         $this->checked = [];
+        $this->multiple = false;
         session()->flash('notification', [
             'message' => 'Records deleted successfully!',
             'type' => 'success',
@@ -255,10 +280,7 @@ class RelatedProducts extends Component
         ]);
         $this->selectPage = false;
     }
-    public function confirmItemsRemoval()
-    {
-        $this->dispatchBrowserEvent('show-deleterelatedprod-modal-multiple');
-    }
+
     public function render()
     {
         $relatedproducts = $this->relatedproducts
