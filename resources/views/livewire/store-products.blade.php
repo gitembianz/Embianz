@@ -92,43 +92,47 @@
    </p>
   @else
    @foreach ($products as $index => $product)
+    @php
+     if ($product->type == 'parrent') {
+         if ($product->variants->count() == 0) {
+             continue;
+         } else {
+             if ($product->variants->where('default_variant', true)->first()) {
+                 $element = $product->variants->where('default_variant', true)->first()->product;
+             } else {
+                 $element = $product->variants->first()->product;
+             }
+         }
+     } else {
+         $element = $product;
+     }
+    @endphp
     <div class="product">
      <div @if ($loop->last) id="last_record" @endif class="card">
-      @if ($product->type != 'parrent')
-       <a
-        href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">
-        @if ($product->media->first() != null)
-         <img loading="eager" class="card-image"
-          src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}"
-          alt="{{ $product->media->first()->name }} {{ $product->name }}">
-        @else
-         <img loading="eager" class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
-        @endif
-       </a>
-      @else
-       <a
-        href="{{ route('product', ['product' => $product->variants->where('default_variant', true)->first()->product->seo_id !== null && $product->variants->where('default_variant', true)->first()->product->seo_id !== '' ? $product->variants->where('default_variant', true)->first()->product->seo_id : $product->variants->where('default_variant', true)->first()->product->id]) }}">
-        @if ($product->variants->where('default_variant', true)->first()->product->media->first() != null)
-         <img loading="eager" class="card-image"
-          src="/{{ $product->variants->where('default_variant', true)->first()->product->media->first()->path }}{{ $product->variants->where('default_variant', true)->first()->product->media->first()->name }}"
-          alt="{{ $product->variants->where('default_variant', true)->first()->product->media->first()->name }} {{ $product->variants->where('default_variant', true)->first()->product->name }}">
-        @else
-         <img loading="eager" class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
-        @endif
-       </a>
-      @endif
+      <a
+       href="{{ route('product', ['product' => $element->seo_id !== null && $element->seo_id !== '' ? $element->seo_id : $element->id]) }}">
+       @if ($element->media->first() != null)
+        <img loading="eager" class="card-image"
+         src="/{{ $element->media->first()->path }}{{ $element->media->first()->name }}"
+         alt="{{ $element->media->first()->name }} {{ $element->name }}">
+       @else
+        <img loading="eager" class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
+       @endif
+      </a>
 
-      <?php if ($product->product_prices->count() != 0) {
-          $price = number_format($product->product_prices->first()->value, 2, ',', '.');
-          $discount = $product->product_prices->first()->discount != 0 ? true : false;
-      } else {
-          $price = null;
-          $discount = false;
-      }
-      ?>
+
+      @php
+       if ($element->product_prices->count() != 0) {
+           $price = number_format($element->product_prices->first()->value, 2, ',', '.');
+           $discount = $element->product_prices->first()->discount != 0 ? true : false;
+       } else {
+           $price = null;
+           $discount = false;
+       }
+      @endphp
       @if ($price)
        {{-- Out- negru // save - rosu --}}
-       @if ($product->quantity < $quantity && $product->quantity > 0)
+       @if ($element->quantity < $quantity && $element->quantity > 0)
         <p class="card-status out">
          @if (app()->has('label_product_status_stock'))
           {!! app('label_product_status_stock') !!}
@@ -136,10 +140,10 @@
         </p>
         @if ($discount)
          <p class="card-status save-secondary">
-          -{{ $product->product_prices->first()->discount }}%
+          -{{ $element->product_prices->first()->discount }}%
          </p>
         @endif
-       @elseif($product->quantity == 0)
+       @elseif($element->quantity == 0)
         <p class="card-status save">
          @if (app()->has('label_product_status_indisponible'))
           {!! app('label_product_status_indisponible') !!}
@@ -148,7 +152,7 @@
        @else
         @if ($discount)
          <p class="card-status save">
-          -{{ $product->product_prices->first()->discount }}%
+          -{{ $element->product_prices->first()->discount }}%
          </p>
         @endif
        @endif
@@ -163,11 +167,11 @@
       @livewire(
           'product-wishlist-button',
           [
-              'productId' => $product->id,
+              'productId' => $element->id,
               'class' => 'card__action',
-              'is_in_wishlist' => $product->wishlists->isNotEmpty(),
+              'is_in_wishlist' => $element->wishlists->isNotEmpty(),
           ],
-          key($product->id)
+          key($element->id)
       )
 
       <div class="card-info">
@@ -177,34 +181,67 @@
        <div class="card-text">
         <h3 class="card-title">{{ $product->name }}</h3>
         <p class="card-price">
+         @if (
+             $product->type == 'parrent' &&
+                 app()->has('global_variant_price_from') &&
+                 app()->has('label_product_price_from') &&
+                 app('global_variant_price_from') === 'true')
+          {!! app('label_product_price_from') !!}
+         @endif
          @if ($discount)
           <span class="card-price discount">
-           @if ($product->product_prices->first())
+           @if ($element->product_prices->first())
             {{ $price }}
-            {{ $product->product_prices->first()->pricelist->currency->symbol }}
+            @if (app()->has('global_currency_primary_symbol'))
+             {!! app('global_currency_primary_symbol') !!}
+            @endif
            @endif
           </span>
           <span class="card-price oldprice">
-           {{ $product->product_prices->first()->value_no_discount }}
-           {{ $product->product_prices->first()->pricelist->currency->symbol }}
+           {{ $element->product_prices->first()->value_no_discount }}
+           @if (app()->has('global_currency_primary_symbol'))
+            {!! app('global_currency_primary_symbol') !!}
+           @endif
           </span>
          @else
           <span>
-           @if ($product->product_prices->first())
+           @if ($element->product_prices->first())
             {{ $price }}
-            {{ $product->product_prices->first()->pricelist->currency->symbol }}
+            @if (app()->has('global_currency_primary_symbol'))
+             {!! app('global_currency_primary_symbol') !!}
+            @endif
            @endif
           </span>
          @endif
         <div style="display: none">
-         <span class="dlv_name">{{ $product->name }}</span>
+         <span class="dlv_name">{{ $element->name }}</span>
          <span class="dlv_price">{{ $price }}</span>
-         <span
-          class="dlv_currency">{{ optional(optional(optional($product->product_prices->first())->pricelist)->currency)->name }}</span>
+         <span class="dlv_currency">
+          @if (app()->has('global_currency_primary_symbol'))
+           {!! app('global_currency_primary_symbol') !!}
+          @endif
+         </span>
         </div>
         </p>
        </div>
-       @livewire('add-to-cart-button', ['product' => $product], key($product->id . $index))
+       @if (
+           $product->type == 'parrent' &&
+               app()->has('global_variant_add_to_cart') &&
+               app('global_variant_add_to_cart') === 'true')
+        @livewire('add-to-cart-button', ['product' => $element], key($element->id . $index))
+       @elseif($product->type == 'parrent')
+        <div class="card__button--wrapper">
+         <a style="text-decoration: none; color: white"
+          href="{{ route('product', ['product' => $element->seo_id !== null && $element->seo_id !== '' ? $element->seo_id : $element->id]) }}"
+          class="card__button">
+          @if (app()->has('label_show_parrent'))
+           {!! app('label_show_parrent') !!}
+          @endif
+         </a>
+        </div>
+       @else
+        @livewire('add-to-cart-button', ['product' => $element], key($element->id . $index))
+       @endif
       </div>
      </div>
     </div>

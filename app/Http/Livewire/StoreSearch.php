@@ -31,7 +31,7 @@ class StoreSearch extends Component
     public function mount($data = null)
     {
         if ($data != null) {
-            $this->search = $data;
+            $this->search = urldecode($data);
             $search_from_session = session()->get('search_values', []);
             if (isset($search_from_session['value']) && $search_from_session['value'] != $data) {
                 session()->put('search_values', [
@@ -92,8 +92,9 @@ class StoreSearch extends Component
     {
         if ($this->search != "") {
             return Product::name($this->search)
-                ->select('id', 'name', 'seo_id', 'short_description', 'quantity')
+                ->select('id', 'name', 'seo_id', 'short_description', 'type', 'quantity')
                 ->where('active', true)
+                ->where('type', '!=', 'parrent')
                 ->where('start_date', '<=',  now()->format('Y-m-d'))
                 ->where('end_date', '>=',  now()->format('Y-m-d'))
                 ->with([
@@ -101,10 +102,7 @@ class StoreSearch extends Component
                         $query->select('path', 'name')->where('type', 'main');
                     },
                     'product_prices' => function ($query) {
-                        $query->select('product_id', 'value', 'pricelist_id')
-                            ->with(['pricelist' => function ($query) {
-                                $query->select('id', 'currency_id')->with('currency:id,name,symbol');
-                            }]);
+                        $query->select('product_id', 'value', 'discount', 'value_no_discount', 'pricelist_id');
                     },
                     'wishlists' => function ($query) {
                         $query->select('id', 'product_id')->where('session_id', $this->session_id);

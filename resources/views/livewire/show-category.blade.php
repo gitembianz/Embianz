@@ -24,7 +24,7 @@
  <nav class="nav--controls">
   <h1 class="table--name">Category: {{ $category->name }}</h1>
   {{-- Refresh Button --}}
-  <a class="button button--secondary button--centered" tooltip="Back to Carts" tooltip-top
+  <a class="button button--secondary button--centered" tooltip="Back to all categories" tooltip-top
    href="{{ route('category') }}">
    <svg>
     <polyline points="15 18 9 12 15 6"></polyline>
@@ -144,7 +144,7 @@
    @if ($editcategory === null)
     <span class="disabled">{{ $category->start_date }}</span>
    @else
-    <input type="text" placeholder=" " name="category__name" wire:model.defer="cat.start_date" required>
+    <input type="date" placeholder=" " name="category__name" wire:model.defer="cat.start_date" required>
    @endif
    <label for="category__name">Start Date</label>
   </div>
@@ -154,7 +154,7 @@
    @if ($editcategory === null)
     <span class="disabled">{{ $category->end_date }}</span>
    @else
-    <input type="text" placeholder=" " name="category__name" wire:model.defer="cat.end_date" required>
+    <input type="date" placeholder=" " name="category__name" wire:model.defer="cat.end_date" required>
    @endif
    <label for="category__name">End Date</label>
   </div>

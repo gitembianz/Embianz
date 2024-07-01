@@ -134,15 +134,11 @@ class RelatedProductsonSpec extends Component
   {
     return $this->orderAsc === '1' ? '0' : '1';
   }
-  // public function updatedChecked()
-  // {
-  //   $this->selectPage = false;
-  // }
-
   public function updatedChecked()
   {
-    // Debugging line
+    $this->selectPage = false;
   }
+
 
   public function isChecked($prodId)
   {

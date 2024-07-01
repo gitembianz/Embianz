@@ -44,8 +44,9 @@ class GeneralSearch extends Component
     {
         if ($this->search != "") {
             return Product::name($this->search)
-                ->select('id', 'name', 'seo_id', 'short_description')
+                ->select('id', 'name', 'seo_id', 'type', 'short_description')
                 ->where('active', true)
+                ->where('type', '!=', 'parrent')
                 ->where('start_date', '<=',  now()->format('Y-m-d'))
                 ->where('end_date', '>=',  now()->format('Y-m-d'))
                 ->with([
@@ -53,10 +54,7 @@ class GeneralSearch extends Component
                         $query->select('path', 'name')->where('type', 'min');
                     },
                     'product_prices' => function ($query) {
-                        $query->select('product_id', 'value', 'pricelist_id')
-                            ->with(['pricelist' => function ($query) {
-                                $query->select('id', 'currency_id')->with('currency:id,name,symbol');
-                            }]);
+                        $query->select('product_id', 'value', 'pricelist_id');
                     }
                 ])
                 ->orderBy('popularity', 'desc')

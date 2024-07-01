@@ -345,7 +345,7 @@
        <td colspan="17">
         <div class="details">
          @foreach ($selectedColumns as $index => $column)
-          @if ($index >= count($selectedColumns) - 18)
+          @if ($index >= count($selectedColumns) - 17)
            <p>
             <bold>{{ $column }}:</bold> {{ $product->$column }}
            </p>

@@ -25,14 +25,14 @@
  <nav class="nav--controls">
   <h1 class="table--name">Product: {{ $product->name }}</h1>
   {{-- Refresh Button --}}
-  <a class="button button--secondary button--centered" tooltip="Back to Products" tooltip-top
-   href="{{ url('all_products') }}">
+  <a class="button button--secondary button--centered" tooltip="Back to all products" tooltip-top
+   href="{{ route('all_products') }}">
    <svg>
     <polyline points="15 18 9 12 15 6"></polyline>
    </svg>
   </a>
   <a class="button button--secondary button--centered" tooltip="Create new Product" tooltip-top
-   href="{{ url('add_product') }}">
+   href="{{ route('add_product') }}">
    <svg>
     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
     <polyline points="14 2 14 8 20 8"></polyline>
@@ -212,7 +212,7 @@
    @if ($editproduct === null)
     <span class="disabled">{{ $product->start_date }}</span>
    @else
-    <input type="text" placeholder=" " name="product__name" wire:model.defer="prod.start_date" required>
+    <input type="date" placeholder=" " name="product__name" wire:model.defer="prod.start_date" required>
    @endif
    <label for="product__name">Start Date</label>
   </div>
@@ -222,7 +222,7 @@
    @if ($editproduct === null)
     <span class="disabled">{{ $product->end_date }}</span>
    @else
-    <input type="text" placeholder=" " name="product__name" wire:model.defer="prod.end_date" required>
+    <input type="date" placeholder=" " name="product__name" wire:model.defer="prod.end_date" required>
    @endif
    <label for="product__name">End Date</label>
   </div>

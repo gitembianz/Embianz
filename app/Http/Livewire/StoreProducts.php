@@ -50,7 +50,6 @@ class StoreProducts extends Component
 
   public function mount($category = null)
   {
-
     $this->session_id = $this->getSessionId();
     $this->quantity = app('global_low_stock');
     $this->specification = Specs::get();
@@ -59,7 +58,7 @@ class StoreProducts extends Component
       $this->category = Category::select('id', 'name', 'long_description', 'seo_id', 'accepted_items')->find($decodedCategory['id']);
     } else {
       if (app()->has('global_default_category')) {
-        $this->category = Category::select('id', 'name', 'long_description', 'seo_id')->find(app('global_default_category')) ?? null;
+        $this->category = Category::select('id', 'name', 'long_description', 'seo_id', 'accepted_items')->find(app('global_default_category')) ?? null;
       }
     }
     $filteredValues = session()->get('filtered_values', []);
@@ -191,11 +190,12 @@ class StoreProducts extends Component
       ->where('start_date', '<=',  now()->format('Y-m-d'))
       ->where('end_date', '>=',  now()->format('Y-m-d'))
       ->with([
-        'product_prices',
         'variants' => function ($query) {
           $query->with('product');
         },
-        'product_prices.pricelist.currency',
+        'product_prices' => function ($query) {
+          $query->select('product_id', 'value', 'discount', 'value_no_discount');
+        },
         'media' => function ($query) {
           $query->select('path', 'name')->where('type', 'main');
         },

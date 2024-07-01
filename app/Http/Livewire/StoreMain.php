@@ -37,17 +37,15 @@ class StoreMain extends Component
         $query->select('path', 'name')->where('type', 'main');
       },
       'product_prices' => function ($query) {
-        $query->select('product_id', 'value', 'discount', 'value_no_discount', 'pricelist_id')
-          ->with(['pricelist' => function ($query) {
-            $query->select('id', 'currency_id')->with('currency:id,name,symbol');
-          }]);
+        $query->select('product_id', 'value', 'discount', 'value_no_discount');
       },
       'wishlists' => function ($query) {
         $query->select('id', 'product_id')->where('session_id', $this->session_id);
       }
     ])
-      ->select('id', 'name', 'seo_id', 'quantity', 'short_description', 'popularity')
+      ->select('id', 'name', 'seo_id', 'quantity', 'type', 'short_description', 'popularity')
       ->where('active', true)
+      ->where('type', '!=', 'parrent')
       ->where('start_date', '<=',  now()->format('Y-m-d'))
       ->where('end_date', '>=',  now()->format('Y-m-d'))
       ->orderBy('popularity', 'desc')
@@ -62,10 +60,7 @@ class StoreMain extends Component
         $query->select('path', 'name')->where('type', 'main');
       },
       'product_prices' => function ($query) {
-        $query->select('product_id', 'value', 'discount', 'value_no_discount', 'pricelist_id')
-          ->with(['pricelist' => function ($query) {
-            $query->select('id', 'currency_id')->with('currency:id,name,symbol');
-          }]);
+        $query->select('product_id', 'value', 'discount', 'value_no_discount');
       },
       'wishlists' => function ($query) {
         $query->select('id', 'product_id')->where('session_id', $this->session_id);
@@ -73,6 +68,7 @@ class StoreMain extends Component
     ])
       ->select('id', 'name', 'seo_id', 'quantity', 'short_description', 'popularity')
       ->where('active', true)
+      ->where('type', '!=', 'parrent')
       ->where('start_date', '<=',  now()->format('Y-m-d'))
       ->where('end_date', '>=',  now()->format('Y-m-d'))
       ->where('is_new', true)

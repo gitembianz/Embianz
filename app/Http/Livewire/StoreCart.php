@@ -47,9 +47,6 @@ class StoreCart extends Component
       ->with([
         'voucher' => function ($query) {
           $query->select('code', 'id', 'percent', 'value');
-        },
-        'currency' => function ($query) {
-          $query->select('id', 'symbol');
         }
       ])
       ->latest()
@@ -70,7 +67,7 @@ class StoreCart extends Component
               'product_prices' => function ($query) {
                 $query->select('product_id', 'value', 'pricelist_id')
                   ->with(['pricelist' => function ($query) {
-                    $query->select('id', 'currency_id')->with('currency:id,name,symbol');
+                    $query->select('id', 'currency_id');
                   }]);
               },
               'wishlists' => function ($query) {
