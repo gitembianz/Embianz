@@ -8,14 +8,14 @@ export function opener(dropdownID, toggleID, clickOutside) {
   const button = document.getElementById(toggleID);
 
   if (!element || !button) {
-    console.error('Un element din Opener nu a fost găsit.');
+    // console.error('Un element din Opener nu a fost găsit.');
     return;
   }
 
   if (clickOutside) {
     document.addEventListener('click', (event) => {
       if (!element.contains(event.target)) {
-          element.classList.remove('active');
+        element.classList.remove('active');
       }
     });
   }
