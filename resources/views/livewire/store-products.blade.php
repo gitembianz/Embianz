@@ -231,13 +231,16 @@
         @livewire('add-to-cart-button', ['product' => $element], key($element->id . $index))
        @elseif($product->type == 'parrent')
         <div class="card__button--wrapper">
-         <a style="text-decoration: none; color: white"
-          href="{{ route('product', ['product' => $element->seo_id !== null && $element->seo_id !== '' ? $element->seo_id : $element->id]) }}"
-          class="card__button">
-          @if (app()->has('label_show_parrent'))
-           {!! app('label_show_parrent') !!}
-          @endif
-         </a>
+         <button class="card__button">
+
+          <a style="text-decoration: none"
+           href="{{ route('product', ['product' => $element->seo_id !== null && $element->seo_id !== '' ? $element->seo_id : $element->id]) }}"
+           class="card__button--text">
+           @if (app()->has('label_show_parrent'))
+            {!! app('label_show_parrent') !!}
+           @endif
+          </a>
+         </button>
         </div>
        @else
         @livewire('add-to-cart-button', ['product' => $element], key($element->id . $index))
