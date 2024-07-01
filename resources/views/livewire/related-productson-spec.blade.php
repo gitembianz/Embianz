@@ -45,7 +45,8 @@
           <button class="button button--danger button--centered" wire:click="closemodal">
             <svg>
               <path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 19v-2a2 2 0 0 1 2 -2h2" />
-              <path d="M15 5v2a2 2 0 0 0 2 2h2" /><path d="M5 15h2a2 2 0 0 1 2 2v2" /><path d="M5 9h2a2 2 0 0 0 2 -2v-2" /></svg>
+              <path d="M15 5v2a2 2 0 0 0 2 2h2" /><path d="M5 15h2a2 2 0 0 1 2 2v2" /><path d="M5 9h2a2 2 0 0 0 2 -2v-2" />
+            </svg>
           </button>
         </nav>
 
@@ -503,9 +504,9 @@
         {{-- Search Input --}}
         <input class="input input--long" type="text" wire:model.debounce.300ms="search" placeholder="Search...">
         {{-- IF CHECKED --}}
-        <div class="dropdown dropdown--right" @if (!$checked) style="display:none;" @endif id="checkProductsonSpec__dropdown">
+        <div class="dropdown dropdown--right" @if (!$checked) style="display:none;" @endif >
           {{-- Dropdown Button --}}
-          <button class="button button--secondary button--centered button--long" tooltip="Actions with checked" tooltip-top id="checkProductsonSpec__open">
+          <button class="button button--secondary button--centered button--long dropdown__button" tooltip="Actions with checked" tooltip-top>
             <span>With Checked({{ count($checked) }})</span>
           </button>
           {{-- Dropdown Content --}}

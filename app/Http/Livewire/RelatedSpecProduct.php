@@ -24,7 +24,7 @@ class RelatedSpecProduct extends Component
   public $all = false;
   public $columns = ['Id', 'Unit', 'Value', 'Sequence', 'Created At'];
   public $selectedColumns = [];
-  public $specidbeingremoved = null;
+  public $idbeingremoved = null;
   public $addrelatedspecs = false;
   public $itemselected;
   public $isselected;
@@ -42,6 +42,43 @@ class RelatedSpecProduct extends Component
   public $specification;
   public $editmultiple = false;
   public $itemstoedit;
+
+  public $rind = null;
+  public $rind2 = null;
+  public $rind3 = null;
+  public $single = false;
+  public $multiple = false;
+
+  public function expandRow($index)
+  {
+    if ($this->rind  === null) {
+      $this->rind = $index;
+    } elseif ($this->rind != $index) {
+      $this->rind = $index;
+    } else {
+      $this->rind = null;
+    }
+  }
+  public function expandRow2($index)
+  {
+    if ($this->rind2  === null) {
+      $this->rind2 = $index;
+    } elseif ($this->rind2 != $index) {
+      $this->rind2 = $index;
+    } else {
+      $this->rind2 = null;
+    }
+  }
+  public function expandRow3($index)
+  {
+    if ($this->rind3  === null) {
+      $this->rind3 = $index;
+    } elseif ($this->rind3 != $index) {
+      $this->rind3 = $index;
+    } else {
+      $this->rind3 = null;
+    }
+  }
 
   public function render()
   {
@@ -110,17 +147,27 @@ class RelatedSpecProduct extends Component
     return Product_Spec::where('product_id', $this->item->id)
       ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->with('spec');
   }
-  public function confirmRemoval($id)
+  public function confirmItemRemoval($id)
   {
-    $this->specidbeingremoved = $id;
-    $this->dispatchBrowserEvent('show-delete-spec');
+    $this->idbeingremoved = $id;
+    $this->single = true;
+  }
+  public function confirmItemsRemoval()
+  {
+    $this->multiple = true;
+  }
+  public function cancel_delete()
+  {
+    $this->multiple = false;
+    $this->single = false;
   }
   public function deleteSingleRecord()
   {
-    $id = $this->specidbeingremoved;
+    $id = $this->idbeingremoved;
     $item = Product_Spec::findOrFail($id);
     $item->delete();
     $this->checked = array_diff($this->checked, [$id]);
+    $this->single = false;
     session()->flash('notification', [
       'message' => 'Record deleted successfully!',
       'type' => 'success',
@@ -137,16 +184,14 @@ class RelatedSpecProduct extends Component
     }
     $this->checked = [];
     $this->selectPage = false;
+    $this->multiple = false;
     session()->flash('notification', [
       'message' => 'Records  deleted successfully!',
       'type' => 'success',
       'title' => 'Success'
     ]);
   }
-  public function confirmRemovalmultiple()
-  {
-    $this->dispatchBrowserEvent('show-delete-modal-multiple');
-  }
+
   public function editspec($id, $idspec, $index)
   {
 
