@@ -2,5 +2,4 @@
 <x-dashboardnavbar />
 <x-dashboardsidebar :active="__('session')" />
 @livewire('sessionstable', ['tableName' => 'sessions'])
-<x-dashboardscript />
 <x-dashboardfooter />

@@ -6,12 +6,12 @@ export function tabs(detailsButtonID, relatedButtonID, detailsContentID, related
 
 
   if (!detailsButton || !relatedButton || !detailsContent || !relatedContent) {
-    console.error("One of the elements from tabs is not found...");
+    // console.error("One of the elements from tabs is not found...");
     return;
   }
 
   // Funcția pentru activarea detaliilor
-  detailsButton.addEventListener('click', function() {
+  detailsButton.addEventListener('click', function () {
     detailsContent.classList.add('active');
     detailsButton.classList.add('button--active');
     relatedContent.classList.remove('active');
@@ -19,7 +19,7 @@ export function tabs(detailsButtonID, relatedButtonID, detailsContentID, related
   });
 
   // Funcția pentru activarea conținutului asociat
-  relatedButton.addEventListener('click', function() {
+  relatedButton.addEventListener('click', function () {
     relatedContent.classList.add('active');
     relatedButton.classList.add('button--active');
     detailsContent.classList.remove('active');

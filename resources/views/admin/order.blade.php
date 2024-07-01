@@ -2,5 +2,4 @@
 <x-dashboardnavbar />
 <x-dashboardsidebar :active="__('order')" />
 <livewire:orderstable tableName="orders" />
-<x-dashboardscript />
 <x-dashboardfooter />

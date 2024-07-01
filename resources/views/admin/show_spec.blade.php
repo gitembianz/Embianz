@@ -3,5 +3,4 @@
 <x-alert />
 <x-dashboardsidebar :active="__('spec')" />
 <livewire:show-spec itemId="{{ $data->id }}" />
-<x-dashboardscript />
 <x-dashboardfooter />

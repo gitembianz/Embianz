@@ -51,5 +51,4 @@
   <input class="button button--fill button--secondary details__long" type="submit" value="Add New" name="submit">
  </section>
 </form>
-<x-dashboardscript />
 <x-dashboardfooter />

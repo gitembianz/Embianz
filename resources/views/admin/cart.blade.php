@@ -2,5 +2,4 @@
 <x-dashboardnavbar />
 <x-dashboardsidebar :active="__('cart')" />
 <livewire:cartstable tableName="carts" />
-<x-dashboardscript />
 <x-dashboardfooter />
