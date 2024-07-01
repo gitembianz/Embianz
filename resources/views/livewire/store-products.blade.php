@@ -97,10 +97,33 @@
          if ($product->variants->count() == 0) {
              continue;
          } else {
-             if ($product->variants->where('default_variant', true)->first()) {
-                 $element = $product->variants->where('default_variant', true)->first()->product;
+             $filteredVariants = $product->variants->filter(function ($variant) use ($selectedSpecValues) {
+                 $matchesFilter = true;
+                 foreach ($selectedSpecValues as $values) {
+                     foreach ($values as $value => $isSelected) {
+                         if (
+                             $isSelected &&
+                             !$variant->product->product_specs->contains('value', str_replace('_', '.', $value))
+                         ) {
+                             $matchesFilter = false;
+                             break;
+                         }
+                     }
+                     if (!$matchesFilter) {
+                         break;
+                     }
+                 }
+                 return $matchesFilter;
+             });
+
+             if ($filteredVariants->isEmpty()) {
+                 continue;
+             }
+
+             if ($filteredVariants->where('default_variant', true)->first()) {
+                 $element = $filteredVariants->where('default_variant', true)->first()->product;
              } else {
-                 $element = $product->variants->first()->product;
+                 $element = $filteredVariants->first()->product;
              }
          }
      } else {
