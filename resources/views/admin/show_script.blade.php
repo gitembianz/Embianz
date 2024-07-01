@@ -3,5 +3,4 @@
 <x-alert />
 <x-dashboardsidebar :active="__('scripts')" />
 @livewire('show-script', ['scriptId' => $data->id])
-<x-dashboardscript />
 <x-dashboardfooter />

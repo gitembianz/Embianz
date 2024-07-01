@@ -10,7 +10,7 @@ export function aside(elementId, openBtnId, closeBtnId, backdropId) {
   const closeBtn = document.getElementById(closeBtnId);
 
   if (!element || !openBtn || !closeBtn || !backdrop) {
-    console.error('Un element din aside nu a fost găsit.');
+    // console.error('Un element din aside nu a fost găsit.');
     return;
   }
   toggle(openBtn, element);

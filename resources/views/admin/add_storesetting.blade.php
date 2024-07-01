@@ -58,6 +58,4 @@
 
 </form>
 {{-- page content end --}}
-<x-dashboardright />
-<x-dashboardscript />
 <x-dashboardfooter />

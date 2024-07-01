@@ -2,5 +2,4 @@
 <x-dashboardnavbar />
 <x-dashboardsidebar :active="__('spec')" />
 @livewire('specstable', ['tableName' => 'specs'])
-<x-dashboardscript />
 <x-dashboardfooter />
