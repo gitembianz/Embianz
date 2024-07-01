@@ -58,7 +58,7 @@ class StoreProducts extends Component
       $this->category = Category::select('id', 'name', 'long_description', 'seo_id', 'accepted_items')->find($decodedCategory['id']);
     } else {
       if (app()->has('global_default_category')) {
-        $this->category = Category::select('id', 'name', 'long_description', 'seo_id')->find(app('global_default_category')) ?? null;
+        $this->category = Category::select('id', 'name', 'long_description', 'seo_id', 'accepted_items')->find(app('global_default_category')) ?? null;
       }
     }
     $filteredValues = session()->get('filtered_values', []);
