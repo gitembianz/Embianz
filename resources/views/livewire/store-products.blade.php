@@ -32,7 +32,13 @@
  <!----------------------Categorie + detalii--------------------->
  @if ($category)
   <section class="section__header container">
-   <h1 class="section__title">{{ $category->name }}</h1>
+   <h1 class="section__title">
+    @if (!empty($category->short_description))
+     {{ $category->short_description }}
+    @else
+     {{ $category->name }}
+    @endif
+   </h1>
    <p class="section__text">
     {!! $category->long_description !!}
    </p>
