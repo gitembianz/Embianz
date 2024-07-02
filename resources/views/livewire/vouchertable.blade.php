@@ -265,7 +265,7 @@
      </th>
      @foreach ($selectedColumns as $index => $column)
       @if ($this->showColumn($column))
-       <th @if ($index > count($selectedColumns) - 7) class="hidden" @endif>
+       <th @if ($index > count($selectedColumns) - 9) class="hidden" @endif>
         <button wire:click="sortBy('{{ $column }}')"
          class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
          {{ str_replace('_id', '', $column) }} {{-- Remove '_id' from column name --}}
@@ -305,7 +305,7 @@
         </label>
        </td>
        @foreach ($selectedColumns as $index => $column)
-        <td @if ($index > count($selectedColumns) - 7) class="hidden" @endif wire:click="expandRow({{ $nr }})">
+        <td @if ($index > count($selectedColumns) - 9) class="hidden" @endif wire:click="expandRow({{ $nr }})">
          @if ($column === 'percent')
           @if ($editindex !== $nr)
            {{ $voucher->$column }} %
@@ -406,95 +406,97 @@
        <td colspan="17">
         <div class="details">
          @foreach ($selectedColumns as $index => $column)
-          @if ($column === 'percent')
-           @if ($editindex !== $nr)
-            <p>
-             <bold>{{ $column }}:</bold> {{ $voucher->$column }} %
-            </p>
+          @if ($index >= count($selectedColumns) - 8)
+           @if ($column === 'percent')
+            @if ($editindex !== $nr)
+             <p>
+              <bold>{{ $column }}:</bold> {{ $voucher->$column }} %
+             </p>
+            @else
+             <p>
+              <bold>{{ $column }}:</bold>
+              <input type="number" min="0" required class="input"
+               wire:model.defer="voucher.{{ $nr }}.{{ $column }}">
+             </p>
+            @endif
+           @elseif ($column === 'value')
+            @if ($editindex !== $nr)
+             <p>
+              <bold>{{ $column }}:</bold> {{ $voucher->$column }}
+             </p>
+            @else
+             <p>
+              <bold>{{ $column }}:</bold>
+              <input type="number" min="0" required class="input"
+               wire:model.defer="voucher.{{ $nr }}.{{ $column }}">
+             </p>
+            @endif
+           @elseif ($column === 'status_id')
+            @if ($editindex !== $nr)
+             <p>
+              <bold>{{ $column }}:</bold> {{ $voucher->status->name }}
+             </p>
+            @else
+             <p>
+              <bold>{{ $column }}:</bold>
+              <select class="input" wire:model.defer="voucher.{{ $nr }}.status_id">
+               @foreach ($statuses as $status)
+                <option value="{{ $status->id }}">{{ $status->name }}</option>
+               @endforeach
+              </select>
+             </p>
+            @endif
+           @elseif ($column === 'single_use')
+            @if ($editindex !== $nr)
+             <p>
+              <bold>{{ $column }}:</bold>
+              @if ($voucher->$column == '1')
+               <label class="checkbox checkbox--secondary inline disabled">
+                <input type="checkbox" disabled checked>
+                <span></span>
+               </label>
+              @else
+               <label class="checkbox checkbox--secondary inline disabled">
+                <input type="checkbox" disabled>
+                <span></span>
+               </label>
+              @endif
+             </p>
+            @else
+             <p>
+              <bold>{{ $column }}:</bold>
+              <input type="checkbox" wire:model.defer="voucher.{{ $nr }}.single_use">
+             </p>
+            @endif
+           @elseif ($column === 'name' || $column === 'code')
+            @if ($editindex !== $nr)
+             <p>
+              <bold>{{ $column }}:</bold> {{ $voucher->$column }}
+             </p>
+            @else
+             <p>
+              <bold>{{ $column }}:</bold>
+              <input type="text" required class="input"
+               wire:model.defer="voucher.{{ $nr }}.{{ $column }}">
+             </p>
+            @endif
+           @elseif ($column === 'start_date' || $column === 'end_date')
+            @if ($editindex !== $nr)
+             <p>
+              <bold>{{ $column }}:</bold> {{ $voucher->$column }}
+             </p>
+            @else
+             <p>
+              <bold>{{ $column }}:</bold>
+              <input type="date" required class="input"
+               wire:model.defer="voucher.{{ $nr }}.{{ $column }}">
+             </p>
+            @endif
            @else
-            <p>
-             <bold>{{ $column }}:</bold>
-             <input type="number" min="0" required class="input"
-              wire:model.defer="voucher.{{ $nr }}.{{ $column }}">
-            </p>
-           @endif
-          @elseif ($column === 'value')
-           @if ($editindex !== $nr)
             <p>
              <bold>{{ $column }}:</bold> {{ $voucher->$column }}
             </p>
-           @else
-            <p>
-             <bold>{{ $column }}:</bold>
-             <input type="number" min="0" required class="input"
-              wire:model.defer="voucher.{{ $nr }}.{{ $column }}">
-            </p>
            @endif
-          @elseif ($column === 'status_id')
-           @if ($editindex !== $nr)
-            <p>
-             <bold>{{ $column }}:</bold> {{ $voucher->status->name }}
-            </p>
-           @else
-            <p>
-             <bold>{{ $column }}:</bold>
-             <select class="input" wire:model.defer="voucher.{{ $nr }}.status_id">
-              @foreach ($statuses as $status)
-               <option value="{{ $status->id }}">{{ $status->name }}</option>
-              @endforeach
-             </select>
-            </p>
-           @endif
-          @elseif ($column === 'single_use')
-           @if ($editindex !== $nr)
-            <p>
-             <bold>{{ $column }}:</bold>
-             @if ($voucher->$column == '1')
-              <label class="checkbox checkbox--secondary inline disabled">
-               <input type="checkbox" disabled checked>
-               <span></span>
-              </label>
-             @else
-              <label class="checkbox checkbox--secondary inline disabled">
-               <input type="checkbox" disabled>
-               <span></span>
-              </label>
-             @endif
-            </p>
-           @else
-            <p>
-             <bold>{{ $column }}:</bold>
-             <input type="checkbox" wire:model.defer="voucher.{{ $nr }}.single_use">
-            </p>
-           @endif
-          @elseif ($column === 'name' || $column === 'code')
-           @if ($editindex !== $nr)
-            <p>
-             <bold>{{ $column }}:</bold> {{ $voucher->$column }}
-            </p>
-           @else
-            <p>
-             <bold>{{ $column }}:</bold>
-             <input type="text" required class="input"
-              wire:model.defer="voucher.{{ $nr }}.{{ $column }}">
-            </p>
-           @endif
-          @elseif ($column === 'start_date' || $column === 'end_date')
-           @if ($editindex !== $nr)
-            <p>
-             <bold>{{ $column }}:</bold> {{ $voucher->$column }}
-            </p>
-           @else
-            <p>
-             <bold>{{ $column }}:</bold>
-             <input type="date" required class="input"
-              wire:model.defer="voucher.{{ $nr }}.{{ $column }}">
-            </p>
-           @endif
-          @else
-           <p>
-            <bold>{{ $column }}:</bold> {{ $voucher->$column }}
-           </p>
           @endif
          @endforeach
         </div>

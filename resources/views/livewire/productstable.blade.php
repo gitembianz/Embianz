@@ -315,7 +315,7 @@
           @else
            {{ $product->$column }}
           @endif
-         @elseif ($column === 'active' || $column === 'store_tab' || $column === 'has_parrent' || $column === 'is_new')
+         @elseif ($column === 'active' || $column === 'is_new')
           @if ($product->$column)
            <label class="checkbox checkbox--secondary inline disabled">
             <input type="checkbox" disabled checked>
@@ -347,7 +347,22 @@
          @foreach ($selectedColumns as $index => $column)
           @if ($index >= count($selectedColumns) - 17)
            <p>
-            <bold>{{ $column }}:</bold> {{ $product->$column }}
+            @if ($column === 'active' || $column === 'is_new')
+             <bold>{{ $column }}:</bold>
+             @if ($product->$column)
+              <label class="checkbox checkbox--secondary inline disabled">
+               <input type="checkbox" disabled checked>
+               <span></span>
+              </label>
+             @else
+              <label class="checkbox checkbox--secondary inline disabled">
+               <input type="checkbox" disabled>
+               <span></span>
+              </label>
+             @endif
+            @else
+             <bold>{{ $column }}:</bold> {{ $product->$column }}
+            @endif
            </p>
           @endif
          @endforeach
