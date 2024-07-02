@@ -298,6 +298,18 @@
           @if ($cart->voucher_id)
            {{ $cart->voucher->code }}
           @endif
+         @elseif ($column === 'seen_by_customer')
+          @if ($cart->$column)
+           <label class="checkbox checkbox--secondary inline disabled">
+            <input type="checkbox" disabled checked>
+            <span></span>
+           </label>
+          @else
+           <label class="checkbox checkbox--secondary inline disabled">
+            <input type="checkbox" disabled>
+            <span></span>
+           </label>
+          @endif
          @elseif ($column === 'order_id')
           @if ($cart->order_id)
            <a href="{{ route('show_order', ['id' => $cart->order_id]) }}">{{ $cart->order->name }}</a>
@@ -320,7 +332,7 @@
        <td colspan="17">
         <div class="details">
          @foreach ($selectedColumns as $index => $column)
-          @if ($index >= count($selectedColumns) - 14)
+          @if ($index >= count($selectedColumns) - 13)
            @if ($column === 'name')
             <p>
              <bold>{{ $column }}:</bold>
@@ -333,6 +345,21 @@
            @elseif ($column === 'status_id')
             <p>
              <bold>{{ $column }}:</bold>{{ $cart->status->name }}
+            </p>
+           @elseif ($column === 'seen_by_customer')
+            <p>
+             <bold>{{ $column }}:</bold>
+             @if ($cart->$column)
+              <label class="checkbox checkbox--secondary inline disabled">
+               <input type="checkbox" disabled checked>
+               <span></span>
+              </label>
+             @else
+              <label class="checkbox checkbox--secondary inline disabled">
+               <input type="checkbox" disabled>
+               <span></span>
+              </label>
+             @endif
             </p>
            @elseif ($column === 'voucher_id')
             @if ($cart->voucher_id)
