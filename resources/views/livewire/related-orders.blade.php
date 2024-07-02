@@ -1,4 +1,4 @@
-<div class="accordion @if ($showrelated) active @endif" id="accordion__addresses">
+<div class="accordion @if ($showrelated) active @endif" >
   {{-- Delete Record OR Records --}}
   <aside>
     <div class="background background--center @if($single || $multiple) active @endif"></div>
