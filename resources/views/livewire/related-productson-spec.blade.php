@@ -1,4 +1,4 @@
-<div class="accordion @if ($showrelatedprods) active @endif" id="accordion__addresses">
+<div class="accordion @if ($showrelatedprods) active @endif" >
 
   {{-- ASIDES --}}
     {{-- Delete Record || Delete Records --}}
