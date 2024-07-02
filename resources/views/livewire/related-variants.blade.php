@@ -62,7 +62,7 @@
     <table class="expandable-table">
      <thead>
       <tr>
-       <th>
+       <th style="width: unset !important;">
         <button class="table--btn">
          Parrent Product
         </button>
@@ -121,7 +121,7 @@
       @endphp
       @foreach ($variantAndValues as $index => $variantAndValue)
        <tr class="expandable-row">
-        <td wire:click="expandRow2({{ $index }})">
+        <td wire:click="expandRow2({{ $index }})" style="width: unset !important;">
          <div style="display: flex; align-items: center; justify-content: center;">
           {{ $item->name }}
           <button class="button button--secondary button--sm" style="opacity: 0">
@@ -188,28 +188,36 @@
          <input type="hidden" wire:model.defer="variantAndValues.{{ $index }}.variant.name">
         </td>
         <td class="hidden">
-         <select class="input button--fill button--xs"
-          wire:model.defer="variantAndValues.{{ $index }}.variant.reference">
-          @foreach ($references as $reference)
-           <option value="{{ $reference->id }}">{{ $reference->name }}</option>
-          @endforeach
-         </select>
+          <div class="searchable">
+            <select class="input__searchable"
+             wire:model.defer="variantAndValues.{{ $index }}.variant.reference">
+             @foreach ($references as $reference)
+              <option value="{{ $reference->id }}">{{ $reference->name }}</option>
+             @endforeach
+            </select>
+          </div>
         </td>
         <td class="hidden" style="width: auto;">
-         <input type="text" placeholder="Insert variant value" required class="input button--fill button--xs"
-          wire:model.defer="variantAndValues.{{ $index }}.variant.value">
+          <div class="searchable">
+            <input type="text" placeholder="Insert variant value" required class="input__searchable"
+             wire:model.defer="variantAndValues.{{ $index }}.variant.value">
+          </div>
         </td>
         <td class="hidden">
-         <input type="checkbox" class="input button--fill button--xs"
-          wire:model.defer="variantAndValues.{{ $index }}.variant.def">
+          <label class="checkbox checkbox--secondary inline">
+            <input type="checkbox" wire:model.defer="variantAndValues.{{ $index }}.variant.def">
+            <span></span>
+          </label>
         </td>
         <td class="hidden">
-         <select class="input button--fill button--xs"
-          wire:model.defer="variantAndValues.{{ $index }}.variant.display">
-          <option value="text">text</option>
-          <option value="image">image</option>
-          <option value="image & text">image & text</option>
-         </select>
+          <div class="searchable">
+            <select class="input__searchable"
+             wire:model.defer="variantAndValues.{{ $index }}.variant.display">
+             <option value="text">text</option>
+             <option value="image">image</option>
+             <option value="image & text">image & text</option>
+            </select>
+          </div>
         </td>
         <td>
          <div style="display: flex;">
@@ -318,8 +326,10 @@
           </p>
           <p>
            <bold>Is defaut Variant?</bold>
-           <input type="checkbox" class="input button--fill button--xs"
-            wire:model.defer="variantAndValues.{{ $index }}.variant.def">
+            <label class="checkbox checkbox--secondary inline">
+              <input type="checkbox" wire:model.defer="variantAndValues.{{ $index }}.variant.def">
+              <span></span>
+            </label>
           </p>
           <p>
            <bold>Variant Dispalyed type</bold>
