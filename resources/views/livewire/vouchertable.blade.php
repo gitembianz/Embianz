@@ -113,11 +113,9 @@
    </svg>
   </a>
   {{-- IF CHECKED --}}
-  <div class="dropdown dropdown--right" @if (!$checked) style="display: none;" @endif
-   >
+  <div class="dropdown dropdown--right" @if (!$checked) style="display: none;" @endif>
    {{-- Dropdown Button --}}
-   <button class="button button--secondary button--centered button--long" tooltip="Actions with checked" tooltip-top
-    >
+   <button class="button button--secondary button--centered button--long" tooltip="Actions with checked" tooltip-top>
     <span>With Checked({{ count($checked) }})</span>
    </button>
    {{-- Dropdown Content --}}
@@ -128,10 +126,9 @@
    </div>
   </div>
   {{-- Sorting Dropdown --}}
-  <div class="dropdown dropdown--right display--desktop" >
+  <div class="dropdown dropdown--right display--desktop">
    {{-- Dropdown Button --}}
-   <button class="button button--secondary button--centered" tooltip="Sort items in table" tooltip-left
-    >
+   <button class="button button--secondary button--centered" tooltip="Sort items in table" tooltip-left>
     <svg>
      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
      <path d="M15 10v-5c0 -1.38 .62 -2 2 -2s2 .62 2 2v5m0 -3h-4" />
@@ -157,10 +154,9 @@
    </div>
   </div>
   {{-- Visible Dropdown --}}
-  <div class="dropdown dropdown--right display--desktop" >
+  <div class="dropdown dropdown--right display--desktop">
    {{-- Dropdown Button --}}
-   <button class="button button--secondary button--centered" tooltip="Show items in table" tooltip-left
-    >
+   <button class="button button--secondary button--centered" tooltip="Show items in table" tooltip-left>
     <svg>
      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
@@ -181,10 +177,9 @@
    </div>
   </div>
   {{-- Optional Dropdown --}}
-  <div class="dropdown dropdown--right display--mobile" >
+  <div class="dropdown dropdown--right display--mobile">
    {{-- Dropdown Button --}}
-   <button class="button button--secondary button--centered" tooltip="Show more actions" tooltip-left
-    >
+   <button class="button button--secondary button--centered" tooltip="Show more actions" tooltip-left>
     <svg>
      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
      <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
@@ -265,7 +260,7 @@
      </th>
      @foreach ($selectedColumns as $index => $column)
       @if ($this->showColumn($column))
-       <th @if ($index > count($selectedColumns) - 9) class="hidden" @endif>
+       <th @if ($index > count($selectedColumns) - 10) class="hidden" @endif>
         <button wire:click="sortBy('{{ $column }}')"
          class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
          {{ str_replace('_id', '', $column) }} {{-- Remove '_id' from column name --}}
@@ -305,7 +300,7 @@
         </label>
        </td>
        @foreach ($selectedColumns as $index => $column)
-        <td @if ($index > count($selectedColumns) - 9) class="hidden" @endif wire:click="expandRow({{ $nr }})">
+        <td @if ($index > count($selectedColumns) - 10) class="hidden" @endif wire:click="expandRow({{ $nr }})">
          @if ($column === 'percent')
           @if ($editindex !== $nr)
            {{ $voucher->$column }} %
@@ -406,7 +401,7 @@
        <td colspan="17">
         <div class="details">
          @foreach ($selectedColumns as $index => $column)
-          @if ($index >= count($selectedColumns) - 8)
+          @if ($index >= count($selectedColumns) - 9)
            @if ($column === 'percent')
             @if ($editindex !== $nr)
              <p>
@@ -434,7 +429,7 @@
            @elseif ($column === 'status_id')
             @if ($editindex !== $nr)
              <p>
-              <bold>{{ $column }}:</bold> {{ $voucher->status->name }}
+              <bold>{{ str_replace('_id', '', $column) }}:</bold> {{ $voucher->status->name }}
              </p>
             @else
              <p>

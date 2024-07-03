@@ -119,10 +119,9 @@
    </svg>
   </button>
   {{-- Sorting Dropdown --}}
-  <div class="dropdown dropdown--right display--desktop" >
+  <div class="dropdown dropdown--right display--desktop">
    {{-- Dropdown Button --}}
-   <button class="button button--secondary button--centered" tooltip="Sort items in table" tooltip-left
-    >
+   <button class="button button--secondary button--centered" tooltip="Sort items in table" tooltip-left>
     <svg>
      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
      <path d="M15 10v-5c0 -1.38 .62 -2 2 -2s2 .62 2 2v5m0 -3h-4" />
@@ -148,10 +147,9 @@
    </div>
   </div>
   {{-- Visible Dropdown --}}
-  <div class="dropdown dropdown--right display--desktop" >
+  <div class="dropdown dropdown--right display--desktop">
    {{-- Dropdown Button --}}
-   <button class="button button--secondary button--centered" tooltip="Show items in table" tooltip-left
-    >
+   <button class="button button--secondary button--centered" tooltip="Show items in table" tooltip-left>
     <svg>
      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
@@ -172,10 +170,9 @@
    </div>
   </div>
   {{-- Optional Dropdown --}}
-  <div class="dropdown dropdown--right display--mobile" >
+  <div class="dropdown dropdown--right display--mobile">
    {{-- Dropdown Button --}}
-   <button class="button button--secondary button--centered" tooltip="Show more actions" tooltip-left
-    >
+   <button class="button button--secondary button--centered" tooltip="Show more actions" tooltip-left>
     <svg>
      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
      <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
@@ -409,17 +406,6 @@
      <tr class="details-row  @if ($row === $i) active @endif">
       <td colspan="17">
        <div class="details">
-        @if ($this->showColumn('Id'))
-         <p>
-          <bold>Id:</bold>{{ $store->id }}
-         </p>
-        @endif
-        @if ($this->showColumn('Parameter'))
-         <p>
-          <bold>Parameter:</bold>
-          {{ $store->parameter }}
-         </p>
-        @endif
         @if ($this->showColumn('Value'))
          @if ($indexstoresettings !== $index)
           <p>
