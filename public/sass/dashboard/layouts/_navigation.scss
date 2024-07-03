@@ -15,3 +15,18 @@ nav.nav--tabs {
   gap: $gap;
   margin-top: $margin;
 }
+
+nav.nav--home {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  justify-content: center;
+  align-items: center;
+  gap: $gap;
+  margin-top: $margin;
+  margin-bottom: auto;
+
+  @media (max-width: map-get($grid-breakpoints, lg)) {
+    grid-template-columns: 1fr 1fr;
+  }
+}

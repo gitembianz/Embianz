@@ -17,10 +17,6 @@ opener('leftbar', 'toggle__leftbar', false);
 /// Navigation (View Table)
 aside('sort', 'sort__open', 'sort__close', 'sort__backdrop');
 aside('visi', 'visi__open', 'visi__close', 'visi__backdrop');
-opener('visible__dropdown', 'visible__open', true);
-opener('optional__dropdown', 'optional__open', true);
-opener('sorting__dropdown', 'sorting__open', true);
-opener('checked__dropdown', 'checked__open', true);
 
 /// Tabs (Show Table)
 tabs('detailsButton','relatedButton','detailsContent','relatedContent');
