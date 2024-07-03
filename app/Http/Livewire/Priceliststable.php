@@ -19,11 +19,22 @@ class Priceliststable extends Component
   public $selectPage = false;
   public $selectAll = false;
   public $idbeingremoved = null;
+  public $row = null;
   public $single = false;
   public $multiple = false;
-  public $columns = ['Id', 'Currency', 'Active', 'Created At'];
+  public $columns = ['Id', 'Currency', 'Active', 'Created At', 'Updated At'];
   public $selectedColumns = [];
 
+  public function expandRow($index)
+  {
+    if ($this->row  === null) {
+      $this->row = $index;
+    } elseif ($this->row != $index) {
+      $this->row = $index;
+    } else {
+      $this->row = null;
+    }
+  }
   public function render()
   {
     return view('livewire.priceliststable', [
