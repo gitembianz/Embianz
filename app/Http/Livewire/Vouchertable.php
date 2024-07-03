@@ -22,7 +22,7 @@ class Vouchertable extends Component
   public $selectedColumns = [];
   public $col = false;
   public $all = false;
-  public $editindex;
+  public $editindex = null;
   public $voucher = [];
   public $statuses;
   public $row = null;
@@ -38,12 +38,17 @@ class Vouchertable extends Component
   }
   public function expandRow($index)
   {
-    if ($this->row  === null) {
-      $this->row = $index;
-    } elseif ($this->row != $index) {
-      $this->row = $index;
+    if ($this->editindex === $index) {
+      return;
     } else {
-      $this->row = null;
+
+      if ($this->row  === null) {
+        $this->row = $index;
+      } elseif ($this->row != $index) {
+        $this->row = $index;
+      } else {
+        $this->row = null;
+      }
     }
   }
   public function mount($tableName)
@@ -79,6 +84,7 @@ class Vouchertable extends Component
   {
     $this->statuses = Status::where('type', 'voucher')->get();
     $this->editindex = $index;
+    $this->row = $index;
     $record = Voucher::find($id);
     $this->voucher = [
       $index . '.name' => $record->name,
