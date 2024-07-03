@@ -210,7 +210,7 @@ function sliderProduct(sliderId, modalId) {
 
       pagination.appendChild(thumbnail);
     } else {
-      console.error(`Elementul media lipsește în slide-ul cu indexul ${index}`);
+      // console.error(`Elementul media lipsește în slide-ul cu indexul ${index}`);
     }
   }
 
@@ -286,9 +286,9 @@ function sliderProduct(sliderId, modalId) {
 
           document.addEventListener("keydown", handleKeyPress);
         } else {
-          console.error(
-            "Elementul <img> nu a fost găsit în cadrul slide-ului.",
-          );
+          // console.error(
+          //   "Elementul <img> nu a fost găsit în cadrul slide-ului.",
+          // );
         }
       }
     });
@@ -363,7 +363,7 @@ function sliderProduct(sliderId, modalId) {
 
       modalCount.textContent = `${currentIndex + 1} / ${slides.length}`;
     } else {
-      console.error("Elementul <img> nu a fost găsit în cadrul slide-ului.");
+      // console.error("Elementul <img> nu a fost găsit în cadrul slide-ului.");
     }
   }
 
@@ -541,7 +541,7 @@ function flyToCart(button) {
   }
 
   if (!target_parent) {
-    console.error("Nu s-a găsit părintele 'product'.");
+    // console.error("Nu s-a găsit părintele 'product'.");
     return;
   }
 
@@ -690,7 +690,7 @@ function miniSlider(sliderId, wrapperId, navLeftId, navRightId) {
   const navRight = document.getElementById(navRightId);
 
   if (!slider || !wrapper || !navLeft || !navRight) {
-    console.error("One or more elements from slider are missing!");
+    // console.error("One or more elements from slider are missing!");
     return;
   }
 
