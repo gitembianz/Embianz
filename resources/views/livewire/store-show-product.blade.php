@@ -289,7 +289,9 @@
            </span>
            <span class="card-price oldprice">
             {{ $product->product->product_prices->first()->value_no_discount }}
-            {{ $product->product->product_prices->first()->pricelist->currency->name }}
+            @if (app()->has('global_currency_primary_name'))
+             {!! app('global_currency_primary_name') !!}
+            @endif
            </span>
           @else
            <span>

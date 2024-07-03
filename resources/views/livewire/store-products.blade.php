@@ -32,7 +32,13 @@
  <!----------------------Categorie + detalii--------------------->
  @if ($category)
   <section class="section__header container">
-   <h1 class="section__title">{{ $category->name }}</h1>
+   <h1 class="section__title">
+    @if (!empty($category->short_description))
+     {{ $category->short_description }}
+    @else
+     {{ $category->name }}
+    @endif
+   </h1>
    <p class="section__text">
     {!! $category->long_description !!}
    </p>
@@ -97,10 +103,33 @@
          if ($product->variants->count() == 0) {
              continue;
          } else {
-             if ($product->variants->where('default_variant', true)->first()) {
-                 $element = $product->variants->where('default_variant', true)->first()->product;
+             $filteredVariants = $product->variants->filter(function ($variant) use ($selectedSpecValues) {
+                 $matchesFilter = true;
+                 foreach ($selectedSpecValues as $values) {
+                     foreach ($values as $value => $isSelected) {
+                         if (
+                             $isSelected &&
+                             !$variant->product->product_specs->contains('value', str_replace('_', '.', $value))
+                         ) {
+                             $matchesFilter = false;
+                             break;
+                         }
+                     }
+                     if (!$matchesFilter) {
+                         break;
+                     }
+                 }
+                 return $matchesFilter;
+             });
+
+             if ($filteredVariants->isEmpty()) {
+                 continue;
+             }
+
+             if ($filteredVariants->where('default_variant', true)->first()) {
+                 $element = $filteredVariants->where('default_variant', true)->first()->product;
              } else {
-                 $element = $product->variants->first()->product;
+                 $element = $filteredVariants->first()->product;
              }
          }
      } else {

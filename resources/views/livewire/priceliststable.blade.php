@@ -291,16 +291,26 @@
       </th>
      @endif
      @if ($this->showColumn('Active'))
-      <th>
+      <th class="hidden">
        <button class="table--btn">
         Is Active
        </button>
       </th>
      @endif
      @if ($this->showColumn('Created At'))
-      <th>
-       <button wire:click="sortBy('created_at')" class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
+      <th class="hidden">
+       <button wire:click="sortBy('created_at')" class="table--btn @if ($orderBy === 'created_at' && $orderAsc === '1') active @endif">
         Created at
+        <svg>
+         <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+       </button>
+      </th>
+     @endif
+     @if ($this->showColumn('Updated At'))
+      <th class="hidden">
+       <button wire:click="sortBy('updated_at')" class="table--btn @if ($orderBy === 'updated_at' && $orderAsc === '1') active @endif">
+        Updated at
         <svg>
          <polyline points="6 9 12 15 18 9"></polyline>
         </svg>
@@ -323,7 +333,10 @@
       <td class="table--empty" colspan="{{ count($selectedColumns) + 2 }}">No record found.</td>
      </tr>
     @else
-     @foreach ($pricelists as $nr => $price)
+     @php
+      $i = 0;
+     @endphp
+     @foreach ($pricelists as $index => $price)
       <tr @if ($loop->last) id="last_record" @endif
        class="expandable-row @if ($this->isChecked($price->id)) active @endif">
        <td style="border-left: none" data-title="Check">
@@ -332,29 +345,44 @@
          <span></span>
         </label>
        </td>
-       <td>
+       <td wire:click="expandRow({{ $index }})">
         @if ($this->showColumn('Id'))
          {{ $price->id }}
         @endif
        </td>
-       <td>
+       <td wire:click="expandRow({{ $index }})">
         @if ($this->showColumn('Name'))
          <a href="{{ route('show_pricelist', ['id' => $price->id]) }}">{{ $price->name }}</a>
         @endif
        </td>
-       <td>
+       <td wire:click="expandRow({{ $index }})">
         @if ($this->showColumn('Currency'))
          {{ $price->currency->name }}
         @endif
        </td>
-       <td>
+       <td class="hidden">
         @if ($this->showColumn('Active'))
-         {{ $price->active ? 'Active' : 'Inactive' }}
+         @if ($price->active)
+          <label class="checkbox checkbox--secondary inline disabled">
+           <input type="checkbox" disabled checked>
+           <span></span>
+          </label>
+         @else
+          <label class="checkbox checkbox--secondary inline disabled">
+           <input type="checkbox" disabled>
+           <span></span>
+          </label>
+         @endif
         @endif
        </td>
-       <td>
+       <td class="hidden">
         @if ($this->showColumn('Created At'))
          {{ $price->created_at }}
+        @endif
+       </td>
+       <td class="hidden">
+        @if ($this->showColumn('Updated At'))
+         {{ $price->updated_at }}
         @endif
        </td>
        <td style="border-right: none">
@@ -367,6 +395,44 @@
         </button>
        </td>
       </tr>
+      <tr class="details-row  @if ($row === $i) active @endif">
+       <td colspan="18">
+        <div class="details">
+
+         @if ($this->showColumn('Active'))
+          <p>
+           <bold>Is active?:</bold>
+           @if ($price->active)
+            <label class="checkbox checkbox--secondary inline disabled">
+             <input type="checkbox" disabled checked>
+             <span></span>
+            </label>
+           @else
+            <label class="checkbox checkbox--secondary inline disabled">
+             <input type="checkbox" disabled>
+             <span></span>
+            </label>
+           @endif
+          </p>
+         @endif
+         @if ($this->showColumn('Created At'))
+          <p>
+           <bold>Created at:</bold>
+           {{ $price->created_at }}
+          </p>
+         @endif
+         @if ($this->showColumn('Updated At'))
+          <p>
+           <bold>Updated at:</bold>
+           {{ $price->updated_at }}
+          </p>
+         @endif
+        </div>
+       </td>
+      </tr>
+      @php
+       $i++;
+      @endphp
      @endforeach
     @endif
    </tbody>

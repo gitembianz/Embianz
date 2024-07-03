@@ -315,9 +315,11 @@
        <td colspan="17">
         <div class="details">
          @foreach ($selectedColumns as $index => $column)
-          @if ($index >= count($selectedColumns) - 11)
+          @if ($index >= count($selectedColumns) - 10)
            <p>
-            <bold>{{ $column }}:</bold> {{ $account->$column }}
+            @if (!empty($account->$column))
+             <bold>{{ $column }}:</bold> {{ $account->$column }}
+            @endif
            </p>
           @endif
          @endforeach

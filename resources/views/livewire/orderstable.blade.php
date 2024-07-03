@@ -326,7 +326,7 @@
        <td colspan="17">
         <div class="details">
          @foreach ($selectedColumns as $index => $column)
-          @if ($index >= count($selectedColumns) - 15)
+          @if ($index >= count($selectedColumns) - 14)
            @if ($column === 'name')
             <p>
              <bold>{{ $column }}:</bold>

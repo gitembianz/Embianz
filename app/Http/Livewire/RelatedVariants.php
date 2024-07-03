@@ -23,8 +23,6 @@ class RelatedVariants extends Component
     public $selectAll = false;
     public $showvariant = false;
     public $productId;
-    public $col = false;
-    public $all = false;
     public $columns = ['Id', 'Parrent Name', 'default variant', 'Variant Name', 'Reference', 'Value', 'Dispalyed type', 'Created At', 'Updated At'];
     public $selectedColumns = [];
     public $idbeingremoved = null;
@@ -83,7 +81,7 @@ class RelatedVariants extends Component
     {
         $this->selectedColumns = $this->columns;
         $this->item = $product;
-        
+
 
         $this->variantAndValues[] = [
             'allow' => false,
@@ -175,7 +173,6 @@ class RelatedVariants extends Component
             'type' => 'success',
             'title' => 'Success'
         ]);
-        
     }
     public function deleteRecords()
     {
@@ -186,7 +183,6 @@ class RelatedVariants extends Component
             $itemtodel->delete();
         }
         $this->checked = [];
-        $this->all = false;
         $this->selectPage = false;
         $this->multiple = false;
 
@@ -222,8 +218,6 @@ class RelatedVariants extends Component
             'variant' => ['name' => null, 'reference' => $this->references->first()->id, 'display' => 'text', 'def' => false],
         ];
         $this->row = 1;
-        $this->checked = [];
-        $this->all = false;
         $this->addvariant = false;
     }
     public function allowselect($index)

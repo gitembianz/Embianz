@@ -55,10 +55,10 @@ class StoreProducts extends Component
     $this->specification = Specs::get();
     if ($category) {
       $decodedCategory = json_decode(htmlspecialchars_decode($category), true);
-      $this->category = Category::select('id', 'name', 'long_description', 'seo_id', 'accepted_items')->find($decodedCategory['id']);
+      $this->category = Category::select('id', 'name', 'short_description', 'long_description', 'seo_id', 'accepted_items')->find($decodedCategory['id']);
     } else {
       if (app()->has('global_default_category')) {
-        $this->category = Category::select('id', 'name', 'long_description', 'seo_id', 'accepted_items')->find(app('global_default_category')) ?? null;
+        $this->category = Category::select('id', 'name', 'short_description', 'long_description', 'seo_id', 'accepted_items')->find(app('global_default_category')) ?? null;
       }
     }
     $filteredValues = session()->get('filtered_values', []);
@@ -95,6 +95,7 @@ class StoreProducts extends Component
       'product',
       function ($query) {
         $query->where('active', true)
+          ->where('type', '!=', 'parrent')
           ->where('start_date', '<=',  now()->format('Y-m-d'))
           ->where('end_date', '>=',  now()->format('Y-m-d'));
       }
@@ -187,8 +188,8 @@ class StoreProducts extends Component
   {
     $query = Product::name($this->search)
       ->where('active', true)
-      ->where('start_date', '<=',  now()->format('Y-m-d'))
-      ->where('end_date', '>=',  now()->format('Y-m-d'))
+      ->where('start_date', '<=', now()->format('Y-m-d'))
+      ->where('end_date', '>=', now()->format('Y-m-d'))
       ->with([
         'variants' => function ($query) {
           $query->with('product');
@@ -203,6 +204,7 @@ class StoreProducts extends Component
           $query->select('id', 'product_id')->where('session_id', $this->session_id);
         },
       ]);
+
     if ($this->category != null) {
       $query->whereHas('product_categories.category', function ($query) {
         $query->where('id', $this->category->id);
@@ -213,20 +215,43 @@ class StoreProducts extends Component
         $query->where('type', '!=', 'variant');
       }
     }
+
     if ($this->specfilter && !empty($this->selectedSpecValues)) {
-      foreach ($this->selectedSpecValues as $values) {
-        $query->Where(function ($specSubQuery) use ($values) {
-          foreach ($values as $value => $isSelected) {
-            if ($isSelected) {
-              $specSubQuery->orWhereHas('product_specs', function ($query) use ($value) {
-                $key = str_replace('_', '.', $value);
-                $query->where('value', $key);
-              });
+      $query->where(function ($mainQuery) {
+        foreach ($this->selectedSpecValues as $values) {
+          $mainQuery->where(function ($specSubQuery) use ($values) {
+            foreach ($values as $value => $isSelected) {
+              if ($isSelected) {
+                $specSubQuery->orWhereHas('product_specs', function ($query) use ($value) {
+                  $key = str_replace('_', '.', $value);
+                  $query->where('value', $key);
+                });
+              }
             }
-          }
+          });
+        }
+
+        // Apply the filter to variants if the product type is 'parrent'
+        $mainQuery->orWhere(function ($parentQuery) {
+          $parentQuery->where('type', 'parrent')
+            ->whereHas('variants.product', function ($variantQuery) {
+              foreach ($this->selectedSpecValues as $values) {
+                $variantQuery->where(function ($specSubQuery) use ($values) {
+                  foreach ($values as $value => $isSelected) {
+                    if ($isSelected) {
+                      $specSubQuery->orWhereHas('product_specs', function ($query) use ($value) {
+                        $key = str_replace('_', '.', $value);
+                        $query->where('value', $key);
+                      });
+                    }
+                  }
+                });
+              }
+            });
         });
-      }
+      });
     }
+
     switch ($this->orderBy) {
       case 'best_selling':
         $query->orderBy('popularity', 'desc');
@@ -252,16 +277,16 @@ class StoreProducts extends Component
       case 'price_as':
         $query->orderByRaw("(SELECT CAST(value AS DECIMAL(10, 2)) FROM pricelist_entries WHERE product_id = products.id) asc");
         break;
-
       case 'price_ds':
         $query->orderByRaw("(SELECT CAST(value AS DECIMAL(10, 2)) FROM pricelist_entries WHERE product_id = products.id) desc");
         break;
     }
-    $products = $query->paginate($this->loadAmount);
 
+    $products = $query->paginate($this->loadAmount);
 
     return $products;
   }
+
 
   public function loadMore()
   {

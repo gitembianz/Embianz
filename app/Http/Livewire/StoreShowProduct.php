@@ -51,7 +51,7 @@ class StoreShowProduct extends Component
           $query->select('product_id', 'spec_id', 'value', 'id')->with('spec:id,name');
         },
         'related_product' => function ($query) {
-          $query->select('parrent_id', 'product_id', 'id')->with([
+          $query->orderBy('sequence')->select('parrent_id', 'product_id', 'sequence', 'id')->with([
             'product' => function ($query) {
               $query->where('active', 1)->where('start_date', '<=',  now()->format('Y-m-d'))
                 ->where('end_date', '>=',  now()->format('Y-m-d'))->select('id', 'name', 'popularity', 'seo_id', 'short_description', 'quantity', 'active', 'end_date', 'start_date')->with([
