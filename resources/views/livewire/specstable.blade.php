@@ -309,6 +309,18 @@
          wire:click="expandRow({{ $nr }})">
          @if ($column === 'name')
           <a href="{{ route('show_spec', ['id' => $item->id]) }}">{{ $item->name }}</a>
+         @elseif ($column === 'mark_as_filter')
+          @if ($item->$column)
+           <label class="checkbox checkbox--secondary inline disabled">
+            <input type="checkbox" disabled checked>
+            <span></span>
+           </label>
+          @else
+           <label class="checkbox checkbox--secondary inline disabled">
+            <input type="checkbox" disabled>
+            <span></span>
+           </label>
+          @endif
          @else
           {{ $item->$column }}
          @endif
@@ -328,11 +340,26 @@
        <td colspan="17">
         <div class="details">
          @foreach ($selectedColumns as $index => $column)
-          @if ($index >= count($selectedColumns) - 7)
+          @if ($index >= count($selectedColumns) - 6)
            @if ($column === 'name')
             <p>
              <bold>{{ $column }}:</bold>
              <a href="{{ route('show_spec', ['id' => $item->id]) }}">{{ $item->name }}</a>
+            </p>
+           @elseif ($column === 'mark_as_filter')
+            <p>
+             <bold>{{ $column }}:</bold>
+             @if ($item->$column)
+              <label class="checkbox checkbox--secondary inline disabled">
+               <input type="checkbox" disabled checked>
+               <span></span>
+              </label>
+             @else
+              <label class="checkbox checkbox--secondary inline disabled">
+               <input type="checkbox" disabled>
+               <span></span>
+              </label>
+             @endif
             </p>
            @else
             <p>
