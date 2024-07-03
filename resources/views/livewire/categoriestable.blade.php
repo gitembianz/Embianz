@@ -322,6 +322,26 @@
             <span></span>
            </label>
           @endif
+         @elseif ($column === "long_description")
+          <span class="show-less">
+            {!! $category->$column !!}
+          </span>
+        @elseif ($column === "short_description")
+          <span class="show-less">
+            {!! $category->$column !!}
+          </span>
+        @elseif ($column === "seo_id")
+          <span class="show-less">
+            {!! $category->$column !!}
+          </span>
+        @elseif ($column === "seo_title")
+          <span class="show-less">
+            {!! $category->$column !!}
+          </span>
+        @elseif ($column === "meta_description")
+          <span class="show-less">
+            {!! $category->$column !!}
+          </span>
          @else
           {{ $category->$column }}
          @endif

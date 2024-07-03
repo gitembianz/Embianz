@@ -321,6 +321,10 @@
             <span></span>
            </label>
           @endif
+        @elseif ($column === 'content')
+          <span class="show-less">
+            {{ $item->$column }}
+          </span>
          @else
           {{ $item->$column }}
          @endif

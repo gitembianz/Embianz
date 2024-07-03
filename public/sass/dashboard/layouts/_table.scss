@@ -253,3 +253,12 @@
 }
 
 
+.show-less{
+  text-decoration: none;
+  text-overflow: ellipsis;
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 80px;
+  height: 32px;
+}
