@@ -29,7 +29,7 @@ class RelatedMediaCategory extends Component
   public $checked = [];
   public $selectPage = false;
   public $selectAll = false;
-  public $mediaidbeingremoved = null;
+  public $idbeingremoved = null;
   public $columns = ['Id', 'Media', 'Sequence', 'Created At'];
   public $selectedColumns = [];
   public $file_sequences = [];
@@ -43,6 +43,48 @@ class RelatedMediaCategory extends Component
   public $row = 1;
   public $externalmedia = false;
 
+
+  public $chose = false;
+
+  public $single = false;
+  public $multiple = false;
+  public $rind = null;
+  public $rind2 = null;
+  public $rind3 = null;
+
+  public function expandRow($index)
+  {
+    if ($this->rind  === null) {
+      $this->rind = $index;
+    } elseif ($this->rind != $index) {
+      $this->rind = $index;
+    } else {
+      $this->rind = null;
+    }
+  }
+  public function expandRow2($index)
+  {
+    if ($this->rind2  === null) {
+      $this->rind2 = $index;
+    } elseif ($this->rind2 != $index) {
+      $this->rind2 = $index;
+    } else {
+      $this->rind2 = null;
+    }
+  }
+  public function expandRow3($index)
+  {
+    if ($this->rind3  === null) {
+      $this->rind3 = $index;
+    } elseif ($this->rind3 != $index) {
+      $this->rind3 = $index;
+    } else {
+      $this->rind3 = null;
+    }
+  }
+
+
+
   public function mount(Category $category)
   {
     $this->category = $category;
@@ -53,6 +95,7 @@ class RelatedMediaCategory extends Component
   public function uploadmedia()
   {
     $this->showmedia = true;
+    $this->chose = true;
     $this->dispatchBrowserEvent('media');
   }
   public function clearall()
@@ -411,6 +454,7 @@ class RelatedMediaCategory extends Component
     }
     $this->medias = [];
     $this->file_sequences = [];
+    $this->chose = false;
     session()->flash('notification', [
       'message' => 'Record related successfully!',
       'type' => 'success',
@@ -437,7 +481,7 @@ class RelatedMediaCategory extends Component
   }
   public function deleteSingleRecord()
   {
-    $media = Media::findOrFail($this->mediaidbeingremoved);
+    $media = Media::findOrFail($this->idbeingremoved);
     $path = $media->path . $media->name;
     if (File::exists($path)) {
       File::delete($path);
@@ -447,13 +491,19 @@ class RelatedMediaCategory extends Component
     if (File::isDirectory($folder) && count(File::allFiles($folder)) === 0) {
       File::deleteDirectory($folder);
     }
-    $this->checked = array_diff($this->checked, [$this->mediaidbeingremoved]);
+    $this->checked = array_diff($this->checked, [$this->idbeingremoved]);
+    $this->single = false;
     session()->flash('notification', [
       'message' => 'Record deleted successfully!',
       'type' => 'success',
       'title' => 'Success'
     ]);
   }
+
+  public function cancel_chose() {
+    $this->chose = false;
+  }
+
   public function deleteRecords()
   {
     $medias = Media::whereKey($this->checked)->get();
@@ -471,6 +521,7 @@ class RelatedMediaCategory extends Component
     }
     $this->checked = [];
     $this->selectPage = false;
+    $this->multiple = false;
     session()->flash('notification', [
       'message' => 'Records deleted successfully!',
       'type' => 'success',
@@ -488,13 +539,17 @@ class RelatedMediaCategory extends Component
   }
   public function confirmItemRemoval($id)
   {
-    $this->mediaidbeingremoved = $id;
-    $this->dispatchBrowserEvent('show-delete-modal');
+    $this->idbeingremoved = $id;
+    $this->single = true;
   }
   public function confirmItemsRemoval()
   {
-
-    $this->dispatchBrowserEvent('show-delete-modal-multiple');
+    $this->multiple = true;
+  }
+  public function cancel_delete()
+  {
+    $this->multiple = false;
+    $this->single = false;
   }
   public function render()
   {
