@@ -248,7 +248,7 @@
       @if ($column == 'payload')
        <?php continue; ?>
       @elseif ($this->showColumn($column))
-       <th @if ($index > count($selectedColumns) - 6) class="hidden" @endif>
+       <th @if ($index > count($selectedColumns) - 7) class="hidden" @endif>
         <button wire:click="sortBy('{{ $column }}')"
          class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
          {{ $column }}
@@ -291,7 +291,7 @@
         @if ($column == 'payload')
          <?php continue; ?>
         @endif
-        <td @if ($index > count($selectedColumns) - 6) class="hidden" @endif data-title="{{ $column }}"
+        <td @if ($index > count($selectedColumns) - 7) class="hidden" @endif data-title="{{ $column }}"
          wire:click="expandRow({{ $nr }})">
          @if ($column == 'last_activity')
           {{ date('Y-m-d H:i:s', $item->$column) }}
