@@ -56,7 +56,7 @@
           <table class="expandable-table">
             <thead>
               <tr>
-                <th style="width: auto;">
+                <th style="width: auto; !important">
                   <div style="display: flex;">
                     <button class="table--btn" >
                       Specification
@@ -80,7 +80,7 @@
                     Product
                   </button>
                 </th>
-                <th class="hidden" style="width: auto;">
+                <th class="hidden" style="width: auto; !important">
                   <button class="table--btn">
                     Value
                   </button>
@@ -93,7 +93,7 @@
               @endphp
               @foreach ($prod as $index => $pro)
                 <tr class="expandable-row">
-                  <td wire:click="expandRow2({{ $index }})" style="width: auto;">
+                  <td wire:click="expandRow2({{ $index }})" style="width: auto; !important">
                     <div style="display: flex; align-items: center; justify-content: center;" >
                       {{ $item->name }}
                       <button class="button button--secondary button--sm" style="opacity: 0">
@@ -157,7 +157,7 @@
                   @endif
                     <input type="hidden" wire:model.defer="prod.{{ $index }}.product.name">
                   </td>
-                  <td class="hidden" style="width: auto;">
+                  <td class="hidden" style="width: auto; !important">
                     <input type="text" required class="input button--fill button--xs" wire:model.defer="prod.{{ $index}}.product.value">
                   </td>
                 </tr>
@@ -262,7 +262,7 @@
           <table class="expandable-table">
             <thead>
               <tr>
-                <th style="width: auto;">
+                <th style="width: auto; !important">
                     <button class="table--btn">
                       Specification
                     </button>
@@ -306,7 +306,7 @@
               @endphp
               @foreach ($prod as $index => $pro)
                 <tr class="expandable-row">
-                  <td wire:click="expandRow3({{ $index }})" style="width: auto;">
+                  <td wire:click="expandRow3({{ $index }})" style="width: auto; !important">
                     <div style="display: flex; align-items: center; justify-content: center;" >
                       {{ $item->name }}
                       <button class="button button--secondary button--sm" style="opacity: 0">

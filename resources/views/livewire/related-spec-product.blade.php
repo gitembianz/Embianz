@@ -57,7 +57,7 @@
           <table class="expandable-table">
             <thead>
               <tr>
-                <th style="width: auto;">
+                <th style="width: auto; !important">
                   <div style="display: flex;">
                     <button class="table--btn" >
                       Product
@@ -94,7 +94,7 @@
               @endphp
               @foreach ($specsAndValues as $index => $specAndValue)
                 <tr class="expandable-row">
-                  <td wire:click="expandRow2({{ $index }})" style="width: auto;">
+                  <td wire:click="expandRow2({{ $index }})" style="width: auto; !important">
                     <div style="display: flex; align-items: center; justify-content: center;" >
                       {{ $item->name }}
                       <button class="button button--secondary button--sm" style="opacity: 0">
