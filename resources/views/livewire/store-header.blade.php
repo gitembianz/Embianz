@@ -163,20 +163,19 @@
      @if ($category->subcategory->count() != 0)
       <div class="dropmenu">
        <div class="dropmenu__button">
-        <span class="dropmenu__button--link dropmenu__open menu__link" onclick="DoubleTapRedirect('{{ route('products', ['categorySlug' => $category->seo_id !== null && $category->seo_id !== '' ? $category->seo_id : $category->id]) }}')">
+        <a class="dropmenu__button--link"
+         href="{{ route('products', ['categorySlug' => $category->seo_id !== null && $category->seo_id !== '' ? $category->seo_id : $category->id]) }}">
          @if ($category->media->first())
-          <img loading="eager" class="cart__list--img"
-           src="/{{ $category->media->first()->path }}{{ $category->media->first()->name }}"
-           alt="{{ $category->media->first()->name }}{{ $category->name }}">
-          <h4>{{ $category->name }}</h4>
-         @else
+          <img loading="eager" class="cart__list--img" src="/{{ $category->media->first()->path }}{{ $category->media->first()->name }}">
           <h4 style="margin-left: 7px">{{ $category->name }}</h4>
           {{-- <img loading="eager" class="heart__list--img" src="/images/store/default/default70.webp" alt="something wrong"> --}}
          @endif
-          <svg style="margin-left: auto;">
-           <polyline points="6 9 12 15 18 9"></polyline>
-          </svg>
-        </span>
+        </a>
+        <button class="dropmenu__open" href="#">
+         <svg>
+          <polyline points="6 9 12 15 18 9"></polyline>
+         </svg>
+        </button>
        </div>
        <div class="dropmenu__list">
         @foreach ($category->subcategory as $subcategory)
