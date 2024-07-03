@@ -1,5 +1,5 @@
 <div>
-
+<x-help-button />
 
  <section id="cookie-banner" style="display: none">
   <div class="container cookie__container">
