@@ -211,7 +211,7 @@
   </div>
  </aside>
  <!-- Desktop Menu -->
- <div class="leftbar display--desktop" id="leftbar">
+ <div class="leftbar display--desktop active" id="leftbar">
   <button class="button button--long button--flexed button--primary" id="toggle__leftbar">
    <svg>
     <polyline points="4 14 10 14 10 20"></polyline>
