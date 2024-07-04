@@ -2,8 +2,6 @@
  {{-- X-Components --}}
  <x-alert />
 
-
-
  {{-- Asides --}}
  <aside>
   <div class="background background--right" id="sort__backdrop"></div>
@@ -56,7 +54,6 @@
    @endforeach
   </div>
  </aside>
-
 
  {{-- Navigation --}}
  <h1 class="table--name">{{ __('Currency') }} ({{ $currencies->total() }})</h1>
@@ -176,7 +173,6 @@
   </div>
  </nav>
 
-
  {{-- Table --}}
  <div class="table">
   <table class="expandable-table">
@@ -184,7 +180,7 @@
     <tr>
      @foreach ($selectedColumns as $index => $column)
       @if ($this->showColumn($column))
-       <th @if ($index > count($selectedColumns) - 4) class="hidden" @endif>
+       <th @if ($index > count($selectedColumns) - 5) class="hidden" @endif>
         <button wire:click="sortBy('{{ $column }}')"
          class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
          {{ $column }}
@@ -218,19 +214,19 @@
       <tr @if ($loop->last) id="last_record" @endif
        class="expandable-row @if ($this->isChecked($item->id)) active @endif">
        @foreach ($selectedColumns as $index => $column)
-        <td @if ($index > count($selectedColumns) - 4) class="hidden" @endif data-title="{{ $column }}"
+        <td @if ($index > count($selectedColumns) - 5) class="hidden" @endif data-title="{{ $column }}"
          wire:click="expandRow({{ $nr }})">
          @if ($column === 'name')
-          @if ($editeindex !== $index)
+          @if ($editindex !== $nr)
            {{ $item->name }}
           @else
-           <input type="text" class="input" wire:model.defer="details.{{ $index }}.name">
+           <input type="text" class="input" wire:model.defer="details.{{ $nr }}.name">
           @endif
          @elseif($column === 'symbol')
-          @if ($editeindex !== $index)
+          @if ($editindex !== $nr)
            {{ $item->symbol }}
           @else
-           <input type="text" class="input" wire:model.defer="details.{{ $index }}.symbol">
+           <input type="text" class="input" wire:model.defer="details.{{ $nr }}.symbol">
           @endif
          @else
           {{ $item->$column }}
@@ -239,9 +235,9 @@
        @endforeach
        <td style="border-right: none">
         <div style="display: flex">
-         @if ($editeindex !== $index)
+         @if ($editindex !== $nr)
           <button class="button button--secondary button--sm"
-           wire:click.prevent="edit({{ $index }}, {{ $item->id }})">
+           wire:click.prevent="edit({{ $nr }}, {{ $item->id }})">
            <svg>
             <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
             </path>
@@ -249,7 +245,7 @@
           </button>
          @else
           <button class="button button--secondary button--sm"
-           wire:click.prevent="save({{ $index }} , {{ $item->id }})">
+           wire:click.prevent="save({{ $nr }} , {{ $item->id }})">
            <svg>
             <polyline points="20 6 9 17 4 12"></polyline>
            </svg>
@@ -271,36 +267,10 @@
         <div class="details">
          @foreach ($selectedColumns as $index => $column)
           @if ($index >= count($selectedColumns) - 4)
-           @if ($column === 'name')
-            @if ($editeindex !== $index)
-             <p>
-              <bold>{{ $column }}:</bold>
-              {{ $item->name }}
-             </p>
-            @else
-             <p>
-              <bold>{{ $column }}:</bold>
-              <input type="text" class="input" wire:model.defer="details.{{ $index }}.name">
-             </p>
-            @endif
-           @elseif($column === 'symbol')
-            @if ($editeindex !== $index)
-             <p>
-              <bold>{{ $column }}:</bold>
-              {{ $item->symbol }}
-             </p>
-            @else
-             <p>
-              <bold>{{ $column }}:</bold>
-              <input type="text" class="input" wire:model.defer="details.{{ $index }}.symbol">
-             </p>
-            @endif
-           @else
-            <p>
-             <bold>{{ $column }}:</bold>
-             {{ $item->$column }}
-            </p>
-           @endif
+           <p>
+            <bold>{{ $column }}:</bold>
+            {{ $item->$column }}
+           </p>
           @endif
          @endforeach
         </div>
