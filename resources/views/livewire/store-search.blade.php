@@ -205,7 +205,7 @@
  @endif
 
  <!--------------------- support button --------------------->
- <x-help-button />
+ 
  <!---------------------------------------------------------->
  <script src="/script/store/catalog.js" defer></script>
 </div>

@@ -226,7 +226,8 @@
           src="/{{ $product->product->media->first()->path }}{{ $product->product->media->first()->name }}"
           alt="{{ $product->product->media->first()->name }} {{ $product->product->name }}">
         @else
-         <img loading="lazy" width="300" height="300" class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
+         <img loading="lazy" width="300" height="300" class="card-image"
+          src="/images/store/default/default300.webp" alt="something wrong">
         @endif
        </a>
        @livewire('product-wishlist-button', ['productId' => $product->product->id, 'class' => 'card__action', 'is_in_wishlist' => $product->product->wishlists->isNotEmpty()], key($product->product->id))
@@ -327,6 +328,6 @@
    </div>
   </section>
  @endif
- <x-help-button />
+
  <script src="/script/store/product.js" defer></script>
 </div>

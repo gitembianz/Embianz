@@ -36,22 +36,22 @@
       <?php
       $disabled[$index] = false;
       $nonquantity[$index] = false;
-
+      
       if ($cartItem->product->active != true || $cartItem->product->start_date > now()->format('Y-m-d') || $cartItem->product->end_date < now()->format('Y-m-d')) {
           $disabled[$index] = true;
           $isdisabled = true;
       }
-
+      
       if (!optional($cartItem->product->product_prices->first())->value) {
           $disabled[$index] = true;
           $isdisabled = true;
       }
-
+      
       if ($cartItem->product->quantity < $cartItem->quantity) {
           $nonquantity[$index] = true;
           $isdisabled = true;
       }
-
+      
       ?>
       <div class="basket__split">
        <div class="basket__item">
@@ -377,7 +377,7 @@
 
  <!---------------------------------------------------------->
  <!--------------------- support button --------------------->
- <x-help-button />
+
  <!------------------- End support button ------------------->
  <!---------------------------------------------------------->
  <script src="/script/store/checkout.js" defer></script>
