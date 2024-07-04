@@ -41,7 +41,7 @@
      <?php
      $disabled[$index] = false;
      $nonquantity[$index] = false;
-     
+
      if ($cartItem->product->active != true || $cartItem->product->start_date > now()->format('Y-m-d') || $cartItem->product->end_date < now()->format('Y-m-d')) {
          $disabled[$index] = true;
          $isdisabled = true;
@@ -50,7 +50,7 @@
          $disabled[$index] = true;
          $isdisabled = true;
      }
-     
+
      if ($cartItem->product->quantity < $cartItem->quantity) {
          $nonquantity[$index] = true;
          $isdisabled = true;
@@ -80,11 +80,11 @@
          {{ $cartItem->quantity }} x
         </span>
         @if ($cartItem->product->media->first())
-         <img loading="eager" class="cart__list--img"
+         <img loading="lazy" class="cart__list--img"
           src="/{{ $cartItem->product->media->first()->path }}{{ $cartItem->product->media->first()->name }}"
           alt="{{ $cartItem->product->media->first()->name }}{{ $cartItem->product->name }}">
         @else
-         <img loading="eager" class="cart__list--img" src="/images/store/default/default70.webp" alt="something wrong">
+         <img loading="lazy" class="cart__list--img" src="/images/store/default/default70.webp" alt="something wrong">
         @endif
         <div class="leftbar__link--text">
          <h4 class="leftbar__link--title">{{ $cartItem->product->name }}</h4>
@@ -100,11 +100,11 @@
          {{ $cartItem->quantity }} x
         </span>
         @if ($cartItem->product->media->first())
-         <img loading="eager" class="cart__list--img"
+         <img loading="lazy" class="cart__list--img"
           src="/{{ $cartItem->product->media->first()->path }}{{ $cartItem->product->media->first()->name }}"
           alt="{{ $cartItem->product->media->first()->name }}{{ $cartItem->product->name }}">
         @else
-         <img loading="eager" class="cart__list--img" src="/images/store/default/default70.webp" alt="something wrong">
+         <img loading="lazy" class="cart__list--img" src="/images/store/default/default70.webp" alt="something wrong">
         @endif
         <div class="leftbar__link--text">
          <h4 class="leftbar__link--title">{{ $cartItem->product->name }}</h4>

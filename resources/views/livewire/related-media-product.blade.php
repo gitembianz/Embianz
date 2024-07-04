@@ -131,7 +131,7 @@
               <tr class="expandable-row">
                 <td wire:click="expandRow3({{ $index }})" style="width: auto;">
                   @if (str_starts_with($media->getMimeType(), "image"))
-                    <img loading="eager" src="data:{{ $media->getMimeType() }};base64,{{ base64_encode($media->get()) }}" width="50px">
+                    <img loading="lazy" src="data:{{ $media->getMimeType() }};base64,{{ base64_encode($media->get()) }}" width="50px">
                   @elseif (str_starts_with($media->getMimeType(), "video"))
                     <video width="100px" controls>
                       <source src="data:{{ $media->getMimeType() }};base64,{{ base64_encode($media->get()) }}" type="{{ $media->getMimeType() }}">
@@ -469,7 +469,7 @@
                   @if ($this->showColumn("Media"))
                   <td wire:click="expandRow({{ $index }})">
                     @if (in_array($file->extension, ["jpg", "jpeg", "png", "gif", "svg", "jfif", "webp"]))
-                    <img loading="eager" src="/{{ $file->path . $file->name }}" alt="{{ $file->name }}" width="50">
+                    <img loading="lazy" src="/{{ $file->path . $file->name }}" alt="{{ $file->name }}" width="50">
                     @else
                     A problem with media
                     @endif
