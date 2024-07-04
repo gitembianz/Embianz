@@ -24,13 +24,13 @@
  <nav class="nav--controls">
   <h1 class="table--name">Category: {{ $category->name }}</h1>
   {{-- Refresh Button --}}
-  <a class="button button--secondary button--centered" tooltip="Back to all categories" tooltip-top
+  <a class="button button--primary button--centered" tooltip="Back to all categories" tooltip-top
    href="{{ route('category') }}">
    <svg>
     <polyline points="15 18 9 12 15 6"></polyline>
    </svg>
   </a>
-  <a class="button button--secondary button--centered" tooltip="Create new category" tooltip-top
+  <a class="button button--primary button--centered" tooltip="Create new category" tooltip-top
    href="{{ route('newcategory') }}">
    <svg>
     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
@@ -40,7 +40,7 @@
    </svg>
   </a>
   @if ($editcategory === null)
-   <button class="button button--secondary button--centered" tooltip="Edit this category" tooltip-left
+   <button class="button button--primary button--centered" tooltip="Edit this category" tooltip-left
     wire:click.prevent="editcategory()">
     <svg>
      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -50,7 +50,7 @@
     </svg>
    </button>
   @else
-   <button class="button button--secondary button--centered" tooltip="Save Edit" tooltip-left
+   <button class="button button--primary button--centered" tooltip="Save Edit" tooltip-left
     wire:click.prevent="savecategory()">
     <svg>
      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -59,7 +59,7 @@
      <path d="M9 15l2 2l4 -4" />
     </svg>
    </button>
-   <button class="button button--secondary button--centered" tooltip="Cancel edit" tooltip-left
+   <button class="button button--primary button--centered" tooltip="Cancel edit" tooltip-left
     wire:click.prevent="cancelcategory()">
     <svg>
      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -70,7 +70,7 @@
     </svg>
    </button>
   @endif
-  <button class="button button--secondary button--centered" tooltip="Delete this category" tooltip-left
+  <button class="button button--primary button--centered" tooltip="Delete this category" tooltip-left
    wire:click.prevent="confirmItemRemoval({{ $category->id }})">
    <svg>
     <path stroke="none" d="M0 0h24v24H0z" fill="none" />

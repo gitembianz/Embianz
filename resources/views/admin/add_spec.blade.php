@@ -9,13 +9,13 @@
  <nav class="nav--controls">
   <h1 class="table--name">New specification</h1>
   {{-- Refresh Button --}}
-  <a class="button button--secondary button--centered" tooltip="Back to Specifications" tooltip-top
+  <a class="button button--primary button--centered" tooltip="Back to Specifications" tooltip-top
    href="{{ route('specs') }}">
    <svg>
     <polyline points="15 18 9 12 15 6"></polyline>
    </svg>
   </a>
-  <button class="button button--secondary button--centered" tooltip="Save specification" tooltip-left type="submit">
+  <button class="button button--primary button--centered" tooltip="Save specification" tooltip-left type="submit">
    <svg>
     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
     <path d="M14 3v4a1 1 0 0 0 1 1h4" />
@@ -23,7 +23,7 @@
     <path d="M9 15l2 2l4 -4" />
    </svg>
   </button>
-  <button class="button button--secondary button--centered" tooltip="Reset specification" tooltip-left type="reset">
+  <button class="button button--primary button--centered" tooltip="Reset specification" tooltip-left type="reset">
    <svg>
     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
     <path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" />

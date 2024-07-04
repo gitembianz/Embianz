@@ -2,12 +2,18 @@
   position: fixed;
   display: inline-block;
   padding: $padding;
-  background: $white;
+  background: $primary;
   z-index: $index-modal;
   transition: $transition-fast;
   overflow-y: auto;
   padding-bottom: calc($padding * 10);
   // transform: scale(0.85);
+
+  & h3 {
+    color: $secondary;
+    font-size: $font-size;
+    font-weight: $font-weight;
+  }
 
 
   /// Positioning

@@ -96,7 +96,7 @@
   {{-- Search Input --}}
   <input class="input input--long" type="text" wire:model.debounce.300ms="search" placeholder="Search...">
   {{-- Refresh Button --}}
-  <button class="button button--secondary button--centered display--desktop" tooltip="Refresh table" tooltip-top
+  <button class="button button--primary button--centered display--desktop" tooltip="Refresh table" tooltip-top
    wire:click="$refresh">
    <svg>
     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -109,7 +109,7 @@
    </svg>
   </button>
   {{-- Add New Button --}}
-  <a class="button button--secondary button--centered display--desktop" tooltip="Add new variant" tooltip-top
+  <a class="button button--primary button--centered display--desktop" tooltip="Add new variant" tooltip-top
    href="{{ route('newvariant') }}">
    <svg>
     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
@@ -122,7 +122,7 @@
   <div class="dropdown dropdown--right" @if (!$checked) style="display: none;" @endif
    >
    {{-- Dropdown Button --}}
-   <button class="button button--secondary button--centered button--long" tooltip="Actions with checked" tooltip-top
+   <button class="button button--primary button--centered button--long" tooltip="Actions with checked" tooltip-top
     >
     <span>With Checked({{ count($checked) }})</span>
    </button>
@@ -136,7 +136,7 @@
   {{-- Sorting Dropdown --}}
   <div class="dropdown dropdown--right display--desktop" >
    {{-- Dropdown Button --}}
-   <button class="button button--secondary button--centered" tooltip="Sort items in table" tooltip-left
+   <button class="button button--primary button--centered" tooltip="Sort items in table" tooltip-left
     >
     <svg>
      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -165,7 +165,7 @@
   {{-- Visible Dropdown --}}
   <div class="dropdown dropdown--right display--desktop" >
    {{-- Dropdown Button --}}
-   <button class="button button--secondary button--centered" tooltip="Show items in table" tooltip-left
+   <button class="button button--primary button--centered" tooltip="Show items in table" tooltip-left
     >
     <svg>
      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -189,7 +189,7 @@
   {{-- Optional Dropdown --}}
   <div class="dropdown dropdown--right display--mobile" >
    {{-- Dropdown Button --}}
-   <button class="button button--secondary button--centered" tooltip="Show more actions" tooltip-left
+   <button class="button button--primary button--centered" tooltip="Show more actions" tooltip-left
     >
     <svg>
      <path stroke="none" d="M0 0h24v24H0z" fill="none" />

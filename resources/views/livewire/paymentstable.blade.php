@@ -63,7 +63,7 @@
   {{-- Search Input --}}
   <input class="input input--long" type="text" wire:model.debounce.300ms="search" placeholder="Search...">
   {{-- Refresh Button --}}
-  <button class="button button--secondary button--centered display--desktop" tooltip="Refresh table" tooltip-top
+  <button class="button button--primary button--centered display--desktop" tooltip="Refresh table" tooltip-top
    wire:click="$refresh">
    <svg>
     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -78,7 +78,7 @@
   {{-- Sorting Dropdown --}}
   <div class="dropdown dropdown--right display--desktop" >
    {{-- Dropdown Button --}}
-   <button class="button button--secondary button--centered" tooltip="Sort items in table" tooltip-left
+   <button class="button button--primary button--centered" tooltip="Sort items in table" tooltip-left
     >
     <svg>
      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -107,7 +107,7 @@
   {{-- Visible Dropdown --}}
   <div class="dropdown dropdown--right display--desktop" >
    {{-- Dropdown Button --}}
-   <button class="button button--secondary button--centered" tooltip="Show items in table" tooltip-left
+   <button class="button button--primary button--centered" tooltip="Show items in table" tooltip-left
     >
     <svg>
      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -131,7 +131,7 @@
   {{-- Optional Dropdown --}}
   <div class="dropdown dropdown--right display--mobile" >
    {{-- Dropdown Button --}}
-   <button class="button button--secondary button--centered" tooltip="Show more actions" tooltip-left
+   <button class="button button--primary button--centered" tooltip="Show more actions" tooltip-left
     >
     <svg>
      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
