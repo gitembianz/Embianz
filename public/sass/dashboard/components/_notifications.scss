@@ -1,0 +1,79 @@
+
+/* Notification Styles */
+.container__notification {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  max-width: 500px;
+  height: 0;
+  // background: red;
+  padding-top: 50px;
+  padding: 10px;
+  z-index: 1024;
+  display: inline-flex;
+  flex-direction: column;
+  // align-items: end;
+  justify-content: flex-end;
+  transition: all 0.3s ease;
+  // user-select: auto;
+  // pointer-events: auto;
+}
+
+.item__notification {
+  background: #fafafa;
+  width: 100%;
+  min-height: 50px;
+  border-radius: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 2.5px 10px;
+  transition: all 0.3s ease;
+  transform: translateX(calc(100% + 10px));
+  animation: apare 6s ease 1.5s forwards;
+  box-shadow: $shadow;
+
+
+  &:not(:first-child) {
+    margin-top: 10px;
+  }
+}
+
+@keyframes apare {
+  0% {
+    transform: translateX(calc(100% + 10px));
+  }
+  20% {
+    transform: translateX(0px);
+  }
+  80% {
+    transform: translateX(0px);
+  }
+  100% {
+    transform: translateX(calc(100% + 10px));
+  }
+}
+
+.image__notification {
+  width: 35px;
+  height: 35px;
+  fill: #333;
+  stroke-width: 0px;
+}
+
+.text__notification {
+  width: 100%;
+  flex: 1;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  text-wrap: balance;
+  text-align: center;
+
+  & a {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+  }
+}
