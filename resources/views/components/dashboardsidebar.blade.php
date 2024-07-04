@@ -429,6 +429,7 @@
   <script>
         const leftbar2 = document.getElementById('leftbar');
         const buttons2 = leftbar2.querySelectorAll('a');
+        const closeButton2 = leftbar2.querySelector('button');
 
         // Funcția pentru inițializarea stării componentului pe baza localStorage
         function initializeComponentState() {
@@ -452,6 +453,7 @@
         // Adaugă tranziția la leftbar și butoane după un scurt interval de timp
         function addTransition() {
             leftbar2.style.transition = 'all 0.25s ease';
+            closeButton2.style.transition = 'all 0.25s ease';
             buttons2.forEach((button) => {
                 button.style.transition = 'all 0.25s ease';
             });

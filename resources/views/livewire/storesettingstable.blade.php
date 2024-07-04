@@ -64,7 +64,7 @@
   {{-- Search Input --}}
   <input class="input input--long" type="text" wire:model.debounce.300ms="search" placeholder="Search...">
   {{-- Refresh Button --}}
-  <button class="button button--secondary button--centered display--desktop" tooltip="Refresh table" tooltip-top
+  <button class="button button--primary button--centered display--desktop" tooltip="Refresh table" tooltip-top
    wire:click="$refresh">
    <svg>
     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -77,7 +77,7 @@
    </svg>
   </button>
   {{-- Add store setting --}}
-  <a class="button button--secondary button--centered display--desktop" tooltip="Add new setting" tooltip-top
+  <a class="button button--primary button--centered display--desktop" tooltip="Add new setting" tooltip-top
    href="{{ route('add_storesetting') }}">
    <svg>
     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
@@ -87,7 +87,7 @@
    </svg>
   </a>
   {{-- Update Website --}}
-  <button class="button button--secondary button--centered display--desktop" tooltip="Update Website" tooltip-top
+  <button class="button button--primary button--centered display--desktop" tooltip="Update Website" tooltip-top
    wire:click="actualizeaza">
    <svg>
     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
@@ -96,7 +96,7 @@
    </svg>
   </button>
   {{-- Update Parameters --}}
-  <button class="button button--secondary button--centered display--desktop" tooltip="Update Parameters" tooltip-top
+  <button class="button button--primary button--centered display--desktop" tooltip="Update Parameters" tooltip-top
    wire:click="addSettingsIfNotExist">
    <svg>
     <polyline points="17 1 21 5 17 9"></polyline>
@@ -106,7 +106,7 @@
    </svg>
   </button>
   {{-- Generate Sitemap --}}
-  <button class="button button--secondary button--centered display--desktop" tooltip="Generate Sitemap" tooltip-top
+  <button class="button button--primary button--centered display--desktop" tooltip="Generate Sitemap" tooltip-top
    wire:click="sitemap">
    <svg>
     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -121,7 +121,7 @@
   {{-- Sorting Dropdown --}}
   <div class="dropdown dropdown--right display--desktop">
    {{-- Dropdown Button --}}
-   <button class="button button--secondary button--centered" tooltip="Sort items in table" tooltip-left>
+   <button class="button button--primary button--centered" tooltip="Sort items in table" tooltip-left>
     <svg>
      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
      <path d="M15 10v-5c0 -1.38 .62 -2 2 -2s2 .62 2 2v5m0 -3h-4" />
@@ -149,7 +149,7 @@
   {{-- Visible Dropdown --}}
   <div class="dropdown dropdown--right display--desktop">
    {{-- Dropdown Button --}}
-   <button class="button button--secondary button--centered" tooltip="Show items in table" tooltip-left>
+   <button class="button button--primary button--centered" tooltip="Show items in table" tooltip-left>
     <svg>
      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
@@ -172,7 +172,7 @@
   {{-- Optional Dropdown --}}
   <div class="dropdown dropdown--right display--mobile">
    {{-- Dropdown Button --}}
-   <button class="button button--secondary button--centered" tooltip="Show more actions" tooltip-left>
+   <button class="button button--primary button--centered" tooltip="Show more actions" tooltip-left>
     <svg>
      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
      <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
