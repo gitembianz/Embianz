@@ -29,12 +29,12 @@ class Vouchertable extends Component
   public $single = false;
   public $multiple = false;
   public $idbeingremoved = null;
-  protected $listeners = ['loadMore' => 'loadMore'];
 
   public function render()
   {
-    $vouchers = $this->vouchers;
-    return view('livewire.vouchertable', compact('vouchers'));
+    return view('livewire.vouchertable', [
+      'vouchers' => $this->vouchers
+    ]);
   }
   public function expandRow($index)
   {

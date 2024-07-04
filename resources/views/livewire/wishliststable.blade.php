@@ -103,9 +103,9 @@
    </svg>
   </button>
   {{-- IF CHECKED --}}
-  <div class="dropdown dropdown--right" @if (!$checked) style="display: none;" @endif
-   >
+  <div class="dropdown dropdown--right" @if (!$checked) style="display: none;" @endif>
    {{-- Dropdown Button --}}
+
    <button class="button button--primary button--centered button--long" tooltip="Actions with checked" tooltip-top
     >
     <span>With Checked({{ count($checked) }})</span>
@@ -118,8 +118,9 @@
    </div>
   </div>
   {{-- Sorting Dropdown --}}
-  <div class="dropdown dropdown--right display--desktop" >
+  <div class="dropdown dropdown--right display--desktop">
    {{-- Dropdown Button --}}
+
    <button class="button button--primary button--centered" tooltip="Sort items in table" tooltip-left
     >
     <svg>
@@ -147,8 +148,9 @@
    </div>
   </div>
   {{-- Visible Dropdown --}}
-  <div class="dropdown dropdown--right display--desktop" >
+  <div class="dropdown dropdown--right display--desktop">
    {{-- Dropdown Button --}}
+
    <button class="button button--primary button--centered" tooltip="Show items in table" tooltip-left
     >
     <svg>
@@ -171,8 +173,9 @@
    </div>
   </div>
   {{-- Optional Dropdown --}}
-  <div class="dropdown dropdown--right display--mobile" >
+  <div class="dropdown dropdown--right display--mobile">
    {{-- Dropdown Button --}}
+
    <button class="button button--primary button--centered" tooltip="Show more actions" tooltip-left
     >
     <svg>
@@ -339,10 +342,6 @@
              <a href="/show_product/{{ $productId }}">{{ $productId }}</a>
             </p>
            @endforeach
-          @else
-           <p>
-            <bold>{{ $column }}:</bold>{{ $item->{$column} }}
-           </p>
           @endif
          @endforeach
         </div>
