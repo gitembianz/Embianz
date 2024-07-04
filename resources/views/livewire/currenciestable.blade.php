@@ -283,5 +283,13 @@
     @endif
    </tbody>
   </table>
+  <x-admin-lazyload />
+
+  {{-- Load More Manual --}}
+  @if ($loadAmount <= count($currencies))
+   <button class="button button--secondary button--fill" style="margin-top: 10px;" wire:click="loadMore">
+    Load more
+   </button>
+  @endif
  </div>
 </section>

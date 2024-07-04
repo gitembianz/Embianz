@@ -12,7 +12,7 @@ class Currenciestable extends Component
     use WithPagination;
 
     public $tableName;
-    public $loadAmount = 10;
+    public $loadAmount = 20;
     public $columns;
     public $search = '';
     public $selectedColumns;
@@ -41,8 +41,10 @@ class Currenciestable extends Component
         }
     }
 
-
-
+    public function loadMore()
+    {
+        $this->loadAmount += 10;
+    }
     public function render()
     {
 
