@@ -77,10 +77,9 @@
    </svg>
   </button>
   {{-- Sorting Dropdown --}}
-  <div class="dropdown dropdown--right display--desktop" >
+  <div class="dropdown dropdown--right display--desktop">
    {{-- Dropdown Button --}}
-   <button class="button button--primary button--centered" tooltip="Sort items in table" tooltip-left
-    >
+   <button class="button button--primary button--centered" tooltip="Sort items in table" tooltip-left>
     <svg>
      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
      <path d="M15 10v-5c0 -1.38 .62 -2 2 -2s2 .62 2 2v5m0 -3h-4" />
@@ -106,10 +105,9 @@
    </div>
   </div>
   {{-- Visible Dropdown --}}
-  <div class="dropdown dropdown--right display--desktop" >
+  <div class="dropdown dropdown--right display--desktop">
    {{-- Dropdown Button --}}
-   <button class="button button--primary button--centered" tooltip="Show items in table" tooltip-left
-    >
+   <button class="button button--primary button--centered" tooltip="Show items in table" tooltip-left>
     <svg>
      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
@@ -130,10 +128,9 @@
    </div>
   </div>
   {{-- Optional Dropdown --}}
-  <div class="dropdown dropdown--right display--mobile" >
+  <div class="dropdown dropdown--right display--mobile">
    {{-- Dropdown Button --}}
-   <button class="button button--primary button--centered" tooltip="Show more actions" tooltip-left
-    >
+   <button class="button button--primary button--centered" tooltip="Show more actions" tooltip-left>
     <svg>
      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
      <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
@@ -241,30 +238,32 @@
         </td>
        @endforeach
        <td style="border-right: none">
-        @if ($editeindex !== $index)
-         <button class="button button--secondary button--sm"
-          wire:click.prevent="edit({{ $index }}, {{ $item->id }})">
-          <svg>
-           <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
-           </path>
-          </svg>
-         </button>
-        @else
-         <button class="button button--secondary button--sm"
-          wire:click.prevent="save({{ $index }} , {{ $item->id }})">
-          <svg>
-           <polyline points="20 6 9 17 4 12"></polyline>
-          </svg>
-         </button>
-         <button class="button button--secondary button--sm" wire:click.prevent="cancel()">
-          <svg>
-           <line x1="18" y1="6" x2="6" y2="18">
-           </line>
-           <line x1="6" y1="6" x2="18" y2="18">
-           </line>
-          </svg>
-         </button>
-        @endif
+        <div style="display: flex">
+         @if ($editeindex !== $index)
+          <button class="button button--secondary button--sm"
+           wire:click.prevent="edit({{ $index }}, {{ $item->id }})">
+           <svg>
+            <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
+            </path>
+           </svg>
+          </button>
+         @else
+          <button class="button button--secondary button--sm"
+           wire:click.prevent="save({{ $index }} , {{ $item->id }})">
+           <svg>
+            <polyline points="20 6 9 17 4 12"></polyline>
+           </svg>
+          </button>
+          <button class="button button--secondary button--sm" wire:click.prevent="cancel()">
+           <svg>
+            <line x1="18" y1="6" x2="6" y2="18">
+            </line>
+            <line x1="6" y1="6" x2="18" y2="18">
+            </line>
+           </svg>
+          </button>
+         @endif
+        </div>
        </td>
       </tr>
       <tr class="details-row  @if ($row === $i) active @endif">

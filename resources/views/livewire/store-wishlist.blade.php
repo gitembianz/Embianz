@@ -111,5 +111,5 @@
    @endif
   </div>
  </section>
- <x-help-button />
+
 </div>

@@ -2,8 +2,6 @@
  {{-- X-Components --}}
  <x-alert />
 
-
-
  {{-- Asides --}}
  <aside>
   <div class="background background--right" id="sort__backdrop"></div>
@@ -56,7 +54,6 @@
    @endforeach
   </div>
  </aside>
-
 
  {{-- Navigation --}}
  <h1 class="table--name">{{ __('Store Settings') }} ({{ $storesettings->total() }})</h1>
@@ -256,7 +253,6 @@
   </div>
  </nav>
 
-
  {{-- Table --}}
  <div class="table">
   <table class="expandable-table">
@@ -329,7 +325,6 @@
        </svg>
       </button>
      </th>
-
     </tr>
    </thead>
    <tbody>
@@ -337,7 +332,7 @@
      $i = 0;
     @endphp
     @foreach ($storesettings as $index => $store)
-     <tr class="expandable-row">
+     <tr @if ($loop->last) id="last_record" @endif class="expandable-row">
       @if ($this->showColumn('Id'))
        <td wire:click="expandRow({{ $index }})">{{ $store->id }}</td>
       @endif
@@ -348,7 +343,7 @@
       @endif
       @if ($this->showColumn('Value'))
        <td wire:click="expandRow({{ $index }})" class="hidden">
-        @if ($indexstoresettings !== $index)
+        @if ($editindex !== $index)
          {{ $store->value }}@if ($store->parameter == 'time_zone')
           (time is: {{ now() }}) - Please refresh to update after the edit
          @endif
@@ -359,7 +354,7 @@
       @endif
       @if ($this->showColumn('Description'))
        <td wire:click="expandRow({{ $index }})" class="hidden">
-        @if ($indexstoresettings !== $index)
+        @if ($editindex !== $index)
          {{ $store->description }}
         @else
          <textarea class="input" wire:model.defer="settings.{{ $index }}.description"></textarea>
@@ -377,7 +372,7 @@
        </td>
       @endif
       <td>
-       @if ($indexstoresettings !== $index)
+       @if ($editindex !== $index)
         <button class="button button--secondary button--sm"
          wire:click.prevent="edititem({{ $index }}, {{ $store->id }})">
          <svg>
@@ -407,7 +402,7 @@
       <td colspan="17">
        <div class="details">
         @if ($this->showColumn('Value'))
-         @if ($indexstoresettings !== $index)
+         @if ($editindex !== $index)
           <p>
            <bold>Value:</bold>
            {{ $store->value }}@if ($store->parameter == 'time_zone')
@@ -422,7 +417,7 @@
          @endif
         @endif
         @if ($this->showColumn('Description'))
-         @if ($indexstoresettings !== $index)
+         @if ($editindex !== $index)
           <p>
            <bold>Description:</bold>
            {{ $store->description }}
@@ -446,7 +441,6 @@
           {{ $store->updated_at }}
          </p>
         @endif
-
        </div>
       </td>
      </tr>
@@ -457,22 +451,7 @@
    </tbody>
   </table>
 
-
-  {{-- Load More Automatic --}}
-  <script>
-   document.addEventListener('livewire:load', function() {
-    let observer = new IntersectionObserver((entries) => {
-     entries.forEach(entry => {
-      if (entry.isIntersecting) {
-       @this.call('loadMore');
-      }
-     });
-    });
-
-    observer.observe(document.getElementById('last_record'));
-   });
-  </script>
-
+  <x-admin-lazyload />
 
   {{-- Load More Manual --}}
   @if ($loadAmount <= count($storesettings))
@@ -481,4 +460,5 @@
    </button>
   @endif
  </div>
+
 </section>
