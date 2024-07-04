@@ -2,8 +2,6 @@
  {{-- X-Components --}}
  <x-alert />
 
-
-
  {{-- Asides --}}
  <aside>
   <div class="background background--right" id="sort__backdrop"></div>
@@ -56,7 +54,6 @@
    @endforeach
   </div>
  </aside>
-
 
  {{-- Navigation --}}
  <h1 class="table--name">{{ __('Store Settings') }} ({{ $storesettings->total() }})</h1>
@@ -256,7 +253,6 @@
   </div>
  </nav>
 
-
  {{-- Table --}}
  <div class="table">
   <table class="expandable-table">
@@ -329,7 +325,6 @@
        </svg>
       </button>
      </th>
-
     </tr>
    </thead>
    <tbody>
@@ -446,7 +441,6 @@
           {{ $store->updated_at }}
          </p>
         @endif
-
        </div>
       </td>
      </tr>
@@ -457,9 +451,7 @@
    </tbody>
   </table>
 
-
   <x-admin-lazyload />
-
 
   {{-- Load More Manual --}}
   @if ($loadAmount <= count($storesettings))
@@ -468,4 +460,5 @@
    </button>
   @endif
  </div>
+
 </section>
