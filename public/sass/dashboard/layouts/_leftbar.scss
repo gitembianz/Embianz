@@ -14,7 +14,7 @@
   background: $primary;
   overflow-y: auto;
   overflow-x: hidden;
-  transition: $transition-fast;
+  // transition: $transition-fast;
   margin-bottom: $margin;
   box-shadow: $shadow-lite;
 
@@ -30,7 +30,8 @@
   &> .button{
     position: relative;
     overflow: hidden;
-    transition: $transition-fast;
+    // transition: $transition-fast;
+    transition: none;
     gap: 0;
     width: $width;
     padding: 5px;
