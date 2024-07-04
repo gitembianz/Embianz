@@ -31,7 +31,7 @@
 	<!---------------------------------------------------------->
 	<!-----------------------About Info------------------------->
 	<section class="section__header container">
-		<img loading="eager" class="about__img container" src="/images/store/banner.webp" alt="contact form image">
+		<img loading="lazy" class="about__img container" src="/images/store/banner.webp" alt="contact form image">
 		<p class="section__text">
 			Ne dorim să transcendem conceptul tradițional de magazin online într-o experiență digitală profundă și personalizată.
 		    De la design-ul intuitiv la selecția meticuloasă a produselor, totul este creat pentru a răspunde nevoilor și așteptărilor clienților noștri.
