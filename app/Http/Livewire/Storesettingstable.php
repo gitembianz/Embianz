@@ -30,19 +30,24 @@ class Storesettingstable extends Component
   public $itemidbeingremoved = null;
   public $columns = ['Id', 'Value', 'Description', 'Created At', 'Updated At'];
   public $selectedColumns = [];
-  public $indexstoresettings = null;
+  public $editindex = null;
   public $settings = [];
   public $row = null;
 
 
   public function expandRow($index)
   {
-    if ($this->row  === null) {
-      $this->row = $index;
-    } elseif ($this->row != $index) {
-      $this->row = $index;
+    if ($this->editindex === $index) {
+      return;
     } else {
-      $this->row = null;
+
+      if ($this->row  === null) {
+        $this->row = $index;
+      } elseif ($this->row != $index) {
+        $this->row = $index;
+      } else {
+        $this->row = null;
+      }
     }
   }
 
@@ -171,7 +176,8 @@ class Storesettingstable extends Component
   public function edititem($index, $id)
   {
     $record = Store_Settings::find($id);
-    $this->indexstoresettings = $index;
+    $this->editindex = $index;
+    $this->row = $index;
     $this->settings = [
       $index . '.value' => $record->value,
       $index . '.description' => $record->description,
@@ -244,11 +250,11 @@ class Storesettingstable extends Component
       ]);
     }
     $this->settings = [];
-    $this->indexstoresettings = null;
+    $this->editindex = null;
   }
   public function cancelitem()
   {
-    $this->indexstoresettings = null;
+    $this->editindex = null;
     $this->settings = [];
   }
 

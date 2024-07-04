@@ -317,25 +317,25 @@
             <span></span>
            </label>
           @endif
-         @elseif ($column === "long_description")
+         @elseif ($column === 'long_description')
           <span class="show-less">
-            {!! $category->$column !!}
+           {!! $category->$column !!}
           </span>
-        @elseif ($column === "short_description")
+         @elseif ($column === 'short_description')
           <span class="show-less">
-            {!! $category->$column !!}
+           {!! $category->$column !!}
           </span>
-        @elseif ($column === "seo_id")
+         @elseif ($column === 'seo_id')
           <span class="show-less">
-            {!! $category->$column !!}
+           {!! $category->$column !!}
           </span>
-        @elseif ($column === "seo_title")
+         @elseif ($column === 'seo_title')
           <span class="show-less">
-            {!! $category->$column !!}
+           {!! $category->$column !!}
           </span>
-        @elseif ($column === "meta_description")
+         @elseif ($column === 'meta_description')
           <span class="show-less">
-            {!! $category->$column !!}
+           {!! $category->$column !!}
           </span>
          @else
           {{ $category->$column }}
@@ -399,22 +399,7 @@
    </tbody>
   </table>
 
-
-  {{-- Load More Automatic --}}
-  <script>
-   document.addEventListener('livewire:load', function() {
-    let observer = new IntersectionObserver((entries) => {
-     entries.forEach(entry => {
-      if (entry.isIntersecting) {
-       @this.call('loadMore');
-      }
-     });
-    });
-
-    observer.observe(document.getElementById('last_record'));
-   });
-  </script>
-
+  <x-admin-lazyload />
 
   {{-- Load More Manual --}}
   @if ($loadAmount <= count($categories))
