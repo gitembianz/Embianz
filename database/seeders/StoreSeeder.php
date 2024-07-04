@@ -39,6 +39,9 @@ class StoreSeeder extends Seeder
             ['parameter' => 'theme', 'value' => 'noren', 'description' => 'Default store theme', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'variant_add_to_cart', 'value' => 'false', 'description' => 'Add product variant to cart', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'variant_price_from', 'value' => 'false', 'description' => 'Showing price from to product variant', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'support_on', 'value' => 'true', 'description' => 'Support button call', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'support_phone_number', 'value' => '+373060968442', 'description' => 'Support telephone number, must contains the prefix', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            // ['parameter' => '', 'value' => '', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
 
         ];
     }

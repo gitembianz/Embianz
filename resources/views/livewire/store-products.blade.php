@@ -452,6 +452,6 @@
    </div>
   </div>
  </div>
- <x-help-button />
+
  <script src="/script/store/catalog.js" defer></script>
 </div>
