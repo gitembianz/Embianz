@@ -113,11 +113,9 @@
    </svg>
   </a>
   {{-- IF CHECKED --}}
-  <div class="dropdown dropdown--right" @if (!$checked) style="display: none;" @endif
-   >
+  <div class="dropdown dropdown--right" @if (!$checked) style="display: none;" @endif>
    {{-- Dropdown Button --}}
-   <button class="button button--primary button--centered button--long" tooltip="Actions with checked" tooltip-top
-    >
+   <button class="button button--primary button--centered button--long" tooltip="Actions with checked" tooltip-top>
     <span>With Checked({{ count($checked) }})</span>
    </button>
    {{-- Dropdown Content --}}
@@ -128,10 +126,9 @@
    </div>
   </div>
   {{-- Sorting Dropdown --}}
-  <div class="dropdown dropdown--right display--desktop" >
+  <div class="dropdown dropdown--right display--desktop">
    {{-- Dropdown Button --}}
-   <button class="button button--primary button--centered" tooltip="Sort items in table" tooltip-left
-    >
+   <button class="button button--primary button--centered" tooltip="Sort items in table" tooltip-left>
     <svg>
      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
      <path d="M15 10v-5c0 -1.38 .62 -2 2 -2s2 .62 2 2v5m0 -3h-4" />
@@ -157,10 +154,9 @@
    </div>
   </div>
   {{-- Visible Dropdown --}}
-  <div class="dropdown dropdown--right display--desktop" >
+  <div class="dropdown dropdown--right display--desktop">
    {{-- Dropdown Button --}}
-   <button class="button button--primary button--centered" tooltip="Show items in table" tooltip-left
-    >
+   <button class="button button--primary button--centered" tooltip="Show items in table" tooltip-left>
     <svg>
      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
@@ -181,10 +177,9 @@
    </div>
   </div>
   {{-- Optional Dropdown --}}
-  <div class="dropdown dropdown--right display--mobile" >
+  <div class="dropdown dropdown--right display--mobile">
    {{-- Dropdown Button --}}
-   <button class="button button--primary button--centered" tooltip="Show more actions" tooltip-left
-    >
+   <button class="button button--primary button--centered" tooltip="Show more actions" tooltip-left>
     <svg>
      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
      <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
@@ -309,7 +304,7 @@
          wire:click="expandRow({{ $nr }})">
          @if ($column === 'name')
           <a href="{{ route('show_script', ['id' => $item->id]) }}">{{ $item->name }}</a>
-         @elseif ($column === 'active' || $column === 'store_tab' || $column === 'has_parrent')
+         @elseif ($column === 'active')
           @if ($item->$column)
            <label class="checkbox checkbox--secondary inline disabled">
             <input type="checkbox" disabled checked>
@@ -321,9 +316,9 @@
             <span></span>
            </label>
           @endif
-        @elseif ($column === 'content')
+         @elseif ($column === 'content')
           <span class="show-less">
-            {{ $item->$column }}
+           {{ $item->$column }}
           </span>
          @else
           {{ $item->$column }}
@@ -344,9 +339,24 @@
        <td colspan="17">
         <div class="details">
          @foreach ($selectedColumns as $index => $column)
-          @if ($index >= count($selectedColumns) - 6)
+          @if ($index >= count($selectedColumns) - 5)
            <p>
-            <bold>{{ $column }}:</bold> {{ $item->$column }}
+            <bold>{{ $column }}:</bold>
+            @if ($column === 'active')
+             @if ($item->$column)
+              <label class="checkbox checkbox--secondary inline disabled">
+               <input type="checkbox" disabled checked>
+               <span></span>
+              </label>
+             @else
+              <label class="checkbox checkbox--secondary inline disabled">
+               <input type="checkbox" disabled>
+               <span></span>
+              </label>
+             @endif
+            @else
+             {{ $item->column }}
+            @endif
            </p>
           @endif
          @endforeach
