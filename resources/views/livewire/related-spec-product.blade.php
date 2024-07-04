@@ -37,7 +37,7 @@
           <h1 class="table--name">
             {{ __("Edit related items") }}
           </h1>
-          <button class="button button--secondary button--centered" wire:click.prevent="confirmspecsmultiple()">
+          <button class="button button--primary button--centered" wire:click.prevent="confirmspecsmultiple()">
             <svg>
               <path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" />
               <path d="M12 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M14 4l0 4l-6 0l0 -4" />
@@ -205,7 +205,7 @@
           <h1 class="table--name">
             {{ __('Add related specifications') }}
           </h1>
-          <button class="button button--secondary button--centered" wire:click.prevent="savespecs()">
+          <button class="button button--primary button--centered" wire:click.prevent="savespecs()">
             <svg>
               <path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" />
               <path d="M12 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M14 4l0 4l-6 0l0 -4" />
@@ -413,7 +413,7 @@
         {{-- IF CHECKED --}}
         <div class="dropdown dropdown--right" @if (!$checked) style="display:none;" @endif >
           {{-- Dropdown Button --}}
-          <button class="button button--secondary button--centered button--long" tooltip="Actions with checked" tooltip-top >
+          <button class="button button--primary button--centered button--long" tooltip="Actions with checked" tooltip-top >
             <span>With Checked({{ count($checked) }})</span>
           </button>
           {{-- Dropdown Content --}}
@@ -431,7 +431,7 @@
         {{-- Visible Dropdown --}}
         <div class="dropdown dropdown--right" >
           {{-- Dropdown Button --}}
-          <button class="button button--secondary button--centered" tooltip="Show items in table" tooltip-left >
+          <button class="button button--primary button--centered" tooltip="Show items in table" tooltip-left >
             <svg>
               <path stroke="none" d="M0 0h24v24H0z" fill="none" />
               <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />

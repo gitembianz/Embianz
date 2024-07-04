@@ -2,7 +2,7 @@
   width: 100%;
   height: calc(100% - 100px);
   border-radius: $border-radius;
-  padding: 4px;
+  // padding: 4px;
   margin: $margin 0;
   overflow: auto;
 
@@ -21,7 +21,7 @@
     font-size: $font-size-lg;
     font-weight: $font-weight;
     line-height: $line-height;
-    letter-spacing: $letter-spacing;
+
     color: $secondary;
     margin: 0;
     margin-top: $margin;
@@ -71,7 +71,7 @@
   width: 100%;
   background-color: transparent;
   border-collapse: collapse;
-  outline: 1px solid $secondary;
+  // outline: 1px solid $secondary;
   border-radius: $border-radius;
 
   & > thead {
@@ -80,8 +80,8 @@
     left: 0;
     z-index: 999;
     border-radius: 8px;
-    outline: 2px solid $white;
-    box-shadow: 0px -20px 20px 20px black;
+    // outline: 2px solid $white;
+    // box-shadow: 0px -20px 20px 20px black;
 
     font-size: 14px;
     font-weight: 700;
@@ -90,6 +90,7 @@
       background-color: darken($primary, 10%);
       border: none;
       text-align: center;
+      border-right: 1px solid #797979;
 
       &:first-child{
         width: 0% !important;
@@ -101,10 +102,11 @@
   }
 
   & > tbody {
-    box-shadow: rgba(0, 0, 0, 1) 0px 0px 13px -5px;
+    // box-shadow: rgba(0, 0, 0, 1) 0px 0px 13px -5px;
     border-top: 1px solid $secondary;
+    border-bottom: 1px solid $secondary;
     td {
-      font-size: 14px;
+      font-size: 12px;
       font-weight: 400;
       color: $white;
       text-decoration: none;
@@ -112,7 +114,7 @@
       // word-break: break-all !important;
 
       & a{
-        font-size: 14px;
+        font-size: 12px;
         font-weight: 400;
         color: $white;
         text-decoration: underline;
@@ -163,13 +165,13 @@
 
   td{
     word-break: break-all !important;
-    border-top: 1px solid $secondary;
-    border-right: 1px solid $secondary;
+    // border-top: 1px solid $secondary;
+    // border-right: 1px solid $secondary;
     width: auto;
   }
 
   .expandable-row {
-    cursor: pointer;
+    // cursor: pointer;
     transition: background-color 0.3s ease;
 
     &:hover {
@@ -259,6 +261,6 @@
   display: block;
   overflow: hidden;
   white-space: nowrap;
-  width: 80px;
+  max-width: 180px;
   height: 32px;
 }
