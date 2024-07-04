@@ -253,6 +253,11 @@
     display: none;
   }
 }
+@media (min-width: map-get($grid-breakpoints, xxl)) {
+  .unhidden {
+    display: none;
+  }
+}
 
 
 .show-less{
