@@ -425,3 +425,40 @@
    <span>Product Variants</span>
   </a>
  </div>
+ {{-- Script for Leftbar --}}
+  <script>
+        const leftbar2 = document.getElementById('leftbar');
+        const buttons2 = leftbar2.querySelectorAll('a');
+
+        // Funcția pentru inițializarea stării componentului pe baza localStorage
+        function initializeComponentState() {
+            const isActive = localStorage.getItem('leftbarActive') === 'true';
+            if (isActive) {
+                leftbar2.classList.add('active');
+            } else {
+                leftbar2.classList.remove('active'); // Asigură-te că clasa 'active' nu este prezentă inițial
+            }
+        }
+
+        // Salvăm starea în localStorage la fiecare modificare a clasei
+        function saveComponentState() {
+            const isActive = leftbar2.classList.contains('active');
+            localStorage.setItem('leftbarActive', isActive);
+        }
+
+        // Inițializează starea componentului la încărcarea paginii
+        initializeComponentState();
+
+        // Adaugă tranziția la leftbar și butoane după un scurt interval de timp
+        function addTransition() {
+            leftbar2.style.transition = 'all 0.25s ease';
+            buttons2.forEach((button) => {
+                button.style.transition = 'all 0.25s ease';
+            });
+        }
+        setTimeout(addTransition, 500);
+
+        // Observăm schimbările clasei și salvăm starea
+        const observer2 = new MutationObserver(saveComponentState);
+        observer2.observe(leftbar2, { attributes: true, attributeFilter: ['class'] });
+  </script>
