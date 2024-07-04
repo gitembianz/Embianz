@@ -22,18 +22,23 @@ class Paymentstable extends Component
     public $tableName;
     public $columns;
     public $selectedColumns = [];
-    public $editeindex = null;
+    public $editindex = null;
     public $isactive = [];
     public $row = null;
 
     public function expandRow($index)
     {
-        if ($this->row  === null) {
-            $this->row = $index;
-        } elseif ($this->row != $index) {
-            $this->row = $index;
+        if ($this->editindex === $index) {
+            return;
         } else {
-            $this->row = null;
+
+            if ($this->row  === null) {
+                $this->row = $index;
+            } elseif ($this->row != $index) {
+                $this->row = $index;
+            } else {
+                $this->row = null;
+            }
         }
     }
 
@@ -139,7 +144,8 @@ class Paymentstable extends Component
     }
     public function edit($index, $id)
     {
-        $this->editeindex = $index;
+        $this->editindex = $index;
+        $this->row = $index;
         $item = Payment::find($id);
         $this->isactive = [
             $index . '.active' => $item->active == 1 ? true : false,
@@ -149,7 +155,7 @@ class Paymentstable extends Component
     }
     public function cancel()
     {
-        $this->editeindex = null;
+        $this->editindex = null;
         $this->isactive = [];
     }
     public function save($index, $id)
@@ -176,6 +182,6 @@ class Paymentstable extends Component
         }
 
         $this->isactive = [];
-        $this->editeindex = null;
+        $this->editindex = null;
     }
 }

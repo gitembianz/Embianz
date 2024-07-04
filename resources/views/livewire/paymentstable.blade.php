@@ -76,10 +76,9 @@
    </svg>
   </button>
   {{-- Sorting Dropdown --}}
-  <div class="dropdown dropdown--right display--desktop" >
+  <div class="dropdown dropdown--right display--desktop">
    {{-- Dropdown Button --}}
-   <button class="button button--primary button--centered" tooltip="Sort items in table" tooltip-left
-    >
+   <button class="button button--primary button--centered" tooltip="Sort items in table" tooltip-left>
     <svg>
      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
      <path d="M15 10v-5c0 -1.38 .62 -2 2 -2s2 .62 2 2v5m0 -3h-4" />
@@ -105,10 +104,9 @@
    </div>
   </div>
   {{-- Visible Dropdown --}}
-  <div class="dropdown dropdown--right display--desktop" >
+  <div class="dropdown dropdown--right display--desktop">
    {{-- Dropdown Button --}}
-   <button class="button button--primary button--centered" tooltip="Show items in table" tooltip-left
-    >
+   <button class="button button--primary button--centered" tooltip="Show items in table" tooltip-left>
     <svg>
      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
@@ -129,10 +127,9 @@
    </div>
   </div>
   {{-- Optional Dropdown --}}
-  <div class="dropdown dropdown--right display--mobile" >
+  <div class="dropdown dropdown--right display--mobile">
    {{-- Dropdown Button --}}
-   <button class="button button--primary button--centered" tooltip="Show more actions" tooltip-left
-    >
+   <button class="button button--primary button--centered" tooltip="Show more actions" tooltip-left>
     <svg>
      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
      <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
@@ -222,7 +219,7 @@
        @foreach ($selectedColumns as $inde => $column)
         <td @if ($inde > count($selectedColumns) - 5) class="hidden" @endif wire:click="expandRow({{ $index }})">
          @if ($column === 'active')
-          @if ($editeindex !== $index)
+          @if ($editindex !== $index)
            @if ($item->active)
             <label class="checkbox checkbox--secondary inline disabled">
              <input type="checkbox" disabled checked>
@@ -241,7 +238,7 @@
            </label>
           @endif
          @elseif($column === 'description')
-          @if ($editeindex !== $index)
+          @if ($editindex !== $index)
            {{ $item->description }}
           @else
            <input type="text" class="input" wire:model.defer="isactive.{{ $index }}.description">
@@ -253,7 +250,7 @@
        @endforeach
        <td>
         <div style="display: flex;">
-         @if ($editeindex !== $index)
+         @if ($editindex !== $index)
           <button class="button button--secondary button--sm"
            wire:click.prevent="edit({{ $index }}, {{ $item->id }})">
            <svg>
@@ -286,7 +283,7 @@
          @foreach ($selectedColumns as $nr => $column)
           @if ($nr >= count($selectedColumns) - 5)
            @if ($column === 'active')
-            @if ($editeindex !== $index)
+            @if ($editindex !== $index)
              <p>
               <bold>{{ $column }}:</bold>
               {{ $item->active ? 'Active' : 'Inactive' }}
@@ -301,7 +298,7 @@
              </p>
             @endif
            @elseif($column === 'description')
-            @if ($editeindex !== $index)
+            @if ($editindex !== $index)
              <p>
               <bold>{{ $column }}:</bold>
               {{ $item->description }}
