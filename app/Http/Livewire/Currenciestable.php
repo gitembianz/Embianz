@@ -21,18 +21,23 @@ class Currenciestable extends Component
     public $orderBy = 'id';
     public $orderAsc = true;
     public $selectAll = false;
-    public $editeindex = null;
+    public $editindex = null;
     public $details = [];
     public $row = null;
 
     public function expandRow($index)
     {
-        if ($this->row  === null) {
-            $this->row = $index;
-        } elseif ($this->row != $index) {
-            $this->row = $index;
+        if ($this->editindex === $index) {
+            return;
         } else {
-            $this->row = null;
+
+            if ($this->row  === null) {
+                $this->row = $index;
+            } elseif ($this->row != $index) {
+                $this->row = $index;
+            } else {
+                $this->row = null;
+            }
         }
     }
 
@@ -102,7 +107,7 @@ class Currenciestable extends Component
     }
     public function edit($index, $id)
     {
-        $this->editeindex = $index;
+        $this->editindex = $index;
         $item = Currency::find($id);
         $this->details = [
             $index . '.name' => $item->name,
@@ -111,7 +116,7 @@ class Currenciestable extends Component
     }
     public function cancel()
     {
-        $this->editeindex = null;
+        $this->editindex = null;
         $this->details = [];
     }
     public function save($index, $id)
@@ -138,6 +143,6 @@ class Currenciestable extends Component
         }
 
         $this->details = [];
-        $this->editeindex = null;
+        $this->editindex = null;
     }
 }
