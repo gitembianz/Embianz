@@ -305,26 +305,32 @@
           @if ($editindex !== $nr)
            {{ $voucher->$column }} %
           @else
-           <input type="number" min="0" required class="input"
+          <div class="searchable">
+           <input type="number" min="0" required class="input__searchable"
             wire:model.defer="voucher.{{ $nr }}.{{ $column }}">
+          </div>
           @endif
          @elseif ($column === 'value')
           @if ($editindex !== $nr)
            {{ $voucher->$column }}
           @else
-           <input type="number" min="0" required class="input"
+          <div class="searchable">
+           <input type="number" min="0" required class="input__searchable"
             wire:model.defer="voucher.{{ $nr }}.{{ $column }}">
+          </div>
           @endif
          @elseif ($column === 'status_id')
           @if ($editindex !== $nr)
            {{ $voucher->status->name }}
           @else
-           <select class="input" wire:model.defer="voucher.{{ $nr }}.status_id">
+          <div class="searchable">
+           <select class="input__searchable" wire:model.defer="voucher.{{ $nr }}.status_id">
             @foreach ($statuses as $status)
              <option value="{{ $status->id }}">
               {{ $status->name }}</option>
             @endforeach
            </select>
+          </div>
           @endif
          @elseif ($column === 'single_use')
           @if ($editindex !== $nr)
@@ -346,15 +352,19 @@
           @if ($editindex !== $nr)
            {{ $voucher->$column }}
           @else
-           <input type="text" required class="input"
+          <div class="searchable">
+           <input type="text" required class="input__searchable"
             wire:model.defer="voucher.{{ $nr }}.{{ $column }}">
+          </div>
           @endif
          @elseif ($column === 'start_date' || $column === 'end_date')
           @if ($editindex !== $nr)
            {{ $voucher->$column }}
           @else
-           <input type="date" required class="input"
+          <div class="searchable">
+           <input type="date" required class="input__searchable"
             wire:model.defer="voucher.{{ $nr }}.{{ $column }}">
+          </div>
           @endif
          @else
           {{ $voucher->$column }}
@@ -410,8 +420,10 @@
             @else
              <p>
               <bold>{{ $column }}:</bold>
-              <input type="number" min="0" required class="input"
-               wire:model.defer="voucher.{{ $nr }}.{{ $column }}">
+              <div class="searchable">
+                <input type="number" min="0" required class="input__searchable"
+                wire:model.defer="voucher.{{ $nr }}.{{ $column }}">
+              </div>
              </p>
             @endif
            @elseif ($column === 'value')
@@ -422,8 +434,10 @@
             @else
              <p>
               <bold>{{ $column }}:</bold>
-              <input type="number" min="0" required class="input"
-               wire:model.defer="voucher.{{ $nr }}.{{ $column }}">
+              <div class="searchable">
+                <input type="number" min="0" required class="input__searchable"
+                wire:model.defer="voucher.{{ $nr }}.{{ $column }}">
+              </div>
              </p>
             @endif
            @elseif ($column === 'status_id')
@@ -434,11 +448,14 @@
             @else
              <p>
               <bold>{{ $column }}:</bold>
-              <select class="input" wire:model.defer="voucher.{{ $nr }}.status_id">
-               @foreach ($statuses as $status)
-                <option value="{{ $status->id }}">{{ $status->name }}</option>
-               @endforeach
-              </select>
+              <div class="searchable">
+                <select class="input__searchable" wire:model.defer="voucher.{{ $nr }}.status_id">
+                @foreach ($statuses as $status)
+                  <option value="{{ $status->id }}">{{ $status->name }}</option>
+                @endforeach
+                </select>
+              </div>
+
              </p>
             @endif
            @elseif ($column === 'single_use')
@@ -471,8 +488,10 @@
             @else
              <p>
               <bold>{{ $column }}:</bold>
-              <input type="text" required class="input"
-               wire:model.defer="voucher.{{ $nr }}.{{ $column }}">
+              <div class="searchable">
+                <input type="text" required class="input__searchable"
+                 wire:model.defer="voucher.{{ $nr }}.{{ $column }}">
+              </div>
              </p>
             @endif
            @elseif ($column === 'start_date' || $column === 'end_date')
@@ -483,8 +502,10 @@
             @else
              <p>
               <bold>{{ $column }}:</bold>
-              <input type="date" required class="input"
-               wire:model.defer="voucher.{{ $nr }}.{{ $column }}">
+              <div class="searchable">
+                <input type="date" required class="input__searchable"
+                wire:model.defer="voucher.{{ $nr }}.{{ $column }}">
+              </div>
              </p>
             @endif
            @else

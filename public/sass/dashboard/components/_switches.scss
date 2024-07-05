@@ -173,7 +173,7 @@
 .switch--primary {
  input:checked + span:before {
   background: $primary;
-  border-color: $primary;
+  border-color: $secondary;
  }
 }
 

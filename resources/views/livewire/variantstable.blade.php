@@ -318,14 +318,18 @@
           @if ($editindex !== $nr)
            {{ $variant->$column }}
           @else
-           <input type="text" class="input" wire:model.defer="variant.{{ $nr }}.{{ $column }}">
+          <div class="searchable">
+           <input type="text" class="input__searchable" wire:model.defer="variant.{{ $nr }}.{{ $column }}">
+          </div>
           @endif
          @elseif ($column === 'sequence')
           @if ($editindex !== $nr)
            {{ $variant->$column }}
           @else
-           <input type="number" min="0" class="input"
+          <div class="searchable">
+           <input type="number" min="0" class="input__searchable"
             wire:model.defer="variant.{{ $nr }}.{{ $column }}">
+          </div>
           @endif
          @else
           {{ $variant->$column }}
@@ -386,8 +390,10 @@
            @else
             <p>
              <bold>{{ $column }}:</bold>
-             <input type="number" min="0" class="input"
+             <div class="searchable">
+             <input type="number" min="0" class="input__searchable"
               wire:model.defer="variant.{{ $nr }}.{{ $column }}">
+             </div>
             </p>
            @endif
           @else
