@@ -204,10 +204,10 @@
           </div>
         </td>
         <td class="hidden">
-          <label class="checkbox checkbox--secondary inline">
+          <div class="checkbox--primary">
             <input type="checkbox" wire:model.defer="variantAndValues.{{ $index }}.variant.def">
-            <span></span>
-          </label>
+            <label></label>
+          </div>
         </td>
         <td class="hidden">
           <div class="searchable">
@@ -326,10 +326,10 @@
           </p>
           <p>
            <bold>Is defaut Variant?</bold>
-            <label class="checkbox checkbox--secondary inline">
+            <div class="checkbox--primary">
               <input type="checkbox" wire:model.defer="variantAndValues.{{ $index }}.variant.def">
-              <span></span>
-            </label>
+              <label></label>
+            </div>
           </p>
           <p>
            <bold>Variant Dispalyed type</bold>
@@ -437,10 +437,10 @@
    <thead>
     <tr>
      <th style="border-right: none; border-left: none;">
-      <label class="checkbox checkbox--secondary inline">
-       <input type="checkbox" wire:model="selectPage" />
-       <span></span>
-      </label>
+      <div class="checkbox--primary">
+       <input type="checkbox" id="selectPage25" wire:model="selectPage" />
+       <label for="selectPage25"></lab>
+      </div>
      </th>
      @if ($this->showColumn('Id'))
       <th>
@@ -562,10 +562,10 @@
      @foreach ($variants as $index => $variant)
       <tr class="expandable-row @if ($this->isChecked($variant->id)) active @endif">
        <td style="border-left: none" data-title="Check">
-        <label class="checkbox checkbox--secondary inline">
-         <input type="checkbox" value="{{ $variant->id }}" wire:model="checked">
-         <span></span>
-        </label>
+        <div class="checkbox--primary">
+         <input type="checkbox" value="{{ $variant->id }}" id="{{ $variant->id }}" wire:model="checked">
+         <label for="{{ $variant->id }}"></label>
+        </div>
        </td>
 
        @if ($this->showColumn('Id'))
@@ -612,15 +612,15 @@
         <td class="hidden" wire:click="expandRow({{ $index }})">
          @if ($editindex !== $index)
           @if ($variant->default_variant)
-           <label class="checkbox checkbox--secondary inline disabled">
-            <input type="checkbox" disabled checked>
-            <span></span>
-           </label>
+           <div class="checkbox--secondary disabled">
+            <input type="checkbox" id="disabled9" disabled checked>
+            <label id="disabled9"></label>
+           </div>
           @else
-           <label class="checkbox checkbox--secondary inline disabled">
-            <input type="checkbox" disabled>
-            <span></span>
-           </label>
+           <div class="checkbox--secondary disabled">
+            <input type="checkbox" id="disabled10" disabled>
+            <label id="disabled10"></label>
+           </div>
           @endif
          @else
           <input type="checkbox" wire:model.defer="var.{{ $index }}.def">
@@ -723,15 +723,15 @@
            <bold>Is default variant?</bold>
            @if ($editindex !== $index)
             @if ($variant->default_variant == '1')
-             <label class="checkbox checkbox--secondary inline disabled">
-              <input type="checkbox" disabled checked>
-              <span></span>
-             </label>
+             <div class="checkbox--secondary disabled">
+              <input type="checkbox" id="disabled11" disabled checked>
+              <label id="disabled11"></label>
+             </div>
             @else
-             <label class="checkbox checkbox--secondary inline disabled">
-              <input type="checkbox" disabled>
-              <span></span>
-             </label>
+             <div class="checkbox--secondary disabled">
+              <input type="checkbox" id="disabled12" disabled>
+              <label id="disabled12"></label>
+             </div>
             @endif
            @else
             <input type="checkbox" wire:model.defer="var.{{ $index }}.def">

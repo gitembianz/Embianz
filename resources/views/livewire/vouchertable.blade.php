@@ -253,10 +253,10 @@
    <thead>
     <tr>
      <th style="border-right: none; border-left: none;">
-      <label class="checkbox checkbox--secondary inline">
-       <input type="checkbox" wire:model="selectPage" />
-       <span></span>
-      </label>
+      <div class="checkbox--primary">
+       <input type="checkbox" id="selectPage29" wire:model="selectPage" />
+       <label for="selectPage29"></label>
+      </div>
      </th>
      @foreach ($selectedColumns as $index => $column)
       @if ($this->showColumn($column))
@@ -294,10 +294,10 @@
       <tr @if ($loop->last) id="last_record" @endif
        class="expandable-row @if ($this->isChecked($voucher->id)) active @endif">
        <td style="border-left: none" data-title="Check">
-        <label class="checkbox checkbox--secondary inline">
-         <input type="checkbox" value="{{ $voucher->id }}" wire:model="checked">
-         <span></span>
-        </label>
+        <div class="checkbox--primary">
+         <input type="checkbox" value="{{ $voucher->id }}" id="{{ $voucher->id }}" wire:model="checked">
+         <label for="{{ $voucher->id }}"></label>
+        </div>
        </td>
        @foreach ($selectedColumns as $index => $column)
         <td @if ($index > count($selectedColumns) - 10) class="hidden" @endif wire:click="expandRow({{ $nr }})">
@@ -335,15 +335,15 @@
          @elseif ($column === 'single_use')
           @if ($editindex !== $nr)
            @if ($voucher->$column == '1')
-            <label class="checkbox checkbox--secondary inline disabled">
-             <input type="checkbox" disabled checked>
-             <span></span>
-            </label>
+            <div class="checkbox--secondary disabled">
+             <input type="checkbox" id="disabled4" disabled checked>
+             <label for="disabled4"></label>
+            </div>
            @else
-            <label class="checkbox checkbox--secondary inline disabled">
-             <input type="checkbox" disabled>
-             <span></span>
-            </label>
+            <div class="checkbox--secondary disabled">
+             <input type="checkbox" id="disabled4" disabled>
+             <label for="disabled4"></label>
+            </div>
            @endif
           @else
            <input type="checkbox" wire:model.defer="voucher.{{ $nr }}.single_use">
@@ -463,15 +463,15 @@
              <p>
               <bold>{{ $column }}:</bold>
               @if ($voucher->$column == '1')
-               <label class="checkbox checkbox--secondary inline disabled">
-                <input type="checkbox" disabled checked>
-                <span></span>
-               </label>
+               <div class="checkbox--secondary disabled">
+                <input type="checkbox" id="disabled9" disabled checked>
+                <label id="disabled9"></label>
+               </div>
               @else
-               <label class="checkbox checkbox--secondary inline disabled">
-                <input type="checkbox" disabled>
-                <span></span>
-               </label>
+               <div class="checkbox--secondary disabled">
+                <input type="checkbox" id="disabled10" disabled>
+                <label id="disabled10"></label>
+               </div>
               @endif
              </p>
             @else

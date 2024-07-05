@@ -243,10 +243,10 @@
    <thead>
     <tr>
      <th style="border-right: none; border-left: none;">
-      <label class="checkbox checkbox--secondary inline">
-       <input type="checkbox" wire:model="selectPage" />
-       <span></span>
-      </label>
+      <div class="checkbox--secondary">
+       <input type="checkbox" id="selectPage2" wire:model="selectPage" />
+       <label for="selectPage2"></label>
+      </div>
      </th>
      @foreach ($selectedColumns as $index => $column)
       @if ($this->showColumn($column))
@@ -284,10 +284,10 @@
       <tr @if ($loop->last) id="last_record" @endif
        class="expandable-row @if ($this->isChecked($cart->id)) active @endif">
        <td style="border-left: none" data-title="Check">
-        <label class="checkbox checkbox--secondary inline">
-         <input type="checkbox" value="{{ $cart->id }}" wire:model="checked">
-         <span></span>
-        </label>
+        <div class="checkbox--primary">
+         <input type="checkbox" value="{{ $cart->id }}" id="{{ $cart->id }}" wire:model="checked">
+         <label for="{{ $cart->id }}""></label>
+        </div>
        </td>
        @foreach ($selectedColumns as $index => $column)
         <td @if ($index > count($selectedColumns) - 14) class="hidden" @endif data-title="{{ $column }}"
@@ -304,15 +304,15 @@
           @endif
          @elseif ($column === 'seen_by_customer')
           @if ($cart->$column)
-           <label class="checkbox checkbox--secondary inline disabled">
-            <input type="checkbox" disabled checked>
-            <span></span>
-           </label>
+           <div class="checkbox--secondary disabled">
+              <input type="checkbox" id="checkboxdisabled1" disabled checked>
+              <label for="checkboxdisabled"></label>
+           </div>
           @else
-           <label class="checkbox checkbox--secondary inline disabled">
-            <input type="checkbox" disabled>
-            <span></span>
-           </label>
+           <div class="checkbox--secondary disabled">
+              <input type="checkbox" id="checkboxdisabled2" disabled>
+              <label for="checkboxdisabled"></label>
+           </div>
           @endif
          @elseif ($column === 'order_id')
           @if ($cart->order_id)
@@ -354,15 +354,15 @@
             <p>
              <bold>{{ $column }}:</bold>
              @if ($cart->$column)
-              <label class="checkbox checkbox--secondary inline disabled">
-               <input type="checkbox" disabled checked>
-               <span></span>
-              </label>
+              <div class="checkbox--secondary disabled">
+               <input type="checkbox" id="disabled1" disabled checked>
+               <label for="disabled1"></label>
+              </div>
              @else
-              <label class="checkbox checkbox--secondary inline disabled">
-               <input type="checkbox" disabled>
-               <span></span>
-              </label>
+              <div class="checkbox--secondary disabled">
+               <input type="checkbox" id="disabled1" disabled>
+               <label for="disabled1"></label>
+              </div>
              @endif
             </p>
            @elseif ($column === 'voucher_id')

@@ -253,10 +253,10 @@
    <thead>
     <tr>
      <th style="border-right: none; border-left: none;">
-      <label class="checkbox checkbox--secondary inline">
-       <input type="checkbox" wire:model="selectPage" />
-       <span></span>
-      </label>
+      <div class="checkbox--primary">
+       <input type="checkbox" id="selectPage4" wire:model="selectPage" />
+       <label for="selectPage4"></label>
+      </div>
      </th>
      @foreach ($selectedColumns as $index => $column)
       @if ($this->showColumn($column))
@@ -294,10 +294,10 @@
       <tr @if ($loop->last) id="last_record" @endif
        class="expandable-row @if ($this->isChecked($item->id)) active @endif">
        <td style="border-left: none" data-title="Check">
-        <label class="checkbox checkbox--secondary inline">
-         <input type="checkbox" value="{{ $item->id }}" wire:model="checked">
-         <span></span>
-        </label>
+        <div class="checkbox--primary">
+         <input type="checkbox" value="{{ $item->id }}" id="{{ $item->id }}" wire:model="checked">
+         <label for="{{ $item->id }}"></label>
+        </div>
        </td>
        @foreach ($selectedColumns as $index => $column)
         <td @if ($index > count($selectedColumns) - 6) class="hidden" @endif data-title="{{ $column }}"
@@ -306,15 +306,15 @@
           <a href="{{ route('show_script', ['id' => $item->id]) }}">{{ $item->name }}</a>
          @elseif ($column === 'active')
           @if ($item->$column)
-           <label class="checkbox checkbox--secondary inline disabled">
-            <input type="checkbox" disabled checked>
-            <span></span>
-           </label>
+           <div class="checkbox--secondary disabled">
+            <input type="checkbox" id="disabled1" disabled checked>
+            <label for="disabled1"></label>
+           </div>
           @else
-           <label class="checkbox checkbox--secondary inline disabled">
-            <input type="checkbox" disabled>
-            <span></span>
-           </label>
+           <div class="checkbox--secondary disabled">
+            <input type="checkbox" id="disabled2" disabled>
+            <label for="disabled2"></label>
+           </div>
           @endif
          @elseif ($column === 'content')
           <span class="show-less">
@@ -344,15 +344,15 @@
             <bold>{{ $column }}:</bold>
             @if ($column === 'active')
              @if ($item->$column)
-              <label class="checkbox checkbox--secondary inline disabled">
-               <input type="checkbox" disabled checked>
-               <span></span>
-              </label>
+              <div class="checkbox checkbox--secondary inline disabled">
+               <input type="checkbox"  id="disabled3"disabled checked>
+               <label for="disabled3"></label>
+              </div>
              @else
-              <label class="checkbox checkbox--secondary inline disabled">
-               <input type="checkbox" disabled>
-               <span></span>
-              </label>
+              <div class="checkbox checkbox--secondary inline disabled">
+               <input type="checkbox"  id="disabled4"disabled>
+               <label for="disabled4"></label>
+              </div>
              @endif
             @else
              {{ $item->column }}

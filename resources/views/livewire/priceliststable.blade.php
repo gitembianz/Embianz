@@ -253,10 +253,10 @@
    <thead>
     <tr>
      <th style="border-right: none; border-left: none;">
-      <label class="checkbox checkbox--secondary inline">
-       <input type="checkbox" wire:model="selectPage" />
-       <span></span>
-      </label>
+      <div class="checkbox--primary">
+       <input type="checkbox" id="selectPage6" wire:model="selectPage" />
+       <label for="selectPage6"></label>
+      </div>
      </th>
      @if ($this->showColumn('Id'))
       <th>
@@ -335,10 +335,10 @@
       <tr @if ($loop->last) id="last_record" @endif
        class="expandable-row @if ($this->isChecked($price->id)) active @endif">
        <td style="border-left: none" data-title="Check">
-        <label class="checkbox checkbox--secondary inline">
-         <input type="checkbox" value="{{ $price->id }}" wire:model="checked">
-         <span></span>
-        </label>
+        <div class="checkbox--primary">
+         <input type="checkbox" value="{{ $price->id }}" id="{{ $price->id }}" wire:model="checked">
+         <label for="{{ $price->id }}"></label>
+        </div>
        </td>
        <td wire:click="expandRow({{ $index }})">
         @if ($this->showColumn('Id'))
@@ -358,15 +358,15 @@
        <td class="hidden">
         @if ($this->showColumn('Active'))
          @if ($price->active)
-          <label class="checkbox checkbox--secondary inline disabled">
-           <input type="checkbox" disabled checked>
-           <span></span>
-          </label>
+          <div class="checkbox--secondary  disabled">
+           <input type="checkbox" id="disabled1" disabled checked>
+           <label for="disabled1"></label>
+          </div>
          @else
-          <label class="checkbox checkbox--secondary inline disabled">
-           <input type="checkbox" disabled>
-           <span></span>
-          </label>
+          <div class="checkbox--secondary  disabled">
+           <input type="checkbox" id="disabled2" disabled>
+           <label for="disabled2"></label>
+          </div>
          @endif
         @endif
        </td>
@@ -398,15 +398,15 @@
           <p>
            <bold>Is active?:</bold>
            @if ($price->active)
-            <label class="checkbox checkbox--secondary inline disabled">
-             <input type="checkbox" disabled checked>
-             <span></span>
-            </label>
+            <div class="checkbox--secondary disabled">
+             <input type="checkbox" id="disabled3" disabled checked>
+             <label for="disabled3"></label>
+            </div>
            @else
-            <label class="checkbox checkbox--secondary inline disabled">
-             <input type="checkbox" disabled>
-             <span></span>
-            </label>
+            <div class="checkbox--secondary disabled">
+             <input type="checkbox" id="disabled4" disabled>
+             <label for="disabled4"></label>
+            </div>
            @endif
           </p>
          @endif
