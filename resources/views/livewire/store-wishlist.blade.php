@@ -38,10 +38,10 @@
        href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}"
        class="basket__link">
        @if ($product->media->first() != null)
-        <img loading="lazy" src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}"
+        <img loading="eager" src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}"
          alt="{{ $product->media->first()->name }} {{ $product->name }}">
        @else
-        <img loading="lazy" src="/images/store/default/default70.webp" alt="something wrong">
+        <img loading="eager" src="/images/store/default/default70.webp" alt="something wrong">
        @endif
        <div class="basket__text">
         <h3>
