@@ -136,10 +136,11 @@
 
   & input:not(.input__searchable), select, textarea  {
     min-width: 150px;
+    min-height: 150px;
     width: 100%;
     // height: $height;
     vertical-align: middle;
-    resize: none;
+    resize: vertical;
     font-size: $font-size-sm;
     line-height: unset;
     padding: 0 $padding;

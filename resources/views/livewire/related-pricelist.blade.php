@@ -97,7 +97,7 @@
                     @if ($priceAndValue['allow'])
                       <div class="searchable active">
                         <!-- Dropdown Header -->
-                        <input class="input__searchable" wire:model.debounce.300ms="searchadd"  placeholder="Search..." type="text">
+                        <input class="input" wire:model.debounce.300ms="searchadd"  placeholder="Search..." type="text">
                         <button class="button__searchable" wire:click.prevent="dennyselect({{ $index }})">
                           <svg>
                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -142,13 +142,19 @@
                     <input type="hidden" wire:model.defer="priceAndValues.{{ $index }}.price.name">
                   </td>
                   <td wire:click="expandRow2({{ $index }})">
-                  <input type="text" required class="input__searchable" wire:model.defer="priceAndValues.{{ $index }}.price.value">
+                  <div class="searchable">
+                    <input type="text" required class="input__searchable" wire:model.defer="priceAndValues.{{ $index }}.price.value">
+                  </div>
                   </td>
                   <td class="hidden" wire:click="expandRow2({{ $index }})">
-                  <input type="number" required class="input__searchable" wire:model.defer="priceAndValues.{{ $index }}.price.discount">
+                  <div class="searchable">
+                    <input type="number" required class="input__searchable" wire:model.defer="priceAndValues.{{ $index }}.price.discount">
+                  </div>
                   </td>
                   <td class="hidden" style="width: unset !important;" wire:click="expandRow2({{ $index }})">
-                    <input type="number" required class="input__searchable"wire:model.defer="priceAndValues.{{ $index }}.price.vat">
+                    <div class="searchable">
+                      <input type="number" required class="input__searchable"wire:model.defer="priceAndValues.{{ $index }}.price.vat">
+                    </div>
                   </td>
                 </tr>
                 <tr class="details-row  @if ($row2 === $j) active @endif">
@@ -159,11 +165,15 @@
 
                       <p>
                         <bold>Discount</bold>
-                        <input type="number" required class="input__searchable" wire:model.defer="priceAndValues.{{ $index }}.price.discount">
+                        <div class="searchable">
+                          <input type="number" required class="input__searchable" wire:model.defer="priceAndValues.{{ $index }}.price.discount">
+                        </div>
                       </p>
                       <p>
                         <bold>VAT</bold>
-                        <input type="number" required class="input__searchable"wire:model.defer="priceAndValues.{{ $index }}.price.vat">
+                        <div class="searchable">
+                          <input type="number" required class="input__searchable"wire:model.defer="priceAndValues.{{ $index }}.price.vat">
+                        </div>
                       </p>
                     </div>
                   </td>
@@ -257,7 +267,7 @@
                     @if ($priceAndValue['allow'])
                       <div class="searchable active">
                         <!-- Dropdown Header -->
-                        <input class="input__searchable" wire:model.debounce.300ms="searchadd"  placeholder="Search..." type="text">
+                        <input class="input" wire:model.debounce.300ms="searchadd"  placeholder="Search..." type="text">
                         <button class="button__searchable" wire:click.prevent="dennyselect({{ $index }})">
                           <svg>
                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -302,13 +312,19 @@
                     <input type="hidden" wire:model.defer="priceAndValues.{{ $index }}.price.name">
                   </td>
                   <td wire:click="expandRow3({{ $index }})">
-                  <input type="text" required class="input__searchable" wire:model.defer="priceAndValues.{{ $index }}.price.value">
+                  <div class="searchable">
+                    <input type="text" required class="input__searchable" wire:model.defer="priceAndValues.{{ $index }}.price.value">
+                  </div>
                   </td>
                   <td class="hidden" wire:click="expandRow3({{ $index }})">
-                  <input type="number" required class="input__searchable" wire:model.defer="priceAndValues.{{ $index }}.price.discount">
+                  <div class="searchable">
+                    <input type="number" required class="input__searchable" wire:model.defer="priceAndValues.{{ $index }}.price.discount">
+                  </div>
                   </td>
                   <td class="hidden" wire:click="expandRow3({{ $index }})">
-                    <input type="number" required class="input__searchable"wire:model.defer="priceAndValues.{{ $index }}.price.vat">
+                    <div class="searchable">
+                      <input type="number" required class="input__searchable"wire:model.defer="priceAndValues.{{ $index }}.price.vat">
+                    </div>
                   </td>
                   <td style="width: unset !important;">
                     <div style="display: flex;">
@@ -350,11 +366,15 @@
 
                       <p>
                         <bold>Discount</bold>
-                        <input type="number" required class="input__searchable" wire:model.defer="priceAndValues.{{ $index }}.price.discount">
+                        <div class="searchable">
+                          <input type="number" required class="input__searchable" wire:model.defer="priceAndValues.{{ $index }}.price.discount">
+                        </div>
                       </p>
                       <p>
                         <bold>VAT</bold>
-                        <input type="number" required class="input__searchable"wire:model.defer="priceAndValues.{{ $index }}.price.vat">
+                        <div class="searchable">
+                          <input type="number" required class="input__searchable"wire:model.defer="priceAndValues.{{ $index }}.price.vat">
+                        </div>
                       </p>
                     </div>
                   </td>
@@ -511,7 +531,7 @@
                     @if ($allow)
                       <div class="searchable active">
                         <!-- Dropdown Header -->
-                        <input class="input__searchable" wire:model.debounce.300ms="searchadd"  placeholder="Search..." type="text">
+                        <input class="input" wire:model.debounce.300ms="searchadd"  placeholder="Search..." type="text">
                         <button class="button__searchable" wire:click.prevent="dennyselect({{ $nr }})">
                           <svg>
                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -564,19 +584,25 @@
                   @if ($editedrow !== $nr)
                     {{ $prices->discount }}%
                   @else
+                  <div class="searchable">
                     <input type="number" required class="input__searchable" wire:model.defer="pricelist.{{ $nr }}.discount">
+                  </div>
                   @endif
                 @elseif ($column === 'Value without VAT')
                   @if ($editedrow !== $nr)
                     {{ $prices->value_no_vat }}
                   @else
-                  <input type="number" required class="input__searchable" wire:model.defer="pricelist.{{ $nr }}.value">
+                  <div class="searchable">
+                    <input type="number" required class="input__searchable" wire:model.defer="pricelist.{{ $nr }}.value">
+                  </div>
                   @endif
                 @elseif ($column === 'VAT')
                   @if ($editedrow !== $nr)
                     {{ $prices->vat }}%
                   @else
+                  <div class="searchable">
                     <input type="number" required class="input__searchable" wire:model.defer="pricelist.{{ $nr }}.vat">
+                  </div>
                   @endif
                 @else
                   {{ $prices->$column }}
@@ -639,7 +665,7 @@
                         @if ($allow)
                           <div class="searchable active">
                             <!-- Dropdown Header -->
-                            <input class="input__searchable" wire:model.debounce.300ms="searchadd"  placeholder="Search..." type="text">
+                            <input class="input" wire:model.debounce.300ms="searchadd"  placeholder="Search..." type="text">
                             <button class="button__searchable" wire:click.prevent="dennyselect({{ $nr }})">
                               <svg>
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -704,7 +730,9 @@
                       @if ($editedrow !== $nr)
                         {{ $prices->discount }}%
                       @else
+                      <div class="searchable">
                         <input type="number" required class="input__searchable" wire:model.defer="pricelist.{{ $nr }}.discount">
+                      </div>
                       @endif
                       </p>
                     @elseif ($column === 'Value without VAT')
@@ -713,7 +741,9 @@
                       @if ($editedrow !== $nr)
                         {{ $prices->value_no_vat }}
                       @else
-                      <input type="number" required class="input__searchable" wire:model.defer="pricelist.{{ $nr }}.value">
+                      <div class="searchable">
+                        <input type="number" required class="input__searchable" wire:model.defer="pricelist.{{ $nr }}.value">
+                      </div>
                       @endif
                       </p>
                     @elseif ($column === 'VAT')
@@ -722,7 +752,9 @@
                       @if ($editedrow !== $nr)
                         {{ $prices->vat }}%
                       @else
+                      <div class="searchable">
                         <input type="number" required class="input__searchable" wire:model.defer="pricelist.{{ $nr }}.vat">
+                      </div>
                       @endif
                       </p>
                     @else
