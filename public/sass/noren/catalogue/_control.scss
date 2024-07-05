@@ -39,7 +39,7 @@
   border-radius: 7px;
   background-color: $primary;
   border: none;
-  box-shadow: $boxShadow;
+  // box-shadow: $boxShadow;
 
   & > svg {
     stroke: $lightBlack;
@@ -58,7 +58,7 @@
   flex: 1;
   background-color: $primary;
   outline: none;
-  box-shadow: $boxShadow;
+  // box-shadow: $boxShadow;
 
   &::placeholder {
     color: $darkGray;
