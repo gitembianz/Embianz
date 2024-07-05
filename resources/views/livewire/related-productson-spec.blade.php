@@ -111,7 +111,7 @@
                   @if ($pro["allow"])
                     <div class="searchable active">
                       {{-- Dropdown Header --}}
-                      <input class="input__searchable" wire:model.debounce.300ms="searchadd"  placeholder="Search..." type="text">
+                      <input class="input" wire:model.debounce.300ms="searchadd"  placeholder="Search..." type="text">
                       <button class="button__searchable" wire:click.prevent="dennyselect({{ $index }})">
                         <svg>
                           <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -169,7 +169,7 @@
                         @if ($pro["allow"])
                           <div class="searchable active">
                             {{-- Dropdown Header --}}
-                            <input class="input__searchable" wire:model.debounce.300ms="searchadd"  placeholder="Search..." type="text">
+                            <input class="input" wire:model.debounce.300ms="searchadd"  placeholder="Search..." type="text">
                             <button class="button__searchable" wire:click.prevent="dennyselect({{ $index }})">
                               <svg>
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -324,7 +324,7 @@
                     @if ($pro["allow"])
                       <div class="searchable active">
                         {{-- Dropdown Header --}}
-                        <input class="input__searchable" wire:model.debounce.300ms="searchadd"  placeholder="Search..." type="text">
+                        <input class="input" wire:model.debounce.300ms="searchadd"  placeholder="Search..." type="text">
                         <button class="button__searchable" wire:click.prevent="dennyselect({{ $index }})">
                           <svg>
                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -414,7 +414,7 @@
                         @if ($pro["allow"])
                           <div class="searchable active">
                             {{-- Dropdown Header --}}
-                            <input class="input__searchable" wire:model.debounce.300ms="searchadd"  placeholder="Search..." type="text">
+                            <input class="input" wire:model.debounce.300ms="searchadd"  placeholder="Search..." type="text">
                             <button class="button__searchable" wire:click.prevent="dennyselect({{ $index }})">
                               <svg>
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />

@@ -109,7 +109,7 @@
                     @if ($specAndValue["allow"])
                       <div class="searchable active">
                         {{-- Dropdown Header --}}
-                        <input class="input__searchable" wire:model.debounce.300ms="searchadd"  placeholder="Search..." type="text">
+                        <input class="input" wire:model.debounce.300ms="searchadd"  placeholder="Search..." type="text">
                         <button class="button__searchable" wire:click.prevent="dennyselect({{ $index }})">
                           <svg>
                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -270,7 +270,7 @@
                     @if ($specAndValue["allow"])
                       <div class="searchable active">
                         {{-- Dropdown Header --}}
-                        <input class="input__searchable" wire:model.debounce.300ms="searchadd"  placeholder="Search..." type="text">
+                        <input class="input" wire:model.debounce.300ms="searchadd"  placeholder="Search..." type="text">
                         <button class="button__searchable" wire:click.prevent="dennyselect({{ $index }})">
                           <svg>
                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -696,7 +696,9 @@
                         @if ($editedrow !== $index)
                           {{ $spec->value }}
                         @else
+                        <div class="searchable">
                           <input type="text" required class="input__searchable" wire:model="specification.{{ $index }}.value">
+                        </div>
                         @endif
                       </p>
                     @endif
@@ -706,7 +708,9 @@
                         @if ($editedrow !== $index)
                           {{ $spec->sequence }}
                         @else
+                        <div class="searchable">
                           <input type="text" required class="input__searchable" wire:model="specification.{{ $index }}.sequence">
+                        </div>
                         @endif
                       </p>
                     @endif

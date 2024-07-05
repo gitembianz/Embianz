@@ -122,7 +122,7 @@
          @if ($productsAndValue['allow'])
           <div class="searchable active">
            {{-- Dropdown Header --}}
-           <input class="input__searchable" wire:model.debounce.300ms="searchadd" placeholder="Search..."
+           <input class="input" wire:model.debounce.300ms="searchadd" placeholder="Search..."
             type="text">
            <button class="button__searchable" wire:click.prevent="dennyselect({{ $index }})">
             <svg>
@@ -217,7 +217,7 @@
            @if ($productsAndValue['allow'])
             <div class="searchable active">
              {{-- Dropdown Header --}}
-             <input class="input__searchable" wire:model.debounce.300ms="searchadd" placeholder="Search..."
+             <input class="input" wire:model.debounce.300ms="searchadd" placeholder="Search..."
               type="text">
              <button class="button__searchable" wire:click.prevent="dennyselect({{ $index }})">
               <svg>
@@ -475,7 +475,9 @@
          @if ($editindex !== $index)
           {{ $relatedproduct->sequence }}
          @else
+         <div class="searchable">
           <input type="number" required class="input__searchable" wire:model.defer="sec.{{ $index }}.sec">
+         </div>
          @endif
         </td>
        @endif
@@ -541,7 +543,9 @@
            @if ($editindex !== $index)
             {{ $relatedproduct->sequence }}
            @else
+           <div class="searchable">
             <input type="number" required class="input__searchable" wire:model.defer="sec.{{ $index }}.sec">
+           </div>
            @endif
           </p>
          @endif
