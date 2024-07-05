@@ -102,10 +102,10 @@
       <thead>
         <tr>
           <th style="border-right: none; border-left: none;">
-            <label class="checkbox checkbox--secondary inline">
-              <input type="checkbox" wire:model="selectPage" />
-              <span></span>
-            </label>
+            <div class="checkbox--primary">
+              <input type="checkbox" id="selectPage15" wire:model="selectPage" />
+              <label for="selectPage15"></label>
+            </div>
           </th>
           @if ($this->showColumn('Id'))
             <th>
@@ -209,10 +209,10 @@
           @foreach ($orders as $index => $order)
             <tr @if ($loop->last) id="last_record" @endif class="expandable-row @if ($this->isChecked($order->id)) active @endif" >
               <td style="border-left: none" data-title="Check">
-                <label class="checkbox checkbox--secondary inline">
-                  <input type="checkbox" value="{{ $order->id }}" wire:model="checked">
-                  <span></span>
-                </label>
+                <div class="checkbox--primary">
+                  <input type="checkbox" value="{{ $order->id }}" id="{{ $order->id }}" wire:model="checked">
+                  <label for="{{ $order->id }}"></label>
+                </div>
               </td>
               @if ($this->showColumn("Id"))
                 <td wire:click="expandRow({{ $index }})">

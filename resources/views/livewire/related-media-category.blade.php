@@ -356,10 +356,10 @@
           <thead>
             <tr>
               <th>
-                <label class="checkbox checkbox--secondary inline">
-                  <input type="checkbox" wire:model="selectPage" />
-                  <span></span>
-                </label>
+                <div class="checkbox--primary">
+                  <input type="checkbox" id="selectPage12" wire:model="selectPage" />
+                  <label for="selectPage12"></label>
+                </div>
               </th>
               @if ($this->showColumn('Id'))
               <th>
@@ -427,10 +427,10 @@
               @foreach ($filteredMedia as $index => $file)
                 <tr  @if ($loop->last) id="last_record" @endif class="expandable-row @if ($this->isChecked($file->id)) active @endif" >
                   <td>
-                    <label class="checkbox checkbox--secondary inline">
-                      <input type="checkbox" value="{{ $file->id }}" wire:model="checked" />
-                      <span></span>
-                    </label>
+                    <div class="checkbox--primary">
+                      <input type="checkbox" value="{{ $file->id }}" id="{{ $file->id }}" wire:model="checked" />
+                      <label for="{{ $file->id }}"></label>
+                    </div>
                   </td>
                   @if ($this->showColumn("Id"))
                   <td wire:click="expandRow({{ $index }})">{{ $file->id }}</td>

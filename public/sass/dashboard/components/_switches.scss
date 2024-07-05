@@ -1,5 +1,5 @@
 // Switchs settings
-.checkbox,
+
 .radio,
 .switch {
  display: table;
@@ -58,7 +58,7 @@
  }
 }
 
-.checkbox,
+
 .radio {
  input {
   & + span {
@@ -81,30 +81,7 @@
  }
 }
 
-.checkbox {
- input {
-  & + span {
-   &:before {
-    border-radius: 6px;
-   }
-   &:after {
-    width: 5px;
-    height: 9px;
-    border: 2px solid #fff;
-    border-top: 0;
-    border-left: 0;
-    left: 8px;
-    top: 5px;
-    transform: rotate(20deg);
-   }
-  }
-  &:checked + span {
-   &:after {
-    transform: rotate(43deg) translate(1px, 0);
-   }
-  }
- }
-}
+
 
 .radio {
  input {
@@ -168,7 +145,7 @@
  }
 }
 
-.checkbox--primary,
+
 .radio--primary,
 .switch--primary {
  input:checked + span:before {
@@ -177,7 +154,7 @@
  }
 }
 
-.checkbox--secondary,
+
 .radio--secondary,
 .switch--secondary {
  input:checked + span:before {
@@ -186,11 +163,7 @@
  }
 }
 
-.checkbox--secondary {
-  input + span:after {
-     border-color:#333;
-  }
- }
+
 
 // Radio Group settings
 .radioGroup {
@@ -362,3 +335,104 @@
 }
 
 
+
+
+
+@mixin checkbox-styles($size, $uncheckedColor, $checkedColor) {
+  // Calculate dimensions for the pseudo-element based on the size
+  $checkmark-width: $size / 4.4;
+  $checkmark-height: $size / 2.44;
+  $checkmark-left: $size / 2.75;
+  $checkmark-top: $size / 4.4;
+  $checkmark-border-width: $size / 11;
+
+  display: table;
+  cursor: pointer;
+  position: relative;
+
+  &.inline {
+    display: inline-block;
+  }
+
+  input {
+    display: none;
+  }
+
+  label {
+    color: #6c7486;
+    height: $size;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    padding-left: $size;
+    position: relative;
+    cursor: pointer;
+
+    &:not(:empty) {
+      padding-left: calc($size + 8px);
+    }
+
+    &:before, &:after {
+      content: '';
+      display: block;
+      position: absolute;
+    }
+
+    &:before {
+      left: 0;
+      top: 0;
+      height: $size;
+      width: $size;
+      border: 2px solid $uncheckedColor;
+      background: transparent;
+      border-radius: 6px;
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
+
+    &:after {
+      width: $checkmark-width;
+      height: $checkmark-height;
+      border: $checkmark-border-width solid #fff;
+      border-top: 0;
+      border-left: 0;
+      left: $checkmark-left;
+      top: $checkmark-top;
+      transform: rotate(20deg);
+      opacity: 0;
+      transition: transform 0.3s ease, opacity 0.2s ease, background 0.2s ease;
+    }
+  }
+
+  input:checked + label {
+    &:before {
+      background: $checkedColor;
+      border-color: $checkedColor;
+    }
+
+    &:after {
+      opacity: 1;
+      transform: rotate(43deg) translate(1px, 0);
+      transition: opacity 0.3s ease, background 0.3s ease, transform 0.6s cubic-bezier(0.175, 0.88, 0.32, 1.2);
+    }
+  }
+
+  &:hover input:not(:checked) + label {
+    &:before {
+      border-color: $uncheckedColor;
+    }
+  }
+}
+
+.checkbox--default {
+  /// Size , uncheckedColor, checkedColor
+  @include checkbox-styles(25px, lighten(#333, 30%), #cacaca);
+}
+.checkbox--primary {
+  /// Size , uncheckedColor, checkedColor
+  @include checkbox-styles(25px, lighten(#333, 30%), $primary);
+}
+.checkbox--secondary {
+  /// Size , uncheckedColor, checkedColor
+  @include checkbox-styles(25px, lighten(#333, 30%), $secondary);
+}
