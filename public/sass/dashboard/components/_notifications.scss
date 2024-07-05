@@ -21,9 +21,10 @@
 
 .item__notification {
   background: #fafafa;
+  position: relative;
   width: 100%;
   min-height: 50px;
-  border-radius: 100px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -31,13 +32,63 @@
   padding: 2.5px 10px;
   transition: all 0.3s ease;
   transform: translateX(calc(100% + 10px));
-  animation: apare 6s ease 1.5s forwards;
+  animation: apare 6s ease forwards;
   box-shadow: $shadow;
+  overflow: hidden;
+
+  &::after {
+    content: "";
+    position: absolute;
+    height: 6px;
+    width: 100%;
+    bottom: -2px;
+    transform-origin: left;
+    transform: scaleX(1);
+    animation: timp 6s ease infinite;
+  }
 
 
   &:not(:first-child) {
     margin-top: 10px;
   }
+  &.success{
+    &::after {
+      background: #0da672;
+    }
+
+    & > .image__notification{
+      fill: #0da672;
+    }
+  }
+  &.danger{
+    &::after {
+      background: #ef433e;
+    }
+
+    & > .image__notification{
+      fill: #ef433e;
+    }
+  }
+  &.warning{
+    &::after {
+      background: #efcd3e;
+    }
+
+    & > .image__notification{
+      fill: #efcd3e;
+    }
+  }
+  &.default{
+    &::after {
+      background: #3e83ef;
+    }
+
+    & > .image__notification{
+      fill: #3e83ef;
+    }
+  }
+
+
 }
 
 @keyframes apare {
@@ -52,6 +103,14 @@
   }
   100% {
     transform: translateX(calc(100% + 10px));
+  }
+}
+@keyframes timp {
+  0% {
+    transform: scaleX(1);
+  }
+  100% {
+    transform: scaleX(0);
   }
 }
 
