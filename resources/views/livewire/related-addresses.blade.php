@@ -48,7 +48,7 @@
       {{-- Search Input --}}
       <input class="input input--long" type="text" wire:model.debounce.300ms="search" placeholder="Search...">
       {{-- IF CHECKED --}}
-      <div class="dropdown dropdown--right" @if (!$checked) style="display:none;" @endif >
+      <div class="dropdown dropdown--right" wire:ignore @if (!$checked) style="display:none;" @endif >
         {{-- Dropdown Button --}}
         <button class="button button--primary button--centered button--long" tooltip="Actions with checked" tooltip-top>
           <span>With Checked({{ count($checked) }})</span>
@@ -61,7 +61,7 @@
         </div>
       </div>
       {{-- Visible Dropdown --}}
-      <div class="dropdown dropdown--right" >
+      <div class="dropdown dropdown--right" wire:ignore >
         {{-- Dropdown Button --}}
         <button class="button button--primary button--centered" tooltip="Show items in table" tooltip-left  >
           <svg>

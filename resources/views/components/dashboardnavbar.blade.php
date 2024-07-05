@@ -37,8 +37,8 @@
 </header>
 
 <aside>
-	<div class="background background--right" id="profile__backdrop"></div>
-	<div class="aside aside--right" id="profile">
+	<div class="background background--right" wire:ignore id="profile__backdrop"></div>
+	<div class="aside aside--right" wire:ignore id="profile">
 		<div class="aside--controls">
 			<button class="button button--flexed button--primary" id="profile__close">
 				<svg>
@@ -66,7 +66,7 @@
 </aside>
 
 <aside>
-	<div class="background background--top" id="search__backdrop"></div>
+	<div class="background background--top" wire:ignore id="search__backdrop"></div>
 	<div class="aside aside--search" id="search">
 		<div class="search--controls">
 			<button class="button button--flexed button--centered  button--primary" id="search__close">
@@ -90,7 +90,7 @@
 </aside>
 
 <aside>
-	<div class="background background--bottom" id="notify__backdrop"></div>
+	<div class="background background--bottom" wire:ignore id="notify__backdrop"></div>
 	<div class="aside aside--bottom" id="notify">
 		<div class="aside--controls">
 			<button class="button button--flexed button--primary" id="notify__close">

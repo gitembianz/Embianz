@@ -6,8 +6,8 @@
 
  {{-- Asides --}}
  <aside>
-  <div class="background background--right" id="sort__backdrop"></div>
-  <div class="aside aside--right" id="sort">
+  <div class="background background--right" wire:ignore id="sort__backdrop"></div>
+  <div class="aside aside--right" wire:ignore id="sort">
    <div class="aside--controls">
     <button class="button button--flexed button--primary" id="sort__close">
      <svg>
@@ -33,8 +33,8 @@
   </div>
  </aside>
  <aside>
-  <div class="background background--right" id="visi__backdrop"></div>
-  <div class="aside aside--right" id="visi">
+  <div class="background background--right" wire:ignore id="visi__backdrop"></div>
+  <div class="aside aside--right" wire:ignore id="visi">
    <div class="aside--controls">
     <button class="button button--flexed button--primary" id="visi__close">
      <svg>
@@ -87,7 +87,7 @@
    </svg>
   </button>
   {{-- Sorting Dropdown --}}
-  <div class="dropdown dropdown--right display--desktop" >
+  <div class="dropdown dropdown--right display--desktop" wire:ignore >
    {{-- Dropdown Button --}}
    <button class="button button--primary button--centered" tooltip="Sort items in table" tooltip-left
     >
@@ -116,7 +116,7 @@
    </div>
   </div>
   {{-- Visible Dropdown --}}
-  <div class="dropdown dropdown--right display--desktop" >
+  <div class="dropdown dropdown--right display--desktop" wire:ignore >
    {{-- Dropdown Button --}}
    <button class="button button--primary button--centered" tooltip="Show items in table" tooltip-left
     >
