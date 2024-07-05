@@ -112,10 +112,10 @@
      <thead>
       <tr>
        <th>
-        <label class="checkbox checkbox--secondary inline">
-         <input type="checkbox" wire:model="selectPageadd" />
-         <span></span>
-        </label>
+        <div class="checkbox--primary">
+         <input type="checkbox" id="selectPageadd17" wire:model="selectPageadd" />
+         <label for="selectPageadd17"></label>
+        </div>
        </th>
        <th>
         <button class="table--btn">
@@ -154,10 +154,10 @@
       @foreach ($prodds as $index => $product)
        <tr class="expandable-row">
         <td style="border-left: none" data-title="Check">
-         <label class="checkbox checkbox--secondary inline">
-          <input type="checkbox" value="{{ $product->id }}" wire:model="checkedadd">
-          <span></span>
-         </label>
+         <div class="checcheckbox--secondary">
+          <input type="checkbox" value="{{ $product->id }}" id="{{ $product->id }}" wire:model="checkedadd">
+          <label for="{{ $product->id }}"></label>
+         </div>
         </td>
         <td wire:click="expandRow2({{ $index }})">
          {{ $product->name }}
@@ -170,15 +170,15 @@
         </td>
         <td class="hidden">
          @if ($product->active)
-          <label class="checkbox checkbox--secondary inline disabled">
-           <input type="checkbox" disabled checked>
-           <span></span>
-          </label>
+          <div class="checkbox--secondary disabled">
+           <input type="checkbox" for="disabled1" disabled checked>
+           <label for="disabled1"></label>
+          </div>
          @else
-          <label class="checkbox checkbox--secondary inline disabled">
-           <input type="checkbox" disabled>
-           <span></span>
-          </label>
+          <div class="checkbox--secondary disabled">
+           <input type="checkbox" for="disabled2" disabled>
+           <label for="disabled2"></label>
+          </div>
          @endif
         </td>
         <td>
@@ -200,15 +200,15 @@
           <p>
            <bold>Category is active?</bold>
            @if ($product->active)
-            <label class="checkbox checkbox--secondary inline disabled">
-             <input type="checkbox" disabled checked>
-             <span></span>
-            </label>
+            <div class="checkbox--secondary disabled">
+             <input type="checkbox" for="disabled3" disabled checked>
+             <label for="disabled3"></label>
+            </div>
            @else
-            <label class="checkbox checkbox--secondary inline disabled">
-             <input type="checkbox" disabled>
-             <span></span>
-            </label>
+            <div class="checkbox--secondary disabled">
+             <input type="checkbox" for="disabled4" disabled>
+             <label for="disabled4"></label>
+            </div>
            @endif
           </p>
          </div>
@@ -318,10 +318,10 @@
    <thead>
     <tr>
      <th style="border-right: none; border-left: none;">
-      <label class="checkbox checkbox--secondary inline">
-       <input type="checkbox" wire:model="selectPage" />
-       <span></span>
-      </label>
+      <div class="checkbox--primary">
+       <input type="checkbox" id="selectPage18" wire:model="selectPage" />
+       <label for="selectPage18"></label>
+      </div>
      </th>
      @if ($this->showColumn('Id'))
       <th>
@@ -425,10 +425,10 @@
      @foreach ($relatedproducts as $index => $related)
       <tr class="expandable-row @if ($this->isChecked($related->id)) active @endif">
        <td style="border-left: none" data-title="Check">
-        <label class="checkbox checkbox--secondary inline">
-         <input type="checkbox" value="{{ $related->id }}" wire:model="checked">
-         <span></span>
-        </label>
+        <div class="checkbox--primary">
+         <input type="checkbox" value="{{ $related->id }}" id="{{ $related->id }}" wire:model="checked">
+         <label for="{{ $related->id }}"></label>
+        </div>
        </td>
 
        @if ($this->showColumn('Id'))
@@ -460,15 +460,15 @@
        @if ($this->showColumn('Product is active?'))
         <td class="hidden" wire:click="expandRow({{ $index }})">
          @if ($related->product->active)
-          <label class="checkbox checkbox--secondary inline disabled">
-           <input type="checkbox" disabled checked>
-           <span></span>
-          </label>
+          <div class="checkbox--secondary disabled">
+           <input type="checkbox" id="disabled5" disabled checked>
+           <label for="disabled5"></label>
+          </div>
          @else
-          <label class="checkbox checkbox--secondary inline disabled">
-           <input type="checkbox" disabled>
-           <span></span>
-          </label>
+          <div class="checkbox--secondary disabled">
+           <input type="checkbox" id="disabled6" disabled>
+           <label for="disabled6"></label>
+          </div>
          @endif
         </td>
        @endif
@@ -512,15 +512,15 @@
           <p>
            <bold>Product is active?</bold>
            @if ($related->product->active)
-            <label class="checkbox checkbox--secondary inline disabled">
-             <input type="checkbox" disabled checked>
-             <span></span>
-            </label>
+            <div class="checkbox--secondary disabled">
+             <input type="checkbox" id="disabled7" disabled checked>
+             <label for="disabled7"></label>
+            </div>
            @else
-            <label class="checkbox checkbox--secondary inline disabled">
-             <input type="checkbox" disabled>
-             <span></span>
-            </label>
+            <div class="checkbox--secondary disabled">
+             <input type="checkbox" id="disabled8" disabled>
+             <label for="disabled8"></label>
+            </div>
            @endif
           </p>
          @endif

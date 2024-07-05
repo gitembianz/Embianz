@@ -148,10 +148,10 @@
                   </div>
                 </td>
                 <td class="hidden" wire:click="expandRow3({{ $index }})">
-                  <label class="checkbox checkbox--secondary inline">
-                    <input type="checkbox" wire:model.defer="file_resize.{{ $index }}" />
-                    <span></span>
-                  </label>
+                  <div class="checkbox--primary">
+                    <input type="checkbox" id="checkbox{{ $index }}" wire:model.defer="file_resize.{{ $index }}" />
+                    <label for="checkbox{{ $index }}"></label>
+                  </div>
                 </td>
                 <td>
                   <button class="button button--secondary button--sm" wire:click.prevent="removemedia({{ $loop->index }})">
@@ -183,10 +183,10 @@
                       </p>
                       <p>
                         <bold>Automatic resize</bold>
-                          <label class="checkbox checkbox--secondary inline">
-                            <input type="checkbox" wire:model.defer="file_resize.{{ $index }}" />
-                            <span></span>
-                          </label>
+                          <div class="checkbox--primary">
+                            <input type="checkbox" id="checkbox2{{ $index }}" wire:model.defer="file_resize.{{ $index }}" />
+                            <label for="checkbox2{{ $index }}"></label>
+                          </div>
                       </p>
                   </div>
                 </td>
@@ -275,10 +275,10 @@
                   </div>
                 </td>
                 <td class="hidden" wire:click="expandRow2({{ $i }})">
-                  <label class="checkbox checkbox--secondary inline">
-                    <input type="checkbox" wire:model.defer="file_resize.{{ $i }}" />
-                    <span></span>
-                  </label>
+                  <div class="checkbox--primary">
+                    <input type="checkbox" id="checkbox3{{ $i }}" wire:model.defer="file_resize.{{ $i }}" />
+                    <label for="checkbox3{{ $i }}"></label>
+                  </div>
                 </td>
                 <td>
                   <div style="display: flex;">
@@ -314,10 +314,10 @@
                       </p>
                       <p>
                         <bold>Automatic resize</bold>
-                        <label class="checkbox checkbox--secondary inline">
-                          <input type="checkbox" wire:model.defer="file_resize.{{ $i }}" />
-                          <span></span>
-                        </label>
+                        <div class="checkbox--primary">
+                          <input type="checkbox" id="checkbox4{{ $i }}" wire:model.defer="file_resize.{{ $i }}" />
+                          <lable for="checkbox4{{ $i }}"></lab>
+                        </div>
                       </p>
                   </div>
                 </td>
@@ -387,10 +387,10 @@
           <thead>
             <tr>
               <th>
-                <label class="checkbox checkbox--secondary inline">
-                  <input type="checkbox" wire:model="selectPage" />
-                  <span></span>
-                </label>
+                <div class="checkbox--primary">
+                  <input type="checkbox" id="selectPage13" wire:model="selectPage" />
+                  <label for="selectPage13"></label>
+                </div>
               </th>
               @if ($this->showColumn('Id'))
               <th>
@@ -458,10 +458,10 @@
               @foreach ($filteredMedia as $index => $file)
                 <tr  @if ($loop->last) id="last_record" @endif class="expandable-row @if ($this->isChecked($file->id)) active @endif" >
                   <td>
-                    <label class="checkbox checkbox--secondary inline">
-                      <input type="checkbox" value="{{ $file->id }}" wire:model="checked" />
-                      <span></span>
-                    </label>
+                    <div class="checkbox--primary">
+                      <input type="checkbox" value="{{ $file->id }}" id="{{ $file->id }}" wire:model="checked" />
+                      <label for="{{ $file->id }}"></label>
+                    </div>
                   </td>
                   @if ($this->showColumn("Id"))
                   <td wire:click="expandRow({{ $index }})">{{ $file->id }}</td>

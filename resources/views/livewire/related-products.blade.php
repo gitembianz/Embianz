@@ -358,10 +358,10 @@
    <thead>
     <tr>
      <th>
-      <label class="checkbox checkbox--secondary inline">
-       <input type="checkbox" wire:model="selectPage" />
-       <span></span>
-      </label>
+      <div class="checkbox--primary">
+       <input type="checkbox" id="selectPage19" wire:model="selectPage" />
+       <label for="selectPage19"></label>
+      </div>
      </th>
      @if ($this->showColumn('Id'))
       <th>
@@ -447,10 +447,10 @@
       <tr @if ($loop->last) id="last_record" @endif
        class="expandable-row @if ($this->isChecked($relatedproduct->id)) active @endif">
        <td>
-        <label class="checkbox checkbox--secondary inline">
-         <input type="checkbox" value="{{ $relatedproduct->id }}" wire:model="checked">
-         <span></span>
-        </label>
+        <div class="checkbox--primary">
+         <input type="checkbox" value="{{ $relatedproduct->id }}" id="{{ $relatedproduct->id }}" wire:model="checked">
+         <label for="{{ $relatedproduct->id }}"></label>
+        </div>
        </td>
 
        @if ($this->showColumn('Id'))

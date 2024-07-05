@@ -238,10 +238,10 @@
    <thead>
     <tr>
      <th style="border-right: none; border-left: none;">
-      <label class="checkbox checkbox--secondary inline">
-       <input type="checkbox" wire:model="selectPage" />
-       <span></span>
-      </label>
+      <div class="checkbox--primary">
+       <input type="checkbox" id="selectPage30" wire:model="selectPage" />
+       <label for="selectPage30"></label>
+      </div>
      </th>
      @foreach ($selectedColumns as $index => $column)
       @if ($column == 'id')
@@ -282,10 +282,10 @@
       <tr @if ($loop->last) id="last_record" @endif
        class="expandable-row @if ($this->isChecked($item->session_id)) active @endif">
        <td style="border-left: none" data-title="Check">
-        <label class="checkbox checkbox--secondary inline">
-         <input type="checkbox" value="{{ $item->session_id }}" wire:model="checked">
-         <span></span>
-        </label>
+        <div class="checkbox--primary">
+         <input type="checkbox" value="{{ $item->session_id }}" id="{{ $item->session_id }}" wire:model="checked">
+         <label for="{{ $item->session_id }}"></label>
+        </div>
        </td>
        @foreach ($selectedColumns as $index => $column)
         @if ($column == 'id')

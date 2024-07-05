@@ -221,29 +221,29 @@
          @if ($column === 'active')
           @if ($editindex !== $index)
            @if ($item->active)
-            <label class="checkbox checkbox--secondary inline disabled">
-             <input type="checkbox" disabled checked>
-             <span></span>
-            </label>
+            <div class="checkbox--primary disabled">
+             <input type="checkbox" id="disabled1" disabled checked>
+             <label for="disabled1"></label>
+            </div>
            @else
-            <label class="checkbox checkbox--secondary inline disabled">
-             <input type="checkbox" disabled>
-             <span></span>
-            </label>
+            <div class="checkbox--primary disabled">
+             <input type="checkbox" id="disabled2" disabled>
+             <label for="disabled2"></label>
+            </div>
            @endif
           @else
-           <label class="checkbox checkbox--secondary inline">
-            <input type="checkbox" wire:model.defer="isactive.{{ $index }}.active" />
-            <span></span>
-           </label>
+           <div class="checkbox--primary inline">
+            <input type="checkbox" id="active" wire:model.defer="isactive.{{ $index }}.active" />
+            <label for="active"></label>
+           </div>
           @endif
          @elseif($column === 'description')
           @if ($editindex !== $index)
            {{ $item->description }}
           @else
-          <div class="searchable">
-           <input type="text" class="input__searchable" wire:model.defer="isactive.{{ $index }}.description">
-          </div>
+              <div class="searchable" >
+                <input type="text" class="input__searchable"  wire:model.defer="isactive.{{ $index }}.description">
+              </div>
           @endif
          @else
           {{ $item->$column }}
@@ -293,10 +293,10 @@
             @else
              <p>
               <bold>{{ $column }}:</bold>
-              <label class="checkbox checkbox--secondary inline">
-               <input type="checkbox" wire:model.defer="isactive.{{ $index }}.active" />
-               <span></span>
-              </label>
+              <div class="checkbox--primary">
+               <input type="checkbox" id="isactive" wire:model.defer="isactive.{{ $index }}.active" />
+               <label for="isactive"></label>
+              </div>
              </p>
             @endif
            @elseif($column === 'description')
