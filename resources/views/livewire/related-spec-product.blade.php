@@ -696,7 +696,7 @@
                         @if ($editedrow !== $index)
                           {{ $spec->value }}
                         @else
-                          <input type="text" required class="input" wire:model="specification.{{ $index }}.value">
+                          <input type="text" required class="input__searchable" wire:model="specification.{{ $index }}.value">
                         @endif
                       </p>
                     @endif
@@ -706,7 +706,7 @@
                         @if ($editedrow !== $index)
                           {{ $spec->sequence }}
                         @else
-                          <input type="text" required class="input" wire:model="specification.{{ $index }}.sequence">
+                          <input type="text" required class="input__searchable" wire:model="specification.{{ $index }}.sequence">
                         @endif
                       </p>
                     @endif

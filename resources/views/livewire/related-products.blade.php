@@ -475,7 +475,7 @@
          @if ($editindex !== $index)
           {{ $relatedproduct->sequence }}
          @else
-          <input type="number" required class="input" wire:model.defer="sec.{{ $index }}.sec">
+          <input type="number" required class="input__searchable" wire:model.defer="sec.{{ $index }}.sec">
          @endif
         </td>
        @endif
@@ -541,7 +541,7 @@
            @if ($editindex !== $index)
             {{ $relatedproduct->sequence }}
            @else
-            <input type="number" required class="input" wire:model.defer="sec.{{ $index }}.sec">
+            <input type="number" required class="input__searchable" wire:model.defer="sec.{{ $index }}.sec">
            @endif
           </p>
          @endif

@@ -348,7 +348,7 @@
           (time is: {{ now() }}) - Please refresh to update after the edit
          @endif
         @else
-         <input type="text" class="input" wire:model.defer="settings.{{ $index }}.value">
+         <input type="text" class="input__searchable" wire:model.defer="settings.{{ $index }}.value">
         @endif
        </td>
       @endif
@@ -412,7 +412,7 @@
          @else
           <p>
            <bold>Value:</bold>
-           <input type="text" class="input" wire:model.defer="settings.{{ $index }}.value">
+           <input type="text" class="input__searchable" wire:model.defer="settings.{{ $index }}.value">
           </p>
          @endif
         @endif

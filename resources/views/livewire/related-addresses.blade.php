@@ -262,7 +262,7 @@
                   @if ($editindex !== $index)
                     {{ $address->first_name }}
                   @else
-                    <input type="text" required class="input" wire:model.defer="adress.{{ $index }}.first_name">
+                    <input type="text" required class="input__searchable" wire:model.defer="adress.{{ $index }}.first_name">
                   @endif
                 </td>
               @endif
@@ -271,7 +271,7 @@
                   @if ($editindex !== $index)
                     {{ $address->last_name }}
                   @else
-                    <input type="text" required class="input" wire:model.defer="adress.{{ $index }}.last_name">
+                    <input type="text" required class="input__searchable" wire:model.defer="adress.{{ $index }}.last_name">
                   @endif
                 </td>
               @endif
@@ -280,7 +280,7 @@
                   @if ($editindex !== $index)
                     {{ $address->phone }}
                   @else
-                    <input type="phone" required class="input" wire:model.defer="adress.{{ $index }}.phone">
+                    <input type="phone" required class="input__searchable" wire:model.defer="adress.{{ $index }}.phone">
                   @endif
                 </td>
               @endif
@@ -289,7 +289,7 @@
                   @if ($editindex !== $index)
                     {{ $address->email }}
                   @else
-                    <input type="email" required class="input" wire:model.defer="adress.{{ $index }}.email">
+                    <input type="email" required class="input__searchable" wire:model.defer="adress.{{ $index }}.email">
                   @endif
                 </td>
               @endif
@@ -298,7 +298,7 @@
                   @if ($editindex !== $index)
                     {{ $address->address1 }}
                   @else
-                    <input type="text" required class="input" wire:model.defer="adress.{{ $index }}.address1">
+                    <input type="text" required class="input__searchable" wire:model.defer="adress.{{ $index }}.address1">
                   @endif
                 </td>
               @endif
@@ -307,7 +307,7 @@
                   @if ($editindex !== $index)
                     {{ $address->address2 }}
                   @else
-                    <input type="text" required class="input" wire:model.defer="adress.{{ $index }}.address2">
+                    <input type="text" required class="input__searchable" wire:model.defer="adress.{{ $index }}.address2">
                   @endif
                 </td>
               @endif
@@ -316,7 +316,7 @@
                   @if ($editindex !== $index)
                     {{ $address->country }}
                   @else
-                    <input type="text" required class="input" wire:model.defer="adress.{{ $index }}.country">
+                    <input type="text" required class="input__searchable" wire:model.defer="adress.{{ $index }}.country">
                   @endif
                 </td>
               @endif
@@ -325,7 +325,7 @@
                   @if ($editindex !== $index)
                     {{ $address->county }}
                   @else
-                    <input type="text" required class="input" wire:model.defer="adress.{{ $index }}.county">
+                    <input type="text" required class="input__searchable" wire:model.defer="adress.{{ $index }}.county">
                   @endif
                 </td>
               @endif
@@ -334,7 +334,7 @@
                   @if ($editindex !== $index)
                     {{ $address->city }}
                   @else
-                    <input type="text" required class="input" wire:model.defer="adress.{{ $index }}.city">
+                    <input type="text" required class="input__searchable" wire:model.defer="adress.{{ $index }}.city">
                   @endif
                 </td>
               @endif
@@ -343,7 +343,7 @@
                   @if ($editindex !== $index)
                     {{ $address->zipcode }}
                   @else
-                    <input type="text" required class="input" wire:model.defer="adress.{{ $index }}.zipcode">
+                    <input type="text" required class="input__searchable" wire:model.defer="adress.{{ $index }}.zipcode">
                   @endif
                 </td>
               @endif
@@ -403,7 +403,7 @@
                       @if ($editindex !== $index)
                         <bold>First Name:</bold>{{ $address->first_name }}
                       @else
-                        <bold>First Name:</bold><input type="text" required class="input" wire:model.defer="adress.{{ $index }}.first_name">
+                        <bold>First Name:</bold><input type="text" required class="input__searchable" wire:model.defer="adress.{{ $index }}.first_name">
                       @endif
                     </p>
                   @endif
@@ -412,7 +412,7 @@
                       @if ($editindex !== $index)
                         <bold>Last Name:</bold>{{ $address->last_name }}
                       @else
-                        <bold>Last Name:</bold><input type="text" required class="input" wire:model.defer="adress.{{ $index }}.last_name">
+                        <bold>Last Name:</bold><input type="text" required class="input__searchable" wire:model.defer="adress.{{ $index }}.last_name">
                       @endif
                     </p>
                   @endif
@@ -421,7 +421,7 @@
                       @if ($editindex !== $index)
                         <bold>Phone:</bold>{{ $address->phone }}
                       @else
-                        <bold>Phone:</bold><input type="phone" required class="input" wire:model.defer="adress.{{ $index }}.phone">
+                        <bold>Phone:</bold><input type="phone" required class="input__searchable" wire:model.defer="adress.{{ $index }}.phone">
                       @endif
                     </p>
                   @endif
@@ -430,7 +430,7 @@
                       @if ($editindex !== $index)
                         <bold>Email:</bold>{{ $address->email }}
                       @else
-                        <bold>Email:</bold><input type="email" required class="input" wire:model.defer="adress.{{ $index }}.email">
+                        <bold>Email:</bold><input type="email" required class="input__searchable" wire:model.defer="adress.{{ $index }}.email">
                       @endif
                     </p>
                   @endif
@@ -439,7 +439,7 @@
                       @if ($editindex !== $index)
                         <bold>Address:</bold>{{ $address->address1 }}
                       @else
-                        <bold>Address:</bold><input type="text" required class="input" wire:model.defer="adress.{{ $index }}.address1">
+                        <bold>Address:</bold><input type="text" required class="input__searchable" wire:model.defer="adress.{{ $index }}.address1">
                       @endif
                     </p>
                   @endif
@@ -448,7 +448,7 @@
                       @if ($editindex !== $index)
                         <bold>Optional Address:</bold>{{ $address->address2 }}
                       @else
-                        <bold>Optional Address:</bold><input type="text" required class="input" wire:model.defer="adress.{{ $index }}.address2">
+                        <bold>Optional Address:</bold><input type="text" required class="input__searchable" wire:model.defer="adress.{{ $index }}.address2">
                       @endif
                     </p>
                   @endif
@@ -457,7 +457,7 @@
                       @if ($editindex !== $index)
                         <bold>Country:</bold>{{ $address->country }}
                       @else
-                        <bold>Country:</bold><input type="text" required class="input" wire:model.defer="adress.{{ $index }}.country">
+                        <bold>Country:</bold><input type="text" required class="input__searchable" wire:model.defer="adress.{{ $index }}.country">
                       @endif
                     </p>
                   @endif
@@ -466,7 +466,7 @@
                       @if ($editindex !== $index)
                         <bold>County:</bold>{{ $address->county }}
                       @else
-                        <bold>County:</bold><input type="text" required class="input" wire:model.defer="adress.{{ $index }}.county">
+                        <bold>County:</bold><input type="text" required class="input__searchable" wire:model.defer="adress.{{ $index }}.county">
                       @endif
                     </p>
                   @endif
@@ -475,7 +475,7 @@
                       @if ($editindex !== $index)
                         <bold>City:</bold>{{ $address->city }}
                       @else
-                        <bold>City:</bold><input type="text" required class="input" wire:model.defer="adress.{{ $index }}.city">
+                        <bold>City:</bold><input type="text" required class="input__searchable" wire:model.defer="adress.{{ $index }}.city">
                       @endif
                     </p>
                   @endif
@@ -484,7 +484,7 @@
                       @if ($editindex !== $index)
                         <bold>Post Code:</bold>{{ $address->zipcode }}
                       @else
-                        <bold>Post Code:</bold><input type="text" required class="input" wire:model.defer="adress.{{ $index }}.zipcode">
+                        <bold>Post Code:</bold><input type="text" required class="input__searchable" wire:model.defer="adress.{{ $index }}.zipcode">
                       @endif
                     </p>
                   @endif

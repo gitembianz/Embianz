@@ -712,7 +712,7 @@
            @if ($editindex !== $index)
             {{ $variant->value }}
            @else
-            <input type="text" required class="input" wire:model.defer="var.{{ $index }}.value">
+            <input type="text" required class="input__searchable" wire:model.defer="var.{{ $index }}.value">
            @endif
           </p>
          @endif

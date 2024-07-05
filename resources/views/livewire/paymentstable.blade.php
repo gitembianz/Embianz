@@ -244,7 +244,7 @@
           @if ($editeindex !== $index)
            {{ $item->description }}
           @else
-           <input type="text" class="input" wire:model.defer="isactive.{{ $index }}.description">
+           <input type="text" class="input__searchable" wire:model.defer="isactive.{{ $index }}.description">
           @endif
          @else
           {{ $item->$column }}
@@ -309,7 +309,7 @@
             @else
              <p>
               <bold>{{ $column }}:</bold>
-              <input type="text" class="input" wire:model.defer="isactive.{{ $index }}.description">
+              <input type="text" class="input__searchable" wire:model.defer="isactive.{{ $index }}.description">
              </p>
             @endif
            @else

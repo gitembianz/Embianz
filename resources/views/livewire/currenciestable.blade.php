@@ -220,13 +220,13 @@
           @if ($editindex !== $nr)
            {{ $item->name }}
           @else
-           <input type="text" class="input" wire:model.defer="details.{{ $nr }}.name">
+           <input type="text" class="input__searchable" wire:model.defer="details.{{ $nr }}.name">
           @endif
          @elseif($column === 'symbol')
           @if ($editindex !== $nr)
            {{ $item->symbol }}
           @else
-           <input type="text" class="input" wire:model.defer="details.{{ $nr }}.symbol">
+           <input type="text" class="input__searchable" wire:model.defer="details.{{ $nr }}.symbol">
           @endif
          @else
           {{ $item->$column }}

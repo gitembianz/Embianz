@@ -773,7 +773,7 @@
                         @if ($editedrow !== $index)
                           {{ $prod->value }}
                         @else
-                          <input type="text" required class="input" wire:model="product.{{ $index }}.value">
+                          <input type="text" required class="input__searchable" wire:model="product.{{ $index }}.value">
                         @endif
                       </p>
                     @endif
