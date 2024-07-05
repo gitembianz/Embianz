@@ -85,7 +85,12 @@ class StoreController extends Controller
     if (($data == null) || ($data->active != true) || ($data->start_date > now()->format('Y-m-d')) || ($data->end_date < now()->format('Y-m-d'))) {
       throw new NotFoundHttpException();
     }
-    return view('store.product', ['data' => $data]);
+    if ($data != null) {
+      $preload = "/" . optional($data->media()->where('type', 'full')->first())->path . optional($data->media()->where('type', 'full')->first())->name;
+    } else {
+      $preload = '';
+    }
+    return view('store.product', compact('data', 'preload'));
   }
 
   // payment function
