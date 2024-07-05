@@ -1,8 +1,8 @@
 <main>
  <!-- Mobile Menu -->
  <aside id="menu__container" class="display--mobile">
-  <div class="background background--left" id="menu__backdrop"></div>
-  <div class="aside aside--left" id="menu">
+  <div class="background background--left" wire:ignore id="menu__backdrop"></div>
+  <div class="aside aside--left" wire:ignore id="menu">
    <div class="aside--controls">
     <button class="button button--flexed button--primary" id="menu__close">
      <svg>

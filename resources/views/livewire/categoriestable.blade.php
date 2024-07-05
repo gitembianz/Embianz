@@ -32,8 +32,8 @@
 
  {{-- Asides --}}
  <aside>
-  <div class="background background--right" id="sort__backdrop"></div>
-  <div class="aside aside--right" id="sort">
+  <div class="background background--right" wire:ignore id="sort__backdrop"></div>
+  <div class="aside aside--right" wire:ignore id="sort">
    <div class="aside--controls">
     <button class="button button--flexed button--primary" id="sort__close">
      <svg>
@@ -59,8 +59,8 @@
   </div>
  </aside>
  <aside>
-  <div class="background background--right" id="visi__backdrop"></div>
-  <div class="aside aside--right" id="visi">
+  <div class="background background--right" wire:ignore id="visi__backdrop" wire:ignore></div>
+  <div class="aside aside--right" wire:ignore id="visi" wire:ignore>
    <div class="aside--controls">
     <button class="button button--flexed button--primary" id="visi__close">
      <svg>
@@ -75,7 +75,7 @@
    <span class="aside--line"></span>
    @foreach ($columns as $column)
     <label class="switch switch--primary" style="margin: 0.25rem 0">
-     <input type="checkbox" wire:ignore wire:model="selectedColumns" value="{{ $column }}"
+     <input type="checkbox" wire:model="selectedColumns" value="{{ $column }}"
       {{ in_array($column, $selectedColumns) ? 'checked' : '' }} />
      <span>{{ $column }}</span>
     </label>
@@ -113,7 +113,7 @@
    </svg>
   </a>
   {{-- IF CHECKED --}}
-  <div class="dropdown dropdown--right" @if (!$checked) style="display: none;" @endif>
+  <div class="dropdown dropdown--right" wire:ignore @if (!$checked) style="display: none;" @endif>
    {{-- Dropdown Button --}}
    <button class="button button--primary button--centered button--long" tooltip="Actions with checked" tooltip-top>
     <span>With Checked({{ count($checked) }})</span>
@@ -126,7 +126,7 @@
    </div>
   </div>
   {{-- Sorting Dropdown --}}
-  <div class="dropdown dropdown--right display--desktop">
+  <div class="dropdown dropdown--right display--desktop" wire:ignore>
    {{-- Dropdown Button --}}
    <button class="button button--primary button--centered" tooltip="Sort items in table" tooltip-left>
     <svg>
@@ -154,7 +154,7 @@
    </div>
   </div>
   {{-- Visible Dropdown --}}
-  <div class="dropdown dropdown--right display--desktop">
+  <div class="dropdown dropdown--right display--desktop" wire:ignore wire:ignore>
    {{-- Dropdown Button --}}
    <button class="button button--primary button--centered" tooltip="Show items in table" tooltip-left>
     <svg>
@@ -167,8 +167,8 @@
    <div class="dropdown__content">
     <div class="dropdown__container">
      @foreach ($columns as $column)
-      <label class="switch switch--primary inline">
-       <input type="checkbox" wire:ignore wire:model="selectedColumns" value="{{ $column }}"
+      <label class="switch switch--primary inline" >
+       <input type="checkbox"  wire:model="selectedColumns" value="{{ $column }}"
         {{ in_array($column, $selectedColumns) ? 'checked' : '' }} />
        <span>{{ $column }}</span>
       </label>
