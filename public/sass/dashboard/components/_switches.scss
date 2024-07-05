@@ -338,7 +338,7 @@
 
 
 
-@mixin checkbox-styles($size, $uncheckedColor, $checkedColor) {
+@mixin checkbox-styles($size, $uncheckedColor, $checkedColor, $checkmarkColor) {
   // Calculate dimensions for the pseudo-element based on the size
   $checkmark-width: $size / 4.4;
   $checkmark-height: $size / 2.44;
@@ -393,7 +393,7 @@
     &:after {
       width: $checkmark-width;
       height: $checkmark-height;
-      border: $checkmark-border-width solid #fff;
+      border: $checkmark-border-width solid $checkmarkColor;
       border-top: 0;
       border-left: 0;
       left: $checkmark-left;
@@ -425,14 +425,14 @@
 }
 
 .checkbox--default {
-  /// Size , uncheckedColor, checkedColor
-  @include checkbox-styles(25px, lighten(#333, 30%), #cacaca);
+  /// Size , uncheckedColor, checkedColor, checkmarkColor
+  @include checkbox-styles(25px, lighten(#333, 30%), #cacaca, #fff);
 }
 .checkbox--primary {
-  /// Size , uncheckedColor, checkedColor
-  @include checkbox-styles(25px, lighten(#333, 30%), $primary);
+  /// Size , uncheckedColor, checkedColor, checkmarkColor
+  @include checkbox-styles(25px, lighten(#333, 30%), $primary, #fff);
 }
 .checkbox--secondary {
-  /// Size , uncheckedColor, checkedColor
-  @include checkbox-styles(25px, lighten(#333, 30%), $secondary);
+  /// Size , uncheckedColor, checkedColor, checkmarkColor
+  @include checkbox-styles(25px, lighten(#333, 30%), $secondary, #333);
 }
