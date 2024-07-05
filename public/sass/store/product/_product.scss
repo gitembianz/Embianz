@@ -106,7 +106,7 @@
   padding: 10px;
   z-index: 100;
   border-radius: 5px;
-  box-shadow: 0px 0px 20px -10px rgba(3, 3, 3, 0.5);
+  // box-shadow: 0px 0px 20px -10px rgba(3, 3, 3, 0.5);
   transition: all 0.3s ease-in-out;
 
   transform: translateY(-20px);
@@ -371,7 +371,7 @@
   height: 35px;
   border-radius: 50%;
   border: none;
-  box-shadow: 0px 0px 15px -5px rgba(3, 3, 3, 0.5);
+  // box-shadow: 0px 0px 15px -5px rgba(3, 3, 3, 0.5);
   background: lighten($lightBlack, 10%);
   color: accentText;
   transition: all 0.3s ease;
