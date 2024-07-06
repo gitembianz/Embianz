@@ -171,6 +171,7 @@
           {{-- <img loading="eager" class="heart__list--img" src="/images/store/default/default70.webp" alt="something wrong"> --}}
          @endif
         </a>
+        <h4 style="margin-left: 7px">{{ $category->name }}</h4>
         <button class="dropmenu__open" href="#">
          <svg>
           <polyline points="6 9 12 15 18 9"></polyline>
