@@ -170,6 +170,7 @@
           <h4 style="margin-left: 7px">{{ $category->name }}</h4>
           {{-- <img loading="eager" class="heart__list--img" src="/images/store/default/default70.webp" alt="something wrong"> --}}
          @endif
+         <h4 style="margin-left: 7px">{{ $category->name }}</h4>
         </a>
         <button class="dropmenu__open" href="#">
          <svg>
