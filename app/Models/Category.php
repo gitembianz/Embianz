@@ -37,7 +37,7 @@ class Category extends Model
 
     while ($currentCategory) {
       $breadcrumbs->prepend([
-        'name' => $currentCategory->name,
+        'name' => $currentCategory->short_description ?? $currentCategory->name,
         'slug' => $currentCategory->seo_id ?? $currentCategory->id,
       ]);
 
