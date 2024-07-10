@@ -224,6 +224,9 @@
     <table class="expandable-table">
      <thead>
       <tr>
+       <th class="unhidden" style="width: auto !important;">
+        <div class="table--btn">Position</div>
+       </th>
        <th style="width: auto !important;">
         <div class="table--btn">Name</div>
        </th>
@@ -249,19 +252,21 @@
       @endphp
       @for ($i = 0; $i <= $row; $i++)
        <tr class="expandable-row">
-        <td style="width: auto !important;" wire:click="expandRow2({{ $i }})" style="width: auto;">
+        <td style="width: auto !important;" wire:click="expandRow2({{ $i }})" class="unhidden">
+         {{ $i }}</td>
+        <td style="width: auto !important;" style="width: auto;">
          <div class="searchable">
           <input required placeholder="Media name" type="text" class="input__searchable"
            wire:model="file_name.{{ $i }}">
          </div>
         </td>
-        <td wire:click="expandRow2({{ $i }})">
+        <td>
          <div class="searchable">
           <input placeholder="Ex: 1,2,3.." required type="number" min="0" class="input__searchable"
            wire:model="file_sequences.{{ $i }}">
          </div>
         </td>
-        <td class="hidden" wire:click="expandRow2({{ $i }})">
+        <td class="hidden">
          <div class="searchable">
           <input placeholder="Media external link" required type="url" class="input__searchable"
            wire:model="file_link.{{ $i }}">
