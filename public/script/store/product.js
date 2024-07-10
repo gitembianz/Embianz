@@ -200,6 +200,7 @@ function sliderProduct(sliderId, modalId) {
       thumbnail.alt = `Thumbnail ${index + 1}`;
       thumbnail.classList.add("thumbnail");
       thumbnail.setAttribute("data-index", index);
+      thumbnail.loading = 'lazy';
 
       thumbnail.addEventListener("click", () => {
         currentIndex = index;
