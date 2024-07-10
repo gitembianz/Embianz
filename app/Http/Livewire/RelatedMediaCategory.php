@@ -273,6 +273,7 @@ class RelatedMediaCategory extends Component
     $this->file_sequences = [];
     $this->file_link = [];
     $this->file_name = [];
+    $this->chose = false;
     $this->mount($this->category);
   }
   public function editMedia($index, $id)
