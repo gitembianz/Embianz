@@ -3,11 +3,9 @@
 namespace App\Http\Livewire;
 
 use App\Models\Category;
-use getID3;
 use App\Models\Media;
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Models\MediaLocation;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -275,6 +273,7 @@ class RelatedMediaCategory extends Component
     $this->file_sequences = [];
     $this->file_link = [];
     $this->file_name = [];
+    $this->chose = false;
     $this->mount($this->category);
   }
   public function editMedia($index, $id)
@@ -355,11 +354,8 @@ class RelatedMediaCategory extends Component
   {
     $this->selectPage = false;
   }
-  public function save()
+  public function savelocal()
   {
-    $this->validate([
-      'medias.*' => 'mimetypes:image/jpeg,image/png,image/webp,image/svg+xml|max:10240', // Max 10MB for all files
-    ]);
     $productType = class_basename(get_class($this->category));
     $filespath = 'media/' . $productType . '/';
     if (!File::exists($filespath)) {
@@ -500,7 +496,8 @@ class RelatedMediaCategory extends Component
     ]);
   }
 
-  public function cancel_chose() {
+  public function cancel_chose()
+  {
     $this->chose = false;
   }
 
