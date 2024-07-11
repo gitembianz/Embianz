@@ -21,8 +21,6 @@ class Variantstable extends Component
     public $selectAll = false;
     public $columns;
     public $selectedColumns = [];
-    public $col = false;
-    public $all = false;
     public $editindex;
     public $variant = [];
     public $statuses;

@@ -23,8 +23,6 @@ class Cartstable extends Component
   public $tableName;
   public $columns;
   public $selectedColumns = [];
-  public $col = false;
-  public $all = false;
   public $idbeingremoved = null;
   public $row = null;
   public $single = false;

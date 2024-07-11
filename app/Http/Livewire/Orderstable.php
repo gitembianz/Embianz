@@ -21,8 +21,6 @@ class Orderstable extends Component
     public $tableName;
     public $columns;
     public $selectedColumns = [];
-    public $col = false;
-    public $all = false;
     public $idbeingremoved = null;
     public $single = false;
     public $multiple = false;

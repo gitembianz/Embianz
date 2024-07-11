@@ -21,8 +21,6 @@ class Accountstable extends Component
     public $selectAll = false;
     public $idbeingremoved = null;
     public $selectedColumns = [];
-    public $col = false;
-    public $all = false;
     public $tableName;
     public $columns;
     public $row = null;

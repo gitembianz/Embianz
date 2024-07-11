@@ -20,8 +20,6 @@ class Vouchertable extends Component
   public $selectAll = false;
   public $columns;
   public $selectedColumns = [];
-  public $col = false;
-  public $all = false;
   public $editindex = null;
   public $voucher = [];
   public $statuses;
