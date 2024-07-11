@@ -23,8 +23,6 @@ class Cartstable extends Component
   public $tableName;
   public $columns;
   public $selectedColumns = [];
-  public $col = false;
-  public $all = false;
   public $idbeingremoved = null;
   public $row = null;
   public $single = false;
@@ -32,8 +30,7 @@ class Cartstable extends Component
 
   public function render()
   {
-    $carts = $this->carts;
-    return view('livewire.cartstable', compact('carts'));
+    return view('livewire.cartstable', ['carts' => $this->carts]);
   }
   public function expandRow($index)
   {

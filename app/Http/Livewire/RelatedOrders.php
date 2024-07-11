@@ -16,25 +16,24 @@ class RelatedOrders extends Component
     public $selectAll = false;
     public $showrelated = false;
     public $accountId;
-    public $col = false;
-    public $all = false;
     public $idbeingremoved = null;
     public $columns =
     ['Id', 'Session Id', 'Cart', 'Quantity Amount', 'Sum Amount', 'Currency', 'Status', 'Delivery Method', 'Created At', 'Updated At'];
     public $selectedColumns = [];
     public $account;
-    public $row =null;
+    public $row = null;
     public $single = false;
     public $multiple = false;
 
 
-    public function expandRow($index){
-        if($this->row  === null){
-          $this->row = $index ;
-        }elseif ($this->row != $index){
-          $this->row = $index ;
-        }else{
-          $this->row = null ;
+    public function expandRow($index)
+    {
+        if ($this->row  === null) {
+            $this->row = $index;
+        } elseif ($this->row != $index) {
+            $this->row = $index;
+        } else {
+            $this->row = null;
         }
     }
 
@@ -143,15 +142,16 @@ class RelatedOrders extends Component
     }
     public function confirmItemRemoval($id)
     {
-      $this->idbeingremoved = $id;
-      $this->single = true;
+        $this->idbeingremoved = $id;
+        $this->single = true;
     }
     public function confirmItemsRemoval()
     {
-      $this->multiple = true;
+        $this->multiple = true;
     }
-    public function cancel_delete(){
-      $this->multiple = false;
-      $this->single = false;
+    public function cancel_delete()
+    {
+        $this->multiple = false;
+        $this->single = false;
     }
 }

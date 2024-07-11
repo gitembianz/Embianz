@@ -20,8 +20,6 @@ class RelatedSpecProduct extends Component
   public $selectPage = false;
   public $selectAll = false;
   public $showrelatedspecs = false;
-  public $col = false;
-  public $all = false;
   public $columns = ['Id', 'Unit', 'Value', 'Sequence', 'Created At'];
   public $selectedColumns = [];
   public $idbeingremoved = null;
@@ -323,7 +321,7 @@ class RelatedSpecProduct extends Component
     ];
     $this->row = 1;
     $this->checked = [];
-    $this->all = false;
+
     $this->editmultiple = false;
     $this->selectPage = false;
     session()->flash('notification', [
@@ -397,7 +395,7 @@ class RelatedSpecProduct extends Component
     ];
     $this->row = 1;
     $this->checked = [];
-    $this->all = false;
+
     $this->editmultiple = false;
     $this->addrelatedspecs = false;
   }

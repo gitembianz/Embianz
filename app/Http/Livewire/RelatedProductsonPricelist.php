@@ -22,8 +22,6 @@ class RelatedProductsonPricelist extends Component
   public $selectAll = false;
   public $showrelatedprods = false;
   public $priceId;
-  public $col = false;
-  public $all = false;
   public $columns = ['Id', 'Currency', 'Value', 'Discount', 'Value without VAT', 'Value without Discount', 'VAT'];
 
   public $selectedColumns = [];
@@ -44,7 +42,8 @@ class RelatedProductsonPricelist extends Component
   public $editedrow;
   public $product;
   public $editmultiple = false;
-  public $itemstoedit;  public $rind = null;
+  public $itemstoedit;
+  public $rind = null;
   public $rind2 = null;
   public $rind3 = null;
   public $single = false;
@@ -327,7 +326,6 @@ class RelatedProductsonPricelist extends Component
     ];
     $this->row = 1;
     $this->checked = [];
-    $this->all = false;
     $this->editmultiple = false;
     $this->addrelatedproducts = false;
   }
@@ -489,7 +487,7 @@ class RelatedProductsonPricelist extends Component
     ];
     $this->row = 1;
     $this->checked = [];
-    $this->all = false;
+
     $this->editmultiple = false;
     session()->flash('notification', [
       'message' => 'Record edited successfully!',

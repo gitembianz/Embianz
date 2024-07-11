@@ -15,7 +15,7 @@ class RelatedProductCategory extends Component
   public $showTable = false;
 
   //related variables
-  public $loadAmount = 10;
+  public $loadAmount = 20;
   public $search = '';
   public $orderBy = 'id';
   public $orderAsc = true;

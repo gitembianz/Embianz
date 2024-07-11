@@ -22,9 +22,7 @@ class RelatedPricelist extends Component
   public $selectAll = false;
   public $showrelatedprice = false;
   public $productId;
-  public $col = false;
-  public $all = false;
-  public $columns = ['Id','Name', 'Currency', 'Value', 'Discount', 'Value without VAT', 'Value without Discount', 'VAT'];
+  public $columns = ['Id', 'Name', 'Currency', 'Value', 'Discount', 'Value without VAT', 'Value without Discount', 'VAT'];
   public $selectedColumns = [];
   public $idbeingremoved = null;
   public $addrelatedprice = false;
@@ -184,7 +182,7 @@ class RelatedPricelist extends Component
       $itemtodel->delete();
     }
     $this->checked = [];
-    $this->all = false;
+
     $this->selectPage = false;
     $this->multiple = false;
     session()->flash('notification', [
@@ -415,7 +413,7 @@ class RelatedPricelist extends Component
     ];
     $this->row = 1;
     $this->checked = [];
-    $this->all = false;
+
     $this->editmultiple = false;
     $this->selectPage = false;
     session()->flash('notification', [
@@ -456,7 +454,7 @@ class RelatedPricelist extends Component
     ];
     $this->row = 1;
     $this->checked = [];
-    $this->all = false;
+
     $this->editmultiple = false;
     $this->addrelatedprice = false;
   }

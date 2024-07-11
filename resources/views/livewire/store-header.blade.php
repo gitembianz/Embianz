@@ -166,9 +166,8 @@
         <a class="dropmenu__button--link"
          href="{{ route('products', ['categorySlug' => $category->seo_id !== null && $category->seo_id !== '' ? $category->seo_id : $category->id]) }}">
          @if ($category->media->first())
-          <img loading="eager" class="cart__list--img" src="/{{ $category->media->first()->path }}{{ $category->media->first()->name }}">
-          <h4 style="margin-left: 7px">{{ $category->name }}</h4>
-          {{-- <img loading="eager" class="heart__list--img" src="/images/store/default/default70.webp" alt="something wrong"> --}}
+          <img loading="eager" class="cart__list--img"
+           src="/{{ $category->media->first()->path }}{{ $category->media->first()->name }}">
          @endif
          <h4 style="margin-left: 7px">{{ $category->name }}</h4>
         </a>
@@ -188,9 +187,6 @@
              <img loading="eager"
               src="/{{ $subcategory->category->media->first()->path }}{{ $subcategory->category->media->first()->name }}"
               alt="{{ $subcategory->category->media->first()->name }}{{ $subcategory->category->name }}">
-             {{-- <h4>{{ $subcategory->category->name }}</h4> --}}
-            @else
-             {{-- <img loading="eager" src="/images/store/default/default70.webp" alt="something wrong"> --}}
             @endif
             <h4>{{ $subcategory->category->name }}</h4>
            </a>
@@ -211,8 +207,6 @@
                <img loading="eager"
                 src="/{{ $subsubCategory->category->media->first()->path }}{{ $subsubCategory->category->media->first()->name }}"
                 alt="{{ $subsubCategory->category->media->first()->name }}{{ $subsubCategory->category->name }}">
-              @else
-               {{-- <img loading="eager" src="/images/store/default/default70.webp" alt="something wrong"> --}}
               @endif
               <h4>{{ $subsubCategory->category->name }}</h4>
              </a>
@@ -229,8 +223,6 @@
        @if ($category->media->first() != null)
         <img loading="eager" src="/{{ $category->media->first()->path }}{{ $category->media->first()->name }}"
          alt="{{ $category->media->first()->name }} {{ $category->name }}">
-       @else
-        {{-- <img loading="eager" src="/images/store/default/default70.webp" alt="something wrong"> --}}
        @endif
        <h4> {{ $category->name }}</h4>
       </a>

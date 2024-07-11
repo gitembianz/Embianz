@@ -194,11 +194,11 @@
         <td colspan="3">
          <div class="details">
           <p>
-           <bold>Category accepted items</bold>
+           <bold>Product type</bold>
            {{ $product->type }}
           </p>
           <p>
-           <bold>Category is active?</bold>
+           <bold>Product is active?</bold>
            @if ($product->active)
             <div class="checkbox--secondary disabled">
              <input type="checkbox" for="disabled3" disabled checked>
@@ -220,8 +220,6 @@
       @endforeach
      </tbody>
     </table>
-
-
     {{-- Load More Manual --}}
     @if ($loadAmount < $prodds->total())
      <button class="button button--secondary button--fill" style="margin-top: 10px;" wire:click="loadMore">
@@ -229,8 +227,6 @@
      </button>
     @endif
    </div>
-
-
   </div>
  </aside>
 

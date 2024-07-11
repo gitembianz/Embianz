@@ -21,8 +21,6 @@ class Variantstable extends Component
     public $selectAll = false;
     public $columns;
     public $selectedColumns = [];
-    public $col = false;
-    public $all = false;
     public $editindex;
     public $variant = [];
     public $statuses;
@@ -34,8 +32,7 @@ class Variantstable extends Component
 
     public function render()
     {
-        $variants = $this->variants;
-        return view('livewire.variantstable', compact('variants'));
+        return view('livewire.variantstable', ['variants' => $this->variants]);
     }
     public function expandRow($index)
     {

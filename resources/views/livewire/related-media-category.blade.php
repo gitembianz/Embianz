@@ -48,7 +48,7 @@
   <div class="background background--center @if ($chose == true) active @endif"></div>
   <div class="aside aside--confirm @if ($chose == true) active @endif">
    <span>
-    How you will upload the media for product?
+    How you will upload the media?
    </span>
    <input style="display: none;" id="localMedia" wire:model="medias" type="file" accept="image/*,video/*" multiple>
    <label class="button button--primary button--long" type="button" for="localMedia">
@@ -78,7 +78,14 @@
     <h1 class="table--name">
      {{ __('Add local media') }}
     </h1>
-    <input class="button button--primary button--centered" value="Save media" type="submit">
+    <button class="button button--primary button--centered" value="submit" type="submit">
+     <svg>
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" />
+      <path d="M12 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+      <path d="M14 4l0 4l-6 0l0 -4" />
+     </svg>
+    </button>
     <button class="button button--danger button--centered" wire:click="cancel()">
      <svg>
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -89,7 +96,6 @@
      </svg>
     </button>
    </nav>
-
 
    {{-- Table --}}
    <div class="table" style="height: calc(100% - 60px);">
@@ -147,7 +153,7 @@
         <td>
          <div class="searchable">
           <input type="number" class="input__searchable" placeholder="Media sequence ex: 1,2..." min="0"
-           required wire:model.defer="file_sequences.{{ $index }}">
+           wire:model.defer="file_sequences.{{ $index }}">
          </div>
         </td>
         <td>
@@ -193,13 +199,13 @@
  {{-- Table add external Media --}}
  <aside>
   <div class="background background--center @if ($externalmedia) active @endif"></div>
-  <form class="aside aside--table @if ($externalmedia) active @endif" wire:submit.prevent="saveexternal">
+  <form class="aside aside--table @if ($externalmedia) active @endif">
    {{-- Navigation --}}
    <nav class="nav--controls">
     <h1 class="table--name">
      {{ __('Add external media') }}
     </h1>
-    <button class="button button--primary button--centered" value="Save" type="submit">
+    <button class="button button--primary button--centered" wire:click.prevent="saveexternal">
      <svg>
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" />
@@ -256,19 +262,19 @@
          {{ $i }}</td>
         <td style="width: auto !important;" style="width: auto;">
          <div class="searchable">
-          <input required placeholder="Media name" type="text" class="input__searchable"
+          <input placeholder="Media name" type="text" class="input__searchable"
            wire:model="file_name.{{ $i }}">
          </div>
         </td>
         <td>
          <div class="searchable">
-          <input placeholder="Ex: 1,2,3.." required type="number" min="0" class="input__searchable"
+          <input placeholder="Ex: 1,2,3.." type="number" min="0" class="input__searchable"
            wire:model="file_sequences.{{ $i }}">
          </div>
         </td>
         <td class="hidden">
          <div class="searchable">
-          <input placeholder="Media external link" required type="url" class="input__searchable"
+          <input placeholder="Media external link" type="url" class="input__searchable"
            wire:model="file_link.{{ $i }}">
          </div>
         </td>
@@ -302,7 +308,7 @@
           <p>
            <bold>Link</bold>
           <div class="searchable">
-           <input placeholder="Media external link" required type="url" class="input__searchable"
+           <input placeholder="Media external link" type="url" class="input__searchable"
             wire:model="file_link.{{ $i }}">
           </div>
           </p>
@@ -456,7 +462,7 @@
             {{ $file->sequence }}
            @else
             <div class="searchable">
-             <input type="number" min="0" required class="input__searchable"
+             <input type="number" min="0" class="input__searchable"
               wire:model.defer="filess.{{ $index }}.sequence" value="{{ $file->sequence }}">
             </div>
            @endif
@@ -527,7 +533,7 @@
               {{ $file->sequence }}
              @else
               <div class="searchable">
-               <input type="number" min="0" required class="input__searchable"
+               <input type="number" min="0" class="input__searchable"
                 wire:model.defer="filess.{{ $index }}.sequence" value="{{ $file->sequence }}">
               </div>
              @endif

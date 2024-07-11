@@ -24,7 +24,7 @@ class RelatedSubcategory extends Component
 
   public $selectedColumns = [];
   public $item;
-  public $loadAmount = 13;
+  public $loadAmount = 20;
 
   //add declaration
   public $searchadd = '';
