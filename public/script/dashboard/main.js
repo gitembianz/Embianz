@@ -1,4 +1,4 @@
-// Import Components
+// Import Components .
 import { aside } from "./components/aside.js";
 import { opener } from "./components/opener.js";
 import { tabs } from "./components/tabs.js";
