@@ -41,6 +41,8 @@ class StoreSeeder extends Seeder
             ['parameter' => 'variant_price_from', 'value' => 'false', 'description' => 'Showing price from to product variant', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'support_on', 'value' => 'true', 'description' => 'Support button call', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'support_phone_number', 'value' => '+373060968442', 'description' => 'Support telephone number, must contains the prefix', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'display_rating', 'value' => 'none', 'description' => 'Display rating', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'display_rating_value', 'value' => 'none', 'description' => 'Display rating value', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             // ['parameter' => '', 'value' => '', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
 
         ];

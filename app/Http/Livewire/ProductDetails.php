@@ -36,7 +36,7 @@ class ProductDetails extends Component
     public function mount($product)
     {
         $prodid = $this->product->id;
-        $this->product = $product->select('id', 'name', 'seo_id', 'long_description', 'quantity', 'short_description', 'type', 'parent_id')
+        $this->product = $product->select('id', 'name', 'seo_id', 'popularity', 'long_description', 'quantity', 'short_description', 'type', 'parent_id')
             ->with([
                 'product_prices' => function ($query) {
                     $query->select('product_id', 'value', 'vat', 'discount', 'value_no_discount');
