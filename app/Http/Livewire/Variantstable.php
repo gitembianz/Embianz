@@ -32,8 +32,7 @@ class Variantstable extends Component
 
     public function render()
     {
-        $variants = $this->variants;
-        return view('livewire.variantstable', compact('variants'));
+        return view('livewire.variantstable', ['variants' => $this->variants]);
     }
     public function expandRow($index)
     {

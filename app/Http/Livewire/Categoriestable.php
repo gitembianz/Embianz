@@ -40,10 +40,6 @@ class Categoriestable extends Component
 
   public function render()
   {
-    if ($this->all) {
-      $this->selectedColumns = $this->columns;
-    }
-
     return view('livewire.categoriestable', ['categories' => $this->categories]);
   }
   public function mount($tableName)

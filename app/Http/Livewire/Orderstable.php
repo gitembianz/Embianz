@@ -39,8 +39,7 @@ class Orderstable extends Component
 
     public function render()
     {
-        $orders = $this->orders;
-        return view('livewire.orderstable', compact('orders'));
+        return view('livewire.orderstable', ['orders' => $this->orders]);
     }
     public function mount($tableName)
     {

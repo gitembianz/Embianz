@@ -30,8 +30,7 @@ class Cartstable extends Component
 
   public function render()
   {
-    $carts = $this->carts;
-    return view('livewire.cartstable', compact('carts'));
+    return view('livewire.cartstable', ['carts' => $this->carts]);
   }
   public function expandRow($index)
   {

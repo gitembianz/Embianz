@@ -39,13 +39,7 @@ class Accountstable extends Component
     }
     public function render()
     {
-        $accounts = $this->accounts;
-
-        if ($this->all) {
-            $this->selectedColumns = $this->columns;
-        }
-
-        return view('livewire.accountstable', compact('accounts'));
+        return view('livewire.accountstable', ['accounts' => $this->accounts]);
     }
     public function mount($tableName)
     {
