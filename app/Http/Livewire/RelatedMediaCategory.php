@@ -3,16 +3,16 @@
 namespace App\Http\Livewire;
 
 use App\Models\Category;
-use getID3;
 use App\Models\Media;
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Models\MediaLocation;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Schema;
+
 
 class RelatedMediaCategory extends Component
 {
@@ -30,13 +30,11 @@ class RelatedMediaCategory extends Component
   public $selectPage = false;
   public $selectAll = false;
   public $idbeingremoved = null;
-  public $columns = ['Id', 'Media', 'Sequence', 'Created At'];
+  public $columns = [];
   public $selectedColumns = [];
   public $file_sequences = [];
   public $file_link = [];
   public $file_name = [];
-  public $col = false;
-  public $all = false;
   public $editedMediaIndex = null;
   public $i;
   public $j;
@@ -88,6 +86,7 @@ class RelatedMediaCategory extends Component
   public function mount(Category $category)
   {
     $this->category = $category;
+    $this->columns = Schema::getColumnListing('media');
     $this->selectedColumns = $this->columns;
     $this->i = null;
     $this->j = null;
@@ -275,7 +274,7 @@ class RelatedMediaCategory extends Component
     $this->file_sequences = [];
     $this->file_link = [];
     $this->file_name = [];
-    $this->mount($this->category);
+    $this->chose = false;
   }
   public function editMedia($index, $id)
   {
@@ -338,9 +337,7 @@ class RelatedMediaCategory extends Component
   }
   public function showColumn($column)
   {
-    if ($column === 'Name') {
-      return true;
-    }
+
     return in_array($column, $this->selectedColumns);
   }
   public function updatedSelectPage($value)
@@ -355,11 +352,8 @@ class RelatedMediaCategory extends Component
   {
     $this->selectPage = false;
   }
-  public function save()
+  public function savelocal()
   {
-    $this->validate([
-      'medias.*' => 'mimetypes:image/jpeg,image/png,image/webp,image/svg+xml|max:10240', // Max 10MB for all files
-    ]);
     $productType = class_basename(get_class($this->category));
     $filespath = 'media/' . $productType . '/';
     if (!File::exists($filespath)) {
@@ -500,7 +494,8 @@ class RelatedMediaCategory extends Component
     ]);
   }
 
-  public function cancel_chose() {
+  public function cancel_chose()
+  {
     $this->chose = false;
   }
 

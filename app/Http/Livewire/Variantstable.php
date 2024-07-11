@@ -39,13 +39,15 @@ class Variantstable extends Component
     }
     public function expandRow($index)
     {
-        if ($this->row  === null) {
-            $this->row = $index;
-        } elseif ($this->row != $index) {
-            $this->row = $index;
+        if ($this->editindex === $index) {
+            return;
         } else {
-            if ($this->editindex != $index) {
 
+            if ($this->row  === null) {
+                $this->row = $index;
+            } elseif ($this->row != $index) {
+                $this->row = $index;
+            } else {
                 $this->row = null;
             }
         }

@@ -139,8 +139,7 @@
          @if ($variantAndValue['allow'])
           <div class="searchable active">
            {{-- Dropdown Header --}}
-           <input class="input" wire:model.debounce.300ms="searchadd" placeholder="Search..."
-            type="text">
+           <input class="input" wire:model.debounce.300ms="searchadd" placeholder="Search..." type="text">
            <button class="button__searchable" wire:click.prevent="dennyselect({{ $index }})">
             <svg>
              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -188,36 +187,34 @@
          <input type="hidden" wire:model.defer="variantAndValues.{{ $index }}.variant.name">
         </td>
         <td class="hidden">
-          <div class="searchable">
-            <select class="input__searchable"
-             wire:model.defer="variantAndValues.{{ $index }}.variant.reference">
-             @foreach ($references as $reference)
-              <option value="{{ $reference->id }}">{{ $reference->name }}</option>
-             @endforeach
-            </select>
-          </div>
+         <div class="searchable">
+          <select class="input__searchable" wire:model.defer="variantAndValues.{{ $index }}.variant.reference">
+           @foreach ($references as $reference)
+            <option value="{{ $reference->id }}">{{ $reference->name }}</option>
+           @endforeach
+          </select>
+         </div>
         </td>
         <td class="hidden" style="width: auto;">
-          <div class="searchable">
-            <input type="text" placeholder="Insert variant value" required class="input__searchable"
-             wire:model.defer="variantAndValues.{{ $index }}.variant.value">
-          </div>
+         <div class="searchable">
+          <input type="text" placeholder="Insert variant value" required class="input__searchable"
+           wire:model.defer="variantAndValues.{{ $index }}.variant.value">
+         </div>
         </td>
         <td class="hidden">
-          <div class="checkbox--primary">
-            <input type="checkbox" wire:model.defer="variantAndValues.{{ $index }}.variant.def">
-            <label></label>
-          </div>
+         <div class="checkbox--primary">
+          <input type="checkbox" wire:model.defer="variantAndValues.{{ $index }}.variant.def">
+          <label></label>
+         </div>
         </td>
         <td class="hidden">
-          <div class="searchable">
-            <select class="input__searchable"
-             wire:model.defer="variantAndValues.{{ $index }}.variant.display">
-             <option value="text">text</option>
-             <option value="image">image</option>
-             <option value="image & text">image & text</option>
-            </select>
-          </div>
+         <div class="searchable">
+          <select class="input__searchable" wire:model.defer="variantAndValues.{{ $index }}.variant.display">
+           <option value="text">text</option>
+           <option value="image">image</option>
+           <option value="image & text">image & text</option>
+          </select>
+         </div>
         </td>
         <td>
          <div style="display: flex;">
@@ -260,8 +257,7 @@
            @if ($variantAndValue['allow'])
             <div class="searchable active">
              {{-- Dropdown Header --}}
-             <input class="input" wire:model.debounce.300ms="searchadd" placeholder="Search..."
-              type="text">
+             <input class="input" wire:model.debounce.300ms="searchadd" placeholder="Search..." type="text">
              <button class="button__searchable" wire:click.prevent="dennyselect({{ $index }})">
               <svg>
                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -326,10 +322,10 @@
           </p>
           <p>
            <bold>Is defaut Variant?</bold>
-            <div class="checkbox--primary">
-              <input type="checkbox" wire:model.defer="variantAndValues.{{ $index }}.variant.def">
-              <label></label>
-            </div>
+          <div class="checkbox--primary">
+           <input type="checkbox" wire:model.defer="variantAndValues.{{ $index }}.variant.def">
+           <label></label>
+          </div>
           </p>
           <p>
            <bold>Variant Dispalyed type</bold>
@@ -379,7 +375,7 @@
    {{-- Search Input --}}
    <input class="input input--long" type="text" wire:model.debounce.300ms="search" placeholder="Search...">
    {{-- IF CHECKED --}}
-   <div class="dropdown dropdown--right" wire:ignore @if (!$checked) style="display:none;" @endif>
+   <div class="dropdown dropdown--right" @if (!$checked) style="display:none;" @endif>
     {{-- Dropdown Button --}}
     <button class="button button--primary button--centered button--long" tooltip="Actions with checked" tooltip-top>
      <span>With Checked({{ count($checked) }})</span>
@@ -394,10 +390,9 @@
     </div>
    </div>
    {{-- Visible Dropdown --}}
-   <div class="dropdown dropdown--right" wire:ignore >
+   <div class="dropdown dropdown--right" wire:ignore>
     {{-- Dropdown Button --}}
-    <button class="button button--primary button--centered" tooltip="Show items in table" tooltip-left
-     >
+    <button class="button button--primary button--centered" tooltip="Show items in table" tooltip-left>
      <svg>
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
@@ -712,9 +707,10 @@
            @if ($editindex !== $index)
             {{ $variant->value }}
            @else
-           <div class="searchable">
-            <input type="text" required class="input__searchable" wire:model.defer="var.{{ $index }}.value">
-           </div>
+            <div class="searchable">
+             <input type="text" required class="input__searchable"
+              wire:model.defer="var.{{ $index }}.value">
+            </div>
            @endif
           </p>
          @endif

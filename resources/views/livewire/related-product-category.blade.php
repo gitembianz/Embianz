@@ -154,7 +154,7 @@
       @foreach ($prodds as $index => $product)
        <tr class="expandable-row">
         <td style="border-left: none" data-title="Check">
-         <div class="checcheckbox--secondary">
+         <div class="checkbox--primary">
           <input type="checkbox" value="{{ $product->id }}" id="{{ $product->id }}" wire:model="checkedadd">
           <label for="{{ $product->id }}"></label>
          </div>
@@ -261,7 +261,7 @@
    {{-- Search Input --}}
    <input class="input input--long" type="text" wire:model.debounce.300ms="search" placeholder="Search...">
    {{-- IF CHECKED --}}
-   <div class="dropdown dropdown--right" wire:ignore @if (!$checked) style="display:none;" @endif>
+   <div class="dropdown dropdown--right" @if (!$checked) style="display:none;" @endif>
     {{-- Dropdown Button --}}
     <button class="button button--primary button--centered button--long" tooltip="Actions with checked" tooltip-top>
      <span>With Checked({{ count($checked) }})</span>

@@ -76,7 +76,7 @@
    </svg>
   </button>
   {{-- Sorting Dropdown --}}
-  <div class="dropdown dropdown--right display--desktop" wire:ignore >
+  <div class="dropdown dropdown--right display--desktop" wire:ignore>
    {{-- Dropdown Button --}}
    <button class="button button--primary button--centered" tooltip="Sort items in table" tooltip-left>
     <svg>
@@ -104,7 +104,7 @@
    </div>
   </div>
   {{-- Visible Dropdown --}}
-  <div class="dropdown dropdown--right display--desktop" wire:ignore >
+  <div class="dropdown dropdown--right display--desktop" wire:ignore>
    {{-- Dropdown Button --}}
    <button class="button button--primary button--centered" tooltip="Show items in table" tooltip-left>
     <svg>
@@ -222,28 +222,30 @@
           @if ($editindex !== $index)
            @if ($item->active)
             <div class="checkbox--primary disabled">
-             <input type="checkbox" id="disabled1" disabled checked>
-             <label for="disabled1"></label>
+             <input type="checkbox" id="isactive{{ $index }}" disabled checked>
+             <label for="isactive{{ $index }}"></label>
             </div>
            @else
             <div class="checkbox--primary disabled">
-             <input type="checkbox" id="disabled2" disabled>
-             <label for="disabled2"></label>
+             <input type="checkbox" id="notactive{{ $index }}" disabled>
+             <label for="notactive{{ $index }}"></label>
             </div>
            @endif
           @else
            <div class="checkbox--primary inline">
-            <input type="checkbox" id="active" wire:model.defer="isactive.{{ $index }}.active" />
-            <label for="active"></label>
+            <input type="checkbox" id="check{{ $index }}"
+             wire:model.defer="isactive.{{ $index }}.active" />
+            <label for="check{{ $index }}"></label>
            </div>
           @endif
          @elseif($column === 'description')
           @if ($editindex !== $index)
            {{ $item->description }}
           @else
-              <div class="searchable" >
-                <input type="text" class="input__searchable"  wire:model.defer="isactive.{{ $index }}.description">
-              </div>
+           <div class="searchable">
+            <input type="text" class="input__searchable"
+             wire:model.defer="isactive.{{ $index }}.description">
+           </div>
           @endif
          @else
           {{ $item->$column }}
@@ -288,15 +290,26 @@
             @if ($editindex !== $index)
              <p>
               <bold>{{ $column }}:</bold>
-              {{ $item->active ? 'Active' : 'Inactive' }}
+              @if ($item->active)
+               <div class="checkbox--primary disabled">
+                <input type="checkbox" id="isactive{{ $nr }}" disabled checked>
+                <label for="isactive{{ $nr }}"></label>
+               </div>
+              @else
+               <div class="checkbox--primary disabled">
+                <input type="checkbox" id="notactive{{ $nr }}" disabled>
+                <label for="notactive{{ $nr }}"></label>
+               </div>
+              @endif
              </p>
             @else
              <p>
               <bold>{{ $column }}:</bold>
-              <div class="checkbox--primary">
-               <input type="checkbox" id="isactive" wire:model.defer="isactive.{{ $index }}.active" />
-               <label for="isactive"></label>
-              </div>
+             <div class="checkbox--primary">
+              <input type="checkbox" id="check{{ $nr }}"
+               wire:model.defer="isactive.{{ $index }}.active" />
+              <label for="check{{ $nr }}"></label>
+             </div>
              </p>
             @endif
            @elseif($column === 'description')
@@ -308,9 +321,10 @@
             @else
              <p>
               <bold>{{ $column }}:</bold>
-              <div class="searchable">
-                <input type="text" class="input__searchable" wire:model.defer="isactive.{{ $index }}.description">
-              </div>
+             <div class="searchable">
+              <input type="text" class="input__searchable"
+               wire:model.defer="isactive.{{ $index }}.description">
+             </div>
              </p>
             @endif
            @else
@@ -332,22 +346,7 @@
    </tbody>
   </table>
 
-
-  {{-- Load More Automatic --}}
-  <script>
-   document.addEventListener('livewire:load', function() {
-    let observer = new IntersectionObserver((entries) => {
-     entries.forEach(entry => {
-      if (entry.isIntersecting) {
-       @this.call('loadMore');
-      }
-     });
-    });
-
-    observer.observe(document.getElementById('last_record'));
-   });
-  </script>
-
+  <x-admin-lazyload />
 
   {{-- Load More Manual --}}
   @if ($loadAmount <= count($payments))

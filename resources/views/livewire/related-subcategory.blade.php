@@ -256,7 +256,7 @@
    {{-- Search Input --}}
    <input class="input input--long" type="text" wire:model.debounce.300ms="search" placeholder="Search...">
    {{-- IF CHECKED --}}
-   <div class="dropdown dropdown--right" wire:ignore @if (!$checked) style="display:none;" @endif>
+   <div class="dropdown dropdown--right" @if (!$checked) style="display:none;" @endif>
     {{-- Dropdown Button --}}
     <button class="button button--primary button--centered button--long" tooltip="Actions with checked" tooltip-top>
      <span>With Checked({{ count($checked) }})</span>
@@ -316,7 +316,7 @@
       <div class="checkbox--primary">
        <input type="checkbox" id="selectPage24" wire:model="selectPage" />
        <label for="selectPage24"></lab>
-      </d>
+        </d>
      </th>
      @if ($this->showColumn('Id'))
       <th>
