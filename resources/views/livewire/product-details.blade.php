@@ -14,7 +14,7 @@
    @if ($discount)
     <span class="product__discount">-{{ $product->product_prices->first()->discount }}%</span>
    @endif
-
+    <div class="rating" style="--rating: 69%;"></div>
   </div>
   @livewire('product-wishlist-button', [
       'productId' => $product->id,
