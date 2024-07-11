@@ -1,75 +1,60 @@
-//<-------------------------- General -------------------------->
-@import "noren/general/colors";
-@import "noren/general/normalize";
-@import "noren/general/variable";
-@import "noren/general/mixin";
-@import "noren/general/fonts";
-@import "noren/general/general";
-//<------------------------ End General ------------------------>
-//<------------------------------------------------------------->
-//<------------------------ Components ------------------------->
-@import "noren/components/loading-screen";
-@import "noren/components/cookie";
-@import "noren/components/section";
-@import "noren/components/breadcrumb";
-@import "noren/components/alert";
-@import "noren/components/quantity";
-@import "noren/components/support";
-@import "noren/components/help-button";
-@import "noren/components/numeric-list";
-@import "noren/components/accordion";
-@import "noren/components/select";
-@import "noren/components/spinner";
-@import "noren/components/newsletter";
-@import "noren/components/alertorder";
-//<---------------------- End Components ----------------------->
-//<------------------------------------------------------------->
-//<------------------------ Other Pages ------------------------>
-@import "noren/other-page/faq";
-@import "noren/other-page/contact";
-@import "noren/other-page/about";
-@import "noren/other-page/redirect";
-//<---------------------- End Other Pages ---------------------->
-//<------------------------------------------------------------->
-//<-------------------------- Header --------------------------->
-@import "noren/header/banner";
-@import "noren/header/header";
-@import "noren/header/leftbar";
-@import "noren/header/navbar";
-@import "noren/header/menu";
-@import "noren/header/searchbar";
-//<------------------------ End Header ------------------------->
-//<------------------------------------------------------------->
-//<------------------------- Catalogue ------------------------->
-@import "noren/catalogue/card-style";
-@import "noren/catalogue/addcart";
-@import "noren/catalogue/catalogue";
-@import "noren/catalogue/control";
-@import "noren/catalogue/filter";
-@import "noren/catalogue/tag";
-//<----------------------- End Catalogue ----------------------->
-//<------------------------------------------------------------->
-//<------------------------- Product --------------------------->
-@import "noren/product/product";
-@import "noren/product/tab";
-//<----------------------- End Product ------------------------->
-//<-------------- Cart, wish and checkout page ----------------->
-@import "noren/checkout/basket";
-@import "noren/checkout/detail";
-@import "noren/checkout/form";
-@import "noren/checkout/step";
-@import "noren/checkout/payment";
-@import "noren/checkout/total";
-//<------------ End Cart, wish and checkout page --------------->
-//<------------------------------------------------------------->
-//<-------------------------- Sliders -------------------------->
-@import "noren/slider/slider-main";
-@import "noren/slider/slider-card";
-@import "noren/slider/slider-product";
-@import "noren/slider/related-slider";
-//<------------------------ End Sliders ------------------------>
-//<------------------------------------------------------------->
-// <-------------------------- Footer -------------------------->
-@import "noren/footer/footer";
-// <------------------------ End Footer ------------------------>
-//<------------------------------------------------------------->
+/// 1. Themes
+@import"store/themes/theme-noren";
+
+/// 2. Abstracts
+@import"store/abstracts/mixin";
+@import"store/abstracts/variable";
+
+/// 3. Bases
+@import"store/base/animation";
+@import"store/base/base";
+@import"store/base/fonts";
+@import"store/base/reset";
+
+/// 4. Components
+@import"store/components/accordion";
+@import"store/components/addcart";
+@import"store/components/alert";
+@import"store/components/alertorder";
+@import"store/components/basket";
+@import"store/components/breadcrumb";
+@import"store/components/card-style";
+@import"store/components/catalogue";
+@import"store/components/control";
+@import"store/components/cookie";
+@import"store/components/detail";
+@import"store/components/filter";
+@import"store/components/form";
+@import"store/components/help-button";
+@import"store/components/newsletter";
+@import"store/components/numeric-list";
+@import"store/components/payment";
+@import"store/components/quantity";
+@import"store/components/related-slider";
+@import"store/components/section";
+@import"store/components/select";
+@import"store/components/slider-card";
+@import"store/components/slider-main";
+@import"store/components/slider-product";
+@import"store/components/spinner";
+@import"store/components/step";
+@import"store/components/support";
+@import"store/components/tag";
+@import"store/components/total";
+
+/// 5. Layouts
+@import"store/layouts/banner";
+@import"store/layouts/footer";
+@import"store/layouts/header";
+@import"store/layouts/leftbar";
+@import"store/layouts/menu";
+@import"store/layouts/navbar";
+@import"store/layouts/searchbar";
+
+/// 6. Pages
+@import"store/pages/about";
+@import"store/pages/contact";
+@import"store/pages/faq";
+@import"store/pages/product";
+@import"store/pages/redirect";
+@import"store/pages/tab";
