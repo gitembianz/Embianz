@@ -22,6 +22,7 @@
     </div>
     @if (app()->has('global_display_rating_value') && app('global_display_rating_value') === 'true')
      {{ $rating }}
+     {{-- / --}}
     @endif
    @endif
   </div>
