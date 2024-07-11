@@ -103,7 +103,7 @@
    </svg>
   </button>
   {{-- IF CHECKED --}}
-  <div class="dropdown dropdown--right" wire:ignore @if (!$checked) style="display: none;" @endif>
+  <div class="dropdown dropdown--right" @if (!$checked) style="display: none;" @endif>
    {{-- Dropdown Button --}}
 
    <button class="button button--primary button--centered button--long" tooltip="Actions with checked" tooltip-top>

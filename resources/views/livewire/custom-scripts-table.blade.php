@@ -113,7 +113,7 @@
    </svg>
   </a>
   {{-- IF CHECKED --}}
-  <div class="dropdown dropdown--right" wire:ignore @if (!$checked) style="display: none;" @endif>
+  <div class="dropdown dropdown--right" @if (!$checked) style="display: none;" @endif>
    {{-- Dropdown Button --}}
    <button class="button button--primary button--centered button--long" tooltip="Actions with checked" tooltip-top>
     <span>With Checked({{ count($checked) }})</span>
@@ -345,12 +345,12 @@
             @if ($column === 'active')
              @if ($item->$column)
               <div class="checkbox checkbox--secondary inline disabled">
-               <input type="checkbox"  id="disabled3"disabled checked>
+               <input type="checkbox" id="disabled3"disabled checked>
                <label for="disabled3"></label>
               </div>
              @else
               <div class="checkbox checkbox--secondary inline disabled">
-               <input type="checkbox"  id="disabled4"disabled>
+               <input type="checkbox" id="disabled4"disabled>
                <label for="disabled4"></label>
               </div>
              @endif

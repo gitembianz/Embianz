@@ -103,7 +103,7 @@
    </svg>
   </button>
   {{-- IF CHECKED --}}
-  <div class="dropdown dropdown--right" wire:ignore @if (!$checked) style="display: none;" @endif>
+  <div class="dropdown dropdown--right" @if (!$checked) style="display: none;" @endif>
    {{-- Dropdown Button --}}
    <button class="button button--secondary button--centered button--long" tooltip="Actions with checked" tooltip-top>
     <span>With Checked({{ count($checked) }})</span>
@@ -235,8 +235,8 @@
     <tr>
      <th style="border-right: none; border-left: none;">
       <div class="checkbox--primary">
-        <input type="checkbox" id="selectPage5" wire:model="selectPage" />
-        <label for="selectPage5"></label>
+       <input type="checkbox" id="selectPage5" wire:model="selectPage" />
+       <label for="selectPage5"></label>
       </div>
      </th>
      @foreach ($selectedColumns as $index => $column)

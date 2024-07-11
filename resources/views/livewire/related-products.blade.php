@@ -122,8 +122,7 @@
          @if ($productsAndValue['allow'])
           <div class="searchable active">
            {{-- Dropdown Header --}}
-           <input class="input" wire:model.debounce.300ms="searchadd" placeholder="Search..."
-            type="text">
+           <input class="input" wire:model.debounce.300ms="searchadd" placeholder="Search..." type="text">
            <button class="button__searchable" wire:click.prevent="dennyselect({{ $index }})">
             <svg>
              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -217,8 +216,7 @@
            @if ($productsAndValue['allow'])
             <div class="searchable active">
              {{-- Dropdown Header --}}
-             <input class="input" wire:model.debounce.300ms="searchadd" placeholder="Search..."
-              type="text">
+             <input class="input" wire:model.debounce.300ms="searchadd" placeholder="Search..." type="text">
              <button class="button__searchable" wire:click.prevent="dennyselect({{ $index }})">
               <svg>
                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -313,7 +311,7 @@
    {{-- Search Input --}}
    <input class="input input--long" type="text" wire:model.debounce.300ms="search" placeholder="Search...">
    {{-- IF CHECKED --}}
-   <div class="dropdown dropdown--right" wire:ignore @if (!$checked) style="display:none;" @endif>
+   <div class="dropdown dropdown--right" @if (!$checked) style="display:none;" @endif>
     {{-- Dropdown Button --}}
     <button class="button button--primary button--centered button--long" tooltip="Actions with checked" tooltip-top>
      <span>With Checked({{ count($checked) }})</span>
@@ -448,7 +446,8 @@
        class="expandable-row @if ($this->isChecked($relatedproduct->id)) active @endif">
        <td>
         <div class="checkbox--primary">
-         <input type="checkbox" value="{{ $relatedproduct->id }}" id="{{ $relatedproduct->id }}" wire:model="checked">
+         <input type="checkbox" value="{{ $relatedproduct->id }}" id="{{ $relatedproduct->id }}"
+          wire:model="checked">
          <label for="{{ $relatedproduct->id }}"></label>
         </div>
        </td>
@@ -475,9 +474,9 @@
          @if ($editindex !== $index)
           {{ $relatedproduct->sequence }}
          @else
-         <div class="searchable">
-          <input type="number" required class="input__searchable" wire:model.defer="sec.{{ $index }}.sec">
-         </div>
+          <div class="searchable">
+           <input type="number" required class="input__searchable" wire:model.defer="sec.{{ $index }}.sec">
+          </div>
          @endif
         </td>
        @endif
@@ -543,9 +542,10 @@
            @if ($editindex !== $index)
             {{ $relatedproduct->sequence }}
            @else
-           <div class="searchable">
-            <input type="number" required class="input__searchable" wire:model.defer="sec.{{ $index }}.sec">
-           </div>
+            <div class="searchable">
+             <input type="number" required class="input__searchable"
+              wire:model.defer="sec.{{ $index }}.sec">
+            </div>
            @endif
           </p>
          @endif
