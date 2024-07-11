@@ -187,9 +187,6 @@
              <img loading="eager"
               src="/{{ $subcategory->category->media->first()->path }}{{ $subcategory->category->media->first()->name }}"
               alt="{{ $subcategory->category->media->first()->name }}{{ $subcategory->category->name }}">
-             {{-- <h4>{{ $subcategory->category->name }}</h4> --}}
-            @else
-             {{-- <img loading="eager" src="/images/store/default/default70.webp" alt="something wrong"> --}}
             @endif
             <h4>{{ $subcategory->category->name }}</h4>
            </a>
@@ -210,8 +207,6 @@
                <img loading="eager"
                 src="/{{ $subsubCategory->category->media->first()->path }}{{ $subsubCategory->category->media->first()->name }}"
                 alt="{{ $subsubCategory->category->media->first()->name }}{{ $subsubCategory->category->name }}">
-              @else
-               {{-- <img loading="eager" src="/images/store/default/default70.webp" alt="something wrong"> --}}
               @endif
               <h4>{{ $subsubCategory->category->name }}</h4>
              </a>
