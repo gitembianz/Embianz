@@ -68,7 +68,7 @@ class StoreController extends Controller
 
     if ($productCategory != null && $productCategory->product->type != 'parrent') {
       $preload = "/" . optional($productCategory->product->media()->first())->path . optional($productCategory->product->media()->first())->name;
-    } elseif ($productCategory->product->type = 'parrent') {
+    } elseif ($productCategory->product->type = 'parrent' && $productCategory->product->variants->count() != 0) {
       if ($productCategory->product->variants->where('default_variant', true)->first()) {
         $element = $productCategory->product->variants->where('default_variant', true)->first()->product;
       } else {
