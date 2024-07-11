@@ -113,7 +113,7 @@
    </svg>
   </a>
   {{-- IF CHECKED --}}
-  <div class="dropdown dropdown--right" wire:ignore @if (!$checked) style="display: none;" @endif>
+  <div class="dropdown dropdown--right" @if (!$checked) style="display: none;" @endif>
    {{-- Dropdown Button --}}
    <button class="button button--primary button--centered button--long" tooltip="Actions with checked" tooltip-top>
     <span>With Checked({{ count($checked) }})</span>
@@ -167,8 +167,8 @@
    <div class="dropdown__content">
     <div class="dropdown__container">
      @foreach ($columns as $column)
-      <label class="switch switch--primary inline" >
-       <input type="checkbox"  wire:model="selectedColumns" value="{{ $column }}"
+      <label class="switch switch--primary inline">
+       <input type="checkbox" wire:model="selectedColumns" value="{{ $column }}"
         {{ in_array($column, $selectedColumns) ? 'checked' : '' }} />
        <span>{{ $column }}</span>
       </label>
@@ -366,18 +366,18 @@
             @if ($category->$column)
              <p>
               <bold>{{ $column }}:</bold>
-              <div class="checkbox--secondary disabled">
-               <input type="checkbox" id="disabled3" disabled checked>
-               <label id="disabled3"></label>
-              </div>
+             <div class="checkbox--secondary disabled">
+              <input type="checkbox" id="disabled3" disabled checked>
+              <label id="disabled3"></label>
+             </div>
              </p>
             @else
              <p>
               <bold>{{ $column }}:</bold>
-              <div class="checkbox--secondary disabled">
-               <input type="checkbox" id="disabled4" disabled>
-               <label id="disabled4"></label>
-              </div>
+             <div class="checkbox--secondary disabled">
+              <input type="checkbox" id="disabled4" disabled>
+              <label id="disabled4"></label>
+             </div>
              </p>
             @endif
            @else
