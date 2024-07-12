@@ -198,7 +198,6 @@ class RelatedSpecProduct extends Component
     $this->specid = $idspec;
     $this->editedrow = $index;
     $this->specification = [
-      $index . '.name' => $this->itemselected,
       $index . '.value' => $val->value,
       $index . '.sequence' => $val->sequence,
 
@@ -214,18 +213,7 @@ class RelatedSpecProduct extends Component
   public function confirmspecs($index, $id)
   {
     $newspec = Product_Spec::find($id);
-    if ($this->isselected != null) {
-      if ($this->isselected) {
-        $newspec->spec_id = $this->specid;
-        $newspec->save();
-      } else {
-        session()->flash('notification', [
-          'message' => 'Please provide a value!',
-          'type' => 'warning',
-          'title' => 'Missing Values'
-        ]);
-      }
-    }
+
     $val = $this->specification;
     if (isset($val["$index"]['value']) || isset($val["$index"]['sequence'])) {
       if (isset($val["$index"]['value']) && $val["$index"]['value'] != "") {
@@ -240,7 +228,6 @@ class RelatedSpecProduct extends Component
       $this->allow = false;
       $this->specid = null;
       $this->specification = [];
-      $this->itemselected = null;
       $this->editedrow = null;
       $this->search = '';
       session()->flash('notification', [
