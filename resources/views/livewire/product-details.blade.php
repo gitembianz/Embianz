@@ -17,13 +17,14 @@
    @if (app()->has('global_display_rating') && app('global_display_rating') === 'true')
     @php
      $rating = 100 / (app('max_popularity') / $product->popularity);
+     $ratingvalue = $rating / 20;
     @endphp
-    <div class="rating" style="--rating: {{ $rating }}%;">
+    <div style="display: flex">
+     <div class="rating" style="--rating: {{ $rating }}%;"></div>
+     @if (app()->has('global_display_rating_value') && app('global_display_rating_value') === 'true')
+      ({{ $ratingvalue }})
+     @endif
     </div>
-    @if (app()->has('global_display_rating_value') && app('global_display_rating_value') === 'true')
-     {{ $rating }}
-     {{-- / --}}
-    @endif
    @endif
   </div>
 
