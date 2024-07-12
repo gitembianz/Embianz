@@ -86,7 +86,7 @@ class RelatedVariants extends Component
         $this->variantAndValues[] = [
             'allow' => false,
             'itemselected' => null,
-            'variant' => ['name' => null, 'reference' => $this->references->first()->id, 'display' => 'text', 'def' => false],
+            'variant' => ['name' => null, 'reference' => optional($this->references->first())->id, 'display' => 'text', 'def' => false],
         ];
     }
     public function load()
