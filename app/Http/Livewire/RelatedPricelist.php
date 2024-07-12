@@ -213,7 +213,6 @@ class RelatedPricelist extends Component
     $this->priceid = $iditem;
     $this->editedrow = $index;
     $this->pricelist = [
-      $index . '.name' => $this->itemselected,
       $index . '.value' => $val->value_no_vat,
       $index . '.vat' => $val->vat,
       $index . '.discount' => $val->discount,
@@ -230,19 +229,6 @@ class RelatedPricelist extends Component
   public function confirmitem($index, $id)
   {
     $new = PricelistEntries::find($id);
-    if ($this->isselected != null) {
-      if ($this->isselected) {
-        $new->pricelist_id = $this->priceid;
-        $new->save();
-      } else {
-        session()->flash('notification', [
-          'message' => 'Please provide a value!',
-          'type' => 'warning',
-          'title' => 'Missing Values'
-        ]);
-      }
-    }
-
     $val = $this->pricelist[$index] ?? NULL;
     if (!is_null($val)) {
       if (array_key_exists('vat', $val)) {
@@ -256,7 +242,6 @@ class RelatedPricelist extends Component
             'title' => 'VAT value'
           ]);
           $this->pricelist = [
-            $index . '.name' => $this->itemselected,
             $index . '.value' => $new->value_no_vat,
             $index . '.vat' => $val["vat"],
             $index . '.discount' => $new->discount,
@@ -277,7 +262,6 @@ class RelatedPricelist extends Component
             'title' => 'Discount value'
           ]);
           $this->pricelist = [
-            $index . '.name' => $this->itemselected,
             $index . '.value' => $new->value_no_vat,
             $index . '.vat' => $new->vat,
             $index . '.discount' => $val["discount"],
@@ -293,7 +277,6 @@ class RelatedPricelist extends Component
         $newValue = str_replace(',', '.', $val["value"]);
         $floatValue = floatval($newValue);
         $formattedValue = number_format($floatValue, 2, '.', '');
-
         $new->value_no_vat = $formattedValue;
       }
       $new->value_no_discount = $new->value_no_vat + (0.01 * $new->vat * $new->value_no_vat);
@@ -341,11 +324,9 @@ class RelatedPricelist extends Component
       $test = PricelistEntries::find($item);
       $this->priceAndValues[$index]['itemselected'] = $test->pricelist->name;
       $this->priceAndValues[$index]['price']['id'] = $test->id;
-      $this->priceAndValues[$index]['price']['idrel'] = $test->pricelist->id;
       $this->priceAndValues[$index]['price']['value'] = $test->value_no_vat;
       $this->priceAndValues[$index]['price']['discount'] = $test->discount;
       $this->priceAndValues[$index]['price']['vat'] = $test->vat;
-      $this->priceAndValues[$index]['allow'] = false;
     }
   }
   public function confirmpricemultiple()
@@ -366,7 +347,6 @@ class RelatedPricelist extends Component
         $item = PricelistEntries::find($priceAndValue['price']['id']);
         if ($item) {
           $item->value_no_vat = $priceAndValue['price']['value'];
-          $item->pricelist_id = $priceAndValue['price']['idrel'];
 
           if ($priceAndValue['price']['vat'] < 0) {
             session()->flash('notification', [
