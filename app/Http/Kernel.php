@@ -20,7 +20,6 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\PreventRequestsDuringMaintenance::class,
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
-        \App\Http\Middleware\SetCacheControl::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
     ];
 
@@ -68,6 +67,5 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'check.order' => \App\Http\Middleware\CheckOrderMiddleware::class,
         'categorycheck' => \App\Http\Middleware\CategoryCheck::class,
-        'cache-control' => \App\Http\Middleware\SetCacheControl::class,
     ];
 }
