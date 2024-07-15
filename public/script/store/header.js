@@ -54,6 +54,12 @@ function dropmenus(menuID, setActive = false) {
       button.addEventListener("click", function () {
         menu.classList.toggle("active");
         list.classList.toggle("active");
+
+                // Scroll into view and focus if the menu is active
+        if (menu.classList.contains("active")) {
+          menu.scrollIntoView({ behavior: "smooth", block: "center" });
+          menu.focus();
+        }
       });
     } else {
       return;
