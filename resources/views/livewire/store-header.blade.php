@@ -165,9 +165,9 @@
        <div class="dropmenu__button">
         <a class="dropmenu__button--link"
          href="{{ route('products', ['categorySlug' => $category->seo_id !== null && $category->seo_id !== '' ? $category->seo_id : $category->id]) }}">
-         @if ($category->media->first())
+         @if ($category->media->where('type', 'min')->first())
           <img loading="eager" class="cart__list--img"
-           src="/{{ $category->media->first()->path }}{{ $category->media->first()->name }}">
+           src="/{{ $category->media->where('type', 'min')->first()->path }}{{ $category->media->where('type', 'min')->first()->name }}">
          @endif
          <h4 style="margin-left: 7px">{{ $category->name }}</h4>
         </a>
@@ -183,10 +183,10 @@
           <div class="submenu__button">
            <a class="submenu__button--link"
             href="{{ route('products', ['categorySlug' => $subcategory->category->seo_id !== null && $subcategory->category->seo_id !== '' ? $subcategory->category->seo_id : $subcategory->category->id]) }}">
-            @if ($subcategory->category->media->first() != null)
+            @if ($subcategory->category->media->where('type', 'min')->first() != null)
              <img loading="eager"
-              src="/{{ $subcategory->category->media->first()->path }}{{ $subcategory->category->media->first()->name }}"
-              alt="{{ $subcategory->category->media->first()->name }}{{ $subcategory->category->name }}">
+              src="/{{ $subcategory->category->media->where('type', 'min')->first()->path }}{{ $subcategory->category->media->where('type', 'min')->first()->name }}"
+              alt="{{ $subcategory->category->media->where('type', 'min')->first()->name }}{{ $subcategory->category->name }}">
             @endif
             <h4>{{ $subcategory->category->name }}</h4>
            </a>
@@ -203,10 +203,10 @@
             @foreach ($subcategory->category->subcategory as $subsubCategory)
              <a class="submenu__link"
               href="{{ route('products', ['categorySlug' => $subsubCategory->category->seo_id !== null && $subsubCategory->category->seo_id !== '' ? $subsubCategory->category->seo_id : $subsubCategory->category->id]) }}">
-              @if ($subsubCategory->category->media->first() != null)
+              @if ($subsubCategory->category->media->where('type', 'min')->first() != null)
                <img loading="eager"
-                src="/{{ $subsubCategory->category->media->first()->path }}{{ $subsubCategory->category->media->first()->name }}"
-                alt="{{ $subsubCategory->category->media->first()->name }}{{ $subsubCategory->category->name }}">
+                src="/{{ $subsubCategory->category->media->where('type', 'min')->first()->path }}{{ $subsubCategory->category->media->where('type', 'min')->first()->name }}"
+                alt="{{ $subsubCategory->category->media->where('type', 'min')->first()->name }}{{ $subsubCategory->category->name }}">
               @endif
               <h4>{{ $subsubCategory->category->name }}</h4>
              </a>
@@ -220,9 +220,10 @@
      @else
       <a class="menu__link"
        href="{{ route('products', ['categorySlug' => $category->seo_id !== null && $category->seo_id !== '' ? $category->seo_id : $category->id]) }}">
-       @if ($category->media->first() != null)
-        <img loading="eager" src="/{{ $category->media->first()->path }}{{ $category->media->first()->name }}"
-         alt="{{ $category->media->first()->name }} {{ $category->name }}">
+       @if ($category->media->where('type', 'min')->first() != null)
+        <img loading="eager"
+         src="/{{ $category->media->where('type', 'min')->first()->path }}{{ $category->media->where('type', 'min')->first()->name }}"
+         alt="{{ $category->media->where('type', 'min')->first()->name }} {{ $category->name }}">
        @endif
        <h4> {{ $category->name }}</h4>
       </a>
