@@ -106,7 +106,7 @@
        <th>
         <div class="table--btn">Media</div>
        </th>
-       <th>
+       <th class="hidden">
         <div class="table--btn">Name</div>
        </th>
        <th class="hidden">
@@ -115,7 +115,7 @@
        <th class="hidden">
         <div class="table--btn">Extension Type</div>
        </th>
-       <th class="hidden">
+       <th>
         <div class="table--btn">Sequence</div>
        </th>
        <th class="hidden">
@@ -149,11 +149,11 @@
           </video>
          @endif
         </td>
-        <td wire:click="expandRow3({{ $index }})">{{ $media->getClientOriginalName() }}</td>
+        <td class="hidden">{{ $media->getClientOriginalName() }}</td>
         <td class="hidden" wire:click="expandRow3({{ $index }})">{{ $media->getSize() }} KB</td>
         <td class="hidden" wire:click="expandRow3({{ $index }})">{{ $media->getClientOriginalExtension() }}
         </td>
-        <td class="hidden" wire:click="expandRow3({{ $index }})">
+        <td>
          <div class="searchable">
           <input type="number" class="input__searchable" placeholder="Media sequence ex: 1,2..." min="0"
            required wire:model.defer="file_sequences.{{ $index }}">
@@ -179,7 +179,10 @@
        <tr class="details-row @if ($rind3 === $k) active @endif">
         <td colspan="3">
          <div class="details">
-
+          <p>
+           <bold>Name</bold>
+           {{ $media->getClientOriginalName() }}
+          </p>
           <p>
            <bold>Size</bold>
            {{ $media->getSize() }} KB
@@ -187,13 +190,6 @@
           <p>
            <bold>Extension Type</bold>
            {{ $media->getClientOriginalExtension() }}
-          </p>
-          <p>
-           <bold>Sequence</bold>
-          <div class="searchable">
-           <input type="number" class="input__searchable" placeholder="Media sequence ex: 1,2..." min="0"
-            required wire:model.defer="file_sequences.{{ $index }}">
-          </div>
           </p>
           <p>
            <bold>Automatic resize</bold>

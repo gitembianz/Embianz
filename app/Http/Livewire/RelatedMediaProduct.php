@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Http\UploadedFile;
 
 class RelatedMediaProduct extends Component
 {
@@ -39,8 +38,6 @@ class RelatedMediaProduct extends Component
   public $file_resize = [];
   public $file_link = [];
   public $file_name = [];
-  public $col = false;
-  public $all = false;
   public $editedMediaIndex = null;
   public $i;
   public $j;
@@ -389,6 +386,7 @@ class RelatedMediaProduct extends Component
     $this->file_sequences = [];
     $this->file_link = [];
     $this->file_name = [];
+    $this->chose = false;
     $this->mount($this->product);
   }
   public function save()
@@ -618,7 +616,8 @@ class RelatedMediaProduct extends Component
       'title' => 'Success'
     ]);
   }
-  public function cancel_chose() {
+  public function cancel_chose()
+  {
     $this->chose = false;
   }
   public function deleteRecords()
