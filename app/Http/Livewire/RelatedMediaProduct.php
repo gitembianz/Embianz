@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Schema;
+
 
 class RelatedMediaProduct extends Component
 {
@@ -19,7 +21,6 @@ class RelatedMediaProduct extends Component
   use WithPagination;
   public $product;
   public $showmedia = false;
-  public $productType;
   public $type;
   public $medias = [];
   public $filess = [];
@@ -31,7 +32,7 @@ class RelatedMediaProduct extends Component
   public $selectPage = false;
   public $selectAll = false;
   public $idbeingremoved = null;
-  public $columns = ['Id', 'Media', 'Media Location', 'Sequence'];
+  public $columns = [];
   public $selectedColumns = [];
   public $locations;
   public $file_sequences = [];
@@ -87,7 +88,7 @@ class RelatedMediaProduct extends Component
   public function mount(Product $product)
   {
     $this->product = $product;
-    $this->productType = class_basename(get_class($this->product));
+    $this->columns = Schema::getColumnListing('media');
     $this->selectedColumns = $this->columns;
     $this->i = null;
     $this->j = null;
@@ -96,18 +97,12 @@ class RelatedMediaProduct extends Component
   {
     $this->editedMediaIndex = $index;
     $media = Media::find($id);
-    if ($media->external == 1) {
-      $this->filess = [
-        $index . '.path' => $media->path,
-        $index . '.name' => $media->name,
-        $index . '.sequence' => $media->sequence,
-      ];
-    } else {
-      $this->filess = [
-        $index . '.name' => $media->name,
-        $index . '.sequence' => $media->sequence,
-      ];
-    }
+
+    $this->filess = [
+      $index . '.name' => $media->name,
+      $index . '.type' => $media->type,
+      $index . '.sequence' => $media->sequence,
+    ];
   }
   public function cancelMedia()
   {
@@ -126,6 +121,9 @@ class RelatedMediaProduct extends Component
       }
       if (array_key_exists('sequence', $media_new)) {
         $media_for_prod->sequence = $media_new['sequence'];
+      }
+      if (array_key_exists('type', $media_new)) {
+        $media_for_prod->type = $media_new['type'];
       }
       if (array_key_exists('name', $media_new)) {
         $newName = $media_new['name'] . '.' . $media_for_prod->extension;
