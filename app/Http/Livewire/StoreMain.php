@@ -12,8 +12,7 @@ class StoreMain extends Component
 
   public function getSliderItemsProperty()
   {
-    $categories = app()->make('cached_categories');
-    return $categories->where('slider_sequence', '!=', '0')->sortBy('slider_sequence');
+    return app()->make('cached_categories')->where('slider_sequence', '!=', '0')->sortBy('slider_sequence');
   }
 
   private function getSessionId()
@@ -29,50 +28,21 @@ class StoreMain extends Component
 
   public function getPopProductsProperty()
   {
-    return Product::with([
-      'media' => function ($query) {
-        $query->select('path', 'name')->where('type', 'main');
-      },
-      'product_prices' => function ($query) {
-        $query->select('product_id', 'value', 'discount', 'value_no_discount');
-      },
-      'wishlists' => function ($query) {
-        $query->select('id', 'product_id')->where('session_id', $this->session_id);
-      }
-    ])
-      ->select('id', 'name', 'seo_id', 'quantity', 'type', 'short_description', 'popularity')
-      ->where('active', true)
-      ->where('type', '!=', 'parrent')
-      ->where('start_date', '<=',  now()->format('Y-m-d'))
-      ->where('end_date', '>=',  now()->format('Y-m-d'))
-      ->orderBy('popularity', 'desc')
-      ->limit(app('global_limit_slideritems'))
-      ->get();
+    return app()->make('cached_products')->filter(function ($product) {
+      return $product->type != 'parrent';
+    })->sortByDesc('popularity')->take(app('global_limit_slideritems'));
   }
 
   public function getNewProductsProperty()
   {
-    return Product::with([
-      'media' => function ($query) {
-        $query->select('path', 'name')->where('type', 'main');
-      },
-      'product_prices' => function ($query) {
-        $query->select('product_id', 'value', 'discount', 'value_no_discount');
-      },
-      'wishlists' => function ($query) {
-        $query->select('id', 'product_id')->where('session_id', $this->session_id);
-      }
-    ])
-      ->select('id', 'name', 'seo_id', 'quantity', 'short_description', 'popularity')
-      ->where('active', true)
-      ->where('type', '!=', 'parrent')
-      ->where('start_date', '<=',  now()->format('Y-m-d'))
-      ->where('end_date', '>=',  now()->format('Y-m-d'))
-      ->where('is_new', true)
-      ->orderBy('popularity', 'desc')
-      ->limit(app('global_limit_slideritems'))
-      ->get();
+    return app()->make('cached_products')
+      ->filter(function ($product) {
+        return $product->type != 'parrent' && $product->is_new == true;
+      })
+      ->sortByDesc('popularity')
+      ->take(app('global_limit_slideritems'));
   }
+
 
 
   public function render()
