@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Category;
 use App\Models\Status;
 use App\Models\Payment;
 use App\Models\Product;
@@ -37,6 +38,8 @@ class GlobalVariablesServiceProvider extends ServiceProvider
         $this->loadGlobalCustomScripts();
         $this->loadGlobalCurrencies();
         $this->loadHighestPopularity();
+        $this->loadAllProductsIntoCache();
+        $this->loadAllCategoriesIntoCache();
     }
     private function loadHighestPopularity()
     {
@@ -148,5 +151,84 @@ class GlobalVariablesServiceProvider extends ServiceProvider
                 $this->app->instance('global_currency_' . strtolower($priceListName) . '_symbol', $currency['currency_symbol']);
             }
         }
+    }
+    private function loadAllProductsIntoCache()
+    {
+
+        $products = Cache::get('cached_products', function () {
+            return Product::where('active', true)
+                ->where('start_date', '<=', now()->format('Y-m-d'))
+                ->where('end_date', '>=', now()->format('Y-m-d'))
+                ->with([
+                    'product_categories',
+                    'product_specs',
+                    'related_product',
+                    'variants',
+                    'parent',
+                    'beeingvariants',
+                    'product_prices' => function ($query) {
+                        $query->select('product_id', 'value', 'discount', 'value_no_discount');
+                    },
+                    'wishlists',
+                    'media',
+                ])->get();
+        });
+
+        $this->app->instance('cached_products', $products);
+    }
+    private function loadAllCategoriesIntoCache()
+    {
+        $categories = Cache::get('cached_categories', function () {
+            return Category::with([
+                'media' => function ($query) {
+                    $query->select('path', 'name', 'sequence', 'type', 'width', 'height');
+                },
+                'subcategory' => function ($query) {
+                    $query->whereHas('category', function ($query) {
+                        $this->applySubcategoryConditions($query);
+                    })->with([
+                        'category' => function ($query) {
+                            $query->select('id', 'name', 'seo_id', 'sequence');
+                            $this->applySubcategoryConditions($query);
+                            $query->with([
+                                'media' => function ($query) {
+                                    $query->where('type', 'min')->select('media_id', 'path', 'name');
+                                },
+                                'subcategory' => function ($query) {
+                                    $query->whereHas('category', function ($query) {
+                                        $this->applySubcategoryConditions($query);
+                                    })->with([
+                                        'category' => function ($query) {
+                                            $query->select('id', 'name', 'seo_id', 'sequence');
+                                            $this->applySubcategoryConditions($query);
+                                            $query->with([
+                                                'media' => function ($query) {
+                                                    $query->where('type', 'min')->select('media_id', 'path', 'name');
+                                                }
+                                            ]);
+                                        }
+                                    ]);
+                                }
+                            ]);
+                        }
+                    ]);
+                }
+            ])
+                ->where('active', 1)
+                ->where('start_date', '<=', now()->format('Y-m-d'))
+                ->where('end_date', '>=', now()->format('Y-m-d'))
+                ->get();
+        });
+
+        $this->app->instance('cached_categories', $categories);
+    }
+
+    protected function applySubcategoryConditions($query)
+    {
+        $query->where('active', 1)
+            ->where('store_tab', 1)
+            ->where('start_date', '<=', now()->format('Y-m-d'))
+            ->where('end_date', '>=', now()->format('Y-m-d'))
+            ->orderBy('sequence');
     }
 }

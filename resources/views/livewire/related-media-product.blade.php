@@ -106,7 +106,7 @@
        <th>
         <div class="table--btn">Media</div>
        </th>
-       <th>
+       <th class="hidden">
         <div class="table--btn">Name</div>
        </th>
        <th class="hidden">
@@ -115,7 +115,7 @@
        <th class="hidden">
         <div class="table--btn">Extension Type</div>
        </th>
-       <th class="hidden">
+       <th>
         <div class="table--btn">Sequence</div>
        </th>
        <th class="hidden">
@@ -149,11 +149,11 @@
           </video>
          @endif
         </td>
-        <td wire:click="expandRow3({{ $index }})">{{ $media->getClientOriginalName() }}</td>
+        <td class="hidden">{{ $media->getClientOriginalName() }}</td>
         <td class="hidden" wire:click="expandRow3({{ $index }})">{{ $media->getSize() }} KB</td>
         <td class="hidden" wire:click="expandRow3({{ $index }})">{{ $media->getClientOriginalExtension() }}
         </td>
-        <td class="hidden" wire:click="expandRow3({{ $index }})">
+        <td>
          <div class="searchable">
           <input type="number" class="input__searchable" placeholder="Media sequence ex: 1,2..." min="0"
            required wire:model.defer="file_sequences.{{ $index }}">
@@ -179,7 +179,10 @@
        <tr class="details-row @if ($rind3 === $k) active @endif">
         <td colspan="3">
          <div class="details">
-
+          <p>
+           <bold>Name</bold>
+           {{ $media->getClientOriginalName() }}
+          </p>
           <p>
            <bold>Size</bold>
            {{ $media->getSize() }} KB
@@ -187,13 +190,6 @@
           <p>
            <bold>Extension Type</bold>
            {{ $media->getClientOriginalExtension() }}
-          </p>
-          <p>
-           <bold>Sequence</bold>
-          <div class="searchable">
-           <input type="number" class="input__searchable" placeholder="Media sequence ex: 1,2..." min="0"
-            required wire:model.defer="file_sequences.{{ $index }}">
-          </div>
           </p>
           <p>
            <bold>Automatic resize</bold>
@@ -424,44 +420,24 @@
         <label for="selectPage13"></label>
        </div>
       </th>
-      @if ($this->showColumn('Id'))
-       <th>
-        <button class="table--btn">
-         ID
-        </button>
-       </th>
-      @endif
-      @if ($this->showColumn('Media'))
-       <th>
-        <button class="table--btn">
-         Media
-        </button>
-       </th>
-      @endif
-      @if ($this->showColumn('Name'))
-       <th class="hidden">
-        <button class="table--btn">
-         Name
-        </button>
-       </th>
-      @endif
-      @if ($this->showColumn('Sequence'))
-       <th class="hidden">
-        <button class="table--btn">
-         Sequence
-        </button>
-       </th>
-      @endif
-      @if ($this->showColumn('Created At'))
-       <th class="hidden">
-        <button class="table--btn">
-         Created at
-         <svg>
-          <polyline points="6 9 12 15 18 9"></polyline>
-         </svg>
-        </button>
-       </th>
-      @endif
+      <th>
+       <button class="table--btn">
+        Media
+       </button>
+      </th>
+      @foreach ($selectedColumns as $index => $column)
+       @if ($this->showColumn($column))
+        <th @if ($index > count($selectedColumns) - 17 && $column != 'id') class="hidden" @endif>
+         <button wire:click="sortBy('{{ $column }}')"
+          class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
+          {{ $column }}
+          <svg>
+           <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+         </button>
+        </th>
+       @endif
+      @endforeach
       <th>
        <div style="display: flex;">
         <button class="button button--secondary button--sm" style="opacity: 0;">
@@ -496,47 +472,51 @@
           <label for="{{ $file->id }}"></label>
          </div>
         </td>
-        @if ($this->showColumn('Id'))
-         <td wire:click="expandRow({{ $index }})">{{ $file->id }}</td>
-        @endif
-        @if ($this->showColumn('Media'))
-         <td wire:click="expandRow({{ $index }})">
-          @if (in_array($file->extension, ['jpg', 'jpeg', 'png', 'gif', 'svg', 'jfif', 'webp']))
-           <img loading="eager" src="/{{ $file->path . $file->name }}" alt="{{ $file->name }}" width="50">
+        <td wire:click="expandRow({{ $index }})">
+         @if (in_array($file->extension, ['jpg', 'jpeg', 'png', 'gif', 'svg', 'jfif', 'webp']))
+          <img loading="eager" src="/{{ $file->path . $file->name }}" alt="{{ $file->name }}" width="50">
+         @else
+          A problem with media
+         @endif
+        </td>
+        @foreach ($selectedColumns as $column)
+         <td @if ($column != 'id') class="hidden" @endif data-title="{{ $column }}">
+          @if ($column === 'name')
+           @if ($editedMediaIndex !== $index)
+            {{ $file->$column }}
+           @else
+            <div class="searchable">
+             <input type="text" class="input__searchable" wire:model.defer="filess.{{ $index }}.name"
+              value="{{ $file->name }}">
+            </div>
+           @endif
+          @elseif ($column === 'sequence')
+           @if ($editedMediaIndex !== $index)
+            {{ $file->sequence }}
+           @else
+            <div class="searchable">
+             <input type="number" min="0" class="input__searchable"
+              wire:model.defer="filess.{{ $index }}.sequence" value="{{ $file->sequence }}">
+            </div>
+           @endif
+          @elseif ($column === 'type')
+           @if ($editedMediaIndex !== $index)
+            {{ $file->$column }}
+           @else
+            <div class="searchable">
+             <select wire:model.defer="filess.{{ $index }}.type" class="input__searchable">
+              <option value="orginal">orginal</option>
+              <option value="min">min</option>
+              <option value="main">main</option>
+              <option value="full">full</option>
+             </select>
+            </div>
+           @endif
           @else
-           A problem with media
+           {{ $file->$column }}
           @endif
          </td>
-        @endif
-        @if ($this->showColumn('Name'))
-         <td class="hidden" wire:click="expandRow({{ $index }})">
-          @if ($editedMediaIndex !== $index)
-           {{ $file->name }}
-          @else
-           <div class="searchable">
-            <input type="text" class="input__searchable" wire:model.defer="filess.{{ $index }}.name"
-             value="{{ $file->name }}">
-           </div>
-          @endif
-         </td>
-        @endif
-        @if ($this->showColumn('Sequence'))
-         <td class="hidden" wire:click="expandRow({{ $index }})">
-          @if ($editedMediaIndex !== $index)
-           {{ $file->sequence }}
-          @else
-           <div class="searchable">
-            <input type="number" min="0" required class="input__searchable"
-             wire:model.defer="filess.{{ $index }}.sequence" value="{{ $file->sequence }}">
-           </div>
-          @endif
-         </td>
-        @endif
-        @if ($this->showColumn('Created At'))
-         <td class="hidden" wire:click="expandRow({{ $index }})">
-          {{ $file->created_at }}
-         </td>
-        @endif
+        @endforeach
         <td>
          <div style="display: flex;">
           @if ($editedMediaIndex !== $index)
@@ -572,40 +552,61 @@
         </td>
        </tr>
        <tr class="details-row  @if ($rind === $i) active @endif">
-        <td colspan="17">
+        <td colspan="{{ count($selectedColumns) + 2 }}">
          <div class="details">
-          @if ($this->showColumn('Name'))
-           <p>
-            <bold>Name</bold>
-            @if ($editedMediaIndex !== $index)
-             {{ $file->name }}
-            @else
-             <div class="searchable">
-              <input type="text" class="input__searchable" wire:model.defer="filess.{{ $index }}.name"
-               value="{{ $file->name }}">
-             </div>
-            @endif
-           </p>
-          @endif
-          @if ($this->showColumn('Sequence'))
-           <p>
-            <bold>Sequence</bold>
-            @if ($editedMediaIndex !== $index)
-             {{ $file->sequence }}
-            @else
-             <div class="searchable">
-              <input type="number" min="0" required class="input__searchable"
-               wire:model.defer="filess.{{ $index }}.sequence" value="{{ $file->sequence }}">
-             </div>
-            @endif
-           </p>
-          @endif
-          @if ($this->showColumn('Created At'))
-           <p>
-            <bold>Created At</bold>
-            {{ $file->created_at }}
-           </p>
-          @endif
+          @foreach ($selectedColumns as $column)
+           @php
+            if ($column === 'id') {
+                continue;
+            }
+           @endphp
+           @if ($column === 'name')
+            <p>
+             <bold>{{ $column }}</bold>
+             @if ($editedMediaIndex !== $index)
+              {{ $file->name }}
+             @else
+              <div class="searchable">
+               <input type="text" class="input__searchable" wire:model.defer="filess.{{ $index }}.name"
+                value="{{ $file->name }}">
+              </div>
+             @endif
+            </p>
+           @elseif($column === 'sequence')
+            <p>
+             <bold>{{ $column }}</bold>
+             @if ($editedMediaIndex !== $index)
+              {{ $file->sequence }}
+             @else
+              <div class="searchable">
+               <input type="number" min="0" class="input__searchable"
+                wire:model.defer="filess.{{ $index }}.sequence" value="{{ $file->sequence }}">
+              </div>
+             @endif
+            </p>
+           @elseif ($column === 'type')
+            <p>
+             <bold>{{ $column }}</bold>
+             @if ($editedMediaIndex !== $index)
+              {{ $file->$column }}
+             @else
+              <div class="searchable">
+               <select wire:model.defer="filess.{{ $index }}.type" class="input__searchable">
+                <option value="orginal">orginal</option>
+                <option value="min">min</option>
+                <option value="main">main</option>
+                <option value="full">full</option>
+               </select>
+              </div>
+             @endif
+            </p>
+           @else
+            <p>
+             <bold>{{ $column }}</bold>
+             {{ $file->$column }}
+            </p>
+           @endif
+          @endforeach
          </div>
         </td>
        </tr>
