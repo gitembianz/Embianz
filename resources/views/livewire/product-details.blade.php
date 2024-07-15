@@ -115,8 +115,8 @@
    @if (count($variantGroup) > 1)
     <span class="product__price--title"
      style="margin-right: auto">{{ $product->beeingvariants->where('variant_id', $variantId)->first()->reference->name }}</span>
-    <div class="product__price">
-     <div class="variant__slider mini-slider">
+    <div class="product__price" style="height: auto;">
+     <div class="variant__slider mini-slider" style="padding: 0 45px;">
       <div class="variant__wrapper mini-wrapper">
        <a class="variant__btn active"
         href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">
