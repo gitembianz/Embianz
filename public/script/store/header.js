@@ -57,7 +57,7 @@ function dropmenus(menuID, setActive = false) {
 
                 // Scroll into view and focus if the menu is active
         if (menu.classList.contains("active")) {
-          menu.scrollIntoView({ behavior: "smooth", block: "center" });
+          menu.scrollIntoView({ behavior: "smooth", block: "start" });
           menu.focus();
         }
       });
