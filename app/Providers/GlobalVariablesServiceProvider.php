@@ -38,8 +38,8 @@ class GlobalVariablesServiceProvider extends ServiceProvider
         $this->loadGlobalCustomScripts();
         $this->loadGlobalCurrencies();
         $this->loadHighestPopularity();
-        // $this->loadAllProductsIntoCache();
-        // $this->loadAllCategoriesIntoCache();
+        $this->loadAllProductsIntoCache();
+        $this->loadAllCategoriesIntoCache();
     }
     private function loadHighestPopularity()
     {
