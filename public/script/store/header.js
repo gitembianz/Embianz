@@ -55,10 +55,8 @@ function dropmenus(menuID, setActive = false) {
         menu.classList.toggle("active");
         list.classList.toggle("active");
 
-                // Scroll into view and focus if the menu is active
         if (menu.classList.contains("active")) {
           menu.scrollIntoView({ behavior: "smooth", block: "start" });
-          // menu.focus();
         }
       });
     } else {
