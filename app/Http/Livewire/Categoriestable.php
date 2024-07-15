@@ -22,8 +22,6 @@ class Categoriestable extends Component
   public $selectAll = false;
   public $idbeingremoved = null;
   public $selectedColumns = [];
-  public $col = false;
-  public $all = false;
   public $columns;
   public $row = null;
   public $single = false;
@@ -42,10 +40,6 @@ class Categoriestable extends Component
 
   public function render()
   {
-    if ($this->all) {
-      $this->selectedColumns = $this->columns;
-    }
-
     return view('livewire.categoriestable', ['categories' => $this->categories]);
   }
   public function mount($tableName)

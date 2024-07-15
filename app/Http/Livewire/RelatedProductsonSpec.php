@@ -22,8 +22,6 @@ class RelatedProductsonSpec extends Component
   public $selectAll = false;
   public $showrelatedprods = false;
   public $specId;
-  public $col = false;
-  public $all = false;
   public $columns = ['Id', 'Unit', 'Value', 'Created At'];
   public $selectedColumns = [];
   public $idbeingremoved = null;
@@ -309,7 +307,7 @@ class RelatedProductsonSpec extends Component
     ];
     $this->row = 1;
     $this->checked = [];
-    $this->all = false;
+
     $this->editmultiple = false;
     $this->selectPage = false;
     session()->flash('notification', [
@@ -386,7 +384,7 @@ class RelatedProductsonSpec extends Component
     ];
     $this->row = 1;
     $this->checked = [];
-    $this->all = false;
+
     $this->editmultiple = false;
     $this->addrelatedproducts = false;
   }

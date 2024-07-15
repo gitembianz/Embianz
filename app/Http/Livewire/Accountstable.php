@@ -21,8 +21,6 @@ class Accountstable extends Component
     public $selectAll = false;
     public $idbeingremoved = null;
     public $selectedColumns = [];
-    public $col = false;
-    public $all = false;
     public $tableName;
     public $columns;
     public $row = null;
@@ -41,13 +39,7 @@ class Accountstable extends Component
     }
     public function render()
     {
-        $accounts = $this->accounts;
-
-        if ($this->all) {
-            $this->selectedColumns = $this->columns;
-        }
-
-        return view('livewire.accountstable', compact('accounts'));
+        return view('livewire.accountstable', ['accounts' => $this->accounts]);
     }
     public function mount($tableName)
     {

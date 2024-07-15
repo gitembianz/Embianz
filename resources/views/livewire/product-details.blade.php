@@ -14,8 +14,20 @@
    @if ($discount)
     <span class="product__discount">-{{ $product->product_prices->first()->discount }}%</span>
    @endif
-    <div class="rating" style="--rating: 69%;"></div>
+   @if (app()->has('global_display_rating') && app('global_display_rating') === 'true')
+    @php
+     $rating = 100 / (app('max_popularity') / $product->popularity);
+     $ratingvalue = $rating / 20;
+    @endphp
+    <div style="display: flex">
+     <div class="rating" style="--rating: {{ $rating }}%;"></div>
+     @if (app()->has('global_display_rating_value') && app('global_display_rating_value') === 'true')
+      ({{ $ratingvalue }})
+     @endif
+    </div>
+   @endif
   </div>
+
   @livewire('product-wishlist-button', [
       'productId' => $product->id,
       'class' => 'product__action',

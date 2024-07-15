@@ -27,8 +27,6 @@ class Productstable extends Component
   public $idbeingremoved = null;
   public $columns;
   public $selectedColumns = [];
-  public $col = false;
-  public $all = false;
   public $row = null;
   public $single = false;
   public $multiple = false;

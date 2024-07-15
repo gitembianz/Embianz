@@ -1,5 +1,5 @@
 <div class="accordion @if ($showvariant) active @endif">
-
+ <x-alert />
  {{-- ASIDES --}}
  {{-- Delete Record || Delete Records --}}
  <aside>

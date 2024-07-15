@@ -21,24 +21,23 @@ class RelatedCartItems extends Component
     public $selectAll = false;
     public $showrelatedprod = false;
     public $cartId;
-    public $col = false;
-    public $all = false;
     public $idbeingremoved = null;
     public $columns = ['Id', 'Price', 'Quantity'];
     public $selectedColumns = [];
     public $cart;
-    public $row =null;
+    public $row = null;
     public $single = false;
     public $multiple = false;
 
 
-    public function expandRow($index){
-        if($this->row  === null){
-          $this->row = $index ;
-        }elseif ($this->row != $index){
-          $this->row = $index ;
-        }else{
-          $this->row = null ;
+    public function expandRow($index)
+    {
+        if ($this->row  === null) {
+            $this->row = $index;
+        } elseif ($this->row != $index) {
+            $this->row = $index;
+        } else {
+            $this->row = null;
         }
     }
 
@@ -159,15 +158,16 @@ class RelatedCartItems extends Component
     }
     public function confirmItemRemoval($id)
     {
-      $this->idbeingremoved = $id;
-      $this->single = true;
+        $this->idbeingremoved = $id;
+        $this->single = true;
     }
     public function confirmItemsRemoval()
     {
-      $this->multiple = true;
+        $this->multiple = true;
     }
-    public function cancel_delete(){
-      $this->multiple = false;
-      $this->single = false;
+    public function cancel_delete()
+    {
+        $this->multiple = false;
+        $this->single = false;
     }
 }

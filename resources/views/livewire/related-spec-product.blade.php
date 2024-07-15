@@ -62,7 +62,7 @@
     <table class="expandable-table">
      <thead>
       <tr>
-       <th style="width: auto; !important">
+       <th>
         <div style="display: flex;">
          <button class="table--btn">
           Product
@@ -110,56 +110,8 @@
           </button>
          </div>
         </td>
-        <td>
-         @if ($specAndValue['allow'])
-          <div class="searchable active">
-           {{-- Dropdown Header --}}
-           <input class="input" wire:model.debounce.300ms="searchadd" placeholder="Search..." type="text">
-           <button class="button__searchable" wire:click.prevent="dennyselect({{ $index }})">
-            <svg>
-             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-             <path d="M10 10l-6 6v4h4l6 -6m1.99 -1.99l2.504 -2.504a2.828 2.828 0 1 0 -4 -4l-2.5 2.5" />
-             <path d="M13.5 6.5l4 4" />
-             <path class="button__searchable--line" d="M3 3l18 18" />
-            </svg>
-           </button>
-           {{-- Dropdown Content --}}
-           <div class="content__searchable">
-            <div class="list__searchable">
-             @if (count($addspecs) >= 1)
-              @foreach ($addspecs as $spec)
-               <button class="item__searchable"
-                wire:click.prevent="selectSpec({{ $index }}, {{ $spec->id }}, '{{ $spec->name }}')">
-                {{ $spec->name }} ({{ $spec->um }})
-               </button>
-              @endforeach
-             @else
-              <button class="item__searchable">{{ __('No record found') }}</button>
-             @endif
-            </div>
-           </div>
-          </div>
-         @else
-          <div class="searchable">
-           {{-- Dropdown Show Selected || Select now --}}
-           <button class="input__searchable">
-            @if ($specAndValue['itemselected'])
-             {{ $specAndValue['itemselected'] }}
-            @else
-             {{ __('Select a product') }}
-            @endif
-           </button>
-           <button class="button__searchable" wire:click.prevent="allowselect({{ $index }})">
-            <svg>
-             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-             <path d="M10 10l-6 6v4h4l6 -6m1.99 -1.99l2.504 -2.504a2.828 2.828 0 1 0 -4 -4l-2.5 2.5" />
-             <path d="M13.5 6.5l4 4" />
-             <path class="button__searchable--line" d="M3 3l18 18" />
-            </svg>
-           </button>
-          </div>
-         @endif
-         <input type="hidden" wire:model.defer="specsAndValues.{{ $index }}.spec.idrel">
+        <td wire:click="expandRow2({{ $index }})">
+         {{ $specAndValue['itemselected'] }}
         </td>
         <td class="hidden">
          <input type="text" required class="input button--fill button--xs"
@@ -317,7 +269,7 @@
             @if ($specAndValue['itemselected'])
              {{ $specAndValue['itemselected'] }}
             @else
-             {{ __('Select a product') }}
+             {{ __('Select a specification') }}
             @endif
            </button>
            <button class="button__searchable" wire:click.prevent="allowselect({{ $index }})">
@@ -584,7 +536,7 @@
     @endphp
     @if ($relatedspecs->isEmpty())
      <tr>
-      <td class="table--empty" colspan="{{ count($columns) + 2 }}">No record found.</td>
+      <td class="table--empty" colspan="{{ count($columns) + 3 }}">No record found.</td>
      </tr>
     @else
      @foreach ($relatedspecs as $index => $spec)
@@ -601,59 +553,10 @@
         <td wire:click="expandRow({{ $index }})">{{ $spec->id }}</td>
        @endif
        @if ($this->showColumn('Name'))
-        <td>
-         @if ($editedrow !== $index)
-          <a href="{{ route('show_spec', ['id' => $spec->spec->id]) }}">
-           {{ $spec->spec->name }}
-          </a>
-         @else
-          @if ($allow)
-           <div class="searchable active">
-            <!-- Header -->
-            <input class="input__searchable" type="text" wire:model.debounce.300ms="searchadd"
-             placeholder="Search..">
-            <button class="button__searchable" wire:click.prevent="denny()">
-             <svg>
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M10 10l-6 6v4h4l6 -6m1.99 -1.99l2.504 -2.504a2.828 2.828 0 1 0 -4 -4l-2.5 2.5" />
-              <path d="M13.5 6.5l4 4" />
-              <path class="button__searchable--line" d="M3 3l18 18" />
-             </svg>
-            </button>
-
-            <!-- Body -->
-            <div class="content__searchable">
-             <div class="list__searchable">
-              @if ($addspecs->isEmpty())
-               <button class="item__searchable">
-                No record found
-               </button>
-              @else
-               @foreach ($addspecs as $speci)
-                <button class="item__searchable" wire:click.prevent="select({{ $speci->id }})">
-                 {{ $speci->name }}
-                </button>
-               @endforeach
-              @endif
-             </div>
-            </div>
-           </div>
-          @else
-           <div class="searchable">
-            <button class="input__searchable">
-             {{ $itemselected->name }}
-            </button>
-            <button class="button__searchable" wire:click.prevent="allow">
-             <svg>
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M10 10l-6 6v4h4l6 -6m1.99 -1.99l2.504 -2.504a2.828 2.828 0 1 0 -4 -4l-2.5 2.5" />
-              <path d="M13.5 6.5l4 4" />
-              <path class="button__searchable--line" d="M3 3l18 18" />
-             </svg>
-            </button>
-           </div>
-          @endif
-         @endif
+        <td wire:click.prevent="expandRow({{ $index }})">
+         <a href="{{ route('show_spec', ['id' => $spec->spec->id]) }}">
+          {{ $spec->spec->name }}
+         </a>
         </td>
        @endif
        @if ($this->showColumn('Unit'))
@@ -668,7 +571,7 @@
          @else
           <div class="searchable">
            <input class="input__searchable" type="text" required
-            wire:model="specification.{{ $index }}.value">
+            wire:model.defer="specification.{{ $index }}.value">
           </div>
          @endif
         </td>
@@ -680,7 +583,7 @@
          @else
           <div class="searchable">
            <input class="input__searchable" type="text" required
-            wire:model="specification.{{ $index }}.sequence">
+            wire:model.defer="specification.{{ $index }}.sequence">
           </div>
          @endif
         </td>
@@ -742,7 +645,7 @@
            @else
             <div class="searchable">
              <input type="text" required class="input__searchable"
-              wire:model="specification.{{ $index }}.value">
+              wire:model.defer="specification.{{ $index }}.value">
             </div>
            @endif
           </p>
@@ -755,7 +658,7 @@
            @else
             <div class="searchable">
              <input type="text" required class="input__searchable"
-              wire:model="specification.{{ $index }}.sequence">
+              wire:model.defer="specification.{{ $index }}.sequence">
             </div>
            @endif
           </p>

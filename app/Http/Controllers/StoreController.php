@@ -66,8 +66,15 @@ class StoreController extends Controller
       }
     ])->first();
 
-    if ($productCategory != null) {
+    if ($productCategory != null && $productCategory->product->type != 'parrent') {
       $preload = "/" . optional($productCategory->product->media()->first())->path . optional($productCategory->product->media()->first())->name;
+    } elseif ($productCategory != null && $productCategory->product->type = 'parrent' && $productCategory->product->variants->count() != 0) {
+      if ($productCategory->product->variants->where('default_variant', true)->first()) {
+        $element = $productCategory->product->variants->where('default_variant', true)->first()->product;
+      } else {
+        $element = $productCategory->product->variants->first()->product;
+      }
+      $preload = "/" . optional($element->media()->first())->path . optional($element->media()->first())->name;
     } else {
       $preload = '';
     }

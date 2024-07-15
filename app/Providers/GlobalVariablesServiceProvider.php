@@ -2,12 +2,13 @@
 
 namespace App\Providers;
 
-use App\Models\CustomScript;
-use App\Models\Payment;
-use App\Models\PriceList;
 use App\Models\Status;
-use App\Models\Store_Settings;
+use App\Models\Payment;
+use App\Models\Product;
+use App\Models\PriceList;
 use App\Models\TextLabel;
+use App\Models\CustomScript;
+use App\Models\Store_Settings;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
@@ -35,6 +36,18 @@ class GlobalVariablesServiceProvider extends ServiceProvider
         $this->loadGlobalPayments();
         $this->loadGlobalCustomScripts();
         $this->loadGlobalCurrencies();
+        $this->loadHighestPopularity();
+    }
+    private function loadHighestPopularity()
+    {
+        if (Schema::hasTable('products')) {
+
+            $highestPopularity = Cache::get('max_popularity', function () {
+                return Product::max('popularity');
+            });
+
+            $this->app->instance('max_popularity', $highestPopularity);
+        }
     }
     private function loadGlobalVariables()
     {

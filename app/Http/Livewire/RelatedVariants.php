@@ -86,7 +86,7 @@ class RelatedVariants extends Component
         $this->variantAndValues[] = [
             'allow' => false,
             'itemselected' => null,
-            'variant' => ['name' => null, 'reference' => $this->references->first()->id, 'display' => 'text', 'def' => false],
+            'variant' => ['name' => null, 'reference' => optional($this->references->first())->id, 'display' => 'text', 'def' => false],
         ];
     }
     public function load()
@@ -197,14 +197,22 @@ class RelatedVariants extends Component
     //function for add new variant
     public function addrelated()
     {
-        if ($this->item->type == 'parrent') {
-            $this->showvariant = true;
-            $this->addvariant = true;
+
+        if ($this->references != null && $this->references->count() > 0) {
+
+            if ($this->item->type == 'parrent') {
+                $this->showvariant = true;
+                $this->addvariant = true;
+            } else {
+                session()->flash('notification', [
+                    'message' => 'Please change the product type first!',
+                    'type' => 'warning',
+                ]);
+            }
         } else {
             session()->flash('notification', [
-                'message' => 'Please change the product type first!',
+                'message' => 'Please add first a reference!',
                 'type' => 'warning',
-                'title' => 'Product type must be "parent"!'
             ]);
         }
     }
