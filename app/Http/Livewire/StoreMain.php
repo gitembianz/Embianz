@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Product;
 use Livewire\Component;
 
 class StoreMain extends Component

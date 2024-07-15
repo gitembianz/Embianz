@@ -166,7 +166,9 @@ class GlobalVariablesServiceProvider extends ServiceProvider
                     'variants',
                     'parent',
                     'beeingvariants',
-                    'product_prices',
+                    'product_prices' => function ($query) {
+                        $query->select('product_id', 'value', 'discount', 'value_no_discount');
+                    },
                     'wishlists',
                     'media',
                 ])->get();
