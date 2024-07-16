@@ -24,13 +24,21 @@ class StoreWishlist extends Component
     ];
     return view('livewire.store-wishlist', $data);
   }
+  private function getSessionId()
+  {
+    if (array_key_exists('sessionId', $_COOKIE)) {
+      return $_COOKIE['sessionId'];
+    } else {
+      return session()->getId();
+    }
+  }
   public function removemessage()
   {
     $this->message = null;
   }
   public function mount()
   {
-    $this->session_id = $_COOKIE['sessionId'];
+    $this->session_id = $this->getSessionId();
   }
   public function removeFromWishlist($productId)
   {

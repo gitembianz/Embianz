@@ -14,6 +14,15 @@ class StoreMain extends Component
     return app()->make('cached_categories')->where('slider_sequence', '!=', '0')->sortBy('slider_sequence');
   }
 
+  private function getSessionId()
+  {
+    if (array_key_exists('sessionId', $_COOKIE)) {
+      return $_COOKIE['sessionId'];
+    } else {
+      return session()->getId();
+    }
+  }
+
   public function getPopProductsProperty()
   {
     return app()->make('cached_products')->filter(function ($product) {
@@ -45,7 +54,7 @@ class StoreMain extends Component
   }
   public function mount()
   {
-    $this->session_id = $_COOKIE['sessionId'];
+    $this->session_id = $this->getSessionId();
     $this->quantity = app('global_low_stock');
   }
 }
