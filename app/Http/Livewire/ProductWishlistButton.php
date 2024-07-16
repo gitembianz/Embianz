@@ -17,19 +17,8 @@ class ProductWishlistButton extends Component
     {
         $this->productId  = $productId;
         $this->is_in_wishlist = $is_in_wishlist;
-        $this->session_id = $this->getSessionId();
+        $this->session_id = $_COOKIE['sessionId'];
         $this->listeners = ["update-wish-" . $this->productId => "refreshComponent"];
-    }
-
-    private function getSessionId()
-    {
-        if (array_key_exists('sessionId', $_COOKIE)) {
-            return $_COOKIE['sessionId'];
-        } else {
-            $sessionId = session()->getId();
-            setcookie('sessionId', $sessionId, time() + 30 * 24 * 60 * 60, '/', null, false, true);
-            return $sessionId;
-        }
     }
 
     public function refreshComponent()

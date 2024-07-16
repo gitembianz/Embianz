@@ -61,16 +61,6 @@ class CartProductsList extends Component
             ->latest()
             ->first() ?? null;
     }
-    private function getSessionId()
-    {
-        if (array_key_exists('sessionId', $_COOKIE)) {
-            return $_COOKIE['sessionId'];
-        } else {
-            $sessionId = session()->getId();
-            setcookie('sessionId', $sessionId, time() + 30 * 24 * 60 * 60, '/', null, false, true);
-            return $sessionId;
-        }
-    }
 
     public function getCartItemsProperty()
     {
@@ -180,7 +170,7 @@ class CartProductsList extends Component
 
     public function mount()
     {
-        $this->session_id = $this->getSessionId();
+        $this->session_id = $_COOKIE['sessionId'];;
     }
 
     public function pricechanged()

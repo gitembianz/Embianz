@@ -20,20 +20,10 @@ class StoreShowProduct extends Component
       'product' => $this->product
     ]);
   }
-  private function getSessionId()
-  {
-    if (array_key_exists('sessionId', $_COOKIE)) {
-      return $_COOKIE['sessionId'];
-    } else {
-      $sessionId = session()->getId();
-      setcookie('sessionId', $sessionId, time() + 30 * 24 * 60 * 60, '/', null, false, true);
-      return $sessionId;
-    }
-  }
   public function mount($productId)
   {
     $this->productId = $productId;
-    $this->session_id = $this->getSessionId();
+    $this->session_id = $_COOKIE['sessionId'];
     $this->quantity = app('global_low_stock');
   }
 
