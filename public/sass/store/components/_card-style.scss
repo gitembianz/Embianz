@@ -21,12 +21,12 @@
     z-index: 200;
   }
 
-  &:hover {
-    .card-image {
-      scale: 1.1;
-      mix-blend-mode: multiply;
-    }
-  }
+  // &:hover {
+  //   .card-image {
+  //     scale: 1.1;
+  //     mix-blend-mode: multiply;
+  //   }
+  // }
 }
 
 .card--category{
@@ -272,9 +272,7 @@
       color: $primary;
     }
   }
-  &:active {
-    transform: scale(0.8);
-  }
+
 
 	&.in {
     // animation 2s
