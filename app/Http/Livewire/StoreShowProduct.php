@@ -20,10 +20,18 @@ class StoreShowProduct extends Component
       'product' => $this->product
     ]);
   }
+  private function getSessionId()
+  {
+    if (array_key_exists('sessionId', $_COOKIE)) {
+      return $_COOKIE['sessionId'];
+    } else {
+      return session()->getId();
+    }
+  }
   public function mount($productId)
   {
     $this->productId = $productId;
-    $this->session_id = $_COOKIE['sessionId'];
+    $this->session_id = $this->getSessionId();
     $this->quantity = app('global_low_stock');
   }
 

@@ -23,10 +23,17 @@ class StoreCart extends Component
     'cartUpdated' => 'mount',
   ];
 
-
+  private function getSessionId()
+  {
+    if (array_key_exists('sessionId', $_COOKIE)) {
+      return $_COOKIE['sessionId'];
+    } else {
+      return session()->getId();
+    }
+  }
   public function mount()
   {
-    $this->session_id = $_COOKIE['sessionId'];
+    $this->session_id = $this->getSessionId();
   }
 
   public function getCartProperty()

@@ -23,6 +23,14 @@ class ProductDetails extends Component
             'variants' => $this->variants
         ]);
     }
+    private function getSessionId()
+    {
+        if (array_key_exists('sessionId', $_COOKIE)) {
+            return $_COOKIE['sessionId'];
+        } else {
+            return session()->getId();
+        }
+    }
     public function mount($product)
     {
         $prodid = $this->product->id;
@@ -47,7 +55,7 @@ class ProductDetails extends Component
             ])
             ->findOrFail($prodid);
         $this->quantity = 1;
-        $this->session_id = $_COOKIE['sessionId'];
+        $this->session_id = $this->getSessionId();
         $this->is_in_wishlist = $this->product->wishlists->where('session_id', $this->session_id)->first() ? true : false;
     }
 
