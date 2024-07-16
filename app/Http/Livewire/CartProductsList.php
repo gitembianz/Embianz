@@ -26,10 +26,15 @@ class CartProductsList extends Component
     ];
     public function render()
     {
-        return view('livewire.cart-products-list', [
-            'cart' => $this->cart,
-            'cartItems' => $this->cartItems,
-        ]);
+        if ($this->showcart) {
+
+            return view('livewire.cart-products-list', [
+                'cart' => $this->cart,
+                'cartItems' => $this->cartItems,
+            ]);
+        } else {
+            return view('livewire.cart-products-list');
+        }
     }
     public function getCartProperty()
     {
@@ -176,9 +181,6 @@ class CartProductsList extends Component
     public function mount()
     {
         $this->session_id = $this->getSessionId();
-        if ($this->cart && $this->cart->seen_by_customer) {
-            $this->cartmodified = true;
-        }
     }
 
     public function pricechanged()
