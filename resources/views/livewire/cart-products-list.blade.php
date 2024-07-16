@@ -22,7 +22,7 @@
   </div>
 
 
-  @if ($cartItems->isEmpty())
+  @if (!isset($cartItems) || $cartItems->isEmpty())
    <span class="leftbar__empty">
     @if (app()->has('label_cart_empty'))
      {!! app('label_cart_empty') !!}
@@ -41,7 +41,7 @@
      <?php
      $disabled[$index] = false;
      $nonquantity[$index] = false;
-
+     
      if ($cartItem->product->active != true || $cartItem->product->start_date > now()->format('Y-m-d') || $cartItem->product->end_date < now()->format('Y-m-d')) {
          $disabled[$index] = true;
          $isdisabled = true;
@@ -50,7 +50,7 @@
          $disabled[$index] = true;
          $isdisabled = true;
      }
-
+     
      if ($cartItem->product->quantity < $cartItem->quantity) {
          $nonquantity[$index] = true;
          $isdisabled = true;
