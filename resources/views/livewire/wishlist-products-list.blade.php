@@ -15,7 +15,7 @@
    </button>
   </div>
 
-  @if ($items->isEmpty())
+  @if (!isset($items) || $items->isEmpty())
    <span class="leftbar__empty">
     @if (app()->has('label_wishlist_empty'))
      {!! app('label_wishlist_empty') !!}
