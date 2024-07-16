@@ -67,6 +67,5 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'check.order' => \App\Http\Middleware\CheckOrderMiddleware::class,
         'categorycheck' => \App\Http\Middleware\CategoryCheck::class,
-        'cache-control' => \App\Http\Middleware\SetCacheControl::class,
     ];
 }

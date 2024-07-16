@@ -142,7 +142,7 @@
 
   //simple page routes
 
-  route::get('/', [HomeController::class, 'home'])->name('home')->middleware('cache-control');
+  route::get('/', [HomeController::class, 'home'])->name('home');
   route::view('/cart', 'store.cart')->name('cart');
   route::view('/wishlist', 'store.wislist')->name('wislist');
   route::view('/order', 'store.order')->name('order');

@@ -1,4 +1,4 @@
-<x-store-head :title="getTitle()" :description="getDescription()" :preload="$preload"/>
+<x-store-head :title="getTitle()" :description="getDescription()" :preload="$preload" />
 
 @php
  function getTitle()
