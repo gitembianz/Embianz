@@ -81,13 +81,13 @@
   }
 
   &.prev {
-    left: -16px;
+    left: 16px;
     animation: LeftToRight 1s ease-in-out infinite;
 
   }
 
   &.next {
-    right: -16px;
+    right: 16px;
     animation: RightToLeft 1s ease-in-out infinite;
 
   }
