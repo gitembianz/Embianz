@@ -142,7 +142,7 @@ function sliderProduct(sliderId, modalId) {
 
   setTimeout(() => {
     updatePaginationButtons();
-  }, 500);
+  }, 2500);
 
   function updatePagination() {
     // Actualizarea butoanelor pentru slider
@@ -234,7 +234,7 @@ function sliderProduct(sliderId, modalId) {
       if (isDragging) {
         const swipeDistance = event.clientX - startX;
 
-        if (Math.abs(swipeDistance) > 50 && !isScrolling()) {
+        if (Math.abs(swipeDistance) > 250 && !isScrolling()) {
           const indexChange = swipeDistance > 0 ? -1 : 1;
           const newIndex = currentIndex + indexChange;
 
@@ -299,9 +299,9 @@ function sliderProduct(sliderId, modalId) {
     const touchEndX = event.changedTouches[0].clientX;
     const swipeDistance = touchEndX - touchStartX;
 
-    if (swipeDistance > 50 && index > 0) {
+    if (swipeDistance > 250 && index > 0) {
       currentIndex = index - 1;
-    } else if (swipeDistance < -50 && index < slides.length - 1) {
+    } else if (swipeDistance < -250 && index < slides.length - 1) {
       currentIndex = index + 1;
     }
 
@@ -376,7 +376,7 @@ function sliderProduct(sliderId, modalId) {
     if (mouseStartX) {
       const dragDistance = event.clientX - mouseStartX;
 
-      if (Math.abs(dragDistance) > 50 && !isScrolling()) {
+      if (Math.abs(dragDistance) > 250 && !isScrolling()) {
         event.preventDefault();
         isDragging = true;
       }
@@ -388,10 +388,10 @@ function sliderProduct(sliderId, modalId) {
       const mouseEndX = event.clientX;
       const dragDistance = mouseEndX - mouseStartX;
 
-      if (dragDistance > 50 && currentIndex > 0) {
+      if (dragDistance > 250 && currentIndex > 0) {
         navigation("prev");
         updateModalImage();
-      } else if (dragDistance < -50 && currentIndex < slides.length - 1) {
+      } else if (dragDistance < -250 && currentIndex < slides.length - 1) {
         navigation("next");
         updateModalImage();
       }
@@ -415,7 +415,7 @@ function sliderProduct(sliderId, modalId) {
         return; // Ignoră acțiunea dacă utilizatorul face zoom
       }
 
-      if (Math.abs(swipeDistance) > 50 && !isScrolling()) {
+      if (Math.abs(swipeDistance) > 250 && !isScrolling()) {
         event.preventDefault();
         isDragging = true;
       }
@@ -427,10 +427,10 @@ function sliderProduct(sliderId, modalId) {
       const touchEndX = event.changedTouches[0].clientX;
       const swipeDistance = touchEndX - touchStartX;
 
-      if (swipeDistance > 50 && currentIndex > 0) {
+      if (swipeDistance > 250 && currentIndex > 0) {
         navigation("prev");
         updateModalImage();
-      } else if (swipeDistance < -50 && currentIndex < slides.length - 1) {
+      } else if (swipeDistance < -250 && currentIndex < slides.length - 1) {
         navigation("next");
         updateModalImage();
       }
@@ -538,7 +538,7 @@ function flyToCart(button) {
 
   if (!button.classList.contains("in")) {
     button.classList.add("in");
-    setTimeout(() => button.classList.remove("in"), 1500);
+    setTimeout(() => button.classList.remove("in"), 12500);
   }
 
   if (!target_parent) {
@@ -613,7 +613,7 @@ function flyToCart(button) {
   setTimeout(() => {
     target_parent.removeChild(flying_img);
     shopping_cart.classList.remove("active");
-  }, 1500);
+  }, 12500);
 
   // Number Cart upscale
   if (!numberCart) {
@@ -622,7 +622,7 @@ function flyToCart(button) {
     numberCart.style.scale = 1.5;
     setTimeout(() => {
       numberCart.style.scale = 1;
-    }, 1500);
+    }, 12500);
   }
 }
 //<-------------------------- End Fly-To-Cart -------------------------->
@@ -678,7 +678,7 @@ function addWishList(button) {
 
     setTimeout(() => {
       wish.style.scale = 1;
-    }, 1500);
+    }, 12500);
   }
 }
 //<-------------------------- END Add-To-Wish -------------------------->
