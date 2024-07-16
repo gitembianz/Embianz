@@ -45,7 +45,7 @@ class GlobalVariablesServiceProvider extends ServiceProvider
     {
         if (Schema::hasTable('products')) {
 
-            $highestPopularity = Cache::get('max_popularity', function () {
+            $highestPopularity = Cache::rememberForever('max_popularity', function () {
                 return Product::max('popularity');
             });
 
@@ -56,7 +56,7 @@ class GlobalVariablesServiceProvider extends ServiceProvider
     {
         if (Schema::hasTable('store__settings')) {
 
-            $globalVariables = Cache::get('global_variables', function () {
+            $globalVariables = Cache::rememberForever('global_variables', function () {
                 $storeSettings = Store_Settings::all()->pluck('value', 'parameter')->toArray();
                 return $storeSettings;
             });
@@ -70,7 +70,7 @@ class GlobalVariablesServiceProvider extends ServiceProvider
     {
         if (Schema::hasTable('text_labels')) {
 
-            $labelVariables = Cache::get('label_variables', function () {
+            $labelVariables = Cache::rememberForever('label_variables', function () {
                 $labels = TextLabel::all()->pluck('value', 'parameter')->toArray();
                 return $labels;
             });
@@ -84,7 +84,7 @@ class GlobalVariablesServiceProvider extends ServiceProvider
     {
         if (Schema::hasTable('custom_scripts')) {
 
-            $globalScripts = Cache::get('global_scripts', function () {
+            $globalScripts = Cache::rememberForever('global_scripts', function () {
                 $scripts = CustomScript::select(['id', 'name', 'type', 'content', 'active'])->where('active', true)->get()->groupBy('type');
                 return $scripts->map(function ($group) {
                     return $group->pluck('content')->implode(PHP_EOL);
@@ -100,7 +100,7 @@ class GlobalVariablesServiceProvider extends ServiceProvider
     {
         if (Schema::hasTable('payments')) {
 
-            $globalPayments = Cache::get('global_payments', function () {
+            $globalPayments = Cache::rememberForever('global_payments', function () {
                 $payments = Payment::all(['id', 'active', 'type', 'name'])->keyBy('id')->toArray();
                 return $payments;
             });
@@ -114,7 +114,7 @@ class GlobalVariablesServiceProvider extends ServiceProvider
     {
         if (Schema::hasTable('statuses')) {
 
-            $globalStatuses = Cache::get('global_statuses', function () {
+            $globalStatuses = Cache::rememberForever('global_statuses', function () {
                 $statuses = Status::whereIn('type', ['cart', 'order', 'voucher'])->get();
                 $statusesByType = $statuses->groupBy('type');
 
@@ -138,7 +138,7 @@ class GlobalVariablesServiceProvider extends ServiceProvider
     {
         if (Schema::hasTable('price_lists') && Schema::hasTable('currencies')) {
 
-            $globalCurrencies = Cache::get('global_currencies', function () {
+            $globalCurrencies = Cache::rememberForever('global_currencies', function () {
                 return PriceList::join('currencies', 'price_lists.currency_id', '=', 'currencies.id')
                     ->where('price_lists.active', true)
                     ->get(['price_lists.name as price_list_name', 'currencies.name as currency_name', 'currencies.symbol as currency_symbol'])
@@ -155,7 +155,8 @@ class GlobalVariablesServiceProvider extends ServiceProvider
     private function loadAllProductsIntoCache()
     {
 
-        $products = Cache::get('cached_products', function () {
+        $products = Cache::rememberForever('cached_products', function () {
+
             return Product::where('active', true)
                 ->where('start_date', '<=', now()->format('Y-m-d'))
                 ->where('end_date', '>=', now()->format('Y-m-d'))
@@ -178,7 +179,7 @@ class GlobalVariablesServiceProvider extends ServiceProvider
     }
     private function loadAllCategoriesIntoCache()
     {
-        $categories = Cache::get('cached_categories', function () {
+        $categories = Cache::rememberForever('cached_categories', function () {
             return Category::with([
                 'media' => function ($query) {
                     $query->select('path', 'name', 'sequence', 'type', 'width', 'height');
