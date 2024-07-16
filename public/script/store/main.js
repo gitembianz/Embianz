@@ -71,18 +71,18 @@ function slider(sliderID) {
       wrapper.scrollLeft = startScrollLeft - (e.pageX - startX);
       // wrapper.scrollIntoView({ behavior: "smooth", block: "nearest" });
       wrapper.style.cursor = "grabbing";
-      wrapperChildrens.forEach((card) => {
-        card.style.pointerEvents = "none";
-      });
+      // wrapperChildrens.forEach((card) => {
+        // card.style.pointerEvents = "none";
+      // });
     };
 
     const dragStop = () => {
       isDragging = false;
       wrapper.classList.remove("dragging");
       wrapper.style.cursor = "initial";
-      wrapperChildrens.forEach((card) => {
-        card.style.pointerEvents = "auto";
-      });
+      // wrapperChildrens.forEach((card) => {
+        // card.style.pointerEvents = "auto";
+      // });
     };
 
     const infiniteScroll = () => {
