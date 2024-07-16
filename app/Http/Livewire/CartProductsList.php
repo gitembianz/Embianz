@@ -181,9 +181,6 @@ class CartProductsList extends Component
     public function mount()
     {
         $this->session_id = $this->getSessionId();
-        if ($this->cart && $this->cart->seen_by_customer) {
-            $this->cartmodified = true;
-        }
     }
 
     public function pricechanged()
