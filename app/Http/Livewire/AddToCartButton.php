@@ -14,19 +14,8 @@ class AddToCartButton extends Component
     public function mount($product)
     {
         $this->product = $product;
-        $this->session_id = $this->getSessionId();
+        $this->session_id = $_COOKIE['sessionId'];
     }
-    private function getSessionId()
-    {
-        if (array_key_exists('sessionId', $_COOKIE)) {
-            return $_COOKIE['sessionId'];
-        } else {
-            $sessionId = session()->getId();
-            setcookie('sessionId', $sessionId, time() + 30 * 24 * 60 * 60, '/', null, false, true);
-            return $sessionId;
-        }
-    }
-
     public function render()
     {
         return view('livewire.add-to-cart-button');

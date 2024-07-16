@@ -23,16 +23,6 @@ class ProductDetails extends Component
             'variants' => $this->variants
         ]);
     }
-    private function getSessionId()
-    {
-        if (array_key_exists('sessionId', $_COOKIE)) {
-            return $_COOKIE['sessionId'];
-        } else {
-            $sessionId = session()->getId();
-            setcookie('sessionId', $sessionId, time() + 30 * 24 * 60 * 60, '/', null, false, true);
-            return $sessionId;
-        }
-    }
     public function mount($product)
     {
         $prodid = $this->product->id;
@@ -57,7 +47,7 @@ class ProductDetails extends Component
             ])
             ->findOrFail($prodid);
         $this->quantity = 1;
-        $this->session_id = $this->getSessionId();
+        $this->session_id = $_COOKIE['sessionId'];
         $this->is_in_wishlist = $this->product->wishlists->where('session_id', $this->session_id)->first() ? true : false;
     }
 
