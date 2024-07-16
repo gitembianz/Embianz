@@ -62,29 +62,22 @@
   position: absolute;
   top: 35%;
   transform: translateY(-50%);
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border: none;
   border-radius: 50%;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: transparent;
+  background: $lightBlack;
   transition: all 0.3s ease-in-out;
   z-index: 99;
 
-  @media (max-width: map-get($grid-breakpoints, md)) {
-    background: $lightBlack;
-  }
 
   & > svg {
-    stroke: $lightBlack;
+    stroke: $primary;
     transform: scale(1.1);
-
-    @media (max-width: map-get($grid-breakpoints, md)) {
-      stroke: $primary;
-    }
   }
 
   &.prev {
