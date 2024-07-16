@@ -21,7 +21,12 @@ class WishlistProductsList extends Component
 
     public function render()
     {
-        return view('livewire.wishlist-products-list', ['items' => $this->items]);
+        if ($this->showwis) {
+
+            return view('livewire.wishlist-products-list', ['items' => $this->items]);
+        } else {
+            return view('livewire.wishlist-products-list');
+        }
     }
 
     public function removemessage()
