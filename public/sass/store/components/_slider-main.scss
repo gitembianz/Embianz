@@ -79,8 +79,8 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   color: $background;
   background: $lightBlack;
   border-radius: 50%;
@@ -91,6 +91,7 @@
   transition: all 0.3s ease-in-out;
   z-index: 99;
   border: none;
+    pointer-events: all;
 
   & > svg {
     stroke: $background;
@@ -98,12 +99,12 @@
   }
 
   &.prev {
-    left: 20px;
+    left: 16px;
     animation: LeftToRight 1s ease-in-out infinite;
   }
 
   &.next {
-    right: 20px;
+    right: 16px;
     animation: RightToLeft 1s ease-in-out infinite;
   }
 
