@@ -82,11 +82,6 @@
        </th>
        <th class="hidden">
         <button class="table--btn">
-         Product
-        </button>
-       </th>
-       <th class="hidden">
-        <button class="table--btn">
          Value without VAT
         </button>
        </th>
@@ -98,11 +93,6 @@
        <th class="hidden">
         <button class="table--btn">
          VAT
-        </button>
-       </th>
-       <th class="hidden" style="width: auto !important;">
-        <button class="table--btn">
-         Value
         </button>
        </th>
       </tr>
@@ -127,57 +117,7 @@
         <td wire:click="expandRow2({{ $index }})">
          {{ $prod[$index]['itemselected'] }}
         </td>
-        <td class="hidden">
-         @if ($pro['allow'])
-          <div class="searchable active">
-           {{-- Dropdown Header --}}
-           <input class="input" wire:model.debounce.300ms="searchadd" placeholder="Search..." type="text">
-           <button class="button__searchable" wire:click.prevent="dennyselect({{ $index }})">
-            <svg>
-             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-             <path d="M10 10l-6 6v4h4l6 -6m1.99 -1.99l2.504 -2.504a2.828 2.828 0 1 0 -4 -4l-2.5 2.5" />
-             <path d="M13.5 6.5l4 4" />
-             <path class="button__searchable--line" d="M3 3l18 18" />
-            </svg>
-           </button>
-           {{-- Dropdown Content --}}
-           <div class="content__searchable">
-            <div class="list__searchable">
-             @if (count($addprods) >= 1)
-              @foreach ($addprods as $pr)
-               <button class="item__searchable"
-                wire:click.prevent="selectitem({{ $index }}, {{ $pr->id }}, '{{ $pr->name }}')">
-                {{ $pr->name }}
-               </button>
-              @endforeach
-             @else
-              <button class="item__searchable">{{ __('No record found') }}</button>
-             @endif
-            </div>
-           </div>
-          </div>
-         @else
-          <div class="searchable">
-           {{-- Dropdown Show Selected || Select now --}}
-           <button class="input__searchable">
-            @if ($pro['itemselected'])
-             {{ $pro['itemselected'] }}
-            @else
-             {{ __('Select a product') }}
-            @endif
-           </button>
-           <button class="button__searchable" wire:click.prevent="allowselect({{ $index }})">
-            <svg>
-             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-             <path d="M10 10l-6 6v4h4l6 -6m1.99 -1.99l2.504 -2.504a2.828 2.828 0 1 0 -4 -4l-2.5 2.5" />
-             <path d="M13.5 6.5l4 4" />
-             <path class="button__searchable--line" d="M3 3l18 18" />
-            </svg>
-           </button>
-          </div>
-         @endif
-         <input type="hidden" wire:model.defer="prod.{{ $index }}.product.name">
-        </td>
+
         <td class="hidden">
          <input type="text" required class="input button--fill button--xs"
           wire:model.defer="prod.{{ $index }}.product.value">
