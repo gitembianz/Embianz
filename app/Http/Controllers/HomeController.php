@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
@@ -20,9 +21,14 @@ class HomeController extends Controller
   public function home()
   {
     $preload = null;
-    $firstcategory = app()->make('cached_categories')->filter(function ($category) {
-      return $category->slider_sequence != 0;
-    })->sortBy('slider_sequence')->first();
+    if (app()->has('global_cache_data') && app('global_cache_data') === 'true') {
+
+      $firstcategory = app()->make('cached_categories')->filter(function ($category) {
+        return $category->slider_sequence != 0;
+      })->sortBy('slider_sequence')->first();
+    } else {
+      $firstcategory = Category::where('slider_sequence', '!=', 0)->orderby('slider_sequence')->first();
+    }
 
     if ($firstcategory != null) {
       $media = $firstcategory->media->first(function ($mediaItem) {
