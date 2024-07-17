@@ -786,58 +786,9 @@
        @endif
        @if ($this->showColumn('Name'))
         <td>
-         @if ($editedrow !== $index)
-          <a href="{{ route('show_product', ['id' => $prod->product->id]) }}">
-           {{ $prod->product->name }}
-          </a>
-         @else
-          @if ($allow)
-           <div class="searchable active">
-            <!-- Header -->
-            <input class="input__searchable" type="text" wire:model.debounce.300ms="searchadd"
-             placeholder="Search..">
-            <button class="button__searchable" wire:click.prevent="denny()">
-             <svg>
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M10 10l-6 6v4h4l6 -6m1.99 -1.99l2.504 -2.504a2.828 2.828 0 1 0 -4 -4l-2.5 2.5" />
-              <path d="M13.5 6.5l4 4" />
-              <path class="button__searchable--line" d="M3 3l18 18" />
-             </svg>
-            </button>
-
-            <!-- Body -->
-            <div class="content__searchable">
-             <div class="list__searchable">
-              @if ($addprods->isEmpty())
-               <button class="item__searchable">
-                No record found
-               </button>
-              @else
-               @foreach ($addprods as $pr)
-                <button class="item__searchable" wire:click.prevent="select({{ $pr->id }})">
-                 {{ $pr->name }}
-                </button>
-               @endforeach
-              @endif
-             </div>
-            </div>
-           </div>
-          @else
-           <div class="searchable">
-            <button class="input__searchable">
-             {{ $itemselected }}
-            </button>
-            <button class="button__searchable" wire:click.prevent="allow">
-             <svg>
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M10 10l-6 6v4h4l6 -6m1.99 -1.99l2.504 -2.504a2.828 2.828 0 1 0 -4 -4l-2.5 2.5" />
-              <path d="M13.5 6.5l4 4" />
-              <path class="button__searchable--line" d="M3 3l18 18" />
-             </svg>
-            </button>
-           </div>
-          @endif
-         @endif
+         <a href="{{ route('show_product', ['id' => $prod->product->id]) }}">
+          {{ $prod->product->name }}
+         </a>
         </td>
        @endif
        @if ($this->showColumn('Currency'))
@@ -847,14 +798,7 @@
        @endif
        @if ($this->showColumn('Value'))
         <td class="hidden" wire:click="expandRow({{ $index }})">
-         @if ($editedrow !== $index)
-          {{ $prod->value }}
-         @else
-          <div class="searchable">
-           <input class="input__searchable" type="text" required
-            wire:model.defer="prod.{{ $index }}.product.value">
-          </div>
-         @endif
+         {{ $prod->value }}
         </td>
        @endif
        @if ($this->showColumn('Value without Discount'))
@@ -876,7 +820,7 @@
        @if ($this->showColumn('Value without VAT'))
         <td class="hidden">
          @if ($editedrow !== $index)
-          {{ $prod->value_no_vat }}%
+          {{ $prod->value_no_vat }}
          @else
           <div class="searchable">
            <input type="number"class="input__searchable" wire:model.defer="product.{{ $index }}.value">
