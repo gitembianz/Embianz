@@ -304,7 +304,7 @@
         <td @if ($index > count($selectedColumns) - 17) class="hidden" @endif data-title="{{ $column }}"
          wire:click="expandRow({{ $nr }})">
          @if ($column === 'name')
-          <a href="{{ route('show_category', ['id' => $category->id]) }}">{{ $category->name }}</a>
+          <a href="{{ route('show_category', ['id' => $category->id]) }}">{{ strip_tags($category->name) }}</a>
          @elseif ($column === 'active' || $column === 'store_tab' || $column === 'has_parrent')
           @if ($category->$column)
            <div class="checkbox--secondary disabled">
