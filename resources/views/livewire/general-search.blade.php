@@ -88,7 +88,7 @@
 
            <div class="search__link--text">
             <div class="search__link--bottom">
-             <h4>{{ $category->name }}</h4>
+             <h4>{!! $category->name !!}</h4>
             </div>
            </div>
           </a>

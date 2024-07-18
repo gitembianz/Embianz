@@ -201,7 +201,7 @@
        </div>
        <div class="card-info">
         <div class="card-text">
-         <h3 class="card-title">{{ $category->name }}</h2>
+         <h3 class="card-title">{!! $category->name !!}</h2>
         </div>
         {!! $category->long_description !!}
        </div>

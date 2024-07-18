@@ -33,7 +33,7 @@
     @if ($breadcrumb['name'] === $category->name)
      <a class="breadcrumbs__link"
       href="{{ route('products', ['categorySlug' => $category->seo_id !== null && $category->seo_id !== '' ? $category->seo_id : $category->id]) }}">
-      {{ $category->name }}
+      {!! $category->name !!}
      </a>
     @else
      <a class="breadcrumbs__link" href="{{ route('products', ['categorySlug' => $breadcrumb['slug']]) }}">
@@ -50,7 +50,7 @@
     @if (!empty($category->short_description))
      {{ $category->short_description }}
     @else
-     {{ $category->name }}
+     {!! $category->name !!}
     @endif
    </h1>
    <p class="section__text">
