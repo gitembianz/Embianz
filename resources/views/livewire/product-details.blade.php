@@ -1,6 +1,20 @@
 <div class="product__container">
+ @php
+  if (app()->has('global_numberformat_element')) {
+      if (app('global_numberformat_element') === '.') {
+          $mill = '.';
+          $decimal = ',';
+      } else {
+          $mill = ',';
+          $decimal = '.';
+      }
+  } else {
+      $mill = '.';
+      $decimal = ',';
+  }
+ @endphp
  <?php if ($product->product_prices->count() != 0) {
-     $price = number_format($product->product_prices->first()->value, 2, ',', '.');
+     $price = number_format($product->product_prices->first()->value, 2, $decimal, $mill);
      $discount = $product->product_prices->first()->discount != 0 ? true : false;
  } else {
      $price = null;
@@ -43,7 +57,9 @@
   @if ($discount && $price)
    @if ($price)
     <div class="product__price--discount">
-     <span class="product__price--oldprice">{{ $product->product_prices->first()->value_no_discount }}@if (app()->has('global_currency_primary_symbol'))
+     <span
+      class="product__price--oldprice">{{ number_format($product->product_prices->first()->value_no_discount, 2, $decimal, $mill) }}
+      @if (app()->has('global_currency_primary_symbol'))
        {!! app('global_currency_primary_symbol') !!}
       @endif
      </span>
@@ -74,7 +90,7 @@
    @if (app()->has('label_pdp_vat'))
     {!! app('label_pdp_vat') !!}
    @endif
-   {{ number_format($product->product_prices->first()->vat, 2, ',', '.') }}%
+   {{ number_format($product->product_prices->first()->vat, 2, $decimal, $mill) }}%
   </span>
   <div class="quantity">
    <span>

@@ -83,7 +83,20 @@
     </button>
    </div>
   @endif
-
+  @php
+   if (app()->has('global_numberformat_element')) {
+       if (app('global_numberformat_element') === '.') {
+           $mill = '.';
+           $decimal = ',';
+       } else {
+           $mill = ',';
+           $decimal = '.';
+       }
+   } else {
+       $mill = '.';
+       $decimal = ',';
+   }
+  @endphp
   <!-------------------- End Slider Images ------------------->
   <!---------------------------------------------------------->
   <!---------------------------------------------------------->
@@ -124,7 +137,7 @@
         $discount = false;
         
         if ($product->product_prices->count() != 0) {
-            $price = number_format($product->product_prices->first()->value, 2, ',', '.');
+            $price = number_format($product->product_prices->first()->value, 2, $decimal, $mill);
             $discount = $product->product_prices->first()->discount != 0 ? true : false;
         }
         ?>
@@ -179,7 +192,7 @@
              @endif
             </span>
             <span class="card-price oldprice">
-             {{ $product->product_prices->first()->value_no_discount }}
+             {{ number_format($product->product_prices->first()->value_no_discount, 2, $decimal, $mill) }}
              @if (app()->has('global_currency_primary_symbol'))
               {!! app('global_currency_primary_symbol') !!}
              @endif
@@ -260,7 +273,7 @@
         $discount = false;
         
         if ($product->product_prices->count() != 0) {
-            $price = number_format($product->product_prices->first()->value, 2, ',', '.');
+            $price = number_format($product->product_prices->first()->value, 2, $decimal, $mill);
             $discount = $product->product_prices->first()->discount != 0 ? true : false;
         }
         ?>
@@ -315,7 +328,7 @@
              @endif
             </span>
             <span class="card-price oldprice">
-             {{ $product->product_prices->first()->value_no_discount }}
+             {{ number_format($product->product_prices->first()->value_no_discount, 2, $decimal, $mill) }}
              @if (app()->has('global_currency_primary_symbol'))
               {!! app('global_currency_primary_symbol') !!}
              @endif
@@ -337,8 +350,11 @@
          <div style="display: none" class="dlv">
           <span class="dlv_name">{{ $product->name }}</span>
           <span class="dlv_price">{{ $price }}</span>
-          <span
-           class="dlv_currency">{{ optional(optional(optional($product->product_prices->first())->pricelist)->currency)->name }}</span>
+          <span class="dlv_currency">
+           @if (app()->has('global_currency_primary_name'))
+            {!! app('global_currency_primary_name') !!}
+           @endif
+          </span>
          </div>
         </div>
        </div>

@@ -258,6 +258,20 @@
    </div>
   </section>
  @else
+  @php
+   if (app()->has('global_numberformat_element')) {
+       if (app('global_numberformat_element') === '.') {
+           $mill = '.';
+           $decimal = ',';
+       } else {
+           $mill = ',';
+           $decimal = '.';
+       }
+   } else {
+       $mill = '.';
+       $decimal = ',';
+   }
+  @endphp
   <section>
    <div class="checkout container">
     <!-------------------- Steps-------------------->
@@ -2484,7 +2498,7 @@
            </div>
           @endif
           <span class="total__price">
-           {{ number_format($cartItem->quantity * $cartItem->price, 2, ',', '.') }}
+           {{ number_format($cartItem->quantity * $cartItem->price, 2, $decimal, $mill) }}
            @if (app()->has('global_currency_primary_symbol'))
             {!! app('global_currency_primary_symbol') !!}
            @endif
@@ -2512,7 +2526,7 @@
             {!! app('label_cart_delivery_free') !!}
            @endif
           @else
-           {{ $cart->delivery_price }} @if (app()->has('global_currency_primary_symbol'))
+           {{ number_format($cart->delivery_price, 2, $decimal, $mill) }} @if (app()->has('global_currency_primary_symbol'))
             {!! app('global_currency_primary_symbol') !!}
            @endif
           @endif
@@ -2526,7 +2540,7 @@
            @endif
           </span>
           <span>
-           -{{ number_format($cart->voucher_value, 2, ',', '.') }} @if (app()->has('global_currency_primary_symbol'))
+           -{{ number_format($cart->voucher_value, 2, $decimal, $mill) }} @if (app()->has('global_currency_primary_symbol'))
             {!! app('global_currency_primary_symbol') !!}
            @endif
           </span>
@@ -2538,7 +2552,7 @@
            {!! app('label_cart_total_tag') !!}
           @endif
          </span>
-         <span>{{ number_format($cart->final_amount, 2, ',', '.') }} @if (app()->has('global_currency_primary_symbol'))
+         <span>{{ number_format($cart->final_amount, 2, $decimal, $mill) }} @if (app()->has('global_currency_primary_symbol'))
            {!! app('global_currency_primary_symbol') !!}
           @endif
          </span>
@@ -2917,7 +2931,7 @@
           href="{{ route('product', ['product' => $cartItem->product->seo_id !== null && $cartItem->product->seo_id !== '' ? $cartItem->product->seo_id : $cartItem->product->id]) }}"
           target="_blank" class="total__name">{{ $cartItem->product->name }}</a>
          <span class="total__price">
-          {{ number_format($cartItem->quantity * $cartItem->price, 2, ',', '.') }}
+          {{ number_format($cartItem->quantity * $cartItem->price, 2, $decimal, $mill) }}
           @if (app()->has('global_currency_primary_symbol'))
            {!! app('global_currency_primary_symbol') !!}
           @endif
@@ -2944,7 +2958,7 @@
            {!! app('label_cart_delivery_free') !!}
           @endif
          @else
-          {{ $new_order->delivery_price }} @if (app()->has('global_currency_primary_symbol'))
+          {{ number_format($new_order->delivery_price, 2, $decimal, $mill) }} @if (app()->has('global_currency_primary_symbol'))
            {!! app('global_currency_primary_symbol') !!}
           @endif
          @endif
@@ -2958,7 +2972,7 @@
           @endif
          </span>
          <span>
-          -{{ number_format($new_order->voucher_value, 2, ',', '.') }}
+          -{{ number_format($new_order->voucher_value, 2, $decimal, $mill) }}
           @if (app()->has('global_currency_primary_symbol'))
            {!! app('global_currency_primary_symbol') !!}
           @endif
@@ -2972,7 +2986,7 @@
           {!! app('label_cart_total_tag') !!}
          @endif
         </span>
-        <span id="final__amount">{{ number_format($new_order->final_amount, 2, ',', '.') }}
+        <span id="final__amount">{{ number_format($new_order->final_amount, 2, $decimal, $mill) }}
          @if (app()->has('global_currency_primary_symbol'))
           {!! app('global_currency_primary_symbol') !!}
          @endif
