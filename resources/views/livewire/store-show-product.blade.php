@@ -60,16 +60,16 @@
    </div>
    <div class="product-slider__pagination--navigation">
     <button class="product-slider__pagination--button product-slider__pagination--prev disabled" aria-label="Previous">
-      <svg>
-       <polyline points="15 18 9 12 15 6"></polyline>
-      </svg>
+     <svg>
+      <polyline points="15 18 9 12 15 6"></polyline>
+     </svg>
     </button>
     <div class="product-slider__pagination">
     </div>
     <button class="product-slider__pagination--button product-slider__pagination--next disabled" aria-label="Next">
-      <svg>
-       <polyline points="9 18 15 12 9 6"></polyline>
-      </svg>
+     <svg>
+      <polyline points="9 18 15 12 9 6"></polyline>
+     </svg>
     </button>
    </div>
   </div>
@@ -87,14 +87,14 @@
     </svg>
    </button>
    <button class="product-modal__prev">
-      <svg>
-       <polyline points="15 18 9 12 15 6"></polyline>
-      </svg>
+    <svg>
+     <polyline points="15 18 9 12 15 6"></polyline>
+    </svg>
    </button>
    <button class="product-modal__next">
-      <svg>
-       <polyline points="9 18 15 12 9 6"></polyline>
-      </svg>
+    <svg>
+     <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
    </button>
    <span class="product-modal__count"></span>
   </div>
@@ -198,14 +198,14 @@
   <section id="relatedSlider" class="related__slider container">
    {{-- <div class="related__navigation"> --}}
    <button class="related__btn prev" aria-label="Previous related slider">
-       <svg>
-       <polyline points="15 18 9 12 15 6"></polyline>
-      </svg>
+    <svg>
+     <polyline points="15 18 9 12 15 6"></polyline>
+    </svg>
    </button>
    <button class="related__btn next" aria-label="Next related slider">
-      <svg>
-       <polyline points="9 18 15 12 9 6"></polyline>
-      </svg>
+    <svg>
+     <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
    </button>
    {{-- </div> --}}
    <div class="related__wrapper">
@@ -272,10 +272,13 @@
        @endif
        <div class="card-info">
         <div class="card-text">
-         <span>{{ $product->product->short_description }}</span>
+         <span><a style="text-decoration: none; font-weight:500"
+           href="{{ route('product', ['product' => $product->product->seo_id !== null && $product->product->seo_id !== '' ? $product->product->seo_id : $product->product->id]) }}">{{ $product->product->short_description }}</a></span>
         </div>
         <div class="card-text">
-         <h3>{{ $product->product->name }}</h3>
+         <h3><a style="text-decoration: none; font-weight:500"
+           href="{{ route('product', ['product' => $product->product->seo_id !== null && $product->product->seo_id !== '' ? $product->product->seo_id : $product->product->id]) }}">{{ $product->product->name }}</a>
+         </h3>
          <p class="card-price">
           @if ($discount)
            <span class="card-price discount">
