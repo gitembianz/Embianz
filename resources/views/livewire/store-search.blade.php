@@ -73,11 +73,9 @@
        <a
         href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">
         @if ($product->media->first() != null)
-         <img loading="eager" class="card-image"
+         <img title="{{ $product->name }}, {{ $product->short_description }}" loading="eager" class="card-image"
           src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}"
           alt="{{ $product->media->first()->name }} {{ $product->name }}">
-        @else
-         <img loading="eager" class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
         @endif
        </a>
        <?php if ($product->product_prices->count() != 0) {

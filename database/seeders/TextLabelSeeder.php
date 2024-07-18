@@ -211,6 +211,7 @@ class TextLabelSeeder extends Seeder
   <line x1="12" y1="17" x2="12.01" y2="17"></line>
  </svg>
  Contact Us', 'description' => 'Support button text/code', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'header_allproducts', 'value' => 'Toate Produsele', 'description' => 'All prodicts category in header - a', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             // ['parameter' => '', 'value' => '', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
 
         ];
