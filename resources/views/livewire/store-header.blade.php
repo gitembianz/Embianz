@@ -40,7 +40,7 @@
       <div class="dropdown">
        <a class="dropdown__button"
         href="{{ route('products', ['categorySlug' => $category->seo_id !== null && $category->seo_id !== '' ? $category->seo_id : $category->id]) }}">
-        {{ $category->name }}
+        {!! $category->name !!}
         <svg>
          <polyline points="6 9 12 15 18 9"></polyline>
         </svg>
@@ -52,7 +52,7 @@
          <div class="dropdown__item">
           <a class="dropdown__item--button"
            href="{{ route('products', ['categorySlug' => $subcategory->category->seo_id !== null && $subcategory->category->seo_id !== '' ? $subcategory->category->seo_id : $subcategory->category->id]) }}">
-           {{ $subcategory->category->name }}
+           {!! $subcategory->category->name !!}
            @if ($subcategory->category->subcategory->count() != 0)
             <svg>
              <polyline points="9 18 15 12 9 6"></polyline>
@@ -66,7 +66,7 @@
     }) as $subsubCategory)
              <a class="dropdown__item--link"
               href="{{ route('products', ['categorySlug' => $subsubCategory->category->seo_id !== null && $subsubCategory->category->seo_id !== '' ? $subsubCategory->category->seo_id : $subsubCategory->category->id]) }}">
-              {{ $subsubCategory->category->name }}
+              {!! $subsubCategory->category->name !!}
              </a>
             @endforeach
            </div>
@@ -78,7 +78,7 @@
      @else
       <a class="navbar__link"
        href="{{ route('products', ['categorySlug' => $category->seo_id !== null && $category->seo_id !== '' ? $category->seo_id : $category->id]) }}">
-       {{ $category->name }}
+       {!! $category->name !!}
       </a>
      @endif
     @endforeach
@@ -169,7 +169,7 @@
           <img loading="eager" class="cart__list--img"
            src="/{{ $category->media->where('type', 'min')->first()->path }}{{ $category->media->where('type', 'min')->first()->name }}">
          @endif
-         <h4 style="margin-left: 7px">{{ $category->name }}</h4>
+         <h4 style="margin-left: 7px">{!! $category->name !!}</h4>
         </a>
         <button class="dropmenu__open" href="#">
          <svg>
@@ -188,7 +188,7 @@
               src="/{{ $subcategory->category->media->where('type', 'min')->first()->path }}{{ $subcategory->category->media->where('type', 'min')->first()->name }}"
               alt="{{ $subcategory->category->media->where('type', 'min')->first()->name }}{{ $subcategory->category->name }}">
             @endif
-            <h4>{{ $subcategory->category->name }}</h4>
+            <h4>{!! $subcategory->category->name !!}</h4>
            </a>
            @if ($subcategory->category->subcategory->count() != 0)
             <button class="submenu__open" href="#">
@@ -208,7 +208,7 @@
                 src="/{{ $subsubCategory->category->media->where('type', 'min')->first()->path }}{{ $subsubCategory->category->media->where('type', 'min')->first()->name }}"
                 alt="{{ $subsubCategory->category->media->where('type', 'min')->first()->name }}{{ $subsubCategory->category->name }}">
               @endif
-              <h4>{{ $subsubCategory->category->name }}</h4>
+              <h4>{!! $subsubCategory->category->name !!}</h4>
              </a>
             @endforeach
            </div>
@@ -225,7 +225,7 @@
          src="/{{ $category->media->where('type', 'min')->first()->path }}{{ $category->media->where('type', 'min')->first()->name }}"
          alt="{{ $category->media->where('type', 'min')->first()->name }} {{ $category->name }}">
        @endif
-       <h4> {{ $category->name }}</h4>
+       <h4> {!! $category->name !!}</h4>
       </a>
      @endif
     @endforeach
