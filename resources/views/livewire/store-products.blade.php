@@ -1,5 +1,19 @@
 <div>
  <!------------------------Breadcrumbs----------------------->
+ @php
+  if (app()->has('global_numberformat_element')) {
+      if (app('global_numberformat_element') === '.') {
+          $mill = '.';
+          $decimal = ',';
+      } else {
+          $mill = ',';
+          $decimal = '.';
+      }
+  } else {
+      $mill = '.';
+      $decimal = ',';
+  }
+ @endphp
  <div class="breadcrumbs container">
   <a class="breadcrumbs__link" href="{{ url('/') }}">
    @if (app()->has('label_breadcrumbs_home_page'))
@@ -152,7 +166,7 @@
 
       @php
        if ($element->product_prices->count() != 0) {
-           $price = number_format($element->product_prices->first()->value, 2, ',', '.');
+           $price = number_format($element->product_prices->first()->value, 2, $decimal, $mill);
            $discount = $element->product_prices->first()->discount != 0 ? true : false;
        } else {
            $price = null;
@@ -227,7 +241,7 @@
            @endif
           </span>
           <span class="card-price oldprice">
-           {{ $element->product_prices->first()->value_no_discount }}
+           {{ number_format($element->product_prices->first()->value_no_discount, 2, $decimal, $mill) }}
            @if (app()->has('global_currency_primary_symbol'))
             {!! app('global_currency_primary_symbol') !!}
            @endif
@@ -246,8 +260,8 @@
          <span class="dlv_name">{{ $element->name }}</span>
          <span class="dlv_price">{{ $price }}</span>
          <span class="dlv_currency">
-          @if (app()->has('global_currency_primary_symbol'))
-           {!! app('global_currency_primary_symbol') !!}
+          @if (app()->has('global_currency_primary_name'))
+           {!! app('global_currency_primary_name') !!}
           @endif
          </span>
         </div>

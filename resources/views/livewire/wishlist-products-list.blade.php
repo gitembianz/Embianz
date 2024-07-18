@@ -14,7 +14,20 @@
     </svg>
    </button>
   </div>
-
+  @php
+   if (app()->has('global_numberformat_element')) {
+       if (app('global_numberformat_element') === '.') {
+           $mill = '.';
+           $decimal = ',';
+       } else {
+           $mill = ',';
+           $decimal = '.';
+       }
+   } else {
+       $mill = '.';
+       $decimal = ',';
+   }
+  @endphp
   @if (!isset($items) || $items->isEmpty())
    <span class="leftbar__empty">
     @if (app()->has('label_wishlist_empty'))
@@ -49,7 +62,7 @@
         <span class="leftbar__link--price">
          @php
           if (optional($item->product->product_prices->first())->value) {
-              $price = number_format(optional($item->product->product_prices->first())->value, 2, ',', '.');
+              $price = number_format(optional($item->product->product_prices->first())->value, 2, $decimal, $mill);
           } else {
               $price = null;
           }

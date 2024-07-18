@@ -318,10 +318,11 @@
        </button>
       </th>
      @endif
-     <th>
-      <button class="button button--secondary button--sm" style="opacity: 0;">
+     <th style="border-left: none; border-right: none;">
+      <button class="button button--secondary button--sm" style="opacity: 0">
        <svg>
-        <polyline points="20 6 9 17 4 12"></polyline>
+        <polyline points="3 6 5 6 21 6"></polyline>
+        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
        </svg>
       </button>
      </th>
@@ -348,19 +349,15 @@
           (time is: {{ now() }}) - Please refresh to update after the edit
          @endif
         @else
-        <div class="searchable">
-         <input type="text" class="input__searchable" wire:model.defer="settings.{{ $index }}.value">
-        </div>
+         <div class="searchable">
+          <input type="text" class="input__searchable" wire:model.defer="settings.{{ $index }}.value">
+         </div>
         @endif
        </td>
       @endif
       @if ($this->showColumn('Description'))
        <td wire:click="expandRow({{ $index }})" class="hidden">
-        @if ($editindex !== $index)
-         {{ $store->description }}
-        @else
-         <textarea class="input" wire:model.defer="settings.{{ $index }}.description"></textarea>
-        @endif
+        {{ $store->description }}
        </td>
       @endif
       @if ($this->showColumn('Created At'))
@@ -414,24 +411,17 @@
          @else
           <p>
            <bold>Value:</bold>
-           <div class="searchable">
+          <div class="searchable">
            <input type="text" class="input__searchable" wire:model.defer="settings.{{ $index }}.value">
-           </div>
+          </div>
           </p>
          @endif
         @endif
         @if ($this->showColumn('Description'))
-         @if ($editindex !== $index)
-          <p>
-           <bold>Description:</bold>
-           {{ $store->description }}
-          </p>
-         @else
-          <p>
-           <bold>Description:</bold>
-           <textarea class="input" wire:model.defer="settings.{{ $index }}.description"></textarea>
-          </p>
-         @endif
+         <p>
+          <bold>Description:</bold>
+          {{ $store->description }}
+         </p>
         @endif
         @if ($this->showColumn('Created At'))
          <p>

@@ -180,7 +180,6 @@ class Storesettingstable extends Component
     $this->row = $index;
     $this->settings = [
       $index . '.value' => $record->value,
-      $index . '.description' => $record->description,
     ];
   }
   public function saveitem($index, $id)
@@ -190,10 +189,16 @@ class Storesettingstable extends Component
       $item = Store_Settings::find($id);
 
       if (array_key_exists('value', $update)) {
+        if ($item->parameter == 'numberformat_element') {
+          if ($update['value'] != '.' && $update['value'] != ',') {
+            session()->flash('notification', [
+              'message' => 'Value must be . or ,',
+              'type' => 'warning',
+            ]);
+            return;
+          }
+        }
         $item->value = $update['value'];
-      }
-      if (array_key_exists('description', $update)) {
-        $item->description = $update['description'];
       }
       $item->save();
       if ($item->parameter == 'app_debug') {
