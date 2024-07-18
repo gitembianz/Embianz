@@ -32,7 +32,9 @@
    <div class="navbar__list">
     @if (app()->has('global_show_on_header') && app('global_show_on_header') == 'true')
      <a class="navbar__link" href="{{ route('products', ['categorySlug' => app('global_default_category')]) }}">
-      Toate Produsele
+      @if (app()->has('label_header_allproducts'))
+       {!! app('label_header_allproducts') !!}
+      @endif
      </a>
     @endif
     @foreach ($categories as $category)

@@ -42,10 +42,9 @@
           <a class="search__link"
            href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">
            @if ($product->media->first() != null)
-            <img loading="eager" src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}"
+            <img title="{{ $product->name }}, {{ $product->short_description }}" loading="eager"
+             src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}"
              alt="{{ $product->media->first()->name }} {{ $product->name }}">
-           @else
-            <img loading="eager" src="/images/store/default/default70.webp" alt="something wrong">
            @endif
 
            <div class="search__link--text">

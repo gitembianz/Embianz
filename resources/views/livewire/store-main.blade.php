@@ -125,8 +125,8 @@
           $mainMedia = $product->media->firstWhere('type', 'main');
          @endphp
          @if ($mainMedia)
-          <img loading="eager" class="card-image" src="/{{ $mainMedia->path }}{{ $mainMedia->name }}"
-           alt="{{ $mainMedia->name }} {{ $product->name }}">
+          <img title="{{ $product->name }}, {{ $product->short_description }}" loading="eager" class="card-image"
+           src="/{{ $mainMedia->path }}{{ $mainMedia->name }}" alt="{{ $mainMedia->name }} {{ $product->name }}">
          @else
           <img loading="eager" class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
          @endif
@@ -261,8 +261,8 @@
           $mainMedia = $product->media->firstWhere('type', 'main');
          @endphp
          @if ($mainMedia)
-          <img loading="eager" class="card-image" src="/{{ $mainMedia->path }}{{ $mainMedia->name }}"
-           alt="{{ $mainMedia->name }} {{ $product->name }}">
+          <img title="{{ $product->name }}, {{ $product->short_description }}" loading="eager" class="card-image"
+           src="/{{ $mainMedia->path }}{{ $mainMedia->name }}" alt="{{ $mainMedia->name }} {{ $product->name }}">
          @else
           <img loading="eager" class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
          @endif
