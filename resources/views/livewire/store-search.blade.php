@@ -1,4 +1,4 @@
-<div wire:scroll="loadMore">
+<div>
  <!------------------------Breadcrumbs----------------------->
  <div class="breadcrumbs container">
   <a class="breadcrumbs__link" href="{{ url('/') }}">
@@ -190,11 +190,9 @@
        href="{{ route('products', ['categorySlug' => $category->seo_id !== null && $category->seo_id !== '' ? $category->seo_id : $category->id]) }}">
        <div>
         @if ($category->media->first() != null)
-         <img loading="eager" class="card-image"
+         <img title="{{ strip_tags($category->name) }}" loading="eager" class="card-image"
           src="/{{ $category->media->first()->path }}{{ $category->media->first()->name }}"
-          alt="{{ $category->media->first()->name }} {{ $category->name }}">
-        @else
-         <img loading="eager" class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
+          alt="{{ $category->media->first()->name }} {{ strip_tags($category->name) }}">
         @endif
        </div>
        <div class="card-info">
@@ -215,8 +213,6 @@
    <button class="filter__apply" wire:click="loadMore" wire:loading.remove>Vezi mai mult!</button>
   </section>
  @endif
-
- <!--------------------- support button --------------------->
 
  <!---------------------------------------------------------->
  <script src="/script/store/catalog.js" defer></script>

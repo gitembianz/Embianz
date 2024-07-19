@@ -1,6 +1,5 @@
 <div>
  <main>
-  <!---------------------------------------------------------->
   <!---------------------- Slider Images --------------------->
   @if (!$slideritems->isEmpty())
    <div class="main-slider">
@@ -24,51 +23,50 @@
          @endif
          {{-- Tablet Picture --}}
          @if ($item->media->where('sequence', 3)->first() != null)
-          <source media="(min-width: 576px)" sizes="(min-width: 576px) 80vw"
+          <source title="{{ $item->media->where('sequence', 3)->first()->name }}" media="(min-width: 576px)"
+           sizes="(min-width: 576px) 80vw"
            srcset="/{{ $item->media->where('sequence', 3)->first()->path }}{{ $item->media->where('sequence', 3)->first()->name }}"
            loading="eager" fetchpriority="high" height="{{ $item->media->where('sequence', 3)->first()->height }}"
            width="{{ $item->media->where('sequence', 3)->first()->width }}">
          @elseif ($item->media->where('sequence', 2)->first() != null)
-          <source media="(min-width: 576px)" sizes="(min-width: 576px) 80vw"
+          <source title="{{ $item->media->where('sequence', 2)->first()->name }}" media="(min-width: 576px)"
+           sizes="(min-width: 576px) 80vw"
            srcset="/{{ $item->media->where('sequence', 2)->first()->path }}{{ $item->media->where('sequence', 2)->first()->name }}"
            loading="eager" fetchpriority="high" height="{{ $item->media->where('sequence', 2)->first()->height }}"
            width="{{ $item->media->where('sequence', 2)->first()->width }}">
          @else
-          <source media="(min-width: 576px)" sizes="(min-width: 576px) 80vw"
+          <source title="Default image" media="(min-width: 576px)" sizes="(min-width: 576px) 80vw"
            srcset="/images/store/default/default640.webp" loading="eager" fetchpriority="high">
          @endif
          {{-- Mobile Picture --}}
          @if ($item->media->where('sequence', 4)->first() != null)
-          <img sizes="100vw" alt="{{ $item->media->where('sequence', 4)->first()->name }} {{ $item->name }}"
+          <img title="{{ $item->media->where('sequence', 4)->first()->name }}" sizes="100vw"
+           alt="{{ $item->media->where('sequence', 4)->first()->name }} {{ $item->name }}"
            src="/{{ $item->media->where('sequence', 4)->first()->path }}{{ $item->media->where('sequence', 4)->first()->name }}"
            loading="eager" fetchpriority="high" height="{{ $item->media->where('sequence', 4)->first()->height }}"
            width="{{ $item->media->where('sequence', 4)->first()->width }}">
          @elseif ($item->media->where('sequence', 3)->first() != null)
-          <img sizes="100vw" alt="{{ $item->media->where('sequence', 3)->first()->name }} {{ $item->name }}"
+          <img title="{{ $item->media->where('sequence', 3)->first()->name }}" sizes="100vw"
+           alt="{{ $item->media->where('sequence', 3)->first()->name }} {{ $item->name }}"
            src="/{{ $item->media->where('sequence', 3)->first()->path }}{{ $item->media->where('sequence', 3)->first()->name }}"
            loading="eager" fetchpriority="high" height="{{ $item->media->where('sequence', 3)->first()->height }}"
            width="{{ $item->media->where('sequence', 3)->first()->width }}">
          @elseif ($item->media->where('sequence', 2)->first() != null)
-          <img sizes="100vw" alt="{{ $item->media->where('sequence', 2)->first()->name }} {{ $item->name }}"
+          <img title="{{ $item->media->where('sequence', 2)->first()->name }}" sizes="100vw"
+           alt="{{ $item->media->where('sequence', 2)->first()->name }} {{ $item->name }}"
            src="/{{ $item->media->where('sequence', 2)->first()->path }}{{ $item->media->where('sequence', 2)->first()->name }}"
            loading="eager" fetchpriority="high" height="{{ $item->media->where('sequence', 2)->first()->height }}"
            width="{{ $item->media->where('sequence', 2)->first()->width }}">
          @else
-          <img src="/images/store/default/default300.webp" alt="something wrong">
+          <img title="Default image" src="/images/store/default/default300.webp" alt="something wrong">
          @endif
         @else
-         <img src="/images/store/default/default300.webp" alt="something wrong">
+         <img title="Default image" src="/images/store/default/default300.webp" alt="something wrong">
         @endif
        </picture>
       </a>
       {{-- End Modelul de schimb de imagini pe slider la rezolutie --}}
      @endforeach
-
-
-
-
-
-
 
     </div>
     <button class="main-slider__button prev" aria-label="Previous main slider">
@@ -128,7 +126,8 @@
           <img title="{{ $product->name }}, {{ $product->short_description }}" loading="eager" class="card-image"
            src="/{{ $mainMedia->path }}{{ $mainMedia->name }}" alt="{{ $mainMedia->name }} {{ $product->name }}">
          @else
-          <img loading="eager" class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
+          <img title="Default image" loading="eager" class="card-image" src="/images/store/default/default300.webp"
+           alt="something wrong">
          @endif
         </a>
         @livewire('product-wishlist-button', ['productId' => $product->id, 'class' => 'card__action', 'is_in_wishlist' => $product->wishlists->where('session_id', $session_id)->isNotEmpty()], key($product->id))
@@ -267,7 +266,8 @@
           <img title="{{ $product->name }}, {{ $product->short_description }}" loading="eager" class="card-image"
            src="/{{ $mainMedia->path }}{{ $mainMedia->name }}" alt="{{ $mainMedia->name }} {{ $product->name }}">
          @else
-          <img loading="eager" class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
+          <img title="Default image" loading="eager" class="card-image" src="/images/store/default/default300.webp"
+           alt="something wrong">
          @endif
         </a>
         @livewire('product-wishlist-button', ['productId' => $product->id, 'class' => 'card__action', 'is_in_wishlist' => $product->wishlists->where('session_id', $session_id)->isNotEmpty()], key($product->id))
@@ -381,15 +381,10 @@
     </div>
    </section>
   @endif
-  <!-------------------- End Slider Cards -------------------->
-  <!---------------------------------------------------------->
+
   <!---------------------- Support Center -------------------->
   <x-support />
-  <!-------------------- End Support Center ------------------>
-  <!---------------------------------------------------------->
-  <!--------------------- support button --------------------->
 
-  <!------------------- End support button ------------------->
   <!---------------------------------------------------------->
  </main>
  <script src="/script/store/main.js" defer></script>

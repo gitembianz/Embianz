@@ -79,10 +79,9 @@
           <a class="search__link"
            href="{{ route('products', ['categorySlug' => $category->seo_id !== null && $category->seo_id !== '' ? $category->seo_id : $category->id]) }}">
            @if ($category->media->first() != null)
-            <img loading="eager" src="/{{ $category->media->first()->path }}{{ $category->media->first()->name }}"
-             alt="{{ $category->media->first()->name }} {{ $category->name }}">
-           @else
-            <img loading="eager" src="/images/store/default/default70.webp" alt="something wrong">
+            <img title="{{ strip_tags($category->name) }}" loading="eager"
+             src="/{{ $category->media->first()->path }}{{ $category->media->first()->name }}"
+             alt="{{ $category->media->first()->name }} {{ strip_tags($category->name) }}">
            @endif
 
            <div class="search__link--text">

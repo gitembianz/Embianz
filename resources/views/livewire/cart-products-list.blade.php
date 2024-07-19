@@ -94,11 +94,12 @@
          {{ $cartItem->quantity }} x
         </span>
         @if ($cartItem->product->media->first())
-         <img loading="eager" class="cart__list--img"
+         <img loading="eager" class="cart__list--img" title="{{ $cartItem->product->name }}"
           src="/{{ $cartItem->product->media->first()->path }}{{ $cartItem->product->media->first()->name }}"
           alt="{{ $cartItem->product->media->first()->name }}{{ $cartItem->product->name }}">
         @else
-         <img loading="eager" class="cart__list--img" src="/images/store/default/default70.webp" alt="something wrong">
+         <img title="Default image" loading="eager" class="cart__list--img" src="/images/store/default/default70.webp"
+          alt="something wrong">
         @endif
         <div class="leftbar__link--text">
          <h4 class="leftbar__link--title">{{ $cartItem->product->name }}</h4>
@@ -114,11 +115,12 @@
          {{ $cartItem->quantity }} x
         </span>
         @if ($cartItem->product->media->first())
-         <img loading="eager" class="cart__list--img"
+         <img loading="eager" class="cart__list--img" title="{{ $cartItem->product->name }}"
           src="/{{ $cartItem->product->media->first()->path }}{{ $cartItem->product->media->first()->name }}"
           alt="{{ $cartItem->product->media->first()->name }}{{ $cartItem->product->name }}">
         @else
-         <img loading="eager" class="cart__list--img" src="/images/store/default/default70.webp" alt="something wrong">
+         <img title="Default image" loading="eager" class="cart__list--img" src="/images/store/default/default70.webp"
+          alt="something wrong">
         @endif
         <div class="leftbar__link--text">
          <h4 class="leftbar__link--title">{{ $cartItem->product->name }}</h4>

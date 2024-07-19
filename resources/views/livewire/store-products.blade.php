@@ -159,7 +159,8 @@
          src="/{{ $element->media->first()->path }}{{ $element->media->first()->name }}"
          alt="{{ $element->media->first()->name }} {{ $element->name }}">
        @else
-        <img loading="eager" class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
+        <img title="Default image" loading="eager" class="card-image" src="/images/store/default/default300.webp"
+         alt="something wrong">
        @endif
       </a>
 
