@@ -33,7 +33,7 @@
      $rating = 100 / (app('max_popularity') / $product->popularity);
      $ratingvalue = $rating / 20;
     @endphp
-    <div style="display: flex">
+    <div style="display: flex; align-items:center">
      <div class="rating" style="--rating: {{ $rating }}%;"></div>
      @if (app()->has('global_display_rating_value') && app('global_display_rating_value') === 'true')
       ({{ $ratingvalue }})

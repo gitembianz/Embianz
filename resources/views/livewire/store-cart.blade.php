@@ -72,11 +72,12 @@
         <a style="width: 100%; display: flex; flex: 1;text-decoration: none"
          href="{{ route('product', ['product' => $cartItem->product->seo_id !== null && $cartItem->product->seo_id !== '' ? $cartItem->product->seo_id : $cartItem->product->id]) }}">
          @if ($cartItem->product->media->first())
-          <img loading="eager" class="cart__list--img"
+          <img loading="eager" class="cart__list--img" title="{{ $cartItem->product->name }}"
            src="/{{ $cartItem->product->media->first()->path }}{{ $cartItem->product->media->first()->name }}"
            alt="{{ $cartItem->product->media->first()->name }} {{ $cartItem->product->name }}">
          @else
-          <img loading="eager" class="cart__list--img" src="/images/store/default/default70.webp" alt="something wrong">
+          <img title="Default image" loading="eager" class="cart__list--img" src="/images/store/default/default70.webp"
+           alt="something wrong">
          @endif
          <div class="basket__text">
           <h3>{{ $cartItem->product->name }}</h3>
@@ -116,7 +117,8 @@
          </span>
          <div class="quantity__buttons">
           <button class="quantity__arrow @if ($cartItem->quantity == 1) disabled @endif"
-           style="width: 48px; height: 48px" aria-label="Decrease quantity" wire:click="decrement({{ $cartItem->id }})">
+           style="width: 48px; height: 48px" aria-label="Decrease quantity"
+           wire:click="decrement({{ $cartItem->id }})">
            <svg>
             <circle cx="12" cy="12" r="10"></circle>
             <line x1="8" y1="12" x2="16" y2="12">

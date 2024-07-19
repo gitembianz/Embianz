@@ -1,11 +1,6 @@
 <div>
- {{-- <script rel="preload" src="script/store/header.js" as="script"></script> --}}
  <x-store-alert />
- <!-- This is the Header;
-    the <header> tag encompasses the Logo and component-calling buttons located below,
-    such as the Searchbar, Shopping Basket, WishList, and Burger Menu. The styles for
-    Similarly, its JavaScript functionality is implemented in the "header.js" file. -->
- <!---------------------------------------------------------->
+
  <!--------------------Banner(Header Top)-------------------->
  @if (app()->has('global_header_top_text') && app('global_header_top_text') != '')
   <div class="banner">
@@ -16,18 +11,14 @@
    </div>
   </div>
  @endif
- <!------------------END-Banner(Header Top)------------------>
- <!---------------------------------------------------------->
  <!--------------------------Header-------------------------->
  <header>
   <div class="header__container container">
    <!-------------------------Logo------------------------->
 
    <a class="logo" href="{{ url('/') }}">
-    <img loading="eager" src="/images/store/svg/logo-dark.svg" alt="Logo">
+    <img title="{{ app('global_site_name') }} logo" loading="eager" src="/images/store/svg/logo-dark.svg" alt="Logo">
    </a>
-   <!-----------------------END-Logo----------------------->
-   <!------------------------------------------------------>
    <!---------------------NavMenu bar---------------------->
    <div class="navbar__list">
     @if (app()->has('global_show_on_header') && app('global_show_on_header') == 'true')
@@ -85,8 +76,6 @@
      @endif
     @endforeach
    </div>
-   <!---------------------NavMenu bar--------------------->
-   <!------------------------------------------------------>
    <!---------------------Right-Buttons--------------------->
    <div class="header__buttons">
     <button class="header__btn" id="menuOpen" aria-label="Open burger menu button">
@@ -104,7 +93,8 @@
      </svg>
     </button>
     <a class="logo__hidden" href="{{ url('/') }}">
-     <img loading="eager" src="/images/store/svg/logo-dark.svg" alt="Site Logo">
+     <img title="{{ app('global_site_name') }} logo" loading="eager" src="/images/store/svg/logo-dark.svg"
+      alt="Logo">
     </a>
     {{-- wislist button --}}
     <button class="header__btn" wire:click="$emit('showwis')" id="wishOpen" aria-label="Open wishlist button">
@@ -127,27 +117,14 @@
      </svg>
     </button>
    </div>
-   <!-------------------END-Right-Buttons------------------->
   </div>
  </header>
- <!------------------------END-Header------------------------>
- <!---------------------------------------------------------->
  <!-------------------------Searchbar------------------------>
  @livewire('general-search')
- <!-----------------------END-Searchbar---------------------->
- <!---------------------------------------------------------->
- <!---------------------Basket (Leftbar)--------------------->
- <!-- In your Blade view -->
 
  @livewire('cart-products-list')
 
-
- <!-------------------END-Basket (Leftbar)------------------->
- <!---------------------------------------------------------->
- <!----------------------Wish (Leftbar)---------------------->
  @livewire('wishlist-products-list')
- <!--------------------END-wish (Leftbar)-------------------->
- <!---------------------------------------------------------->
  <!----------------------Menu (Leftbar)---------------------->
  <div class="menu" id="menuList">
   <div class="menu__content" id="menuContent">
@@ -168,8 +145,9 @@
         <a class="dropmenu__button--link"
          href="{{ route('products', ['categorySlug' => $category->seo_id !== null && $category->seo_id !== '' ? $category->seo_id : $category->id]) }}">
          @if ($category->media->where('type', 'min')->first())
-          <img loading="eager" class="cart__list--img"
-           src="/{{ $category->media->where('type', 'min')->first()->path }}{{ $category->media->where('type', 'min')->first()->name }}">
+          <img title="{{ strip_tags($category->name) }}" loading="eager" class="cart__list--img"
+           src="/{{ $category->media->where('type', 'min')->first()->path }}{{ $category->media->where('type', 'min')->first()->name }}"
+           alt="{{ $category->media->where('type', 'min')->first()->name }} {{ strip_tags($category->name) }}">
          @endif
          <h4 style="margin-left: 7px">{!! $category->name !!}</h4>
         </a>
@@ -186,9 +164,9 @@
            <a class="submenu__button--link"
             href="{{ route('products', ['categorySlug' => $subcategory->category->seo_id !== null && $subcategory->category->seo_id !== '' ? $subcategory->category->seo_id : $subcategory->category->id]) }}">
             @if ($subcategory->category->media->where('type', 'min')->first() != null)
-             <img loading="eager"
+             <img loading="eager" title="{{ strip_tags($subcategory->category->name) }}"
               src="/{{ $subcategory->category->media->where('type', 'min')->first()->path }}{{ $subcategory->category->media->where('type', 'min')->first()->name }}"
-              alt="{{ $subcategory->category->media->where('type', 'min')->first()->name }}{{ $subcategory->category->name }}">
+              alt="{{ $subcategory->category->media->where('type', 'min')->first()->name }}{{ strip_tags($subcategory->category->name) }}">
             @endif
             <h4>{!! $subcategory->category->name !!}</h4>
            </a>
@@ -206,9 +184,9 @@
              <a class="submenu__link"
               href="{{ route('products', ['categorySlug' => $subsubCategory->category->seo_id !== null && $subsubCategory->category->seo_id !== '' ? $subsubCategory->category->seo_id : $subsubCategory->category->id]) }}">
               @if ($subsubCategory->category->media->where('type', 'min')->first() != null)
-               <img loading="eager"
+               <img loading="eager" title="{{ strip_tags($subsubCategory->category->name) }}"
                 src="/{{ $subsubCategory->category->media->where('type', 'min')->first()->path }}{{ $subsubCategory->category->media->where('type', 'min')->first()->name }}"
-                alt="{{ $subsubCategory->category->media->where('type', 'min')->first()->name }}{{ $subsubCategory->category->name }}">
+                alt="{{ $subsubCategory->category->media->where('type', 'min')->first()->name }}{{ strip_tags($subsubCategory->category->name) }}">
               @endif
               <h4>{!! $subsubCategory->category->name !!}</h4>
              </a>
@@ -223,9 +201,9 @@
       <a class="menu__link"
        href="{{ route('products', ['categorySlug' => $category->seo_id !== null && $category->seo_id !== '' ? $category->seo_id : $category->id]) }}">
        @if ($category->media->where('type', 'min')->first() != null)
-        <img loading="eager"
+        <img loading="eager" title="{{ strip_tags($category->name) }}"
          src="/{{ $category->media->where('type', 'min')->first()->path }}{{ $category->media->where('type', 'min')->first()->name }}"
-         alt="{{ $category->media->where('type', 'min')->first()->name }} {{ $category->name }}">
+         alt="{{ $category->media->where('type', 'min')->first()->name }} {{ strip_tags($category->name) }}">
        @endif
        <h4> {!! $category->name !!}</h4>
       </a>

@@ -2459,11 +2459,12 @@
          <div class="total__product">
           <span class="total__quantity">{{ $cartItem->quantity }} x</span>
           @if ($cartItem->product->media->first())
-           <img class="cart__list--img"
+           <img class="cart__list--img" title="{{ $cartItem->product->name }}"
             src="/{{ $cartItem->product->media->first()->path }}{{ $cartItem->product->media->first()->name }}"
             alt="{{ $cartItem->product->media->first()->name }} {{ $cartItem->product->name }}">
           @else
-           <img class="cart__list--img" src="/images/store/default/default70.webp" alt="something wrong">
+           <img title="Default image" class="cart__list--img" src="/images/store/default/default70.webp"
+            alt="something wrong">
           @endif
           <!------------------------- No Quantity of Cart Item --------------------------->
           @if ($nonquantity[$index])
@@ -2921,11 +2922,12 @@
           {{ $cartItem->quantity }} x
          </span>
          @if ($cartItem->product->media->where('type', 'min')->first())
-          <img class="cart__list--img"
+          <img class="cart__list--img" title="{{ $cartItem->product->name }}"
            src="/{{ $cartItem->product->media->where('type', 'min')->first()->path }}{{ $cartItem->product->media->where('type', 'min')->first()->name }}"
            alt="{{ $cartItem->product->media->where('type', 'min')->first()->name }} {{ $cartItem->product->name }}">
          @else
-          <img class="cart__list--img" src="/images/store/default/default70.webp" alt="something wrong">
+          <img title="default image" class="cart__list--img" src="/images/store/default/default70.webp"
+           alt="something wrong">
          @endif
          <a
           href="{{ route('product', ['product' => $cartItem->product->seo_id !== null && $cartItem->product->seo_id !== '' ? $cartItem->product->seo_id : $cartItem->product->id]) }}"
