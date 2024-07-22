@@ -1,0 +1,13 @@
+@media (min-width: 1024px) {
+  .right {
+    @include position(fixed, $headerHeight, 0);
+    border-radius: $BtnBorderRadius 0 0 $BtnBorderRadius;
+    background-color: $darkBg;
+    margin-left: $margin;
+    transform: translateX(0%);
+
+    &.open {
+      width: $calendarWidth;
+    }
+  }
+}
