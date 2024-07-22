@@ -135,6 +135,7 @@ return [
             'password' => env('REDIS_PASSWORD'),
             'port' => env('REDIS_PORT', '6379'),
             'database' => env('REDIS_DB', '0'),
+            'persistent' => true, // keep Redis connection open
         ],
 
         'cache' => [
