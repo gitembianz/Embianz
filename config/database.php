@@ -136,6 +136,8 @@ return [
             'port' => env('REDIS_PORT', '6379'),
             'database' => env('REDIS_DB', '0'),
             'path' => env('REDIS_PATH', ''),
+            'scheme' => env('REDIS_SCHEME', 'tcp'),
+            
         ],
 
         'cache' => [
@@ -146,6 +148,7 @@ return [
             'port' => env('REDIS_PORT', '6379'),
             'database' => env('REDIS_CACHE_DB', '1'),
             'path' => env('REDIS_PATH', ''),
+            'scheme' => env('REDIS_SCHEME', 'tcp'),
         ],
 
     ],
