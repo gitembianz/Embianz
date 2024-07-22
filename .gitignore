@@ -9,7 +9,6 @@ public/sitemap.xml
 public/robots.txt
 public/.DS_Store
 bootstrap
-vendor
 .env
 .htpasswd
 .DS_Store
