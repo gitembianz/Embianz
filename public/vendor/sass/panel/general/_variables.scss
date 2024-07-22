@@ -1,0 +1,95 @@
+///////////// color sistem///////
+//oldest
+$white: #ffffff;
+$black: #000;
+$gray: rgb(169, 169, 169);
+
+
+
+//border
+$base-border-radius: 10px !default;
+$base-width: 10% !default;
+
+////////// FONT-WEIGHT/////////
+$font-weight-light: 300;
+$font-weight-medium: 400;
+$font-weight-bold: 500;
+
+//font sizes
+$base-font-size: .875rem; //14px base font size
+$font-size-sm: $base-font-size * 0.75 !default;
+$font-size-md: $base-font-size * 1.2 !default;
+$font-size-lg: $base-font-size * 1.5 !default;
+$font-size-xl: $base-font-size * 2 !default;
+$font-size-xxl: $base-font-size * 3 !default;
+
+
+//Stanislav//
+
+//colors
+$mainBg: #35424B; // #35424B Embianz color
+$darkBg: darken($mainBg, 10%);
+$secondColor: #BBFCDE;
+$alertColor: #e25b73;
+$checkColor: #03a9f4a8;
+
+$inputBackground: $white;
+
+// Header variables
+$headerHeight: 100px;
+$headerIndex: 5;
+
+//generals resets(paddding, margin, etc)
+$padding: 10px;
+$contentPadding: 30px;
+$margin: 10px;
+$fSize: $base-font-size;
+$fWeight: $font-weight-medium;
+$gap: 10px;
+
+// Transitions
+$transition: all .2s ease-in-out;
+
+// Button Variables
+$BtnColorText: $secondColor;
+$BtnHover: darken($darkBg, 10%);
+$BtnSize: 3rem;
+$BtnSvgColor: $secondColor;
+$BtnSvgSize: 23px;
+$btnSvgBold: 1.5px;
+$BtnBorderRadius: $base-border-radius;
+$BtnShadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+
+$notifyWidth: 30rem;
+$NotifyHeight: 15rem;
+
+//Alert
+$alertSize: 20px;
+
+// Sidebar Width on PC
+$sidebar-Width-Desktop-Min: 70px;
+$sidebar-Width-Desktop-Max: 200px;
+
+// Search and Profile button
+$headBtnWidth: 25rem;
+
+
+//Right-calendar
+$calendarWidth: 400px;
+
+
+//color maps
+$colors: (
+  "mainBg": $mainBg,
+  "darkBg": $darkBg,
+  "secondColor": $secondColor,
+  "black": $black,
+  "white": $white,
+);
+
+// The new Z-index Manager:
+$z-index-content: 200;
+$z-index-active: 300;
+$z-index-dropdown: 300;
+$z-index-modal: 500;
+$z-index-error: 700;

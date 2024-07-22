@@ -1,0 +1,78 @@
+.dropdown {
+  @include size(100%, 2.5rem);
+  position: relative;
+  // box-shadow: $BtnShadow;
+  cursor: pointer;
+
+  &-button {
+    @include flexbox(flex, row, center, center);
+    @include standart-Font;
+    @include size(auto, 100%);
+    padding: 0 10px;
+    position: relative;
+    color: white;
+    background-color: $mainBg;
+    border-radius: 5px;
+    border: 1px solid $mainBg;
+    cursor: pointer;
+    z-index: 2;
+
+    svg {
+      @include size(23px);
+    }
+  }
+
+  &-list {
+    @include flexbox(none, column, center, center, $gap);
+    @include position(absolute, 110%, 0);
+    @include size(max-content, auto);
+    padding: 10px;
+    border: 1.5px solid $mainBg;
+    background: white;
+    border-radius: 5px;
+    z-index: 9999;
+
+    input[type=checkbox] {
+      @include size(2rem);
+      border-radius: 5px;
+    }
+
+    label {
+      flex: 1;
+      text-align: start;
+    }
+
+    button {
+      @include standart-Btn;
+      width: 6rem;
+      box-shadow: none;
+
+      // &.delete {
+      //   background: #7d0017
+      // }
+    }
+  }
+
+  &-item {
+    @include flexbox(flex, row, space-between, center, $gap);
+    @include size(100%, auto);
+  }
+
+  &.open {
+    z-index: 5;
+
+    &.dropdown-list {
+      display: flex;
+    }
+  }
+}
+
+
+
+.dropdown.open .dropdown-list {
+  display: flex;
+}
+
+.none {
+  display: none;
+}

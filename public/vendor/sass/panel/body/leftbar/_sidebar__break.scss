@@ -1,0 +1,57 @@
+@media (max-height: 375px) {
+  .sidebar {
+    &__list {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+}
+
+@media (min-width: 1024px) {
+  .sidebar {
+    width: $sidebar-Width-Desktop-Min;
+    @include position(fixed, $headerHeight, null, null, 0);
+
+    &__list {
+      justify-items: center;
+      grid-template-columns: repeat(1, 1fr);
+      height: 100%;
+
+    }
+
+    &__btn {
+      display: none;
+    }
+
+    &__open {
+      @include standart-Btn;
+      @include size($BtnSize);
+      border-radius: 10px;
+      outline: none;
+      border: none;
+      justify-self: end;
+
+      svg {
+        @include size($BtnSvgSize);
+      }
+    }
+
+    &__icon {
+      opacity: 1;
+      @include size($BtnSize);
+    }
+
+    &__item {
+      width: $BtnSize;
+    }
+
+    &.open {
+      width: $sidebar-Width-Desktop-Max;
+
+      .sidebar__open {
+        svg {
+          transform: rotateY(180deg);
+        }
+      }
+    }
+  }
+}

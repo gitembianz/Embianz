@@ -1,0 +1,50 @@
+.accordion {
+  &__btn {
+    @include standart-Btn;
+    display: block;
+    padding: 0 $padding;
+    text-align: left;
+    width: 100%;
+    position: relative;
+    background-color: $mainBg;
+    border-radius: $BtnBorderRadius 0 0 $BtnBorderRadius;
+
+    &-flex {
+      display: flex;
+    }
+  }
+
+  &__content {
+    // border: 1px solid $mainBg;
+    // border-top: 0;
+    // border-radius: 0 0 $base-border-radius $base-border-radius;
+    margin-top: -10px;
+    // background-color: #0f1315;
+
+    &>div .panel__header {
+      border-radius: 0;
+      padding-top: 15px;
+    }
+
+    p {
+      text-align: center;
+      color: $mainBg;
+    }
+  }
+
+  &__upload {
+    @include standart-Btn;
+    border: none;
+    background-color: $mainBg;
+    border-radius: 0 $BtnBorderRadius $BtnBorderRadius 0;
+
+    input {
+      display: none;
+    }
+
+    label {
+      border-radius: 0 $BtnBorderRadius $BtnBorderRadius 0;
+    }
+
+  }
+}

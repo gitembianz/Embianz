@@ -1,0 +1,47 @@
+.leftbar{
+  width: 100%;
+  max-width: calc($width + ($padding * 2));
+  height: auto;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: $gap;
+  margin: $margin 0;
+  border-radius: $border-radius;
+  padding: $padding;
+  background: $primary;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition: $transition-fast;
+  margin-bottom: $margin;
+  box-shadow: $shadow-lite;
+
+  &.active{
+    max-width: $max-width;
+
+    & > .button{
+      width: 100%;
+
+      &>span{
+        transform: scale(1);
+      }
+   }
+  }
+
+  &> .button{
+    position: relative;
+    overflow: hidden;
+    transition: $transition-fast;
+    gap: 0;
+    width: $width;
+    padding: 5px;
+
+    &> span{
+      position: absolute;
+      right: 5px;
+      transform: scale(0);
+      transition: $transition-fast;
+    }
+  }
+}

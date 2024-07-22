@@ -1,0 +1,71 @@
+*,
+*:before,
+*:after {
+  color: inherit;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  list-style-type: none;
+  text-decoration: none;
+  font-family: 'Roboto', sans-serif;
+  font-weight: normal;
+}
+
+
+body {
+  background: $mainBg;
+  @include scrollbar;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+svg {
+  width: 32px;
+  height: 32px;
+  fill: none;
+  stroke: #BBFCDE;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.overflow {
+  overflow: hidden;
+}
+
+.stop-height {
+  height: 65vh;
+}
+
+main {
+  position: relative;
+  // margin-top: $headerHeight;
+  transition: $transition;
+}
+
+
+// The big part for all main content
+.content {
+  padding: $contentPadding;
+  position: relative;
+  color: $black;
+  height: 100%;
+  background-color: $white;
+  border-radius: $BtnBorderRadius;
+}
+
+@media (max-width: 740px) {
+  .content {
+    padding: 0;
+    border-radius: 0;
+  }
+}
+
+button,
+a,
+input[type="button"],
+input[type="submit"] {
+  cursor: pointer;
+}
