@@ -1,0 +1,76 @@
+//<------------------------------------------------------------->
+//<------------------- Animation Add to Cart ------------------->
+.product {
+  position: relative;
+}
+
+.flying-img {
+  position: absolute;
+  animation: fly_to_cart 1.5s ease-in-out;
+  width: 150px;
+  height: 150px;
+  aspect-ratio: 1/1;
+  object-fit: contain;
+  border-radius: 50%;
+  user-select: none;
+  cursor: pointer;
+  background: none;
+  background-color: $background;
+  mix-blend-mode: multiply;
+}
+
+.flying-img-product {
+  position: absolute;
+  animation: fly_to_cart-product 1.5s ease-in-out;
+  width: 150px;
+  height: 150px;
+  aspect-ratio: 1/1;
+  object-fit: contain;
+  border-radius: 50%;
+  user-select: none;
+  cursor: pointer;
+  background: none;
+  background-color: $background;
+  mix-blend-mode: multiply;
+}
+
+.card__button--link{
+  background: transparent;
+  border: none;
+  color: transparent;
+  width: 0%;
+  height: 0%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 20;
+}
+
+@keyframes fly_to_cart {
+  0% {
+    left: 100px;
+    top: 200px;
+  }
+
+  100% {
+    left: calc(var(--left) + 100px + 30px);
+    top: calc(var(--top) + 200px + 30px);
+    transform: scale(0.2);
+  }
+}
+
+@keyframes fly_to_cart-product {
+  0% {
+    left: 100px;
+    top: 430px;
+  }
+
+  100% {
+    left: calc(var(--left) + 100px + 30px);
+    top: calc(var(--top) + 430px + 30px);
+    transform: scale(0.2);
+  }
+}
+
+//<----------------- End Animation Add to Cart ----------------->
+//<------------------------------------------------------------->

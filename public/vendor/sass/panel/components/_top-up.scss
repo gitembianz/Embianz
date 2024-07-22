@@ -1,0 +1,38 @@
+.top-up-btn {
+  @include standart-Btn;
+  // @include position(fixed, auto, 1rem, 1rem, auto);
+  position: fixed;
+  right: calc(2.5rem / 2);
+  bottom: calc(2.5rem / 2);
+  opacity: 0;
+  pointer-events: none;
+  border-radius: 100px;
+
+  &.actived {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+
+.top-up-modal {
+  @extend.top-up-btn;
+  opacity: 1;
+  pointer-events: auto;
+  bottom: calc(-2.5rem / 2);
+  right: calc(-2.5rem / 2);
+  z-index: 999;
+  background-color: white;
+
+  svg {
+    stroke: $mainBg;
+  }
+
+  &.delete {
+    position: fixed;
+    right: calc(-2.5rem / 2);
+    top: calc(-2.5rem / 2);
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+}

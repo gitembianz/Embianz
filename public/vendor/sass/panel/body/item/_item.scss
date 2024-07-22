@@ -1,0 +1,265 @@
+.item {
+  @include flexbox(flex, column, center, center, $gap);
+
+  &__header {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 1fr;
+    gap: $gap;
+    padding: 2rem 0;
+    align-items: start;
+
+    &-title {
+      color: $mainBg;
+      text-align: center
+    }
+
+    &-buttons {
+      @include flexbox(flex, row, center, center, 20px);
+    }
+
+    &-btn {
+      background-color: $mainBg;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.5rem;
+      height: 2.5rem;
+      border: none;
+      color: white;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background .3s ease-in-out;
+
+      &.delete {
+        background: $alertColor;
+        width: 2.5rem;
+
+        &:active,
+        &:hover {
+          background: darken($alertColor, 20%);
+        }
+      }
+
+      &.confirm {
+        border: 1px solid $mainBg;
+        background-color: $secondColor;
+
+        &:active,
+        &:hover {
+          background-color: darken($secondColor, 30%);
+        }
+
+        svg {
+          stroke: $mainBg;
+        }
+      }
+
+
+      &:active,
+      &:hover {
+        background-color: darken($mainBg, 30%);
+      }
+
+      &.edit {
+        width: 6rem;
+      }
+
+      svg {
+        stroke-width: 2px;
+        width: 24px;
+        height: 24px;
+      }
+    }
+  }
+
+  &__form {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px;
+    width: 100%;
+    padding: 20px;
+    align-items: start;
+
+
+    &-btn {
+      background: #bcfcdf;
+      border: none;
+      border-radius: 5px;
+      text-align: center;
+    }
+
+    &-input,
+    &-input-close {
+      @include flexbox(flex, column, center, center);
+      flex-shrink: unset;
+      flex: 1;
+      width: 100%;
+      height: 2.5rem;
+      position: relative;
+      word-wrap: break-word;
+
+
+
+      label {
+        @include position(absolute, 50%, auto, auto, 15px);
+        @include standart-Font;
+        @include size(auto);
+        color: $mainBg;
+        transform: translateY(-50%);
+        transition: $transition;
+        pointer-events: none;
+      }
+
+      div,
+      textarea,
+      select,
+      input {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        border: none;
+        background: #e8e8e8;
+        box-shadow: none;
+        height: 100%;
+        width: 100%;
+        border-radius: 5px;
+        padding: 0 7px;
+        position: relative;
+        transition: $transition;
+        outline: none;
+
+        &:focus {
+          border: 1px solid $mainBg;
+          background: white;
+        }
+
+        &:focus~label,
+        &:valid~label {
+          top: -10px;
+          left: 0;
+        }
+      }
+
+    }
+
+    &-input {
+
+      input,
+      textarea {
+        background: white;
+        border: 1px solid $darkBg;
+      }
+    }
+
+    &-input-close {
+      cursor: not-allowed;
+
+      label {
+        @include position(absolute, -10px, auto, auto, 0);
+        @include standart-Font;
+        color: $mainBg;
+        transition: $transition;
+        background-color: $white;
+      }
+
+      div,
+      textarea,
+      select,
+      input {
+        border-color: $gray;
+        color: $gray;
+        padding: 10px;
+        appearance: none;
+      }
+
+      div {
+        height: 100%
+      }
+    }
+
+    &-long {
+      // grid-column: 1/3;
+      min-height: 2.5rem;
+      // height: auto;
+    }
+
+    &-textarea {
+      height: 100%;
+      min-height: 300px;
+      // grid-column: 1/3;
+
+      &>div,
+      textarea {
+        padding: 10px;
+        min-height: 300px;
+        align-items: flex-start;
+        resize: vertical;
+
+        &>svg {
+          stroke: #333 !important;
+        }
+      }
+
+    }
+  }
+}
+
+a,
+button {
+
+  &[data-tooltip-left],
+  &[data-tooltip-right],
+  &[data-tooltip-center] {
+    position: relative;
+
+    &::after {
+      width: max-content;
+      height: auto;
+      position: absolute;
+      top: 110%;
+      padding: 5px 10px;
+      border-radius: 5px;
+      background-color: $mainBg;
+      color: $white;
+      font-size: 12px;
+      opacity: 0;
+      visibility: hidden;
+      transition: $transition;
+      pointer-events: none;
+      z-index: 99;
+    }
+
+    &:hover::after {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  &[data-tooltip-left] {
+    &::after {
+      content: attr(data-tooltip-left);
+      left: 0;
+    }
+  }
+
+  &[data-tooltip-right] {
+    &::after {
+      content: attr(data-tooltip-right);
+      right: 0;
+    }
+  }
+
+  &[data-tooltip-center] {
+    &::after {
+      content: attr(data-tooltip-center);
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+}
+
+#editor>svg {
+  stroke: #333;
+}

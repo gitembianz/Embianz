@@ -1,0 +1,19 @@
+//pagination
+.pagination {
+  @include flexbox(flex, row, center, center, calc($gap*1.5));
+  background: $mainBg;
+  padding: $padding;
+  border-radius: $BtnBorderRadius;
+  box-shadow: $BtnShadow;
+  width: 100%;
+
+  &__item {
+    @include standart-Btn;
+    @include size(2rem);
+
+    &.active {
+      background-color: #BBFCDE;
+      color: #35424B;
+    }
+  }
+}

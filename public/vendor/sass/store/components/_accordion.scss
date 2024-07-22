@@ -1,0 +1,83 @@
+.accordion {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  &.active > .accordion-button {
+    border-radius: 5px 5px 0 0;
+
+    & > svg {
+      transform: translateY(-50%) rotateX(180deg);
+    }
+  }
+}
+
+.accordion-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-decoration: none;
+  gap: 15px;
+  text-align: left;
+  position: relative;
+  padding: 10px;
+  background-color: $primary;
+  cursor: pointer;
+  border: none;
+  font-size: $inputSize;
+  font-weight: $boldWeight;
+  color: $lightBlack;
+  line-height: $lineHeight;
+  border-radius: 5px;
+  outline: none;
+  padding-right: 30px;
+  transition: all 0.3s ease-in-out;
+
+  &:hover,
+  &:focus,
+  &:active {
+    background-color: $secondary;
+  }
+
+  & > svg {
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 15px;
+    transition: all 0.3s ease-in-out;
+  }
+}
+
+.accordion-wrapper {
+  display: grid;
+  grid-template-rows: 0fr;
+  background-color: $secondary;
+  border-radius: 0 0 5px 5px;
+  overflow: hidden;
+  transition: grid-template-rows 0.3s ease-in-out;
+
+  &.active {
+    grid-template-rows: 1fr;
+
+    & > .accordion-content {
+      padding: 10px;
+    }
+  }
+}
+
+.accordion-content {
+  min-height: 0;
+  transition:
+    padding-top 0.3s ease-in-out,
+    padding-bottom 0.3s ease-in-out;
+  padding: 0 10px;
+
+  &>p{
+    font-size: $textSize;
+    font-weight: $lightWeight;
+    color: $lightBlack;
+    line-height: $lineHeight;
+  }
+}

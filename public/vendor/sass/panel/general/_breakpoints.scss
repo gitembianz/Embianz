@@ -1,0 +1,18 @@
+@media (min-width: 1024px) {
+  .overflow {
+    overflow: visible;
+  }
+
+  // General Modifacation
+  main {
+    margin: 0 $margin $margin $sidebar-Width-Desktop-Min;
+
+    &.ml {
+      margin-left: $sidebar-Width-Desktop-Max;
+    }
+
+    &.mr {
+      margin-right: 410px;
+    }
+  }
+}

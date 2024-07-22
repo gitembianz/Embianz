@@ -1,0 +1,9 @@
+@media (min-width: 1024px) {
+  .header {
+    justify-content: space-between;
+
+    &__logo {
+      display: block;
+    }
+  }
+}
