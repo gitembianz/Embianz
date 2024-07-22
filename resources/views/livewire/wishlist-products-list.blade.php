@@ -14,7 +14,20 @@
     </svg>
    </button>
   </div>
-
+  @php
+   if (app()->has('global_numberformat_element')) {
+       if (app('global_numberformat_element') === '.') {
+           $mill = '.';
+           $decimal = ',';
+       } else {
+           $mill = ',';
+           $decimal = '.';
+       }
+   } else {
+       $mill = '.';
+       $decimal = ',';
+   }
+  @endphp
   @if (!isset($items) || $items->isEmpty())
    <span class="leftbar__empty">
     @if (app()->has('label_wishlist_empty'))
@@ -37,11 +50,12 @@
       <a class="leftbar__link"
        href="{{ route('product', ['product' => $item->product->seo_id !== null && $item->product->seo_id !== '' ? $item->product->seo_id : $item->product->id]) }}">
        @if ($item->product->media->first())
-        <img loading="eager" class="cart__list--img"
+        <img title="{{ $item->product->name }}" loading="eager" class="cart__list--img"
          src="/{{ $item->product->media->first()->path }}{{ $item->product->media->first()->name }}"
          alt="{{ $item->product->media->first()->name }} {{ $item->product->name }}">
        @else
-        <img loading="eager" class="heart__list--img" src="/images/store/default/default70.webp" alt="something wrong">
+        <img title="Default image" loading="eager" class="heart__list--img" src="/images/store/default/default70.webp"
+         alt="something wrong">
        @endif
 
        <div class="leftbar__link--text">
@@ -49,7 +63,7 @@
         <span class="leftbar__link--price">
          @php
           if (optional($item->product->product_prices->first())->value) {
-              $price = number_format(optional($item->product->product_prices->first())->value, 2, ',', '.');
+              $price = number_format(optional($item->product->product_prices->first())->value, 2, $decimal, $mill);
           } else {
               $price = null;
           }

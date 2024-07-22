@@ -1,4 +1,4 @@
-<div wire:scroll="loadMore">
+<div>
  <!------------------------Breadcrumbs----------------------->
  <div class="breadcrumbs container">
   <a class="breadcrumbs__link" href="{{ url('/') }}">
@@ -44,6 +44,20 @@
    </button>
   </div>
  </section>
+ @php
+  if (app()->has('global_numberformat_element')) {
+      if (app('global_numberformat_element') === '.') {
+          $mill = '.';
+          $decimal = ',';
+      } else {
+          $mill = ',';
+          $decimal = '.';
+      }
+  } else {
+      $mill = '.';
+      $decimal = ',';
+  }
+ @endphp
  @if ($showproducts)
   <section class="catalogue container">
    @if ($products->isEmpty())
@@ -59,15 +73,13 @@
        <a
         href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">
         @if ($product->media->first() != null)
-         <img loading="eager" class="card-image"
+         <img title="{{ $product->name }}, {{ $product->short_description }}" loading="eager" class="card-image"
           src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}"
           alt="{{ $product->media->first()->name }} {{ $product->name }}">
-        @else
-         <img loading="eager" class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
         @endif
        </a>
        <?php if ($product->product_prices->count() != 0) {
-           $price = number_format($product->product_prices->first()->value, 2, ',', '.');
+           $price = number_format($product->product_prices->first()->value, 2, $decimal, $mill);
            $discount = $product->product_prices->first()->discount != 0 ? true : false;
        } else {
            $price = null;
@@ -135,7 +147,7 @@
             @endif
            </span>
            <span class="card-price oldprice">
-            {{ $product->product_prices->first()->value_no_discount }}
+            {{ number_format($product->product_prices->first()->value_no_discount, 2, $decimal, $mill) }}
             @if (app()->has('global_currency_primary_symbol'))
              {!! app('global_currency_primary_symbol') !!}
             @endif
@@ -178,16 +190,14 @@
        href="{{ route('products', ['categorySlug' => $category->seo_id !== null && $category->seo_id !== '' ? $category->seo_id : $category->id]) }}">
        <div>
         @if ($category->media->first() != null)
-         <img loading="eager" class="card-image"
+         <img title="{{ strip_tags($category->name) }}" loading="eager" class="card-image"
           src="/{{ $category->media->first()->path }}{{ $category->media->first()->name }}"
-          alt="{{ $category->media->first()->name }} {{ $category->name }}">
-        @else
-         <img loading="eager" class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
+          alt="{{ $category->media->first()->name }} {{ strip_tags($category->name) }}">
         @endif
        </div>
        <div class="card-info">
         <div class="card-text">
-         <h3 class="card-title">{{ $category->name }}</h2>
+         <h3 class="card-title">{!! $category->name !!}</h2>
         </div>
         {!! $category->long_description !!}
        </div>
@@ -203,8 +213,6 @@
    <button class="filter__apply" wire:click="loadMore" wire:loading.remove>Vezi mai mult!</button>
   </section>
  @endif
-
- <!--------------------- support button --------------------->
 
  <!---------------------------------------------------------->
  <script src="/script/store/catalog.js" defer></script>

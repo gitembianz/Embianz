@@ -1,6 +1,20 @@
 <div>
  <script rel="preload" src="script/store/checkout.js" as="script"></script>
  <x-store-alert />
+ @php
+  if (app()->has('global_numberformat_element')) {
+      if (app('global_numberformat_element') === '.') {
+          $mill = '.';
+          $decimal = ',';
+      } else {
+          $mill = ',';
+          $decimal = '.';
+      }
+  } else {
+      $mill = '.';
+      $decimal = ',';
+  }
+ @endphp
  <section>
   <div class="section__header container">
    <h1 class="section__title">
@@ -36,38 +50,39 @@
       <?php
       $disabled[$index] = false;
       $nonquantity[$index] = false;
-
+      
       if ($cartItem->product->active != true || $cartItem->product->start_date > now()->format('Y-m-d') || $cartItem->product->end_date < now()->format('Y-m-d')) {
           $disabled[$index] = true;
           $isdisabled = true;
       }
-
+      
       if (!optional($cartItem->product->product_prices->first())->value) {
           $disabled[$index] = true;
           $isdisabled = true;
       }
-
+      
       if ($cartItem->product->quantity < $cartItem->quantity) {
           $nonquantity[$index] = true;
           $isdisabled = true;
       }
-
+      
       ?>
       <div class="basket__split">
        <div class="basket__item">
         <a style="width: 100%; display: flex; flex: 1;text-decoration: none"
          href="{{ route('product', ['product' => $cartItem->product->seo_id !== null && $cartItem->product->seo_id !== '' ? $cartItem->product->seo_id : $cartItem->product->id]) }}">
          @if ($cartItem->product->media->first())
-          <img loading="eager" class="cart__list--img"
+          <img loading="eager" class="cart__list--img" title="{{ $cartItem->product->name }}"
            src="/{{ $cartItem->product->media->first()->path }}{{ $cartItem->product->media->first()->name }}"
            alt="{{ $cartItem->product->media->first()->name }} {{ $cartItem->product->name }}">
          @else
-          <img loading="eager" class="cart__list--img" src="/images/store/default/default70.webp" alt="something wrong">
+          <img title="Default image" loading="eager" class="cart__list--img" src="/images/store/default/default70.webp"
+           alt="something wrong">
          @endif
          <div class="basket__text">
           <h3>{{ $cartItem->product->name }}</h3>
           <span>
-           {{ number_format($cartItem->price, 2, ',', '.') }}
+           {{ number_format($cartItem->price, 2, $decimal, $mill) }}
            @if (app()->has('global_currency_primary_symbol'))
             {!! app('global_currency_primary_symbol') !!}
            @endif
@@ -102,7 +117,8 @@
          </span>
          <div class="quantity__buttons">
           <button class="quantity__arrow @if ($cartItem->quantity == 1) disabled @endif"
-           style="width: 48px; height: 48px" aria-label="Decrease quantity" wire:click="decrement({{ $cartItem->id }})">
+           style="width: 48px; height: 48px" aria-label="Decrease quantity"
+           wire:click="decrement({{ $cartItem->id }})">
            <svg>
             <circle cx="12" cy="12" r="10"></circle>
             <line x1="8" y1="12" x2="16" y2="12">
@@ -132,7 +148,7 @@
           @endif
          </span>
          <span>
-          {{ number_format($cartItem->quantity * $cartItem->price, 2, ',', '.') }}
+          {{ number_format($cartItem->quantity * $cartItem->price, 2, $decimal, $mill) }}
           @if (app()->has('global_currency_primary_symbol'))
            {!! app('global_currency_primary_symbol') !!}
           @endif
@@ -172,7 +188,7 @@
          {!! app('label_cart_products_tag') !!}
         @endif
        </h3>
-       <span> {{ number_format($cart->sum_amount, 2, ',', '.') }}
+       <span> {{ number_format($cart->sum_amount, 2, $decimal, $mill) }}
         @if (app()->has('global_currency_primary_symbol'))
          {!! app('global_currency_primary_symbol') !!}
         @endif
@@ -190,7 +206,7 @@
           {!! app('label_cart_delivery_free') !!}
          @endif
         @else
-         {{ $cart->delivery_price }} @if (app()->has('global_currency_primary_symbol'))
+         {{ number_format($cart->delivery_price, 2, $decimal, $mill) }} @if (app()->has('global_currency_primary_symbol'))
           {!! app('global_currency_primary_symbol') !!}
          @endif
         @endif
@@ -204,7 +220,7 @@
          @endif
         </h3>
         <span class="voucher__choice">
-         -{{ number_format($cart->voucher_value, 2, ',', '.') }} @if (app()->has('global_currency_primary_symbol'))
+         -{{ number_format($cart->voucher_value, 2, $decimal, $mill) }} @if (app()->has('global_currency_primary_symbol'))
           {!! app('global_currency_primary_symbol') !!}
          @endif
          <button wire:click="removevoucher" class="details__delete" aria-label="Remove voucher">
@@ -226,7 +242,7 @@
         @endif
        </h3>
        <span id="detailsTotal">
-        {{ number_format($cart->final_amount, 2, ',', '.') }} @if (app()->has('global_currency_primary_symbol'))
+        {{ number_format($cart->final_amount, 2, $decimal, $mill) }} @if (app()->has('global_currency_primary_symbol'))
          {!! app('global_currency_primary_symbol') !!}
         @endif
        </span>
@@ -303,7 +319,7 @@
      {!! app('global_currency_primary_symbol') !!}
     @endif
    </span>
-   <span class="dlv_value">{{ number_format($cart->sum_amount, 2, ',', '.') }}</span>
+   <span class="dlv_value">{{ number_format($cart->sum_amount, 2, $decimal, $mill) }}</span>
    @foreach ($cartItems as $cartItem)
     <div class="dlv_item">
      <span class="dlv_item-id">{{ $cartItem->product->id }}</span>

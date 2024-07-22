@@ -1,5 +1,19 @@
 <div>
  <!------------------------Breadcrumbs----------------------->
+ @php
+  if (app()->has('global_numberformat_element')) {
+      if (app('global_numberformat_element') === '.') {
+          $mill = '.';
+          $decimal = ',';
+      } else {
+          $mill = ',';
+          $decimal = '.';
+      }
+  } else {
+      $mill = '.';
+      $decimal = ',';
+  }
+ @endphp
  <div class="breadcrumbs container">
   <a class="breadcrumbs__link" href="{{ url('/') }}">
    @if (app()->has('label_breadcrumbs_home_page'))
@@ -19,7 +33,7 @@
     @if ($breadcrumb['name'] === $category->name)
      <a class="breadcrumbs__link"
       href="{{ route('products', ['categorySlug' => $category->seo_id !== null && $category->seo_id !== '' ? $category->seo_id : $category->id]) }}">
-      {{ $category->name }}
+      {!! $category->name !!}
      </a>
     @else
      <a class="breadcrumbs__link" href="{{ route('products', ['categorySlug' => $breadcrumb['slug']]) }}">
@@ -36,7 +50,7 @@
     @if (!empty($category->short_description))
      {{ $category->short_description }}
     @else
-     {{ $category->name }}
+     {!! $category->name !!}
     @endif
    </h1>
    <p class="section__text">
@@ -141,18 +155,19 @@
       <a
        href="{{ route('product', ['product' => $element->seo_id !== null && $element->seo_id !== '' ? $element->seo_id : $element->id]) }}">
        @if ($element->media->first() != null)
-        <img loading="eager" class="card-image"
+        <img title="{{ $product->name }}, {{ $product->short_description }}" loading="eager" class="card-image"
          src="/{{ $element->media->first()->path }}{{ $element->media->first()->name }}"
          alt="{{ $element->media->first()->name }} {{ $element->name }}">
        @else
-        <img loading="eager" class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
+        <img title="Default image" loading="eager" class="card-image" src="/images/store/default/default300.webp"
+         alt="something wrong">
        @endif
       </a>
 
 
       @php
        if ($element->product_prices->count() != 0) {
-           $price = number_format($element->product_prices->first()->value, 2, ',', '.');
+           $price = number_format($element->product_prices->first()->value, 2, $decimal, $mill);
            $discount = $element->product_prices->first()->discount != 0 ? true : false;
        } else {
            $price = null;
@@ -205,10 +220,13 @@
 
       <div class="card-info">
        <div class="card-text">
-        <span>{{ $product->short_description }}</span>
+        <span><a style="text-decoration: none; font-weight:500"
+          href="{{ route('product', ['product' => $element->seo_id !== null && $element->seo_id !== '' ? $element->seo_id : $element->id]) }}">{{ $product->short_description }}</a></span>
        </div>
        <div class="card-text">
-        <h3 class="card-title">{{ $product->name }}</h3>
+        <h3 class="card-title"><a style="text-decoration: none; font-weight:500"
+          href="{{ route('product', ['product' => $element->seo_id !== null && $element->seo_id !== '' ? $element->seo_id : $element->id]) }}">{{ $product->name }}</a>
+        </h3>
         <p class="card-price">
          @if (
              $product->type == 'parrent' &&
@@ -227,7 +245,7 @@
            @endif
           </span>
           <span class="card-price oldprice">
-           {{ $element->product_prices->first()->value_no_discount }}
+           {{ number_format($element->product_prices->first()->value_no_discount, 2, $decimal, $mill) }}
            @if (app()->has('global_currency_primary_symbol'))
             {!! app('global_currency_primary_symbol') !!}
            @endif
@@ -246,8 +264,8 @@
          <span class="dlv_name">{{ $element->name }}</span>
          <span class="dlv_price">{{ $price }}</span>
          <span class="dlv_currency">
-          @if (app()->has('global_currency_primary_symbol'))
-           {!! app('global_currency_primary_symbol') !!}
+          @if (app()->has('global_currency_primary_name'))
+           {!! app('global_currency_primary_name') !!}
           @endif
          </span>
         </div>

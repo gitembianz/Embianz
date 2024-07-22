@@ -22,7 +22,7 @@
 
  {{-- Navigation --}}
  <nav class="nav--controls">
-  <h1 class="table--name">Category: {{ $category->name }}</h1>
+  <h1 class="table--name">Category: {{ strip_tags($category->name) }}</h1>
   {{-- Refresh Button --}}
   <a class="button button--primary button--centered" tooltip="Back to all categories" tooltip-top
    href="{{ route('category') }}">

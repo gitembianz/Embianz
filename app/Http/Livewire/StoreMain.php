@@ -43,7 +43,7 @@ class StoreMain extends Component
     } else {
       return Product::with([
         'media' => function ($query) {
-          $query->select('path', 'name')->where('type', 'main');
+          $query->select('path', 'name', 'type')->where('type', 'main');
         },
         'product_prices' => function ($query) {
           $query->select('product_id', 'value', 'discount', 'value_no_discount');
@@ -76,7 +76,7 @@ class StoreMain extends Component
     } else {
       return Product::with([
         'media' => function ($query) {
-          $query->select('path', 'name')->where('type', 'main');
+          $query->select('path', 'name', 'type')->where('type', 'main');
         },
         'product_prices' => function ($query) {
           $query->select('product_id', 'value', 'discount', 'value_no_discount');

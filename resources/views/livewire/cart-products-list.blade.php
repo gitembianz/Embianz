@@ -21,6 +21,20 @@
    </button>
   </div>
 
+  @php
+   if (app()->has('global_numberformat_element')) {
+       if (app('global_numberformat_element') === '.') {
+           $mill = '.';
+           $decimal = ',';
+       } else {
+           $mill = ',';
+           $decimal = '.';
+       }
+   } else {
+       $mill = '.';
+       $decimal = ',';
+   }
+  @endphp
 
   @if (!isset($cartItems) || $cartItems->isEmpty())
    <span class="leftbar__empty">
@@ -80,11 +94,12 @@
          {{ $cartItem->quantity }} x
         </span>
         @if ($cartItem->product->media->first())
-         <img loading="eager" class="cart__list--img"
+         <img loading="eager" class="cart__list--img" title="{{ $cartItem->product->name }}"
           src="/{{ $cartItem->product->media->first()->path }}{{ $cartItem->product->media->first()->name }}"
           alt="{{ $cartItem->product->media->first()->name }}{{ $cartItem->product->name }}">
         @else
-         <img loading="eager" class="cart__list--img" src="/images/store/default/default70.webp" alt="something wrong">
+         <img title="Default image" loading="eager" class="cart__list--img" src="/images/store/default/default70.webp"
+          alt="something wrong">
         @endif
         <div class="leftbar__link--text">
          <h4 class="leftbar__link--title">{{ $cartItem->product->name }}</h4>
@@ -100,18 +115,19 @@
          {{ $cartItem->quantity }} x
         </span>
         @if ($cartItem->product->media->first())
-         <img loading="eager" class="cart__list--img"
+         <img loading="eager" class="cart__list--img" title="{{ $cartItem->product->name }}"
           src="/{{ $cartItem->product->media->first()->path }}{{ $cartItem->product->media->first()->name }}"
           alt="{{ $cartItem->product->media->first()->name }}{{ $cartItem->product->name }}">
         @else
-         <img loading="eager" class="cart__list--img" src="/images/store/default/default70.webp" alt="something wrong">
+         <img title="Default image" loading="eager" class="cart__list--img" src="/images/store/default/default70.webp"
+          alt="something wrong">
         @endif
         <div class="leftbar__link--text">
          <h4 class="leftbar__link--title">{{ $cartItem->product->name }}</h4>
          <span class="leftbar__link--price">
           @php
            if (optional($cartItem->product->product_prices->first())->value) {
-               $price = number_format($cartItem->product->product_prices->first()->value, 2, ',', '.');
+               $price = number_format($cartItem->product->product_prices->first()->value, 2, $decimal, $mill);
            } else {
                $price = null;
            }
@@ -162,7 +178,7 @@
       {!! app('label_cart_products_tag') !!}
      @endif
      <span id="leftbarTotalPrice">
-      {{ number_format($cart->sum_amount, 2, ',', '.') }}
+      {{ number_format($cart->sum_amount, 2, $decimal, $mill) }}
       @if (app()->has('global_currency_primary_symbol'))
        {!! app('global_currency_primary_symbol') !!}
       @endif
@@ -179,7 +195,7 @@
         {!! app('label_cart_delivery_free') !!}
        @endif
       @else
-       {{ $cart->delivery_price }}@if (app()->has('global_currency_primary_symbol'))
+       {{ number_format($cart->delivery_price, 2, $decimal, $mill) }}@if (app()->has('global_currency_primary_symbol'))
         {!! app('global_currency_primary_symbol') !!}
        @endif
       @endif
@@ -191,7 +207,7 @@
        {!! app('label_cart_voucher_tag') !!}
       @endif
       <span class="voucher__choice">
-       -{{ number_format($cart->voucher_value, 2, ',', '.') }} @if (app()->has('global_currency_primary_symbol'))
+       -{{ number_format($cart->voucher_value, 2, $decimal, $mill) }} @if (app()->has('global_currency_primary_symbol'))
         {!! app('global_currency_primary_symbol') !!}
        @endif
        <button wire:click="removevoucher" class="details__delete" aria-label="Remove voucher">
@@ -208,7 +224,7 @@
       {!! app('label_cart_total_tag') !!}
      @endif
      <span id="leftbarTotalPrice">
-      {{ number_format($cart->final_amount, 2, ',', '.') }}
+      {{ number_format($cart->final_amount, 2, $decimal, $mill) }}
       @if (app()->has('global_currency_primary_symbol'))
        {!! app('global_currency_primary_symbol') !!}
       @endif
