@@ -1,7 +1,6 @@
  <?php
 
   use App\Http\Controllers\AdminController;
-  use App\Http\Controllers\CartController;
   use Illuminate\Support\Facades\Route;
   use Illuminate\Support\Facades\Artisan;
   use App\Http\Controllers\HomeController;
@@ -54,7 +53,7 @@
 
       //carts route
       route::view('/carts', 'admin.cart')->name('carts');
-      route::get('/show_cart/{id}/', [CartController::class, 'show'])->name('show_cart');
+      route::get('/show_cart/{id}/', [AdminController::class, 'show_cart'])->name('show_cart');
 
       //specs route
       route::view('/specs', 'admin.specs')->name('specs');

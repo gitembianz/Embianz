@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
 use App\Models\Order;
-use App\Models\Store_Settings;
 use App\Models\Account;
-use App\Models\Voucher;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Models\CustomScript;
 use App\Models\Variant;
+use App\Models\Voucher;
+use App\Models\CustomScript;
+use Illuminate\Http\Request;
+use App\Models\Store_Settings;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Cache;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 
@@ -20,6 +21,11 @@ use Illuminate\Support\Facades\Redirect;
 
 class AdminController extends Controller
 {
+  public function show_cart($id)
+  {
+    $data = Cart::find($id);
+    return view('admin.show_cart', compact('data'));
+  }
 
   function correctMediaSequence()
   {
