@@ -77,11 +77,21 @@ class Category extends Model
   public static function search($search)
   {
     return empty($search) ? static::query()
-      : static::query()->where('id', 'like', '%' . $search . '%')
-      ->orWhere('name', 'like', '%' . $search . '%')
-      ->orWhere('sequence', 'like', '%' . $search . '%')
-      ->orWhere('short_description', 'like', '%' . $search . '%');
+      : static::query()
+      ->where(function ($query) use ($search) {
+        $searchTerms = explode(' ', $search);
+
+        foreach ($searchTerms as $term) {
+          $query->where(function ($subQuery) use ($term) {
+            $subQuery->where('id', 'like', '%' . $term . '%')
+              ->orWhere('name', 'like', '%' . $term . '%')
+              ->orWhere('sequence', 'like', '%' . $term . '%')
+              ->orWhere('short_description', 'like', '%' . $term . '%');
+          });
+        }
+      });
   }
+
   public static function search_by_name($search)
   {
     return empty($search) ? static::query()

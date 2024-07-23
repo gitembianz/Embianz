@@ -21,7 +21,7 @@ class GlobalVariablesServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        ///
     }
 
 
@@ -38,7 +38,7 @@ class GlobalVariablesServiceProvider extends ServiceProvider
         $this->loadGlobalCustomScripts();
         $this->loadGlobalCurrencies();
         $this->loadHighestPopularity();
-        if(app()->has('global_cache_data') && app('global_cache_data') === 'true'){
+        if (app()->has('global_cache_data') && app('global_cache_data') === 'true') {
 
             $this->loadAllProductsIntoCache();
             $this->loadAllCategoriesIntoCache();

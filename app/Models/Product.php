@@ -137,12 +137,18 @@ class Product extends Model
     return empty($search) ? static::query()
       : static::query()
       ->where(function ($query) use ($search) {
-        $query->where('id', 'like', '%' . $search . '%')
-          ->orWhere('name', 'like', '%' . $search . '%')
-          ->orWhere('ean', 'like', '%' . $search . '%')
-          ->orWhere('meta_description', 'like', '%' . $search . '%')
-          ->orWhere('short_description', 'like', '%' . $search . '%')
-          ->orWhere('sku', 'like', '%' . $search . '%');
+        $searchTerms = explode(' ', $search);
+
+        foreach ($searchTerms as $term) {
+          $query->where(function ($subQuery) use ($term) {
+            $subQuery->where('id', 'like', '%' . $term . '%')
+              ->orWhere('name', 'like', '%' . $term . '%')
+              ->orWhere('ean', 'like', '%' . $term . '%')
+              ->orWhere('meta_description', 'like', '%' . $term . '%')
+              ->orWhere('short_description', 'like', '%' . $term . '%')
+              ->orWhere('sku', 'like', '%' . $term . '%');
+          });
+        }
       });
   }
 
