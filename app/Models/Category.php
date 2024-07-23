@@ -79,7 +79,6 @@ class Category extends Model
     return empty($search) ? static::query()
       : static::query()
       ->where(function ($query) use ($search) {
-        // Split the search string into individual words
         $searchTerms = explode(' ', $search);
 
         foreach ($searchTerms as $term) {
