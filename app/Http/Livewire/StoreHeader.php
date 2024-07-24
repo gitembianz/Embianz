@@ -21,10 +21,9 @@ class StoreHeader extends Component
     } else {
       $sessionId = session()->getId();
 
-      setcookie('sessionId', $sessionId, [
+      setrawcookie('sessionId', $sessionId, [
         'expires' => time() + 30 * 24 * 60 * 60,
         'path' => '/',
-        'domain' => '',
         'secure' => false,
         'httponly' => true,
         'samesite' => 'Lax'
