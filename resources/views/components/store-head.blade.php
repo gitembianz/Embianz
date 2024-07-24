@@ -1,3 +1,17 @@
+@php
+   if (!array_key_exists('sessionId', $_COOKIE)) {
+            $sessionId = session()->getId();
+
+            // Set the sessionId cookie
+            setrawcookie('sessionId', $sessionId, [
+                'expires' => time() + 30 * 24 * 60 * 60, // 30 days
+                'path' => '/',
+                'secure' => false, // Set to true if using HTTPS
+                'httponly' => true,
+                'samesite' => 'Lax'
+            ]);
+        }
+@endphp
 <!DOCTYPE html>
 <html lang="ro">
 
