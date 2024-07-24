@@ -18,7 +18,6 @@ class StoreFooter extends Component
   public function mount()
   {
     $this->cookieConsent = $this->checkCookieConsent();
-    $this->getSessionId();
   }
 
   public function render()
@@ -81,14 +80,5 @@ class StoreFooter extends Component
     $this->cookieConsent = true;
     setcookie('cookieConsent', 'accepted', time() + (30 * 24 * 60 * 60), '/');
     $this->emit('updateCookieConsent');
-  }
-  public function getSessionId()
-  {
-    if (array_key_exists('sessionId', $_COOKIE)) {
-      return;
-    } else {
-      $sessionId = session()->getId();
-      setcookie('sessionId', $sessionId, time() + 30 * 24 * 60 * 60, '/');
-    }
   }
 }

@@ -166,9 +166,9 @@
   Route::post('/cancel', [StoreController::class, 'cancel'])->name('payment_cancel');
 
 
-  // //Custom login routes
-  // Route::get('/login', function () {
-  //   throw new NotFoundHttpException();
-  // });
+  //Custom login routes
+  Route::get('/login', function () {
+    throw new NotFoundHttpException();
+  });
   Route::get('/embadmin/login', [AuthenticatedSessionController::class, 'create'])->name('login');
   Route::post('/embadmin/login', [AuthenticatedSessionController::class, 'store']);
