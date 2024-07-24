@@ -14,13 +14,22 @@ class StoreHeader extends Component
     'orderprocess' => 'getCartProperty',
   ];
 
-  private function getSessionId()
+  public function getSessionId()
   {
     if (array_key_exists('sessionId', $_COOKIE)) {
       return $_COOKIE['sessionId'];
     } else {
       $sessionId = session()->getId();
-      // setcookie('sessionId', $sessionId, time() + 30 * 24 * 60 * 60, '/', null, false, true);
+
+      setcookie('sessionId', $sessionId, [
+        'expires' => time() + 30 * 24 * 60 * 60,
+        'path' => '/',
+        'domain' => '',
+        'secure' => false,
+        'httponly' => true,
+        'samesite' => 'Lax'
+      ]);
+
       return $sessionId;
     }
   }

@@ -1,5 +1,5 @@
 <x-store-head :canonical="'contact'" :title="' Contactează-ne | '" :description="'Contactează-ne'"/>
-<x-store-header />
+@livewire('store-header')
 
 <main>
   <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" defer></script>

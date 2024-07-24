@@ -1,5 +1,5 @@
 <x-store-head :canonical="'about'" :title="' Despre noi | '" :description="'Despre noi'" />
-<x-store-header />
+@livewire('store-header')
 <main>
 	<!---------------------------------------------------------->
 	<!------------------------Breadcrumbs----------------------->

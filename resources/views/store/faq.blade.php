@@ -1,5 +1,5 @@
 <x-store-head :canonical="'faq'" :title="' FAQ | '" :description="'Întrebări și răspunsuri'"/>
-<x-store-header />
+@livewire('store-header')
 <main>
 	<script rel="preload" src="script/store/faq.js" as="script"></script>
 

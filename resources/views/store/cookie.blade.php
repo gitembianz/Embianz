@@ -1,5 +1,5 @@
 <x-store-head :canonical="'cookie'" :title="' Cookie | '" :description="'Cookie'"/>
-<x-store-header />
+@livewire('store-header')
 <main>
 	<!---------------------------------------------------------->
 	<!------------------------Breadcrumbs----------------------->
