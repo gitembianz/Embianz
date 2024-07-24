@@ -14,17 +14,12 @@ class StoreHeader extends Component
     'orderprocess' => 'getCartProperty',
   ];
 
-  public function getSessionId()
+  private function getSessionId()
   {
     if (array_key_exists('sessionId', $_COOKIE)) {
       return $_COOKIE['sessionId'];
     } else {
-      $sessionId = session()->getId();
-
-      // Ensure no output occurs before this
-      header('Set-Cookie: sessionId=' . $sessionId . '; expires=' . gmdate('D, d M Y H:i:s T', time() + 30 * 24 * 60 * 60) . '; path=/; HttpOnly; SameSite=Lax');
-
-      return $sessionId;
+      return session()->getId();
     }
   }
 
