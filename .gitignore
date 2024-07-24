@@ -10,4 +10,3 @@ bootstrap
 .htpasswd
 .DS_Store
 .github/workflows/
-vendor

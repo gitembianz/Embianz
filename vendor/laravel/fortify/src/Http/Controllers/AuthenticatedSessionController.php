@@ -4,7 +4,6 @@ namespace Laravel\Fortify\Http\Controllers;
 
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Routing\Controller;
 use Illuminate\Routing\Pipeline;
 use Laravel\Fortify\Actions\AttemptToAuthenticate;
@@ -58,10 +57,6 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request)
     {
-        if (Auth::user()) {
-            // User is already authenticated, redirect them to the intended route or a default route
-            return redirect()->route('dashboard');
-        }
         return $this->loginPipeline($request)->then(function ($request) {
             return app(LoginResponse::class);
         });

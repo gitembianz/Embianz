@@ -94,6 +94,10 @@ class RedirectIfTwoFactorAuthenticatable
 
                 $this->throwFailedAuthenticationException($request);
             }
+
+            if (config('hashing.rehash_on_login', true) && method_exists($this->guard->getProvider(), 'rehashPasswordIfRequired')) {
+                $this->guard->getProvider()->rehashPasswordIfRequired($user, ['password' => $request->password]);
+            }
         });
     }
 
@@ -123,7 +127,7 @@ class RedirectIfTwoFactorAuthenticatable
      */
     protected function fireFailedEvent($request, $user = null)
     {
-        event(new Failed(config('fortify.guard'), $user, [
+        event(new Failed($this->guard?->name ?? config('fortify.guard'), $user, [
             Fortify::username() => $request->{Fortify::username()},
             'password' => $request->password,
         ]));
