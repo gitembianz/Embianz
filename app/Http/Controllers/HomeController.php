@@ -20,6 +20,10 @@ class HomeController extends Controller
 
   public function home()
   {
+    if (!array_key_exists('sessionId', $_COOKIE)) {
+      $sessionId = session()->getId();
+      setcookie('sessionId', $sessionId, time() + 30 * 24 * 60 * 60, '/');
+    }
     $preload = null;
     if (app()->has('global_cache_data') && app('global_cache_data') === 'true') {
 
