@@ -1,7 +1,6 @@
-<x-store-head :canonical="'privacy'" :title="'Politica de confidențialitate | '" :description="'Politica de confidențialitate'" />
-{{-- <x-store-head :title="getTitle()" :description="getDescription()" :preload="$preload" /> --}}
+<x-store-head :title="getTitle()" :description="getDescription()" :preload="$preload" />
 
-{{-- @php
+@php
  function getTitle()
  {
      try {
@@ -19,8 +18,8 @@
          return '';
      }
  }
-@endphp --}}
+@endphp
 
-<x-store-header />
+@livewire('store-header')
 @livewire('store-main')
 <x-store-footer />
