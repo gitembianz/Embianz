@@ -20,7 +20,7 @@ class StoreHeader extends Component
       return $_COOKIE['sessionId'];
     } else {
       $sessionId = session()->getId();
-      setcookie('sessionId', $sessionId, time() + 30 * 24 * 60 * 60, '/', null, false, true);
+      // setcookie('sessionId', $sessionId, time() + 30 * 24 * 60 * 60, '/', null, false, true);
       return $sessionId;
     }
   }
@@ -53,7 +53,7 @@ class StoreHeader extends Component
     $this->getCategoriesProperty();
     $this->emit('newcartlist');
   }
- protected function applyCategoryConditions($query)
+  protected function applyCategoryConditions($query)
   {
     $query->where('active', 1)
       ->where('store_tab', 1)
