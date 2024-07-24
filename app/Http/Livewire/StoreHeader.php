@@ -14,24 +14,19 @@ class StoreHeader extends Component
     'orderprocess' => 'getCartProperty',
   ];
 
-  // public function getSessionId()
-  // {
-  //   if (array_key_exists('sessionId', $_COOKIE)) {
-  //     return $_COOKIE['sessionId'];
-  //   } else {
-  //     $sessionId = session()->getId();
+  public function getSessionId()
+  {
+    if (array_key_exists('sessionId', $_COOKIE)) {
+      return $_COOKIE['sessionId'];
+    } else {
+      $sessionId = session()->getId();
 
-  //     setrawcookie('sessionId', $sessionId, [
-  //       'expires' => time() + 30 * 24 * 60 * 60,
-  //       'path' => '/',
-  //       'secure' => false,
-  //       'httponly' => true,
-  //       'samesite' => 'Lax'
-  //     ]);
+      // Ensure no output occurs before this
+      header('Set-Cookie: sessionId=' . $sessionId . '; expires=' . gmdate('D, d M Y H:i:s T', time() + 30 * 24 * 60 * 60) . '; path=/; HttpOnly; SameSite=Lax');
 
-  //     return $sessionId;
-  //   }
-  // }
+      return $sessionId;
+    }
+  }
 
   public function render()
   {
@@ -44,7 +39,7 @@ class StoreHeader extends Component
   }
   public function mount()
   {
-    $this->session_id = $_COOKIE['sessionId'] ?? null;
+    $this->session_id = $this->getSessionId();
   }
 
   public function getCartProperty()
