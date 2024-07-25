@@ -538,7 +538,7 @@ function flyToCart(button) {
 
   if (!button.classList.contains("in")) {
     button.classList.add("in");
-    setTimeout(() => button.classList.remove("in"), 11500);
+    setTimeout(() => button.classList.remove("in"), 1500);
   }
 
   if (!target_parent) {
@@ -613,7 +613,7 @@ function flyToCart(button) {
   setTimeout(() => {
     target_parent.removeChild(flying_img);
     shopping_cart.classList.remove("active");
-  }, 11500);
+  }, 1500);
 
   // Number Cart upscale
   if (!numberCart) {
@@ -622,7 +622,7 @@ function flyToCart(button) {
     numberCart.style.scale = 1.5;
     setTimeout(() => {
       numberCart.style.scale = 1;
-    }, 11500);
+    }, 1500);
   }
 }
 //<-------------------------- End Fly-To-Cart -------------------------->
@@ -678,7 +678,7 @@ function addWishList(button) {
 
     setTimeout(() => {
       wish.style.scale = 1;
-    }, 11500);
+    }, 1500);
   }
 }
 //<-------------------------- END Add-To-Wish -------------------------->
