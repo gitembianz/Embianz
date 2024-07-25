@@ -43,7 +43,7 @@ class GeneralSearch extends Component
     public function getObjectsProperty()
     {
         if ($this->search != "") {
-            return Product::name($this->search)
+            return Product::search($this->search)
                 ->select('id', 'name', 'seo_id', 'type', 'short_description')
                 ->where('active', true)
                 ->where('type', '!=', 'parrent')
