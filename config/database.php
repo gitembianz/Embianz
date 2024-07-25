@@ -137,7 +137,7 @@ return [
             'database' => env('REDIS_DB', '0'),
             'path' => env('REDIS_PATH', ''),
             'scheme' => env('REDIS_SCHEME', 'tcp'),
-           // 'persistent' => true, // keep Redis connection open
+            'persistent' => true, // keep Redis connection open
             
         ],
 
