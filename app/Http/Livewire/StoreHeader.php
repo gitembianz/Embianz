@@ -19,7 +19,9 @@ class StoreHeader extends Component
     if (array_key_exists('sessionId', $_COOKIE)) {
       return $_COOKIE['sessionId'];
     } else {
-      return session()->getId();
+      $sessionId = session()->getId();
+      setcookie('sessionId', $sessionId, time() + 30 * 24 * 60 * 60, '/', null, false, true);
+      return $sessionId;
     }
   }
 
