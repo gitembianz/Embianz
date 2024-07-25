@@ -132,12 +132,12 @@ return [
             'url' => env('REDIS_URL'),
             'host' => env('REDIS_HOST', '127.0.0.1'),
             'username' => env('REDIS_USERNAME'),
-            'password' => env('REDIS_PASSWORD'),
+            'password' => env('REDIS_PASSWORD',null),
             'port' => env('REDIS_PORT', '6379'),
             'database' => env('REDIS_DB', '0'),
             'path' => env('REDIS_PATH', ''),
             'scheme' => env('REDIS_SCHEME', 'tcp'),
-            'persistent' => true, // keep Redis connection open
+           // 'persistent' => true, // keep Redis connection open
             
         ],
 
@@ -145,7 +145,7 @@ return [
             'url' => env('REDIS_URL'),
             'host' => env('REDIS_HOST', '127.0.0.1'),
             'username' => env('REDIS_USERNAME'),
-            'password' => env('REDIS_PASSWORD'),
+            'password' => env('REDIS_PASSWORD',null),
             'port' => env('REDIS_PORT', '6379'),
             'database' => env('REDIS_CACHE_DB', '1'),
             'path' => env('REDIS_PATH', ''),
