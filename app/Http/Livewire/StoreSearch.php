@@ -89,7 +89,7 @@ class StoreSearch extends Component
     public function getProductsProperty()
     {
         if ($this->search != "") {
-            return Product::name($this->search)
+            return Product::search($this->search)
                 ->select('id', 'name', 'seo_id', 'short_description', 'type', 'quantity')
                 ->where('active', true)
                 ->where('type', '!=', 'parrent')

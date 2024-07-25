@@ -184,7 +184,7 @@ class StoreProducts extends Component
   // products function
   public function getProductsProperty()
   {
-    $query = Product::name($this->search)
+    $query = Product::search($this->search)
       ->where('active', true)
       ->where('start_date', '<=', now()->format('Y-m-d'))
       ->where('end_date', '>=', now()->format('Y-m-d'))
