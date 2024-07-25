@@ -1,6 +1,7 @@
-<x-store-head :title="getTitle()" :description="getDescription()" :preload="$preload" />
+{{-- <x-store-head :title="getTitle()" :description="getDescription()" :preload="$preload" /> --}}
+<x-store-head :canonical="'faq'" :title="' FAQ | '" :description="'Întrebări și răspunsuri'"/>
 
-@php
+{{-- @php
  function getTitle()
  {
      try {
@@ -18,7 +19,7 @@
          return '';
      }
  }
-@endphp
+@endphp --}}
 
 @livewire('store-header')
 @livewire('store-main')
