@@ -81,7 +81,7 @@ class Product extends Model
       }
       $currentHierarchy = collect([
         [
-          'name' => $category->name,
+          'name' => strip_tags($category->name),
           'slug' => $category->seo_id ?? $category->id,
         ],
       ]);
@@ -96,7 +96,7 @@ class Product extends Model
         }
 
         $currentHierarchy->push([
-          'name' => $parrentCategory->name,
+          'name' => strip_tags($parrentCategory->name),
           'slug' => $parrentCategory->seo_id ?? $parrentCategory->id,
         ]);
 
