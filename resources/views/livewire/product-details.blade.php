@@ -159,7 +159,7 @@
         @php
          if ($variant->id == $product->id) {
              continue;
-         }
+         } 
         @endphp
         <a class="variant__btn"
          href="{{ route('product', ['product' => $variant->seo_id !== null && $variant->seo_id !== '' ? $variant->seo_id : $variant->id]) }}">
