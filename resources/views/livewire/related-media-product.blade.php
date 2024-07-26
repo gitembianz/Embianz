@@ -194,9 +194,9 @@
           <p>
            <bold>Automatic resize</bold>
           <div class="checkbox--primary">
-           <input type="checkbox" id="checkbox2{{ $index }}"
-            wire:model.defer="file_resize.{{ $index }}" />
-           <label for="checkbox2{{ $index }}"></label>
+                   <input type="checkbox" id="checkbox{{ $index }}"
+           wire:model.defer="file_resize.{{ $index }}" />
+          <label for="checkbox{{ $index }}"></label>
           </div>
           </p>
          </div>
