@@ -202,9 +202,10 @@
          </div>
         </td>
         <td class="hidden">
-         <div class="checkbox--primary">
-          <input type="checkbox" wire:model.defer="variantAndValues.{{ $index }}.variant.def">
-          <label></label>
+            <div class="checkbox--primary">
+          <input type="checkbox" id="checkbox{{ $index }}"
+           wire:model.defer="variantAndValues.{{ $index }}.variant.def" />
+          <label for="checkbox{{ $index }}"></label>
          </div>
         </td>
         <td class="hidden">
@@ -322,10 +323,11 @@
           </p>
           <p>
            <bold>Is defaut Variant?</bold>
-          <div class="checkbox--primary">
-           <input type="checkbox" wire:model.defer="variantAndValues.{{ $index }}.variant.def">
-           <label></label>
-          </div>
+             <div class="checkbox--primary">
+          <input type="checkbox" id="checkbox{{ $index }}"
+           wire:model.defer="variantAndValues.{{ $index }}.variant.def" />
+          <label for="checkbox{{ $index }}"></label>
+         </div>
           </p>
           <p>
            <bold>Variant Dispalyed type</bold>
