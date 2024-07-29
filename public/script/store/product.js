@@ -327,7 +327,7 @@ function sliderProduct(sliderId, modalId) {
           return; // Ignoră acțiunea dacă utilizatorul face zoom
         }
 
-        if (Math.abs(swipeDistance) > 10 && !isScrolling()) {
+        if (Math.abs(swipeDistance) > 10 && !isScrolling() && event.cancelable) {
           isSwiping = true;
           event.preventDefault();
         }
