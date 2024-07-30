@@ -128,7 +128,6 @@
  @endif
  @if ($product->type == 'variant')
   @foreach ($variants as $variantId => $variantGroup)
-  {{ $variantGroup }}
    @if (count($variantGroup) > 1)
     <span class="product__price--title"
      style="margin-right: auto">{{ $product->beeingvariants->where('variant_id', $variantId)->first()->reference->name }}</span>

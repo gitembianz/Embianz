@@ -43,11 +43,14 @@ class ProductDetails extends Component
                 'parent' => function ($query) {
                     $query->with(['variants' => function ($query) {
                         $query->distinct('variant_id')->with(['product' => function ($query) {
-                            $query->select('id', 'seo_id')->with([
-                                'media' => function ($query) {
-                                    $query->select('path', 'name')->where('type', 'min');
-                                }
-                            ]);
+                            $query->where('active', true)
+                                ->where('start_date', '<=', now()->format('Y-m-d'))
+                                ->where('end_date', '>=', now()->format('Y-m-d'))
+                                ->with([
+                                    'media' => function ($query) {
+                                        $query->select('path', 'name')->where('type', 'min');
+                                    }
+                                ]);
                         }]);
                     }]);
                 },
