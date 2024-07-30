@@ -36,7 +36,7 @@
     <div style="display: flex; align-items:center">
      <div class="rating" style="--rating: {{ $rating }}%;"></div>
      @if (app()->has('global_display_rating_value') && app('global_display_rating_value') === 'true')
-      ({{ $ratingvalue }})
+      ({{ number_format($ratingvalue,2) }})
      @endif
     </div>
    @endif
