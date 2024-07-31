@@ -20,6 +20,9 @@ return new class extends Migration
             $table->unsignedBigInteger('variant_id')->index();
             $table->foreign('variant_id')->references('id')->on('variants');
             $table->string('value')->nullable();
+            $table->boolean('default_variant')->nullable()->default(
+                false
+            );
             $table->string('displayed')->nullable();
             $table->timestamps();
         });
