@@ -75,7 +75,7 @@ class ProductDetails extends Component
 
         $allVariants = $parentProduct->variants->map->product->where('active', true)
             ->where('start_date', '<=', now()->format('Y-m-d'))
-            ->where('end_date', '>=', now()->format('Y-m-d'))->unique();
+            ->where('end_date', '>=', now()->format('Y-m-d'));
 
         $filterVariants = function ($variants, $currentProduct, $variantIdToExclude) {
             return $variants->filter(function ($variant) use ($currentProduct, $variantIdToExclude) {
