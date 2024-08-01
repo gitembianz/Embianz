@@ -36,7 +36,7 @@
     <div style="display: flex; align-items:center">
      <div class="rating" style="--rating: {{ $rating }}%;"></div>
      @if (app()->has('global_display_rating_value') && app('global_display_rating_value') === 'true')
-      ({{ number_format($ratingvalue,2) }})
+      ({{ number_format($ratingvalue, 2) }})
      @endif
     </div>
    @endif
@@ -83,8 +83,6 @@
    @endif
   @endif
  </div>
-
-
  @if ($price)
   <span class="product__tva">
    @if (app()->has('label_pdp_vat'))
@@ -130,14 +128,38 @@
   @foreach ($variants as $variantId => $variantGroup)
    @if (count($variantGroup) > 1)
     <span class="product__price--title"
-     style="margin-right: auto">{{ $product->beeingvariants->where('variant_id', $variantId)->first()->reference->name }}</span>
+     style="margin-right: auto; font-size: 14px; font-weight:500">{{ $product->beeingvariants->where('variant_id', $variantId)->first()->reference->name }}</span>
     <div class="product__price" style="height: auto;">
      <div class="variant__slider mini-slider" style="padding: 0 45px;">
       <div class="variant__wrapper mini-wrapper">
+       <a class="variant__btn active"
+        href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">
+        @if ($product->beeingvariants->where('variant_id', $variantId)->first()->displayed == 'image')
+         @if ($product->media->first() != null)
+          <img src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}"
+           alt="{{ $product->media->first()->name }}">
+         @else
+          <img src="/images/store/default/default70.webp" alt="something wrong">
+         @endif
+        @elseif ($product->beeingvariants->where('variant_id', $variantId)->first()->displayed == 'text')
+         {{ $product->beeingvariants->where('variant_id', $variantId)->first()->value }}
+        @else
+         @if ($product->media->first() != null)
+          <img src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}"
+           alt="{{ $product->media->first()->name }}">
+         @else
+          <img src="/images/store/default/default70.webp" alt="something wrong">
+         @endif
+         {{ $product->beeingvariants->where('variant_id', $variantId)->first()->value }}
+        @endif
+       </a>
        @foreach ($variantGroup as $variant)
-        <a class="variant__btn @if ($variant->id == $product->id)
-            active
-        @endif"
+        @php
+         if ($variant->id == $product->id) {
+             continue;
+         }
+        @endphp
+        <a class="variant__btn"
          href="{{ route('product', ['product' => $variant->seo_id !== null && $variant->seo_id !== '' ? $variant->seo_id : $variant->id]) }}">
          @if ($variant->beeingvariants->where('variant_id', $variantId)->first()->displayed == 'image')
           @if ($variant->media->first() != null)
@@ -152,7 +174,6 @@
           @if ($variant->media->first() != null)
            <img src="/{{ $variant->media->first()->path }}{{ $variant->media->first()->name }}"
             alt="{{ $variant->media->first()->name }}">
-           {{ $variant->beeingvariants->where('variant_id', $variantId)->first()->value }}
           @else
            <img src="/images/store/default/default70.webp" alt="something wrong">
            {{ $variant->beeingvariants->where('variant_id', $variantId)->first()->value }}
@@ -176,8 +197,6 @@
    @endif
   @endforeach
  @endif
-
-
  @if ($price && $product->quantity != 0)
   <button class="card__button" style="width: 100%;height: 40px;" onclick="flyToCart(this)"
    aria-label="Add to cart button" wire:click="addToCart({{ $product->id }})" wire:ignore="$refresh">
