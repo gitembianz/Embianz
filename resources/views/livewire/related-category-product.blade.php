@@ -160,7 +160,7 @@
          </div>
         </td>
         <td wire:click="expandRow2({{ $index }})">
-         {{ $category->name }}
+         {{ strip_tags($category->name) }}
         </td>
         <td wire:click="expandRow2({{ $index }})">
          {{ $category->short_description }}
@@ -444,7 +444,7 @@
        @if ($this->showColumn('Category Name'))
         <td data-title="Name" wire:click="expandRow({{ $index }})">
          <a href="{{ route('show_category', ['id' => $related->category->id]) }}">
-          {{ $related->category->name }}</a>
+          {{ strip_tags($related->category->name) }}</a>
         </td>
        @endif
        @if ($this->showColumn('Category Description'))
