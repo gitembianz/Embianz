@@ -164,6 +164,11 @@ class RelatedVariants extends Component
     {
         $id = $this->idbeingremoved;
         $item = ProductVariant::findOrFail($id);
+        $items = ProductVariant::where('parent_id', $this->item->id)->where('product_id', $item->product_id)->get();
+        if ($items->count() == 1) {
+
+            $item->product->update(['parent_id' => null]);
+        }
         $item->delete();
         $this->checked = array_diff($this->checked, [$id]);
         $this->single = false;
@@ -180,6 +185,11 @@ class RelatedVariants extends Component
         foreach ($items as $item) {
             $id = $item->id;
             $itemtodel = ProductVariant::find($id);
+            $itemss = ProductVariant::where('parent_id', $this->item->id)->where('product_id', $itemtodel->product_id)->get();
+            if ($itemss->count() == 1) {
+
+                $itemtodel->product->update(['parent_id' => null]);
+            }
             $itemtodel->delete();
         }
         $this->checked = [];
