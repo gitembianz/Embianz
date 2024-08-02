@@ -314,7 +314,7 @@ class Storesettingstable extends Component
       $url->addChild('priority', $priority);
     }
     // Fetch and add active products
-    $products = Product::where('active', true)->where('type', '!=', 'parrent')
+    $products = Product::where('active', true)->where('type', '!=', 'parent')
       ->where('start_date', '<=', Carbon::now())->where('end_date', '>=', Carbon::now())
       ->get();
 

@@ -17,7 +17,7 @@ return new class extends Migration
       $table->id();
       $table->string('name')->nullable();
       $table->boolean('active');
-      $table->boolean('has_parrent')->nullable()->default(
+      $table->boolean('has_parent')->nullable()->default(
         false
       );
       $table->longText('long_description')->nullable();

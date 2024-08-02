@@ -109,7 +109,7 @@ class Categoriestable extends Component
           $pro->delete();
         }
       }
-      $subcategories = Subcategory::where('parrent_id', $id)->orwhere('category_id', $id)->get();
+      $subcategories = Subcategory::where('parent_id', $id)->orwhere('category_id', $id)->get();
       if ($subcategories != NULL) {
         foreach ($subcategories as $sub) {
           $sub->delete();
@@ -148,7 +148,7 @@ class Categoriestable extends Component
         $productcat->delete();
       }
     }
-    $subcategories = Subcategory::where('parrent_id', $id)->get();
+    $subcategories = Subcategory::where('parent_id', $id)->get();
     if ($subcategories != NULL) {
       foreach ($subcategories as $sub) {
         $sub->delete();

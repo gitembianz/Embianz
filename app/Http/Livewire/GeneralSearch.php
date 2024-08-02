@@ -46,7 +46,7 @@ class GeneralSearch extends Component
             return Product::search($this->search)
                 ->select('id', 'name', 'seo_id', 'type', 'short_description')
                 ->where('active', true)
-                ->where('type', '!=', 'parrent')
+                ->where('type', '!=', 'parent')
                 ->where('start_date', '<=',  now()->format('Y-m-d'))
                 ->where('end_date', '>=',  now()->format('Y-m-d'))
                 ->with([

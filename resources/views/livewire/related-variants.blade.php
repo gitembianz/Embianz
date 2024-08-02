@@ -64,7 +64,7 @@
       <tr>
        <th style="width: unset !important;">
         <button class="table--btn">
-         Parrent Product
+         parent Product
         </button>
        </th>
        <th>
@@ -202,7 +202,7 @@
          </div>
         </td>
         <td class="hidden">
-            <div class="checkbox--primary">
+         <div class="checkbox--primary">
           <input type="checkbox" id="checkbox{{ $index }}"
            wire:model.defer="variantAndValues.{{ $index }}.variant.def" />
           <label for="checkbox{{ $index }}"></label>
@@ -323,11 +323,11 @@
           </p>
           <p>
            <bold>Is defaut Variant?</bold>
-             <div class="checkbox--primary">
-          <input type="checkbox" id="checkbox{{ $index }}"
-           wire:model.defer="variantAndValues.{{ $index }}.variant.def" />
-          <label for="checkbox{{ $index }}"></label>
-         </div>
+          <div class="checkbox--primary">
+           <input type="checkbox" id="checkbox{{ $index }}"
+            wire:model.defer="variantAndValues.{{ $index }}.variant.def" />
+           <label for="checkbox{{ $index }}"></label>
+          </div>
           </p>
           <p>
            <bold>Variant Dispalyed type</bold>
@@ -449,10 +449,10 @@
        </button>
       </th>
      @endif
-     @if ($this->showColumn('Parrent Name'))
+     @if ($this->showColumn('parent Name'))
       <th>
        <button class="table--btn">
-        Parrent Name
+        parent Name
         <svg>
          <polyline points="6 9 12 15 18 9"></polyline>
         </svg>
@@ -568,7 +568,7 @@
        @if ($this->showColumn('Id'))
         <td wire:click="expandRow({{ $index }})">{{ $variant->id }}</td>
        @endif
-       @if ($this->showColumn('Parrent Name'))
+       @if ($this->showColumn('parent Name'))
         <td data-title="Name" wire:click="expandRow({{ $index }})">
          <a href="{{ route('show_product', ['id' => $item->id]) }}">
           {{ $item->name }}</a>

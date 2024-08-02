@@ -113,7 +113,7 @@
   @else
    @foreach ($products as $index => $product)
     @php
-     if ($product->type == 'parrent') {
+     if ($product->type == 'parent') {
          if ($product->variants->count() == 0) {
              continue;
          } else {
@@ -229,7 +229,7 @@
         </h3>
         <p class="card-price">
          @if (
-             $product->type == 'parrent' &&
+             $product->type == 'parent' &&
                  app()->has('global_variant_price_from') &&
                  app()->has('label_product_price_from') &&
                  app('global_variant_price_from') === 'true')
@@ -272,19 +272,19 @@
         </p>
        </div>
        @if (
-           $product->type == 'parrent' &&
+           $product->type == 'parent' &&
                app()->has('global_variant_add_to_cart') &&
                app('global_variant_add_to_cart') === 'true')
         @livewire('add-to-cart-button', ['product' => $element], key($element->id . $index))
-       @elseif($product->type == 'parrent')
+       @elseif($product->type == 'parent')
         <div class="card__button--wrapper">
          <button class="card__button">
 
           <a style="text-decoration: none"
            href="{{ route('product', ['product' => $element->seo_id !== null && $element->seo_id !== '' ? $element->seo_id : $element->id]) }}"
            class="card__button--text">
-           @if (app()->has('label_show_parrent'))
-            {!! app('label_show_parrent') !!}
+           @if (app()->has('label_show_parent'))
+            {!! app('label_show_parent') !!}
            @endif
           </a>
          </button>

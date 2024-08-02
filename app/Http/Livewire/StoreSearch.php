@@ -92,7 +92,7 @@ class StoreSearch extends Component
             return Product::search($this->search)
                 ->select('id', 'name', 'seo_id', 'short_description', 'type', 'quantity')
                 ->where('active', true)
-                ->where('type', '!=', 'parrent')
+                ->where('type', '!=', 'parent')
                 ->where('start_date', '<=',  now()->format('Y-m-d'))
                 ->where('end_date', '>=',  now()->format('Y-m-d'))
                 ->with([

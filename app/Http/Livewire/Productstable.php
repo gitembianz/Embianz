@@ -118,7 +118,7 @@ class Productstable extends Component
           $productspec->delete();
         }
       }
-      $relproducts = Related_Products::where('product_id', $id)->orwhere('parrent_id', $id)->get();
+      $relproducts = Related_Products::where('product_id', $id)->orwhere('parent_id', $id)->get();
       if ($relproducts != NULL) {
         foreach ($relproducts as $item) {
           $item->delete();

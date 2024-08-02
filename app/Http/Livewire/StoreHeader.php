@@ -66,7 +66,7 @@ class StoreHeader extends Component
     if (app()->has('global_cache_data') && app('global_cache_data') === 'true') {
 
       return app()->make('cached_categories')->where('store_tab', 1)
-        ->where('has_parrent', 0)->sortBy('sequence')->take(app('global_limit_category'));
+        ->where('has_parent', 0)->sortBy('sequence')->take(app('global_limit_category'));
     } else {
       return Category::select('id', 'name', 'seo_id', 'sequence')
         ->with([
@@ -106,7 +106,7 @@ class StoreHeader extends Component
         ])
         ->where('active', 1)
         ->where('store_tab', 1)
-        ->where('has_parrent', 0)
+        ->where('has_parent', 0)
         ->where('start_date', '<=', now()->format('Y-m-d'))
         ->where('end_date', '>=', now()->format('Y-m-d'))
         ->orderBy('sequence')

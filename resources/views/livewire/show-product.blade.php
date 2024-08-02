@@ -149,7 +149,7 @@
     <span class="disabled">{{ $product->type }}</span>
    @else
     <select wire:model.defer="prod.type">
-     <option value="parrent">parrent</option>
+     <option value="parent">parent</option>
      <option value="standard">standard</option>
      <option value="variant">variant</option>
     </select>
@@ -305,8 +305,8 @@
 
  {{-- Tabs Body (Related) --}}
  <div style="height: calc(100% - 107.5px);" class="tabs__content related__view" id="relatedContent">
-   @livewire('related-media-product', ['product' => $product])
-   @livewire('related-variants', ['product' => $product])
+  @livewire('related-media-product', ['product' => $product])
+  @livewire('related-variants', ['product' => $product])
   @livewire('related-category-product', ['product' => $product])
   @livewire('related-products', ['product' => $product])
   @livewire('related-spec-product', ['product' => $product])

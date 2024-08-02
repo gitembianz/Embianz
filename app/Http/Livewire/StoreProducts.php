@@ -93,7 +93,7 @@ class StoreProducts extends Component
       'product',
       function ($query) {
         $query->where('active', true)
-          ->where('type', '!=', 'parrent')
+          ->where('type', '!=', 'parent')
           ->where('start_date', '<=',  now()->format('Y-m-d'))
           ->where('end_date', '>=',  now()->format('Y-m-d'));
       }
@@ -208,7 +208,7 @@ class StoreProducts extends Component
         $query->where('id', $this->category->id);
       });
       if ($this->category->accepted_items == 'default') {
-        $query->where('type', '!=', 'parrent');
+        $query->where('type', '!=', 'parent');
       } else {
         $query->where('type', '!=', 'variant');
       }
@@ -229,9 +229,9 @@ class StoreProducts extends Component
           });
         }
 
-        // Apply the filter to variants if the product type is 'parrent'
+        // Apply the filter to variants if the product type is 'parent'
         $mainQuery->orWhere(function ($parentQuery) {
-          $parentQuery->where('type', 'parrent')
+          $parentQuery->where('type', 'parent')
             ->whereHas('variants.product', function ($variantQuery) {
               foreach ($this->selectedSpecValues as $values) {
                 $variantQuery->where(function ($specSubQuery) use ($values) {
