@@ -132,10 +132,13 @@
 
        <div class="card-info">
         <div class="card-text">
-         <span>{{ $product->short_description }}</span>
+         <span><a style="text-decoration: none; font-weight:500"
+           href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">{{ $product->short_description }}</a></span>
         </div>
         <div class="card-text">
-         <h3 class="card-title">{{ $product->name }}</h3>
+         <h3 class="card-title"><a style="text-decoration: none; font-weight:500"
+           href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">{{ $product->name }}</a>
+         </h3>
          <p class="card-price">
           @if ($discount)
            <span class="card-price discount">
