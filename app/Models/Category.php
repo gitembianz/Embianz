@@ -18,9 +18,9 @@ class Category extends Model
   }
   public function subcategory()
   {
-    return $this->hasMany(Subcategory::class, 'parrent_id');
+    return $this->hasMany(Subcategory::class, 'parent_id');
   }
-  public function parrent()
+  public function parent()
   {
     return $this->hasMany(Subcategory::class, 'category_id');
   }
@@ -41,14 +41,14 @@ class Category extends Model
         'slug' => $currentCategory->seo_id ?? $currentCategory->id,
       ]);
 
-      if ($currentCategory->parrent->isNotEmpty()) {
-        $parrentCategory = $currentCategory->parrent->first()->category_parrent;
+      if ($currentCategory->parent->isNotEmpty()) {
+        $parentCategory = $currentCategory->parent->first()->category_parent;
 
-        if (!$parrentCategory) {
+        if (!$parentCategory) {
           break;
         }
 
-        $currentCategory = $parrentCategory;
+        $currentCategory = $parentCategory;
       } else {
         break;
       }
@@ -59,7 +59,7 @@ class Category extends Model
 
   protected $fillable = [
     'name',
-    'parrent',
+    'parent',
     'active',
     'long_description',
     'meta_description',

@@ -13,7 +13,7 @@ class Related_Products extends Model
         return $this->belongsTo(Product::class, 'product_id');
     }
     protected $fillable = [
-        'parrent_id',
+        'parent_id',
         'product_id',
         'sequence'
     ];

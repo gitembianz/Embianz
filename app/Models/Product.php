@@ -20,12 +20,12 @@ class Product extends Model
 
   public function related_product()
   {
-    return $this->hasMany(Related_Products::class, 'parrent_id');
+    return $this->hasMany(Related_Products::class, 'parent_id');
   }
 
   public function variants()
   {
-    return $this->hasMany(ProductVariant::class, 'parrent_id');
+    return $this->hasMany(ProductVariant::class, 'parent_id');
   }
 
   public function parent()
@@ -88,19 +88,19 @@ class Product extends Model
 
       $currentCategory = $category;
 
-      while ($currentCategory->parrent->isNotEmpty()) {
-        $parrentCategory = $currentCategory->parrent->first()->category_parrent;
+      while ($currentCategory->parent->isNotEmpty()) {
+        $parentCategory = $currentCategory->parent->first()->category_parent;
 
-        if (!$parrentCategory) {
+        if (!$parentCategory) {
           break;
         }
 
         $currentHierarchy->push([
-          'name' => strip_tags($parrentCategory->name),
-          'slug' => $parrentCategory->seo_id ?? $parrentCategory->id,
+          'name' => strip_tags($parentCategory->name),
+          'slug' => $parentCategory->seo_id ?? $parentCategory->id,
         ]);
 
-        $currentCategory = $parrentCategory;
+        $currentCategory = $parentCategory;
       }
 
       if ($currentHierarchy->count() > $longestHierarchy->count()) {

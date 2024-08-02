@@ -167,7 +167,7 @@ class RelatedProducts extends Component
         foreach ($this->productsAndValues as  $array) {
             if (isset($array['product']['sequence']) && isset($array['product']['idrel'])) {
                 Related_Products::create([
-                    'parrent_id' => $this->item->id,
+                    'parent_id' => $this->item->id,
                     'product_id' => $array['product']['idrel'],
                     'sequence' => $array['product']['sequence']
                 ]);
@@ -200,7 +200,7 @@ class RelatedProducts extends Component
     public function getProductsProperty()
     {
         $relatedIds = $this->relatedproducts->pluck('product_id')->merge([$this->item->id])->toArray();
-        $unrelatedQuery = Product::whereNotIn('id', $relatedIds)->where('type', '!=', 'parrent');
+        $unrelatedQuery = Product::whereNotIn('id', $relatedIds)->where('type', '!=', 'parent');
         if (!empty($this->searchadd)) {
             $unrelatedQuery->where('name', 'like', '%' . $this->searchadd . '%');
         }
@@ -259,7 +259,7 @@ class RelatedProducts extends Component
     }
     public function getRelatedproductsQueryProperty()
     {
-        return Related_Products::where('parrent_id', $this->item->id)
+        return Related_Products::where('parent_id', $this->item->id)
             ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->with('product');
     }
     public function confirmItemRemoval($id)

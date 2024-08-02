@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->unsignedBigInteger('parent_id')->after('type')->nullable()->index(); // Corrected 'parrent_id' to 'parent_id' and added 'nullable()'
+            $table->unsignedBigInteger('parent_id')->after('type')->nullable()->index(); // Corrected 'parent_id' to 'parent_id' and added 'nullable()'
             $table->foreign('parent_id')->references('id')->on('products'); // Added 'onDelete' for referential integrity
         });
     }

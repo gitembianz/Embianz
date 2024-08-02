@@ -209,7 +209,7 @@
    @else
     <select wire:model.defer="cat.acc_items">
      <option value="default">default</option>
-     <option value="parrents">parrents</option>
+     <option value="parents">parents</option>
     </select>
    @endif
    <label for="category__name">Displayed items</label>

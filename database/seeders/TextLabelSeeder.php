@@ -204,7 +204,7 @@ class TextLabelSeeder extends Seeder
             ['parameter' => 'form_number_space', 'value' => 'Numărul de înregistrare nu poate conține spații consecutive.', 'description' => 'Order form registernumber valisation - message', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'terms_checkout', 'value' => 'Sunt de acord cu <a href="' . route('terms') . '">Termenii și condițiile</a>.', 'description' => 'Confirm termn checkout', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'product_price_from', 'value' => 'Preț începand de la', 'description' => 'Product variant price from', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
-            ['parameter' => 'show_parrent', 'value' => 'Vizualizează produsul', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'show_parent', 'value' => 'Vizualizează produsul', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'support_phone_text', 'value' => '<svg>
   <circle cx="12" cy="12" r="10"></circle>
   <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>

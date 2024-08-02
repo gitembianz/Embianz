@@ -285,7 +285,7 @@
          wire:click="expandRow({{ $nr }})">
          @if ($column === 'name')
           <a href="{{ route('show_account', ['id' => $account->id]) }}">{{ $account->name }}</a>
-         @elseif ($column === 'active' || $column === 'store_tab' || $column === 'has_parrent')
+         @elseif ($column === 'active' || $column === 'store_tab' || $column === 'has_parent')
           @if ($account->$column)
            true
           @else

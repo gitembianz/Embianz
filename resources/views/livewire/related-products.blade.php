@@ -62,7 +62,7 @@
       <tr>
        <th style="width: auto !important;">
         <button class="table--btn">
-         Parrent Product
+         parent Product
         </button>
        </th>
        <th>

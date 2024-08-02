@@ -144,8 +144,8 @@ class RelatedSubcategory extends Component
     $rec = new  Subcategory();
     $rec->name = $category->name;
     $rec->category_id = $category->id;
-    $rec->parrent_id = $this->item->id;
-    $category->has_parrent = true;
+    $rec->parent_id = $this->item->id;
+    $category->has_parent = true;
     $category->save();
     $rec->save();
     $this->linksingle = false;
@@ -165,8 +165,8 @@ class RelatedSubcategory extends Component
       $add = new Subcategory();
       $add->name = $category->name;
       $add->category_id = $category->id;
-      $add->parrent_id = $this->item->id;
-      $cat->has_parrent = true;
+      $add->parent_id = $this->item->id;
+      $cat->has_parent = true;
       $cat->save();
       $add->save();
     }
@@ -237,17 +237,17 @@ class RelatedSubcategory extends Component
   }
   public function getRelatedsubcatsQueryProperty()
   {
-    return Subcategory::where('parrent_id', $this->item->id)
+    return Subcategory::where('parent_id', $this->item->id)
       ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->with('category');
   }
 
   public function deleteSingleRecord()
   {
     $record = Subcategory::findOrFail($this->idbeingremoved);
-    $still_has_parrents = Subcategory::where('category_id', $record->category_id)->count();
-    if ($still_has_parrents == 1) {
+    $still_has_parents = Subcategory::where('category_id', $record->category_id)->count();
+    if ($still_has_parents == 1) {
       $cat = Category::findOrFail($record->category_id);
-      $cat->has_parrent = false;
+      $cat->has_parent = false;
       $cat->save();
     }
     $record->delete();
@@ -265,10 +265,10 @@ class RelatedSubcategory extends Component
     $records = Subcategory::whereKey($this->checked)->get();
     foreach ($records as $record) {
       $recordtodel = Subcategory::find($record->id);
-      $still_has_parrents = Subcategory::where('category_id', $recordtodel->category_id)->count();
-      if ($still_has_parrents == 1) {
+      $still_has_parents = Subcategory::where('category_id', $recordtodel->category_id)->count();
+      if ($still_has_parents == 1) {
         $cat = Category::findOrFail($recordtodel->category_id);
-        $cat->has_parrent = false;
+        $cat->has_parent = false;
         $cat->save();
       }
       $recordtodel->delete();

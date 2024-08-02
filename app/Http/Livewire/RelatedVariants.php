@@ -23,7 +23,7 @@ class RelatedVariants extends Component
     public $selectAll = false;
     public $showvariant = false;
     public $productId;
-    public $columns = ['Id', 'Parrent Name', 'default variant', 'Variant Name', 'Reference', 'Value', 'Dispalyed type', 'Created At', 'Updated At'];
+    public $columns = ['Id', 'parent Name', 'default variant', 'Variant Name', 'Reference', 'Value', 'Dispalyed type', 'Created At', 'Updated At'];
     public $selectedColumns = [];
     public $idbeingremoved = null;
     public $editindex;
@@ -143,7 +143,7 @@ class RelatedVariants extends Component
     }
     public function getVariantsQueryProperty()
     {
-        return ProductVariant::where('parrent_id', $this->item->id)
+        return ProductVariant::where('parent_id', $this->item->id)
             ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->with('product');
     }
     public function confirmItemRemoval($id)
@@ -200,7 +200,7 @@ class RelatedVariants extends Component
 
         if ($this->references != null && $this->references->count() > 0) {
 
-            if ($this->item->type == 'parrent') {
+            if ($this->item->type == 'parent') {
                 $this->showvariant = true;
                 $this->addvariant = true;
             } else {
@@ -279,12 +279,12 @@ class RelatedVariants extends Component
         foreach ($this->variantAndValues as  $array) {
             if (isset($array['variant']['value']) && isset($array['variant']['idrel'])) {
                 if ($array['variant']['def']) {
-                    ProductVariant::where('parrent_id', $this->item->id)
+                    ProductVariant::where('parent_id', $this->item->id)
                         ->where('default_variant', true)
                         ->update(['default_variant' => false]);
                 }
                 ProductVariant::create([
-                    'parrent_id' => $this->item->id,
+                    'parent_id' => $this->item->id,
                     'product_id' => $array['variant']['idrel'],
                     'variant_id' => $array['variant']['reference'],
                     'value' => $array['variant']['value'],
@@ -352,7 +352,7 @@ class RelatedVariants extends Component
             $new = ProductVariant::find($id);
             if (array_key_exists('def', $record)) {
                 if ($record['def']) {
-                    ProductVariant::where('parrent_id', $this->item->id)
+                    ProductVariant::where('parent_id', $this->item->id)
                         ->where('default_variant', true)
                         ->update(['default_variant' => false]);
                     $new->default_variant = $record['def'];

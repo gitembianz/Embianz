@@ -38,7 +38,7 @@ class StoreMain extends Component
     if (app()->has('global_cache_data') && app('global_cache_data') === 'true') {
 
       return app()->make('cached_products')->filter(function ($product) {
-        return $product->type != 'parrent';
+        return $product->type != 'parent';
       })->sortByDesc('popularity')->take(app('global_limit_slideritems'));
     } else {
       return Product::with([
@@ -54,7 +54,7 @@ class StoreMain extends Component
       ])
         ->select('id', 'name', 'seo_id', 'quantity', 'type', 'short_description', 'popularity')
         ->where('active', true)
-        ->where('type', '!=', 'parrent')
+        ->where('type', '!=', 'parent')
         ->where('start_date', '<=',  now()->format('Y-m-d'))
         ->where('end_date', '>=',  now()->format('Y-m-d'))
         ->orderBy('popularity', 'desc')
@@ -69,7 +69,7 @@ class StoreMain extends Component
 
       return app()->make('cached_products')
         ->filter(function ($product) {
-          return $product->type != 'parrent' && $product->is_new == true;
+          return $product->type != 'parent' && $product->is_new == true;
         })
         ->sortByDesc('popularity')
         ->take(app('global_limit_slideritems'));
@@ -87,7 +87,7 @@ class StoreMain extends Component
       ])
         ->select('id', 'name', 'seo_id', 'quantity', 'short_description', 'popularity')
         ->where('active', true)
-        ->where('type', '!=', 'parrent')
+        ->where('type', '!=', 'parent')
         ->where('start_date', '<=',  now()->format('Y-m-d'))
         ->where('end_date', '>=',  now()->format('Y-m-d'))
         ->where('is_new', true)
