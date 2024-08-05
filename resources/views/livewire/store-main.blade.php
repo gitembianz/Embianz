@@ -190,7 +190,7 @@
          </div>
          <div class="card-text">
           <h2 class="card-title"><a style="text-decoration: none; font-weight:500"
-            href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">{{ $product->wishlists->where('session_id', $session_id) }}{{ $product->name }}</a>
+            href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">{{ $product->name }}</a>
           </h2>
           <p class="card-price">
            @if ($discount)
