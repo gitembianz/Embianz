@@ -9,9 +9,10 @@
     @endif
    </h2>
    <div class="support__categories">
-    <div class="suport__item">
+    <div class="support__item">
      <div>
-      <img width="50px" height="50px" title="headset" loading="eager" src="/images/store/svg/headset.svg" alt="headset">
+      <img srcset="/images/store/svg/headset.svg" sizes="(max-width: 600px) 50px, 100px" width="50" height="50"
+       title="headset" loading="eager" alt="headset">
       <h3 class="support__title">
        @if (app()->has('label_support_livechat_title'))
         {!! app('label_support_livechat_title') !!}
@@ -24,10 +25,10 @@
       @endif
      </span>
     </div>
-    <div class="suport__item">
+    <div class="support__item">
      <div>
-      <img width="50px" height="50px" title="truck" loading="eager" src="/images/store/svg/truck.svg"
-       alt="truck">
+      <img srcset="/images/store/svg/truck.svg" sizes="(max-width: 600px) 50px, 100px" width="50" height="50"
+       title="truck" loading="eager" alt="truck">
       <h3 class="support__title">
        @if (app()->has('label_support_delivery_title'))
         {!! app('label_support_delivery_title') !!}
@@ -40,16 +41,16 @@
       @endif
      </span>
      <div class="support__brand">
-      <img width="50px" height="50px" title="dhl" loading="eager" class="support__brand--item"
-       src="/images/store/brands/dhl.webp" alt="dhl">
-      <img width="50px" height="50px" title="fan" loading="eager" class="support__brand--item"
-       src="/images/store/brands/Fan.webp" alt="fan">
+      <img srcset="/images/store/brands/dhl.webp" sizes="(max-width: 600px) 50px, 100px" width="50" height="50"
+       title="dhl" loading="eager" class="support__brand--item" alt="dhl">
+      <img srcset="/images/store/brands/Fan.webp" sizes="(max-width: 600px) 50px, 100px" width="50" height="50"
+       title="fan" loading="eager" class="support__brand--item" alt="fan">
      </div>
     </div>
-    <div class="suport__item">
+    <div class="support__item">
      <div>
-      <img width="50px" height="50px" title="shield" loading="eager" src="/images/store/svg/shield.svg"
-       alt="shield">
+      <img srcset="/images/store/svg/shield.svg" sizes="(max-width: 600px) 50px, 100px" width="50" height="50"
+       title="shield" loading="eager" alt="shield">
       <h3 class="support__title">
        @if (app()->has('label_support_secure_title'))
         {!! app('label_support_secure_title') !!}
@@ -62,15 +63,16 @@
       @endif
      </span>
      <div class="support__brand">
-      <img width="50px" height="50px" title="visa" loading="eager" class="support__brand--item"
-       src="/images/store/brands/visa.webp" alt="visa">
-      <img width="50px" height="50px" title="mastercard" loading="eager" class="support__brand--item"
-       src="/images/store/brands/mastercard.webp" alt="mastercard">
+      <img srcset="/images/store/brands/visa.webp" sizes="(max-width: 600px) 50px, 100px" width="50" height="50"
+       title="visa" loading="eager" class="support__brand--item" alt="visa">
+      <img srcset="/images/store/brands/mastercard.webp" sizes="(max-width: 600px) 50px, 100px" width="50"
+       height="50" title="mastercard" loading="eager" class="support__brand--item" alt="mastercard">
      </div>
     </div>
-    <div class="suport__item">
+    <div class="support__item">
      <div>
-      <img width="50px" height="50px" title="chat" loading="eager" src="/images/store/svg/chat.svg" alt="chat">
+      <img srcset="/images/store/svg/chat.svg" sizes="(max-width: 600px) 50px, 100px" width="50" height="50"
+       title="chat" loading="eager" alt="chat">
       <h3 class="support__title">
        @if (app()->has('label_support_faq_title'))
         {!! app('label_support_faq_title') !!}
@@ -81,7 +83,6 @@
       @if (app()->has('label_support_faq_description'))
        {!! app('label_support_faq_description') !!}
       @endif
-      </a>
      </span>
     </div>
    </div>
