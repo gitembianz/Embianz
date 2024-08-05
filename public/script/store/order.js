@@ -12,7 +12,7 @@ const firstNameValidation = [
     message: getLabel('name_min'),
   },
   {
-    validation: (value) => value.length <= 255,
+    validation: (value) => value.length <= 100,
     message: getLabel('name_max'),
   },
   {
@@ -38,7 +38,7 @@ const lastNameValidation = [
     message: getLabel('lastname_space'),
   },
   {
-    validation: (value) => value.length <= 255,
+    validation: (value) => value.length <= 100,
     message: getLabel('lastname_max'),
   },
   {
@@ -65,7 +65,7 @@ const emailValidation = [
     message: getLabel('email_min'),
   },
   {
-    validation: (value) => value.length <= 255,
+    validation: (value) => value.length <= 100,
     message: getLabel('email_max'),
   },
 ];
@@ -121,7 +121,7 @@ const countyValidations = [
     message: getLabel('county_space'),
   },
   {
-    validation: (value) => value.length <= 100,
+    validation: (value) => value.length <= 40,
     message: getLabel('county_max'),
   },
 ];
@@ -139,7 +139,7 @@ const cityValidations = [
     message: getLabel('city_space'),
   },
   {
-    validation: (value) => value.length <= 100,
+    validation: (value) => value.length <= 40,
     message: getLabel('city_max'),
   },
 ];

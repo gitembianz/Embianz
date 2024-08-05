@@ -229,12 +229,12 @@ class StoreOrder extends Component
         'individual_billing_first' => [
           'required',
           'min:2',
-          'max:20',
+          'max:100',
         ],
         'individual_billing_last' => [
           'required',
           'min:2',
-          'max:20',
+          'max:100',
 
         ],
         'individual_billing_phone' => 'required|regex:/^\+?\d{1,4}?\s?\(?\d{1,4}\)?[-.\s]?\d{1,10}[-.\s]?\d{1,10}$/',
@@ -242,19 +242,19 @@ class StoreOrder extends Component
         'individual_billing_address1' => [
           'required',
           'min:1',
-          'max:200',
+          'max:100',
         ],
         'individual_billing_county' =>
         [
           'required',
           'min:1',
-          'max:100',
+          'max:40',
         ],
         'individual_billing_city' =>
         [
           'required',
           'min:1',
-          'max:100',
+          'max:40',
         ],
         'individual_billing_zipcode' =>
         [
@@ -269,12 +269,12 @@ class StoreOrder extends Component
           'individual_shipping_first' => [
             'required',
             'min:2',
-            'max:20',
+            'max:100',
           ],
           'individual_shipping_last' => [
             'required',
             'min:2',
-            'max:20',
+            'max:100',
           ],
           'individual_billing_phone' => 'required|regex:/^\+?\d{1,4}?\s?\(?\d{1,4}\)?[-.\s]?\d{1,10}[-.\s]?\d{1,10}$/',
           'individual_shipping_email' => 'required|email',
@@ -282,19 +282,19 @@ class StoreOrder extends Component
           [
             'required',
             'min:1',
-            'max:200',
+            'max:100',
           ],
           'individual_shipping_county' =>
           [
             'required',
             'min:1',
-            'max:100',
+            'max:40',
           ],
           'individual_shipping_city' =>
           [
             'required',
             'min:1',
-            'max:100',
+            'max:40',
           ],
           'individual_shipping_zipcode' =>
           [
@@ -313,12 +313,12 @@ class StoreOrder extends Component
         'juridic_billing_first' => [
           'required',
           'min:2',
-          'max:20',
+          'max:100',
         ],
         'juridic_billing_last' => [
           'required',
           'min:2',
-          'max:20',
+          'max:100',
         ],
         'juridic_billing_phone' => 'required|regex:/^\+?\d{1,4}?\s?\(?\d{1,4}\)?[-.\s]?\d{1,10}[-.\s]?\d{1,10}$/',
         'juridic_billing_email' => 'required|email',
@@ -340,19 +340,19 @@ class StoreOrder extends Component
         'juridic_billing_address1' => [
           'required',
           'min:1',
-          'max:200',
+          'max:100',
         ],
         'juridic_billing_county' =>
         [
           'required',
           'min:1',
-          'max:100',
+          'max:40',
         ],
         'juridic_billing_city' =>
         [
           'required',
           'min:1',
-          'max:100',
+          'max:40',
         ],
         'juridic_billing_zipcode' =>
         [
@@ -366,29 +366,29 @@ class StoreOrder extends Component
           'juridic_shipping_first' => [
             'required',
             'min:2',
-            'max:20',
+            'max:100',
           ],
           'juridic_shipping_last' => [
             'required',
             'min:2',
-            'max:20',
+            'max:100',
           ],
           'juridic_shipping_phone' => 'required|regex:/^\+?\d{1,4}?\s?\(?\d{1,4}\)?[-.\s]?\d{1,10}[-.\s]?\d{1,10}$/',
           'juridic_shipping_email' => 'required|email',
           'juridic_shipping_address1' => [
             'required',
             'min:1',
-            'max:200',
+            'max:100',
           ],
           'juridic_shipping_county' => [
             'required',
             'min:1',
-            'max:100',
+            'max:40',
           ],
           'juridic_shipping_city' => [
             'required',
             'min:1',
-            'max:100',
+            'max:40',
           ],
           'juridic_shipping_zipcode' => [
             'required',
