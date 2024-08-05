@@ -5,11 +5,13 @@ namespace App\Http\Livewire;
 use App\Models\Product;
 use Livewire\Component;
 use App\Models\Category;
+use App\Models\Wishlist;
 
 class StoreMain extends Component
 {
   public $quantity;
   public $session_id;
+  public $wishlistItems;
 
   public function getSliderItemsProperty()
   {
@@ -22,6 +24,11 @@ class StoreMain extends Component
           $query->select('path', 'name', 'sequence', 'width', 'height')->where('type', 'original');
         }])->orderby('slider_sequence')->get();
     }
+  }
+
+  public function isInWishlist($productId)
+  {
+    return in_array($productId, $this->wishlistItems);
   }
 
   private function getSessionId()
@@ -48,9 +55,6 @@ class StoreMain extends Component
         'product_prices' => function ($query) {
           $query->select('product_id', 'value', 'discount', 'value_no_discount');
         },
-        'wishlists' => function ($query) {
-          $query->where('session_id', $this->session_id);
-        }
       ])
         ->select('id', 'name', 'seo_id', 'quantity', 'type', 'short_description', 'popularity')
         ->where('active', true)
@@ -81,9 +85,7 @@ class StoreMain extends Component
         'product_prices' => function ($query) {
           $query->select('product_id', 'value', 'discount', 'value_no_discount');
         },
-        'wishlists' => function ($query) {
-          $query->where('session_id', $this->session_id);
-        }
+
       ])
         ->select('id', 'name', 'seo_id', 'quantity', 'short_description', 'popularity')
         ->where('active', true)
@@ -113,5 +115,6 @@ class StoreMain extends Component
   {
     $this->session_id = $this->getSessionId();
     $this->quantity = app('global_low_stock');
+    $this->wishlistItems = Wishlist::where('session_id', $this->session_id)->pluck('product_id')->toArray();
   }
 }

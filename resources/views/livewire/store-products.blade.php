@@ -211,11 +211,11 @@
       @livewire(
           'product-wishlist-button',
           [
-              'productId' => $element->id,
+              'productId' => $product->id,
               'class' => 'card__action',
-              'is_in_wishlist' => $element->wishlists->isNotEmpty(),
+              'is_in_wishlist' => $this->isInWishlist($product->id),
           ],
-          key($element->id)
+          key($product->id)
       )
 
       <div class="card-info">
