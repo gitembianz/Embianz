@@ -4,10 +4,11 @@ namespace App\Http\Livewire;
 
 use App\Models\Specs;
 use App\Models\Product;
-use App\Models\Product_Spec;
-
 use Livewire\Component;
+
 use App\Models\Category;
+use App\Models\Wishlist;
+use App\Models\Product_Spec;
 use Livewire\WithPagination;
 
 class StoreProducts extends Component
@@ -28,6 +29,8 @@ class StoreProducts extends Component
   public $selectedKeys = [];
   public $selectedSpecNames = [];
   public $productCount;
+  public $wishlistItems;
+
 
   public function render()
   {
@@ -50,6 +53,7 @@ class StoreProducts extends Component
   {
     $this->session_id = $this->getSessionId();
     $this->quantity = app('global_low_stock');
+    $this->wishlistItems = Wishlist::where('session_id', $this->session_id)->pluck('product_id')->toArray();
     $this->specification = Specs::get();
     if ($category) {
       $decodedCategory = json_decode(htmlspecialchars_decode($category), true);
@@ -181,6 +185,11 @@ class StoreProducts extends Component
     session()->forget('filtered_values');
   }
 
+  public function isInWishlist($productId)
+  {
+    return in_array($productId, $this->wishlistItems);
+  }
+
   // products function
   public function getProductsProperty()
   {
@@ -197,9 +206,6 @@ class StoreProducts extends Component
         },
         'media' => function ($query) {
           $query->select('path', 'name')->where('type', 'main');
-        },
-        'wishlists' => function ($query) {
-          $query->select('id', 'product_id')->where('session_id', $this->session_id);
         },
       ]);
 

@@ -136,7 +136,7 @@
             [
                 'productId' => $product->id,
                 'class' => 'card__action',
-                'is_in_wishlist' => $product->wishlists->where('session_id', $session_id)->isNotEmpty(),
+                'is_in_wishlist' => $this->isInWishlist($product->id),
             ],
             key($product->id)
         )
@@ -284,7 +284,7 @@
             [
                 'productId' => $product->id,
                 'class' => 'card__action',
-                'is_in_wishlist' => $product->wishlists->where('session_id', $session_id)->isNotEmpty(),
+                'is_in_wishlist' => $this->isInWishlist($product->id),
             ],
             key($product->id)
         ) <?php
