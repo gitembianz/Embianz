@@ -1,8 +1,21 @@
 <div class="product__container">
+ @php
+  if (app()->has('global_numberformat_element')) {
+      if (app('global_numberformat_element') === '.') {
+          $mill = '.';
+          $decimal = ',';
+      } else {
+          $mill = ',';
+          $decimal = '.';
+      }
+  } else {
+      $mill = '.';
+      $decimal = ',';
+  }
+ @endphp
  <?php if ($product->product_prices->count() != 0) {
-     $price = number_format($product->product_prices->first()->value, 2, ',', '.');
+     $price = number_format($product->product_prices->first()->value, 2, $decimal, $mill);
      $discount = $product->product_prices->first()->discount != 0 ? true : false;
-     $currency = $product->product_prices->first()->pricelist->currency->symbol;
  } else {
      $price = null;
      $discount = false;
@@ -15,41 +28,147 @@
    @if ($discount)
     <span class="product__discount">-{{ $product->product_prices->first()->discount }}%</span>
    @endif
-
+   @if (app()->has('global_display_rating') && app('global_display_rating') === 'true')
+    @php
+     $rating = 100 / (app('max_popularity') / $product->popularity);
+     $ratingvalue = $rating / 20;
+    @endphp
+    <div style="display: flex; align-items:center">
+     <div class="rating" style="--rating: {{ $rating }}%;"></div>
+     @if (app()->has('global_display_rating_value') && app('global_display_rating_value') === 'true')
+      ({{ number_format($ratingvalue, 2) }})
+     @endif
+    </div>
+   @endif
   </div>
+
   @livewire('product-wishlist-button', [
       'productId' => $product->id,
       'class' => 'product__action',
       'is_in_wishlist' => $this->is_in_wishlist,
   ])
  </div>
+ @if ($product->type == 'variant')
+  @foreach ($variants as $variantId => $variantGroup)
+   @if (count($variantGroup) > 1)
+    <span class="product__price--title"
+     style="margin-right: auto; font-size: 14px; font-weight:500">{{ $product->beeingvariants->where('variant_id', $variantId)->first()->reference->name }}</span>
+    <div class="product__price" style="height: auto;">
+     <div class="variant__slider mini-slider" style="padding: 0 45px;">
+      <div class="variant__wrapper mini-wrapper">
+       <a style="border: 3px solid #333" class="variant__btn active"
+        href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">
+        @if ($product->beeingvariants->where('variant_id', $variantId)->first()->displayed == 'image')
+         @if ($product->media->first() != null)
+          <img src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}"
+           alt="{{ $product->media->first()->name }}">
+         @else
+          <img src="/images/store/default/default70.webp" alt="something wrong">
+         @endif
+        @elseif ($product->beeingvariants->where('variant_id', $variantId)->first()->displayed == 'text')
+         {{ $product->beeingvariants->where('variant_id', $variantId)->first()->value }}
+        @else
+         @if ($product->media->first() != null)
+          <img src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}"
+           alt="{{ $product->media->first()->name }}">
+         @else
+          <img src="/images/store/default/default70.webp" alt="something wrong">
+         @endif
+         {{ $product->beeingvariants->where('variant_id', $variantId)->first()->value }}
+        @endif
+       </a>
+       @foreach ($variantGroup as $variant)
+        @php
+         if ($variant->id == $product->id) {
+             continue;
+         }
+        @endphp
+        <a class="variant__btn"
+         href="{{ route('product', ['product' => $variant->seo_id !== null && $variant->seo_id !== '' ? $variant->seo_id : $variant->id]) }}">
+         @if ($variant->beeingvariants->where('variant_id', $variantId)->first()->displayed == 'image')
+          @if ($variant->media->first() != null)
+           <img src="/{{ $variant->media->first()->path }}{{ $variant->media->first()->name }}"
+            alt="{{ $variant->media->first()->name }}">
+          @else
+           <img src="/images/store/default/default70.webp" alt="something wrong">
+          @endif
+         @elseif ($variant->beeingvariants->where('variant_id', $variantId)->first()->displayed == 'text')
+          {{ $variant->beeingvariants->where('variant_id', $variantId)->first()->value }}
+         @else
+          @if ($variant->media->first() != null)
+           <img src="/{{ $variant->media->first()->path }}{{ $variant->media->first()->name }}"
+            alt="{{ $variant->media->first()->name }}">
+          @else
+           <img src="/images/store/default/default70.webp" alt="something wrong">
+           {{ $variant->beeingvariants->where('variant_id', $variantId)->first()->value }}
+          @endif
+         @endif
+        </a>
+       @endforeach
+      </div>
+      <button class="variant__navigation variant__left mini-left">
+       <svg>
+        <polyline points="15 18 9 12 15 6"></polyline>
+       </svg>
+      </button>
+      <button class="variant__navigation variant__right mini-right">
+       <svg>
+        <polyline points="9 18 15 12 9 6"></polyline>
+       </svg>
+      </button>
+     </div>
+    </div>
+   @endif
+  @endforeach
+ @endif
  <div class="product__price">
-  <span class="product__price--title">@if (app()->has('label_pdp_price_tag')){!! app('label_pdp_price_tag') !!} @endif</span>
+  <span class="product__price--title">
+   @if (app()->has('label_pdp_price_tag'))
+    {!! app('label_pdp_price_tag') !!}
+   @endif
+  </span>
   @if ($discount && $price)
    @if ($price)
     <div class="product__price--discount">
      <span
-      class="product__price--oldprice">{{ $product->product_prices->first()->value_no_discount }}{{ $currency }}</span>
+      class="product__price--oldprice">{{ number_format($product->product_prices->first()->value_no_discount, 2, $decimal, $mill) }}
+      @if (app()->has('global_currency_primary_symbol'))
+       {!! app('global_currency_primary_symbol') !!}
+      @endif
+     </span>
      <span class="product__price--newprice">{{ $price }}
-      {{ $currency }}</span>
+      @if (app()->has('global_currency_primary_symbol'))
+       {!! app('global_currency_primary_symbol') !!}
+      @endif
+     </span>
     </div>
    @endif
   @else
    @if ($price)
     {{ $price }}
-    {{ $currency }}
+    @if (app()->has('global_currency_primary_symbol'))
+     {!! app('global_currency_primary_symbol') !!}
+    @endif
    @else
-    @if (app()->has('label_product_status_indisponible')){!! app('label_product_status_indisponible') !!} @endif
+    @if (app()->has('label_product_status_indisponible'))
+     {!! app('label_product_status_indisponible') !!}
+    @endif
    @endif
   @endif
  </div>
  @if ($price)
   <span class="product__tva">
-   @if (app()->has('label_pdp_vat')){!! app('label_pdp_vat') !!} @endif
-   {{ number_format($product->product_prices->first()->vat, 2, ',', '.') }}%
+   @if (app()->has('label_pdp_vat'))
+    {!! app('label_pdp_vat') !!}
+   @endif
+   {{ number_format($product->product_prices->first()->vat, 2, $decimal, $mill) }}%
   </span>
   <div class="quantity">
-   <span>@if (app()->has('label_product_quantity_tag')){!! app('label_product_quantity_tag') !!} @endif</span>
+   <span>
+    @if (app()->has('label_product_quantity_tag'))
+     {!! app('label_product_quantity_tag') !!}
+    @endif
+   </span>
    <div class="quantity__buttons">
     <button class="quantity__arrow" wire:click="decrementCounter" aria-label="Decrement quantity">
      <svg>
@@ -72,8 +191,13 @@
   </div>
  @endif
  @if ($maxlimit)
-  <span>@if (app()->has('label_product_quantity_error')){!! app('label_product_quantity_error') !!} @endif {{ $limit }}</span>
+  <span>
+   @if (app()->has('label_product_quantity_error'))
+    {!! app('label_product_quantity_error') !!}
+   @endif {{ $limit }}
+  </span>
  @endif
+
  @if ($price && $product->quantity != 0)
   <button class="card__button" style="width: 100%;height: 40px;" onclick="flyToCart(this)"
    aria-label="Add to cart button" wire:click="addToCart({{ $product->id }})" wire:ignore="$refresh">
@@ -93,50 +217,28 @@
      <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path>
     </svg>
    </div>
-   <span class="card__button--text">@if (app()->has('label_add_to_cart_button')){!! app('label_add_to_cart_button') !!} @endif</span>
+   <span class="card__button--text">
+    @if (app()->has('label_add_to_cart_button'))
+     {!! app('label_add_to_cart_button') !!}
+    @endif
+   </span>
   </button>
  @else
-  <button class="card-button-disabled" aria-label="Disabled Add to cart button">@if (app()->has('label_add_to_cart_button_indisponibil')){!! app('label_add_to_cart_button_indisponibil') !!} @endif</button>
+  <button class="card-button-disabled" aria-label="Disabled Add to cart button">
+   @if (app()->has('label_add_to_cart_button_indisponibil'))
+    {!! app('label_add_to_cart_button_indisponibil') !!}
+   @endif
+  </button>
  @endif
 
  <div style="display: none" class="dlv">
   <span class="dlv_name">{{ $product->name }}</span>
   <span class="dlv_price">{{ $price }}</span>
-  <span class="dlv_currency">{{ $product->product_prices->first()->pricelist->currency->name }}</span>
+  <span class="dlv_currency">
+   @if (app()->has('global_currency_primary_name'))
+    {!! app('global_currency_primary_name') !!}
+   @endif
+  </span>
  </div>
- <div class="tab">
-  <div class="tab__top">
-   <button class="tab__button @if ($activeTab === 0) active @endif"
-    wire:click="switchTab(0)">@if (app()->has('label_pdp_description_tag')){!! app('label_pdp_description_tag') !!} @endif</button>
-   <button class="tab__button @if ($activeTab === 1) active @endif"
-    wire:click="switchTab(1)">@if (app()->has('label_pdp_details_tag')){!! app('label_pdp_details_tag') !!} @endif</button>
-  </div>
-  <div class="tab__content @if ($activeTab === 0) active @endif">
-   <p class="tab__info">{!! $product->long_description !!}</p>
-  </div>
-  <div class="tab__content @if ($activeTab === 1) active @endif">
-   <table class="tab__table">
-    <thead>
-     <tr>
-      <th>@if (app()->has('label_pdp_specs_tag')){!! app('label_pdp_specs_tag') !!} @endif</th>
-      <th>@if (app()->has('label_pdp_description_tag')){!! app('label_pdp_description_tag') !!} @endif</th>
-     </tr>
-    </thead>
-    <tbody>
-     @if ($product->product_specs->first() !== null)
-      @foreach ($product->product_specs->sortBy('sequence') as $spec)
-       <tr>
-        <td>{{ $spec->spec->name }}</td>
-        <td>{{ $spec->value }}</td>
-       </tr>
-      @endforeach
-     @else
-      <tr>
-       <td colspan="2">@if (app()->has('label_pdp_specs_error')){!! app('label_pdp_specs_error') !!} @endif</td>
-      </tr>
-     @endif
-    </tbody>
-   </table>
-  </div>
- </div>
+
 </div>

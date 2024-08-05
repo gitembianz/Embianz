@@ -21,14 +21,25 @@ class Orderstable extends Component
     public $tableName;
     public $columns;
     public $selectedColumns = [];
-    public $col = false;
-    public $all = false;
-    public $itemidbeingremoved = null;
+    public $idbeingremoved = null;
+    public $single = false;
+    public $multiple = false;
+    public $row = null;
+
+    public function expandRow($index)
+    {
+        if ($this->row  === null) {
+            $this->row = $index;
+        } elseif ($this->row != $index) {
+            $this->row = $index;
+        } else {
+            $this->row = null;
+        }
+    }
 
     public function render()
     {
-        $orders = $this->orders;
-        return view('livewire.orderstable', compact('orders'));
+        return view('livewire.orderstable', ['orders' => $this->orders]);
     }
     public function mount($tableName)
     {
@@ -38,7 +49,7 @@ class Orderstable extends Component
     }
     public function getOrdersProperty()
     {
-        return $this->ordersQuery->limit($this->loadAmount)->get();
+        return $this->ordersQuery->paginate($this->loadAmount);
     }
     public function getOrdersQueryProperty()
     {
@@ -93,7 +104,7 @@ class Orderstable extends Component
     }
     public function deleteSingleRecord()
     {
-        $id = $this->itemidbeingremoved;
+        $id = $this->idbeingremoved;
         $item = Order::findOrFail($id);
         $order_items = Order_Item::where('order_id', $id)->get();
 
@@ -105,6 +116,7 @@ class Orderstable extends Component
         }
         $item->delete();
         $this->checked = array_diff($this->checked, [$id]);
+        $this->single = false;
         session()->flash('notification', [
             'message' => 'Record deleted successfully!',
             'type' => 'success',
@@ -113,12 +125,17 @@ class Orderstable extends Component
     }
     public function confirmItemRemoval($id)
     {
-        $this->itemidbeingremoved = $id;
-        $this->dispatchBrowserEvent('show-delete-modal');
+        $this->idbeingremoved = $id;
+        $this->single = true;
     }
     public function confirmItemsRemoval()
     {
-        $this->dispatchBrowserEvent('show-delete-modal-multiple');
+        $this->multiple = true;
+    }
+    public function cancel_delete()
+    {
+        $this->multiple = false;
+        $this->single = false;
     }
     public function deleteRecords()
     {
@@ -138,6 +155,7 @@ class Orderstable extends Component
         }
         $this->checked = [];
         $this->selectPage = false;
+        $this->multiple = false;
         session()->flash('notification', [
             'message' => 'Records deleted successfully!',
             'type' => 'success',

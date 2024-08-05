@@ -20,20 +20,34 @@ class Vouchertable extends Component
   public $selectAll = false;
   public $columns;
   public $selectedColumns = [];
-  public $col = false;
-  public $all = false;
-  public $editindex;
+  public $editindex = null;
   public $voucher = [];
   public $statuses;
-
-  protected $listeners = ['loadMore' => 'loadMore'];
-
-  public $itemidbeingremoved = null;
+  public $row = null;
+  public $single = false;
+  public $multiple = false;
+  public $idbeingremoved = null;
 
   public function render()
   {
-    $vouchers = $this->vouchers;
-    return view('livewire.vouchertable', compact('vouchers'));
+    return view('livewire.vouchertable', [
+      'vouchers' => $this->vouchers
+    ]);
+  }
+  public function expandRow($index)
+  {
+    if ($this->editindex === $index) {
+      return;
+    } else {
+
+      if ($this->row  === null) {
+        $this->row = $index;
+      } elseif ($this->row != $index) {
+        $this->row = $index;
+      } else {
+        $this->row = null;
+      }
+    }
   }
   public function mount($tableName)
   {
@@ -42,7 +56,7 @@ class Vouchertable extends Component
   }
   public function getVouchersProperty()
   {
-    return $this->vouchersQuery->limit($this->loadAmount)->get();
+    return $this->vouchersQuery->paginate($this->loadAmount);
   }
   public function getVouchersQueryProperty()
   {
@@ -50,9 +64,6 @@ class Vouchertable extends Component
   }
   public function showColumn($column)
   {
-    if ($column === 'name') {
-      return true;
-    }
     return in_array($column, $this->selectedColumns);
   }
   public function updatedSelectPage($value)
@@ -71,6 +82,7 @@ class Vouchertable extends Component
   {
     $this->statuses = Status::where('type', 'voucher')->get();
     $this->editindex = $index;
+    $this->row = $index;
     $record = Voucher::find($id);
     $this->voucher = [
       $index . '.name' => $record->name,
@@ -83,7 +95,6 @@ class Vouchertable extends Component
       $index . '.end_date' => $record->end_date,
     ];
   }
-
   public function saveitem($index, $id)
   {
     $record = $this->voucher[$index] ?? null;
@@ -131,9 +142,6 @@ class Vouchertable extends Component
     $this->editindex = null;
     $this->voucher = [];
   }
-
-
-
   public function canceledit()
   {
     $this->editindex = null;
@@ -169,10 +177,11 @@ class Vouchertable extends Component
   }
   public function deleteSingleRecord()
   {
-    $id = $this->itemidbeingremoved;
+    $id = $this->idbeingremoved;
     $item = Voucher::findOrFail($id);
     $item->delete();
     $this->checked = array_diff($this->checked, [$id]);
+    $this->single = false;
     session()->flash('notification', [
       'message' => 'Record deleted successfully!',
       'type' => 'success',
@@ -181,12 +190,17 @@ class Vouchertable extends Component
   }
   public function confirmItemRemoval($id)
   {
-    $this->itemidbeingremoved = $id;
-    $this->dispatchBrowserEvent('show-delete-modal');
+    $this->idbeingremoved = $id;
+    $this->single = true;
   }
   public function confirmItemsRemoval()
   {
-    $this->dispatchBrowserEvent('show-delete-modal-multiple');
+    $this->multiple = true;
+  }
+  public function cancel_delete()
+  {
+    $this->multiple = false;
+    $this->single = false;
   }
   public function deleteRecords()
   {
@@ -198,6 +212,7 @@ class Vouchertable extends Component
     }
     $this->checked = [];
     $this->selectPage = false;
+    $this->multiple = false;
     session()->flash('notification', [
       'message' => 'Records deleted successfully!',
       'type' => 'success',

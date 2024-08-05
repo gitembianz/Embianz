@@ -1,13 +1,30 @@
-<div wire:scroll="loadMore">
-
+<div>
  <!------------------------Breadcrumbs----------------------->
+ @php
+  if (app()->has('global_numberformat_element')) {
+      if (app('global_numberformat_element') === '.') {
+          $mill = '.';
+          $decimal = ',';
+      } else {
+          $mill = ',';
+          $decimal = '.';
+      }
+  } else {
+      $mill = '.';
+      $decimal = ',';
+  }
+ @endphp
  <div class="breadcrumbs container">
   <a class="breadcrumbs__link" href="{{ url('/') }}">
-   @if (app()->has('label_breadcrumbs_home_page')){!! app('label_breadcrumbs_home_page') !!} @endif
+   @if (app()->has('label_breadcrumbs_home_page'))
+    {!! app('label_breadcrumbs_home_page') !!}
+   @endif
   </a>
   @if (app()->has('global_show_on_breadcrumbs') && app('global_show_on_breadcrumbs') == 'true')
    <a class="breadcrumbs__link" href="{{ url('/storeproducts') }}">
-    @if (app()->has('label_breadcrumbs_allproducts')){!! app('label_breadcrumbs_allproducts') !!} @endif
+    @if (app()->has('label_breadcrumbs_allproducts'))
+     {!! app('label_breadcrumbs_allproducts') !!}
+    @endif
    </a>
   @endif
   <!-------------------If Category is appear------------------>
@@ -16,7 +33,7 @@
     @if ($breadcrumb['name'] === $category->name)
      <a class="breadcrumbs__link"
       href="{{ route('products', ['categorySlug' => $category->seo_id !== null && $category->seo_id !== '' ? $category->seo_id : $category->id]) }}">
-      {{ $category->name }}
+      {!! $category->name !!}
      </a>
     @else
      <a class="breadcrumbs__link" href="{{ route('products', ['categorySlug' => $breadcrumb['slug']]) }}">
@@ -29,7 +46,13 @@
  <!----------------------Categorie + detalii--------------------->
  @if ($category)
   <section class="section__header container">
-   <h1 class="section__title">{{ $category->name }}</h1>
+   <h1 class="section__title">
+    @if (!empty($category->short_description))
+     {{ $category->short_description }}
+    @else
+     {!! $category->name !!}
+    @endif
+   </h1>
    <p class="section__text">
     {!! $category->long_description !!}
    </p>
@@ -45,7 +68,7 @@
    </svg>
   </button>
   <input class="controls__search" maxlength="100" type="text" name="search" id="search" wire:model="search"
-   autocomplete="off" placeholder="@if (app()->has('label_placeholder_search')){!! app('label_placeholder_search') !!} @endif">
+   autocomplete="off" placeholder="@if (app()->has('label_placeholder_search')) {!! app('label_placeholder_search') !!} @endif">
   <button class="controls__button" id="sortOpen" aria-label="Open sort button">
    <svg>
     <line x1="21" y1="10" x2="7" y2="10"></line>
@@ -68,7 +91,9 @@
     </button>
    @endforeach
    <button class="tag__button" wire:click="clearall()" class="filter__applied--clear">
-    @if (app()->has('label_remove_all_filters')){!! app('label_remove_all_filters') !!} @endif
+    @if (app()->has('label_remove_all_filters'))
+     {!! app('label_remove_all_filters') !!}
+    @endif
     <svg>
      <line x1="18" y1="6" x2="6" y2="18"></line>
      <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -80,102 +105,193 @@
  <h2></h2>
  <section class="catalogue container">
   @if ($products->isEmpty())
-   <p>@if(app()->has('label_message_no_elements')){!! app('label_message_no_elements') !!} @endif</p>
+   <p>
+    @if (app()->has('label_message_no_elements'))
+     {!! app('label_message_no_elements') !!}
+    @endif
+   </p>
   @else
    @foreach ($products as $index => $product)
+    @php
+     if ($product->type == 'parent') {
+         if ($product->variants->count() == 0) {
+             continue;
+         } else {
+             $filteredVariants = $product->variants->filter(function ($variant) use ($selectedSpecValues) {
+                 $matchesFilter = true;
+                 foreach ($selectedSpecValues as $values) {
+                     foreach ($values as $value => $isSelected) {
+                         if (
+                             $isSelected &&
+                             !$variant->product->product_specs->contains('value', str_replace('_', '.', $value))
+                         ) {
+                             $matchesFilter = false;
+                             break;
+                         }
+                     }
+                     if (!$matchesFilter) {
+                         break;
+                     }
+                 }
+                 return $matchesFilter;
+             });
+
+             if ($filteredVariants->isEmpty()) {
+                 continue;
+             }
+
+             if ($filteredVariants->where('default_variant', true)->first()) {
+                 $element = $filteredVariants->where('default_variant', true)->first()->product;
+             } else {
+                 $element = $filteredVariants->first()->product;
+             }
+         }
+     } else {
+         $element = $product;
+     }
+    @endphp
     <div class="product">
      <div @if ($loop->last) id="last_record" @endif class="card">
       <a
-       href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">
-       @if ($product->media->first() != null)
-        <img loading="eager" class="card-image"
-         src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}"
-         alt="{{ $product->media->first()->name }} {{ $product->name }}">
+       href="{{ route('product', ['product' => $element->seo_id !== null && $element->seo_id !== '' ? $element->seo_id : $element->id]) }}">
+       @if ($element->media->first() != null)
+        <img title="{{ $product->name }}, {{ $product->short_description }}" loading="eager" class="card-image"
+         src="/{{ $element->media->first()->path }}{{ $element->media->first()->name }}"
+         alt="{{ $element->media->first()->name }} {{ $element->name }}">
        @else
-        <img loading="eager" class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
+        <img title="Default image" loading="eager" class="card-image" src="/images/store/default/default300.webp"
+         alt="something wrong">
        @endif
       </a>
-      <?php if ($product->product_prices->count() != 0) {
-          $price = number_format($product->product_prices->first()->value, 2, ',', '.');
-          $discount = $product->product_prices->first()->discount != 0 ? true : false;
-      } else {
-          $price = null;
-          $discount = false;
-      }
-      ?>
+
+
+      @php
+       if ($element->product_prices->count() != 0) {
+           $price = number_format($element->product_prices->first()->value, 2, $decimal, $mill);
+           $discount = $element->product_prices->first()->discount != 0 ? true : false;
+       } else {
+           $price = null;
+           $discount = false;
+       }
+      @endphp
       @if ($price)
        {{-- Out- negru // save - rosu --}}
-       @if ($product->quantity < $quantity && $product->quantity > 0)
+       @if ($element->quantity < $quantity && $element->quantity > 0)
         <p class="card-status out">
-           @if (app()->has('label_product_status_stock')){!! app('label_product_status_stock') !!} @endif
-          </p>
+         @if (app()->has('label_product_status_stock'))
+          {!! app('label_product_status_stock') !!}
+         @endif
+        </p>
         @if ($discount)
          <p class="card-status save-secondary">
-          -{{ $product->product_prices->first()->discount }}%
+          -{{ $element->product_prices->first()->discount }}%
          </p>
         @endif
-       @elseif($product->quantity == 0)
+       @elseif($element->quantity == 0)
         <p class="card-status save">
-           @if (app()->has('label_product_status_indisponible')){!! app('label_product_status_indisponible') !!} @endif
-          </p>
+         @if (app()->has('label_product_status_indisponible'))
+          {!! app('label_product_status_indisponible') !!}
+         @endif
+        </p>
        @else
         @if ($discount)
          <p class="card-status save">
-          -{{ $product->product_prices->first()->discount }}%
+          -{{ $element->product_prices->first()->discount }}%
          </p>
         @endif
        @endif
        {{-- tagul de discount --}}
       @else
        <p class="card-status save">
-           @if (app()->has('label_product_status_coming_soon')){!! app('label_product_status_coming_soon') !!} @endif
-          </p>
+        @if (app()->has('label_product_status_coming_soon'))
+         {!! app('label_product_status_coming_soon') !!}
+        @endif
+       </p>
       @endif
       @livewire(
           'product-wishlist-button',
           [
               'productId' => $product->id,
               'class' => 'card__action',
-              'is_in_wishlist' => $product->wishlists->isNotEmpty(),
+              'is_in_wishlist' => $this->isInWishlist($product->id),
           ],
           key($product->id)
       )
 
       <div class="card-info">
        <div class="card-text">
-        <span>{{ $product->short_description }}</span>
+        <span><a style="text-decoration: none; font-weight:500"
+          href="{{ route('product', ['product' => $element->seo_id !== null && $element->seo_id !== '' ? $element->seo_id : $element->id]) }}">{{ $product->short_description }}</a></span>
        </div>
        <div class="card-text">
-        <h3 class="card-title">{{ $product->name }}</h3>
+        <h3 class="card-title"><a style="text-decoration: none; font-weight:500"
+          href="{{ route('product', ['product' => $element->seo_id !== null && $element->seo_id !== '' ? $element->seo_id : $element->id]) }}">{{ $product->name }}</a>
+        </h3>
         <p class="card-price">
+         @if (
+             $product->type == 'parent' &&
+                 app()->has('global_variant_price_from') &&
+                 app()->has('label_product_price_from') &&
+                 app('global_variant_price_from') === 'true')
+          {!! app('label_product_price_from') !!}
+         @endif
          @if ($discount)
           <span class="card-price discount">
-           @if ($product->product_prices->first())
+           @if ($element->product_prices->first())
             {{ $price }}
-            {{ $product->product_prices->first()->pricelist->currency->symbol }}
+            @if (app()->has('global_currency_primary_symbol'))
+             {!! app('global_currency_primary_symbol') !!}
+            @endif
            @endif
           </span>
           <span class="card-price oldprice">
-           {{ $product->product_prices->first()->value_no_discount }}
-           {{ $product->product_prices->first()->pricelist->currency->symbol }}
+           {{ number_format($element->product_prices->first()->value_no_discount, 2, $decimal, $mill) }}
+           @if (app()->has('global_currency_primary_symbol'))
+            {!! app('global_currency_primary_symbol') !!}
+           @endif
           </span>
          @else
           <span>
-           @if ($product->product_prices->first())
+           @if ($element->product_prices->first())
             {{ $price }}
-            {{ $product->product_prices->first()->pricelist->currency->symbol }}
+            @if (app()->has('global_currency_primary_symbol'))
+             {!! app('global_currency_primary_symbol') !!}
+            @endif
            @endif
           </span>
          @endif
         <div style="display: none">
-         <span class="dlv_name">{{ $product->name }}</span>
+         <span class="dlv_name">{{ $element->name }}</span>
          <span class="dlv_price">{{ $price }}</span>
-         <span
-          class="dlv_currency">{{ optional(optional(optional($product->product_prices->first())->pricelist)->currency)->name }}</span>
+         <span class="dlv_currency">
+          @if (app()->has('global_currency_primary_name'))
+           {!! app('global_currency_primary_name') !!}
+          @endif
+         </span>
         </div>
         </p>
        </div>
-        @livewire('add-to-cart-button', ['product' => $product], key($product->id . $index))
+       @if (
+           $product->type == 'parent' &&
+               app()->has('global_variant_add_to_cart') &&
+               app('global_variant_add_to_cart') === 'true')
+        @livewire('add-to-cart-button', ['product' => $element], key($element->id . $index))
+       @elseif($product->type == 'parent')
+        <div class="card__button--wrapper">
+         <button class="card__button">
+
+          <a style="text-decoration: none"
+           href="{{ route('product', ['product' => $element->seo_id !== null && $element->seo_id !== '' ? $element->seo_id : $element->id]) }}"
+           class="card__button--text">
+           @if (app()->has('label_show_parent'))
+            {!! app('label_show_parent') !!}
+           @endif
+          </a>
+         </button>
+        </div>
+       @else
+        @livewire('add-to-cart-button', ['product' => $element], key($element->id . $index))
+       @endif
       </div>
      </div>
     </div>
@@ -194,7 +310,9 @@
   <div class="filter__content" id="filterContent">
    <div class="filter__top">
     <button class="filter__apply" id="resetFilter" wire:click="resetFilter">
-     @if (app()->has('label_remove_all_filters')){!! app('label_remove_all_filters') !!} @endif
+     @if (app()->has('label_remove_all_filters'))
+      {!! app('label_remove_all_filters') !!}
+     @endif
      <svg>
       <polyline points="23 4 23 10 17 10"></polyline>
       <polyline points="1 20 1 14 7 14"></polyline>
@@ -209,7 +327,9 @@
     </button>
    </div>
    <button class="filter__top filter__top--button" wire:click="$set('showspecfilter', false)">
-    @if (app()->has('label_display_filters_results')){!! app('label_display_filters_results') !!} @endif <span>{{ $products->total() }}</span>
+    @if (app()->has('label_display_filters_results'))
+     {!! app('label_display_filters_results') !!}
+    @endif <span>{{ $products->total() }}</span>
    </button>
    <div wire:ignore class="filter__list">
     @foreach ($filtervalues->sortBy('spec.sequence')->groupBy('spec_id') as $values)
@@ -225,7 +345,7 @@
       <div class="dropfilter__list">
        @foreach ($values->sortBy('sequence') as $value)
         @php
-         $key = str_replace('.', '_', $value->value); 
+         $key = str_replace('.', '_', $value->value);
         @endphp
         <label class="dropfilter__link" for="{{ $value->id }}{{ $value->value }}">
          <input type="checkbox" wire:model="selectedSpecValues.{{ $value->spec_id }}.{{ $key }}"
@@ -245,7 +365,9 @@
   <div class="filter__content" id="sortContent">
    <div class="filter__top">
     <div class="filter__text--long">
-     @if (app()->has('label_sort_title')){!! app('label_sort_title') !!} @endif
+     @if (app()->has('label_sort_title'))
+      {!! app('label_sort_title') !!}
+     @endif
     </div>
     <button class="filter__reset" id="sortClose" href="#">
      <svg>
@@ -259,59 +381,95 @@
     <input class="filter__input" wire:model="orderBy" type="radio" name="sort" value="best_selling"
      id="sort">
     <label class="filter__link sort__item" for="sort">
-     <h4>@if (app()->has('label_sort_popularity')){!! app('label_sort_popularity') !!} @endif</h4>
+     <h4>
+      @if (app()->has('label_sort_popularity'))
+       {!! app('label_sort_popularity') !!}
+      @endif
+     </h4>
     </label>
 
     <input class="filter__input" wire:model="orderBy" type="radio" name="sort1" value="price_as"
      id="sort1">
     <label class="filter__link sort__item" for="sort1">
-    <h4>@if (app()->has('label_sort_price_as')){!! app('label_sort_price_as') !!} @endif</h4>
+     <h4>
+      @if (app()->has('label_sort_price_as'))
+       {!! app('label_sort_price_as') !!}
+      @endif
+     </h4>
     </label>
 
     <input class="filter__input" wire:model="orderBy" type="radio" name="sort2" value="price_ds"
      id="sort2">
     <label class="filter__link sort__item" for="sort2">
-    <h4>@if (app()->has('label_sort_price_ds')){!! app('label_sort_price_ds') !!} @endif</h4>
+     <h4>
+      @if (app()->has('label_sort_price_ds'))
+       {!! app('label_sort_price_ds') !!}
+      @endif
+     </h4>
     </label>
 
     <input class="filter__input" wire:model="orderBy" type="radio" name="sort3" value="quantity"
      id="sort3">
     <label class="filter__link sort__item" for="sort3">
-    <h4>@if (app()->has('label_sort_quantity_ds')){!! app('label_sort_quantity_ds') !!} @endif</h4>
+     <h4>
+      @if (app()->has('label_sort_quantity_ds'))
+       {!! app('label_sort_quantity_ds') !!}
+      @endif
+     </h4>
     </label>
 
     <input class="filter__input" wire:model="orderBy" type="radio" name="sort8" value="quantity_as"
      id="sort8">
     <label class="filter__link sort__item" for="sort8">
-    <h4>@if (app()->has('label_sort_quantity_as')){!! app('label_sort_quantity_as') !!} @endif</h4>
+     <h4>
+      @if (app()->has('label_sort_quantity_as'))
+       {!! app('label_sort_quantity_as') !!}
+      @endif
+     </h4>
     </label>
 
     <input class="filter__input" wire:model="orderBy" type="radio" name="sort4" value="name_az"
      id="sort4">
     <label class="filter__link sort__item" for="sort4">
-    <h4>@if (app()->has('label_sort_name_az')){!! app('label_sort_name_az') !!} @endif</h4>
+     <h4>
+      @if (app()->has('label_sort_name_az'))
+       {!! app('label_sort_name_az') !!}
+      @endif
+     </h4>
     </label>
 
     <input class="filter__input" wire:model="orderBy" type="radio" name="sort5" value="name_za"
      id="sort5">
     <label class="filter__link sort__item" for="sort5">
-    <h4>@if (app()->has('label_sort_name_za')){!! app('label_sort_name_za') !!} @endif</h4>
+     <h4>
+      @if (app()->has('label_sort_name_za'))
+       {!! app('label_sort_name_za') !!}
+      @endif
+     </h4>
     </label>
 
     <input class="filter__input" wire:model="orderBy" type="radio" name="sort6" value="date_old_new"
      id="sort6">
     <label class="filter__link sort__item" for="sort6">
-    <h4>@if (app()->has('label_sort_date_ds')){!! app('label_sort_date_ds') !!} @endif</h4>
+     <h4>
+      @if (app()->has('label_sort_date_ds'))
+       {!! app('label_sort_date_ds') !!}
+      @endif
+     </h4>
     </label>
 
     <input class="filter__input" wire:model="orderBy" type="radio" name="sort7" value="date_new_old"
      id="sort7">
     <label class="filter__link sort__item" for="sort7">
-    <h4>@if (app()->has('label_sort_date_as')){!! app('label_sort_date_as') !!} @endif</h4>
+     <h4>
+      @if (app()->has('label_sort_date_as'))
+       {!! app('label_sort_date_as') !!}
+      @endif
+     </h4>
     </label>
    </div>
   </div>
  </div>
- <x-help-button />
+
  <script src="/script/store/catalog.js" defer></script>
 </div>

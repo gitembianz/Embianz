@@ -65,8 +65,16 @@ class StoreController extends Controller
         }])->orderBy('popularity', 'desc');
       }
     ])->first();
-    if ($productCategory != null) {
-      $preload = "/" . $productCategory->product->media()->where('type', 'main')->first()->path . $productCategory->product->media()->where('type', 'main')->first()->name;
+
+    if ($productCategory != null && $productCategory->product->type != 'parent') {
+      $preload = "/" . optional($productCategory->product->media()->first())->path . optional($productCategory->product->media()->first())->name;
+    } elseif ($productCategory != null && $productCategory->product->type = 'parent' && $productCategory->product->variants->count() != 0) {
+      if ($productCategory->product->variants->where('default_variant', true)->first()) {
+        $element = $productCategory->product->variants->where('default_variant', true)->first()->product;
+      } else {
+        $element = $productCategory->product->variants->first()->product;
+      }
+      $preload = "/" . optional($element->media()->first())->path . optional($element->media()->first())->name;
     } else {
       $preload = '';
     }
@@ -84,7 +92,12 @@ class StoreController extends Controller
     if (($data == null) || ($data->active != true) || ($data->start_date > now()->format('Y-m-d')) || ($data->end_date < now()->format('Y-m-d'))) {
       throw new NotFoundHttpException();
     }
-    return view('store.product', ['data' => $data]);
+    if ($data != null) {
+      $preload = "/" . optional($data->media()->where('type', 'full')->first())->path . optional($data->media()->where('type', 'full')->first())->name;
+    } else {
+      $preload = '';
+    }
+    return view('store.product', compact('data', 'preload'));
   }
 
   // payment function

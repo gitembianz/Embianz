@@ -20,7 +20,22 @@ class Product extends Model
 
   public function related_product()
   {
-    return $this->hasMany(Related_Products::class, 'parrent_id');
+    return $this->hasMany(Related_Products::class, 'parent_id');
+  }
+
+  public function variants()
+  {
+    return $this->hasMany(ProductVariant::class, 'parent_id');
+  }
+
+  public function parent()
+  {
+    return $this->belongsTo(Product::class, 'parent_id');
+  }
+
+  public function beeingvariants()
+  {
+    return $this->hasMany(ProductVariant::class, 'product_id');
   }
 
   public function product_prices()
@@ -59,28 +74,33 @@ class Product extends Model
     $longestHierarchy = collect();
 
     foreach ($categories as $category) {
+      if (app()->has('global_default_category')) {
+        if ($category->id == app('global_default_category')) {
+          continue;
+        }
+      }
       $currentHierarchy = collect([
         [
-          'name' => $category->name,
+          'name' => strip_tags($category->name),
           'slug' => $category->seo_id ?? $category->id,
         ],
       ]);
 
       $currentCategory = $category;
 
-      while ($currentCategory->parrent->isNotEmpty()) {
-        $parrentCategory = $currentCategory->parrent->first()->category_parrent;
+      while ($currentCategory->parent->isNotEmpty()) {
+        $parentCategory = $currentCategory->parent->first()->category_parent;
 
-        if (!$parrentCategory) {
+        if (!$parentCategory) {
           break;
         }
 
         $currentHierarchy->push([
-          'name' => $parrentCategory->name,
-          'slug' => $parrentCategory->seo_id ?? $parrentCategory->id,
+          'name' => strip_tags($parentCategory->name),
+          'slug' => $parentCategory->seo_id ?? $parentCategory->id,
         ]);
 
-        $currentCategory = $parrentCategory;
+        $currentCategory = $parentCategory;
       }
 
       if ($currentHierarchy->count() > $longestHierarchy->count()) {
@@ -108,7 +128,8 @@ class Product extends Model
     'last_modified_by',
     'seo_title',
     'popularity',
-    'seo_id'
+    'seo_id',
+    'parent_id'
   ];
 
   public static function search($search)
@@ -116,12 +137,18 @@ class Product extends Model
     return empty($search) ? static::query()
       : static::query()
       ->where(function ($query) use ($search) {
-        $query->where('id', 'like', '%' . $search . '%')
-          ->orWhere('name', 'like', '%' . $search . '%')
-          ->orWhere('ean', 'like', '%' . $search . '%')
-          ->orWhere('meta_description', 'like', '%' . $search . '%')
-          ->orWhere('short_description', 'like', '%' . $search . '%')
-          ->orWhere('sku', 'like', '%' . $search . '%');
+        $searchTerms = explode(' ', $search);
+
+        foreach ($searchTerms as $term) {
+          $query->where(function ($subQuery) use ($term) {
+            $subQuery->where('id', 'like', '%' . $term . '%')
+              ->orWhere('name', 'like', '%' . $term . '%')
+              ->orWhere('ean', 'like', '%' . $term . '%')
+              ->orWhere('meta_description', 'like', '%' . $term . '%')
+              ->orWhere('short_description', 'like', '%' . $term . '%')
+              ->orWhere('sku', 'like', '%' . $term . '%');
+          });
+        }
       });
   }
 

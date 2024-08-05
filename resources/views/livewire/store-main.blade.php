@@ -1,6 +1,5 @@
 <div>
  <main>
-  <!---------------------------------------------------------->
   <!---------------------- Slider Images --------------------->
   @if (!$slideritems->isEmpty())
    <div class="main-slider">
@@ -19,54 +18,55 @@
            loading="eager" fetchpriority="high" height="{{ $item->media->where('sequence', 2)->first()->height }}"
            width="{{ $item->media->where('sequence', 2)->first()->width }}">
          @else
-          <source media="(min-width: 992px)" sizes="(min-width: 992px) 50vw" srcset="/images/store/default/default.webp" loading="eager" fetchpriority="high">
+          <source media="(min-width: 992px)" sizes="(min-width: 992px) 50vw" srcset="/images/store/default/default.webp"
+           loading="eager" fetchpriority="high">
          @endif
          {{-- Tablet Picture --}}
          @if ($item->media->where('sequence', 3)->first() != null)
-          <source media="(min-width: 576px)" sizes="(min-width: 576px) 80vw"
+          <source title="{{ $item->media->where('sequence', 3)->first()->name }}" media="(min-width: 576px)"
+           sizes="(min-width: 576px) 80vw"
            srcset="/{{ $item->media->where('sequence', 3)->first()->path }}{{ $item->media->where('sequence', 3)->first()->name }}"
            loading="eager" fetchpriority="high" height="{{ $item->media->where('sequence', 3)->first()->height }}"
            width="{{ $item->media->where('sequence', 3)->first()->width }}">
          @elseif ($item->media->where('sequence', 2)->first() != null)
-          <source media="(min-width: 576px)" sizes="(min-width: 576px) 80vw"
+          <source title="{{ $item->media->where('sequence', 2)->first()->name }}" media="(min-width: 576px)"
+           sizes="(min-width: 576px) 80vw"
            srcset="/{{ $item->media->where('sequence', 2)->first()->path }}{{ $item->media->where('sequence', 2)->first()->name }}"
            loading="eager" fetchpriority="high" height="{{ $item->media->where('sequence', 2)->first()->height }}"
            width="{{ $item->media->where('sequence', 2)->first()->width }}">
          @else
-         <source media="(min-width: 576px)" sizes="(min-width: 576px) 80vw" srcset="/images/store/default/default640.webp" loading="eager" fetchpriority="high">
+          <source title="Default image" media="(min-width: 576px)" sizes="(min-width: 576px) 80vw"
+           srcset="/images/store/default/default640.webp" loading="eager" fetchpriority="high">
          @endif
          {{-- Mobile Picture --}}
          @if ($item->media->where('sequence', 4)->first() != null)
-          <img sizes="100vw" alt="{{ $item->media->where('sequence', 4)->first()->name }} {{ $item->name }}"
+          <img title="{{ $item->media->where('sequence', 4)->first()->name }}" sizes="100vw"
+           alt="{{ $item->media->where('sequence', 4)->first()->name }} {{ $item->name }}"
            src="/{{ $item->media->where('sequence', 4)->first()->path }}{{ $item->media->where('sequence', 4)->first()->name }}"
            loading="eager" fetchpriority="high" height="{{ $item->media->where('sequence', 4)->first()->height }}"
            width="{{ $item->media->where('sequence', 4)->first()->width }}">
          @elseif ($item->media->where('sequence', 3)->first() != null)
-          <img sizes="100vw" alt="{{ $item->media->where('sequence', 3)->first()->name }} {{ $item->name }}"
+          <img title="{{ $item->media->where('sequence', 3)->first()->name }}" sizes="100vw"
+           alt="{{ $item->media->where('sequence', 3)->first()->name }} {{ $item->name }}"
            src="/{{ $item->media->where('sequence', 3)->first()->path }}{{ $item->media->where('sequence', 3)->first()->name }}"
            loading="eager" fetchpriority="high" height="{{ $item->media->where('sequence', 3)->first()->height }}"
            width="{{ $item->media->where('sequence', 3)->first()->width }}">
          @elseif ($item->media->where('sequence', 2)->first() != null)
-          <img sizes="100vw" alt="{{ $item->media->where('sequence', 2)->first()->name }} {{ $item->name }}"
+          <img title="{{ $item->media->where('sequence', 2)->first()->name }}" sizes="100vw"
+           alt="{{ $item->media->where('sequence', 2)->first()->name }} {{ $item->name }}"
            src="/{{ $item->media->where('sequence', 2)->first()->path }}{{ $item->media->where('sequence', 2)->first()->name }}"
            loading="eager" fetchpriority="high" height="{{ $item->media->where('sequence', 2)->first()->height }}"
            width="{{ $item->media->where('sequence', 2)->first()->width }}">
          @else
-          <img src="/images/store/default/default300.webp" alt="something wrong">
+          <img title="Default image" src="/images/store/default/default300.webp" alt="something wrong">
          @endif
         @else
-         <img src="/images/store/default/default300.webp" alt="something wrong">
+         <img title="Default image" src="/images/store/default/default300.webp" alt="something wrong">
         @endif
        </picture>
       </a>
       {{-- End Modelul de schimb de imagini pe slider la rezolutie --}}
      @endforeach
-
-
-
-
-
-
 
     </div>
     <button class="main-slider__button prev" aria-label="Previous main slider">
@@ -81,7 +81,20 @@
     </button>
    </div>
   @endif
-
+  @php
+   if (app()->has('global_numberformat_element')) {
+       if (app('global_numberformat_element') === '.') {
+           $mill = '.';
+           $decimal = ',';
+       } else {
+           $mill = ',';
+           $decimal = '.';
+       }
+   } else {
+       $mill = '.';
+       $decimal = ',';
+   }
+  @endphp
   <!-------------------- End Slider Images ------------------->
   <!---------------------------------------------------------->
   <!---------------------------------------------------------->
@@ -104,23 +117,35 @@
      <div class="card-slider__wrapper new-slider__wrapper">
       @foreach ($popproducts as $product)
        <div class="card-slider__slide new-slider__slide card">
+
         <a draggable="false"
          href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">
-         @if ($product->media->first() != null)
-          <img loading="eager" class="card-image"
-           src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}"
-           alt="{{ $product->media->first()->name }} {{ $product->name }}">
+         @php
+          $mainMedia = $product->media->firstWhere('type', 'main');
+         @endphp
+         @if ($mainMedia)
+          <img title="{{ $product->name }}, {{ $product->short_description }}" loading="eager" class="card-image"
+           src="/{{ $mainMedia->path }}{{ $mainMedia->name }}" alt="{{ $mainMedia->name }} {{ $product->name }}">
          @else
-          <img loading="eager" class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
+          <img title="Default image" loading="eager" class="card-image" src="/images/store/default/default300.webp"
+           alt="something wrong">
          @endif
         </a>
-        @livewire('product-wishlist-button', ['productId' => $product->id, 'class' => 'card__action', 'is_in_wishlist' => $product->wishlists->isNotEmpty()], key($product->id))
+        @livewire(
+            'product-wishlist-button',
+            [
+                'productId' => $product->id,
+                'class' => 'card__action',
+                'is_in_wishlist' => $this->isInWishlist($product->id),
+            ],
+            key($product->id)
+        )
         <?php
         $price = null;
         $discount = false;
-
+        
         if ($product->product_prices->count() != 0) {
-            $price = number_format($product->product_prices->first()->value, 2, ',', '.');
+            $price = number_format($product->product_prices->first()->value, 2, $decimal, $mill);
             $discount = $product->product_prices->first()->discount != 0 ? true : false;
         }
         ?>
@@ -128,7 +153,9 @@
         @if ($price)
          @if ($product->quantity < $quantity && $product->quantity > 0)
           <p class="card-status out">
-           @if (app()->has('label_product_status_stock')){!! app('label_product_status_stock') !!} @endif
+           @if (app()->has('label_product_status_stock'))
+            {!! app('label_product_status_stock') !!}
+           @endif
           </p>
           @if ($discount)
            <p class="card-status save-secondary">
@@ -137,7 +164,9 @@
           @endif
          @elseif($product->quantity == 0)
           <p class="card-status save">
-           @if (app()->has('label_product_status_indisponible')){!! app('label_product_status_indisponible') !!} @endif
+           @if (app()->has('label_product_status_indisponible'))
+            {!! app('label_product_status_indisponible') !!}
+           @endif
           </p>
          @else
           @if ($discount)
@@ -148,45 +177,59 @@
          @endif
          {{-- tagul de discount --}}
         @else
-          <p class="card-status save">
-           @if (app()->has('label_product_status_coming_soon')){!! app('label_product_status_coming_soon') !!} @endif
-          </p>
+         <p class="card-status save">
+          @if (app()->has('label_product_status_coming_soon'))
+           {!! app('label_product_status_coming_soon') !!}
+          @endif
+         </p>
         @endif
         <div class="card-info">
          <div class="card-text">
-          <span>{{ $product->short_description }}</span>
+          <span><a style="text-decoration: none; font-weight:500"
+            href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">{{ $product->short_description }}</a></span>
          </div>
          <div class="card-text">
-          <h2 class="card-title">{{ $product->name }}</h2>
+          <h2 class="card-title"><a style="text-decoration: none; font-weight:500"
+            href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">{{ $product->name }}</a>
+          </h2>
           <p class="card-price">
            @if ($discount)
             <span class="card-price discount">
              @if ($product->product_prices->first())
               {{ $price }}
-              {{ $product->product_prices->first()->pricelist->currency->symbol }}
+              @if (app()->has('global_currency_primary_symbol'))
+               {!! app('global_currency_primary_symbol') !!}
+              @endif
              @endif
             </span>
             <span class="card-price oldprice">
-             {{ $product->product_prices->first()->value_no_discount }}
-             {{ $product->product_prices->first()->pricelist->currency->symbol }}
+             {{ number_format($product->product_prices->first()->value_no_discount, 2, $decimal, $mill) }}
+             @if (app()->has('global_currency_primary_symbol'))
+              {!! app('global_currency_primary_symbol') !!}
+             @endif
             </span>
            @else
             <span>
              @if ($product->product_prices->first())
               {{ $price }}
-              {{ $product->product_prices->first()->pricelist->currency->symbol }}
+              @if (app()->has('global_currency_primary_symbol'))
+               {!! app('global_currency_primary_symbol') !!}
+              @endif
              @endif
             </span>
            @endif
 
           </p>
          </div>
-          @livewire('add-to-cart-button', ['product' => $product], key($product->id))
+         @livewire('add-to-cart-button', ['product' => $product], key($product->id))
          <div style="display: none" class="dlv">
-          <span class="dlv_name">{{ $product->name }}</span>
+          <span class="dlv_name"> {{ $product->name }}</span>
           <span class="dlv_price">{{ $price }}</span>
-          <span
-           class="dlv_currency">{{ optional(optional(optional($product->product_prices->first())->pricelist)->currency)->name }}</span>
+          <span class="dlv_currency">
+           @if (app()->has('global_currency_primary_name'))
+            {!! app('global_currency_primary_name') !!}
+           @endif
+          </span>
          </div>
         </div>
        </div>
@@ -225,21 +268,31 @@
        <div class="card-slider__slide popular-slider__slide card">
         <a draggable="false"
          href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">
-         @if ($product->media->first() != null)
-          <img loading="eager" class="card-image"
-           src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}"
-           alt="{{ $product->media->first()->name }} {{ $product->name }}">
+         @php
+          $mainMedia = $product->media->firstWhere('type', 'main');
+         @endphp
+         @if ($mainMedia)
+          <img title="{{ $product->name }}, {{ $product->short_description }}" loading="eager" class="card-image"
+           src="/{{ $mainMedia->path }}{{ $mainMedia->name }}" alt="{{ $mainMedia->name }} {{ $product->name }}">
          @else
-          <img loading="eager" class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
+          <img title="Default image" loading="eager" class="card-image" src="/images/store/default/default300.webp"
+           alt="something wrong">
          @endif
         </a>
-        @livewire('product-wishlist-button', ['productId' => $product->id, 'class' => 'card__action', 'is_in_wishlist' => $product->wishlists->isNotEmpty()], key($product->id))
-        <?php
+        @livewire(
+            'product-wishlist-button',
+            [
+                'productId' => $product->id,
+                'class' => 'card__action',
+                'is_in_wishlist' => $this->isInWishlist($product->id),
+            ],
+            key($product->id)
+        ) <?php
         $price = null;
         $discount = false;
-
+        
         if ($product->product_prices->count() != 0) {
-            $price = number_format($product->product_prices->first()->value, 2, ',', '.');
+            $price = number_format($product->product_prices->first()->value, 2, $decimal, $mill);
             $discount = $product->product_prices->first()->discount != 0 ? true : false;
         }
         ?>
@@ -247,7 +300,9 @@
         @if ($price)
          @if ($product->quantity < $quantity && $product->quantity > 0)
           <p class="card-status out">
-           @if (app()->has('label_product_status_stock')){!! app('label_product_status_stock') !!} @endif
+           @if (app()->has('label_product_status_stock'))
+            {!! app('label_product_status_stock') !!}
+           @endif
           </p>
           @if ($discount)
            <p class="card-status save-secondary">
@@ -256,7 +311,9 @@
           @endif
          @elseif($product->quantity == 0)
           <p class="card-status save">
-           @if (app()->has('label_product_status_indisponible')){!! app('label_product_status_indisponible') !!} @endif
+           @if (app()->has('label_product_status_indisponible'))
+            {!! app('label_product_status_indisponible') !!}
+           @endif
           </p>
          @else
           @if ($discount)
@@ -268,44 +325,60 @@
          {{-- tagul de discount --}}
         @else
          <p class="card-status save">
-           @if (app()->has('label_product_status_coming_soon')){!! app('label_product_status_coming_soon') !!} @endif
-          </p>
+          @if (app()->has('label_product_status_coming_soon'))
+           {!! app('label_product_status_coming_soon') !!}
+          @endif
+         </p>
         @endif
         <div class="card-info">
          <div class="card-text">
-          <span>{{ $product->short_description }}</span>
+          <span><a style="text-decoration: none; font-weight:500"
+            href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">{{ $product->short_description }}
+           </a>
+          </span>
          </div>
          <div class="card-text">
-          <h2 class="card-title">{{ $product->name }}</h2>
+          <h2 class="card-title"><a style="text-decoration: none; font-weight:500"
+            href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">{{ $product->name }}</a>
+          </h2>
           <p class="card-price">
            @if ($discount)
             <span class="card-price discount">
              @if ($product->product_prices->first())
               {{ $price }}
-              {{ $product->product_prices->first()->pricelist->currency->symbol }}
+              @if (app()->has('global_currency_primary_symbol'))
+               {!! app('global_currency_primary_symbol') !!}
+              @endif
              @endif
             </span>
             <span class="card-price oldprice">
-             {{ $product->product_prices->first()->value_no_discount }}
-             {{ $product->product_prices->first()->pricelist->currency->symbol }}
+             {{ number_format($product->product_prices->first()->value_no_discount, 2, $decimal, $mill) }}
+             @if (app()->has('global_currency_primary_symbol'))
+              {!! app('global_currency_primary_symbol') !!}
+             @endif
             </span>
            @else
             <span>
              @if ($product->product_prices->first())
               {{ $price }}
-              {{ $product->product_prices->first()->pricelist->currency->symbol }}
+              @if (app()->has('global_currency_primary_symbol'))
+               {!! app('global_currency_primary_symbol') !!}
+              @endif
              @endif
             </span>
            @endif
           </p>
          </div>
-          @livewire('add-to-cart-button', ['product' => $product], key($product->id))
-         
+         @livewire('add-to-cart-button', ['product' => $product], key($product->id))
+
          <div style="display: none" class="dlv">
           <span class="dlv_name">{{ $product->name }}</span>
           <span class="dlv_price">{{ $price }}</span>
-          <span
-           class="dlv_currency">{{ optional(optional(optional($product->product_prices->first())->pricelist)->currency)->name }}</span>
+          <span class="dlv_currency">
+           @if (app()->has('global_currency_primary_name'))
+            {!! app('global_currency_primary_name') !!}
+           @endif
+          </span>
          </div>
         </div>
        </div>
@@ -324,15 +397,10 @@
     </div>
    </section>
   @endif
-  <!-------------------- End Slider Cards -------------------->
-  <!---------------------------------------------------------->
+
   <!---------------------- Support Center -------------------->
   <x-support />
-  <!-------------------- End Support Center ------------------>
-  <!---------------------------------------------------------->
-  <!--------------------- support button --------------------->
-  <x-help-button />
-  <!------------------- End support button ------------------->
+
   <!---------------------------------------------------------->
  </main>
  <script src="/script/store/main.js" defer></script>

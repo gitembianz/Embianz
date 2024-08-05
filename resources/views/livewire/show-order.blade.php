@@ -1,128 +1,153 @@
-<div>
-	<x-alert />
-	<x-loading />
-	<div class="item__header">
-		<h1 class="item__header-title" id="title">Order: {{ $order->name }}</h1>
-		<div class="item__header-buttons">
-			<a class="item__header-btn" href="{{ route("orders") }}" data-tooltip-left="Back to all orders">
-				<svg>
-					<polyline points="11 17 6 12 11 7"></polyline>
-					<polyline points="18 17 13 12 18 7"></polyline>
-				</svg>
-			</a>
-			@if ($edititem === null)
-				<button class="item__header-btn" type="button" value="Edit" wire:click.prevent="edititem()" data-tooltip-center="Edit this order">
-					<svg>
-						<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-						<path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-					</svg>
-				</button>
-			@else
-				<button class="item__header-btn confirm" type="button" wire:click.prevent="saveitem()" value="Save" data-tooltip-center="Save this changes"><svg>
-						<polyline points="20 6 9 17 4 12"></polyline>
-					</svg></button>
-				<button class="item__header-btn" type="button" wire:click.prevent="canceledit()" value="Cancel" data-tooltip-center="Cancel this changes"><svg>
-						<line x1="18" y1="6" x2="6" y2="18">
-						</line>
-						<line x1="6" y1="6" x2="18" y2="18">
-						</line>
-					</svg></button>
-			@endif
-			<button wire:click.prevent="confirmItemRemoval" class="item__header-btn delete" type="button" value="Delete" data-tooltip-right="Delete this order">
-				<svg>
-					<polyline points="3 6 5 6 21 6"></polyline>
-					<path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-				</svg>
-			</button>
-		</div>
-	</div>
-	<div class="modal" id="confirmationmodal">
-		<div class="modal-content">
-			<h1 class="modal-content-title">
-				{{ __("Are you sure to delete this record?") }}
-			</h1>
-			<input wire:click.prevent="deleteRecord()" class="modal-content-btn submit" type="button" value="Confirm">
-			<input class="modal-content-btn delete" type="button" onclick="document.getElementById('confirmationmodal').style.display='none'" value="Cancel">
-			<span class="modal-content-btn delete" onclick="document.getElementById('confirmationmodal').style.display='none'">
-				<svg>
-					<line x1="18" y1="6" x2="6" y2="18"></line>
-					<line x1="6" y1="6" x2="18" y2="18"></line>
-				</svg>
-			</span>
-		</div>
-	</div>
-	<div class="tab">
-		<div class="tabs">
-			<h3 class="tabs__page active">Details</h3>
-			<h3 class="tabs__page">Related</h3>
-		</div>
-		<div class="tab__list">
-			<div class="tabs__content active" id="Details">
-				<div class="item__form">
-					<div class="item__form-input-close">
-						<div>{{ $order->name }}</div>
-						<label>Name</label>
-					</div>
-					<div class="item__form-input-close">
-						<div>{{ $order->session_id }}</div>
-						<label>Session ID </label>
-					</div>
-					<div class="item__form-input-close">
-						<div>
-							<a href="{{ route("show_account", ['id'=> $order->account_id ])}}">{{ $order->account->name }}</a>
-						</div>
-						<label>Account </label>
-					</div>
-					<div class="item__form-input-close">
-						<div><a href="{{ route("show_cart", ['id'=> $order->cart_id ])}}">{{ $order->cart->name }}</a></div>
-						<label>Cart </label>
-					</div>
-					<div class="item__form-input-close">
-						<div>{{ $order->quantity_amount }}</div>
-						<label>Quantity amount </label>
-					</div>
-					<div class="item__form-input-close">
-						<div>{{ $order->sum_amount }}</div>
-						<label>Sum amount </label>
-					</div>
-					<div class="item__form-input-close">
-						<div>{{ $order->currency->name }}</div>
-						<label>Currency </label>
-					</div>
-					@if ($edititem === null)
-						<div class="item__form-input-close">
-							<div>{{ $order->status->name }}</div>
-							<label>Status</label>
-						</div>
-					@else
-						<select wire:model.defer="record.status_id" class="item__form-input">
-							@foreach ($statuses as $status)
-								<option value="{{ $status->id }}">{{ $status->name }}</option>
-							@endforeach
-						</select>
-					@endif
-					<div class="item__form-input-close">
-						<div>{{ $order->payment->name }}</div>
-						<label>Payment Method </label>
-					</div>
-					<div class="item__form-input-close">
-						<div>{{ $order->created_at }}</div>
-						<label>Create date / time</label>
-					</div>
-					<div class="item__form-input-close">
-						<div>{{ $order->updated_at }}</div>
-						<label>Updated date / time</label>
-					</div>
-					@if ($edititem != null)
-						<button class="item__form-btn item__form-long" wire:click.prevent="saveitem()" value="Save">
-							Save
-						</button>
-					@endif
-				</div>
-			</div>
-			<div class="tabs__content">
-				@livewire("related-order-items", ["order" => $order])
-			</div>
-		</div>
-	</div>
-</div>
+<section class="content">
+  {{-- X-Components --}}
+  <x-alert />
+
+
+  {{-- Delete Record --}}
+  <aside>
+    <div class="background background--center @if($delete) active @endif"></div>
+    <div class="aside aside--confirm @if($delete) active @endif">
+      <span>
+          Are you sure to delete this record?
+      </span>
+      <button class="button button--primary button--long" wire:click.prevent="deleteRecord()">
+        <span>Delete</span>
+      </button>
+      <button class="button button--danger button--long" wire:click.prevent="cancelItemRemoval()">
+        <span>Cancel</span>
+      </button>
+    </div>
+  </aside>
+
+
+  {{-- Navigation --}}
+  <nav class="nav--controls">
+    <h1 class="table--name">Order: {{ $order->name }}</h1>
+    {{-- Refresh Button --}}
+    <a class="button button--primary button--centered" tooltip="Back to Order" tooltip-top href="{{ route('orders') }}">
+      <svg><polyline points="15 18 9 12 15 6"></polyline></svg>
+    </a>
+    @if ($edititem === null)
+      <button class="button button--primary button--centered" tooltip="Edit this Order" tooltip-left wire:click.prevent="edititem()">
+        <svg><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" /><path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" /><path d="M16 5l3 3" /></svg>
+      </button>
+    @else
+      <button class="button button--primary button--centered" tooltip="Save Edit" tooltip-left wire:click.prevent="saveitem()">
+        <svg><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" /><path d="M9 15l2 2l4 -4" /></svg>
+      </button>
+      <button class="button button--primary button--centered" tooltip="Cancel edit" tooltip-left wire:click.prevent="canceledit()">
+        <svg><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2" /><path d="M10 12l4 5" /><path d="M10 17l4 -5" /></svg>
+      </button>
+    @endif
+    <button class="button button--primary button--centered" tooltip="Delete this Order" tooltip-left wire:click.prevent="confirmItemRemoval">
+      <svg><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" /><path d="M9 14l6 0" /></svg>
+    </button>
+  </nav>
+
+
+  {{-- Tabs Header --}}
+  <nav class="nav--tabs">
+    <button class="button button--primary button--long button--active" id="detailsButton">
+      Details
+    </button>
+    <button class="button button--primary button--long" id="relatedButton">
+      Related
+    </button>
+  </nav>
+
+
+  {{-- Tabs Body (Details) --}}
+  <form style="height: calc(100% - 107.5px);" class="tabs__content details__view active" id="detailsContent">
+    {{-- Order Name --}}
+    <div class="input__tabs">
+      <span class="disabled">{{ $order->name }}</span>
+      <label for="category__name">Name</label>
+    </div>
+
+    {{-- Order Account --}}
+    <div class="input__tabs">
+      <a href="{{ route("show_account", ['id'=> $order->account_id ]) }}">{{ $order->account->name }}</a>
+      <label for="category__name">Account</label>
+    </div>
+
+    {{-- Order Session Id --}}
+    <div class="input__tabs details__long">
+      <span class="disabled">{{ $order->session_id }}</span>
+      <label for="category__name">Session Id</label>
+    </div>
+
+    {{-- Order Cart --}}
+    @if($order->cart_id)
+    <div class="input__tabs">
+      <a href="{{ route("show_cart", ['id'=> $order->cart_id ])}}">{{ $order->cart->name }}</a>
+      <label for="category__name">Cart</label>
+    </div>
+    @endif
+
+
+    {{-- Order Quantity amount --}}
+    <div class="input__tabs">
+      <span class="disabled">{{ $order->quantity_amount }}</span>
+      <label>Quantity amount </label>
+    </div>
+
+    {{-- Order Sum amount --}}
+    <div class="input__tabs">
+      <span class="disabled">{{ $order->sum_amount }}</span>
+      <label>Sum amount </label>
+    </div>
+
+    {{-- Order Currency --}}
+    <div class="input__tabs">
+      <span class="disabled">{{ $order->currency->name }}</span>
+      <label>Currency </label>
+    </div>
+
+
+    {{-- Order Status --}}
+    <div class="input__tabs">
+      @if ($edititem === null)
+        <span class="disabled">{{ $order->status->name }}</span>
+      @else
+        <select wire:model.defer="record.status_id">
+          @foreach ($statuses as $status)
+            <option value="{{ $status->id }}">{{ $status->name }}</option>
+          @endforeach
+        </select>
+      @endif
+      <label for="category__name"> Status</label>
+    </div>
+
+
+    {{-- Order Payment Method --}}
+    <div class="input__tabs">
+      <span class="disabled">{{ $order->payment->name }}</span>
+      <label>Payment Method </label>
+    </div>
+
+    {{-- Create date / time --}}
+    <div class="input__tabs">
+      <span class="disabled">{{ $order->created_at }}</span>
+      <label>Create date / time</label>
+    </div>
+
+    {{-- Updated At --}}
+    <div class="input__tabs">
+      <span class="disabled">{{ $order->updated_at }}</span>
+      <label>Updated At</label>
+    </div>
+
+    {{-- Save Button --}}
+    @if ($edititem != null)
+      <button class="button button--fill button--secondary details__long" wire:click.prevent="saveitem()" value="Save">
+        Save
+      </button>
+    @endif
+  </form>
+
+
+  {{-- Tabs Body (Related) --}}
+  <div style="height: calc(100% - 107.5px);" class="tabs__content related__view" id="relatedContent">
+    @livewire("related-order-items", ["order" => $order])
+  </div>
+</section>

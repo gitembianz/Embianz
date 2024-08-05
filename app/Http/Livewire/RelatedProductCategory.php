@@ -12,52 +12,98 @@ class RelatedProductCategory extends Component
 {
 
   use WithPagination;
-  //related delclaration/
-  public $perPage = 10;
+  public $showTable = false;
+
+  //related variables
+  public $loadAmount = 20;
   public $search = '';
   public $orderBy = 'id';
   public $orderAsc = true;
   public $checked = [];
   public $selectPage = false;
   public $selectAll = false;
-  public $showrelatedprod = false;
-  public $categoryId;
-  public $col = false;
-  public $all = false;
-  public $productidbeingremoved = null;
-  public $columns = ['Id', 'Short Description', 'Created At'];
+  public $showrelateitems = false;
+  public $idbeingremoved = null;
+  public $columns = ['Id', 'Category Name', 'Product Name', 'Product Description', 'Product type', 'Product is active?', 'Created At', 'Updated At'];
   public $selectedColumns = [];
   public $category;
 
-  //add declaration
+  //add variables
   public $searchadd = '';
-  public $orderByadd = 'id';
-  public $orderAscadd = true;
   public $checkedadd = [];
   public $selectPageadd = false;
   public $selectAlladd = false;
-  public $coladd = false;
-  public $alladd = false;
-  public $columnsadd = ['Id', 'Short Description', 'Created At'];
-  public $selectedColumnsadd = [];
-  public $productidbeinglink = null;
-  public $showTable = false;
-  public $totalRecords;
-  public $loadAmount = 10;
+  public $idbeinglink = null;
 
-  // function for add products
-  public function toggleTable()
+  public $linksingle = false;
+  public $linkmultiple = false;
+  public $single = false;
+  public $multiple = false;
+  public $rind2 = null;
+  public $rind = null;
+
+  public function expandRow2($index)
   {
-    $this->showrelatedprod = true;
-    $this->showTable = !$this->showTable;
+    if ($this->rind2  === null) {
+      $this->rind2 = $index;
+    } elseif ($this->rind2 != $index) {
+      $this->rind2 = $index;
+    } else {
+      $this->rind2 = null;
+    }
+  }
+  public function expandRow($index)
+  {
+    if ($this->rind  === null) {
+      $this->rind = $index;
+    } elseif ($this->rind != $index) {
+      $this->rind = $index;
+    } else {
+      $this->rind = null;
+    }
+  }
+  public function confirmItemRemoval($id)
+  {
+    $this->idbeingremoved = $id;
+    $this->single = true;
+  }
+  public function confirmItemsRemoval()
+  {
+    $this->multiple = true;
+  }
+  public function cancel_delete()
+  {
+    $this->multiple = false;
+    $this->single = false;
+  }
+
+  public function cancel_link()
+  {
+    $this->linkmultiple = false;
+    $this->linksingle = false;
+  }
+  // function for add products
+  public function addrelated()
+  {
+    $this->showrelateitems = true;
+    $this->showTable = true;
+  }
+  public function confirmItemLink($id)
+  {
+    $this->idbeinglink = $id;
+    $this->linksingle = true;
+  }
+  public function confirmItemsLink()
+  {
+    $this->linkmultiple = true;
   }
   public function loadMore()
   {
     $this->loadAmount += 10;
   }
-  public function cancel()
+  public function closemodal()
   {
-    $this->showTable = false; // Set $showTable to false to hide the table
+    $this->showTable = false;
   }
   public function showColumnadd($column)
   {
@@ -82,16 +128,9 @@ class RelatedProductCategory extends Component
   {
     return in_array($id, $this->checked);
   }
-  public function sortByadd($columnName)
+  public function updatedCheckedadd()
   {
-
-    if ($this->orderByadd === $columnName) {
-      $this->orderAscadd = $this->swapSortDirectionadd();
-    } else {
-      $this->orderAscadd = '1';
-    }
-
-    $this->orderByadd = $columnName;
+    $this->selectPageadd = false;
   }
   public function selectAlladd()
   {
@@ -105,18 +144,10 @@ class RelatedProductCategory extends Component
     if (!empty($this->searchadd)) {
       $unrelated->where('name', 'like', '%' . $this->searchadd . '%');
     }
-    $unrelated->orderBy($this->orderByadd, $this->orderAscadd ? 'asc' : 'desc');
-    if ($this->selectAlladd) {
-      return $unrelated->get();
-    } else {
-      return $unrelated->limit($this->loadAmount)->get();
-    }
+
+    return $unrelated->paginate($this->loadAmount);
   }
-  public function confirmProductlink($productid)
-  {
-    $this->productidbeinglink = $productid;
-    $this->dispatchBrowserEvent('show-link-modal');
-  }
+
   public function linkSingleRecord()
   {
     $id = $this->productidbeinglink;
@@ -124,6 +155,8 @@ class RelatedProductCategory extends Component
     $product->product_id = $id;
     $product->category_id = $this->category->id;
     $product->save();
+    $this->linksingle = false;
+
     $this->checkedadd = array_diff($this->checkedadd, [$id]);
     session()->flash('notification', [
       'message' => 'Record related successfully!',
@@ -142,16 +175,15 @@ class RelatedProductCategory extends Component
     }
     $this->selectPageadd = false;
     $this->checkedadd = [];
+    $this->linkmultiple = false;
+
     session()->flash('notification', [
       'message' => 'Records related successfully!',
       'type' => 'success',
       'title' => 'Success'
     ]);
   }
-  public function updatedCheckedadd()
-  {
-    $this->selectPageadd = false;
-  }
+
 
   //function for related products
   public function showColumn($column)
@@ -195,28 +227,27 @@ class RelatedProductCategory extends Component
   public function selectAll()
   {
     $this->selectAll = true;
-    $this->checked = $this->relatedproductsQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+    $this->checked = $this->RelatedProducts->pluck('id')->map(fn ($item) => (string) $item)->toArray();
   }
-  public function load()
+  public function getRelatedProductsQueryProperty()
   {
-    $this->perPage += 10;
+    return $this->relatedPoductsQuery->get();
   }
-  public function getRelatedproductsProperty()
+  public function getRelatedProductsProperty()
   {
     return Products_categories::where('category_id', $this->category->id)
       ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc');
   }
-  public function confirmItemRemoval($productid)
-  {
-    $this->productidbeingremoved = $productid;
-    $this->dispatchBrowserEvent('show-delete-modal');
-  }
+
+
   public function deleteSingleRecord()
   {
-    $id = $this->productidbeingremoved;
+    $id = $this->idbeingremoved;
     $product = Products_categories::findOrFail($id);
     $product->delete();
     $this->checked = array_diff($this->checked, [$id]);
+    $this->single = false;
+
     session()->flash('notification', [
       'message' => 'Record deleted successfully!',
       'type' => 'success',
@@ -234,45 +265,34 @@ class RelatedProductCategory extends Component
 
     $this->checked = [];
     $this->selectPage = false;
+    $this->multiple = false;
+
     session()->flash('notification', [
       'message' => 'Records deleted successfully!',
       'type' => 'success',
       'title' => 'Success'
     ]);
   }
-  public function confirmItemsRemoval()
-  {
-    $this->dispatchBrowserEvent('show-delete-modal-multiple');
-  }
-  public function confirmLinkmultiple()
-  {
-    $this->dispatchBrowserEvent('show-link-modal-multiple');
-  }
+
   public function render()
   {
-    $relatedProducts = $this->relatedproducts
+    $relatedproducts = $this->RelatedProducts
       ->where(function ($query) {
         $query->whereHas('product', function ($subQuery) {
           $subQuery->where('name', 'LIKE', '%' . $this->search . '%')
-            ->orWhere('short_description', 'LIKE', '%' . $this->search . '%');
+            ->orWhere('short_description', 'LIKE', '%' . $this->search . '%')
+            ->orWhere('type', 'LIKE', '%' . $this->search . '%');
         });
-      })->get();
+      })->paginate($this->loadAmount);
 
-    if ($this->showTable === true) {
-      return view('livewire.related-product-category', [
-        'relatedproducts' => $relatedProducts,
-        'prodds' => $this->prodds,
-      ]);
-    } else {
-      return view('livewire.related-product-category', [
-        'relatedproducts' => $relatedProducts,
-      ]);
-    }
+    return view('livewire.related-product-category', [
+      'relatedproducts' => $relatedproducts,
+      'prodds' => $this->prodds,
+    ]);
   }
   public function mount(Category $category)
   {
     $this->category = $category;
     $this->selectedColumns = $this->columns;
-    $this->selectedColumnsadd = $this->columnsadd;
   }
 }

@@ -1,0 +1,130 @@
+/// Searchable Variables
+$bg__searchable: #fafafa;
+$color__searchable: #333;
+$triangle__searchable: 8px;
+$padding__searchable: 5px;
+$max-width__searchable: 100%;
+$max-height__searchable: 250px;
+$transition__searchable: all 0.3s ease-in-out;
+
+
+/// Searchable Element
+.searchable {
+	position: relative;
+	width: $max-width__searchable;
+	height: 25px;
+
+	&.active .content__searchable {
+		opacity: 1;
+		visibility: visible;
+		transform: translateY($triangle__searchable);
+	}
+	&.active .button__searchable--line {
+		opacity: 1;
+	}
+}
+
+
+/// Searchable Header
+.input__searchable {
+	width: 100%;
+	height: 100%;
+	padding: 0 $padding__searchable;
+	border: none;
+	border-radius: $padding__searchable;
+	background: $bg__searchable;
+	color: $color__searchable;
+	font-size: 16px;
+	font-weight: 500;
+  text-align: start;
+	outline: none;
+
+	&::placeholder {
+		font-size: 14px;
+		font-weight: 500;
+		color: $color__searchable;
+		opacity: 0.75;
+	}
+}
+.button__searchable {
+	position: absolute;
+	transform: translateY(-50%) scale(0.85);
+	top: 50%;
+	right: 0;
+	background: darken($bg__searchable, 10%);
+	border: none;
+	border-radius: 50%;
+	width: 25px;
+	height: 25px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+
+	& svg {
+		transform: scale(0.7);
+		transition: $transition__searchable;
+	}
+  &--line {
+    opacity: 0;
+    transition: $transition__searchable;
+  }
+}
+
+
+/// Searchable Body
+.content__searchable {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	width: 100%;
+	padding: $padding__searchable;
+	border-radius: $padding__searchable;
+	background: darken($bg__searchable, 10%);
+	transition: $transition__searchable;
+	opacity: 0;
+	visibility: hidden;
+	transform: translateY($triangle__searchable + $padding__searchable);
+  z-index: 500;
+
+	&::after {
+		position: absolute;
+		bottom: calc(100% - 2px);
+		left: 50%;
+		transform: translateX(-50%);
+		width: $triangle__searchable * 2;
+		height: $triangle__searchable;
+		clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+		background: darken($bg__searchable, 10%);
+		content: "";
+		z-index: 10;
+	}
+}
+.list__searchable {
+	width: 100%;
+	height: 100%;
+	max-height: $max-height__searchable;
+	display: flex;
+	flex-direction: column;
+	gap: $padding__searchable;
+	overflow: auto;
+}
+.item__searchable {
+	width: 100%;
+	min-height: 25px;
+	padding: 0 $padding__searchable;
+	border: none;
+	border-radius: $padding__searchable;
+	background: $bg__searchable;
+	color: $color__searchable;
+	font-size: 14px;
+	font-weight: 500;
+	text-align: left;
+	text-wrap: balance;
+	cursor: pointer;
+	transition: $transition__searchable;
+
+	&:active {
+		transform: scale(0.95);
+	}
+}

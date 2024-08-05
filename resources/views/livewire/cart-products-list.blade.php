@@ -8,7 +8,11 @@
  <button class="leftbar__hidden--close" wire:click="$set('showcart', false)" id="basketHidden"></button>
  <div class="leftbar__content" id="basketContent">
   <div class="leftbar__top">
-   <a id="price_change" class="leftbar__button" href="{{ url('/cart') }}">@if (app()->has('label_cart_title')){!! app('label_cart_title') !!} @endif</a>
+   <a id="price_change" class="leftbar__button" href="{{ url('/cart') }}">
+    @if (app()->has('label_cart_title'))
+     {!! app('label_cart_title') !!}
+    @endif
+   </a>
    <button class="leftbar__close" id="basketClose" wire:click="$set('showcart', false)">
     <svg>
      <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -17,9 +21,27 @@
    </button>
   </div>
 
+  @php
+   if (app()->has('global_numberformat_element')) {
+       if (app('global_numberformat_element') === '.') {
+           $mill = '.';
+           $decimal = ',';
+       } else {
+           $mill = ',';
+           $decimal = '.';
+       }
+   } else {
+       $mill = '.';
+       $decimal = ',';
+   }
+  @endphp
 
-  @if ($cartItems->isEmpty())
-   <span class="leftbar__empty">@if (app()->has('label_cart_empty')){!! app('label_cart_empty') !!} @endif</span>
+  @if (!isset($cartItems) || $cartItems->isEmpty())
+   <span class="leftbar__empty">
+    @if (app()->has('label_cart_empty'))
+     {!! app('label_cart_empty') !!}
+    @endif
+   </span>
   @else
    <?php $total = 0; ?>
    <ul class="leftbar__list">
@@ -33,7 +55,7 @@
      <?php
      $disabled[$index] = false;
      $nonquantity[$index] = false;
-
+     
      if ($cartItem->product->active != true || $cartItem->product->start_date > now()->format('Y-m-d') || $cartItem->product->end_date < now()->format('Y-m-d')) {
          $disabled[$index] = true;
          $isdisabled = true;
@@ -42,25 +64,25 @@
          $disabled[$index] = true;
          $isdisabled = true;
      }
-
+     
      if ($cartItem->product->quantity < $cartItem->quantity) {
          $nonquantity[$index] = true;
          $isdisabled = true;
      }
      ?>
-     
+
      <script>
       document.addEventListener('livewire:load', function() {
-    let observer = new IntersectionObserver((entries) => {
-     entries.forEach(entry => {
-      if (entry.isIntersecting) {
-       @this.call('pricechanged');
-      }
-     });
-    });
+       let observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+         if (entry.isIntersecting) {
+          @this.call('pricechanged');
+         }
+        });
+       });
 
-    observer.observe(document.getElementById('price_change'));
-   });
+       observer.observe(document.getElementById('price_change'));
+      });
      </script>
 
 
@@ -72,11 +94,12 @@
          {{ $cartItem->quantity }} x
         </span>
         @if ($cartItem->product->media->first())
-         <img loading="eager" class="cart__list--img"
+         <img loading="eager" class="cart__list--img" title="{{ $cartItem->product->name }}"
           src="/{{ $cartItem->product->media->first()->path }}{{ $cartItem->product->media->first()->name }}"
           alt="{{ $cartItem->product->media->first()->name }}{{ $cartItem->product->name }}">
         @else
-         <img loading="eager" class="cart__list--img" src="/images/store/default/default70.webp" alt="something wrong">
+         <img title="Default image" loading="eager" class="cart__list--img" src="/images/store/default/default70.webp"
+          alt="something wrong">
         @endif
         <div class="leftbar__link--text">
          <h4 class="leftbar__link--title">{{ $cartItem->product->name }}</h4>
@@ -92,26 +115,31 @@
          {{ $cartItem->quantity }} x
         </span>
         @if ($cartItem->product->media->first())
-         <img loading="eager" class="cart__list--img"
+         <img loading="eager" class="cart__list--img" title="{{ $cartItem->product->name }}"
           src="/{{ $cartItem->product->media->first()->path }}{{ $cartItem->product->media->first()->name }}"
           alt="{{ $cartItem->product->media->first()->name }}{{ $cartItem->product->name }}">
         @else
-         <img loading="eager" class="cart__list--img" src="/images/store/default/default70.webp" alt="something wrong">
+         <img title="Default image" loading="eager" class="cart__list--img" src="/images/store/default/default70.webp"
+          alt="something wrong">
         @endif
         <div class="leftbar__link--text">
          <h4 class="leftbar__link--title">{{ $cartItem->product->name }}</h4>
          <span class="leftbar__link--price">
           @php
            if (optional($cartItem->product->product_prices->first())->value) {
-               $price = number_format($cartItem->product->product_prices->first()->value, 2, ',', '.');
+               $price = number_format($cartItem->product->product_prices->first()->value, 2, $decimal, $mill);
            } else {
                $price = null;
            }
           @endphp
           @if ($price && $price != null)
-           {{ $price }} {{ $cartItem->product->product_prices->first()->pricelist->currency->symbol }}
+           {{ $price }} @if (app()->has('global_currency_primary_symbol'))
+            {!! app('global_currency_primary_symbol') !!}
+           @endif
           @else
-           @if (app()->has('label_product_status_indisponible')){!! app('label_product_status_indisponible') !!} @endif
+           @if (app()->has('label_product_status_indisponible'))
+            {!! app('label_product_status_indisponible') !!}
+           @endif
           @endif
          </span>
         </div>
@@ -127,7 +155,11 @@
       </button>
       @if ($disabled[$index])
        <div class="item__product--disabled">
-        <span>@if (app()->has('label_product_status_indisponible')){!! app('label_product_status_indisponible') !!} @endif</span>
+        <span>
+         @if (app()->has('label_product_status_indisponible'))
+          {!! app('label_product_status_indisponible') !!}
+         @endif
+        </span>
         <button class="leftbar__delete" type="button" wire:click="removeFromCart({{ $cartItem->product->id }})">
          <svg>
           <polyline points="3 6 5 6 21 6"></polyline>
@@ -142,28 +174,42 @@
 
    <div class="leftbar__total">
     <h5 class="leftbar__total--text">
-     @if (app()->has('label_cart_products_tag')){!! app('label_cart_products_tag') !!} @endif
+     @if (app()->has('label_cart_products_tag'))
+      {!! app('label_cart_products_tag') !!}
+     @endif
      <span id="leftbarTotalPrice">
-      {{ number_format($cart->sum_amount, 2, ',', '.') }}
-      {{ $cart->currency->symbol }}
+      {{ number_format($cart->sum_amount, 2, $decimal, $mill) }}
+      @if (app()->has('global_currency_primary_symbol'))
+       {!! app('global_currency_primary_symbol') !!}
+      @endif
 
      </span>
     </h5>
     <h5 class="leftbar__total--text">
-     @if (app()->has('label_cart_delivery_tag')){!! app('label_cart_delivery_tag') !!} @endif
+     @if (app()->has('label_cart_delivery_tag'))
+      {!! app('label_cart_delivery_tag') !!}
+     @endif
      <span id="leftbarTotalPrice">
       @if ($cart->delivery_price == 0)
-       @if (app()->has('label_cart_delivery_free')){!! app('label_cart_delivery_free') !!} @endif
+       @if (app()->has('label_cart_delivery_free'))
+        {!! app('label_cart_delivery_free') !!}
+       @endif
       @else
-       {{ $cart->delivery_price }} {{ $cart->currency->symbol }}
+       {{ number_format($cart->delivery_price, 2, $decimal, $mill) }}@if (app()->has('global_currency_primary_symbol'))
+        {!! app('global_currency_primary_symbol') !!}
+       @endif
       @endif
      </span>
     </h5>
     @if ($cart->voucher_id != null)
      <h5 class="leftbar__total--text">
-      @if (app()->has('label_cart_voucher_tag')){!! app('label_cart_voucher_tag') !!} @endif
+      @if (app()->has('label_cart_voucher_tag'))
+       {!! app('label_cart_voucher_tag') !!}
+      @endif
       <span class="voucher__choice">
-       -{{ number_format($cart->voucher_value, 2, ',', '.') }} {{ $cart->currency->symbol }}
+       -{{ number_format($cart->voucher_value, 2, $decimal, $mill) }} @if (app()->has('global_currency_primary_symbol'))
+        {!! app('global_currency_primary_symbol') !!}
+       @endif
        <button wire:click="removevoucher" class="details__delete" aria-label="Remove voucher">
         <svg>
          <polyline points="3 6 5 6 21 6"></polyline>
@@ -174,10 +220,14 @@
      </h5>
     @endif
     <h5 class="leftbar__total--text">
-     @if (app()->has('label_cart_total_tag')){!! app('label_cart_total_tag') !!} @endif
+     @if (app()->has('label_cart_total_tag'))
+      {!! app('label_cart_total_tag') !!}
+     @endif
      <span id="leftbarTotalPrice">
-      {{ number_format($cart->final_amount, 2, ',', '.') }}
-      {{ $cart->currency->symbol }}
+      {{ number_format($cart->final_amount, 2, $decimal, $mill) }}
+      @if (app()->has('global_currency_primary_symbol'))
+       {!! app('global_currency_primary_symbol') !!}
+      @endif
      </span>
     </h5>
     @if ($message)
@@ -186,18 +236,32 @@
     @if ($cart->voucher_id == null)
      <div class="voucher">
       <input type="text" wire:model="voucher" maxlength="100" name="voucher"
-       placeholder="@if (app()->has('label_cart_voucher_placeholder')){!! app('label_cart_voucher_placeholder') !!} @endif">
+       placeholder="@if (app()->has('label_cart_voucher_placeholder')) {!! app('label_cart_voucher_placeholder') !!} @endif">
       <button type="submit" wire:click="checkvoucher">
-       @if (app()->has('label_cart_voucher_apply')){!! app('label_cart_voucher_apply') !!} @endif
+       @if (app()->has('label_cart_voucher_apply'))
+        {!! app('label_cart_voucher_apply') !!}
+       @endif
       </button>
      </div>
     @endif
 
     @if ($isdisabled)
-     <a class="leftbar__button leftbar__button--long item__button--disabled">@if (app()->has('label_cart_order')){!! app('label_cart_order') !!} @endif</a>
-     <span class="item__text--disabled" id="headerContinue">@if (app()->has('label_cart_order_mesage')){!! app('label_cart_order_mesage') !!} @endif</span>
+     <a class="leftbar__button leftbar__button--long item__button--disabled">
+      @if (app()->has('label_cart_order'))
+       {!! app('label_cart_order') !!}
+      @endif
+     </a>
+     <span class="item__text--disabled" id="headerContinue">
+      @if (app()->has('label_cart_order_mesage'))
+       {!! app('label_cart_order_mesage') !!}
+      @endif
+     </span>
     @else
-     <a class="leftbar__button leftbar__button--long" id="headerContinue" wire:click.prevent="continue">@if (app()->has('label_cart_order')){!! app('label_cart_order') !!} @endif</a>
+     <a class="leftbar__button leftbar__button--long" id="headerContinue" wire:click.prevent="continue">
+      @if (app()->has('label_cart_order'))
+       {!! app('label_cart_order') !!}
+      @endif
+     </a>
     @endif
    </div>
 
@@ -231,16 +295,36 @@
   @endif
  </div>
  <div class="leftbar__modal">
-  <div class="leftbar__modal--text">@if (app()->has('label_cart_voucher_question')){!! app('label_cart_voucher_question') !!} @endif "{{ $voucher }}"?</div>
+  <div class="leftbar__modal--text">
+   @if (app()->has('label_cart_voucher_question'))
+    {!! app('label_cart_voucher_question') !!}
+    @endif "{{ $voucher }}"?
+  </div>
   <div class="leftbar__modal--bundle">
-   <button class="leftbar__modal--btn" wire:click="confirm_aplicabble">@if (app()->has('label_cart_voucher_question_confirm')){!! app('label_cart_voucher_question_confirm') !!} @endif</button>
-   <button class="leftbar__modal--btn" wire:click="cancel_aplicabble">@if (app()->has('label_cart_voucher_question_cancel')){!! app('label_cart_voucher_question_cancel') !!} @endif</button>
+   <button class="leftbar__modal--btn" wire:click="confirm_aplicabble">
+    @if (app()->has('label_cart_voucher_question_confirm'))
+     {!! app('label_cart_voucher_question_confirm') !!}
+    @endif
+   </button>
+   <button class="leftbar__modal--btn" wire:click="cancel_aplicabble">
+    @if (app()->has('label_cart_voucher_question_cancel'))
+     {!! app('label_cart_voucher_question_cancel') !!}
+    @endif
+   </button>
   </div>
  </div>
  <div class="leftbar__problem">
-  <div class="leftbar__modal--text">@if (app()->has('label_cart_changed_mesage')){!! app('label_cart_changed_mesage') !!} @endif</div>
+  <div class="leftbar__modal--text">
+   @if (app()->has('label_cart_changed_mesage'))
+    {!! app('label_cart_changed_mesage') !!}
+   @endif
+  </div>
   <div class="leftbar__modal--bundle">
-   <button class="leftbar__modal--btn" wire:click="seen">@if (app()->has('label_cart_changed_confirm')){!! app('label_cart_changed_confirm') !!} @endif</button>
+   <button class="leftbar__modal--btn" wire:click="seen">
+    @if (app()->has('label_cart_changed_confirm'))
+     {!! app('label_cart_changed_confirm') !!}
+    @endif
+   </button>
   </div>
  </div>
 </div>

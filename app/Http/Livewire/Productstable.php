@@ -24,11 +24,23 @@ class Productstable extends Component
   public $checked = [];
   public $selectPage = false;
   public $selectAll = false;
-  public $productidbeingremoved = null;
+  public $idbeingremoved = null;
   public $columns;
   public $selectedColumns = [];
-  public $col = false;
-  public $all = false;
+  public $row = null;
+  public $single = false;
+  public $multiple = false;
+
+  public function expandRow($index)
+  {
+    if ($this->row  === null) {
+      $this->row = $index;
+    } elseif ($this->row != $index) {
+      $this->row = $index;
+    } else {
+      $this->row = null;
+    }
+  }
 
   public function render()
   {
@@ -77,7 +89,7 @@ class Productstable extends Component
   }
   public function getProductsProperty()
   {
-    return $this->productsQuery->limit($this->loadAmount)->get();
+    return $this->productsQuery->paginate($this->loadAmount);
   }
   public function getProductsQueryProperty()
   {
@@ -106,7 +118,7 @@ class Productstable extends Component
           $productspec->delete();
         }
       }
-      $relproducts = Related_Products::where('product_id', $id)->orwhere('parrent_id', $id)->get();
+      $relproducts = Related_Products::where('product_id', $id)->orwhere('parent_id', $id)->get();
       if ($relproducts != NULL) {
         foreach ($relproducts as $item) {
           $item->delete();
@@ -150,6 +162,7 @@ class Productstable extends Component
     }
     $this->checked = [];
     $this->selectPage = false;
+    $this->multiple = false;
     session()->flash('notification', [
       'message' => 'Records deleted successfully!',
       'type' => 'success',
@@ -158,7 +171,7 @@ class Productstable extends Component
   }
   public function deleteSingleRecord()
   {
-    $id = $this->productidbeingremoved;
+    $id = $this->idbeingremoved;
     $product = Product::findOrFail($id);
     $productcats = Products_categories::where('product_id', $id)->get();
     if ($productcats != NULL) {
@@ -207,21 +220,28 @@ class Productstable extends Component
     }
     $product->delete();
     $this->checked = array_diff($this->checked, [$id]);
+    $this->single = false;
     session()->flash('notification', [
       'message' => 'Records deleted successfully!',
       'type' => 'success',
       'title' => 'Success'
     ]);
   }
-  public function confirmProductRemoval($productid)
+  public function confirmItemRemoval($id)
   {
-    $this->productidbeingremoved = $productid;
-    $this->dispatchBrowserEvent('show-delete-modal');
+    $this->idbeingremoved = $id;
+    $this->single = true;
   }
   public function confirmItemsRemoval()
   {
-    $this->dispatchBrowserEvent('show-delete-modal-multiple');
+    $this->multiple = true;
   }
+  public function cancel_delete()
+  {
+    $this->multiple = false;
+    $this->single = false;
+  }
+
   public function isChecked($id)
   {
     return in_array($id, $this->checked);

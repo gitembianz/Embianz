@@ -13,8 +13,8 @@ return new class extends Migration
   {
     Schema::create('subcategories', function (Blueprint $table) {
       $table->id();
-      $table->unsignedBigInteger('parrent_id')->index();
-      $table->foreign('parrent_id')->references('id')->on('categories');
+      $table->unsignedBigInteger('parent_id')->index();
+      $table->foreign('parent_id')->references('id')->on('categories');
       $table->unsignedBigInteger('category_id')->nullable();
       $table->foreign('category_id')->references('id')->on('categories');
       $table->timestamps();

@@ -1,5 +1,5 @@
 <x-store-head :canonical="'terms'" :title='" Termeni si Conditii | "' :description='"Termeni și conditii"'/>
-<x-store-header />
+@livewire('store-header')
 <main>
 	<!---------------------------------------------------------->
 	<!------------------------Breadcrumbs----------------------->

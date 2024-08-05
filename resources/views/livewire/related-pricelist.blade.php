@@ -1,613 +1,730 @@
-<div>
- <x-alert />
- <div class="accordion">
-  <div class="accordion__btn-flex">
-   <button class="accordion__btn"
-    wire:click.prevent="@if ($showrelatedprice === false) $set('showrelatedprice', true) @else $set('showrelatedprice', false) @endif">
-    {{ __('Price List ') }}({{ $item->product_prices->count() }})
-   </button>
-   <button wire:click.prevent="addrelated()" class="accordion__upload">
-    <svg>
-     <line x1="12" y1="5" x2="12" y2="19"></line>
-     <line x1="5" y1="12" x2="19" y2="12"></line>
-    </svg>
+<div class="accordion @if ($showrelatedprice) active @endif">
+
+ {{-- ASIDES --}}
+ {{-- Delete Record || Delete Records --}}
+ <aside>
+  <div class="background background--center @if ($single || $multiple) active @endif"></div>
+  <div class="aside aside--confirm @if ($single || $multiple) active @endif">
+   <span>
+    @if ($single)
+     Are you sure to delete this record?
+    @else
+     Are you sure to delete those records?
+    @endif
+   </span>
+   @if ($single)
+    <button class="button button--primary button--long" wire:click="deleteSingleRecord">
+     <span>Delete</span>
+    </button>
+   @else
+    <button class="button button--primary button--long" wire:click="deleteRecords()">
+     <span>Delete</span>
+    </button>
+   @endif
+   <button class="button button--danger button--long" wire:click="cancel_delete()">
+    <span>Cancel</span>
    </button>
   </div>
+ </aside>
+ {{-- Table Edit Multiple --}}
+ <aside>
+  <div class="background background--center  @if ($editmultiple) active @endif"></div>
+  <div class="aside aside--table @if ($editmultiple) active @endif">
 
-  {{-- add related specs --}}
-  @if ($addrelatedprice)
-   <div class="modal" id="modalelements" style="display: block">
-    <div class="modal-content modal--tabel">
-     {{-- Header of the table --}}
-     <div class="panel__header">
-      <h1 class="panel__header--title">
-       {{ __('Add related Pricelist') }}
-      </h1>
-      <input class="panel__header--input panel__header--checked" wire:click.prevent="saveitems()" type="button"
-       value="Save">
-     </div>
-     {{-- Table --}}
-     <div style="overflow-y: auto; position: relative; background: white; height: 100%;">
-      <table class="table table-top">
-       <thead>
-        <tr>
-         <th class="wid-3"><button class="table__header--btn">Product</button></th>
-         <th class="wid-3"><button class="table__header--btn">Pricelist</button></th>
-         <th class="wid-1"><button class="table__header--btn">Value without VAT</button></th>
-         <th class="wid-1"><button class="table__header--btn">Discount %</button></th>
-         <th class="wid-1"><button class="table__header--btn">VAT %</button></th>
-         <th class="wid-1"></th>
-        </tr>
-       </thead>
-      </table>
-      <table class="table" style="margin-top: 1.5rem">
-       <tbody>
-        @foreach ($priceAndValues as $index => $priceAndValue)
-         <tr wire:key="price-row-{{ $index }}">
-          <td class="wid-3" data-title="Name">
-           {{ $item->name }}
-          </td>
-          <td class="wid-3" data-title="Pricelist">
-           @if ($priceAndValue['allow'])
-            <div class="table__drop" style="position: relative">
-             <input class="table__drop--input" wire:model.debounce.300ms="searchadd" placeholder="Search..."
-              type="text">
-             <ul class="table__drop--list">
-              @if (count($addprices) >= 1)
-               @foreach ($addprices as $pri)
-                <li class="table__drop--item"
-                 wire:click.prevent="selectitem({{ $index }}, {{ $pri->id }}, '{{ $pri->name }}')">
-                 {{ $pri->name }} ({{ $pri->currency->name }})
-                </li>
-               @endforeach
-              @else
-               <li>{{ __('No pricelist found') }}</li>
-              @endif
-             </ul>
-             <svg wire:click.prevent="denny({{ $index }})"
-              style="background: #35424b;position: absolute;top: 50%;transform: translateY(-50%);right: 10px;border-radius: 5px;padding: 5px;opacity: .7;stroke: white;"
-              width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round" class="feather feather-x">
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
-             </svg>
-            </div>
-           @else
-            <div style="position: relative" class="table__drop--input">
-             @if ($priceAndValue['itemselected'])
-              {{ $priceAndValue['itemselected'] }}
-             @else
-              {{ __('Select a item') }}
-             @endif
-             <svg wire:click.prevent="allowselect({{ $index }})"
-              style="background: #35424b;position: absolute;top: 50%;transform: translateY(-50%);right: 10px;border-radius: 5px;padding: 5px;opacity: .7;stroke: white;"
-              width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2">
-              <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
-              </path>
-             </svg>
-            </div>
-           @endif
-           <input type="hidden" wire:model.defer="priceAndValues.{{ $index }}.price.name">
-          </td>
-          <td class="wid-1" data-title="Price">
-           <input type="text" required class="table__drop--input"
-            wire:model.defer="priceAndValues.{{ $index }}.price.value">
-          </td>
-          <td class="wid-1" data-title="Discount">
-           <input type="number" max="100" class="table__drop--input"
+
+   {{-- Navigation --}}
+   <nav class="nav--controls">
+    <h1 class="table--name">
+     {{ __('Edit related items') }}
+    </h1>
+    <button class="button button--primary button--centered" wire:click.prevent="confirmpricemultiple()">
+     <svg>
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" />
+      <path d="M12 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+      <path d="M14 4l0 4l-6 0l0 -4" />
+     </svg>
+    </button>
+    <button class="button button--danger button--centered" wire:click="closemodal">
+     <svg>
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M15 19v-2a2 2 0 0 1 2 -2h2" />
+      <path d="M15 5v2a2 2 0 0 0 2 2h2" />
+      <path d="M5 15h2a2 2 0 0 1 2 2v2" />
+      <path d="M5 9h2a2 2 0 0 0 2 -2v-2" />
+     </svg>
+    </button>
+   </nav>
+
+
+   {{-- Tabel --}}
+   <div class="table" style="height: calc(100% - 60px);">
+    <table class="expandable-table">
+     <thead>
+      <tr>
+       <th style="width: unset !important;">
+        <div style="display: flex;">
+         <button class="table--btn">
+          Product
+         </button>
+         <button class="button button--secondary button--sm" style="opacity: 0">
+          <svg>
+           <polyline points="3 6 5 6 21 6"></polyline>
+           <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+          </svg>
+         </button>
+        </div>
+       </th>
+       <th>
+        <button class="table--btn">Pricelist</button>
+       </th>
+       <th>
+        <button class="table--btn">Value without VAT</button>
+       </th>
+       <th class="hidden">
+        <button class="table--btn">Discount %</button>
+       </th>
+       <th class="hidden" style="width: unset !important;">
+        <button class="table--btn">VAT %</button>
+       </th>
+      </tr>
+     </thead>
+     <tbody>
+      @php
+       $j = 0;
+      @endphp
+      @foreach ($priceAndValues as $index => $priceAndValue)
+       <tr class="expandable-row" wire:key="price-row-{{ $index }}">
+        <td wire:click="expandRow2({{ $index }})" style="width: unset !important;">
+         {{ $item->name }}
+        </td>
+        <td wire:click="expandRow2({{ $index }})">
+         {{ $priceAndValue['itemselected'] }}
+        </td>
+        <td wire:click="expandRow2({{ $index }})">
+         <div class="searchable">
+          <input type="text" required class="input__searchable"
+           wire:model.defer="priceAndValues.{{ $index }}.price.value">
+         </div>
+        </td>
+        <td class="hidden" wire:click="expandRow2({{ $index }})">
+         <div class="searchable">
+          <input type="number" required class="input__searchable"
+           wire:model.defer="priceAndValues.{{ $index }}.price.discount">
+         </div>
+        </td>
+        <td class="hidden" style="width: unset !important;" wire:click="expandRow2({{ $index }})">
+         <div class="searchable">
+          <input type="number" required
+           class="input__searchable"wire:model.defer="priceAndValues.{{ $index }}.price.vat">
+         </div>
+        </td>
+       </tr>
+       <tr class="details-row  @if ($row2 === $j) active @endif">
+        <td colspan="3">
+         <div class="details">
+
+
+
+          <p>
+           <bold>Discount</bold>
+          <div class="searchable">
+           <input type="number" required class="input__searchable"
             wire:model.defer="priceAndValues.{{ $index }}.price.discount">
-          </td>
+          </div>
+          </p>
+          <p>
+           <bold>VAT</bold>
+          <div class="searchable">
+           <input type="number" required
+            class="input__searchable"wire:model.defer="priceAndValues.{{ $index }}.price.vat">
+          </div>
+          </p>
+         </div>
+        </td>
+       </tr>
+       @php
+        $j++;
+       @endphp
+      @endforeach
+     </tbody>
+    </table>
+   </div>
 
-          <td class="wid-1" data-title="TVA">
-           <input type="text" required class="table__drop--input"
-            wire:model.defer="priceAndValues.{{ $index }}.price.vat"
-            value="{{ old('priceAndValues.' . $index . '.price.vat', 19) }}">
-          </td>
+  </div>
+ </aside>
+ {{-- Table Add Multiple --}}
+ <aside>
+  <div class="background background--center  @if ($addrelatedprice) active @endif"></div>
+  <div class="aside aside--table @if ($addrelatedprice) active @endif">
 
-          <td class="wid-1" data-title="Action">
-           <div class="table__buttons">
-            @if ($index == $row - 1)
-             <button type="button" class="edit" wire:click="plus">
-              <svg>
-               <line x1="12" y1="5" x2="12" y2="19">
-               </line>
-               <line x1="5" y1="12" x2="19" y2="12">
-               </line>
-              </svg>
-             </button>
-             <button type="button" class="save" wire:click="clear({{ $index }})">
-              <svg>
-               <line x1="18" y1="6" x2="6" y2="18">
-               </line>
-               <line x1="6" y1="6" x2="18" y2="18">
-               </line>
-              </svg>
-             </button>
-            @endif
-            @if ($index != $row - 1)
-             <button type="button" class="save" wire:click="clear({{ $index }})">
-              <svg>
-               <line x1="18" y1="6" x2="6" y2="18">
-               </line>
-               <line x1="6" y1="6" x2="18" y2="18">
-               </line>
-              </svg>
-             </button>
-            @endif
+
+   {{-- Navigation --}}
+   <nav class="nav--controls">
+    <h1 class="table--name">
+     {{ __('Add related Pricelist') }}
+    </h1>
+    <button class="button button--primary button--centered" wire:click.prevent="saveitems()">
+     <svg>
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" />
+      <path d="M12 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+      <path d="M14 4l0 4l-6 0l0 -4" />
+     </svg>
+    </button>
+    <button class="button button--danger button--centered" wire:click="closemodal">
+     <svg>
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M15 19v-2a2 2 0 0 1 2 -2h2" />
+      <path d="M15 5v2a2 2 0 0 0 2 2h2" />
+      <path d="M5 15h2a2 2 0 0 1 2 2v2" />
+      <path d="M5 9h2a2 2 0 0 0 2 -2v-2" />
+     </svg>
+    </button>
+   </nav>
+
+
+   {{-- Tabel --}}
+   <div class="table" style="height: calc(100% - 60px);">
+    <table class="expandable-table">
+     <thead>
+      <tr>
+       <th style="width: unset !important;">
+        <button class="table--btn">
+         Product
+        </button>
+       </th>
+       <th>
+        <button class="table--btn">Pricelist</button>
+       </th>
+       <th>
+        <button class="table--btn">Value without VAT</button>
+       </th>
+       <th class="hidden">
+        <button class="table--btn">Discount %</button>
+       </th>
+       <th class="hidden" style="width: unset !important;">
+        <button class="table--btn">VAT %</button>
+       </th>
+       <th>
+        <div style="display: flex;">
+         <button class="button button--secondary button--sm" style="opacity: 0">
+          <svg>
+           <polyline points="3 6 5 6 21 6"></polyline>
+           <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+          </svg>
+         </button>
+         <button class="button button--secondary button--sm" style="opacity: 0">
+          <svg>
+           <polyline points="3 6 5 6 21 6"></polyline>
+           <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+          </svg>
+         </button>
+        </div>
+       </th>
+      </tr>
+     </thead>
+     <tbody>
+      @php
+       $k = 0;
+      @endphp
+      @foreach ($priceAndValues as $index => $priceAndValue)
+       <tr class="expandable-row" wire:key="price-row-{{ $index }}">
+        <td wire:click="expandRow3({{ $index }})" style="width: unset !important;">
+         {{ $item->name }}
+        </td>
+        <td wire:click="expandRow3({{ $index }})">
+         @if ($priceAndValue['allow'])
+          <div class="searchable active">
+           <!-- Dropdown Header -->
+           <input class="input" wire:model.debounce.300ms="searchadd" placeholder="Search..." type="text">
+           <button class="button__searchable" wire:click.prevent="dennyselect({{ $index }})">
+            <svg>
+             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+             <path d="M10 10l-6 6v4h4l6 -6m1.99 -1.99l2.504 -2.504a2.828 2.828 0 1 0 -4 -4l-2.5 2.5" />
+             <path d="M13.5 6.5l4 4" />
+             <path class="button__searchable--line" d="M3 3l18 18" />
+            </svg>
+           </button>
+           <div class="content__searchable">
+            <div class="list__searchable">
+             @if (count($addprices) >= 1)
+              @foreach ($addprices as $pri)
+               <button class="item__searchable"
+                wire:click.prevent="selectitem({{ $index }}, {{ $pri->id }}, '{{ $pri->name }}')">
+                {{ $pri->name }}
+               </button>
+              @endforeach
+             @else
+              <button class="item__searchable">{{ __('No record found') }}</button>
+             @endif
+            </div>
            </div>
-          </td>
-         </tr>
-        @endforeach
-       </tbody>
-      </table>
-     </div>
-     <span class="top-up-modal delete" wire:click="closemodal">
-      <svg>
-       <line x1="18" y1="6" x2="6" y2="18">
-       </line>
-       <line x1="6" y1="6" x2="18" y2="18">
-       </line>
-      </svg>
-     </span>
-     <a href="#top1" class="top-up-modal" id="topUp">
-      <svg>
-       <polyline points="18 15 12 9 6 15"></polyline>
-      </svg>
-     </a>
-    </div>
-   </div>
-  @endif
-
-
-  @if ($editmultiple)
-   <div class="modal" id="modalelements" style="display: block">
-    <div class="modal-content modal--tabel">
-     {{-- Header of the table --}}
-     <div class="panel__header">
-      <h1 class="panel__header--title">
-       {{ __('Edit multiple related Prices') }}
-      </h1>
-      <input class="panel__header--input panel__header--checked" wire:click.prevent="confirmpricemultiple()"
-       type="button" value="Save">
-     </div>
-     {{-- Table --}}
-     <div style="overflow-y: auto; position: relative; background: white; height: 100%">
-      <table class="table table-top">
-       <thead>
-        <tr>
-         <th class="wid-4"><button class="table__header--btn">Product</button></th>
-         <th class="wid-3"><button class="table__header--btn">Pricelist</button></th>
-         <th class="wid-1"><button class="table__header--btn">Value without VAT</button></th>
-         <th class="wid-1"><button class="table__header--btn">Discount %</button></th>
-         <th class="wid-1"><button class="table__header--btn">VAT %</button></th>
-
-        </tr>
-       </thead>
-      </table>
-      <table class="table" style="margin-top: 1.5rem">
-       <tbody>
-        @foreach ($priceAndValues as $index => $priceAndValue)
-         <tr wire:key="price-row-{{ $index }}">
-          <td class="wid-4" data-title="Name">
-           {{ $item->name }}
-          </td>
-          <td class="wid-3" data-title="Pricelist">
-           @if ($priceAndValue['allow'])
-            <div class="table__drop" style="position: relative">
-             <input class="table__drop--input" wire:model.debounce.300ms="searchadd" placeholder="Search..."
-              type="text">
-             <ul class="table__drop--list">
-              @if (count($addprices) >= 1)
-               @foreach ($addprices as $pri)
-                <li class="table__drop--item"
-                 wire:click.prevent="selectitem({{ $index }}, {{ $pri->id }}, '{{ $pri->name }}')">
-                 {{ $pri->name }} ({{ $pri->currency->um }})
-                </li>
-               @endforeach
-              @else
-               <li>{{ __('No pricelist found') }}</li>
-              @endif
-             </ul>
-             <svg wire:click.prevent="denny({{ $index }})"
-              style="background: #35424b;position: absolute;top: 50%;transform: translateY(-50%);right: 10px;border-radius: 5px;padding: 5px;opacity: .7;stroke: white;"
-              width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x">
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
-             </svg>
-            </div>
-           @else
-            <div style="position: relative" class="table__drop--input">
-             @if ($priceAndValue['itemselected'])
-              {{ $priceAndValue['itemselected'] }}
-             @else
-              {{ __('Select a item') }}
-             @endif
-             <svg wire:click.prevent="allowselect({{ $index }})"
-              style="background: #35424b;position: absolute;top: 50%;transform: translateY(-50%);right: 10px;border-radius: 5px;padding: 5px;opacity: .7;stroke: white;"
-              width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2">
-              <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
-              </path>
-             </svg>
-            </div>
-           @endif
-           <input type="hidden" wire:model.defer="priceAndValues.{{ $index }}.price.name">
-          </td>
-          <td class="wid-1" data-title="Value without VAT">
-           <input type="text" required class="table__drop--input"
-            wire:model.defer="priceAndValues.{{ $index }}.price.value">
-          </td>
-          <td class="wid-1" data-title="Discount %">
-           <input type="number" required class="table__drop--input"
-            wire:model.defer="priceAndValues.{{ $index }}.price.discount">
-          </td>
-          <td class="wid-1" data-title="VAT %">
-           <input type="number" required class="table__drop--input"
-            wire:model.defer="priceAndValues.{{ $index }}.price.vat">
-          </td>
-         </tr>
-        @endforeach
-       </tbody>
-      </table>
-     </div>
-     <span class="top-up-modal delete" wire:click="closemodal">
-      <svg>
-       <line x1="18" y1="6" x2="6" y2="18">
-       </line>
-       <line x1="6" y1="6" x2="18" y2="18">
-       </line>
-      </svg>
-     </span>
-     <a href="#top1" class="top-up-modal" id="topUp">
-      <svg>
-       <polyline points="18 15 12 9 6 15"></polyline>
-      </svg>
-     </a>
-    </div>
-   </div>
-  @endif
-
-
-  {{-- end add related specs --}}
-  @if ($showrelatedprice)
-   <div class="accordion__content">
-    <div>
-     @if ($item->product_prices->count() > 0)
-      {{-- delete single record --}}
-      <div class="modal" id="confirmationmodalprice">
-       <div class="modal-content">
-        <h1 class="modal-content-title">
-         {{ __('Are you sure to delete this record?') }}
-        </h1>
-        <input wire:click.prevent="deleteSingleRecord()" class="modal-content-btn submit" type="button"
-         value="Confirm" id="confirmLoad">
-        <input class="modal-content-btn delete" type="button"
-         onclick="document.getElementById('confirmationmodalprice').style.display='none'" value="Cancel">
-        <span class="modal-content-btn delete"
-         onclick="document.getElementById('confirmationmodalprice').style.display='none'">
-         <svg>
-          <line x1="18" y1="6" x2="6" y2="18">
-          </line>
-          <line x1="6" y1="6" x2="18" y2="18">
-          </line>
-         </svg>
-        </span>
-       </div>
-      </div>
-      {{-- delete myltiple records --}}
-      <div class="modal" id="confirmationmodalmultiple">
-       <div class="modal-content">
-        <h1 class="modal-content-title">
-         {{ __('Are you sure to delete those records?') }}
-        </h1>
-        <input wire:click.prevent="deleteRecords()" class="modal-content-btn submit" type="button" value="Confirm"
-         id="confirmLoad">
-        <input class="modal-content-btn delete" type="button"
-         onclick="document.getElementById('confirmationmodalmultiple').style.display='none'" value="Cancel">
-        <span class="modal-content-btn delete"
-         onclick="document.getElementById('confirmationmodalmultiple').style.display='none'">
-         <svg>
-          <line x1="18" y1="6" x2="6" y2="18">
-          </line>
-          <line x1="6" y1="6" x2="18" y2="18">
-          </line>
-         </svg>
-        </span>
-       </div>
-      </div>
-      {{-- Header of the table --}}
-      <div class="panel__header">
-       <input class="panel__header--input" type="text" wire:model.debounce.300ms="search" placeholder="Search..."
-        style="grid-column: 1/4">
-       <div class="panel__header--bundle">
-        <div class="dropdown">
-         <button
-          wire:click.prevent="@if ($col === false) $set('col', true) @else $set('col', false) @endif"
-          class="dropdown-button">
-          Columns
-         </button>
-         @if ($col)
-          <div class="dropdown-list" style="display: flex;">
-           @foreach ($columns as $column)
-            <div class="dropdown-item">
-             <input type="checkbox" wire:model="selectedColumns" value="{{ $column }}"
-              {{ in_array($column, $selectedColumns) ? 'checked' : '' }}>
-             <label>{{ $column }}</label>
-            </div>
-           @endforeach
           </div>
-         @endif
-        </div>
-        <div class="dropdown none" @if ($checked) style="display: unset; z-index: 5;" @endif>
-         <button
-          wire:click.prevent="@if ($all === false) $set('all', true); $set('col', false) @else $set('all', false) @endif"
-          class="dropdown-button none" @if ($checked) style="display: flex" @endif>
-          With Checked({{ count($checked) }})
-         </button>
-         @if ($checked && $all)
-          <div class="dropdown-list" style="display: flex;">
-           <button class="dropdown-item delete" type="button" wire:click="confirmRemovalmultiple()">
-            Delete
+         @else
+          <div class="searchable">
+           <button class="input__searchable">
+            @if ($priceAndValue['itemselected'])
+             {{ $priceAndValue['itemselected'] }}
+            @else
+             {{ __('Select a item') }}
+            @endif
            </button>
-           <button class="dropdown-item submit" type="button" wire:click="editSelected">
-            Edit
+           <button class="button__searchable" wire:click.prevent="allowselect({{ $index }})">
+            <svg>
+             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+             <path d="M10 10l-6 6v4h4l6 -6m1.99 -1.99l2.504 -2.504a2.828 2.828 0 1 0 -4 -4l-2.5 2.5" />
+             <path d="M13.5 6.5l4 4" />
+             <path class="button__searchable--line" d="M3 3l18 18" />
+            </svg>
            </button>
           </div>
          @endif
-        </div>
-       </div>
-       @if ($selectPage && $selectAll)
-        <div class="panel__header--checked">
-         <p>
-          You selected <strong>{{ count($checked) }}</strong> items.
-         </p>
-        </div>
-       @elseif($selectPage)
-        <div class="panel__header--checked" wire:click="selectAll">
-         <p>
-          You selected {{ count($checked) }} items, select all?
-         </p>
-        </div>
-       @endif
-      </div>
-      {{-- Table --}}
-      <table class="table">
-       <thead>
-        <tr>
-         <th><input type="checkbox" wire:model="selectPage"></th>
-         @if ($this->showColumn('Id'))
-          <th wire:click="sortBy('id')">
-           <button class="table__header--btn">
-            ID
+         <input type="hidden" wire:model.defer="priceAndValues.{{ $index }}.price.name">
+        </td>
+        <td wire:click="expandRow3({{ $index }})">
+         <div class="searchable">
+          <input type="text" required class="input__searchable"
+           wire:model.defer="priceAndValues.{{ $index }}.price.value">
+         </div>
+        </td>
+        <td class="hidden" wire:click="expandRow3({{ $index }})">
+         <div class="searchable">
+          <input type="number" required class="input__searchable"
+           wire:model.defer="priceAndValues.{{ $index }}.price.discount">
+         </div>
+        </td>
+        <td class="hidden" wire:click="expandRow3({{ $index }})">
+         <div class="searchable">
+          <input type="number" required
+           class="input__searchable"wire:model.defer="priceAndValues.{{ $index }}.price.vat">
+         </div>
+        </td>
+        <td style="width: unset !important;">
+         <div style="display: flex;">
+          @if ($index == $row4 - 1)
+           <button class="button button--secondary button--sm" wire:click="plus">
+            <svg>
+             <line x1="12" y1="5" x2="12" y2="19">
+             </line>
+             <line x1="5" y1="12" x2="19" y2="12">
+             </line>
+            </svg>
            </button>
-          </th>
-         @endif
-         @if ($this->showColumn('Name'))
-          <th wire:click="sortBy('name')">
-           <button class="table__header--btn">
-            Name
+           <button class="button button--secondary button--sm" wire:click="clear({{ $index }})">
+            <svg>
+             <line x1="18" y1="6" x2="6" y2="18">
+             </line>
+             <line x1="6" y1="6" x2="18" y2="18">
+             </line>
+            </svg>
            </button>
-          </th>
-         @endif
-         @if ($this->showColumn('Currency'))
-          <th>
-           <button class="table__header--btn">
-            Currency
+          @else
+           <button class="button button--secondary button--sm" wire:click="clear({{ $index }})">
+            <svg>
+             <line x1="18" y1="6" x2="6" y2="18">
+             </line>
+             <line x1="6" y1="6" x2="18" y2="18">
+             </line>
+            </svg>
            </button>
-          </th>
-         @endif
-         @if ($this->showColumn('Value'))
-          <th>
-           <button class="table__header--btn">
-            Value
-           </button>
-          </th>
-         @endif
-         @if ($this->showColumn('Value without Discount'))
-          <th>
-           <button class="table__header--btn">
-            Value without Discount
-           </button>
-          </th>
-         @endif
-         @if ($this->showColumn('Discount'))
-          <th>
-           <button class="table__header--btn">
-            Discount %
-           </button>
-          </th>
-         @endif
-         @if ($this->showColumn('Value without VAT'))
-          <th>
-           <button class="table__header--btn">
-            Value without VAT
-           </button>
-          </th>
-         @endif
-         @if ($this->showColumn('VAT'))
-          <th>
-           <button class="table__header--btn">
-            VAT %
-           </button>
-          </th>
-         @endif
-         <th wire:click="sortBy('created_at')">
-          <button class="table__header--btn">
-           Created at
-          </button>
-         </th>
-         <th wire:click="sortBy('created_at')">
-          <button class="table__header--btn">
-           Updated at
-          </button>
-         </th>
-         <th></th>
-        </tr>
-       </thead>
-       <tbody>
-        @if ($relatedprices->isEmpty())
-         <tr>
-          <td class="table__empty" colspan="{{ count($columns) + 3 }}">No record
-           found.</td>
-         </tr>
-        @else
-         @foreach ($relatedprices as $index => $prices)
-          @if ($index >= $perPage)
-           <?php
-           break;
-           ?>
           @endif
-          <tr class="@if ($this->isChecked($prices->id)) table__row--selected @endif">
-           <td data-title="Check">
-            <input type="checkbox" value="{{ $prices->id }}" wire:model="checked">
-           </td>
-           @if ($this->showColumn('Id'))
-            <td data-title="ID">
+         </div>
+        </td>
+       </tr>
+       <tr class="details-row  @if ($row3 === $k) active @endif">
+        <td colspan="3">
+         <div class="details">
+
+
+
+          <p>
+           <bold>Discount</bold>
+          <div class="searchable">
+           <input type="number" required class="input__searchable"
+            wire:model.defer="priceAndValues.{{ $index }}.price.discount">
+          </div>
+          </p>
+          <p>
+           <bold>VAT</bold>
+          <div class="searchable">
+           <input type="number" required
+            class="input__searchable"wire:model.defer="priceAndValues.{{ $index }}.price.vat">
+          </div>
+          </p>
+         </div>
+        </td>
+       </tr>
+       @php
+        $k++;
+       @endphp
+      @endforeach
+     </tbody>
+    </table>
+   </div>
+
+  </div>
+ </aside>
+
+
+
+ {{-- Accordion Header --}}
+ <div class="accordion__header">
+  <button
+   class="button button--flexed button--fill button--primary @if ($showrelatedprice) button--secondary active @endif"
+   wire:click.prevent="@if ($showrelatedprice === false) $set('showrelatedprice', true) @else $set('showrelatedprice', false) @endif">
+   {{ __('Price List ') }}({{ $item->product_prices->count() }})
+   <svg>
+    <polyline points="6 9 12 15 18 9"></polyline>
+   </svg>
+  </button>
+  <button class="button button--secondary" wire:click.prevent="addrelated()">
+   <svg>
+    <line x1="12" y1="5" x2="12" y2="19"></line>
+    <line x1="5" y1="12" x2="19" y2="12"></line>
+   </svg>
+  </button>
+ </div>
+
+
+ {{-- Accordion Body --}}
+ <div class="accordion__body">
+  {{-- Navigation --}}
+  <nav class="nav--controls">
+   {{-- Search Input --}}
+   <input class="input input--long" type="text" wire:model.debounce.300ms="search" placeholder="Search...">
+   {{-- IF CHECKED --}}
+   <div class="dropdown dropdown--right" @if (!$checked) style="display:none;" @endif>
+    {{-- Dropdown Button --}}
+    <button class="button button--primary button--centered button--long dropdown__button"
+     tooltip="Actions with checked" tooltip-top>
+     <span>With Checked({{ count($checked) }})</span>
+    </button>
+    {{-- Dropdown Content --}}
+    <div class="dropdown__content">
+     <div class="dropdown__container">
+      <button class="button button--primary button--long" wire:click="confirmItemsRemoval()">
+       Delete
+      </button>
+      <button class="button button--primary button--long" wire:click="editSelected">
+       Edit
+      </button>
+     </div>
+    </div>
+   </div>
+   {{-- Visible Dropdown --}}
+   <div class="dropdown dropdown--right" wire:ignore>
+    {{-- Dropdown Button --}}
+    <button class="button button--primary button--centered" tooltip="Show items in table" tooltip-left>
+     <svg>
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
+     </svg>
+    </button>
+    {{-- Dropdown Content --}}
+    <div class="dropdown__content">
+     <div class="dropdown__container">
+      @foreach ($columns as $column)
+       <label class="switch switch--primary inline">
+        <input type="checkbox" wire:model="selectedColumns" value="{{ $column }}"
+         {{ in_array($column, $selectedColumns) ? 'checked' : '' }} />
+        <span>{{ $column }}</span>
+       </label>
+      @endforeach
+     </div>
+    </div>
+   </div>
+  </nav>
+
+
+  {{-- Select All? --}}
+  @if ($selectPage && $selectAll)
+   <button class="button button--fill button--primary">
+    You selected {{ count($checked) }} items.
+   </button>
+  @elseif($selectPage)
+   <button class="button button--fill button--secondary" wire:click="selectAll">
+    You selected {{ count($checked) }} items, select all?
+   </button>
+  @endif
+
+
+  {{-- Table --}}
+  <table class="expandable-table">
+   <thead>
+    <tr>
+     <th style="border-right: none; border-left: none;">
+      <div class="checkbox--primary">
+       <input type="checkbox" id="selectPage16" wire:model="selectPage" />
+       <label for="selectPage16"></label>
+      </div>
+     </th>
+     @foreach ($selectedColumns as $index => $column)
+      @if ($this->showColumn($column))
+       <th @if ($index > count($selectedColumns) - 5) class="hidden" @endif>
+        <button wire:click="sortBy('{{ $column }}')"
+         class="table--btn @if ($orderBy === $column && $orderAsc === '1') active @endif">
+         {{ $column }}
+         <svg>
+          <polyline points="6 9 12 15 18 9"></polyline>
+         </svg>
+        </button>
+       </th>
+      @endif
+     @endforeach
+     <th style="border-left: none; border-right: none;">
+      <button class="button button--secondary button--sm" style="opacity: 0">
+       <svg>
+        <polyline points="3 6 5 6 21 6"></polyline>
+        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+       </svg>
+      </button>
+     </th>
+    </tr>
+   </thead>
+   <tbody>
+    @if ($relatedprices->isEmpty())
+     <tr>
+      <td class="table--empty" colspan="{{ count($selectedColumns) + 2 }}">No record found.</td>
+     </tr>
+    @else
+     @php
+      $i = 0;
+     @endphp
+     @foreach ($relatedprices as $nr => $prices)
+      <tr @if ($loop->last) id="last_record" @endif
+       class="expandable-row @if ($this->isChecked($prices->id)) active @endif">
+       <td style="border-left: none" data-title="Check">
+        <div class="checkbox--primary">
+         <input type="checkbox" value="{{ $prices->id }}" id="{{ $prices->id }}" wire:model="checked">
+         <label for="{{ $prices->id }}"></label>
+        </div>
+       </td>
+       @foreach ($selectedColumns as $index => $column)
+        <td @if ($index > count($selectedColumns) - 5) class="hidden" @endif wire:click="expandRow({{ $nr }})">
+         @if ($column === 'Id')
+          {{ $prices->id }}
+         @elseif ($column === 'Name')
+          <a href="{{ route('show_pricelist', ['id' => $prices->pricelist->id]) }}">
+           {{ $prices->pricelist->name }}
+          </a>
+         @elseif ($column === 'Currency')
+          {{ $prices->pricelist->currency->name }}
+         @elseif ($column === 'Value')
+          {{ $prices->value }}
+         @elseif ($column === 'Value without Discount')
+          {{ $prices->value_no_discount }}
+         @elseif ($column === 'Discount')
+          @if ($editedrow !== $nr)
+           {{ $prices->discount }}%
+          @else
+           <div class="searchable">
+            <input type="number" required class="input__searchable"
+             wire:model.defer="pricelist.{{ $nr }}.discount">
+           </div>
+          @endif
+         @elseif ($column === 'Value without VAT')
+          @if ($editedrow !== $nr)
+           {{ $prices->value_no_vat }}
+          @else
+           <div class="searchable">
+            <input type="number" required class="input__searchable"
+             wire:model.defer="pricelist.{{ $nr }}.value">
+           </div>
+          @endif
+         @elseif ($column === 'VAT')
+          @if ($editedrow !== $nr)
+           {{ $prices->vat }}%
+          @else
+           <div class="searchable">
+            <input type="number" required class="input__searchable"
+             wire:model.defer="pricelist.{{ $nr }}.vat">
+           </div>
+          @endif
+         @else
+          {{ $prices->$column }}
+         @endif
+        </td>
+       @endforeach
+       <td style="border-right: none">
+        <div style="display: flex;">
+         @if ($editedrow !== $nr)
+          <button class="button button--secondary button--sm"
+           wire:click.prevent="edititem({{ $prices->id }}, {{ $prices->pricelist->id }}, {{ $nr }})">
+           <svg>
+            <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
+            </path>
+           </svg>
+          </button>
+          <button class="button button--secondary button--sm"
+           wire:click.prevent="confirmItemRemoval({{ $prices->id }})">
+           <svg>
+            <polyline points="3 6 5 6 21 6"></polyline>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+            </path>
+           </svg>
+          </button>
+         @else
+          <button class="button button--secondary button--sm"
+           wire:click.prevent="confirmitem({{ $nr }},{{ $prices->id }})">
+           <svg>
+            <polyline points="20 6 9 17 4 12"></polyline>
+           </svg>
+          </button>
+          <button class="button button--secondary button--sm" wire:click.prevent="canceledit()">
+           <svg>
+            <line x1="18" y1="6" x2="6" y2="18">
+            </line>
+            <line x1="6" y1="6" x2="18" y2="18">
+            </line>
+           </svg>
+          </button>
+         @endif
+        </div>
+       </td>
+      </tr>
+      <tr class="details-row  @if ($row === $i) active @endif">
+       <td colspan="17">
+        <div class="details">
+         @foreach ($selectedColumns as $index => $column)
+          @if ($index >= count($selectedColumns) - 4)
+           @if ($column === 'Id')
+            <p>
+             <bold>{{ $column }}:</bold>
              {{ $prices->id }}
-            </td>
-           @endif
-           @if ($this->showColumn('Name'))
-            <td data-title="Name">
-             @if ($editedrow !== $index)
+            </p>
+           @elseif ($column === 'Name')
+            <p>
+             <bold>{{ $column }}:</bold>
+             @if ($editedrow !== $nr)
               <a href="{{ route('show_pricelist', ['id' => $prices->pricelist->id]) }}">
                {{ $prices->pricelist->name }}
               </a>
              @else
               @if ($allow)
-               <div class="table__drop" style="position: relative">
-                <input class="table__drop--input" wire:model.debounce.300ms="searchadd" placeholder="Search.."
-                 type="text">
-                <ul class="table__drop--list">
-                 @if ($addprices->isEmpty())
-                  <li class="table__drop--item">No
-                   record
-                   found.</li>
-                 @else
-                  @foreach ($addprices as $pri)
-                   <li class="table__drop--item" wire:click.prevent="select({{ $pri->id }})">
-                    {{ $pri->name }}
-                   </li>
-                  @endforeach
-                 @endif
-                </ul>
-                <svg wire:click.prevent="dennyselect()"
-                 style="background: #35424b;position: absolute;top: 50%;transform: translateY(-50%);right: 10px;border-radius: 5px;padding: 5px;opacity: .7;stroke: white;"
-                 width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x">
-                 <line x1="18" y1="6" x2="6" y2="18"></line>
-                 <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
+               <div class="searchable active">
+                <!-- Dropdown Header -->
+                <input class="input" wire:model.debounce.300ms="searchadd" placeholder="Search..." type="text">
+                <button class="button__searchable" wire:click.prevent="dennyselect({{ $nr }})">
+                 <svg>
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                  <path d="M10 10l-6 6v4h4l6 -6m1.99 -1.99l2.504 -2.504a2.828 2.828 0 1 0 -4 -4l-2.5 2.5" />
+                  <path d="M13.5 6.5l4 4" />
+                  <path class="button__searchable--line" d="M3 3l18 18" />
+                 </svg>
+                </button>
+                <div class="content__searchable">
+                 <div class="list__searchable">
+                  @if (count($addprices) >= 1)
+                   @foreach ($addprices as $pri)
+                    <button class="item__searchable" wire:click.prevent="select({{ $pri->id }})">
+                     {{ $pri->name }}
+                    </button>
+                   @endforeach
+                  @else
+                   <button class="item__searchable">{{ __('No record found') }}</button>
+                  @endif
+                 </div>
+                </div>
                </div>
               @else
-               <button wire:click.prevent="allow" class="table__drop--input">
-                {{ $itemselected->name }}
-               </button>
+               <div class="searchable">
+                <button class="input__searchable">
+                 @if (!$itemselected)
+                  {{ $itemselected->name }}
+                 @else
+                  {{ __('Select a product') }}
+                 @endif
+                </button>
+                <button class="button__searchable" wire:click.prevent="allow({{ $nr }})">
+                 <svg>
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                  <path d="M10 10l-6 6v4h4l6 -6m1.99 -1.99l2.504 -2.504a2.828 2.828 0 1 0 -4 -4l-2.5 2.5" />
+                  <path d="M13.5 6.5l4 4" />
+                  <path class="button__searchable--line" d="M3 3l18 18" />
+                 </svg>
+                </button>
+               </div>
               @endif
              @endif
-            </td>
-           @endif
-           @if ($this->showColumn('Currency'))
-            <td data-title="Currency">
+            </p>
+           @elseif ($column === 'Currency')
+            <p>
+             <bold>{{ $column }}:</bold>
              {{ $prices->pricelist->currency->name }}
-            </td>
-           @endif
-           @if ($this->showColumn('Value'))
-            <td data-title="Value">
+            </p>
+           @elseif ($column === 'Value')
+            <p>
+             <bold>{{ $column }}:</bold>
              {{ $prices->value }}
-            </td>
-           @endif
-           @if ($this->showColumn('Value without Discount'))
-            <td data-title="Value without Discount">
+            </p>
+           @elseif ($column === 'Value without Discount')
+            <p>
+             <bold>{{ $column }}:</bold>
              {{ $prices->value_no_discount }}
-            </td>
-           @endif
-           @if ($this->showColumn('Discount'))
-            <td>
-             @if ($editedrow !== $index)
+            </p>
+           @elseif ($column === 'Discount')
+            <p>
+             <bold>{{ $column }}:</bold>
+             @if ($editedrow !== $nr)
               {{ $prices->discount }}%
              @else
-              <input type="number" required class="table__edit"
-               wire:model.defer="pricelist.{{ $index }}.discount">
+              <div class="searchable">
+               <input type="number" required class="input__searchable"
+                wire:model.defer="pricelist.{{ $nr }}.discount">
+              </div>
              @endif
-            </td>
-           @endif
-           @if ($this->showColumn('Value without VAT'))
-            <td>
-             @if ($editedrow !== $index)
+            </p>
+           @elseif ($column === 'Value without VAT')
+            <p>
+             <bold>{{ $column }}:</bold>
+             @if ($editedrow !== $nr)
               {{ $prices->value_no_vat }}
              @else
-              <input type="text" required class="table__edit"
-               wire:model.defer="pricelist.{{ $index }}.value">
+              <div class="searchable">
+               <input type="number" required class="input__searchable"
+                wire:model.defer="pricelist.{{ $nr }}.value">
+              </div>
              @endif
-            </td>
-           @endif
-           @if ($this->showColumn('VAT'))
-            <td>
-             @if ($editedrow !== $index)
+            </p>
+           @elseif ($column === 'VAT')
+            <p>
+             <bold>{{ $column }}:</bold>
+             @if ($editedrow !== $nr)
               {{ $prices->vat }}%
              @else
-              <input type="number" required class="table__edit"
-               wire:model.defer="pricelist.{{ $index }}.vat">
+              <div class="searchable">
+               <input type="number" required class="input__searchable"
+                wire:model.defer="pricelist.{{ $nr }}.vat">
+              </div>
              @endif
-            </td>
+            </p>
+           @else
+            <p>
+             <bold>{{ $column }}:</bold>
+             {{ $prices->$column }}
+            </p>
            @endif
-           <td data-title="Created At">
-            {{ $prices->created_at }}
-           </td>
-           <td data-title="Created At">
-            {{ $prices->updated_at }}
-           </td>
-           <td data-title="Action">
-            <div class="table__buttons">
-             @if ($editedrow !== $index)
-              <button class="edit"
-               wire:click.prevent="edititem({{ $prices->id }}, {{ $prices->pricelist->id }}, {{ $index }})">
-               <svg>
-                <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
-                </path>
-               </svg>
-              </button>
-              <button class="delete" wire:click.prevent="confirmRemoval({{ $prices->id }})">
-               <svg>
-                <polyline points="3 6 5 6 21 6"></polyline>
-                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                </path>
-               </svg>
-              </button>
-             @else
-              <button class="edit" wire:click.prevent="confirmitem({{ $index }},{{ $prices->id }})">
-               <svg>
-                <polyline points="20 6 9 17 4 12"></polyline>
-               </svg>
-              </button>
-              <button class="save" wire:click.prevent="canceledit()">
-               <svg>
-                <line x1="18" y1="6" x2="6" y2="18">
-                </line>
-                <line x1="6" y1="6" x2="18" y2="18">
-                </line>
-               </svg>
-              </button>
-             @endif
-            </div>
-           </td>
-          </tr>
+          @endif
          @endforeach
-        @endif
-       </tbody>
-      </table>
-      @if ($perPage <= count($relatedprices))
-       <div class="table__load-more" wire:click="load">
-        Load more
-       </div>
-      @endif
-     @else
-      <p class="mt-2">No records related</p>
-     @endif
-    </div>
-   </div>
+        </div>
+       </td>
+      </tr>
+      @php
+       $i++;
+      @endphp
+     @endforeach
+    @endif
+   </tbody>
+  </table>
+
+
+  {{-- Load More Manual --}}
+  @if (count($relatedprices) >= 10)
+   <button class="button button--secondary button--fill" style="margin-top: 10px;" wire:click="load">
+    Load more
+   </button>
   @endif
  </div>
 </div>

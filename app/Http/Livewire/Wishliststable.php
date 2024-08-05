@@ -13,7 +13,7 @@ class Wishliststable extends Component
     use WithPagination;
 
     public $tableName;
-    public $loadAmount = 10;
+    public $loadAmount = 100;
     public $columns;
     public $search = '';
     public $selectedColumns;
@@ -22,7 +22,21 @@ class Wishliststable extends Component
     public $orderBy = 'id';
     public $orderAsc = true;
     public $selectAll = false;
-    public $removedid;
+    public $idbeingremoved = null;
+    public $single = false;
+    public $multiple = false;
+    public $row = null;
+
+    public function expandRow($index)
+    {
+        if ($this->row  === null) {
+            $this->row = $index;
+        } elseif ($this->row != $index) {
+            $this->row = $index;
+        } else {
+            $this->row = null;
+        }
+    }
 
     public function render()
     {
@@ -86,34 +100,41 @@ class Wishliststable extends Component
             DB::raw('MIN(created_at) as earliest_created_at')
         )
             ->groupBy('session_id')
-            ->limit($this->loadAmount)
-            ->get();
+            ->paginate($this->loadAmount);
     }
     public function loadMore()
     {
         $this->loadAmount += 10;
     }
-    public function remove($id)
-    {
-        $this->removedid = $id;
-        $this->dispatchBrowserEvent('show-delete-modal-wishlist');
-    }
+
     public function deleteSingleRecord()
     {
-        $items = Wishlist::where('session_id', $this->removedid)->get();
+        $items = Wishlist::where('session_id', $this->idbeingremoved)->get();
         foreach ($items as $item) {
             $item->delete();
         }
-        $this->checked = array_diff($this->checked, [$this->removedid]);
+        $this->checked = array_diff($this->checked, [$this->idbeingremoved]);
+        $this->single = false;
+
         session()->flash('notification', [
             'message' => 'Record deleted successfully!',
             'type' => 'success',
             'title' => 'Success'
         ]);
     }
-    public function confirmItemsRemovalmultiple()
+    public function confirmItemRemoval($id)
     {
-        $this->dispatchBrowserEvent('show-delete-modal-multiple-wishlist');
+        $this->idbeingremoved = $id;
+        $this->single = true;
+    }
+    public function confirmItemsRemoval()
+    {
+        $this->multiple = true;
+    }
+    public function cancel_delete()
+    {
+        $this->multiple = false;
+        $this->single = false;
     }
     public function deleteRecords()
     {
@@ -123,6 +144,8 @@ class Wishliststable extends Component
         }
         $this->selectPage = false;
         $this->checked = [];
+        $this->multiple = false;
+
         session()->flash('notification', [
             'message' => 'Records deleted successfully!',
             'type' => 'success',

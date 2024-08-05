@@ -41,7 +41,7 @@ function sliderProduct(sliderId, modalId) {
     !body
   ) {
     console.log(
-      "Elementele necesare pentru slider product sau modal nu au fost găsite."
+      "Elementele necesare pentru slider product sau modal nu au fost găsite.",
     );
     return;
   }
@@ -102,7 +102,7 @@ function sliderProduct(sliderId, modalId) {
   paginationLeft.addEventListener("click", () => {
     pagination.scrollTo({
       left: pagination.scrollLeft - 100,
-      behavior: "smooth"
+      behavior: "smooth",
     });
     updatePaginationButtons();
   });
@@ -110,7 +110,7 @@ function sliderProduct(sliderId, modalId) {
   paginationRight.addEventListener("click", () => {
     pagination.scrollTo({
       left: pagination.scrollLeft + 100,
-      behavior: "smooth"
+      behavior: "smooth",
     });
     updatePaginationButtons();
   });
@@ -124,7 +124,10 @@ function sliderProduct(sliderId, modalId) {
       if (pagination.scrollLeft === 0) {
         paginationLeft.classList.add("disabled");
         paginationRight.classList.remove("disabled");
-      } else if (pagination.scrollLeft + pagination.clientWidth >= pagination.scrollWidth) {
+      } else if (
+        pagination.scrollLeft + pagination.clientWidth >=
+        pagination.scrollWidth
+      ) {
         paginationLeft.classList.remove("disabled");
         paginationRight.classList.add("disabled");
       } else {
@@ -137,10 +140,9 @@ function sliderProduct(sliderId, modalId) {
     }
   }
 
-
   setTimeout(() => {
     updatePaginationButtons();
-  }, 500)
+  }, 1500);
 
   function updatePagination() {
     // Actualizarea butoanelor pentru slider
@@ -167,8 +169,10 @@ function sliderProduct(sliderId, modalId) {
       if (index === currentIndex) {
         thumbnail.focus();
         pagination.scrollTo({
-          left: thumbnail.offsetLeft - (pagination.offsetWidth - thumbnail.offsetWidth) / 2,
-          behavior: "smooth"
+          left:
+            thumbnail.offsetLeft -
+            (pagination.offsetWidth - thumbnail.offsetWidth) / 2,
+          behavior: "smooth",
         });
       }
     });
@@ -180,7 +184,7 @@ function sliderProduct(sliderId, modalId) {
 
   function createThumb(slide, index) {
     const existingThumbnail = pagination.querySelector(
-      `.thumbnail[data-index="${index}"]`
+      `.thumbnail[data-index="${index}"]`,
     );
 
     if (existingThumbnail) {
@@ -196,6 +200,7 @@ function sliderProduct(sliderId, modalId) {
       thumbnail.alt = `Thumbnail ${index + 1}`;
       thumbnail.classList.add("thumbnail");
       thumbnail.setAttribute("data-index", index);
+      thumbnail.loading = 'lazy';
 
       thumbnail.addEventListener("click", () => {
         currentIndex = index;
@@ -206,7 +211,7 @@ function sliderProduct(sliderId, modalId) {
 
       pagination.appendChild(thumbnail);
     } else {
-      console.error(`Elementul media lipsește în slide-ul cu indexul ${index}`);
+      // console.error(`Elementul media lipsește în slide-ul cu indexul ${index}`);
     }
   }
 
@@ -229,7 +234,7 @@ function sliderProduct(sliderId, modalId) {
       if (isDragging) {
         const swipeDistance = event.clientX - startX;
 
-        if (Math.abs(swipeDistance) > 50 && !isScrolling()) {
+        if (Math.abs(swipeDistance) > 150 && !isScrolling()) {
           const indexChange = swipeDistance > 0 ? -1 : 1;
           const newIndex = currentIndex + indexChange;
 
@@ -282,9 +287,9 @@ function sliderProduct(sliderId, modalId) {
 
           document.addEventListener("keydown", handleKeyPress);
         } else {
-          console.error(
-            "Elementul <img> nu a fost găsit în cadrul slide-ului."
-          );
+          // console.error(
+          //   "Elementul <img> nu a fost găsit în cadrul slide-ului.",
+          // );
         }
       }
     });
@@ -294,9 +299,9 @@ function sliderProduct(sliderId, modalId) {
     const touchEndX = event.changedTouches[0].clientX;
     const swipeDistance = touchEndX - touchStartX;
 
-    if (swipeDistance > 50 && index > 0) {
+    if (swipeDistance > 150 && index > 0) {
       currentIndex = index - 1;
-    } else if (swipeDistance < -50 && index < slides.length - 1) {
+    } else if (swipeDistance < -150 && index < slides.length - 1) {
       currentIndex = index + 1;
     }
 
@@ -322,7 +327,7 @@ function sliderProduct(sliderId, modalId) {
           return; // Ignoră acțiunea dacă utilizatorul face zoom
         }
 
-        if (Math.abs(swipeDistance) > 10 && !isScrolling()) {
+        if (Math.abs(swipeDistance) > 10 && !isScrolling() && event.cancelable) {
           isSwiping = true;
           event.preventDefault();
         }
@@ -343,7 +348,6 @@ function sliderProduct(sliderId, modalId) {
 
   window.addEventListener("load", () => updatePagination());
 
-
   modalCount.textContent = `${currentIndex + 1} / ${slides.length}`;
   function updateModalImage() {
     // Actualizarea imaginii din modal
@@ -359,11 +363,8 @@ function sliderProduct(sliderId, modalId) {
       modalContent.appendChild(newImgElement);
 
       modalCount.textContent = `${currentIndex + 1} / ${slides.length}`;
-
     } else {
-      console.error(
-        "Elementul <img> nu a fost găsit în cadrul slide-ului."
-      );
+      // console.error("Elementul <img> nu a fost găsit în cadrul slide-ului.");
     }
   }
 
@@ -375,7 +376,7 @@ function sliderProduct(sliderId, modalId) {
     if (mouseStartX) {
       const dragDistance = event.clientX - mouseStartX;
 
-      if (Math.abs(dragDistance) > 50 && !isScrolling()) {
+      if (Math.abs(dragDistance) > 150 && !isScrolling()) {
         event.preventDefault();
         isDragging = true;
       }
@@ -387,10 +388,10 @@ function sliderProduct(sliderId, modalId) {
       const mouseEndX = event.clientX;
       const dragDistance = mouseEndX - mouseStartX;
 
-      if (dragDistance > 50 && currentIndex > 0) {
+      if (dragDistance > 150 && currentIndex > 0) {
         navigation("prev");
         updateModalImage();
-      } else if (dragDistance < -50 && currentIndex < slides.length - 1) {
+      } else if (dragDistance < -150 && currentIndex < slides.length - 1) {
         navigation("next");
         updateModalImage();
       }
@@ -414,7 +415,7 @@ function sliderProduct(sliderId, modalId) {
         return; // Ignoră acțiunea dacă utilizatorul face zoom
       }
 
-      if (Math.abs(swipeDistance) > 50 && !isScrolling()) {
+      if (Math.abs(swipeDistance) > 150 && !isScrolling()) {
         event.preventDefault();
         isDragging = true;
       }
@@ -426,10 +427,10 @@ function sliderProduct(sliderId, modalId) {
       const touchEndX = event.changedTouches[0].clientX;
       const swipeDistance = touchEndX - touchStartX;
 
-      if (swipeDistance > 50 && currentIndex > 0) {
+      if (swipeDistance > 150 && currentIndex > 0) {
         navigation("prev");
         updateModalImage();
-      } else if (swipeDistance < -50 && currentIndex < slides.length - 1) {
+      } else if (swipeDistance < -150 && currentIndex < slides.length - 1) {
         navigation("next");
         updateModalImage();
       }
@@ -438,11 +439,7 @@ function sliderProduct(sliderId, modalId) {
       isDragging = false;
     }
   });
-
 }
-
-
-
 //<----------------------- End Modal Product --------------------------->
 //<--------------------------------------------------------------------->
 //<--------------------------- Related-Slider -------------------------->
@@ -533,45 +530,48 @@ function relatedSlider() {
 }
 //<------------------------- End Related-Slider ------------------------>
 //<--------------------------------------------------------------------->
+//<---------------------------- Fly-To-Cart ---------------------------->
 function flyToCart(button) {
   const shopping_cart = document.getElementById("basketOpen");
   const numberCart = shopping_cart.querySelector(".header__count");
   const target_parent = button.closest(".product"); // Obținem cel mai apropiat părinte cu clasa "product"
 
-  if(!button.classList.contains('in')) {
-      button.classList.add('in');
-      setTimeout(() => button.classList.remove('in'), 1500);
+  if (!button.classList.contains("in")) {
+    button.classList.add("in");
+    setTimeout(() => button.classList.remove("in"), 1500);
   }
 
   if (!target_parent) {
-    console.error("Nu s-a găsit părintele 'product'.");
+    // console.error("Nu s-a găsit părintele 'product'.");
     return;
   }
 
   function add_to_cart(product) {
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({ ecommerce: null });
-      window.dataLayer.push({
-          event: "add_to_cart",
-          ecommerce: {
-              currency: product.currency,
-              value: product.price * product.quantity,
-              items: [
-                  {
-                      item_name: product.name,
-                      price: product.price,
-                      quantity: product.quantity
-                  }
-              ]
-          }
-      });
+    window.dataLayer.push({
+      event: "add_to_cart",
+      ecommerce: {
+        currency: product.currency,
+        value: product.price * product.quantity,
+        items: [
+          {
+            item_name: product.name,
+            price: product.price,
+            quantity: product.quantity,
+          },
+        ],
+      },
+    });
 
-      // console.log('Product added to cart:', product);
+    // console.log('Product added to cart:', product);
   }
   // Variables
   const dlv = target_parent.querySelector(".dlv");
   const dlv_name = dlv.querySelector(".dlv_name").innerText.trim();
-  const dlv_price = parseFloat(dlv.querySelector(".dlv_price").innerText.trim().replace(',', '.'));
+  const dlv_price = parseFloat(
+    dlv.querySelector(".dlv_price").innerText.trim().replace(",", "."),
+  );
   const dlv_currency = dlv.querySelector(".dlv_currency").innerText.trim();
   const dlv_quantity = 1;
   // Product
@@ -579,11 +579,10 @@ function flyToCart(button) {
     name: dlv_name,
     price: dlv_price,
     quantity: dlv_quantity,
-    currency: dlv_currency
+    currency: dlv_currency,
   };
   // Function call
   add_to_cart(product);
-
 
   // Creăm o imagine separată
   shopping_cart.classList.add("active");
@@ -617,16 +616,18 @@ function flyToCart(button) {
   }, 1500);
 
   // Number Cart upscale
-  if(!numberCart) {
+  if (!numberCart) {
     return;
   } else {
-      numberCart.style.scale = 1.5;
-      setTimeout(() => {
-          numberCart.style.scale = 1;
-      }, 1500);
+    numberCart.style.scale = 1.5;
+    setTimeout(() => {
+      numberCart.style.scale = 1;
+    }, 1500);
   }
 }
-
+//<-------------------------- End Fly-To-Cart -------------------------->
+//<--------------------------------------------------------------------->
+//<---------------------------- Add-To-Wish ---------------------------->
 function addWishList(button) {
   const wish = document.getElementById("wishlistCount");
 
@@ -635,27 +636,29 @@ function addWishList(button) {
   function add_to_wishlist(product) {
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({ ecommerce: null });
-      window.dataLayer.push({
-          event: "add_to_wishlist",
-          ecommerce: {
-              currency: product.currency,
-              value: product.price * product.quantity,
-              items: [
-                  {
-                      item_name: product.name,
-                      price: product.price,
-                      quantity: product.quantity
-                  }
-              ]
-          }
-      });
+    window.dataLayer.push({
+      event: "add_to_wishlist",
+      ecommerce: {
+        currency: product.currency,
+        value: product.price * product.quantity,
+        items: [
+          {
+            item_name: product.name,
+            price: product.price,
+            quantity: product.quantity,
+          },
+        ],
+      },
+    });
 
-      // console.log('Product added to wishlist:', product);
+    // console.log('Product added to wishlist:', product);
   }
   // Variables
   const dlv = target_parent.querySelector(".dlv");
   const dlv_name = dlv.querySelector(".dlv_name").innerText.trim();
-  const dlv_price = parseFloat(dlv.querySelector(".dlv_price").innerText.trim().replace(',', '.'));
+  const dlv_price = parseFloat(
+    dlv.querySelector(".dlv_price").innerText.trim().replace(",", "."),
+  );
   const dlv_currency = dlv.querySelector(".dlv_currency").innerText.trim();
   const dlv_quantity = 1;
   // Product
@@ -663,12 +666,12 @@ function addWishList(button) {
     name: dlv_name,
     price: dlv_price,
     quantity: dlv_quantity,
-    currency: dlv_currency
+    currency: dlv_currency,
   };
   // Function call
   add_to_wishlist(product);
 
-  if(!wish) {
+  if (!wish) {
     return;
   } else {
     wish.style.scale = 1.5;
@@ -678,17 +681,35 @@ function addWishList(button) {
     }, 1500);
   }
 }
+//<-------------------------- END Add-To-Wish -------------------------->
+//<--------------------------------------------------------------------->
+//<---------------------------- MiniSlider ---------------------------->
+function miniSlider(sliderId, wrapperId, navLeftId, navRightId) {
+  const slider = document.getElementById(sliderId);
+  const wrapper = document.getElementById(wrapperId);
+  const navLeft = document.getElementById(navLeftId);
+  const navRight = document.getElementById(navRightId);
+
+  if (!slider || !wrapper || !navLeft || !navRight) {
+    // console.error("One or more elements from slider are missing!");
+    return;
+  }
+
+  const scrollAmount = 100;
+
+  navLeft.addEventListener("click", () => {
+    wrapper.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+  });
+
+  navRight.addEventListener("click", () => {
+    wrapper.scrollBy({ left: scrollAmount, behavior: "smooth" });
+  });
+}
+//<-------------------------- End MiniSlider -------------------------->
+//<--------------------------------------------------------------------->
 //<-------------------------- Start Functions -------------------------->
 sliderProduct(".product-slider", ".product-modal");
 relatedSlider();
+miniSlider("miniSlider", "miniWrapper", "miniNavLeft", "miniNavRight");
 //<------------------------ End Start Functions ------------------------>
 //<--------------------------------------------------------------------->
-// function flyToCart(button) {
-//   const shopping_cart = document.getElementById("basketOpen");
-//   const numberCart = shopping_cart.querySelector(".header__count");
-//   numberCart.style.scale = 1.5;
-
-//   setTimeout(() => {
-//     numberCart.style.scale = 1;
-//   }, 1500);
-// }

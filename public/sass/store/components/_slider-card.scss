@@ -1,0 +1,122 @@
+.card-slider {
+  width: 100%;
+  position: relative;
+}
+
+.card-slider__wrapper {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 100%;
+  gap: 16px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  transition: all 0.3s ease-in-out;
+
+  @media (min-width: map-get($grid-breakpoints, sm)) {
+    grid-auto-columns: calc((100% / 2) - 9px);
+  }
+
+  @media (min-width: map-get($grid-breakpoints, md)) {
+    grid-auto-columns: calc((100% / 3) - 12px);
+  }
+
+  @media (min-width: map-get($grid-breakpoints, lg)) {
+    grid-auto-columns: calc((100% / 4) - 12px);
+  }
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &.no-transition {
+    scroll-behavior: auto;
+  }
+
+  &.dragging {
+    scroll-snap-type: none;
+    scroll-behavior: auto;
+
+    & > .card {
+      cursor: grab;
+      user-select: none;
+    }
+  }
+}
+
+.card-slider__slide {
+  scroll-snap-align: start;
+  position: relative;
+  width: 100%;
+
+  &:first-child {
+    z-index: 5;
+  }
+}
+
+.card-slider__button {
+  position: absolute;
+  top: 35%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $lightBlack;
+  transition: all 0.3s ease-in-out;
+  z-index: 99;
+
+
+  & > svg {
+    stroke: $primary;
+    transform: scale(1.1);
+  }
+
+  &.prev {
+    left: 16px;
+    animation: LeftToRight 1s ease-in-out infinite;
+
+  }
+
+  &.next {
+    right: 16px;
+    animation: RightToLeft 1s ease-in-out infinite;
+
+  }
+
+  @keyframes LeftToRight {
+    0% {
+      transform: translateX(0) scale(1.1);
+    }
+
+    50% {
+      transform: translateX(-5px) scale(1.1);
+    }
+
+    100% {
+      transform: translateX(0) scale(1.1);
+    }
+  }
+
+  @keyframes RightToLeft {
+    0% {
+      transform: translateX(0) scale(1.1);
+    }
+
+    50% {
+      transform: translateX(5px) scale(1.1);
+    }
+
+    100% {
+      transform: translateX(0) scale(1.1);
+    }
+  }
+}

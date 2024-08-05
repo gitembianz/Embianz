@@ -18,10 +18,23 @@ class Priceliststable extends Component
   public $checked = [];
   public $selectPage = false;
   public $selectAll = false;
-  public $itemidbeingremoved = null;
-  public $columns = ['Id', 'Currency', 'Active', 'Created At'];
+  public $idbeingremoved = null;
+  public $row = null;
+  public $single = false;
+  public $multiple = false;
+  public $columns = ['Id', 'Currency', 'Active', 'Created At', 'Updated At'];
   public $selectedColumns = [];
 
+  public function expandRow($index)
+  {
+    if ($this->row  === null) {
+      $this->row = $index;
+    } elseif ($this->row != $index) {
+      $this->row = $index;
+    } else {
+      $this->row = null;
+    }
+  }
   public function render()
   {
     return view('livewire.priceliststable', [
@@ -75,7 +88,7 @@ class Priceliststable extends Component
   }
   public function getPricelistsProperty()
   {
-    return $this->pricelistsQuery->limit($this->loadAmount)->get();
+    return $this->pricelistsQuery->paginate($this->loadAmount);
   }
   public function getPricelistsQueryProperty()
   {
@@ -98,6 +111,7 @@ class Priceliststable extends Component
     }
     $this->checked = [];
     $this->selectPage = false;
+    $this->multiple = false;
     session()->flash('notification', [
       'message' => 'Records deleted successfully!',
       'type' => 'success',
@@ -106,7 +120,7 @@ class Priceliststable extends Component
   }
   public function deleteSingleRecord()
   {
-    $id = $this->itemidbeingremoved;
+    $id = $this->idbeingremoved;
     $productpricelists = PricelistEntries::where('pricelist_id', $id)->get();
     if ($productpricelists != NULL) {
       foreach ($productpricelists as $productpricelist) {
@@ -116,6 +130,7 @@ class Priceliststable extends Component
     $item = PriceList::findOrFail($id);
     $item->delete();
     $this->checked = array_diff($this->checked, [$id]);
+    $this->single = false;
     session()->flash('notification', [
       'message' => 'Record deleted successfully!',
       'type' => 'success',
@@ -124,12 +139,17 @@ class Priceliststable extends Component
   }
   public function confirmItemRemoval($id)
   {
-    $this->itemidbeingremoved = $id;
-    $this->dispatchBrowserEvent('show-delete-modal');
+    $this->idbeingremoved = $id;
+    $this->single = true;
   }
-  public function confirmItemsRemovalmultiple()
+  public function confirmItemsRemoval()
   {
-    $this->dispatchBrowserEvent('show-delete-modal-multiple');
+    $this->multiple = true;
+  }
+  public function cancel_delete()
+  {
+    $this->multiple = false;
+    $this->single = false;
   }
   public function isChecked($id)
   {

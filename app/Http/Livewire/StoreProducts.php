@@ -4,10 +4,11 @@ namespace App\Http\Livewire;
 
 use App\Models\Specs;
 use App\Models\Product;
-use App\Models\Product_Spec;
-
 use Livewire\Component;
+
 use App\Models\Category;
+use App\Models\Wishlist;
+use App\Models\Product_Spec;
 use Livewire\WithPagination;
 
 class StoreProducts extends Component
@@ -28,6 +29,8 @@ class StoreProducts extends Component
   public $selectedKeys = [];
   public $selectedSpecNames = [];
   public $productCount;
+  public $wishlistItems;
+
 
   public function render()
   {
@@ -42,24 +45,22 @@ class StoreProducts extends Component
     if (array_key_exists('sessionId', $_COOKIE)) {
       return $_COOKIE['sessionId'];
     } else {
-      $sessionId = session()->getId();
-      setcookie('sessionId', $sessionId, time() + 30 * 24 * 60 * 60, '/', null, false, true);
-      return $sessionId;
+      return session()->getId();
     }
   }
 
   public function mount($category = null)
   {
-
     $this->session_id = $this->getSessionId();
     $this->quantity = app('global_low_stock');
+    $this->wishlistItems = Wishlist::where('session_id', $this->session_id)->pluck('product_id')->toArray();
     $this->specification = Specs::get();
     if ($category) {
       $decodedCategory = json_decode(htmlspecialchars_decode($category), true);
-      $this->category = Category::select('id', 'name', 'long_description', 'seo_id')->find($decodedCategory['id']);
+      $this->category = Category::select('id', 'name', 'short_description', 'long_description', 'seo_id', 'accepted_items')->find($decodedCategory['id']);
     } else {
       if (app()->has('global_default_category')) {
-        $this->category = Category::select('id', 'name', 'long_description', 'seo_id')->find(app('global_default_category')) ?? null;
+        $this->category = Category::select('id', 'name', 'short_description', 'long_description', 'seo_id', 'accepted_items')->find(app('global_default_category')) ?? null;
       }
     }
     $filteredValues = session()->get('filtered_values', []);
@@ -95,7 +96,10 @@ class StoreProducts extends Component
     $query->whereHas(
       'product',
       function ($query) {
-        $query->where('active', true);
+        $query->where('active', true)
+          ->where('type', '!=', 'parent')
+          ->where('start_date', '<=',  now()->format('Y-m-d'))
+          ->where('end_date', '>=',  now()->format('Y-m-d'));
       }
     );
 
@@ -181,42 +185,77 @@ class StoreProducts extends Component
     session()->forget('filtered_values');
   }
 
+  public function isInWishlist($productId)
+  {
+    return in_array($productId, $this->wishlistItems);
+  }
+
   // products function
   public function getProductsProperty()
   {
-    $query = Product::name($this->search)
+    $query = Product::search($this->search)
       ->where('active', true)
-      ->where('start_date', '<=',  now()->format('Y-m-d'))
-      ->where('end_date', '>=',  now()->format('Y-m-d'))
+      ->where('start_date', '<=', now()->format('Y-m-d'))
+      ->where('end_date', '>=', now()->format('Y-m-d'))
       ->with([
-        'product_prices',
-        'product_prices.pricelist.currency',
+        'variants' => function ($query) {
+          $query->with('product');
+        },
+        'product_prices' => function ($query) {
+          $query->select('product_id', 'value', 'discount', 'value_no_discount');
+        },
         'media' => function ($query) {
           $query->select('path', 'name')->where('type', 'main');
         },
-        'wishlists' => function ($query) {
-          $query->select('id', 'product_id')->where('session_id', $this->session_id);
-        },
       ]);
+
     if ($this->category != null) {
       $query->whereHas('product_categories.category', function ($query) {
         $query->where('id', $this->category->id);
       });
-    }
-    if ($this->specfilter && !empty($this->selectedSpecValues)) {
-      foreach ($this->selectedSpecValues as $values) {
-        $query->Where(function ($specSubQuery) use ($values) {
-          foreach ($values as $value => $isSelected) {
-            if ($isSelected) {
-              $specSubQuery->orWhereHas('product_specs', function ($query) use ($value) {
-                $key = str_replace('_', '.', $value);
-                $query->where('value', $key);
-              });
-            }
-          }
-        });
+      if ($this->category->accepted_items == 'default') {
+        $query->where('type', '!=', 'parent');
+      } else {
+        $query->where('type', '!=', 'variant');
       }
     }
+
+    if ($this->specfilter && !empty($this->selectedSpecValues)) {
+      $query->where(function ($mainQuery) {
+        foreach ($this->selectedSpecValues as $values) {
+          $mainQuery->where(function ($specSubQuery) use ($values) {
+            foreach ($values as $value => $isSelected) {
+              if ($isSelected) {
+                $specSubQuery->orWhereHas('product_specs', function ($query) use ($value) {
+                  $key = str_replace('_', '.', $value);
+                  $query->where('value', $key);
+                });
+              }
+            }
+          });
+        }
+
+        // Apply the filter to variants if the product type is 'parent'
+        $mainQuery->orWhere(function ($parentQuery) {
+          $parentQuery->where('type', 'parent')
+            ->whereHas('variants.product', function ($variantQuery) {
+              foreach ($this->selectedSpecValues as $values) {
+                $variantQuery->where(function ($specSubQuery) use ($values) {
+                  foreach ($values as $value => $isSelected) {
+                    if ($isSelected) {
+                      $specSubQuery->orWhereHas('product_specs', function ($query) use ($value) {
+                        $key = str_replace('_', '.', $value);
+                        $query->where('value', $key);
+                      });
+                    }
+                  }
+                });
+              }
+            });
+        });
+      });
+    }
+
     switch ($this->orderBy) {
       case 'best_selling':
         $query->orderBy('popularity', 'desc');
@@ -242,16 +281,16 @@ class StoreProducts extends Component
       case 'price_as':
         $query->orderByRaw("(SELECT CAST(value AS DECIMAL(10, 2)) FROM pricelist_entries WHERE product_id = products.id) asc");
         break;
-
       case 'price_ds':
         $query->orderByRaw("(SELECT CAST(value AS DECIMAL(10, 2)) FROM pricelist_entries WHERE product_id = products.id) desc");
         break;
     }
-    $products = $query->paginate($this->loadAmount);
 
+    $products = $query->paginate($this->loadAmount);
 
     return $products;
   }
+
 
   public function loadMore()
   {

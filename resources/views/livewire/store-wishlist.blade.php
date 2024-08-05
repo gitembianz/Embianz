@@ -1,16 +1,28 @@
 <div>
  <section>
   <div class="section__header container">
-   <h1 class="section__title">@if (app()->has('label_wishlist_page_title')){!! app('label_wishlist_page_title') !!} @endif</h1>
+   <h1 class="section__title">
+    @if (app()->has('label_wishlist_page_title'))
+     {!! app('label_wishlist_page_title') !!}
+    @endif
+   </h1>
    <h2></h2>
-   <p class="section__text">@if (app()->has('label_wishlist_page_description')){!! app('label_wishlist_page_description') !!} @endif</p>
+   <p class="section__text">
+    @if (app()->has('label_wishlist_page_description'))
+     {!! app('label_wishlist_page_description') !!}
+    @endif
+   </p>
   </div>
  </section>
  <section>
   <div class="basket container">
    <!------------------- Products ------------------>
    @if ($wishlistitems->isEmpty())
-    <span class="basket__empty">@if (app()->has('label_wishlist_empty')){!! app('label_wishlist_empty') !!} @endif</span>
+    <span class="basket__empty">
+     @if (app()->has('label_wishlist_empty'))
+      {!! app('label_wishlist_empty') !!}
+     @endif
+    </span>
    @else
     <?php
     $disables = [];
@@ -26,10 +38,11 @@
        href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}"
        class="basket__link">
        @if ($product->media->first() != null)
-        <img loading="eager" src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}"
+        <img title="{{ $product->name }}" loading="eager"
+         src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}"
          alt="{{ $product->media->first()->name }} {{ $product->name }}">
        @else
-        <img loading="eager" src="/images/store/default/default70.webp" alt="something wrong">
+        <img title="Default image" loading="eager" src="/images/store/default/default70.webp" alt="something wrong">
        @endif
        <div class="basket__text">
         <h3>
@@ -38,9 +51,13 @@
         <span>
          @if ($product->product_prices->first() !== null)
           {{ $product->product_prices->first()->value }}
-          {{ $product->product_prices->first()->pricelist->currency->symbol }}
+          @if (app()->has('global_currency_primary_symbol'))
+           {!! app('global_currency_primary_symbol') !!}
+          @endif
          @else
-          @if (app()->has('label_product_status_indisponible')){!! app('label_product_status_indisponible') !!} @endif
+          @if (app()->has('label_product_status_indisponible'))
+           {!! app('label_product_status_indisponible') !!}
+          @endif
          @endif
         </span>
        </div>
@@ -65,7 +82,11 @@
       </button>
       @if ($disabled[$index])
        <div class="item__product--disabled">
-        <span>@if (app()->has('label_product_status_indisponible')){!! app('label_product_status_indisponible') !!} @endif</span>
+        <span>
+         @if (app()->has('label_product_status_indisponible'))
+          {!! app('label_product_status_indisponible') !!}
+         @endif
+        </span>
         <button class="basket__delete" type="button" wire:click="removeFromWishlist({{ $product->id }})">
          <svg>
           <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -76,7 +97,11 @@
       @endif
      </div>
      @if ($message === $index)
-      <p class="leftbar__message">@if (app()->has('label_wishlist_add_to_cart')){!! app('label_wishlist_add_to_cart') !!} @endif</p>
+      <p class="leftbar__message">
+       @if (app()->has('label_wishlist_add_to_cart'))
+        {!! app('label_wishlist_add_to_cart') !!}
+       @endif
+      </p>
       <script>
        setTimeout(function() {
         @this.removemessage();
@@ -87,5 +112,5 @@
    @endif
   </div>
  </section>
- <x-help-button />
+
 </div>

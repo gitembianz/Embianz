@@ -17,13 +17,13 @@ return new class extends Migration
       $table->id();
       $table->string('name')->nullable();
       $table->boolean('active');
-      $table->boolean('has_parrent')->nullable()->default(
+      $table->boolean('has_parent')->nullable()->default(
         false
       );
       $table->longText('long_description')->nullable();
       $table->string('short_description')->nullable();
       $table->string('meta_description')->nullable();
-      $table->string('sequence')->nullable();
+      $table->integer('sequence')->nullable();
       $table->integer('slider_sequence')->nullable()->default(
         '0'
       );

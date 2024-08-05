@@ -12,7 +12,7 @@ class Currenciestable extends Component
     use WithPagination;
 
     public $tableName;
-    public $loadAmount = 10;
+    public $loadAmount = 20;
     public $columns;
     public $search = '';
     public $selectedColumns;
@@ -21,11 +21,30 @@ class Currenciestable extends Component
     public $orderBy = 'id';
     public $orderAsc = true;
     public $selectAll = false;
-    public $editeindex = null;
+    public $editindex = null;
     public $details = [];
+    public $row = null;
 
+    public function expandRow($index)
+    {
+        if ($this->editindex === $index) {
+            return;
+        } else {
 
+            if ($this->row  === null) {
+                $this->row = $index;
+            } elseif ($this->row != $index) {
+                $this->row = $index;
+            } else {
+                $this->row = null;
+            }
+        }
+    }
 
+    public function loadMore()
+    {
+        $this->loadAmount += 10;
+    }
     public function render()
     {
 
@@ -78,10 +97,11 @@ class Currenciestable extends Component
         $this->selectAll = true;
         $this->checked = $this->currenciesQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
     }
+
     public function getCurrenciesProperty()
     {
         return Currency::search($this->search)
-            ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->limit($this->loadAmount)->get();
+            ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->paginate($this->loadAmount);
     }
     public function isChecked($id)
     {
@@ -89,7 +109,7 @@ class Currenciestable extends Component
     }
     public function edit($index, $id)
     {
-        $this->editeindex = $index;
+        $this->editindex = $index;
         $item = Currency::find($id);
         $this->details = [
             $index . '.name' => $item->name,
@@ -98,7 +118,7 @@ class Currenciestable extends Component
     }
     public function cancel()
     {
-        $this->editeindex = null;
+        $this->editindex = null;
         $this->details = [];
     }
     public function save($index, $id)
@@ -125,6 +145,6 @@ class Currenciestable extends Component
         }
 
         $this->details = [];
-        $this->editeindex = null;
+        $this->editindex = null;
     }
 }

@@ -1,287 +1,315 @@
-<div>
+<section class="content">
+ {{-- X-Components --}}
  <x-alert />
- <x-loading />
- <div class="item__header">
-  <h1 class="item__header-title" id="title">Product: {{ $product->name }}</h1>
-  <div class="item__header-buttons">
-   <a class="item__header-btn" href="{{ url('/products') }}" data-tooltip-left="Back to all Products">
-    <svg>
-     <polyline points="11 17 6 12 11 7"></polyline>
-     <polyline points="18 17 13 12 18 7"></polyline>
-    </svg>
-   </a>
-   <a class="item__header-btn" href="{{ route('add_product') }}" data-tooltip-center="Add a new Product">
-    <svg>
-     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-     <polyline points="14 2 14 8 20 8"></polyline>
-     <line x1="12" y1="18" x2="12" y2="12"></line>
-     <line x1="9" y1="15" x2="15" y2="15"></line>
-    </svg>
-   </a>
-   @if ($editproduct === null)
-    <button class="item__header-btn" type="button" value="Edit" wire:click.prevent="editproduct()"
-     data-tooltip-center="Edit this Product">
-     <svg>
-      <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-      <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-     </svg>
-    </button>
-   @else
-    <button class="item__header-btn confirm" type="button" wire:click.prevent="saveproduct()" value="Save"
-     data-tooltip-center="Save this changes"><svg>
-      <polyline points="20 6 9 17 4 12"></polyline>
-     </svg></button>
-    <button class="item__header-btn" type="button" wire:click.prevent="cancelproduct()" value="Cancel"
-     data-tooltip-center="Cancel this changes"><svg>
-      <line x1="18" y1="6" x2="6" y2="18">
-      </line>
-      <line x1="6" y1="6" x2="18" y2="18">
-      </line>
-     </svg></button>
-   @endif
-   <button wire:click.prevent="confirmProductRemoval({{ $product->id }})" class="item__header-btn delete"
-    type="button" value="Delete" data-tooltip-right="Delete this Product">
-    <svg>
-     <polyline points="3 6 5 6 21 6"></polyline>
-     <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-    </svg>
+
+
+ {{-- Delete Record --}}
+ <aside>
+  <div class="background background--center @if ($delete) active @endif"></div>
+  <div class="aside aside--confirm @if ($delete) active @endif">
+   <span>
+    Are you sure to delete this record?
+   </span>
+   <button class="button button--primary button--long" wire:click.prevent="deleteRecord()">
+    <span>Delete</span>
+   </button>
+   <button class="button button--danger button--long" wire:click.prevent="cancelItemRemoval()">
+    <span>Cancel</span>
    </button>
   </div>
- </div>
- <div class="modal" id="confirmationmodal">
-  <div class="modal-content">
-   <h1 class="modal-content-title">
-    {{ __('Are you sure to delete this record?') }}
-   </h1>
-   <input wire:click.prevent="deleteRecord()" class="modal-content-btn submit" type="button" value="Confirm">
-   <input class="modal-content-btn delete" type="button"
-    onclick="document.getElementById('confirmationmodal').style.display='none'" value="Cancel">
-   <span class="modal-content-btn delete" onclick="document.getElementById('confirmationmodal').style.display='none'">
+ </aside>
+
+
+
+ {{-- Navigation --}}
+ <nav class="nav--controls">
+  <h1 class="table--name">Product: {{ $product->name }}</h1>
+  {{-- Refresh Button --}}
+  <a class="button button--primary button--centered" tooltip="Back to all products" tooltip-top
+   href="{{ route('all_products') }}">
+   <svg>
+    <polyline points="15 18 9 12 15 6"></polyline>
+   </svg>
+  </a>
+  <a class="button button--primary button--centered" tooltip="Create new Product" tooltip-top
+   href="{{ route('add_product') }}">
+   <svg>
+    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+    <polyline points="14 2 14 8 20 8"></polyline>
+    <line x1="12" y1="18" x2="12" y2="12"></line>
+    <line x1="9" y1="15" x2="15" y2="15"></line>
+   </svg>
+  </a>
+  @if ($editproduct === null)
+   <button class="button button--primary button--centered" tooltip="Edit this Product" tooltip-left
+    wire:click.prevent="editproduct()">
     <svg>
-     <line x1="18" y1="6" x2="6" y2="18"></line>
-     <line x1="6" y1="6" x2="18" y2="18"></line>
+     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+     <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+     <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+     <path d="M16 5l3 3" />
     </svg>
-   </span>
+   </button>
+  @else
+   <button class="button button--primary button--centered" tooltip="Save Edit" tooltip-left
+    wire:click.prevent="saveproduct()">
+    <svg>
+     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+     <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+     <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />
+     <path d="M9 15l2 2l4 -4" />
+    </svg>
+   </button>
+   <button class="button button--primary button--centered" tooltip="Cancel edit" tooltip-left
+    wire:click.prevent="cancelproduct()">
+    <svg>
+     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+     <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+     <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2" />
+     <path d="M10 12l4 5" />
+     <path d="M10 17l4 -5" />
+    </svg>
+   </button>
+  @endif
+  <button class="button button--primary button--centered" tooltip="Delete this Product" tooltip-left
+   wire:click.prevent="confirmProductRemoval({{ $product->id }})">
+   <svg>
+    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+    <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+    <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />
+    <path d="M9 14l6 0" />
+   </svg>
+  </button>
+ </nav>
+
+
+
+ {{-- Tabs Header --}}
+ <nav class="nav--tabs">
+  <button class="button button--primary button--long button--active" id="detailsButton">
+   Details
+  </button>
+  <button class="button button--primary button--long" id="relatedButton">
+   Related
+  </button>
+ </nav>
+
+
+ {{-- Tabs Body (Details) --}}
+ <form style="height: calc(100% - 107.5px);" class="tabs__content details__view active" id="detailsContent">
+  {{-- Product Name --}}
+  <div class="input__tabs">
+   @if ($editproduct === null)
+    <span class="disabled">{{ $product->name }}</span>
+   @else
+    <input type="text" placeholder=" " name="product__name" wire:model.defer="prod.product_name" required>
+   @endif
+   <label for="product__name">Name</label>
   </div>
- </div>
- <div class="tab">
-  <div class="tabs">
-   <h3 class="tabs__page active">Details</h3>
-   <h3 class="tabs__page">Related</h3>
-  </div>
-  <div class="tab__list">
-   <div class="tabs__content active" id="Details">
-    <div class="item__form">
-     @if ($editproduct === null)
-      <div class="item__form-input-close">
-       <div>{{ $product->name }}</div>
-       <label>Name</label>
-      </div>
+
+
+
+  {{-- Product Active && IsNew --}}
+  <div class="details__checkboxes">
+   {{-- Product Active --}}
+   <div class="checkbox__details ">
+    @if ($editproduct === null)
+     @if ($product->active)
+      <input type="checkbox" id="active1" checked class="disabled" disabled />
+      <label for="active1" class="disabled">Active</label>
      @else
-      <div class="item__form-input">
-       <input type="text" wire:model.defer="prod.product_name" required>
-       <label> Name</label>
-      </div>
+      <input type="checkbox" id="active2" class="disabled" disabled />
+      <label for="active2" class="disabled">Active</label>
      @endif
-     @if ($editproduct === null)
-      <div class="item__form-input-close">
-       <div>{{ $product->sku }}</div>
-       <label>Sku</label>
-      </div>
-     @else
-      <div class="item__form-input">
-       <input type="text" wire:model.defer="prod.sku" required>
-       <label> Sku</label>
-      </div>
-     @endif
-     @if ($editproduct === null)
-      <div class="item__form-input-close">
-       <div>{{ $product->ean }}</div>
-       <label>Ean</label>
-      </div>
-     @else
-      <div class="item__form-input">
-       <input type="text" wire:model.defer="prod.ean" required>
-       <label> Ean</label>
-      </div>
-     @endif
-     @if ($editproduct === null)
-      <div class="item__form-input-close">
-       <div>{{ $product->start_date }}</div>
-       <label>Start Date</label>
-      </div>
-     @else
-      <div class="item__form-input">
-       <input type="date" id="start_date" wire:model.defer="prod.start_date">
-       <label>Start Date</label>
-      </div>
-     @endif
-     @if ($editproduct === null)
-      <div class="item__form-input-close">
-       <div>{{ $product->end_date }}</div>
-       <label>End Date </label>
-      </div>
-     @else
-      <div class="item__form-input">
-       <input type="date" id="end_date" wire:model.defer="prod.end_date">
-       <label>End Date</label>
-      </div>
-     @endif
-     @if ($editproduct === null)
-      <div class="item__form-input-close">
-       <div>{{ $product->quantity }}</div>
-       <label>Quantity</label>
-      </div>
-     @else
-      <div class="item__form-input">
-       <input type="number" min="0" wire:model.defer="prod.quantity" required>
-       <label>Quantity</label>
-      </div>
-     @endif
-     <div style="display: flex; gap:20px">
-     @if ($editproduct === null)
-      <div style="display: flex; align-items: center;justify-content: flex-start;gap: 10px">
-       @if ($product->active)
-        <div class="simple__checkbox">
-         <svg>
-          <polyline points="20 6 9 17 4 12"></polyline>
-         </svg>
-        </div>
-       @else
-        <div class="simple__checkbox--disabled">
-         <svg>
-          <polyline points="20 6 9 17 4 12"></polyline>
-         </svg>
-        </div>
-       @endif
-       {{ _('Active') }}
-      </div>
-     @else
-      <div style="display: flex; align-items: center;justify-content: flex-start;gap: 10px">
-       <input type="checkbox" wire:model.defer="prod.active">
-       <span>Active</span>
-      </div>
-     @endif
-      @if ($editproduct === null)
-      <div style="display: flex; align-items: center;justify-content: flex-start;gap: 10px">
-       @if ($product->is_new)
-        <div class="simple__checkbox">
-         <svg>
-          <polyline points="20 6 9 17 4 12"></polyline>
-         </svg>
-        </div>
-       @else
-        <div class="simple__checkbox--disabled">
-         <svg>
-          <polyline points="20 6 9 17 4 12"></polyline>
-         </svg>
-        </div>
-       @endif
-       {{ _('Is New') }}
-      </div>
-     @else
-      <div style="display: flex; align-items: center;justify-content: flex-start;gap: 10px">
-       <input type="checkbox" wire:model.defer="prod.is_new">
-       <span>Is New</span>
-      </div>
-     @endif
-     </div>
-     @if ($editproduct === null)
-      <div class="item__form-input-close">
-       <div>{{ $product->popularity }}</div>
-       <label>Popularity</label>
-      </div>
-     @else
-      <div class="item__form-input">
-       <input type="number" min="0" wire:model.defer="prod.popularity" required>
-       <label>Popularity</label>
-      </div>
-     @endif
-     @if ($editproduct === null)
-      <div class="item__form-input-close">
-       <div>{{ $product->short_description }}</div>
-       <label>Short Description</label>
-      </div>
-     @else
-      <div class="item__form-input">
-       <input type="text" wire:model.defer="prod.short_description" required>
-       <label>Short Description</label>
-      </div>
-     @endif
-     @if ($editproduct === null)
-      <div class="item__form-input-close">
-       <div>{{ $product->meta_description }}</div>
-       <label>Meta Description</label>
-      </div>
-     @else
-      <div class="item__form-input">
-       <input type="text" wire:model.defer="prod.meta_description" required>
-       <label>Meta Description</label>
-      </div>
-     @endif
-     @if ($editproduct === null)
-      <div class="item__form-input-close item__form-textarea">
-       <div>{!! $product->long_description !!}</div>
-       <label>Long Description</label>
-      </div>
-     @else
-      <div class="item__form-input item__form-textarea">
-       <textarea id="editor" wire:model="prod.long_description" required></textarea>
-       <label>Long Description</label>
-      </div>
-     @endif
-     @if ($editproduct === null)
-      <div class="item__form-input-close">
-       <div>{{ $product->seo_title }}</div>
-       <label>SEO Title</label>
-      </div>
-     @else
-      <div class="item__form-input">
-       <input type="text" wire:model.defer="prod.seo_title" required>
-       <label>SEO Title</label>
-      </div>
-     @endif
-     @if ($editproduct === null)
-      <div class="item__form-input-close">
-       <div>{{ $product->seo_id }}</div>
-       <label>Friendly URL</label>
-      </div>
-     @else
-      <div class="item__form-input">
-       <input type="text" wire:model.defer="prod.seo_id" required>
-       <label>Friendly URL</label>
-      </div>
-     @endif
-     <div class="item__form-input-close">
-      <div>{{ $product->created_at }}</div>
-      <label>Create date / time</label>
-     </div>
-     <div class="item__form-input-close">
-      <div>{{ $product->created_by }}</div>
-      <label>Create by</label>
-     </div>
-     <div class="item__form-input-close">
-      <div>{{ $product->updated_at }}</div>
-      <label>Updated date / time</label>
-     </div>
-     <div class="item__form-input-close">
-      <div>{{ $product->last_modified_by }}</div>
-      <label>Last modified by</label>
-     </div>
-     @if ($editproduct != null)
-      <button class="item__form-btn item__form-long" wire:click.prevent="saveproduct()" value="Save">
-       Save
-      </button>
-     @endif
-    </div>
+    @else
+     <input type="checkbox" id="active3" wire:model.defer="prod.active" />
+     <label for="active3">Active</label>
+    @endif
    </div>
-   <div class="tabs__content">
-    @livewire('related-media-product', ['product' => $product])
-    @livewire('related-category-product', ['product' => $product])
-    @livewire('related-products', ['product' => $product])
-    @livewire('related-spec-product', ['product' => $product])
-    @livewire('related-pricelist', ['product' => $product])
+   <div class="checkbox__details">
+    @if ($editproduct === null)
+     @if ($product->is_new)
+      <input type="checkbox" id="isNew1" checked class="disabled" disabled />
+      <label for="isNew1" class="disabled">Is New</label>
+     @else
+      <input type="checkbox" id="isNew2" class="disabled" disabled />
+      <label for="isNew2" class="disabled">Is New</label>
+     @endif
+    @else
+     <input type="checkbox" id="isNew3" wire:model.defer="prod.is_new" />
+     <label for="isNew3">Is New</label>
+    @endif
    </div>
+   {{-- Product IsNew --}}
   </div>
+
+  {{-- Product Type --}}
+  <div class="input__tabs">
+   @if ($editproduct === null)
+    <span class="disabled">{{ $product->type }}</span>
+   @else
+    <select wire:model.defer="prod.type">
+     <option value="parent">parent</option>
+     <option value="standard">standard</option>
+     <option value="variant">variant</option>
+    </select>
+   @endif
+   <label for="product__name">Type</label>
+  </div>
+
+  {{-- Product Quantity --}}
+  <div class="input__tabs">
+   @if ($editproduct === null)
+    <span class="disabled">{{ $product->quantity }}</span>
+   @else
+    <input type="text" placeholder=" " name="product__name" wire:model.defer="prod.quantity" required>
+   @endif
+   <label for="product__name">Quantity</label>
+  </div>
+
+  {{-- Product Popularity --}}
+  <div class="input__tabs">
+   @if ($editproduct === null)
+    <span class="disabled">{{ $product->popularity }}</span>
+   @else
+    <input type="text" placeholder=" " name="product__name" wire:model.defer="prod.popularity" required>
+   @endif
+   <label for="product__name">Popularity</label>
+  </div>
+
+  {{-- Product SKU --}}
+  <div class="input__tabs">
+   @if ($editproduct === null)
+    <span class="disabled">{{ $product->sku }}</span>
+   @else
+    <input type="text" placeholder=" " name="product__name" wire:model.defer="prod.sku" required>
+   @endif
+   <label for="product__name">SKU</label>
+  </div>
+
+  {{-- Product EAN --}}
+  <div class="input__tabs">
+   @if ($editproduct === null)
+    <span class="disabled">{{ $product->ean }}</span>
+   @else
+    <input type="text" placeholder=" " name="product__name" wire:model.defer="prod.ean" required>
+   @endif
+   <label for="product__name">EAN</label>
+  </div>
+
+  {{-- Product Short Description --}}
+  <div class="input__tabs">
+   @if ($editproduct === null)
+    <span class="disabled">{{ $product->short_description }}</span>
+   @else
+    <input type="text" placeholder=" " name="product__name" wire:model.defer="prod.short_description" required>
+   @endif
+   <label for="product__name">Short Description</label>
+  </div>
+
+  {{-- Product Start Date --}}
+  <div class="input__tabs">
+   @if ($editproduct === null)
+    <span class="disabled">{{ $product->start_date }}</span>
+   @else
+    <input type="date" placeholder=" " name="product__name" wire:model.defer="prod.start_date" required>
+   @endif
+   <label for="product__name">Start Date</label>
+  </div>
+
+  {{-- Product End Date --}}
+  <div class="input__tabs">
+   @if ($editproduct === null)
+    <span class="disabled">{{ $product->end_date }}</span>
+   @else
+    <input type="date" placeholder=" " name="product__name" wire:model.defer="prod.end_date" required>
+   @endif
+   <label for="product__name">End Date</label>
+  </div>
+
+  {{-- Product Meta Description --}}
+  <div class="input__tabs details__long">
+   @if ($editproduct === null)
+    <span class="disabled">{{ $product->meta_description }}</span>
+   @else
+    <input type="text" placeholder=" " name="product__name" wire:model.defer="prod.meta_description" required>
+   @endif
+   <label for="product__name">Meta Description</label>
+  </div>
+
+
+
+  {{-- Product Long Description --}}
+  <div class="textarea__tabs details__long">
+   @if ($editproduct === null)
+    <span class="disabled">{{ $product->long_description }}</span>
+   @else
+    <textarea type="text" placeholder=" " name="product__name" wire:model.defer="prod.long_description" required></textarea>
+   @endif
+   <label for="product__name">Long Description</label>
+  </div>
+
+  {{-- Product Seo Title --}}
+  <div class="input__tabs">
+   @if ($editproduct === null)
+    <span class="disabled">{{ $product->seo_title }}</span>
+   @else
+    <input type="text" placeholder=" " name="product__name" wire:model.defer="prod.seo_title" required>
+   @endif
+   <label for="product__name">Seo Title</label>
+  </div>
+
+  {{-- Product Friendly URL --}}
+  <div class="input__tabs">
+   @if ($editproduct === null)
+    <span class="disabled">{{ $product->seo_id }}</span>
+   @else
+    <input type="text" placeholder=" " name="product__name" wire:model.defer="prod.seo_id" required>
+   @endif
+   <label for="product__name">Friendly URL</label>
+  </div>
+
+  {{-- Create date / time --}}
+  <div class="input__tabs">
+   <span class="disabled">{{ $product->created_at }}</span>
+   <label>Create date / time</label>
+  </div>
+
+  {{-- Created By --}}
+  <div class="input__tabs">
+   <span class="disabled">{{ $product->created_by }}</span>
+   <label>Created By</label>
+  </div>
+
+  {{-- Updated At --}}
+  <div class="input__tabs">
+   <span class="disabled">{{ $product->updated_at }}</span>
+   <label>Updated At</label>
+  </div>
+
+  {{-- Last Modified By --}}
+  <div class="input__tabs">
+   <span class="disabled">{{ $product->last_modified_by }}</span>
+   <label>Last modified by</label>
+  </div>
+
+  {{-- Save Button --}}
+  @if ($editproduct != null)
+   <button class="button button--fill button--secondary details__long" wire:click.prevent="saveproduct()"
+    value="Save">
+    Save
+   </button>
+  @endif
+ </form>
+
+
+ {{-- Tabs Body (Related) --}}
+ <div style="height: calc(100% - 107.5px);" class="tabs__content related__view" id="relatedContent">
+  @livewire('related-media-product', ['product' => $product])
+  @livewire('related-variants', ['product' => $product])
+  @livewire('related-category-product', ['product' => $product])
+  @livewire('related-products', ['product' => $product])
+  @livewire('related-spec-product', ['product' => $product])
+  @livewire('related-pricelist', ['product' => $product])
  </div>
-</div>
+</section>

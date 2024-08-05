@@ -20,10 +20,21 @@ class HomeController extends Controller
 
   public function home()
   {
+
     $preload = null;
-    $firstcategory = Category::where('slider_sequence', '!=', 0)->orderby('slider_sequence')->first();
+    if (app()->has('global_cache_data') && app('global_cache_data') === 'true') {
+
+      $firstcategory = app()->make('cached_categories')->filter(function ($category) {
+        return $category->slider_sequence != 0;
+      })->sortBy('slider_sequence')->first();
+    } else {
+      $firstcategory = Category::where('slider_sequence', '!=', 0)->orderby('slider_sequence')->first();
+    }
+
     if ($firstcategory != null) {
-      $media = $firstcategory->media()->where('sequence', 4)->first();
+      $media = $firstcategory->media->first(function ($mediaItem) {
+        return $mediaItem->sequence == 4;
+      });
       if ($media) {
         $preload = "/" . $media->path . $media->name;
       } else {

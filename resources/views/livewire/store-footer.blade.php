@@ -1,12 +1,20 @@
 <div>
-
+ @if (app()->has('global_support_on') && app('global_support_on') === 'true')
+  <x-help-button />
+ @endif
 
  <section id="cookie-banner" style="display: none">
   <div class="container cookie__container">
    <div class="cookie__description">
-    <span>@if (app()->has('label_cookie_description')){!! app('label_cookie_description') !!} @endif</span>
+    <span>
+     @if (app()->has('label_cookie_description'))
+      {!! app('label_cookie_description') !!}
+     @endif
+    </span>
     <a href="{{ url('/cookie') }}">
-     @if (app()->has('label_cookie_policy')){!! app('label_cookie_policy') !!} @endif
+     @if (app()->has('label_cookie_policy'))
+      {!! app('label_cookie_policy') !!}
+     @endif
     </a>
    </div>
    <div id="cookieForm">
@@ -15,28 +23,54 @@
       <label>
        <input type="checkbox" id="essential-cookies" name="essential" disabled checked>
        <span>
-        @if (app()->has('label_cookie_esential_title')){!! app('label_cookie_esential_title') !!} @endif
+        @if (app()->has('label_cookie_esential_title'))
+         {!! app('label_cookie_esential_title') !!}
+        @endif
        </span>
-       <p>@if (app()->has('label_cookie_esential_description')){!! app('label_cookie_esential_description') !!} @endif</p>
+       <p>
+        @if (app()->has('label_cookie_esential_description'))
+         {!! app('label_cookie_esential_description') !!}
+        @endif
+       </p>
       </label>
       <label>
        <input type="checkbox" id="analytics-cookies" name="analytics" checked>
-       <span>@if (app()->has('label_cookie_analitics_title')){!! app('label_cookie_analitics_title') !!} @endif</span>
-       <p>@if (app()->has('label_cookie_analitics_description')){!! app('label_cookie_analitics_description') !!} @endif</p>
+       <span>
+        @if (app()->has('label_cookie_analitics_title'))
+         {!! app('label_cookie_analitics_title') !!}
+        @endif
+       </span>
+       <p>
+        @if (app()->has('label_cookie_analitics_description'))
+         {!! app('label_cookie_analitics_description') !!}
+        @endif
+       </p>
       </label>
       <label>
        <input type="checkbox" id="marketing-cookies" name="marketing" checked>
-       <span>@if (app()->has('label_cookie_marketing_title')){!! app('label_cookie_marketing_title') !!} @endif</span>
-       <p>@if (app()->has('label_cookie_marketing_description')){!! app('label_cookie_marketing_description') !!} @endif</p>
+       <span>
+        @if (app()->has('label_cookie_marketing_title'))
+         {!! app('label_cookie_marketing_title') !!}
+        @endif
+       </span>
+       <p>
+        @if (app()->has('label_cookie_marketing_description'))
+         {!! app('label_cookie_marketing_description') !!}
+        @endif
+       </p>
       </label>
      </div>
     </div>
     <div class="cookie-btns">
      <button id="accept-cookies" class="cookie__button cookie__button--accept">
-      @if (app()->has('label_cookie_accept_button')){!! app('label_cookie_accept_button') !!} @endif
+      @if (app()->has('label_cookie_accept_button'))
+       {!! app('label_cookie_accept_button') !!}
+      @endif
      </button>
      <button id="advanced-settings" class="cookie__button" type="button">
-      @if (app()->has('label_cookie_advanced_button')){!! app('label_cookie_advanced_button') !!} @endif
+      @if (app()->has('label_cookie_advanced_button'))
+       {!! app('label_cookie_advanced_button') !!}
+      @endif
      </button>
     </div>
    </div>
@@ -51,7 +85,8 @@
    <!---------------------Logo and Social--------------------->
    <div class="footer__top">
     <a class="logo" href="{{ url('/') }}">
-     <img loading="eager" src="/images/store/svg/logo-light.svg" alt="logo">
+     <img title="{{ app('global_site_name') }} logo" loading="eager" src="/images/store/svg/logo-light.svg"
+      alt="logo">
     </a>
     <div class="social__list">
      @if (app()->has('global_instagram_url') && app('global_instagram_url') != '')
@@ -77,15 +112,28 @@
    </div>
    <!------------------------Subscribe------------------------>
    <div class="footer__middle">
-    <h2>@if (app()->has('label_newsletter_subscribe_title')){!! app('label_newsletter_subscribe_title') !!} @endif</h2>
+    <h2>
+     @if (app()->has('label_newsletter_subscribe_title'))
+      {!! app('label_newsletter_subscribe_title') !!}
+     @endif
+    </h2>
     <div class="footer__checkbox">
      <input type="checkbox" wire:model="ischecked" id="subscribeCheckbox" name="subscribe__checkbox">
-     <label for="subscribeCheckbox">@if (app()->has('label_newsletter_subscribe_input')){!! app('label_newsletter_subscribe_input') !!} @endif</label>
+     <label for="subscribeCheckbox">
+      @if (app()->has('label_terms_confirm'))
+       {!! app('label_terms_confirm') !!}
+      @endif
+     </label>
     </div>
     <form class="subscribe" wire:submit.prevent="store">
      <input type="email" id="subscribeInput" wire:model="email" name="email" id="email"
-      placeholder="@if (app()->has('label_newsletter_subscribe_placeholder')){!! app('label_newsletter_subscribe_placeholder') !!} @endif" aria-describedby="email-error" autocomplete="email">
-     <button type="submit" id="subscribeSend" @if (!$ischecked || !($email && filter_var($email, FILTER_VALIDATE_EMAIL))) disabled @endif>@if (app()->has('label_newsletter_subscribe_button')){!! app('label_newsletter_subscribe_button') !!} @endif</button>
+      placeholder="@if (app()->has('label_newsletter_subscribe_placeholder')) {!! app('label_newsletter_subscribe_placeholder') !!} @endif" aria-describedby="email-error"
+      autocomplete="email">
+     <button type="submit" id="subscribeSend" @if (!$ischecked || !($email && filter_var($email, FILTER_VALIDATE_EMAIL))) disabled @endif>
+      @if (app()->has('label_newsletter_subscribe_button'))
+       {!! app('label_newsletter_subscribe_button') !!}
+      @endif
+     </button>
 
     </form>
    </div>
@@ -108,7 +156,11 @@
     </div>
    </div>
    <!------------------------Copyright------------------------>
-   <span class="footer__copyright">@if (app()->has('label_footer_copyright')){!! app('label_footer_copyright') !!} @endif</span>
+   <span class="footer__copyright">
+    @if (app()->has('label_footer_copyright'))
+     {!! app('label_footer_copyright') !!}
+    @endif
+   </span>
   </div>
  </footer>
 </div>

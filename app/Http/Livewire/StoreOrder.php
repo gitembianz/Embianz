@@ -99,9 +99,7 @@ class StoreOrder extends Component
     if (array_key_exists('sessionId', $_COOKIE)) {
       return $_COOKIE['sessionId'];
     } else {
-      $sessionId = session()->getId();
-      setcookie('sessionId', $sessionId, time() + 30 * 24 * 60 * 60, '/', null, false, true);
-      return $sessionId;
+      return session()->getId();
     }
   }
 
@@ -136,7 +134,7 @@ class StoreOrder extends Component
               'product_prices' => function ($query) {
                 $query->select('product_id', 'value', 'pricelist_id')
                   ->with(['pricelist' => function ($query) {
-                    $query->select('id', 'currency_id')->with('currency:id,name,symbol');
+                    $query->select('id', 'currency_id');
                   }]);
               }
             ]);
@@ -231,12 +229,12 @@ class StoreOrder extends Component
         'individual_billing_first' => [
           'required',
           'min:2',
-          'max:20',
+          'max:100',
         ],
         'individual_billing_last' => [
           'required',
           'min:2',
-          'max:20',
+          'max:100',
 
         ],
         'individual_billing_phone' => 'required|regex:/^\+?\d{1,4}?\s?\(?\d{1,4}\)?[-.\s]?\d{1,10}[-.\s]?\d{1,10}$/',
@@ -244,19 +242,19 @@ class StoreOrder extends Component
         'individual_billing_address1' => [
           'required',
           'min:1',
-          'max:200',
+          'max:100',
         ],
         'individual_billing_county' =>
         [
           'required',
           'min:1',
-          'max:100',
+          'max:40',
         ],
         'individual_billing_city' =>
         [
           'required',
           'min:1',
-          'max:100',
+          'max:40',
         ],
         'individual_billing_zipcode' =>
         [
@@ -271,12 +269,12 @@ class StoreOrder extends Component
           'individual_shipping_first' => [
             'required',
             'min:2',
-            'max:20',
+            'max:100',
           ],
           'individual_shipping_last' => [
             'required',
             'min:2',
-            'max:20',
+            'max:100',
           ],
           'individual_billing_phone' => 'required|regex:/^\+?\d{1,4}?\s?\(?\d{1,4}\)?[-.\s]?\d{1,10}[-.\s]?\d{1,10}$/',
           'individual_shipping_email' => 'required|email',
@@ -284,19 +282,19 @@ class StoreOrder extends Component
           [
             'required',
             'min:1',
-            'max:200',
+            'max:100',
           ],
           'individual_shipping_county' =>
           [
             'required',
             'min:1',
-            'max:100',
+            'max:40',
           ],
           'individual_shipping_city' =>
           [
             'required',
             'min:1',
-            'max:100',
+            'max:40',
           ],
           'individual_shipping_zipcode' =>
           [
@@ -315,12 +313,12 @@ class StoreOrder extends Component
         'juridic_billing_first' => [
           'required',
           'min:2',
-          'max:20',
+          'max:100',
         ],
         'juridic_billing_last' => [
           'required',
           'min:2',
-          'max:20',
+          'max:100',
         ],
         'juridic_billing_phone' => 'required|regex:/^\+?\d{1,4}?\s?\(?\d{1,4}\)?[-.\s]?\d{1,10}[-.\s]?\d{1,10}$/',
         'juridic_billing_email' => 'required|email',
@@ -342,19 +340,19 @@ class StoreOrder extends Component
         'juridic_billing_address1' => [
           'required',
           'min:1',
-          'max:200',
+          'max:100',
         ],
         'juridic_billing_county' =>
         [
           'required',
           'min:1',
-          'max:100',
+          'max:40',
         ],
         'juridic_billing_city' =>
         [
           'required',
           'min:1',
-          'max:100',
+          'max:40',
         ],
         'juridic_billing_zipcode' =>
         [
@@ -368,29 +366,29 @@ class StoreOrder extends Component
           'juridic_shipping_first' => [
             'required',
             'min:2',
-            'max:20',
+            'max:100',
           ],
           'juridic_shipping_last' => [
             'required',
             'min:2',
-            'max:20',
+            'max:100',
           ],
           'juridic_shipping_phone' => 'required|regex:/^\+?\d{1,4}?\s?\(?\d{1,4}\)?[-.\s]?\d{1,10}[-.\s]?\d{1,10}$/',
           'juridic_shipping_email' => 'required|email',
           'juridic_shipping_address1' => [
             'required',
             'min:1',
-            'max:200',
+            'max:100',
           ],
           'juridic_shipping_county' => [
             'required',
             'min:1',
-            'max:100',
+            'max:40',
           ],
           'juridic_shipping_city' => [
             'required',
             'min:1',
-            'max:100',
+            'max:40',
           ],
           'juridic_shipping_zipcode' => [
             'required',
@@ -408,18 +406,21 @@ class StoreOrder extends Component
   {
     if ($item == 'rtc') {
       $this->payment = $this->cash;
+      $this->payment['description'] = app('label_order_cash_title');
       $this->rtc = true;
       $this->crd = false;
       $this->invoice = false;
     }
     if ($item == 'crd') {
       $this->payment = $this->card;
+      $this->payment['description'] = app('label_order_cart_stripe_title');
       $this->crd = true;
       $this->rtc = false;
       $this->invoice = false;
     }
     if ($item == 'invoice') {
       $this->payment = $this->ordin;
+      $this->payment['description'] = app('label_order_invoice_title');
       $this->rtc = false;
       $this->crd = false;
       $this->invoice = true;
@@ -433,6 +434,8 @@ class StoreOrder extends Component
     if (session()->has('paymentcancel')) {
       $this->payment_cancel = true;
       $this->step = 2;
+      $message = app('label_order_payment_cancel_text') ?? "";
+      $this->emit('alert__modal', ['message' => $message]);
       session()->forget('paymentcancel');
     }
 
@@ -621,6 +624,8 @@ class StoreOrder extends Component
     $this->card = app('global_card_stripe');
     $this->ordin = app('global_ordin');
     $this->payment = $this->card;
+    $this->payment['description'] = app('label_order_cart_stripe_title');
+
 
     if ($this->step == 2) {
       $this->cart->update([
@@ -638,12 +643,11 @@ class StoreOrder extends Component
 
   public function render()
   {
-      $data = [
-        'cartItems' => $this->cartItems,
-        'cart' => $this->cart
-      ];
-      return view('livewire.store-order', $data);
-
+    $data = [
+      'cartItems' => $this->cartItems,
+      'cart' => $this->cart
+    ];
+    return view('livewire.store-order', $data);
   }
 
 
@@ -659,10 +663,10 @@ class StoreOrder extends Component
       if ($this->cart->voucher) {
         if (($this->cart->voucher->status_id == app('global_voucher_closed')) || ($this->cart->voucher->start_date > now()->format('Y-m-d')) || ($this->cart->voucher->end_date < now()->format('Y-m-d'))) {
 
-          if (app()->has('global_order_error_voucher')) {
-            $message = app('global_order_error_voucher');
+          if (app()->has('label_order_error_voucher')) {
+            $message = app('label_order_error_voucher');
           } else {
-            $message = "Vă rog verificați detaliile comenzii!";
+            $message = "";
           }
           $this->dispatchBrowserEvent('alert__modal', ['message' => $message]);
           $this->cart->update([
@@ -677,10 +681,10 @@ class StoreOrder extends Component
       foreach ($this->cartitems as $item) {
         if ($item->quantity > $item->product->quantity) {
           $this->validatequantity = false;
-          if (app()->has('global_order_error_quantity')) {
-            $message = app('global_order_error_quantity');
+          if (app()->has('label_order_error_quantity')) {
+            $message = app('label_order_error_quantity');
           } else {
-            $message = "Vă rog verificați detaliile comenzii!";
+            $message = "";
           }
           $this->dispatchBrowserEvent('alert__modal', ['message' => $message]);
           return;
@@ -688,10 +692,10 @@ class StoreOrder extends Component
       }
       foreach ($this->cartitems as $item) {
         if (($item->product->active != true) || ($item->product->start_date > now()->format('Y-m-d')) || ($item->product->end_date < now()->format('Y-m-d'))) {
-          if (app()->has('global_order_error_active')) {
-            $message = app('global_order_error_active');
+          if (app()->has('label_order_error_active')) {
+            $message = app('label_order_error_active');
           } else {
-            $message = "Vă rog verificați detaliile comenzii!";
+            $message = "";
           }
           $this->dispatchBrowserEvent('alert__modal', ['message' => $message]);
           return;
@@ -700,10 +704,10 @@ class StoreOrder extends Component
     } else {
       $this->emit('cartUpdated');
       $this->validatequantity = false;
-      if (app()->has('global_order_error_cart')) {
-        $message = app('global_order_error_cart');
+      if (app()->has('label_order_error_cart')) {
+        $message = app('label_order_error_cart');
       } else {
-        $message = "Vă rog verificați detaliile comenzii!";
+        $message = "";
       }
       $this->dispatchBrowserEvent('alert__modal', ['message' => $message]);
       return;

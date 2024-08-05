@@ -20,18 +20,26 @@ class Categoriestable extends Component
   public $checked = [];
   public $selectPage = false;
   public $selectAll = false;
-  public $catidbeingremoved = null;
+  public $idbeingremoved = null;
   public $selectedColumns = [];
-  public $col = false;
-  public $all = false;
   public $columns;
+  public $row = null;
+  public $single = false;
+  public $multiple = false;
+
+  public function expandRow($index)
+  {
+    if ($this->row  === null) {
+      $this->row = $index;
+    } elseif ($this->row != $index) {
+      $this->row = $index;
+    } else {
+      $this->row = null;
+    }
+  }
 
   public function render()
   {
-    if ($this->all) {
-      $this->selectedColumns = $this->columns;
-    }
-
     return view('livewire.categoriestable', ['categories' => $this->categories]);
   }
   public function mount($tableName)
@@ -78,7 +86,7 @@ class Categoriestable extends Component
   }
   public function getCategoriesProperty()
   {
-    return $this->categoriesQuery->limit($this->loadAmount)->get();
+    return $this->categoriesQuery->paginate($this->loadAmount);
   }
   public function loadMore()
   {
@@ -101,7 +109,7 @@ class Categoriestable extends Component
           $pro->delete();
         }
       }
-      $subcategories = Subcategory::where('parrent_id', $id)->orwhere('category_id', $id)->get();
+      $subcategories = Subcategory::where('parent_id', $id)->orwhere('category_id', $id)->get();
       if ($subcategories != NULL) {
         foreach ($subcategories as $sub) {
           $sub->delete();
@@ -120,6 +128,8 @@ class Categoriestable extends Component
     }
     $this->checked = [];
     $this->selectPage = false;
+    $this->multiple = false;
+
     session()->flash('notification', [
       'message' => 'Records deleted successfully!',
       'type' => 'success',
@@ -128,7 +138,7 @@ class Categoriestable extends Component
   }
   public function deleteSingleRecord()
   {
-    $id = $this->catidbeingremoved;
+    $id = $this->idbeingremoved;
     $category = Category::findOrFail($id);
     $productcats = Products_categories::where('category_id', $id)->get();
 
@@ -138,7 +148,7 @@ class Categoriestable extends Component
         $productcat->delete();
       }
     }
-    $subcategories = Subcategory::where('parrent_id', $id)->get();
+    $subcategories = Subcategory::where('parent_id', $id)->get();
     if ($subcategories != NULL) {
       foreach ($subcategories as $sub) {
         $sub->delete();
@@ -155,6 +165,7 @@ class Categoriestable extends Component
     }
     $category->delete();
     $this->checked = array_diff($this->checked, [$id]);
+    $this->single = false;
     session()->flash('notification', [
       'message' => 'Record deleted successfully!',
       'type' => 'success',
@@ -163,12 +174,17 @@ class Categoriestable extends Component
   }
   public function confirmItemRemoval($id)
   {
-    $this->catidbeingremoved = $id;
-    $this->dispatchBrowserEvent('show-delete-modal');
+    $this->idbeingremoved = $id;
+    $this->single = true;
   }
   public function confirmItemsRemoval()
   {
-    $this->dispatchBrowserEvent('show-delete-modal-multiple');
+    $this->multiple = true;
+  }
+  public function cancel_delete()
+  {
+    $this->multiple = false;
+    $this->single = false;
   }
   public function isChecked($id)
   {

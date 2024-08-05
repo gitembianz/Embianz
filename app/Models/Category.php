@@ -18,9 +18,9 @@ class Category extends Model
   }
   public function subcategory()
   {
-    return $this->hasMany(Subcategory::class, 'parrent_id');
+    return $this->hasMany(Subcategory::class, 'parent_id');
   }
-  public function parrent()
+  public function parent()
   {
     return $this->hasMany(Subcategory::class, 'category_id');
   }
@@ -37,18 +37,18 @@ class Category extends Model
 
     while ($currentCategory) {
       $breadcrumbs->prepend([
-        'name' => $currentCategory->name,
+        'name' => $currentCategory->short_description ?? strip_tags($currentCategory->name),
         'slug' => $currentCategory->seo_id ?? $currentCategory->id,
       ]);
 
-      if ($currentCategory->parrent->isNotEmpty()) {
-        $parrentCategory = $currentCategory->parrent->first()->category_parrent;
+      if ($currentCategory->parent->isNotEmpty()) {
+        $parentCategory = $currentCategory->parent->first()->category_parent;
 
-        if (!$parrentCategory) {
+        if (!$parentCategory) {
           break;
         }
 
-        $currentCategory = $parrentCategory;
+        $currentCategory = $parentCategory;
       } else {
         break;
       }
@@ -59,7 +59,7 @@ class Category extends Model
 
   protected $fillable = [
     'name',
-    'parrent',
+    'parent',
     'active',
     'long_description',
     'meta_description',
@@ -77,11 +77,21 @@ class Category extends Model
   public static function search($search)
   {
     return empty($search) ? static::query()
-      : static::query()->where('id', 'like', '%' . $search . '%')
-      ->orWhere('name', 'like', '%' . $search . '%')
-      ->orWhere('sequence', 'like', '%' . $search . '%')
-      ->orWhere('short_description', 'like', '%' . $search . '%');
+      : static::query()
+      ->where(function ($query) use ($search) {
+        $searchTerms = explode(' ', $search);
+
+        foreach ($searchTerms as $term) {
+          $query->where(function ($subQuery) use ($term) {
+            $subQuery->where('id', 'like', '%' . $term . '%')
+              ->orWhere('name', 'like', '%' . $term . '%')
+              ->orWhere('sequence', 'like', '%' . $term . '%')
+              ->orWhere('short_description', 'like', '%' . $term . '%');
+          });
+        }
+      });
   }
+
   public static function search_by_name($search)
   {
     return empty($search) ? static::query()

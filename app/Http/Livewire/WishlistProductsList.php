@@ -21,7 +21,12 @@ class WishlistProductsList extends Component
 
     public function render()
     {
-        return view('livewire.wishlist-products-list', ['items' => $this->items]);
+        if ($this->showwis) {
+
+            return view('livewire.wishlist-products-list', ['items' => $this->items]);
+        } else {
+            return view('livewire.wishlist-products-list');
+        }
     }
 
     public function removemessage()
@@ -34,9 +39,7 @@ class WishlistProductsList extends Component
         if (array_key_exists('sessionId', $_COOKIE)) {
             return $_COOKIE['sessionId'];
         } else {
-            $sessionId = session()->getId();
-            setcookie('sessionId', $sessionId, time() + 30 * 24 * 60 * 60, '/', null, false, true);
-            return $sessionId;
+            return session()->getId();
         }
     }
 
@@ -63,10 +66,7 @@ class WishlistProductsList extends Component
                             $query->select('path', 'name')->where('type', 'min');
                         },
                         'product_prices' => function ($query) {
-                            $query->select('product_id', 'value', 'pricelist_id')
-                                ->with(['pricelist' => function ($query) {
-                                    $query->select('id', 'currency_id')->with('currency:id,name,symbol');
-                                }]);
+                            $query->select('product_id', 'value', 'pricelist_id');
                         }
                     ]);
                 }
@@ -83,7 +83,7 @@ class WishlistProductsList extends Component
         $product = Product::with(['product_prices' => function ($query) {
             $query->select('product_id', 'value', 'pricelist_id')
                 ->with(['pricelist' => function ($query) {
-                    $query->select('id', 'currency_id')->with('currency:id,name,symbol');
+                    $query->select('id', 'currency_id');
                 }]);
         }])->find($productId);
 

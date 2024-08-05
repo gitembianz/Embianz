@@ -1,4 +1,4 @@
-<x-store-head :title="getTitle()" :description="getDescription()" :preload="$preload"/>
+<x-store-head :title="getTitle()" :description="getDescription()" :preload="$preload" />
 
 @php
  function getTitle()
@@ -20,6 +20,6 @@
  }
 @endphp
 
-<x-store-header />
+@livewire('store-header')
 @livewire('store-main')
 <x-store-footer />

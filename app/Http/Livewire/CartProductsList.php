@@ -26,22 +26,36 @@ class CartProductsList extends Component
     ];
     public function render()
     {
-        return view('livewire.cart-products-list', [
-            'cart' => $this->cart,
-            'cartItems' => $this->cartItems,
-        ]);
+        if ($this->showcart) {
+
+            return view('livewire.cart-products-list', [
+                'cart' => $this->cart,
+                'cartItems' => $this->cartItems,
+            ]);
+        } else {
+            return view('livewire.cart-products-list');
+        }
     }
     public function getCartProperty()
     {
-        return Cart::select('id', 'quantity_amount', 'delivery_price', 'sum_amount', 'voucher_id', 'final_amount', 'voucher_value', 'currency_id')
+        return Cart::select('id', 'quantity_amount', 'delivery_price', 'sum_amount', 'voucher_id', 'final_amount', 'voucher_value')
             ->where('session_id', $this->session_id)
             ->where('status_id', '!=', app('global_cart_closed'))
             ->with([
                 'voucher' => function ($query) {
                     $query->select('code', 'id', 'percent', 'value');
                 },
-                'currency' => function ($query) {
-                    $query->select('id', 'symbol');
+                'carts' => function ($query) {
+                    $query->select('id', 'product_id', 'price', 'quantity')->with([
+                        'product' => function ($query) {
+                            $query->with([
+                                'product_prices' => function ($query) {
+                                    $query->select('product_id', 'value');
+                                },
+
+                            ]);
+                        }
+                    ]);
                 }
             ])
             ->latest()
@@ -52,9 +66,7 @@ class CartProductsList extends Component
         if (array_key_exists('sessionId', $_COOKIE)) {
             return $_COOKIE['sessionId'];
         } else {
-            $sessionId = session()->getId();
-            setcookie('sessionId', $sessionId, time() + 30 * 24 * 60 * 60, '/', null, false, true);
-            return $sessionId;
+            return session()->getId();
         }
     }
 
@@ -70,10 +82,7 @@ class CartProductsList extends Component
                                 $query->select('path', 'name')->where('type', 'min');
                             },
                             'product_prices' => function ($query) {
-                                $query->select('product_id', 'value', 'pricelist_id')
-                                    ->with(['pricelist' => function ($query) {
-                                        $query->select('id', 'currency_id')->with('currency:id,name,symbol');
-                                    }]);
+                                $query->select('product_id', 'value');
                             },
 
                         ]);
@@ -170,9 +179,6 @@ class CartProductsList extends Component
     public function mount()
     {
         $this->session_id = $this->getSessionId();
-        if ($this->cart && $this->cart->seen_by_customer) {
-            $this->cartmodified = true;
-        }
     }
 
     public function pricechanged()

@@ -2,12 +2,18 @@
   position: fixed;
   display: inline-block;
   padding: $padding;
-  background: $white;
+  background: $primary;
   z-index: $index-modal;
   transition: $transition-fast;
   overflow-y: auto;
   padding-bottom: calc($padding * 10);
   // transform: scale(0.85);
+
+  & h3 {
+    color: $secondary;
+    font-size: $font-size;
+    font-weight: $font-weight;
+  }
 
 
   /// Positioning
@@ -62,7 +68,68 @@
         left: 0;
     }
   }
-  &--search{
+
+  &--confirm {
+    max-width: 350px;
+    max-height: 100px;
+    width: 100%;
+    height: 100%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    overflow: unset;
+
+    &.active {
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    /// Confirm Styles
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: $gap;
+    padding: $padding;
+    border-radius: $border-radius-sm;
+
+    & > span {
+      text-align: center;
+      text-wrap: balance;
+      color: $white;
+      font-size: $font-size;
+      font-weight: $font-weight;
+      margin: 0 5%;
+    }
+  }
+
+  &--table {
+    width: 90%;
+    height: 90%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    overflow: unset;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: $padding;
+    border-radius: $border-radius-sm;
+    background: $primary;
+
+    &.active {
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    &>nav {
+      margin-top: 0;
+    }
+    &>table {
+      margin-top: 0;
+    }
+  }
+
+  &--search {
     top: -$max-width;
     left: 50%;
     transform: translateX(-50%);
@@ -74,7 +141,7 @@
 
     &.active{
         top: 0;
-      }
+    }
   }
 
   /// Objects and styles for aside

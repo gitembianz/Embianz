@@ -21,9 +21,7 @@ class AddToCartButton extends Component
         if (array_key_exists('sessionId', $_COOKIE)) {
             return $_COOKIE['sessionId'];
         } else {
-            $sessionId = session()->getId();
-            setcookie('sessionId', $sessionId, time() + 30 * 24 * 60 * 60, '/', null, false, true);
-            return $sessionId;
+            return session()->getId();
         }
     }
 
@@ -34,6 +32,9 @@ class AddToCartButton extends Component
 
     public function addToCart($productId)
     {
+        if (!array_key_exists('sessionId', $_COOKIE)) {
+            setcookie('sessionId', $this->session_id, time() + 30 * 24 * 60 * 60, '/');
+        }
         $cart = Cart::where('session_id', $this->session_id)
             ->where('status_id', '!=', app('global_cart_closed'))
             ->with('voucher')

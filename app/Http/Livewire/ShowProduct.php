@@ -19,6 +19,7 @@ class ShowProduct extends Component
 {
   public $productId;
   public $editproduct = null;
+  public $delete = false;
   public $prod;
 
   public function mount($productId)
@@ -29,6 +30,11 @@ class ShowProduct extends Component
   {
     $this->productId = $id;
     $this->dispatchBrowserEvent('show-delete-modal');
+    $this->delete = true;
+  }
+  public function cancelItemRemoval()
+  {
+      $this->delete = false;
   }
   public function editproduct()
   {
@@ -46,7 +52,9 @@ class ShowProduct extends Component
       'quantity' => $this->product->quantity,
       'sku' => $this->product->sku,
       'ean' => $this->product->ean,
-      'seo_id' => $this->product->seo_id
+      'seo_id' => $this->product->seo_id,
+      'type' => $this->product->type
+
     ];
     $this->editproduct = true;
   }
@@ -83,6 +91,9 @@ class ShowProduct extends Component
         } elseif ($new->seo_id != $product_new['seo_id']) {
           $new->seo_id = $this->generateUniqueSeoId($product_new['seo_id']);
         }
+      }
+      if (array_key_exists('type', $product_new)) {
+        $new->type = $product_new['type'];
       }
       if (array_key_exists('start_date', $product_new)) {
         $new->start_date = $product_new['start_date'];
@@ -169,7 +180,7 @@ class ShowProduct extends Component
         $this->emit('cartUpdated');
       }
     }
-    $relproducts = Related_Products::where('product_id', $id)->orwhere('parrent_id', $id)->get();
+    $relproducts = Related_Products::where('product_id', $id)->orwhere('parent_id', $id)->get();
     if ($relproducts != NULL) {
       foreach ($relproducts as $item) {
         $item->delete();
@@ -198,7 +209,8 @@ class ShowProduct extends Component
       File::deleteDirectory($filespath);
     }
     $product->delete();
-    return redirect()->route('products')->with('notification', [
+    $this->delete = false;
+    return redirect()->route('all_products')->with('notification', [
       'message' => 'Record deleted successfully!',
       'type' => 'success',
       'title' => 'Success'

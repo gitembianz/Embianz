@@ -1,45 +1,49 @@
-// vendors
+/// Vendors
 @import"dashboard/vendors/normalize";
 
-// abstracts
-@import"dashboard/abstracts/variables";
-@import"dashboard/abstracts/functions";
-@import"dashboard/abstracts/mixins";
-@import"dashboard/abstracts/placeholders";
 
-// base
-@import"dashboard/base/typography";
+/// Abstracts
+@import"dashboard/abstracts/variables";
+@import"dashboard/abstracts/mixins";
+
+
+/// Bases
 @import"dashboard/base/fonts";
+@import"dashboard/base/reset";
 @import"dashboard/base/base";
 @import"dashboard/base/animations";
 
-// components
-@import"dashboard/components/buttons";
-@import"dashboard/components/carousel";
-@import"dashboard/components/media";
-@import"dashboard/components/cover";
-@import"dashboard/components/dropdown";
-@import"dashboard/components/background";
-@import"dashboard/components/switches";
-@import"dashboard/components/inputs";
-@import"dashboard/components/controls";
-@import"dashboard/components/gradient";
 
-// layout
-@import"dashboard/layouts/navigation";
-@import"dashboard/layouts/grid";
+/// Components
+@import"dashboard/components/background";
+@import"dashboard/components/buttons";
+@import"dashboard/components/dropdown";
+@import"dashboard/components/gradient";
+@import"dashboard/components/inputs";
+@import"dashboard/components/select";
+@import"dashboard/components/scrollbar";
+@import"dashboard/components/switches";
+@import"dashboard/components/error";
+@import"dashboard/components/tooltip";
+@import"dashboard/components/accordion";
+@import"dashboard/components/notifications";
+
+
+/// Layouts
 @import"dashboard/layouts/header";
-@import"dashboard/layouts/footer";
+@import"dashboard/layouts/navigation";
 @import"dashboard/layouts/sidebar";
 @import"dashboard/layouts/leftbar";
-@import"dashboard/layouts/forms";
-@import"dashboard/layouts/tables";
+@import"dashboard/layouts/table";
+@import"dashboard/layouts/tabs";
 
-// pages
+
+/// Pages
 @import"dashboard/pages/home";
-@import"dashboard/pages/contact";
 @import"dashboard/pages/login";
+@import"dashboard/pages/table-details";
+@import"dashboard/pages/table-related";
 
-// themes
-@import"dashboard/themes/theme";
-@import"dashboard/themes/admin";
+
+/// Themes
+@import"dashboard/themes/standart";

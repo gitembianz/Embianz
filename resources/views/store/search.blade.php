@@ -1,6 +1,5 @@
 <x-store-head :canonical="'search'" :title="'Caută | '" :description="'Căutare generală'" />
-
-<x-store-header />
+@livewire('store-header')
 <main>
 	@livewire("store-search", ["data" => $data])
 </main>

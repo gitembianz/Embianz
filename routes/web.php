@@ -1,7 +1,6 @@
  <?php
 
   use App\Http\Controllers\AdminController;
-  use App\Http\Controllers\CartController;
   use Illuminate\Support\Facades\Route;
   use Illuminate\Support\Facades\Artisan;
   use App\Http\Controllers\HomeController;
@@ -10,7 +9,7 @@
   use App\Http\Controllers\PriceListController;
   use App\Http\Controllers\SpecsController;
   use App\Http\Controllers\StoreController;
-  use App\Http\Controllers\TodolistController;
+  // use App\Http\Controllers\TodolistController;
   use Illuminate\Support\Facades\Cache;
   use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
   use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -49,12 +48,12 @@
       route::get('/show_product/{id}/', [ProductController::class, 'show'])->name('show_product');
 
       //todolist routes
-      route::post('/new', [TodolistController::class, 'store'])->name('new_todo');
-      route::delete('/{todolist:id}', [TodolistController::class, 'destroy'])->name('delete_todo');
+      // route::post('/new', [TodolistController::class, 'store'])->name('new_todo');
+      // route::delete('/{todolist:id}', [TodolistController::class, 'destroy'])->name('delete_todo');
 
       //carts route
       route::view('/carts', 'admin.cart')->name('carts');
-      route::get('/show_cart/{id}/', [CartController::class, 'show'])->name('show_cart');
+      route::get('/show_cart/{id}/', [AdminController::class, 'show_cart'])->name('show_cart');
 
       //specs route
       route::view('/specs', 'admin.specs')->name('specs');
@@ -94,7 +93,15 @@
 
       route::view('/storesettings', 'admin.store_settings')->name('storesettings');
       route::view('/addstoresettings', 'admin.add_storesetting')->name('add_storesetting');
+      route::post('/add_setting', [AdminController::class, 'store_setting'])->name('add_setting');
+
       route::view('/labels', 'admin.labels')->name('labels');
+      route::view('/variants', 'admin.variants')->name('variants');
+      route::view('/newvariant', 'admin.add_variant')->name('newvariant');
+      route::post('/add_variant', [AdminController::class, 'store_variant'])->name('add_variant');
+
+
+
 
       //specific routes
       route::get('/cleareverything', function () {
@@ -134,7 +141,7 @@
 
   //simple page routes
 
-  route::get('/', [HomeController::class, 'home'])->name('home')->middleware('cache-control');
+  route::get('/', [HomeController::class, 'home'])->name('home');
   route::view('/cart', 'store.cart')->name('cart');
   route::view('/wishlist', 'store.wislist')->name('wislist');
   route::view('/order', 'store.order')->name('order');

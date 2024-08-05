@@ -2,11 +2,15 @@
 
  <div class="breadcrumbs container">
   <a class="breadcrumbs__link" href="{{ url('/') }}">
-    @if (app()->has('label_breadcrumbs_home_page')){!! app('label_breadcrumbs_home_page') !!} @endif
+   @if (app()->has('label_breadcrumbs_home_page'))
+    {!! app('label_breadcrumbs_home_page') !!}
+   @endif
   </a>
   @if (app()->has('global_show_on_breadcrumbs') && app('global_show_on_breadcrumbs') == 'true')
    <a class="breadcrumbs__link" href="{{ url('/storeproducts') }}">
-    @if (app()->has('label_breadcrumbs_allproducts')){!! app('label_breadcrumbs_allproducts') !!} @endif
+    @if (app()->has('label_breadcrumbs_allproducts'))
+     {!! app('label_breadcrumbs_allproducts') !!}
+    @endif
    </a>
   @endif
   @if ($product->product_categories->isNotEmpty())
@@ -29,7 +33,7 @@
      @if ($product->media->count() != 0)
       @foreach ($product->media->where('type', 'full') as $media)
        <div class="product-slider__slide">
-        <img loading="eager" src="/{{ $media->path }}{{ $media->name }}"
+        <img width="550" height="550" loading="eager" src="/{{ $media->path }}{{ $media->name }}"
          data-name-alt="{{ $media->name }}{{ $product->name }}" alt="{{ $media->name }}{{ $product->name }}"
          data-img-src="/{{ $product->media->where('type', 'original')->where('sequence', $media->sequence)->first()->path }}{{ $product->media->where('type', 'original')->where('sequence', $media->sequence)->first()->name }}">
        </div>
@@ -101,6 +105,77 @@
   <!--------------------- End Product details -------------------->
   <!------------------------------------------------------>
  </section>
+
+ <section class="tab container">
+  <div class="tab__top">
+   <button class="tab__button active" onclick="switchTab(0)">
+    @if (app()->has('label_pdp_description_tag'))
+     {!! app('label_pdp_description_tag') !!}
+    @endif
+   </button>
+   <button class="tab__button" onclick="switchTab(1)">
+    @if (app()->has('label_pdp_details_tag'))
+     {!! app('label_pdp_details_tag') !!}
+    @endif
+   </button>
+  </div>
+  <div class="tab__content active">
+   <p class="tab__info">{!! $product->long_description !!}</p>
+  </div>
+  <div class="tab__content">
+   <table class="tab__table">
+    <thead>
+     <tr>
+      <th>
+       @if (app()->has('label_pdp_specs_tag'))
+        {!! app('label_pdp_specs_tag') !!}
+       @endif
+      </th>
+      <th>
+       @if (app()->has('label_pdp_description_tag'))
+        {!! app('label_pdp_description_tag') !!}
+       @endif
+      </th>
+     </tr>
+    </thead>
+    <tbody>
+     @if ($product->product_specs->first() !== null)
+      @foreach ($product->product_specs->sortBy('sequence') as $spec)
+       <tr>
+        <td>{{ $spec->spec->name }}</td>
+        <td>{{ $spec->value }}</td>
+       </tr>
+      @endforeach
+     @else
+      <tr>
+       <td colspan="2">
+        @if (app()->has('label_pdp_specs_error'))
+         {!! app('label_pdp_specs_error') !!}
+        @endif
+       </td>
+      </tr>
+     @endif
+    </tbody>
+   </table>
+  </div>
+ </section>
+
+ <script>
+  function switchTab(tabIndex) {
+   const tabs = document.querySelectorAll('.tab__content');
+   const buttons = document.querySelectorAll('.tab__button');
+
+   tabs.forEach((tab, index) => {
+    if (index === tabIndex) {
+     tab.classList.add('active');
+     buttons[index].classList.add('active');
+    } else {
+     tab.classList.remove('active');
+     buttons[index].classList.remove('active');
+    }
+   });
+  }
+ </script>
  <h2></h2>
  <!---------------------------------------------------------->
  <!------------------- Section Description ------------------>
@@ -124,14 +199,12 @@
    {{-- <div class="related__navigation"> --}}
    <button class="related__btn prev" aria-label="Previous related slider">
     <svg>
-     <line x1="19" y1="12" x2="5" y2="12"></line>
-     <polyline points="12 19 5 12 12 5"></polyline>
+     <polyline points="15 18 9 12 15 6"></polyline>
     </svg>
    </button>
    <button class="related__btn next" aria-label="Next related slider">
     <svg>
-     <line x1="5" y1="12" x2="19" y2="12"></line>
-     <polyline points="12 5 19 12 12 19"></polyline>
+     <polyline points="9 18 15 12 9 6"></polyline>
     </svg>
    </button>
    {{-- </div> --}}
@@ -142,15 +215,17 @@
              $product->product->active == true &&
              $product->product->end_date >= now()->format('Y-m-d') &&
              $product->product->start_date <= now()->format('Y-m-d'))
-      <div class="card product" style="width: 100%; pointer-events: none !important" >
-       <a style="width: 100%" href="{{ route('product', ['product' => $product->product->seo_id !== null && $product->product->seo_id !== '' ? $product->product->seo_id : $product->product->id]) }}">
+      <div class="card product" style="width: 100%;">
+       <a style="width: 100%"
+        href="{{ route('product', ['product' => $product->product->seo_id !== null && $product->product->seo_id !== '' ? $product->product->seo_id : $product->product->id]) }}">
 
         @if ($product->product->media->first() != null)
-         <img loading="eager" class="card-image"
+         <img loading="eager" width="300" height="300" class="card-image"
           src="/{{ $product->product->media->first()->path }}{{ $product->product->media->first()->name }}"
           alt="{{ $product->product->media->first()->name }} {{ $product->product->name }}">
         @else
-         <img loading="eager" class="card-image" src="/images/store/default/default300.webp" alt="something wrong">
+         <img loading="eager" width="300" height="300" class="card-image"
+          src="/images/store/default/default300.webp" alt="something wrong">
         @endif
        </a>
        @livewire('product-wishlist-button', ['productId' => $product->product->id, 'class' => 'card__action', 'is_in_wishlist' => $product->product->wishlists->isNotEmpty()], key($product->product->id))
@@ -164,9 +239,11 @@
        ?>
        @if ($price)
         @if ($product->product->quantity < $quantity && $product->product->quantity > 0)
-          <p class="card-status out">
-           @if (app()->has('label_product_status_stock')){!! app('label_product_status_stock') !!} @endif
-          </p>
+         <p class="card-status out">
+          @if (app()->has('label_product_status_stock'))
+           {!! app('label_product_status_stock') !!}
+          @endif
+         </p>
          @if ($discount)
           <p class="card-status save-secondary">
            -{{ $product->product->product_prices->first()->discount }}%
@@ -174,8 +251,10 @@
          @endif
         @elseif($product->product->quantity == 0)
          <p class="card-status save">
-           @if (app()->has('label_product_status_indisponible')){!! app('label_product_status_indisponible') !!} @endif
-          </p>
+          @if (app()->has('label_product_status_indisponible'))
+           {!! app('label_product_status_indisponible') !!}
+          @endif
+         </p>
         @else
          @if ($discount)
           <p class="card-status save">
@@ -186,32 +265,43 @@
         {{-- tagul de discount --}}
        @else
         <p class="card-status save">
-           @if (app()->has('label_product_status_coming_soon')){!! app('label_product_status_coming_soon') !!} @endif
-          </p>
+         @if (app()->has('label_product_status_coming_soon'))
+          {!! app('label_product_status_coming_soon') !!}
+         @endif
+        </p>
        @endif
        <div class="card-info">
         <div class="card-text">
-         <span>{{ $product->product->short_description }}</span>
+         <span><a style="text-decoration: none; font-weight:500"
+           href="{{ route('product', ['product' => $product->product->seo_id !== null && $product->product->seo_id !== '' ? $product->product->seo_id : $product->product->id]) }}">{{ $product->product->short_description }}</a></span>
         </div>
         <div class="card-text">
-         <h3>{{ $product->product->name }}</h3>
+         <h3><a style="text-decoration: none; font-weight:500"
+           href="{{ route('product', ['product' => $product->product->seo_id !== null && $product->product->seo_id !== '' ? $product->product->seo_id : $product->product->id]) }}">{{ $product->product->name }}</a>
+         </h3>
          <p class="card-price">
           @if ($discount)
            <span class="card-price discount">
             @if ($product->product->product_prices->first())
              {{ $price }}
-             {{ $product->product->product_prices->first()->pricelist->currency->symbol }}
+             @if (app()->has('global_currency_primary_symbol'))
+              {!! app('global_currency_primary_symbol') !!}
+             @endif
             @endif
            </span>
            <span class="card-price oldprice">
             {{ $product->product->product_prices->first()->value_no_discount }}
-            {{ $product->product->product_prices->first()->pricelist->currency->name }}
+            @if (app()->has('global_currency_primary_name'))
+             {!! app('global_currency_primary_name') !!}
+            @endif
            </span>
           @else
            <span>
             @if ($product->product->product_prices->first())
              {{ $price }}
-             {{ $product->product->product_prices->first()->pricelist->currency->symbol }}
+             @if (app()->has('global_currency_primary_symbol'))
+              {!! app('global_currency_primary_symbol') !!}
+             @endif
             @endif
            </span>
           @endif
@@ -227,8 +317,11 @@
        <div style="display: none" class="dlv">
         <span class="dlv_name">{{ $product->product->name }}</span>
         <span class="dlv_price">{{ $price }}</span>
-        <span
-         class="dlv_currency">{{ optional(optional(optional($product->product->product_prices->first())->pricelist)->currency)->name }}</span>
+        <span class="dlv_currency">
+         @if (app()->has('global_currency_primary_name'))
+          {!! app('global_currency_primary_name') !!}
+         @endif
+        </span>
        </div>
       </div>
      @endif
@@ -236,6 +329,6 @@
    </div>
   </section>
  @endif
- <x-help-button />
+
  <script src="/script/store/product.js" defer></script>
 </div>
