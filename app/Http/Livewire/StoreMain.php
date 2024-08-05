@@ -49,7 +49,7 @@ class StoreMain extends Component
           $query->select('product_id', 'value', 'discount', 'value_no_discount');
         },
         'wishlists' => function ($query) {
-          $query->select('id', 'product_id')->where('session_id', $this->session_id);
+          $query->where('session_id', $this->session_id);
         }
       ])
         ->select('id', 'name', 'seo_id', 'quantity', 'type', 'short_description', 'popularity')
@@ -82,7 +82,7 @@ class StoreMain extends Component
           $query->select('product_id', 'value', 'discount', 'value_no_discount');
         },
         'wishlists' => function ($query) {
-          $query->select('id', 'product_id')->where('session_id', $this->session_id);
+          $query->where('session_id', $this->session_id);
         }
       ])
         ->select('id', 'name', 'seo_id', 'quantity', 'short_description', 'popularity')

@@ -117,6 +117,7 @@
      <div class="card-slider__wrapper new-slider__wrapper">
       @foreach ($popproducts as $product)
        <div class="card-slider__slide new-slider__slide card">
+
         <a draggable="false"
          href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">
          @php
@@ -130,7 +131,15 @@
            alt="something wrong">
          @endif
         </a>
-        @livewire('product-wishlist-button', ['productId' => $product->id, 'class' => 'card__action', 'is_in_wishlist' => $product->wishlists->where('session_id', $session_id)->isNotEmpty()], key($product->id))
+        @livewire(
+            'product-wishlist-button',
+            [
+                'productId' => $product->id,
+                'class' => 'card__action',
+                'is_in_wishlist' => $product->wishlists->where('session_id', $session_id)->isNotEmpty(),
+            ],
+            key($product->id)
+        )
         <?php
         $price = null;
         $discount = false;
@@ -181,7 +190,7 @@
          </div>
          <div class="card-text">
           <h2 class="card-title"><a style="text-decoration: none; font-weight:500"
-            href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">{{ $product->name }}</a>
+            href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">{{ $product->wishlists->where('session_id', $session_id) }}{{ $product->name }}</a>
           </h2>
           <p class="card-price">
            @if ($discount)
@@ -214,7 +223,7 @@
          </div>
          @livewire('add-to-cart-button', ['product' => $product], key($product->id))
          <div style="display: none" class="dlv">
-          <span class="dlv_name">{{ $product->name }}</span>
+          <span class="dlv_name"> {{ $product->name }}</span>
           <span class="dlv_price">{{ $price }}</span>
           <span class="dlv_currency">
            @if (app()->has('global_currency_primary_name'))
@@ -270,8 +279,15 @@
            alt="something wrong">
          @endif
         </a>
-        @livewire('product-wishlist-button', ['productId' => $product->id, 'class' => 'card__action', 'is_in_wishlist' => $product->wishlists->where('session_id', $session_id)->isNotEmpty()], key($product->id))
-        <?php
+        @livewire(
+            'product-wishlist-button',
+            [
+                'productId' => $product->id,
+                'class' => 'card__action',
+                'is_in_wishlist' => $product->wishlists->where('session_id', $session_id)->isNotEmpty(),
+            ],
+            key($product->id)
+        ) <?php
         $price = null;
         $discount = false;
         
