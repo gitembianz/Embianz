@@ -16,6 +16,11 @@ return new class extends Migration
     Schema::create('products', function (Blueprint $table) {
       $table->id();
       $table->string('name')->nullable();
+      $table->string('type')->nullable()->default(
+        'standard'
+      );
+      $table->unsignedBigInteger('parent_id')->nullable()->index();
+      $table->foreign('parent_id')->references('id')->on('products');
       $table->string('sku')->nullable()->unique();
       $table->string('ean')->nullable()->unique();
       $table->boolean('active');
