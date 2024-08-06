@@ -16,6 +16,9 @@ return new class extends Migration
     Schema::create('categories', function (Blueprint $table) {
       $table->id();
       $table->string('name')->nullable();
+      $table->string('accepted_items')->nullable()->default(
+        'default'
+      );
       $table->boolean('active');
       $table->boolean('has_parent')->nullable()->default(
         false
