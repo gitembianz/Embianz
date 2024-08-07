@@ -71,10 +71,10 @@
        <div class="basket__item">
         <a style="width: 100%; display: flex; flex: 1;text-decoration: none"
          href="{{ route('product', ['product' => $cartItem->product->seo_id !== null && $cartItem->product->seo_id !== '' ? $cartItem->product->seo_id : $cartItem->product->id]) }}">
-         @if ($cartItem->product->media->first())
+         @if ($cartItem->product->media->where('type', 'min')->first())
           <img loading="eager" class="cart__list--img" title="{{ $cartItem->product->name }}"
-           src="/{{ $cartItem->product->media->first()->path }}{{ $cartItem->product->media->first()->name }}"
-           alt="{{ $cartItem->product->media->first()->name }} {{ $cartItem->product->name }}">
+           src="/{{ $cartItem->product->media->where('type', 'min')->first()->path }}{{ $cartItem->product->media->where('type', 'min')->first()->name }}"
+           alt="{{ $cartItem->product->media->where('type', 'min')->first()->name }} {{ $cartItem->product->name }}">
          @else
           <img title="Default image" loading="eager" class="cart__list--img" src="/images/store/default/default70.webp"
            alt="something wrong">

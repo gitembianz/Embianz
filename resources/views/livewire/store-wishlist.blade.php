@@ -27,30 +27,30 @@
     <?php
     $disables = [];
     ?>
-    @foreach ($wishlistitems as $index => $product)
+    @foreach ($wishlistitems as $index => $item)
      <?php
      $disabled[$index] = false;
-     if ($product->active != true || $product->start_date > now()->format('Y-m-d') || $product->end_date < now()->format('Y-m-d')) {
+     if ($item->product->active != true || $item->product->start_date > now()->format('Y-m-d') || $item->product->end_date < now()->format('Y-m-d')) {
          $disabled[$index] = true;
      } ?>
      <div class="basket__item">
       <a
-       href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}"
+       href="{{ route('product', ['product' => $item->product->seo_id !== null && $item->product->seo_id !== '' ? $item->product->seo_id : $item->product->id]) }}"
        class="basket__link">
-       @if ($product->media->first() != null)
-        <img title="{{ $product->name }}" loading="eager"
-         src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}"
-         alt="{{ $product->media->first()->name }} {{ $product->name }}">
+       @if ($item->product->media->where('type', 'min')->first() != null)
+        <img title="{{ $item->product->name }}" loading="eager"
+         src="/{{ $item->product->media->where('type', 'min')->first()->path }}{{ $item->product->media->where('type', 'min')->first()->name }}"
+         alt="{{ $item->product->media->where('type', 'min')->first()->name }} {{ $item->product->name }}">
        @else
         <img title="Default image" loading="eager" src="/images/store/default/default70.webp" alt="something wrong">
        @endif
        <div class="basket__text">
         <h3>
-         {{ $product->name }}
+         {{ $item->product->name }}
         </h3>
         <span>
-         @if ($product->product_prices->first() !== null)
-          {{ $product->product_prices->first()->value }}
+         @if ($item->product->product_prices->first() !== null)
+          {{ $item->product->product_prices->first()->value }}
           @if (app()->has('global_currency_primary_symbol'))
            {!! app('global_currency_primary_symbol') !!}
           @endif
@@ -62,8 +62,8 @@
         </span>
        </div>
       </a>
-      @if ($product->product_prices->first() !== null && $product->quantity > 1)
-       <button class="basket__delete" wire:click="addToCart({{ $product->id }}, {{ $index }})"
+      @if ($item->product->product_prices->first() !== null && $item->product->quantity > 1)
+       <button class="basket__delete" wire:click="addToCart({{ $item->product->id }}, {{ $index }})"
         aria-label="add to cart">
         <svg>
          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
@@ -72,7 +72,7 @@
         </svg>
        </button>
       @endif
-      <button class="basket__delete" wire:click="removeFromWishlist({{ $product->id }})"
+      <button class="basket__delete" wire:click="removeFromWishlist({{ $item->product->id }})"
        aria-label="Remove from wishlist">
        <svg>
         <polyline points="3 6 5 6 21 6"></polyline>
@@ -87,7 +87,7 @@
           {!! app('label_product_status_indisponible') !!}
          @endif
         </span>
-        <button class="basket__delete" type="button" wire:click="removeFromWishlist({{ $product->id }})">
+        <button class="basket__delete" type="button" wire:click="removeFromWishlist({{ $item->product->id }})">
          <svg>
           <line x1="18" y1="6" x2="6" y2="18"></line>
           <line x1="6" y1="6" x2="18" y2="18"></line>
