@@ -44,33 +44,63 @@ class StoreCart extends Component
   }
   public function getCartProperty()
   {
-    return Cart::select('id', 'quantity_amount', 'delivery_price', 'sum_amount', 'voucher_id', 'final_amount', 'voucher_value')
-      ->where('session_id', $this->session_id)
-      ->where('status_id', '!=', app('global_cart_closed'))
-      ->with([
-        'voucher' => function ($query) {
-          $query->select('code', 'id', 'percent', 'value');
-        },
-        'cartItems' => function ($query) {
-          $query->select('id', 'cart_id', 'product_id', 'price', 'quantity')
-            ->with([
-              'product' => function ($query) {
-                $query->select('id', 'name', 'seo_id', 'active', 'start_date', 'end_date', 'quantity')
-                  ->with([
-                    'media' => function ($query) {
-                      $query->select('path', 'name')->where('type', 'min');
-                    },
-                    'product_prices' => function ($query) {
-                      $query->select('product_id', 'value');
-                    },
-                  ]);
-              }
-            ]);
+    if (app()->has('global_cache_data') && app('global_cache_data') === 'true') {
+
+      $cachedProducts = app()->make('cached_products')->keyBy('id');
+
+      $cart = Cart::select('id', 'quantity_amount', 'delivery_price', 'sum_amount', 'voucher_id', 'final_amount', 'voucher_value')
+        ->where('session_id', $this->session_id)
+        ->where('status_id', '!=', app('global_cart_closed'))
+        ->with([
+          'voucher' => function ($query) {
+            $query->select('code', 'id', 'percent', 'value');
+          },
+          'cartItems' => function ($query) {
+            $query->select('id', 'cart_id', 'product_id', 'price', 'quantity');
+          }
+        ])
+        ->latest()
+        ->first();
+
+      if ($cart) {
+        foreach ($cart->cartItems as $item) {
+          if ($cachedProducts->has($item->product_id)) {
+            $item->setRelation('product', $cachedProducts->get($item->product_id));
+          }
         }
-      ])
-      ->latest()
-      ->first() ?? null;
+      }
+
+      return $cart;
+    } else {
+      return Cart::select('id', 'quantity_amount', 'delivery_price', 'sum_amount', 'voucher_id', 'final_amount', 'voucher_value')
+        ->where('session_id', $this->session_id)
+        ->where('status_id', '!=', app('global_cart_closed'))
+        ->with([
+          'voucher' => function ($query) {
+            $query->select('code', 'id', 'percent', 'value');
+          },
+          'cartItems' => function ($query) {
+            $query->select('id', 'cart_id', 'product_id', 'price', 'quantity')
+              ->with([
+                'product' => function ($query) {
+                  $query->select('id', 'name', 'seo_id', 'active', 'start_date', 'end_date', 'quantity')
+                    ->with([
+                      'media' => function ($query) {
+                        $query->select('path', 'name', 'type')->where('type', 'min');
+                      },
+                      'product_prices' => function ($query) {
+                        $query->select('product_id', 'value');
+                      },
+                    ]);
+                }
+              ]);
+          }
+        ])
+        ->latest()
+        ->first() ?? null;
+    }
   }
+
 
   public function removeFromCart($productId)
   {
