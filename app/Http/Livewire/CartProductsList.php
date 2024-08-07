@@ -30,7 +30,6 @@ class CartProductsList extends Component
 
             return view('livewire.cart-products-list', [
                 'cart' => $this->cart,
-                'cartItems' => $this->cartItems,
             ]);
         } else {
             return view('livewire.cart-products-list');
@@ -45,22 +44,27 @@ class CartProductsList extends Component
                 'voucher' => function ($query) {
                     $query->select('code', 'id', 'percent', 'value');
                 },
-                'carts' => function ($query) {
-                    $query->select('id', 'product_id', 'price', 'quantity')->with([
-                        'product' => function ($query) {
-                            $query->with([
-                                'product_prices' => function ($query) {
-                                    $query->select('product_id', 'value');
-                                },
-
-                            ]);
-                        }
-                    ]);
+                'cartItems' => function ($query) {
+                    $query->select('id', 'cart_id', 'product_id', 'price', 'quantity')
+                        ->with([
+                            'product' => function ($query) {
+                                $query->select('id', 'name', 'seo_id', 'active', 'start_date', 'end_date', 'quantity')
+                                    ->with([
+                                        'media' => function ($query) {
+                                            $query->select('path', 'name')->where('type', 'min');
+                                        },
+                                        'product_prices' => function ($query) {
+                                            $query->select('product_id', 'value');
+                                        },
+                                    ]);
+                            }
+                        ]);
                 }
             ])
             ->latest()
             ->first() ?? null;
     }
+
     private function getSessionId()
     {
         if (array_key_exists('sessionId', $_COOKIE)) {
@@ -70,28 +74,6 @@ class CartProductsList extends Component
         }
     }
 
-    public function getCartItemsProperty()
-    {
-        if ($this->cart) {
-            return Cart_Item::select('id', 'quantity', 'price', 'product_id')
-                ->where('cart_id', $this->cart->id)
-                ->with([
-                    'product' => function ($query) {
-                        $query->select('id', 'name', 'seo_id', 'active', 'start_date', 'end_date', 'quantity')->with([
-                            'media' => function ($query) {
-                                $query->select('path', 'name')->where('type', 'min');
-                            },
-                            'product_prices' => function ($query) {
-                                $query->select('product_id', 'value');
-                            },
-
-                        ]);
-                    }
-                ])->get() ?? collect();
-        } else {
-            return collect();
-        }
-    }
     public function removevoucher()
     {
         $this->cart->update([
@@ -183,7 +165,7 @@ class CartProductsList extends Component
 
     public function pricechanged()
     {
-        foreach ($this->cart->carts as $item) {
+        foreach ($this->cart->cartItems as $item) {
             if (optional($item->product->product_prices->first())->value) {
 
                 if ($item->price != $item->product->product_prices->first()->value) {
@@ -271,8 +253,8 @@ class CartProductsList extends Component
             $this->aplicabble_voucher = true;
             return;
         }
-        if ($this->cartItems->isNotEmpty()) {
-            foreach ($this->cartItems as $item) {
+        if ($this->cart->quantity_amount != 0) {
+            foreach ($this->cart->cartItems as $item) {
                 if (($item->product->active != true) || ($item->product->start_date > now()->format('Y-m-d')) || ($item->product->end_date < now()->format('Y-m-d'))) {
                     $this->emit('cartUpdated');
                     return;
@@ -281,8 +263,8 @@ class CartProductsList extends Component
         }
         $validateQuantity = true;
 
-        if ($this->cartItems->isNotEmpty()) {
-            foreach ($this->cartItems as $item) {
+        if ($this->cart->quantity_amount != 0) {
+            foreach ($this->cart->cartItems as $item) {
                 if ($item->quantity > $item->product->quantity) {
                     $validateQuantity = false;
                     if (app()->has('global_order_error_quantity')) {

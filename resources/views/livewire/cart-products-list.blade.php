@@ -35,8 +35,7 @@
        $decimal = ',';
    }
   @endphp
-
-  @if (!isset($cartItems) || $cartItems->isEmpty())
+  @if (!isset($cart) || $cart->quantity_amount == 0)
    <span class="leftbar__empty">
     @if (app()->has('label_cart_empty'))
      {!! app('label_cart_empty') !!}
@@ -51,7 +50,7 @@
     $disables = [];
     $nonquantity = [];
     ?>
-    @foreach ($cartItems as $index => $cartItem)
+    @foreach ($cart->cartItems as $index => $cartItem)
      <?php
      $disabled[$index] = false;
      $nonquantity[$index] = false;
