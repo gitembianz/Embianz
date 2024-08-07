@@ -23,7 +23,7 @@
     @endif
    </h1>
    <h2></h2>
-   @if (!$cartItems->isEmpty())
+   @if (isset($cart) && $cart->quantity_amount != 0)
     <p class="section__text">
      @if (app()->has('label_cart_page_description'))
       {!! app('label_cart_page_description') !!}
@@ -36,7 +36,7 @@
   <div class="basket__container container">
    <!------------------- Products ------------------>
    <div class="basket">
-    @if ($cartItems->isEmpty())
+    @if (!isset($cart) || $cart->quantity_amount == 0)
      <span class="basket__empty">
       @if (app()->has('label_cart_empty'))
        {!! app('label_cart_empty') !!}
@@ -46,7 +46,7 @@
      <?php $disables = [];
      $nonquantity = [];
      $isdisabled = false; ?>
-     @foreach ($cartItems as $index => $cartItem)
+     @foreach ($cart->cartItems as $index => $cartItem)
       <?php
       $disabled[$index] = false;
       $nonquantity[$index] = false;
@@ -98,7 +98,15 @@
           @endif
          </div>
         </a>
-        @livewire('product-wishlist-button', ['productId' => $cartItem->product->id, 'class' => 'basket__action', 'is_in_wishlist' => $cartItem->product->wishlists->isNotEmpty()], key($cartItem->product->id))
+        @livewire(
+            'product-wishlist-button',
+            [
+                'productId' => $cartItem->product->id,
+                'class' => 'basket__action',
+                'is_in_wishlist' => $this->isInWishlist($cartItem->product->id),
+            ],
+            key($cartItem->product->id)
+        )
         <button class="basket__delete" aria-label="Remove from cart button"
          wire:click="removeFromCart({{ $cartItem->product->id }})" onclick="removeItem(this)">
          <svg>
@@ -174,7 +182,7 @@
      @endforeach
     @endif
    </div>
-   @if (!$cartItems->isEmpty())
+   @if ($cart->quantity_amount != 0)
     <div class="details">
      <div class="details__content">
       <h2 class="details__title">
@@ -312,7 +320,7 @@
    <!------------------------------------------------------>
   </div>
  </section>
- @if (!$cartItems->isEmpty())
+ @if ($cart->quantity_amount != 0)
   <div class="dlv" style="display: none">
    <span class="dlv_currency">
     @if (app()->has('global_currency_primary_symbol'))
@@ -320,7 +328,7 @@
     @endif
    </span>
    <span class="dlv_value">{{ number_format($cart->sum_amount, 2, $decimal, $mill) }}</span>
-   @foreach ($cartItems as $cartItem)
+   @foreach ($cart->cartItems as $cartItem)
     <div class="dlv_item">
      <span class="dlv_item-id">{{ $cartItem->product->id }}</span>
      <span class="dlv_item-name">{{ $cartItem->product->name }}</span>

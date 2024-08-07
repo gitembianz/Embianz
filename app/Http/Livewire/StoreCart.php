@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Models\Cart;
 use App\Models\Voucher;
 use Livewire\Component;
+use App\Models\Wishlist;
 use App\Models\Cart_Item;
 use Illuminate\Support\Facades\DB;
 
@@ -17,6 +18,7 @@ class StoreCart extends Component
   public $message = null;
   public $session_id;
   public $aplicabble_voucher = false;
+  public $wishlistItems;
 
 
   protected $listeners = [
@@ -34,48 +36,40 @@ class StoreCart extends Component
   public function mount()
   {
     $this->session_id = $this->getSessionId();
+    $this->wishlistItems = Wishlist::where('session_id', $this->session_id)->pluck('product_id')->toArray();
   }
-
+  public function isInWishlist($productId)
+  {
+    return in_array($productId, $this->wishlistItems);
+  }
   public function getCartProperty()
   {
-    return Cart::select('id', 'quantity_amount', 'delivery_price', 'currency_id', 'sum_amount', 'voucher_id', 'final_amount', 'voucher_value')
+    return Cart::select('id', 'quantity_amount', 'delivery_price', 'sum_amount', 'voucher_id', 'final_amount', 'voucher_value')
       ->where('session_id', $this->session_id)
       ->where('status_id', '!=', app('global_cart_closed'))
       ->with([
         'voucher' => function ($query) {
           $query->select('code', 'id', 'percent', 'value');
+        },
+        'cartItems' => function ($query) {
+          $query->select('id', 'cart_id', 'product_id', 'price', 'quantity')
+            ->with([
+              'product' => function ($query) {
+                $query->select('id', 'name', 'seo_id', 'active', 'start_date', 'end_date', 'quantity')
+                  ->with([
+                    'media' => function ($query) {
+                      $query->select('path', 'name')->where('type', 'min');
+                    },
+                    'product_prices' => function ($query) {
+                      $query->select('product_id', 'value');
+                    },
+                  ]);
+              }
+            ]);
         }
       ])
       ->latest()
       ->first() ?? null;
-  }
-
-  public function getCartItemsProperty()
-  {
-    if ($this->cart) {
-      return Cart_Item::select('id', 'quantity', 'price', 'product_id')
-        ->where('cart_id', $this->cart->id)
-        ->with([
-          'product' => function ($query) {
-            $query->select('id', 'name', 'seo_id', 'active', 'start_date', 'end_date', 'quantity')->with([
-              'media' => function ($query) {
-                $query->select('path', 'name')->where('type', 'min');
-              },
-              'product_prices' => function ($query) {
-                $query->select('product_id', 'value', 'pricelist_id')
-                  ->with(['pricelist' => function ($query) {
-                    $query->select('id', 'currency_id');
-                  }]);
-              },
-              'wishlists' => function ($query) {
-                $query->select('id', 'product_id')->where('session_id', $this->session_id);
-              }
-            ]);
-          }
-        ])->get() ?? collect();
-    } else {
-      return collect();
-    }
   }
 
   public function removeFromCart($productId)
@@ -112,8 +106,8 @@ class StoreCart extends Component
 
   public function increment($id)
   {
-    if ($this->cart && $this->cartItems->isNotEmpty()) {
-      $cartitem_to_increment = $this->cartItems->where('id', $id)->first();
+    if ($this->cart) {
+      $cartitem_to_increment = $this->cart->cartItems->where('id', $id)->first();
       if ($cartitem_to_increment->quantity < $cartitem_to_increment->product->quantity) {
         $cartitem_to_increment->increment('quantity');
         $this->cart->increment('quantity_amount');
@@ -147,8 +141,8 @@ class StoreCart extends Component
 
   public function decrement($id)
   {
-    if ($this->cart && $this->cartItems->isNotEmpty()) {
-      $cartitem_to_decrement = $this->cartItems->where('id', $id)->first();
+    if ($this->cart) {
+      $cartitem_to_decrement = $this->cart->cartItems->where('id', $id)->first();
       if ($cartitem_to_decrement && $cartitem_to_decrement->quantity > 1) {
         $cartitem_to_decrement->decrement('quantity');
         $this->cart->decrement('quantity_amount');
@@ -258,8 +252,8 @@ class StoreCart extends Component
       $this->aplicabble_voucher = true;
       return;
     }
-    if ($this->cartItems->isNotEmpty()) {
-      foreach ($this->cartItems as $item) {
+    if ($this->cart->quantity_amount != 0) {
+      foreach ($this->cart->cartItems as $item) {
         if (($item->product->active != true) || ($item->product->start_date > now()->format('Y-m-d')) || ($item->product->end_date < now()->format('Y-m-d'))) {
           $this->emit('cartUpdated');
           return;
@@ -269,8 +263,8 @@ class StoreCart extends Component
 
     $validateQuantity = true;
 
-    if ($this->cartItems->isNotEmpty()) {
-      foreach ($this->cartItems as $item) {
+    if ($this->cart->quantity_amount != 0) {
+      foreach ($this->cart->cartItems as $item) {
         if ($item->quantity > $item->product->quantity) {
           $validateQuantity = false;
           $this->dispatchBrowserEvent('alert__modal');
@@ -290,7 +284,6 @@ class StoreCart extends Component
   public function render()
   {
     $data = [
-      'cartItems' => $this->cartItems,
       'cart' => $this->cart
     ];
     return view('livewire.store-cart', $data);
