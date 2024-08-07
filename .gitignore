@@ -3,6 +3,7 @@ node_modules
 storage/app/livewire-tmp
 public/dist/css/main.css.map
 public/dist/css/loading-screen.css.map
+public/images/
 public/sitemap.xml
 public/robots.txt
 bootstrap
