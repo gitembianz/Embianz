@@ -35,8 +35,7 @@
        $decimal = ',';
    }
   @endphp
-
-  @if (!isset($cartItems) || $cartItems->isEmpty())
+  @if (!isset($cart) || $cart->quantity_amount == 0)
    <span class="leftbar__empty">
     @if (app()->has('label_cart_empty'))
      {!! app('label_cart_empty') !!}
@@ -51,7 +50,7 @@
     $disables = [];
     $nonquantity = [];
     ?>
-    @foreach ($cartItems as $index => $cartItem)
+    @foreach ($cart->cartItems as $index => $cartItem)
      <?php
      $disabled[$index] = false;
      $nonquantity[$index] = false;
@@ -93,10 +92,10 @@
         <span class="leftbar__link--quantity">
          {{ $cartItem->quantity }} x
         </span>
-        @if ($cartItem->product->media->first())
+        @if ($cartItem->product->media->where('type', 'min')->first())
          <img loading="eager" class="cart__list--img" title="{{ $cartItem->product->name }}"
-          src="/{{ $cartItem->product->media->first()->path }}{{ $cartItem->product->media->first()->name }}"
-          alt="{{ $cartItem->product->media->first()->name }}{{ $cartItem->product->name }}">
+          src="/{{ $cartItem->product->media->where('type', 'min')->first()->path }}{{ $cartItem->product->media->where('type', 'min')->first()->name }}"
+          alt="{{ $cartItem->product->media->where('type', 'min')->first()->name }}{{ $cartItem->product->name }}">
         @else
          <img title="Default image" loading="eager" class="cart__list--img" src="/images/store/default/default70.webp"
           alt="something wrong">
@@ -114,10 +113,10 @@
         <span class="leftbar__link--quantity">
          {{ $cartItem->quantity }} x
         </span>
-        @if ($cartItem->product->media->first())
+        @if ($cartItem->product->media->where('type', 'min')->first())
          <img loading="eager" class="cart__list--img" title="{{ $cartItem->product->name }}"
-          src="/{{ $cartItem->product->media->first()->path }}{{ $cartItem->product->media->first()->name }}"
-          alt="{{ $cartItem->product->media->first()->name }}{{ $cartItem->product->name }}">
+          src="/{{ $cartItem->product->media->where('type', 'min')->first()->path }}{{ $cartItem->product->media->where('type', 'min')->first()->name }}"
+          alt="{{ $cartItem->product->media->where('type', 'min')->first()->name }}{{ $cartItem->product->name }}">
         @else
          <img title="Default image" loading="eager" class="cart__list--img" src="/images/store/default/default70.webp"
           alt="something wrong">

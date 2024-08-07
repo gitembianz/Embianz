@@ -57,20 +57,37 @@ class WishlistProductsList extends Component
 
     public function getItemsProperty()
     {
-        return Wishlist::select('id', 'product_id')
-            ->where('session_id', $this->session_id)
-            ->with([
-                'product' => function ($query) {
-                    $query->select('id', 'name', 'seo_id', 'active', 'start_date', 'end_date', 'quantity')->with([
-                        'media' => function ($query) {
-                            $query->select('path', 'name')->where('type', 'min');
-                        },
-                        'product_prices' => function ($query) {
-                            $query->select('product_id', 'value', 'pricelist_id');
-                        }
-                    ]);
+        if (app()->has('global_cache_data') && app('global_cache_data') === 'true') {
+            $cachedProducts = app()->make('cached_products')->keyBy('id');
+
+            $wishlistItems = Wishlist::select('id', 'product_id')
+                ->where('session_id', $this->session_id)
+                ->get();
+
+            foreach ($wishlistItems as $item) {
+                if ($cachedProducts->has($item->product_id)) {
+                    $item->setRelation('product', $cachedProducts->get($item->product_id));
                 }
-            ])->get() ?? collect();
+            }
+
+            return $wishlistItems;
+        } else {
+
+            return Wishlist::select('id', 'product_id')
+                ->where('session_id', $this->session_id)
+                ->with([
+                    'product' => function ($query) {
+                        $query->select('id', 'name', 'seo_id', 'active', 'start_date', 'end_date', 'quantity')->with([
+                            'media' => function ($query) {
+                                $query->select('path', 'name', 'type')->where('type', 'min');
+                            },
+                            'product_prices' => function ($query) {
+                                $query->select('product_id', 'value', 'pricelist_id');
+                            }
+                        ]);
+                    }
+                ])->get() ?? collect();
+        }
     }
     public function addToCart($productId, $index)
     {
