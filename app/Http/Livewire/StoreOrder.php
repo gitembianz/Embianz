@@ -13,6 +13,8 @@ use App\Models\Cart_Item;
 use App\Models\Order_Item;
 use Stripe\Checkout\Session;
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Cache;
+
 
 class StoreOrder extends Component
 {
