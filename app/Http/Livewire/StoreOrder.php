@@ -165,20 +165,47 @@ class StoreOrder extends Component
   public function resetForm()
   {
     $this->reset([
-      'individual_billing_first', 'individual_billing_last', 'individual_billing_phone', 'individual_billing_email',
-      'individual_billing_address1', 'individual_billing_address2', 'individual_billing_county',
-      'individual_billing_city', 'individual_billing_zipcode',
-      'individual_shipping_first', 'individual_shipping_last', 'individual_shipping_phone', 'individual_shipping_email',
-      'individual_shipping_address1', 'individual_shipping_address2', 'individual_shipping_county',
-      'individual_shipping_city', 'individual_shipping_zipcode',
-      'juridic_billing_first', 'juridic_billing_last', 'juridic_billing_phone', 'juridic_billing_email',
-      'juridic_billing_company_name', 'juridic_billing_registration_code', 'juridic_billing_registration_number',
-      'juridic_billing_bank', 'juridic_billing_account',
-      'juridic_billing_address1', 'juridic_billing_address2', 'juridic_billing_county',
-      'juridic_billing_city', 'juridic_billing_zipcode',
-      'juridic_shipping_first', 'juridic_shipping_last', 'juridic_shipping_phone', 'juridic_shipping_email',
-      'juridic_shipping_address1', 'juridic_shipping_address2', 'juridic_shipping_county',
-      'juridic_shipping_city', 'juridic_shipping_zipcode'
+      'individual_billing_first',
+      'individual_billing_last',
+      'individual_billing_phone',
+      'individual_billing_email',
+      'individual_billing_address1',
+      'individual_billing_address2',
+      'individual_billing_county',
+      'individual_billing_city',
+      'individual_billing_zipcode',
+      'individual_shipping_first',
+      'individual_shipping_last',
+      'individual_shipping_phone',
+      'individual_shipping_email',
+      'individual_shipping_address1',
+      'individual_shipping_address2',
+      'individual_shipping_county',
+      'individual_shipping_city',
+      'individual_shipping_zipcode',
+      'juridic_billing_first',
+      'juridic_billing_last',
+      'juridic_billing_phone',
+      'juridic_billing_email',
+      'juridic_billing_company_name',
+      'juridic_billing_registration_code',
+      'juridic_billing_registration_number',
+      'juridic_billing_bank',
+      'juridic_billing_account',
+      'juridic_billing_address1',
+      'juridic_billing_address2',
+      'juridic_billing_county',
+      'juridic_billing_city',
+      'juridic_billing_zipcode',
+      'juridic_shipping_first',
+      'juridic_shipping_last',
+      'juridic_shipping_phone',
+      'juridic_shipping_email',
+      'juridic_shipping_address1',
+      'juridic_shipping_address2',
+      'juridic_shipping_county',
+      'juridic_shipping_city',
+      'juridic_shipping_zipcode'
     ]);
   }
 
@@ -992,6 +1019,9 @@ class StoreOrder extends Component
         Voucher::where('id', $this->cart->voucher_id)->update([
           'status_id' => app('global_voucher_closed')
         ]);
+      }
+      if (app()->has('global_cache_data') && app('global_cache_data') === 'true') {
+        Cache::forget('cached_products');
       }
       if ($this->payment['type'] != 'card') {
 
