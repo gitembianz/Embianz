@@ -21,7 +21,7 @@ class CartProductsList extends Component
     protected $listeners = [
         'showcart' => 'cartshow',
         'orderprocess' => 'orderprocess',
-        'newcartlist' => 'getCartItemsProperty',
+        'newcartlist' => 'mount',
         'cartUpdated' => 'mount',
     ];
     public function render()

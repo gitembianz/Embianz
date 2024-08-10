@@ -72,10 +72,13 @@
       <div @if ($loop->last) id="last_record" @endif class="card">
        <a
         href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">
-        @if ($product->media->first() != null)
+        @if ($product->media->where('type', 'main')->first() != null)
          <img title="{{ $product->name }}, {{ $product->short_description }}" loading="eager" class="card-image"
-          src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}"
-          alt="{{ $product->media->first()->name }} {{ $product->name }}">
+          src="/{{ $product->media->where('type', 'main')->first()->path }}{{ $product->media->where('type', 'main')->first()->name }}"
+          alt="{{ $product->media->where('type', 'main')->first()->name }} {{ $product->name }}">
+        @else
+         <img title="Default image" loading="eager" class="card-image" src="/images/store/default/default300.webp"
+          alt="something wrong">
         @endif
        </a>
        <?php if ($product->product_prices->count() != 0) {
@@ -115,8 +118,8 @@
         @endif
        @else
         <p class="card-status save">
-         @if (app()->has('label_product_status_coming_soon'))
-          {!! app('label_product_status_coming_soon') !!}
+         @if (app()->has('label_product_status_comaing_soon'))
+          {!! app('label_product_status_comaing_soon') !!}
          @endif
         </p>
        @endif
