@@ -299,9 +299,9 @@ function sliderProduct(sliderId, modalId) {
     const touchEndX = event.changedTouches[0].clientX;
     const swipeDistance = touchEndX - touchStartX;
 
-    if (swipeDistance > 150 && index > 0) {
+    if (swipeDistance > 50 && index > 0) {
       currentIndex = index - 1;
-    } else if (swipeDistance < -150 && index < slides.length - 1) {
+    } else if (swipeDistance < -50 && index < slides.length - 1) {
       currentIndex = index + 1;
     }
 
@@ -376,7 +376,7 @@ function sliderProduct(sliderId, modalId) {
     if (mouseStartX) {
       const dragDistance = event.clientX - mouseStartX;
 
-      if (Math.abs(dragDistance) > 150 && !isScrolling()) {
+      if (Math.abs(dragDistance) > 50 && !isScrolling()) {
         event.preventDefault();
         isDragging = true;
       }
@@ -388,10 +388,10 @@ function sliderProduct(sliderId, modalId) {
       const mouseEndX = event.clientX;
       const dragDistance = mouseEndX - mouseStartX;
 
-      if (dragDistance > 150 && currentIndex > 0) {
+      if (dragDistance > 50 && currentIndex > 0) {
         navigation("prev");
         updateModalImage();
-      } else if (dragDistance < -150 && currentIndex < slides.length - 1) {
+      } else if (dragDistance < -50 && currentIndex < slides.length - 1) {
         navigation("next");
         updateModalImage();
       }
@@ -415,7 +415,7 @@ function sliderProduct(sliderId, modalId) {
         return; // Ignoră acțiunea dacă utilizatorul face zoom
       }
 
-      if (Math.abs(swipeDistance) > 150 && !isScrolling()) {
+      if (Math.abs(swipeDistance) > 50 && !isScrolling()) {
         event.preventDefault();
         isDragging = true;
       }
@@ -427,10 +427,10 @@ function sliderProduct(sliderId, modalId) {
       const touchEndX = event.changedTouches[0].clientX;
       const swipeDistance = touchEndX - touchStartX;
 
-      if (swipeDistance > 150 && currentIndex > 0) {
+      if (swipeDistance > 50 && currentIndex > 0) {
         navigation("prev");
         updateModalImage();
-      } else if (swipeDistance < -150 && currentIndex < slides.length - 1) {
+      } else if (swipeDistance < -50 && currentIndex < slides.length - 1) {
         navigation("next");
         updateModalImage();
       }
