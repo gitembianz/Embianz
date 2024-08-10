@@ -54,7 +54,6 @@ class GeneralSearch extends Component
                             str_contains($product->id, $term) ||
                             str_contains(strtolower($product->name), $term) ||
                             str_contains(strtolower($product->ean), $term) ||
-                            str_contains(strtolower($product->meta_description), $term) ||
                             str_contains(strtolower($product->short_description), $term) ||
                             str_contains(strtolower($product->sku), $term)
                         ) {
