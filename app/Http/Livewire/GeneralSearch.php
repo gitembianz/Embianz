@@ -43,44 +43,94 @@ class GeneralSearch extends Component
     public function getObjectsProperty()
     {
         if ($this->search != "") {
-            return Product::search($this->search)
-                ->select('id', 'name', 'seo_id', 'type', 'short_description')
-                ->where('active', true)
-                ->where('type', '!=', 'parent')
-                ->where('start_date', '<=',  now()->format('Y-m-d'))
-                ->where('end_date', '>=',  now()->format('Y-m-d'))
-                ->with([
-                    'media' => function ($query) {
-                        $query->select('path', 'name')->where('type', 'min');
-                    },
-                    'product_prices' => function ($query) {
-                        $query->select('product_id', 'value', 'pricelist_id');
+            if (app()->has('global_cache_data') && app('global_cache_data') === 'true') {
+                $searchTerms = explode(' ', $this->search);
+
+                return app()->make('cached_products')->filter(function ($product) use ($searchTerms) {
+                    $matches = false;
+
+                    foreach ($searchTerms as $term) {
+                        if (
+                            str_contains($product->id, $term) ||
+                            str_contains(strtolower($product->name), $term) ||
+                            str_contains(strtolower($product->ean), $term) ||
+                            str_contains(strtolower($product->meta_description), $term) ||
+                            str_contains(strtolower($product->short_description), $term) ||
+                            str_contains(strtolower($product->sku), $term)
+                        ) {
+                            $matches = true;
+                            break;
+                        }
                     }
-                ])
-                ->orderBy('popularity', 'desc')
-                ->limit(app('global_limit_searchitems'))
-                ->get();
+
+                    return $matches
+                        && $product->active
+                        && $product->type != 'parent'
+                        && $product->start_date <= now()->format('Y-m-d')
+                        && $product->end_date >= now()->format('Y-m-d');
+                })->sortByDesc('popularity')->take(app('global_limit_searchitems'));
+            } else {
+                return Product::search($this->search)
+                    ->select('id', 'name', 'seo_id', 'type', 'short_description')
+                    ->where('active', true)
+                    ->where('type', '!=', 'parent')
+                    ->where('start_date', '<=', now()->format('Y-m-d'))
+                    ->where('end_date', '>=', now()->format('Y-m-d'))
+                    ->with([
+                        'media' => function ($query) {
+                            $query->select('path', 'name', 'type')->where('type', 'min');
+                        },
+                        'product_prices' => function ($query) {
+                            $query->select('product_id', 'value', 'pricelist_id');
+                        }
+                    ])
+                    ->orderBy('popularity', 'desc')
+                    ->limit(app('global_limit_searchitems'))
+                    ->get();
+            }
         } else {
             return collect();
         }
     }
 
-
     public function getCatsProperty()
     {
         if ($this->search != "") {
-            return Category::search_by_name($this->search)
-                ->select('id', 'name', 'seo_id')
-                ->where('active', true)
-                ->where('start_date', '<=',  now()->format('Y-m-d'))
-                ->where('end_date', '>=',  now()->format('Y-m-d'))
-                ->with([
-                    'media' => function ($query) {
-                        $query->select('path', 'name')->where('type', 'min');
+            if (app()->has('global_cache_data') && app('global_cache_data') === 'true') {
+                $searchTerms = explode(' ', $this->search);
+
+                return app()->make('cached_categories')->filter(function ($category) use ($searchTerms) {
+                    $matches = false;
+
+                    foreach ($searchTerms as $term) {
+                        if (
+                            str_contains(strtolower(strip_tags($category->name)), $term) ||
+                            str_contains(strtolower($category->short_description), $term)
+                        ) {
+                            $matches = true;
+                            break;
+                        }
                     }
-                ])
-                ->limit(app('global_limit_searchitems'))
-                ->get();
+
+                    return $matches
+                        && $category->active
+                        && $category->start_date <= now()->format('Y-m-d')
+                        && $category->end_date >= now()->format('Y-m-d');
+                })->take(app('global_limit_searchitems'));
+            } else {
+                return Category::search_by_name($this->search)
+                    ->select('id', 'name', 'seo_id')
+                    ->where('active', true)
+                    ->where('start_date', '<=',  now()->format('Y-m-d'))
+                    ->where('end_date', '>=',  now()->format('Y-m-d'))
+                    ->with([
+                        'media' => function ($query) {
+                            $query->select('path', 'name')->where('type', 'min');
+                        }
+                    ])
+                    ->limit(app('global_limit_searchitems'))
+                    ->get();
+            }
         } else {
             return collect();
         }
