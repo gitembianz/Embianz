@@ -455,7 +455,7 @@ function relatedSlider() {
 
     function updateCardWidth() {
       const cards = wrapper.querySelectorAll(".card");
-      const cardWidth = cards[0].offsetWidth + 20; // adăugăm 20px pentru gap-ul dintre card-uri
+      const cardWidth = cards[0].offsetWidth + 16; // adăugăm 16px pentru gap-ul dintre card-uri
       return cardWidth;
     }
 
