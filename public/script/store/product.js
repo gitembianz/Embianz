@@ -234,7 +234,7 @@ function sliderProduct(sliderId, modalId) {
       if (isDragging) {
         const swipeDistance = event.clientX - startX;
 
-        if (Math.abs(swipeDistance) > 150 && !isScrolling()) {
+        if (Math.abs(swipeDistance) > 50 && !isScrolling()) {
           const indexChange = swipeDistance > 0 ? -1 : 1;
           const newIndex = currentIndex + indexChange;
 
