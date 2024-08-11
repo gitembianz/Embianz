@@ -150,7 +150,7 @@ class RelatedProductCategory extends Component
 
   public function linkSingleRecord()
   {
-    $id = $this->productidbeinglink;
+    $id = $this->idbeinglink;
     $product = new  Products_categories();
     $product->product_id = $id;
     $product->category_id = $this->category->id;
