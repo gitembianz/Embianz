@@ -101,7 +101,7 @@
   <!------------------ End Modal Product ---------------->
   <!------------------------------------------------------>
   <!----------------------- Product details ---------------------->
-  @livewire('product-details', ['product' => $product])
+  @livewire('product-details', ['product' => $product, 'wishlistItems' => $wishlistItems])
   <!--------------------- End Product details -------------------->
   <!------------------------------------------------------>
  </section>
@@ -228,7 +228,7 @@
           src="/images/store/default/default300.webp" alt="something wrong">
         @endif
        </a>
-       @livewire('product-wishlist-button', ['productId' => $product->product->id, 'class' => 'card__action', 'is_in_wishlist' => $product->product->wishlists->isNotEmpty()], key($product->product->id))
+       @livewire('product-wishlist-button', ['productId' => $product->product->id, 'class' => 'card__action', 'is_in_wishlist' => $this->isInWishlist($product->product->id)], key($product->product->id))
        <?php if ($product->product->product_prices->count() != 0) {
            $price = number_format($product->product->product_prices->first()->value, 2, ',', '.');
            $discount = $product->product->product_prices->first()->discount != 0 ? true : false;
