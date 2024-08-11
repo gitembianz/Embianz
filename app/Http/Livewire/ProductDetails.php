@@ -15,6 +15,7 @@ class ProductDetails extends Component
     public $product;
     public $session_id;
     public $prodid;
+    public $wishlistItems;
     public $is_in_wishlist;
 
     public function render()
@@ -34,12 +35,18 @@ class ProductDetails extends Component
     public function mount($product)
     {
         $prodid = $this->product->id;
-        $this->product = $product->select('id', 'name', 'seo_id', 'popularity', 'long_description', 'quantity', 'short_description', 'type', 'parent_id')
-            ->with([
-                'product_prices' => function ($query) {
-                    $query->select('product_id', 'value', 'vat', 'discount', 'value_no_discount');
+
+        if (app()->has('global_cache_data') && app('global_cache_data') === 'true') {
+            $cachedProduct = app()->make('cached_products')->firstWhere('id', $prodid);
+
+
+            $cachedProduct->with([
+                'media' => function ($query) {
+                    $query->select('name', 'path', 'type', 'sequence')
+                        ->whereIn('type', ['full', 'original'])
+                        ->orderBy('sequence');
                 },
-                'wishlists',
+                'product_prices',
                 'parent' => function ($query) {
                     $query->with(['variants' => function ($query) {
                         $query->distinct('variant_id')->with(['product' => function ($query) {
@@ -49,18 +56,50 @@ class ProductDetails extends Component
                                 ->with([
                                     'media' => function ($query) {
                                         $query->select('path', 'name')->where('type', 'min');
-                                    }
+                                    },
+                                    'beeingvariants'
                                 ]);
                         }]);
                     }]);
                 },
                 'beeingvariants'
-            ])
-            ->findOrFail($prodid);
+            ]);
+
+            $this->product = $cachedProduct;
+        } else {
+            $this->product = $product->select('id', 'name', 'seo_id', 'popularity', 'long_description', 'quantity', 'short_description', 'type', 'parent_id')
+                ->with([
+                    'product_prices' => function ($query) {
+                        $query->select('product_id', 'value', 'vat', 'discount', 'value_no_discount');
+                    },
+                    'wishlists' => function ($query) {
+                        $query->where('session_id', $this->getSessionId());
+                    },
+                    'parent' => function ($query) {
+                        $query->with(['variants' => function ($query) {
+                            $query->distinct('variant_id')->with(['product' => function ($query) {
+                                $query->where('active', true)
+                                    ->where('start_date', '<=', now()->format('Y-m-d'))
+                                    ->where('end_date', '>=', now()->format('Y-m-d'))
+                                    ->with([
+                                        'media' => function ($query) {
+                                            $query->select('path', 'name')->where('type', 'min');
+                                        },
+                                        'beeingvariants'
+                                    ]);
+                            }]);
+                        }]);
+                    },
+                    'beeingvariants'
+                ])
+                ->findOrFail($prodid);
+        }
+
         $this->quantity = 1;
         $this->session_id = $this->getSessionId();
-        $this->is_in_wishlist = $this->product->wishlists->where('session_id', $this->session_id)->first() ? true : false;
+        $this->is_in_wishlist = in_array($prodid, $this->wishlistItems);
     }
+
 
     public function getVariantsProperty()
     {

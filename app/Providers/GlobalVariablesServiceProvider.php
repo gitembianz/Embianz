@@ -165,8 +165,24 @@ class GlobalVariablesServiceProvider extends ServiceProvider
                 ->where('end_date', '>=', now()->format('Y-m-d'))
                 ->with([
                     'product_categories',
-                    'product_specs',
-                    'related_product',
+                    'product_specs' => function ($query) {
+                        $query->select('product_id', 'spec_id', 'value', 'id')->with('spec:id,name');
+                    },
+                    'related_product' => function ($query) {
+                        $query->orderBy('sequence')->select('parent_id', 'product_id', 'sequence', 'id')->with([
+                            'product' => function ($query) {
+                                $query->where('active', 1)->where('start_date', '<=',  now()->format('Y-m-d'))
+                                    ->where('end_date', '>=',  now()->format('Y-m-d'))->select('id', 'name', 'popularity', 'seo_id', 'short_description', 'quantity', 'active', 'end_date', 'start_date')->with([
+                                        'media' => function ($query) {
+                                            $query->select('path', 'name', 'type')->where('type', 'main');
+                                        },
+                                        'product_prices' => function ($query) {
+                                            $query->select('product_id', 'value', 'discount', 'value_no_discount');
+                                        },
+                                    ]);
+                            }
+                        ]);
+                    },
                     'variants',
                     'parent' => function ($query) {
                         $query->with(['variants' => function ($query) {
@@ -176,8 +192,9 @@ class GlobalVariablesServiceProvider extends ServiceProvider
                                     ->where('end_date', '>=', now()->format('Y-m-d'))
                                     ->with([
                                         'media' => function ($query) {
-                                            $query->select('path', 'name', 'type');
-                                        }
+                                            $query->select('path', 'name')->where('type', 'min');
+                                        },
+                                        'beeingvariants'
                                     ]);
                             }]);
                         }]);

@@ -65,58 +65,106 @@ class Product extends Model
 
   public function getCategoryHierarchy()
   {
-    $cachedCategories = app()->make('cached_categories');
-    $productCategoryIds = $this->product_categories->pluck('category_id')->unique();
+    if (app()->has('global_cache_data') && app('global_cache_data') === 'true') {
+      $cachedCategories = app()->make('cached_categories');
+      $productCategoryIds = $this->product_categories->pluck('category_id')->unique();
 
-    $categories = $cachedCategories->filter(function ($category) use ($productCategoryIds) {
-      return $productCategoryIds->contains($category->id);
-    });
+      $categories = $cachedCategories->filter(function ($category) use ($productCategoryIds) {
+        return $productCategoryIds->contains($category->id);
+      });
 
-    if ($categories->isEmpty()) {
-      return [];
-    }
-
-    $longestHierarchy = collect();
-
-    foreach ($categories as $category) {
-      if (app()->has('global_default_category')) {
-        if ($category->id == app('global_default_category')) {
-          continue;
-        }
+      if ($categories->isEmpty()) {
+        return [];
       }
 
-      $currentHierarchy = collect([
-        [
-          'name' => strip_tags($category->name),
-          'slug' => $category->seo_id ?? $category->id,
-        ],
-      ]);
+      $longestHierarchy = collect();
 
-      $currentCategory = $category;
-
-      while ($currentCategory->parent->isNotEmpty()) {
-        $parentCategory = $cachedCategories->firstWhere('id', $currentCategory->parent->first()->category_parent_id);
-
-        if (!$parentCategory) {
-          break;
+      foreach ($categories as $category) {
+        if (app()->has('global_default_category')) {
+          if ($category->id == app('global_default_category')) {
+            continue;
+          }
         }
 
-        $currentHierarchy->push([
-          'name' => strip_tags($parentCategory->name),
-          'slug' => $parentCategory->seo_id ?? $parentCategory->id,
+        $currentHierarchy = collect([
+          [
+            'name' => strip_tags($category->name),
+            'slug' => $category->seo_id ?? $category->id,
+          ],
         ]);
 
-        $currentCategory = $parentCategory;
+        $currentCategory = $category;
+
+        while ($currentCategory->parent->isNotEmpty()) {
+          $parentCategory = $cachedCategories->firstWhere('id', $currentCategory->parent->first()->category_parent_id);
+
+          if (!$parentCategory) {
+            break;
+          }
+
+          $currentHierarchy->push([
+            'name' => strip_tags($parentCategory->name),
+            'slug' => $parentCategory->seo_id ?? $parentCategory->id,
+          ]);
+
+          $currentCategory = $parentCategory;
+        }
+
+        if ($currentHierarchy->count() > $longestHierarchy->count()) {
+          $longestHierarchy = $currentHierarchy;
+        }
       }
 
-      if ($currentHierarchy->count() > $longestHierarchy->count()) {
-        $longestHierarchy = $currentHierarchy;
+      return $longestHierarchy->reverse()->toArray();
+    } else {
+
+
+      $categories = $this->product_categories->pluck('category')->unique();
+
+      if ($categories->isEmpty()) {
+        return [];
       }
+
+      $longestHierarchy = collect();
+
+      foreach ($categories as $category) {
+        if (app()->has('global_default_category')) {
+          if ($category->id == app('global_default_category')) {
+            continue;
+          }
+        }
+        $currentHierarchy = collect([
+          [
+            'name' => strip_tags($category->name),
+            'slug' => $category->seo_id ?? $category->id,
+          ],
+        ]);
+
+        $currentCategory = $category;
+
+        while ($currentCategory->parent->isNotEmpty()) {
+          $parentCategory = $currentCategory->parent->first()->category_parent;
+
+          if (!$parentCategory) {
+            break;
+          }
+
+          $currentHierarchy->push([
+            'name' => strip_tags($parentCategory->name),
+            'slug' => $parentCategory->seo_id ?? $parentCategory->id,
+          ]);
+
+          $currentCategory = $parentCategory;
+        }
+
+        if ($currentHierarchy->count() > $longestHierarchy->count()) {
+          $longestHierarchy = $currentHierarchy;
+        }
+      }
+
+      return $longestHierarchy->reverse()->toArray();
     }
-
-    return $longestHierarchy->reverse()->toArray();
   }
-
 
 
   protected $fillable = [

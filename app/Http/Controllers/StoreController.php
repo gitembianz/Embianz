@@ -84,21 +84,47 @@ class StoreController extends Controller
   public function show($product = null)
   {
     if (is_numeric($product)) {
-      $data = Product::find($product);
+      $productId = $product;
+      $data = null;
     } else {
-
-      $data = Product::where('seo_id', $product)->first();
+      $seoId = $product;
+      $data = null;
     }
-    if (($data == null) || ($data->active != true) || ($data->start_date > now()->format('Y-m-d')) || ($data->end_date < now()->format('Y-m-d'))) {
+
+    if (app()->has('global_cache_data') && app('global_cache_data') === 'true') {
+      $cachedProducts = app()->make('cached_products');
+
+      if (isset($productId)) {
+        $data = $cachedProducts->firstWhere('id', $productId);
+      } elseif (isset($seoId)) {
+        $data = $cachedProducts->firstWhere('seo_id', $seoId);
+      }
+
+      $media = $data ? $data->media->firstWhere('type', 'full') : null;
+      $preload = $media ? "/" . $media['path'] . $media['name'] : '';
+    } else {
+      if (isset($productId)) {
+        $data = Product::with('media')->find($productId);
+      } elseif (isset($seoId)) {
+        $data = Product::with('media')->where('seo_id', $seoId)->first();
+      }
+
+      if ($data) {
+        $media = $data->media->firstWhere('type', 'full');
+        $preload = $media ? "/" . $media->path . $media->name : '';
+      } else {
+        $preload = '';
+      }
+    }
+
+    if (!$data || $data->active != true || $data->start_date > now()->format('Y-m-d') || $data->end_date < now()->format('Y-m-d')) {
       throw new NotFoundHttpException();
     }
-    if ($data != null) {
-      $preload = "/" . optional($data->media()->where('type', 'full')->first())->path . optional($data->media()->where('type', 'full')->first())->name;
-    } else {
-      $preload = '';
-    }
+
     return view('store.product', compact('data', 'preload'));
   }
+
+
 
   // payment function
   public function success()
