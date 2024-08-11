@@ -65,7 +65,12 @@ class Product extends Model
 
   public function getCategoryHierarchy()
   {
-    $categories = $this->product_categories->pluck('category')->unique();
+    $cachedCategories = app()->make('cached_categories');
+    $productCategoryIds = $this->product_categories->pluck('category_id')->unique();
+
+    $categories = $cachedCategories->filter(function ($category) use ($productCategoryIds) {
+      return $productCategoryIds->contains($category->id);
+    });
 
     if ($categories->isEmpty()) {
       return [];
@@ -79,6 +84,7 @@ class Product extends Model
           continue;
         }
       }
+
       $currentHierarchy = collect([
         [
           'name' => strip_tags($category->name),
@@ -89,7 +95,7 @@ class Product extends Model
       $currentCategory = $category;
 
       while ($currentCategory->parent->isNotEmpty()) {
-        $parentCategory = $currentCategory->parent->first()->category_parent;
+        $parentCategory = $cachedCategories->firstWhere('id', $currentCategory->parent->first()->category_parent_id);
 
         if (!$parentCategory) {
           break;
@@ -110,6 +116,7 @@ class Product extends Model
 
     return $longestHierarchy->reverse()->toArray();
   }
+
 
 
   protected $fillable = [

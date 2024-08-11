@@ -168,7 +168,20 @@ class GlobalVariablesServiceProvider extends ServiceProvider
                     'product_specs',
                     'related_product',
                     'variants',
-                    'parent',
+                    'parent' => function ($query) {
+                        $query->with(['variants' => function ($query) {
+                            $query->distinct('variant_id')->with(['product' => function ($query) {
+                                $query->where('active', true)
+                                    ->where('start_date', '<=', now()->format('Y-m-d'))
+                                    ->where('end_date', '>=', now()->format('Y-m-d'))
+                                    ->with([
+                                        'media' => function ($query) {
+                                            $query->select('path', 'name', 'type');
+                                        }
+                                    ]);
+                            }]);
+                        }]);
+                    },
                     'beeingvariants',
                     'product_prices' => function ($query) {
                         $query->select('product_id', 'value', 'discount', 'value_no_discount');
@@ -187,6 +200,7 @@ class GlobalVariablesServiceProvider extends ServiceProvider
                 'media' => function ($query) {
                     $query->select('path', 'name', 'sequence', 'type', 'width', 'height');
                 },
+                'parent',
                 'subcategory' => function ($query) {
                     $query->whereHas('category', function ($query) {
                         $this->applySubcategoryConditions($query);
