@@ -882,7 +882,7 @@ h2.section__title {
   }
 }
 
-.suport__item {
+.support__item {
   background: #efefef;
   border-radius: 5px;
   padding: 10px;
@@ -893,17 +893,17 @@ h2.section__title {
   justify-content: flex-start;
   gap: 15px;
 }
-.suport__item:not(:last-child, :first-child) {
+.support__item:not(:last-child, :first-child) {
   justify-content: space-between;
 }
-.suport__item > div {
+.support__item > div {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: flex-start;
   gap: 10px;
 }
-.suport__item > div > img {
+.support__item > div > img {
   width: 50px;
   height: 50px;
   object-fit: contain;
@@ -913,7 +913,7 @@ h2.section__title {
   pointer-events: none;
 }
 @media (max-width: 768px) {
-  .suport__item > div > img {
+  .support__item > div > img {
     width: 30px;
     height: 30px;
   }
