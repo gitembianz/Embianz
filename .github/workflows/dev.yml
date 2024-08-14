@@ -14,8 +14,4 @@ jobs:
         server: ftp.eztemcorp.com
         username: gituser@dev.embianz.com
         password: ${{ secrets.devftp}}
-        exclude: |
-          **/.git*
-          **/.git*/**
-          **/node_modules/**
-          **/vendor*
+        exclude: **/.git* **/.git*/** **/node_modules/** vendor**
