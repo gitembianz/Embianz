@@ -11,6 +11,6 @@ jobs:
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
       with:
-        server: ftp.embianz.com
+        server: ftp.eztemcorp.com
         username: gituser@dev.embianz.com
         password: ${{ secrets.devftp}}
