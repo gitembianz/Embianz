@@ -12,5 +12,5 @@ jobs:
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
       with:
         server: ftp.embianz.com
-        username: gituser@dev.embianz.com
+        username: gituser@31.14.13.52
         password: ${{ secrets.devftp}}
