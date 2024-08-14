@@ -2,17 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Account;
+use App\Models\Variant;
 use App\Models\Voucher;
+use App\Models\CustomScript;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Models\Store_Settings;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Redirect;
 
 
 
 class AdminController extends Controller
 {
+  public function show_cart($id)
+  {
+    $data = Cart::find($id);
+    return view('admin.show_cart', compact('data'));
+  }
 
   function correctMediaSequence()
   {
@@ -53,57 +66,148 @@ class AdminController extends Controller
     }
     return true;
   }
-  //admin function
 
-  public function storesettings()
+  function forceLogoutAndForgetUser()
   {
-    return view('admin.store_settings');
+    Auth::logout();
+    Session::forget('user');
+    return Redirect::to('/');
   }
-  public function accounts()
-  {
-    return view('admin.accounts');
-  }
+
   public function show_account($id)
   {
     $data = Account::find($id);
     return view('admin.show_account', compact('data'));
   }
-  public function vouchers()
+  public function show_script($id)
   {
-    return view('admin.voucher');
-  }
-  public function payments()
-  {
-    return view('admin.payment');
+    $data = CustomScript::find($id);
+    return view('admin.show_script', compact('data'));
   }
 
-  public function create_voucher()
+  public function store_setting(Request $request)
   {
-    return view('admin.add_voucher');
+    if (!$request->filled('description') || !$request->filled('parameter') || !$request->filled('value')) {
+      return redirect()->back()->withInput()->with([
+        'notification' => [
+          'message' => 'Please fill all imputs!',
+          'type' => 'error',
+          'title' => 'Something went wrong'
+        ],
+      ]);
+    }
+    $values = array(
+      "parameter" => $request->parameter,
+      "value" => $request->value,
+      "description" => $request->description,
+      "createdby" => Auth::user()->name,
+      "lastmodifiedby" => Auth::user()->name,
+      "created_at" => now(),
+      "updated_at" => now()
+
+    );
+
+    Store_Settings::insert($values);
+    Cache::forget('global_variables');
+    return redirect()->back()->with('notification', [
+      'message' => 'Record added successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
   }
 
+  public function store_variant(Request $request)
+  {
+    if (!$request->filled('name') || !$request->filled('sequence')) {
+      return redirect()->back()->withInput()->with([
+        'notification' => [
+          'message' => 'Please fill all imputs!',
+          'type' => 'error',
+          'title' => 'Something went wrong'
+        ],
+      ]);
+    }
+    $values = array(
+      "name" => $request->name,
+      "sequence" => $request->sequence,
+      "created_at" => now(),
+      "updated_at" => now()
+    );
+
+    Variant::insert($values);
+    return redirect()->back()->with('notification', [
+      'message' => 'Record added successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
+  }
+
+
+  public function store_script(Request $request)
+  {
+    if (!$request->filled('content')) {
+      return redirect()->back()->withInput()->with([
+        'notification' => [
+          'message' => 'Please provide the specific script!',
+          'type' => 'error',
+          'title' => 'Something went wrong'
+        ],
+      ]);
+    }
+    if (!$request->filled('name')) {
+      return redirect()->back()->withInput()->with([
+        'notification' => [
+          'message' => 'Please provide the script name!',
+          'type' => 'error',
+          'title' => 'Something went wrong'
+        ],
+      ]);
+    }
+
+    CustomScript::create([
+      'name' => $request->name,
+      'type' => $request->type,
+      'content' => $request->content,
+      'active' => $request->has('active')
+    ]);
+    Cache::forget('global_scripts');
+
+    return redirect()->back()->with([
+      'notification' => [
+        'message' => 'Record added successfully!',
+        'type' => 'success',
+        'title' => 'Success'
+      ],
+    ]);
+  }
 
   public function store_voucher(Request $request)
   {
-    // Validation rules
     $rules = [
-      'start_date' => 'required|date|after_or_equal:today',
+      'start_date' => 'required|date',
       'end_date' => 'required|date|after_or_equal:start_date',
+      'percent' => [
+        'nullable',
+        'integer',
+        'between:1,100',
+      ],
+      'value' => [
+        'nullable',
+        'gt:0'
+      ]
     ];
-    // Custom validation messages
     $messages = [
-      'start_date.after_or_equal' => 'The start date must be in the future or present.',
+      'start_date' => 'The start is required.',
       'end_date.after_or_equal' => 'The end date must be in the future and after the start date.',
+      'percent' => 'The percent must be between 1-100',
+      'value' => 'The value must be bigger than 0'
     ];
     $rules['percent_or_value'] = 'required_without_all:percent,value';
-
     $this->validate(
       $request,
       $rules,
       $messages
     );
-
-    // If neither percent nor value is provided, redirect back with an error
     if ($request->filled('percent') && $request->filled('value')) {
       return redirect()->back()->withInput()->with([
         'notification' => [
@@ -133,17 +237,6 @@ class AdminController extends Controller
     ]);
   }
 
-
-
-  public function addstoresetting()
-  {
-    return view('admin.add_storesetting');
-  }
-
-  public function orders()
-  {
-    return view('admin.order');
-  }
   public function show_order($id)
   {
     $data = Order::find($id);

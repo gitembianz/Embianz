@@ -34,10 +34,11 @@ return [
      | Warning: Enabling storage.open will allow everyone to access previous
      | request, do not enable open storage in publicly available environments!
      | Specify a callback if you want to limit based on IP or authentication.
+     | Leaving it to null will allow localhost only.
      */
     'storage' => [
         'enabled'    => true,
-        'open'       => env('DEBUGBAR_OPEN_STORAGE', false), // bool/callback.
+        'open'       => env('DEBUGBAR_OPEN_STORAGE'), // bool/callback.
         'driver'     => 'file', // redis, file, pdo, socket, custom
         'path'       => storage_path('debugbar'), // For file driver
         'connection' => null,   // Leave null for default connection (Redis/PDO)
@@ -60,7 +61,7 @@ return [
     |
     */
 
-    'editor' => env('DEBUGBAR_EDITOR', 'phpstorm'),
+    'editor' => env('DEBUGBAR_EDITOR') ?: env('IGNITION_EDITOR', 'phpstorm'),
 
     /*
     |--------------------------------------------------------------------------
@@ -124,6 +125,7 @@ return [
     'capture_ajax' => true,
     'add_ajax_timing' => false,
     'ajax_handler_auto_show' => true,
+    'ajax_handler_enable_tab' => true,
 
     /*
      |--------------------------------------------------------------------------
@@ -206,6 +208,7 @@ return [
         ],
         'auth' => [
             'show_name' => true,   // Also show the users name/email in the debugbar
+            'show_guards' => true, // Show the guards that are used
         ],
         'db' => [
             'with_params'       => true,   // Render SQL with the parameters substituted
@@ -226,7 +229,7 @@ return [
         ],
         'mail' => [
             'timeline' => false,  // Add mails to the timeline
-            'full_log' => false,
+            'show_body' => true,
         ],
         'views' => [
             'timeline' => false,    // Add the views to the timeline (Experimental)
@@ -244,6 +247,9 @@ return [
         ],
         'symfony_request' => [
             'hiddens' => [], // hides sensitive values using array paths, example: request_request.password
+        ],
+        'events' => [
+            'data' => false, // collect events data, listeners
         ],
         'logs' => [
             'file' => null,

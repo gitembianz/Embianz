@@ -2,8 +2,6 @@
 
 namespace App\View\Components;
 
-use Closure;
-use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
 class StoreHead extends Component
@@ -11,17 +9,24 @@ class StoreHead extends Component
     public $title;
     public $description;
     public $canonical;
+    public $image;
+    public $preload;
+
 
     /**
      * Create a new component instance.
      */
-    public function __construct($title = "", $description = "", $canonical = "")
+    public function __construct($title = "", $description = "", $canonical = "", $image = "", $preload = "")
     {
         $this->title = $title . app('global_site_name');
         $this->description = empty($description)
-            ? "Noren.ro is a website dedicated to providing eco-friendly products for a sustainable lifestyle. Shop our wide range of environmentally-friendly products including reusable items, zero-waste essentials, and more."
+            ? ""
             : $description;
         $this->canonical = $canonical;
+        $this->image  = empty($image)
+            ? "images/store/logo-banner.webp"
+            : $image;
+        $this->preload  = $preload;
     }
 
     public function render()
@@ -29,7 +34,9 @@ class StoreHead extends Component
         return view('components.store-head', [
             'title' => $this->title,
             'description' => $this->description,
-            'canonical' => $this->canonical
+            'canonical' => $this->canonical,
+            'image' => $this->image,
+            'preload' => $this->preload,
         ]);
     }
 }

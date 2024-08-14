@@ -1,0 +1,39 @@
+// Validation Failed
+@keyframes loginValidationFail {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+  75% {
+    transform: translateX(-5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+// animation: loginValidationFail 0.5s ease-in-out;
+
+
+
+// Rotation 360 grades
+@keyframes rotate {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/// Error
+@keyframes show-error {
+  0% {transform: translate(calc(100% + $margin));}
+  15% {transform: translate(0);}
+  85% {transform: translate(0);}
+  100% {transform: translate(calc(100% + $margin));}
+}

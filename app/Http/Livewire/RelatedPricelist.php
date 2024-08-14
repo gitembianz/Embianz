@@ -22,11 +22,9 @@ class RelatedPricelist extends Component
   public $selectAll = false;
   public $showrelatedprice = false;
   public $productId;
-  public $col = false;
-  public $all = false;
-  public $columns = ['Id', 'Currency', 'Value', 'TVA', 'Created At'];
+  public $columns = ['Id', 'Name', 'Currency', 'Value', 'Discount', 'Value without VAT', 'Value without Discount', 'VAT'];
   public $selectedColumns = [];
-  public $priceidbeingremoved = null;
+  public $idbeingremoved = null;
   public $addrelatedprice = false;
   //Add specs declaration
   public $searchadd = '';
@@ -41,10 +39,47 @@ class RelatedPricelist extends Component
   public $editmultiple = false;
   public $itemstoedit;
   public $priceAndValues = [];
-  public $row = 1;
   public $editedrow;
   public $pricelist;
   public $isselected;
+
+  public $single = false;
+  public $multiple = false;
+  public $row = null;
+  public $row2 = null;
+  public $row3 = null;
+  public $row4 = 1;
+
+  public function expandRow($index)
+  {
+    if ($this->row  === null) {
+      $this->row = $index;
+    } elseif ($this->row != $index) {
+      $this->row = $index;
+    } else {
+      $this->row = null;
+    }
+  }
+  public function expandRow2($index)
+  {
+    if ($this->row2  === null) {
+      $this->row2 = $index;
+    } elseif ($this->row2 != $index) {
+      $this->row2 = $index;
+    } else {
+      $this->row2 = null;
+    }
+  }
+  public function expandRow3($index)
+  {
+    if ($this->row3  === null) {
+      $this->row3 = $index;
+    } elseif ($this->row3 != $index) {
+      $this->row3 = $index;
+    } else {
+      $this->row3 = null;
+    }
+  }
 
   public function render()
   {
@@ -66,7 +101,7 @@ class RelatedPricelist extends Component
     $this->priceAndValues[] = [
       'allow' => false,
       'itemselected' => null,
-      'price' => ['idrel' => null, 'value' => null, 'tva' => 19],
+      'price' => ['idrel' => null, 'value' => null, 'vat' => 19, 'discount' => 0],
     ];
   }
   public function load()
@@ -124,17 +159,14 @@ class RelatedPricelist extends Component
     return PricelistEntries::where('product_id', $this->item->id)
       ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->with('pricelist.currency');
   }
-  public function confirmRemoval($id)
-  {
-    $this->priceidbeingremoved = $id;
-    $this->dispatchBrowserEvent('show-delete-modal-price');
-  }
+
   public function deleteSingleRecord()
   {
-    $id = $this->priceidbeingremoved;
+    $id = $this->idbeingremoved;
     $item = PricelistEntries::findOrFail($id);
     $item->delete();
     $this->checked = array_diff($this->checked, [$id]);
+    $this->single = false;
     session()->flash('notification', [
       'message' => 'Record deleted successfully!',
       'type' => 'success',
@@ -150,18 +182,30 @@ class RelatedPricelist extends Component
       $itemtodel->delete();
     }
     $this->checked = [];
-    $this->all = false;
+
     $this->selectPage = false;
+    $this->multiple = false;
     session()->flash('notification', [
       'message' => 'Records deleted successfully!',
       'type' => 'success',
       'title' => 'Success'
     ]);
   }
-  public function confirmRemovalmultiple()
+  public function confirmItemRemoval($id)
   {
-    $this->dispatchBrowserEvent('show-delete-modal-multiple');
+    $this->idbeingremoved = $id;
+    $this->single = true;
   }
+  public function confirmItemsRemoval()
+  {
+    $this->multiple = true;
+  }
+  public function cancel_delete()
+  {
+    $this->multiple = false;
+    $this->single = false;
+  }
+
   public function edititem($id, $iditem, $index)
   {
     $this->itemselected = PriceList::find($iditem);
@@ -169,11 +213,12 @@ class RelatedPricelist extends Component
     $this->priceid = $iditem;
     $this->editedrow = $index;
     $this->pricelist = [
-      $index . '.name' => $this->itemselected,
-      $index . '.value' => $val->value,
-      $index . '.tva' => $val->tva_percent,
+      $index . '.value' => $val->value_no_vat,
+      $index . '.vat' => $val->vat,
+      $index . '.discount' => $val->discount,
     ];
   }
+
   public function canceledit()
   {
     $this->editedrow = null;
@@ -184,31 +229,58 @@ class RelatedPricelist extends Component
   public function confirmitem($index, $id)
   {
     $new = PricelistEntries::find($id);
-    if ($this->isselected != null) {
-      if ($this->isselected) {
-        $new->pricelist_id = $this->priceid;
-        $new->save();
-      } else {
-        session()->flash('notification', [
-          'message' => 'Please provide a value!',
-          'type' => 'warning',
-          'title' => 'Missing Values'
-        ]);
-      }
-    }
-
     $val = $this->pricelist[$index] ?? NULL;
     if (!is_null($val)) {
-      if (array_key_exists('value', $val)) {
-        // Replace commas with dots for consistent decimal representation
-        $newValue = str_replace(',', '.', $val["value"]);
-        // Convert the string to a float
-        $floatValue = floatval($newValue);
-        // Format the float to have two decimal places
-        $formattedValue = number_format($floatValue, 2, '.', '');
+      if (array_key_exists('vat', $val)) {
+        if ($val["vat"] === "") {
+          $val["vat"] = 0;
+        }
+        if ($val["vat"] < 0) {
+          session()->flash('notification', [
+            'message' => 'Please provide a value biger than 0!',
+            'type' => 'warning',
+            'title' => 'VAT value'
+          ]);
+          $this->pricelist = [
+            $index . '.value' => $new->value_no_vat,
+            $index . '.vat' => $val["vat"],
+            $index . '.discount' => $new->discount,
+          ];
+          return;
+        }
 
-        $new->value = $formattedValue;
+        $new->vat = $val["vat"];
       }
+      if (array_key_exists('discount', $val)) {
+        if ($val["discount"] === "") {
+          $val["discount"] = 0;
+        }
+        if ($val["discount"] < 0 || $val["discount"] >= 100) {
+          session()->flash('notification', [
+            'message' => 'Please provide a value biger than 0 and smaller that 100!',
+            'type' => 'warning',
+            'title' => 'Discount value'
+          ]);
+          $this->pricelist = [
+            $index . '.value' => $new->value_no_vat,
+            $index . '.vat' => $new->vat,
+            $index . '.discount' => $val["discount"],
+          ];
+          return;
+        } else {
+
+          $new->discount = $val["discount"];
+          $new->save();
+        }
+      }
+      if (array_key_exists('value', $val)) {
+        $newValue = str_replace(',', '.', $val["value"]);
+        $floatValue = floatval($newValue);
+        $formattedValue = number_format($floatValue, 2, '.', '');
+        $new->value_no_vat = $formattedValue;
+      }
+      $new->value_no_discount = $new->value_no_vat + (0.01 * $new->vat * $new->value_no_vat);
+      $new->value = $new->value_no_discount - (0.01 * $new->value_no_discount * $new->discount);
       $new->save();
       $this->allow = false;
       $this->priceid = null;
@@ -242,6 +314,8 @@ class RelatedPricelist extends Component
     $this->showrelatedprice = true;
     $this->addrelatedprice = true;
   }
+
+  // fct de edit multiple
   public function editSelected()
   {
     $this->itemstoedit = $this->checked;
@@ -250,30 +324,54 @@ class RelatedPricelist extends Component
       $test = PricelistEntries::find($item);
       $this->priceAndValues[$index]['itemselected'] = $test->pricelist->name;
       $this->priceAndValues[$index]['price']['id'] = $test->id;
-      $this->priceAndValues[$index]['price']['idrel'] = $test->pricelist->id;
-      $this->priceAndValues[$index]['price']['value'] = $test->value;
-      $this->priceAndValues[$index]['price']['tva'] = $test->tva_percent;
-      $this->priceAndValues[$index]['allow'] = false;
+      $this->priceAndValues[$index]['price']['value'] = $test->value_no_vat;
+      $this->priceAndValues[$index]['price']['discount'] = $test->discount;
+      $this->priceAndValues[$index]['price']['vat'] = $test->vat;
     }
   }
   public function confirmpricemultiple()
   {
     if (empty($this->priceAndValues)) {
       session()->flash('notification', [
-        'message' => 'No specifications to update.',
+        'message' => 'No pricelist to update.',
         'type' => 'warning',
         'title' => 'No Data'
       ]);
       return;
     }
-    foreach ($this->priceAndValues as  $priceAndValue) {
+
+
+    foreach ($this->priceAndValues as $index => $priceAndValue) {
       if (!empty($priceAndValue['price']['value'])) {
+
         $item = PricelistEntries::find($priceAndValue['price']['id']);
         if ($item) {
-          $item->tva_percent = $priceAndValue['price']['tva'];
-          $item->pricelist_id = $priceAndValue['price']['idrel'];
-          $item->value = $priceAndValue['price']['value'];
+          $item->value_no_vat = $priceAndValue['price']['value'];
+
+          if ($priceAndValue['price']['vat'] < 0) {
+            session()->flash('notification', [
+              'message' => 'Please provide a value bigger than 0!',
+              'type' => 'warning',
+              'title' => 'VAT value'
+            ]);
+            return;
+          }
+          $item->vat = $priceAndValue['price']['vat'];
+          if ($priceAndValue['price']['discount'] < 0 || $priceAndValue['price']['discount'] >= 100) {
+            session()->flash('notification', [
+              'message' => 'Please provide a value bigger than 0 and smaller than 100!',
+              'type' => 'warning',
+              'title' => 'Discount value'
+            ]);
+            return;
+          }
+          $item->discount = $priceAndValue['price']['discount'];
+          $item->value_no_discount = $item->value_no_vat + (0.01 * $item->vat * $item->value_no_vat);
+          $item->value = $item->value_no_discount - (0.01 * $item->value_no_discount * $item->discount);
+
           $item->save();
+          unset($this->priceAndValues[$index]);
+          $this->priceAndValues = array_values($this->priceAndValues);
         }
       } else {
         session()->flash('notification', [
@@ -285,16 +383,17 @@ class RelatedPricelist extends Component
       }
     }
 
+
     $this->priceAndValues = [
       [
         'allow' => false,
         'itemselected' => null,
-        'price' => ['name' => null, 'value' => null],
+        'price' => ['idrel' => null, 'value' => null, 'vat' => 19, 'discount' => 0],
       ]
     ];
     $this->row = 1;
     $this->checked = [];
-    $this->all = false;
+
     $this->editmultiple = false;
     $this->selectPage = false;
     session()->flash('notification', [
@@ -304,6 +403,8 @@ class RelatedPricelist extends Component
     ]);
     $this->mount($this->item);
   }
+
+
   public function allow()
   {
     $this->allow = true;
@@ -328,12 +429,12 @@ class RelatedPricelist extends Component
       [
         'allow' => false,
         'itemselected' => null,
-        'spec' => ['name' => null, 'value' => null],
+        'price' => ['idrel' => null, 'value' => null, 'vat' => 19, 'discount' => 0],
       ]
     ];
     $this->row = 1;
     $this->checked = [];
-    $this->all = false;
+
     $this->editmultiple = false;
     $this->addrelatedprice = false;
   }
@@ -359,11 +460,11 @@ class RelatedPricelist extends Component
   }
   public function plus()
   {
-    $this->row++;
+    $this->row4++;
     $this->priceAndValues[] = [
       'allow' => false,
       'itemselected' => null,
-      'price' => ['name' => null, 'value' => null, 'tva' => 19],
+      'price' => ['name' => null, 'value' => null, 'vat' => 19, 'discount' => 0],
     ];
   }
   public function clear($index)
@@ -372,33 +473,36 @@ class RelatedPricelist extends Component
 
     $this->priceAndValues = array_values($this->priceAndValues);
 
-    $this->row--;
-    if ($this->row < 1) {
+    $this->row4--;
+    if ($this->row4 < 1) {
       $this->addrelatedprice = false;
       $this->priceAndValues =
         [
           [
             'allow' => false,
             'itemselected' => null,
-            'price' => ['name' => null, 'value' => null, 'tva' => 19],
+            'price' => ['name' => null, 'value' => null, 'vat' => 19, 'discount' => 0],
           ]
         ];
-      $this->row = 1;
+      $this->row4 = 1;
     }
   }
   public function saveitems()
   {
     foreach ($this->priceAndValues as  $priceAndValue) {
-      if (isset($priceAndValue['price']['value'])) {
+      if (isset($priceAndValue['price']['value']) && isset($priceAndValue['price']['idrel'])) {
         $new = new PricelistEntries();
         $new->product_id = $this->item->id;
         $new->pricelist_id = $priceAndValue['price']['idrel'];
-        $new->value = $priceAndValue['price']['value'];
-        $new->tva_percent = $priceAndValue['price']['tva'];
+        $new->vat = $priceAndValue['price']['vat'];
+        $new->discount = $priceAndValue['price']['discount'];
+        $new->value_no_vat = $priceAndValue['price']['value'];
+        $new->value_no_discount = $priceAndValue['price']['value'] + (0.01 * $priceAndValue['price']['vat'] * $priceAndValue['price']['value']);
+        $new->value = $priceAndValue['price']['value'] - (0.01 * $priceAndValue['price']['discount'] * $new->value_no_discount) + (0.01 * $priceAndValue['price']['vat'] * $priceAndValue['price']['value']);
         $new->save();
       } else {
         session()->flash('notification', [
-          'message' => 'Please provide a value!',
+          'message' => 'Please provide all corect values for Value without VAT, VAT(bigger than 0) and Discount(bigger than 0 and smaller than 100)!',
           'type' => 'warning',
           'title' => 'Missing Values'
         ]);
@@ -410,7 +514,7 @@ class RelatedPricelist extends Component
       [
         'allow' => false,
         'itemselected' => null,
-        'price' => ['name' => null, 'value' => null],
+        'price' => ['name' => null, 'value' => null, 'vat' => 19, 'discount' => 0],
       ]
     ];
     $this->row = 1;
@@ -422,6 +526,7 @@ class RelatedPricelist extends Component
     ]);
     $this->mount($this->item);
   }
+
   public function getAddpricesProperty()
   {
     $ids = $this->relatedprices->pluck('pricelist_id')->toArray();

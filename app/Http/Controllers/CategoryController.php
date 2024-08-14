@@ -13,10 +13,7 @@ use Illuminate\Support\Str;
 class CategoryController extends Controller
 {
 
-  public function category()
-  {
-    return view('admin.category');
-  }
+
   private function generateUniqueSeoId($name)
   {
     $seoId = Str::slug($name, '-');
@@ -39,7 +36,10 @@ class CategoryController extends Controller
     $messages = [
       'end_date.after_or_equal' => 'Data de încheiere a categoriei trebuie să fie în viitor și după data de început.',
     ];
-    $this->validate($request, $rules, $messages);
+    if ($request->end_date) {
+
+      $this->validate($request, $rules, $messages);
+    }
 
     if ($request->seo_id != null) {
       $seo_id = $this->generateUniqueSeoId($request->seo_id);
@@ -50,6 +50,7 @@ class CategoryController extends Controller
     $data->name = $request->category;
     $data->long_description = $request->long_description;
     $data->short_description = $request->short_description;
+    $data->meta_description = $request->meta_description;
     $data->sequence = $request->sequence;
     $data->start_date = $request->start_date;
     $data->end_date = $request->end_date;
@@ -62,17 +63,13 @@ class CategoryController extends Controller
     $data->save();
     return redirect()->back()->with([
       'notification' => [
-        'message' => 'Record added successfully! Click here  <a href="/show_category/' . $data->id . '">' . $data->name . '</a>',
+        'message' => 'Record added successfully! Click here <a href="' . route("show_category", ["id" => $data->id]) . '">' . $data->name . '</a>',
         'type' => 'success',
         'title' => 'Success'
       ]
     ]);
   }
 
-  public function new()
-  {
-    return view('admin.add_category');
-  }
 
   public function show($id)
   {

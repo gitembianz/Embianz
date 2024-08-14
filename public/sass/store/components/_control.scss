@@ -1,0 +1,68 @@
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  position: sticky;
+  top: 90px;
+  z-index: 100;
+  background: $background;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  transition: all 0.3s ease-in-out;
+
+  &--search {
+    flex-direction: column;
+    gap: 10px;
+
+    &>input{
+      min-height: 40px;
+      max-height: 40px;
+    }
+
+    &>div{
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+  }
+}
+
+.controls__button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 7px;
+  background-color: $primary;
+  border: none;
+  // box-shadow: $boxShadow;
+
+  & > svg {
+    stroke: $lightBlack;
+  }
+}
+
+.controls__search {
+  width: 100%;
+  height: 40px;
+  border-radius: 7px;
+  padding: 0 10px;
+  font-size: $inputSize;
+  font-weight: $lightWeight;
+  color: $lightBlack;
+  border: none;
+  flex: 1;
+  background-color: $primary;
+  outline: none;
+  // box-shadow: $boxShadow;
+
+  &::placeholder {
+    color: $darkGray;
+    font-size: $inputSize;
+    font-weight: $lightWeight;
+  }
+}

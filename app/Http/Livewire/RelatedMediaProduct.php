@@ -11,7 +11,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Schema;
+
 
 class RelatedMediaProduct extends Component
 {
@@ -20,7 +21,6 @@ class RelatedMediaProduct extends Component
   use WithPagination;
   public $product;
   public $showmedia = false;
-  public $productType;
   public $type;
   public $medias = [];
   public $filess = [];
@@ -31,27 +31,64 @@ class RelatedMediaProduct extends Component
   public $checked = [];
   public $selectPage = false;
   public $selectAll = false;
-  public $mediaidbeingremoved = null;
-  public $columns = ['Id', 'Media', 'Media Location', 'Sequence'];
+  public $idbeingremoved = null;
+  public $columns = [];
   public $selectedColumns = [];
   public $locations;
   public $file_sequences = [];
   public $file_resize = [];
   public $file_link = [];
   public $file_name = [];
-  public $col = false;
-  public $all = false;
   public $editedMediaIndex = null;
   public $i;
   public $j;
   public $row = 1;
   public $externalmedia = false;
   public $initiate = false;
+  public $chose = false;
+
+  public $single = false;
+  public $multiple = false;
+  public $rind = null;
+  public $rind2 = null;
+  public $rind3 = null;
+
+
+  public function expandRow($index)
+  {
+    if ($this->rind  === null) {
+      $this->rind = $index;
+    } elseif ($this->rind != $index) {
+      $this->rind = $index;
+    } else {
+      $this->rind = null;
+    }
+  }
+  public function expandRow2($index)
+  {
+    if ($this->rind2  === null) {
+      $this->rind2 = $index;
+    } elseif ($this->rind2 != $index) {
+      $this->rind2 = $index;
+    } else {
+      $this->rind2 = null;
+    }
+  }
+  public function expandRow3($index)
+  {
+    if ($this->rind3  === null) {
+      $this->rind3 = $index;
+    } elseif ($this->rind3 != $index) {
+      $this->rind3 = $index;
+    } else {
+      $this->rind3 = null;
+    }
+  }
 
   public function mount(Product $product)
   {
     $this->product = $product;
-    $this->productType = class_basename(get_class($this->product));
+    $this->columns = Schema::getColumnListing('media');
     $this->selectedColumns = $this->columns;
     $this->i = null;
     $this->j = null;
@@ -60,18 +97,12 @@ class RelatedMediaProduct extends Component
   {
     $this->editedMediaIndex = $index;
     $media = Media::find($id);
-    if ($media->external == 1) {
-      $this->filess = [
-        $index . '.path' => $media->path,
-        $index . '.name' => $media->name,
-        $index . '.sequence' => $media->sequence,
-      ];
-    } else {
-      $this->filess = [
-        $index . '.name' => $media->name,
-        $index . '.sequence' => $media->sequence,
-      ];
-    }
+
+    $this->filess = [
+      $index . '.name' => $media->name,
+      $index . '.type' => $media->type,
+      $index . '.sequence' => $media->sequence,
+    ];
   }
   public function cancelMedia()
   {
@@ -91,17 +122,20 @@ class RelatedMediaProduct extends Component
       if (array_key_exists('sequence', $media_new)) {
         $media_for_prod->sequence = $media_new['sequence'];
       }
+      if (array_key_exists('type', $media_new)) {
+        $media_for_prod->type = $media_new['type'];
+      }
       if (array_key_exists('name', $media_new)) {
-        $newName = $media_new['name'] . '.' . $media_for_prod->type;
+        $newName = $media_new['name'] . '.' . $media_for_prod->extension;
         $oldName = $media_for_prod->name;
         if ($newName !== $oldName) {
           $path = $media_for_prod->path;
           if (file_exists($path . $newName)) {
             $i = 1;
-            while (file_exists($path . $media_new['name'] . '(' . $i . ').' . $media_for_prod->type)) {
+            while (file_exists($path . $media_new['name'] . '(' . $i . ').' . $media_for_prod->extension)) {
               $i++;
             }
-            $newName = $media_new['name'] . '(' . $i . ').' . $media_for_prod->type;
+            $newName = $media_new['name'] . '(' . $i . ').' . $media_for_prod->extension;
           }
           $oldFilePath = $path . $oldName;
           $newFilePath = $path . $newName;
@@ -125,17 +159,23 @@ class RelatedMediaProduct extends Component
   public function uploadmedia()
   {
     $this->showmedia = true;
-    $this->dispatchBrowserEvent('media');
+    $this->chose = true;
   }
   public function external()
   {
-    $this->row = 1;
+    $this->row = 0;
     $this->externalmedia = true;
-    $this->file_resize[1] = false;
+    $this->file_name[$this->row] = null;
+    $this->file_sequences[$this->row] = null;
+    $this->file_link[$this->row] = null;
+    $this->file_resize[$this->row] = false;
   }
   public function plus()
   {
     $this->row++;
+    $this->file_name[$this->row] = null;
+    $this->file_sequences[$this->row] = null;
+    $this->file_link[$this->row] = null;
     $this->file_resize[$this->row] = false;
   }
   public function updatedChecked()
@@ -173,7 +213,7 @@ class RelatedMediaProduct extends Component
     array_splice($this->file_resize, $i, 1);
     $this->row--;
 
-    if ($this->row < 1) {
+    if ($this->row < 0) {
       $this->externalmedia = false;
     }
   }
@@ -190,27 +230,54 @@ class RelatedMediaProduct extends Component
     }
     $path = $filespath . $this->product->id . "/";
 
-    for ($i = 1; $i <= $this->row; $i++) {
+    for ($i = 0; $i <= $this->row; $i++) {
       $this->resetErrorBag();
       $this->validate([
         'file_sequences.*' => 'required',
         'file_link.*' => 'required|url',
         'file_name.*' => 'required'
       ]);
-      $fileContent = file_get_contents($this->file_link[$i]);
-      // Get image information
-      $imageInfo = getimagesizefromstring($fileContent);
-      //extension
-      $fileExtension = image_type_to_extension($imageInfo[2], false);
-      $name = $this->file_name[$i] . '.' . $fileExtension;
-      if (file_exists($path . $name)) {
-        $this->j = 1;
-        while (file_exists($path . $this->file_name[$i] . '(' . $this->j . ').' . $fileExtension)) {
-          $this->j++;
-        }
-        $name = $this->file_name[$i] . '(' . $this->j . ').' . $fileExtension;
+      $urlComponents = parse_url($this->file_link[$i]);
+
+      $urlWithoutParams = $urlComponents['scheme'] . '://' . $urlComponents['host'] . $urlComponents['path'];
+      $this->file_link[$i] = $urlWithoutParams;
+      $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp', 'svg'];
+      $fileExtension = strtolower(pathinfo($this->file_link[$i], PATHINFO_EXTENSION));
+
+      if (!in_array($fileExtension, $allowedExtensions)) {
+        continue;
       }
-      Storage::disk('public_upload')->put($path . $name, $fileContent);
+      $fileContent = file_get_contents($this->file_link[$i]);
+      if ($fileContent == false) {
+        continue;
+      }
+      $imageInfo = getimagesizefromstring($fileContent);
+      if (app()->has('global_auto_webp') &&  app('global_auto_webp') == 'true') {
+        $image = Image::make($fileContent);
+        $webpContent = $image->encode('webp')->__toString();
+        $fileExtension = 'webp';
+        $name = $this->file_name[$i] . '.' . $fileExtension;
+        if (file_exists($path . $name)) {
+          $this->j = 1;
+          while (file_exists($path . $this->file_name[$i] . '(' . $this->j . ').' . $fileExtension)) {
+            $this->j++;
+          }
+          $name = $this->file_name[$i] . '(' . $this->j . ').' . $fileExtension;
+        }
+        Storage::disk('public_upload')->put($path . $name, $webpContent);
+      } else {
+        $fileExtension = image_type_to_extension($imageInfo[2], false);
+        $name = $this->file_name[$i] . '.' . $fileExtension;
+        if (file_exists($path . $name)) {
+          $this->j = 1;
+          while (file_exists($path . $this->file_name[$i] . '(' . $this->j . ').' . $fileExtension)) {
+            $this->j++;
+          }
+          $name = $this->file_name[$i] . '(' . $this->j . ').' . $fileExtension;
+        }
+        Storage::disk('public_upload')->put($path . $name, $fileContent);
+      }
+
       $media = new Media();
       $media->name = $name;
       $media->extension = $fileExtension;
@@ -317,6 +384,7 @@ class RelatedMediaProduct extends Component
     $this->file_sequences = [];
     $this->file_link = [];
     $this->file_name = [];
+    $this->chose = false;
     $this->mount($this->product);
   }
   public function save()
@@ -336,7 +404,11 @@ class RelatedMediaProduct extends Component
     $this->i = 0;
     foreach ($this->medias as $file) {
       $media = new Media();
-      $type = $file->getClientOriginalExtension();
+      if (app()->has('global_auto_webp') &&  app('global_auto_webp') == 'true') {
+        $type = 'webp';
+      } else {
+        $type = $file->getClientOriginalExtension();
+      }
       $image = Image::make($file);
       $width = $image->width();
       $height = $image->height();
@@ -443,6 +515,7 @@ class RelatedMediaProduct extends Component
     $this->initiate = false;
     $this->file_sequences = [];
     $this->file_resize = [];
+    $this->chose = false;
     session()->flash('notification', [
       'message' => 'Record edited successfully!',
       'type' => 'success',
@@ -523,7 +596,7 @@ class RelatedMediaProduct extends Component
   }
   public function deleteSingleRecord()
   {
-    $media = Media::findOrFail($this->mediaidbeingremoved);
+    $media = Media::findOrFail($this->idbeingremoved);
     $path = $media->path . $media->name;
     if (File::exists($path)) {
       File::delete($path);
@@ -533,12 +606,17 @@ class RelatedMediaProduct extends Component
     if (File::isDirectory($folder) && count(File::allFiles($folder)) === 0) {
       File::deleteDirectory($folder);
     }
-    $this->checked = array_diff($this->checked, [$this->mediaidbeingremoved]);
+    $this->checked = array_diff($this->checked, [$this->idbeingremoved]);
+    $this->single = false;
     session()->flash('notification', [
       'message' => 'Record related successfully!',
       'type' => 'success',
       'title' => 'Success'
     ]);
+  }
+  public function cancel_chose()
+  {
+    $this->chose = false;
   }
   public function deleteRecords()
   {
@@ -556,6 +634,7 @@ class RelatedMediaProduct extends Component
     }
     $this->checked = [];
     $this->selectPage = false;
+    $this->multiple = false;
     session()->flash('notification', [
       'message' => 'Records related successfully!',
       'type' => 'success',
@@ -571,14 +650,19 @@ class RelatedMediaProduct extends Component
   {
     return in_array($id, $this->checked);
   }
-  public function confirmRemoval($id)
+  public function confirmItemRemoval($id)
   {
-    $this->mediaidbeingremoved = $id;
-    $this->dispatchBrowserEvent('delete-media');
+    $this->idbeingremoved = $id;
+    $this->single = true;
   }
-  public function confirmFilesRemovalmultiple()
+  public function confirmItemsRemoval()
   {
-    $this->dispatchBrowserEvent('show-delete-modal-multiple');
+    $this->multiple = true;
+  }
+  public function cancel_delete()
+  {
+    $this->multiple = false;
+    $this->single = false;
   }
   public function render()
   {

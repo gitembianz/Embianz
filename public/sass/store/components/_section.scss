@@ -25,10 +25,10 @@ section {
 h1.section__title {
   width: 100%;
   font-size: 25px;
-  font-weight: 500;
-  color: $text;
+  font-weight: $lightWeight;
+  color: $lightBlack;
   text-align: center;
-  line-height: 150%;
+  line-height: $lineHeight;
   margin: 0;
 
   @media (max-width: map-get($grid-breakpoints, md)) {
@@ -39,38 +39,38 @@ h1.section__title {
 h2.section__title {
   width: 100%;
   font-size: 24px;
-  font-weight: 500;
-  color: $text;
+  font-weight: $lightWeight;
+  color: $lightBlack;
   text-align: center;
-  line-height: 150%;
+  line-height: $lineHeight;
   margin: 0;
 
   @media (max-width: map-get($grid-breakpoints, md)) {
-    font-size: 17px;
+    font-size: 18px;
   }
 }
 
 .section__text {
   width: 100%;
-  font-size: 14px;
-  font-weight: 400;
-  color: lighten($color: $text, $amount: 25%);
+  font-size: $textSize;
+  font-weight: $lightWeight;
+  color: $lightBlack;
   text-align: center;
-  line-height: 150%;
+  line-height: $lineHeight;
   text-wrap: balance;
 
-  @media (max-width: map-get($grid-breakpoints, md)) {
-    font-size: 12px;
-    width: 90%;
-  }
+  // @media (max-width: map-get($grid-breakpoints, md)) {
+  //   font-size: 12px;
+  //   width: 90%;
+  // }
 
   & > a {
     text-decoration: underline;
     text-underline-offset: 3px;
-    font-weight: 500;
-    font-size: 15px;
-    color: $text;
-    line-height: 150%;
+    font-weight: $lightWeight;
+    font-size: $textSize;
+    color: $lightBlack;
+    line-height: $lineHeight;
   }
 }
 

@@ -1,0 +1,68 @@
+.payment {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.payment__wrapper {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background: $secondary;
+  padding: 10px;
+  border-radius: 5px;
+  gap: 10px;
+
+  & > span {
+    font-size: $inputSize;
+    font-weight: $lightWeight;
+    color: $lightBlack;
+  }
+}
+
+.payment__text {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 5px;
+  padding-top: 10px;
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: all 0.3s ease-in-out;
+  opacity: 0;
+  visibility: hidden;
+  height: 0;
+
+  background: $secondary;
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: -7px;
+  z-index: 5;
+
+  &.active {
+    transform: scaleY(1);
+    opacity: 1;
+    visibility: visible;
+    height: auto;
+  }
+
+  & > h3 {
+    width: 100%;
+    text-align: left;
+    color: $lightBlack;
+    font-size: $textSize;
+    font-weight: $lightWeight;
+  }
+
+  & > span {
+    width: 100%;
+    text-align: left;
+    color: $darkRed;
+    font-size: $textSize;
+    font-weight: 400;
+  }
+}

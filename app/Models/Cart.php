@@ -9,11 +9,11 @@ class Cart extends Model
 {
   use HasFactory;
   protected $table = 'carts';
-  protected $fillable = ['session_id', 'voucher_value', 'final_amount', 'voucher_id', 'name', 'delivery_price', 'quantity_amount', 'sum_amount', 'status_id', 'currency_id'];
+  protected $fillable = ['session_id', 'voucher_value', 'final_amount', 'voucher_id', 'name', 'delivery_price', 'quantity_amount', 'sum_amount', 'status_id', 'order_id', 'currency_id'];
 
-  public function carts()
+  public function cartItems()
   {
-    return $this->hasMany(Cart_Item::class, 'cart_id');
+    return $this->hasMany(Cart_Item::class, 'cart_id'); // Adjust class name and foreign key as needed
   }
   public function currency()
   {

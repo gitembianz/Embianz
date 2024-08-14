@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Status;
 use Livewire\Component;
@@ -13,6 +12,7 @@ class ShowOrder extends Component
     public $orderId;
     public $record = [];
     public $edititem = null;
+    public $delete = false;
     public $statuses;
     public function render()
     {
@@ -22,7 +22,7 @@ class ShowOrder extends Component
     }
     public function getOrderProperty()
     {
-        return $this->orderQuery->first();
+        return $this->orderQuery;
     }
     public function getOrderQueryProperty()
     {
@@ -45,9 +45,33 @@ class ShowOrder extends Component
         ];
         $this->edititem = true;
     }
+    public function saveitem()
+    {
+        $new_status = $this->record ?? NULL;
+        if (!is_null($new_status)) {
+            $order = Order::find($this->orderId);
+            if (array_key_exists('status_id', $new_status)) {
+                $order->status_id = $new_status['status_id'];
+                $order->updated_at = now();
+                $order->save();
+                $this->emit('itemSaved');
+                session()->flash('notification', [
+                    'message' => 'Record edited successfully!',
+                    'type' => 'success',
+                    'title' => 'Success'
+                ]);
+            }
+        }
+        $this->record = [];
+        $this->edititem = null;
+    }
     public function confirmItemRemoval()
     {
-        $this->dispatchBrowserEvent('show-delete-modal');
+        $this->delete = true;
+    }
+    public function cancelItemRemoval()
+    {
+        $this->delete = false;
     }
     public function deleteRecord()
     {
@@ -60,6 +84,7 @@ class ShowOrder extends Component
             }
         }
         $item->delete();
+        $this->delete = false;
         return redirect()->route('orders')->with('notification', [
             'message' => 'Record deleted successfully!',
             'type' => 'success',

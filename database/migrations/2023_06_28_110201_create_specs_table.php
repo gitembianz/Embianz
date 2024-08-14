@@ -15,6 +15,10 @@ return new class extends Migration
       $table->id();
       $table->string('name')->nullable();
       $table->string('um')->nullable();
+      $table->string('sequence')->nullable();
+      $table->boolean('mark_as_filter')->nullable()->default(
+        false
+      );
       $table->string('createdby')->nullable();
       $table->string('lastmodifiedby')->nullable();
       $table->timestamps();

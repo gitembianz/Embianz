@@ -1,9 +1,29 @@
 public/media/
 node_modules
-public/dist/.DS_Store
-.DS_Store
 storage/app/livewire-tmp
 public/dist/css/main.css.map
 public/dist/css/loading-screen.css.map
+public/images/
+public/sitemap.xml
+public/robots.txt
+bootstrap
+.env
+.htpasswd
+.DS_Store
+.github/workflows/
 
-public/.DS_Store
+# static pages
+resources\views\store\404.blade.php
+resources\views\store\about.blade.php
+resources\views\store\confirm.blade.php
+resources\views\store\contact.blade.php
+resources\views\store\cookie.blade.php
+resources\views\store\faq.blade.php
+resources\views\store\privacy.blade.php
+resources\views\store\terms.blade.php
+
+
+
+
+
+

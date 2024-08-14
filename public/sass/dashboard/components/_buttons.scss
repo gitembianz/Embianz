@@ -1,0 +1,220 @@
+/// Buttons settings
+
+.button {
+  /// Button size
+  @include box($width);
+  /// Button standart colors
+  background-color: #cacaca;
+  color: $primary;
+  /// Button settings
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  outline: none;
+  text-decoration: none;
+  border-radius: $border-radius-sm;
+  transition: $transition;
+  font-size: $font-size;
+  font-weight: $font-weight;
+  flex-shrink: 1;
+  min-height: $height;
+
+  & span ,
+  & a {
+    font-size: $font-size-sm;
+    font-weight: $font-weight;
+    // line-height: $line-height;
+
+    text-decoration: none;
+  }
+
+  @media (hover: hover) {
+   &:hover {
+    background-color: darken(#cacaca, 5%);
+    outline: none;
+   }
+   &:active {
+    background-color: darken(#cacaca, 20%);
+    outline: none;
+    transform: scale(0.9);
+   }
+   &:focus-visible {
+    background-color: darken(#cacaca, 20%);
+    outline: 2px solid darken(#cacaca, 20%);
+    outline-offset: 2px;
+   }
+  }
+  @media (hover: none) {
+   &:active {
+    background-color: darken(#cacaca, 20%);
+    outline: none;
+   }
+  }
+  /// Button Long
+  &--long {
+   width: 100%;
+   max-width: $max-width;
+  //  min-width: $min-width;
+
+   &:has(span){
+    width: unset;
+    padding: 0 $padding;
+    gap: 10px;
+   }
+  }
+
+  &--fill {
+    width: 100%;
+  }
+
+  &--flexed {
+    justify-content: space-between;
+    gap: 10px;
+    padding: 0 $padding;
+  }
+
+  /// Button Rounded
+  &--rounded {
+   border-radius: 100px;
+  }
+
+  &--sm{
+    transform: scale(0.8);
+  }
+  &--xs{
+    min-height: calc($height - $margin) !important;
+    height: calc($height - $margin) !important;
+    font-size: $font-size !important;
+    font-weight: $font-weight !important;
+  }
+
+  &--centered{
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+  }
+
+  /// Button Primary
+  &--primary {
+   color: $secondary;
+   background-color: darken($primary, 5%);
+
+   @media (hover: hover) {
+    &:hover {
+     background-color: darken($primary, 10%);
+     outline: none;
+    }
+    &:active {
+     background-color: darken($primary, 20%);
+     outline: none;
+    }
+    &:focus-visible {
+     background-color: darken($primary, 20%);
+     outline: 2px solid darken($primary, 20%);
+     outline-offset: 2px;
+    }
+   }
+   @media (hover: none) {
+    &:active {
+     background-color: darken($primary, 20%);
+     outline: none;
+    }
+   }
+  }
+
+  /// Button Secondary
+  &--secondary {
+   color: $primary;
+   background-color: $secondary;
+
+   @media (hover: hover) {
+    &:hover {
+     background-color: darken($secondary, 5%);
+     outline: none;
+    }
+    &:active {
+     background-color: darken($secondary, 20%);
+     outline: none;
+    }
+    &:focus-visible {
+     background-color: darken($secondary, 20%);
+     outline: 2px solid darken($secondary, 20%);
+     outline-offset: 2px;
+    }
+   }
+   @media (hover: none) {
+    &:active {
+     background-color: darken($secondary, 20%);
+     outline: none;
+    }
+   }
+  }
+  /// Button Active
+  &--active {
+    color: $primary;
+    background-color: $secondary;
+    // border: 2px solid $primary;
+
+    @media (hover: hover) {
+     &:hover {
+      background-color: darken($secondary, 5%);
+      outline: none;
+     }
+     &:active {
+      background-color: darken($secondary, 20%);
+      outline: none;
+     }
+     &:focus-visible {
+      background-color: darken($secondary, 20%);
+      outline: 2px solid darken($secondary, 20%);
+      outline-offset: 2px;
+     }
+    }
+    @media (hover: none) {
+     &:active {
+      background-color: darken($secondary, 20%);
+      outline: none;
+     }
+    }
+   }
+
+   &--danger {
+    color: $secondary;
+    background-color: $danger;
+
+    @media (hover: hover) {
+     &:hover {
+      background-color: darken($danger, 5%);
+      outline: none;
+     }
+     &:active {
+      background-color: darken($danger, 20%);
+      outline: none;
+     }
+     &:focus-visible {
+      background-color: darken($danger, 20%);
+      outline: 2px solid darken($danger, 20%);
+      outline-offset: 2px;
+     }
+    }
+    @media (hover: none) {
+     &:active {
+      background-color: darken($danger, 20%);
+      outline: none;
+     }
+    }
+   }
+
+   &--arrow {
+    & > svg {
+      transition: $transition;
+    }
+
+    &.active{
+      & > svg {
+        transform: rotateX(180deg);
+      }
+    }
+   }
+}

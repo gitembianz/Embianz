@@ -20,4 +20,11 @@ class Currency extends Model
   {
     return $this->belongsTo(Order::class, 'currency_id');
   }
+  public static function search($search)
+  {
+    return empty($search) ? static::query()
+      : static::query()->where('id', 'like', '%' . $search . '%')
+      ->orWhere('name', 'like', '%' . $search . '%')
+      ->orWhere('symbol', 'like', '%' . $search . '%');
+  }
 }

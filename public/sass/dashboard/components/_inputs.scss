@@ -1,0 +1,308 @@
+.input{
+    @include box(max-width, $height);
+    background-color: darken($white, 10%);
+    color: $primary;
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    border: none;
+    outline: none;
+    border-radius: $border-radius-sm;
+    transition: $transition;
+    font-size: $font-size;
+    font-weight: $font-weight;
+    min-height: $height;
+    padding: $padding;
+    flex-shrink: 1;
+
+    &--long {
+      flex: 1;
+      width: 100%;
+    }
+    &--sm{
+      transform: scale(0.8);
+    }
+    &--rounded {
+    border-radius: 100px;
+    }
+
+    &::placeholder{
+      font-size: 13px;
+    }
+}
+
+
+.search--controls{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: $gap;
+  padding-right: calc($padding * 1.5);
+}
+
+
+///Input for Tabs
+.input__tabs {
+  $labelHeight: 25px;
+
+  /// Input container
+  position: relative;
+  width: 100%;
+  margin-top: $labelHeight;
+
+    /// Input & fake input style
+  & > input, span, select, a {
+    width: 100%;
+    height: 100%;
+    min-height: 35px;
+
+    background: $white;
+    padding: 0 $padding;
+
+    border: none;
+    outline: none;
+    overflow: hidden;
+
+    color: $primary;
+    font-size: 16px;
+    font-weight: $font-weight;
+    line-height: $line-height;
+
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    transition: $transition;
+    border-radius: $border-radius-sm;
+
+
+    /// Input autofill style
+    &:-webkit-autofill,
+    &:-webkit-autofill:hover,
+    &:-webkit-autofill:focus,
+    &:-webkit-autofill:active{
+        -webkit-box-shadow: 0 0 0 30px white inset !important;
+    }
+
+
+    /// Input States for Desktop
+    @media (hover: hover) {
+      &:hover {
+        background-color: darken($white, 5%);
+        outline: none;
+      }
+      &:active {
+        background-color: darken($white, 10%);
+        outline: none;
+      }
+      &:focus-visible {
+        background-color: darken($white, 10%);
+        outline: 1px solid darken($white, 10%);
+        outline-offset: 1.5px;
+      }
+    }
+
+
+    /// Input States for Mobile
+    @media (hover: none) {
+      &:active {
+        background-color: darken($white, 10%);
+        outline: none;
+      }
+    }
+  }
+  &>a {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    text-decoration-thickness: 2px;
+    font-weight: 700;
+
+  }
+  /// Diferent Cursors
+  &>input {
+    cursor: text;
+  }
+  &>span, select, a {
+    cursor: pointer;
+  }
+
+
+  /// Label style
+  & > label {
+    /// Position
+    position: absolute;
+    top: calc(50% + $labelHeight);
+    left: $padding;
+    transform: translateY(calc(-50% - $labelHeight));
+
+    /// Typography
+    color: $primary;
+    font-size: $font-size-sm;
+    font-weight: $font-weight;
+    line-height: $line-height;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+
+    /// Unselect
+    user-select: none;
+    pointer-events: none;
+    opacity: 0.8;
+    transition: $transition;
+  }
+
+  /// Label effect
+  &>input:hover ~ label,
+  &>input:focus ~ label,
+  &>input:autofill ~ label,
+  &>input:not(:placeholder-shown) ~ label,
+  &>select:hover ~ label,
+  &>select:focus ~ label,
+  &>select:autofill ~ label,
+  &>select:not(:placeholder-shown) ~ label,
+  &>a:hover ~ label,
+  &>a:focus ~ label,
+  &>a:autofill ~ label,
+  &>a:not(:placeholder-shown) ~ label,
+  &>span:hover ~ label,
+  &>span:focus ~ label,
+  &>span:autofill ~ label,
+  &>span:not(:placeholder-shown) ~ label,
+  &.active > label{
+    top: -$labelHeight;
+    left: 0;
+    transform: translateY(0);
+    color: $secondary;
+    opacity: 1;
+  }
+}
+
+///textarea for Tabs
+.textarea__tabs {
+  $labelHeight: 25px;
+  /// textarea container
+  position: relative;
+  width: 100%;
+  margin-top: $labelHeight;
+
+    /// textarea & fake textarea style
+  & > textarea, span {
+    width: 100%;
+    height: auto;
+    // min-height: 350px;
+    resize: vertical;
+
+    color: $primary;
+    background: $white;
+    padding: $padding;
+
+    border: none;
+    outline: none;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+
+    font-size: 16px;
+    font-weight: $font-weight;
+    line-height: $line-height;
+
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+
+    transition: $transition;
+    border-radius: $border-radius-sm;
+
+
+    /// textarea autofill style
+    &:-webkit-autofill,
+    &:-webkit-autofill:hover,
+    &:-webkit-autofill:focus,
+    &:-webkit-autofill:active{
+        -webkit-box-shadow: 0 0 0 30px white inset !important;
+    }
+
+
+    /// textarea States for Desktop
+    @media (hover: hover) {
+      &:hover {
+        background-color: darken($white, 5%);
+        outline: none;
+      }
+      &:active {
+        background-color: darken($white, 10%);
+        outline: none;
+      }
+      &:focus-visible {
+        background-color: darken($white, 10%);
+        outline: 1px solid darken($white, 10%);
+        outline-offset: 1.5px;
+      }
+    }
+
+
+    /// textarea States for Mobile
+    @media (hover: none) {
+      &:active {
+        background-color: darken($white, 10%);
+        outline: none;
+      }
+    }
+  }
+
+  /// Diferent Cursors
+  &>textarea {
+    cursor: text;
+  }
+  &>span {
+    cursor: pointer;
+  }
+
+
+  /// Label style
+  & > label {
+    /// Position
+    position: absolute;
+    top: calc(50% + $labelHeight);
+    left: $padding;
+    transform: translateY(calc(-50% - $labelHeight));
+
+
+    /// Typography
+    color: $primary;
+    font-size: $font-size-sm;
+    font-weight: $font-weight;
+    line-height: $line-height;
+
+
+    /// Unselect
+    user-select: none;
+    pointer-events: none;
+    opacity: 0.8;
+    transition: $transition;
+  }
+
+
+  /// Label effect
+  &>textarea:hover ~ label,
+  &>textarea:focus ~ label,
+  &>textarea:autofill ~ label,
+  &>textarea:not(:placeholder-shown) ~ label,
+  &>span:hover ~ label,
+  &>span:focus ~ label,
+  &>span:autofill ~ label,
+  &>span:not(:placeholder-shown) ~ label,
+  &.active > label{
+    top: -$labelHeight;
+    left: 0;
+    transform: translateY(0);
+    color: $secondary;
+    opacity: 1;
+  }
+}
+

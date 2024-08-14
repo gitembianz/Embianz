@@ -7,6 +7,7 @@ use Livewire\Component;
 use App\Models\Wishlist;
 use App\Models\Cart_Item;
 use App\Models\Product_Spec;
+use App\Models\Related_Products;
 use App\Models\PricelistEntries;
 use App\Models\Products_categories;
 use Illuminate\Support\Facades\Auth;
@@ -18,6 +19,7 @@ class ShowProduct extends Component
 {
   public $productId;
   public $editproduct = null;
+  public $delete = false;
   public $prod;
 
   public function mount($productId)
@@ -28,22 +30,31 @@ class ShowProduct extends Component
   {
     $this->productId = $id;
     $this->dispatchBrowserEvent('show-delete-modal');
+    $this->delete = true;
+  }
+  public function cancelItemRemoval()
+  {
+      $this->delete = false;
   }
   public function editproduct()
   {
     $this->prod = [
       'product_name' => $this->product->name,
       'active' => $this->product->active == 1 ? true : false,
+      'is_new' => $this->product->is_new == 1 ? true : false,
       'start_date' => $this->product->start_date,
       'end_date' => $this->product->end_date,
       'popularity' => $this->product->popularity,
       'short_description' => $this->product->short_description,
+      'meta_description' => $this->product->meta_description,
       'long_description' => $this->product->long_description,
       'seo_title' => $this->product->seo_title,
       'quantity' => $this->product->quantity,
       'sku' => $this->product->sku,
       'ean' => $this->product->ean,
-      'seo_id' => $this->product->seo_id
+      'seo_id' => $this->product->seo_id,
+      'type' => $this->product->type
+
     ];
     $this->editproduct = true;
   }
@@ -81,11 +92,17 @@ class ShowProduct extends Component
           $new->seo_id = $this->generateUniqueSeoId($product_new['seo_id']);
         }
       }
+      if (array_key_exists('type', $product_new)) {
+        $new->type = $product_new['type'];
+      }
       if (array_key_exists('start_date', $product_new)) {
         $new->start_date = $product_new['start_date'];
       }
       if (array_key_exists('active', $product_new)) {
         $new->active = $product_new['active'];
+      }
+      if (array_key_exists('is_new', $product_new)) {
+        $new->is_new = $product_new['is_new'];
       }
       if (array_key_exists('end_date', $product_new)) {
         $new->end_date = $product_new['end_date'];
@@ -95,6 +112,9 @@ class ShowProduct extends Component
       }
       if (array_key_exists('short_description', $product_new)) {
         $new->short_description = $product_new['short_description'];
+      }
+      if (array_key_exists('meta_description', $product_new)) {
+        $new->meta_description = $product_new['meta_description'];
       }
       if (array_key_exists('popularity', $product_new)) {
         $new->popularity = $product_new['popularity'];
@@ -160,6 +180,12 @@ class ShowProduct extends Component
         $this->emit('cartUpdated');
       }
     }
+    $relproducts = Related_Products::where('product_id', $id)->orwhere('parent_id', $id)->get();
+    if ($relproducts != NULL) {
+      foreach ($relproducts as $item) {
+        $item->delete();
+      }
+    }
     $productswishlist = Wishlist::where('product_id', $id)->get();
     if ($productswishlist != NULL) {
       foreach ($productswishlist as $productwis) {
@@ -183,7 +209,8 @@ class ShowProduct extends Component
       File::deleteDirectory($filespath);
     }
     $product->delete();
-    return redirect()->route('products')->with('notification', [
+    $this->delete = false;
+    return redirect()->route('all_products')->with('notification', [
       'message' => 'Record deleted successfully!',
       'type' => 'success',
       'title' => 'Success'

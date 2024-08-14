@@ -15,12 +15,11 @@ class UserTypeCheck
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // Check if the user is authenticated and has usertype equal to 1
         if (auth()->check() && auth()->user()->usertype == 1) {
             return $next($request);
+        } else {
+            auth()->logout();
+            return redirect('/login')->with('error', 'Unauthorized access');
         }
-
-        // If not authenticated or usertype is not 1, you can redirect or return an unauthorized response
-        return redirect('/login')->with('error', 'Unauthorized access');
     }
 }

@@ -1,6 +1,5 @@
-<x-store-head :canonical="'storeproducts' . ($can ? '/' . $can : '')" :description="'All Products'" :title="'Produse | '" />
-
-<x-store-header />
+<x-store-head :canonical="'storeproducts' . ($can ? '/' . $can : '')" :title='($data->seo_title ?? "Produse") . " | "' :description='$data->meta_description ?? $data->name ?? ""' :preload="$preload" />
+@livewire('store-header')
 <main>
  <livewire:store-products category="{{ $data }}" />
 </main>

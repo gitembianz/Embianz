@@ -1,0 +1,87 @@
+/// Background
+.background {
+  $background-wh: 100%;
+  position: fixed;
+  width: 0px;
+  height: 0px;
+  display: inline-block;
+  background: $modal;
+  z-index: $index-modal-backdrop;
+  transition: $transition;
+
+  &--top {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transform-origin: top center;
+    width: $background-wh;
+    clip-path: circle(0% at 50% 0%);
+
+    &.active {
+      height: $background-wh;
+      clip-path: circle(50% at 50% 0%);
+      transform: scale(5);
+    }
+  }
+
+  &--bottom {
+    bottom: 0;
+    left: 0;
+    transform-origin: bottom;
+    width: $background-wh;
+    clip-path: circle(0% at 50% 100%);
+
+    &.active {
+      height: $background-wh;
+      clip-path: circle(50% at 50% 100%);
+      transform: scale(5);
+    }
+  }
+
+  &--right {
+    top: 0;
+    right: 0;
+    transform-origin: right;
+    height: $background-wh;
+    clip-path: circle(0% at 100% 50%);
+
+    &.active{
+      width: $background-wh;
+      clip-path: circle(50% at 100% 50%);
+      transform: scale(5);
+    }
+  }
+
+  &--left {
+    top: 0;
+    left: 0;
+    transform-origin: left;
+    height: $background-wh;
+    clip-path: circle(0% at 0% 50%);
+
+    &.active{
+      width: $background-wh;
+      clip-path: circle(50% at 0% 50%);
+      transform: scale(5);
+    }
+  }
+  &--center {
+    width: 100%;
+    height: 100%;
+    top: 50%;
+    left: 50%;
+    bottom: unset;
+    right: unset;
+    transform-origin: center;
+    transform: translate(-50%,-50%) scale(0);
+    clip-path: circle(0% at 50% 50%);
+
+    &.active{
+      width: 100%;
+      height: 100%;
+      clip-path: circle(50% at 50% 50%);
+      transform: translate(-50%,-50%) scale(5);
+    }
+  }
+}

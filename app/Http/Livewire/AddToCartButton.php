@@ -21,9 +21,7 @@ class AddToCartButton extends Component
         if (array_key_exists('sessionId', $_COOKIE)) {
             return $_COOKIE['sessionId'];
         } else {
-            $sessionId = session()->getId();
-            setcookie('sessionId', $sessionId, time() + 30 * 24 * 60 * 60, '/', null, false, true);
-            return $sessionId;
+            return session()->getId();
         }
     }
 
@@ -34,6 +32,9 @@ class AddToCartButton extends Component
 
     public function addToCart($productId)
     {
+        if (!array_key_exists('sessionId', $_COOKIE)) {
+            setcookie('sessionId', $this->session_id, time() + 30 * 24 * 60 * 60, '/');
+        }
         $cart = Cart::where('session_id', $this->session_id)
             ->where('status_id', '!=', app('global_cart_closed'))
             ->with('voucher')
@@ -82,8 +83,19 @@ class AddToCartButton extends Component
             if ($cartItem->quantity < $this->product->quantity) {
                 $cartItem->increment('quantity');
                 $cart->increment('quantity_amount');
+                if ($cartItem->price != $this->product->product_prices->first()->value) {
+                    $cartItem->price = $this->product->product_prices->first()->value;
+                    $cartItem->save();
+                    $sum_amount = 0;
+                    foreach ($cart->carts as $item) {
+                        $sum_amount = $sum_amount + $item->price * $item->quantity;
+                    }
+                    $cart->sum_amount = $sum_amount;
+                    $cart->seen_by_customer = true;
+                } else {
+                    $cart->sum_amount += $this->product->product_prices->first()->value;
+                }
                 $cart->delivery_price = app('global_delivery_price');
-                $cart->sum_amount += $this->product->product_prices->first()->value;
                 if ($cart->voucher && $cart->voucher->percent !== null) {
                     $cart->voucher_value = ($cart->voucher->percent / 100) * $cart->sum_amount;
                 } elseif ($cart->voucher && $cart->voucher->value !== null) {
@@ -91,9 +103,9 @@ class AddToCartButton extends Component
                 }
                 $cart->final_amount = $cart->sum_amount + app('global_delivery_price');
                 $cart->final_amount -= $cart->voucher_value;
-                $cart->status_id = app('global_cart_new');
             }
         }
+        $cart->status_id = app('global_cart_new');
         $cart->save();
         $this->emit('cartUpdated');
     }

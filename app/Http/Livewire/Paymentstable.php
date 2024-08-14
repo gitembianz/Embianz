@@ -5,6 +5,8 @@ namespace App\Http\Livewire;
 use App\Models\Payment;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\Schema;
+
 
 class Paymentstable extends Component
 {
@@ -17,10 +19,28 @@ class Paymentstable extends Component
     public $selectPage = false;
     public $selectAll = false;
     public $removedid = null;
-    public $columns = ['Id', 'Active', 'Created At'];
+    public $tableName;
+    public $columns;
     public $selectedColumns = [];
-    public $editeindex = null;
+    public $editindex = null;
     public $isactive = [];
+    public $row = null;
+
+    public function expandRow($index)
+    {
+        if ($this->editindex === $index) {
+            return;
+        } else {
+
+            if ($this->row  === null) {
+                $this->row = $index;
+            } elseif ($this->row != $index) {
+                $this->row = $index;
+            } else {
+                $this->row = null;
+            }
+        }
+    }
 
     public function render()
     {
@@ -32,13 +52,15 @@ class Paymentstable extends Component
     {
         $this->loadAmount += 10;
     }
-    public function mount()
+    public function mount($tableName)
     {
+        $this->tableName = $tableName;
+        $this->columns = Schema::getColumnListing($this->tableName);
         $this->selectedColumns = $this->columns;
     }
     public function showColumn($column)
     {
-        if ($column === 'Name') {
+        if ($column === 'name') {
             return true;
         }
         return in_array($column, $this->selectedColumns);
@@ -77,12 +99,8 @@ class Paymentstable extends Component
     }
     public function getPaymentsProperty()
     {
-        return $this->paymentsQuery->limit($this->loadAmount)->get();
-    }
-    public function getPaymentsQueryProperty()
-    {
         return Payment::search($this->search)
-            ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc');
+            ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->paginate($this->loadAmount);
     }
     public function deleteRecords()
     {
@@ -126,24 +144,34 @@ class Paymentstable extends Component
     }
     public function edit($index, $id)
     {
-        $this->editeindex = $index;
+        $this->editindex = $index;
+        $this->row = $index;
         $item = Payment::find($id);
         $this->isactive = [
             $index . '.active' => $item->active == 1 ? true : false,
+            $index . '.description' => $item->description
+
         ];
     }
     public function cancel()
     {
-        $this->editeindex = null;
+        $this->editindex = null;
         $this->isactive = [];
     }
     public function save($index, $id)
     {
         $new = $this->isactive[$index] ?? NULL;
 
-        if (!is_null($new) && array_key_exists('active', $new)) {
+        if (!is_null($new)) {
             $item = Payment::find($id);
-            $item->active = $new['active'] ? 1 : 0; // Convert true to 1 and false to 0
+            if (array_key_exists('active', $new)) {
+
+                $item->active = $new['active'] ? 1 : 0; // Convert true to 1 and false to 0
+            }
+            if (array_key_exists('description', $new)) {
+
+                $item->description = $new['description'];
+            }
             $item->save();
 
             session()->flash('notification', [
@@ -154,6 +182,6 @@ class Paymentstable extends Component
         }
 
         $this->isactive = [];
-        $this->editeindex = null;
+        $this->editindex = null;
     }
 }

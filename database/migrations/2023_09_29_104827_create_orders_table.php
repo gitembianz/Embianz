@@ -14,8 +14,8 @@ return new class extends Migration
     Schema::create('orders', function (Blueprint $table) {
       $table->id();
       $table->string('order_number')->nullable();
-      $table->string('name');
-      $table->string('session_id');
+      $table->string('name')->nullable();
+      $table->string('session_id')->nullable();
       $table->unsignedBigInteger('account_id')->index()->nullable();
       $table->foreign('account_id')->references('id')->on('accounts');
       $table->unsignedBigInteger('cart_id')->index()->nullable();
@@ -30,6 +30,9 @@ return new class extends Migration
       $table->foreign('payment_id')->references('id')->on('payments');
       $table->unsignedBigInteger('voucher_id')->index()->nullable();
       $table->foreign('voucher_id')->references('id')->on('vouchers');
+      $table->decimal('voucher_value', 10, 2)->default(0);
+      $table->decimal('delivery_price', 5, 2)->default(0);
+      $table->decimal('final_amount', 10, 2)->default(0);
       $table->timestamps();
     });
   }

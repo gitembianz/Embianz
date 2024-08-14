@@ -6,17 +6,32 @@ function scrollEvent() {
   const main = document.querySelector("main");
   const body = document.body;
 
-  const headerHeight = header.offsetHeight;
-  const bannerHeight = banner.offsetHeight;
+  if (!banner) {
+    const headerHeight = header.offsetHeight;
+    // const bannerHeight = banner.offsetHeight;
 
-  if (window.pageYOffset > 200) {
-    banner.style.transform = `translate3d(0px, -${bannerHeight}px, 0px)`;
-    main.style.paddingTop = `${headerHeight}px`;
-    header.style.paddingTop = 0;
+    if (window.pageYOffset > 200) {
+      // banner.style.transform = `translate3d(0px, -${bannerHeight}px, 0px)`;
+      main.style.paddingTop = `${headerHeight}px`;
+      header.style.paddingTop = 0;
+    } else {
+      // banner.style.transform = `translate3d(0px, 0px, 0px)`;
+      main.style.paddingTop = `${headerHeight}px`;
+      // header.style.paddingTop = `${headerHeight}px`;
+    }
   } else {
-    banner.style.transform = `translate3d(0px, 0px, 0px)`;
-    main.style.paddingTop = `${60 + bannerHeight}px`;
-    header.style.paddingTop = `${bannerHeight}px`;
+    const headerHeight = header.offsetHeight;
+    const bannerHeight = banner.offsetHeight;
+
+    if (window.pageYOffset > 200) {
+      banner.style.transform = `translate3d(0px, -${bannerHeight}px, 0px)`;
+      main.style.paddingTop = `${headerHeight}px`;
+      header.style.paddingTop = 0;
+    } else {
+      banner.style.transform = `translate3d(0px, 0px, 0px)`;
+      main.style.paddingTop = `${60 + bannerHeight}px`;
+      header.style.paddingTop = `${bannerHeight}px`;
+    }
   }
 }
 
@@ -39,6 +54,10 @@ function dropmenus(menuID, setActive = false) {
       button.addEventListener("click", function () {
         menu.classList.toggle("active");
         list.classList.toggle("active");
+
+        if (menu.classList.contains("active")) {
+          menu.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
       });
     } else {
       return;
@@ -48,11 +67,12 @@ function dropmenus(menuID, setActive = false) {
 //<---------------------- End DropMenu on leftbar ---------------------->
 //<--------------------------------------------------------------------->
 //<------------------------------ LeftBar ------------------------------>
-function leftbar(idOpen, idClose, idList, idContent) {
+function leftbar(idOpen, idClose, idList, idContent, hiddenId) {
   const buttonOpen = document.getElementById(idOpen);
   const buttonClose = document.getElementById(idClose);
   const list = document.getElementById(idList);
   const content = document.getElementById(idContent);
+  const contentModal = document.getElementById(hiddenId);
   const body = document.querySelector("body");
 
   if (!buttonOpen || !buttonClose || !list || !content) {
@@ -68,15 +88,19 @@ function leftbar(idOpen, idClose, idList, idContent) {
       list.classList.remove("active");
       body.style.overflow = "auto";
     });
-    list.addEventListener("click", (event) => {
-      if (
-        !content.contains(event.target) &&
-        !buttonOpen.contains(event.target)
-      ) {
+    contentModal.addEventListener("click", (event) => {
+      list.classList.remove("active");
+      body.style.overflow = "auto";
+    });
+
+    function handleKeyPress(event) {
+      if (event.keyCode === 27) {
         list.classList.remove("active");
         body.style.overflow = "auto";
       }
-    });
+    }
+
+    document.addEventListener("keydown", handleKeyPress);
   }
 }
 //<---------------------------- End LeftBar ---------------------------->
@@ -87,12 +111,15 @@ function searchBar() {
   const closeBtn = document.getElementById("searchClose");
   const input = document.getElementById("searchInput");
   const modalClose = document.getElementById("modalClose");
+  const searching = document.getElementById("searching");
 
   searchBtn.addEventListener("click", function () {
-    document.body.style.overflow = "hidden";
-    setTimeout(() => {
+    new Promise((resolve) => {
+      document.body.style.overflow = "hidden";
+      resolve();
+    }).then(() => {
       input.focus();
-    }, 400);
+    });
   });
 
   closeBtn.addEventListener("click", function () {
@@ -101,30 +128,55 @@ function searchBar() {
   modalClose.addEventListener("click", function () {
     document.body.style.overflow = "auto";
   });
+  function handleKeyPress(event) {
+    if (event.keyCode === 27) {
+      document.getElementById("searchList").classList.remove("active");
+      document.body.style.overflow = "auto";
+    }
+  }
+
+  input.addEventListener("keypress", function (event) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      window.location.href = "/search/" + encodeURIComponent(input.value);
+    }
+  });
+  searching.addEventListener("click", function () {
+    window.location.href = "/search/" + encodeURIComponent(input.value);
+  });
 }
+
 //<--------------------------- End SearchBar --------------------------->
+//<--------------------------------------------------------------------->
+//<------------------------ Double Tap Redirect ------------------------>
+let lastTap = 0;
+
+function DoubleTapRedirect(link) {
+  const currentTime = new Date().getTime();
+  const tapLength = currentTime - lastTap;
+  lastTap = currentTime;
+
+  if (tapLength < 500 && tapLength > 0) {
+    window.location.href = link;
+  }
+}
+//<---------------------- End Double Tap Redirect ---------------------->
 //<--------------------------------------------------------------------->
 //<------------------------ Start Functions IOS ------------------------>
 searchBar();
-leftbar("basketOpen", "basketClose", "basketList", "basketContent");
-leftbar("wishOpen", "wishClose", "wishList", "wishContent");
-leftbar("menuOpen", "menuClose", "menuList", "menuContent");
+leftbar(
+  "basketOpen",
+  "basketClose",
+  "basketList",
+  "basketContent",
+  "basketHidden",
+);
+leftbar("wishOpen", "wishClose", "wishList", "wishContent", "wishHidden");
+leftbar("menuOpen", "menuClose", "menuList", "menuContent", "menuHidden");
 dropmenus(".dropmenu", false);
 dropmenus(".submenu", false);
-
-//<---------------------- End Start Functions IOS ---------------------->
-//<--------------------------------------------------------------------->
-//<------------------------- Start Functions PC ------------------------>
-// document.addEventListener("DOMContentLoaded", function () {
-// searchBar();
-// leftbar("basketOpen", "basketClose", "basketList", "basketContent");
-// leftbar("wishOpen", "wishClose", "wishList", "wishContent");
-// leftbar("menuOpen", "menuClose", "menuList", "menuContent");
-// dropmenus(".dropmenu", false);
-// dropmenus(".submenu", false);
-// });
-//<----------------------- End Start Functions PC ---------------------->
-//<--------------------------------------------------------------------->
 scrollEvent();
 window.addEventListener("scroll", scrollEvent);
 window.addEventListener("resize", scrollEvent);
+//<---------------------- End Start Functions IOS ---------------------->
+//<--------------------------------------------------------------------->

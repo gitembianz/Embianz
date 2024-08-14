@@ -23,7 +23,7 @@
                     if (tpl.xdebug_link) {
                         if (tpl.xdebug_link.ajax) {
                             $('<a title="' + tpl.xdebug_link.url + '"></a>').on('click', function () {
-                                $.ajax(tpl.xdebug_link.url);
+                                fetch(tpl.xdebug_link.url);
                             }).addClass(csscls('editor-link')).appendTo(header);
                         } else {
                             $('<a href="' + tpl.xdebug_link.url + '"></a>').addClass(csscls('editor-link')).appendTo(header);
@@ -58,6 +58,9 @@
                         }
                     }
                     li.css('cursor', 'pointer').click(function() {
+                        if (window.getSelection().type == "Range") {
+                            return''
+                        }
                         if (table.is(':visible')) {
                             table.hide();
                         } else {

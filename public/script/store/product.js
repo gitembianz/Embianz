@@ -5,27 +5,38 @@ function sliderProduct(sliderId, modalId) {
   const wrapper = slider.querySelector(sliderId + "__wrapper");
   const slides = slider.querySelectorAll(sliderId + "__slide");
   const pagination = slider.querySelector(sliderId + "__pagination");
+  const paginationLeft = slider.querySelector(sliderId + "__pagination--prev");
+  const paginationRight = slider.querySelector(sliderId + "__pagination--next");
   const prevButton = slider.querySelector(sliderId + "__prev");
   const nextButton = slider.querySelector(sliderId + "__next");
   const modal = document.querySelector(modalId);
   const modalContent = modal.querySelector(modalId + "__content");
+  const modalPrev = modal.querySelector(modalId + "__prev");
+  const modalNext = modal.querySelector(modalId + "__next");
   const closeButton = modal.querySelector(modalId + "__close");
+  const modalCount = modal.querySelector(modalId + "__count");
   const body = document.querySelector("body");
 
   let currentIndex = 0;
   let touchStartX = 0;
   let isDragging = false;
   let startX = 0;
+  let mouseStartX = 0;
 
   if (
     !slider ||
     !wrapper ||
     !slides ||
     !pagination ||
+    !paginationLeft ||
+    !paginationRight ||
     !prevButton ||
     !nextButton ||
     !modal ||
     !modalContent ||
+    !modalPrev ||
+    !modalNext ||
+    !modalCount ||
     !closeButton ||
     !body
   ) {
@@ -42,31 +53,25 @@ function sliderProduct(sliderId, modalId) {
       if (newIndex >= slides.length) {
         newIndex = slides.length - 1;
         nextButton.classList.add("disabled");
+        modalNext.classList.add("disabled");
       }
       prevButton.classList.remove("disabled");
+      modalPrev.classList.remove("disabled");
     } else {
       newIndex = currentIndex - 1;
       if (newIndex < 0) {
         newIndex = 0;
         prevButton.classList.add("disabled");
+        modalPrev.classList.add("disabled");
       }
       nextButton.classList.remove("disabled");
+      modalNext.classList.remove("disabled");
     }
     currentIndex = newIndex;
 
-    if (currentIndex === slides.length - 1) {
-      nextButton.classList.add("disabled");
-    } else {
-      nextButton.classList.remove("disabled");
-    }
-    if (currentIndex === 0) {
-      prevButton.classList.add("disabled");
-    } else {
-      prevButton.classList.remove("disabled");
-    }
-
     updatePagination();
     updateTransform(wrapper);
+    modalCount.textContent = `${currentIndex + 1} / ${slides.length}`;
   }
 
   closeButton.addEventListener("click", () => {
@@ -82,27 +87,95 @@ function sliderProduct(sliderId, modalId) {
     navigation("prev");
   });
   prevButton.classList.add("disabled");
+  modalPrev.classList.add("disabled");
+
+  modalNext.addEventListener("click", () => {
+    navigation("next");
+    updateModalImage();
+  });
+
+  modalPrev.addEventListener("click", () => {
+    navigation("prev");
+    updateModalImage();
+  });
+
+  paginationLeft.addEventListener("click", () => {
+    pagination.scrollTo({
+      left: pagination.scrollLeft - 100,
+      behavior: "smooth",
+    });
+    updatePaginationButtons();
+  });
+
+  paginationRight.addEventListener("click", () => {
+    pagination.scrollTo({
+      left: pagination.scrollLeft + 100,
+      behavior: "smooth",
+    });
+    updatePaginationButtons();
+  });
+
+  pagination.addEventListener("scroll", () => {
+    updatePaginationButtons();
+  });
+
+  function updatePaginationButtons() {
+    if (pagination.scrollWidth > pagination.clientWidth) {
+      if (pagination.scrollLeft === 0) {
+        paginationLeft.classList.add("disabled");
+        paginationRight.classList.remove("disabled");
+      } else if (
+        pagination.scrollLeft + pagination.clientWidth >=
+        pagination.scrollWidth
+      ) {
+        paginationLeft.classList.remove("disabled");
+        paginationRight.classList.add("disabled");
+      } else {
+        paginationLeft.classList.remove("disabled");
+        paginationRight.classList.remove("disabled");
+      }
+    } else {
+      paginationLeft.classList.add("disabled");
+      paginationRight.classList.add("disabled");
+    }
+  }
+
+  setTimeout(() => {
+    updatePaginationButtons();
+  }, 1500);
 
   function updatePagination() {
-    const thumbnails = Array.from(pagination.children);
-    thumbnails.forEach((thumbnail, index) => {
-      thumbnail.classList.toggle("active", index === currentIndex);
-      if (index === currentIndex) {
-        thumbnail.focus(); // Focalizăm punctul de paginare activ
-        thumbnail.scrollIntoView({ behavior: "smooth", block: "nearest" });
-      }
-    });
+    // Actualizarea butoanelor pentru slider
     if (currentIndex === 0) {
       prevButton.classList.add("disabled");
+      modalPrev.classList.add("disabled");
     } else {
       prevButton.classList.remove("disabled");
+      modalPrev.classList.remove("disabled");
     }
 
     if (currentIndex === slides.length - 1) {
       nextButton.classList.add("disabled");
+      modalNext.classList.add("disabled");
     } else {
       nextButton.classList.remove("disabled");
+      modalNext.classList.remove("disabled");
     }
+
+    // Actualizarea punctelor de paginare
+    const thumbnails = Array.from(pagination.children);
+    thumbnails.forEach((thumbnail, index) => {
+      thumbnail.classList.toggle("active", index === currentIndex);
+      if (index === currentIndex) {
+        thumbnail.focus();
+        pagination.scrollTo({
+          left:
+            thumbnail.offsetLeft -
+            (pagination.offsetWidth - thumbnail.offsetWidth) / 2,
+          behavior: "smooth",
+        });
+      }
+    });
   }
 
   function updateTransform(element) {
@@ -127,16 +200,18 @@ function sliderProduct(sliderId, modalId) {
       thumbnail.alt = `Thumbnail ${index + 1}`;
       thumbnail.classList.add("thumbnail");
       thumbnail.setAttribute("data-index", index);
+      thumbnail.loading = 'lazy';
 
       thumbnail.addEventListener("click", () => {
         currentIndex = index;
         updateTransform(wrapper);
         updatePagination();
+        modalCount.textContent = `${currentIndex + 1} / ${slides.length}`;
       });
 
       pagination.appendChild(thumbnail);
     } else {
-      console.error(`Elementul media lipsește în slide-ul cu indexul ${index}`);
+      // console.error(`Elementul media lipsește în slide-ul cu indexul ${index}`);
     }
   }
 
@@ -159,7 +234,7 @@ function sliderProduct(sliderId, modalId) {
       if (isDragging) {
         const swipeDistance = event.clientX - startX;
 
-        if (Math.abs(swipeDistance) > 250 && !isScrolling()) {
+        if (Math.abs(swipeDistance) > 50 && !isScrolling()) {
           const indexChange = swipeDistance > 0 ? -1 : 1;
           const newIndex = currentIndex + indexChange;
 
@@ -192,18 +267,29 @@ function sliderProduct(sliderId, modalId) {
         const imgElement = slide.querySelector("img");
         if (imgElement) {
           const dataSrcValue = imgElement.getAttribute("data-img-src");
+          const dataAltValue = imgElement.getAttribute("data-name-alt");
           const newImgElement = document.createElement("img");
 
           newImgElement.src = dataSrcValue;
+          newImgElement.alt = dataAltValue;
           modalContent.innerHTML = ""; // Golește conținutul modalului înainte de a adăuga imaginea
           modalContent.appendChild(newImgElement); // Adaugă imaginea în conținutul modalului
 
           modal.classList.add("active"); // Deschide modalul
           body.style.overflow = "hidden"; // Blochează scroll-ul paginii
+
+          function handleKeyPress(event) {
+            if (event.keyCode === 27) {
+              modal.classList.remove("active"); // Deschide modalul
+              body.style.overflow = "auto"; // Blochează scroll-ul paginii
+            }
+          }
+
+          document.addEventListener("keydown", handleKeyPress);
         } else {
-          console.error(
-            "Elementul <img> nu a fost găsit în cadrul slide-ului.",
-          );
+          // console.error(
+          //   "Elementul <img> nu a fost găsit în cadrul slide-ului.",
+          // );
         }
       }
     });
@@ -236,7 +322,12 @@ function sliderProduct(sliderId, modalId) {
       if (touchStartX) {
         const swipeDistance = event.changedTouches[0].clientX - touchStartX;
 
-        if (Math.abs(swipeDistance) > 10 && !isScrolling()) {
+        // Verifică dacă utilizatorul face un gest de zoom
+        if (event.scale && event.scale !== 1) {
+          return; // Ignoră acțiunea dacă utilizatorul face zoom
+        }
+
+        if (Math.abs(swipeDistance) > 10 && !isScrolling() && event.cancelable) {
           isSwiping = true;
           event.preventDefault();
         }
@@ -256,6 +347,98 @@ function sliderProduct(sliderId, modalId) {
   }
 
   window.addEventListener("load", () => updatePagination());
+
+  modalCount.textContent = `${currentIndex + 1} / ${slides.length}`;
+  function updateModalImage() {
+    // Actualizarea imaginii din modal
+    const imgElement = slides[currentIndex].querySelector("img");
+    if (imgElement) {
+      const dataSrcValue = imgElement.getAttribute("data-img-src");
+      const dataAltValue = imgElement.getAttribute("data-name-alte");
+      const newImgElement = document.createElement("img");
+
+      newImgElement.src = dataSrcValue;
+      newImgElement.alt = dataAltValue;
+      modalContent.innerHTML = "";
+      modalContent.appendChild(newImgElement);
+
+      modalCount.textContent = `${currentIndex + 1} / ${slides.length}`;
+    } else {
+      // console.error("Elementul <img> nu a fost găsit în cadrul slide-ului.");
+    }
+  }
+
+  modalContent.addEventListener("mousedown", (event) => {
+    mouseStartX = event.clientX;
+  });
+
+  modalContent.addEventListener("mousemove", (event) => {
+    if (mouseStartX) {
+      const dragDistance = event.clientX - mouseStartX;
+
+      if (Math.abs(dragDistance) > 50 && !isScrolling()) {
+        event.preventDefault();
+        isDragging = true;
+      }
+    }
+  });
+
+  modalContent.addEventListener("mouseup", (event) => {
+    if (isDragging) {
+      const mouseEndX = event.clientX;
+      const dragDistance = mouseEndX - mouseStartX;
+
+      if (dragDistance > 50 && currentIndex > 0) {
+        navigation("prev");
+        updateModalImage();
+      } else if (dragDistance < -50 && currentIndex < slides.length - 1) {
+        navigation("next");
+        updateModalImage();
+      }
+
+      mouseStartX = 0;
+      isDragging = false;
+    }
+  });
+
+  // Funcție pentru gesturi de touch pe modalContent
+  modalContent.addEventListener("touchstart", (event) => {
+    touchStartX = event.touches[0].clientX;
+  });
+
+  modalContent.addEventListener("touchmove", (event) => {
+    if (touchStartX) {
+      const swipeDistance = event.changedTouches[0].clientX - touchStartX;
+
+      // Verifică dacă utilizatorul face un gest de zoom
+      if (event.scale && event.scale !== 1) {
+        return; // Ignoră acțiunea dacă utilizatorul face zoom
+      }
+
+      if (Math.abs(swipeDistance) > 50 && !isScrolling()) {
+        event.preventDefault();
+        isDragging = true;
+      }
+    }
+  });
+
+  modalContent.addEventListener("touchend", (event) => {
+    if (isDragging) {
+      const touchEndX = event.changedTouches[0].clientX;
+      const swipeDistance = touchEndX - touchStartX;
+
+      if (swipeDistance > 50 && currentIndex > 0) {
+        navigation("prev");
+        updateModalImage();
+      } else if (swipeDistance < -50 && currentIndex < slides.length - 1) {
+        navigation("next");
+        updateModalImage();
+      }
+
+      touchStartX = 0;
+      isDragging = false;
+    }
+  });
 }
 //<----------------------- End Modal Product --------------------------->
 //<--------------------------------------------------------------------->
@@ -272,7 +455,7 @@ function relatedSlider() {
 
     function updateCardWidth() {
       const cards = wrapper.querySelectorAll(".card");
-      const cardWidth = cards[0].offsetWidth + 20; // adăugăm 20px pentru gap-ul dintre card-uri
+      const cardWidth = cards[0].offsetWidth + 16; // adăugăm 16px pentru gap-ul dintre card-uri
       return cardWidth;
     }
 
@@ -347,17 +530,186 @@ function relatedSlider() {
 }
 //<------------------------- End Related-Slider ------------------------>
 //<--------------------------------------------------------------------->
-//<-------------------------- Start Functions -------------------------->
-sliderProduct(".product-slider", ".product-modal");
-relatedSlider();
-//<------------------------ End Start Functions ------------------------>
-//<--------------------------------------------------------------------->
+//<---------------------------- Fly-To-Cart ---------------------------->
 function flyToCart(button) {
   const shopping_cart = document.getElementById("basketOpen");
   const numberCart = shopping_cart.querySelector(".header__count");
-  numberCart.style.scale = 1.5;
+  const target_parent = button.closest(".product"); // Obținem cel mai apropiat părinte cu clasa "product"
+
+  if (!button.classList.contains("in")) {
+    button.classList.add("in");
+    setTimeout(() => button.classList.remove("in"), 1500);
+  }
+
+  if (!target_parent) {
+    // console.error("Nu s-a găsit părintele 'product'.");
+    return;
+  }
+
+  function add_to_cart(product) {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ ecommerce: null });
+    window.dataLayer.push({
+      event: "add_to_cart",
+      ecommerce: {
+        currency: product.currency,
+        value: product.price * product.quantity,
+        items: [
+          {
+            item_name: product.name,
+            price: product.price,
+            quantity: product.quantity,
+          },
+        ],
+      },
+    });
+
+    // console.log('Product added to cart:', product);
+  }
+  // Variables
+  const dlv = target_parent.querySelector(".dlv");
+  const dlv_name = dlv.querySelector(".dlv_name").innerText.trim();
+  const dlv_price = parseFloat(
+    dlv.querySelector(".dlv_price").innerText.trim().replace(",", "."),
+  );
+  const dlv_currency = dlv.querySelector(".dlv_currency").innerText.trim();
+  const dlv_quantity = 1;
+  // Product
+  const product = {
+    name: dlv_name,
+    price: dlv_price,
+    quantity: dlv_quantity,
+    currency: dlv_currency,
+  };
+  // Function call
+  add_to_cart(product);
+
+  // Creăm o imagine separată
+  shopping_cart.classList.add("active");
+  let img = target_parent.querySelector("img");
+  let flying_img = img.cloneNode();
+  flying_img.classList.add("flying-img-product");
+  target_parent.appendChild(flying_img);
+
+  // Obținem poziția imaginii care va zbura
+  const flying_img_pos = flying_img.getBoundingClientRect();
+  const shopping_cart_pos = shopping_cart.getBoundingClientRect();
+
+  let data = {
+    left:
+      shopping_cart_pos.left -
+      (shopping_cart_pos.width / 2 +
+        flying_img_pos.left +
+        flying_img_pos.width / 2),
+    top: shopping_cart_pos.bottom - flying_img_pos.bottom + 30,
+  };
+
+  flying_img.style.cssText = `
+      --left : ${data.left.toFixed(2)}px;
+      --top : ${data.top.toFixed(2)}px;
+      z-index: 400;
+  `;
 
   setTimeout(() => {
-    numberCart.style.scale = 1;
+    target_parent.removeChild(flying_img);
+    shopping_cart.classList.remove("active");
   }, 1500);
+
+  // Number Cart upscale
+  if (!numberCart) {
+    return;
+  } else {
+    numberCart.style.scale = 1.5;
+    setTimeout(() => {
+      numberCart.style.scale = 1;
+    }, 1500);
+  }
 }
+//<-------------------------- End Fly-To-Cart -------------------------->
+//<--------------------------------------------------------------------->
+//<---------------------------- Add-To-Wish ---------------------------->
+function addWishList(button) {
+  const wish = document.getElementById("wishlistCount");
+
+  const target_parent = button.closest(".product");
+
+  function add_to_wishlist(product) {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ ecommerce: null });
+    window.dataLayer.push({
+      event: "add_to_wishlist",
+      ecommerce: {
+        currency: product.currency,
+        value: product.price * product.quantity,
+        items: [
+          {
+            item_name: product.name,
+            price: product.price,
+            quantity: product.quantity,
+          },
+        ],
+      },
+    });
+
+    // console.log('Product added to wishlist:', product);
+  }
+  // Variables
+  const dlv = target_parent.querySelector(".dlv");
+  const dlv_name = dlv.querySelector(".dlv_name").innerText.trim();
+  const dlv_price = parseFloat(
+    dlv.querySelector(".dlv_price").innerText.trim().replace(",", "."),
+  );
+  const dlv_currency = dlv.querySelector(".dlv_currency").innerText.trim();
+  const dlv_quantity = 1;
+  // Product
+  const product = {
+    name: dlv_name,
+    price: dlv_price,
+    quantity: dlv_quantity,
+    currency: dlv_currency,
+  };
+  // Function call
+  add_to_wishlist(product);
+
+  if (!wish) {
+    return;
+  } else {
+    wish.style.scale = 1.5;
+
+    setTimeout(() => {
+      wish.style.scale = 1;
+    }, 1500);
+  }
+}
+//<-------------------------- END Add-To-Wish -------------------------->
+//<--------------------------------------------------------------------->
+//<---------------------------- MiniSlider ---------------------------->
+function miniSlider(sliderId, wrapperId, navLeftId, navRightId) {
+  const slider = document.getElementById(sliderId);
+  const wrapper = document.getElementById(wrapperId);
+  const navLeft = document.getElementById(navLeftId);
+  const navRight = document.getElementById(navRightId);
+
+  if (!slider || !wrapper || !navLeft || !navRight) {
+    // console.error("One or more elements from slider are missing!");
+    return;
+  }
+
+  const scrollAmount = 100;
+
+  navLeft.addEventListener("click", () => {
+    wrapper.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+  });
+
+  navRight.addEventListener("click", () => {
+    wrapper.scrollBy({ left: scrollAmount, behavior: "smooth" });
+  });
+}
+//<-------------------------- End MiniSlider -------------------------->
+//<--------------------------------------------------------------------->
+//<-------------------------- Start Functions -------------------------->
+sliderProduct(".product-slider", ".product-modal");
+relatedSlider();
+miniSlider("miniSlider", "miniWrapper", "miniNavLeft", "miniNavRight");
+//<------------------------ End Start Functions ------------------------>
+//<--------------------------------------------------------------------->

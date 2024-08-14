@@ -6,20 +6,37 @@ use App\Models\Specs;
 use App\Models\Product_Spec;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\Schema;
+
 
 class Specstable extends Component
 {
   use WithPagination;
-  public $loadAmount = 10;
+  public $loadAmount = 20;
   public $search = '';
   public $orderBy = 'id';
   public $orderAsc = true;
   public $checked = [];
   public $selectPage = false;
   public $selectAll = false;
-  public $specidbeingremoved = null;
-  public $columns = ['Id', 'Unit', 'Group', 'Created At'];
+  public $idbeingremoved = null;
+  public $columns = [];
   public $selectedColumns = [];
+  public $tableName;
+  public $single = false;
+  public $multiple = false;
+  public $row = null;
+
+  public function expandRow($index)
+  {
+    if ($this->row  === null) {
+      $this->row = $index;
+    } elseif ($this->row != $index) {
+      $this->row = $index;
+    } else {
+      $this->row = null;
+    }
+  }
 
   public function render()
   {
@@ -31,13 +48,15 @@ class Specstable extends Component
   {
     $this->loadAmount += 10;
   }
-  public function mount()
+  public function mount($tableName)
   {
+    $this->tableName = $tableName;
+    $this->columns = Schema::getColumnListing($this->tableName);
     $this->selectedColumns = $this->columns;
   }
   public function showColumn($column)
   {
-    if ($column === 'Name') {
+    if ($column === 'name') {
       return true;
     }
     return in_array($column, $this->selectedColumns);
@@ -76,7 +95,7 @@ class Specstable extends Component
   }
   public function getSpecsProperty()
   {
-    return $this->specsQuery->limit($this->loadAmount)->get();
+    return $this->specsQuery->paginate($this->loadAmount);
   }
   public function getSpecsQueryProperty()
   {
@@ -100,6 +119,7 @@ class Specstable extends Component
     }
     $this->selectPage = false;
     $this->checked = [];
+    $this->multiple = false;
     session()->flash('notification', [
       'message' => 'Records deleted successfully!',
       'type' => 'success',
@@ -108,7 +128,7 @@ class Specstable extends Component
   }
   public function deleteSingleRecord()
   {
-    $id = $this->specidbeingremoved;
+    $id = $this->idbeingremoved;
     $item = Specs::findOrFail($id);
     $relateds = Product_Spec::where('spec_id', $id)->get();
     if ($relateds != NULL) {
@@ -118,6 +138,7 @@ class Specstable extends Component
     }
     $item->delete();
     $this->checked = array_diff($this->checked, [$id]);
+    $this->single = false;
     session()->flash('notification', [
       'message' => 'Record deleted successfully!',
       'type' => 'success',
@@ -126,12 +147,17 @@ class Specstable extends Component
   }
   public function confirmItemRemoval($id)
   {
-    $this->specidbeingremoved = $id;
-    $this->dispatchBrowserEvent('show-delete-modal');
+    $this->idbeingremoved = $id;
+    $this->single = true;
   }
-  public function confirmItemsRemovalmultiple()
+  public function confirmItemsRemoval()
   {
-    $this->dispatchBrowserEvent('show-delete-modal-multiple');
+    $this->multiple = true;
+  }
+  public function cancel_delete()
+  {
+    $this->multiple = false;
+    $this->single = false;
   }
   public function isChecked($id)
   {

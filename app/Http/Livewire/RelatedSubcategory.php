@@ -12,58 +12,92 @@ class RelatedSubcategory extends Component
   use WithPagination;
 
   //related delclaration
-  public $perPage = 10;
   public $search = '';
   public $orderBy = 'id';
   public $orderAsc = true;
   public $checked = [];
   public $selectPage = false;
   public $selectAll = false;
-  public $showrelatedsub = false;
-  public $categoryId;
-  public $col = false;
-  public $all = false;
-  public $subcatidbeingremoved = null;
-  public $columns = ['Id', 'Short Description', 'Created At'];
+  public $showrelateitems = false;
+  public $idbeingremoved = null;
+  public $columns = ['Id', 'Subcategory Name', 'Category Name', 'Subcategory Description', 'Subcategory displayed elements', 'Subcategory is active?', 'Created At', 'Updated At'];
+
   public $selectedColumns = [];
-  public $category;
+  public $item;
+  public $loadAmount = 20;
 
   //add declaration
   public $searchadd = '';
-  public $orderByadd = 'id';
-  public $orderAscadd = true;
   public $checkedadd = [];
   public $selectPageadd = false;
   public $selectAlladd = false;
-  public $coladd = false;
-  public $alladd = false;
-  public $columnsadd = ['Id', 'Short Description', 'Created At'];
-  public $selectedColumnsadd = [];
-  public $catidbeinglink = null;
+  public $idbeinglink = null;
   public $showTable = false;
-  public $totalRecords;
-  public $loadAmount = 13;
+  public $linksingle = false;
+  public $linkmultiple = false;
+  public $single = false;
+  public $multiple = false;
+  public $rind2 = null;
+  public $rind = null;
 
-
-  // function for add categories
-  public function toggleTable()
+  public function expandRow2($index)
   {
-    $this->showrelatedsub = true;
-    $this->showTable = !$this->showTable;
+    if ($this->rind2  === null) {
+      $this->rind2 = $index;
+    } elseif ($this->rind2 != $index) {
+      $this->rind2 = $index;
+    } else {
+      $this->rind2 = null;
+    }
   }
-  public function cancel()
+  public function expandRow($index)
   {
-    $this->showTable = false; // Set $showTable to false to hide the table
+    if ($this->rind  === null) {
+      $this->rind = $index;
+    } elseif ($this->rind != $index) {
+      $this->rind = $index;
+    } else {
+      $this->rind = null;
+    }
+  }
+
+  public function addrelated()
+  {
+    $this->showrelateitems = true;
+    $this->showTable = true;
   }
   public function loadMore()
   {
     $this->loadAmount += 10;
   }
+  public function closemodal()
+  {
+    $this->showTable = false;
+  }
+
+  public function confirmItemRemoval($id)
+  {
+    $this->idbeingremoved = $id;
+    $this->single = true;
+  }
+  public function confirmItemsRemoval()
+  {
+    $this->multiple = true;
+  }
+  public function cancel_delete()
+  {
+    $this->multiple = false;
+    $this->single = false;
+  }
+
+  public function cancel_link()
+  {
+    $this->linkmultiple = false;
+    $this->linksingle = false;
+  }
+
   public function showColumnadd($column)
   {
-    if ($column === 'Name') {
-      return true;
-    }
     return in_array(
       $column,
       $this->selectedColumnsadd
@@ -88,17 +122,7 @@ class RelatedSubcategory extends Component
       $this->checked
     );
   }
-  public function sortByadd($columnName)
-  {
 
-    if ($this->orderByadd === $columnName) {
-      $this->orderAscadd = $this->swapSortDirectionadd();
-    } else {
-      $this->orderAscadd = '1';
-    }
-
-    $this->orderByadd = $columnName;
-  }
   public function selectAlladd()
   {
     $this->selectAlladd = true;
@@ -106,34 +130,27 @@ class RelatedSubcategory extends Component
   }
   public function getCategoriesProperty()
   {
-    $relatedcatsIds = $this->relatedsubcats->pluck('category_id')->merge([$this->category->id])->toArray();
+    $relatedcatsIds = $this->relatedsubcats->pluck('category_id')->merge([$this->item->id])->toArray();
     $unrelatedCatsQuery = Category::whereNotIn('id', $relatedcatsIds);
     if (!empty($this->searchadd)) {
       $unrelatedCatsQuery->where('name', 'like', '%' . $this->searchadd . '%');
     }
-    $unrelatedCatsQuery->orderBy($this->orderByadd, $this->orderAscadd ? 'asc' : 'desc');
-    if ($this->selectAlladd) {
-      return $unrelatedCatsQuery->get();
-    } else {
-      return $unrelatedCatsQuery->limit($this->loadAmount)->get();
-    }
+    return $unrelatedCatsQuery->paginate($this->loadAmount);
   }
-  public function confirmitemlink($id)
-  {
-    $this->catidbeinglink = $id;
-    $this->dispatchBrowserEvent('show-link-modal');
-  }
+
   public function linkSingleRecord()
   {
-    $category = Category::find($this->catidbeinglink);
+    $category = Category::find($this->idbeinglink);
     $rec = new  Subcategory();
     $rec->name = $category->name;
     $rec->category_id = $category->id;
-    $rec->parrent_id = $this->category->id;
-    $category->has_parrent = true;
+    $rec->parent_id = $this->item->id;
+    $category->has_parent = true;
     $category->save();
     $rec->save();
-    $this->checkedadd = array_diff($this->checkedadd, [$this->catidbeinglink]);
+    $this->linksingle = false;
+
+    $this->checkedadd = array_diff($this->checkedadd, [$this->idbeinglink]);
     session()->flash('notification', [
       'message' => 'Record related successfully!',
       'type' => 'success',
@@ -148,13 +165,15 @@ class RelatedSubcategory extends Component
       $add = new Subcategory();
       $add->name = $category->name;
       $add->category_id = $category->id;
-      $add->parrent_id = $this->category->id;
-      $cat->has_parrent = true;
+      $add->parent_id = $this->item->id;
+      $cat->has_parent = true;
       $cat->save();
       $add->save();
     }
 
     $this->checkedadd = [];
+    $this->linkmultiple = false;
+
     session()->flash('notification', [
       'message' => 'Records related successfully!',
       'type' => 'success',
@@ -165,23 +184,14 @@ class RelatedSubcategory extends Component
   {
     $this->selectPageadd = false;
   }
-  public function confirmLinkmultiple()
-  {
-    $this->dispatchBrowserEvent('show-link-modal-multiple');
-  }
+
 
   //related subcatecory functions
   public function showColumn($column)
   {
-    if ($column === 'Name') {
-      return true;
-    }
     return in_array($column, $this->selectedColumns);
   }
-  public function load()
-  {
-    $this->perPage += 10;
-  }
+
   public function updatedSelectPage($value)
   {
     if ($value) {
@@ -223,30 +233,27 @@ class RelatedSubcategory extends Component
   }
   public function getRelatedsubcatsProperty()
   {
-    return $this->relatedsubcatsQuery->get();
+    return $this->relatedsubcatsQuery;
   }
   public function getRelatedsubcatsQueryProperty()
   {
-    return Subcategory::where('parrent_id', $this->category->id)
+    return Subcategory::where('parent_id', $this->item->id)
       ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->with('category');
   }
-  public function confirmItemRemoval($productid)
-  {
-    $this->subcatidbeingremoved = $productid;
-    $this->dispatchBrowserEvent('show-delete-modal');
-  }
+
   public function deleteSingleRecord()
   {
-    $record = Subcategory::findOrFail($this->subcatidbeingremoved);
-    $still_has_parrents = Subcategory::where('category_id', $record->category_id)->count();
-    if ($still_has_parrents == 1) {
+    $record = Subcategory::findOrFail($this->idbeingremoved);
+    $still_has_parents = Subcategory::where('category_id', $record->category_id)->count();
+    if ($still_has_parents == 1) {
       $cat = Category::findOrFail($record->category_id);
-      $cat->has_parrent = false;
+      $cat->has_parent = false;
       $cat->save();
     }
     $record->delete();
+    $this->single = false;
 
-    $this->checked = array_diff($this->checked, [$this->subcatidbeingremoved]);
+    $this->checked = array_diff($this->checked, [$this->idbeingremoved]);
     session()->flash('notification', [
       'message' => 'Record deleted successfully!',
       'type' => 'success',
@@ -258,15 +265,17 @@ class RelatedSubcategory extends Component
     $records = Subcategory::whereKey($this->checked)->get();
     foreach ($records as $record) {
       $recordtodel = Subcategory::find($record->id);
-      $still_has_parrents = Subcategory::where('category_id', $recordtodel->category_id)->count();
-      if ($still_has_parrents == 1) {
+      $still_has_parents = Subcategory::where('category_id', $recordtodel->category_id)->count();
+      if ($still_has_parents == 1) {
         $cat = Category::findOrFail($recordtodel->category_id);
-        $cat->has_parrent = false;
+        $cat->has_parent = false;
         $cat->save();
       }
       $recordtodel->delete();
     }
     $this->checked = [];
+    $this->multiple = false;
+
     session()->flash('notification', [
       'message' => 'Records deleted successfully!',
       'type' => 'success',
@@ -274,33 +283,35 @@ class RelatedSubcategory extends Component
     ]);
     $this->selectPage = false;
   }
-  public function confirmItemsRemoval()
-  {
-    $this->dispatchBrowserEvent('show-delete-modal-multiple');
-  }
+
   public function render()
   {
     $relatedsubcats = $this->relatedsubcats
-      ->filter(function ($subcat) {
-        return strpos(strtolower($subcat->category->name), strtolower($this->search)) !== false;
-      });
+      ->where(function ($query) {
+        $query->whereHas('category', function ($subQuery) {
+          $subQuery->where('name', 'LIKE', '%' . $this->search . '%')
+            ->orWhere('short_description', 'LIKE', '%' . $this->search . '%');
+        });
+      })->paginate($this->loadAmount);
 
 
-    if ($this->showTable === true) {
-      return view('livewire.related-subcategory', [
-        'relatedsubcats' => $relatedsubcats,
-        'categories' => $this->categories,
-      ]);
-    } else {
-      return view('livewire.related-subcategory', [
-        'relatedsubcats' => $relatedsubcats,
-      ]);
-    }
+    return view('livewire.related-subcategory', [
+      'relatedsubcats' => $relatedsubcats,
+      'categories' => $this->categories,
+    ]);
   }
   public function mount(Category $category)
   {
-    $this->category = $category;
+    $this->item = $category;
     $this->selectedColumns = $this->columns;
-    $this->selectedColumnsadd = $this->columnsadd;
+  }
+  public function confirmItemLink($id)
+  {
+    $this->idbeinglink = $id;
+    $this->linksingle = true;
+  }
+  public function confirmItemsLink()
+  {
+    $this->linkmultiple = true;
   }
 }

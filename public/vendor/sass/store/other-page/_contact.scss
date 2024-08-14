@@ -1,0 +1,114 @@
+.contact {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+
+  @media (max-width: map-get($grid-breakpoints, xl)) {
+    flex-direction: column-reverse;
+  }
+}
+
+.contact__form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
+  flex: 1;
+
+  @media (min-width: map-get($grid-breakpoints, md)) {
+    flex: 1;
+  }
+}
+
+.contact__label {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 5px;
+  flex-direction: column;
+
+  & > label {
+    width: max-content;
+    min-width: 90px;
+  }
+
+  & > input {
+    width: 100%;
+    height: 40px;
+    border-radius: 6px;
+    border: 1.5px solid $darkGray;
+    text-align: start;
+    padding: 10px;
+    flex: 1;
+    outline: none;
+    font-size: 16px;
+    font-weight: 400;
+    color: $lightBlack;
+  }
+
+  & > textarea {
+    width: 100%;
+    height: 150px;
+    border-radius: 6px;
+    border: 1.5px solid $darkGray;
+    padding: 10px;
+    resize: none;
+    flex: 1;
+    outline: none;
+    font-size: 16px;
+    font-weight: 400;
+    color: $lightBlack;
+    padding: 10px;
+  }
+
+  &:last-child {
+    align-items: flex-start;
+  }
+}
+
+.contact__button {
+  height: 50px;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $lightBlack;
+  color: $background;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 5px;
+  gap: 10px;
+  border: none;
+
+  & > svg {
+    stroke: $background;
+  }
+
+  &:disabled{
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.contact__img {
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  object-position: center;
+  max-width: 600px;
+  height: auto;
+
+  @media (max-width: map-get($grid-breakpoints, md)) {
+    max-width: 300px;
+  }
+}
+
+.red__label {
+  font-size: 16px;
+  color: $darkRed;
+}
