@@ -21,7 +21,7 @@
   color: $text;
 }
 
-// ----------------------------------------------
+// ---------------------------------------------
 
 .support__categories {
   display: grid;
@@ -39,7 +39,7 @@
 
 .support__item {
   background: $secondary;
-  border-radius: 5px;
+  border-radius: 6px;
   padding: 10px;
   width: 100%;
   display: flex;
@@ -50,6 +50,7 @@
 
   &:not(:last-child, :first-child) {
     justify-content: space-between;
+    
   }
 
   & > div {
