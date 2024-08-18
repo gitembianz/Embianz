@@ -62,7 +62,7 @@ class StoreController extends Controller
       'product' => function ($query) {
           $query->with(['media' => function ($query) {
               $query->where('type', 'main');
-          }])->orderBy('popularity', 'desc');
+          }])->orderBy('popularity', 'desc')->take(1);
       }
   ])->first();
 
