@@ -64,7 +64,7 @@ class StoreController extends Controller
           $query->where('type', 'main');
         }])->orderBy('popularity', 'desc');
       }
-    ])->first();
+      ])->orderByHas('product', 'popularity', 'desc')->first();
 
     if ($productCategory != null && $productCategory->product->type != 'parent') {
       $preload = "/" . optional($productCategory->product->media()->first())->path . optional($productCategory->product->media()->first())->name;
