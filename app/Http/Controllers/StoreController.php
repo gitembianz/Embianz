@@ -56,16 +56,15 @@ class StoreController extends Controller
     }
     $productCategory = $category->product_categories()->whereHas('product', function ($query) {
       $query->where('active', true)
-            ->where('start_date', '<=', now()->format('Y-m-d'));
-            ->where('end_date', '>=', now()->format('Y-m-d'))
-            ->orderBy('popularity', 'desc');
-  })->with([
+        ->where('start_date', '<=',  now()->format('Y-m-d'))
+        ->where('end_date', '>=',  now()->format('Y-m-d'));
+    })->with([
       'product' => function ($query) {
-          $query->with(['media' => function ($query) {
-              $query->where('type', 'main');
-          }])->orderBy('popularity', 'desc')->take(1);
+        $query->with(['media' => function ($query) {
+          $query->where('type', 'main');
+        }])->orderBy('popularity', 'desc');
       }
-  ])->first();
+    ])->first();
 
     if ($productCategory != null && $productCategory->product->type != 'parent') {
       $preload = "/" . optional($productCategory->product->media()->first())->path . optional($productCategory->product->media()->first())->name;
