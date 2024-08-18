@@ -57,7 +57,7 @@ class StoreController extends Controller
     $productCategory = $category->product_categories()->whereHas('product', function ($query) {
       $query->where('active', true)
             ->where('start_date', '<=', now()->format('Y-m-d'));
-            ->where('end_date', '>=', now()->format('Y-m-d'));
+            ->where('end_date', '>=', now()->format('Y-m-d'))
             ->orderBy('popularity', 'desc');
   })->with([
       'product' => function ($query) {
