@@ -11,6 +11,7 @@ bootstrap
 .htpasswd
 .DS_Store
 .github/workflows/
+.vscode
 
 # static pages
 resources\views\store\404.blade.php
