@@ -8,7 +8,7 @@
      <path d="M19 21l0 -10.15" />
      <path d="M9 21v-4a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v4" />
   </svg>
-  Produse ({{ $activeProductsCount }})
+  Products ({{ $activeProductsCount }})
  </a>
  <a href="{{ route('category') }}" class="button button--fill button--flexed button--secondary">
     <svg>
