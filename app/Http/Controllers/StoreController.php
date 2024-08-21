@@ -54,33 +54,6 @@ class StoreController extends Controller
         throw new NotFoundHttpException();
       }
     }
-    // $productCategory = $category->product_categories()->whereHas('product', function ($query) {
-    //   $query->where('active', true)
-    //     ->where('start_date', '<=',  now()->format('Y-m-d'))
-    //     ->where('end_date', '>=',  now()->format('Y-m-d'));
-    // })->with([
-    //   'product' => function ($query) {
-    //     $query->with(['media' => function ($query) {
-    //       $query->where('type', 'main');
-    //     }])->orderBy('popularity', 'desc');
-    //   }
-    // ])->first();
-
-  //   if ($productCategory != null && $productCategory->product->type != 'parent') {
-  //     $preload = "/" . optional($productCategory->product->media()->first())->path . optional($productCategory->product->media()->first())->name;
-  //   } elseif ($productCategory != null && $productCategory->product->type = 'parent' && $productCategory->product->variants->count() != 0) {
-  //     if ($productCategory->product->variants->where('default_variant', true)->first()) {
-  //       $element = $productCategory->product->variants->where('default_variant', true)->first()->product;
-  //     } else {
-  //       $element = $productCategory->product->variants->first()->product;
-  //     }
-  //     $preload = "/" . optional($element->media()->first())->path . optional($element->media()->first())->name;
-  //   } else {
-  //     $preload = '';
-  //   }
-  //   return view('store.products', compact('data', 'can', 'preload'));
-  // }
-
     $product = \App\Models\Product::where('active', true)
     ->where('start_date', '<=', now()->format('Y-m-d'))
     ->where('end_date', '>=', now()->format('Y-m-d'))
