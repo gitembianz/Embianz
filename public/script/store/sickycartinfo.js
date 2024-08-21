@@ -36,6 +36,7 @@ function stickyElement(elementSelector) {
 
   window.addEventListener("scroll", updateSticky);
   window.addEventListener("resize", updateSticky);
+  document.onload=updateSticky();
 }
 
 stickyElement(".details");
