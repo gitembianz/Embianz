@@ -12,7 +12,7 @@ function stickyElement(elementSelector) {
   let activationPosition = 10; // Poziția la care se activează funcționalitatea sticky
   // let elementPosition = element.offsetTop + element.offsetHeight + 20;
   let elementPosition = element.offsetTop + element.offsetHeight - 100;
-  element.classList.add("sticky");
+ // element.classList.add("sticky");
 
   function updateSticky() {
     let scrollPosition = window.scrollY;

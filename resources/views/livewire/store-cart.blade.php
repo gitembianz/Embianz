@@ -1,4 +1,5 @@
 <div>
+ <script rel="preload" src="script/store/checkout.js" as="script"></script>
  <x-store-alert />
  @php
   if (app()->has('global_numberformat_element')) {
