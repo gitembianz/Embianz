@@ -10,6 +10,7 @@ use App\Models\Product_Spec;
 use App\Models\Related_Products;
 use App\Models\PricelistEntries;
 use App\Models\Products_categories;
+use App\Models\ProductVariant;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
@@ -208,6 +209,17 @@ class ShowProduct extends Component
     if (File::exists($filespath)) {
       File::deleteDirectory($filespath);
     }
+
+   
+    if($product->type =='parent'){
+    $variants = ProductVariant::where('parent_id',$id)->get();
+    if($variants!=NULL){
+      foreach ($variants as $variant){
+        $variant->delete();
+      }
+      $parentids=Product::where('parent_id',$id)->update(['parent_id'=>NULL]);
+    }
+  }
     $product->delete();
     $this->delete = false;
     return redirect()->route('all_products')->with('notification', [
