@@ -54,25 +54,32 @@ class StoreController extends Controller
         throw new NotFoundHttpException();
       }
     }
-    $productCategory = $category->product_categories()->whereHas('product', function ($query) {
-      $query->where('active', true)
-        ->where('start_date', '<=',  now()->format('Y-m-d'))
-        ->where('end_date', '>=',  now()->format('Y-m-d'));
-    })->with([
-      'product' => function ($query) {
-        $query->with(['media' => function ($query) {
-          $query->where('type', 'main');
-        }])->orderBy('popularity', 'desc');
-      }
-    ])->first();
+    $product = \App\Models\Product::where('active', true)
+    ->where('start_date', '<=', now()->format('Y-m-d'))
+    ->where('end_date', '>=', now()->format('Y-m-d'))
+    ->whereHas('product_categories', function ($query) use ($category) {
+        $query->where('category_id', $category->id);
+    })
+    ->with([
+        'media' => function ($query) {
+            $query->where('type', 'main');
+        },
+        'product_categories' => function ($query) use ($category) {
+            $query->where('category_id', $category->id);
+        }
+    ])
+    ->orderBy('popularity', 'desc')
+    ->orderBy('id','desc')
 
-    if ($productCategory != null && $productCategory->product->type != 'parent') {
-      $preload = "/" . optional($productCategory->product->media()->first())->path . optional($productCategory->product->media()->first())->name;
-    } elseif ($productCategory != null && $productCategory->product->type = 'parent' && $productCategory->product->variants->count() != 0) {
-      if ($productCategory->product->variants->where('default_variant', true)->first()) {
-        $element = $productCategory->product->variants->where('default_variant', true)->first()->product;
+    ->first();
+
+    if ($product->product_categories != null && $product->type != 'parent') {
+      $preload = "/" . optional($product->media()->first())->path . optional($product->media()->first())->name;
+    } elseif ($$product->product_categories != null && $product->type = 'parent' && $product->variants->count() != 0) {
+      if ($product->variants->where('default_variant', true)->first()) {
+        $element = $product->variants->where('default_variant', true)->first()->product;
       } else {
-        $element = $productCategory->product->variants->first()->product;
+        $element = $product->variants->first()->product;
       }
       $preload = "/" . optional($element->media()->first())->path . optional($element->media()->first())->name;
     } else {
@@ -80,6 +87,8 @@ class StoreController extends Controller
     }
     return view('store.products', compact('data', 'can', 'preload'));
   }
+
+
 
   public function show($product = null)
   {
