@@ -968,6 +968,7 @@ h2.section__title {
   transform: scale(1);
   animation: pulse 2s infinite;
   display: none;
+  z-index:99;
 }
 .help__button > svg {
   stroke: #333;
