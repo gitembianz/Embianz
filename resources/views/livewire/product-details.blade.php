@@ -54,9 +54,9 @@
     <span class="product__price--title"
      style="margin-right: auto; font-size: 14px; font-weight:500">{{ $product->beeingvariants->where('variant_id', $variantId)->first()->reference->name }}</span>
     <div class="product__price" style="height: auto;">
-     <div class="variant__slider mini-slider" style="padding: 0 45px;">
+     <div class="variant__slider mini-slider">
       <div class="variant__wrapper mini-wrapper">
-       <a style="border: 3px solid #333" class="variant__btn active"
+       <a class="variant__btn active"
         href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">
         @if ($product->beeingvariants->where('variant_id', $variantId)->first()->displayed == 'image')
          @if ($product->media->first() != null)
@@ -74,7 +74,7 @@
          @else
           <img src="/images/store/default/default70.webp" alt="something wrong">
          @endif
-         {{ $product->beeingvariants->where('variant_id', $variantId)->first()->value }}
+        <span>{{ $product->beeingvariants->where('variant_id', $variantId)->first()->value }}</span>
         @endif
        </a>
        @foreach ($variantGroup as $variant)
@@ -100,22 +100,13 @@
             alt="{{ $variant->media->first()->name }}">
           @else
            <img src="/images/store/default/default70.webp" alt="something wrong">
-           {{ $variant->beeingvariants->where('variant_id', $variantId)->first()->value }}
+           <span>{{ $variant->beeingvariants->where('variant_id', $variantId)->first()->value }}</span>
           @endif
+          <span>{{ $variant->beeingvariants->where('variant_id', $variantId)->first()->value }}</span>
          @endif
         </a>
        @endforeach
       </div>
-      <button class="variant__navigation variant__left mini-left">
-       <svg>
-        <polyline points="15 18 9 12 15 6"></polyline>
-       </svg>
-      </button>
-      <button class="variant__navigation variant__right mini-right">
-       <svg>
-        <polyline points="9 18 15 12 9 6"></polyline>
-       </svg>
-      </button>
      </div>
     </div>
    @endif
