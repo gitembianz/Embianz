@@ -66,7 +66,7 @@
           <img src="/images/store/default/default70.webp" alt="something wrong">
          @endif
         @elseif ($product->beeingvariants->where('variant_id', $variantId)->first()->displayed == 'text')
-         {{ $product->beeingvariants->where('variant_id', $variantId)->first()->value }}
+        <span>{{ $product->beeingvariants->where('variant_id', $variantId)->first()->value }}</span>
         @else
          @if ($product->media->first() != null)
           <img src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}"
@@ -93,7 +93,7 @@
            <img src="/images/store/default/default70.webp" alt="something wrong">
           @endif
          @elseif ($variant->beeingvariants->where('variant_id', $variantId)->first()->displayed == 'text')
-          {{ $variant->beeingvariants->where('variant_id', $variantId)->first()->value }}
+          <span>{{ $variant->beeingvariants->where('variant_id', $variantId)->first()->value }}</span>
          @else
           @if ($variant->media->first() != null)
            <img src="/{{ $variant->media->first()->path }}{{ $variant->media->first()->name }}"
