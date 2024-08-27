@@ -12,6 +12,7 @@ bootstrap
 .DS_Store
 .github/workflows/
 .vscode
+.DS_Store
 
 # static pages
 resources\views\store\404.blade.php
