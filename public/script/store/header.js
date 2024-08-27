@@ -79,8 +79,17 @@ function leftbar(idOpen, idClose, idList, idContent, hiddenId) {
     // console.log("leftbar error");
     return;
   } else {
+    
     buttonOpen.addEventListener("click", () => {
       list.classList.add("active");
+      // gtm view_cart event
+
+      dataLayer.push({
+        event: "view_minicart",
+        ecommerce: {
+        }
+       });
+
       body.style.overflow = "hidden";
       scrollEvent();
     });

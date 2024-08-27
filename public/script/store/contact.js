@@ -6,7 +6,7 @@ const nameValidation = [
   },
   {
     validation: (value) => value.length >= 2,
-    message: "Numele trebuie să aibă cel puțin 2 caractere",
+    message: "Numele trebuie conțină cel puțin 2 caractere",
   },
   {
     validation: (value) => value.length <= 70,

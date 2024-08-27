@@ -41,6 +41,10 @@
     background-color: $lightBlack;
     color: $background;
   }
+
+  @media (max-width: map-get($grid-breakpoints, sm)) {
+    font-size: 12px;
+  }
 }
 
 .tab__button--long {

@@ -1,8 +1,0 @@
-//<--------------------Breakpoints------------------->
-@mixin container($breakpoint) {
-  @media (min-width: map-get($grid-breakpoints, $breakpoint)) {
-    .container {
-      max-width: map-get($container-max-widths, $breakpoint);
-    }
-  }
-}

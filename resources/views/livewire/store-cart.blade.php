@@ -1,5 +1,5 @@
 <div>
- <script rel="preload" src="script/store/checkout.js" as="script"></script>
+
  <x-store-alert />
  @php
   if (app()->has('global_numberformat_element')) {
@@ -404,5 +404,5 @@
 
  <!------------------- End support button ------------------->
  <!---------------------------------------------------------->
- <script src="/script/store/checkout.js" defer></script>
+ <script src="/script/store/sickycartinfo.js" defer></script>
 </div>
