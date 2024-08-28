@@ -6,12 +6,14 @@ public/dist/css/loading-screen.css.map
 public/images/
 public/sitemap.xml
 public/robots.txt
+storage/
 bootstrap
 .env
 .htpasswd
 .DS_Store
 .github/workflows/
 .vscode
+.DS_Store
 
 # static pages
 resources\views\store\404.blade.php
