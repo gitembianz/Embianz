@@ -14,8 +14,6 @@ bootstrap
 .github/workflows/
 .vscode
 .DS_Store
-
-# static pages
 resources\views\store\404.blade.php
 resources\views\store\about.blade.php
 resources\views\store\confirm.blade.php
@@ -24,9 +22,3 @@ resources\views\store\cookie.blade.php
 resources\views\store\faq.blade.php
 resources\views\store\privacy.blade.php
 resources\views\store\terms.blade.php
-
-
-
-
-
-
