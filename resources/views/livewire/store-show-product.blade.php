@@ -239,7 +239,7 @@
        ?>
        @if ($price)
         @if ($product->product->quantity < $quantity && $product->product->quantity > 0)
-         <p class="card-status out">
+         <p class="card-status save">
           @if (app()->has('label_product_status_stock'))
            {!! app('label_product_status_stock') !!}
           @endif
@@ -250,7 +250,7 @@
           </p>
          @endif
         @elseif($product->product->quantity == 0)
-         <p class="card-status save">
+         <p class="card-status out">
           @if (app()->has('label_product_status_indisponible'))
            {!! app('label_product_status_indisponible') !!}
           @endif
