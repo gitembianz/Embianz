@@ -182,7 +182,7 @@
      @endforeach
     @endif
    </div>
-   @if ($cart->quantity_amount != 0)
+   @if ($cart!=null && $cart->quantity_amount != 0)
     <div class="details">
      <div class="details__content">
       <h2 class="details__title">
@@ -320,7 +320,7 @@
    <!------------------------------------------------------>
   </div>
  </section>
- @if ($cart->quantity_amount != 0)
+ @if ($cart!= null && $cart->quantity_amount != 0)
   <div class="dlv" style="display: none">
    <span class="dlv_currency">
     @if (app()->has('global_currency_primary_symbol'))
