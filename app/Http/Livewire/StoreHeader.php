@@ -71,7 +71,7 @@ class StoreHeader extends Component
       return Category::select('id', 'name', 'seo_id', 'sequence')
         ->with([
           'media' => function ($query) {
-            $query->where('type', 'min')->select('media_id', 'path', 'name');
+            $query->where('type', 'min')->select('media_id', 'path', 'name','type');
           },
           'subcategory' => function ($query) {
             $query->whereHas('category', function ($query) {
@@ -82,7 +82,7 @@ class StoreHeader extends Component
                 $this->applyCategoryConditions($query);
                 $query->with([
                   'media' => function ($query) {
-                    $query->where('type', 'min')->select('media_id', 'path', 'name');
+                    $query->where('type', 'min')->select('media_id', 'path', 'name','type');
                   },
                   'subcategory' => function ($query) {
                     $query->whereHas('category', function ($query) {
@@ -93,7 +93,7 @@ class StoreHeader extends Component
                         $this->applyCategoryConditions($query);
                         $query->with([
                           'media' => function ($query) {
-                            $query->where('type', 'min')->select('media_id', 'path', 'name');
+                            $query->where('type', 'min')->select('media_id', 'path', 'name','type');
                           }
                         ]);
                       }
