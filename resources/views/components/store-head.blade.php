@@ -23,7 +23,7 @@
  <meta name="theme-color" content="#fafafa">
 
  {{-- dinamical image playload --}}
- @if ($preload != '' && (app()->has('global_preload_image') && app('global_preload_image') === 'true'))
+ @if ($preload != '')
   <link rel="preload" href="{{ $preload }}" as="image">
  @endif
  {{-- favicon end --}}
