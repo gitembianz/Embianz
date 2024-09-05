@@ -50,7 +50,8 @@ class ShowCategory extends Component
       'seo_title' => $this->category->seo_title,
       'seo_id' => $this->category->seo_id,
       'slider_sequence' => $this->category->slider_sequence,
-      'acc_items' => $this->category->accepted_items
+      'acc_items' => $this->category->accepted_items,
+      'preload' => $this->category->preload_image
 
     ];
     $this->editcategory = true;
@@ -100,6 +101,9 @@ class ShowCategory extends Component
       if (array_key_exists('active', $category_new)) {
         $new->active = $category_new['active'];
       }
+      if (array_key_exists('preload', $category_new)) {
+        $new->preload_image = $category_new['preload'];
+      }
       if (array_key_exists('start_date', $category_new)) {
         $new->start_date = $category_new['start_date'];
       }
@@ -136,11 +140,11 @@ class ShowCategory extends Component
   }
   public function confirmItemRemoval()
   {
-      $this->delete = true;
+    $this->delete = true;
   }
   public function cancelItemRemoval()
   {
-      $this->delete = false;
+    $this->delete = false;
   }
   public function deleteRecord()
   {

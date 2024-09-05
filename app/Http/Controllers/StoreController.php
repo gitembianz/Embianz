@@ -54,34 +54,38 @@ class StoreController extends Controller
         throw new NotFoundHttpException();
       }
     }
+
     $product = \App\Models\Product::where('active', true)
-    ->where('start_date', '<=', now()->format('Y-m-d'))
-    ->where('end_date', '>=', now()->format('Y-m-d'))
-    ->whereHas('product_categories', function ($query) use ($category) {
+      ->where('start_date', '<=', now()->format('Y-m-d'))
+      ->where('end_date', '>=', now()->format('Y-m-d'))
+      ->whereHas('product_categories', function ($query) use ($category) {
         $query->where('category_id', $category->id);
-    })
-    ->with([
+      })
+      ->with([
         'media' => function ($query) {
-            $query->where('type', 'main');
+          $query->where('type', 'main');
         },
         'product_categories' => function ($query) use ($category) {
-            $query->where('category_id', $category->id);
+          $query->where('category_id', $category->id);
         }
-    ])
-    ->orderBy('popularity', 'desc')
-    ->orderBy('id','desc')
+      ])
+      ->orderBy('popularity', 'desc')
+      ->orderBy('id', 'desc')
 
-    ->first();
-
-    if ($product->product_categories != null && $product->type != 'parent') {
-      $preload = "/" . optional($product->media()->first())->path . optional($product->media()->first())->name;
-    } elseif ($product->product_categories != null && $product->type = 'parent' && $product->variants->count() != 0) {
-      if ($product->variants->where('default_variant', true)->first()) {
-        $element = $product->variants->where('default_variant', true)->first()->product;
+      ->first();
+    if ($data->preload_image == true) {
+      if ($product->product_categories != null && $product->type != 'parent') {
+        $preload = "/" . optional($product->media()->first())->path . optional($product->media()->first())->name;
+      } elseif ($product->product_categories != null && $product->type = 'parent' && $product->variants->count() != 0) {
+        if ($product->variants->where('default_variant', true)->first()) {
+          $element = $product->variants->where('default_variant', true)->first()->product;
+        } else {
+          $element = $product->variants->first()->product;
+        }
+        $preload = "/" . optional($element->media()->first())->path . optional($element->media()->first())->name;
       } else {
-        $element = $product->variants->first()->product;
+        $preload = '';
       }
-      $preload = "/" . optional($element->media()->first())->path . optional($element->media()->first())->name;
     } else {
       $preload = '';
     }
