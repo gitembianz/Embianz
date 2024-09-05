@@ -185,8 +185,8 @@
         @endif
         <div class="card-info">
          <div class="card-text">
-          <span><a style="text-decoration: none; font-weight:500"
-            href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">{{ $product->short_description }}</a></span>
+          <h2><a style="text-decoration: none; font-weight:500"
+            href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">{{ $product->short_description }}</a></h2>
          </div>
          <div class="card-text">
           <h2 class="card-title"><a style="text-decoration: none; font-weight:500"
