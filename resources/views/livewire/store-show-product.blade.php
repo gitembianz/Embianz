@@ -1,5 +1,18 @@
 <div id="store-show-product">
-
+ @php
+  if (app()->has('global_numberformat_element')) {
+      if (app('global_numberformat_element') === '.') {
+          $mill = '.';
+          $decimal = ',';
+      } else {
+          $mill = ',';
+          $decimal = '.';
+      }
+  } else {
+      $mill = '.';
+      $decimal = ',';
+  }
+ @endphp
  <div class="breadcrumbs container">
   <a class="breadcrumbs__link" href="{{ url('/') }}">
    @if (app()->has('label_breadcrumbs_home_page'))
@@ -230,7 +243,7 @@
        </a>
        @livewire('product-wishlist-button', ['productId' => $product->product->id, 'class' => 'card__action', 'is_in_wishlist' => $this->isInWishlist($product->product->id)], key($product->product->id))
        <?php if ($product->product->product_prices->count() != 0) {
-           $price = number_format($product->product->product_prices->first()->value, 2, ',', '.');
+           $price = number_format($product->product->product_prices->first()->value, 2, $decimal, $mill);
            $discount = $product->product->product_prices->first()->discount != 0 ? true : false;
        } else {
            $price = null;
@@ -290,7 +303,7 @@
             @endif
            </span>
            <span class="card-price oldprice">
-            {{ $product->product->product_prices->first()->value_no_discount }}
+            {{ number_format($product->product->product_prices->first()->value_no_discount, 2, $decimal, $mill) }}
             @if (app()->has('global_currency_primary_name'))
              {!! app('global_currency_primary_name') !!}
             @endif

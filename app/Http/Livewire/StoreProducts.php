@@ -103,11 +103,11 @@ class StoreProducts extends Component
       }
     );
 
-    if ($this->category != null) {
-      $query->whereHas('product.product_categories', function ($query) {
-        $query->where('category_id', $this->category->id);
-      });
-    }
+    // if ($this->category != null) {
+    //   $query->whereHas('product.product_categories', function ($query) {
+    //     $query->where('category_id', $this->category->id);
+    //   });
+    // }
 
     return $query->get();
   }
@@ -285,7 +285,7 @@ class StoreProducts extends Component
         $query->orderByRaw("(SELECT CAST(value AS DECIMAL(10, 2)) FROM pricelist_entries WHERE product_id = products.id) desc");
         break;
     }
-    $query->orderBy('id','desc');
+    $query->orderBy('id', 'desc');
     $products = $query->paginate($this->loadAmount);
 
     return $products;

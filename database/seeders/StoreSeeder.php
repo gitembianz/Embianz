@@ -45,6 +45,7 @@ class StoreSeeder extends Seeder
             ['parameter' => 'display_rating_value', 'value' => 'none', 'description' => 'Display rating value', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'cache_data', 'value' => 'false', 'description' => 'Cache products and categories', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'numberformat_element', 'value' => '.', 'description' => 'Number format element(is accepted only . or ,)', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'preload_image', 'value' => 'true', 'description' => 'Preload product image on category view', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             // ['parameter' => '', 'value' => '', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
 
         ];

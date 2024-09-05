@@ -23,27 +23,27 @@
  <meta name="theme-color" content="#fafafa">
 
  {{-- dinamical image playload --}}
- @if ($preload != '')
+ @if ($preload != '' && (app()->has('global_preload_image') && app('global_preload_image') === 'true'))
   <link rel="preload" href="{{ $preload }}" as="image">
  @endif
  {{-- favicon end --}}
 
-<link rel="canonical" href="{{ config('app.url') . '/'. $canonical }}">
+ <link rel="canonical" href="{{ config('app.url') . '/' . $canonical }}">
 
-<?php
-  $theme = app()->has('global_theme') ? app('global_theme') : 'store';
-  $href = '/dist/css/' . $theme . '.css';
-?>
-    <link rel="preload" href="{{ $href }}" as="style">
+ <?php
+ $theme = app()->has('global_theme') ? app('global_theme') : 'store';
+ $href = '/dist/css/' . $theme . '.css';
+ ?>
+ <link rel="preload" href="{{ $href }}" as="style">
  <link rel="stylesheet" href="{{ $href }}" async>
  <!-- Open Graph / Facebook -->
- <meta property="og:url" content="{{ config('app.url') . '/'. $canonical }}" />
+ <meta property="og:url" content="{{ config('app.url') . '/' . $canonical }}" />
  <meta property="og:type" content="website" />
  <meta property="og:image" content="{{ url('/' . $image) }}" />
  <meta property="og:title" content="{{ $title }}" />
  <meta property="og:description" content="{{ $description }}" />
  <!-- Twitter -->
- <meta property="twitter:url" content="{{ config('app.url') . '/'. $canonical }}" />
+ <meta property="twitter:url" content="{{ config('app.url') . '/' . $canonical }}" />
  <meta property="twitter:card" content="summary_large_image" />
  <meta property="twitter:image" content="{{ url('/' . $image) }}" />
  <meta property="twitter:title" content="{{ $title }}" />
