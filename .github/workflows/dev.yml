@@ -19,4 +19,4 @@ jobs:
           **/.git*/**
           **/node_modules/**
           **/vendor*/**
-          .env
+          .env 
