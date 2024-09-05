@@ -285,13 +285,13 @@
        @endif
        <div class="card-info">
         <div class="card-text">
-         <span><a style="text-decoration: none; font-weight:500"
-           href="{{ route('product', ['product' => $product->product->seo_id !== null && $product->product->seo_id !== '' ? $product->product->seo_id : $product->product->id]) }}">{{ $product->product->short_description }}</a></span>
+         <h2><a style="text-decoration: none; font-weight:500"
+           href="{{ route('product', ['product' => $product->product->seo_id !== null && $product->product->seo_id !== '' ? $product->product->seo_id : $product->product->id]) }}">{{ $product->product->short_description }}</a></h2>
         </div>
         <div class="card-text">
-         <h3><a style="text-decoration: none; font-weight:500"
+         <h2><a style="text-decoration: none; font-weight:500"
            href="{{ route('product', ['product' => $product->product->seo_id !== null && $product->product->seo_id !== '' ? $product->product->seo_id : $product->product->id]) }}">{{ $product->product->name }}</a>
-         </h3>
+         </h2>
          <p class="card-price">
           @if ($discount)
            <span class="card-price discount">
