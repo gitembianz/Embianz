@@ -1,0 +1,146 @@
+#cookie-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  background-color: $lightBlack;
+  opacity: 90%;
+  z-index: 100;
+}
+
+.cookie-btns {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 25px;
+  flex-wrap: wrap;
+
+  & > .button {
+    font-size: $textSize;
+  }
+}
+
+.cookie__container {
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 10px;
+}
+
+.cookie__description {
+  text-align: center;
+  margin-bottom: 10px;
+
+  & > span {
+    color: $background;
+    font-size: $textSize;
+  }
+
+  & > a {
+    color: $background;
+    text-decoration: underline;
+    font-size: $textSize;
+  }
+}
+
+.cookie__form--container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  transition: all 0.3s ease-in-out;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+
+  & > label {
+    text-align: left;
+
+    & > span,
+    p {
+      color: $background;
+      font-size: $textSize;
+    }
+
+    p {
+      margin-top: 5px;
+      font-size: $textSize;
+    }
+  }
+}
+
+.cookie__form {
+  width: 100%;
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: all 0.4s ease-in-out;
+  margin-bottom: 0;
+
+  &.show {
+    margin-bottom: 20px;
+    grid-template-rows: 1fr;
+
+    & > .cookie__form--container {
+      gap: 25px;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      border: 1px solid $background;
+      border-left: none;
+      border-right: none;
+      opacity: 1;
+      visibility: visible;
+
+      & > label {
+        display: grid;
+        grid-template-columns: 50px 100%;
+        justify-items: start;
+        align-items: center;
+
+        & > input {
+          border: 2px solid $primary;
+          transform: scale(0.8);
+        }
+
+        & > input:disabled {
+          opacity: 0.7;
+          cursor: not-allowed;
+        }
+
+        & > p {
+          grid-column: 1/3;
+          width: 100%;
+          text-wrap: balance;
+        }
+      }
+    }
+  }
+}
+
+.cookie__button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 15px;
+  height: 40px;
+  font-size: $textSize;
+  font-weight: $lightWeight;
+  border-radius: 3px;
+  color: $primary;
+  border: 1px solid $primary;
+  background-color: transparent;
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    background-color: $secondary;
+    color: $lightBlack;
+  }
+}
+
+.cookie__button--accept {
+  background-color: $primary;
+  color: $lightBlack;
+
+  &:hover {
+    background-color: $secondary;
+    color: $lightBlack;
+  }
+}

@@ -1,0 +1,21 @@
+/// Error on Show Table
+.error {
+  color: $secondary;
+  background-color: $danger;
+  font-size: $font-size-sm;
+  font-weight: 900;
+  line-height: $line-height;
+  padding: $padding;
+  border-radius: $border-radius-sm;
+  text-wrap: balance;
+
+  width: 270px;
+  position: fixed;
+  top: 60px;
+  right: $margin;
+  transform: translate(calc(100% + $margin));
+
+  &.active {
+    animation: show-error 5s ease forwards 1.5s;
+  }
+}

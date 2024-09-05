@@ -1,0 +1,129 @@
+.tab {
+  width: 100%;
+  gap: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.tab__top {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+.tab__button {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  color: $lightBlack;
+  font-size: $textSize;
+  font-weight: $lightWeight;
+  border: 1px solid $lightBlack;
+  text-transform: uppercase;
+  border-radius: 3px;
+  padding: 0px 10px;
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    background-color: $lightBlack;
+    color: $background;
+  }
+
+  &.active {
+    background-color: $lightBlack;
+    color: $background;
+  }
+
+  @media (max-width: map-get($grid-breakpoints, sm)) {
+    font-size: 12px;
+  }
+}
+
+.tab__button--long {
+  width: 100%;
+  // text-transform: none;
+}
+
+.tab__content {
+  display: none;
+  background-color: $primary;
+  border-radius: 5px;
+  padding: 10px;
+  width: 100%;
+
+  &.active {
+    display: block;
+  }
+}
+
+.tab__info {
+  font-size: $textSize;
+  font-weight: $lightWeight;
+  color: $lightBlack;
+  line-height: 150%;
+}
+
+.tab__table {
+  border-collapse: collapse;
+  width: 100%;
+
+  thead tr {
+    background-color: $lightBlack;
+    text-align: left;
+    color: $background;
+    font-size: $textSize;
+    font-weight: $lightWeight;
+
+    & th {
+      &:first-child {
+        border-radius: 5px 0 0 0;
+        outline: 1px solid $lightBlack;
+        outline-offset: -0.5px;
+      }
+
+      &:last-child {
+        border-radius: 0 5px 0 0;
+        outline: 1px solid $lightBlack;
+        outline-offset: -0.5px;
+      }
+    }
+  }
+
+  tbody {
+    color: $lightBlack;
+    font-size: $textSize;
+    font-weight: $lightWeight;
+    outline: 1px solid black;
+    border-radius: 0 0 7px 7px;
+    outline-offset: -0.5px;
+
+    tr:not(:last-child) th,
+    tr:not(:last-child) td {
+      border-left: 1px solid $lightBlack;
+      border-right: 1px solid $lightBlack;
+    }
+
+    tr td:last-child {
+      border-left: 1px solid black;
+    }
+
+    tr:nth-of-type(even) {
+      background-color: $background;
+      border-top: 1px solid $lightBlack;
+    }
+  }
+
+  th,
+  td {
+    padding: 15px 10px;
+    width: 50%;
+  }
+}
