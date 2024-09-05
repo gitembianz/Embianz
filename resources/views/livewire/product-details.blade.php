@@ -23,8 +23,8 @@
  ?>
  <div class="product__text">
   <div>
-   <span class="product__subtitle">{{ $product->short_description }}</span>
    <h1 class="product__title">{{ $product->name }}</h1>
+   <h2 class="product__subtitle">{{ $product->short_description }}</h2>
    @if ($discount)
     <span class="product__discount">-{{ $product->product_prices->first()->discount }}%</span>
    @endif
