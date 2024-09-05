@@ -305,7 +305,7 @@
          wire:click="expandRow({{ $nr }})">
          @if ($column === 'name')
           <a href="{{ route('show_category', ['id' => $category->id]) }}">{{ strip_tags($category->name) }}</a>
-         @elseif ($column === 'active' || $column === 'store_tab' || $column === 'has_parent')
+         @elseif ($column === 'active' || $column === 'store_tab' || $column === 'has_parent' || $column === 'preload_image')
           @if ($category->$column)
            <div class="checkbox--secondary disabled">
             <input type="checkbox" id="disabled2" disabled checked>

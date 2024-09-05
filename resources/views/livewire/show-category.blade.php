@@ -137,6 +137,20 @@
      <label for="store_tab3">Show in store</label>
     @endif
    </div>
+   <div class="checkbox__details ">
+    @if ($editcategory === null)
+     @if ($category->preload_image)
+      <input type="checkbox" id="preload1" checked class="disabled" disabled />
+      <label for="preload1" class="disabled">Preload image</label>
+     @else
+      <input type="checkbox" id="preload2" class="disabled" disabled />
+      <label for="preload2" class="disabled">Preload image</label>
+     @endif
+    @else
+     <input type="checkbox" id="preload3" wire:model.defer="cat.preload" />
+     <label for="preload3">Preload image</label>
+    @endif
+   </div>
   </div>
 
   {{-- Category Start Date --}}
