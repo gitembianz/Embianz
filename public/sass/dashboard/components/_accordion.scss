@@ -1,0 +1,45 @@
+.accordion {
+  width: 100%;
+
+  &.active > .accordion__header{
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    padding: $padding $padding 0 $padding;
+  }
+
+  &.active > .accordion__body{
+    display: flex;
+  }
+}
+
+.accordion__header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: $primary;
+  padding: $padding;
+  border-radius: $border-radius-sm;
+  gap: $gap;
+
+  & > button.active svg {
+    transform: rotateX(180deg);
+  }
+}
+
+.accordion__body {
+  width: 100%;
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+  gap: $margin;
+  background: $primary;
+  padding: 0 $padding $padding $padding;
+  border-bottom-left-radius: $border-radius-sm;
+  border-bottom-right-radius: $border-radius-sm;
+
+  & > table thead {
+    box-shadow: none !important;
+  }
+}

@@ -1,0 +1,82 @@
+/// Colors
+$primary: #35424B;
+$secondary: #bbfcde;
+$warning: #ffd500;
+$danger: #ED2939;
+$info: #00b4d8;
+$white: #fAfAfA;
+
+
+/// Typography
+$font-family: Arial, Helvetica, sans-serif;
+$font-size: clamp(16px, 2vw, 18px);
+$font-size-sm: clamp(14px, 1.75vw, 16px);
+$font-size-lg: clamp(18px, 2.25vw, 20px);
+$font-weight: 500;
+$line-height: 150%;
+$letter-spacing: 1px;
+
+
+/// Borders
+$border-width: 1.5px;
+$border-radius: 8px;
+$border-radius-sm: 4px;
+$border-radius-lg: 12px;
+
+
+/// Transitions
+$transition: all .4s ease-in-out;
+$transition-fast: all .25s ease-in-out;
+$transition-low: all .55s ease-in-out;
+
+
+/// Gaps
+$margin: 7.5px;
+$padding: 7.5px;
+$gap: 7.5px;
+
+
+/// Shadows
+$shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+$shadow-lite: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+$modal: rgba($color: #000000, $alpha: 0.50);
+
+
+// Widths
+$max-width: 200px;
+$min-width: 200px;
+$width: 35px;
+$height: 35px;
+
+
+/// Indexes
+$index-dropdown: 1000;
+$index-sticky: 1020;
+$index-fixed: 1030;
+$index-modal-backdrop: 1040;
+$index-modal: 1050;
+$index-popover: 1060;
+$index-tooltip: 1070;
+
+
+/// Breakpoints
+$grid-breakpoints: (
+ xs: 0,
+ sm: 576px,
+ md: 768px,
+ lg: 992px,
+ xl: 1200px,
+ xxl: 1400px,
+ xxxl: 1600px,
+ xxxxl: 1800px,
+);
+
+$container-max-widths: (
+ sm: 540px,
+ md: 720px,
+ lg: 960px,
+ xl: 1140px,
+ xxl: 1320px,
+ xxxl: 1500px,
+ xxxxl: 1700px,
+);

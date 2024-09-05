@@ -1,0 +1,9 @@
+/// Navigation
+header{
+  width: 100%;
+  height: calc($height + ($margin * 2));
+  background: $primary;
+  box-shadow: $shadow-lite;
+  padding-left: $margin;
+  padding-right: $margin;
+}
