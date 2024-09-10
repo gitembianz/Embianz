@@ -128,10 +128,7 @@
       });
 
       route::get('/clear-cache', function () {
-        Cache::forget('global_variables');
-        Cache::forget('global_statuses');
-        Cache::forget('global_payments');
-        Cache::forget('global_scripts');
+        Artisan::call('cache:clear');
         echo 'Cache cleared for global variables';
       });
     });
