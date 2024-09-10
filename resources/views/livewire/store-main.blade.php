@@ -162,7 +162,7 @@
             -{{ $product->product_prices->first()->discount }}%
            </p>
           @endif
-         @elseif($product->quantity == 0)
+         @elseif($product->quantity == 0 && (app()->has('global_preorder') && app('global_preorder') === 'false'))
           <p class="card-status out">
            @if (app()->has('label_product_status_indisponible'))
             {!! app('label_product_status_indisponible') !!}
@@ -186,7 +186,8 @@
         <div class="card-info">
          <div class="card-text">
           <h2><a style="text-decoration: none; font-weight:500"
-            href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">{{ $product->short_description }}</a></h2>
+            href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">{{ $product->short_description }}</a>
+          </h2>
          </div>
          <div class="card-text">
           <h2 class="card-title"><a style="text-decoration: none; font-weight:500"
