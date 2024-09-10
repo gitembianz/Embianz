@@ -61,7 +61,7 @@
           $isdisabled = true;
       }
       
-      if ($cartItem->product->quantity < $cartItem->quantity) {
+      if ($cartItem->product->quantity < $cartItem->quantity && (app()->has('global_preorder') && app('global_preorder') === 'false')) {
           $nonquantity[$index] = true;
           $isdisabled = true;
       }
@@ -182,7 +182,7 @@
      @endforeach
     @endif
    </div>
-   @if ($cart!=null && $cart->quantity_amount != 0)
+   @if ($cart != null && $cart->quantity_amount != 0)
     <div class="details">
      <div class="details__content">
       <h2 class="details__title">
@@ -320,7 +320,7 @@
    <!------------------------------------------------------>
   </div>
  </section>
- @if ($cart!= null && $cart->quantity_amount != 0)
+ @if ($cart != null && $cart->quantity_amount != 0)
   <div class="dlv" style="display: none">
    <span class="dlv_currency">
     @if (app()->has('global_currency_primary_symbol'))

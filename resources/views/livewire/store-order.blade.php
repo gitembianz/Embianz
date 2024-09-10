@@ -2451,7 +2451,10 @@
               $disabled[$index] = true;
               $this->emit('isdisabled');
           }
-          if ($cartItem->product->quantity < $cartItem->quantity) {
+          if (
+              $cartItem->product->quantity < $cartItem->quantity &&
+              (app()->has('global_preorder') && app('global_preorder') === 'false')
+          ) {
               $nonquantity[$index] = true;
               $this->emit('isdisabled');
           }
