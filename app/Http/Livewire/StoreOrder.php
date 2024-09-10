@@ -708,7 +708,7 @@ class StoreOrder extends Component
         }
       }
       foreach ($this->cartitems as $item) {
-        if ($item->quantity > $item->product->quantity) {
+        if ($item->quantity > $item->product->quantity && (app()->has('global_preorder') && app('global_preorder') === 'false')) {
           $this->validatequantity = false;
           if (app()->has('label_order_error_quantity')) {
             $message = app('label_order_error_quantity');

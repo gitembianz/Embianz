@@ -103,11 +103,11 @@ class StoreProducts extends Component
       }
     );
 
-    // if ($this->category != null) {
-    //   $query->whereHas('product.product_categories', function ($query) {
-    //     $query->where('category_id', $this->category->id);
-    //   });
-    // }
+    if ($this->category != null) {
+      $query->whereHas('product.product_categories', function ($query) {
+        $query->where('category_id', $this->category->id);
+      });
+    }
 
     return $query->get();
   }

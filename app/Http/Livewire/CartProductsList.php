@@ -294,7 +294,7 @@ class CartProductsList extends Component
 
         if ($this->cart->quantity_amount != 0) {
             foreach ($this->cart->cartItems as $item) {
-                if ($item->quantity > $item->product->quantity) {
+                if ($item->quantity > $item->product->quantity && (app()->has('global_preorder') && app('global_preorder') === 'false')) {
                     $validateQuantity = false;
                     if (app()->has('global_order_error_quantity')) {
                         $message = app('global_order_error_quantity');
