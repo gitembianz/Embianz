@@ -41,7 +41,7 @@ class GlobalVariablesServiceProvider extends ServiceProvider
         $this->loadGlobalCustomScripts();
         $this->loadGlobalCurrencies();
         $this->loadHighestPopularity();
-        $this->loadAllProductSpecsIntoCache();
+        // $this->loadAllProductSpecsIntoCache();
         if (app()->has('global_cache_data') && app('global_cache_data') === 'true') {
 
             $this->loadAllProductsIntoCache();
@@ -270,55 +270,55 @@ class GlobalVariablesServiceProvider extends ServiceProvider
             ->where('end_date', '>=', now()->format('Y-m-d'))
             ->orderBy('sequence');
     }
-    private function loadAllProductSpecsIntoCache()
-    {
-        $productSpecs = Cache::rememberForever('cached_product_specs', function () {
-            $productSpecs = Product_Spec::select('value', 'spec_id', DB::raw('ANY_VALUE(product_id) as product_id'))
-                ->groupBy('spec_id', 'value')
-                ->with([
-                    'spec' => function ($query) {
-                        $query->select('id', 'name', 'sequence');
-                    },
-                    'product' => function ($query) {
-                        $query->select('id')->whereHas('product_categories');  // Filter for products with at least one category
-                    }
-                ])
-                ->whereHas('spec', function ($query) {
-                    $query->where('mark_as_filter', true);
-                })
-                ->whereHas('product', function ($query) {
-                    $query->where('active', true)
-                        ->where('type', '!=', 'parent')
-                        ->where('start_date', '<=', now()->format('Y-m-d'))
-                        ->where('end_date', '>=', now()->format('Y-m-d'))->whereHas('product_categories');
-                })
-                ->get();
+    // private function loadAllProductSpecsIntoCache()
+    // {
+    //     $productSpecs = Cache::rememberForever('cached_product_specs', function () {
+    //         $productSpecs = Product_Spec::select('value', 'spec_id', DB::raw('ANY_VALUE(product_id) as product_id'))
+    //             ->groupBy('spec_id', 'value')
+    //             ->with([
+    //                 'spec' => function ($query) {
+    //                     $query->select('id', 'name', 'sequence');
+    //                 },
+    //                 'product' => function ($query) {
+    //                     $query->select('id')->whereHas('product_categories');  // Filter for products with at least one category
+    //                 }
+    //             ])
+    //             ->whereHas('spec', function ($query) {
+    //                 $query->where('mark_as_filter', true);
+    //             })
+    //             ->whereHas('product', function ($query) {
+    //                 $query->where('active', true)
+    //                     ->where('type', '!=', 'parent')
+    //                     ->where('start_date', '<=', now()->format('Y-m-d'))
+    //                     ->where('end_date', '>=', now()->format('Y-m-d'))->whereHas('product_categories');
+    //             })
+    //             ->get();
 
-            // Create a collection with the desired structure
-            $formattedSpecs = $productSpecs->groupBy('spec_id')->map(function ($specs) {
-                $firstSpec = $specs->first();
-                $uniqueValues = $specs->groupBy('value')->map(function ($items) {
-                    $productIds = $items->pluck('product_id')->unique();
-                    $categories = $items->flatMap(function ($item) {
-                        return $item->product->product_categories->pluck('category_id');
-                    })->unique();
+    //         // Create a collection with the desired structure
+    //         $formattedSpecs = $productSpecs->groupBy('spec_id')->map(function ($specs) {
+    //             $firstSpec = $specs->first();
+    //             $uniqueValues = $specs->groupBy('value')->map(function ($items) {
+    //                 $productIds = $items->pluck('product_id')->unique();
+    //                 $categories = $items->flatMap(function ($item) {
+    //                     return $item->product->product_categories->pluck('category_id');
+    //                 })->unique();
 
-                    return [
-                        'products' => $productIds->toArray(),
-                        'categories' => $categories->toArray(),
-                    ];
-                });
+    //                 return [
+    //                     'products' => $productIds->toArray(),
+    //                     'categories' => $categories->toArray(),
+    //                 ];
+    //             });
 
-                return [
-                    'spec' => $firstSpec->spec->name,
-                    'sequence' => $firstSpec->spec->sequence,
-                    'values' => $uniqueValues,
-                ];
-            })->sortBy('sequence')->values();
+    //             return [
+    //                 'spec' => $firstSpec->spec->name,
+    //                 'sequence' => $firstSpec->spec->sequence,
+    //                 'values' => $uniqueValues,
+    //             ];
+    //         })->sortBy('sequence')->values();
 
-            return $formattedSpecs->toArray();
-        });
+    //         return $formattedSpecs->toArray();
+    //     });
 
-        $this->app->instance('cached_product_specs', $productSpecs);
-    }
+    //     $this->app->instance('cached_product_specs', $productSpecs);
+    // }
 }
