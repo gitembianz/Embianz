@@ -40,20 +40,20 @@
          @endif
          {{-- Mobile Picture --}}
          @if ($item->media->where('sequence', 4)->first() != null)
-          <img title="{{ $item->media->where('sequence', 4)->first()->name }}" sizes="100vw"
-           alt="{{ $item->media->where('sequence', 4)->first()->name }} {{ $item->name }}"
+          <img title="{{ $item->name }}" sizes="100vw"
+           alt="{{ $item->name }}"
            src="/{{ $item->media->where('sequence', 4)->first()->path }}{{ $item->media->where('sequence', 4)->first()->name }}"
            loading="eager" fetchpriority="high" height="{{ $item->media->where('sequence', 4)->first()->height }}"
            width="{{ $item->media->where('sequence', 4)->first()->width }}">
          @elseif ($item->media->where('sequence', 3)->first() != null)
-          <img title="{{ $item->media->where('sequence', 3)->first()->name }}" sizes="100vw"
-           alt="{{ $item->media->where('sequence', 3)->first()->name }} {{ $item->name }}"
+          <img title="{{ $item->name }}" sizes="100vw"
+           alt="{{ $item->name }}"
            src="/{{ $item->media->where('sequence', 3)->first()->path }}{{ $item->media->where('sequence', 3)->first()->name }}"
            loading="eager" fetchpriority="high" height="{{ $item->media->where('sequence', 3)->first()->height }}"
            width="{{ $item->media->where('sequence', 3)->first()->width }}">
          @elseif ($item->media->where('sequence', 2)->first() != null)
-          <img title="{{ $item->media->where('sequence', 2)->first()->name }}" sizes="100vw"
-           alt="{{ $item->media->where('sequence', 2)->first()->name }} {{ $item->name }}"
+          <img title="{{ $item->name }}" sizes="100vw"
+           alt="{{ $item->name }}"
            src="/{{ $item->media->where('sequence', 2)->first()->path }}{{ $item->media->where('sequence', 2)->first()->name }}"
            loading="eager" fetchpriority="high" height="{{ $item->media->where('sequence', 2)->first()->height }}"
            width="{{ $item->media->where('sequence', 2)->first()->width }}">
@@ -124,8 +124,8 @@
           $mainMedia = $product->media->firstWhere('type', 'main');
          @endphp
          @if ($mainMedia)
-          <img title="{{ $product->name }}, {{ $product->short_description }}" loading="eager" class="card-image"
-           src="/{{ $mainMedia->path }}{{ $mainMedia->name }}" alt="{{ $mainMedia->name }} {{ $product->name }}">
+          <img title="{{ $product->name }}" loading="eager" class="card-image"
+           src="/{{ $mainMedia->path }}{{ $mainMedia->name }}" alt="{{ $product->name }}">
          @else
           <img title="Default image" loading="eager" class="card-image" src="/images/store/default/default300.webp"
            alt="something wrong">
@@ -274,7 +274,7 @@
          @endphp
          @if ($mainMedia)
           <img title="{{ $product->name }}, {{ $product->short_description }}" loading="eager" class="card-image"
-           src="/{{ $mainMedia->path }}{{ $mainMedia->name }}" alt="{{ $mainMedia->name }} {{ $product->name }}">
+           src="/{{ $mainMedia->path }}{{ $mainMedia->name }}" alt="{{ $product->name }}">
          @else
           <img title="Default image" loading="eager" class="card-image" src="/images/store/default/default300.webp"
            alt="something wrong">
