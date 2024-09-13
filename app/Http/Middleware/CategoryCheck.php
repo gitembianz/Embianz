@@ -19,7 +19,11 @@ class CategoryCheck
     {
         $categorySlug = $request->segment(2);
         if (is_numeric($categorySlug)) {
-            $category = Category::find($categorySlug);
+            if (app()->has('global_cache_data') && app('global_cache_data') === 'true') {
+                $category = app()->make('cached_categories')->firstWhere('id', $categorySlug);
+            } else {
+                $category = Category::find($categorySlug);
+            }
             if ($category != null) {
                 if ($category->seo_id) {
                     return redirect()->route('products', ['categorySlug' => $category->seo_id]);
@@ -30,8 +34,11 @@ class CategoryCheck
             }
         }
         if ($categorySlug == null) {
-
-            $category = Category::find(app('global_default_category'));
+            if (app()->has('global_cache_data') && app('global_cache_data') === 'true') {
+                $category = app()->make('cached_categories')->firstWhere('id', app('global_default_category'));
+            } else {
+                $category = Category::find(app('global_default_category'));
+            }
             if ($category != null) {
                 if ($category->seo_id) {
                     return redirect()->route('products', ['categorySlug' => $category->seo_id]);
