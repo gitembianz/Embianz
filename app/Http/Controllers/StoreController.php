@@ -25,37 +25,41 @@ class StoreController extends Controller
     $data = null;
     $can = null;
     $preload = null;
+    $useCache = app()->has('global_cache_data') && app('global_cache_data') === 'true';
     if ($categorySlug) {
       if (is_numeric($categorySlug)) {
-        $category = Category::find($categorySlug);
-        if (($category->id != app('global_default_category')) && (($category == null) || ($category->active != true) || ($category->start_date > now()->format('Y-m-d')) || ($category->end_date < now()->format('Y-m-d')))) {
-          throw new NotFoundHttpException();
-        }
-        $can = $category->id;
+        $category = $useCache
+          ? app()->make('cached_categories')->firstWhere('id', $categorySlug)
+          : Category::find($categorySlug);
       } else {
-        $can = $categorySlug;
-        $category = Category::where('seo_id', $categorySlug)->first();
-        if (($category->id != app('global_default_category')) && (($category == null) || ($category->active != true) || ($category->start_date > now()->format('Y-m-d')) || ($category->end_date < now()->format('Y-m-d')))) {
-          throw new NotFoundHttpException();
-        }
+        $category = $useCache
+          ? app()->make('cached_categories')->firstWhere('seo_id', $categorySlug)
+          : Category::where('seo_id', $categorySlug)->first();
       }
-      if ($category) {
-        $data = $category;
-      } else {
+
+      if (!$category || $this->isCategoryInvalid($category)) {
         throw new NotFoundHttpException();
       }
-    }
-    if ($categorySlug == null) {
 
-      $category = Category::find(app('global_default_category'));
-      if ($category) {
-        $data = $category;
-      } else {
+      $can = is_numeric($categorySlug) ? $category->id : $categorySlug;
+      $data = $category;
+    } else {
+      $category = $useCache
+        ? app()->make('cached_categories')->firstWhere('id', app('global_default_category'))
+        : Category::find(app('global_default_category'));
+      if (!$category) {
         throw new NotFoundHttpException();
       }
+      $data = $category;
     }
 
-    $product = \App\Models\Product::where('active', true)
+    $product = $useCache
+      ? app()->make('cached_products')->filter(function ($product) use ($category) {
+        return collect($product->product_categories)->contains('category_id', $category->id);
+      })->sortByDesc('popularity')
+      ->sortByDesc('id')
+      ->first()
+      : Product::where('active', true)
       ->where('start_date', '<=', now()->format('Y-m-d'))
       ->where('end_date', '>=', now()->format('Y-m-d'))
       ->whereHas('product_categories', function ($query) use ($category) {
@@ -71,28 +75,40 @@ class StoreController extends Controller
       ])
       ->orderBy('popularity', 'desc')
       ->orderBy('id', 'desc')
-
       ->first();
-    if ($data->preload_image == true) {
-      if ($product->product_categories != null && $product->type != 'parent') {
-        $preload = "/" . optional($product->media()->first())->path . optional($product->media()->first())->name;
-      } elseif ($product->product_categories != null && $product->type = 'parent' && $product->variants->count() != 0) {
-        if ($product->variants->where('default_variant', true)->first()) {
-          $element = $product->variants->where('default_variant', true)->first()->product;
-        } else {
-          $element = $product->variants->first()->product;
-        }
-        $preload = "/" . optional($element->media()->first())->path . optional($element->media()->first())->name;
-      } else {
-        $preload = '';
-      }
-    } else {
-      $preload = '';
-    }
+
+    $preload = $this->getPreloadImage($product, $data);
+
     return view('store.products', compact('data', 'can', 'preload'));
   }
 
+  private function isCategoryInvalid($category)
+  {
+    return $category->id != app('global_default_category') &&
+      ($category->active != true ||
+        $category->start_date > now()->format('Y-m-d') ||
+        $category->end_date < now()->format('Y-m-d'));
+  }
 
+  private function getPreloadImage($product, $data)
+  {
+    if (!$data->preload_image) {
+      return '';
+    }
+
+    if ($product->product_categories != null && $product->type != 'parent') {
+      return "/" . optional($product->media->first())->path . optional($product->media->first())->name;
+    }
+
+    if ($product->product_categories != null && $product->type == 'parent' && $product->variants->count() != 0) {
+      $variant = $product->variants->where('default_variant', true)->first() ?? $product->variants->first();
+      $element = $variant->product;
+
+      return "/" . optional($element->media->first())->path . optional($element->media->first())->name;
+    }
+
+    return '';
+  }
 
   public function show($product = null)
   {
@@ -136,8 +152,6 @@ class StoreController extends Controller
 
     return view('store.product', compact('data', 'preload'));
   }
-
-
 
   // payment function
   public function success()

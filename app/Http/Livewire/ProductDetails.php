@@ -155,7 +155,7 @@ class ProductDetails extends Component
     public function incrementCounter()
     {
         $this->limit = $this->product->quantity;
-        if ($this->quantity >= $this->limit && (app()->has('global_preorder') && app('global_preorder') === 'false')) {
+        if ($this->quantity >= $this->limit && (app()->has('global_preorder') && app('global_preorder') != 'true')) {
             $this->maxlimit = true;
             $this->quantity = $this->limit;
         } else {

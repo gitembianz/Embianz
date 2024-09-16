@@ -295,7 +295,7 @@ class StoreCart extends Component
 
     if ($this->cart->quantity_amount != 0) {
       foreach ($this->cart->cartItems as $item) {
-        if ($item->quantity > $item->product->quantity && (app()->has('global_preorder') && app('global_preorder') === 'false')) {
+        if ($item->quantity > $item->product->quantity && (app()->has('global_preorder') && app('global_preorder') != 'true')) {
           $validateQuantity = false;
           $this->dispatchBrowserEvent('alert__modal');
           return;
