@@ -142,6 +142,15 @@
    </div>
    {{-- Product IsNew --}}
   </div>
+  {{-- Product Brand --}}
+  <div class="input__tabs">
+   @if ($editproduct === null)
+    <span class="disabled">{{ $product->brand }}</span>
+   @else
+    <input type="text" placeholder=" " name="product__brand" wire:model.defer="prod.product_brand" required>
+   @endif
+   <label for="product__name">Brand</label>
+  </div>
 
   {{-- Product Type --}}
   <div class="input__tabs">
@@ -176,25 +185,26 @@
    @endif
    <label for="product__name">Popularity</label>
   </div>
+  <div class="details__checkboxes">
+   {{-- Product SKU --}}
+   <div class="input__tabs">
+    @if ($editproduct === null)
+     <span class="disabled">{{ $product->sku }}</span>
+    @else
+     <input type="text" placeholder=" " name="product__name" wire:model.defer="prod.sku" required>
+    @endif
+    <label for="product__name">SKU</label>
+   </div>
 
-  {{-- Product SKU --}}
-  <div class="input__tabs">
-   @if ($editproduct === null)
-    <span class="disabled">{{ $product->sku }}</span>
-   @else
-    <input type="text" placeholder=" " name="product__name" wire:model.defer="prod.sku" required>
-   @endif
-   <label for="product__name">SKU</label>
-  </div>
-
-  {{-- Product EAN --}}
-  <div class="input__tabs">
-   @if ($editproduct === null)
-    <span class="disabled">{{ $product->ean }}</span>
-   @else
-    <input type="text" placeholder=" " name="product__name" wire:model.defer="prod.ean" required>
-   @endif
-   <label for="product__name">EAN</label>
+   {{-- Product EAN --}}
+   <div class="input__tabs">
+    @if ($editproduct === null)
+     <span class="disabled">{{ $product->ean }}</span>
+    @else
+     <input type="text" placeholder=" " name="product__name" wire:model.defer="prod.ean" required>
+    @endif
+    <label for="product__name">EAN</label>
+   </div>
   </div>
 
   {{-- Product Short Description --}}

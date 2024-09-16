@@ -241,5 +241,26 @@
    @endif
   </span>
  </div>
+ <script type="application/ld+json">
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "name": "{{ $product->name }}",
+    "image": "{{ config('app.url') . '/' . $product->media->first()->path . $product->media->first()->name }}",
+    "description": "{{ strip_tags($product->long_description) }}",
+    "brand": {
+      "@type": "Brand",
+      "name": "{{ $product->brand }}"
+    },
+    "sku": "{{ $product->sku }}",
+    "offers": {
+      "@type": "Offer",
+      "url": "{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}",
+      "priceCurrency": "@if (app()->has('global_currency_primary_name')){!! app('global_currency_primary_name') !!}@endif",
+      "price": "{{ $price }}",
+      "availability": "https://schema.org/InStock"
+    }
+  }
+</script>
 
 </div>

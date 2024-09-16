@@ -67,7 +67,7 @@ class ProductDetails extends Component
 
             $this->product = $cachedProduct;
         } else {
-            $this->product = $product->select('id', 'name', 'seo_id', 'popularity', 'long_description', 'quantity', 'short_description', 'type', 'parent_id')
+            $this->product = $product->select('id', 'sku', 'long_description', 'brand', 'name', 'seo_id', 'popularity', 'long_description', 'quantity', 'short_description', 'type', 'parent_id')
                 ->with([
                     'product_prices' => function ($query) {
                         $query->select('product_id', 'value', 'vat', 'discount', 'value_no_discount');
