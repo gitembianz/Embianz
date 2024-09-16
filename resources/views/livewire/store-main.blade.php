@@ -234,6 +234,27 @@
          </div>
         </div>
        </div>
+       <script type="application/ld+json">
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "name": "{{ $product->name }}",
+    "image": "{{ config('app.url') . '/' . $mainMedia->path . $mainMedia->name }}",
+    "description": "{{ strip_tags($product->long_description) }}",
+    "brand": {
+      "@type": "Brand",
+      "name": "{{ $product->brand }}"
+    },
+    "sku": "{{ $product->sku }}",
+    "offers": {
+      "@type": "Offer",
+      "url": "{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}",
+      "priceCurrency": "@if (app()->has('global_currency_primary_name')){!! app('global_currency_primary_name') !!}@endif",
+      "price": "{{ $price }}",
+      "availability": "https://schema.org/InStock"
+    }
+  }
+</script>
       @endforeach
      </div>
      <button class="card-slider__button new-slider__button prev" aria-label="Previous card slider button">
@@ -383,6 +404,27 @@
          </div>
         </div>
        </div>
+       <script type="application/ld+json">
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "name": "{{ $product->name }}",
+    "image": "{{ config('app.url') . '/' . $mainMedia->path . $mainMedia->name }}",
+    "description": "{{ strip_tags($product->long_description) }}",
+    "brand": {
+      "@type": "Brand",
+      "name": "{{ $product->brand }}"
+    },
+    "sku": "{{ $product->sku }}",
+    "offers": {
+      "@type": "Offer",
+      "url": "{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}",
+      "priceCurrency": "@if (app()->has('global_currency_primary_name')){!! app('global_currency_primary_name') !!}@endif",
+      "price": "{{ $price }}",
+      "availability": "https://schema.org/InStock"
+    }
+  }
+</script>
       @endforeach
      </div>
      <button class="popular-slider__button card-slider__button prev" aria-label="Previous card slider button">
