@@ -216,6 +216,24 @@ class GlobalVariablesServiceProvider extends ServiceProvider
     }
     private function loadAllCategoriesIntoCache()
     {
+        $defaultCategoryId = app('global_default_category');
+        $defaultCategory = Category::with([
+            'media' => function ($query) {
+                $query->select('path', 'name', 'sequence', 'type', 'width', 'height');
+            },
+            'parent',
+            'subcategory' => function ($query) {
+                $query->with([
+                    'category' => function ($query) {
+                        $query->select('id', 'name', 'seo_id', 'sequence')->with([
+                            'media' => function ($query) {
+                                $query->select('media_id', 'path', 'name');
+                            }
+                        ]);
+                    }
+                ]);
+            }
+        ])->find($defaultCategoryId);
         $categories = Cache::rememberForever('cached_categories', function () {
             return Category::with([
                 'media' => function ($query) {
@@ -258,6 +276,9 @@ class GlobalVariablesServiceProvider extends ServiceProvider
                 ->where('end_date', '>=', now()->format('Y-m-d'))
                 ->get();
         });
+        if ($defaultCategory && !$categories->contains('id', $defaultCategoryId)) {
+            $categories->push($defaultCategory);
+        }
 
         $this->app->instance('cached_categories', $categories);
     }
