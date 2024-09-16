@@ -187,7 +187,7 @@
           -{{ $element->product_prices->first()->discount }}%
          </p>
         @endif
-       @elseif($element->quantity == 0)
+       @elseif($element->quantity == 0 && (app()->has('global_preorder') && app('global_preorder') != 'true'))
         <p class="card-status out">
          @if (app()->has('label_product_status_indisponible'))
           {!! app('label_product_status_indisponible') !!}
@@ -221,7 +221,8 @@
       <div class="card-info">
        <div class="card-text">
         <h2><a style="text-decoration: none; font-weight:500"
-          href="{{ route('product', ['product' => $element->seo_id !== null && $element->seo_id !== '' ? $element->seo_id : $element->id]) }}">{{ $product->short_description }}</a></h2>
+          href="{{ route('product', ['product' => $element->seo_id !== null && $element->seo_id !== '' ? $element->seo_id : $element->id]) }}">{{ $product->short_description }}</a>
+        </h2>
        </div>
        <div class="card-text">
         <h2 class="card-title"><a style="text-decoration: none; font-weight:500"
@@ -295,6 +296,27 @@
       </div>
      </div>
     </div>
+    <script type="application/ld+json">
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "name": "{{ $product->name }}",
+    "image": "{{ config('app.url') . '/' . $element->media->first()->path . $element->media->first()->name }}",
+    "description": "{{ strip_tags($product->long_description) }}",
+    "brand": {
+      "@type": "Brand",
+      "name": "{{ $product->brand }}"
+    },
+    "sku": "{{ $product->sku }}",
+    "offers": {
+      "@type": "Offer",
+      "url": "{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}",
+      "priceCurrency": "@if (app()->has('global_currency_primary_name')){!! app('global_currency_primary_name') !!}@endif",
+      "price": "{{ $price }}",
+      "availability": "https://schema.org/InStock"
+    }
+  }
+</script>
    @endforeach
    <x-lazy />
   @endif

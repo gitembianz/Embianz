@@ -184,7 +184,8 @@ class Product extends Model
     'seo_title',
     'popularity',
     'seo_id',
-    'parent_id'
+    'parent_id',
+    'brand'
   ];
 
   public static function search($search)

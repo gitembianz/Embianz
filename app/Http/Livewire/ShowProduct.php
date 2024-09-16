@@ -35,7 +35,7 @@ class ShowProduct extends Component
   }
   public function cancelItemRemoval()
   {
-      $this->delete = false;
+    $this->delete = false;
   }
   public function editproduct()
   {
@@ -54,7 +54,8 @@ class ShowProduct extends Component
       'sku' => $this->product->sku,
       'ean' => $this->product->ean,
       'seo_id' => $this->product->seo_id,
-      'type' => $this->product->type
+      'type' => $this->product->type,
+      'brand' => $this->product->brand
 
     ];
     $this->editproduct = true;
@@ -95,6 +96,9 @@ class ShowProduct extends Component
       }
       if (array_key_exists('type', $product_new)) {
         $new->type = $product_new['type'];
+      }
+      if (array_key_exists('brand', $product_new)) {
+        $new->brand = $product_new['brand'];
       }
       if (array_key_exists('start_date', $product_new)) {
         $new->start_date = $product_new['start_date'];
@@ -210,16 +214,16 @@ class ShowProduct extends Component
       File::deleteDirectory($filespath);
     }
 
-   
-    if($product->type =='parent'){
-    $variants = ProductVariant::where('parent_id',$id)->get();
-    if($variants!=NULL){
-      foreach ($variants as $variant){
-        $variant->delete();
+
+    if ($product->type == 'parent') {
+      $variants = ProductVariant::where('parent_id', $id)->get();
+      if ($variants != NULL) {
+        foreach ($variants as $variant) {
+          $variant->delete();
+        }
+        $parentids = Product::where('parent_id', $id)->update(['parent_id' => NULL]);
       }
-      $parentids=Product::where('parent_id',$id)->update(['parent_id'=>NULL]);
     }
-  }
     $product->delete();
     $this->delete = false;
     return redirect()->route('all_products')->with('notification', [

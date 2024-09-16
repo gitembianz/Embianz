@@ -56,7 +56,7 @@ class StoreMain extends Component
           $query->select('product_id', 'value', 'discount', 'value_no_discount');
         },
       ])
-        ->select('id', 'name', 'seo_id', 'quantity', 'type', 'short_description', 'popularity')
+        ->select('id', 'name', 'seo_id', 'quantity', 'sku', 'long_description', 'brand', 'type', 'short_description', 'popularity')
         ->where('active', true)
         ->where('type', '!=', 'parent')
         ->where('start_date', '<=',  now()->format('Y-m-d'))
@@ -87,7 +87,7 @@ class StoreMain extends Component
         },
 
       ])
-        ->select('id', 'name', 'seo_id', 'quantity', 'short_description', 'popularity')
+        ->select('id', 'name', 'seo_id', 'quantity', 'sku', 'long_description', 'brand', 'short_description', 'popularity')
         ->where('active', true)
         ->where('type', '!=', 'parent')
         ->where('start_date', '<=',  now()->format('Y-m-d'))

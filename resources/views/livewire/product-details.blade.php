@@ -66,7 +66,7 @@
           <img src="/images/store/default/default70.webp" alt="something wrong">
          @endif
         @elseif ($product->beeingvariants->where('variant_id', $variantId)->first()->displayed == 'text')
-        <span>{{ $product->beeingvariants->where('variant_id', $variantId)->first()->value }}</span>
+         <span>{{ $product->beeingvariants->where('variant_id', $variantId)->first()->value }}</span>
         @else
          @if ($product->media->first() != null)
           <img src="/{{ $product->media->first()->path }}{{ $product->media->first()->name }}"
@@ -74,7 +74,7 @@
          @else
           <img src="/images/store/default/default70.webp" alt="something wrong">
          @endif
-        <span>{{ $product->beeingvariants->where('variant_id', $variantId)->first()->value }}</span>
+         <span>{{ $product->beeingvariants->where('variant_id', $variantId)->first()->value }}</span>
         @endif
        </a>
        @foreach ($variantGroup as $variant)
@@ -154,32 +154,34 @@
    @endif
    {{ number_format($product->product_prices->first()->vat, 2, $decimal, $mill) }}%
   </span>
-  <div class="quantity">
-   <span>
-    @if (app()->has('label_product_quantity_tag'))
-     {!! app('label_product_quantity_tag') !!}
-    @endif
-   </span>
-   <div class="quantity__buttons">
-    <button class="quantity__arrow" wire:click="decrementCounter" aria-label="Decrement quantity">
-     <svg>
-      <circle cx="12" cy="12" r="10"></circle>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-     </svg>
-    </button>
-    <span class="quantity__input" name="count" id="count">
-     {{ $quantity }}
+  @if ($product->quantity != 0 || (app()->has('global_preorder') && app('global_preorder') === 'true'))
+   <div class="quantity">
+    <span>
+     @if (app()->has('label_product_quantity_tag'))
+      {!! app('label_product_quantity_tag') !!}
+     @endif
     </span>
-    <button class="quantity__arrow" wire:click="incrementCounter" aria-label="Increment quantity">
-     <svg>
-      <circle cx="12" cy="12" r="10"></circle>
-      <line x1="12" y1="8" x2="12" y2="16"></line>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-     </svg>
-    </button>
-   </div>
+    <div class="quantity__buttons">
+     <button class="quantity__arrow" wire:click="decrementCounter" aria-label="Decrement quantity">
+      <svg>
+       <circle cx="12" cy="12" r="10"></circle>
+       <line x1="8" y1="12" x2="16" y2="12"></line>
+      </svg>
+     </button>
+     <span class="quantity__input" name="count" id="count">
+      {{ $quantity }}
+     </span>
+     <button class="quantity__arrow" wire:click="incrementCounter" aria-label="Increment quantity">
+      <svg>
+       <circle cx="12" cy="12" r="10"></circle>
+       <line x1="12" y1="8" x2="12" y2="16"></line>
+       <line x1="8" y1="12" x2="16" y2="12"></line>
+      </svg>
+     </button>
+    </div>
 
-  </div>
+   </div>
+  @endif
  @endif
  @if ($maxlimit)
   <span>
@@ -189,31 +191,39 @@
   </span>
  @endif
 
- @if ($price && $product->quantity != 0)
-  <button class="card__button" style="width: 100%;height: 40px;" onclick="flyToCart(this)"
-   aria-label="Add to cart button" wire:click="addToCart({{ $product->id }})" wire:ignore="$refresh">
-   <div class="card__button--cart">
-    <svg>
-     <circle cx="9" cy="21" r="1"></circle>
-     <circle cx="20" cy="21" r="1"></circle>
-     <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-    </svg>
-   </div>
-   <div class="card__button--gift">
-    <svg>
-     <polyline points="20 12 20 22 4 22 4 12"></polyline>
-     <rect x="2" y="7" width="20" height="5"></rect>
-     <line x1="12" y1="22" x2="12" y2="7"></line>
-     <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path>
-     <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path>
-    </svg>
-   </div>
-   <span class="card__button--text">
-    @if (app()->has('label_add_to_cart_button'))
-     {!! app('label_add_to_cart_button') !!}
+ @if ($price)
+  @if ($product->quantity != 0 || (app()->has('global_preorder') && app('global_preorder') === 'true'))
+   <button class="card__button" style="width: 100%;height: 40px;" onclick="flyToCart(this)"
+    aria-label="Add to cart button" wire:click="addToCart({{ $product->id }})" wire:ignore="$refresh">
+    <div class="card__button--cart">
+     <svg>
+      <circle cx="9" cy="21" r="1"></circle>
+      <circle cx="20" cy="21" r="1"></circle>
+      <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+     </svg>
+    </div>
+    <div class="card__button--gift">
+     <svg>
+      <polyline points="20 12 20 22 4 22 4 12"></polyline>
+      <rect x="2" y="7" width="20" height="5"></rect>
+      <line x1="12" y1="22" x2="12" y2="7"></line>
+      <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path>
+      <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path>
+     </svg>
+    </div>
+    <span class="card__button--text">
+     @if (app()->has('label_add_to_cart_button'))
+      {!! app('label_add_to_cart_button') !!}
+     @endif
+    </span>
+   </button>
+  @else
+   <button class="card-button-disabled" aria-label="Disabled Add to cart button">
+    @if (app()->has('label_add_to_cart_button_indisponibil'))
+     {!! app('label_add_to_cart_button_indisponibil') !!}
     @endif
-   </span>
-  </button>
+   </button>
+  @endif
  @else
   <button class="card-button-disabled" aria-label="Disabled Add to cart button">
    @if (app()->has('label_add_to_cart_button_indisponibil'))
@@ -231,5 +241,26 @@
    @endif
   </span>
  </div>
+ <script type="application/ld+json">
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "name": "{{ $product->name }}",
+    "image": "{{ config('app.url') . '/' . $product->media->first()->path . $product->media->first()->name }}",
+    "description": "{{ strip_tags($product->long_description) }}",
+    "brand": {
+      "@type": "Brand",
+      "name": "{{ $product->brand }}"
+    },
+    "sku": "{{ $product->sku }}",
+    "offers": {
+      "@type": "Offer",
+      "url": "{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}",
+      "priceCurrency": "@if (app()->has('global_currency_primary_name')){!! app('global_currency_primary_name') !!}@endif",
+      "price": "{{ $price }}",
+      "availability": "https://schema.org/InStock"
+    }
+  }
+</script>
 
 </div>

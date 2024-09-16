@@ -74,7 +74,7 @@ class StoreShowProduct extends Component
                   $query->where('active', 1)
                     ->where('start_date', '<=', now()->format('Y-m-d'))
                     ->where('end_date', '>=', now()->format('Y-m-d'))
-                    ->select('id', 'name', 'popularity', 'seo_id', 'short_description', 'quantity', 'active', 'end_date', 'start_date')
+                    ->select('id', 'name', 'sku', 'long_description', 'brand', 'popularity', 'seo_id', 'short_description', 'quantity', 'active', 'end_date', 'start_date')
                     ->with([
                       'media' => function ($query) {
                         $query->select('path', 'name', 'type')->where('type', 'main');

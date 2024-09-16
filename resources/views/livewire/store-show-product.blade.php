@@ -286,7 +286,8 @@
        <div class="card-info">
         <div class="card-text">
          <h2><a style="text-decoration: none; font-weight:500"
-           href="{{ route('product', ['product' => $product->product->seo_id !== null && $product->product->seo_id !== '' ? $product->product->seo_id : $product->product->id]) }}">{{ $product->product->short_description }}</a></h2>
+           href="{{ route('product', ['product' => $product->product->seo_id !== null && $product->product->seo_id !== '' ? $product->product->seo_id : $product->product->id]) }}">{{ $product->product->short_description }}</a>
+         </h2>
         </div>
         <div class="card-text">
          <h2><a style="text-decoration: none; font-weight:500"
@@ -337,6 +338,27 @@
         </span>
        </div>
       </div>
+      <script type="application/ld+json">
+   {
+     "@context": "https://schema.org/",
+     "@type": "Product",
+     "name": "{{ $product->product->name }}",
+     "image": "{{ config('app.url') . '/' . $product->product->media->first()->path . $product->product->media->first()->name }}",
+     "description": "{{ strip_tags($product->product->long_description) }}",
+     "brand": {
+       "@type": "Brand",
+       "name": "{{ $product->product->brand }}"
+     },
+     "sku": "{{ $product->product->sku }}",
+     "offers": {
+       "@type": "Offer",
+       "url": "{{ route('product', ['product' => $product->product->seo_id !== null && $product->product->seo_id !== '' ? $product->product->seo_id : $product->product->id]) }}",
+       "priceCurrency": "@if (app()->has('global_currency_primary_name')){!! app('global_currency_primary_name') !!}@endif",
+       "price": "{{ $price }}",
+       "availability": "https://schema.org/InStock"
+     }
+   }
+ </script>
      @endif
     @endforeach
    </div>
