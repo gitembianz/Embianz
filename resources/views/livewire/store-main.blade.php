@@ -310,8 +310,8 @@
             -{{ $product->product_prices->first()->discount }}%
            </p>
           @endif
-         @elseif($product->quantity == 0)
-          <p class="card-status save">
+         @elseif($product->quantity == 0 && (app()->has('global_preorder') && app('global_preorder') != 'true'))
+          <p class="card-status out">
            @if (app()->has('label_product_status_indisponible'))
             {!! app('label_product_status_indisponible') !!}
            @endif

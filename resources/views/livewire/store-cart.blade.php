@@ -61,7 +61,7 @@
           $isdisabled = true;
       }
       
-      if ($cartItem->product->quantity < $cartItem->quantity && (app()->has('global_preorder') && app('global_preorder') === 'false')) {
+      if ($cartItem->product->quantity < $cartItem->quantity && (app()->has('global_preorder') && app('global_preorder') != 'true')) {
           $nonquantity[$index] = true;
           $isdisabled = true;
       }
