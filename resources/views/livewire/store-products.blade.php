@@ -491,7 +491,7 @@
      let priceElement = document.querySelector('.dlv_price');
      let currencyElement = document.querySelector('.dlv_currency');
      let price = priceElement ? priceElement.textContent.trim() : product.price;
-     let currency = currencyElement ? currencyElement.textContent.trim();
+     let currency = currencyElement.textContent.trim();
      let jsonLd = {
       "@context": "https://schema.org/",
       "@type": "Product",
@@ -507,7 +507,7 @@
        "@type": "Offer",
        "url": `${window.location.origin}/product/${product.seo_id || product.id}`,
        "priceCurrency": currency,
-       "price": price,
+       "price": `${product.product_prices[0].value}`,
        "availability": `https://schema.org/InStock`
       }
      };
