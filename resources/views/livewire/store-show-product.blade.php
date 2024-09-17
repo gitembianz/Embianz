@@ -331,6 +331,8 @@
        <div style="display: none" class="dlv">
         <span class="dlv_name">{{ $product->product->name }}</span>
         <span class="dlv_price">{{ $price }}</span>
+        <span
+         class="dlv_media">/{{ $product->product->media->first()->path }}{{ $product->product->media->first()->name }}</span>
         <span class="dlv_currency">
          @if (app()->has('global_currency_primary_name'))
           {!! app('global_currency_primary_name') !!}
@@ -338,32 +340,61 @@
         </span>
        </div>
       </div>
-      <script type="application/ld+json">
-   {
-     "@context": "https://schema.org/",
-     "@type": "Product",
-     "name": "{{ $product->product->name }}",
-     "image": "{{ config('app.url') . '/' . $product->product->media->first()->path . $product->product->media->first()->name }}",
-     "description": "{{ strip_tags($product->product->long_description) }}",
-     "brand": {
-       "@type": "Brand",
-       "name": "{{ $product->product->brand }}"
-     },
-     "sku": "{{ $product->product->sku }}",
-     "offers": {
-       "@type": "Offer",
-       "url": "{{ route('product', ['product' => $product->product->seo_id !== null && $product->product->seo_id !== '' ? $product->product->seo_id : $product->product->id]) }}",
-       "priceCurrency": "@if (app()->has('global_currency_primary_name')){!! app('global_currency_primary_name') !!}@endif",
-       "price": "{{ $price }}",
-       "availability": "https://schema.org/InStock"
-     }
-   }
- </script>
+      <div style="display: none" class="json-ld-data" data-product-json='@json($product->product)'></div>
      @endif
     @endforeach
    </div>
   </section>
  @endif
+ <script>
+  document.addEventListener("livewire:load", function() {
+   injectJsonLd();
+   Livewire.hook('message.processed', (message, component) => {
+    injectJsonLd();
+   });
 
+   function injectJsonLd() {
+    let existingScripts = document.querySelectorAll('script[type="application/ld+json"]');
+
+    let jsonLdElements = document.querySelectorAll('.json-ld-data');
+    jsonLdElements.forEach(element => {
+     let productData = element.dataset.productJson;
+     let product = JSON.parse(productData);
+
+     let priceElement = document.querySelector('.dlv_price');
+     let currencyElement = document.querySelector('.dlv_currency');
+     let mediaElement = document.querySelector('.dlv_media');
+
+     let price = priceElement ? priceElement.textContent.trim() : product.price;
+     let currency = currencyElement.textContent.trim();
+     let media = mediaElement.textContent.trim();
+     let jsonLd = {
+      "@context": "https://schema.org/",
+      "@type": "Product",
+      "name": product.name,
+      "image": `${window.location.origin}${media}`,
+      "description": product.long_description,
+      "brand": {
+       "@type": "Brand",
+       "name": product.brand
+      },
+      "sku": product.sku,
+      "offers": {
+       "@type": "Offer",
+       "url": `${window.location.origin}/product/${product.seo_id || product.id}`,
+       "priceCurrency": currency,
+       "price": `${product.product_prices[0].value}`,
+       "availability": `https://schema.org/InStock`
+      }
+     };
+
+     let script = document.createElement('script');
+     script.type = 'application/ld+json';
+     script.textContent = JSON.stringify(jsonLd);
+     document.head.appendChild(script);
+    });
+   }
+  });
+ </script>
  <script src="/script/store/product.js" defer></script>
 </div>
