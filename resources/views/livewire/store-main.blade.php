@@ -116,7 +116,7 @@
     <div class="card-slider container new-slider">
      <div class="card-slider__wrapper new-slider__wrapper">
       @foreach ($popproducts as $product)
-       <div class="card-slider__slide new-slider__slide card">
+       <div class="card-slider__slide new-slider__slide card" data-product-jsonld="products-{{ $loop->index }}">
 
         <a draggable="false"
          href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">
@@ -234,27 +234,7 @@
          </div>
         </div>
        </div>
-       <script type="application/ld+json">
-  {
-    "@context": "https://schema.org/",
-    "@type": "Product",
-    "name": "{{ $product->name }}",
-    "image": "{{ config('app.url') . '/' . $mainMedia->path . $mainMedia->name }}",
-    "description": "{{ strip_tags($product->long_description) }}",
-    "brand": {
-      "@type": "Brand",
-      "name": "{{ $product->brand }}"
-    },
-    "sku": "{{ $product->sku }}",
-    "offers": {
-      "@type": "Offer",
-      "url": "{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}",
-      "priceCurrency": "@if (app()->has('global_currency_primary_name')){!! app('global_currency_primary_name') !!}@endif",
-      "price": "{{ $price }}",
-      "availability": "https://schema.org/InStock"
-    }
-  }
-</script>
+       <div style="display: none" class="json-ld-data" data-product-json='@json($product)'></div>
       @endforeach
      </div>
      <button class="card-slider__button new-slider__button prev" aria-label="Previous card slider button">
@@ -287,7 +267,8 @@
     <div class="card-slider container popular-slider">
      <div class="card-slider__wrapper popular-slider__wrapper">
       @foreach ($newproducts as $product)
-       <div class="card-slider__slide popular-slider__slide card">
+       <div class="card-slider__slide popular-slider__slide card"
+        data-product-jsonld="newproducts-{{ $loop->index }}">
         <a draggable="false"
          href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">
          @php
@@ -404,27 +385,7 @@
          </div>
         </div>
        </div>
-       <script type="application/ld+json">
-  {
-    "@context": "https://schema.org/",
-    "@type": "Product",
-    "name": "{{ $product->name }}",
-    "image": "{{ config('app.url') . '/' . $mainMedia->path . $mainMedia->name }}",
-    "description": "{{ strip_tags($product->long_description) }}",
-    "brand": {
-      "@type": "Brand",
-      "name": "{{ $product->brand }}"
-    },
-    "sku": "{{ $product->sku }}",
-    "offers": {
-      "@type": "Offer",
-      "url": "{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}",
-      "priceCurrency": "@if (app()->has('global_currency_primary_name')){!! app('global_currency_primary_name') !!}@endif",
-      "price": "{{ $price }}",
-      "availability": "https://schema.org/InStock"
-    }
-  }
-</script>
+       <div style="display: none" class="json-ld-data" data-product-json='@json($product)'></div>
       @endforeach
      </div>
      <button class="popular-slider__button card-slider__button prev" aria-label="Previous card slider button">
@@ -446,5 +407,50 @@
 
   <!---------------------------------------------------------->
  </main>
+ <script>
+  document.addEventListener("livewire:load", function() {
+   injectJsonLd();
+
+   function injectJsonLd() {
+    let existingScripts = document.querySelectorAll('script[type="application/ld+json"]');
+    existingScripts.forEach(script => script.remove());
+
+    let jsonLdElements = document.querySelectorAll('.json-ld-data');
+    jsonLdElements.forEach(element => {
+     let productData = element.dataset.productJson;
+     let product = JSON.parse(productData);
+
+     let priceElement = document.querySelector('.dlv_price');
+     let currencyElement = document.querySelector('.dlv_currency');
+     let price = priceElement ? priceElement.textContent.trim() : product.price;
+     let currency = currencyElement.textContent.trim();
+     let jsonLd = {
+      "@context": "https://schema.org/",
+      "@type": "Product",
+      "name": product.name,
+      "image": `${window.location.origin}/${product.media[0].path}${product.media[0].name}`, // Dynamic image path
+      "description": product.long_description.replace(/(<([^>]+)>)/gi, ""),
+      "brand": {
+       "@type": "Brand",
+       "name": product.brand
+      },
+      "sku": product.sku,
+      "offers": {
+       "@type": "Offer",
+       "url": `${window.location.origin}/product/${product.seo_id || product.id}`,
+       "priceCurrency": currency,
+       "price": `${product.product_prices[0].value}`,
+       "availability": `https://schema.org/InStock`
+      }
+     };
+
+     let script = document.createElement('script');
+     script.type = 'application/ld+json';
+     script.textContent = JSON.stringify(jsonLd);
+     document.head.appendChild(script);
+    });
+   }
+  });
+ </script>
  <script src="/script/store/main.js" defer></script>
 </div>
