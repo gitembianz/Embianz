@@ -51,7 +51,8 @@ class ShowCategory extends Component
       'seo_id' => $this->category->seo_id,
       'slider_sequence' => $this->category->slider_sequence,
       'acc_items' => $this->category->accepted_items,
-      'preload' => $this->category->preload_image
+      'preload' => $this->category->preload_image,
+      'varprice' => $this->category->display_variant_price
 
     ];
     $this->editcategory = true;
@@ -103,6 +104,9 @@ class ShowCategory extends Component
       }
       if (array_key_exists('preload', $category_new)) {
         $new->preload_image = $category_new['preload'];
+      }
+      if (array_key_exists('varprice', $category_new)) {
+        $new->display_variant_price = $category_new['varprice'];
       }
       if (array_key_exists('start_date', $category_new)) {
         $new->start_date = $category_new['start_date'];

@@ -137,6 +137,9 @@
      <label for="store_tab3">Show in store</label>
     @endif
    </div>
+  </div>
+  <div class="details__checkboxes">
+
    <div class="checkbox__details ">
     @if ($editcategory === null)
      @if ($category->preload_image)
@@ -149,6 +152,20 @@
     @else
      <input type="checkbox" id="preload3" wire:model.defer="cat.preload" />
      <label for="preload3">Preload image</label>
+    @endif
+   </div>
+   <div class="checkbox__details ">
+    @if ($editcategory === null)
+     @if ($category->display_variant_price)
+      <input type="checkbox" id="varprice1" checked class="disabled" disabled />
+      <label for="varprice1" class="disabled">Display Variant Price</label>
+     @else
+      <input type="checkbox" id="varprice2" class="disabled" disabled />
+      <label for="varprice2" class="disabled">Display Variant Price</label>
+     @endif
+    @else
+     <input type="checkbox" id="varprice3" wire:model.defer="cat.varprice" />
+     <label for="varprice3">Display Variant Price</label>
     @endif
    </div>
   </div>
@@ -172,28 +189,29 @@
    @endif
    <label for="category__name">End Date</label>
   </div>
+  <div class="details__checkboxes">
 
-  {{-- Category Slider Sequence --}}
-  <div class="input__tabs">
-   @if ($editcategory === null)
-    <span class="disabled">{{ $category->slider_sequence }}</span>
-   @else
-    <input type="number" placeholder=" " name="category__name" wire:model.defer="cat.slider_sequence" required>
-   @endif
-   <label for="category__name">slider Sequence</label>
+   {{-- Category Slider Sequence --}}
+   <div class="input__tabs">
+    @if ($editcategory === null)
+     <span class="disabled">{{ $category->slider_sequence }}</span>
+    @else
+     <input type="number" placeholder=" " name="category__name" wire:model.defer="cat.slider_sequence" required>
+    @endif
+    <label for="category__name">Slider Sequence</label>
+   </div>
+
+   {{-- Category Sequence --}}
+   <div class="input__tabs">
+    @if ($editcategory === null)
+     <span class="disabled">{{ $category->sequence }}</span>
+    @else
+     <input type="number" placeholder=" " name="category__name" wire:model.defer="cat.sequence" required>
+    @endif
+    <label for="category__name">Sequence</label>
+   </div>
+
   </div>
-
-  {{-- Category Sequence --}}
-  <div class="input__tabs">
-   @if ($editcategory === null)
-    <span class="disabled">{{ $category->sequence }}</span>
-   @else
-    <input type="number" placeholder=" " name="category__name" wire:model.defer="cat.sequence" required>
-   @endif
-   <label for="category__name">Sequence</label>
-  </div>
-
-
 
   {{-- Category Meta Description --}}
   <div class="input__tabs details__long">
