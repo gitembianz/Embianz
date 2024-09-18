@@ -424,11 +424,15 @@
      let currencyElement = document.querySelector('.dlv_currency');
      let price = priceElement ? priceElement.textContent.trim() : product.price;
      let currency = currencyElement.textContent.trim();
+     let media = (product.media && product.media.length > 0) ?
+      `${window.location.origin}/${product.media[0].path}${product.media[0].name}` :
+      `${window.location.origin}/images/store/default/default300.webp`;
+
      let jsonLd = {
       "@context": "https://schema.org/",
       "@type": "Product",
       "name": product.name,
-      "image": `${window.location.origin}/${product.media[0].path}${product.media[0].name}`, // Dynamic image path
+      "image": media,
       "description": product.long_description.replace(/(<([^>]+)>)/gi, ""),
       "brand": {
        "@type": "Brand",

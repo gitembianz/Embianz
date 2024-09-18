@@ -235,8 +235,6 @@
  <div style="display: none" class="dlv">
   <span class="dlv_name">{{ $product->name }}</span>
   <span class="dlv_price">{{ $price }}</span>
-  <span class="dlv_media">/{{ $product->media->first()->path }}{{ $product->media->first()->name }}</span>
-
   <span class="dlv_currency">
    @if (app()->has('global_currency_primary_name'))
     {!! app('global_currency_primary_name') !!}
@@ -261,11 +259,15 @@
      let currencyElement = document.querySelector('.dlv_currency');
      let price = priceElement ? priceElement.textContent.trim() : product.price;
      let currency = currencyElement.textContent.trim();
+     let media = (product.media && product.media.length > 0) ?
+      `${window.location.origin}/${product.media[0].path}${product.media[0].name}` :
+      `${window.location.origin}/images/store/default/default.webp`;
+
      let jsonLd = {
       "@context": "https://schema.org/",
       "@type": "Product",
       "name": product.name,
-      "image": `${window.location.origin}/${product.media[0].path}${product.media[0].name}`, // Dynamic image path
+      "image": media,
       "description": product.long_description.replace(/(<([^>]+)>)/gi, ""),
       "brand": {
        "@type": "Brand",

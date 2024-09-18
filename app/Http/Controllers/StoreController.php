@@ -96,11 +96,11 @@ class StoreController extends Controller
       return '';
     }
 
-    if ($product->product_categories != null && $product->type != 'parent') {
+    if ($product && $product->product_categories != null && $product->type != 'parent') {
       return "/" . optional($product->media->first())->path . optional($product->media->first())->name;
     }
 
-    if ($product->product_categories != null && $product->type == 'parent' && $product->variants->count() != 0) {
+    if ($product && $product->product_categories != null && $product->type == 'parent' && $product->variants->count() != 0) {
       $variant = $product->variants->where('default_variant', true)->first() ?? $product->variants->first();
       $element = $variant->product;
 
