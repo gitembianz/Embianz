@@ -331,8 +331,6 @@
        <div style="display: none" class="dlv">
         <span class="dlv_name">{{ $product->product->name }}</span>
         <span class="dlv_price">{{ $price }}</span>
-        <span
-         class="dlv_media">/{{ $product->product->media->first()->path }}{{ $product->product->media->first()->name }}</span>
         <span class="dlv_currency">
          @if (app()->has('global_currency_primary_name'))
           {!! app('global_currency_primary_name') !!}
@@ -367,12 +365,15 @@
 
      let price = priceElement ? priceElement.textContent.trim() : product.price;
      let currency = currencyElement.textContent.trim();
-     let media = mediaElement.textContent.trim();
+     let media = (product.media && product.media.length > 0) ?
+      `${window.location.origin}/${product.media[0].path}${product.media[0].name}` :
+      `${window.location.origin}/images/store/default/default300.webp`;
+
      let jsonLd = {
       "@context": "https://schema.org/",
       "@type": "Product",
       "name": product.name,
-      "image": `${window.location.origin}${media}`,
+      "image": media,
       "description": product.long_description,
       "brand": {
        "@type": "Brand",
