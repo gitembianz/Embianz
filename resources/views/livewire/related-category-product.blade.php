@@ -1,4 +1,6 @@
 <div class="accordion @if ($showrelateitems) active @endif">
+ <x-alert />
+
  {{-- ASIDES --}}
  {{-- Delete Record || Delete Records --}}
  <aside>
@@ -384,6 +386,16 @@
        </button>
       </th>
      @endif
+     @if ($this->showColumn('Is primary category?'))
+      <th class="hidden">
+       <button class="table--btn">
+        Is primary category?
+        <svg>
+         <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+       </button>
+      </th>
+     @endif
      @if ($this->showColumn('Created At'))
       <th class="hidden">
        <button class="table--btn">
@@ -429,18 +441,18 @@
         <div class="checkbox--primary">
          <input type="checkbox" value="{{ $related->id }}" id="{{ $related->id }}" wire:model="checked">
          <lable for="{{ $related->id }}"></lable>
-         </d>
+        </div>
        </td>
 
        @if ($this->showColumn('Id'))
         <td wire:click="expandRow({{ $index }})">{{ $related->id }}</td>
        @endif
-       @if ($this->showColumn('Product Name'))
+       {{-- @if ($this->showColumn('Product Name'))
         <td data-title="Name" wire:click="expandRow({{ $index }})">
          <a href="{{ route('show_product', ['id' => $product->id]) }}">
           {{ $product->name }}</a>
         </td>
-       @endif
+       @endif --}}
        @if ($this->showColumn('Category Name'))
         <td data-title="Name" wire:click="expandRow({{ $index }})">
          <a href="{{ route('show_category', ['id' => $related->category->id]) }}">
@@ -472,24 +484,70 @@
          @endif
         </td>
        @endif
+       @if ($this->showColumn('Is primary category?'))
+        <td class="hidden" wire:click="expandRow({{ $index }})">
+         @if ($editindex !== $index)
+          @if ($related->primary_category)
+           <div class="checkbox--secondary disabled">
+            <input type="checkbox" id="disabled9" disabled checked>
+            <label id="disabled9"></label>
+           </div>
+          @else
+           <div class="checkbox--secondary disabled">
+            <input type="checkbox" id="disabled10" disabled>
+            <label id="disabled10"></label>
+           </div>
+          @endif
+         @else
+          <input type="checkbox" id="primary" wire:model="var.{{ $index }}.primary">
+         @endif
+        </td>
+       @endif
+
        @if ($this->showColumn('Created At'))
         <td class="hidden" wire:click="expandRow({{ $index }})">
-         {{ $related->created_at }}
+         {{ $related->category->created_at }}
         </td>
        @endif
        @if ($this->showColumn('Updated At'))
         <td class="hidden" wire:click="expandRow({{ $index }})">
-         {{ $related->updated_at }}
+         {{ $related->category->updated_at }}
         </td>
        @endif
        <td>
-        <button class="button button--secondary button--sm"
-         wire:click.prevent="confirmItemRemoval({{ $related->id }})">
-         <svg>
-          <polyline points="3 6 5 6 21 6"></polyline>
-          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-         </svg>
-        </button>
+        @if ($editindex !== $index)
+         <div style="display: flex;">
+          <button class="button button--secondary button--sm"
+           wire:click.prevent="edititem({{ $index }}, {{ $related->id }})">
+           <svg>
+            <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
+            </path>
+           </svg>
+          </button>
+          <button class="button button--secondary button--sm"
+           wire:click.prevent="confirmItemRemoval({{ $related->id }})">
+           <svg>
+            <polyline points="3 6 5 6 21 6"></polyline>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+           </svg>
+          </button>
+         </div>
+        @else
+         <div style="display: flex;">
+          <button class="button button--secondary button--sm"
+           wire:click.prevent="saveitem({{ $index }},{{ $related->id }})">
+           <svg>
+            <polyline points="20 6 9 17 4 12"></polyline>
+           </svg>
+          </button>
+          <button class="button button--secondary button--sm" wire:click.prevent="canceledit()">
+           <svg>
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+           </svg>
+          </button>
+         </div>
+        @endif
        </td>
       </tr>
       <tr class="details-row  @if ($rind === $i) active @endif">
@@ -524,16 +582,32 @@
            @endif
           </p>
          @endif
+         @if ($this->showColumn('Is primary category?'))
+          <p>
+           <bold>Is primary category?</bold>
+           @if ($related->primary_category)
+            <div class="checkbox--secondary disabled">
+             <input type="checkbox" id="disabled7" disabled checked>
+             <label for="disabled7"></label>
+            </div>
+           @else
+            <div class="checkbox--secondary disabled">
+             <input type="checkbox" id="disabled8" disabled>
+             <label for="disabled8"></label>
+            </div>
+           @endif
+          </p>
+         @endif
          @if ($this->showColumn('Created At'))
           <p>
            <bold>Created At</bold>
-           {{ $related->created_at }}
+           {{ $related->category->created_at }}
           </p>
          @endif
          @if ($this->showColumn('Updated At'))
           <p>
            <bold>Updated At</bold>
-           {{ $related->updated_at }}
+           {{ $related->category->updated_at }}
           </p>
          @endif
         </div>
