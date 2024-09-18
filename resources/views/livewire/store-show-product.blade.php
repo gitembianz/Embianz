@@ -13,30 +13,37 @@
       $decimal = ',';
   }
  @endphp
- <div class="breadcrumbs container">
+ <ol class="breadcrumbs container">
+  <li>
   <a class="breadcrumbs__link" href="{{ url('/') }}">
    @if (app()->has('label_breadcrumbs_home_page'))
     {!! app('label_breadcrumbs_home_page') !!}
    @endif
   </a>
+</li>
   @if (app()->has('global_show_on_breadcrumbs') && app('global_show_on_breadcrumbs') == 'true')
+  <li>
    <a class="breadcrumbs__link" href="{{ url('/storeproducts') }}">
     @if (app()->has('label_breadcrumbs_allproducts'))
      {!! app('label_breadcrumbs_allproducts') !!}
     @endif
    </a>
+  </li>
   @endif
   @if ($product->product_categories->isNotEmpty())
    @foreach ($product->getCategoryHierarchy() as $breadcrumb)
+   <li>
     <a class="breadcrumbs__link" href="{{ route('products', ['categorySlug' => $breadcrumb['slug']]) }}">
      {{ $breadcrumb['name'] }}
     </a>
+  </li>
    @endforeach
   @endif
-  <a
-   href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}"
+  <li>
+  <a href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}"
    class="breadcrumbs__link">{{ $product->name }}</a>
- </div>
+  </li>
+  </ol>
  <section class="product container">
   <!-------------------- Slider Product ------------------>
   <div class="product-slider">

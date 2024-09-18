@@ -1,17 +1,21 @@
 <div>
  <!------------------------Breadcrumbs----------------------->
- <div class="breadcrumbs container">
+ <ol class="breadcrumbs container">
+  <li>
   <a class="breadcrumbs__link" href="{{ url('/') }}">
    @if (app()->has('label_breadcrumbs_home_page'))
     {!! app('label_breadcrumbs_home_page') !!}
    @endif
   </a>
+  </li>
+  <li>
   <a class="breadcrumbs__link" href="{{ url('/search') }}">
    @if (app()->has('label_breadcrumbs_search'))
     {!! app('label_breadcrumbs_search') !!}
    @endif
   </a>
- </div>
+  </li>
+</ol>
  <!---------------------------------------------------------->
  <section class="controls container controls--search">
   <input class="controls__search" type="text" maxlength="100" autocomplete="off" name="search" id="search"

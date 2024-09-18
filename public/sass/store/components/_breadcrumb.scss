@@ -13,6 +13,16 @@
   transition: all 0.3s ease-in-out;
 }
 
+.breadcrumbs > li {
+  list-style: none;
+
+  &:not(:last-child)::after {
+    content:"/";
+    transform: translateY(-50%);
+    font-size:0.8rem;
+  }
+}
+
 .breadcrumbs__link {
   font-size: 12px;
   font-weight: $lightWeight;
@@ -23,7 +33,7 @@
   // text-wrap: nowrap;
   // text-transform: capitalize;
   position: relative;
-  padding-right: 10px;
+  padding-right: 5px;
   line-height: 150%;
   text-underline-offset: 3px;
   text-decoration-thickness: 2px;
