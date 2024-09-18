@@ -344,12 +344,14 @@
          @endif
         </span>
        </div>
+       <div style="display: none" class="json-ld-data" data-product-json='@json($product->product)'></div>
       </div>
-      <div style="display: none" class="json-ld-data" data-product-json='@json($product->product)'></div>
      @endif
     @endforeach
    </div>
   </section>
+  <!---------------------- Support Center -------------------->
+  <x-support />
  @endif
  <script>
   document.addEventListener("livewire:load", function() {

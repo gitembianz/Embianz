@@ -233,8 +233,8 @@
           </span>
          </div>
         </div>
+        <div style="display: none" class="json-ld-data" data-product-json='@json($product)'></div>
        </div>
-       <div style="display: none" class="json-ld-data" data-product-json='@json($product)'></div>
       @endforeach
      </div>
      <button class="card-slider__button new-slider__button prev" aria-label="Previous card slider button">
@@ -384,8 +384,8 @@
           </span>
          </div>
         </div>
+        <div style="display: none" class="json-ld-data" data-product-json='@json($product)'></div>
        </div>
-       <div style="display: none" class="json-ld-data" data-product-json='@json($product)'></div>
       @endforeach
      </div>
      <button class="popular-slider__button card-slider__button prev" aria-label="Previous card slider button">
