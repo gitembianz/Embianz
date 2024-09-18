@@ -295,8 +295,8 @@
        @endif
       </div>
      </div>
+     <div style="display: none" class="json-ld-data" data-product-json='@json($product)'></div>
     </div>
-    <div style="display: none" class="json-ld-data" data-product-json='@json($product)'></div>
    @endforeach
    <x-lazy />
   @endif
