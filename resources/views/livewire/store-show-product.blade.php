@@ -343,6 +343,8 @@
     @endforeach
    </div>
   </section>
+  <!---------------------- Support Center -------------------->
+  <x-support />
  @endif
  <script>
   document.addEventListener("livewire:load", function() {
