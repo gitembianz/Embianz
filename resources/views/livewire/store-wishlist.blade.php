@@ -40,7 +40,7 @@
        @if ($item->product->media->where('type', 'min')->first() != null)
         <img title="{{ $item->product->name }}" loading="eager"
          src="/{{ $item->product->media->where('type', 'min')->first()->path }}{{ $item->product->media->where('type', 'min')->first()->name }}"
-         alt="{{ $item->product->media->where('type', 'min')->first()->name }} {{ $item->product->name }}">
+         alt="{{ $item->product->name }}">
        @else
         <img title="Default image" loading="eager" src="/images/store/default/default70.webp" alt="something wrong">
        @endif

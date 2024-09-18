@@ -14,35 +14,43 @@
       $decimal = ',';
   }
  @endphp
- <div class="breadcrumbs container">
+ <ol class="breadcrumbs container">
+    <li>
   <a class="breadcrumbs__link" href="{{ url('/') }}">
    @if (app()->has('label_breadcrumbs_home_page'))
     {!! app('label_breadcrumbs_home_page') !!}
    @endif
   </a>
+  </li>
   @if (app()->has('global_show_on_breadcrumbs') && app('global_show_on_breadcrumbs') == 'true')
-   <a class="breadcrumbs__link" href="{{ url('/storeproducts') }}">
+  <li> 
+  <a class="breadcrumbs__link" href="{{ url('/storeproducts') }}">
     @if (app()->has('label_breadcrumbs_allproducts'))
      {!! app('label_breadcrumbs_allproducts') !!}
     @endif
    </a>
+   </li>
   @endif
   <!-------------------If Category is appear------------------>
   @if ($category != null && $category->id != app('global_default_category'))
    @foreach ($category->getCategoryBreadcrumbs() as $breadcrumb)
     @if ($breadcrumb['name'] === $category->name)
+    <li>
      <a class="breadcrumbs__link"
       href="{{ route('products', ['categorySlug' => $category->seo_id !== null && $category->seo_id !== '' ? $category->seo_id : $category->id]) }}">
       {!! $category->name !!}
      </a>
+    </li>
     @else
+    <li>
      <a class="breadcrumbs__link" href="{{ route('products', ['categorySlug' => $breadcrumb['slug']]) }}">
       {{ $breadcrumb['name'] }}
      </a>
+    </li>
     @endif
    @endforeach
   @endif
- </div>
+    </ol>
  <!----------------------Categorie + detalii--------------------->
  @if ($category)
   <section class="section__header container">
@@ -157,7 +165,7 @@
        @if ($element->media->first() != null)
         <img title="{{ $product->name }}, {{ $product->short_description }}" loading="eager" class="card-image"
          src="/{{ $element->media->first()->path }}{{ $element->media->first()->name }}"
-         alt="{{ $element->media->first()->name }} {{ $element->name }}">
+         alt="{{ $element->name }}">
        @else
         <img title="Default image" loading="eager" class="card-image" src="/images/store/default/default300.webp"
          alt="something wrong">

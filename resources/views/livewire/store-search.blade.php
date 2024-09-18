@@ -1,17 +1,21 @@
 <div>
  <!------------------------Breadcrumbs----------------------->
- <div class="breadcrumbs container">
+ <ol class="breadcrumbs container">
+  <li>
   <a class="breadcrumbs__link" href="{{ url('/') }}">
    @if (app()->has('label_breadcrumbs_home_page'))
     {!! app('label_breadcrumbs_home_page') !!}
    @endif
   </a>
+  </li>
+  <li>
   <a class="breadcrumbs__link" href="{{ url('/search') }}">
    @if (app()->has('label_breadcrumbs_search'))
     {!! app('label_breadcrumbs_search') !!}
    @endif
   </a>
- </div>
+  </li>
+</ol>
  <!---------------------------------------------------------->
  <section class="controls container controls--search">
   <input class="controls__search" type="text" maxlength="100" autocomplete="off" name="search" id="search"
@@ -75,7 +79,7 @@
         @if ($product->media->where('type', 'main')->first() != null)
          <img title="{{ $product->name }}, {{ $product->short_description }}" loading="eager" class="card-image"
           src="/{{ $product->media->where('type', 'main')->first()->path }}{{ $product->media->where('type', 'main')->first()->name }}"
-          alt="{{ $product->media->where('type', 'main')->first()->name }} {{ $product->name }}">
+          alt="{{ $product->name }}">
         @else
          <img title="Default image" loading="eager" class="card-image" src="/images/store/default/default300.webp"
           alt="something wrong">
@@ -198,7 +202,7 @@
         @if ($category->media->first() != null)
          <img title="{{ strip_tags($category->name) }}" loading="eager" class="card-image"
           src="/{{ $category->media->first()->path }}{{ $category->media->first()->name }}"
-          alt="{{ $category->media->first()->name }} {{ strip_tags($category->name) }}">
+          alt="{{ strip_tags($category->name) }}">
         @endif
        </div>
        <div class="card-info">
