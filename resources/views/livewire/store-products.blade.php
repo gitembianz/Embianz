@@ -229,38 +229,77 @@
           href="{{ route('product', ['product' => $element->seo_id !== null && $element->seo_id !== '' ? $element->seo_id : $element->id]) }}">{{ $product->name }}</a>
         </h2>
         <p class="card-price">
+         {{-- label price from --}}
          @if (
-             $product->type == 'parent' &&
+             $category->display_variant_price == true &&
+                 $product->type == 'parent' &&
                  app()->has('global_variant_price_from') &&
+                 app()->has('global_variant_add_to_cart') &&
+                 app('global_variant_add_to_cart') === 'true' &&
                  app()->has('label_product_price_from') &&
                  app('global_variant_price_from') === 'true')
           {!! app('label_product_price_from') !!}
          @endif
-         @if ($discount)
-          <span class="card-price discount">
-           @if ($element->product_prices->first())
-            {{ $price }}
-            @if (app()->has('global_currency_primary_symbol'))
-             {!! app('global_currency_primary_symbol') !!}
-            @endif
+         {{-- price --}}
+         @if ($product->type == 'parent')
+          @if (
+              $category->display_variant_price == true &&
+                  app()->has('global_variant_add_to_cart') &&
+                  app('global_variant_add_to_cart') === 'true')
+           @if ($discount)
+            <span class="card-price discount">
+             @if ($element->product_prices->first())
+              {{ $price }}
+              @if (app()->has('global_currency_primary_symbol'))
+               {!! app('global_currency_primary_symbol') !!}
+              @endif
+             @endif
+            </span>
+            <span class="card-price oldprice">
+             {{ number_format($element->product_prices->first()->value_no_discount, 2, $decimal, $mill) }}
+             @if (app()->has('global_currency_primary_symbol'))
+              {!! app('global_currency_primary_symbol') !!}
+             @endif
+            </span>
+           @else
+            <span>
+             @if ($element->product_prices->first())
+              {{ $price }}
+              @if (app()->has('global_currency_primary_symbol'))
+               {!! app('global_currency_primary_symbol') !!}
+              @endif
+             @endif
+            </span>
            @endif
-          </span>
-          <span class="card-price oldprice">
-           {{ number_format($element->product_prices->first()->value_no_discount, 2, $decimal, $mill) }}
-           @if (app()->has('global_currency_primary_symbol'))
-            {!! app('global_currency_primary_symbol') !!}
-           @endif
-          </span>
+          @endif
          @else
-          <span>
-           @if ($element->product_prices->first())
-            {{ $price }}
+          @if ($discount)
+           <span class="card-price discount">
+            @if ($element->product_prices->first())
+             {{ $price }}
+             @if (app()->has('global_currency_primary_symbol'))
+              {!! app('global_currency_primary_symbol') !!}
+             @endif
+            @endif
+           </span>
+           <span class="card-price oldprice">
+            {{ number_format($element->product_prices->first()->value_no_discount, 2, $decimal, $mill) }}
             @if (app()->has('global_currency_primary_symbol'))
              {!! app('global_currency_primary_symbol') !!}
             @endif
-           @endif
-          </span>
+           </span>
+          @else
+           <span>
+            @if ($element->product_prices->first())
+             {{ $price }}
+             @if (app()->has('global_currency_primary_symbol'))
+              {!! app('global_currency_primary_symbol') !!}
+             @endif
+            @endif
+           </span>
+          @endif
          @endif
+        </p>
         <div style="display: none">
          <span class="dlv_name">{{ $element->name }}</span>
          <span class="dlv_price">{{ $price }}</span>
@@ -270,12 +309,12 @@
           @endif
          </span>
         </div>
-        </p>
        </div>
        @if (
            $product->type == 'parent' &&
                app()->has('global_variant_add_to_cart') &&
-               app('global_variant_add_to_cart') === 'true')
+               app('global_variant_add_to_cart') === 'true' &&
+               $category->display_variant_price == true)
         @livewire('add-to-cart-button', ['product' => $element], key($element->id . $index))
        @elseif($product->type == 'parent')
         <div class="card__button--wrapper">

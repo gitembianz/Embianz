@@ -72,7 +72,8 @@ class Category extends Model
     'lastmodifiedby',
     'seo_title',
     'seo_id',
-    'preload_image'
+    'preload_image',
+    'display_variant_price'
   ];
 
   public static function search($search)

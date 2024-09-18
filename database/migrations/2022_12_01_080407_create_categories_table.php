@@ -23,6 +23,11 @@ return new class extends Migration
       $table->boolean('has_parent')->nullable()->default(
         false
       );
+      $table->boolean('preload_image')->nullable()->default(
+        true
+      );
+      $table->boolean('display_variant_price')->default(false)->nullable();
+
       $table->longText('long_description')->nullable();
       $table->string('short_description')->nullable();
       $table->string('meta_description')->nullable();
