@@ -110,7 +110,6 @@
   </section>
  @endif
  <!-------------------------Catalogue------------------------>
- <h2></h2>
  <section class="catalogue container">
   @if ($products->isEmpty())
    <p>
