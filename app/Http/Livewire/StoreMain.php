@@ -55,12 +55,19 @@ class StoreMain extends Component
         'product_prices' => function ($query) {
           $query->select('product_id', 'value', 'discount', 'value_no_discount');
         },
+        'product_categories' => function ($query) {
+          $query->select('product_id', 'category_id', 'primary_category')
+            ->where('primary_category', true);
+          $query->with(['category' => function ($query) {
+            $query->select('id', 'short_description', 'seo_id');
+          }]);
+        }
       ])
         ->select('id', 'name', 'seo_id', 'quantity', 'sku', 'long_description', 'brand', 'type', 'short_description', 'popularity')
         ->where('active', true)
         ->where('type', '!=', 'parent')
-        ->where('start_date', '<=',  now()->format('Y-m-d'))
-        ->where('end_date', '>=',  now()->format('Y-m-d'))
+        ->where('start_date', '<=', now()->format('Y-m-d'))
+        ->where('end_date', '>=', now()->format('Y-m-d'))
         ->orderBy('popularity', 'desc')
         ->limit(app('global_limit_slideritems'))
         ->get();
@@ -85,6 +92,13 @@ class StoreMain extends Component
         'product_prices' => function ($query) {
           $query->select('product_id', 'value', 'discount', 'value_no_discount');
         },
+        'product_categories' => function ($query) {
+          $query->select('product_id', 'category_id', 'primary_category')
+            ->where('primary_category', true);
+          $query->with(['category' => function ($query) {
+            $query->select('id', 'short_description', 'seo_id');
+          }]);
+        }
 
       ])
         ->select('id', 'name', 'seo_id', 'quantity', 'sku', 'long_description', 'brand', 'short_description', 'popularity')

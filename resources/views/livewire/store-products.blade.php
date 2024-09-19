@@ -15,42 +15,42 @@
   }
  @endphp
  <ol class="breadcrumbs container">
-    <li>
-  <a class="breadcrumbs__link" href="{{ url('/') }}">
-   @if (app()->has('label_breadcrumbs_home_page'))
-    {!! app('label_breadcrumbs_home_page') !!}
-   @endif
-  </a>
-  </li>
-  @if (app()->has('global_show_on_breadcrumbs') && app('global_show_on_breadcrumbs') == 'true')
-  <li> 
-  <a class="breadcrumbs__link" href="{{ url('/storeproducts') }}">
-    @if (app()->has('label_breadcrumbs_allproducts'))
-     {!! app('label_breadcrumbs_allproducts') !!}
+  <li>
+   <a class="breadcrumbs__link" href="{{ url('/') }}">
+    @if (app()->has('label_breadcrumbs_home_page'))
+     {!! app('label_breadcrumbs_home_page') !!}
     @endif
    </a>
+  </li>
+  @if (app()->has('global_show_on_breadcrumbs') && app('global_show_on_breadcrumbs') == 'true')
+   <li>
+    <a class="breadcrumbs__link" href="{{ url('/storeproducts') }}">
+     @if (app()->has('label_breadcrumbs_allproducts'))
+      {!! app('label_breadcrumbs_allproducts') !!}
+     @endif
+    </a>
    </li>
   @endif
   <!-------------------If Category is appear------------------>
   @if ($category != null && $category->id != app('global_default_category'))
    @foreach ($category->getCategoryBreadcrumbs() as $breadcrumb)
     @if ($breadcrumb['name'] === $category->name)
-    <li>
-     <a class="breadcrumbs__link"
-      href="{{ route('products', ['categorySlug' => $category->seo_id !== null && $category->seo_id !== '' ? $category->seo_id : $category->id]) }}">
-      {!! $category->name !!}
-     </a>
-    </li>
+     <li>
+      <a class="breadcrumbs__link"
+       href="{{ route('products', ['categorySlug' => $category->seo_id !== null && $category->seo_id !== '' ? $category->seo_id : $category->id]) }}">
+       {!! $category->name !!}
+      </a>
+     </li>
     @else
-    <li>
-     <a class="breadcrumbs__link" href="{{ route('products', ['categorySlug' => $breadcrumb['slug']]) }}">
-      {{ $breadcrumb['name'] }}
-     </a>
-    </li>
+     <li>
+      <a class="breadcrumbs__link" href="{{ route('products', ['categorySlug' => $breadcrumb['slug']]) }}">
+       {{ $breadcrumb['name'] }}
+      </a>
+     </li>
     @endif
    @endforeach
   @endif
-    </ol>
+ </ol>
  <!----------------------Categorie + detalii--------------------->
  @if ($category)
   <section class="section__header container">
@@ -164,8 +164,7 @@
        href="{{ route('product', ['product' => $element->seo_id !== null && $element->seo_id !== '' ? $element->seo_id : $element->id]) }}">
        @if ($element->media->first() != null)
         <img title="{{ $product->name }}, {{ $product->short_description }}" loading="eager" class="card-image"
-         src="/{{ $element->media->first()->path }}{{ $element->media->first()->name }}"
-         alt="{{ $element->name }}">
+         src="/{{ $element->media->first()->path }}{{ $element->media->first()->name }}" alt="{{ $element->name }}">
        @else
         <img title="Default image" loading="eager" class="card-image" src="/images/store/default/default300.webp"
          alt="something wrong">
@@ -231,8 +230,20 @@
         <h2 class="card-title"><a style="text-decoration: none; font-weight:500"
           href="{{ route('product', ['product' => $element->seo_id !== null && $element->seo_id !== '' ? $element->seo_id : $element->id]) }}">{{ $product->name }}</a>
         </h2>
-            <a class="categorylink"
-              href="{{ route('product', ['product' => $element->seo_id !== null && $element->seo_id !== '' ? $element->seo_id : $element->id]) }}">{{ $product->short_description }}</a>
+        @php
+         if (app()->has('global_cache_data') && app('global_cache_data') === 'true') {
+             $primaryCategory = $product->product_categories->where('primary_category', true)->first();
+         } else {
+             $primaryCategory = $product->product_categories->first();
+         }
+        @endphp
+
+        @if ($primaryCategory && $primaryCategory->category)
+         <a class="categorylink"
+          href="{{ route('products', ['categorySlug' => $primaryCategory->category->seo_id !== null && $primaryCategory->category->seo_id !== '' ? $primaryCategory->category->seo_id : $primaryCategory->category->id]) }}">
+          {{ $primaryCategory->category->short_description }}
+         </a>
+        @endif
         <p class="card-price">
          {{-- label price from --}}
          @if (
