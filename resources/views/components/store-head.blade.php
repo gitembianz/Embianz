@@ -2,6 +2,9 @@
 <html lang="ro">
 
 <head>
+ @if (app()->has('global_site_name'))
+  <meta name="author" content="{{ app('global_site_name') }}">
+ @endif
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
  <title>{{ $title }}</title>
@@ -36,6 +39,9 @@
  ?>
  <link rel="preload" href="{{ $href }}" as="style">
  <link rel="stylesheet" href="{{ $href }}" async>
+ @if (app()->has('global_site_name'))
+  <meta property="og:site_name" content="{{ app('global_site_name') }}">
+ @endif
  <!-- Open Graph / Facebook -->
  <meta property="og:url" content="{{ config('app.url') . '/' . $canonical }}" />
  <meta property="og:type" content="website" />
