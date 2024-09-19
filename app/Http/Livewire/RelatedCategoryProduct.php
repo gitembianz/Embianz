@@ -24,9 +24,12 @@ class RelatedCategoryProduct extends Component
   public $selectAll = false;
   public $showrelateitems = false;
   public $idbeingremoved = null;
-  public $columns = ['Id', 'Product Name', 'Category Name', 'Category Description', 'Category displayed elements', 'Category is active?', 'Created At', 'Updated At'];
+  public $columns = ['Id', 'Category Name', 'Category Description', 'Category displayed elements', 'Category is active?', 'Is primary category?', 'Created At', 'Updated At'];
   public $selectedColumns = [];
   public $product;
+  public $editindex;
+  public $var = [];
+
 
   //add variables
   public $searchadd = '';
@@ -64,6 +67,50 @@ class RelatedCategoryProduct extends Component
     }
   }
 
+  public function edititem($index, $id)
+  {
+    $this->editindex = $index;
+    $record = Products_categories::find($id);
+    $this->var = [
+      $index . '.primary' => $record->primary_category == 1 ? true : false,
+    ];
+  }
+  public function canceledit()
+  {
+    $this->editindex = null;
+    $this->var = [];
+  }
+
+  public function saveitem($index, $id)
+  {
+    $record = $this->var[$index] ?? null;
+    if (!is_null($record)) {
+      $new = Products_categories::find($id);
+      if (array_key_exists('primary', $record)) {
+        if ($record['primary']) {
+          Products_categories::where('product_id', $this->product->id)
+            ->where('primary_category', true)
+            ->update(['primary_category' => false]);
+          $new->primary_category = $record['primary'];
+        }
+      }
+      $new->save();
+      session()->flash('notification', [
+        'message' => 'Record edited successfully!',
+        'type' => 'success',
+        'title' => 'Success'
+      ]);
+    } else {
+      session()->flash('notification', [
+        'message' => 'Nothing was edited!',
+        'type' => 'warning',
+        'title' => 'Warning'
+      ]);
+    }
+    $this->editindex = null;
+    $this->var = [];
+  }
+
   public function addrelated()
   {
     $this->showrelateitems = true;
@@ -81,7 +128,7 @@ class RelatedCategoryProduct extends Component
   public function updatedSelectPageadd($value)
   {
     if ($value) {
-      $this->checkedadd = $this->cats->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+      $this->checkedadd = $this->cats->pluck('id')->map(fn($item) => (string) $item)->toArray();
     } else {
       $this->checkedadd = [];
     }
@@ -95,7 +142,7 @@ class RelatedCategoryProduct extends Component
   public function selectAlladd()
   {
     $this->selectAlladd = true;
-    $this->checkedadd = $this->cats->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+    $this->checkedadd = $this->cats->pluck('id')->map(fn($item) => (string) $item)->toArray();
   }
   public function getCatsProperty()
   {
@@ -128,7 +175,7 @@ class RelatedCategoryProduct extends Component
   public function updatedSelectPage($value)
   {
     if ($value) {
-      $this->checked = $this->relatedcats->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+      $this->checked = $this->relatedcats->pluck('id')->map(fn($item) => (string) $item)->toArray();
     } else {
       $this->checked = [];
     }
@@ -159,7 +206,7 @@ class RelatedCategoryProduct extends Component
   public function selectAll()
   {
     $this->selectAll = true;
-    $this->checked = $this->relatedcatsQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+    $this->checked = $this->relatedcatsQuery->pluck('id')->map(fn($item) => (string) $item)->toArray();
   }
   public function getRelatedcatsProperty()
   {
