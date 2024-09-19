@@ -68,7 +68,7 @@
  @endif
 
  <!---------------------------Filter------------------------->
- <section class="controls container">
+ <section class="controls container" id="productlist">
   <button class="controls__button" id="filterOpen" wire:click="$set('showspecfilter', true)"
    aria-label="Open filter button">
    <svg>
