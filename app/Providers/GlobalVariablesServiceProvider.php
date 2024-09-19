@@ -168,7 +168,12 @@ class GlobalVariablesServiceProvider extends ServiceProvider
                 ->where('start_date', '<=', now()->format('Y-m-d'))
                 ->where('end_date', '>=', now()->format('Y-m-d'))
                 ->with([
-                    'product_categories',
+                    'product_categories' => function ($query) {
+                        $query->select('product_id', 'category_id', 'primary_category');
+                        $query->with(['category' => function ($query) {
+                            $query->select('id', 'short_description', 'seo_id');
+                        }]);
+                    },
                     'product_specs' => function ($query) {
                         $query->select('product_id', 'spec_id', 'value', 'id')->with('spec:id,name');
                     },
@@ -183,6 +188,12 @@ class GlobalVariablesServiceProvider extends ServiceProvider
                                         'product_prices' => function ($query) {
                                             $query->select('product_id', 'value', 'discount', 'value_no_discount');
                                         },
+                                        'product_categories' => function ($query) {
+                                            $query->select('product_id', 'category_id', 'primary_category');
+                                            $query->with(['category' => function ($query) {
+                                                $query->select('id', 'short_description', 'seo_id');
+                                            }]);
+                                        }
                                     ]);
                             }
                         ]);

@@ -144,6 +144,13 @@ class StoreSearch extends Component
                         'wishlists' => function ($query) {
                             $query->select('id', 'product_id')->where('session_id', $this->session_id);
                         },
+                        'product_categories' => function ($query) {
+                            $query->select('product_id', 'category_id', 'primary_category')
+                                ->where('primary_category', true);
+                            $query->with(['category' => function ($query) {
+                                $query->select('id', 'short_description', 'seo_id');
+                            }]);
+                        }
                     ])
                     ->orderBy('popularity', 'desc')
                     ->paginate($this->loadAmount);
