@@ -544,38 +544,39 @@
      let productData = element.dataset.productJson;
      let product = JSON.parse(productData);
 
-     let priceElement = document.querySelector('.dlv_price');
      let currencyElement = document.querySelector('.dlv_currency');
-     let price = priceElement ? priceElement.textContent.trim() : product.price;
+     let price = (product.product_prices && product.product_prices.length > 0) ?
+      `${product.product_prices[0].value}` : `0`;
      let currency = currencyElement.textContent.trim();
      let media = (product.media && product.media.length > 0) ?
       `${window.location.origin}/${product.media[0].path}${product.media[0].name}` :
       `${window.location.origin}/images/store/default/default300.webp`;
+     if (price != '0') {
+      let jsonLd = {
+       "@context": "https://schema.org/",
+       "@type": "Product",
+       "name": product.name,
+       "image": media,
+       "description": product.long_description.replace(/(<([^>]+)>)/gi, ""),
+       "brand": {
+        "@type": "Brand",
+        "name": product.brand
+       },
+       "sku": product.sku,
+       "offers": {
+        "@type": "Offer",
+        "url": `${window.location.origin}/product/${product.seo_id || product.id}`,
+        "priceCurrency": currency,
+        "price": price,
+        "availability": `https://schema.org/InStock`
+       }
+      };
 
-     let jsonLd = {
-      "@context": "https://schema.org/",
-      "@type": "Product",
-      "name": product.name,
-      "image": media,
-      "description": product.long_description.replace(/(<([^>]+)>)/gi, ""),
-      "brand": {
-       "@type": "Brand",
-       "name": product.brand
-      },
-      "sku": product.sku,
-      "offers": {
-       "@type": "Offer",
-       "url": `${window.location.origin}/product/${product.seo_id || product.id}`,
-       "priceCurrency": currency,
-       "price": `${product.product_prices[0].value}`,
-       "availability": `https://schema.org/InStock`
-      }
-     };
-
-     let script = document.createElement('script');
-     script.type = 'application/ld+json';
-     script.textContent = JSON.stringify(jsonLd);
-     document.head.appendChild(script);
+      let script = document.createElement('script');
+      script.type = 'application/ld+json';
+      script.textContent = JSON.stringify(jsonLd);
+      document.head.appendChild(script);
+     }
     });
    }
   });
