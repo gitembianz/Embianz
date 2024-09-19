@@ -2,22 +2,26 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  white-space:nowrap;
+  overflow-x: auto;
   gap: 5px;
   position: sticky;
   top: 60px;
   z-index: 100;
   background: $background;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding-top: 5px;
+  padding-bottom: 15px;
   transition: all 0.3s ease-in-out;
+  scrollbar-color: $lightGray #f1f1f1;
+ // border-bottom:1px solid $primary;
 }
 
 .breadcrumbs > li {
   list-style: none;
 
   &:not(:last-child)::after {
-    content:"/";
+    content:">";
     transform: translateY(-50%);
     font-size:0.8rem;
   }
