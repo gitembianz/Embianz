@@ -68,7 +68,7 @@
  @endif
 
  <!---------------------------Filter------------------------->
- <section class="controls container">
+ <section class="controls container" id="productlist">
   <button class="controls__button" id="filterOpen" wire:click="$set('showspecfilter', true)"
    aria-label="Open filter button">
    <svg>
@@ -110,7 +110,6 @@
   </section>
  @endif
  <!-------------------------Catalogue------------------------>
- <h2></h2>
  <section class="catalogue container">
   @if ($products->isEmpty())
    <p>
@@ -350,7 +349,7 @@
        @endif
       </div>
      </div>
-     <div style="display: none" class="json-ld-data" data-product-json='@json($product)'></div>
+     <div style="display: none" class="json-ld-data" data-product-json='@json($element)'></div>
     </div>
    @endforeach
    <x-lazy />
