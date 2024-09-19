@@ -42,9 +42,9 @@
           <a class="search__link"
            href="{{ route('product', ['product' => $product->seo_id !== null && $product->seo_id !== '' ? $product->seo_id : $product->id]) }}">
            @if ($product->media->where('type', 'min')->first() != null)
-            <img title="{{ $product->name }}, {{ $product->short_description }}" loading="eager"
+            <img title="{{ $product->name }}" loading="eager"
              src="/{{ $product->media->where('type', 'min')->first()->path }}{{ $product->media->where('type', 'min')->first()->name }}"
-             alt="{{ $product->media->where('type', 'min')->first()->name }} {{ $product->name }}">
+             alt="{{ $product->name }}">
            @endif
 
            <div class="search__link--text">
