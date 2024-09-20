@@ -422,45 +422,48 @@
     <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
     <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
    </svg>
-   <span>Product Variants</span>
+   <span>Variants References</span>
   </a>
  </div>
  {{-- Script for Leftbar --}}
-  <script>
-        const leftbar2 = document.getElementById('leftbar');
-        const buttons2 = leftbar2.querySelectorAll('a');
-        const closeButton2 = leftbar2.querySelector('button');
+ <script>
+  const leftbar2 = document.getElementById('leftbar');
+  const buttons2 = leftbar2.querySelectorAll('a');
+  const closeButton2 = leftbar2.querySelector('button');
 
-        // Funcția pentru inițializarea stării componentului pe baza localStorage
-        function initializeComponentState() {
-            const isActive = localStorage.getItem('leftbarActive') === 'true';
-            if (isActive) {
-                leftbar2.classList.add('active');
-            } else {
-                leftbar2.classList.remove('active'); // Asigură-te că clasa 'active' nu este prezentă inițial
-            }
-        }
+  // Funcția pentru inițializarea stării componentului pe baza localStorage
+  function initializeComponentState() {
+   const isActive = localStorage.getItem('leftbarActive') === 'true';
+   if (isActive) {
+    leftbar2.classList.add('active');
+   } else {
+    leftbar2.classList.remove('active'); // Asigură-te că clasa 'active' nu este prezentă inițial
+   }
+  }
 
-        // Salvăm starea în localStorage la fiecare modificare a clasei
-        function saveComponentState() {
-            const isActive = leftbar2.classList.contains('active');
-            localStorage.setItem('leftbarActive', isActive);
-        }
+  // Salvăm starea în localStorage la fiecare modificare a clasei
+  function saveComponentState() {
+   const isActive = leftbar2.classList.contains('active');
+   localStorage.setItem('leftbarActive', isActive);
+  }
 
-        // Inițializează starea componentului la încărcarea paginii
-        initializeComponentState();
+  // Inițializează starea componentului la încărcarea paginii
+  initializeComponentState();
 
-        // Adaugă tranziția la leftbar și butoane după un scurt interval de timp
-        function addTransition() {
-            leftbar2.style.transition = 'all 0.25s ease';
-            closeButton2.style.transition = 'all 0.25s ease';
-            buttons2.forEach((button) => {
-                button.style.transition = 'all 0.25s ease';
-            });
-        }
-        setTimeout(addTransition, 500);
+  // Adaugă tranziția la leftbar și butoane după un scurt interval de timp
+  function addTransition() {
+   leftbar2.style.transition = 'all 0.25s ease';
+   closeButton2.style.transition = 'all 0.25s ease';
+   buttons2.forEach((button) => {
+    button.style.transition = 'all 0.25s ease';
+   });
+  }
+  setTimeout(addTransition, 500);
 
-        // Observăm schimbările clasei și salvăm starea
-        const observer2 = new MutationObserver(saveComponentState);
-        observer2.observe(leftbar2, { attributes: true, attributeFilter: ['class'] });
-  </script>
+  // Observăm schimbările clasei și salvăm starea
+  const observer2 = new MutationObserver(saveComponentState);
+  observer2.observe(leftbar2, {
+   attributes: true,
+   attributeFilter: ['class']
+  });
+ </script>
