@@ -20,16 +20,20 @@
     <img title="{{ app('global_site_name') }} logo" loading="eager" src="/images/store/svg/logo-dark.svg" alt="Logo">
    </a>
    <!---------------------NavMenu bar---------------------->
-   <div class="navbar__list">
+   <nav class="navbar__list">
+    <ul class="navbar__list">
     @if (app()->has('global_show_on_header') && app('global_show_on_header') == 'true')
+    <li>
      <a class="navbar__link" href="{{ route('products', ['categorySlug' => app('global_default_category')]) }}">
       @if (app()->has('label_header_allproducts'))
        {!! app('label_header_allproducts') !!}
       @endif
      </a>
+    </li>
     @endif
     @foreach ($categories as $category)
      @if ($category->subcategory->count() != 0)
+     <li>
       <div class="dropdown">
        <a class="dropdown__button"
         href="{{ route('products', ['categorySlug' => $category->seo_id !== null && $category->seo_id !== '' ? $category->seo_id : $category->id]) }}">
@@ -38,11 +42,11 @@
          <polyline points="6 9 12 15 18 9"></polyline>
         </svg>
        </a>
-       <div class="dropdown__list">
+       <ul class="dropdown__list">
         @foreach ($category->subcategory->sortBy(function ($subcategory) {
         return $subcategory->category->sequence;
     }) as $subcategory)
-         <div class="dropdown__item">
+         <li class="dropdown__item">
           <a class="dropdown__item--button"
            href="{{ route('products', ['categorySlug' => $subcategory->category->seo_id !== null && $subcategory->category->seo_id !== '' ? $subcategory->category->seo_id : $subcategory->category->id]) }}">
            {!! $subcategory->category->name !!}
@@ -64,18 +68,22 @@
             @endforeach
            </div>
           @endif
-         </div>
+          </li>
         @endforeach
-       </div>
+        </ul>
       </div>
+      </li>
      @else
+     <li>
       <a class="navbar__link"
        href="{{ route('products', ['categorySlug' => $category->seo_id !== null && $category->seo_id !== '' ? $category->seo_id : $category->id]) }}">
        {!! $category->name !!}
       </a>
+    </li>
      @endif
     @endforeach
-   </div>
+    </ul>
+    </nav>
    <!---------------------Right-Buttons--------------------->
    <div class="header__buttons">
     <button class="header__btn" id="menuOpen" aria-label="Open burger menu button">
@@ -126,7 +134,7 @@
 
  @livewire('wishlist-products-list')
  <!----------------------Menu (Leftbar)---------------------->
- <div class="menu" id="menuList">
+ <nav class="menu" id="menuList">
   <div class="menu__content" id="menuContent">
    <div class="menu__top">
     <button class="menu__close" id="menuClose" href="#">
@@ -137,10 +145,10 @@
      </svg>
     </button>
    </div>
-   <div class="menu__list">
+   <ul class="menu__list">
     @foreach ($categories as $category)
      @if ($category->subcategory->count() != 0)
-      <div class="dropmenu">
+      <li class="dropmenu">
        <div class="dropmenu__button">
         <a class="dropmenu__button--link"
          href="{{ route('products', ['categorySlug' => $category->seo_id !== null && $category->seo_id !== '' ? $category->seo_id : $category->id]) }}">
@@ -157,9 +165,9 @@
          </svg>
         </button>
        </div>
-       <div class="dropmenu__list">
+       <ul class="dropmenu__list">
         @foreach ($category->subcategory as $subcategory)
-         <div class="submenu">
+         <li class="submenu">
           <div class="submenu__button">
            <a class="submenu__button--link"
             href="{{ route('products', ['categorySlug' => $subcategory->category->seo_id !== null && $subcategory->category->seo_id !== '' ? $subcategory->category->seo_id : $subcategory->category->id]) }}">
@@ -193,11 +201,12 @@
             @endforeach
            </div>
           @endif
-         </div>
+          </li>
         @endforeach
-       </div>
-      </div>
+        </ul>
+      </li>
      @else
+     <li>
       <a class="menu__link"
        href="{{ route('products', ['categorySlug' => $category->seo_id !== null && $category->seo_id !== '' ? $category->seo_id : $category->id]) }}">
        @if ($category->media->where('type', 'min')->first() != null)
@@ -207,12 +216,13 @@
        @endif
        <h4> {!! $category->name !!}</h4>
       </a>
+    </li>
      @endif
     @endforeach
-   </div>
+    </ul>
   </div>
   <button class="menu__hidden--close" id="menuHidden"></button>
- </div>
+</nav>
  <!--------------------END-Menu (Leftbar)-------------------->
  <!---------------------------------------------------------->
  <script src="/script/store/header.js" defer></script>
