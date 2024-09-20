@@ -46,7 +46,8 @@ class StoreSeeder extends Seeder
             ['parameter' => 'cache_data', 'value' => 'false', 'description' => 'Cache products and categories', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'numberformat_element', 'value' => '.', 'description' => 'Number format element(is accepted only . or ,)', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'preorder', 'value' => 'true', 'description' => 'Order indisponible products', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
-            // ['parameter' => '', 'value' => '', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'lang', 'value' => 'ro', 'description' => 'Project Language ex: ro', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'locale', 'value' => 'ro_RO', 'description' => 'Project Locale ex: ro_RO', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
 
         ];
     }

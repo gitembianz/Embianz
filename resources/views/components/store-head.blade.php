@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ro">
+<html lang="{{ app()->getLocale() }}">
 
 <head>
  @if (app()->has('global_site_name'))
@@ -42,6 +42,7 @@
  @if (app()->has('global_site_name'))
   <meta property="og:site_name" content="{{ app('global_site_name') }}">
  @endif
+ <meta property="og:locale" content="{{ env('APP_LOCALE') }}">
  <!-- Open Graph / Facebook -->
  <meta property="og:url" content="{{ config('app.url') . '/' . $canonical }}" />
  <meta property="og:type" content="website" />
