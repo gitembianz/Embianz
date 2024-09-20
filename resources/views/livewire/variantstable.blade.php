@@ -91,7 +91,7 @@
 
 
  {{-- Navigation --}}
- <h1 class="table--name">{{ __('Product variants') }} ({{ $variants->total() }})</h1>
+ <h1 class="table--name">{{ __('Variants References') }} ({{ $variants->total() }})</h1>
  <nav class="nav--controls">
   {{-- Search Input --}}
   <input class="input input--long" type="text" wire:model.debounce.300ms="search" placeholder="Search...">
