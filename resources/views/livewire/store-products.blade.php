@@ -568,7 +568,15 @@
         "url": `${window.location.origin}/product/${product.seo_id || product.id}`,
         "priceCurrency": currency,
         "price": price,
-        "availability": `https://schema.org/InStock`
+        "availability": `https://schema.org/InStock`,
+        "priceValidUntil": product.end_date,
+        "hasMerchantReturnPolicy": {
+         "value": true
+        },
+        "shippingDetails": {
+         "type": "FreeShipping",
+         "price": "0"
+        }
        }
       };
 
