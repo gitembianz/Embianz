@@ -14,6 +14,7 @@ use App\Models\ProductVariant;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Cache;
 
 
 class ShowProduct extends Component
@@ -123,6 +124,7 @@ class ShowProduct extends Component
       }
       if (array_key_exists('popularity', $product_new)) {
         $new->popularity = $product_new['popularity'];
+        Cache::forget('max_popularity');
       }
       if (array_key_exists('long_description', $product_new)) {
         $new->long_description = $product_new['long_description'];

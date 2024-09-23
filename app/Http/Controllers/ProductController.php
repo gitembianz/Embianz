@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use App\Models\Products_categories;
+use Illuminate\Support\Facades\Cache;
 
 
 
@@ -66,7 +67,7 @@ class ProductController extends Controller
       'last_modified_by' => Auth::user()->name,
       'seo_id' => $seo_id
     ]);
-
+    Cache::forget('max_popularity');
     if (app('global_default_category') != 0) {
       $defaultcategory = new Products_categories();
       $defaultcategory->product_id = $newproduct->id;

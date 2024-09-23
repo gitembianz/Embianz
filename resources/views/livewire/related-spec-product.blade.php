@@ -366,7 +366,7 @@
   <button
    class="button button--flexed button--fill button--primary @if ($showrelatedspecs) button--secondary active @endif"
    wire:click.prevent="@if ($showrelatedspecs === false) $set('showrelatedspecs', true) @else $set('showrelatedspecs', false) @endif">
-   {{ __('Specs ') }}({{ $item->product_specs->count() }})
+   {{ __('Specifications ') }}({{ $item->product_specs->count() }})
    <svg>
     <polyline points="6 9 12 15 18 9"></polyline>
    </svg>

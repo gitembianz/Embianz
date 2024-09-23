@@ -547,6 +547,10 @@
      let currencyElement = document.querySelector('.dlv_currency');
      let price = (product.product_prices && product.product_prices.length > 0) ?
       `${product.product_prices[0].value}` : `0`;
+     let ratingValue = (product.reviews && product.reviews.length > 0) ?
+      `${product.reviews[0].value}` : `0`;
+     let reviewCount = (product.reviews && product.reviews.length > 0) ?
+      `${product.reviews[0].count}` : `0`;
      let currency = currencyElement.textContent.trim();
      let media = (product.media && product.media.length > 0) ?
       `${window.location.origin}/${product.media[0].path}${product.media[0].name}` :
@@ -576,7 +580,24 @@
         "shippingDetails": {
          "type": "FreeShipping",
          "price": "0"
-        }
+        },
+        "aggregateRating": {
+         "@type": "AggregateRating",
+         "ratingValue": ratingValue,
+         "reviewCount": reviewCount
+        },
+        "review": {
+         "@type": "Review",
+         "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": ratingValue,
+          "bestRating": 5
+         },
+         "author": {
+          "@type": "Person",
+          "name": "anonim"
+         }
+        },
        }
       };
 
