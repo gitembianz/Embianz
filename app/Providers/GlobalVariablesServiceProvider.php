@@ -174,6 +174,9 @@ class GlobalVariablesServiceProvider extends ServiceProvider
                             $query->select('id', 'short_description', 'seo_id');
                         }]);
                     },
+                    'reviews' => function ($query) {
+                        $query->select('product_id', 'count', 'value');
+                    },
                     'product_specs' => function ($query) {
                         $query->select('product_id', 'spec_id', 'value', 'id')->with('spec:id,name');
                     },
@@ -184,6 +187,9 @@ class GlobalVariablesServiceProvider extends ServiceProvider
                                     ->where('end_date', '>=',  now()->format('Y-m-d'))->select('id', 'name', 'popularity', 'seo_id', 'short_description', 'quantity', 'active', 'end_date', 'start_date')->with([
                                         'media' => function ($query) {
                                             $query->select('path', 'name', 'type')->where('type', 'main');
+                                        },
+                                        'reviews' => function ($query) {
+                                            $query->select('product_id', 'count', 'value');
                                         },
                                         'product_prices' => function ($query) {
                                             $query->select('product_id', 'value', 'discount', 'value_no_discount');

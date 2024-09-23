@@ -790,7 +790,7 @@ class StoreOrder extends Component
             'phone' => $this->individual_billing_phone,
             'email' => $this->individual_billing_email
           ]);
-          setcookie('accountId', $account->id, time() + 30 * 24 * 60 * 60, '/', null, false, true);
+          setcookie('accountId', $account->id, time() + 30 * 24 * 60 * 60, '/', '', false, true);
 
 
           Address::create([
@@ -898,7 +898,7 @@ class StoreOrder extends Component
             'bank_name' => $this->juridic_billing_bank,
             'account' => $this->juridic_billing_account,
           ]);
-          setcookie('accountId', $account->id, time() + 30 * 24 * 60 * 60, '/', null, false, true);
+          setcookie('accountId', $account->id, time() + 30 * 24 * 60 * 60, '/', '', false, true);
 
 
           Address::create([
