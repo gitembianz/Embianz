@@ -63,6 +63,9 @@ class StoreShowProduct extends Component
               ->whereIn('type', ['full', 'original'])
               ->orderBy('sequence');
           },
+          'reviews' => function ($query) {
+            $query->select('product_id', 'count', 'value');
+          },
           'product_specs' => function ($query) {
             $query->select('product_id', 'spec_id', 'value', 'id')->with('spec:id,name');
           },
@@ -78,6 +81,9 @@ class StoreShowProduct extends Component
                     ->with([
                       'media' => function ($query) {
                         $query->select('path', 'name', 'type')->where('type', 'main');
+                      },
+                      'reviews' => function ($query) {
+                        $query->select('product_id', 'count', 'value');
                       },
                       'product_categories' => function ($query) {
                         $query->select('product_id', 'category_id', 'primary_category')

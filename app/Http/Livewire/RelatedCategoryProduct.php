@@ -119,7 +119,7 @@ class RelatedCategoryProduct extends Component
   public function getCatsProperty()
   {
     $relatedcatsIds = $this->relatedcats->pluck('category_id')->toArray();
-    return Category::whereNotIn('id', $relatedcatsIds)->get();
+    return Category::whereNotIn('id', $relatedcatsIds)->where('name', 'like', '%' . $this->searchadd . '%')->get();
   }
   public function plus()
   {
@@ -146,6 +146,11 @@ class RelatedCategoryProduct extends Component
       ];
       $this->row = 1;
     }
+  }
+  public function dennyselect($index)
+  {
+    $this->productsAndValues[$index]['allow'] = false;
+    $this->searchadd = '';
   }
   public function allowselect($index)
   {
@@ -246,6 +251,7 @@ class RelatedCategoryProduct extends Component
   {
     return $this->relatedcatsQuery->get();
   }
+
   public function getRelatedcatsQueryProperty()
   {
     return Products_categories::where('product_id', $this->product->id)

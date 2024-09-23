@@ -92,7 +92,7 @@ class Storesettingstable extends Component
   public function updatedSelectPage($value)
   {
     if ($value) {
-      $this->checked = $this->storesettings->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+      $this->checked = $this->storesettings->pluck('id')->map(fn($item) => (string) $item)->toArray();
     } else {
       $this->checked = [];
     }
@@ -121,7 +121,7 @@ class Storesettingstable extends Component
   public function selectAll()
   {
     $this->selectAll = true;
-    $this->checked = $this->storesettingsQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+    $this->checked = $this->storesettingsQuery->pluck('id')->map(fn($item) => (string) $item)->toArray();
   }
   public function getStoresettingsProperty()
   {
@@ -245,6 +245,26 @@ class Storesettingstable extends Component
           }
           $content = preg_replace('/^APP_TIMEZONE=.*/m', "APP_TIMEZONE=Etc/GMT" . $adjustedValue, $content);
           File::put($envPath, $content);
+        }
+      }
+      if ($item->parameter == 'lang') {
+        if (array_key_exists('value', $update)) {
+          if ($update['value'] = !'') {
+            $envPath = base_path('.env');
+            $content = File::get($envPath);
+            $content = preg_replace('/^APP_LANG=.*/m', "APP_LANG=" . $item->value, $content);
+            File::put($envPath, $content);
+          }
+        }
+      }
+      if ($item->parameter == 'locale') {
+        if (array_key_exists('value', $update)) {
+          if ($update['value'] = !'') {
+            $envPath = base_path('.env');
+            $content = File::get($envPath);
+            $content = preg_replace('/^APP_LOCALE=.*/m', "APP_LOCALE=" . $item->value, $content);
+            File::put($envPath, $content);
+          }
         }
       }
       Cache::forget('global_variables');

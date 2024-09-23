@@ -201,6 +201,9 @@ class StoreProducts extends Component
         'variants' => function ($query) {
           $query->with('product');
         },
+        'reviews' => function ($query) {
+          $query->select('product_id', 'count', 'value');
+        },
         'product_categories' => function ($query) {
           $query->select('product_id', 'category_id', 'primary_category')
             ->where('primary_category', true);
