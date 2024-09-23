@@ -7,6 +7,8 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Schema;
 use App\Models\ProductReviews as ModelsProductReviews;
+use Illuminate\Support\Facades\Cache;
+
 
 class ProductReviews extends Component
 {
@@ -74,7 +76,8 @@ class ProductReviews extends Component
         $this->editindex = $index;
         $record = ModelsProductReviews::find($id);
         $this->record = [
-            $index . '.count' => $record->count
+            $index . '.count' => $record->count,
+            $index . '.value' => $record->value
         ];
     }
     public function canceledit()
@@ -90,6 +93,28 @@ class ProductReviews extends Component
 
             if (array_key_exists('count', $record)) {
                 $new->count = $record['count'];
+            }
+            if (array_key_exists('value', $record)) {
+                if ($record['value'] <= 5 && $record['value'] > 0) {
+
+                    $new->value = $record['value'];
+                    $popularity = app('max_popularity') * ($record['value'] * 20) / 100;
+                    $new->product->update([
+                        'popularity' => $popularity
+                    ]);
+                    Cache::forget('max_popularity');
+                } else {
+                    session()->flash('notification', [
+                        'message' => 'Provide a value between 0-5!',
+                        'type' => 'warning',
+                        'title' => 'Warning'
+                    ]);
+                    $this->record = [
+                        $index . '.count' => $new->count,
+                        $index . '.value' => $record['value']
+                    ];
+                    return;
+                }
             }
             $new->save();
             session()->flash('notification', [

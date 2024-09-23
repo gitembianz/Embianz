@@ -52,6 +52,9 @@ class StoreMain extends Component
         'media' => function ($query) {
           $query->select('path', 'name', 'type')->where('type', 'main');
         },
+        'reviews' => function ($query) {
+          $query->select('product_id', 'count', 'value');
+        },
         'product_prices' => function ($query) {
           $query->select('product_id', 'value', 'discount', 'value_no_discount');
         },
@@ -88,6 +91,9 @@ class StoreMain extends Component
       return Product::with([
         'media' => function ($query) {
           $query->select('path', 'name', 'type')->where('type', 'main');
+        },
+        'reviews' => function ($query) {
+          $query->select('product_id', 'count', 'value');
         },
         'product_prices' => function ($query) {
           $query->select('product_id', 'value', 'discount', 'value_no_discount');

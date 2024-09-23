@@ -1,5 +1,5 @@
 <div class="accordion @if ($showrelated) active @endif">
-
+ <x-alert />
  {{-- Accordion Header --}}
  <div class="accordion__header">
   <button
@@ -112,6 +112,13 @@
           @else
            <input type="number" min="0" required class="input__searchable"
             wire:model.defer="record.{{ $index }}.count">
+          @endif
+         @elseif ($column === 'value')
+          @if ($editindex !== $index)
+           {{ $review->$column }}
+          @else
+           <input type="number" required class="input__searchable"
+            wire:model.defer="record.{{ $index }}.value">
           @endif
          @else
           {{ $review->$column }}

@@ -90,7 +90,10 @@ class ProductDetails extends Component
                             }]);
                         }]);
                     },
-                    'beeingvariants'
+                    'beeingvariants',
+                    'reviews' => function ($query) {
+                        $query->select('product_id', 'count', 'value');
+                    }
                 ])
                 ->findOrFail($prodid);
         }
