@@ -20,7 +20,7 @@ class StoreHeader extends Component
       return $_COOKIE['sessionId'];
     } else {
       $sessionId = session()->getId();
-      setcookie('sessionId', $sessionId, time() + 30 * 24 * 60 * 60, '/', null, false, true);
+      setcookie('sessionId', $sessionId, time() + 30 * 24 * 60 * 60, '/', '', false, true);
       return $sessionId;
     }
   }
@@ -71,7 +71,7 @@ class StoreHeader extends Component
       return Category::select('id', 'name', 'seo_id', 'sequence')
         ->with([
           'media' => function ($query) {
-            $query->where('type', 'min')->select('media_id', 'path', 'name','type');
+            $query->where('type', 'min')->select('media_id', 'path', 'name', 'type');
           },
           'subcategory' => function ($query) {
             $query->whereHas('category', function ($query) {
@@ -82,7 +82,7 @@ class StoreHeader extends Component
                 $this->applyCategoryConditions($query);
                 $query->with([
                   'media' => function ($query) {
-                    $query->where('type', 'min')->select('media_id', 'path', 'name','type');
+                    $query->where('type', 'min')->select('media_id', 'path', 'name', 'type');
                   },
                   'subcategory' => function ($query) {
                     $query->whereHas('category', function ($query) {
@@ -93,7 +93,7 @@ class StoreHeader extends Component
                         $this->applyCategoryConditions($query);
                         $query->with([
                           'media' => function ($query) {
-                            $query->where('type', 'min')->select('media_id', 'path', 'name','type');
+                            $query->where('type', 'min')->select('media_id', 'path', 'name', 'type');
                           }
                         ]);
                       }
