@@ -30,8 +30,8 @@
    @endif
    @if (app()->has('global_display_rating') && app('global_display_rating') === 'true')
     @php
-     $rating = 100 / (app('max_popularity') / $product->popularity);
-     $ratingvalue = $rating / 20;
+     $rating = $product->reviews->first()->value * 20;
+     $ratingvalue = $product->reviews->first()->value;
     @endphp
     <div class="ratingscore">
      <div class="rating" style="--rating: {{ $rating }}%;"></div>
@@ -258,6 +258,10 @@
      let currencyElement = document.querySelector('.dlv_currency');
      let price = (product.product_prices && product.product_prices.length > 0) ?
       `${product.product_prices[0].value}` : `0`;
+     let ratingValue = (product.reviews && product.reviews.length > 0) ?
+      `${product.reviews[0].value}` : `0`;
+     let reviewCount = (product.reviews && product.reviews.length > 0) ?
+      `${product.reviews[0].count}` : `0`;
      let currency = currencyElement.textContent.trim();
      let media = (product.media && product.media.length > 0) ?
       `${window.location.origin}/${product.media[0].path}${product.media[0].name}` :
@@ -279,7 +283,32 @@
         "url": `${window.location.origin}/product/${product.seo_id || product.id}`,
         "priceCurrency": currency,
         "price": price,
-        "availability": `https://schema.org/InStock`
+        "availability": `https://schema.org/InStock`,
+        "priceValidUntil": product.end_date,
+        "hasMerchantReturnPolicy": {
+         "value": true
+        },
+        "shippingDetails": {
+         "type": "FreeShipping",
+         "price": "0"
+        },
+        "aggregateRating": {
+         "@type": "AggregateRating",
+         "ratingValue": ratingValue,
+         "reviewCount": reviewCount
+        },
+        "review": {
+         "@type": "Review",
+         "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": ratingValue,
+          "bestRating": 5
+         },
+         "author": {
+          "@type": "Person",
+          "name": "anonim"
+         }
+        },
        }
       };
 
