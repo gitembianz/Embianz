@@ -55,7 +55,7 @@ class Categoriestable extends Component
   public function updatedSelectPage($value)
   {
     if ($value) {
-      $this->checked = $this->categories->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+      $this->checked = $this->categories->pluck('id')->map(fn($item) => (string) $item)->toArray();
     } else {
       $this->checked = [];
     }
@@ -82,7 +82,7 @@ class Categoriestable extends Component
   public function selectAll()
   {
     $this->selectAll = true;
-    $this->checked = $this->categoriesQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+    $this->checked = $this->categoriesQuery->pluck('id')->map(fn($item) => (string) $item)->toArray();
   }
   public function getCategoriesProperty()
   {

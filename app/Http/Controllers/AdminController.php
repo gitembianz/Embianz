@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Account;
+use App\Models\Product;
 use App\Models\Variant;
 use App\Models\Voucher;
 use App\Models\CustomScript;
@@ -12,6 +13,8 @@ use Illuminate\Http\Request;
 use App\Models\Store_Settings;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Http\Livewire\ProductReviews;
+use App\Models\ProductReviews as ModelsProductReviews;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
@@ -241,5 +244,21 @@ class AdminController extends Controller
   {
     $data = Order::find($id);
     return view('admin.show_order', compact('data'));
+  }
+
+  // seed reviews
+  public function seedreviews()
+  {
+    $prods = Product::where('active', true)
+      ->where('start_date', '<=', now()->format('Y-m-d'))
+      ->where('end_date', '>=', now()->format('Y-m-d'))->get();
+
+    foreach ($prods as $key => $product) {
+      ModelsProductReviews::create([
+        'product_id' => $product->id,
+        'count' => 1,
+      ]);
+    }
+    return Redirect::to('/');
   }
 }

@@ -126,6 +126,7 @@
         Artisan::call('db:seed');
         echo 'Database seeded';
       });
+      route::get('/seedreviews', [AdminController::class, 'seedreviews']);
 
       route::get('/clear-cache', function () {
         Artisan::call('cache:clear');

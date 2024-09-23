@@ -321,5 +321,7 @@
   @livewire('related-products', ['product' => $product])
   @livewire('related-spec-product', ['product' => $product])
   @livewire('related-pricelist', ['product' => $product])
+  @livewire('product-reviews', ['product' => $product, 'tableName' => 'product_reviews'])
+
  </div>
 </section>
