@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Cache;
+use App\Models\ProductReviews as ModelsProductReviews;
 
 
 class ShowProduct extends Component
@@ -125,6 +126,20 @@ class ShowProduct extends Component
       if (array_key_exists('popularity', $product_new)) {
         $new->popularity = $product_new['popularity'];
         Cache::forget('max_popularity');
+        if (!$new->reviews->first()) {
+          $value = (100 / (app('max_popularity') / $new->popularity)) / 20;
+
+          ModelsProductReviews::create([
+            'product_id' => $new->id,
+            'count' => 1,
+            'value' => $value
+          ]);
+        } else {
+          $value = (100 / (app('max_popularity') / $new->popularity)) / 20;
+          ModelsProductReviews::where('product_id', $new->id)->update([
+            'value' => $value,
+          ]);
+        }
       }
       if (array_key_exists('long_description', $product_new)) {
         $new->long_description = $product_new['long_description'];
