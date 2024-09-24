@@ -555,7 +555,7 @@
      let media = (product.media && product.media.length > 0) ?
       `${window.location.origin}/${product.media[0].path}${product.media[0].name}` :
       `${window.location.origin}/images/store/default/default300.webp`;
-     if (price != '0') {
+     if (price != '0' || (ratingValue != '0') && (reviewCount != 0)) {
       let jsonLd = {
        "@context": "https://schema.org/",
        "@type": "Product",
