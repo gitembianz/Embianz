@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Database\Seeders\StoreSeeder;
+use App\Models\ProductReviews as ModelsProductReviews;
+
 
 
 
@@ -49,6 +51,29 @@ class Storesettingstable extends Component
         $this->row = null;
       }
     }
+  }
+  public function seedreviews()
+  {
+    $prods = Product::where('active', true)
+      ->where('start_date', '<=', now()->format('Y-m-d'))
+      ->where('end_date', '>=', now()->format('Y-m-d'))->get();
+
+    foreach ($prods as $product) {
+      if (!$product->reviews->first()) {
+        $value = (100 / (app('max_popularity') / $product->popularity)) / 20;
+
+        ModelsProductReviews::create([
+          'product_id' => $product->id,
+          'count' => 1,
+          'value' => $value
+        ]);
+      }
+    }
+    session()->flash('notification', [
+      'message' => 'Reviews added successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
   }
 
   public function render()

@@ -73,7 +73,7 @@
     <path d="M19.94 11l0 .01" />
    </svg>
   </button>
-  {{-- Add store setting --}}
+  {{-- Add store setting
   <a class="button button--primary button--centered display--desktop" tooltip="Add new setting" tooltip-top
    href="{{ route('add_storesetting') }}">
    <svg>
@@ -82,7 +82,14 @@
     <line x1="12" y1="18" x2="12" y2="12"></line>
     <line x1="9" y1="15" x2="15" y2="15"></line>
    </svg>
-  </a>
+  </a> --}}
+  {{-- Add store setting --}}
+  <button class="button button--primary button--centered display--desktop" tooltip="Seed reviews" tooltip-top
+   wire:click.prevent="seedreviews">
+   <svg>
+    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+   </svg>
+  </button>
   {{-- Update Website --}}
   <button class="button button--primary button--centered display--desktop" tooltip="Update Website" tooltip-top
    wire:click="actualizeaza">

@@ -255,10 +255,12 @@ class AdminController extends Controller
 
     foreach ($prods as $product) {
       if (!$product->reviews->first()) {
+        $value = (100 / (app('max_popularity') / $product->popularity)) / 20;
+
         ModelsProductReviews::create([
           'product_id' => $product->id,
           'count' => 1,
-          'value' => 5
+          'value' => $value
         ]);
       }
     }

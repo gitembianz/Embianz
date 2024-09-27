@@ -77,7 +77,7 @@ class StoreController extends Controller
       ->orderBy('id', 'desc')
       ->first();
 
-    $preload = $this->getPreloadImage($product, $data);
+    $preload = $this->getPreloadImage($product, $data, $useCache);
 
     return view('store.products', compact('data', 'can', 'preload'));
   }
@@ -90,21 +90,23 @@ class StoreController extends Controller
         $category->end_date < now()->format('Y-m-d'));
   }
 
-  private function getPreloadImage($product, $data)
+  private function getPreloadImage($product, $data, $useCache)
   {
-    if (!$data->preload_image) {
-      return '';
-    }
+    $media = $useCache ? $product->media->where('type', 'main')->first() : $product->media->first();
+    if (app()->has('global_'))
+      if (!$data->preload_image) {
+        return '';
+      }
 
     if ($product && $product->product_categories != null && $product->type != 'parent') {
-      return "/" . optional($product->media->first())->path . optional($product->media->first())->name;
+      return "/" . optional($media)->path . optional($media)->name;
     }
 
     if ($product && $product->product_categories != null && $product->type == 'parent' && $product->variants->count() != 0) {
       $variant = $product->variants->where('default_variant', true)->first() ?? $product->variants->first();
       $element = $variant->product;
-
-      return "/" . optional($element->media->first())->path . optional($element->media->first())->name;
+      $mediaa = $useCache ? $element->media->where('type', 'main')->first() : $element->media->first();
+      return "/" . optional($mediaa)->path . optional($mediaa)->name;
     }
 
     return '';
