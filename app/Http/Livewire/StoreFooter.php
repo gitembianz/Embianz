@@ -78,7 +78,7 @@ class StoreFooter extends Component
   public function acceptCookie()
   {
     $this->cookieConsent = true;
-    setcookie('cookieConsent', 'accepted', time() + (30 * 24 * 60 * 60), '/');
+    setrawcookie('cookieConsent', 'accepted');
     $this->emit('updateCookieConsent');
   }
 }
