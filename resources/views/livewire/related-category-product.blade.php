@@ -498,7 +498,7 @@
        </td>
 
        @if ($this->showColumn('Id'))
-        <td wire:click="expandRow({{ $index }})">{{ $related->id }}</td>
+        <td wire:click="expandRow({{ $index }})">{{ $related->category->id }}</td>
        @endif
        @if ($this->showColumn('Category Name'))
         <td data-title="Name" wire:click="expandRow({{ $index }})">

@@ -313,8 +313,7 @@ class GlobalVariablesServiceProvider extends ServiceProvider
     private function loadAllSpecificationsIntoCache()
     {
         $productSpecs = Cache::rememberForever('cached_specifications', function () {
-            $productSpecs = Product_Spec::select('value', 'spec_id', DB::raw('MIN(product_id) as product_id')) // Replaced ANY_VALUE with MIN
-                ->groupBy('spec_id', 'value')
+            $productSpecs = Product_Spec::select('value', 'spec_id', 'product_id')
                 ->with([
                     'spec' => function ($query) {
                         $query->select('id', 'name', 'sequence');
@@ -330,21 +329,32 @@ class GlobalVariablesServiceProvider extends ServiceProvider
                     $query->where('active', true)
                         ->where('type', '!=', 'parent')
                         ->where('start_date', '<=', now()->format('Y-m-d'))
-                        ->where('end_date', '>=', now()->format('Y-m-d'))->whereHas('product_categories');
+                        ->where('end_date', '>=', now()->format('Y-m-d'))
+                        ->whereHas('product_categories');
                 })
                 ->get();
 
             $formattedSpecs = $productSpecs->groupBy('spec_id')->map(function ($specs) {
                 $firstSpec = $specs->first();
+
                 $uniqueValues = $specs->groupBy('value')->map(function ($items) {
-                    $productIds = $items->pluck('product_id')->unique();
-                    $categories = $items->flatMap(function ($item) {
+
+                    $productsWithCategories = $items->map(function ($item) {
+                        $categoryIds = $item->product->product_categories->pluck('category_id')->toArray();
+
+                        return [
+                            'product_id' => $item->product_id,
+                            'categories' => $categoryIds,
+                        ];
+                    });
+
+                    $uniqueCategories = $items->flatMap(function ($item) {
                         return $item->product->product_categories->pluck('category_id');
                     })->unique();
 
                     return [
-                        'products' => $productIds->toArray(),
-                        'categories' => $categories->toArray(),
+                        'products' => $productsWithCategories->toArray(),
+                        'categories' => $uniqueCategories->toArray(),
                     ];
                 });
 
