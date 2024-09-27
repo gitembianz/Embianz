@@ -20,7 +20,7 @@ class StoreHeader extends Component
       return $_COOKIE['sessionId'];
     } else {
       $sessionId = session()->getId();
-      setcookie('sessionId', $this->session_id, time() + 30 * 24 * 60 * 60, '/');
+      setrawcookie('sessionId', $sessionId);
       return $sessionId;
     }
   }
