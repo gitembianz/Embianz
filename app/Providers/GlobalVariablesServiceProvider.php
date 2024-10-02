@@ -26,9 +26,6 @@ class GlobalVariablesServiceProvider extends ServiceProvider
     {
         ///
     }
-
-
-
     /**
      * Bootstrap services.
      */
@@ -185,7 +182,7 @@ class GlobalVariablesServiceProvider extends ServiceProvider
                         $query->orderBy('sequence')->select('parent_id', 'product_id', 'sequence', 'id')->with([
                             'product' => function ($query) {
                                 $query->where('active', 1)->where('start_date', '<=',  now()->format('Y-m-d'))
-                                    ->where('end_date', '>=',  now()->format('Y-m-d'))->select('id', 'name', 'popularity', 'seo_id', 'short_description', 'quantity', 'active', 'end_date', 'start_date')->with([
+                                    ->where('end_date', '>=',  now()->format('Y-m-d'))->select('id', 'name', 'popularity', 'seo_id', 'short_description', 'long_description', 'quantity', 'active', 'end_date', 'start_date')->with([
                                         'media' => function ($query) {
                                             $query->select('path', 'name', 'type')->where('type', 'main');
                                         },
@@ -300,7 +297,6 @@ class GlobalVariablesServiceProvider extends ServiceProvider
 
         $this->app->instance('cached_categories', $categories);
     }
-
     protected function applySubcategoryConditions($query)
     {
         $query->where('active', 1)
@@ -309,10 +305,9 @@ class GlobalVariablesServiceProvider extends ServiceProvider
             ->where('end_date', '>=', now()->format('Y-m-d'))
             ->orderBy('sequence');
     }
-
     private function loadAllSpecificationsIntoCache()
     {
-        $productSpecs = Cache::rememberForever('cached_specifications', function () {
+        $productSpecs = Cache::rememberForever(' ', function () {
             $productSpecs = Product_Spec::select('value', 'spec_id', 'product_id')
                 ->with([
                     'spec' => function ($query) {

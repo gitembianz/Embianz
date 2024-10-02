@@ -405,9 +405,19 @@ class Storesettingstable extends Component
     ]);
   }
 
+  public function refreshfilters()
+  {
+    Cache::forget('cached_specifications');
+    session()->flash('notification', [
+      'message' => 'Fileters update successfully!',
+      'type' => 'success',
+      'title' => 'Success'
+    ]);
+  }
+
   public function addSettingsIfNotExist()
   {
-    $settings = StoreSeeder::settings(); // Access settings from the seeder directly
+    $settings = StoreSeeder::settings();
     foreach ($settings as $setting) {
       $exists = DB::table('store__settings')
         ->where('parameter', $setting['parameter'])
