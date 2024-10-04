@@ -215,6 +215,9 @@ class ShowProduct extends Component
         $this->emit('wishlistUpdated');
       }
     }
+
+    ModelsProductReviews::where('product_id', $id)->delete();
+
     $productpricelists = PricelistEntries::where('product_id', $id)->get();
     if ($productpricelists != NULL) {
       foreach ($productpricelists as $productpricelist) {

@@ -69,8 +69,7 @@
 
  <!---------------------------Filter------------------------->
  <section class="controls container" id="productlist">
-  <button class="controls__button" id="filterOpen" wire:click="$set('showspecfilter', true)"
-   aria-label="Open filter button">
+  <button class="controls__button" id="filterOpen" aria-label="Open filter button">
    <svg>
     <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
    </svg>
@@ -87,11 +86,11 @@
   </button>
  </section>
  <!---------------------------- Display filters-------------------------->
- @if (!empty($selectedSpecNames))
+ @if (!empty($selectedfilters))
   <section class="tag container">
-   @foreach ($selectedSpecNames as $key => $name)
-    <button class="tag__button" wire:click="removeSpec('{{ $key }}')">
-     {{ $name }}: {{ $key }}
+   @foreach ($selectedfilters as $key => $specname)
+    <button class="tag__button" wire:click="removeSpec('{{ $key }}', '{{ $specname }}')">
+     {{ $specname }}: {{ $key }}
      <svg>
       <line x1="18" y1="6" x2="6" y2="18"></line>
       <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -124,9 +123,9 @@
          if ($product->variants->count() == 0) {
              continue;
          } else {
-             $filteredVariants = $product->variants->filter(function ($variant) use ($selectedSpecValues) {
+             $filteredVariants = $product->variants->filter(function ($variant) use ($queryfilters) {
                  $matchesFilter = true;
-                 foreach ($selectedSpecValues as $values) {
+                 foreach ($queryfilters as $values) {
                      foreach ($values as $value => $isSelected) {
                          if (
                              $isSelected &&
@@ -182,8 +181,8 @@
       @endphp
       @if ($price)
        {{-- Out- negru // save - rosu --}}
-       @if ($element->quantity < $quantity && $element->quantity > 0)
-        <p class="card-status save">
+       @if ($element->quantity < app('global_low_stock') && $element->quantity > 0)
+        <p class="card-status out">
          @if (app()->has('label_product_status_stock'))
           {!! app('label_product_status_stock') !!}
          @endif
@@ -362,10 +361,10 @@
   </section>
  @endif
  <!---------------------------Filters------------------------->
- <div class="filter @if ($showspecfilter) active @endif" id="filterList">
+ <div class="filter" id="filterList" wire:ignore>
   <div class="filter__content" id="filterContent">
    <div class="filter__top">
-    <button class="filter__apply" id="resetFilter" wire:click="resetFilter">
+    <button class="filter__apply" id="resetFilter" wire:click.prevent="clearall">
      @if (app()->has('label_remove_all_filters'))
       {!! app('label_remove_all_filters') !!}
      @endif
@@ -375,46 +374,57 @@
       <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
      </svg>
     </button>
-    <button class="filter__reset" wire:click="$set('showspecfilter', false)" id="filterClose" href="#">
+    <button class="filter__reset" id="filterClose">
      <svg>
       <line x1="18" y1="6" x2="6" y2="18"></line>
       <line x1="6" y1="6" x2="18" y2="18"></line>
      </svg>
     </button>
    </div>
-   <button class="filter__top filter__top--button" wire:click="$set('showspecfilter', false)">
+   <button class="filter__top filter__top--button">
     @if (app()->has('label_display_filters_results'))
      {!! app('label_display_filters_results') !!}
-    @endif <span>{{ $products->total() }}</span>
+    @endif
+    <span>{{ $products->total() }}</span>
    </button>
-   <div wire:ignore class="filter__list">
-    @foreach ($filtervalues->sortBy('spec.sequence')->groupBy('spec_id') as $values)
+   <div class="filter__list">
+    @foreach ($filtervalues as $values)
      <div class="dropfilter">
       <div class="dropfilter__button">
-       <button class="dropfilter__open" href="#">
-        <h4>{{ $values->first()->spec->name }}</h4>
+       <button class="dropfilter__open">
+        <h4>{{ $values['spec'] }}</h4>
         <svg>
          <polyline points="6 9 12 15 18 9"></polyline>
         </svg>
        </button>
       </div>
       <div class="dropfilter__list">
-       @foreach ($values->sortBy('sequence') as $value)
+       @foreach ($values['values'] as $value => $productsids)
         @php
-         $key = str_replace('.', '_', $value->value);
+         $ids = implode(',', $productsids['product_ids']);
         @endphp
-        <label class="dropfilter__link" for="{{ $value->id }}{{ $value->value }}">
-         <input type="checkbox" wire:model="selectedSpecValues.{{ $value->spec_id }}.{{ $key }}"
-          wire:change="applyFilter" id="{{ $value->id }}{{ $value->value }}">
-         <h4>{{ $value->value }}</h4>
+        <label class="dropfilter__link" for="{{ $value }}">
+         <input type="checkbox"
+          wire:model="queryfilters.{{ $values['spec'] }}.{{ $value }}.{{ $ids }}"
+          wire:change="applyFilter" id="{{ $value }}">
+         <h4>{{ $value }}</h4>
         </label>
        @endforeach
       </div>
      </div>
     @endforeach
+
    </div>
   </div>
-  <button class="filter__close-modal" wire:click="$set('showspecfilter', false)"></button>
+  <button id="filterClose" class="filter__close-modal"></button>
+  <script>
+   document.addEventListener('livewire:load', function() {
+    Livewire.on('filtersApplied', function(selectedCount, totalCount) {
+     const filterButton = document.querySelector('.filter__top--button span');
+     filterButton.textContent = selectedCount > 0 ? selectedCount : totalCount;
+    });
+   });
+  </script>
  </div>
  <!-------------------------Sorting----------------------->
  <div class="filter" id="sortList">
@@ -425,13 +435,14 @@
       {!! app('label_sort_title') !!}
      @endif
     </div>
-    <button class="filter__reset" id="sortClose" href="#">
+    <button class="filter__reset" id="sortClose">
      <svg>
       <line x1="18" y1="6" x2="6" y2="18"></line>
       <line x1="6" y1="6" x2="18" y2="18"></line>
      </svg>
     </button>
    </div>
+   {{-- orderby --}}
    <div class="filter__list">
 
     <input class="filter__input" wire:model="orderBy" type="radio" name="sort" value="best_selling"

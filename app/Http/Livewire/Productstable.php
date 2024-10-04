@@ -13,6 +13,8 @@ use App\Models\Products_categories;
 use App\Models\Related_Products;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Schema;
+use App\Models\ProductReviews as ModelsProductReviews;
+
 
 class Productstable extends Component
 {
@@ -60,7 +62,7 @@ class Productstable extends Component
   public function updatedSelectPage($value)
   {
     if ($value) {
-      $this->checked = $this->products->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+      $this->checked = $this->products->pluck('id')->map(fn($item) => (string) $item)->toArray();
     } else {
       $this->checked = [];
     }
@@ -85,7 +87,7 @@ class Productstable extends Component
   public function selectAll()
   {
     $this->selectAll = true;
-    $this->checked = $this->productsQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+    $this->checked = $this->productsQuery->pluck('id')->map(fn($item) => (string) $item)->toArray();
   }
   public function getProductsProperty()
   {
@@ -143,6 +145,8 @@ class Productstable extends Component
           $this->emit('wishlistUpdated');
         }
       }
+      ModelsProductReviews::where('product_id', $id)->delete();
+
       $productpricelists = PricelistEntries::where('product_id', $id)->get();
       if ($productpricelists != NULL) {
         foreach ($productpricelists as $productpricelist) {
@@ -203,6 +207,8 @@ class Productstable extends Component
         $productspec->delete();
       }
     }
+    ModelsProductReviews::where('product_id', $id)->delete();
+
     $productpricelists = PricelistEntries::where('product_id', $id)->get();
     if ($productpricelists != NULL) {
       foreach ($productpricelists as $productpricelist) {
