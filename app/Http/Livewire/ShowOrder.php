@@ -54,6 +54,12 @@ class ShowOrder extends Component
                 $order->status_id = $new_status['status_id'];
                 $order->updated_at = now();
                 $order->save();
+                if ($order->status->name == 'canceled') {
+                    foreach ($order->orders as $orderitem) {
+                        $orderitem->product->quantity += $orderitem->quantity;
+                        $orderitem->product->save();
+                    }
+                }
                 $this->emit('itemSaved');
                 session()->flash('notification', [
                     'message' => 'Record edited successfully!',
@@ -75,15 +81,14 @@ class ShowOrder extends Component
     }
     public function deleteRecord()
     {
-        $item = Order::findOrFail($this->orderId);
-        $orderitems = Order_Item::where('order_id', $this->orderId)->get();
-
-        if ($orderitems != NULL) {
-            foreach ($orderitems as $orderitem) {
-                $orderitem->delete();
-            }
+        $order = Order::findOrFail($this->orderId);
+        foreach ($order->orders as $orderitem) {
+            $orderitem->product->quantity += $orderitem->quantity;
+            $orderitem->product->save();
+            $orderitem->delete();
         }
-        $item->delete();
+
+        $order->delete();
         $this->delete = false;
         return redirect()->route('orders')->with('notification', [
             'message' => 'Record deleted successfully!',
