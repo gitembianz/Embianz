@@ -14,7 +14,6 @@ use App\Models\Store_Settings;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\DB;
 
 
 class GlobalVariablesServiceProvider extends ServiceProvider
@@ -307,14 +306,14 @@ class GlobalVariablesServiceProvider extends ServiceProvider
     }
     private function loadAllSpecificationsIntoCache()
     {
-        $productSpecs = Cache::rememberForever(' ', function () {
+        $productSpecs = Cache::rememberForever('cached_specifications', function () {
             $productSpecs = Product_Spec::select('value', 'spec_id', 'product_id')
                 ->with([
                     'spec' => function ($query) {
                         $query->select('id', 'name', 'sequence');
                     },
                     'product' => function ($query) {
-                        $query->select('id')->whereHas('product_categories');
+                        $query->select('id', 'type', 'parent_id')->whereHas('product_categories');
                     }
                 ])
                 ->whereHas('spec', function ($query) {
@@ -336,10 +335,13 @@ class GlobalVariablesServiceProvider extends ServiceProvider
 
                     $productsWithCategories = $items->map(function ($item) {
                         $categoryIds = $item->product->product_categories->pluck('category_id')->toArray();
+                        $parentId = $item->product->type === 'variant' ? $item->product->parent_id : null;
 
                         return [
                             'product_id' => $item->product_id,
                             'categories' => $categoryIds,
+                            'parent_id' => $parentId,
+                            'type' => $item->product->type,
                         ];
                     });
 

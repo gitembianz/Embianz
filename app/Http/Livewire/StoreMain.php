@@ -66,7 +66,7 @@ class StoreMain extends Component
           }]);
         }
       ])
-        ->select('id', 'end_date', 'name', 'seo_id', 'quantity', 'sku', 'long_description', 'brand', 'type', 'short_description', 'popularity')
+        ->select('id', 'end_date', 'name', 'seo_id', 'ean', 'quantity', 'sku', 'long_description', 'brand', 'type', 'short_description', 'popularity')
         ->where('active', true)
         ->where('type', '!=', 'parent')
         ->where('start_date', '<=', now()->format('Y-m-d'))
@@ -107,7 +107,7 @@ class StoreMain extends Component
         }
 
       ])
-        ->select('id', 'end_date', 'name', 'seo_id', 'quantity', 'sku', 'long_description', 'brand', 'short_description', 'popularity')
+        ->select('id', 'end_date', 'name', 'seo_id', 'ean', 'quantity', 'sku', 'long_description', 'brand', 'short_description', 'popularity')
         ->where('active', true)
         ->where('type', '!=', 'parent')
         ->where('start_date', '<=',  now()->format('Y-m-d'))

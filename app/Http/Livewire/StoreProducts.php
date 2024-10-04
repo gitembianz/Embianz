@@ -19,6 +19,7 @@ class StoreProducts extends Component
   public $category;
   public $queryfilters = [];
   public $selectedKeys = [];
+  public $selectedvariantsKeys = [];
   public $selectedfilters = [];
   public $wishlistItems;
 
@@ -71,6 +72,9 @@ class StoreProducts extends Component
     } else {
       session()->forget('filtered_values');
       $this->loadAmount = app('global_limit_load');
+    }
+    if ($this->selectedKeys) {
+      dd($this->products);
     }
   }
 
@@ -125,7 +129,9 @@ class StoreProducts extends Component
       if ($this->category->accepted_items == 'default') {
         $query->where('type', '!=', 'parent');
       } else {
-        $query->where('type', '!=', 'variant');
+        if (empty($this->selectedKeys)) {
+          $query->where('type', '!=', 'variant');
+        }
       }
     }
     switch ($this->orderBy) {
@@ -177,10 +183,30 @@ class StoreProducts extends Component
           });
 
           if ($filteredProducts->isNotEmpty()) {
-            $productIds = $filteredProducts->pluck('product_id')->toArray();
+            $productData = $filteredProducts->map(function ($product) {
+              if ($this->category->accepted_items === 'parents') {
+                if ($product['parent_id'] != "" && $product['type'] != 'standard') {
+                  return [
+                    'product_id' => $product['product_id'],
+                    'parent_id' => $product['parent_id'],
+                    'type' => $product['type'],
+                  ];
+                } elseif ($product['type'] != 'variant') {
+                  return [
+                    'product_id' => $product['product_id'],
+                    'type' => $product['type'],
+                  ];
+                }
+              } else {
+                return [
+                  'product_id' => $product['product_id'],
+                  'type' => $product['type'],
+                ];
+              }
+            })->filter();
 
             return [
-              'product_ids' => $productIds,
+              'product_data' => $productData->toArray(),
             ];
           }
           return null;
@@ -196,8 +222,10 @@ class StoreProducts extends Component
         return null;
       })->filter();
     }
+
     return $query;
   }
+
   public function applyFilter()
   {
     $this->selectedKeys = [];
@@ -208,18 +236,40 @@ class StoreProducts extends Component
 
       foreach ($this->queryfilters as $specName => $values) {
         $specProductIds = [];
+        $specVariantIds = [];
 
         foreach ($values as $value => $isfilterselected) {
           if (array_values($isfilterselected)[0]) {
-            $productIds = explode(',', array_keys($isfilterselected)[0]);
 
-            $specProductIds = array_merge($specProductIds, $productIds);
+            $fullString = array_keys($isfilterselected)[0];
+            $productIdsWithTypes = explode(',', $fullString);
+
+            foreach ($productIdsWithTypes as $item) {
+              $parts = explode('|', $item);
+              $productId = $parts[0];
+              $productType = $parts[1] ?? 'standard';
+
+              if ($productType === 'variant') {
+                $variantId = $productId;
+                $parentId = $parts[1] ?? null;
+
+                if ($parentId) {
+                  $specVariantIds[$parentId] = $variantId;
+                }
+              } else {
+                $specProductIds[] = $productId;
+              }
+            }
 
             $this->selectedfilters[$value] = $specName;
           }
         }
 
-        $productIdsPerSpec[] = array_unique($specProductIds);
+        $mergedProductIds = array_merge($specProductIds, array_keys($specVariantIds));
+
+        if (!empty($mergedProductIds)) {
+          $productIdsPerSpec[] = array_unique($mergedProductIds);
+        }
       }
 
       if (count($productIdsPerSpec) > 1) {
@@ -232,8 +282,8 @@ class StoreProducts extends Component
         'category_id' => $this->category->id,
         'queryfilters' => $this->queryfilters
       ]);
-      if (count($this->selectedKeys) > 0) {
 
+      if (count($this->selectedKeys) > 0) {
         $this->emit('filtersApplied', count($this->selectedKeys));
       } else {
         $this->emit('filtersApplied', $this->products->total());
@@ -241,6 +291,7 @@ class StoreProducts extends Component
     }
     return $this->products->whereIn('id', $this->selectedKeys);
   }
+
 
   public function clearall()
   {
