@@ -118,38 +118,16 @@
    </p>
   @else
    @foreach ($products as $index => $product)
+
     @php
      if ($product->type == 'parent') {
          if ($product->variants->count() == 0) {
              continue;
          } else {
-             $filteredVariants = $product->variants->filter(function ($variant) use ($queryfilters) {
-                 $matchesFilter = true;
-                 foreach ($queryfilters as $values) {
-                     foreach ($values as $value => $isSelected) {
-                         if (
-                             $isSelected &&
-                             !$variant->product->product_specs->contains('value', str_replace('_', '.', $value))
-                         ) {
-                             $matchesFilter = false;
-                             break;
-                         }
-                     }
-                     if (!$matchesFilter) {
-                         break;
-                     }
-                 }
-                 return $matchesFilter;
-             });
-
-             if ($filteredVariants->isEmpty()) {
-                 continue;
-             }
-
-             if ($filteredVariants->where('default_variant', true)->first()) {
-                 $element = $filteredVariants->where('default_variant', true)->first()->product;
+             if ($product->variants->where('default_variant', true)->first()) {
+                 $element = $product->variants->where('default_variant', true)->first()->product;
              } else {
-                 $element = $filteredVariants->first()->product;
+                 $element = $product->variants->first()->product;
              }
          }
      } else {
@@ -226,13 +204,24 @@
       <div class="card-info">
        <div class="card-text">
         <h2 class="card-title"><a style="text-decoration: none; font-weight:500"
-          href="{{ route('product', ['product' => $element->seo_id !== null && $element->seo_id !== '' ? $element->seo_id : $element->id]) }}">{{ $product->name }}</a>
+          href="{{ route('product', ['product' => $element->seo_id !== null && $element->seo_id !== '' ? $element->seo_id : $element->id]) }}">
+          @if ($product->type === 'variant' && $category->accepted_items === 'parents')
+           {{ $product->parent->name }}
+          @else
+           {{ $product->name }}
+          @endif
+         </a>
         </h2>
         @php
-         if (app()->has('global_cache_data') && app('global_cache_data') === 'true') {
-             $primaryCategory = $product->product_categories->where('primary_category', true)->first();
+         if ($product->type === 'variant' && $category->accepted_items === 'parents') {
+             $corectproduct = $product->parent;
          } else {
-             $primaryCategory = $product->product_categories->first();
+             $corectproduct = $product;
+         }
+         if (app()->has('global_cache_data') && app('global_cache_data') === 'true') {
+             $primaryCategory = $corectproduct->product_categories->where('primary_category', true)->first();
+         } else {
+             $primaryCategory = $corectproduct->product_categories->first();
          }
         @endphp
 
@@ -246,7 +235,7 @@
          {{-- label price from --}}
          @if (
              $category->display_variant_price == true &&
-                 $product->type == 'parent' &&
+                 ($product->type == 'parent' || $product->type == 'variant') &&
                  app()->has('global_variant_price_from') &&
                  app()->has('global_variant_add_to_cart') &&
                  app('global_variant_add_to_cart') === 'true' &&
@@ -255,7 +244,7 @@
           {!! app('label_product_price_from') !!}
          @endif
          {{-- price --}}
-         @if ($product->type == 'parent')
+         @if ($product->type == 'parent' || $product->type == 'variant')
           @if (
               $category->display_variant_price == true &&
                   app()->has('global_variant_add_to_cart') &&
@@ -325,12 +314,12 @@
         </div>
        </div>
        @if (
-           $product->type == 'parent' &&
+           ($product->type == 'parent' || $product->type == 'variant') &&
                app()->has('global_variant_add_to_cart') &&
                app('global_variant_add_to_cart') === 'true' &&
                $category->display_variant_price == true)
         @livewire('add-to-cart-button', ['product' => $element], key($element->id . $index))
-       @elseif($product->type == 'parent')
+       @elseif($product->type == 'parent' || $product->type == 'variant')
         <div class="card__button--wrapper">
          <button class="card__button">
 
@@ -399,13 +388,21 @@
        </button>
       </div>
       <div class="dropfilter__list">
-       @foreach ($values['values'] as $value => $productsids)
+       @foreach ($values['values'] as $value => $productData)
         @php
-         $ids = implode(',', $productsids['product_ids']);
+         $productsString = collect($productData['product_data'])
+             ->map(function ($product) {
+                 if (isset($product['parent_id'])) {
+                     return implode('|', [$product['product_id'], $product['parent_id'], $product['type']]);
+                 } else {
+                     return implode('|', [$product['product_id'], $product['type']]);
+                 }
+             })
+             ->implode(',');
         @endphp
         <label class="dropfilter__link" for="{{ $value }}">
          <input type="checkbox"
-          wire:model="queryfilters.{{ $values['spec'] }}.{{ $value }}.{{ $ids }}"
+          wire:model="queryfilters.{{ $values['spec'] }}.{{ $value }}.{{ $productsString }}"
           wire:change="applyFilter" id="{{ $value }}">
          <h4>{{ $value }}</h4>
         </label>
@@ -413,6 +410,7 @@
       </div>
      </div>
     @endforeach
+
 
    </div>
   </div>
