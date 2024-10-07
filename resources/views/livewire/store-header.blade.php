@@ -93,6 +93,10 @@
       <line x1="3" y1="18" x2="21" y2="18"></line>
      </svg>
     </button>
+    <a class="logo__hidden" href="{{ url('/') }}">
+     <img title="{{ app('global_site_name') }} logo" loading="eager" src="/images/store/svg/logo-dark.svg"
+      alt="Logo">
+    </a>
     {{-- search button --}}
     <button class="header__btn" wire:click="$emit('showsearch')" id="searchOpen" aria-label="Open Searchbar button">
      <svg>
@@ -100,10 +104,12 @@
       <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
      </svg>
     </button>
-    <a class="logo__hidden" href="{{ url('/') }}">
-     <img title="{{ app('global_site_name') }} logo" loading="eager" src="/images/store/svg/logo-dark.svg"
-      alt="Logo">
+     <a href="tel:+40123412341234" class="header__btn" aria-label="Call" alt="Call">
+     <svg>
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+     </svg>
     </a>
+    
     {{-- wislist button --}}
     <button class="header__btn" wire:click="$emit('showwis')" id="wishOpen" aria-label="Open wishlist button">
      @livewire('wishlist-quantity')
