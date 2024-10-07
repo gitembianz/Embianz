@@ -1,8 +1,4 @@
 <div>
- @if (app()->has('global_support_on') && app('global_support_on') === 'true')
-  <x-help-button />
- @endif
-
  <section id="cookie-banner" style="display: none">
   <div class="container cookie__container">
    <div class="cookie__description">
