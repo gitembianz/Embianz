@@ -73,9 +73,6 @@ class StoreProducts extends Component
       session()->forget('filtered_values');
       $this->loadAmount = app('global_limit_load');
     }
-    if ($this->selectedKeys) {
-      dd($this->products);
-    }
   }
 
   public function loadMore()
