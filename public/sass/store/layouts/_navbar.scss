@@ -29,7 +29,7 @@
   text-align: center;
 
   & > svg {
-    width: 35px;
+    width: 24px;
     stroke: $lightBlack;
   }
 
@@ -84,6 +84,8 @@
   opacity: 0;
   visibility: hidden;
   list-style: none;
+  max-height:400px;
+  overflow-y:auto;
 }
 
 .dropdown__item {

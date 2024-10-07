@@ -86,6 +86,7 @@
     </nav>
    <!---------------------Right-Buttons--------------------->
    <div class="header__buttons">
+    <div class="head__button__left">
     <button class="header__btn" id="menuOpen" aria-label="Open burger menu button">
      <svg>
       <line x1="3" y1="12" x2="21" y2="12"></line>
@@ -97,6 +98,8 @@
      <img title="{{ app('global_site_name') }} logo" loading="eager" src="/images/store/svg/logo-dark.svg"
       alt="Logo">
     </a>
+    </div>
+    <div class="head__button__right">
     {{-- search button --}}
     <button class="header__btn" wire:click="$emit('showsearch')" id="searchOpen" aria-label="Open Searchbar button">
      <svg>
@@ -130,6 +133,7 @@
       <path d="M16 10a4 4 0 0 1-8 0"></path>
      </svg>
     </button>
+    </div>
    </div>
   </div>
  </header>
