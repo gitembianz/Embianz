@@ -69,8 +69,7 @@
 
  <!---------------------------Filter------------------------->
  <section class="controls container" id="productlist">
-  <button class="controls__button" id="filterOpen" wire:click="$set('showspecfilter', true)"
-   aria-label="Open filter button">
+  <button class="controls__button" id="filterOpen" aria-label="Open filter button">
    <svg>
     <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
    </svg>
@@ -87,11 +86,11 @@
   </button>
  </section>
  <!---------------------------- Display filters-------------------------->
- @if (!empty($selectedSpecNames))
+ @if (!empty($selectedfilters))
   <section class="tag container">
-   @foreach ($selectedSpecNames as $key => $name)
-    <button class="tag__button" wire:click="removeSpec('{{ $key }}')">
-     {{ $name }}: {{ $key }}
+   @foreach ($selectedfilters as $key => $specname)
+    <button class="tag__button" wire:click="removeSpec('{{ $key }}', '{{ $specname }}')">
+     {{ $specname }}: {{ $key }}
      <svg>
       <line x1="18" y1="6" x2="6" y2="18"></line>
       <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -119,38 +118,16 @@
    </p>
   @else
    @foreach ($products as $index => $product)
+
     @php
      if ($product->type == 'parent') {
          if ($product->variants->count() == 0) {
              continue;
          } else {
-             $filteredVariants = $product->variants->filter(function ($variant) use ($selectedSpecValues) {
-                 $matchesFilter = true;
-                 foreach ($selectedSpecValues as $values) {
-                     foreach ($values as $value => $isSelected) {
-                         if (
-                             $isSelected &&
-                             !$variant->product->product_specs->contains('value', str_replace('_', '.', $value))
-                         ) {
-                             $matchesFilter = false;
-                             break;
-                         }
-                     }
-                     if (!$matchesFilter) {
-                         break;
-                     }
-                 }
-                 return $matchesFilter;
-             });
-
-             if ($filteredVariants->isEmpty()) {
-                 continue;
-             }
-
-             if ($filteredVariants->where('default_variant', true)->first()) {
-                 $element = $filteredVariants->where('default_variant', true)->first()->product;
+             if ($product->variants->where('default_variant', true)->first()) {
+                 $element = $product->variants->where('default_variant', true)->first()->product;
              } else {
-                 $element = $filteredVariants->first()->product;
+                 $element = $product->variants->first()->product;
              }
          }
      } else {
@@ -182,8 +159,8 @@
       @endphp
       @if ($price)
        {{-- Out- negru // save - rosu --}}
-       @if ($element->quantity < $quantity && $element->quantity > 0)
-        <p class="card-status save">
+       @if ($element->quantity < app('global_low_stock') && $element->quantity > 0)
+        <p class="card-status out">
          @if (app()->has('label_product_status_stock'))
           {!! app('label_product_status_stock') !!}
          @endif
@@ -227,13 +204,24 @@
       <div class="card-info">
        <div class="card-text">
         <h2 class="card-title"><a style="text-decoration: none; font-weight:500"
-          href="{{ route('product', ['product' => $element->seo_id !== null && $element->seo_id !== '' ? $element->seo_id : $element->id]) }}">{{ $product->name }}</a>
+          href="{{ route('product', ['product' => $element->seo_id !== null && $element->seo_id !== '' ? $element->seo_id : $element->id]) }}">
+          @if ($product->type === 'variant' && $category->accepted_items === 'parents')
+           {{ $product->parent->name }}
+          @else
+           {{ $product->name }}
+          @endif
+         </a>
         </h2>
         @php
-         if (app()->has('global_cache_data') && app('global_cache_data') === 'true') {
-             $primaryCategory = $product->product_categories->where('primary_category', true)->first();
+         if ($product->type === 'variant' && $category->accepted_items === 'parents') {
+             $corectproduct = $product->parent;
          } else {
-             $primaryCategory = $product->product_categories->first();
+             $corectproduct = $product;
+         }
+         if (app()->has('global_cache_data') && app('global_cache_data') === 'true') {
+             $primaryCategory = $corectproduct->product_categories->where('primary_category', true)->first();
+         } else {
+             $primaryCategory = $corectproduct->product_categories->first();
          }
         @endphp
 
@@ -247,7 +235,7 @@
          {{-- label price from --}}
          @if (
              $category->display_variant_price == true &&
-                 $product->type == 'parent' &&
+                 ($product->type == 'parent' || $product->type == 'variant') &&
                  app()->has('global_variant_price_from') &&
                  app()->has('global_variant_add_to_cart') &&
                  app('global_variant_add_to_cart') === 'true' &&
@@ -256,7 +244,7 @@
           {!! app('label_product_price_from') !!}
          @endif
          {{-- price --}}
-         @if ($product->type == 'parent')
+         @if ($product->type == 'parent' || $product->type == 'variant')
           @if (
               $category->display_variant_price == true &&
                   app()->has('global_variant_add_to_cart') &&
@@ -326,12 +314,12 @@
         </div>
        </div>
        @if (
-           $product->type == 'parent' &&
+           ($product->type == 'parent' || $product->type == 'variant') &&
                app()->has('global_variant_add_to_cart') &&
                app('global_variant_add_to_cart') === 'true' &&
                $category->display_variant_price == true)
         @livewire('add-to-cart-button', ['product' => $element], key($element->id . $index))
-       @elseif($product->type == 'parent')
+       @elseif($product->type == 'parent' || $product->type == 'variant')
         <div class="card__button--wrapper">
          <button class="card__button">
 
@@ -362,10 +350,10 @@
   </section>
  @endif
  <!---------------------------Filters------------------------->
- <div class="filter @if ($showspecfilter) active @endif" id="filterList">
+ <div class="filter" id="filterList" wire:ignore>
   <div class="filter__content" id="filterContent">
    <div class="filter__top">
-    <button class="filter__apply" id="resetFilter" wire:click="resetFilter">
+    <button class="filter__apply" id="resetFilter" wire:click.prevent="clearall">
      @if (app()->has('label_remove_all_filters'))
       {!! app('label_remove_all_filters') !!}
      @endif
@@ -375,46 +363,66 @@
       <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
      </svg>
     </button>
-    <button class="filter__reset" wire:click="$set('showspecfilter', false)" id="filterClose" href="#">
+    <button class="filter__reset" id="filterClose">
      <svg>
       <line x1="18" y1="6" x2="6" y2="18"></line>
       <line x1="6" y1="6" x2="18" y2="18"></line>
      </svg>
     </button>
    </div>
-   <button class="filter__top filter__top--button" wire:click="$set('showspecfilter', false)">
+   <button class="filter__top filter__top--button">
     @if (app()->has('label_display_filters_results'))
      {!! app('label_display_filters_results') !!}
-    @endif <span>{{ $products->total() }}</span>
+    @endif
+    <span>{{ $products->total() }}</span>
    </button>
-   <div wire:ignore class="filter__list">
-    @foreach ($filtervalues->sortBy('spec.sequence')->groupBy('spec_id') as $values)
+   <div class="filter__list">
+    @foreach ($filtervalues as $values)
      <div class="dropfilter">
       <div class="dropfilter__button">
-       <button class="dropfilter__open" href="#">
-        <h4>{{ $values->first()->spec->name }}</h4>
+       <button class="dropfilter__open">
+        <h4>{{ $values['spec'] }}</h4>
         <svg>
          <polyline points="6 9 12 15 18 9"></polyline>
         </svg>
        </button>
       </div>
       <div class="dropfilter__list">
-       @foreach ($values->sortBy('sequence') as $value)
+       @foreach ($values['values'] as $value => $productData)
         @php
-         $key = str_replace('.', '_', $value->value);
+         $productsString = collect($productData['product_data'])
+             ->map(function ($product) {
+                 if (isset($product['parent_id'])) {
+                     return implode('|', [$product['product_id'], $product['parent_id'], $product['type']]);
+                 } else {
+                     return implode('|', [$product['product_id'], $product['type']]);
+                 }
+             })
+             ->implode(',');
         @endphp
-        <label class="dropfilter__link" for="{{ $value->id }}{{ $value->value }}">
-         <input type="checkbox" wire:model="selectedSpecValues.{{ $value->spec_id }}.{{ $key }}"
-          wire:change="applyFilter" id="{{ $value->id }}{{ $value->value }}">
-         <h4>{{ $value->value }}</h4>
+        <label class="dropfilter__link" for="{{ $value }}">
+         <input type="checkbox"
+          wire:model="queryfilters.{{ $values['spec'] }}.{{ $value }}.{{ $productsString }}"
+          wire:change="applyFilter" id="{{ $value }}">
+         <h4>{{ $value }}</h4>
         </label>
        @endforeach
       </div>
      </div>
     @endforeach
+
+
    </div>
   </div>
-  <button class="filter__close-modal" wire:click="$set('showspecfilter', false)"></button>
+  <button id="filterClose" class="filter__close-modal"></button>
+  <script>
+   document.addEventListener('livewire:load', function() {
+    Livewire.on('filtersApplied', function(selectedCount, totalCount) {
+     const filterButton = document.querySelector('.filter__top--button span');
+     filterButton.textContent = selectedCount > 0 ? selectedCount : totalCount;
+    });
+   });
+  </script>
  </div>
  <!-------------------------Sorting----------------------->
  <div class="filter" id="sortList">
@@ -425,13 +433,14 @@
       {!! app('label_sort_title') !!}
      @endif
     </div>
-    <button class="filter__reset" id="sortClose" href="#">
+    <button class="filter__reset" id="sortClose">
      <svg>
       <line x1="18" y1="6" x2="6" y2="18"></line>
       <line x1="6" y1="6" x2="18" y2="18"></line>
      </svg>
     </button>
    </div>
+   {{-- orderby --}}
    <div class="filter__list">
 
     <input class="filter__input" wire:model="orderBy" type="radio" name="sort" value="best_selling"

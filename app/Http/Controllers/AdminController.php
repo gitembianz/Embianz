@@ -13,7 +13,6 @@ use Illuminate\Http\Request;
 use App\Models\Store_Settings;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Http\Livewire\ProductReviews;
 use App\Models\ProductReviews as ModelsProductReviews;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;

@@ -65,7 +65,7 @@ class Orderstable extends Component
     public function updatedSelectPage($value)
     {
         if ($value) {
-            $this->checked = $this->orders->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+            $this->checked = $this->orders->pluck('id')->map(fn($item) => (string) $item)->toArray();
         } else {
             $this->checked = [];
         }
@@ -96,7 +96,7 @@ class Orderstable extends Component
     public function selectAll()
     {
         $this->selectAll = true;
-        $this->checked = $this->ordersQuery->pluck('id')->map(fn ($item) => (string) $item)->toArray();
+        $this->checked = $this->ordersQuery->pluck('id')->map(fn($item) => (string) $item)->toArray();
     }
     public function loadMore()
     {
@@ -105,16 +105,14 @@ class Orderstable extends Component
     public function deleteSingleRecord()
     {
         $id = $this->idbeingremoved;
-        $item = Order::findOrFail($id);
-        $order_items = Order_Item::where('order_id', $id)->get();
-
-        if ($order_items != NULL) {
-            foreach ($order_items as $order_item) {
-
-                $order_item->delete();
-            }
+        $order = Order::findOrFail($id);
+        foreach ($order->orders as $orderitem) {
+            $orderitem->product->quantity += $orderitem->quantity;
+            $orderitem->product->save();
+            $orderitem->delete();
         }
-        $item->delete();
+
+        $order->delete();
         $this->checked = array_diff($this->checked, [$id]);
         $this->single = false;
         session()->flash('notification', [
@@ -141,17 +139,13 @@ class Orderstable extends Component
     {
         $orders = Order::whereKey($this->checked)->get();
         foreach ($orders as $order) {
-            $id = $order->id;
-            $item = Order::find($id);
-            $order_items = Order_Item::where('order_id', $id)->get();
-
-            if ($order_items != NULL) {
-                foreach ($order_items as $order_item) {
-
-                    $order_item->delete();
-                }
+            foreach ($order->orders as $orderitem) {
+                $orderitem->product->quantity += $orderitem->quantity;
+                $orderitem->product->save();
+                $orderitem->delete();
             }
-            $item->delete();
+
+            $order->delete();
         }
         $this->checked = [];
         $this->selectPage = false;

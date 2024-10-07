@@ -14,7 +14,6 @@ use App\Models\Store_Settings;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\DB;
 
 
 class GlobalVariablesServiceProvider extends ServiceProvider
@@ -26,9 +25,6 @@ class GlobalVariablesServiceProvider extends ServiceProvider
     {
         ///
     }
-
-
-
     /**
      * Bootstrap services.
      */
@@ -185,7 +181,7 @@ class GlobalVariablesServiceProvider extends ServiceProvider
                         $query->orderBy('sequence')->select('parent_id', 'product_id', 'sequence', 'id')->with([
                             'product' => function ($query) {
                                 $query->where('active', 1)->where('start_date', '<=',  now()->format('Y-m-d'))
-                                    ->where('end_date', '>=',  now()->format('Y-m-d'))->select('id', 'name', 'popularity', 'seo_id', 'short_description', 'quantity', 'active', 'end_date', 'start_date')->with([
+                                    ->where('end_date', '>=',  now()->format('Y-m-d'))->select('id', 'name', 'popularity', 'seo_id', 'short_description', 'long_description', 'quantity', 'active', 'end_date', 'start_date')->with([
                                         'media' => function ($query) {
                                             $query->select('path', 'name', 'type')->where('type', 'main');
                                         },
@@ -300,7 +296,6 @@ class GlobalVariablesServiceProvider extends ServiceProvider
 
         $this->app->instance('cached_categories', $categories);
     }
-
     protected function applySubcategoryConditions($query)
     {
         $query->where('active', 1)
@@ -309,7 +304,6 @@ class GlobalVariablesServiceProvider extends ServiceProvider
             ->where('end_date', '>=', now()->format('Y-m-d'))
             ->orderBy('sequence');
     }
-
     private function loadAllSpecificationsIntoCache()
     {
         $productSpecs = Cache::rememberForever('cached_specifications', function () {
@@ -319,7 +313,7 @@ class GlobalVariablesServiceProvider extends ServiceProvider
                         $query->select('id', 'name', 'sequence');
                     },
                     'product' => function ($query) {
-                        $query->select('id')->whereHas('product_categories');
+                        $query->select('id', 'type', 'parent_id')->whereHas('product_categories');
                     }
                 ])
                 ->whereHas('spec', function ($query) {
@@ -341,10 +335,13 @@ class GlobalVariablesServiceProvider extends ServiceProvider
 
                     $productsWithCategories = $items->map(function ($item) {
                         $categoryIds = $item->product->product_categories->pluck('category_id')->toArray();
+                        $parentId = $item->product->type === 'variant' ? $item->product->parent_id : null;
 
                         return [
                             'product_id' => $item->product_id,
                             'categories' => $categoryIds,
+                            'parent_id' => $parentId,
+                            'type' => $item->product->type,
                         ];
                     });
 
