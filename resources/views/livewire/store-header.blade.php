@@ -86,6 +86,7 @@
     </nav>
    <!---------------------Right-Buttons--------------------->
    <div class="header__buttons">
+    <div class="head__button__left">
     <button class="header__btn" id="menuOpen" aria-label="Open burger menu button">
      <svg>
       <line x1="3" y1="12" x2="21" y2="12"></line>
@@ -97,6 +98,8 @@
      <img title="{{ app('global_site_name') }} logo" loading="eager" src="/images/store/svg/logo-dark.svg"
       alt="Logo">
     </a>
+    </div>
+    <div class="head__button__right">
     {{-- search button --}}
     <button class="header__btn" wire:click="$emit('showsearch')" id="searchOpen" aria-label="Open Searchbar button">
      <svg>
@@ -104,7 +107,7 @@
       <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
      </svg>
     </button>
-     <a href="tel:+40123412341234" class="header__btn" aria-label="Call" alt="Call">
+     <a href="tel:+40123412341234" class="header__btn" aria-label="Call">
      <svg>
       <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
      </svg>
@@ -130,6 +133,7 @@
       <path d="M16 10a4 4 0 0 1-8 0"></path>
      </svg>
     </button>
+    </div>
    </div>
   </div>
  </header>

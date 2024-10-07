@@ -2,12 +2,13 @@
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  //gap: 20px;
+  gap: 20px;
   width: 100%;
 
   @media (max-width: map-get($grid-breakpoints, md)) {
     flex-direction: column;
     height: 100%;
+    gap:0px;
   }
 }
 
