@@ -205,12 +205,6 @@ class TextLabelSeeder extends Seeder
             ['parameter' => 'terms_checkout', 'value' => 'Sunt de acord cu <a href="' . route('terms') . '">Termenii și condițiile</a>.', 'description' => 'Confirm termn checkout', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'product_price_from', 'value' => 'Preț începand de la', 'description' => 'Product variant price from', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'show_parent', 'value' => 'Vizualizează produsul', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
-            ['parameter' => 'support_phone_text', 'value' => '<svg>
-  <circle cx="12" cy="12" r="10"></circle>
-  <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
-  <line x1="12" y1="17" x2="12.01" y2="17"></line>
- </svg>
- Contact Us', 'description' => 'Support button text/code', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'header_allproducts', 'value' => 'Toate Produsele', 'description' => 'All prodicts category in header - a', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             // ['parameter' => '', 'value' => '', 'description' => '', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
 
