@@ -73,9 +73,6 @@ class StoreProducts extends Component
       session()->forget('filtered_values');
       $this->loadAmount = app('global_limit_load');
     }
-    if ($this->selectedKeys) {
-      dd($this->products);
-    }
   }
 
   public function loadMore()
@@ -233,7 +230,6 @@ class StoreProducts extends Component
     $productIdsPerSpec = [];
 
     if (!empty($this->queryfilters)) {
-
       foreach ($this->queryfilters as $specName => $values) {
         $specProductIds = [];
         $specVariantIds = [];
@@ -246,17 +242,13 @@ class StoreProducts extends Component
 
             foreach ($productIdsWithTypes as $item) {
               $parts = explode('|', $item);
-              $productId = $parts[0];
-              $productType = $parts[1] ?? 'standard';
 
-              if ($productType === 'variant') {
-                $variantId = $productId;
+              if (count($parts) === 3) {
+                $variantId = $parts[0];
                 $parentId = $parts[1] ?? null;
-
-                if ($parentId) {
-                  $specVariantIds[$parentId] = $variantId;
-                }
+                $specVariantIds[$parentId][] = $variantId;
               } else {
+                $productId = $parts[0];
                 $specProductIds[] = $productId;
               }
             }
@@ -265,19 +257,35 @@ class StoreProducts extends Component
           }
         }
 
-        $mergedProductIds = array_merge($specProductIds, array_keys($specVariantIds));
+        if (!empty($specProductIds)) {
+          $productIdsPerSpec[] = array_unique($specProductIds);
+        }
+        if (!empty($specVariantIds)) {
+          foreach ($specVariantIds as $parentId => $variants) {
+            $variantCount = array_count_values($variants);
 
-        if (!empty($mergedProductIds)) {
-          $productIdsPerSpec[] = array_unique($mergedProductIds);
+            $maxCount = max($variantCount);
+            $mostFrequentVariant = array_search($maxCount, $variantCount);
+
+            $productIdsPerSpec[] = [$mostFrequentVariant];
+          }
         }
       }
 
-      if (count($productIdsPerSpec) > 1) {
-        $this->selectedKeys = array_intersect(...$productIdsPerSpec);
+      $allProductIds = [];
+      if (isset($productIdsPerSpec[1])) {
+        foreach ($productIdsPerSpec as $ids) {
+          $allProductIds = array_merge($allProductIds, $ids);
+        }
       } else {
-        $this->selectedKeys = $productIdsPerSpec[0] ?? [];
+        $allProductIds = $productIdsPerSpec;
       }
 
+      if (count($allProductIds) > 1) {
+        $this->selectedKeys = array_unique($allProductIds);
+      } else {
+        $this->selectedKeys = $allProductIds[0] ?? [];
+      }
       session()->put('filtered_values', [
         'category_id' => $this->category->id,
         'queryfilters' => $this->queryfilters
@@ -289,9 +297,9 @@ class StoreProducts extends Component
         $this->emit('filtersApplied', $this->products->total());
       }
     }
+
     return $this->products->whereIn('id', $this->selectedKeys);
   }
-
 
   public function clearall()
   {
