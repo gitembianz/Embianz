@@ -92,87 +92,178 @@ class ProductController extends Controller
   }
 
   public function feed()
-  {
-      // Fetch products with type 'variant' or 'standard', their media, category, and pricing details
-      $products = Product::whereIn('products.type', ['variant', 'standard'])  // Filter products by type
-      ->leftJoin('item_media', function($join) {
-          $join->on('products.id', '=', 'item_media.mediable_id')
-               ->whereRaw('item_media.id = (SELECT MIN(im.id) FROM item_media im WHERE im.mediable_id = products.id)');
-      })
-      ->leftJoin('media', 'item_media.media_id', '=', 'media.id')  // Join media table to get media path
-      ->leftJoin('products_categories', function ($join) {
-          $join->on('products.id', '=', 'products_categories.product_id')
-              ->where('products_categories.primary_category', '=', 1);  // Only get the primary category
-      })
-      ->leftJoin('categories', 'products_categories.category_id', '=', 'categories.id')  // Join categories table
-      ->leftJoin('pricelist_entries', 'products.id', '=', 'pricelist_entries.product_id')  // Join pricelist_entries for prices
-      ->select(
-          'products.id',
-          'products.name',
-          'products.long_description',
-          'products.seo_id',
-          'products.ean',
-          'products.brand',
-          'categories.name as category_name',  // Select the primary category name
-          'media.path as media_path',
-          'media.name as media_name',  // Select media path if available
-          'pricelist_entries.value as value'  // Price value
-      )
-      ->groupBy(
-          'products.id',
-          'products.name',
-          'products.long_description',
-          'products.seo_id',
-          'products.ean',
-          'products.brand',
-          'categories.name',  // Select the primary category name
-          'media.path',
-          'media.name',  // Select the first media path and name
-          'pricelist_entries.value'
-      )
-      ->get();
-  
-      // Define the CSV file name
-      
-      $fileName = 'google.csv';
-      
-      // Open file in write mode
-      $file = fopen(public_path('feed/' . $fileName), 'w');
-  
-      // Add the CSV headers
-      fputcsv($file, [
-          'id', 'title', 'description', 'link',
-          'mobile_link', 'image_link', 'condition', 'price', 'availability',
-          'gtin','brand'
-      ]);
-  
-      // Loop through the products and extract the required data
-      foreach ($products as $product) {
-          // Handle category fallback if null
-          $link = route('product', ['product' => $product->seo_id ?? $product->id]);
-      $image = env('APP_URL')."/".$product->media_path.$product->media_name;
-          $category = $product->category_name ? $product->category_name : '';  // Fallback for missing category
-  
-          fputcsv($file, [
-              $product->id,
-              $product->name,
-              strip_tags($product->long_description),
-              $link,
-              $link,
-              $image,
-              'New',
-              $product->value,
-              'in stock',
-              $product->ean,
-              $product->brand
-              //$category,  // Insert the category name or default
-             // $product->media_path ? $product->media_path : '',  // If no media path, leave blank
-              
-          ]);
-      }
-  
-      // Close the file
-      fclose($file);
-      return;
+{
+    // Fetch products with type 'variant' or 'standard', their media, category, and pricing details
+    $products = Product::whereIn('products.type', ['variant', 'standard'])  // Filter products by type
+    ->leftJoin('item_media', 'products.id', '=', 'item_media.mediable_id')  // Join item_media to get media id
+    ->leftJoin('media', function($join) {
+        $join->on('item_media.media_id', '=', 'media.id')
+             ->where('media.type', '=', 'full');  // Add condition to filter media by type = 'full'
+    })
+    ->leftJoin('products_categories', function ($join) {
+        $join->on('products.id', '=', 'products_categories.product_id')
+            ->where('products_categories.primary_category', '=', 1);  // Only get the primary category
+    })
+    ->leftJoin('categories', 'products_categories.category_id', '=', 'categories.id')  // Join categories table
+    ->leftJoin('pricelist_entries', 'products.id', '=', 'pricelist_entries.product_id')  // Join pricelist_entries for prices
+    ->leftJoin('price_lists', 'pricelist_entries.pricelist_id', '=', 'price_lists.id')  // Join price_lists to get currency_id
+    ->leftJoin('currencies', 'price_lists.currency_id', '=', 'currencies.id')  // Join currencies to get currency details
+    ->select(
+        'products.id',
+        'products.name',
+        'products.long_description',
+        'products.seo_id',
+        'products.ean',
+        'products.sku',
+        'products.brand',
+        'products.active',
+        'products.quantity',
+        'products.popularity',
+        'products.short_description',
+        'products.start_date',
+        'products.end_date',
+        'products.seo_title',
+        'products.meta_description',
+        'products.is_new',
+        'categories.name as category_name',  // Select the primary category name
+        'media.path as media_path',
+        'media.name as media_name',  // Select media path if available
+        'pricelist_entries.value as price',
+        'pricelist_entries.discount as discount',
+        'pricelist_entries.value_no_vat as price_no_vat',
+        'pricelist_entries.vat as vat',  // Price value
+        'currencies.name as currency_name'  // Select currency code
+    )
+    ->groupBy(
+        'products.id',
+        'products.name',
+        'products.long_description',
+        'products.seo_id',
+        'products.ean',
+        'products.sku',
+        'products.brand',
+        'products.active',
+        'products.quantity',
+        'products.popularity',
+        'products.short_description',
+        'products.start_date',
+        'products.end_date',
+        'products.seo_title',
+        'products.meta_description',
+        'products.is_new',
+        'categories.name',  // Select the primary category name
+        'media.path',
+        'media.name',  // Select the first media path and name
+        'pricelist_entries.value',
+        'pricelist_entries.discount',
+        'pricelist_entries.value_no_vat',
+        'pricelist_entries.vat',
+        'currencies.name'
+    )
+    ->get();
+
+    // Generate multiple CSV feeds
+    $this->generateCsvFeed($products, 'google');
+    $this->generateCsvFeed($products, 'salesforce');
+    $this->generateCsvFeed($products, 'facebook');
+}
+
+private function generateCsvFeed($products, $feedType)
+{
+    // Define CSV headers and file names for each feed
+    $feeds = [
+        'google' => [
+            'fileName' => 'google.csv',
+            'headers' => ['id', 'title', 'description', 'link', 'mobile_link', 'image_link', 'condition', 'price', 'availability', 'gtin', 'brand'],
+            'columns' => function($product) {
+                $link = route('product', ['product' => $product->seo_id ?? $product->id]);
+                $image = env('APP_URL')."/".$product->media_path.$product->media_name;
+                return [
+                    $product->id,
+                    $product->name,
+                    strip_tags($product->long_description),
+                    $link,
+                    $link,
+                    $image,
+                    'New',
+                    $product->value." ".$product->currency_name,
+                    'in stock',
+                    $product->ean,
+                    $product->brand
+                ];
+            }
+        ],
+        'salesforce' => [
+            'fileName' => 'salesforce.csv',
+            'headers' => ['Store','Product Name', 'Product Id','SKU', 'EAN', 'Active', 'New', 'Quantity', 'Popularity', 'Start Date','End Date','Short Description','Long Description','SEO Id','SEO Title','Product URL','Image URL 640','Image URL 70','Price','Currency','VAT','Price without VAT','Discount','Category','Brand'],
+            'columns' => function($product) {
+                $store=app('global_site_url');
+                $producturl = route('product', ['product' => $product->seo_id ?? $product->id]);
+                $image640 = env('APP_URL')."/".$product->media_path.$product->media_name;
+                $image70= str_replace('resized640','resized70',$image640);
+                $category = $product->category_name ?? '';
+                return [
+                    $store,
+                    $product->name,
+                    $product->id,
+                    $product->sku,
+                    $product->ean,
+                    $product->active,
+                    $product->is_new,
+                    $product->quantity,
+                    $product->popularity,      
+                    $product->start_date,
+                    $product->end_date,
+                    $product->short_description,
+                    $product->long_description,
+                    $product->seo_id,
+                    $product->seo_title,
+                    $producturl,
+                    $image640,
+                    $image70,
+                    $product->price,
+                    $product->currency_name,
+                    $product->vat,
+                    $product->price_no_vat,
+                    $product->discount,
+                    $category,
+                    $product->brand
+                ];
+            }
+        ],
+        'facebook' => [
+            'fileName' => 'facebook.csv',
+            'headers' => ['id', 'name', 'image_link', 'price', 'availability', 'category'],
+            'columns' => function($product) {
+                $image = env('APP_URL')."/".$product->media_path.$product->media_name;
+                $category = $product->category_name ?? '';
+                return [
+                    $product->id,
+                    $product->name,
+                    $image,
+                    $product->value,
+                    'in stock',
+                    $category
+                ];
+            }
+        ]
+    ];
+
+    // Get feed configuration
+    $feed = $feeds[$feedType];
+
+    // Open file in write mode
+    $file = fopen(public_path('feed/' . $feed['fileName']), 'w');
+
+    // Add the CSV headers
+    fputcsv($file, $feed['headers']);
+
+    // Loop through the products and extract the required data
+    foreach ($products as $product) {
+        fputcsv($file, $feed['columns']($product));
+    }
+
+    // Close the file
+    fclose($file);
 }
 }
