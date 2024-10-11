@@ -235,7 +235,7 @@
          {{-- label price from --}}
          @if (
              $category->display_variant_price == true &&
-                 ($product->type == 'parent' || $product->type == 'variant') &&
+                 ($product->type == 'parent' || ($product->type === 'variant' && $category->accepted_items === 'parents')) &&
                  app()->has('global_variant_price_from') &&
                  app()->has('global_variant_add_to_cart') &&
                  app('global_variant_add_to_cart') === 'true' &&
@@ -244,7 +244,7 @@
           {!! app('label_product_price_from') !!}
          @endif
          {{-- price --}}
-         @if ($product->type == 'parent' || $product->type == 'variant')
+         @if ($product->type == 'parent' || ($product->type === 'variant' && $category->accepted_items === 'parents'))
           @if (
               $category->display_variant_price == true &&
                   app()->has('global_variant_add_to_cart') &&
@@ -314,12 +314,12 @@
         </div>
        </div>
        @if (
-           ($product->type == 'parent' || $product->type == 'variant') &&
+           ($product->type == 'parent' || ($product->type === 'variant' && $category->accepted_items === 'parents')) &&
                app()->has('global_variant_add_to_cart') &&
                app('global_variant_add_to_cart') === 'true' &&
                $category->display_variant_price == true)
         @livewire('add-to-cart-button', ['product' => $element], key($element->id . $index))
-       @elseif($product->type == 'parent' || $product->type == 'variant')
+       @elseif($product->type == 'parent' || ($product->type === 'variant' && $category->accepted_items === 'parents'))
         <div class="card__button--wrapper">
          <button class="card__button">
 

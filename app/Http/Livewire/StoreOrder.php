@@ -512,7 +512,7 @@ class StoreOrder extends Component
           'query' => [
             'orgid' => '00D09000008XPQu',
             'debug' => '0',
-            'debugEmail' => 'iosif.relia@eztemcorp.com',
+            'debugEmail' => 'support@embianz.com',
             'subject' => app()->has('global_site_name') && app('global_site_name') != "" ?
               app('global_site_name') . ' Order_id:' . $order->id :
               'Order_id:' . $order->id,
@@ -1060,7 +1060,7 @@ class StoreOrder extends Component
             'query' => [
               'orgid' => '00D09000008XPQu',
               'debug' => '0',
-              'debugEmail' => 'iosif.relia@eztemcorp.com',
+              'debugEmail' => 'support@embianz.com',
               'subject' => app()->has('global_site_name') && app('global_site_name') != "" ?
                 app('global_site_name') . ' Order_id:' . $order->id :
                 'Order_id:' . $order->id,

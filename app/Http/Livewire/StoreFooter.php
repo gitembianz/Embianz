@@ -46,7 +46,7 @@ class StoreFooter extends Component
         ],
         'query' => [
           'oid' => '00D09000008XPQu',
-          '00N9N000000PrL5' => 'www.noren.ro',
+          '00N9N000000PrL5' => config('app.url'),
           'lead_source' => 'Web',
           'email' => $sucscriber->email,
         ],
