@@ -93,75 +93,48 @@ class ProductController extends Controller
 
   public function feed()
 {
-    // Fetch products with type 'variant' or 'standard', their media, category, and pricing details
-    $products = Product::whereIn('products.type', ['variant', 'standard'])  // Filter products by type
-    ->leftJoin('item_media', 'products.id', '=', 'item_media.mediable_id')  // Join item_media to get media id
-    ->leftJoin('media', function($join) {
-        $join->on('item_media.media_id', '=', 'media.id')
-             ->where('media.type', '=', 'full');  // Add condition to filter media by type = 'full'
-    })
-    ->leftJoin('products_categories', function ($join) {
-        $join->on('products.id', '=', 'products_categories.product_id')
-            ->where('products_categories.primary_category', '=', 1);  // Only get the primary category
-    })
-    ->leftJoin('categories', 'products_categories.category_id', '=', 'categories.id')  // Join categories table
-    ->leftJoin('pricelist_entries', 'products.id', '=', 'pricelist_entries.product_id')  // Join pricelist_entries for prices
-    ->leftJoin('price_lists', 'pricelist_entries.pricelist_id', '=', 'price_lists.id')  // Join price_lists to get currency_id
-    ->leftJoin('currencies', 'price_lists.currency_id', '=', 'currencies.id')  // Join currencies to get currency details
-    ->select(
-        'products.id',
-        'products.name',
-        'products.long_description',
-        'products.seo_id',
-        'products.ean',
-        'products.sku',
-        'products.brand',
-        'products.active',
-        'products.quantity',
-        'products.popularity',
-        'products.short_description',
-        'products.start_date',
-        'products.end_date',
-        'products.seo_title',
-        'products.meta_description',
-        'products.is_new',
-        'categories.name as category_name',  // Select the primary category name
-        'media.path as media_path',
-        'media.name as media_name',  // Select media path if available
-        'pricelist_entries.value as price',
-        'pricelist_entries.discount as discount',
-        'pricelist_entries.value_no_vat as price_no_vat',
-        'pricelist_entries.vat as vat',  // Price value
-        'currencies.name as currency_name'  // Select currency code
-    )
-    ->groupBy(
-        'products.id',
-        'products.name',
-        'products.long_description',
-        'products.seo_id',
-        'products.ean',
-        'products.sku',
-        'products.brand',
-        'products.active',
-        'products.quantity',
-        'products.popularity',
-        'products.short_description',
-        'products.start_date',
-        'products.end_date',
-        'products.seo_title',
-        'products.meta_description',
-        'products.is_new',
-        'categories.name',  // Select the primary category name
-        'media.path',
-        'media.name',  // Select the first media path and name
-        'pricelist_entries.value',
-        'pricelist_entries.discount',
-        'pricelist_entries.value_no_vat',
-        'pricelist_entries.vat',
-        'currencies.name'
-    )
-    ->get();
-
+  $products = Product::whereIn('products.type', ['variant', 'standard'])  // Filter products by type
+  ->leftJoin('item_media', 'products.id', '=', 'item_media.mediable_id')  // Join item_media to get media id
+  ->leftJoin('media', function($join) {
+      $join->on('item_media.media_id', '=', 'media.id')
+           ->where('media.type', '=', 'full');  // Add condition to filter media by type = 'full'
+  })
+  ->leftJoin('products_categories', function ($join) {
+      $join->on('products.id', '=', 'products_categories.product_id')
+          ->where('products_categories.primary_category', '=', 1);  // Only get the primary category
+  })
+  ->leftJoin('categories', 'products_categories.category_id', '=', 'categories.id')  // Join categories table
+  ->leftJoin('pricelist_entries', 'products.id', '=', 'pricelist_entries.product_id')  // Join pricelist_entries for prices
+  ->leftJoin('price_lists', 'pricelist_entries.pricelist_id', '=', 'price_lists.id')  // Join price_lists to get currency_id
+  ->leftJoin('currencies', 'price_lists.currency_id', '=', 'currencies.id')  // Join currencies to get currency details
+  ->select(
+      'products.id',
+      'products.name',
+      \DB::raw('MAX(products.long_description) as long_description'),  // Aggregate long_description
+      'products.seo_id',
+      'products.ean',
+      'products.sku',
+      'products.brand',
+      'products.active',
+      'products.quantity',
+      'products.popularity',
+      'products.short_description',
+      'products.start_date',
+      'products.end_date',
+      'products.seo_title',
+      'products.meta_description',
+      'products.is_new',
+      \DB::raw('MAX(categories.name) as category_name'),  // Aggregate category_name
+      \DB::raw('MAX(media.path) as media_path'),  // Aggregate media path
+      \DB::raw('MAX(media.name) as media_name'),  // Aggregate media name
+      \DB::raw('MAX(pricelist_entries.value) as price'),  // Aggregate price
+      \DB::raw('MAX(pricelist_entries.discount) as discount'),  // Aggregate discount
+      \DB::raw('MAX(pricelist_entries.value_no_vat) as price_no_vat'),  // Aggregate price_no_vat
+      \DB::raw('MAX(pricelist_entries.vat) as vat'),  // Aggregate VAT
+      \DB::raw('MAX(currencies.name) as currency_name')  // Aggregate currency name
+  )
+  ->groupBy('products.id')  // Group only by product ID
+  ->get();
     // Generate multiple CSV feeds
     $this->generateCsvFeed($products, 'google');
     $this->generateCsvFeed($products, 'salesforce');
