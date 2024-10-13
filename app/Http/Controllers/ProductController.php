@@ -108,32 +108,32 @@ class ProductController extends Controller
   ->leftJoin('price_lists', 'pricelist_entries.pricelist_id', '=', 'price_lists.id')  // Join price_lists to get currency_id
   ->leftJoin('currencies', 'price_lists.currency_id', '=', 'currencies.id')  // Join currencies to get currency details
   ->select(
-      'products.id',
-      'products.name',
-      \DB::raw('MAX(products.long_description) as long_description'),  // Aggregate long_description
-      'products.seo_id',
-      'products.ean',
-      'products.sku',
-      'products.brand',
-      'products.active',
-      'products.quantity',
-      'products.popularity',
-      'products.short_description',
-      'products.start_date',
-      'products.end_date',
-      'products.seo_title',
-      'products.meta_description',
-      'products.is_new',
-      \DB::raw('MAX(categories.name) as category_name'),  // Aggregate category_name
-      \DB::raw('MAX(media.path) as media_path'),  // Aggregate media path
-      \DB::raw('MAX(media.name) as media_name'),  // Aggregate media name
-      \DB::raw('MAX(pricelist_entries.value) as price'),  // Aggregate price
-      \DB::raw('MAX(pricelist_entries.discount) as discount'),  // Aggregate discount
-      \DB::raw('MAX(pricelist_entries.value_no_vat) as price_no_vat'),  // Aggregate price_no_vat
-      \DB::raw('MAX(pricelist_entries.vat) as vat'),  // Aggregate VAT
-      \DB::raw('MAX(currencies.name) as currency_name')  // Aggregate currency name
-  )
-  ->groupBy('products.id')  // Group only by product ID
+    'products.id',
+    'products.name',
+    \DB::raw('MAX(products.long_description) as long_description'),  // Aggregate long_description
+    \DB::raw('MAX(products.seo_id) as seo_id'),  // Aggregate seo_id
+    \DB::raw('MAX(products.ean) as ean'),  // Aggregate ean
+    \DB::raw('MAX(products.sku) as sku'),  // Aggregate sku
+    \DB::raw('MAX(products.brand) as brand'),  // Aggregate brand
+    \DB::raw('MAX(products.active) as active'),  // Aggregate active
+    \DB::raw('MAX(products.quantity) as quantity'),  // Aggregate quantity
+    \DB::raw('MAX(products.popularity) as popularity'),  // Aggregate popularity
+    \DB::raw('MAX(products.short_description) as short_description'),  // Aggregate short_description
+    \DB::raw('MAX(products.start_date) as start_date'),  // Aggregate start_date
+    \DB::raw('MAX(products.end_date) as end_date'),  // Aggregate end_date
+    \DB::raw('MAX(products.seo_title) as seo_title'),  // Aggregate seo_title
+    \DB::raw('MAX(products.meta_description) as meta_description'),  // Aggregate meta_description
+    \DB::raw('MAX(products.is_new) as is_new'),  // Aggregate is_new
+    \DB::raw('MAX(categories.name) as category_name'),  // Aggregate category_name
+    \DB::raw('MAX(media.path) as media_path'),  // Aggregate media path
+    \DB::raw('MAX(media.name) as media_name'),  // Aggregate media name
+    \DB::raw('MAX(pricelist_entries.value) as price'),  // Aggregate price
+    \DB::raw('MAX(pricelist_entries.discount) as discount'),  // Aggregate discount
+    \DB::raw('MAX(pricelist_entries.value_no_vat) as price_no_vat'),  // Aggregate price_no_vat
+    \DB::raw('MAX(pricelist_entries.vat) as vat'),  // Aggregate VAT
+    \DB::raw('MAX(currencies.name) as currency_name')  // Aggregate currency name
+)
+->groupBy('products.id')  // Group only by product ID
   ->get();
     // Generate multiple CSV feeds
     $this->generateCsvFeed($products, 'google');
