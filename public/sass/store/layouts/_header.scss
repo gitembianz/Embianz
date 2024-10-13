@@ -44,7 +44,7 @@ header {
   @media (max-width: map-get($grid-breakpoints, xl)) {
     padding: 0;
     width: 100%;
-    gap: 30px;
+   // gap: 30px;
   }
 
 
@@ -59,14 +59,14 @@ display:none;
   display: flex;
   gap:15px;
   max-width:250px;
-  width: 100%;
+  width: 50%;
   align-items: center;
 }
 
 }
 
 > .head__button__right {
-  width: 100%;
+  width: 50%;
   display:flex;
   max-width:200px;
   justify-content: space-between;
