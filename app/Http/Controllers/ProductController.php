@@ -149,20 +149,20 @@ private function generateCsvFeed($products, $feedType)
             'fileName' => 'google.csv',
             'headers' => ['id', 'title', 'description', 'link', 'mobile_link', 'image_link', 'condition', 'price', 'availability', 'gtin', 'brand'],
             'columns' => function($product) {
-                $link = route('product', ['product' => $product->seo_id ?? $product->id]);
-                $image = env('APP_URL')."/".$product->media_path.$product->media_name;
+                $link = route('product', ['product' => $this->sanitizeData($product->seo_id ?? $product->id)]);
+                $image = env('APP_URL')."/".$this->sanitizeData($product->media_path).$this->sanitizeData($product->media_name);
                 return [
-                    $product->id,
-                    $product->name,
-                    strip_tags($product->long_description),
+                    $this->sanitizeData($product->id),
+                    $this->sanitizeData($product->name),
+                    strip_tags($this->sanitizeData($product->long_description)),
                     $link,
                     $link,
                     $image,
                     'New',
-                    $product->value." ".$product->currency_name,
+                    $this->sanitizeData($product->price)." ".$this->sanitizeData($product->currency_name),
                     'in stock',
-                    $product->ean,
-                    $product->brand
+                    $this->sanitizeData($product->ean),
+                    $this->sanitizeData($product->brand)
                 ];
             }
         ],
@@ -170,37 +170,37 @@ private function generateCsvFeed($products, $feedType)
             'fileName' => 'salesforce.csv',
             'headers' => ['Store','Product Name', 'Product Id','SKU', 'EAN', 'Active', 'New', 'Quantity', 'Popularity', 'Start Date','End Date','Short Description','Long Description','SEO Id','SEO Title','Product URL','Image URL 640','Image URL 70','Price','Currency','VAT','Price without VAT','Discount','Category','Brand'],
             'columns' => function($product) {
-                $store=app('global_site_url');
-                $producturl = route('product', ['product' => $product->seo_id ?? $product->id]);
-                $image640 = env('APP_URL')."/".$product->media_path.$product->media_name;
-                $image70= str_replace('resized640','resized70',$image640);
-                $category = $product->category_name ?? '';
+                $store = $this->sanitizeData(app('global_site_url'));
+                $producturl = route('product', ['product' => $this->sanitizeData($product->seo_id ?? $product->id)]);
+                $image640 = env('APP_URL')."/".$this->sanitizeData($product->media_path).$this->sanitizeData($product->media_name);
+                $image70 = str_replace('resized640','resized70', $image640);
+                $category = $this->sanitizeData($product->category_name ?? '');
                 return [
                     $store,
-                    $product->name,
-                    $product->id,
-                    $product->sku,
-                    $product->ean,
-                    $product->active,
-                    $product->is_new,
-                    $product->quantity,
-                    $product->popularity,      
-                    $product->start_date,
-                    $product->end_date,
-                    $product->short_description,
-                    $product->long_description,
-                    $product->seo_id,
-                    $product->seo_title,
+                    $this->sanitizeData($product->name),
+                    $this->sanitizeData($product->id),
+                    $this->sanitizeData($product->sku),
+                    $this->sanitizeData($product->ean),
+                    $this->sanitizeData($product->active),
+                    $this->sanitizeData($product->is_new),
+                    $this->sanitizeData($product->quantity),
+                    $this->sanitizeData($product->popularity),
+                    $this->sanitizeData($product->start_date),
+                    $this->sanitizeData($product->end_date),
+                    $this->sanitizeData($product->short_description),
+                    $this->sanitizeData($product->long_description),
+                    $this->sanitizeData($product->seo_id),
+                    $this->sanitizeData($product->seo_title),
                     $producturl,
                     $image640,
                     $image70,
-                    $product->price,
-                    $product->currency_name,
-                    $product->vat,
-                    $product->price_no_vat,
-                    $product->discount,
+                    $product->price = $product->price ? floatval($product->price) : 0.00,
+                    $this->sanitizeData($product->currency_name),
+                    floatval($this->sanitizeData($product->vat)),
+                    floatval($this->sanitizeData($product->price_no_vat)),
+                    floatval($this->sanitizeData($product->discount)),
                     $category,
-                    $product->brand
+                    $this->sanitizeData($product->brand)
                 ];
             }
         ],
@@ -208,13 +208,13 @@ private function generateCsvFeed($products, $feedType)
             'fileName' => 'facebook.csv',
             'headers' => ['id', 'name', 'image_link', 'price', 'availability', 'category'],
             'columns' => function($product) {
-                $image = env('APP_URL')."/".$product->media_path.$product->media_name;
-                $category = $product->category_name ?? '';
+                $image = env('APP_URL')."/".$this->sanitizeData($product->media_path).$this->sanitizeData($product->media_name);
+                $category = $this->sanitizeData($product->category_name ?? '');
                 return [
-                    $product->id,
-                    $product->name,
+                    $this->sanitizeData($product->id),
+                    $this->sanitizeData($product->name),
                     $image,
-                    $product->value,
+                    $this->sanitizeData($product->price),
                     'in stock',
                     $category
                 ];
@@ -227,16 +227,34 @@ private function generateCsvFeed($products, $feedType)
 
     // Open file in write mode
     $file = fopen(public_path('feed/' . $feed['fileName']), 'w');
-
-    // Add the CSV headers
-    fputcsv($file, $feed['headers']);
-
-    // Loop through the products and extract the required data
+    fputs($file, $bom =( chr(0xEF) . chr(0xBB) . chr(0xBF) ));
+    fputcsv($file, $feed['headers'], ',', '"');
     foreach ($products as $product) {
-        fputcsv($file, $feed['columns']($product));
+      fputcsv($file, $feed['columns']($product), ',', '"');
     }
 
     // Close the file
     fclose($file);
+}
+
+private function sanitizeData($data)
+{
+    // Remove leading and trailing whitespace
+    $data = trim($data);
+    
+    // Convert null values to an empty string
+    if (is_null($data)) {
+        return '';
+    }
+
+    // Check for non-string data and convert it to a string
+    if (!is_string($data)) {
+        $data = (string)$data;
+    }
+
+    // Sanitize special characters if needed (like removing newlines or tabs)
+    $data = str_replace(["\r", "\n", "\t"], ' ', $data);
+    
+    return $data;
 }
 }
