@@ -37,14 +37,14 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 10px;
+  gap: 15px;
   height: 100%;
   padding: 0 15px;
 
   @media (max-width: map-get($grid-breakpoints, xl)) {
     padding: 0;
     width: 100%;
-    gap: 10px;
+    gap: 30px;
   }
 
 
