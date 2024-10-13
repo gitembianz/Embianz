@@ -133,7 +133,7 @@ class ProductController extends Controller
     \DB::raw('MAX(pricelist_entries.vat) as vat'),  // Aggregate VAT
     \DB::raw('MAX(currencies.name) as currency_name')  // Aggregate currency name
 )
-->groupBy('products.id')  // Group only by product ID
+->groupBy('products.id','products.name')
   ->get();
     // Generate multiple CSV feeds
     $this->generateCsvFeed($products, 'google');
