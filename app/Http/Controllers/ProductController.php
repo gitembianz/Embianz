@@ -125,8 +125,8 @@ class ProductController extends Controller
     \DB::raw('MAX(products.meta_description) as meta_description'),  // Aggregate meta_description
     \DB::raw('MAX(products.is_new) as is_new'),  // Aggregate is_new
     \DB::raw('MAX(categories.name) as category_name'),  // Aggregate category_name
-    \DB::raw('MAX(media.path) as media_path'),  // Aggregate media path
-    \DB::raw('MAX(media.name) as media_name'),  // Aggregate media name
+    \DB::raw('MIN(media.path) as media_path'),  // Aggregate media path
+    \DB::raw('MIN(media.name) as media_name'),  // Aggregate media name
     \DB::raw('MAX(pricelist_entries.value) as price'),  // Aggregate price
     \DB::raw('MAX(pricelist_entries.discount) as discount'),  // Aggregate discount
     \DB::raw('MAX(pricelist_entries.value_no_vat) as price_no_vat'),  // Aggregate price_no_vat
