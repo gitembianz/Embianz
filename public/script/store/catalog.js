@@ -119,11 +119,13 @@ function applyFilter(Close, Reset) {
   const buttonClose = document.getElementById(Close);
   const buttonReset = document.getElementById(Reset);
   const body = document.querySelector("body");
+  const list = document.getElementById("filterList");
 
   if (!buttonClose || !buttonReset) {
     return;
   } else {
     buttonClose.addEventListener("click", () => {
+      list.classList.remove("active");
       body.style.overflow = "auto";
     });
     buttonReset.addEventListener("click", () => {
