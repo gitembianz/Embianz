@@ -147,10 +147,11 @@ private function generateCsvFeed($products, $feedType)
     $feeds = [
         'google' => [
             'fileName' => 'google.csv',
-            'headers' => ['id', 'title', 'description', 'link', 'mobile_link', 'image_link', 'condition', 'price', 'availability', 'gtin', 'brand'],
+            'headers' => ['id', 'title', 'description', 'link', 'mobile_link', 'image_link', 'condition', 'price', 'availability', 'brand'],
             'columns' => function($product) {
                 $link = route('product', ['product' => $this->sanitizeData($product->seo_id ?? $product->id)]);
                 $image = env('APP_URL')."/".$this->sanitizeData($product->media_path).$this->sanitizeData($product->media_name);
+                $image = str_replace(' ', '%20', $image);
                 return [
                     $this->sanitizeData($product->id),
                     $this->sanitizeData($product->name),
@@ -161,7 +162,6 @@ private function generateCsvFeed($products, $feedType)
                     'New',
                     $this->sanitizeData($product->price)." ".$this->sanitizeData($product->currency_name),
                     'in stock',
-                    $this->sanitizeData($product->ean),
                     $this->sanitizeData($product->brand)
                 ];
             }
@@ -173,6 +173,7 @@ private function generateCsvFeed($products, $feedType)
                 $store = $this->sanitizeData(app('global_site_url'));
                 $producturl = route('product', ['product' => $this->sanitizeData($product->seo_id ?? $product->id)]);
                 $image640 = env('APP_URL')."/".$this->sanitizeData($product->media_path).$this->sanitizeData($product->media_name);
+                $image640 = str_replace(' ', '%20', $image640);
                 $image70 = str_replace('resized640','resized70', $image640);
                 $category = $this->sanitizeData($product->category_name ?? '');
                 return [
