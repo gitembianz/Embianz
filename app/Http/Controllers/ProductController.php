@@ -170,7 +170,7 @@ private function generateCsvFeed($products, $feedType)
         ],
         'salesforce' => [
             'fileName' => 'salesforce.csv',
-            'headers' => ['Store','Product Name', 'Product Id','SKU', 'EAN', 'Active', 'New', 'Quantity', 'Popularity', 'Start Date','End Date','Short Description','Long Description','SEO Id','SEO Title','Product URL','Image URL 640','Image URL 70','Price','Currency','VAT','Price without VAT','Discount','Category','Brand'],
+            'headers' => ['Store','Product Name', 'Product Id','SKU', 'EAN', 'Active', 'New', 'Quantity', 'Popularity', 'Start Date','End Date','Short Description','Long Description','SEO Id','SEO Title','Product URL','Image URL 640','Image URL 70','Price','Currency','VAT','Price without VAT','Discount','Category','Brand','Type'],
             'columns' => function($product) {
                 $store = $this->sanitizeData(app('global_site_url'));
                 $producturl = route('product', ['product' => $this->sanitizeData($product->seo_id ?? $product->id)]);
@@ -203,7 +203,8 @@ private function generateCsvFeed($products, $feedType)
                     floatval($this->sanitizeData($product->price_no_vat)),
                     floatval($this->sanitizeData($product->discount)),
                     $category,
-                    $this->sanitizeData($product->brand)
+                    $this->sanitizeData($product->brand),
+                    'Store Product'
                 ];
             }
         ],
