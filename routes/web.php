@@ -46,7 +46,7 @@
       route::view('/add_product', 'admin.add_products')->name('add_product');
       route::post('/new_products', [ProductController::class, 'new'])->name('new_products');
       route::get('/show_product/{id}/', [ProductController::class, 'show'])->name('show_product');
-
+      route::get('/productfeed', [ProductController::class, 'feed'])->name('create_feed');
       //todolist routes
       // route::post('/new', [TodolistController::class, 'store'])->name('new_todo');
       // route::delete('/{todolist:id}', [TodolistController::class, 'destroy'])->name('delete_todo');

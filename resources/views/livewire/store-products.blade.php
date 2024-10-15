@@ -370,7 +370,7 @@
      </svg>
     </button>
    </div>
-   <button class="filter__top filter__top--button">
+   <button class="filter__top filter__top--button" id="closeFilter">
     @if (app()->has('label_display_filters_results'))
      {!! app('label_display_filters_results') !!}
     @endif
