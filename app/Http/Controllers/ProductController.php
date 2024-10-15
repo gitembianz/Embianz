@@ -147,21 +147,23 @@ private function generateCsvFeed($products, $feedType)
     $feeds = [
         'google' => [
             'fileName' => 'google.csv',
-            'headers' => ['id', 'title', 'description', 'link', 'mobile_link', 'image_link', 'condition', 'price', 'availability', 'brand'],
+            'headers' => ['id', 'item_group_id','title', 'product_type','description', 'link', 'mobile_link', 'image_link', 'condition', 'price', 'availability', 'brand'],
             'columns' => function($product) {
                 $link = route('product', ['product' => $this->sanitizeData($product->seo_id ?? $product->id)]);
                 $image = env('APP_URL')."/".$this->sanitizeData($product->media_path).$this->sanitizeData($product->media_name);
                 $image = str_replace(' ', '%20', $image);
                 return [
                     $this->sanitizeData($product->id),
+                    $this->sanitizeData($product->id),
                     $this->sanitizeData($product->name),
+                    $category = $this->sanitizeData($product->category_name ?? ''),
                     strip_tags($this->sanitizeData($product->long_description)),
                     $link,
                     $link,
                     $image,
-                    'New',
+                    'new',
                     $this->sanitizeData($product->price)." ".$this->sanitizeData($product->currency_name),
-                    'in stock',
+                    'in_stock',
                     $this->sanitizeData($product->brand)
                 ];
             }
