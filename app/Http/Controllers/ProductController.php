@@ -97,7 +97,7 @@ class ProductController extends Controller
   ->leftJoin('item_media', 'products.id', '=', 'item_media.mediable_id')  // Join item_media to get media id
   ->leftJoin('media', function($join) {
       $join->on('item_media.media_id', '=', 'media.id')
-           ->where('media.type', '=', 'full');  // Add condition to filter media by type = 'full'
+           ->where('media.type', '=', 'full');
   })
   ->leftJoin('products_categories', function ($join) {
       $join->on('products.id', '=', 'products_categories.product_id')
@@ -125,16 +125,16 @@ class ProductController extends Controller
     \DB::raw('MAX(products.meta_description) as meta_description'),  // Aggregate meta_description
     \DB::raw('MAX(products.is_new) as is_new'),  // Aggregate is_new
     \DB::raw('MAX(categories.name) as category_name'),  // Aggregate category_name
-    \DB::raw('MIN(media.path) as media_path'),  // Aggregate media path
-    \DB::raw('MIN(media.name) as media_name'),  // Aggregate media name
+    \DB::raw('MIN(media.path) as media_path'),  // Select first media path
+    \DB::raw('MIN(media.name) as media_name'),  // Select first media name
     \DB::raw('MAX(pricelist_entries.value) as price'),  // Aggregate price
     \DB::raw('MAX(pricelist_entries.discount) as discount'),  // Aggregate discount
     \DB::raw('MAX(pricelist_entries.value_no_vat) as price_no_vat'),  // Aggregate price_no_vat
     \DB::raw('MAX(pricelist_entries.vat) as vat'),  // Aggregate VAT
     \DB::raw('MAX(currencies.name) as currency_name')  // Aggregate currency name
 )
-->groupBy('products.id','products.name')
-  ->get();
+->groupBy('products.id', 'products.name')
+->get();
     // Generate multiple CSV feeds
     $this->generateCsvFeed($products, 'google');
     $this->generateCsvFeed($products, 'salesforce');
