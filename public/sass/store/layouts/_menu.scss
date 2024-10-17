@@ -130,8 +130,8 @@
   overflow-y: scroll;
   overflow-x: hidden;
   width: 100%;
-  height: 2000px;
-  padding-bottom: 500px;
+ // height: 2000px;
+  //padding-bottom: 500px;
   flex: 1;
   scrollbar-color: $lightBlack transparent;
   scrollbar-width: thin;
@@ -189,6 +189,17 @@
     font-weight: $lightWeight;
     text-transform: capitalize;
   }
+}
+
+.menufooter{
+  padding-top:15px;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.menufooter__item a{ 
+font-weight: 400;
+font-size: 0.8rem;
 }
 
 //<-------------------------- End Menu-Leftbar Styles -------------------------->

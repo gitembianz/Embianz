@@ -202,7 +202,7 @@
         @endif
        </span>
       </div>
-      <div class="details__text">
+      <!-- <div class="details__text">
        <h3>
         @if (app()->has('label_cart_delivery_tag'))
          {!! app('label_cart_delivery_tag') !!}
@@ -219,7 +219,7 @@
          @endif
         @endif
        </span>
-      </div>
+      </div> -->
       @if ($cart->voucher_id != null)
        <div class="details__text">
         <h3>
@@ -250,8 +250,12 @@
         @endif
        </h3>
        <span id="detailsTotal">
-        {{ number_format($cart->final_amount, 2, $decimal, $mill) }} @if (app()->has('global_currency_primary_symbol'))
+        {{ number_format($cart->sum_amount, 2, $decimal, $mill) }}
+        @if (app()->has('global_currency_primary_symbol'))
          {!! app('global_currency_primary_symbol') !!}
+        @endif
+        <!-- {{ number_format($cart->final_amount, 2, $decimal, $mill) }} @if (app()->has('global_currency_primary_symbol'))
+         {!! app('global_currency_primary_symbol') !!} TEMPORARY!!!--> 
         @endif
        </span>
       </div>

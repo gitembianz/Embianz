@@ -184,7 +184,7 @@
 
      </span>
     </h5>
-    <h5 class="leftbar__total--text">
+    <!-- <h5 class="leftbar__total--text">
      @if (app()->has('label_cart_delivery_tag'))
       {!! app('label_cart_delivery_tag') !!}
      @endif
@@ -199,7 +199,7 @@
        @endif
       @endif
      </span>
-    </h5>
+    </h5> -->
     @if ($cart->voucher_id != null)
      <h5 class="leftbar__total--text">
       @if (app()->has('label_cart_voucher_tag'))
@@ -218,7 +218,7 @@
       </span>
      </h5>
     @endif
-    <h5 class="leftbar__total--text">
+    <!-- <h5 class="leftbar__total--text">
      @if (app()->has('label_cart_total_tag'))
       {!! app('label_cart_total_tag') !!}
      @endif
@@ -228,7 +228,7 @@
        {!! app('global_currency_primary_symbol') !!}
       @endif
      </span>
-    </h5>
+    </h5> -->
     @if ($message)
      <p class="voucher__error">{{ $message }}</p>
     @endif
