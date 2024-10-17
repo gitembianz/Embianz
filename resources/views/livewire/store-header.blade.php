@@ -235,6 +235,18 @@
       </li>
      @endif
     @endforeach
+    <li class="menufooter">Informații</li>
+    <li class="menufooter__item"><a href="{{ url('/about') }}">Despre Noi</a></li>
+    <li class="menufooter__item"><a href="{{ url('/contact') }}">Contactează-ne</a></li>
+    <li class="menufooter__item"><a href="{{ url('/terms') }}">Termeni și Condiții</a></li>
+
+    <li class="menufooter">Serviciu clienți</li>
+    <li class="menufooter__item"><a href="{{ url('/cookie') }}">Politica de Cookies</a></li>
+    <li class="menufooter__item"><a href="{{ url('/faq') }}">Întrebări Frecvente</a></li>
+    <li class="menufooter__item"><a href="{{ url('/privacy') }}">Politica de confidențialitate</a></li>
+    <li class="menufooter__item"><a href="{{ url('/sitemap.xml') }}">Hartă Site</a></li>
+    <li class="menufooter__item"><a target="blank" href="https://anpc.ro/">ANPC</a></li>
+
    </ul>
   </div>
   <button class="menu__hidden--close" id="menuHidden"></button>

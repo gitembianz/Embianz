@@ -235,7 +235,8 @@
     font-weight: 500;
     color: $lightBlack;
     display: -webkit-box;            /* Display as flexbox */
-    -webkit-line-clamp: 2;           /* Limit the number of lines to 2 */
+    -webkit-line-clamp: 2; 
+    line-clamp: 2;          /* Limit the number of lines to 2 */
     -webkit-box-orient: vertical;    /* Specify the box orientation */
     //overflow: hidden;                /* Hide overflowed text */
     text-overflow: ellipsis;  
