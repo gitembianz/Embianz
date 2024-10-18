@@ -171,7 +171,8 @@
     @endforeach
    </ul>
 
-   <div class="leftbar__total">
+   <div class="leftbar__total" @if (app()->has('global_display_delivery_price_on_cart') && app('global_display_delivery_price_on_cart') != 'true') style="min-height: 10% !important" @endif>
+
     <h5 class="leftbar__total--text">
      @if (app()->has('label_cart_products_tag'))
       {!! app('label_cart_products_tag') !!}
@@ -184,22 +185,25 @@
 
      </span>
     </h5>
-    <!-- <h5 class="leftbar__total--text">
-     @if (app()->has('label_cart_delivery_tag'))
-      {!! app('label_cart_delivery_tag') !!}
-     @endif
-     <span id="leftbarTotalPrice">
-      @if ($cart->delivery_price == 0)
-       @if (app()->has('label_cart_delivery_free'))
-        {!! app('label_cart_delivery_free') !!}
-       @endif
-      @else
-       {{ number_format($cart->delivery_price, 2, $decimal, $mill) }}@if (app()->has('global_currency_primary_symbol'))
-        {!! app('global_currency_primary_symbol') !!}
-       @endif
+    @if (app()->has('global_display_delivery_price_on_cart') && app('global_display_delivery_price_on_cart') === 'true')
+
+     <h5 class="leftbar__total--text">
+      @if (app()->has('label_cart_delivery_tag'))
+       {!! app('label_cart_delivery_tag') !!}
       @endif
-     </span>
-    </h5> -->
+      <span id="leftbarTotalPrice">
+       @if ($cart->delivery_price == 0)
+        @if (app()->has('label_cart_delivery_free'))
+         {!! app('label_cart_delivery_free') !!}
+        @endif
+       @else
+        {{ number_format($cart->delivery_price, 2, $decimal, $mill) }}@if (app()->has('global_currency_primary_symbol'))
+         {!! app('global_currency_primary_symbol') !!}
+        @endif
+       @endif
+      </span>
+     </h5>
+    @endif
     @if ($cart->voucher_id != null)
      <h5 class="leftbar__total--text">
       @if (app()->has('label_cart_voucher_tag'))
@@ -218,17 +222,20 @@
       </span>
      </h5>
     @endif
-    <!-- <h5 class="leftbar__total--text">
-     @if (app()->has('label_cart_total_tag'))
-      {!! app('label_cart_total_tag') !!}
-     @endif
-     <span id="leftbarTotalPrice">
-      {{ number_format($cart->final_amount, 2, $decimal, $mill) }}
-      @if (app()->has('global_currency_primary_symbol'))
-       {!! app('global_currency_primary_symbol') !!}
+    @if (app()->has('global_display_delivery_price_on_cart') && app('global_display_delivery_price_on_cart') === 'true')
+
+     <h5 class="leftbar__total--text">
+      @if (app()->has('label_cart_total_tag'))
+       {!! app('label_cart_total_tag') !!}
       @endif
-     </span>
-    </h5> -->
+      <span id="leftbarTotalPrice">
+       {{ number_format($cart->final_amount, 2, $decimal, $mill) }}
+       @if (app()->has('global_currency_primary_symbol'))
+        {!! app('global_currency_primary_symbol') !!}
+       @endif
+      </span>
+     </h5>
+    @endif
     @if ($message)
      <p class="voucher__error">{{ $message }}</p>
     @endif
@@ -269,19 +276,18 @@
      let productsList = [];
      let products = document.querySelectorAll('.leftbar__item');
      let total = parseFloat(document.getElementById('leftbarTotalPrice').innerText.replace('RON', '')
-      .trim()); // Extrage totalul comenzii și converteste-l la float
+      .trim());
 
      products.forEach(function(product) {
       let productName = product.querySelector('.leftbar__link--title').innerText; // Extrage numele produsului
       let productPrice = parseFloat(product.querySelector('.leftbar__link--price').innerText.replace('RON', '')
-       .trim()); // Extrage pretul produsului și converteste-l la float
+       .trim());
       let productQuantity = parseInt(product.querySelector('.leftbar__link--quantity')
-       .innerText); // Extrage cantitatea produsului și converteste-l la int
+       .innerText);
 
       productsList.push(productName + ' --- ' + productQuantity + 'buc --- ' + productPrice);
      });
 
-     // Adaugă informațiile în dataLayer
      window.dataLayer = window.dataLayer || [];
      window.dataLayer.push({
       'event': 'addToCart',
