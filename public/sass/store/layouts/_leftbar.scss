@@ -222,7 +222,7 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  gap: 15px;
+  gap: 5px;
 }
 
 .leftbar__button {
@@ -450,7 +450,7 @@
     font-size: $textSize;
     color: $lightBlack;
     font-weight: $lightWeight;
-    text-transform: uppercase;
+    //text-transform: uppercase;
   }
 }
 
