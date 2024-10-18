@@ -171,7 +171,7 @@
     @endforeach
    </ul>
 
-   <div class="leftbar__total" @if (app()->has('global_display_delivery_price_on_cart') && app('global_display_delivery_price_on_cart') != 'true') style="min-height: 10% !important" @endif>
+   <div class="leftbar__total" @if (app()->has('global_display_delivery_price_on_cart') && app('global_display_delivery_price_on_cart') != 'true') @endif>
 
     <h5 class="leftbar__total--text">
      @if (app()->has('label_cart_products_tag'))
