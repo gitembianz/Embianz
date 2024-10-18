@@ -49,6 +49,7 @@ class StoreSeeder extends Seeder
             ['parameter' => 'lang', 'value' => 'ro', 'description' => 'Project Language ex: ro', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'locale', 'value' => 'ro_RO', 'description' => 'Project Locale ex: ro_RO', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
             ['parameter' => 'display_delivery_price_on_cart', 'value' => 'true', 'description' => 'Display Delivery price on cart, default :true', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
+            ['parameter' => 'display_phone_on_pdp', 'value' => 'true', 'description' => 'Display Phone number on pdp, default :true', 'createdby' => 'admin', 'lastmodifiedby' => 'admin', 'created_at' => $currentTime, 'updated_at' => $currentTime],
 
         ];
     }
