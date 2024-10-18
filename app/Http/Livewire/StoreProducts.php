@@ -164,7 +164,8 @@ class StoreProducts extends Component
       $query->whereIn('id', $this->selectedKeys);
     }
 
-    return $query->orderBy('id', 'desc')->paginate($this->loadAmount);
+    return $query->orderBy('popularity', 'DESC')
+      ->orderBy('innerid', 'ASC')->paginate($this->loadAmount);
   }
 
   // filters fro cache

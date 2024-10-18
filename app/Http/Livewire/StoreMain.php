@@ -46,7 +46,7 @@ class StoreMain extends Component
 
       return app()->make('cached_products')->filter(function ($product) {
         return $product->type != 'parent';
-      })->sortByDesc('popularity')->take(app('global_limit_slideritems'));
+      })->sortByDesc('popularity')->sortByDesc('innerid')->take(app('global_limit_slideritems'));
     } else {
       return Product::with([
         'media' => function ($query) {
@@ -66,12 +66,13 @@ class StoreMain extends Component
           }]);
         }
       ])
-        ->select('id', 'end_date', 'name', 'seo_id', 'ean', 'quantity', 'sku', 'long_description', 'brand', 'type', 'short_description', 'popularity')
+        ->select('id', 'end_date', 'innerid', 'name', 'seo_id', 'ean', 'quantity', 'sku', 'long_description', 'brand', 'type', 'short_description', 'popularity')
         ->where('active', true)
         ->where('type', '!=', 'parent')
         ->where('start_date', '<=', now()->format('Y-m-d'))
         ->where('end_date', '>=', now()->format('Y-m-d'))
-        ->orderBy('popularity', 'desc')
+        ->orderBy('popularity', 'DESC')
+        ->orderBy('innerid', 'ASC')
         ->limit(app('global_limit_slideritems'))
         ->get();
     }
@@ -86,6 +87,7 @@ class StoreMain extends Component
           return $product->type != 'parent' && $product->is_new == true;
         })
         ->sortByDesc('popularity')
+        ->sortByDesc('innerid')
         ->take(app('global_limit_slideritems'));
     } else {
       return Product::with([
@@ -107,13 +109,14 @@ class StoreMain extends Component
         }
 
       ])
-        ->select('id', 'end_date', 'name', 'seo_id', 'ean', 'quantity', 'sku', 'long_description', 'brand', 'short_description', 'popularity')
+        ->select('id', 'end_date', 'innerid', 'name', 'seo_id', 'ean', 'quantity', 'sku', 'long_description', 'brand', 'short_description', 'popularity')
         ->where('active', true)
         ->where('type', '!=', 'parent')
         ->where('start_date', '<=',  now()->format('Y-m-d'))
         ->where('end_date', '>=',  now()->format('Y-m-d'))
         ->where('is_new', true)
-        ->orderBy('popularity', 'desc')
+        ->orderBy('popularity', 'DESC')
+        ->orderBy('innerid', 'ASC')
         ->limit(app('global_limit_slideritems'))
         ->get();
     }
